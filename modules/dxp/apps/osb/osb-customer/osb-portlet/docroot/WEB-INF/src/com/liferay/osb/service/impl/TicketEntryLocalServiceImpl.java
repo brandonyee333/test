@@ -725,23 +725,8 @@ public class TicketEntryLocalServiceImpl
 		return new Tuple(ticketEntries, corruptIndex);
 	}
 
-	public List<TicketEntry> getTicketEntries(long accountEntryId) {
-		return ticketEntryPersistence.findByAccountEntryId(accountEntryId);
-	}
-
-	public List<TicketEntry> getTicketEntries(
-		long accountEntryId, int start, int end, OrderByComparator obc) {
-
-		return ticketEntryPersistence.findByAccountEntryId(
-			accountEntryId, start, end, obc);
-	}
-
 	public int getTicketEntriesCount(Date modifiedDate) {
 		return ticketEntryPersistence.countByGtModifiedDate(modifiedDate);
-	}
-
-	public int getTicketEntriesCount(long accountEntryId) {
-		return ticketEntryPersistence.countByAccountEntryId(accountEntryId);
 	}
 
 	public TicketEntry getTicketEntry(long accountEntryId, long ticketId)
@@ -775,27 +760,6 @@ public class TicketEntryLocalServiceImpl
 		return ticketEntries;
 	}
 
-	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws PortalException {
-
-		List<Integer> userVisibilities = new ArrayList<>();
-
-		for (int i = 1; i < 4; i++) {
-			if (!hasVisibility(userId, ticketEntryId, i)) {
-				continue;
-			}
-
-			userVisibilities.add(i);
-		}
-
-		return ArrayUtil.toArray(userVisibilities.toArray(new Integer[0]));
-	}
-
-	public List<TicketEntry> getValidTicketEntries(long offeringEntryId) {
-		return ticketEntryPersistence.findByOEI_NotR(
-			offeringEntryId, TicketEntryConstants.RESOLUTION_REDIRECTED);
-	}
-
 	public int getValidTicketEntriesCount(long offeringEntryId) {
 		return ticketEntryPersistence.countByOEI_NotR(
 			offeringEntryId, TicketEntryConstants.RESOLUTION_REDIRECTED);
@@ -807,10 +771,6 @@ public class TicketEntryLocalServiceImpl
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
 
-		return hasParticipant(userId, ticketEntry);
-	}
-
-	public boolean hasParticipant(long userId, TicketEntry ticketEntry) {
 		if (ticketEntry.getUserId() == userId) {
 			return true;
 		}
@@ -854,36 +814,6 @@ public class TicketEntryLocalServiceImpl
 
 		for (TicketLink ticketLink : ticketLinks) {
 			if (ticketLink.getUserId() == userId) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public boolean hasVisibility(
-			long userId, long ticketEntryId, int visibility)
-		throws PortalException {
-
-		if (visibility == VisibilityConstants.PUBLIC) {
-			return true;
-		}
-
-		if (organizationLocalService.hasUserOrganization(
-				userId, OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-			return true;
-		}
-
-		if (visibility == VisibilityConstants.WORKERS) {
-			TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
-				ticketEntryId);
-
-			AccountEntry accountEntry = ticketEntry.getAccountEntry();
-
-			if (partnerWorkerLocalService.hasPartnerWorker(
-					userId, accountEntry.getPartnerEntryId())) {
-
 				return true;
 			}
 		}
@@ -1386,25 +1316,6 @@ public class TicketEntryLocalServiceImpl
 		reindexTicketEntry(ticketEntry);
 
 		syncToJIRA(ticketEntry.getTicketEntryId());
-
-		return ticketEntry;
-	}
-
-	public TicketEntry updateTicketId(long ticketEntryId, long ticketId)
-		throws PortalException {
-
-		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
-			ticketEntryId);
-
-		ticketEntry.setTicketId(ticketId);
-
-		//TODO implement serviceContext how needed
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		ticketEntryPersistence.update(ticketEntry, serviceContext);
-
-		reindexTicketEntry(ticketEntry);
 
 		return ticketEntry;
 	}
@@ -2522,7 +2433,8 @@ public class TicketEntryLocalServiceImpl
 			if ((accountCustomer.getNotifications() ==
 					AccountCustomerConstants.NOTIFICATIONS_NONE) &&
 				!subscribed &&
-				!ticketEntry.hasParticipant(accountCustomer.getUserId())) {
+				!hasParticipant(
+					user.getUserId(), ticketEntry.getTicketEntryId())) {
 
 				continue;
 			}
@@ -2538,7 +2450,7 @@ public class TicketEntryLocalServiceImpl
 			while (itr.hasNext()) {
 				Long customerUserId = itr.next();
 
-				if (!ticketCommentLocalService.hasVisibility(
+				if (!VisibilityConstants.hasVisibility(
 						customerUserId, ticketEntry.getTicketEntryId(),
 						ticketComment.getVisibility())) {
 
@@ -2982,7 +2894,7 @@ public class TicketEntryLocalServiceImpl
 			while (itr.hasNext()) {
 				Long workerUserId = itr.next();
 
-				if (!ticketCommentLocalService.hasVisibility(
+				if (!VisibilityConstants.hasVisibility(
 						workerUserId, ticketEntry.getTicketEntryId(),
 						ticketComment.getVisibility())) {
 

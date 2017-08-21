@@ -171,18 +171,6 @@ public class AccountAttachmentLocalServiceImpl
 		}
 	}
 
-	public void deleteAccountAttachments(
-			long accountEntryId, long accountProjectId, int type)
-		throws PortalException {
-
-		List<AccountAttachment> accountAttachments = getAccountAttachments(
-			accountEntryId, accountProjectId, type);
-
-		for (AccountAttachment accountAttachment : accountAttachments) {
-			deleteAccountAttachment(accountAttachment);
-		}
-	}
-
 	public List<AccountAttachment> getAccountAttachments(long accountEntryId) {
 		return accountAttachmentPersistence.findByAccountEntryId(
 			accountEntryId);

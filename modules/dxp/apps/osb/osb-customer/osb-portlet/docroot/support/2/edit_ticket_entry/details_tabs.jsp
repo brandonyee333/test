@@ -101,7 +101,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 					types = ArrayUtil.append(TicketAttachmentConstants.TYPES, TicketAttachmentConstants.TYPES_LARGE);
 				}
 
-				int[] userVisibilities = TicketEntryLocalServiceUtil.getUserVisibilities(user.getUserId(), ticketEntry.getTicketEntryId());
+				int[] userVisibilities = VisibilityConstants.getUserVisibilities(user.getUserId(), ticketEntry.getTicketEntryId());
 
 				int attachmentsCount = TicketAttachmentLocalServiceUtil.getTicketAttachmentsCount(ticketEntry.getTicketEntryId(), types, userVisibilities);
 				%>

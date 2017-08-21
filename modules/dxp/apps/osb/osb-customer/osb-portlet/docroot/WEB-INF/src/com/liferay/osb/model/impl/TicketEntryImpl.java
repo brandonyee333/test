@@ -23,6 +23,7 @@ import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.TicketAttachment;
+import com.liferay.osb.model.TicketAttachmentConstants;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.model.TicketFlagConstants;
 import com.liferay.osb.model.TicketInformation;
@@ -34,10 +35,10 @@ import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
-import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.service.TicketFlagLocalServiceUtil;
 import com.liferay.osb.service.TicketInformationLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
+import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -270,12 +271,20 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 		int[] types, int[] visibilities) {
 
 		return TicketAttachmentLocalServiceUtil.getTicketAttachments(
-			getTicketEntryId(), types, visibilities);
+			getTicketEntryId(), types, visibilities,
+			WorkflowConstants.STATUS_APPROVED);
 	}
 
 	public int getTicketAttachmentsCount(int[] visibilities) {
+		int[] types = {
+			TicketAttachmentConstants.TYPE_HOTFIX,
+			TicketAttachmentConstants.TYPE_LARGE_FILE,
+			TicketAttachmentConstants.TYPE_LARGE_HOTFIX,
+			TicketAttachmentConstants.TYPE_NONE
+		};
+
 		return TicketAttachmentLocalServiceUtil.getTicketAttachmentsCount(
-			getTicketEntryId(), visibilities);
+			getTicketEntryId(), types, visibilities);
 	}
 
 	public Map<Long, String> getTicketInformationFieldsMap()
@@ -302,11 +311,6 @@ public class TicketEntryImpl extends TicketEntryBaseImpl {
 
 	public double getWork() {
 		return getWork(getWeight());
-	}
-
-	public boolean hasParticipant(long userId) throws PortalException {
-		return TicketEntryLocalServiceUtil.hasParticipant(
-			userId, getTicketEntryId());
 	}
 
 	public boolean isPendingCustomer() {

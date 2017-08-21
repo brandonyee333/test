@@ -1928,31 +1928,25 @@ public class AccountEntryLocalServiceImpl
 		subscriptionSender.setMailId(
 			"account_entry", accountEntry.getAccountEntryId());
 
-		List<TicketEntry> ticketEntries =
-			ticketEntryLocalService.getTicketEntries(
+		List<AccountWorker> accountWorkers =
+			accountWorkerLocalService.getAccountWorkers(
 				accountEntry.getAccountEntryId());
 
-		for (TicketEntry ticketEntry : ticketEntries) {
-			List<AccountWorker> accountWorkers =
-				accountWorkerLocalService.getAccountWorkers(
-					ticketEntry.getAccountEntryId());
+		for (AccountWorker accountWorker : accountWorkers) {
+			if (accountWorker.getNotifications() ==
+					AccountWorkerConstants.NOTIFICATIONS_NONE) {
 
-			for (AccountWorker accountWorker : accountWorkers) {
-				if (accountWorker.getNotifications() ==
-						AccountWorkerConstants.NOTIFICATIONS_NONE) {
+				continue;
+			}
 
-					continue;
-				}
+			User user = userLocalService.getUser(accountWorker.getUserId());
 
-				User user = userLocalService.getUser(accountWorker.getUserId());
+			if (organizationLocalService.hasUserOrganization(
+					user.getUserId(),
+					OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
-				if (organizationLocalService.hasUserOrganization(
-						user.getUserId(),
-						OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-					subscriptionSender.addRuntimeSubscribers(
-						user.getEmailAddress(), user.getFullName());
-				}
+				subscriptionSender.addRuntimeSubscribers(
+					user.getEmailAddress(), user.getFullName());
 			}
 		}
 

@@ -24,7 +24,7 @@ String url2 = ParamUtil.getString(request, "url2");
 String url3 = ParamUtil.getString(request, "url3");
 int visibility = ParamUtil.getInteger(request, "visibility");
 
-int[] userVisibilities = TicketEntryLocalServiceUtil.getUserVisibilities(user.getUserId(), ticketEntry.getTicketEntryId());
+int[] userVisibilities = VisibilityConstants.getUserVisibilities(user.getUserId(), ticketEntry.getTicketEntryId());
 
 List<TicketLink> ticketLinks = TicketLinkLocalServiceUtil.getTicketLinks(ticketEntry.getTicketEntryId(), userVisibilities);
 

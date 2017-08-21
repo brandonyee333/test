@@ -19,6 +19,7 @@ import com.liferay.osb.service.base.TicketLinkServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBTicketEntryPermission;
 import com.liferay.osb.service.permission.OSBTicketLinkPermission;
 import com.liferay.osb.util.OSBActionKeys;
+import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
@@ -61,7 +62,7 @@ public class TicketLinkServiceImpl extends TicketLinkServiceBaseImpl {
 			long userId, long ticketEntryId, int visibility)
 		throws PortalException {
 
-		if (!ticketEntryLocalService.hasVisibility(
+		if (!VisibilityConstants.hasVisibility(
 				userId, ticketEntryId, visibility)) {
 
 			throw new PrincipalException();

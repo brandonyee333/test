@@ -32,7 +32,7 @@ if (screenShareMode) {
 	userVisibilities = new int[] {VisibilityConstants.PUBLIC};
 }
 else {
-	userVisibilities = TicketCommentLocalServiceUtil.getUserVisibilities(user.getUserId(), ticketEntry.getTicketEntryId());
+	userVisibilities = VisibilityConstants.getUserVisibilities(user.getUserId(), ticketEntry.getTicketEntryId());
 }
 
 boolean orderByAsc = true;

@@ -3559,9 +3559,8 @@ public class SupportPortlet extends MVCPortlet {
 		long ticketEntryId = ParamUtil.getLong(
 			resourceRequest, "ticketEntryId");
 
-		int[] userVisibilities =
-			TicketEntryLocalServiceUtil.getUserVisibilities(
-				themeDisplay.getUserId(), ticketEntryId);
+		int[] userVisibilities = VisibilityConstants.getUserVisibilities(
+			themeDisplay.getUserId(), ticketEntryId);
 
 		File file = null;
 

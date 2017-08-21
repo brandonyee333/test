@@ -69,13 +69,6 @@ public class LicenseEntryLocalServiceImpl
 		return licenseEntry;
 	}
 
-	@Override
-	public LicenseEntry deleteLicenseEntry(long licenseEntryId)
-		throws PortalException {
-
-		return licenseEntryPersistence.remove(licenseEntryId);
-	}
-
 	public List<LicenseEntry> getLicenseEntries(long productEntryId) {
 		return licenseEntryPersistence.findByProductEntryId(productEntryId);
 	}

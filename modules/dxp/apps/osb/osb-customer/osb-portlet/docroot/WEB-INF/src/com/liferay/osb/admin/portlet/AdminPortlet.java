@@ -98,7 +98,7 @@ import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentAttachmentServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
-import com.liferay.osb.service.AccountWorkerServiceUtil;
+import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.HolidayCalendarLocalServiceUtil;
 import com.liferay.osb.service.HolidayCalendarRelLocalServiceUtil;
 import com.liferay.osb.service.HolidayEntryLocalServiceUtil;
@@ -831,6 +831,9 @@ public class AdminPortlet extends MVCPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
 		long[] addUserIds = StringUtil.split(
 			ParamUtil.getString(actionRequest, "addUserIds"), 0L);
 		long[] removeUserIds = StringUtil.split(
@@ -850,10 +853,11 @@ public class AdminPortlet extends MVCPortlet {
 				actionRequest, "notifications_" + userId);
 		}
 
-		AccountWorkerServiceUtil.addAccountWorkers(
-			addUserIds, accountEntryId, roles, notifications);
-		AccountWorkerServiceUtil.deleteAccountWorkers(
-			removeUserIds, accountEntryId);
+		AccountWorkerLocalServiceUtil.addAccountWorkers(
+			themeDisplay.getUserId(), addUserIds, accountEntryId, roles,
+			notifications);
+		AccountWorkerLocalServiceUtil.deleteAccountWorkers(
+			themeDisplay.getUserId(), removeUserIds, accountEntryId);
 	}
 
 	public void updateHolidayCalendar(

@@ -35,30 +35,6 @@ import java.util.List;
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 
-	public void addAccountCustomers(
-			long[] userIds, long accountEntryId, int[] roles,
-			int[] notifications)
-		throws PortalException {
-
-		OSBAccountEntryPermission.check(
-			getPermissionChecker(), accountEntryId,
-			OSBActionKeys.ASSIGN_CUSTOMERS);
-
-		accountCustomerLocalService.addAccountCustomers(
-			getUserId(), userIds, accountEntryId, roles, notifications);
-	}
-
-	public void deleteAccountCustomers(long[] userIds, long accountEntryId)
-		throws PortalException {
-
-		OSBAccountEntryPermission.check(
-			getPermissionChecker(), accountEntryId,
-			OSBActionKeys.ASSIGN_CUSTOMERS);
-
-		accountCustomerLocalService.deleteAccountCustomers(
-			getUserId(), userIds, accountEntryId);
-	}
-
 	@JSONWebService
 	public List<String> getCorpProjectAccountCustomerUUIDs(long corpProjectId)
 		throws PortalException {

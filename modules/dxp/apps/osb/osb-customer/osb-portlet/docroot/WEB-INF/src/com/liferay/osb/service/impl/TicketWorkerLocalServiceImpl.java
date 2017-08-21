@@ -338,10 +338,6 @@ public class TicketWorkerLocalServiceImpl
 			sourceClassNameId, sourceClassPK);
 	}
 
-	public List<TicketWorker> getUserTicketWorkers(long userId) {
-		return ticketWorkerPersistence.findByUserId(userId);
-	}
-
 	public int getUserTicketWorkersCount(long userId) {
 		return ticketWorkerPersistence.countByUserId(userId);
 	}

@@ -419,40 +419,9 @@ public class TicketAttachmentLocalServiceImpl
 			ticketAttachment.getFilePath());
 	}
 
-	public List<TicketAttachment> getTicketAttachments(
-		Date createDate, int type) {
-
-		return ticketAttachmentPersistence.findByCD_T(createDate, type);
-	}
-
-	public List<TicketAttachment> getTicketAttachments(int[] types) {
-		return ticketAttachmentPersistence.findByType(types);
-	}
-
 	public List<TicketAttachment> getTicketAttachments(long ticketEntryId) {
 		return ticketAttachmentPersistence.findByTEI_S(
 			ticketEntryId, WorkflowConstants.STATUS_APPROVED);
-	}
-
-	public List<TicketAttachment> getTicketAttachments(
-		long ticketEntryId, int[] visibilities, int status) {
-
-		int[] types = {
-			TicketAttachmentConstants.TYPE_HOTFIX,
-			TicketAttachmentConstants.TYPE_LARGE_FILE,
-			TicketAttachmentConstants.TYPE_LARGE_HOTFIX,
-			TicketAttachmentConstants.TYPE_NONE
-		};
-
-		return getTicketAttachments(ticketEntryId, types, visibilities, status);
-	}
-
-	public List<TicketAttachment> getTicketAttachments(
-		long ticketEntryId, int[] types, int[] visibilities) {
-
-		return getTicketAttachments(
-			ticketEntryId, types, visibilities,
-			WorkflowConstants.STATUS_APPROVED);
 	}
 
 	public List<TicketAttachment> getTicketAttachments(
@@ -474,19 +443,6 @@ public class TicketAttachmentLocalServiceImpl
 
 		return ticketAttachmentPersistence.findByU_TEI_V_S(
 			userId, ticketEntryId, visibility, status);
-	}
-
-	public int getTicketAttachmentsCount(
-		long ticketEntryId, int[] visibilities) {
-
-		int[] types = {
-			TicketAttachmentConstants.TYPE_HOTFIX,
-			TicketAttachmentConstants.TYPE_LARGE_FILE,
-			TicketAttachmentConstants.TYPE_LARGE_HOTFIX,
-			TicketAttachmentConstants.TYPE_NONE
-		};
-
-		return getTicketAttachmentsCount(ticketEntryId, types, visibilities);
 	}
 
 	public int getTicketAttachmentsCount(

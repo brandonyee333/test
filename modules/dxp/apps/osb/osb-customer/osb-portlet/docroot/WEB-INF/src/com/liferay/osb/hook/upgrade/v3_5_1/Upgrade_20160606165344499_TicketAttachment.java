@@ -15,11 +15,6 @@
 package com.liferay.osb.hook.upgrade.v3_5_1;
 
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-import com.liferay.osb.model.TicketAttachment;
-import com.liferay.osb.model.TicketAttachmentConstants;
-import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
-
-import java.util.List;
 
 /**
  * @author Kyle Bischof
@@ -48,7 +43,7 @@ public class Upgrade_20160606165344499_TicketAttachment
 	}
 
 	protected void updateTicketAttachments() {
-		int[] types = {
+		/*int[] types = {
 			TicketAttachmentConstants.TYPE_NEW_PATCH_LEVEL,
 			TicketAttachmentConstants.TYPE_NEW_PORTAL_EXT,
 			TicketAttachmentConstants.TYPE_PATCH_LEVEL,
@@ -61,7 +56,7 @@ public class Upgrade_20160606165344499_TicketAttachment
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
 			TicketAttachmentLocalServiceUtil.updateExtractedText(
 				ticketAttachment);
-		}
+		}*/
 	}
 
 }

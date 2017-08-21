@@ -139,13 +139,6 @@ public class PartnerEntryLocalServiceImpl
 		return partnerEntries;
 	}
 
-	@Override
-	public PartnerEntry getPartnerEntry(long partnerEntryId)
-		throws PortalException {
-
-		return partnerEntryPersistence.findByPrimaryKey(partnerEntryId);
-	}
-
 	public PartnerEntry getPartnerEntryByCode(String code)
 		throws PortalException {
 

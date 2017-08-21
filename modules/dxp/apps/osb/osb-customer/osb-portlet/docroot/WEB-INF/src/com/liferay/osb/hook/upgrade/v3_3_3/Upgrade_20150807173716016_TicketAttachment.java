@@ -17,19 +17,13 @@ package com.liferay.osb.hook.upgrade.v3_3_3;
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.model.TicketAttachment;
-import com.liferay.osb.model.TicketAttachmentConstants;
-import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
 import com.liferay.osb.support.util.FileRepositoryUtil;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Alan Zhang
@@ -108,7 +102,7 @@ public class Upgrade_20150807173716016_TicketAttachment
 	}
 
 	private void _renameFiles() {
-		List<TicketAttachment> ticketAttachments =
+		/*List<TicketAttachment> ticketAttachments =
 			TicketAttachmentLocalServiceUtil.getTicketAttachments(
 				new Date(), TicketAttachmentConstants.TYPE_LARGE_FILE);
 
@@ -131,7 +125,7 @@ public class Upgrade_20150807173716016_TicketAttachment
 
 		for (String key : ticketAttachmentGroup.keySet()) {
 			_doRenameFiles(ticketAttachmentGroup.get(key));
-		}
+		}*/
 	}
 
 	private void _upgradeIndex() throws Exception {

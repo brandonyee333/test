@@ -124,13 +124,6 @@ public class OfferingDefinitionLocalServiceImpl
 			productEntryId);
 	}
 
-	public List<OfferingDefinition> getSupportResponseOfferingDefinitions(
-		long supportResponseId) {
-
-		return offeringDefinitionPersistence.findBySupportResponseId(
-			supportResponseId);
-	}
-
 	public OfferingDefinition updateOfferingDefinition(
 			long offeringDefinitionId, long productEntryId,
 			long supportResponseId, String productDescription, boolean licenses,

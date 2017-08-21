@@ -328,53 +328,6 @@ public class TicketCommentLocalServiceImpl
 			userId, ticketEntryId, visibilities, statuses);
 	}
 
-	public int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws PortalException {
-
-		List<Integer> userVisibilities = new ArrayList<>();
-
-		for (int i = 1; i < 4; i++) {
-			if (!hasVisibility(userId, ticketEntryId, i)) {
-				continue;
-			}
-
-			userVisibilities.add(i);
-		}
-
-		return ArrayUtil.toArray(userVisibilities.toArray(new Integer[0]));
-	}
-
-	public boolean hasVisibility(
-			long userId, long ticketEntryId, int visibility)
-		throws PortalException {
-
-		if (visibility == VisibilityConstants.PUBLIC) {
-			return true;
-		}
-
-		if (visibility == VisibilityConstants.WORKERS) {
-			TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
-				ticketEntryId);
-
-			AccountEntry accountEntry = ticketEntry.getAccountEntry();
-
-			if (accountEntry.isPartnerManagedSupport() &&
-				partnerWorkerLocalService.hasPartnerWorker(
-					userId, accountEntry.getPartnerEntryId())) {
-
-				return true;
-			}
-		}
-
-		if (organizationLocalService.hasUserOrganization(
-				userId, OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
 	public void resetSolutionTicketComment(long ticketEntryId) {
 		List<TicketComment> ticketComments =
 			ticketCommentPersistence.findByTEI_T(

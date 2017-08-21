@@ -15,9 +15,6 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.service.base.AccountWorkerServiceBaseImpl;
-import com.liferay.osb.service.permission.OSBAccountEntryPermission;
-import com.liferay.osb.util.OSBActionKeys;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 
@@ -26,29 +23,4 @@ import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
  */
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class AccountWorkerServiceImpl extends AccountWorkerServiceBaseImpl {
-
-	public void addAccountWorkers(
-			long[] userIds, long accountEntryId, int[] roles,
-			int[] notifications)
-		throws PortalException {
-
-		OSBAccountEntryPermission.check(
-			getPermissionChecker(), accountEntryId,
-			OSBActionKeys.ASSIGN_WORKERS);
-
-		accountWorkerLocalService.addAccountWorkers(
-			getUserId(), userIds, accountEntryId, roles, notifications);
-	}
-
-	public void deleteAccountWorkers(long[] userIds, long accountEntryId)
-		throws PortalException {
-
-		OSBAccountEntryPermission.check(
-			getPermissionChecker(), accountEntryId,
-			OSBActionKeys.ASSIGN_WORKERS);
-
-		accountWorkerLocalService.deleteAccountWorkers(
-			getUserId(), userIds, accountEntryId);
-	}
-
 }

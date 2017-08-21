@@ -145,26 +145,6 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			getUserId(), ticketEntryId, commentBody);
 	}
 
-	public List<TicketEntry> getTicketEntries(
-			long accountEntryId, int start, int end, OrderByComparator obc)
-		throws PortalException {
-
-		OSBAccountEntryPermission.check(
-			getPermissionChecker(), accountEntryId, OSBActionKeys.VIEW);
-
-		return ticketEntryLocalService.getTicketEntries(
-			accountEntryId, start, end, obc);
-	}
-
-	public int getTicketEntriesCount(long accountEntryId)
-		throws PortalException {
-
-		OSBAccountEntryPermission.check(
-			getPermissionChecker(), accountEntryId, OSBActionKeys.VIEW);
-
-		return ticketEntryLocalService.getTicketEntriesCount(accountEntryId);
-	}
-
 	public TicketEntry getTicketEntry(long ticketEntryId)
 		throws PortalException {
 

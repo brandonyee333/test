@@ -30,6 +30,7 @@ import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.model.TicketAttachment;
+import com.liferay.osb.model.TicketAttachmentConstants;
 import com.liferay.osb.model.TicketComment;
 import com.liferay.osb.model.TicketCommentConstants;
 import com.liferay.osb.model.TicketEntry;
@@ -1220,9 +1221,17 @@ public class SupportUtil {
 
 		// Ticket attachments
 
+		int[] types = {
+			TicketAttachmentConstants.TYPE_HOTFIX,
+			TicketAttachmentConstants.TYPE_LARGE_FILE,
+			TicketAttachmentConstants.TYPE_LARGE_HOTFIX,
+			TicketAttachmentConstants.TYPE_NONE
+		};
+
 		List<TicketAttachment> ticketAttachments =
 			TicketAttachmentLocalServiceUtil.getTicketAttachments(
-				ticketEntryId, visibilities, WorkflowConstants.STATUS_APPROVED);
+				ticketEntryId, types, visibilities,
+				WorkflowConstants.STATUS_APPROVED);
 
 		for (TicketAttachment ticketAttachment : ticketAttachments) {
 			String key = ticketAttachment.getKey();

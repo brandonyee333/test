@@ -183,10 +183,6 @@ public class OfferingEntryLocalServiceImpl
 		return offeringEntry;
 	}
 
-	public OfferingEntry fetchOfferingEntry(long offeringEntryId) {
-		return offeringEntryPersistence.fetchByPrimaryKey(offeringEntryId);
-	}
-
 	public List<OfferingEntry> getAccountEntryOfferingEntries(
 		long accountEntryId) {
 

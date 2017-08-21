@@ -20,6 +20,7 @@ import com.liferay.osb.service.permission.OSBTicketAttachmentPermission;
 import com.liferay.osb.service.permission.OSBTicketEntryPermission;
 import com.liferay.osb.support.util.FileRepositoryUtil;
 import com.liferay.osb.util.OSBActionKeys;
+import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
@@ -260,7 +261,7 @@ public class TicketAttachmentServiceImpl
 			long userId, long ticketEntryId, int visibility)
 		throws PortalException {
 
-		if (!ticketEntryLocalService.hasVisibility(
+		if (!VisibilityConstants.hasVisibility(
 				userId, ticketEntryId, visibility)) {
 
 			throw new PrincipalException();

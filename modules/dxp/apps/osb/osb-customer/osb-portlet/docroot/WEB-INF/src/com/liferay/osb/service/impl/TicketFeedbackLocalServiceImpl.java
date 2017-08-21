@@ -153,13 +153,6 @@ public class TicketFeedbackLocalServiceImpl
 		return ticketFeedbackPersistence.findByTEI_S(ticketEntryId, subject);
 	}
 
-	public List<TicketFeedback> getTicketFeedbacks(
-		long ticketEntryId, int subject, int status) {
-
-		return ticketFeedbackPersistence.findByTEI_S_S(
-			ticketEntryId, subject, status);
-	}
-
 	public List<TicketFeedback> search(
 		String name, int createdGTDay, int createdGTMonth, int createdGTYear,
 		int createdLTDay, int createdLTMonth, int createdLTYear,
@@ -585,7 +578,10 @@ public class TicketFeedbackLocalServiceImpl
 				continue;
 			}
 
-			if (!ticketEntry.hasParticipant(accountCustomer.getUserId())) {
+			if (!ticketEntryLocalService.hasParticipant(
+					accountCustomer.getUserId(),
+					ticketEntry.getTicketEntryId())) {
+
 				continue;
 			}
 

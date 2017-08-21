@@ -125,10 +125,6 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 			StringPool.BLANK);
 	}
 
-	public List<TicketLink> getTicketLinks(long ticketEntryId, int visibility) {
-		return ticketLinkPersistence.findByTEI_V(ticketEntryId, visibility);
-	}
-
 	public List<TicketLink> getTicketLinks(
 		long ticketEntryId, int[] visibilities) {
 
@@ -140,10 +136,6 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 
 		return ticketLinkPersistence.findByTEI_TSI(
 			ticketEntryId, ticketSolutionId);
-	}
-
-	public int getTicketLinksCount(long ticketEntryId, int visibility) {
-		return ticketLinkPersistence.countByTEI_V(ticketEntryId, visibility);
 	}
 
 	public int getTicketLinksCount(long ticketEntryId, int[] visibilities) {

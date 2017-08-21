@@ -213,7 +213,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 												<%
 												TicketAttachment ticketAttachment = TicketAttachmentLocalServiceUtil.fetchTicketAttachment(ticketEntry.getTicketEntryId(), TicketAttachmentConstants.TYPE_HOTFIX);
 
-												int[] userVisibilities = TicketEntryLocalServiceUtil.getUserVisibilities(user.getUserId(), ticketEntry.getTicketEntryId());
+												int[] userVisibilities = VisibilityConstants.getUserVisibilities(user.getUserId(), ticketEntry.getTicketEntryId());
 												%>
 
 												<span title="<%= (ticketAttachment != null) ? HtmlUtil.escapeAttribute(ticketAttachment.getFileName()) : StringPool.BLANK %>">
