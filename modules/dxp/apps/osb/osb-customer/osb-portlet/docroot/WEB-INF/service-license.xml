@@ -108,9 +108,6 @@
 		<finder name="ProductEntryId" return-type="Collection">
 			<finder-column name="productEntryId" />
 		</finder>
-		<finder name="Type" return-type="Collection">
-			<finder-column name="type" />
-		</finder>
 		<finder name="PEI_T" return-type="LicenseEntry" unique="true">
 			<finder-column name="productEntryId" />
 			<finder-column name="type" />
@@ -184,9 +181,6 @@
 
 		<!-- Finder methods -->
 
-		<finder name="UserId" return-type="Collection">
-			<finder-column name="userId" />
-		</finder>
 		<finder name="LicenseKeySetId" return-type="Collection">
 			<finder-column name="licenseKeySetId" />
 		</finder>
@@ -195,9 +189,6 @@
 		</finder>
 		<finder name="OfferingEntryId" return-type="Collection">
 			<finder-column name="offeringEntryId" />
-		</finder>
-		<finder name="OrderEntryId" return-type="Collection">
-			<finder-column name="orderEntryId" />
 		</finder>
 		<finder name="U_AEI" return-type="Collection">
 			<finder-column name="userId" />
