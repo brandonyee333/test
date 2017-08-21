@@ -69,7 +69,7 @@
 		<column name="comments" type="String" />
 		<column name="pageURL" type="String" />
 	</entity>
-	<entity local-service="true" name="LCSSubscriptionEntry" remote-service="true">
+	<entity local-service="true" name="LCSSubscriptionEntry" remote-service="false">
 
 		<!-- PK fields -->
 
