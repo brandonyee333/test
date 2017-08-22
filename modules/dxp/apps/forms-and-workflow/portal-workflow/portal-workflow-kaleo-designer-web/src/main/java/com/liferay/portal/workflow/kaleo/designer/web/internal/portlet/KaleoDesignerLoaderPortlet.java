@@ -35,6 +35,7 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/loader/view.jsp",
 		"javax.portlet.name=" + KaleoDesignerPortletKeys.KALEO_DESIGNER_LOADER,
+		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.supports.mime-type=text/html"
 	},
 	service = Portlet.class
