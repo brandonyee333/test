@@ -189,16 +189,23 @@
 															editAccountCallURL.setParameter("accountCallId", String.valueOf(accountCall.getAccountCallId()));
 															editAccountCallURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
 															editAccountCallURL.setWindowState(LiferayWindowState.POP_UP);
+
+															String taglibEdit = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-project-call") + "', '" + editAccountCallURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountCall');";
+
 															%>
 
-															<aui:button cssClass="aui-button-input" onClick="'<%= renderResponse.getNamespace() + "openDialog('<liferay-ui:message key="edit-project-call" />', '<%= editAccountCallURL.toString() %>', '<portlet:namespace />updateAccountCall');" %>' value="edit" />
+															<aui:button cssClass="aui-button-input" onClick="<%= rtaglibEdit %>" value="edit" />
 
 															<portlet:actionURL name="deleteAccountCall" var="deleteAccountCallURL">
 																<portlet:param name="redirect" value="<%= currentURL %>" />
 																<portlet:param name="accountCallId" value="<%= String.valueOf(accountCall.getAccountCallId()) %>" />
 															</portlet:actionURL>
 
-															<aui:button cssClass="aui-button-input" onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this-call-log") %>')) { location.href='<%= deleteAccountCallURL %>'; } else { self.focus(); }" value="delete" />
+															<%
+															String taglibDelete = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this-call-log") + "')) { location.href='" + deleteAccountCallURL + "'; } else { self.focus(); }";
+															%>
+
+															<aui:button cssClass="aui-button-input" onClick="<%= taglibDelete %>" value="delete" />
 														</div>
 													</c:if>
 												</div>
@@ -229,9 +236,11 @@
 								addAccountCallURL.setParameter("mvcPath", "/support/2/edit_account_call.jsp");
 								addAccountCallURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
 								addAccountCallURL.setWindowState(LiferayWindowState.POP_UP);
+
+								String taglibAddCallLog = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "add-call-log") + "', '" + addAccountCallURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountCall');";
 								%>
 
-								<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "openDialog('<liferay-ui:message key="add-call-log" />', '<%= addAccountCallURL.toString() %>', '<portlet:namespace />updateAccountCall');" %>' value="add-call-log" />
+								<aui:button cssClass="aui-button-input" onClick="<%= taglibAddCallLog %>" value="add-call-log" />
 							</div>
 						</div>
 					</c:if>
@@ -273,7 +282,12 @@
 								</c:if>
 
 								<c:if test="<%= hasUpdateAccountInfoPermission %>">
-									<aui:button cssClass="aui-button-input" onClick="'<%= renderResponse.getNamespace() + "toggleSection('<%= casSectionLabel %>', '<%= casSectionEditLabel %>');" %>' value="edit" />
+
+									<%
+									String taglibEdit = renderResponse.getNamespace() + "toggleSection('" + casSectionLabel + "', '" + casSectionEditLabel + "');";
+									%>
+
+									<aui:button cssClass="aui-button-input" onClick="<%= taglibEdit %>" value="edit" />
 								</c:if>
 							</div>
 						</div>
@@ -302,9 +316,18 @@
 
 							<div class="clearfix">
 								<div class="fr">
-									<aui:button cssClass="aui-button-input" onClick="<%= renderResponse.getNamespace() %>updateAccountInformation('<%= AccountInformationConstants.SECTION_ADVOCACY_SPECIALIST %>', 'casInformation');" value="save" />
 
-									<aui:button cssClass="aui-button-input" onClick="<%= renderResponse.getNamespace() %>toggleSection('<%= casSectionEditLabel %>', '<%= casSectionLabel %>');" value="cancel" />
+									<%
+									String taglibSave = renderResponse.getNamespace() + "updateAccountInformation('" + AccountInformationConstants.SECTION_ADVOCACY_SPECIALIST + "', 'casInformation');";
+									%>
+
+									<aui:button cssClass="aui-button-input" onClick="<%= taglibSave %>" value="save" />
+
+									<%
+									String taglibCancel = renderResponse.getNamespace() + "toggleSection('" + casSectionEditLabel + "', '" + casSectionLabel + "');";
+									%>
+
+									<aui:button cssClass="aui-button-input" onClick="<%= taglibCancel %>" value="cancel" />
 								</div>
 							</div>
 						</div>
@@ -347,7 +370,11 @@
 								</c:if>
 
 								<c:if test="<%= hasUpdateAccountInfoPermission %>">
-									<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "toggleSection('<%= salesSectionLabel %>', '<%= salesSectionEditLabel %>');" %>' value="edit" />
+									<%
+									String taglibEdit = renderResponse.getNamespace() + "toggleSection('" + salesSectionLabel + "', '" + salesSectionEditLabel + "');";
+									%>
+
+									<aui:button cssClass="aui-button-input" onClick="<%= taglibEdit %>" value="edit" />
 								</c:if>
 							</div>
 						</div>
@@ -376,9 +403,15 @@
 
 							<div class="clearfix">
 								<div class="fr">
-									<aui:button cssClass="aui-button-input" onClick="'<%= renderResponse.getNamespace() + "updateAccountInformation('<%= AccountInformationConstants.SECTION_SALES %>', 'salesInformation');" %>' value="save" />
+									<%
+									String taglibSave = renderResponse.getNamespace() + "updateAccountInformation('" + AccountInformationConstants.SECTION_SALES + "', 'salesInformation');";
 
-									<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "toggleSection('<%= salesSectionEditLabel %>', '<%= salesSectionLabel %>');" %>' value="cancel" />
+									String taglibcancel = renderResponse.getNamespace() + "toggleSection('" + salesSectionEditLabel + "', '" + salesSectionLabel + "');";
+									%>
+
+									<aui:button cssClass="aui-button-input" onClick="<%= taglibSave %>" value="save" />
+
+									<aui:button cssClass="aui-button-input" onClick="<%= taglibcancel %>" value="cancel" />
 								</div>
 							</div>
 						</div>

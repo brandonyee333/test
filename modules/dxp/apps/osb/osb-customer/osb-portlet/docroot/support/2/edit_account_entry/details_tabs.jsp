@@ -311,9 +311,11 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 					addAccountEnvironmentURL.setParameter("mvcPath", "/support/2/edit_account_environment.jsp");
 					addAccountEnvironmentURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
 					addAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
+
+					String taglibCreateEnvironment = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "create-environment-configuration") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
 					%>
 
-					<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "openDialog('<liferay-ui:message key="create-environment-configuration" />', '<%= addAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment');" %>' value="create-environment" />
+					<aui:button cssClass="aui-button-input" onClick="<%= taglibCreateEnvironment %>" value="create-environment" />
 
 					<br /><br />
 				</c:if>
