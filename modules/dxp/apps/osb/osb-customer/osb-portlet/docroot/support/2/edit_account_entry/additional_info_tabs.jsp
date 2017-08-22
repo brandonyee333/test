@@ -466,6 +466,16 @@
 			['aui-base']
 		);
 
+		Liferay.provide(
+			window,
+			'<portlet:namespace />toggleSection',
+			function(hideId, showId) {
+				A.one('#<portlet:namespace />' + hideId).hide();
+				A.one('#<portlet:namespace />' + showId).show();
+			},
+			['aui-base']
+		);
+
 		function <portlet:namespace />updateAccountInformation(section, additionalInfoTab) {
 			document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
 			document.<portlet:namespace />fm1.<portlet:namespace />additionalInfoTab.value = additionalInfoTab;
@@ -498,11 +508,6 @@
 					accountCallDetails.addClass('collapsed');
 				}
 			}
-		}
-
-		function <portlet:namespace />toggleSection(hideId, showId) {
-			A.one('#<portlet:namespace />' + hideId).hide();
-			A.one('#<portlet:namespace />' + showId).show();
 		}
 	</aui:script>
 </c:if>

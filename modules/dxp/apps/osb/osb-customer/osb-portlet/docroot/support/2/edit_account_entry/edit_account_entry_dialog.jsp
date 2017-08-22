@@ -112,52 +112,7 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 <c:if test="<%= OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.UPDATE_ACCOUNT_INFO) || OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS) %>">
 	<%@ include file="/support/2/common/javascript/ticket_entry_validator_js.jspf" %>
 
-	<aui:script use="aui-base">
-		var onChange = function(e) {
-			var name = e.currentTarget.getAttribute('name');
-			var label = A.one('label#' + name + 'Label');
-
-			if (label) {
-				label.addClass('field-modified');
-			}
-
-			var labelAncestor = label.ancestor('.tab-content-tab');
-			var tab = A.one('span#' + labelAncestor.getAttribute('id'));
-
-			var modified = '(Modified)'.bold();
-
-			if (tab && tab.html().indexOf('Modified') == -1) {
-				tab.append(modified);
-				tab.addClass('field-modified');
-			}
-
-			if (this.hasAttribute('data-field-required-status')) {
-				<portlet:namespace />validateRequiredField(this);
-			}
-
-			document.getElementById('<portlet:namespace />modified').value = 'true';
-		};
-
-		var ticketTabContent = A.one('#<portlet:namespace />ticketTabContent');
-
-		if (ticketTabContent) {
-			ticketTabContent.delegate('change', onChange, 'input[type=checkbox], select');
-			ticketTabContent.delegate('keyup', onChange, 'input[type=text], textarea');
-		}
-	</aui:script>
-
 	<aui:script>
-		window.addEventListener(
-			'keydown',
-			function(A) {
-				if (A.keyCode === 27) {
-					Liferay.Util.getWindow().show();
-
-					<portlet:namespace />closePopup();
-				}
-			}
-		);
-
 		function <portlet:namespace />closePopup() {
 			var modified = document.getElementById('<portlet:namespace />modified');
 
@@ -166,30 +121,6 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 			}
 
 			Liferay.Util.getWindow().close();
-		}
-
-		function <portlet:namespace />submit() {
-			var firstNode = null;
-
-			var requiredFields = AUI().all('#<portlet:namespace />editAccountDetails input[data-field-required-status="false"], select[data-field-required-status="false"], textarea[data-field-required-status="false"]');
-
-			if (requiredFields.size()) {
-				requiredFields.each(
-					function(requiredField) {
-						if (!<portlet:namespace />validateRequiredField(requiredField) && !firstNode) {
-							firstNode = requiredField;
-						}
-					}
-				)
-
-				if (firstNode) {
-					<portlet:namespace />reveal('editAccountDetails');
-
-					firstNode.scrollIntoView();
-				}
-			}
-
-			submitForm(document.<portlet:namespace />fm);
 		}
 
 		Liferay.provide(
@@ -222,6 +153,82 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 				window.scroll(0, 0);
 			},
 			['aui-base', 'querystring-util']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />submit',
+			function() {
+				var A = AUI();
+
+				var firstNode = null;
+
+				var requiredFields = A.all('#<portlet:namespace />editAccountDetails input[data-field-required-status="false"], select[data-field-required-status="false"], textarea[data-field-required-status="false"]');
+
+				if (requiredFields.size()) {
+					requiredFields.each(
+						function(requiredField) {
+							if (!<portlet:namespace />validateRequiredField(requiredField) && !firstNode) {
+								firstNode = requiredField;
+							}
+						}
+					)
+
+					if (firstNode) {
+						<portlet:namespace />reveal('editAccountDetails');
+
+						firstNode.scrollIntoView();
+					}
+				}
+
+				submitForm(document.<portlet:namespace />fm);
+			},
+			['aui-base']
+		)
+	</aui:script>
+
+	<aui:script use="aui-base">
+		var onChange = function(e) {
+			var name = e.currentTarget.getAttribute('name');
+			var label = A.one('label#' + name + 'Label');
+
+			if (label) {
+				label.addClass('field-modified');
+			}
+
+			var labelAncestor = label.ancestor('.tab-content-tab');
+			var tab = A.one('span#' + labelAncestor.getAttribute('id'));
+
+			var modified = '(Modified)'.bold();
+
+			if (tab && tab.html().indexOf('Modified') == -1) {
+				tab.append(modified);
+				tab.addClass('field-modified');
+			}
+
+			if (this.hasAttribute('data-field-required-status')) {
+				<portlet:namespace />validateRequiredField(this);
+			}
+
+			document.getElementById('<portlet:namespace />modified').value = 'true';
+		};
+
+		var ticketTabContent = A.one('#<portlet:namespace />ticketTabContent');
+
+		if (ticketTabContent) {
+			ticketTabContent.delegate('change', onChange, 'input[type=checkbox], select');
+			ticketTabContent.delegate('keyup', onChange, 'input[type=text], textarea');
+		}
+
+		window.addEventListener(
+			'keydown',
+			function(A) {
+				if (A.keyCode === 27) {
+					Liferay.Util.getWindow().show();
+
+					<portlet:namespace />closePopup();
+				}
+			}
 		);
 	</aui:script>
 </c:if>
