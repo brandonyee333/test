@@ -1839,8 +1839,8 @@ public abstract class BaseBuild implements Build {
 	protected PrerequisiteStatus getPrerequisiteStatus(
 		List<Build> prerequisiteBuilds, PrerequisiteRule prerequisiteRule) {
 
-		BuildMatcher discardMatcher = prerequisiteRule.discardMatcher;
-		BuildMatcher invokeMatcher = prerequisiteRule.invokeMatcher;
+		BuildMatcher discardMatcher = prerequisiteRule.getDiscardMatcher();
+		BuildMatcher invokeMatcher = prerequisiteRule.getInvokeMatcher();
 
 		for (Build prerequisiteBuild : prerequisiteBuilds) {
 			if (invokeMatcher.matches(prerequisiteBuild)) {

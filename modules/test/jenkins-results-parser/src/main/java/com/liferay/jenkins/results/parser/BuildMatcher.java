@@ -31,7 +31,7 @@ public class BuildMatcher {
 	public void addParameterPatterns(
 		Pattern parameterNamePattern, Pattern parameterValuePattern) {
 
-		parameterNameValuePatterns.put(
+		_parameterNameValuePatterns.put(
 			parameterNamePattern, parameterValuePattern);
 	}
 
@@ -52,19 +52,19 @@ public class BuildMatcher {
 	}
 
 	public boolean matches(Build build) {
-		if (clazz != null) {
+		if (_clazz != null) {
 			if (!matchesClass(build)) {
 				return false;
 			}
 		}
 
-		if (checkHasDownstreamBuilds) {
+		if (_checkHasDownstreamBuilds) {
 			if (!matchesHasDownstreamBuilds(build)) {
 				return false;
 			}
 		}
 
-		if (jobNamePattern != null) {
+		if (_jobNamePattern != null) {
 			if (!matchesJobName(build)) {
 				return false;
 			}
@@ -74,13 +74,13 @@ public class BuildMatcher {
 			return false;
 		}
 
-		if (resultPattern != null) {
+		if (_resultPattern != null) {
 			if (!matchesResult(build)) {
 				return false;
 			}
 		}
 
-		if (statusPattern != null) {
+		if (_statusPattern != null) {
 			if (!matchesStatus(build)) {
 				return false;
 			}
@@ -90,27 +90,27 @@ public class BuildMatcher {
 	}
 
 	public void setBuildType(Class<? extends Build> clazz) {
-		this.clazz = clazz;
+		_clazz = clazz;
 	}
 
 	public void setCheckHasDownstreamBuilds(boolean checkHasDownstreamBuilds) {
-		this.checkHasDownstreamBuilds = checkHasDownstreamBuilds;
+		_checkHasDownstreamBuilds = checkHasDownstreamBuilds;
 	}
 
 	public void setJobNamePattern(Pattern jobNamePattern) {
-		this.jobNamePattern = jobNamePattern;
+		_jobNamePattern = jobNamePattern;
 	}
 
 	public void setResultPattern(Pattern resultPattern) {
-		this.resultPattern = resultPattern;
+		_resultPattern = resultPattern;
 	}
 
 	public void setStatusPattern(Pattern statusPattern) {
-		this.statusPattern = statusPattern;
+		_statusPattern = statusPattern;
 	}
 
 	protected boolean matchesClass(Build build) {
-		return clazz.isInstance(build);
+		return _clazz.isInstance(build);
 	}
 
 	protected boolean matchesHasDownstreamBuilds(Build build) {
@@ -122,7 +122,8 @@ public class BuildMatcher {
 	}
 
 	protected boolean matchesJobName(Build build) {
-		Matcher namePatternMatcher = jobNamePattern.matcher(build.getJobName());
+		Matcher namePatternMatcher = _jobNamePattern.matcher(
+			build.getJobName());
 
 		if (!namePatternMatcher.find()) {
 			return false;
@@ -133,7 +134,7 @@ public class BuildMatcher {
 
 	protected boolean matchesParameters(Build build) {
 		for (Entry<Pattern, Pattern> patternEntry :
-				parameterNameValuePatterns.entrySet()) {
+				_parameterNameValuePatterns.entrySet()) {
 
 			Map<String, String> parameters = build.getParameters();
 
@@ -178,23 +179,23 @@ public class BuildMatcher {
 			buildResult = "";
 		}
 
-		Matcher resultMatcher = resultPattern.matcher(buildResult);
+		Matcher resultMatcher = _resultPattern.matcher(buildResult);
 
 		return resultMatcher.find();
 	}
 
 	protected boolean matchesStatus(Build build) {
-		Matcher statusMatcher = statusPattern.matcher(build.getStatus());
+		Matcher statusMatcher = _statusPattern.matcher(build.getStatus());
 
 		return statusMatcher.find();
 	}
 
-	protected boolean checkHasDownstreamBuilds;
-	protected Class<? extends Build> clazz;
-	protected Pattern jobNamePattern;
-	protected Map<Pattern, Pattern> parameterNameValuePatterns =
+	private boolean _checkHasDownstreamBuilds;
+	private Class<? extends Build> _clazz;
+	private Pattern _jobNamePattern;
+	private final Map<Pattern, Pattern> _parameterNameValuePatterns =
 		new HashMap<>();
-	protected Pattern resultPattern;
-	protected Pattern statusPattern;
+	private Pattern _resultPattern;
+	private Pattern _statusPattern;
 
 }

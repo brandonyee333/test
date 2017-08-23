@@ -32,7 +32,7 @@ public class AxisBuildMatcher extends BuildMatcher {
 			return false;
 		}
 
-		if (axisNumberPattern != null) {
+		if (_axisNumberPattern != null) {
 			if (!matchesAxisNumber((AxisBuild)build)) {
 				return false;
 			}
@@ -42,7 +42,7 @@ public class AxisBuildMatcher extends BuildMatcher {
 	}
 
 	public void setAxisNumberPattern(Pattern axisNumberPattern) {
-		this.axisNumberPattern = axisNumberPattern;
+		_axisNumberPattern = axisNumberPattern;
 	}
 
 	@Override
@@ -50,12 +50,12 @@ public class AxisBuildMatcher extends BuildMatcher {
 	}
 
 	protected boolean matchesAxisNumber(AxisBuild axisBuild) {
-		Matcher axisNumberMatcher = axisNumberPattern.matcher(
+		Matcher axisNumberMatcher = _axisNumberPattern.matcher(
 			axisBuild.getAxisNumber());
 
 		return axisNumberMatcher.find();
 	}
 
-	protected Pattern axisNumberPattern;
+	private Pattern _axisNumberPattern;
 
 }

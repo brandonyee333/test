@@ -26,37 +26,45 @@ public class PrerequisiteRule {
 		BuildMatcher discardMatcher, BuildMatcher invokeMatcher,
 		BuildMatcher prerequisiteMatcher) {
 
-		this.assignMatcher = assignMatcher;
-		this.description = description;
-		this.discardMatcher = discardMatcher;
-		this.invokeMatcher = invokeMatcher;
-		this.prerequisiteMatcher = prerequisiteMatcher;
+		_assignMatcher = assignMatcher;
+		_description = description;
+		_discardMatcher = discardMatcher;
+		_invokeMatcher = invokeMatcher;
+		_prerequisiteMatcher = prerequisiteMatcher;
 	}
 
 	public List<Build> getApplicableBuilds(List<Build> builds) {
-		return assignMatcher.getMatchingBuilds(builds);
+		return _assignMatcher.getMatchingBuilds(builds);
 	}
 
 	public String getDescription() {
-		return description;
+		return _description;
+	}
+
+	public BuildMatcher getDiscardMatcher() {
+		return _discardMatcher;
+	}
+
+	public BuildMatcher getInvokeMatcher() {
+		return _invokeMatcher;
 	}
 
 	public List<Build> getPrerequisiteBuilds(List<Build> builds) {
-		return prerequisiteMatcher.getMatchingBuilds(builds);
+		return _prerequisiteMatcher.getMatchingBuilds(builds);
 	}
 
 	public boolean isApplicable(Build build) {
-		return assignMatcher.matches(build);
+		return _assignMatcher.matches(build);
 	}
 
 	public boolean isPrerequisite(Build build) {
-		return prerequisiteMatcher.matches(build);
+		return _prerequisiteMatcher.matches(build);
 	}
 
-	protected BuildMatcher assignMatcher;
-	protected String description;
-	protected BuildMatcher discardMatcher;
-	protected BuildMatcher invokeMatcher;
-	protected BuildMatcher prerequisiteMatcher;
+	private final BuildMatcher _assignMatcher;
+	private final String _description;
+	private final BuildMatcher _discardMatcher;
+	private final BuildMatcher _invokeMatcher;
+	private final BuildMatcher _prerequisiteMatcher;
 
 }
