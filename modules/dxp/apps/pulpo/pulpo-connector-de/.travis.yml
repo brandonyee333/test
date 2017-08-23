@@ -34,8 +34,16 @@ before_install:
     - curl -O https://liferay-labs.github.io/reports-catcher/catch-reports.sh
     - chmod +x catch-reports.sh
 
-install:
-    - ./pulpo-connector-de-deployment/src/scripts/install_aws_and_eb_cli.sh
+    # moreutils (to be able to use sponge command)
+
+    - sudo apt-get install moreutils
+
+    # Install update_deployment_repository script
+
+    - curl -O https://raw.githubusercontent.com/liferay-labs/sepia-deployment-scripts/master/travis/update_deployment_repository.sh
+    - chmod +x update_deployment_repository.sh
+
+install: true
 
 before_script:
 
@@ -70,24 +78,10 @@ after_success:
 
     - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" = "7.0.x-private" ]; then
            ./gradlew pushAppDockerImage;
+           ./update_deployment_repository.sh -p $TRAVIS_BUILD_DIR/pulpo-connector-de-deployment/travis/update_deployment_repository.env;
        fi'
-
-before_deploy:
-
-  # Set variables used by deploy script
-
-  - export COMPONENT_NAME="client-de"
-  - export DOCKER_IMAGE_NAME="liferay-pulpo-client-de"
-
-deploy:
-  on:
-    branch: "7.0.x-private"
-    condition: $TRAVIS_EVENT_TYPE = push
-  provider: script
-  script: $TRAVIS_BUILD_DIR/pulpo-connector-de-deployment/src/scripts/deploy.sh
-  skip_cleanup: true
 
 after_script:
     - ./catch-reports.sh
 
-    - docker logs liferay-pulpo-client-de
+    - docker logs com-liferay-pulpo-connector-de-private

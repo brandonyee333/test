@@ -29,11 +29,14 @@ import cucumber.runtime.arquillian.CukeSpace;
 
 import java.io.IOException;
 
+import java.net.URL;
+
 import java.util.Optional;
 import java.util.UUID;
 
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.drone.api.annotation.Drone;
+import org.jboss.arquillian.test.api.ArquillianResource;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -205,9 +208,11 @@ public class AssetConnectorTest {
 		Thread.sleep(seconds * 1000);
 	}
 
-	@Given("^I am in the (.+) url$")
-	public void navigateInClientWindowToURL(String url) {
-		browser.get(url);
+	@Given("^I am in the Liferay main page$")
+	public void navigateInClientWindowToURL() {
+		browser.get(_url.toExternalForm());
+
+		Assert.assertEquals("Welcome - Liferay DXP", browser.getTitle());
 	}
 
 	@After
@@ -293,9 +298,6 @@ public class AssetConnectorTest {
 			_getAssetIdByTitle(_title));
 	}
 
-	protected static String elasticSearchUrl = System.getenv(
-		"ELASTIC_SEARCH_URL");
-
 	private static void _deleteAssetByTitle(String title) throws Throwable {
 		String id = _getAssetIdByTitle(title);
 
@@ -304,7 +306,7 @@ public class AssetConnectorTest {
 		}
 
 		String deleteAssetUrl =
-			elasticSearchUrl + "/" + _assetIndexName + "/asset/" + id;
+			_elasticSearchUrl + "/" + _assetIndexName + "/asset/" + id;
 
 		System.out.println("Delete asset url: " + deleteAssetUrl);
 
@@ -319,8 +321,7 @@ public class AssetConnectorTest {
 	private static String _getAssetIdByTitle(String title) throws IOException {
 		String assetSearchIdUrl = String.format(
 			"%s/%s/asset/_search?q=title.en_US:'%s'&filter_path=hits.hits._id",
-			AssetConnectorTest.elasticSearchUrl,
-			AssetConnectorTest._assetIndexName, title);
+			_elasticSearchUrl, _assetIndexName, title);
 
 		System.out.println("Asset search id url: " + assetSearchIdUrl);
 
@@ -351,8 +352,7 @@ public class AssetConnectorTest {
 		String assetCountUrl = String.format(
 			"%s/%s/asset/_search?pretty=true&q=title.en_US:'%s'&filter_path=" +
 				"hits.total",
-			AssetConnectorTest.elasticSearchUrl,
-			AssetConnectorTest._assetIndexName, title);
+			_elasticSearchUrl, _assetIndexName, title);
 
 		try {
 			System.out.println("Asset count url: " + assetCountUrl);
@@ -424,11 +424,16 @@ public class AssetConnectorTest {
 
 	private static Long _assetCount;
 	private static final String _assetEngineEnvironmentUniquename =
-		System.getenv("PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME");
+		System.getenv("PULPO_TEST_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME");
 	private static final String _assetEngineUrl = System.getenv(
-		"ASSET_ENGINE_URL");
+		"PULPO_TEST_ASSET_ENGINE_URL");
 	private static final String _assetIndexName =
 		"asset_" + _assetEngineEnvironmentUniquename;
+	private static final String _elasticSearchUrl = System.getenv(
+		"PULPO_TEST_ASSET_ELASTIC_SEARCH_URL");
 	private static String _title;
+
+	@ArquillianResource
+	private URL _url;
 
 }

@@ -29,15 +29,19 @@ import cucumber.runtime.arquillian.CukeSpace;
 
 import java.io.IOException;
 
+import java.net.URL;
+
 import java.util.Optional;
 import java.util.UUID;
 
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.drone.api.annotation.Drone;
+import org.jboss.arquillian.test.api.ArquillianResource;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import org.openqa.selenium.By;
@@ -53,6 +57,7 @@ import org.openqa.selenium.WebElement;
 	features = "features/contacts_end_to_end.feature",
 	plugin = {"com.cucumber.listener.ExtentCucumberFormatter", "pretty"}
 )
+@Ignore
 @RunAsClient
 @RunWith(CukeSpace.class)
 public class ContactConnectorTest {
@@ -274,9 +279,11 @@ public class ContactConnectorTest {
 		Thread.sleep(seconds * 1000);
 	}
 
-	@Given("^I am in the (.+) url$")
-	public void navigateInClientWindowToURL(String url) {
-		browser.get(url);
+	@Given("^I am in the Liferay main page$")
+	public void navigateInClientWindowToURL() {
+		browser.get(_url.toExternalForm());
+
+		Assert.assertEquals("Welcome - Liferay DXP", browser.getTitle());
 	}
 
 	@After
@@ -450,12 +457,15 @@ public class ContactConnectorTest {
 
 	private static Long _contactCount;
 	private static final String _contactEngineEnvironmentUniquename =
-		System.getenv("PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME");
+		System.getenv("PULPO_TEST_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME");
 	private static final String _contactEngineUrl = System.getenv(
-		"CONTACT_ENGINE_URL");
+		"PULPO_TEST_CONTACT_ELASTIC_SEARCH_URL");
 	private static final String _contactIndexName =
 		"pulpo_engine_contacts_" + _contactEngineEnvironmentUniquename;
 	private static String _email;
 	private static String _screenName;
+
+	@ArquillianResource
+	private URL _url;
 
 }

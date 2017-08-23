@@ -40,17 +40,22 @@ testIntegration {
 		showStackTraces true
 	}
 
-	def contactEngineUrlValue = System.getenv("CONTACT_ENGINE_URL") ?: project.property("com.liferay.pulpo.connector.de.contact.engine.url")
+	def contactEngineUrlValue = System.getenv("PULPO_TEST_CONTACT_ENGINE_URL") ?: project.property("com.liferay.pulpo.connector.de.contact.engine.url")
 
-	environment "CONTACT_ENGINE_URL", contactEngineUrlValue
+	environment "PULPO_TEST_CONTACT_ENGINE_URL", contactEngineUrlValue
 
-	def elasticSearchUrlValue = System.getenv("ELASTIC_SEARCH_URL") ?: project.property("com.liferay.pulpo.connector.de.contact.engine.elastic.search.url")
+	def elasticSearchUrlValue = System.getenv("PULPO_TEST_CONTACT_ELASTIC_SEARCH_URL") ?: project.property("com.liferay.pulpo.connector.de.contact.engine.elastic.search.url")
 
-	environment "ELASTIC_SEARCH_URL", elasticSearchUrlValue
+	environment "PULPO_TEST_CONTACT_ELASTIC_SEARCH_URL", elasticSearchUrlValue
+
+	def uniqueNameValue = System.getenv("PULPO_TEST_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME") ?:project.property("com.liferay.pulpo.connector.de.contact.unique.name")
+
+	environment "PULPO_TEST_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME", uniqueNameValue
 
 	doFirst {
 		println "Using contactEngineUrlValue: " + contactEngineUrlValue
 		println "Using elasticSearchUrlValue: " + elasticSearchUrlValue
+		println "Using uniqueNameValue: " + uniqueNameValue
 	}
 }
 

@@ -40,17 +40,22 @@ testIntegration {
 		showStackTraces true
 	}
 
-	def assetEngineUrlValue = System.getenv("ASSET_ENGINE_URL") ?: project.property("com.liferay.pulpo.connector.de.asset.engine.url")
+	def assetEngineUrlValue = System.getenv("PULPO_TEST_ASSET_ENGINE_URL") ?: project.property("com.liferay.pulpo.connector.de.asset.engine.url")
 
-	environment "ASSET_ENGINE_URL", assetEngineUrlValue
+	environment "PULPO_TEST_ASSET_ENGINE_URL", assetEngineUrlValue
 
-	def elasticSearchUrlValue = System.getenv("ELASTIC_SEARCH_URL") ?: project.property("com.liferay.pulpo.connector.de.asset.engine.elastic.search.url")
+	def elasticSearchUrlValue = System.getenv("PULPO_TEST_ASSET_ELASTIC_SEARCH_URL") ?: project.property("com.liferay.pulpo.connector.de.asset.engine.elastic.search.url")
 
-	environment "ELASTIC_SEARCH_URL", elasticSearchUrlValue
+	environment "PULPO_TEST_ASSET_ELASTIC_SEARCH_URL", elasticSearchUrlValue
+
+	def uniqueNameValue = System.getenv("PULPO_TEST_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME") ?: project.property("com.liferay.pulpo.connector.de.asset.unique.name")
+
+	environment "PULPO_TEST_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME", uniqueNameValue
 
 	doFirst {
 		println "Using assetEngineUrlValue: " + assetEngineUrlValue
 		println "Using elasticSearchUrlValue: " + elasticSearchUrlValue
+		println "Using uniqueNameValue: " + uniqueNameValue
 	}
 }
 

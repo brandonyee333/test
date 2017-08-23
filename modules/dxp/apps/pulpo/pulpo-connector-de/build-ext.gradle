@@ -44,14 +44,6 @@ allprojects {
 }
 
 configure(subprojects.findAll {!it.childProjects}) {
-	repositories {
-		mavenLocal()
-
-		maven {
-			url "http://nexus-wcm.liferay.org.es/repository/dxp-cloud"
-		}
-	}
-
 	liferay {
 		deployDir = new File(getClientDeployDir())
 	}
@@ -88,6 +80,10 @@ configure(subprojects.findAll {!it.childProjects}) {
 	}
 
 	testIntegration {
+		def connectorUrl = System.getenv().get("PULPO_TEST_CONNECTOR_DE_URL") ?: project.property("com.liferay.pulpo.connector.de.url")
+
+		environment "PULPO_TEST_CONNECTOR_DE_URL", connectorUrl
+
 		ignoreFailures = false
 
 		testLogging {
@@ -179,14 +175,20 @@ def getClientDeployDir() {
 	return "${rootDir}/${project.property('com.liferay.pulpo.connector.de.deploy.dir')}"
 }
 
+def osbLcsGatewayHostName = System.getenv().get("OSB_LCS_GATEWAY_WEB_HOST_NAME")
+def osbLcsGatewayHostPort = System.getenv().get("OSB_LCS_GATEWAY_WEB_HOST_PORT")
+def osbLcsGatewayWebIp = System.getenv().get("OSB_LCS_GATEWAY_WEB_IP")
+def osbLcsGatewayWebProtocol = System.getenv().get("OSB_LCS_GATEWAY_WEB_PROTOCOL")
+def osbLcsPortletHostName = System.getenv().get("OSB_LCS_PORTLET_HOST_NAME")
+def osbLcsPortletEmail = System.getenv().get("OSB_LCS_PORTLET_EMAIL")
+def osbLcsPortletHostPort = System.getenv().get("OSB_LCS_PORTLET_HOST_PORT")
+def osbLcsPortletIp = System.getenv().get("OSB_LCS_PORTLET_IP")
+def osbLcsPortletOauthConsumerKey = System.getenv().get("OSB_LCS_PORTLET_OAUTH_CONSUMER_KEY")
+def osbLcsPortletOauthConsumerSecret = System.getenv().get("OSB_LCS_PORTLET_OAUTH_CONSUMER_SECRET")
+def osbLcsPortletProcotol = System.getenv().get("OSB_LCS_PORTLET_PROTOCOL")
+def osbLcsPortletPwd = System.getenv().get("OSB_LCS_PORTLET_PWD")
 def pulpoAssetConnectorEnvironmentUniquename = System.getenv().get("PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME")
 def pulpoContactConnectorEnvironmentUniquename = System.getenv().get("PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME")
-def lcsPortalHost = System.getenv().get("LCS_PORTAL_HOST")
-def lcsPortalPort = System.getenv().get("LCS_PORTAL_PORT")
-def lcsPortalEmail = System.getenv().get("LCS_PORTAL_EMAIL")
-def lcsPortalPwd = System.getenv().get("LCS_PORTAL_PWD")
-def lcsPortalIp = System.getenv().get("LCS_PORTAL_IP")
-def lcsGatewayIp = System.getenv().get("LCS_GATEWAY_IP")
 
 task runDocker(type: Exec) {
 	dependsOn subprojects.findAll {!it.childProjects}.copyJacocoAgent
@@ -201,16 +203,22 @@ task runDocker(type: Exec) {
 
 	commandLine 'docker', 'run',
 			'-h', "localhost",
- 			'--add-host', "lcs-portal-pulpo:$lcsPortalIp",
-			'--add-host', "lcs-gateway-pulpo:$lcsGatewayIp",
-			'-e', "PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoAssetConnectorEnvironmentUniquename}",
-			'-e', "PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoContactConnectorEnvironmentUniquename}",
+ 			'--add-host', "lcs-portal-pulpo:$osbLcsPortletIp",
+			'--add-host', "lcs-gateway-pulpo:$osbLcsGatewayWebIp",
 			'-e', "JACOCO_DIR=${rootDir}/build/jacoco",
 			'-e', "JAVA_OPTS=$javaOpts",
-			'-e', "LCS_PORTAL_HOST=$lcsPortalHost",
-			'-e', "LCS_PORTAL_PORT=$lcsPortalPort",
-			'-e', "LCS_PORTAL_EMAIL=$lcsPortalEmail",
-			'-e', "LCS_PORTAL_PWD=$lcsPortalPwd",
+			'-e', "OSB_LCS_GATEWAY_WEB_HOST_NAME=$osbLcsGatewayHostName",
+			'-e', "OSB_LCS_GATEWAY_WEB_HOST_PORT=$osbLcsGatewayHostPort",
+			'-e', "OSB_LCS_GATEWAY_WEB_PROTOCOL=$osbLcsGatewayWebProtocol",
+			'-e', "OSB_LCS_PORTLET_EMAIL=$osbLcsPortletEmail",
+			'-e', "OSB_LCS_PORTLET_HOST_NAME=$osbLcsPortletHostName",
+			'-e', "OSB_LCS_PORTLET_HOST_PORT=$osbLcsPortletHostPort",
+			'-e', "OSB_LCS_PORTLET_OAUTH_CONSUMER_KEY=$osbLcsPortletOauthConsumerKey",
+			'-e', "OSB_LCS_PORTLET_OAUTH_CONSUMER_SECRET=$osbLcsPortletOauthConsumerSecret",
+			'-e', "OSB_LCS_PORTLET_PROTOCOL=$osbLcsPortletProcotol",
+			'-e', "OSB_LCS_PORTLET_PWD=$osbLcsPortletPwd",
+			'-e', "PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoAssetConnectorEnvironmentUniquename}",
+			'-e', "PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoContactConnectorEnvironmentUniquename}",
 			'-e', "ROOT_DIR=${rootDir}",
 			'-p', '5005:5005',
 			'-p', '8080:8080',
@@ -220,7 +228,7 @@ task runDocker(type: Exec) {
 			'-v', "${getClientDeployDir()}:/liferay/deploy",
 			'-d',
 			'-v', "${rootDir}/pulpo-connector-de-docker/portal-ext.properties:/liferay/portal-ext.properties",
-			'--name', "liferay-pulpo-client-de",
+			'--name', "com-liferay-pulpo-connector-de-private",
 			getImageNameWithUserAndVersion()
 
 	finalizedBy checkDocker

@@ -1,0 +1,28 @@
+{
+    "computeType": "BUILD_GENERAL1_SMALL",
+    "image": "aws/codebuild/java:openjdk-8",
+    "type": "LINUX_CONTAINER",
+    "environmentVariables": [
+        {
+            "name": "PULPO_TEST_CONNECTOR_DE_URL",
+            "value": "http://pulpo-connector-de-pre.eu-west-1.elasticbeanstalk.com"
+        },
+        {
+            "name": "PULPO_TEST_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME",
+            "value": "pre"
+        },
+        {
+            "name": "PULPO_TEST_ASSET_ENGINE_URL",
+            "value": "http://pulpo-engine-assets-pre.eu-west-1.elasticbeanstalk.com"
+        },
+        {
+            "name": "PULPO_TEST_ASSET_ELASTIC_SEARCH_URL",
+            "value": "https://search-pulpo-elasticsearch-dev-fowirqyosr5ljgr24rfuuqwmqm.eu-west-1.es.amazonaws.com/"
+        },
+        {
+            "name": "PULPO_TEST_CONTACT_ELASTIC_SEARCH_URL",
+            "value": "https://search-pulpo-elasticsearch-dev-fowirqyosr5ljgr24rfuuqwmqm.eu-west-1.es.amazonaws.com/"
+        }
+    ]
+
+}

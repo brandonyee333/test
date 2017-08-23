@@ -1,0 +1,170 @@
+{
+    "pipeline": {
+        "roleArn": "arn:aws:iam::569796009809:role/AWS-CodePipeline-Service", 
+        "stages": [
+            {
+                "name": "get-source",
+                "actions": [
+                    {
+                        "inputArtifacts": [], 
+                        "name": "get-deployment-source",
+                        "actionTypeId": {
+                            "category": "Source", 
+                            "owner": "ThirdParty", 
+                            "version": "1", 
+                            "provider": "GitHub"
+                        }, 
+                        "outputArtifacts": [
+                            {
+                                "name": "deployment-source-output"
+                            }
+                        ], 
+                        "configuration": {
+                            "Owner": "liferay-labs", 
+                            "Repo": "com-liferay-pulpo-connector-de-deployment-private",
+                            "PollForSourceChanges": "true", 
+                            "Branch": "7.0.x-private",
+                            "OAuthToken": "f701bb2c9ec6d35366af553db2a820af471d6295"
+                        }, 
+                        "runOrder": 1
+                    }, 
+                    {
+                        "inputArtifacts": [], 
+                        "name": "get-test-source",
+                        "actionTypeId": {
+                            "category": "Source", 
+                            "owner": "ThirdParty", 
+                            "version": "1", 
+                            "provider": "GitHub"
+                        }, 
+                        "outputArtifacts": [
+                            {
+                                "name": "test-source-output"
+                            }
+                        ], 
+                        "configuration": {
+                            "Owner": "liferay",
+                            "Repo": "com-liferay-pulpo-connector-de-private",
+                            "PollForSourceChanges": "false",
+                            "Branch": "7.0.x-private",
+                            "OAuthToken": "f701bb2c9ec6d35366af553db2a820af471d6295"
+                        }, 
+                        "runOrder": 1
+                    }
+                ]
+            }, 
+            {
+                "name": "deploy-to-dev",
+                "actions": [
+                    {
+                        "inputArtifacts": [
+                            {
+                                "name": "deployment-source-output"
+                            }
+                        ], 
+                        "name": "deploy-to-dev",
+                        "actionTypeId": {
+                            "category": "Deploy", 
+                            "owner": "AWS", 
+                            "version": "1", 
+                            "provider": "ElasticBeanstalk"
+                        }, 
+                        "outputArtifacts": [], 
+                        "configuration": {
+                            "ApplicationName": "pulpo-connector-de",
+                            "EnvironmentName": "pulpo-connector-de-dev"
+                        }, 
+                        "runOrder": 1
+                    }
+                ]
+            }, 
+            {
+                "name": "test-dev", 
+                "actions": [
+                    {
+                        "inputArtifacts": [
+                            {
+                                "name": "test-source-output"
+                            }
+                        ], 
+                        "name": "test-dev",
+                        "actionTypeId": {
+                            "category": "Test", 
+                            "owner": "AWS", 
+                            "version": "1", 
+                            "provider": "CodeBuild"
+                        }, 
+                        "outputArtifacts": [
+                            {
+                                "name": "test-dev-output"
+                            }
+                        ], 
+                        "configuration": {
+                            "ProjectName": "pulpo-connector-de-test-dev"
+                        }, 
+                        "runOrder": 1
+                    }
+                ]
+            }, 
+            {
+                "name": "deploy-to-pre", 
+                "actions": [
+                    {
+                        "inputArtifacts": [
+                            {
+                                "name": "deployment-source-output"
+                            }
+                        ], 
+                        "name": "deploy-to-pre",
+                        "actionTypeId": {
+                            "category": "Deploy", 
+                            "owner": "AWS", 
+                            "version": "1", 
+                            "provider": "ElasticBeanstalk"
+                        }, 
+                        "outputArtifacts": [], 
+                        "configuration": {
+                            "ApplicationName": "pulpo-connector-de",
+                            "EnvironmentName": "pulpo-connector-de-pre"
+                        }, 
+                        "runOrder": 1
+                    }
+                ]
+            }, 
+            {
+                "name": "test-pre", 
+                "actions": [
+                    {
+                        "inputArtifacts": [
+                            {
+                                "name": "test-source-output"
+                            }
+                        ], 
+                        "name": "test-pre",
+                        "actionTypeId": {
+                            "category": "Test", 
+                            "owner": "AWS", 
+                            "version": "1", 
+                            "provider": "CodeBuild"
+                        }, 
+                        "outputArtifacts": [
+                            {
+                                "name": "test-pre-output"
+                            }
+                        ], 
+                        "configuration": {
+                            "ProjectName": "pulpo-connector-de-test-pre"
+                        }, 
+                        "runOrder": 1
+                    }
+                ]
+            }
+        ], 
+        "artifactStore": {
+            "type": "S3", 
+            "location": "codepipeline-eu-west-1-597955060954"
+        }, 
+        "name": "pulpo-connector-de-deployment-pipeline",
+        "version": 20
+    }
+}

@@ -6,7 +6,7 @@ Feature: Contacts can be added and retrieved
 
   Background: I have authenticated in Liferay Portal Instance
 
-    Given I am in the http://localhost:8080 url
+    Given I am in the Liferay main page
     And   I click in the Sign In link
     And   I enter test as email
     And   I enter test as password

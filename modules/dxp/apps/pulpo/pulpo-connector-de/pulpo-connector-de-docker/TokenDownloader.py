@@ -5,10 +5,10 @@ import requests
 from requests.auth import HTTPBasicAuth
 import sys
 
-lcs_host = os.environ['LCS_PORTAL_HOST']
-lcs_port = os.environ['LCS_PORTAL_PORT']
-lcs_email = os.environ['LCS_PORTAL_EMAIL']
-lcs_pwd = os.environ['LCS_PORTAL_PWD']
+lcs_host = os.environ['OSB_LCS_PORTLET_HOST_NAME']
+lcs_port = os.environ['OSB_LCS_PORTLET_HOST_PORT']
+lcs_email = os.environ['OSB_LCS_PORTLET_EMAIL']
+lcs_pwd = os.environ['OSB_LCS_PORTLET_PWD']
 
 lcs_base_url = "http://" + lcs_host + ":" + lcs_port + "/api/jsonws/osb-lcs-portlet.lcsclusterentry/export-lcs-cluster-entry-token"
 lcs_environment_name = datetime.datetime.now().strftime("%Y%m%d%H%M%S")

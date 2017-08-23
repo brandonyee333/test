@@ -16,5 +16,6 @@ RUN chmod a+x /init.sh
 RUN chmod a+x /TokenDownloader.py
 RUN apt-get update && apt-get install -y python-pip
 RUN pip install requests
+RUN apt install -y -t jessie-backports openjdk-8-jre-headless ca-certificates-java
 
 ENTRYPOINT /init.sh
