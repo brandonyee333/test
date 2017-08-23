@@ -216,13 +216,13 @@ public class PrerequisiteRulesParser {
 	}
 
 	protected static Element getRequiredChildElement(
-			String childElementName, Element parentElement)
+			String requiredChildElementName, Element parentElement)
 		throws MissingElementException {
 
-		Element childElement = parentElement.element(childElementName);
+		Element childElement = parentElement.element(requiredChildElementName);
 
 		if (childElement == null) {
-			throw new MissingElementException(childElementName);
+			throw new MissingElementException(requiredChildElementName);
 		}
 
 		return childElement;
