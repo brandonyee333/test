@@ -336,7 +336,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 	<c:if test="<%= hasUpdateAdvanced %>">
 		function <portlet:namespace />updatePendingTypes() {
-			var updatePendingURL = '<portlet:actionURL name="updatePendingTypes"><portlet:param name="mvcPath" value="/support/edit_ticket_entry.jsp" /></portlet:actionURL>';
+			var updatePendingURL = '<portlet:actionURL name="updatePendingTypes"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>';
 
 			document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
 
@@ -366,7 +366,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		}
 
 		function <portlet:namespace />updateSeverity() {
-			var updateSeverityURL = '<portlet:actionURL name="updateTicketEntrySeverity"><portlet:param name="mvcPath" value="/support/edit_ticket_entry.jsp" /></portlet:actionURL>';
+			var updateSeverityURL = '<portlet:actionURL name="updateTicketEntrySeverity"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>';
 
 			document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
 

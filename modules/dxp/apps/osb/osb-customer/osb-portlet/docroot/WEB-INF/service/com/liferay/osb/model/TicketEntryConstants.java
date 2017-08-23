@@ -700,10 +700,6 @@ public class TicketEntryConstants {
 
 	public static final int RESOLUTION_COMPLETED = 32000;
 
-	public static final int RESOLUTION_DUPLICATE = 32001;
-
-	public static final int RESOLUTION_FUTURE_RELEASE = 32005;
-
 	public static final int RESOLUTION_PENDING_CUSTOMER = 32003;
 
 	public static final int RESOLUTION_REDIRECTED = 32004;
@@ -744,11 +740,6 @@ public class TicketEntryConstants {
 	public static final int[] STATUSES_CLOSED = {
 		STATUS_CLOSED, STATUS_RESOLVED, STATUS_RESOLVED_IN_PRODUCTION,
 		STATUS_SOLUTION_DELIVERED
-	};
-
-	public static final int[] STATUSES_IN_PROGRESS = {
-		STATUS_BUILDING_PATCH, STATUS_ENGINEER_ANALYZING, STATUS_PENDING_WORKER,
-		STATUS_REPRODUCED
 	};
 
 	public static final int[] STATUSES_INACTIVE = {

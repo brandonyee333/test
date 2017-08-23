@@ -62,13 +62,9 @@ public class OSBConstants {
 
 	public static long ORGANIZATION_LIFERAY_INC_ID = 21;
 
-	public static String ORGANIZATION_LIFERAY_INC_NAME = "Liferay, Inc.";
-
 	public static long ORGANIZATION_PARTNER_ID = 810654;
 
 	public static long ORGANIZATION_TRIAL_ID = 76993481;
-
-	public static final String OSB_DIR = "osb/";
 
 	public static long ROLE_LIFERAY_EMPLOYEE_ID = 38751983;
 
@@ -88,7 +84,7 @@ public class OSBConstants {
 
 	public static long SUPPORT_REGION_US_ID = 42356488;
 
-	public static final String TEMP_DIR = OSB_DIR + "temp/";
+	public static final String TEMP_DIR = "osb/temp/";
 
 	public static long TEXTAREA_MAX_LENGTH = 12000;
 

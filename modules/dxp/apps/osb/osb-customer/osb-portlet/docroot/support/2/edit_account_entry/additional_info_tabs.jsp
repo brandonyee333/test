@@ -185,7 +185,7 @@
 															<%
 															PortletURL editAccountCallURL = renderResponse.createRenderURL();
 
-															editAccountCallURL.setParameter("mvcPath", "/support/edit_account_call.jsp");
+															editAccountCallURL.setParameter("mvcPath", "/support/2/edit_account_call.jsp");
 															editAccountCallURL.setParameter("accountCallId", String.valueOf(accountCall.getAccountCallId()));
 															editAccountCallURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
 															editAccountCallURL.setWindowState(LiferayWindowState.POP_UP);

@@ -29,9 +29,6 @@ public interface PortletPropsKeys {
 	public static final String DEVELOPER_UPGRADE_ENABLED =
 		"developer.upgrade.enabled";
 
-	public static final String ELASTICSEARCH_SEARCH_ENGINE_ID =
-		"elasticsearch.search.engine.id";
-
 	public static final String FILE_REPOSITORY_HOST = "file.repository.host";
 
 	public static final String FILE_REPOSITORY_IDS = "file.repository.ids";
@@ -40,8 +37,6 @@ public interface PortletPropsKeys {
 
 	public static final String FILE_REPOSITORY_SUPPORT_REGION_IDS =
 		"file.repository.support.region.ids";
-
-	public static final String JIRA_BROWSE_URL = "jira.browse.url";
 
 	public static final String PROVISIONING_EMAIL_ADDRESS =
 		"provisioning.email.address";

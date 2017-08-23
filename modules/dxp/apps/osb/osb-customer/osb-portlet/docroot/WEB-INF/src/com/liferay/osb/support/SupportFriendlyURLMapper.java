@@ -60,9 +60,7 @@ public class SupportFriendlyURLMapper extends DefaultFriendlyURLMapper {
 			return friendlyURLPath;
 		}
 
-		if (mvcPath.equals("/support/edit_ticket_entry.jsp") ||
-			mvcPath.equals("/support/2/edit_ticket_entry.jsp")) {
-
+		if (mvcPath.equals("/support/2/edit_ticket_entry.jsp")) {
 			long ticketEntryId = GetterUtil.getLong(
 				portletURL.getParameter("ticketEntryId"));
 
@@ -98,9 +96,7 @@ public class SupportFriendlyURLMapper extends DefaultFriendlyURLMapper {
 				}
 			}
 		}
-		else if (mvcPath.equals("/support/edit_account_entry.jsp") ||
-				 mvcPath.equals("/support/2/edit_account_entry.jsp")) {
-
+		else if (mvcPath.equals("/support/2/edit_account_entry.jsp")) {
 			long accountEntryId = GetterUtil.getLong(
 				portletURL.getParameter("accountEntryId"));
 
@@ -126,22 +122,6 @@ public class SupportFriendlyURLMapper extends DefaultFriendlyURLMapper {
 				}
 				catch (Exception e) {
 				}
-			}
-		}
-		else if (mvcPath.equals("/support/edit_liferay_ticket_feedback.jsp")) {
-			long ticketFeedbackId = GetterUtil.getLong(
-				portletURL.getParameter("ticketFeedbackId"));
-
-			if (ticketFeedbackId > 0) {
-				friendlyURLPath = "/support/feedback/" + ticketFeedbackId;
-			}
-		}
-		else if (mvcPath.equals("/support/view.jsp")) {
-			long searchFilterId = GetterUtil.getLong(
-				portletURL.getParameter("searchFilterId"));
-
-			if (searchFilterId > 0) {
-				friendlyURLPath = "/support/search/" + searchFilterId;
 			}
 		}
 
@@ -186,7 +166,7 @@ public class SupportFriendlyURLMapper extends DefaultFriendlyURLMapper {
 		int x = friendlyURLPath.indexOf("/", 1);
 
 		if ((x + 1) == friendlyURLPath.length()) {
-			addParameter(parameters, "mvcPath", "/support/view.jsp");
+			addParameter(parameters, "mvcPath", "/support/2/view.jsp");
 
 			return;
 		}
@@ -203,7 +183,7 @@ public class SupportFriendlyURLMapper extends DefaultFriendlyURLMapper {
 
 					addParameter(
 						parameters, "mvcPath",
-						"/support/edit_ticket_entry.jsp");
+						"/support/2/edit_ticket_entry.jsp");
 					addParameter(
 						parameters, "ticketDisplayId", ticketDisplayId);
 				}
@@ -247,7 +227,7 @@ public class SupportFriendlyURLMapper extends DefaultFriendlyURLMapper {
 				addParameter(parameters, "p_p_state", WindowState.NORMAL);
 				addParameter(
 					parameters, "mvcPath",
-					"/support/edit_liferay_ticket_feedback.jsp");
+					"/support/2/edit_liferay_ticket_feedback.jsp");
 				addParameter(parameters, "ticketFeedbackId", ticketFeedbackId);
 			}
 			else if (urlFragment0.equals("partner_feedback")) {
@@ -256,13 +236,8 @@ public class SupportFriendlyURLMapper extends DefaultFriendlyURLMapper {
 				addParameter(parameters, "p_p_state", WindowState.NORMAL);
 				addParameter(
 					parameters, "mvcPath",
-					"/support/edit_partner_ticket_feedback.jsp");
+					"/support/2/edit_partner_ticket_feedback.jsp");
 				addParameter(parameters, "ticketFeedbackId", ticketFeedbackId);
-			}
-			else if (urlFragment0.equals("search")) {
-				addParameter(parameters, "p_p_state", WindowState.NORMAL);
-				addParameter(parameters, "mvcPath", "/support/view.jsp");
-				addParameter(parameters, "searchFilterId", urlFragments[1]);
 			}
 
 			String propertiesAuthenticatonTokenSharedSecret = Encryptor.digest(

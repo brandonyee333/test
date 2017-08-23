@@ -34,9 +34,6 @@ public class PortletPropsValues {
 	public static final String[] FILE_REPOSITORY_IDS = PortletProps.getArray(
 		PortletPropsKeys.FILE_REPOSITORY_IDS);
 
-	public static final String JIRA_BROWSE_URL = PortletProps.get(
-		PortletPropsKeys.JIRA_BROWSE_URL);
-
 	public static final String RABBITMQ_MESSAGE_DEAD_LETTER_QUEUE_NAME =
 		PortletProps.get(
 			PortletPropsKeys.RABBITMQ_MESSAGE_DEAD_LETTER_QUEUE_NAME);

@@ -32,7 +32,4 @@ public interface CMDConstants extends Constants {
 	public static final String UPDATE_PROFILE_PREFERENCES =
 		"updateProfilePreferences";
 
-	public static final String UPDATE_TICKET_ENTRY_STATUS =
-		"updateTicketEntryStatus";
-
 }

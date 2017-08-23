@@ -26,10 +26,6 @@ public class ExternalIdMapperConstants {
 
 	public static final int TYPE_JIRA = 6;
 
-	public static final int TYPE_KRYTERION = 4;
-
-	public static final int TYPE_PROMETRIC = 2;
-
 	public static final int TYPE_SALESFORCE = 1;
 
 }

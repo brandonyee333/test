@@ -125,7 +125,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 				<%
 				PortletURL searchURL = renderResponse.createRenderURL();
 
-				searchURL.setParameter("mvcPath", "/support/edit_account_entry.jsp");
+				searchURL.setParameter("mvcPath", "/support/2/edit_account_entry.jsp");
 				searchURL.setParameter("redirect", redirect);
 				searchURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
 				%>

@@ -84,7 +84,7 @@ Date lastEnabledDate = calendar.getTime();
 				<td colspan="2">
 					<input id="<portlet:namespace /><%= displayTerms.PARTNER_ENTRY_CODE %>" name="<portlet:namespace /><%= displayTerms.PARTNER_ENTRY_CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getPartnerEntryCode()) %>" />
 
-					<input class="aui-button-input" onClick="var partnerEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/select_partner_entry.jsp" /></portlet:renderURL>', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+					<input class="aui-button-input" onClick="var partnerEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/2/select_partner_entry.jsp" /></portlet:renderURL>', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
 				</td>
 				<td colspan="2">
 					<c:if test="<%= liferayIncOrg %>">
@@ -92,7 +92,7 @@ Date lastEnabledDate = calendar.getTime();
 						<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLE %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLE %>" type="hidden" value="<%= displayTerms.getAccountWorkerRole() %>" />
 						<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_NAME %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_NAME %>" readonly="readonly" type="text" value="<%= HtmlUtil.escape(displayTerms.getAccountWorkerName()) %>" />
 
-						<input class="aui-button-input" onClick="var accountWorkerWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/select_account_worker.jsp" /></portlet:renderURL>', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+						<input class="aui-button-input" onClick="var accountWorkerWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/2/select_account_worker.jsp" /></portlet:renderURL>', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
 					</c:if>
 				</td>
 			</tr>
@@ -279,7 +279,7 @@ Date lastEnabledDate = calendar.getTime();
 
 						<input id="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" name="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
 
-						<input class="aui-button-input" onClick="var createUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/select_user.jsp" /><portlet:param name="callback" value="selectCreateUser" /></portlet:renderURL>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+						<input class="aui-button-input" onClick="var createUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/2/select_user.jsp" /><portlet:param name="callback" value="selectCreateUser" /></portlet:renderURL>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
 					</td>
 					<td colspan="2">
 						<select id="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>" name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>">
@@ -293,7 +293,7 @@ Date lastEnabledDate = calendar.getTime();
 
 						<input id="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
 
-						<input class="aui-button-input" onClick="var modifiedUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/select_user.jsp" /><portlet:param name="callback" value="selectModifiedUser" /></portlet:renderURL>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+						<input class="aui-button-input" onClick="var modifiedUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/2/select_user.jsp" /><portlet:param name="callback" value="selectModifiedUser" /></portlet:renderURL>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
 					</td>
 				</tr>
 			</c:if>

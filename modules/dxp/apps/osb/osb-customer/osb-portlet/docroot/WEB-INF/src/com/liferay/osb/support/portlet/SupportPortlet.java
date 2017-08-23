@@ -838,35 +838,6 @@ public class SupportPortlet extends MVCPortlet {
 		TicketEntryServiceUtil.forwardTicketEntry(ticketEntryId, commentBody);
 	}
 
-	public void getSearchFilter(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long searchFilterId = ParamUtil.getLong(
-			actionRequest, "searchFilterId");
-
-		SearchFilter searchFilter = SearchFilterServiceUtil.getSearchFilter(
-			searchFilterId);
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put(
-			"filter",
-			JSONFactoryUtil.createJSONObject(searchFilter.getFilter()));
-		jsonObject.put("name", searchFilter.getName());
-
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			actionRequest);
-
-		jsonObject.put(
-			"permalink",
-			SupportUtil.getFriendlySearchFilterURL(request, searchFilterId));
-
-		jsonObject.put("visibility", searchFilter.getVisibility());
-
-		writeJSON(actionRequest, actionResponse, jsonObject);
-	}
-
 	@Override
 	public void processAction(
 			ActionRequest actionRequest, ActionResponse actionResponse)

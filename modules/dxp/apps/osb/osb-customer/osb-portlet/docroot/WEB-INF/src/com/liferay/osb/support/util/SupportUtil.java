@@ -878,25 +878,6 @@ public class SupportUtil {
 		return null;
 	}
 
-	public static String getFriendlySearchFilterURL(
-			HttpServletRequest request, long searchFilterId)
-		throws PortalException {
-
-		long customerPlid = PortalUtil.getPlidFromPortletId(
-			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
-
-		PortletURL searchFilterURL = PortletURLFactoryUtil.create(
-			request, OSBPortletKeys.OSB_SUPPORT, customerPlid,
-			PortletRequest.RENDER_PHASE);
-
-		searchFilterURL.setParameter("mvcPath", "/support/view.jsp");
-		searchFilterURL.setParameter(
-			"searchFilterId", String.valueOf(searchFilterId));
-		searchFilterURL.setParameter("friendly", String.valueOf(Boolean.TRUE));
-
-		return searchFilterURL.toString();
-	}
-
 	public static String getFriendlyTicketEntryURL(
 			HttpServletRequest request, long ticketEntryId)
 		throws PortalException {
@@ -909,7 +890,7 @@ public class SupportUtil {
 			PortletRequest.RENDER_PHASE);
 
 		ticketEntryURL.setParameter(
-			"mvcPath", "/support/edit_ticket_entry.jsp");
+			"mvcPath", "/support/2/edit_ticket_entry.jsp");
 		ticketEntryURL.setParameter(
 			"ticketEntryId", String.valueOf(ticketEntryId));
 		ticketEntryURL.setParameter("friendly", String.valueOf(Boolean.TRUE));

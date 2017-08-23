@@ -38,14 +38,6 @@ public class OSBActionKeys extends ActionKeys {
 
 	public static final String ADD_LINK = "ADD_LINK";
 
-	public static final String ADD_OFFERING = "ADD_OFFERING";
-
-	public static final String ADD_ORDER = "ADD_ORDER";
-
-	public static final String ADD_PRODUCT = "ADD_PRODUCT";
-
-	public static final String ADD_SUPPORT = "ADD_SUPPORT";
-
 	public static final String ADD_TICKET = "ADD_TICKET";
 
 	public static final String ASSIGN_CUSTOMERS = "ASSIGN_CUSTOMERS";
@@ -78,8 +70,6 @@ public class OSBActionKeys extends ActionKeys {
 	public static final String UPDATE_BASIC = "UPDATE_BASIC";
 
 	public static final String UPDATE_BULK = "UPDATE_BULK";
-
-	public static final String UPDATE_LICENSE = "UPDATE_LICENSE";
 
 	public static final String UPDATE_SOLUTION = "UPDATE_SOLUTION";
 
