@@ -14,10 +14,6 @@
 
 package com.liferay.jenkins.results.parser;
 
-import com.liferay.jenkins.results.parser.exception.EmptyElementTextException;
-import com.liferay.jenkins.results.parser.exception.MissingElementException;
-import com.liferay.jenkins.results.parser.exception.UnknownElementException;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -154,7 +150,10 @@ public class PrerequisiteRulesParser {
 			String text = element.getText();
 
 			if (text.isEmpty()) {
-				throw new EmptyElementTextException(element);
+				throw new RuntimeException(
+					JenkinsResultsParserUtil.combine(
+						"Text field of element ", element.getName(),
+						" is empty"));
 			}
 
 			StringBuilder sb = new StringBuilder();
@@ -183,7 +182,10 @@ public class PrerequisiteRulesParser {
 				String text = childElement.getText();
 
 				if (text.isEmpty()) {
-					throw new EmptyElementTextException(childElement);
+					throw new RuntimeException(
+						JenkinsResultsParserUtil.combine(
+							"Text field of element ", childElement.getName(),
+							" is empty"));
 				}
 
 				if (sb.length() > 0) {
@@ -196,7 +198,10 @@ public class PrerequisiteRulesParser {
 				String text = childElement.getText();
 
 				if (text.isEmpty()) {
-					throw new EmptyElementTextException(childElement);
+					throw new RuntimeException(
+						JenkinsResultsParserUtil.combine(
+							"Text field of element ", childElement.getName(),
+							" is empty"));
 				}
 
 				if (sb.length() > 0) {
@@ -208,7 +213,8 @@ public class PrerequisiteRulesParser {
 				sb.append(")");
 			}
 			else {
-				throw new UnknownElementException(childElement);
+				throw new RuntimeException(
+					"Unknown element " + element.getName());
 			}
 		}
 
@@ -216,13 +222,16 @@ public class PrerequisiteRulesParser {
 	}
 
 	protected static Element getRequiredChildElement(
-			String requiredChildElementName, Element parentElement)
-		throws MissingElementException {
+		String requiredChildElementName, Element parentElement) {
 
 		Element childElement = parentElement.element(requiredChildElementName);
 
 		if (childElement == null) {
-			throw new MissingElementException(requiredChildElementName);
+			throw new RuntimeException(
+				JenkinsResultsParserUtil.combine(
+					parentElement.getName(),
+					" is missing required child element ",
+					requiredChildElementName));
 		}
 
 		return childElement;
