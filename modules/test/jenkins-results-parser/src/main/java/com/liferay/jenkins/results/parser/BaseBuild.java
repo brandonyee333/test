@@ -687,7 +687,7 @@ public abstract class BaseBuild implements Build {
 		String status = getStatus();
 
 		if (status.equals("discarded")) {
-			sb.append(" was discarded.");
+			sb.append(" was discarded");
 
 			return sb.toString();
 		}
@@ -710,7 +710,7 @@ public abstract class BaseBuild implements Build {
 		}
 
 		if (status.equals("pending")) {
-			sb.append(" is pending.");
+			sb.append(" is pending");
 
 			return sb.toString();
 		}
@@ -752,7 +752,7 @@ public abstract class BaseBuild implements Build {
 			return sb.toString();
 		}
 
-		throw new RuntimeException("Unknown status: " + status);
+		throw new RuntimeException(status + " is unknown");
 	}
 
 	@Override
