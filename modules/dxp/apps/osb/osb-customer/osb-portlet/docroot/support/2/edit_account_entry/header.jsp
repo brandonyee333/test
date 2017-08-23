@@ -105,7 +105,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 							<aui:button cssClass="aui-button-input" id='<%= renderResponse.getNamespace() + "tierCancel" %>' onclick="<%= taglibCancel %>" value="cancel" />
 						</div>
 					</span>
-
 					<span class="spacer"></span>
 
 					<%

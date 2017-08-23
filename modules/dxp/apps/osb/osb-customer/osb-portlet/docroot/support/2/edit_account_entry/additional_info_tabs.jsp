@@ -191,7 +191,6 @@
 															editAccountCallURL.setWindowState(LiferayWindowState.POP_UP);
 
 															String taglibEdit = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-project-call") + "', '" + editAccountCallURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountCall');";
-
 															%>
 
 															<aui:button cssClass="aui-button-input" onClick="<%= rtaglibEdit %>" value="edit" />
@@ -370,6 +369,7 @@
 								</c:if>
 
 								<c:if test="<%= hasUpdateAccountInfoPermission %>">
+
 									<%
 									String taglibEdit = renderResponse.getNamespace() + "toggleSection('" + salesSectionLabel + "', '" + salesSectionEditLabel + "');";
 									%>
@@ -393,7 +393,7 @@
 									</div>
 
 									<div class="aui-w80 customer-info fl">
-										<aui:input maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name="<%= renderResponse.getNamespace() + "field--" +  fieldId %>" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %>" type="textarea" />
+										<aui:input maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= renderResponse.getNamespace() + "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %>" type="textarea" />
 									</div>
 								</div>
 
@@ -403,6 +403,7 @@
 
 							<div class="clearfix">
 								<div class="fr">
+
 									<%
 									String taglibSave = renderResponse.getNamespace() + "updateAccountInformation('" + AccountInformationConstants.SECTION_SALES + "', 'salesInformation');";
 
