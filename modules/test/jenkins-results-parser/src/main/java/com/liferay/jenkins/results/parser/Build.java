@@ -16,6 +16,7 @@ package com.liferay.jenkins.results.parser;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.dom4j.Element;
 
@@ -24,11 +25,15 @@ import org.json.JSONObject;
 /**
  * @author Kevin Yen
  */
-public interface Build {
+public interface Build extends BuildEventListener {
+
+	public void addBuildEventListener(BuildEventListener buildEventListener);
 
 	public void addDownstreamBuilds(String... urls);
 
 	public void archive(String archiveName);
+
+	public void discard();
 
 	public String getAppServer();
 
@@ -118,14 +123,22 @@ public interface Build {
 
 	public boolean hasBuildURL(String buildURL);
 
+	public void invoke();
+
 	public void reinvoke();
 
 	public void reinvoke(ReinvokeRule reinvokeRule);
+
+	public void removeBuildEventListener(BuildEventListener buildEventListener);
 
 	public String replaceBuildURL(String text);
 
 	public void setCompareToUpstream(boolean compareToUpstream);
 
+	public void setPrerequisiteRules(Set<PrerequisiteRule> prerequisiteRules);
+
 	public void update();
+
+	public void updateBuildTriggers();
 
 }
