@@ -415,36 +415,42 @@ Date lastEnabledDate = calendar.getTime();
 
 		var advancedSearchDiv = A.one('#toggle_id_account_entry_searchadvanced');
 
-		advancedSearchDiv.all(':input').each(
-			function(item, index, collection) {
-				var type = item.get('type');
+		if (advancedSearchDiv) {
+			advancedSearchDiv.all(':input').each(
+				function(item, index, collection) {
+					var type = item.get('type');
 
-				if (type == 'select-multiple') {
-					item.all('option').each(
-						function(item, index, collection) {
-							item.attr('selected', '');
+					if (type == 'select-multiple') {
+						item.all('option').each(
+							function(item, index, collection) {
+								item.attr('selected', '');
+							}
+						);
+					}
+					else if ((type == 'hidden') || (type == 'select-one') || (type == 'text') || (type == 'textarea')) {
+						var name = item.get('name');
+
+						if ((name == '<portlet:namespace /><%= displayTerms.COUNTRY_ID %>') ||
+							(name == '<portlet:namespace /><%= displayTerms.REGION_ID %>')) {
+
+							item.val(0);
 						}
-					);
-				}
-				else if ((type == 'hidden') || (type == 'select-one') || (type == 'text') || (type == 'textarea')) {
-					var name = item.get('name');
-
-					if ((name == '<portlet:namespace /><%= displayTerms.COUNTRY_ID %>') ||
-						(name == '<portlet:namespace /><%= displayTerms.REGION_ID %>')) {
-
-						item.val(0);
+						else {
+							item.val('');
+						}
 					}
-					else {
-						item.val('');
+					else if ((type == 'checkbox') || (type == 'radio')) {
+						item.set('checked', false);
 					}
 				}
-				else if ((type == 'checkbox') || (type == 'radio')) {
-					item.set('checked', false);
-				}
-			}
-		);
+			);
+		}
 
-		A.one('#<portlet:namespace />andOperator').val('1');
+		var andOperator = A.one('#<portlet:namespace />andOperator');
+
+		if (andOperator) {
+			andOperator.val('1');
+		}
 	}
 
 	function <portlet:namespace />selectAccountWorker(userId, name, role) {
@@ -479,6 +485,7 @@ Date lastEnabledDate = calendar.getTime();
 		else {
 			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').disabled = true;
 			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').value = "";
+
 			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').disabled = true;
 			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').value = "";
 		}
@@ -492,6 +499,32 @@ Date lastEnabledDate = calendar.getTime();
 				source: '<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="accountEntries" />'
 			}
 		);
+
+		var codeAutoComplete = new A.AutoComplete(
+			{
+				autoHighlight: true,
+				button: false,
+				contentBox: '#<portlet:namespace />codeContainer',
+				cssClass: 'auto-complete-container',
+				dataSource: dataSource,
+				input: '#<portlet:namespace /><%= displayTerms.CODE %>',
+				matchKey: 'code',
+				minQueryLength: 2,
+				schema: {
+					resultFields: ['name', 'code']
+				},
+				schemaType: 'json',
+				typeAhead: true
+			}
+		);
+
+		codeAutoComplete.generateRequest = function(code) {
+			return {
+				request: '&<portlet:namespace /><%= displayTerms.CODE %>=' + code
+			};
+		};
+
+		codeAutoComplete.render();
 
 		var nameAutoComplete = new A.AutoComplete(
 			{
@@ -525,32 +558,6 @@ Date lastEnabledDate = calendar.getTime();
 		};
 
 		nameAutoComplete.render();
-
-		var codeAutoComplete = new A.AutoComplete(
-			{
-				autoHighlight: true,
-				button: false,
-				contentBox: '#<portlet:namespace />codeContainer',
-				cssClass: 'auto-complete-container',
-				dataSource: dataSource,
-				input: '#<portlet:namespace /><%= displayTerms.CODE %>',
-				matchKey: 'code',
-				minQueryLength: 2,
-				schema: {
-					resultFields: ['name', 'code']
-				},
-				schemaType: 'json',
-				typeAhead: true
-			}
-		);
-
-		codeAutoComplete.generateRequest = function(code) {
-			return {
-				request: '&<portlet:namespace /><%= displayTerms.CODE %>=' + code
-			};
-		};
-
-		codeAutoComplete.render();
 	</aui:script>
 </c:if>
 
