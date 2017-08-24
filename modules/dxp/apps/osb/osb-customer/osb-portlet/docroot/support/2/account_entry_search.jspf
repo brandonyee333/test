@@ -55,19 +55,19 @@ Date lastEnabledDate = calendar.getTime();
 			<tr>
 				<td>
 					<div id="<portlet:namespace />nameContainer">
-						<aui:input name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
+						<aui:input name="<%= displayTerms.NAME %>" type="text" value="<%= displayTerms.getName() %>" />
 					</div>
 				</td>
 				<td>
 					<div id="<portlet:namespace />codeContainer">
-						<aui:input name="<%= displayTerms.CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCode()) %>" />
+						<aui:input name="<%= displayTerms.CODE %>" type="text" value="<%= displayTerms.getCode() %>" />
 					</div>
 				</td>
 				<td>
-					<aui:input name="<%= displayTerms.INSTRUCTIONS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getInstructions()) %>" />
+					<aui:input name="<%= displayTerms.INSTRUCTIONS %>" type="text" value="<%= displayTerms.getInstructions() %>" />
 				</td>
 				<td>
-					<aui:input name="<%= displayTerms.NOTES %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getNotes()) %>" />
+					<aui:input name="<%= displayTerms.NOTES %>" type="text" value="<%= displayTerms.getNotes() %>" />
 				</td>
 			</tr>
 			<tr>
@@ -82,33 +82,33 @@ Date lastEnabledDate = calendar.getTime();
 			</tr>
 			<tr>
 				<td colspan="2">
-					<aui:input name="<%= displayTerms.PARTNER_ENTRY_CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getPartnerEntryCode()) %>" />
+					<aui:input name="<%= displayTerms.PARTNER_ENTRY_CODE %>" size="20" type="text" value="<%= displayTerms.getPartnerEntryCode() %>" />
 
 					<portlet:renderURL var="selectPartnerEntryRenderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 						<portlet:param name="mvcPath" value="/support/select_partner_entry.jsp" />
 					</portlet:renderURL>
 
 					<%
-					String taglibChoose = "var partnerEntryWindow = window.open('" + selectPartnerEntryRenderURL.toString() + "', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();";
+					String partnerEntryOnClick = "var partnerEntryWindow = window.open('" + selectPartnerEntryRenderURL.toString() + "', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();";
 					%>
 
-					<aui:button cssClass="aui-button-input" onClick="<%= taglibChoose %>" value="choose" />
+					<aui:button cssClass="aui-button-input" onClick="<%= partnerEntryOnClick %>" value="choose" />
 				</td>
 				<td colspan="2">
 					<c:if test="<%= liferayIncOrg %>">
 						<aui:input name="<%= displayTerms.ACCOUNT_WORKER_USER_ID %>" type="hidden" value="<%= displayTerms.getAccountWorkerUserId() %>" />
 						<aui:input name="<%= displayTerms.ACCOUNT_WORKER_ROLE %>" type="hidden" value="<%= displayTerms.getAccountWorkerRole() %>" />
-						<aui:input name="<%= displayTerms.ACCOUNT_WORKER_NAME %>" readonly="readonly" type="text" value="<%= HtmlUtil.escape(displayTerms.getAccountWorkerName()) %>" />
+						<aui:input name="<%= displayTerms.ACCOUNT_WORKER_NAME %>" readonly="readonly" type="text" value="<%= displayTerms.getAccountWorkerName() %>" />
 
 						<portlet:renderURL var="selectAccountWorkerRenderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 							<portlet:param name="mvcPath" value="/support/select_account_worker.jsp" />
 						</portlet:renderURL>
 
 						<%
-						String taglibChoose = "var accountWorkerWindow = window.open('" + selectAccountWorkerRenderURL.toString() + "', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();";
+						String accountWorkerOnClick = "var accountWorkerWindow = window.open('" + selectAccountWorkerRenderURL.toString() + "', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();";
 						%>
 
-						<aui:button cssClass="aui-button-input" onClick="<%= taglibChoose %>" value="choose" />
+						<aui:button cssClass="aui-button-input" onClick="<%= accountWorkerOnClick %>" value="choose" />
 					</c:if>
 				</td>
 			</tr>
@@ -175,7 +175,7 @@ Date lastEnabledDate = calendar.getTime();
 						for (SupportRegion supportRegion : SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
 						%>
 
-							<aui:option label="<%= HtmlUtil.escape(supportRegion.getName()) %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId() %>" value="<%= supportRegion.getSupportRegionId() %>" />
+							<aui:option label="<%= supportRegion.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId() %>" value="<%= supportRegion.getSupportRegionId() %>" />
 
 						<%
 						}
@@ -258,13 +258,13 @@ Date lastEnabledDate = calendar.getTime();
 			</tr>
 			<tr>
 				<td>
-					<aui:input name="<%= displayTerms.CITY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCity()) %>" />
+					<aui:input name="<%= displayTerms.CITY %>" type="text" value="<%= displayTerms.getCity() %>" />
 				</td>
 				<td>
-					<aui:input name="<%= displayTerms.STREET %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getStreet()) %>" />
+					<aui:input name="<%= displayTerms.STREET %>" type="text" value="<%= displayTerms.getStreet() %>" />
 				</td>
 				<td>
-					<aui:input name="<%= displayTerms.ZIP %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getZip()) %>" />
+					<aui:input name="<%= displayTerms.ZIP %>" type="text" value="<%= displayTerms.getZip() %>" />
 				</td>
 			</tr>
 			<tr>
@@ -289,11 +289,11 @@ Date lastEnabledDate = calendar.getTime();
 							<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getCreateUserId() %>" value="<%= user.getUserId() %>" />
 
 							<c:if test="<%= (displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId()) %>">
-								<aui:option label="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" selected="<%= true %>" value="<%= displayTerms.getCreateUserId() %>" />
+								<aui:option label="<%= displayTerms.getCreateUserName() %>" selected="<%= true %>" value="<%= displayTerms.getCreateUserId() %>" />
 							</c:if>
 						</select>
 
-						<aui:input name="<%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
+						<aui:input name="<%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= displayTerms.getCreateUserName() %>" />
 
 						<portlet:renderURL var="selectUserRenderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 							<portlet:param name="mvcPath" value="/support/select_user.jsp" />
@@ -301,10 +301,10 @@ Date lastEnabledDate = calendar.getTime();
 						</portlet:renderURL>
 
 						<%
-						String taglibChoose = "var createUserWindow = window.open('" + selectUserRenderURL.toString() + "', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();";
+						String createUserOnClick = "var createUserWindow = window.open('" + selectUserRenderURL.toString() + "', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();";
 						%>
 
-						<aui:button cssClass="aui-button-input" onClick="<%= taglibChoose %>" value="choose" />
+						<aui:button cssClass="aui-button-input" onClick="<%= createUserOnClick %>" value="choose" />
 					</td>
 					<td colspan="2">
 						<aui:select name="<%= displayTerms.MODIFIED_USER_ID %>">
@@ -312,11 +312,11 @@ Date lastEnabledDate = calendar.getTime();
 							<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getModifiedUserId() %>" value="<%= user.getUserId() %>" />
 
 							<c:if test="<%= (displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId()) %>">
-								<aui:option label="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" selected="<%= true %>" value="<%= displayTerms.getModifiedUserId() %>" />
+								<aui:option label="<%= displayTerms.getModifiedUserName() %>" selected="<%= true %>" value="<%= displayTerms.getModifiedUserId() %>" />
 							</c:if>
 						</aui:select>
 
-						<aui:input name="<%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
+						<aui:input name="<%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= displayTerms.getModifiedUserName() %>" />
 
 						<portlet:renderURL var="selectUserRenderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 							<portlet:param name="mvcPath" value="/support/select_user.jsp" />
@@ -324,10 +324,10 @@ Date lastEnabledDate = calendar.getTime();
 						</portlet:renderURL>
 
 						<%
-						String taglibChoose = "var modifiedUserWindow = window.open('" + selectUserRenderURL.toString() + "', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();";
+						String modifiedOnClick = "var modifiedUserWindow = window.open('" + selectUserRenderURL.toString() + "', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();";
 						%>
 
-						<aui:button cssClass="aui-button-input" onClick="<%= taglibChoose %>"value="choose" />
+						<aui:button cssClass="aui-button-input" onClick="<%= modifiedOnClick %>" value="choose" />
 					</td>
 				</tr>
 			</c:if>
@@ -417,12 +417,12 @@ Date lastEnabledDate = calendar.getTime();
 
 		if (advancedSearchDiv) {
 			advancedSearchDiv.all(':input').each(
-				function(item, index, collection) {
+				function(item) {
 					var type = item.get('type');
 
 					if (type == 'select-multiple') {
 						item.all('option').each(
-							function(item, index, collection) {
+							function(item) {
 								item.attr('selected', '');
 							}
 						);
@@ -430,9 +430,7 @@ Date lastEnabledDate = calendar.getTime();
 					else if ((type == 'hidden') || (type == 'select-one') || (type == 'text') || (type == 'textarea')) {
 						var name = item.get('name');
 
-						if ((name == '<portlet:namespace /><%= displayTerms.COUNTRY_ID %>') ||
-							(name == '<portlet:namespace /><%= displayTerms.REGION_ID %>')) {
-
+						if (name == '<portlet:namespace /><%= displayTerms.COUNTRY_ID %>' || name == '<portlet:namespace /><%= displayTerms.REGION_ID %>') {
 							item.val(0);
 						}
 						else {
@@ -484,10 +482,10 @@ Date lastEnabledDate = calendar.getTime();
 		}
 		else {
 			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').disabled = true;
-			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').value = "";
+			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').value = '';
 
 			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').disabled = true;
-			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').value = "";
+			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').value = '';
 		}
 	}
 </aui:script>
@@ -539,7 +537,7 @@ Date lastEnabledDate = calendar.getTime();
 				on: {
 					itemSelect: function(event) {
 						if (event != null) {
-							document.getElementById("<portlet:namespace /><%= displayTerms.NAME %>").value = '"' + event.details[1].name + '"';
+							document.getElementById('<portlet:namespace /><%= displayTerms.NAME %>').value = '"' + event.details[1].name + '"';
 						}
 					}
 				},
