@@ -21,5 +21,5 @@
 		<liferay-ui:message key="subscribe-for-updates-on-the-latest-fix-packs-security-fixes-and-product-releases" />
 	</span>
 
-	<input class="aui-button-input" onClick="location.href = '/group/customer/support/announcements';" type="button" value="<liferay-ui:message key="announcements" />" />
+	<aui:button cssClass="aui-button-input" href="/group/customer/support/announcements" value="announcements" />
 </div>

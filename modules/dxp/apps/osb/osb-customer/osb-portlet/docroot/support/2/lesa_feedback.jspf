@@ -14,7 +14,7 @@
  */
 --%>
 
-<div class="aui-helper-hidden">
+<div class="hide">
 	<div class="lesa-feedback-container" id="<portlet:namespace />lesaFeedbackContainer">
 		<div>
 			<h2 class="center txt-b">
@@ -26,13 +26,13 @@
 			</div>
 
 			<div>
-				<input checked="checked" id="<portlet:namespace />lesaFeedbackRadioButton" name="<portlet:namespace />lesaFeedbackRadioButton" type="radio" value="0" />
+				<aui:input checked="<%= true %>" name="lesaFeedbackRadioButton" type="radio" value="0" />
 
 				<liferay-ui:message key="i-would-like-to-give-feedback-about-lesa" />
 			</div>
 
 			<div>
-				<input id="<portlet:namespace />lesaFeedbackBugRadioButton" name="<portlet:namespace />lesaFeedbackRadioButton" type="radio" value="1" />
+				<aui:input name="lesaFeedbackRadioButton" type="radio" value="1" />
 
 				<liferay-ui:message key="i-would-like-to-report-a-bug-in-lesa" />
 			</div>
@@ -46,7 +46,7 @@
 					<liferay-ui:message key="summary" />:
 				</div>
 
-				<textarea class="textarea-summary" id="<portlet:namespace />lesaFeedbackSummary"></textarea>
+				<aui:input cssClass="textarea-summary" name="lesaFeedbackSummary" type="textarea" />
 			</div>
 
 			<div class="margin-top-10">
@@ -58,18 +58,18 @@
 					<liferay-ui:message key="comments" />:
 				</div>
 
-				<textarea class="textarea-comments" id="<portlet:namespace />lesaFeedbackComments"></textarea>
+				<aui:input cssClass="textarea-comments" name="lesaFeedbackComments" type="textarea" />
 			</div>
 
 			<div class="aui-helper-clearfix">
-				<input class="fl" id="<portlet:namespace />lesaFeedbackCancelButton" type="button" value="<liferay-ui:message key="cancel" />" />
-				<input class="fr" id="<portlet:namespace />lesaFeedbackSubmitButton" type="button" value="<liferay-ui:message key="submit" />" />
+				<aui:button cssClass="fl" name="lesaFeedbackCancelButton" value="cancel" />
+				<aui:button cssClass="fr" name="lesaFeedbackSubmitButton" value="submit" />
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="aui-helper-hidden">
+<div class="hide">
 	<div class="lesa-feedback-container" id="<portlet:namespace />lesaFeedbackThankYouContainer">
 		<div class="center">
 			<h2 class="txt-b">
@@ -80,7 +80,7 @@
 				<liferay-ui:message key="your-feedback-has-been-submitted" />
 			</div>
 
-			<input id="<portlet:namespace />lesaFeedbackCloseButton" type="button" value="<liferay-ui:message key="close" />" />
+			<aui:button name="lesaFeedbackCloseButton" value="close" />
 		</div>
 	</div>
 </div>
