@@ -180,38 +180,8 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	@Override
-	public WatsonIncident toEscapedModel() {
-		return new WatsonIncidentWrapper(_watsonIncident.toEscapedModel());
-	}
-
-	@Override
-	public WatsonIncident toUnescapedModel() {
-		return new WatsonIncidentWrapper(_watsonIncident.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _watsonIncident.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _watsonIncident.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _watsonIncident.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _watsonIncident.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonIncident> toCacheModel() {
-		return _watsonIncident.toCacheModel();
+	public java.lang.Object clone() {
+		return new WatsonIncidentWrapper((WatsonIncident)_watsonIncident.clone());
 	}
 
 	@Override
@@ -219,39 +189,29 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		return _watsonIncident.compareTo(watsonIncident);
 	}
 
-	/**
-	* Returns the incident status of this watson incident.
-	*
-	* @return the incident status of this watson incident
-	*/
 	@Override
-	public int getIncidentStatus() {
-		return _watsonIncident.getIncidentStatus();
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _watsonIncident.getAvailableLanguageIds();
 	}
 
 	/**
-	* Returns the status of this watson incident.
+	* Returns the company ID of this watson incident.
 	*
-	* @return the status of this watson incident
+	* @return the company ID of this watson incident
 	*/
 	@Override
-	public int getStatus() {
-		return _watsonIncident.getStatus();
+	public long getCompanyId() {
+		return _watsonIncident.getCompanyId();
 	}
 
+	/**
+	* Returns the create date of this watson incident.
+	*
+	* @return the create date of this watson incident
+	*/
 	@Override
-	public int hashCode() {
-		return _watsonIncident.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonIncident.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonIncidentWrapper((WatsonIncident)_watsonIncident.clone());
+	public Date getCreateDate() {
+		return _watsonIncident.getCreateDate();
 	}
 
 	@Override
@@ -267,30 +227,6 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public java.lang.String getDescription() {
 		return _watsonIncident.getDescription();
-	}
-
-	/**
-	* Returns the localized description of this watson incident in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized description of this watson incident
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
-		return _watsonIncident.getDescription(languageId);
-	}
-
-	/**
-	* Returns the localized description of this watson incident in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson incident
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
-		return _watsonIncident.getDescription(languageId, useDefault);
 	}
 
 	/**
@@ -317,6 +253,30 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		return _watsonIncident.getDescription(locale, useDefault);
 	}
 
+	/**
+	* Returns the localized description of this watson incident in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized description of this watson incident
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId) {
+		return _watsonIncident.getDescription(languageId);
+	}
+
+	/**
+	* Returns the localized description of this watson incident in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized description of this watson incident
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
+		return _watsonIncident.getDescription(languageId, useDefault);
+	}
+
 	@Override
 	public java.lang.String getDescriptionCurrentLanguageId() {
 		return _watsonIncident.getDescriptionCurrentLanguageId();
@@ -325,101 +285,6 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public java.lang.String getDescriptionCurrentValue() {
 		return _watsonIncident.getDescriptionCurrentValue();
-	}
-
-	/**
-	* Returns the name of this watson incident.
-	*
-	* @return the name of this watson incident
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _watsonIncident.getName();
-	}
-
-	/**
-	* Returns the user name of this watson incident.
-	*
-	* @return the user name of this watson incident
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _watsonIncident.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this watson incident.
-	*
-	* @return the user uuid of this watson incident
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _watsonIncident.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _watsonIncident.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonIncident.toXmlString();
-	}
-
-	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
-		return _watsonIncident.getAvailableLanguageIds();
-	}
-
-	/**
-	* Returns the create date of this watson incident.
-	*
-	* @return the create date of this watson incident
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonIncident.getCreateDate();
-	}
-
-	/**
-	* Returns the end date of this watson incident.
-	*
-	* @return the end date of this watson incident
-	*/
-	@Override
-	public Date getEndDate() {
-		return _watsonIncident.getEndDate();
-	}
-
-	/**
-	* Returns the modified date of this watson incident.
-	*
-	* @return the modified date of this watson incident
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonIncident.getModifiedDate();
-	}
-
-	/**
-	* Returns the report date of this watson incident.
-	*
-	* @return the report date of this watson incident
-	*/
-	@Override
-	public Date getReportDate() {
-		return _watsonIncident.getReportDate();
-	}
-
-	/**
-	* Returns the start date of this watson incident.
-	*
-	* @return the start date of this watson incident
-	*/
-	@Override
-	public Date getStartDate() {
-		return _watsonIncident.getStartDate();
 	}
 
 	/**
@@ -433,13 +298,48 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	/**
-	* Returns the company ID of this watson incident.
+	* Returns the end date of this watson incident.
 	*
-	* @return the company ID of this watson incident
+	* @return the end date of this watson incident
 	*/
 	@Override
-	public long getCompanyId() {
-		return _watsonIncident.getCompanyId();
+	public Date getEndDate() {
+		return _watsonIncident.getEndDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _watsonIncident.getExpandoBridge();
+	}
+
+	/**
+	* Returns the incident status of this watson incident.
+	*
+	* @return the incident status of this watson incident
+	*/
+	@Override
+	public int getIncidentStatus() {
+		return _watsonIncident.getIncidentStatus();
+	}
+
+	/**
+	* Returns the modified date of this watson incident.
+	*
+	* @return the modified date of this watson incident
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _watsonIncident.getModifiedDate();
+	}
+
+	/**
+	* Returns the name of this watson incident.
+	*
+	* @return the name of this watson incident
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _watsonIncident.getName();
 	}
 
 	/**
@@ -452,6 +352,21 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		return _watsonIncident.getPrimaryKey();
 	}
 
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _watsonIncident.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the report date of this watson incident.
+	*
+	* @return the report date of this watson incident
+	*/
+	@Override
+	public Date getReportDate() {
+		return _watsonIncident.getReportDate();
+	}
+
 	/**
 	* Returns the source watson list type ID of this watson incident.
 	*
@@ -460,6 +375,26 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public long getSourceWatsonListTypeId() {
 		return _watsonIncident.getSourceWatsonListTypeId();
+	}
+
+	/**
+	* Returns the start date of this watson incident.
+	*
+	* @return the start date of this watson incident
+	*/
+	@Override
+	public Date getStartDate() {
+		return _watsonIncident.getStartDate();
+	}
+
+	/**
+	* Returns the status of this watson incident.
+	*
+	* @return the status of this watson incident
+	*/
+	@Override
+	public int getStatus() {
+		return _watsonIncident.getStatus();
 	}
 
 	/**
@@ -493,6 +428,26 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	/**
+	* Returns the user name of this watson incident.
+	*
+	* @return the user name of this watson incident
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _watsonIncident.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this watson incident.
+	*
+	* @return the user uuid of this watson incident
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _watsonIncident.getUserUuid();
+	}
+
+	/**
 	* Returns the watson incident ID of this watson incident.
 	*
 	* @return the watson incident ID of this watson incident
@@ -500,6 +455,26 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public long getWatsonIncidentId() {
 		return _watsonIncident.getWatsonIncidentId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _watsonIncident.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _watsonIncident.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _watsonIncident.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _watsonIncident.isNew();
 	}
 
 	@Override
@@ -620,14 +595,14 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_watsonIncident.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_watsonIncident.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_watsonIncident.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -783,6 +758,31 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public void setWatsonIncidentId(long watsonIncidentId) {
 		_watsonIncident.setWatsonIncidentId(watsonIncidentId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonIncident> toCacheModel() {
+		return _watsonIncident.toCacheModel();
+	}
+
+	@Override
+	public WatsonIncident toEscapedModel() {
+		return new WatsonIncidentWrapper(_watsonIncident.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _watsonIncident.toString();
+	}
+
+	@Override
+	public WatsonIncident toUnescapedModel() {
+		return new WatsonIncidentWrapper(_watsonIncident.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _watsonIncident.toXmlString();
 	}
 
 	@Override

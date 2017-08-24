@@ -34,38 +34,6 @@ public class WatsonAddressLocalServiceWrapper
 		_watsonAddressLocalService = watsonAddressLocalService;
 	}
 
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _watsonAddressLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _watsonAddressLocalService.dynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _watsonAddressLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _watsonAddressLocalService.deletePersistedModel(persistedModel);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _watsonAddressLocalService.getPersistedModel(primaryKeyObj);
-	}
-
 	/**
 	* Adds the watson address to the database. Also notifies the appropriate model listeners.
 	*
@@ -91,15 +59,13 @@ public class WatsonAddressLocalServiceWrapper
 	}
 
 	/**
-	* Deletes the watson address from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonAddress the watson address
-	* @return the watson address that was removed
+	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.watson.model.WatsonAddress deleteWatsonAddress(
-		com.liferay.watson.model.WatsonAddress watsonAddress) {
-		return _watsonAddressLocalService.deleteWatsonAddress(watsonAddress);
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _watsonAddressLocalService.deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -116,64 +82,21 @@ public class WatsonAddressLocalServiceWrapper
 		return _watsonAddressLocalService.deleteWatsonAddress(watsonAddressId);
 	}
 
-	@Override
-	public com.liferay.watson.model.WatsonAddress fetchWatsonAddress(
-		long watsonAddressId) {
-		return _watsonAddressLocalService.fetchWatsonAddress(watsonAddressId);
-	}
-
 	/**
-	* Returns the watson address with the primary key.
-	*
-	* @param watsonAddressId the primary key of the watson address
-	* @return the watson address
-	* @throws PortalException if a watson address with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.watson.model.WatsonAddress getWatsonAddress(
-		long watsonAddressId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _watsonAddressLocalService.getWatsonAddress(watsonAddressId);
-	}
-
-	/**
-	* Updates the watson address in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the watson address from the database. Also notifies the appropriate model listeners.
 	*
 	* @param watsonAddress the watson address
-	* @return the watson address that was updated
+	* @return the watson address that was removed
 	*/
 	@Override
-	public com.liferay.watson.model.WatsonAddress updateWatsonAddress(
+	public com.liferay.watson.model.WatsonAddress deleteWatsonAddress(
 		com.liferay.watson.model.WatsonAddress watsonAddress) {
-		return _watsonAddressLocalService.updateWatsonAddress(watsonAddress);
-	}
-
-	/**
-	* Returns the number of watson addresses.
-	*
-	* @return the number of watson addresses
-	*/
-	@Override
-	public int getWatsonAddressesCount() {
-		return _watsonAddressLocalService.getWatsonAddressesCount();
+		return _watsonAddressLocalService.deleteWatsonAddress(watsonAddress);
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _watsonAddressLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _watsonAddressLocalService.getOSGiServiceIdentifier();
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _watsonAddressLocalService.dynamicQuery();
 	}
 
 	/**
@@ -230,23 +153,6 @@ public class WatsonAddressLocalServiceWrapper
 	}
 
 	/**
-	* Returns a range of all the watson addresses.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonAddressModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson addresses
-	* @param end the upper bound of the range of watson addresses (not inclusive)
-	* @return the range of watson addresses
-	*/
-	@Override
-	public java.util.List<com.liferay.watson.model.WatsonAddress> getWatsonAddresses(
-		int start, int end) {
-		return _watsonAddressLocalService.getWatsonAddresses(start, end);
-	}
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -271,6 +177,100 @@ public class WatsonAddressLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _watsonAddressLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public com.liferay.watson.model.WatsonAddress fetchWatsonAddress(
+		long watsonAddressId) {
+		return _watsonAddressLocalService.fetchWatsonAddress(watsonAddressId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _watsonAddressLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _watsonAddressLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _watsonAddressLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _watsonAddressLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the watson address with the primary key.
+	*
+	* @param watsonAddressId the primary key of the watson address
+	* @return the watson address
+	* @throws PortalException if a watson address with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.watson.model.WatsonAddress getWatsonAddress(
+		long watsonAddressId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _watsonAddressLocalService.getWatsonAddress(watsonAddressId);
+	}
+
+	/**
+	* Returns a range of all the watson addresses.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonAddressModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of watson addresses
+	* @param end the upper bound of the range of watson addresses (not inclusive)
+	* @return the range of watson addresses
+	*/
+	@Override
+	public java.util.List<com.liferay.watson.model.WatsonAddress> getWatsonAddresses(
+		int start, int end) {
+		return _watsonAddressLocalService.getWatsonAddresses(start, end);
+	}
+
+	/**
+	* Returns the number of watson addresses.
+	*
+	* @return the number of watson addresses
+	*/
+	@Override
+	public int getWatsonAddressesCount() {
+		return _watsonAddressLocalService.getWatsonAddressesCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _watsonAddressLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Updates the watson address in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param watsonAddress the watson address
+	* @return the watson address that was updated
+	*/
+	@Override
+	public com.liferay.watson.model.WatsonAddress updateWatsonAddress(
+		com.liferay.watson.model.WatsonAddress watsonAddress) {
+		return _watsonAddressLocalService.updateWatsonAddress(watsonAddress);
 	}
 
 	@Override

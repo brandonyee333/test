@@ -61,25 +61,6 @@ public interface WatsonIncidentLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonIncidentLocalServiceUtil} to access the watson incident local service. Add custom service methods to {@link com.liferay.watson.service.impl.WatsonIncidentLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
 
 	/**
 	* Adds the watson incident to the database. Also notifies the appropriate model listeners.
@@ -99,13 +80,11 @@ public interface WatsonIncidentLocalService extends BaseLocalService,
 	public WatsonIncident createWatsonIncident(long watsonIncidentId);
 
 	/**
-	* Deletes the watson incident from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonIncident the watson incident
-	* @return the watson incident that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public WatsonIncident deleteWatsonIncident(WatsonIncident watsonIncident);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the watson incident with the primary key from the database. Also notifies the appropriate model listeners.
@@ -118,48 +97,16 @@ public interface WatsonIncidentLocalService extends BaseLocalService,
 	public WatsonIncident deleteWatsonIncident(long watsonIncidentId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public WatsonIncident fetchWatsonIncident(long watsonIncidentId);
-
 	/**
-	* Returns the watson incident with the primary key.
-	*
-	* @param watsonIncidentId the primary key of the watson incident
-	* @return the watson incident
-	* @throws PortalException if a watson incident with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public WatsonIncident getWatsonIncident(long watsonIncidentId)
-		throws PortalException;
-
-	/**
-	* Updates the watson incident in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the watson incident from the database. Also notifies the appropriate model listeners.
 	*
 	* @param watsonIncident the watson incident
-	* @return the watson incident that was updated
+	* @return the watson incident that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public WatsonIncident updateWatsonIncident(WatsonIncident watsonIncident);
+	@Indexable(type = IndexableType.DELETE)
+	public WatsonIncident deleteWatsonIncident(WatsonIncident watsonIncident);
 
-	/**
-	* Returns the number of watson incidents.
-	*
-	* @return the number of watson incidents
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getWatsonIncidentsCount();
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -201,20 +148,6 @@ public interface WatsonIncidentLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns a range of all the watson incidents.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonIncidentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson incidents
-	* @param end the upper bound of the range of watson incidents (not inclusive)
-	* @return the range of watson incidents
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<WatsonIncident> getWatsonIncidents(int start, int end);
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -231,4 +164,72 @@ public interface WatsonIncidentLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WatsonIncident fetchWatsonIncident(long watsonIncidentId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the watson incident with the primary key.
+	*
+	* @param watsonIncidentId the primary key of the watson incident
+	* @return the watson incident
+	* @throws PortalException if a watson incident with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WatsonIncident getWatsonIncident(long watsonIncidentId)
+		throws PortalException;
+
+	/**
+	* Returns a range of all the watson incidents.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonIncidentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of watson incidents
+	* @param end the upper bound of the range of watson incidents (not inclusive)
+	* @return the range of watson incidents
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<WatsonIncident> getWatsonIncidents(int start, int end);
+
+	/**
+	* Returns the number of watson incidents.
+	*
+	* @return the number of watson incidents
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getWatsonIncidentsCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Updates the watson incident in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param watsonIncident the watson incident
+	* @return the watson incident that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public WatsonIncident updateWatsonIncident(WatsonIncident watsonIncident);
 }

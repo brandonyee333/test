@@ -41,32 +41,6 @@ public class WatsonAddressLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.watson.service.impl.WatsonAddressLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
 
 	/**
 	* Adds the watson address to the database. Also notifies the appropriate model listeners.
@@ -91,14 +65,12 @@ public class WatsonAddressLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the watson address from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonAddress the watson address
-	* @return the watson address that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.watson.model.WatsonAddress deleteWatsonAddress(
-		com.liferay.watson.model.WatsonAddress watsonAddress) {
-		return getService().deleteWatsonAddress(watsonAddress);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -114,57 +86,19 @@ public class WatsonAddressLocalServiceUtil {
 		return getService().deleteWatsonAddress(watsonAddressId);
 	}
 
-	public static com.liferay.watson.model.WatsonAddress fetchWatsonAddress(
-		long watsonAddressId) {
-		return getService().fetchWatsonAddress(watsonAddressId);
-	}
-
 	/**
-	* Returns the watson address with the primary key.
-	*
-	* @param watsonAddressId the primary key of the watson address
-	* @return the watson address
-	* @throws PortalException if a watson address with the primary key could not be found
-	*/
-	public static com.liferay.watson.model.WatsonAddress getWatsonAddress(
-		long watsonAddressId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getWatsonAddress(watsonAddressId);
-	}
-
-	/**
-	* Updates the watson address in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the watson address from the database. Also notifies the appropriate model listeners.
 	*
 	* @param watsonAddress the watson address
-	* @return the watson address that was updated
+	* @return the watson address that was removed
 	*/
-	public static com.liferay.watson.model.WatsonAddress updateWatsonAddress(
+	public static com.liferay.watson.model.WatsonAddress deleteWatsonAddress(
 		com.liferay.watson.model.WatsonAddress watsonAddress) {
-		return getService().updateWatsonAddress(watsonAddress);
+		return getService().deleteWatsonAddress(watsonAddress);
 	}
 
-	/**
-	* Returns the number of watson addresses.
-	*
-	* @return the number of watson addresses
-	*/
-	public static int getWatsonAddressesCount() {
-		return getService().getWatsonAddressesCount();
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
 	}
 
 	/**
@@ -218,22 +152,6 @@ public class WatsonAddressLocalServiceUtil {
 	}
 
 	/**
-	* Returns a range of all the watson addresses.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonAddressModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson addresses
-	* @param end the upper bound of the range of watson addresses (not inclusive)
-	* @return the range of watson addresses
-	*/
-	public static java.util.List<com.liferay.watson.model.WatsonAddress> getWatsonAddresses(
-		int start, int end) {
-		return getService().getWatsonAddresses(start, end);
-	}
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -255,6 +173,89 @@ public class WatsonAddressLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static com.liferay.watson.model.WatsonAddress fetchWatsonAddress(
+		long watsonAddressId) {
+		return getService().fetchWatsonAddress(watsonAddressId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the watson address with the primary key.
+	*
+	* @param watsonAddressId the primary key of the watson address
+	* @return the watson address
+	* @throws PortalException if a watson address with the primary key could not be found
+	*/
+	public static com.liferay.watson.model.WatsonAddress getWatsonAddress(
+		long watsonAddressId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getWatsonAddress(watsonAddressId);
+	}
+
+	/**
+	* Returns a range of all the watson addresses.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonAddressModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of watson addresses
+	* @param end the upper bound of the range of watson addresses (not inclusive)
+	* @return the range of watson addresses
+	*/
+	public static java.util.List<com.liferay.watson.model.WatsonAddress> getWatsonAddresses(
+		int start, int end) {
+		return getService().getWatsonAddresses(start, end);
+	}
+
+	/**
+	* Returns the number of watson addresses.
+	*
+	* @return the number of watson addresses
+	*/
+	public static int getWatsonAddressesCount() {
+		return getService().getWatsonAddressesCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Updates the watson address in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param watsonAddress the watson address
+	* @return the watson address that was updated
+	*/
+	public static com.liferay.watson.model.WatsonAddress updateWatsonAddress(
+		com.liferay.watson.model.WatsonAddress watsonAddress) {
+		return getService().updateWatsonAddress(watsonAddress);
 	}
 
 	public static void clearService() {

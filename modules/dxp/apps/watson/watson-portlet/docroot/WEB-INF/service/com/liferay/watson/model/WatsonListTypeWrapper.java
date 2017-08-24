@@ -137,38 +137,8 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	}
 
 	@Override
-	public WatsonListType toEscapedModel() {
-		return new WatsonListTypeWrapper(_watsonListType.toEscapedModel());
-	}
-
-	@Override
-	public WatsonListType toUnescapedModel() {
-		return new WatsonListTypeWrapper(_watsonListType.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _watsonListType.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _watsonListType.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _watsonListType.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _watsonListType.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonListType> toCacheModel() {
-		return _watsonListType.toCacheModel();
+	public java.lang.Object clone() {
+		return new WatsonListTypeWrapper((WatsonListType)_watsonListType.clone());
 	}
 
 	@Override
@@ -176,34 +146,49 @@ public class WatsonListTypeWrapper implements WatsonListType,
 		return _watsonListType.compareTo(watsonListType);
 	}
 
+	@Override
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _watsonListType.getAvailableLanguageIds();
+	}
+
 	/**
-	* Returns the status of this watson list type.
+	* Returns the company ID of this watson list type.
 	*
-	* @return the status of this watson list type
+	* @return the company ID of this watson list type
 	*/
 	@Override
-	public int getStatus() {
-		return _watsonListType.getStatus();
+	public long getCompanyId() {
+		return _watsonListType.getCompanyId();
 	}
 
+	/**
+	* Returns the create date of this watson list type.
+	*
+	* @return the create date of this watson list type
+	*/
 	@Override
-	public int hashCode() {
-		return _watsonListType.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonListType.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonListTypeWrapper((WatsonListType)_watsonListType.clone());
+	public Date getCreateDate() {
+		return _watsonListType.getCreateDate();
 	}
 
 	@Override
 	public java.lang.String getDefaultLanguageId() {
 		return _watsonListType.getDefaultLanguageId();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _watsonListType.getExpandoBridge();
+	}
+
+	/**
+	* Returns the modified date of this watson list type.
+	*
+	* @return the modified date of this watson list type
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _watsonListType.getModifiedDate();
 	}
 
 	/**
@@ -214,6 +199,29 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	@Override
 	public java.lang.String getName() {
 		return _watsonListType.getName();
+	}
+
+	/**
+	* Returns the localized name of this watson list type in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param locale the locale of the language
+	* @return the localized name of this watson list type
+	*/
+	@Override
+	public java.lang.String getName(java.util.Locale locale) {
+		return _watsonListType.getName(locale);
+	}
+
+	/**
+	* Returns the localized name of this watson list type in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized name of this watson list type. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
+		return _watsonListType.getName(locale, useDefault);
 	}
 
 	/**
@@ -240,29 +248,6 @@ public class WatsonListTypeWrapper implements WatsonListType,
 		return _watsonListType.getName(languageId, useDefault);
 	}
 
-	/**
-	* Returns the localized name of this watson list type in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized name of this watson list type
-	*/
-	@Override
-	public java.lang.String getName(java.util.Locale locale) {
-		return _watsonListType.getName(locale);
-	}
-
-	/**
-	* Returns the localized name of this watson list type in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized name of this watson list type. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
-		return _watsonListType.getName(locale, useDefault);
-	}
-
 	@Override
 	public java.lang.String getNameCurrentLanguageId() {
 		return _watsonListType.getNameCurrentLanguageId();
@@ -274,71 +259,6 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	}
 
 	/**
-	* Returns the type of this watson list type.
-	*
-	* @return the type of this watson list type
-	*/
-	@Override
-	public java.lang.String getType() {
-		return _watsonListType.getType();
-	}
-
-	/**
-	* Returns the user name of this watson list type.
-	*
-	* @return the user name of this watson list type
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _watsonListType.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this watson list type.
-	*
-	* @return the user uuid of this watson list type
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _watsonListType.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _watsonListType.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonListType.toXmlString();
-	}
-
-	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
-		return _watsonListType.getAvailableLanguageIds();
-	}
-
-	/**
-	* Returns the create date of this watson list type.
-	*
-	* @return the create date of this watson list type
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonListType.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this watson list type.
-	*
-	* @return the modified date of this watson list type
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonListType.getModifiedDate();
-	}
-
-	/**
 	* Returns a map of the locales and localized names of this watson list type.
 	*
 	* @return the locales and localized names of this watson list type
@@ -346,16 +266,6 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	@Override
 	public Map<java.util.Locale, java.lang.String> getNameMap() {
 		return _watsonListType.getNameMap();
-	}
-
-	/**
-	* Returns the company ID of this watson list type.
-	*
-	* @return the company ID of this watson list type
-	*/
-	@Override
-	public long getCompanyId() {
-		return _watsonListType.getCompanyId();
 	}
 
 	/**
@@ -378,6 +288,31 @@ public class WatsonListTypeWrapper implements WatsonListType,
 		return _watsonListType.getPrimaryKey();
 	}
 
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _watsonListType.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the status of this watson list type.
+	*
+	* @return the status of this watson list type
+	*/
+	@Override
+	public int getStatus() {
+		return _watsonListType.getStatus();
+	}
+
+	/**
+	* Returns the type of this watson list type.
+	*
+	* @return the type of this watson list type
+	*/
+	@Override
+	public java.lang.String getType() {
+		return _watsonListType.getType();
+	}
+
 	/**
 	* Returns the user ID of this watson list type.
 	*
@@ -389,6 +324,26 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	}
 
 	/**
+	* Returns the user name of this watson list type.
+	*
+	* @return the user name of this watson list type
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _watsonListType.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this watson list type.
+	*
+	* @return the user uuid of this watson list type
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _watsonListType.getUserUuid();
+	}
+
+	/**
 	* Returns the watson list type ID of this watson list type.
 	*
 	* @return the watson list type ID of this watson list type
@@ -396,6 +351,26 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	@Override
 	public long getWatsonListTypeId() {
 		return _watsonListType.getWatsonListTypeId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _watsonListType.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _watsonListType.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _watsonListType.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _watsonListType.isNew();
 	}
 
 	@Override
@@ -442,14 +417,14 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_watsonListType.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_watsonListType.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_watsonListType.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -616,6 +591,31 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	@Override
 	public void setWatsonListTypeId(long watsonListTypeId) {
 		_watsonListType.setWatsonListTypeId(watsonListTypeId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonListType> toCacheModel() {
+		return _watsonListType.toCacheModel();
+	}
+
+	@Override
+	public WatsonListType toEscapedModel() {
+		return new WatsonListTypeWrapper(_watsonListType.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _watsonListType.toString();
+	}
+
+	@Override
+	public WatsonListType toUnescapedModel() {
+		return new WatsonListTypeWrapper(_watsonListType.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _watsonListType.toXmlString();
 	}
 
 	@Override

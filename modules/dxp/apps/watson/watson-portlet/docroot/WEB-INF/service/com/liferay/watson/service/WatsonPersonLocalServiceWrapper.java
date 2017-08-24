@@ -33,38 +33,6 @@ public class WatsonPersonLocalServiceWrapper implements WatsonPersonLocalService
 		_watsonPersonLocalService = watsonPersonLocalService;
 	}
 
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _watsonPersonLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _watsonPersonLocalService.dynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _watsonPersonLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _watsonPersonLocalService.deletePersistedModel(persistedModel);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _watsonPersonLocalService.getPersistedModel(primaryKeyObj);
-	}
-
 	/**
 	* Adds the watson person to the database. Also notifies the appropriate model listeners.
 	*
@@ -90,15 +58,13 @@ public class WatsonPersonLocalServiceWrapper implements WatsonPersonLocalService
 	}
 
 	/**
-	* Deletes the watson person from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonPerson the watson person
-	* @return the watson person that was removed
+	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.watson.model.WatsonPerson deleteWatsonPerson(
-		com.liferay.watson.model.WatsonPerson watsonPerson) {
-		return _watsonPersonLocalService.deleteWatsonPerson(watsonPerson);
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _watsonPersonLocalService.deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -115,64 +81,21 @@ public class WatsonPersonLocalServiceWrapper implements WatsonPersonLocalService
 		return _watsonPersonLocalService.deleteWatsonPerson(watsonPersonId);
 	}
 
-	@Override
-	public com.liferay.watson.model.WatsonPerson fetchWatsonPerson(
-		long watsonPersonId) {
-		return _watsonPersonLocalService.fetchWatsonPerson(watsonPersonId);
-	}
-
 	/**
-	* Returns the watson person with the primary key.
-	*
-	* @param watsonPersonId the primary key of the watson person
-	* @return the watson person
-	* @throws PortalException if a watson person with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.watson.model.WatsonPerson getWatsonPerson(
-		long watsonPersonId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _watsonPersonLocalService.getWatsonPerson(watsonPersonId);
-	}
-
-	/**
-	* Updates the watson person in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the watson person from the database. Also notifies the appropriate model listeners.
 	*
 	* @param watsonPerson the watson person
-	* @return the watson person that was updated
+	* @return the watson person that was removed
 	*/
 	@Override
-	public com.liferay.watson.model.WatsonPerson updateWatsonPerson(
+	public com.liferay.watson.model.WatsonPerson deleteWatsonPerson(
 		com.liferay.watson.model.WatsonPerson watsonPerson) {
-		return _watsonPersonLocalService.updateWatsonPerson(watsonPerson);
-	}
-
-	/**
-	* Returns the number of watson persons.
-	*
-	* @return the number of watson persons
-	*/
-	@Override
-	public int getWatsonPersonsCount() {
-		return _watsonPersonLocalService.getWatsonPersonsCount();
+		return _watsonPersonLocalService.deleteWatsonPerson(watsonPerson);
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _watsonPersonLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _watsonPersonLocalService.getOSGiServiceIdentifier();
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _watsonPersonLocalService.dynamicQuery();
 	}
 
 	/**
@@ -229,23 +152,6 @@ public class WatsonPersonLocalServiceWrapper implements WatsonPersonLocalService
 	}
 
 	/**
-	* Returns a range of all the watson persons.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonPersonModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson persons
-	* @param end the upper bound of the range of watson persons (not inclusive)
-	* @return the range of watson persons
-	*/
-	@Override
-	public java.util.List<com.liferay.watson.model.WatsonPerson> getWatsonPersons(
-		int start, int end) {
-		return _watsonPersonLocalService.getWatsonPersons(start, end);
-	}
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -270,6 +176,100 @@ public class WatsonPersonLocalServiceWrapper implements WatsonPersonLocalService
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _watsonPersonLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public com.liferay.watson.model.WatsonPerson fetchWatsonPerson(
+		long watsonPersonId) {
+		return _watsonPersonLocalService.fetchWatsonPerson(watsonPersonId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _watsonPersonLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _watsonPersonLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _watsonPersonLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _watsonPersonLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the watson person with the primary key.
+	*
+	* @param watsonPersonId the primary key of the watson person
+	* @return the watson person
+	* @throws PortalException if a watson person with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.watson.model.WatsonPerson getWatsonPerson(
+		long watsonPersonId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _watsonPersonLocalService.getWatsonPerson(watsonPersonId);
+	}
+
+	/**
+	* Returns a range of all the watson persons.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonPersonModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of watson persons
+	* @param end the upper bound of the range of watson persons (not inclusive)
+	* @return the range of watson persons
+	*/
+	@Override
+	public java.util.List<com.liferay.watson.model.WatsonPerson> getWatsonPersons(
+		int start, int end) {
+		return _watsonPersonLocalService.getWatsonPersons(start, end);
+	}
+
+	/**
+	* Returns the number of watson persons.
+	*
+	* @return the number of watson persons
+	*/
+	@Override
+	public int getWatsonPersonsCount() {
+		return _watsonPersonLocalService.getWatsonPersonsCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _watsonPersonLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Updates the watson person in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param watsonPerson the watson person
+	* @return the watson person that was updated
+	*/
+	@Override
+	public com.liferay.watson.model.WatsonPerson updateWatsonPerson(
+		com.liferay.watson.model.WatsonPerson watsonPerson) {
+		return _watsonPersonLocalService.updateWatsonPerson(watsonPerson);
 	}
 
 	@Override

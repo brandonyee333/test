@@ -261,13 +261,13 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	@Override
-	public WatsonPerson toEscapedModel() {
-		return new WatsonPersonWrapper(_watsonPerson.toEscapedModel());
+	public java.lang.Object clone() {
+		return new WatsonPersonWrapper((WatsonPerson)_watsonPerson.clone());
 	}
 
 	@Override
-	public WatsonPerson toUnescapedModel() {
-		return new WatsonPersonWrapper(_watsonPerson.toUnescapedModel());
+	public int compareTo(WatsonPerson watsonPerson) {
+		return _watsonPerson.compareTo(watsonPerson);
 	}
 
 	/**
@@ -280,355 +280,9 @@ public class WatsonPersonWrapper implements WatsonPerson,
 		return _watsonPerson.getAccepted();
 	}
 
-	/**
-	* Returns <code>true</code> if this watson person is accepted.
-	*
-	* @return <code>true</code> if this watson person is accepted; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isAccepted() {
-		return _watsonPerson.isAccepted();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _watsonPerson.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _watsonPerson.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _watsonPerson.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _watsonPerson.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonPerson> toCacheModel() {
-		return _watsonPerson.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(WatsonPerson watsonPerson) {
-		return _watsonPerson.compareTo(watsonPerson);
-	}
-
-	/**
-	* Returns the status of this watson person.
-	*
-	* @return the status of this watson person
-	*/
-	@Override
-	public int getStatus() {
-		return _watsonPerson.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _watsonPerson.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonPerson.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonPersonWrapper((WatsonPerson)_watsonPerson.clone());
-	}
-
-	@Override
-	public java.lang.String getDefaultLanguageId() {
-		return _watsonPerson.getDefaultLanguageId();
-	}
-
-	/**
-	* Returns the description of this watson person.
-	*
-	* @return the description of this watson person
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _watsonPerson.getDescription();
-	}
-
-	/**
-	* Returns the localized description of this watson person in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized description of this watson person
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
-		return _watsonPerson.getDescription(languageId);
-	}
-
-	/**
-	* Returns the localized description of this watson person in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson person
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
-		return _watsonPerson.getDescription(languageId, useDefault);
-	}
-
-	/**
-	* Returns the localized description of this watson person in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized description of this watson person
-	*/
-	@Override
-	public java.lang.String getDescription(java.util.Locale locale) {
-		return _watsonPerson.getDescription(locale);
-	}
-
-	/**
-	* Returns the localized description of this watson person in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson person. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getDescription(java.util.Locale locale,
-		boolean useDefault) {
-		return _watsonPerson.getDescription(locale, useDefault);
-	}
-
-	@Override
-	public java.lang.String getDescriptionCurrentLanguageId() {
-		return _watsonPerson.getDescriptionCurrentLanguageId();
-	}
-
-	@Override
-	public java.lang.String getDescriptionCurrentValue() {
-		return _watsonPerson.getDescriptionCurrentValue();
-	}
-
-	/**
-	* Returns the end age of this watson person.
-	*
-	* @return the end age of this watson person
-	*/
-	@Override
-	public java.lang.String getEndAge() {
-		return _watsonPerson.getEndAge();
-	}
-
-	/**
-	* Returns the height of this watson person.
-	*
-	* @return the height of this watson person
-	*/
-	@Override
-	public java.lang.String getHeight() {
-		return _watsonPerson.getHeight();
-	}
-
-	/**
-	* Returns the image payload of this watson person.
-	*
-	* @return the image payload of this watson person
-	*/
-	@Override
-	public java.lang.String getImagePayload() {
-		return _watsonPerson.getImagePayload();
-	}
-
-	/**
-	* Returns the occupation of this watson person.
-	*
-	* @return the occupation of this watson person
-	*/
-	@Override
-	public java.lang.String getOccupation() {
-		return _watsonPerson.getOccupation();
-	}
-
-	/**
-	* Returns the localized occupation of this watson person in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized occupation of this watson person
-	*/
-	@Override
-	public java.lang.String getOccupation(java.lang.String languageId) {
-		return _watsonPerson.getOccupation(languageId);
-	}
-
-	/**
-	* Returns the localized occupation of this watson person in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized occupation of this watson person
-	*/
-	@Override
-	public java.lang.String getOccupation(java.lang.String languageId,
-		boolean useDefault) {
-		return _watsonPerson.getOccupation(languageId, useDefault);
-	}
-
-	/**
-	* Returns the localized occupation of this watson person in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized occupation of this watson person
-	*/
-	@Override
-	public java.lang.String getOccupation(java.util.Locale locale) {
-		return _watsonPerson.getOccupation(locale);
-	}
-
-	/**
-	* Returns the localized occupation of this watson person in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized occupation of this watson person. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getOccupation(java.util.Locale locale,
-		boolean useDefault) {
-		return _watsonPerson.getOccupation(locale, useDefault);
-	}
-
-	@Override
-	public java.lang.String getOccupationCurrentLanguageId() {
-		return _watsonPerson.getOccupationCurrentLanguageId();
-	}
-
-	@Override
-	public java.lang.String getOccupationCurrentValue() {
-		return _watsonPerson.getOccupationCurrentValue();
-	}
-
-	/**
-	* Returns the start age of this watson person.
-	*
-	* @return the start age of this watson person
-	*/
-	@Override
-	public java.lang.String getStartAge() {
-		return _watsonPerson.getStartAge();
-	}
-
-	/**
-	* Returns the user name of this watson person.
-	*
-	* @return the user name of this watson person
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _watsonPerson.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this watson person.
-	*
-	* @return the user uuid of this watson person
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _watsonPerson.getUserUuid();
-	}
-
-	/**
-	* Returns the weight of this watson person.
-	*
-	* @return the weight of this watson person
-	*/
-	@Override
-	public java.lang.String getWeight() {
-		return _watsonPerson.getWeight();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _watsonPerson.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonPerson.toXmlString();
-	}
-
 	@Override
 	public java.lang.String[] getAvailableLanguageIds() {
 		return _watsonPerson.getAvailableLanguageIds();
-	}
-
-	/**
-	* Returns the birth date of this watson person.
-	*
-	* @return the birth date of this watson person
-	*/
-	@Override
-	public Date getBirthDate() {
-		return _watsonPerson.getBirthDate();
-	}
-
-	/**
-	* Returns the create date of this watson person.
-	*
-	* @return the create date of this watson person
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonPerson.getCreateDate();
-	}
-
-	/**
-	* Returns the date accepted of this watson person.
-	*
-	* @return the date accepted of this watson person
-	*/
-	@Override
-	public Date getDateAccepted() {
-		return _watsonPerson.getDateAccepted();
-	}
-
-	/**
-	* Returns the modified date of this watson person.
-	*
-	* @return the modified date of this watson person
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonPerson.getModifiedDate();
-	}
-
-	/**
-	* Returns a map of the locales and localized descriptions of this watson person.
-	*
-	* @return the locales and localized descriptions of this watson person
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
-		return _watsonPerson.getDescriptionMap();
-	}
-
-	/**
-	* Returns a map of the locales and localized occupations of this watson person.
-	*
-	* @return the locales and localized occupations of this watson person
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getOccupationMap() {
-		return _watsonPerson.getOccupationMap();
 	}
 
 	/**
@@ -639,6 +293,16 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public long getBirthCountryId() {
 		return _watsonPerson.getBirthCountryId();
+	}
+
+	/**
+	* Returns the birth date of this watson person.
+	*
+	* @return the birth date of this watson person
+	*/
+	@Override
+	public Date getBirthDate() {
+		return _watsonPerson.getBirthDate();
 	}
 
 	/**
@@ -672,6 +336,119 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
+	* Returns the create date of this watson person.
+	*
+	* @return the create date of this watson person
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _watsonPerson.getCreateDate();
+	}
+
+	/**
+	* Returns the date accepted of this watson person.
+	*
+	* @return the date accepted of this watson person
+	*/
+	@Override
+	public Date getDateAccepted() {
+		return _watsonPerson.getDateAccepted();
+	}
+
+	@Override
+	public java.lang.String getDefaultLanguageId() {
+		return _watsonPerson.getDefaultLanguageId();
+	}
+
+	/**
+	* Returns the description of this watson person.
+	*
+	* @return the description of this watson person
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _watsonPerson.getDescription();
+	}
+
+	/**
+	* Returns the localized description of this watson person in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param locale the locale of the language
+	* @return the localized description of this watson person
+	*/
+	@Override
+	public java.lang.String getDescription(java.util.Locale locale) {
+		return _watsonPerson.getDescription(locale);
+	}
+
+	/**
+	* Returns the localized description of this watson person in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized description of this watson person. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getDescription(java.util.Locale locale,
+		boolean useDefault) {
+		return _watsonPerson.getDescription(locale, useDefault);
+	}
+
+	/**
+	* Returns the localized description of this watson person in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized description of this watson person
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId) {
+		return _watsonPerson.getDescription(languageId);
+	}
+
+	/**
+	* Returns the localized description of this watson person in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized description of this watson person
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
+		return _watsonPerson.getDescription(languageId, useDefault);
+	}
+
+	@Override
+	public java.lang.String getDescriptionCurrentLanguageId() {
+		return _watsonPerson.getDescriptionCurrentLanguageId();
+	}
+
+	@Override
+	public java.lang.String getDescriptionCurrentValue() {
+		return _watsonPerson.getDescriptionCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized descriptions of this watson person.
+	*
+	* @return the locales and localized descriptions of this watson person
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+		return _watsonPerson.getDescriptionMap();
+	}
+
+	/**
+	* Returns the end age of this watson person.
+	*
+	* @return the end age of this watson person
+	*/
+	@Override
+	public java.lang.String getEndAge() {
+		return _watsonPerson.getEndAge();
+	}
+
+	/**
 	* Returns the ethnicity watson list type ID of this watson person.
 	*
 	* @return the ethnicity watson list type ID of this watson person
@@ -679,6 +456,11 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public long getEthnicityWatsonListTypeId() {
 		return _watsonPerson.getEthnicityWatsonListTypeId();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _watsonPerson.getExpandoBridge();
 	}
 
 	/**
@@ -702,6 +484,114 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
+	* Returns the height of this watson person.
+	*
+	* @return the height of this watson person
+	*/
+	@Override
+	public java.lang.String getHeight() {
+		return _watsonPerson.getHeight();
+	}
+
+	/**
+	* Returns the image payload of this watson person.
+	*
+	* @return the image payload of this watson person
+	*/
+	@Override
+	public java.lang.String getImagePayload() {
+		return _watsonPerson.getImagePayload();
+	}
+
+	/**
+	* Returns the modified date of this watson person.
+	*
+	* @return the modified date of this watson person
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _watsonPerson.getModifiedDate();
+	}
+
+	/**
+	* Returns the occupation of this watson person.
+	*
+	* @return the occupation of this watson person
+	*/
+	@Override
+	public java.lang.String getOccupation() {
+		return _watsonPerson.getOccupation();
+	}
+
+	/**
+	* Returns the localized occupation of this watson person in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param locale the locale of the language
+	* @return the localized occupation of this watson person
+	*/
+	@Override
+	public java.lang.String getOccupation(java.util.Locale locale) {
+		return _watsonPerson.getOccupation(locale);
+	}
+
+	/**
+	* Returns the localized occupation of this watson person in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized occupation of this watson person. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getOccupation(java.util.Locale locale,
+		boolean useDefault) {
+		return _watsonPerson.getOccupation(locale, useDefault);
+	}
+
+	/**
+	* Returns the localized occupation of this watson person in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized occupation of this watson person
+	*/
+	@Override
+	public java.lang.String getOccupation(java.lang.String languageId) {
+		return _watsonPerson.getOccupation(languageId);
+	}
+
+	/**
+	* Returns the localized occupation of this watson person in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized occupation of this watson person
+	*/
+	@Override
+	public java.lang.String getOccupation(java.lang.String languageId,
+		boolean useDefault) {
+		return _watsonPerson.getOccupation(languageId, useDefault);
+	}
+
+	@Override
+	public java.lang.String getOccupationCurrentLanguageId() {
+		return _watsonPerson.getOccupationCurrentLanguageId();
+	}
+
+	@Override
+	public java.lang.String getOccupationCurrentValue() {
+		return _watsonPerson.getOccupationCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized occupations of this watson person.
+	*
+	* @return the locales and localized occupations of this watson person
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getOccupationMap() {
+		return _watsonPerson.getOccupationMap();
+	}
+
+	/**
 	* Returns the original watson person ID of this watson person.
 	*
 	* @return the original watson person ID of this watson person
@@ -721,6 +611,11 @@ public class WatsonPersonWrapper implements WatsonPerson,
 		return _watsonPerson.getPrimaryKey();
 	}
 
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _watsonPerson.getPrimaryKeyObj();
+	}
+
 	/**
 	* Returns the sex watson list type ID of this watson person.
 	*
@@ -729,6 +624,26 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public long getSexWatsonListTypeId() {
 		return _watsonPerson.getSexWatsonListTypeId();
+	}
+
+	/**
+	* Returns the start age of this watson person.
+	*
+	* @return the start age of this watson person
+	*/
+	@Override
+	public java.lang.String getStartAge() {
+		return _watsonPerson.getStartAge();
+	}
+
+	/**
+	* Returns the status of this watson person.
+	*
+	* @return the status of this watson person
+	*/
+	@Override
+	public int getStatus() {
+		return _watsonPerson.getStatus();
 	}
 
 	/**
@@ -752,6 +667,26 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
+	* Returns the user name of this watson person.
+	*
+	* @return the user name of this watson person
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _watsonPerson.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this watson person.
+	*
+	* @return the user uuid of this watson person
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _watsonPerson.getUserUuid();
+	}
+
+	/**
 	* Returns the watson incident ID of this watson person.
 	*
 	* @return the watson incident ID of this watson person
@@ -769,6 +704,46 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public long getWatsonPersonId() {
 		return _watsonPerson.getWatsonPersonId();
+	}
+
+	/**
+	* Returns the weight of this watson person.
+	*
+	* @return the weight of this watson person
+	*/
+	@Override
+	public java.lang.String getWeight() {
+		return _watsonPerson.getWeight();
+	}
+
+	@Override
+	public int hashCode() {
+		return _watsonPerson.hashCode();
+	}
+
+	/**
+	* Returns <code>true</code> if this watson person is accepted.
+	*
+	* @return <code>true</code> if this watson person is accepted; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isAccepted() {
+		return _watsonPerson.isAccepted();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _watsonPerson.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _watsonPerson.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _watsonPerson.isNew();
 	}
 
 	@Override
@@ -959,14 +934,14 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_watsonPerson.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_watsonPerson.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_watsonPerson.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -1216,6 +1191,31 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public void setWeight(java.lang.String weight) {
 		_watsonPerson.setWeight(weight);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonPerson> toCacheModel() {
+		return _watsonPerson.toCacheModel();
+	}
+
+	@Override
+	public WatsonPerson toEscapedModel() {
+		return new WatsonPersonWrapper(_watsonPerson.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _watsonPerson.toString();
+	}
+
+	@Override
+	public WatsonPerson toUnescapedModel() {
+		return new WatsonPersonWrapper(_watsonPerson.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _watsonPerson.toXmlString();
 	}
 
 	@Override

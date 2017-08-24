@@ -260,58 +260,8 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	@Override
-	public WatsonAddress toEscapedModel() {
-		return new WatsonAddressWrapper(_watsonAddress.toEscapedModel());
-	}
-
-	@Override
-	public WatsonAddress toUnescapedModel() {
-		return new WatsonAddressWrapper(_watsonAddress.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _watsonAddress.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _watsonAddress.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _watsonAddress.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _watsonAddress.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonAddress> toCacheModel() {
-		return _watsonAddress.toCacheModel();
-	}
-
-	/**
-	* Returns the latitude of this watson address.
-	*
-	* @return the latitude of this watson address
-	*/
-	@Override
-	public double getLatitude() {
-		return _watsonAddress.getLatitude();
-	}
-
-	/**
-	* Returns the longitude of this watson address.
-	*
-	* @return the longitude of this watson address
-	*/
-	@Override
-	public double getLongitude() {
-		return _watsonAddress.getLongitude();
+	public java.lang.Object clone() {
+		return new WatsonAddressWrapper((WatsonAddress)_watsonAddress.clone());
 	}
 
 	@Override
@@ -319,29 +269,9 @@ public class WatsonAddressWrapper implements WatsonAddress,
 		return _watsonAddress.compareTo(watsonAddress);
 	}
 
-	/**
-	* Returns the status of this watson address.
-	*
-	* @return the status of this watson address
-	*/
 	@Override
-	public int getStatus() {
-		return _watsonAddress.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _watsonAddress.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonAddress.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonAddressWrapper((WatsonAddress)_watsonAddress.clone());
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _watsonAddress.getAvailableLanguageIds();
 	}
 
 	/**
@@ -352,30 +282,6 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public java.lang.String getBuilding() {
 		return _watsonAddress.getBuilding();
-	}
-
-	/**
-	* Returns the localized building of this watson address in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized building of this watson address
-	*/
-	@Override
-	public java.lang.String getBuilding(java.lang.String languageId) {
-		return _watsonAddress.getBuilding(languageId);
-	}
-
-	/**
-	* Returns the localized building of this watson address in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized building of this watson address
-	*/
-	@Override
-	public java.lang.String getBuilding(java.lang.String languageId,
-		boolean useDefault) {
-		return _watsonAddress.getBuilding(languageId, useDefault);
 	}
 
 	/**
@@ -402,6 +308,30 @@ public class WatsonAddressWrapper implements WatsonAddress,
 		return _watsonAddress.getBuilding(locale, useDefault);
 	}
 
+	/**
+	* Returns the localized building of this watson address in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized building of this watson address
+	*/
+	@Override
+	public java.lang.String getBuilding(java.lang.String languageId) {
+		return _watsonAddress.getBuilding(languageId);
+	}
+
+	/**
+	* Returns the localized building of this watson address in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized building of this watson address
+	*/
+	@Override
+	public java.lang.String getBuilding(java.lang.String languageId,
+		boolean useDefault) {
+		return _watsonAddress.getBuilding(languageId, useDefault);
+	}
+
 	@Override
 	public java.lang.String getBuildingCurrentLanguageId() {
 		return _watsonAddress.getBuildingCurrentLanguageId();
@@ -410,6 +340,46 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public java.lang.String getBuildingCurrentValue() {
 		return _watsonAddress.getBuildingCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized buildings of this watson address.
+	*
+	* @return the locales and localized buildings of this watson address
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getBuildingMap() {
+		return _watsonAddress.getBuildingMap();
+	}
+
+	/**
+	* Returns the company ID of this watson address.
+	*
+	* @return the company ID of this watson address
+	*/
+	@Override
+	public long getCompanyId() {
+		return _watsonAddress.getCompanyId();
+	}
+
+	/**
+	* Returns the country ID of this watson address.
+	*
+	* @return the country ID of this watson address
+	*/
+	@Override
+	public long getCountryId() {
+		return _watsonAddress.getCountryId();
+	}
+
+	/**
+	* Returns the create date of this watson address.
+	*
+	* @return the create date of this watson address
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _watsonAddress.getCreateDate();
 	}
 
 	@Override
@@ -425,30 +395,6 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public java.lang.String getDescription() {
 		return _watsonAddress.getDescription();
-	}
-
-	/**
-	* Returns the localized description of this watson address in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized description of this watson address
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
-		return _watsonAddress.getDescription(languageId);
-	}
-
-	/**
-	* Returns the localized description of this watson address in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson address
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
-		return _watsonAddress.getDescription(languageId, useDefault);
 	}
 
 	/**
@@ -475,6 +421,30 @@ public class WatsonAddressWrapper implements WatsonAddress,
 		return _watsonAddress.getDescription(locale, useDefault);
 	}
 
+	/**
+	* Returns the localized description of this watson address in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized description of this watson address
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId) {
+		return _watsonAddress.getDescription(languageId);
+	}
+
+	/**
+	* Returns the localized description of this watson address in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized description of this watson address
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
+		return _watsonAddress.getDescription(languageId, useDefault);
+	}
+
 	@Override
 	public java.lang.String getDescriptionCurrentLanguageId() {
 		return _watsonAddress.getDescriptionCurrentLanguageId();
@@ -483,6 +453,31 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public java.lang.String getDescriptionCurrentValue() {
 		return _watsonAddress.getDescriptionCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized descriptions of this watson address.
+	*
+	* @return the locales and localized descriptions of this watson address
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+		return _watsonAddress.getDescriptionMap();
+	}
+
+	/**
+	* Returns the district watson list type ID of this watson address.
+	*
+	* @return the district watson list type ID of this watson address
+	*/
+	@Override
+	public long getDistrictWatsonListTypeId() {
+		return _watsonAddress.getDistrictWatsonListTypeId();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _watsonAddress.getExpandoBridge();
 	}
 
 	/**
@@ -506,6 +501,46 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	/**
+	* Returns the last seen date of this watson address.
+	*
+	* @return the last seen date of this watson address
+	*/
+	@Override
+	public Date getLastSeenDate() {
+		return _watsonAddress.getLastSeenDate();
+	}
+
+	/**
+	* Returns the latitude of this watson address.
+	*
+	* @return the latitude of this watson address
+	*/
+	@Override
+	public double getLatitude() {
+		return _watsonAddress.getLatitude();
+	}
+
+	/**
+	* Returns the longitude of this watson address.
+	*
+	* @return the longitude of this watson address
+	*/
+	@Override
+	public double getLongitude() {
+		return _watsonAddress.getLongitude();
+	}
+
+	/**
+	* Returns the modified date of this watson address.
+	*
+	* @return the modified date of this watson address
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _watsonAddress.getModifiedDate();
+	}
+
+	/**
 	* Returns the name of this watson address.
 	*
 	* @return the name of this watson address
@@ -513,6 +548,29 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public java.lang.String getName() {
 		return _watsonAddress.getName();
+	}
+
+	/**
+	* Returns the localized name of this watson address in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param locale the locale of the language
+	* @return the localized name of this watson address
+	*/
+	@Override
+	public java.lang.String getName(java.util.Locale locale) {
+		return _watsonAddress.getName(locale);
+	}
+
+	/**
+	* Returns the localized name of this watson address in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized name of this watson address. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
+		return _watsonAddress.getName(locale, useDefault);
 	}
 
 	/**
@@ -539,29 +597,6 @@ public class WatsonAddressWrapper implements WatsonAddress,
 		return _watsonAddress.getName(languageId, useDefault);
 	}
 
-	/**
-	* Returns the localized name of this watson address in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized name of this watson address
-	*/
-	@Override
-	public java.lang.String getName(java.util.Locale locale) {
-		return _watsonAddress.getName(locale);
-	}
-
-	/**
-	* Returns the localized name of this watson address in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized name of this watson address. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
-		return _watsonAddress.getName(locale, useDefault);
-	}
-
 	@Override
 	public java.lang.String getNameCurrentLanguageId() {
 		return _watsonAddress.getNameCurrentLanguageId();
@@ -570,6 +605,16 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public java.lang.String getNameCurrentValue() {
 		return _watsonAddress.getNameCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized names of this watson address.
+	*
+	* @return the locales and localized names of this watson address
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getNameMap() {
+		return _watsonAddress.getNameMap();
 	}
 
 	/**
@@ -583,6 +628,16 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	/**
+	* Returns the original watson address ID of this watson address.
+	*
+	* @return the original watson address ID of this watson address
+	*/
+	@Override
+	public long getOriginalWatsonAddressId() {
+		return _watsonAddress.getOriginalWatsonAddressId();
+	}
+
+	/**
 	* Returns the postal code of this watson address.
 	*
 	* @return the postal code of this watson address
@@ -590,6 +645,31 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public java.lang.String getPostalCode() {
 		return _watsonAddress.getPostalCode();
+	}
+
+	/**
+	* Returns the primary key of this watson address.
+	*
+	* @return the primary key of this watson address
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _watsonAddress.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _watsonAddress.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the province watson list type ID of this watson address.
+	*
+	* @return the province watson list type ID of this watson address
+	*/
+	@Override
+	public long getProvinceWatsonListTypeId() {
+		return _watsonAddress.getProvinceWatsonListTypeId();
 	}
 
 	/**
@@ -613,6 +693,16 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	/**
+	* Returns the status of this watson address.
+	*
+	* @return the status of this watson address
+	*/
+	@Override
+	public int getStatus() {
+		return _watsonAddress.getStatus();
+	}
+
+	/**
 	* Returns the street of this watson address.
 	*
 	* @return the street of this watson address
@@ -620,161 +710,6 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public java.lang.String getStreet() {
 		return _watsonAddress.getStreet();
-	}
-
-	/**
-	* Returns the user name of this watson address.
-	*
-	* @return the user name of this watson address
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _watsonAddress.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this watson address.
-	*
-	* @return the user uuid of this watson address
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _watsonAddress.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _watsonAddress.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonAddress.toXmlString();
-	}
-
-	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
-		return _watsonAddress.getAvailableLanguageIds();
-	}
-
-	/**
-	* Returns the create date of this watson address.
-	*
-	* @return the create date of this watson address
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonAddress.getCreateDate();
-	}
-
-	/**
-	* Returns the last seen date of this watson address.
-	*
-	* @return the last seen date of this watson address
-	*/
-	@Override
-	public Date getLastSeenDate() {
-		return _watsonAddress.getLastSeenDate();
-	}
-
-	/**
-	* Returns the modified date of this watson address.
-	*
-	* @return the modified date of this watson address
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonAddress.getModifiedDate();
-	}
-
-	/**
-	* Returns a map of the locales and localized buildings of this watson address.
-	*
-	* @return the locales and localized buildings of this watson address
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getBuildingMap() {
-		return _watsonAddress.getBuildingMap();
-	}
-
-	/**
-	* Returns a map of the locales and localized descriptions of this watson address.
-	*
-	* @return the locales and localized descriptions of this watson address
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
-		return _watsonAddress.getDescriptionMap();
-	}
-
-	/**
-	* Returns a map of the locales and localized names of this watson address.
-	*
-	* @return the locales and localized names of this watson address
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getNameMap() {
-		return _watsonAddress.getNameMap();
-	}
-
-	/**
-	* Returns the company ID of this watson address.
-	*
-	* @return the company ID of this watson address
-	*/
-	@Override
-	public long getCompanyId() {
-		return _watsonAddress.getCompanyId();
-	}
-
-	/**
-	* Returns the country ID of this watson address.
-	*
-	* @return the country ID of this watson address
-	*/
-	@Override
-	public long getCountryId() {
-		return _watsonAddress.getCountryId();
-	}
-
-	/**
-	* Returns the district watson list type ID of this watson address.
-	*
-	* @return the district watson list type ID of this watson address
-	*/
-	@Override
-	public long getDistrictWatsonListTypeId() {
-		return _watsonAddress.getDistrictWatsonListTypeId();
-	}
-
-	/**
-	* Returns the original watson address ID of this watson address.
-	*
-	* @return the original watson address ID of this watson address
-	*/
-	@Override
-	public long getOriginalWatsonAddressId() {
-		return _watsonAddress.getOriginalWatsonAddressId();
-	}
-
-	/**
-	* Returns the primary key of this watson address.
-	*
-	* @return the primary key of this watson address
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _watsonAddress.getPrimaryKey();
-	}
-
-	/**
-	* Returns the province watson list type ID of this watson address.
-	*
-	* @return the province watson list type ID of this watson address
-	*/
-	@Override
-	public long getProvinceWatsonListTypeId() {
-		return _watsonAddress.getProvinceWatsonListTypeId();
 	}
 
 	/**
@@ -808,6 +743,26 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	/**
+	* Returns the user name of this watson address.
+	*
+	* @return the user name of this watson address
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _watsonAddress.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this watson address.
+	*
+	* @return the user uuid of this watson address
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _watsonAddress.getUserUuid();
+	}
+
+	/**
 	* Returns the watson address ID of this watson address.
 	*
 	* @return the watson address ID of this watson address
@@ -825,6 +780,26 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public long getWatsonIncidentId() {
 		return _watsonAddress.getWatsonIncidentId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _watsonAddress.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _watsonAddress.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _watsonAddress.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _watsonAddress.isNew();
 	}
 
 	@Override
@@ -1018,14 +993,14 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_watsonAddress.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_watsonAddress.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_watsonAddress.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -1322,6 +1297,31 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public void setWatsonIncidentId(long watsonIncidentId) {
 		_watsonAddress.setWatsonIncidentId(watsonIncidentId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonAddress> toCacheModel() {
+		return _watsonAddress.toCacheModel();
+	}
+
+	@Override
+	public WatsonAddress toEscapedModel() {
+		return new WatsonAddressWrapper(_watsonAddress.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _watsonAddress.toString();
+	}
+
+	@Override
+	public WatsonAddress toUnescapedModel() {
+		return new WatsonAddressWrapper(_watsonAddress.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _watsonAddress.toXmlString();
 	}
 
 	@Override

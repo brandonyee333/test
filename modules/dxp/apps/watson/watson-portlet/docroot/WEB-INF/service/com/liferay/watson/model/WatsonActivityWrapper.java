@@ -150,38 +150,8 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	}
 
 	@Override
-	public WatsonActivity toEscapedModel() {
-		return new WatsonActivityWrapper(_watsonActivity.toEscapedModel());
-	}
-
-	@Override
-	public WatsonActivity toUnescapedModel() {
-		return new WatsonActivityWrapper(_watsonActivity.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _watsonActivity.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _watsonActivity.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _watsonActivity.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _watsonActivity.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonActivity> toCacheModel() {
-		return _watsonActivity.toCacheModel();
+	public java.lang.Object clone() {
+		return new WatsonActivityWrapper((WatsonActivity)_watsonActivity.clone());
 	}
 
 	@Override
@@ -189,34 +159,49 @@ public class WatsonActivityWrapper implements WatsonActivity,
 		return _watsonActivity.compareTo(watsonActivity);
 	}
 
+	@Override
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _watsonActivity.getAvailableLanguageIds();
+	}
+
 	/**
-	* Returns the status of this watson activity.
+	* Returns the company ID of this watson activity.
 	*
-	* @return the status of this watson activity
+	* @return the company ID of this watson activity
 	*/
 	@Override
-	public int getStatus() {
-		return _watsonActivity.getStatus();
+	public long getCompanyId() {
+		return _watsonActivity.getCompanyId();
 	}
 
+	/**
+	* Returns the create date of this watson activity.
+	*
+	* @return the create date of this watson activity
+	*/
 	@Override
-	public int hashCode() {
-		return _watsonActivity.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonActivity.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonActivityWrapper((WatsonActivity)_watsonActivity.clone());
+	public Date getCreateDate() {
+		return _watsonActivity.getCreateDate();
 	}
 
 	@Override
 	public java.lang.String getDefaultLanguageId() {
 		return _watsonActivity.getDefaultLanguageId();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _watsonActivity.getExpandoBridge();
+	}
+
+	/**
+	* Returns the modified date of this watson activity.
+	*
+	* @return the modified date of this watson activity
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _watsonActivity.getModifiedDate();
 	}
 
 	/**
@@ -227,30 +212,6 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	@Override
 	public java.lang.String getNarrative() {
 		return _watsonActivity.getNarrative();
-	}
-
-	/**
-	* Returns the localized narrative of this watson activity in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized narrative of this watson activity
-	*/
-	@Override
-	public java.lang.String getNarrative(java.lang.String languageId) {
-		return _watsonActivity.getNarrative(languageId);
-	}
-
-	/**
-	* Returns the localized narrative of this watson activity in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized narrative of this watson activity
-	*/
-	@Override
-	public java.lang.String getNarrative(java.lang.String languageId,
-		boolean useDefault) {
-		return _watsonActivity.getNarrative(languageId, useDefault);
 	}
 
 	/**
@@ -277,6 +238,30 @@ public class WatsonActivityWrapper implements WatsonActivity,
 		return _watsonActivity.getNarrative(locale, useDefault);
 	}
 
+	/**
+	* Returns the localized narrative of this watson activity in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized narrative of this watson activity
+	*/
+	@Override
+	public java.lang.String getNarrative(java.lang.String languageId) {
+		return _watsonActivity.getNarrative(languageId);
+	}
+
+	/**
+	* Returns the localized narrative of this watson activity in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized narrative of this watson activity
+	*/
+	@Override
+	public java.lang.String getNarrative(java.lang.String languageId,
+		boolean useDefault) {
+		return _watsonActivity.getNarrative(languageId, useDefault);
+	}
+
 	@Override
 	public java.lang.String getNarrativeCurrentLanguageId() {
 		return _watsonActivity.getNarrativeCurrentLanguageId();
@@ -288,58 +273,28 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	}
 
 	/**
-	* Returns the user name of this watson activity.
+	* Returns a map of the locales and localized narratives of this watson activity.
 	*
-	* @return the user name of this watson activity
+	* @return the locales and localized narratives of this watson activity
 	*/
 	@Override
-	public java.lang.String getUserName() {
-		return _watsonActivity.getUserName();
+	public Map<java.util.Locale, java.lang.String> getNarrativeMap() {
+		return _watsonActivity.getNarrativeMap();
 	}
 
 	/**
-	* Returns the user uuid of this watson activity.
+	* Returns the primary key of this watson activity.
 	*
-	* @return the user uuid of this watson activity
+	* @return the primary key of this watson activity
 	*/
 	@Override
-	public java.lang.String getUserUuid() {
-		return _watsonActivity.getUserUuid();
+	public long getPrimaryKey() {
+		return _watsonActivity.getPrimaryKey();
 	}
 
 	@Override
-	public java.lang.String toString() {
-		return _watsonActivity.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonActivity.toXmlString();
-	}
-
-	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
-		return _watsonActivity.getAvailableLanguageIds();
-	}
-
-	/**
-	* Returns the create date of this watson activity.
-	*
-	* @return the create date of this watson activity
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonActivity.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this watson activity.
-	*
-	* @return the modified date of this watson activity
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonActivity.getModifiedDate();
+	public Serializable getPrimaryKeyObj() {
+		return _watsonActivity.getPrimaryKeyObj();
 	}
 
 	/**
@@ -363,33 +318,13 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	}
 
 	/**
-	* Returns a map of the locales and localized narratives of this watson activity.
+	* Returns the status of this watson activity.
 	*
-	* @return the locales and localized narratives of this watson activity
+	* @return the status of this watson activity
 	*/
 	@Override
-	public Map<java.util.Locale, java.lang.String> getNarrativeMap() {
-		return _watsonActivity.getNarrativeMap();
-	}
-
-	/**
-	* Returns the company ID of this watson activity.
-	*
-	* @return the company ID of this watson activity
-	*/
-	@Override
-	public long getCompanyId() {
-		return _watsonActivity.getCompanyId();
-	}
-
-	/**
-	* Returns the primary key of this watson activity.
-	*
-	* @return the primary key of this watson activity
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _watsonActivity.getPrimaryKey();
+	public int getStatus() {
+		return _watsonActivity.getStatus();
 	}
 
 	/**
@@ -413,6 +348,26 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	}
 
 	/**
+	* Returns the user name of this watson activity.
+	*
+	* @return the user name of this watson activity
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _watsonActivity.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this watson activity.
+	*
+	* @return the user uuid of this watson activity
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _watsonActivity.getUserUuid();
+	}
+
+	/**
 	* Returns the watson activity ID of this watson activity.
 	*
 	* @return the watson activity ID of this watson activity
@@ -430,6 +385,26 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	@Override
 	public long getWatsonIncidentId() {
 		return _watsonActivity.getWatsonIncidentId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _watsonActivity.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _watsonActivity.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _watsonActivity.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _watsonActivity.isNew();
 	}
 
 	@Override
@@ -476,14 +451,14 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_watsonActivity.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_watsonActivity.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_watsonActivity.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -672,6 +647,31 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	@Override
 	public void setWatsonIncidentId(long watsonIncidentId) {
 		_watsonActivity.setWatsonIncidentId(watsonIncidentId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonActivity> toCacheModel() {
+		return _watsonActivity.toCacheModel();
+	}
+
+	@Override
+	public WatsonActivity toEscapedModel() {
+		return new WatsonActivityWrapper(_watsonActivity.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _watsonActivity.toString();
+	}
+
+	@Override
+	public WatsonActivity toUnescapedModel() {
+		return new WatsonActivityWrapper(_watsonActivity.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _watsonActivity.toXmlString();
 	}
 
 	@Override

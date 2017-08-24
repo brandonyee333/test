@@ -164,128 +164,13 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	@Override
-	public WatsonRelationship toEscapedModel() {
-		return new WatsonRelationshipWrapper(_watsonRelationship.toEscapedModel());
-	}
-
-	@Override
-	public WatsonRelationship toUnescapedModel() {
-		return new WatsonRelationshipWrapper(_watsonRelationship.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _watsonRelationship.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _watsonRelationship.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _watsonRelationship.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _watsonRelationship.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonRelationship> toCacheModel() {
-		return _watsonRelationship.toCacheModel();
+	public java.lang.Object clone() {
+		return new WatsonRelationshipWrapper((WatsonRelationship)_watsonRelationship.clone());
 	}
 
 	@Override
 	public int compareTo(WatsonRelationship watsonRelationship) {
 		return _watsonRelationship.compareTo(watsonRelationship);
-	}
-
-	/**
-	* Returns the status of this watson relationship.
-	*
-	* @return the status of this watson relationship
-	*/
-	@Override
-	public int getStatus() {
-		return _watsonRelationship.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _watsonRelationship.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonRelationship.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonRelationshipWrapper((WatsonRelationship)_watsonRelationship.clone());
-	}
-
-	/**
-	* Returns the description of this watson relationship.
-	*
-	* @return the description of this watson relationship
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _watsonRelationship.getDescription();
-	}
-
-	/**
-	* Returns the user name of this watson relationship.
-	*
-	* @return the user name of this watson relationship
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _watsonRelationship.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this watson relationship.
-	*
-	* @return the user uuid of this watson relationship
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _watsonRelationship.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _watsonRelationship.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonRelationship.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this watson relationship.
-	*
-	* @return the create date of this watson relationship
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonRelationship.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this watson relationship.
-	*
-	* @return the modified date of this watson relationship
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonRelationship.getModifiedDate();
 	}
 
 	/**
@@ -339,6 +224,41 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	/**
+	* Returns the create date of this watson relationship.
+	*
+	* @return the create date of this watson relationship
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _watsonRelationship.getCreateDate();
+	}
+
+	/**
+	* Returns the description of this watson relationship.
+	*
+	* @return the description of this watson relationship
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _watsonRelationship.getDescription();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _watsonRelationship.getExpandoBridge();
+	}
+
+	/**
+	* Returns the modified date of this watson relationship.
+	*
+	* @return the modified date of this watson relationship
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _watsonRelationship.getModifiedDate();
+	}
+
+	/**
 	* Returns the primary key of this watson relationship.
 	*
 	* @return the primary key of this watson relationship
@@ -346,6 +266,21 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	@Override
 	public long getPrimaryKey() {
 		return _watsonRelationship.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _watsonRelationship.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the status of this watson relationship.
+	*
+	* @return the status of this watson relationship
+	*/
+	@Override
+	public int getStatus() {
+		return _watsonRelationship.getStatus();
 	}
 
 	/**
@@ -369,6 +304,26 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	/**
+	* Returns the user name of this watson relationship.
+	*
+	* @return the user name of this watson relationship
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _watsonRelationship.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this watson relationship.
+	*
+	* @return the user uuid of this watson relationship
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _watsonRelationship.getUserUuid();
+	}
+
+	/**
 	* Returns the watson incident ID of this watson relationship.
 	*
 	* @return the watson incident ID of this watson relationship
@@ -386,6 +341,26 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	@Override
 	public long getWatsonRelationshipId() {
 		return _watsonRelationship.getWatsonRelationshipId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _watsonRelationship.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _watsonRelationship.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _watsonRelationship.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _watsonRelationship.isNew();
 	}
 
 	@Override
@@ -469,14 +444,14 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_watsonRelationship.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_watsonRelationship.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_watsonRelationship.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -582,6 +557,31 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	@Override
 	public void setWatsonRelationshipId(long watsonRelationshipId) {
 		_watsonRelationship.setWatsonRelationshipId(watsonRelationshipId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonRelationship> toCacheModel() {
+		return _watsonRelationship.toCacheModel();
+	}
+
+	@Override
+	public WatsonRelationship toEscapedModel() {
+		return new WatsonRelationshipWrapper(_watsonRelationship.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _watsonRelationship.toString();
+	}
+
+	@Override
+	public WatsonRelationship toUnescapedModel() {
+		return new WatsonRelationshipWrapper(_watsonRelationship.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _watsonRelationship.toXmlString();
 	}
 
 	@Override

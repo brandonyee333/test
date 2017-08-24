@@ -157,58 +157,8 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	}
 
 	@Override
-	public WatsonListTypeRel toEscapedModel() {
-		return new WatsonListTypeRelWrapper(_watsonListTypeRel.toEscapedModel());
-	}
-
-	@Override
-	public WatsonListTypeRel toUnescapedModel() {
-		return new WatsonListTypeRelWrapper(_watsonListTypeRel.toUnescapedModel());
-	}
-
-	/**
-	* Returns the primary of this watson list type rel.
-	*
-	* @return the primary of this watson list type rel
-	*/
-	@Override
-	public boolean getPrimary() {
-		return _watsonListTypeRel.getPrimary();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _watsonListTypeRel.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _watsonListTypeRel.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _watsonListTypeRel.isNew();
-	}
-
-	/**
-	* Returns <code>true</code> if this watson list type rel is primary.
-	*
-	* @return <code>true</code> if this watson list type rel is primary; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isPrimary() {
-		return _watsonListTypeRel.isPrimary();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _watsonListTypeRel.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonListTypeRel> toCacheModel() {
-		return _watsonListTypeRel.toCacheModel();
+	public java.lang.Object clone() {
+		return new WatsonListTypeRelWrapper((WatsonListTypeRel)_watsonListTypeRel.clone());
 	}
 
 	@Override
@@ -216,29 +166,9 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 		return _watsonListTypeRel.compareTo(watsonListTypeRel);
 	}
 
-	/**
-	* Returns the status of this watson list type rel.
-	*
-	* @return the status of this watson list type rel
-	*/
 	@Override
-	public int getStatus() {
-		return _watsonListTypeRel.getStatus();
-	}
-
-	@Override
-	public int hashCode() {
-		return _watsonListTypeRel.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonListTypeRel.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonListTypeRelWrapper((WatsonListTypeRel)_watsonListTypeRel.clone());
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _watsonListTypeRel.getAvailableLanguageIds();
 	}
 
 	/**
@@ -251,9 +181,99 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 		return _watsonListTypeRel.getClassName();
 	}
 
+	/**
+	* Returns the class name ID of this watson list type rel.
+	*
+	* @return the class name ID of this watson list type rel
+	*/
+	@Override
+	public long getClassNameId() {
+		return _watsonListTypeRel.getClassNameId();
+	}
+
+	/**
+	* Returns the class pk of this watson list type rel.
+	*
+	* @return the class pk of this watson list type rel
+	*/
+	@Override
+	public long getClassPK() {
+		return _watsonListTypeRel.getClassPK();
+	}
+
+	/**
+	* Returns the company ID of this watson list type rel.
+	*
+	* @return the company ID of this watson list type rel
+	*/
+	@Override
+	public long getCompanyId() {
+		return _watsonListTypeRel.getCompanyId();
+	}
+
+	/**
+	* Returns the create date of this watson list type rel.
+	*
+	* @return the create date of this watson list type rel
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _watsonListTypeRel.getCreateDate();
+	}
+
 	@Override
 	public java.lang.String getDefaultLanguageId() {
 		return _watsonListTypeRel.getDefaultLanguageId();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _watsonListTypeRel.getExpandoBridge();
+	}
+
+	/**
+	* Returns the modified date of this watson list type rel.
+	*
+	* @return the modified date of this watson list type rel
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _watsonListTypeRel.getModifiedDate();
+	}
+
+	/**
+	* Returns the primary of this watson list type rel.
+	*
+	* @return the primary of this watson list type rel
+	*/
+	@Override
+	public boolean getPrimary() {
+		return _watsonListTypeRel.getPrimary();
+	}
+
+	/**
+	* Returns the primary key of this watson list type rel.
+	*
+	* @return the primary key of this watson list type rel
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _watsonListTypeRel.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _watsonListTypeRel.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the status of this watson list type rel.
+	*
+	* @return the status of this watson list type rel
+	*/
+	@Override
+	public int getStatus() {
+		return _watsonListTypeRel.getStatus();
 	}
 
 	/**
@@ -264,6 +284,16 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	@Override
 	public java.lang.String getType() {
 		return _watsonListTypeRel.getType();
+	}
+
+	/**
+	* Returns the user ID of this watson list type rel.
+	*
+	* @return the user ID of this watson list type rel
+	*/
+	@Override
+	public long getUserId() {
+		return _watsonListTypeRel.getUserId();
 	}
 
 	/**
@@ -299,6 +329,29 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	/**
 	* Returns the localized value of this watson list type rel in the language. Uses the default language if no localization exists for the requested language.
 	*
+	* @param locale the locale of the language
+	* @return the localized value of this watson list type rel
+	*/
+	@Override
+	public java.lang.String getValue(java.util.Locale locale) {
+		return _watsonListTypeRel.getValue(locale);
+	}
+
+	/**
+	* Returns the localized value of this watson list type rel in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized value of this watson list type rel. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getValue(java.util.Locale locale, boolean useDefault) {
+		return _watsonListTypeRel.getValue(locale, useDefault);
+	}
+
+	/**
+	* Returns the localized value of this watson list type rel in the language. Uses the default language if no localization exists for the requested language.
+	*
 	* @param languageId the ID of the language
 	* @return the localized value of this watson list type rel
 	*/
@@ -320,29 +373,6 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 		return _watsonListTypeRel.getValue(languageId, useDefault);
 	}
 
-	/**
-	* Returns the localized value of this watson list type rel in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized value of this watson list type rel
-	*/
-	@Override
-	public java.lang.String getValue(java.util.Locale locale) {
-		return _watsonListTypeRel.getValue(locale);
-	}
-
-	/**
-	* Returns the localized value of this watson list type rel in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized value of this watson list type rel. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getValue(java.util.Locale locale, boolean useDefault) {
-		return _watsonListTypeRel.getValue(locale, useDefault);
-	}
-
 	@Override
 	public java.lang.String getValueCurrentLanguageId() {
 		return _watsonListTypeRel.getValueCurrentLanguageId();
@@ -353,41 +383,6 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 		return _watsonListTypeRel.getValueCurrentValue();
 	}
 
-	@Override
-	public java.lang.String toString() {
-		return _watsonListTypeRel.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonListTypeRel.toXmlString();
-	}
-
-	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
-		return _watsonListTypeRel.getAvailableLanguageIds();
-	}
-
-	/**
-	* Returns the create date of this watson list type rel.
-	*
-	* @return the create date of this watson list type rel
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonListTypeRel.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this watson list type rel.
-	*
-	* @return the modified date of this watson list type rel
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonListTypeRel.getModifiedDate();
-	}
-
 	/**
 	* Returns a map of the locales and localized values of this watson list type rel.
 	*
@@ -396,56 +391,6 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	@Override
 	public Map<java.util.Locale, java.lang.String> getValueMap() {
 		return _watsonListTypeRel.getValueMap();
-	}
-
-	/**
-	* Returns the class name ID of this watson list type rel.
-	*
-	* @return the class name ID of this watson list type rel
-	*/
-	@Override
-	public long getClassNameId() {
-		return _watsonListTypeRel.getClassNameId();
-	}
-
-	/**
-	* Returns the class pk of this watson list type rel.
-	*
-	* @return the class pk of this watson list type rel
-	*/
-	@Override
-	public long getClassPK() {
-		return _watsonListTypeRel.getClassPK();
-	}
-
-	/**
-	* Returns the company ID of this watson list type rel.
-	*
-	* @return the company ID of this watson list type rel
-	*/
-	@Override
-	public long getCompanyId() {
-		return _watsonListTypeRel.getCompanyId();
-	}
-
-	/**
-	* Returns the primary key of this watson list type rel.
-	*
-	* @return the primary key of this watson list type rel
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _watsonListTypeRel.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this watson list type rel.
-	*
-	* @return the user ID of this watson list type rel
-	*/
-	@Override
-	public long getUserId() {
-		return _watsonListTypeRel.getUserId();
 	}
 
 	/**
@@ -466,6 +411,36 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	@Override
 	public long getWatsonListTypeRelId() {
 		return _watsonListTypeRel.getWatsonListTypeRelId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _watsonListTypeRel.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _watsonListTypeRel.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _watsonListTypeRel.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _watsonListTypeRel.isNew();
+	}
+
+	/**
+	* Returns <code>true</code> if this watson list type rel is primary.
+	*
+	* @return <code>true</code> if this watson list type rel is primary; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isPrimary() {
+		return _watsonListTypeRel.isPrimary();
 	}
 
 	@Override
@@ -537,14 +512,14 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_watsonListTypeRel.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_watsonListTypeRel.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_watsonListTypeRel.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -721,6 +696,31 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	@Override
 	public void setWatsonListTypeRelId(long watsonListTypeRelId) {
 		_watsonListTypeRel.setWatsonListTypeRelId(watsonListTypeRelId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonListTypeRel> toCacheModel() {
+		return _watsonListTypeRel.toCacheModel();
+	}
+
+	@Override
+	public WatsonListTypeRel toEscapedModel() {
+		return new WatsonListTypeRelWrapper(_watsonListTypeRel.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _watsonListTypeRel.toString();
+	}
+
+	@Override
+	public WatsonListTypeRel toUnescapedModel() {
+		return new WatsonListTypeRelWrapper(_watsonListTypeRel.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _watsonListTypeRel.toXmlString();
 	}
 
 	@Override

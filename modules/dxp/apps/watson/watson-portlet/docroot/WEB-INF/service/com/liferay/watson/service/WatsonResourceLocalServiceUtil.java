@@ -41,32 +41,6 @@ public class WatsonResourceLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.watson.service.impl.WatsonResourceLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
 
 	/**
 	* Adds the watson resource to the database. Also notifies the appropriate model listeners.
@@ -91,14 +65,12 @@ public class WatsonResourceLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the watson resource from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonResource the watson resource
-	* @return the watson resource that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.watson.model.WatsonResource deleteWatsonResource(
-		com.liferay.watson.model.WatsonResource watsonResource) {
-		return getService().deleteWatsonResource(watsonResource);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -114,57 +86,19 @@ public class WatsonResourceLocalServiceUtil {
 		return getService().deleteWatsonResource(watsonResourceId);
 	}
 
-	public static com.liferay.watson.model.WatsonResource fetchWatsonResource(
-		long watsonResourceId) {
-		return getService().fetchWatsonResource(watsonResourceId);
-	}
-
 	/**
-	* Returns the watson resource with the primary key.
-	*
-	* @param watsonResourceId the primary key of the watson resource
-	* @return the watson resource
-	* @throws PortalException if a watson resource with the primary key could not be found
-	*/
-	public static com.liferay.watson.model.WatsonResource getWatsonResource(
-		long watsonResourceId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getWatsonResource(watsonResourceId);
-	}
-
-	/**
-	* Updates the watson resource in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the watson resource from the database. Also notifies the appropriate model listeners.
 	*
 	* @param watsonResource the watson resource
-	* @return the watson resource that was updated
+	* @return the watson resource that was removed
 	*/
-	public static com.liferay.watson.model.WatsonResource updateWatsonResource(
+	public static com.liferay.watson.model.WatsonResource deleteWatsonResource(
 		com.liferay.watson.model.WatsonResource watsonResource) {
-		return getService().updateWatsonResource(watsonResource);
+		return getService().deleteWatsonResource(watsonResource);
 	}
 
-	/**
-	* Returns the number of watson resources.
-	*
-	* @return the number of watson resources
-	*/
-	public static int getWatsonResourcesCount() {
-		return getService().getWatsonResourcesCount();
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
 	}
 
 	/**
@@ -218,22 +152,6 @@ public class WatsonResourceLocalServiceUtil {
 	}
 
 	/**
-	* Returns a range of all the watson resources.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonResourceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson resources
-	* @param end the upper bound of the range of watson resources (not inclusive)
-	* @return the range of watson resources
-	*/
-	public static java.util.List<com.liferay.watson.model.WatsonResource> getWatsonResources(
-		int start, int end) {
-		return getService().getWatsonResources(start, end);
-	}
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -255,6 +173,89 @@ public class WatsonResourceLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static com.liferay.watson.model.WatsonResource fetchWatsonResource(
+		long watsonResourceId) {
+		return getService().fetchWatsonResource(watsonResourceId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the watson resource with the primary key.
+	*
+	* @param watsonResourceId the primary key of the watson resource
+	* @return the watson resource
+	* @throws PortalException if a watson resource with the primary key could not be found
+	*/
+	public static com.liferay.watson.model.WatsonResource getWatsonResource(
+		long watsonResourceId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getWatsonResource(watsonResourceId);
+	}
+
+	/**
+	* Returns a range of all the watson resources.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonResourceModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of watson resources
+	* @param end the upper bound of the range of watson resources (not inclusive)
+	* @return the range of watson resources
+	*/
+	public static java.util.List<com.liferay.watson.model.WatsonResource> getWatsonResources(
+		int start, int end) {
+		return getService().getWatsonResources(start, end);
+	}
+
+	/**
+	* Returns the number of watson resources.
+	*
+	* @return the number of watson resources
+	*/
+	public static int getWatsonResourcesCount() {
+		return getService().getWatsonResourcesCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Updates the watson resource in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param watsonResource the watson resource
+	* @return the watson resource that was updated
+	*/
+	public static com.liferay.watson.model.WatsonResource updateWatsonResource(
+		com.liferay.watson.model.WatsonResource watsonResource) {
+		return getService().updateWatsonResource(watsonResource);
 	}
 
 	public static void clearService() {

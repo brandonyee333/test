@@ -195,38 +195,8 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	@Override
-	public WatsonVehicle toEscapedModel() {
-		return new WatsonVehicleWrapper(_watsonVehicle.toEscapedModel());
-	}
-
-	@Override
-	public WatsonVehicle toUnescapedModel() {
-		return new WatsonVehicleWrapper(_watsonVehicle.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _watsonVehicle.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _watsonVehicle.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _watsonVehicle.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _watsonVehicle.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonVehicle> toCacheModel() {
-		return _watsonVehicle.toCacheModel();
+	public java.lang.Object clone() {
+		return new WatsonVehicleWrapper((WatsonVehicle)_watsonVehicle.clone());
 	}
 
 	@Override
@@ -234,39 +204,39 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 		return _watsonVehicle.compareTo(watsonVehicle);
 	}
 
-	/**
-	* Returns the status of this watson vehicle.
-	*
-	* @return the status of this watson vehicle
-	*/
 	@Override
-	public int getStatus() {
-		return _watsonVehicle.getStatus();
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _watsonVehicle.getAvailableLanguageIds();
 	}
 
 	/**
-	* Returns the year of this watson vehicle.
+	* Returns the color watson list type ID of this watson vehicle.
 	*
-	* @return the year of this watson vehicle
+	* @return the color watson list type ID of this watson vehicle
 	*/
 	@Override
-	public int getYear() {
-		return _watsonVehicle.getYear();
+	public long getColorWatsonListTypeId() {
+		return _watsonVehicle.getColorWatsonListTypeId();
 	}
 
+	/**
+	* Returns the company ID of this watson vehicle.
+	*
+	* @return the company ID of this watson vehicle
+	*/
 	@Override
-	public int hashCode() {
-		return _watsonVehicle.hashCode();
+	public long getCompanyId() {
+		return _watsonVehicle.getCompanyId();
 	}
 
+	/**
+	* Returns the create date of this watson vehicle.
+	*
+	* @return the create date of this watson vehicle
+	*/
 	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonVehicle.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonVehicleWrapper((WatsonVehicle)_watsonVehicle.clone());
+	public Date getCreateDate() {
+		return _watsonVehicle.getCreateDate();
 	}
 
 	@Override
@@ -282,30 +252,6 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	@Override
 	public java.lang.String getDescription() {
 		return _watsonVehicle.getDescription();
-	}
-
-	/**
-	* Returns the localized description of this watson vehicle in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized description of this watson vehicle
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId) {
-		return _watsonVehicle.getDescription(languageId);
-	}
-
-	/**
-	* Returns the localized description of this watson vehicle in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized description of this watson vehicle
-	*/
-	@Override
-	public java.lang.String getDescription(java.lang.String languageId,
-		boolean useDefault) {
-		return _watsonVehicle.getDescription(languageId, useDefault);
 	}
 
 	/**
@@ -332,6 +278,30 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 		return _watsonVehicle.getDescription(locale, useDefault);
 	}
 
+	/**
+	* Returns the localized description of this watson vehicle in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized description of this watson vehicle
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId) {
+		return _watsonVehicle.getDescription(languageId);
+	}
+
+	/**
+	* Returns the localized description of this watson vehicle in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized description of this watson vehicle
+	*/
+	@Override
+	public java.lang.String getDescription(java.lang.String languageId,
+		boolean useDefault) {
+		return _watsonVehicle.getDescription(languageId, useDefault);
+	}
+
 	@Override
 	public java.lang.String getDescriptionCurrentLanguageId() {
 		return _watsonVehicle.getDescriptionCurrentLanguageId();
@@ -340,6 +310,21 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	@Override
 	public java.lang.String getDescriptionCurrentValue() {
 		return _watsonVehicle.getDescriptionCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized descriptions of this watson vehicle.
+	*
+	* @return the locales and localized descriptions of this watson vehicle
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+		return _watsonVehicle.getDescriptionMap();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _watsonVehicle.getExpandoBridge();
 	}
 
 	/**
@@ -363,91 +348,6 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	/**
-	* Returns the user name of this watson vehicle.
-	*
-	* @return the user name of this watson vehicle
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _watsonVehicle.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this watson vehicle.
-	*
-	* @return the user uuid of this watson vehicle
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _watsonVehicle.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _watsonVehicle.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonVehicle.toXmlString();
-	}
-
-	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
-		return _watsonVehicle.getAvailableLanguageIds();
-	}
-
-	/**
-	* Returns the create date of this watson vehicle.
-	*
-	* @return the create date of this watson vehicle
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonVehicle.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this watson vehicle.
-	*
-	* @return the modified date of this watson vehicle
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonVehicle.getModifiedDate();
-	}
-
-	/**
-	* Returns a map of the locales and localized descriptions of this watson vehicle.
-	*
-	* @return the locales and localized descriptions of this watson vehicle
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getDescriptionMap() {
-		return _watsonVehicle.getDescriptionMap();
-	}
-
-	/**
-	* Returns the color watson list type ID of this watson vehicle.
-	*
-	* @return the color watson list type ID of this watson vehicle
-	*/
-	@Override
-	public long getColorWatsonListTypeId() {
-		return _watsonVehicle.getColorWatsonListTypeId();
-	}
-
-	/**
-	* Returns the company ID of this watson vehicle.
-	*
-	* @return the company ID of this watson vehicle
-	*/
-	@Override
-	public long getCompanyId() {
-		return _watsonVehicle.getCompanyId();
-	}
-
-	/**
 	* Returns the make watson list type ID of this watson vehicle.
 	*
 	* @return the make watson list type ID of this watson vehicle
@@ -468,6 +368,16 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	/**
+	* Returns the modified date of this watson vehicle.
+	*
+	* @return the modified date of this watson vehicle
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _watsonVehicle.getModifiedDate();
+	}
+
+	/**
 	* Returns the original watson vehicle ID of this watson vehicle.
 	*
 	* @return the original watson vehicle ID of this watson vehicle
@@ -485,6 +395,21 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	@Override
 	public long getPrimaryKey() {
 		return _watsonVehicle.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _watsonVehicle.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the status of this watson vehicle.
+	*
+	* @return the status of this watson vehicle
+	*/
+	@Override
+	public int getStatus() {
+		return _watsonVehicle.getStatus();
 	}
 
 	/**
@@ -508,6 +433,26 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	/**
+	* Returns the user name of this watson vehicle.
+	*
+	* @return the user name of this watson vehicle
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _watsonVehicle.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this watson vehicle.
+	*
+	* @return the user uuid of this watson vehicle
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _watsonVehicle.getUserUuid();
+	}
+
+	/**
 	* Returns the watson incident ID of this watson vehicle.
 	*
 	* @return the watson incident ID of this watson vehicle
@@ -528,6 +473,16 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	/**
+	* Returns the year of this watson vehicle.
+	*
+	* @return the year of this watson vehicle
+	*/
+	@Override
+	public int getYear() {
+		return _watsonVehicle.getYear();
+	}
+
+	/**
 	* Returns the year watson list type ID of this watson vehicle.
 	*
 	* @return the year watson list type ID of this watson vehicle
@@ -535,6 +490,26 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	@Override
 	public long getYearWatsonListTypeId() {
 		return _watsonVehicle.getYearWatsonListTypeId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _watsonVehicle.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _watsonVehicle.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _watsonVehicle.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _watsonVehicle.isNew();
 	}
 
 	@Override
@@ -655,14 +630,14 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_watsonVehicle.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_watsonVehicle.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_watsonVehicle.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -838,6 +813,31 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	@Override
 	public void setYearWatsonListTypeId(long yearWatsonListTypeId) {
 		_watsonVehicle.setYearWatsonListTypeId(yearWatsonListTypeId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonVehicle> toCacheModel() {
+		return _watsonVehicle.toCacheModel();
+	}
+
+	@Override
+	public WatsonVehicle toEscapedModel() {
+		return new WatsonVehicleWrapper(_watsonVehicle.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _watsonVehicle.toString();
+	}
+
+	@Override
+	public WatsonVehicle toUnescapedModel() {
+		return new WatsonVehicleWrapper(_watsonVehicle.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _watsonVehicle.toXmlString();
 	}
 
 	@Override

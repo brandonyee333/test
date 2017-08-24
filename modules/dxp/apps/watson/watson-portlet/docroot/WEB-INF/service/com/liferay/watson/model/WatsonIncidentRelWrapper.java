@@ -136,28 +136,33 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	@Override
-	public WatsonIncidentRel toEscapedModel() {
-		return new WatsonIncidentRelWrapper(_watsonIncidentRel.toEscapedModel());
+	public java.lang.Object clone() {
+		return new WatsonIncidentRelWrapper((WatsonIncidentRel)_watsonIncidentRel.clone());
 	}
 
 	@Override
-	public WatsonIncidentRel toUnescapedModel() {
-		return new WatsonIncidentRelWrapper(_watsonIncidentRel.toUnescapedModel());
+	public int compareTo(WatsonIncidentRel watsonIncidentRel) {
+		return _watsonIncidentRel.compareTo(watsonIncidentRel);
 	}
 
+	/**
+	* Returns the company ID of this watson incident rel.
+	*
+	* @return the company ID of this watson incident rel
+	*/
 	@Override
-	public boolean isCachedModel() {
-		return _watsonIncidentRel.isCachedModel();
+	public long getCompanyId() {
+		return _watsonIncidentRel.getCompanyId();
 	}
 
+	/**
+	* Returns the create date of this watson incident rel.
+	*
+	* @return the create date of this watson incident rel
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _watsonIncidentRel.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _watsonIncidentRel.isNew();
+	public Date getCreateDate() {
+		return _watsonIncidentRel.getCreateDate();
 	}
 
 	@Override
@@ -165,14 +170,29 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 		return _watsonIncidentRel.getExpandoBridge();
 	}
 
+	/**
+	* Returns the modified date of this watson incident rel.
+	*
+	* @return the modified date of this watson incident rel
+	*/
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<WatsonIncidentRel> toCacheModel() {
-		return _watsonIncidentRel.toCacheModel();
+	public Date getModifiedDate() {
+		return _watsonIncidentRel.getModifiedDate();
+	}
+
+	/**
+	* Returns the primary key of this watson incident rel.
+	*
+	* @return the primary key of this watson incident rel
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _watsonIncidentRel.getPrimaryKey();
 	}
 
 	@Override
-	public int compareTo(WatsonIncidentRel watsonIncidentRel) {
-		return _watsonIncidentRel.compareTo(watsonIncidentRel);
+	public Serializable getPrimaryKeyObj() {
+		return _watsonIncidentRel.getPrimaryKeyObj();
 	}
 
 	/**
@@ -185,21 +205,6 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 		return _watsonIncidentRel.getStatus();
 	}
 
-	@Override
-	public int hashCode() {
-		return _watsonIncidentRel.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _watsonIncidentRel.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new WatsonIncidentRelWrapper((WatsonIncidentRel)_watsonIncidentRel.clone());
-	}
-
 	/**
 	* Returns the type of this watson incident rel.
 	*
@@ -208,6 +213,16 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	@Override
 	public java.lang.String getType() {
 		return _watsonIncidentRel.getType();
+	}
+
+	/**
+	* Returns the user ID of this watson incident rel.
+	*
+	* @return the user ID of this watson incident rel
+	*/
+	@Override
+	public long getUserId() {
+		return _watsonIncidentRel.getUserId();
 	}
 
 	/**
@@ -228,66 +243,6 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	@Override
 	public java.lang.String getUserUuid() {
 		return _watsonIncidentRel.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _watsonIncidentRel.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _watsonIncidentRel.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this watson incident rel.
-	*
-	* @return the create date of this watson incident rel
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _watsonIncidentRel.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this watson incident rel.
-	*
-	* @return the modified date of this watson incident rel
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _watsonIncidentRel.getModifiedDate();
-	}
-
-	/**
-	* Returns the company ID of this watson incident rel.
-	*
-	* @return the company ID of this watson incident rel
-	*/
-	@Override
-	public long getCompanyId() {
-		return _watsonIncidentRel.getCompanyId();
-	}
-
-	/**
-	* Returns the primary key of this watson incident rel.
-	*
-	* @return the primary key of this watson incident rel
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _watsonIncidentRel.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this watson incident rel.
-	*
-	* @return the user ID of this watson incident rel
-	*/
-	@Override
-	public long getUserId() {
-		return _watsonIncidentRel.getUserId();
 	}
 
 	/**
@@ -321,6 +276,26 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	@Override
+	public int hashCode() {
+		return _watsonIncidentRel.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _watsonIncidentRel.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _watsonIncidentRel.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _watsonIncidentRel.isNew();
+	}
+
+	@Override
 	public void persist() {
 		_watsonIncidentRel.persist();
 	}
@@ -351,14 +326,14 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_watsonIncidentRel.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_watsonIncidentRel.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_watsonIncidentRel.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -474,6 +449,31 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	@Override
 	public void setWatsonIncidentRelId(long watsonIncidentRelId) {
 		_watsonIncidentRel.setWatsonIncidentRelId(watsonIncidentRelId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<WatsonIncidentRel> toCacheModel() {
+		return _watsonIncidentRel.toCacheModel();
+	}
+
+	@Override
+	public WatsonIncidentRel toEscapedModel() {
+		return new WatsonIncidentRelWrapper(_watsonIncidentRel.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _watsonIncidentRel.toString();
+	}
+
+	@Override
+	public WatsonIncidentRel toUnescapedModel() {
+		return new WatsonIncidentRelWrapper(_watsonIncidentRel.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _watsonIncidentRel.toXmlString();
 	}
 
 	@Override

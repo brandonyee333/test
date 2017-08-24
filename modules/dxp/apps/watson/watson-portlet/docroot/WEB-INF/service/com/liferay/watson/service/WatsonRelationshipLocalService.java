@@ -61,25 +61,6 @@ public interface WatsonRelationshipLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonRelationshipLocalServiceUtil} to access the watson relationship local service. Add custom service methods to {@link com.liferay.watson.service.impl.WatsonRelationshipLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
 
 	/**
 	* Adds the watson relationship to the database. Also notifies the appropriate model listeners.
@@ -101,14 +82,11 @@ public interface WatsonRelationshipLocalService extends BaseLocalService,
 		long watsonRelationshipId);
 
 	/**
-	* Deletes the watson relationship from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonRelationship the watson relationship
-	* @return the watson relationship that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public WatsonRelationship deleteWatsonRelationship(
-		WatsonRelationship watsonRelationship);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the watson relationship with the primary key from the database. Also notifies the appropriate model listeners.
@@ -121,49 +99,17 @@ public interface WatsonRelationshipLocalService extends BaseLocalService,
 	public WatsonRelationship deleteWatsonRelationship(
 		long watsonRelationshipId) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public WatsonRelationship fetchWatsonRelationship(long watsonRelationshipId);
-
 	/**
-	* Returns the watson relationship with the primary key.
-	*
-	* @param watsonRelationshipId the primary key of the watson relationship
-	* @return the watson relationship
-	* @throws PortalException if a watson relationship with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public WatsonRelationship getWatsonRelationship(long watsonRelationshipId)
-		throws PortalException;
-
-	/**
-	* Updates the watson relationship in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the watson relationship from the database. Also notifies the appropriate model listeners.
 	*
 	* @param watsonRelationship the watson relationship
-	* @return the watson relationship that was updated
+	* @return the watson relationship that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public WatsonRelationship updateWatsonRelationship(
+	@Indexable(type = IndexableType.DELETE)
+	public WatsonRelationship deleteWatsonRelationship(
 		WatsonRelationship watsonRelationship);
 
-	/**
-	* Returns the number of watson relationships.
-	*
-	* @return the number of watson relationships
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getWatsonRelationshipsCount();
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -205,20 +151,6 @@ public interface WatsonRelationshipLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns a range of all the watson relationships.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonRelationshipModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson relationships
-	* @param end the upper bound of the range of watson relationships (not inclusive)
-	* @return the range of watson relationships
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<WatsonRelationship> getWatsonRelationships(int start, int end);
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -235,4 +167,73 @@ public interface WatsonRelationshipLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WatsonRelationship fetchWatsonRelationship(long watsonRelationshipId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the watson relationship with the primary key.
+	*
+	* @param watsonRelationshipId the primary key of the watson relationship
+	* @return the watson relationship
+	* @throws PortalException if a watson relationship with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public WatsonRelationship getWatsonRelationship(long watsonRelationshipId)
+		throws PortalException;
+
+	/**
+	* Returns a range of all the watson relationships.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonRelationshipModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of watson relationships
+	* @param end the upper bound of the range of watson relationships (not inclusive)
+	* @return the range of watson relationships
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<WatsonRelationship> getWatsonRelationships(int start, int end);
+
+	/**
+	* Returns the number of watson relationships.
+	*
+	* @return the number of watson relationships
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getWatsonRelationshipsCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Updates the watson relationship in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param watsonRelationship the watson relationship
+	* @return the watson relationship that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public WatsonRelationship updateWatsonRelationship(
+		WatsonRelationship watsonRelationship);
 }

@@ -34,38 +34,6 @@ public class WatsonListTypeRelLocalServiceWrapper
 		_watsonListTypeRelLocalService = watsonListTypeRelLocalService;
 	}
 
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _watsonListTypeRelLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _watsonListTypeRelLocalService.dynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _watsonListTypeRelLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _watsonListTypeRelLocalService.deletePersistedModel(persistedModel);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _watsonListTypeRelLocalService.getPersistedModel(primaryKeyObj);
-	}
-
 	/**
 	* Adds the watson list type rel to the database. Also notifies the appropriate model listeners.
 	*
@@ -91,15 +59,13 @@ public class WatsonListTypeRelLocalServiceWrapper
 	}
 
 	/**
-	* Deletes the watson list type rel from the database. Also notifies the appropriate model listeners.
-	*
-	* @param watsonListTypeRel the watson list type rel
-	* @return the watson list type rel that was removed
+	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.watson.model.WatsonListTypeRel deleteWatsonListTypeRel(
-		com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
-		return _watsonListTypeRelLocalService.deleteWatsonListTypeRel(watsonListTypeRel);
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _watsonListTypeRelLocalService.deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -116,64 +82,21 @@ public class WatsonListTypeRelLocalServiceWrapper
 		return _watsonListTypeRelLocalService.deleteWatsonListTypeRel(watsonListTypeRelId);
 	}
 
-	@Override
-	public com.liferay.watson.model.WatsonListTypeRel fetchWatsonListTypeRel(
-		long watsonListTypeRelId) {
-		return _watsonListTypeRelLocalService.fetchWatsonListTypeRel(watsonListTypeRelId);
-	}
-
 	/**
-	* Returns the watson list type rel with the primary key.
-	*
-	* @param watsonListTypeRelId the primary key of the watson list type rel
-	* @return the watson list type rel
-	* @throws PortalException if a watson list type rel with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.watson.model.WatsonListTypeRel getWatsonListTypeRel(
-		long watsonListTypeRelId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _watsonListTypeRelLocalService.getWatsonListTypeRel(watsonListTypeRelId);
-	}
-
-	/**
-	* Updates the watson list type rel in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the watson list type rel from the database. Also notifies the appropriate model listeners.
 	*
 	* @param watsonListTypeRel the watson list type rel
-	* @return the watson list type rel that was updated
+	* @return the watson list type rel that was removed
 	*/
 	@Override
-	public com.liferay.watson.model.WatsonListTypeRel updateWatsonListTypeRel(
+	public com.liferay.watson.model.WatsonListTypeRel deleteWatsonListTypeRel(
 		com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
-		return _watsonListTypeRelLocalService.updateWatsonListTypeRel(watsonListTypeRel);
-	}
-
-	/**
-	* Returns the number of watson list type rels.
-	*
-	* @return the number of watson list type rels
-	*/
-	@Override
-	public int getWatsonListTypeRelsCount() {
-		return _watsonListTypeRelLocalService.getWatsonListTypeRelsCount();
+		return _watsonListTypeRelLocalService.deleteWatsonListTypeRel(watsonListTypeRel);
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _watsonListTypeRelLocalService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _watsonListTypeRelLocalService.getOSGiServiceIdentifier();
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _watsonListTypeRelLocalService.dynamicQuery();
 	}
 
 	/**
@@ -231,23 +154,6 @@ public class WatsonListTypeRelLocalServiceWrapper
 	}
 
 	/**
-	* Returns a range of all the watson list type rels.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonListTypeRelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of watson list type rels
-	* @param end the upper bound of the range of watson list type rels (not inclusive)
-	* @return the range of watson list type rels
-	*/
-	@Override
-	public java.util.List<com.liferay.watson.model.WatsonListTypeRel> getWatsonListTypeRels(
-		int start, int end) {
-		return _watsonListTypeRelLocalService.getWatsonListTypeRels(start, end);
-	}
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -272,6 +178,100 @@ public class WatsonListTypeRelLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _watsonListTypeRelLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
+	}
+
+	@Override
+	public com.liferay.watson.model.WatsonListTypeRel fetchWatsonListTypeRel(
+		long watsonListTypeRelId) {
+		return _watsonListTypeRelLocalService.fetchWatsonListTypeRel(watsonListTypeRelId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _watsonListTypeRelLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _watsonListTypeRelLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _watsonListTypeRelLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _watsonListTypeRelLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the watson list type rel with the primary key.
+	*
+	* @param watsonListTypeRelId the primary key of the watson list type rel
+	* @return the watson list type rel
+	* @throws PortalException if a watson list type rel with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.watson.model.WatsonListTypeRel getWatsonListTypeRel(
+		long watsonListTypeRelId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _watsonListTypeRelLocalService.getWatsonListTypeRel(watsonListTypeRelId);
+	}
+
+	/**
+	* Returns a range of all the watson list type rels.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.watson.model.impl.WatsonListTypeRelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of watson list type rels
+	* @param end the upper bound of the range of watson list type rels (not inclusive)
+	* @return the range of watson list type rels
+	*/
+	@Override
+	public java.util.List<com.liferay.watson.model.WatsonListTypeRel> getWatsonListTypeRels(
+		int start, int end) {
+		return _watsonListTypeRelLocalService.getWatsonListTypeRels(start, end);
+	}
+
+	/**
+	* Returns the number of watson list type rels.
+	*
+	* @return the number of watson list type rels
+	*/
+	@Override
+	public int getWatsonListTypeRelsCount() {
+		return _watsonListTypeRelLocalService.getWatsonListTypeRelsCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _watsonListTypeRelLocalService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
+	/**
+	* Updates the watson list type rel in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param watsonListTypeRel the watson list type rel
+	* @return the watson list type rel that was updated
+	*/
+	@Override
+	public com.liferay.watson.model.WatsonListTypeRel updateWatsonListTypeRel(
+		com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
+		return _watsonListTypeRelLocalService.updateWatsonListTypeRel(watsonListTypeRel);
 	}
 
 	@Override
