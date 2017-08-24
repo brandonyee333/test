@@ -305,7 +305,7 @@
 									</div>
 
 									<div class="aui-w80 customer-info fl">
-										<aui:input maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= renderResponse.getNamespace() + "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %>" type="textarea" />
+										<aui:input maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %>" type="textarea" />
 									</div>
 								</div>
 
@@ -393,7 +393,7 @@
 									</div>
 
 									<div class="aui-w80 customer-info fl">
-										<aui:input maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= renderResponse.getNamespace() + "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %>" type="textarea" />
+										<aui:input maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %>" type="textarea" />
 									</div>
 								</div>
 

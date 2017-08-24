@@ -84,7 +84,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 						</div>
 
 						<div id="<portlet:namespace/>tierDropDown" style="display: none;">
-							<aui:select name='<%= renderResponse.getNamespace() + "tier" %>'onChange='<%= renderResponse.getNamespace() + "updateAccountTier();" %>'>
+							<aui:select name="tier" onChange='<%= renderResponse.getNamespace() + "updateAccountTier();" %>'>
 
 								<%
 								for (int tier : AccountEntryConstants.TIERS) {
@@ -102,7 +102,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 							String taglibCancel = renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "tierDropDown, '" + renderResponse.getNamespace() + "tierDisplay');";
 							%>
 
-							<aui:button cssClass="aui-button-input" id='<%= renderResponse.getNamespace() + "tierCancel" %>' onclick="<%= taglibCancel %>" value="cancel" />
+							<aui:button cssClass="aui-button-input" name="tierCancel" onclick="<%= taglibCancel %>" value="cancel" />
 						</div>
 					</span>
 					<span class="spacer"></span>

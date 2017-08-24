@@ -94,9 +94,7 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 				<div class="field-group">
-					<label id="<portlet:namespace />instructionsLabel"><liferay-ui:message key="special-instructions" /></label>
-
-					<aui:input bean="<%= accountEntry %>" label="" model="<%= AccountEntry.class %>" name="instructions" />
+					<aui:input bean="<%= accountEntry %>" label="special-instructions" model="<%= AccountEntry.class %>" name="instructions" />
 				</div>
 
 				<div align="right">
