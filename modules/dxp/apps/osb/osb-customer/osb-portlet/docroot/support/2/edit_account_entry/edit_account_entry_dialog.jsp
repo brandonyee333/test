@@ -112,13 +112,19 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 
 	<aui:script>
 		function <portlet:namespace />closePopup() {
-			var modified = document.getElementById('<portlet:namespace />modified');
+			var modifiedNode = document.getElementById('<portlet:namespace />modified');
 
-			if (modified && modified.value == 'true') {
-				confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-project.-are-you-sure-you-want-to-cancel-editing") %>');
+			var modified = modifiedNode && modifiedNode.value == 'true';
+
+			var cancelEdit = false;
+
+			if (modified) {
+				cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-project.-are-you-sure-you-want-to-cancel-editing") %>');
 			}
 
-			Liferay.Util.getWindow().close();
+			if (!modified || (modified && cancelEdit)) {
+				Liferay.Util.getWindow().close();
+			}
 		}
 
 		Liferay.provide(
@@ -138,9 +144,9 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 						tabContent.show();
 					}
 
-					A.all(".details .tabs span").removeClass("selected");
+					A.all('.details .tabs span').removeClass('selected');
 
-					tab.addClass("selected");
+					tab.addClass('selected');
 
 					Liferay.QueryStringUtil.updateParam('<portlet:namespace />detailTab', id);
 				}
@@ -170,7 +176,7 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 								firstNode = requiredField;
 							}
 						}
-					)
+					);
 
 					if (firstNode) {
 						<portlet:namespace />reveal('editAccountDetails');
@@ -182,12 +188,13 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 				submitForm(document.<portlet:namespace />fm);
 			},
 			['aui-base']
-		)
+		);
 	</aui:script>
 
 	<aui:script use="aui-base">
-		var onChange = function(e) {
-			var name = e.currentTarget.getAttribute('name');
+		var onChange = function(event) {
+			var name = event.currentTarget.getAttribute('name');
+
 			var label = A.one('label#' + name + 'Label');
 
 			if (label) {
@@ -195,13 +202,17 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 			}
 
 			var labelAncestor = label.ancestor('.tab-content-tab');
-			var tab = A.one('span#' + labelAncestor.getAttribute('id'));
 
-			var modified = '(Modified)'.bold();
+			if (labelAncestor) {
+				var tab = A.one('span#' + labelAncestor.getAttribute('id'));
 
-			if (tab && tab.html().indexOf('Modified') == -1) {
-				tab.append(modified);
-				tab.addClass('field-modified');
+				var modified = '(Modified)'.bold();
+
+				if (tab && tab.html().indexOf('Modified') == -1) {
+					tab.append(modified);
+
+					tab.addClass('field-modified');
+				}
 			}
 
 			if (this.hasAttribute('data-field-required-status')) {

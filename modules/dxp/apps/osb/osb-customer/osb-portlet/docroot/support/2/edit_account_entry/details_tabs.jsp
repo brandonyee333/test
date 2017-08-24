@@ -669,12 +669,13 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 
 			var tab = A.one('.details .tabs #<portlet:namespace />' + id);
 
+			var revealId = 'contacts';
+
 			if (tab) {
-				<portlet:namespace />reveal('.details', id);
+				revealId = id;
 			}
-			else {
-				<portlet:namespace />reveal('.details', 'contacts');
-			}
+
+			<portlet:namespace />reveal('.details', revealId);
 		},
 		['aui-base']
 	);
@@ -689,10 +690,10 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 				{
 					align: {
 						node: null,
-						points: [ 'tl', 'bl' ]
+						points: ['tl', 'bl']
 					},
 					arrow: 'tl',
-					bodyContent: '<liferay-ui:message key="the-pending-status-can-only-be-set-automatically-through-workflow-tasks" unicode="<%= true %>" />',
+					bodyContent: '<liferay-ui:message key="the-pending-status-can-only-be-set-automatically-through-workflow-tasks" />',
 					hideDelay: 0,
 					trigger: item
 				}

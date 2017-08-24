@@ -406,11 +406,13 @@
 
 									<%
 									String taglibSave = renderResponse.getNamespace() + "updateAccountInformation('" + AccountInformationConstants.SECTION_SALES + "', 'salesInformation');";
-
-									String taglibcancel = renderResponse.getNamespace() + "toggleSection('" + salesSectionEditLabel + "', '" + salesSectionLabel + "');";
 									%>
 
 									<aui:button cssClass="aui-button-input" onClick="<%= taglibSave %>" value="save" />
+
+									<%
+									String taglibcancel = renderResponse.getNamespace() + "toggleSection('" + salesSectionEditLabel + "', '" + salesSectionLabel + "');";
+									%>
 
 									<aui:button cssClass="aui-button-input" onClick="<%= taglibcancel %>" value="cancel" />
 								</div>
@@ -449,6 +451,14 @@
 	</div>
 
 	<aui:script>
+		function <portlet:namespace />updateAccountInformation(section, additionalInfoTab) {
+			document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
+			document.<portlet:namespace />fm1.<portlet:namespace />additionalInfoTab.value = additionalInfoTab;
+			document.<portlet:namespace />fm1.<portlet:namespace />section.value = section;
+
+			submitForm(document.<portlet:namespace />fm1);
+		}
+
 		Liferay.provide(
 			window,
 			'<portlet:namespace />revealAdditionalInfo',
@@ -457,11 +467,38 @@
 
 				var tab = A.one('.account-additional-info .tabs #<portlet:namespace />' + id);
 
+				var revealId = 'callLog';
+
 				if (tab) {
-					<portlet:namespace />reveal('.account-additional-info', id);
+					revealId = id;
 				}
-				else {
-					<portlet:namespace />reveal('.account-additional-info', 'callLog');
+
+				<portlet:namespace />reveal('.account-additional-info', revealId);
+			},
+			['aui-base']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />toggleAccountCall',
+			function(accountCallId) {
+				var accountCall = A.one('#<portlet:namespace />accountCall_' + accountCallId);
+				var accountCallDetails = A.one('#<portlet:namespace />accountCallDetails_' + accountCallId);
+
+				if (accountCall && accountCallDetails) {
+					var collapsed = accountCall.hasClass('collapsed');
+
+					if (collapsed) {
+						A.all('#<portlet:namespace />accountCallsContainer tr').each(
+							function(item) {
+								item.addClass('collapsed');
+							}
+						);
+					}
+
+					accountCall.toggleClass('collapsed', !collapsed);
+
+					accountCallDetails.toggleClass('collapsed', !collapsed);
 				}
 			},
 			['aui-base']
@@ -471,44 +508,23 @@
 			window,
 			'<portlet:namespace />toggleSection',
 			function(hideId, showId) {
-				A.one('#<portlet:namespace />' + hideId).hide();
-				A.one('#<portlet:namespace />' + showId).show();
+				var A = AUI();
+
+				var hideNode = A.one('#<portlet:namespace />' + hideId);
+
+				if (hideNode) {
+					hideNode.hide();
+				}
+
+				var showNode = A.one('#<portlet:namespace />' + showId);
+
+				if (showNode) {
+					showNode.show();
+				}
 			},
 			['aui-base']
 		);
 
-		function <portlet:namespace />updateAccountInformation(section, additionalInfoTab) {
-			document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
-			document.<portlet:namespace />fm1.<portlet:namespace />additionalInfoTab.value = additionalInfoTab;
-			document.<portlet:namespace />fm1.<portlet:namespace />section.value = section;
-
-			submitForm(document.<portlet:namespace />fm1);
-		}
-	</aui:script>
-
-	<aui:script use="aui-base">
 		<portlet:namespace />revealAdditionalInfo('<%= HtmlUtil.escape(additionalInfoTab) %>');
-
-		function <portlet:namespace />toggleAccountCall(accountCallId) {
-			var accountCall = A.one('#<portlet:namespace />accountCall_' + accountCallId);
-			var accountCallDetails = A.one('#<portlet:namespace />accountCallDetails_' + accountCallId);
-
-			if (accountCall && accountCallDetails) {
-				if (accountCall.hasClass('collapsed')) {
-					A.all("#<portlet:namespace />accountCallsContainer tr").each(
-						function(item, index, collection) {
-							item.addClass('collapsed');
-						}
-					);
-
-					accountCall.removeClass('collapsed');
-					accountCallDetails.removeClass('collapsed');
-				}
-				else {
-					accountCall.addClass('collapsed');
-					accountCallDetails.addClass('collapsed');
-				}
-			}
-		}
 	</aui:script>
 </c:if>
