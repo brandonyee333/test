@@ -19,12 +19,12 @@ Map baseAlloyModels = [
 		pluralInstanceName: "watsonAddresses"
 	],
 	"WatsonHistory": [
-			baseClassName: "WatsonHistoryBaseModel",
-			fileSafeName: "history",
-			instanceName: "watsonHistory",
-			langName: "history",
-			pluralClassName: "WatsonHistories",
-			pluralInstanceName: "watsonHistories"
+		baseClassName: "WatsonHistoryBaseModel",
+		fileSafeName: "history",
+		instanceName: "watsonHistory",
+		langName: "history",
+		pluralClassName: "WatsonHistories",
+		pluralInstanceName: "watsonHistories"
 	],
 	"WatsonIncident": [
 		baseClassName: "WatsonIncidentBaseModel",
@@ -35,12 +35,12 @@ Map baseAlloyModels = [
 		pluralInstanceName: "watsonIncidents"
 	],
 	"WatsonIncidentRel": [
-			baseClassName: "WatsonIncidentRelBaseModel",
-			fileSafeName: "incident_rel",
-			instanceName: "watsonIncidentRel",
-			langName: "incident-rel",
-			pluralClassName: "WatsonIncidentRels",
-			pluralInstanceName: "watsonIncidentRels"
+		baseClassName: "WatsonIncidentRelBaseModel",
+		fileSafeName: "incident_rel",
+		instanceName: "watsonIncidentRel",
+		langName: "incident-rel",
+		pluralClassName: "WatsonIncidentRels",
+		pluralInstanceName: "watsonIncidentRels"
 	],
 	"WatsonListType": [
 		baseClassName: "WatsonListTypeBaseModel",
