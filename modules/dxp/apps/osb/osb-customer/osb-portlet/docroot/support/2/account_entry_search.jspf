@@ -175,7 +175,7 @@ Date lastEnabledDate = calendar.getTime();
 						for (SupportRegion supportRegion : SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
 						%>
 
-							<aui:option label="<%= supportRegion.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId() %>" value="<%= supportRegion.getSupportRegionId() %>" />
+							<aui:option label="<%= supportRegion.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) %>" value="<%= supportRegion.getSupportRegionId() %>" />
 
 						<%
 						}
@@ -230,7 +230,7 @@ Date lastEnabledDate = calendar.getTime();
 						for (ListType industryType : industryTypes) {
 						%>
 
-							<aui:option label="<%= industryType.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getIndustries(), industryType.getListTypeId()) %>" value="<%= industryType.getListTypeId() %>" />
+							<aui:option label="<%= industryType.getName() %>" selected="<%= ArrayUtil.contains(displayTermsIndustries, industryType.getListTypeId()) %>" value="<%= industryType.getListTypeId() %>" />
 
 						<%
 						}
@@ -291,7 +291,7 @@ Date lastEnabledDate = calendar.getTime();
 							<c:if test="<%= (displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId()) %>">
 								<aui:option label="<%= displayTerms.getCreateUserName() %>" selected="<%= true %>" value="<%= displayTerms.getCreateUserId() %>" />
 							</c:if>
-						</select>
+						</aui:select>
 
 						<aui:input name="<%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= displayTerms.getCreateUserName() %>" />
 
@@ -350,7 +350,7 @@ Date lastEnabledDate = calendar.getTime();
 						monthParam="<%= displayTerms.CREATE_DATE_GT_MONTH %>"
 						monthValue="<%= displayTerms.getCreateDateGTMonth() %>"
 						nullable="<%= true %>"
-						yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>""
+						yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>"
 						yearValue="<%= displayTerms.getCreateDateGTYear() %>"
 					/>
 				</td>
