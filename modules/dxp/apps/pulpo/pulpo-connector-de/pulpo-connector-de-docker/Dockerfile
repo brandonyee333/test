@@ -6,6 +6,7 @@ COPY deploy/*.?ar $LIFERAY_HOME/osgi/modules/
 COPY libs/*.?ar $LIFERAY_HOME/osgi/modules/
 COPY supervisord-tomcat.conf /etc/supervisor/conf.d/supervisord-tomcat.conf
 COPY TokenDownloader.py /
+COPY portal-ext.properties /liferay/portal-ext.properties
 
 USER root
 

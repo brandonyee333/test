@@ -83,8 +83,8 @@ In order to run the tests, the connectors should be deployed into a
 Liferay DE installation with the latest version of LCS deployed and
 configured. If you have the docker image running, then you just need to execute:
 
-```shell
-./gradlew testIntegration
+```
+shell ./gradlew testIntegration
 ```
 
 Running the test will use the default value of these variables. They can
@@ -96,7 +96,16 @@ a different environment.
 | PULPO_TEST_CONNECTOR_DE_URL                             | Connector URL                           | http://localhost:8080                                                                        |
 | PULPO_TEST_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME       | Asset Connector Environment UniqueName  | dev                                                                                          |
 | PULPO_TEST_ASSET_ENGINE_URL                             | Asset Engine URL                        | http://pulpo-engine-assets-dev.eu-west-1.elasticbeanstalk.com                                |
-| PULPO_TEST_ASSET_ELASTIC_SEARCH_URL                     | Asset Engine Elastic Search URL         | https://search-pulpo-elasticsearch-dev-fowirqyosr5ljgr24rfuuqwmqm.eu-west-1.es.amazonaws.com |                                               |
+| PULPO_TEST_ASSET_ELASTIC_SEARCH_URL                     | Asset Engine Elastic Search URL         | https://search-pulpo-elasticsearch-dev-fowirqyosr5ljgr24rfuuqwmqm.eu-west-1.es.amazonaws.com |
 | PULPO_TEST_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME     | Contact Connector Environment UniqueName| dev                                                                                          |
 | PULPO_TEST_CONTACT_ENGINE_URL                           | Contact Engine URL                      | http://pulpo-engine-contacts-dev.eu-west-1.elasticbeanstalk.com                              |
-| PULPO_TEST_CONTACT_ELASTIC_SEARCH_URL                   | Contact Engine Elastic Search URL       | https://search-pulpo-elasticsearch-dev-fowirqyosr5ljgr24rfuuqwmqm.eu-west-1.es.amazonaws.com |                                               |
+| PULPO_TEST_CONTACT_ELASTIC_SEARCH_URL                   | Contact Engine Elastic Search URL       | https://search-pulpo-elasticsearch-dev-fowirqyosr5ljgr24rfuuqwmqm.eu-west-1.es.amazonaws.com |
+
+If you want to reproduce the exactly same environment that it is use in
+Codebuild to run the tests, you should pull the docker image from
+
+```
+docker pull cgoncas/aws-codebuild-docker-image-pulpo-test
+```
+
+This image is build from https://github.com/liferay-labs/aws-codebuild-docker-image-pulpo-test

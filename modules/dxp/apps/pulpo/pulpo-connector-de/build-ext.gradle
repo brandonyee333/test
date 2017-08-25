@@ -80,6 +80,10 @@ configure(subprojects.findAll {!it.childProjects}) {
 	}
 
 	testIntegration {
+		def browser = System.getenv().get("PULPO_TEST_BROWSER") ?: project.property("com.liferay.pulpo.connector.de.browser")
+
+		environment "PULPO_TEST_BROWSER", browser
+
 		def connectorUrl = System.getenv().get("PULPO_TEST_CONNECTOR_DE_URL") ?: project.property("com.liferay.pulpo.connector.de.url")
 
 		environment "PULPO_TEST_CONNECTOR_DE_URL", connectorUrl
@@ -227,7 +231,6 @@ task runDocker(type: Exec) {
 			'-v', "${rootDir}/build/jacoco:/jacoco",
 			'-v', "${getClientDeployDir()}:/liferay/deploy",
 			'-d',
-			'-v', "${rootDir}/pulpo-connector-de-docker/portal-ext.properties:/liferay/portal-ext.properties",
 			'--name', "com-liferay-pulpo-connector-de-private",
 			getImageNameWithUserAndVersion()
 

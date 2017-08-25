@@ -9,8 +9,8 @@
 		<property name="url">${env.PULPO_TEST_CONNECTOR_DE_URL}</property>
 	</extension>
 	<extension qualifier="webdriver">
-		<property name="browser">chrome</property>
-		<property name="chromeArguments">--start-maximized</property>
+		<property name="browser">${env.PULPO_TEST_BROWSER}</property>
+		<property name="chromeArguments">--headless --no-sandbox --enable-logging  --disable-gpu</property>
 		<property name="chromeExtensions">./src/testIntegration/resources/JSErrorCollector.crx</property>
 	</extension>
 </arquillian>
