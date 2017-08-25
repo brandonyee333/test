@@ -86,108 +86,149 @@
 </div>
 
 <aui:script>
-	AUI().use(
-		'aui-dialog',
-		function(A) {
-			var lesaFeedbackDialog = A.one('#<portlet:namespace />lesaFeedbackContainer');
+	function <portlet:namespace />closePopup(dialog) {
+		var commentsNode = document.getElementById('<portlet:namespace />lesaFeedbackComments');
+		var summaryNode = document.getElementById('<portlet:namespace />lesaFeedbackSummary');
 
-			var lesaFeedbackThankYouDialog = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
+		var comments = commentsNode && commentsNode.value;
+		var summary = summaryNode && summaryNode.value;
 
-			var dialog = new A.Dialog(
-				{
-					bodyContent: lesaFeedbackDialog,
-					centered: true,
-					close: false,
-					constrain: true,
-					cssClass: 'lesa-feedback-dialog',
-					draggable: false,
-					modal: true,
-					resizable: false,
-					visible: false
+		if (summary || comments) {
+			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-cancel-submitting-feedback") %>');
+		}
+
+		if (cancelEdit || !(summary || comments)) {
+			dialog.hide();
+
+			<portlet:namespace />resetFeedback();
+		}
+	}
+
+	function <portlet:namespace />resetFeedback() {
+		document.getElementById('<portlet:namespace />lesaFeedbackComments').value = '';
+		document.getElementById('<portlet:namespace />lesaFeedbackSummary').value = '';
+
+		document.getElementById('<portlet:namespace />lesaFeedbackRadioButton').checked = true;
+	}
+</aui:script>
+
+<aui:script use="aui-modal">
+	var lesaFeedbackDialog = A.one('#<portlet:namespace />lesaFeedbackContainer');
+
+	if (lesaFeedbackDialog) {
+		var dialog = new A.Modal(
+			{
+				bodyContent: lesaFeedbackDialog,
+				centered: true,
+				constrain: true,
+				cssClass: 'lesa-feedback-dialog',
+				draggable: false,
+				modal: true,
+				resizable: false,
+				visible: false
+			}
+		).render();
+	}
+
+	var lesaFeedbackIcon = A.one('#<portlet:namespace />lesaFeedbackIcon');
+
+	if (lesaFeedbackIcon) {
+		lesaFeedbackIcon.on(
+			'click',
+			function() {
+				dialog.show();
+			}
+		);
+	}
+
+	var lesaFeedbackCancelButton = A.one('#<portlet:namespace />lesaFeedbackCancelButton');
+
+	if (lesaFeedbackCancelButton) {
+		lesaFeedbackCancelButton.on(
+			'click',
+			function() {
+				<portlet:namespace />closePopup(dialog);
+			}
+		);
+	}
+
+	var lesaFeedbackSubmitButton = A.one('#<portlet:namespace />lesaFeedbackSubmitButton');
+
+	if (lesaFeedbackSubmitButton) {
+		lesaFeedbackSubmitButton.on(
+			'click',
+			function() {
+				var lesaFeedbackComments = A.one('#<portlet:namespace />lesaFeedbackComments').val();
+				var lesaFeedbackCommentsMessage = A.one('#<portlet:namespace />lesaFeedbackCommentsMessage');
+
+				var lesaFeedbackSummary = A.one('#<portlet:namespace />lesaFeedbackSummary').val();
+				var lesaFeedbackSummaryMessage = A.one('#<portlet:namespace />lesaFeedbackSummaryMessage');
+
+				var error = false;
+
+				lesaFeedbackCommentsMessage.toggleClass('visible', error);
+				lesaFeedbackSummaryMessage.toggleClass('visible', error);
+
+				if (lesaFeedbackSummary.length == 0) {
+					error = true;
+
+					lesaFeedbackSummaryMessage.toggleClass('visible', error);
 				}
-			).render();
 
-			var lesaFeedbackIcon = A.one('#<portlet:namespace />lesaFeedbackIcon');
+				if (lesaFeedbackComments.length == 0) {
+					error = true;
 
-			lesaFeedbackIcon.on(
-				'click',
-				function() {
-					dialog.show();
+					lesaFeedbackCommentsMessage.toggleClass('visible', error);
 				}
-			);
 
-			var lesaFeedbackCancelButton = A.one('#<portlet:namespace />lesaFeedbackCancelButton');
-
-			lesaFeedbackCancelButton.on(
-				'click',
-				function() {
-					<portlet:namespace />closePopup(dialog);
+				if (error) {
+					return;
 				}
-			);
 
-			var lesaFeedbackSubmitButton = A.one('#<portlet:namespace />lesaFeedbackSubmitButton');
+				var lesaFeedbackType = '';
 
-			lesaFeedbackSubmitButton.on(
-				'click',
-				function() {
-					var lesaFeedbackComments = document.getElementById('<portlet:namespace />lesaFeedbackComments').value;
-					var lesaFeedbackCommentsMessage = A.one('#<portlet:namespace />lesaFeedbackCommentsMessage');
-					var lesaFeedbackSummary = document.getElementById('<portlet:namespace />lesaFeedbackSummary').value;
-					var lesaFeedbackSummaryMessage = A.one('#<portlet:namespace />lesaFeedbackSummaryMessage');
+				var lesaFeedbackRadioButton = A.one('#<portlet:namespace />lesaFeedbackRadioButton');
+				var lesaFeedbackBugRadioButton = A.one('#<portlet:namespace />lesaFeedbackBugRadioButton');
 
-					var error = false;
-
-					lesaFeedbackCommentsMessage.removeClass('visible');
-					lesaFeedbackSummaryMessage.removeClass('visible');
-
-					if (lesaFeedbackSummary.length == 0) {
-						error = true;
-
-						lesaFeedbackSummaryMessage.addClass('visible');
-					}
-
-					if (lesaFeedbackComments.length == 0) {
-						error = true;
-
-						lesaFeedbackCommentsMessage.addClass('visible');
-					}
-
-					if (error) {
-						return;
-					}
-
-					var lesaFeedbackType = '';
-
-					if (document.getElementById('<portlet:namespace />lesaFeedbackRadioButton').checked) {
-						lesaFeedbackType = document.getElementById('<portlet:namespace />lesaFeedbackRadioButton').value;
+				if (lesaFeedbackRadioButton && lesaFeedbackBugRadioButton) {
+					if (lesaFeedbackRadioButton.get('checked') {
+						lesaFeedbackType = lesaFeedbackRadioButton.val();
 					}
 					else {
-						lesaFeedbackType = document.getElementById('<portlet:namespace />lesaFeedbackBugRadioButton').value;
+						lesaFeedbackType = lesaFeedbackBugRadioButton.val();
 					}
+				}
 
-					A.io.request(
-						'<liferay-portlet:actionURL name="sendLesaFeedbackEmail" />',
-						{
-							data: {
-								<portlet:namespace />lesaFeedbackComments: lesaFeedbackComments,
-								<portlet:namespace />lesaFeedbackSummary: lesaFeedbackSummary,
-								<portlet:namespace />lesaFeedbackType: lesaFeedbackType
-							},
-							dataType: 'json',
-							method: 'post'
-						}
-					);
+				A.io.request(
+					'<liferay-portlet:actionURL name="sendLesaFeedbackEmail" />',
+					{
+						data: {
+							<portlet:namespace />lesaFeedbackComments: lesaFeedbackComments,
+							<portlet:namespace />lesaFeedbackSummary: lesaFeedbackSummary,
+							<portlet:namespace />lesaFeedbackType: lesaFeedbackType
+						},
+						dataType: 'json',
+						method: 'post'
+					}
+				);
 
-					var lesaFeedbackDialogContent = A.one('.lesa-feedback-dialog-content');
+				var lesaFeedbackDialogContent = A.one('.lesa-feedback-dialog-content');
 
+				if (lesaFeedbackDialogContent) {
 					lesaFeedbackDialogContent.addClass('lesa-feedback-thank-you');
+				}
 
+				var lesaFeedbackThankYouDialog = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
+
+				if (lesaFeedbackThankYouDialog) {
 					dialog.set('bodyContent', lesaFeedbackThankYouDialog);
+				}
 
-					dialog.syncUI();
+				dialog.syncUI();
 
-					var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
+				var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
 
+				if (lesaFeedbackCloseButton && lesaFeedbackDialogContent) {
 					lesaFeedbackCloseButton.on(
 						'click',
 						function() {
@@ -203,42 +244,16 @@
 						}
 					);
 				}
-			);
+			}
+		);
+	}
 
-			window.addEventListener(
-				'keydown',
-				function(A) {
-					if (A.keyCode === 27) {
-						<portlet:namespace />closePopup(dialog);
-					}
-				}
-			);
-		}
-	);
-
-	function <portlet:namespace />closePopup(dialog) {
-		var summary = document.getElementById('<portlet:namespace />lesaFeedbackSummary').value;
-		var comments = document.getElementById('<portlet:namespace />lesaFeedbackComments').value;
-
-		if ((summary != '') || (comments != '')) {
-			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-cancel-submitting-feedback") %>');
-
-			if (cancelEdit) {
-				dialog.hide();
-
-				<portlet:namespace />resetFeedback();
+	window.addEventListener(
+		'keydown',
+		function(event) {
+			if (A.keyCode === 27) {
+				<portlet:namespace />closePopup(dialog);
 			}
 		}
-		else {
-			dialog.hide();
-
-			<portlet:namespace />resetFeedback();
-		}
-	}
-
-	function <portlet:namespace />resetFeedback() {
-		document.getElementById('<portlet:namespace />lesaFeedbackComments').value = '';
-		document.getElementById('<portlet:namespace />lesaFeedbackRadioButton').checked = true;
-		document.getElementById('<portlet:namespace />lesaFeedbackSummary').value = '';
-	}
+	);
 </aui:script>
