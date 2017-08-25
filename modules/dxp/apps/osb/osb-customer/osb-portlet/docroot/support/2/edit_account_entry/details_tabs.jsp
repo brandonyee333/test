@@ -279,7 +279,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 
 								<div id="<portlet:namespace />status_<%= key %>" style="display: none;">
 									<c:if test="<%= Validator.isNotNull(statusOnClick) %>">
-										<aui:select name='<%= renderResponse.getNamespace() + "status_" + key %>' onBlur="<%= statusOnBlur %>" onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('<%= key %>', '<%= StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) %>');" %>' />
+										<aui:select name='<%= renderResponse.getNamespace() + "status_" + key %>' onBlur="<%= statusOnBlur %>" onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('" + key + "', '" + StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) + "');" %>'>
 
 											<%
 											for (int i = 1; i <= 3; i++) {

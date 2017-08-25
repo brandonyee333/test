@@ -193,7 +193,7 @@
 															String taglibEdit = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-project-call") + "', '" + editAccountCallURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountCall');";
 															%>
 
-															<aui:button cssClass="aui-button-input" onClick="<%= rtaglibEdit %>" value="edit" />
+															<aui:button cssClass="aui-button-input" onClick="<%= taglibEdit %>" value="edit" />
 
 															<portlet:actionURL name="deleteAccountCall" var="deleteAccountCallURL">
 																<portlet:param name="redirect" value="<%= currentURL %>" />
