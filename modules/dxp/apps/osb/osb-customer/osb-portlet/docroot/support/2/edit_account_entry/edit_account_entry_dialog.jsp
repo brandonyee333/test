@@ -114,7 +114,7 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 		function <portlet:namespace />closePopup() {
 			var modifiedNode = document.getElementById('<portlet:namespace />modified');
 
-			var modified = modifiedNode && modifiedNode.value == 'true';
+			var modified = modifiedNode && (modifiedNode.value == 'true');
 
 			var cancelEdit = false;
 
@@ -206,10 +206,8 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 			if (labelAncestor) {
 				var tab = A.one('span#' + labelAncestor.getAttribute('id'));
 
-				var modified = '(Modified)'.bold();
-
-				if (tab && tab.html().indexOf('Modified') == -1) {
-					tab.append(modified);
+				if (tab && (tab.html().indexOf('Modified') == -1)) {
+					tab.append('(Modified)'.bold());
 
 					tab.addClass('field-modified');
 				}
