@@ -27,7 +27,7 @@
 	portletURL.setParameter("tabs1", tabs1);
 	%>
 
-	<aui:form action="<%= portletURL.toString() %>" method="post" name="<portlet:namespace />fm" onSubmit="submitForm(this); return false;">
+	<aui:form action="<%= portletURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
 		<div class="unit">
 			<div class="table-report">
 				<liferay-ui:tabs

@@ -24,7 +24,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 portletURL.setParameter("mvcPath", "/support/2/select_ticket_canned_response.jsp");
 %>
 
-<aui:form action="<%= portletURL.toString() %>" class="canned-response-results" method="post" name="fm" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= portletURL.toString() %>" cssClass="canned-response-results" method="post" name="fm" onSubmit="submitForm(this); return false;">
 	<div class="unit">
 		<liferay-ui:tabs names="canned-responses" />
 

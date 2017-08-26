@@ -31,8 +31,8 @@
 		</h2>
 
 		<div>
-			<select name="<portlet:namespace />resolution">
-				<option></option>
+			<aui:select name="resolution">
+				<aui:option value="" />
 
 				<%
 				List<ListType> resolutionTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION);
@@ -40,13 +40,13 @@
 				for (ListType resolutionType : resolutionTypes) {
 				%>
 
-					<option value="<%= resolutionType.getListTypeId() %>"><%= LanguageUtil.get(request, resolutionType.getName()) %></option>
+					<aui:option label="<%= resolutionType.getName() %>" value="<%= resolutionType.getListTypeId() %>" />
 
 				<%
 				}
 				%>
 
-			</select>
+			</aui:select>
 		</div>
 
 		<h2 class="section-heading">
@@ -54,13 +54,13 @@
 		</h2>
 
 		<div>
-			<textarea name="<portlet:namespace />addCommentBody" style="height: 250px; width: 700px;" wrap="soft"></textarea>
+			<aui:input name="addCommentBody" style="height: 250px; width: 700px;" type="textarea" wrap="soft" />
 		</div>
 
 		<div>
-			<input class="aui-button-input" onClick="<portlet:namespace />closeTicket();" type="button" value="<liferay-ui:message key="close-ticket" />" />
+			<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "closeTicket();" %>' value="close-ticket" />
 
-			<input class="aui-button-input" onClick="window.close();" type="button" value="<liferay-ui:message key="cancel" />" />
+			<aui:button cssClass="aui-button-input" onClick="window.close();" type="button" value="cancel" />
 		</div>
 	</div>
 </aui:form>

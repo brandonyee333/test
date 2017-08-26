@@ -51,14 +51,14 @@ String gamePlan = GetterUtil.get(gamePlanMap.get(locale), gamePlanMap.get(Locale
 				<pre><%= HtmlUtil.escape(gamePlan) %></pre>
 			</div>
 
-			<input id="<portlet:namespace />gamePlan" type="hidden" value="<%= HtmlUtil.escapeAttribute(gamePlan) %>" />
+			<aui:input name="gamePlan" type="hidden" value="<%= gamePlan %>" />
 		</div>
 	</div>
 
 	<div>
-		<input class="aui-button-input" onClick="<portlet:namespace />chooseGamePlan();" type="button" value="<liferay-ui:message key="choose" />" />
+		<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "chooseGamePlan();" %>' value="choose" />
 
-		<input class="aui-button-input" onClick="window.close();" type="button" value="<liferay-ui:message key="cancel" />" />
+		<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
 	</div>
 </div>
 

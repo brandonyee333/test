@@ -147,7 +147,7 @@ if (liferayIncOrg) {
 											url='<%= "javascript:" + renderResponse.getNamespace() + "toggleAccountEntries(" + supportTeam.getSupportTeamId() + ", true);" %>'
 										/>
 									</span>
-									<span class="aui-helper-hidden collapse" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>">
+									<span class="collapse hide" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>">
 										<liferay-ui:icon
 											image="../arrows/01_minus"
 											label="<%= true %>"
@@ -156,7 +156,7 @@ if (liferayIncOrg) {
 										/>
 									</span>
 
-									<div class="aui-helper-hidden" id="<portlet:namespace />accountEntries_<%= supportTeam.getSupportTeamId() %>">
+									<div class="hide" id="<portlet:namespace />accountEntries_<%= supportTeam.getSupportTeamId() %>">
 
 										<%
 										for (int i = 0; i < accountEntries.size(); i++) {

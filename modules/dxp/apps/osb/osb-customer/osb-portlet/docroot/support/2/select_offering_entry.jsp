@@ -71,22 +71,23 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 
 						<strong><%= HtmlUtil.escape(curAccountEntry.getName()) %></strong>
 
-						<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+						<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 					</c:when>
 					<c:when test="<%= RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID) %>">
-						<select name="<portlet:namespace />accountEntryId" onChange="submitForm(document.<portlet:namespace />fm);">
+						<aui:select name="accountEntryId" onChange='
+						<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'
 
 							<%
 							for (AccountEntry curAccountEntry : accountEntries) {
 							%>
 
-								<option <%= (curAccountEntry.getAccountEntryId() == accountEntryId) ? "selected" : "" %> value="<%= curAccountEntry.getAccountEntryId() %>"><%= curAccountEntry.getName() %></option>
+								<aui:option label="<%= curAccountEntry.getName() %>" selected="<%= curAccountEntry.getAccountEntryId() == accountEntryId %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 					</c:when>
 					<c:otherwise>
 
@@ -94,7 +95,7 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 						AccountEntry accountEntry = ticketEntry.getAccountEntry();
 						%>
 
-						<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+						<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 
 						<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 					</c:otherwise>
@@ -205,7 +206,7 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 									/>
 								</c:when>
 								<c:otherwise>
-									<input class="aui-button-input" onClick="<%= rowHREF %>" type="button" value="<liferay-ui:message key="choose" />" />
+									<aui:button cssClass="aui-button-input" onClick="<%= rowHREF %>" value="choose" />
 								</c:otherwise>
 							</c:choose>
 						</liferay-ui:search-container-column-text>
