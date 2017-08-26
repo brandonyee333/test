@@ -24,14 +24,14 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 		displayTerms="<%= displayTerms %>"
 		id="toggle_id_partner_entry_search"
 	>
-		<div class="aui-helper-clearfix cleared partner-entry-row">
+		<div class="clearfix cleared partner-entry-row">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content left-column">
 					<h2 class="support-assignment support-input-heading">
 						<liferay-ui:message key="code" />
 					</h2>
 
-					<input id="<portlet:namespace /><%= displayTerms.CODE %>" name="<portlet:namespace /><%= displayTerms.CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCode()) %>" />
+					<aui:input name="<%= displayTerms.CODE %>" type="text" value="<%= displayTerms.getCode() %>" />
 				</div>
 			</div>
 
@@ -41,11 +41,11 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 						<liferay-ui:message key="first-line-support" />
 					</h2>
 
-					<select id="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>">
-						<option <%= !displayTerms.hasManagingSupport() ? "selected" : StringPool.BLANK %> value=""></option>
-						<option <%= (displayTerms.hasManagingSupport() && displayTerms.isManagingSupport()) ? "selected" : StringPool.BLANK %> value="1"><liferay-ui:message key="yes" /></option>
-						<option <%= (displayTerms.hasManagingSupport() && !displayTerms.isManagingSupport()) ? "selected" : StringPool.BLANK %> value="0"><liferay-ui:message key="no" /></option>
-					</select>
+					<aui:select name="<%= displayTerms.MANAGING_SUPPORT %>">
+						<aui:option selected="<%= !displayTerms.hasManagingSupport() %>" value="" />
+						<aui:option label="yes" selected="<%= displayTerms.hasManagingSupport() && displayTerms.isManagingSupport() %>" value="1" />
+						<aui:option label="no" selected="<%= displayTerms.hasManagingSupport() && !displayTerms.isManagingSupport() %>" value="0" />
+					</aui:select>
 				</div>
 			</div>
 
@@ -55,36 +55,36 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 						<liferay-ui:message key="has-child-partner-entries" />
 					</h2>
 
-					<select id="<portlet:namespace /><%= displayTerms.CHILD_PARTNER_ENTRIES %>" name="<portlet:namespace /><%= displayTerms.CHILD_PARTNER_ENTRIES %>">
-						<option <%= !displayTerms.hasChildPartnerEntries() ? "selected" : "" %> value=""></option>
-						<option <%= (displayTerms.hasChildPartnerEntries() && displayTerms.isChildPartnerEntries()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
-						<option <%= (displayTerms.hasChildPartnerEntries() && !displayTerms.isChildPartnerEntries()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
-					</select>
+					<aui:select name="<%= displayTerms.CHILD_PARTNER_ENTRIES %>">
+						<aui:option selected="<%= !displayTerms.hasChildPartnerEntries() %>" value="" />
+						<aui:option label="yes" selected="<%= displayTerms.hasChildPartnerEntries() && displayTerms.isChildPartnerEntries() %>" value="1" />
+						<aui:option label="no" selected="<%= displayTerms.hasChildPartnerEntries() && !displayTerms.isChildPartnerEntries() %>" value="0" />
+					</aui:select>
 				</div>
 			</div>
 		</div>
 
-		<div class="aui-helper-clearfix partner-entry-row">
+		<div class="clearfix partner-entry-row">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content left-column">
 					<h2 class="support-assignment support-input-heading">
 						<liferay-ui:message key="support-region" />
 					</h2>
 
-					<select id="<portlet:namespace /><%= displayTerms.SUPPORT_REGION_IDS %>" name="<portlet:namespace /><%= displayTerms.SUPPORT_REGION_IDS %>">
-						<option value=""></option>
+					<aui:select name="<%= displayTerms.SUPPORT_REGION_IDS %>">
+						<aui:option value="" />
 
 						<%
 						for (SupportRegion supportRegion : SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
 						%>
 
-							<option <%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) ? "selected" : "" %> value="<%= supportRegion.getSupportRegionId() %>"><%= HtmlUtil.escape(supportRegion.getName()) %></option>
+							<aui:option label="<%= supportRegion.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) %>" value="<%= supportRegion.getSupportRegionId() %>" />
 
 						<%
 						}
 						%>
 
-					</select>
+					</aui:select>
 				</div>
 			</div>
 
@@ -95,11 +95,11 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 							<liferay-ui:message key="status" />
 						</h2>
 
-						<select id="<portlet:namespace /><%= displayTerms.STATUSES %>" name="<portlet:namespace /><%= displayTerms.STATUSES %>">
-							<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_ANY) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_ANY %>"><liferay-ui:message key="any-status" /></option>
-							<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_APPROVED) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_APPROVED %>"><liferay-ui:message key="active" /></option>
-							<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_INACTIVE) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_INACTIVE %>"><liferay-ui:message key="inactive" /></option>
-						</select>
+						<aui:select name="<%= displayTerms.STATUSES %>">
+							<aui:option label="any-status" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_ANY) %>" value="<%= WorkflowConstants.STATUS_ANY %>" />
+							<aui:option label="active" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_APPROVED) %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
+							<aui:option label="inactive" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_INACTIVE) %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
+						</aui:select>
 					</div>
 				</div>
 			</c:if>

@@ -42,7 +42,7 @@ if (ticketEntry != null) {
 			</div>
 		</c:when>
 		<c:otherwise>
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<div class="aui-w50 content-column">
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up">
@@ -66,7 +66,7 @@ if (ticketEntry != null) {
 				</div>
 			</div>
 
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<div class="aui-w50 content-column">
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up">
@@ -115,16 +115,20 @@ if (ticketEntry != null) {
 	</c:choose>
 
 	<c:if test="<%= liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, ticketFeedback, OSBActionKeys.UPDATE) %>">
-		<br />
-
 		<div>
 			<c:if test="<%= !closed %>">
+				<portlet:renderURL var="editPartnerTicketFeedbackRenderURL">
+					<portlet:param name="mvcPath" value="/support/2/edit_partner_ticket_feedback.jsp" />
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+					<portlet:param name="ticketFeedbackId" value="<%= String.valueOf(ticketFeedback.getTicketFeedbackId()) %>" />
+				</portlet:renderURL>
+
 				<c:choose>
 					<c:when test="<%= ticketFeedback.getStatus() == TicketFeedbackConstants.STATUS_UNANSWERED %>">
-						<input class="aui-button-input" onClick="location.href='<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/edit_partner_ticket_feedback.jsp" /><portlet:param name="redirect" value="<%= currentURL %>" /><portlet:param name="ticketFeedbackId" value="<%= String.valueOf(ticketFeedback.getTicketFeedbackId()) %>" /></portlet:renderURL>';" type="button" value="<liferay-ui:message key="submit-feedback" />" />
+						<aui:button cssClass="aui-button-input" href="<%= editPartnerTicketFeedbackRenderURL.toString() %>" value="submit-feedback" />
 					</c:when>
 					<c:otherwise>
-						<input class="aui-button-input" onClick="location.href='<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/edit_partner_ticket_feedback.jsp" /><portlet:param name="redirect" value="<%= currentURL %>" /><portlet:param name="ticketFeedbackId" value="<%= String.valueOf(ticketFeedback.getTicketFeedbackId()) %>" /></portlet:renderURL>';" type="button" value="<liferay-ui:message key="edit-feedback" />" />
+						<aui:button cssClass="aui-button-input" href="<%= editPartnerTicketFeedbackRenderURL.toString() %>" value="edit-feedback" />
 					</c:otherwise>
 				</c:choose>
 			</c:if>
