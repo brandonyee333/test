@@ -63,33 +63,77 @@ portletURL.setParameter("tabs1", tabs1);
 			label="assigned-to-my-roles"
 			selected='<%= tabs1.equals("assigned-to-my-roles") %>'
 		/>
+
+		<portlet:renderURL var="viewOtherAssigneesURL">
+			<portlet:param name="mvcPath" value="/other_assignees.jsp" />
+			<portlet:param name="tabs1" value="other-assignees" />
+		</portlet:renderURL>
+
+		<aui:nav-item
+			href="<%= viewOtherAssigneesURL %>"
+			label="other-assignees"
+			selected='<%= tabs1.equals("other-assignees") %>'
+		/>
 	</aui:nav>
 </aui:nav-bar>
 
-<liferay-frontend:management-bar
-	includeCheckBox="<%= false %>"
->
-	<liferay-frontend:management-bar-buttons>
-		<c:if test="<%= !workflowTaskDisplayContext.isSearch() %>">
-			<liferay-frontend:management-bar-display-buttons
-				displayViews="<%= workflowTaskDisplayContext.getDisplayViews() %>"
-				portletURL="<%= workflowTaskDisplayContext.getPortletURL() %>"
-				selectedDisplayStyle="<%= workflowTaskDisplayContext.getDisplayStyle() %>"
-			/>
-		</c:if>
-	</liferay-frontend:management-bar-buttons>
+<c:choose>
+	<c:when test='<%= tabs1.equals("other-assignees") %>'>
+		<liferay-frontend:management-bar
+			includeCheckBox="<%= false %>"
+		>
+			<liferay-frontend:management-bar-buttons>
+				<c:if test="<%= !workflowTaskDisplayContext.isSearch() %>">
+					<liferay-frontend:management-bar-display-buttons
+						displayViews="<%= workflowTaskDisplayContext.getDisplayViews() %>"
+						portletURL="<%= workflowTaskDisplayContext.getPortletURL() %>"
+						selectedDisplayStyle="<%= workflowTaskDisplayContext.getDisplayStyle() %>"
+					/>
+				</c:if>
+			</liferay-frontend:management-bar-buttons>
 
-	<liferay-frontend:management-bar-filters>
-		<liferay-frontend:management-bar-navigation
-			navigationKeys='<%= new String[] {"all", "pending", "completed"} %>'
-			portletURL="<%= PortletURLUtil.clone(portletURL, liferayPortletResponse) %>"
-		/>
+			<liferay-frontend:management-bar-filters>
+				<liferay-frontend:management-bar-navigation
+					navigationKeys='<%= new String[] {"all", "asset-title", "assigned-to", "opportunity-type"} %>'
+					portletURL="<%= PortletURLUtil.clone(portletURL, liferayPortletResponse) %>"
+				/>
 
-		<liferay-frontend:management-bar-sort
-			orderByCol="<%= workflowTaskDisplayContext.getOrderByCol() %>"
-			orderByType="<%= workflowTaskDisplayContext.getOrderByType() %>"
-			orderColumns='<%= new String[] {"last-activity-date", "due-date"} %>'
-			portletURL="<%= workflowTaskDisplayContext.getPortletURL() %>"
-		/>
-	</liferay-frontend:management-bar-filters>
-</liferay-frontend:management-bar>
+				<liferay-frontend:management-bar-sort
+					orderByCol="<%= workflowTaskDisplayContext.getOrderByCol() %>"
+					orderByType="<%= workflowTaskDisplayContext.getOrderByType() %>"
+					orderColumns='<%= new String[] {"last-activity-date", "due-date"} %>'
+					portletURL="<%= workflowTaskDisplayContext.getPortletURL() %>"
+				/>
+			</liferay-frontend:management-bar-filters>
+		</liferay-frontend:management-bar>
+	</c:when>
+	<c:otherwise>
+		<liferay-frontend:management-bar
+			includeCheckBox="<%= false %>"
+		>
+			<liferay-frontend:management-bar-buttons>
+				<c:if test="<%= !workflowTaskDisplayContext.isSearch() %>">
+					<liferay-frontend:management-bar-display-buttons
+						displayViews="<%= workflowTaskDisplayContext.getDisplayViews() %>"
+						portletURL="<%= workflowTaskDisplayContext.getPortletURL() %>"
+						selectedDisplayStyle="<%= workflowTaskDisplayContext.getDisplayStyle() %>"
+					/>
+				</c:if>
+			</liferay-frontend:management-bar-buttons>
+
+			<liferay-frontend:management-bar-filters>
+				<liferay-frontend:management-bar-navigation
+					navigationKeys='<%= new String[] {"all", "pending", "completed"} %>'
+					portletURL="<%= PortletURLUtil.clone(portletURL, liferayPortletResponse) %>"
+				/>
+
+				<liferay-frontend:management-bar-sort
+					orderByCol="<%= workflowTaskDisplayContext.getOrderByCol() %>"
+					orderByType="<%= workflowTaskDisplayContext.getOrderByType() %>"
+					orderColumns='<%= new String[] {"last-activity-date", "due-date"} %>'
+					portletURL="<%= workflowTaskDisplayContext.getPortletURL() %>"
+				/>
+			</liferay-frontend:management-bar-filters>
+		</liferay-frontend:management-bar>
+	</c:otherwise>
+</c:choose>

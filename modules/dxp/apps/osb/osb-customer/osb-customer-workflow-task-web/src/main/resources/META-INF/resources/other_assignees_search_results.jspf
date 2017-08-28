@@ -14,14 +14,8 @@
  */
 --%>
 
-<%@ page import="com.liferay.portal.kernel.search.BooleanQuery" %>
-<%@ page import="com.liferay.portal.kernel.search.BooleanQueryFactoryUtil" %>
-<%@ page import="com.liferay.portal.kernel.search.Hits" %>
-<%@ page import="com.liferay.portal.kernel.search.SearchContext" %>
-<%@ page import="com.liferay.portal.kernel.search.SearchEngineUtil" %>
-
 <%
-SearchContext searchContext = new SearchContext();
+SearchContext searchContext = SearchContextFactory.getInstance(request);
 
 searchContext.setCompanyId(company.getCompanyId());
 searchContext.setEnd(searchContainer.getEnd());
@@ -60,15 +54,15 @@ if (Validator.isNotNull(assigneeClassName)) {
 	}
 }
 
-if (completed != null) {
-	fullQuery.addRequiredTerm("completed", completed);
+if (workflowTask.isCompleted() != null) {
+	fullQuery.addRequiredTerm("completed", workflowTask.isCompleted());
 }
 
 if (salesforceOpportunityType > 0) {
 	fullQuery.addRequiredTerm("salesforceOpportunityType", salesforceOpportunityType);
 }
 
-Hits hits = SearchEngineUtil.search(searchContext, fullQuery);
+Hits hits = IndexSearcherHelperUtil.search(searchContext, fullQuery);
 
 pageContext.setAttribute("results", hits.toList());
 pageContext.setAttribute("total", hits.getLength());

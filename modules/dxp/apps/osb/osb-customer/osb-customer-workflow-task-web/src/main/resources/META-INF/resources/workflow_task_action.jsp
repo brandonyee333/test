@@ -14,23 +14,16 @@
  */
 --%>
 
-<%@ include file="/html/portlet/workflow_tasks/init.jsp" %>
+<%@ include file="/init.jsp" %>
 
-<liferay-util:include page="/html/portlet/workflow_tasks/workflow_task_action.portal.jsp" />
+<liferay-util:include page="/workflow_task_action.portal.jsp" servletContext="<%= application %>" />
 
 <%
 ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 
 boolean updateTask = false;
 
-WorkflowTask workflowTask = null;
-
-if (row != null) {
-	workflowTask = (WorkflowTask)row.getParameter("workflowTask");
-}
-else {
-	workflowTask = (WorkflowTask)request.getAttribute(WebKeys.WORKFLOW_TASK);
-}
+WorkflowTask workflowTask = workflowTaskDisplayContext.getWorkflowTask();
 
 if (workflowTask != null) {
 	WorkflowInstance workflowInstance = WorkflowInstanceManagerUtil.getWorkflowInstance(company.getCompanyId(), workflowTask.getWorkflowInstanceId());
