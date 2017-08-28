@@ -123,14 +123,7 @@ if (ticketEntry != null) {
 					<portlet:param name="ticketFeedbackId" value="<%= String.valueOf(ticketFeedback.getTicketFeedbackId()) %>" />
 				</portlet:renderURL>
 
-				<c:choose>
-					<c:when test="<%= ticketFeedback.getStatus() == TicketFeedbackConstants.STATUS_UNANSWERED %>">
-						<aui:button cssClass="aui-button-input" href="<%= editPartnerTicketFeedbackRenderURL.toString() %>" value="submit-feedback" />
-					</c:when>
-					<c:otherwise>
-						<aui:button cssClass="aui-button-input" href="<%= editPartnerTicketFeedbackRenderURL.toString() %>" value="edit-feedback" />
-					</c:otherwise>
-				</c:choose>
+				<aui:button cssClass="aui-button-input" href="<%= editPartnerTicketFeedbackRenderURL.toString() %>" value='<%= ticketFeedback.getStatus() == TicketFeedbackConstants.STATUS_UNANSWERED ? "submit-feedback" : "edit-feedback" %>' />
 			</c:if>
 		</div>
 	</c:if>
