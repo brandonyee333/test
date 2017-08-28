@@ -24,7 +24,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 		displayTerms="<%= displayTerms %>"
 		id="toggle_id_partner_entry_search"
 	>
-		<div class="clearfix cleared partner-entry-row">
+		<div class="cleared clearfix partner-entry-row">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content left-column">
 					<h2 class="support-assignment support-input-heading">
