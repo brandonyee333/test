@@ -64,11 +64,15 @@ String gamePlan = GetterUtil.get(gamePlanMap.get(locale), gamePlanMap.get(Locale
 
 <aui:script>
 	function <portlet:namespace />chooseGamePlan() {
-		var gamePlan = document.getElementById('<portlet:namespace />gamePlan').value;
+		var gamePlanNode = document.getElementById('<portlet:namespace />gamePlan');
 
-		opener.<portlet:namespace />selectGamePlan(gamePlan);
+		if (gamePlanNode) {
+			var gamePlan = gamePlanNode.value;
 
-		window.close();
+			opener.<portlet:namespace />selectGamePlan(gamePlan);
+
+			window.close();
+		}
 	}
 
 	Liferay.provide(
@@ -76,8 +80,6 @@ String gamePlan = GetterUtil.get(gamePlanMap.get(locale), gamePlanMap.get(Locale
 		'<portlet:namespace />updateLanguage',
 		function(languageId) {
 			var A = AUI();
-
-			var gamePlanDisplay = A.one('#<portlet:namespace />gamePlanDisplay');
 
 			A.io.request(
 				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="gamePlan" />',
@@ -92,9 +94,17 @@ String gamePlan = GetterUtil.get(gamePlanMap.get(locale), gamePlanMap.get(Locale
 							var response = this.get('responseData');
 
 							if (response && response.gamePlan) {
-								gamePlanDisplay.html('<pre>' + response.gamePlan + '</pre>');
+								var gamePlanDisplay = A.one('#<portlet:namespace />gamePlanDisplay');
 
-								A.one('#<portlet:namespace />gamePlan').val(response.gamePlan);
+								if (gamePlanDisplay) {
+									gamePlanDisplay.html('<pre>' + response.gamePlan + '</pre>');
+								}
+
+								var gamePlanNode = A.one('#<portlet:namespace />gamePlan');
+
+								if (gamePlanNode) {
+									gamePlanNode.val(response.gamePlan);
+								}
 							}
 						}
 					}

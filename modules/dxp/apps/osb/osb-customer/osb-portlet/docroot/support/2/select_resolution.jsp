@@ -16,14 +16,6 @@
 
 <%@ include file="/support/2/init.jsp" %>
 
-<script type="text/javascript">
-	function <portlet:namespace />closeTicket() {
-		opener.<portlet:namespace />closeTicket(document.<portlet:namespace />fm.<portlet:namespace />resolution.value, document.<portlet:namespace />fm.<portlet:namespace />addCommentBody.value);
-
-		window.close();
-	}
-</script>
-
 <aui:form name="fm">
 	<div class="unit">
 		<h2 class="section-heading">
@@ -64,3 +56,11 @@
 		</div>
 	</div>
 </aui:form>
+
+<aui:script>
+	function <portlet:namespace />closeTicket() {
+		opener.<portlet:namespace />closeTicket(document.<portlet:namespace />fm.<portlet:namespace />resolution.value, document.<portlet:namespace />fm.<portlet:namespace />addCommentBody.value);
+
+		window.close();
+	}
+</aui:script>

@@ -279,19 +279,24 @@ if (liferayIncOrg) {
 	</div>
 </aui:form>
 
-<aui:script>
-	function <portlet:namespace />toggleAccountEntries(supportTeamId, expand) {
-		var A = AUI();
+<aui:script use="aui-base">
+	function <portlet:namespace />toggleAccountEntries(id, expand) {
+		var accountEntriesNode = A.one("#<portlet:namespace />accountEntries_" + id);
 
-		if (expand) {
-			A.one("#<portlet:namespace />accountEntries_" + supportTeamId).show();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId).show();
-			A.one("#<portlet:namespace />expand_" + supportTeamId).hide();
+		if (accountEntriesNode) {
+			accountEntriesNode.toggle(expand);
 		}
-		else {
-			A.one("#<portlet:namespace />accountEntries_" + supportTeamId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId).hide();
-			A.one("#<portlet:namespace />expand_" + supportTeamId).show();
+
+		var collapseNode = A.one("#<portlet:namespace />collapse_" + id);
+
+		if (collapseNode) {
+			collapseNode.toggle(expand);
+		}
+
+		var expandNode = A.one("#<portlet:namespace />expand_" + id);
+
+		if (expandNode) {
+			expandNode.toggle(!expand);
 		}
 	}
 </aui:script>

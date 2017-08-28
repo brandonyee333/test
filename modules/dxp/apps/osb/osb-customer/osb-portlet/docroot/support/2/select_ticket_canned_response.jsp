@@ -36,7 +36,7 @@ portletURL.setParameter("mvcPath", "/support/2/select_ticket_canned_response.jsp
 			TicketCannedResponseDisplayTerms displayTerms = (TicketCannedResponseDisplayTerms)searchContainer.getDisplayTerms();
 			%>
 
-			<aui:select inlineField="true" label="language" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateLanguage();" %>'>
+			<aui:select inlineField="true" label="language" name="languageId" onChange='<%= "document." + renderResponse.getNamespace() + "fm.submit();" %>' />
 
 				<%
 				Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
@@ -100,9 +100,3 @@ portletURL.setParameter("mvcPath", "/support/2/select_ticket_canned_response.jsp
 		</liferay-ui:search-container>
 	</div>
 </aui:form>
-
-<aui:script>
-	function <portlet:namespace />updateLanguage() {
-		document.<portlet:namespace />fm.submit();
-	}
-</aui:script>
