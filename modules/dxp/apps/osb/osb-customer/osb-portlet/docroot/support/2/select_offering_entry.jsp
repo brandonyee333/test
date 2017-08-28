@@ -75,7 +75,7 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 					</c:when>
 					<c:when test="<%= RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID) %>">
 						<aui:select name="accountEntryId" onChange='
-						<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'
+							<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
 
 							<%
 							for (AccountEntry curAccountEntry : accountEntries) {
