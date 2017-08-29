@@ -1,0 +1,259 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.osb.hook.filter;
+
+import com.liferay.compat.portal.kernel.util.Validator;
+import com.liferay.compat.portal.util.PortalUtil;
+import com.liferay.portal.NoSuchLayoutException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.model.Group;
+import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.permission.ActionKeys;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.LayoutLocalServiceUtil;
+import com.liferay.portal.service.permission.LayoutPermissionUtil;
+import com.liferay.portlet.expando.model.ExpandoColumn;
+import com.liferay.portlet.expando.model.ExpandoTable;
+import com.liferay.portlet.expando.model.ExpandoTableConstants;
+import com.liferay.portlet.expando.model.ExpandoValue;
+import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * @author Jenny Chen
+ */
+public class RedirectFilter implements Filter {
+
+	@Override
+	public void destroy() {
+	}
+
+	@Override
+	public void doFilter(
+			ServletRequest servletRequest, ServletResponse servletResponse,
+			FilterChain filterChain)
+		throws IOException, ServletException {
+
+		HttpServletRequest request = (HttpServletRequest)servletRequest;
+		HttpServletResponse response = (HttpServletResponse)servletResponse;
+
+		try {
+			String redirect = getRedirect(request, response);
+
+			if (Validator.isNotNull(redirect)) {
+				response.sendRedirect(redirect);
+			}
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+
+		filterChain.doFilter(servletRequest, servletResponse);
+	}
+
+	@Override
+	public void init(FilterConfig filterConfig) {
+	}
+
+	protected long getPlid(
+		long companyId, String pathInfo, String servletPath) {
+
+		if (Validator.isNull(pathInfo) ||
+			!pathInfo.startsWith(StringPool.SLASH)) {
+
+			return 0;
+		}
+
+		String friendlyURL = null;
+
+		int pos = pathInfo.indexOf(CharPool.SLASH, 1);
+
+		if (pos != -1) {
+			friendlyURL = pathInfo.substring(0, pos);
+		}
+		else if (pathInfo.length() > 1) {
+			friendlyURL = pathInfo;
+		}
+
+		if (Validator.isNull(friendlyURL)) {
+			return 0;
+		}
+
+		long groupId = 0;
+		boolean privateLayout = false;
+
+		try {
+			Group group = GroupLocalServiceUtil.getFriendlyURLGroup(
+				companyId, friendlyURL);
+
+			groupId = group.getGroupId();
+
+			String privateGroupServletMapping = PropsUtil.get(
+				PropsKeys.LAYOUT_FRIENDLY_URL_PRIVATE_GROUP_SERVLET_MAPPING);
+			String privateUserServletMapping = PropsUtil.get(
+				PropsKeys.LAYOUT_FRIENDLY_URL_PRIVATE_USER_SERVLET_MAPPING);
+			String publicServletMapping = PropsUtil.get(
+				PropsKeys.LAYOUT_FRIENDLY_URL_PUBLIC_SERVLET_MAPPING);
+
+			if (servletPath.startsWith(privateGroupServletMapping) ||
+				servletPath.startsWith(privateUserServletMapping)) {
+
+				privateLayout = true;
+			}
+			else if (servletPath.startsWith(publicServletMapping)) {
+				privateLayout = false;
+			}
+		}
+		catch (NoSuchLayoutException nsle) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(nsle, nsle);
+			}
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.error(e, e);
+			}
+
+			return 0;
+		}
+
+		friendlyURL = null;
+
+		if ((pos != -1) && ((pos + 1) != pathInfo.length())) {
+			friendlyURL = pathInfo.substring(pos);
+		}
+
+		if (Validator.isNull(friendlyURL)) {
+			try {
+				long plid = LayoutLocalServiceUtil.getDefaultPlid(
+					groupId, privateLayout);
+
+				return plid;
+			}
+			catch (Exception e) {
+				_log.warn(e, e);
+
+				return 0;
+			}
+		}
+		else if (friendlyURL.endsWith(StringPool.FORWARD_SLASH)) {
+			friendlyURL = friendlyURL.substring(0, friendlyURL.length() - 1);
+		}
+
+		try {
+			Layout layout = LayoutLocalServiceUtil.getFriendlyURLLayout(
+				groupId, privateLayout, friendlyURL);
+
+			return layout.getPlid();
+		}
+		catch (NoSuchLayoutException nsle) {
+			_log.warn(nsle, nsle);
+
+			return 0;
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			return 0;
+		}
+	}
+
+	protected String getRedirect(
+			HttpServletRequest request, HttpServletResponse response)
+		throws Exception {
+
+		User user = PortalUtil.getUser(request);
+
+		if (user == null) {
+			return null;
+		}
+
+		String pathInfo = request.getPathInfo();
+
+		long plid = getPlid(
+			user.getCompanyId(), pathInfo, request.getServletPath());
+
+		if (plid <= 0) {
+			return null;
+		}
+
+		Layout layout = LayoutLocalServiceUtil.getLayout(plid);
+
+		if (layout.isTypeLinkToLayout()) {
+			long layoutId = GetterUtil.getLong(
+				layout.getTypeSettingsProperty("linkToLayoutId"));
+
+			if (layoutId > 0) {
+				layout = LayoutLocalServiceUtil.getLayout(
+					layout.getGroupId(), layout.getPrivateLayout(), layoutId);
+			}
+		}
+
+		PermissionChecker permissionChecker =
+			PermissionCheckerFactoryUtil.create(user);
+
+		PermissionThreadLocal.setPermissionChecker(permissionChecker);
+
+		if (LayoutPermissionUtil.contains(
+				permissionChecker, layout, ActionKeys.VIEW)) {
+
+			return null;
+		}
+
+		ExpandoTable expandoTable = ExpandoTableLocalServiceUtil.getTable(
+			user.getCompanyId(), Layout.class.getName(),
+			ExpandoTableConstants.DEFAULT_TABLE_NAME);
+
+		ExpandoColumn expandoColumn = ExpandoColumnLocalServiceUtil.getColumn(
+			expandoTable.getTableId(), "osbRedirectURL");
+
+		ExpandoValue expandoValue = ExpandoValueLocalServiceUtil.getValue(
+			expandoTable.getTableId(), expandoColumn.getColumnId(),
+			layout.getPlid());
+
+		if ((expandoValue != null) &&
+			!pathInfo.contains(expandoValue.getData())) {
+
+			return expandoValue.getData();
+		}
+
+		return null;
+	}
+
+	private static Log _log = LogFactoryUtil.getLog(RedirectFilter.class);
+
+}
