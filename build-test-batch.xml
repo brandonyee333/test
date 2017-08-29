@@ -2525,6 +2525,44 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
+	<target name="portal-license-jdk8">
+		<run-batch-test>
+			<test-action>
+				<sequential>
+					<execute>
+						<![CDATA[
+							git diff --name-only ${liferay.portal.branch}...HEAD > ${project.dir}/git.diff
+						]]>
+					</execute>
+
+					<print-file file.name="${project.dir}/git.diff" />
+
+					<copy file="${project.dir}/git.diff" todir="${release.tool.dir}" />
+
+					<print-file file.name="${release.tool.dir}/git.diff" />
+
+					<ant antfile="build-release-license.xml" dir="${release.tool.dir}" inheritAll="false" target="check-git-diff-output" />
+				</sequential>
+			</test-action>
+
+			<test-tear-down>
+				<if>
+				 	<available file="${project.dir}/git.diff" />
+			 		<then>
+						<delete file="${project.dir}/git.diff" />
+			 		</then>
+			 	</if>
+
+			 	<if>
+				 	<available file="${release.tool.dir}/git.diff" />
+			 		<then>
+						<delete file="${release.tool.dir}/git.diff" />
+			 		</then>
+			 	</if>
+			</test-tear-down>
+		</run-batch-test>
+	</target>
+
 	<target name="portal-startup-space-in-path-jdk8">
 		<sequential>
 			<run-batch-test>
