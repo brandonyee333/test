@@ -12,35 +12,35 @@
  * details.
  */
 
-package com.liferay.osb.hook.filter;
+package com.liferay.osb.customer.web.internal.servlet.filter;
 
-import com.liferay.compat.portal.kernel.util.Validator;
-import com.liferay.compat.portal.util.PortalUtil;
-import com.liferay.portal.NoSuchLayoutException;
+import com.liferay.expando.kernel.model.ExpandoColumn;
+import com.liferay.expando.kernel.model.ExpandoTable;
+import com.liferay.expando.kernel.model.ExpandoTableConstants;
+import com.liferay.expando.kernel.model.ExpandoValue;
+import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
+import com.liferay.expando.kernel.service.ExpandoTableLocalService;
+import com.liferay.expando.kernel.service.ExpandoValueLocalService;
+import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.service.LayoutLocalService;
+import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Layout;
-import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.ActionKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.security.permission.PermissionThreadLocal;
-import com.liferay.portal.service.GroupLocalServiceUtil;
-import com.liferay.portal.service.LayoutLocalServiceUtil;
-import com.liferay.portal.service.permission.LayoutPermissionUtil;
-import com.liferay.portlet.expando.model.ExpandoColumn;
-import com.liferay.portlet.expando.model.ExpandoTable;
-import com.liferay.portlet.expando.model.ExpandoTableConstants;
-import com.liferay.portlet.expando.model.ExpandoValue;
-import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoTableLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 
@@ -53,9 +53,19 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Jenny Chen
  */
+@Component(
+	property = {
+		"dispatcher=FORWARD", "dispatcher=REQUEST", "servlet-context-name=",
+		"servlet-filter-name=Redirect Filter", "url-pattern=/group/customer/*"
+	},
+	service = Filter.class
+)
 public class RedirectFilter implements Filter {
 
 	@Override
@@ -117,7 +127,7 @@ public class RedirectFilter implements Filter {
 		boolean privateLayout = false;
 
 		try {
-			Group group = GroupLocalServiceUtil.getFriendlyURLGroup(
+			Group group = _groupLocalService.getFriendlyURLGroup(
 				companyId, friendlyURL);
 
 			groupId = group.getGroupId();
@@ -159,7 +169,7 @@ public class RedirectFilter implements Filter {
 
 		if (Validator.isNull(friendlyURL)) {
 			try {
-				long plid = LayoutLocalServiceUtil.getDefaultPlid(
+				long plid = _layoutLocalService.getDefaultPlid(
 					groupId, privateLayout);
 
 				return plid;
@@ -175,7 +185,7 @@ public class RedirectFilter implements Filter {
 		}
 
 		try {
-			Layout layout = LayoutLocalServiceUtil.getFriendlyURLLayout(
+			Layout layout = _layoutLocalService.getFriendlyURLLayout(
 				groupId, privateLayout, friendlyURL);
 
 			return layout.getPlid();
@@ -196,7 +206,7 @@ public class RedirectFilter implements Filter {
 			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 
-		User user = PortalUtil.getUser(request);
+		User user = _portal.getUser(request);
 
 		if (user == null) {
 			return null;
@@ -211,14 +221,14 @@ public class RedirectFilter implements Filter {
 			return null;
 		}
 
-		Layout layout = LayoutLocalServiceUtil.getLayout(plid);
+		Layout layout = _layoutLocalService.getLayout(plid);
 
 		if (layout.isTypeLinkToLayout()) {
 			long layoutId = GetterUtil.getLong(
 				layout.getTypeSettingsProperty("linkToLayoutId"));
 
 			if (layoutId > 0) {
-				layout = LayoutLocalServiceUtil.getLayout(
+				layout = _layoutLocalService.getLayout(
 					layout.getGroupId(), layout.getPrivateLayout(), layoutId);
 			}
 		}
@@ -234,14 +244,14 @@ public class RedirectFilter implements Filter {
 			return null;
 		}
 
-		ExpandoTable expandoTable = ExpandoTableLocalServiceUtil.getTable(
+		ExpandoTable expandoTable = _expandoTableLocalService.getTable(
 			user.getCompanyId(), Layout.class.getName(),
 			ExpandoTableConstants.DEFAULT_TABLE_NAME);
 
-		ExpandoColumn expandoColumn = ExpandoColumnLocalServiceUtil.getColumn(
+		ExpandoColumn expandoColumn = _expandoColumnLocalService.getColumn(
 			expandoTable.getTableId(), "osbRedirectURL");
 
-		ExpandoValue expandoValue = ExpandoValueLocalServiceUtil.getValue(
+		ExpandoValue expandoValue = _expandoValueLocalService.getValue(
 			expandoTable.getTableId(), expandoColumn.getColumnId(),
 			layout.getPlid());
 
@@ -254,6 +264,24 @@ public class RedirectFilter implements Filter {
 		return null;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(RedirectFilter.class);
+	private static final Log _log = LogFactoryUtil.getLog(RedirectFilter.class);
+
+	@Reference
+	private ExpandoColumnLocalService _expandoColumnLocalService;
+
+	@Reference
+	private ExpandoTableLocalService _expandoTableLocalService;
+
+	@Reference
+	private ExpandoValueLocalService _expandoValueLocalService;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }
