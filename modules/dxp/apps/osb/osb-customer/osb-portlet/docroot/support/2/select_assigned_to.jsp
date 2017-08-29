@@ -281,19 +281,19 @@ if (liferayIncOrg) {
 
 <aui:script use="aui-base">
 	function <portlet:namespace />toggleAccountEntries(id, expand) {
-		var accountEntriesNode = A.one("#<portlet:namespace />accountEntries_" + id);
+		var accountEntriesNode = A.one('#<portlet:namespace />accountEntries_' + id);
 
 		if (accountEntriesNode) {
 			accountEntriesNode.toggle(expand);
 		}
 
-		var collapseNode = A.one("#<portlet:namespace />collapse_" + id);
+		var collapseNode = A.one('#<portlet:namespace />collapse_' + id);
 
 		if (collapseNode) {
 			collapseNode.toggle(expand);
 		}
 
-		var expandNode = A.one("#<portlet:namespace />expand_" + id);
+		var expandNode = A.one('#<portlet:namespace />expand_' + id);
 
 		if (expandNode) {
 			expandNode.toggle(!expand);
