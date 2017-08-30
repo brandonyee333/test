@@ -65,7 +65,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		<liferay-ui:error exception="<%= AccountCallSummaryException.class %>" message="please-enter-a-valid-customer-name" />
 		<liferay-ui:error exception="<%= AccountCallTypeException.class %>" message="please-choose-a-valid-type" />
 
-		<div class="aui-helper-clearfix">
+		<div class="clearfix">
 			<div class="aui-w33 content-column">
 				<aui:select label="call-type" name="type" showEmptyOption="true">
 					<aui:option label="incoming" selected="<%= type == AccountCallConstants.TYPE_INCOMING %>" value="<%= AccountCallConstants.TYPE_INCOMING %>" />
@@ -116,105 +116,105 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 					<br />
 
 					<div class="lfr-input-time">
-						<select name="<portlet:namespace />callLengthHours">
+						<aui:select name="callLengthHours">
 
 							<%
 							for (int i = 0; i < 24; i++) {
 							%>
 
-								<option <%= (callLengthHours == i) ? "selected" : "" %> value="<%= i %>"><%= i %></option>
+								<aui:option label="<%= i %>" selected="<%= callLengthHours == i %>" value="<%= i %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 
 						<%= StringPool.COLON %>
 
-						<select name="<portlet:namespace />callLengthMinutes">
+						<aui:select name="callLengthMinutes">
 
 							<%
 							for (int i = 0; i < 60; i++) {
 							%>
 
-								<option <%= (callLengthMinutes == i) ? "selected" : "" %> value="<%= i %>"><%= i %></option>
+								<aui:option label="<%= i %>" selected="<%= callLengthMinutes == i %>" value="<%= i %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 
 						<%= StringPool.COLON %>
 
-						<select name="<portlet:namespace />callLengthSeconds">
+						<aui:select name="callLengthSeconds">
 
 							<%
 							for (int i = 0; i < 60; i++) {
 							%>
 
-								<option <%= (callLengthSeconds == i) ? "selected" : "" %> value="<%= i %>"><%= i %></option>
+								<aui:option label="<%= i %>" selected="<%= callLengthSeconds == i %>" value="<%= i %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="aui-helper-clearfix">
+		<div class="clearfix">
 			<div class="aui-w15 content-column customer-info-label">
 				<liferay-ui:message key="summary" />
 			</div>
 
 			<div class="aui-w85 content-column customer-info">
-				<aui:input bean="<%= accountCall %>" field="summary" label="" model="<%= AccountCall.class %>" name="summary" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
+				<aui:input bean="<%= accountCall %>" field="summary" model="<%= AccountCall.class %>" name="summary" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
 			</div>
 		</div>
 
-		<div class="aui-helper-clearfix">
+		<div class="clearfix">
 			<div class="aui-w15 content-column customer-info-label">
 				<liferay-ui:message key="clients-present" />
 			</div>
 
 			<div class="aui-w85 content-column customer-info">
-				<aui:input bean="<%= accountCall %>" field="clientsPresent" label="" model="<%= AccountCall.class %>" name="clientsPresent" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
+				<aui:input bean="<%= accountCall %>" field="clientsPresent" model="<%= AccountCall.class %>" name="clientsPresent" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
 			</div>
 		</div>
 
-		<div class="aui-helper-clearfix">
+		<div class="clearfix">
 			<div class="aui-w15 content-column customer-info-label">
 				<liferay-ui:message key="notes" />
 			</div>
 
 			<div class="aui-w85 content-column customer-info">
-				<aui:input bean="<%= accountCall %>" field="notes" label="" model="<%= AccountCall.class %>" name="notes" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
+				<aui:input bean="<%= accountCall %>" field="notes" model="<%= AccountCall.class %>" name="notes" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
 			</div>
 		</div>
 
-		<div class="aui-helper-clearfix">
+		<div class="clearfix">
 			<div class="aui-w15 content-column customer-info-label">
 				<liferay-ui:message key="action-items" />
 			</div>
 
 			<div class="aui-w85 content-column customer-info">
-				<aui:input bean="<%= accountCall %>" field="actionItems" label="" model="<%= AccountCall.class %>" name="actionItems" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
+				<aui:input bean="<%= accountCall %>" field="actionItems" model="<%= AccountCall.class %>" name="actionItems" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
 			</div>
 		</div>
 
-		<div class="aui-helper-clearfix">
+		<div class="clearfix">
 			<div class="fr">
 				<c:if test="<%= accountCall != null %>">
 					<liferay-ui:message arguments="<%= new Object[] {accountCall.getModifiedUserName(), fullDateFormatDateTime.format(accountCall.getModifiedDate())} %>" key="x-on-x" />
 				</c:if>
 
-				<input class="aui-button-input" type="submit" value="<liferay-ui:message key="save" />" />
+				<aui:button cssClass="aui-button-input" type="submit" value="save" />
 
-				<input class="aui-button-input" onClick="javascript:Liferay.Util.getWindow().close();" type="button" value="<liferay-ui:message key="cancel" />" />
+				<aui:button cssClass="aui-button-input" onClick="javascript:Liferay.Util.getWindow().close();" value="cancel" />
 			</div>
 		</div>
 	</aui:form>

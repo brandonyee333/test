@@ -34,9 +34,9 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEnt
 </portlet:actionURL>
 
 <aui:form action="<%= updateTicketFeedbackURL %>" class="uni-form" method="post" name="fm">
-	<input name="<portlet:namespace />redirect" type="hidden" value="<%= portletURL.toString() %>" />
-	<input name="<portlet:namespace />ticketFeedbackId" type="hidden" />
-	<input name="<portlet:namespace />satisfied" type="hidden" />
+	<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
+	<aui:input name="ticketFeedbackId" type="hidden" />
+	<aui:input name="satisfied" type="hidden" />
 
 	<div>
 		<div id="<portlet:namespace />liferayTicketFeedbackButtons">
@@ -45,13 +45,13 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEnt
 			</div>
 
 			<div class="aui-field-inline indent">
-				<input class="aui-button-input" onClick="<portlet:namespace />updateSatisfied(<%= TicketFeedbackConstants.SATISFIED_YES %>);" type="button" value="<liferay-ui:message key="yes" />" />
+				<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "updateSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' value="yes" />
 
-				<input class="aui-button-input" onClick="<portlet:namespace />updateSatisfied(<%= TicketFeedbackConstants.SATISFIED_NO %>);" type="button" value="<liferay-ui:message key="no" />" />
+				<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "updateSatisfied(" + TicketFeedbackConstants.SATISFIED_NO + ");" %>' value="no" />
 			</div>
 		</div>
 
-		<div class="aui-helper-hidden" id="<portlet:namespace />commentSection">
+		<div class="hide" id="<portlet:namespace />commentSection">
 			<div class="indent">
 				<liferay-ui:message key="thank-you" />
 
@@ -67,11 +67,11 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEnt
 
 				<br />
 
-				<textarea id="<portlet:namespace />comments" name="<portlet:namespace />comments" wrap="soft"></textarea>
+				<aui:input name="comments" type="textarea" wrap="soft" />
 
 				<br /><br />
 
-				<input class="aui-button-input" type="submit" value="<liferay-ui:message key="submit" />" />
+				<aui:button cssClass="aui-button-input" type="submit" value="submit" />
 			</div>
 		</div>
 	</div>

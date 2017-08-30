@@ -55,7 +55,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 
 					<br />
 
-					<input name="<portlet:namespace />customerName" type="text" value="<%= HtmlUtil.escapeAttribute(customerName) %>" />
+					<aui:input name="customerName" type="text" value="<%= customerName %>" />
 				</div>
 			</div>
 
@@ -65,7 +65,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 
 					<br />
 
-					<input name="<portlet:namespace />customerContact" type="text" value="<%= HtmlUtil.escapeAttribute(customerContact) %>" />
+					<aui:input name="customerContact" type="text" value="<%= customerContact %>" />
 				</div>
 			</div>
 
@@ -75,11 +75,11 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 
 					<br />
 
-					<select name="<portlet:namespace />type">
-						<option value="0"></option>
-						<option <%= (type == TicketCallConstants.TYPE_INCOMING) ? "selected" : "" %> value="<%= TicketCallConstants.TYPE_INCOMING %>"><liferay-ui:message key="incoming" /></option>
-						<option <%= (type == TicketCallConstants.TYPE_OUTGOING) ? "selected" : "" %> value="<%= TicketCallConstants.TYPE_OUTGOING %>"><liferay-ui:message key="outgoing" /></option>
-					</select>
+					<aui:select name="type">
+						<aui:option value="0" />
+						<aui:option label="incoming" selected="<%= type == TicketCallConstants.TYPE_INCOMING %>" value="<%= TicketCallConstants.TYPE_INCOMING %>" />
+						<aui:option label="outgoing" selected="<%= type == TicketCallConstants.TYPE_OUTGOING %>" value="<%= TicketCallConstants.TYPE_OUTGOING %>" />
+					</aui:select>
 				</div>
 			</div>
 		</div>
@@ -102,51 +102,51 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 					<br />
 
 					<div class="lfr-input-time">
-						<select name="<portlet:namespace />callLengthHours">
+						<aui:select name="callLengthHours">
 
 							<%
 							for (int i = 0; i < 24; i++) {
 							%>
 
-								<option <%= (callLengthHours == i) ? "selected" : "" %> value="<%= i %>"><%= i %></option>
+								<aui:option label="<%= i %>" selected="<%= callLengthHours == i %>" value="<%= i %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 
 						<%= StringPool.COLON %>
 
-						<select name="<portlet:namespace />callLengthMinutes">
+						<aui:select name="callLengthMinutes">
 
 							<%
 							for (int i = 0; i < 60; i++) {
 							%>
 
-								<option <%= (callLengthMinutes == i) ? "selected" : "" %> value="<%= i %>"><%= i %></option>
+								<aui:option label="<%= i %>" selected="<%= callLengthMinutes == i %>" value="<%= i %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 
 						<%= StringPool.COLON %>
 
-						<select name="<portlet:namespace />callLengthSeconds">
+						<aui:select name="callLengthSeconds">
 
 							<%
 							for (int i = 0; i < 60; i++) {
 							%>
 
-								<option <%= (callLengthSeconds == i) ? "selected" : "" %> value="<%= i %>"><%= i %></option>
+								<aui:option label="<%= i %>" selected="<%= callLengthSeconds == i %>" value="<%= i %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 					</div>
 				</div>
 			</div>
@@ -159,7 +159,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 				<div class="content-column-content">
 					<span class="txt-b"><liferay-ui:message key="customer-confirmation" />: </span>
 
-					<textarea name="<portlet:namespace />confirmation" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 100px; width: 100%;" wrap="soft"><%= HtmlUtil.escape(confirmation) %></textarea>
+					<aui:input label="<%= confirmation %>" name="confirmation" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 100px; width: 100%;" type="textarea" wrap="soft" />
 				</div>
 
 				<br />
@@ -169,15 +169,15 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 				<div class="content-column-content">
 					<span class="txt-b"><liferay-ui:message key="internal-instructions" />: </span>
 
-					<textarea name="<portlet:namespace />instructions" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 100px; width: 100%;" wrap="soft"><%= HtmlUtil.escape(instructions) %></textarea>
+					<aui:input label="<%= instructions %>" name="instructions" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 100px; width: 100%;" type="textarea" wrap="soft" />
 				</div>
 			</div>
 		</div>
 
 		<div>
-			<input class="aui-button-input" type="submit" value="<liferay-ui:message key="log-call" />" />
+			<aui:button cssClass="aui-button-input" type="submit" value="log-call" />
 
-			<input class="aui-button-input" onClick="window.close();" type="button" value="<liferay-ui:message key="cancel" />" />
+			<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
 		</div>
 	</div>
 </aui:form>

@@ -39,9 +39,9 @@
 				<portlet:param name="mvcPath" value="/support/2/edit_account_attachments.jsp" />
 			</portlet:actionURL>
 
-			<aui:form action="<%= addAccountAttachmentURL %>" class="uni-form" enctype="multipart/form-data" method="post" name="fm">
-				<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
-				<input name="<portlet:namespace />accountProjectId" type="hidden" value="<%= accountProjectId %>" />
+			<aui:form action="<%= addAccountAttachmentURL %>" cssClass="uni-form" enctype="multipart/form-data" method="post" name="fm">
+				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+				<aui:input name="accountProjectId" type="hidden" value="<%= accountProjectId %>" />
 
 				<div class="cleared section">
 					<div class="fl">
@@ -146,9 +146,7 @@
 
 								<tr>
 									<td>
-										<label for="<portlet:namespace />file<%= i %>"><liferay-ui:message key="file" /> <%= i %></label>
-
-										<input id="<portlet:namespace />file<%= i %>" name="<portlet:namespace />file<%= i %>" type="file" />
+										<aui:input label='<%= "file" + i %>' name='<%= "file" + i %>' type="file" />
 									</td>
 								</tr>
 
@@ -159,9 +157,9 @@
 						</table>
 
 						<div class="button-holder">
-							<input class="aui-button-input" type="submit" value="<liferay-ui:message key="save" />" />
+							<aui:button cssClass="aui-button-input" type="submit" value="save" />
 
-							<input class="aui-button-input" onClick="javascript:window.close();" type="button" value="<liferay-ui:message key="cancel" />" />
+							<aui:button cssClass="aui-button-input" onClick="javascript:window.close();" value="cancel" />
 						</div>
 					</div>
 				</div>

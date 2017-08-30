@@ -71,8 +71,8 @@
 			</portlet:actionURL>
 
 			<aui:form action="<%= updateAccountEnvironmentURL %>" enctype="multipart/form-data" method="post" name="fm1">
-				<input name="<portlet:namespace />accountEnvironmentId" type="hidden" value="<%= accountEnvironmentId %>" />
-				<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+				<aui:input name="accountEnvironmentId" type="hidden" value="<%= accountEnvironmentId %>" />
+				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 				<liferay-ui:error exception="<%= AccountEnvironmentAttachmentException.class %>" message="please-upload-a-portal-ext-and-patch-level-file" />
 
@@ -102,13 +102,13 @@
 				</liferay-util:include>
 
 				<div class="edit-account-environment">
-					<div class="aui-helper-clearfix">
+					<div class="clearfix">
 						<div class="fl single-line">
 							<div class="aui-w50 content-column">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="name" />:</span>
 
-									<input id="<portlet:namespace />name" maxLength="<%= ModelHintsUtil.getMaxLength(AccountEnvironment.class.getName(), "name") %>" name="<portlet:namespace />name" type="text" value="<%= (accountEnvironment != null) ? HtmlUtil.escapeAttribute(accountEnvironment.getName()) : "" %>" />
+									<aui:input maxLength='<%= ModelHintsUtil.getMaxLength(AccountEnvironment.class.getName(), "name") %>' name="name" type="text" value='<%= (accountEnvironment != null) ? accountEnvironment.getName() : "" %>' />
 								</div>
 							</div>
 
@@ -116,8 +116,8 @@
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="product" />:</span>
 
-									<select id="<portlet:namespace />offeringEntryId" name="<portlet:namespace />offeringEntryId" onChange="<portlet:namespace />selectProductEntry(this.value);">
-										<option value="0"><liferay-ui:message key="select" /></option>
+									<aui:select name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectProductEntry(this.value);" %>' />
+										<aui:option label="select" value="0" />
 
 										<%
 										LinkedHashMap params = new LinkedHashMap();
@@ -141,7 +141,7 @@
 										for (Map.Entry<String, Long> entry : productEntryEnvironments.entrySet()) {
 										%>
 
-											<option <%= productEntryName.equals(entry.getKey()) ? "selected" : "" %> value="<%= entry.getValue() %>"><%= LanguageUtil.get(request, entry.getKey()) %></option>
+											<aui:option label="<%= entry.getKey() %>" selected="<%= productEntryName.equals(entry.getKey()) %>" value="<%= entry.getValue() %>" />
 
 										<%
 										}
@@ -150,7 +150,7 @@
 									</select>
 
 									<c:if test="<%= productEntryId > 0 %>">
-										<input name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
+										<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
 									</c:if>
 								</div>
 							</div>
@@ -163,9 +163,13 @@
 								<div class="content-column-content">
 									<span class="txt-b" id="<portlet:namespace />portalVersion" title="<liferay-ui:message key="liferay-version" />">*<liferay-ui:message key="lr" />:</span>
 
-									<select id="<portlet:namespace />envLFR" name="<portlet:namespace />envLFR" onChange="<portlet:namespace />selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, ''); <portlet:namespace />updateSupportMessage(this.value);">
+									<%
+									String envLFROnChange = renderResponse.getNamespace() + "selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, ''); " + renderResponse.getNamespace() + "updateSupportMessage(this.value);";
+									%>
+
+									<aui:select name="envLFR" onChange="<%= envLFROnChange.toString() %>">
 										<c:if test="<%= productEntry != null %>">
-											<option value="0"><liferay-ui:message key="select" /></option>
+											<aui:option label="select" value="0" />
 
 											<%
 											List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
@@ -185,10 +189,10 @@
 											%>
 
 												<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-													<option disabled>--------</option>
+													<aui:option disabled="true" label="--------" />
 												</c:if>
 
-												<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %></option>
+												<aui:option label="<%= envLFRType.getName() %>" selected="<%= envLFRType.getListTypeId() == envLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 
 											<%
 												previousNamePrefix = namePrefix;
@@ -196,7 +200,7 @@
 											%>
 
 										</c:if>
-									</select>
+									</aui:select>
 								</div>
 							</div>
 
@@ -204,11 +208,11 @@
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="operating-system" />">*<liferay-ui:message key="os" />:</span>
 
-									<select id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
-										<option value="0"></option>
-									</select>
+									<aui:select name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>'>
+										<aui:option value="0" />
+									</aui:select>
 
-									<input class="<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />envOSCustom" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="<portlet:namespace />envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" />
+									<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="envOSCustom %>" />
 								</div>
 							</div>
 
@@ -216,9 +220,9 @@
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="java-virtual-machine" />">*<liferay-ui:message key="jvm" />:</span>
 
-									<select id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
-										<option value="0"></option>
-									</select>
+									<aui:select name="envJVM">
+										<aui:option value="0" />
+									</aui:select>
 								</div>
 							</div>
 						</div>
@@ -228,9 +232,9 @@
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="application-server" />">*<liferay-ui:message key="as" />:</span>
 
-									<select id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
-										<option value="0"></option>
-									</select>
+									<aui:select name="envAS">
+										<aui:option value="0" />
+									</aui:select>
 								</div>
 							</div>
 
@@ -238,9 +242,9 @@
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="database" />">*<liferay-ui:message key="db" />:</span>
 
-									<select id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
-										<option value="0"></option>
-									</select>
+									<aui:select name="envDB">
+										<aui:option value="0" />
+									</aui:select>
 								</div>
 							</div>
 						</div>
@@ -276,7 +280,7 @@
 										</c:if>
 									</span>
 
-									<input id="<portlet:namespace />portalExt" name="<portlet:namespace />portalExt" type="file" value="upload" />
+									<aui:input name="portalExt" type="file" value="upload" />
 								</div>
 							</div>
 						</div>
@@ -310,15 +314,15 @@
 										</c:if>
 									</span>
 
-									<input id="<portlet:namespace />patchLevel" name="<portlet:namespace />patchLevel" type="file" value="upload" />
+									<aui:input name="patchLevel" type="file" value="upload" />
 								</div>
 							</div>
 						</div>
 
 						<div class="fl foot-details single-line">
-							<input class="aui-button-input fl" onClick="javascript:<portlet:namespace />cancel();" type="button" value="<liferay-ui:message key="cancel" />" />
+							<aui:button cssClass="aui-button-input fl" onClick='<%= renderResponse.getNamespace() + "cancel();" %>' value="cancel" />
 
-							<input class="aui-button-input fr" onClick="javascript:<portlet:namespace />submit();" type="button" value="<liferay-ui:message key='<%= (accountEnvironmentId == 0) ? "create" : "update" %>' />" />
+							<aui:button cssClass="aui-button-input fr" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value='<%= (accountEnvironmentId == 0) ? "create" : "update" %>' />
 						</div>
 					</div>
 				</div>

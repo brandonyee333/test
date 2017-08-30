@@ -35,18 +35,18 @@ String name = BeanParamUtil.getString(accountProject, request, "name");
 	</portlet:actionURL>
 
 	<aui:form action="<%= updateAccountProjectURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
-		<input name="<portlet:namespace />accountProjectId" type="hidden" value="<%= accountProjectId %>" />
-		<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+		<aui:input name="accountProjectId" type="hidden" value="<%= accountProjectId %>" />
+		<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 		<liferay-ui:error exception="<%= AccountProjectNameException.class %>" message="please-select-a-valid-project-name" />
 
-		<div class="aui-helper-clearfix">
+		<div class="clearfix">
 			<div class="aui-w20 content-column customer-info-label">
 				<liferay-ui:message key="project-name" />
 			</div>
 
 			<div class="aui-w80 content-column customer-info">
-				<input name="<portlet:namespace />name" type="text" value="<%= HtmlUtil.escapeAttribute(name) %>" />
+				<aui:input name="name" type="text" value="<%= name %>" />
 			</div>
 		</div>
 
@@ -54,13 +54,13 @@ String name = BeanParamUtil.getString(accountProject, request, "name");
 		for (int fieldId : AccountInformationConstants.ACCOUNT_PROJECT_FIELD_IDS) {
 		%>
 
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<div class="aui-w20 content-column customer-info-label">
 					<liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />
 				</div>
 
 				<div class="aui-w80 content-column customer-info">
-					<textarea id="<portlet:namespace />field--<%= fieldId %>" maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name="<portlet:namespace />field--<%= fieldId %>" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();"><%= (accountProject != null) ? HtmlUtil.escape(accountProject.getData(fieldId)) : "" %></textarea>
+					<aui:input label='<%= (accountProject != null) ? accountProject.getData(fieldId) : "" %>' maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
 				</div>
 			</div>
 
@@ -68,15 +68,15 @@ String name = BeanParamUtil.getString(accountProject, request, "name");
 		}
 		%>
 
-		<div class="aui-helper-clearfix">
+		<div class="clearfix">
 			<div class="fr">
 				<c:if test="<%= accountProject != null %>">
 					<liferay-ui:message arguments="<%= new Object[] {accountProject.getModifiedUserName(), fullDateFormatDateTime.format(accountProject.getModifiedDate())} %>" key="x-on-x" />
 				</c:if>
 
-				<input class="aui-button-input" type="submit" value="<liferay-ui:message key="save" />" />
+				<aui:button cssClass="aui-button-input" type="submit" value="save" />
 
-				<input class="aui-button-input" onClick="javascript:Liferay.Util.getWindow().close();" type="button" value="<liferay-ui:message key="cancel" />" />
+				<aui:button cssClass="aui-button-input" onClick="Liferay.Util.getWindow().close();" value="cancel" />
 			</div>
 		</div>
 	</aui:form>

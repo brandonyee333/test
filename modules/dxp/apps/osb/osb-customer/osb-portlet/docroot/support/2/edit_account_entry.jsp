@@ -56,10 +56,10 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 </portlet:renderURL>
 
 <aui:form action="<%= editAccountEntryURL %>" class="uni-form" method="post" name="fm">
-	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
-	<input name="<portlet:namespace />key" type="hidden" value="" />
-	<input name="<portlet:namespace />offeringEntryIds" type="hidden" value="" />
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+	<aui:input name="key" type="hidden" />
+	<aui:input name="offeringEntryIds" type="hidden" />
 
 	<%
 	request.setAttribute("edit_account_entry.jsp-accountEntry", accountEntry);
@@ -84,10 +84,10 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	</portlet:actionURL>
 
 	<aui:form action="<%= updateAccountInformationURL %>" class="uni-form" method="post" name="fm1">
-		<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-		<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
-		<input name="<portlet:namespace />additionalInfoTab" type="hidden" value="" />
-		<input name="<portlet:namespace />section" type="hidden" value="" />
+		<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+		<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+		<aui:input name="additionalInfoTab" type="hidden" />
+		<aui:input name="section" type="hidden" />
 
 		<liferay-util:include page="/support/2/edit_account_entry/additional_info_tabs.jsp" servletContext="<%= application %>" />
 	</aui:form>

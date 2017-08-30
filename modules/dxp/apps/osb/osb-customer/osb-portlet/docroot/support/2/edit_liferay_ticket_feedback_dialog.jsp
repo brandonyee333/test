@@ -31,13 +31,13 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 		</div>
 
 		<div>
-			<input checked="checked" id="<portlet:namespace />dialogYesRadioButton" name="<portlet:namespace />dialogRadioButton" onClick="<portlet:namespace />toggleDialogSatisfied(<%= TicketFeedbackConstants.SATISFIED_YES %>);" type="radio" value="<%= TicketFeedbackConstants.SATISFIED_YES %>" />
+			<aui:input checked="true" name="dialogRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_YES %>" />
 
 			<liferay-ui:message key="yes" />
 		</div>
 
 		<div>
-			<input id="<portlet:namespace />dialogNoRadioButton" name="<portlet:namespace />dialogRadioButton" onClick="<portlet:namespace />toggleDialogSatisfied(<%= TicketFeedbackConstants.SATISFIED_NO %>);" type="radio" value="<%= TicketFeedbackConstants.SATISFIED_NO %>" />
+			<aui:input name="dialogRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_NO + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_NO %>" />
 
 			<liferay-ui:message key="no" />
 		</div>
@@ -47,17 +47,17 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 				<liferay-ui:message key="were-glad-to-hear-that-what-went-well" />
 			</div>
 
-			<div class="aui-helper-hidden" id="<portlet:namespace />dialogAnswerNotSatisfied">
+			<div class="hide" id="<portlet:namespace />dialogAnswerNotSatisfied">
 				<liferay-ui:message key="were-sorry-to-hear-that-how-can-we-improve" />
 			</div>
 
-			<textarea class="textarea-comments" id="<portlet:namespace />dialogComments"></textarea>
+			<aui:input cssClass="textarea-comments" name="dialogComments" type="textarea" />
 		</div>
 
-		<div class="aui-helper-clearfix">
-			<input class="aui-button-input fl" id="<portlet:namespace />dialogCancelButton" onClick="<portlet:namespace />closeDialog(1);" type="button" value="<liferay-ui:message key="cancel" />" />
+		<div class="clearfix">
+			<aui:button cssClass="aui-button-input fl" name="dialogCancelButton" onClick='<%= renderResponse.getNamespace() + "closeDialog(1);" %>' value="cancel" />
 
-			<input class="aui-button-input fr" id="<portlet:namespace />dialogSubmitButton" onClick="<portlet:namespace />submitLiferayTicketFeedback();" type="button" value="<liferay-ui:message key="submit" />" />
+			<aui:button cssClass="aui-button-input fr" name="dialogSubmitButton" onClick='<%= renderResponse.getNamespace() + "submitLiferayTicketFeedback();" %>' value="submit" />
 		</div>
 	</div>
 </div>

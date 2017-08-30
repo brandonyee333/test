@@ -42,7 +42,7 @@
 			</portlet:actionURL>
 
 			<aui:form action="<%= addAccountLinkURL %>" method="post" name="fm">
-				<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 				<div class="cleared section">
 					<div class="fl">
@@ -99,7 +99,7 @@
 							<liferay-ui:message key="url" /> 1
 						</td>
 						<td>
-							<input class="lfr-input-text" name="<portlet:namespace />url1" style="width: 350px;" type="text" value="<%= HtmlUtil.escapeAttribute(url1) %>" />
+							<aui:input cssClass="lfr-input-text" name="url1" style="width: 350px;" type="text" value="<%= url1 %>" />
 						</td>
 					</tr>
 					<tr>
@@ -107,7 +107,7 @@
 							<liferay-ui:message key="url" /> 2
 						</td>
 						<td>
-							<input class="lfr-input-text" name="<portlet:namespace />url2" style="width: 350px;" type="text" value="<%= HtmlUtil.escapeAttribute(url2) %>" />
+							<aui:input cssClass="lfr-input-text" name="url2" style="width: 350px;" type="text" value="<%= url2 %>" />
 						</td>
 					</tr>
 					<tr>
@@ -115,15 +115,15 @@
 							<liferay-ui:message key="url" /> 3
 						</td>
 						<td>
-							<input class="lfr-input-text" name="<portlet:namespace />url3" style="width: 350px;" type="text" value="<%= HtmlUtil.escapeAttribute(url3) %>" />
+							<aui:input cssClass="lfr-input-text" name="url3" style="width: 350px;" type="text" value="<%= url3 %>" />
 						</td>
 					</tr>
 				</table>
 
 				<div class="button-holder">
-					<input class="aui-button-input" type="submit" value="<liferay-ui:message key="save" />" />
+					<aui:button cssClass="aui-button-input" type="submit" value="save" />
 
-					<input class="aui-button-input" onClick="javascript:window.close();" type="button" value="<liferay-ui:message key="cancel" />" />
+					<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
 				</div>
 			</aui:form>
 		</c:if>
