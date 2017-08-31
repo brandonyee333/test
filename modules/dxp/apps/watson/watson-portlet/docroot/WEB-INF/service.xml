@@ -106,6 +106,7 @@
 		<column name="sourceWatsonListTypeId" type="long" />
 		<column name="typeWatsonListTypeId" type="long" />
 		<column name="subtypeWatsonListTypeId" type="long" />
+		<column name="audienceKey" type="String" />
 		<column name="name" type="String" />
 		<column localized="true" name="description" type="String" />
 		<column name="reportDate" type="Date" />
@@ -210,12 +211,14 @@
 		<column name="imagePayload" type="String" />
 		<column name="birthDate" type="Date" />
 		<column name="dateAccepted" type="Date" />
+		<column name="dateRescued" type="Date" />
 		<column name="startAge" type="String" />
 		<column name="endAge" type="String" />
 		<column localized="true" name="occupation" type="String" />
 		<column name="height" type="String" />
 		<column name="weight" type="String" />
 		<column name="accepted" type="boolean" />
+		<column name="rescued" type="boolean" />
 		<column name="status" type="int" />
 	</entity>
 	<entity local-service="true" name="WatsonRelationship" remote-service="false">
