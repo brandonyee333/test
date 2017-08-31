@@ -62,6 +62,7 @@ class IncidentForm extends JSXComponent {
 			'incidentStatus',
 			'sourceWatsonListTypeId',
 			'typeWatsonListTypeId',
+			'audienceKey',
 			'subtypeWatsonListTypeId',
 			'reportDate',
 			'startDate',

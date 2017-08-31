@@ -76,6 +76,8 @@ class PersonForm extends JSXComponent {
 			'id',
 			'imagePayload',
 			'typeWatsonListTypeId',
+			'rescued',
+			'dateRescued',
 			'accepted',
 			'dateAccepted',
 			'nameWatsonListTypeRels',

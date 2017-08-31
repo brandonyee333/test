@@ -29,7 +29,7 @@ class TranslateAddressForm extends JSXComponent {
 			'building',
 			'description'
 		];
-	};
+	}
 
 	render() {
 		const {

@@ -26,7 +26,7 @@ class TranslateVehicleForm extends JSXComponent {
 		return [
 			'description'
 		];
-	};
+	}
 
 	render() {
 		const {

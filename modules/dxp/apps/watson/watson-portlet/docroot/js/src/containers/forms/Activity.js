@@ -436,7 +436,6 @@ ActivityForm.STATE = {
 	dataSent: Config.bool().value(false),
 	intervalId: Config.value(null),
 	navigateAwayPath: Config.value(null),
-	needsUpdate: Config.bool().value(false),
 	showLeaveModal: Config.bool().value(false),
 	unlockNavigate: Config.bool().value(false)
 };

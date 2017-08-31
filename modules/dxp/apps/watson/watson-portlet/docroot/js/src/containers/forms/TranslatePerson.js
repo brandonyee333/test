@@ -27,7 +27,7 @@ class TranslatePersonForm extends JSXComponent {
 			'occupation',
 			'description'
 		];
-	};
+	}
 
 	render() {
 		const {

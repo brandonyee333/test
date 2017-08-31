@@ -51,7 +51,7 @@ class Input extends JSXComponent {
 					checked={!!value}
 					cssClass="watson-input"
 					disabled={disabled}
-					label={[Liferay.Language.get('false'), Liferay.Language.get('true')]}
+					label={[Liferay.Language.get('no'), Liferay.Language.get('yes')]}
 					onChange={this.handleOnChange}
 				/>
 			);

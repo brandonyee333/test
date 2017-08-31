@@ -44,6 +44,7 @@ class HistoriesView extends JSXComponent {
 	render() {
 		const {
 			headerStringLeft = Liferay.Language.get('history'),
+			loading,
 			storeData,
 			watsonIncidentId
 		} = this.props;
@@ -87,6 +88,12 @@ class HistoriesView extends JSXComponent {
 							showUpdated={showUpdated}
 							watsonIncidentId={watsonIncidentId}
 						/>
+
+						{((storeData.size < 1) && !loading) &&
+							<div class="no-entries">
+								{sub(Liferay.Language.get('no-x-found'), WatsonConstants.inputConfig.histories.pluralLabel)}
+							</div>
+						}
 					</div>
 				</div>
 			</div>

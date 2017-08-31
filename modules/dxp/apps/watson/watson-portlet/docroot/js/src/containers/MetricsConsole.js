@@ -5,16 +5,14 @@ import {Map} from 'immutable';
 
 import DynamicSelectInput from '../components/DynamicInputGenerator';
 import HeatMap from '../components/HeatMap';
+import MetricsReport from '../components/MetricsReport';
+import Navigation from '../components/Navigation';
 import SidebarHeader from '../components/SidebarHeader';
 
 import {fetchIncidentMetrics} from '../actions/incidents';
 import {updateFilter} from '../actions/display';
 
 class MetricsConsole extends JSXComponent {
-	attached() {
-		this.props.fetchIncidentMetrics();
-	}
-
 	clearHeatmap() {
 		if (Liferay.Watson.mapComponent.heatMap) {
 			Liferay.Watson.mapComponent.heatMap.setMap(null);
@@ -38,17 +36,24 @@ class MetricsConsole extends JSXComponent {
 	}
 
 	getCurrentView(action, data, loading, viewBy) {
-		let currentView = (
-			<HeatMap
-				data={data}
-				loading={loading}
-				updateViewBy={this.handleUpdateViewBy}
-				viewBy={viewBy}
-			/>
-		);
+		let currentView = <span class="text">{Liferay.Language.get('please-select-a-method-on-the-left')}</span>;
 
-		if (action != 'heatmap') {
-			currentView = <span class="text">{Liferay.Language.get('please-select-a-method-on-the-left')}</span>;
+		if (action === 'heatmap') {
+			currentView = (
+				<HeatMap
+					data={data}
+					loading={loading}
+					updateViewBy={this.handleUpdateViewBy}
+					viewBy={viewBy}
+				/>
+			);
+		}
+		else if (action === 'report') {
+			currentView = (
+				<MetricsReport
+					data={data}
+				/>
+			);
 		}
 
 		return currentView;
@@ -65,7 +70,7 @@ class MetricsConsole extends JSXComponent {
 	handleUpdateViewBy(viewBy) {
 		const {state} = this;
 
-		if (state.viewBy != viewBy) {
+		if (state.viewBy !== viewBy) {
 			this.setState(
 				{
 					resendRequest: true,
@@ -78,31 +83,52 @@ class MetricsConsole extends JSXComponent {
 	render() {
 		const {props, state} = this;
 
-		const {action} = props.router.params;
-
-		const {incidentsFilter, incidentsMetricsData, loading} = props;
+		const {action, incidentsFilter, incidentsMetricsData, loading} = props;
 
 		const {viewBy} = state;
+
+		const nav = [
+			{
+				collapsible: false,
+				href: `${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`,
+				selected: action === 'heatmap',
+				text: Liferay.Language.get('heatmap')
+			},
+			{
+				collapsible: false,
+				href: `${WatsonConstants.urls.baseURL}/incidents/metrics/report`,
+				selected: action === 'report',
+				text: Liferay.Language.get('report')
+			}
+		];
 
 		return (
 			<div class="page-container incidents-metrics no-print">
 				<div class="sidebar">
 					<SidebarHeader mainHeader={Liferay.Language.get('watson-metrics')} />
 
-					<div class="filter-header">
-						{Liferay.Language.get('filter-by')}
-					</div>
+					{(action && action === 'heatmap') &&
+						<div class="filter-header">
+							{Liferay.Language.get('filter-by')}
+						</div> &&
 
-					<DynamicSelectInput
-						elementClasses="filter-input"
-						filter={incidentsFilter}
-						inputConfig={WatsonConstants.inputConfig.heatmaps.inputs}
-						label={Liferay.Language.get('add-filter')}
-						onChange={this.handleUpdateFilter}
-					/>
+						<DynamicSelectInput
+							elementClasses="filter-input"
+							filter={incidentsFilter}
+							inputConfig={WatsonConstants.inputConfig.heatmaps.inputs}
+							label={Liferay.Language.get('add-filter')}
+							onChange={this.handleUpdateFilter}
+						/>
+					}
+
+					{!action &&
+						<Navigation entries={nav} />
+					}
 				</div>
 
-				{this.getCurrentView(action, incidentsMetricsData, loading, viewBy)}
+				<div class="metrics-content">
+					{this.getCurrentView(action, incidentsMetricsData, loading, viewBy)}
+				</div>
 			</div>
 		);
 	}
@@ -110,7 +136,9 @@ class MetricsConsole extends JSXComponent {
 	rendered() {
 		const {props, state} = this;
 
-		if (state.resendRequest) {
+		const {action} = props;
+
+		if (state.resendRequest && action) {
 			const fieldsArray = [];
 			const keywordsArray = [];
 
@@ -128,6 +156,7 @@ class MetricsConsole extends JSXComponent {
 
 			props.fetchIncidentMetrics(
 				{
+					actionType: action,
 					fields: fieldsArray,
 					keywords: keywordsArray,
 					type: state.viewBy
@@ -138,15 +167,25 @@ class MetricsConsole extends JSXComponent {
 
 			this.state.resendRequest = false;
 		}
+
+		if (action && action !== state.actionDisplayed) {
+			this.state.actionDisplayed = action;
+
+			this.state.resendRequest = true;
+		}
 	}
 }
 
 MetricsConsole.PROPS = {
-	incidentsFilter: Config.value(new Map())
+	action: Config.string(),
+	incidentsFilter: Config.value(new Map()),
+	incidentsLoading: Config.bool(),
+	incidentsMetricsData: Config.any()
 };
 
 MetricsConsole.STATE = {
-	resendRequest: Config.bool(),
+	actionDisplayed: Config.string().value(''),
+	resendRequest: Config.bool().value(true),
 	viewBy: Config.string().value('9361')
 };
 
@@ -171,12 +210,15 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
+	const {action} = props.router.params;
+
 	const incidentsFilter = state.getIn(['display', 'filter', 1, 'incidents']) || new Map();
 	const incidentsLoading = state.getIn(['incidents', 'loading']) || false;
 	const incidentsMetricsData = state.getIn(['incidents', 'metricsData']) || new Map();
 
 	return {
+		action,
 		incidentsFilter,
 		incidentsMetricsData,
 		loading: incidentsLoading

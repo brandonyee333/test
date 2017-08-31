@@ -10,7 +10,7 @@ class HeaderToolbar extends JSXComponent {
 		const formattedOptions = (
 			<ul class="items">
 				<li><a href={`${WatsonConstants.urls.baseURL}/incidents/admin`}>{Liferay.Language.get('administrator-console')}</a></li>
-				<li><a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`}>{Liferay.Language.get('heat-map')}</a></li>
+				<li><a href={`${WatsonConstants.urls.baseURL}/incidents/metrics`}>{Liferay.Language.get('reports')}</a></li>
 				<li><a href={`${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`}>{Liferay.Language.get('logout')}</a></li>
 			</ul>);
 

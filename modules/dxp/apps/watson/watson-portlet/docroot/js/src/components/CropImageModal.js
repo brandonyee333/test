@@ -44,7 +44,6 @@ class CropImageModal extends JSXComponent {
 		this._cropper = new Cropper(
 			event.target,
 			{
-				aspectRatio: 1 / 1,
 				zoomable: false
 			}
 		);

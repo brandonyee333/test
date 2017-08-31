@@ -24,7 +24,7 @@ class GoogleMapWrapper extends JSXComponent {
 					address
 				},
 				(results, status) => {
-					if (status === google.maps.GeocoderStatus.OK) {
+					if (status === 'OK') {
 						const location = results[0].geometry.location;
 
 						const latLng = {
@@ -46,14 +46,14 @@ class GoogleMapWrapper extends JSXComponent {
 			Liferay.Watson.mapComponent.geocoder.geocode(
 				{latLng},
 				(results, status) => {
-					if (status === google.maps.GeocoderStatus.OK) {
+					if (status === 'OK') {
 						const addressResult = results[0].address_components;
 
 						this.populateAddressFields(addressResult);
 
 						addressResult.forEach(
 							addressComponent => {
-								if (addressComponent.types === 'route') {
+								if (addressComponent.types == 'route') {
 									this.props.onChange(addressComponent.long_name, 'street');
 								}
 							}
@@ -334,8 +334,9 @@ class GoogleMapWrapper extends JSXComponent {
 		let shouldRefocusMapData = true;
 
 		if (latitude && longitude) {
+			shouldRefocusMapData = false;
+
 			if (state.latitude !== latitude || state.longitude !== longitude) {
-				shouldRefocusMapData = false;
 
 				const latLng = {
 					lat: latitude,

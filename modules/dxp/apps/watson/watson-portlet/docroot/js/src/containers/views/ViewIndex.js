@@ -24,11 +24,11 @@ class ViewIndex extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnClick',
+			'handleButtonClick',
 			'handleLoadMore',
+			'handleOnClick',
 			'handleUpdateFilter',
 			'handleUpdateSortBy',
-			'handleButtonClick',
 			'refreshData'
 		);
 
@@ -98,23 +98,30 @@ class ViewIndex extends JSXComponent {
 	handleOnClick(event) {
 		const {delegateTarget} = event;
 
+		let entryId = 0;
+
 		if (delegateTarget && delegateTarget.attributes.id) {
-			const entryId = delegateTarget.attributes.id.value;
+			entryId = delegateTarget.attributes.id.value;
 
-			let {selectedIds} = this.state;
-
-			const index = selectedIds.indexOf(entryId);
-
-			if (index !== -1) {
-				selectedIds.splice(index, 1);
+			if (this.props.action === 'view') {
+				window.open(`${WatsonConstants.urls.baseURL}/incidents/${entryId}/edit`);
 			}
 			else {
-				selectedIds.push(entryId);
+				let {selectedIds} = this.state;
+
+				const index = selectedIds.indexOf(entryId);
+
+				if (index !== -1) {
+					selectedIds.splice(index, 1);
+				}
+				else {
+					selectedIds.push(entryId);
+				}
+
+				selectedIds = [...(new Set(selectedIds))];
+
+				this.setState({selectedIds});
 			}
-
-			selectedIds = [...(new Set(selectedIds))];
-
-			this.setState({selectedIds});
 		}
 	}
 
@@ -236,7 +243,7 @@ class ViewIndex extends JSXComponent {
 		const {props} = this;
 
 		const {
-			action = 'index',
+			action,
 			buttonData,
 			disabled,
 			disableDataFetch,
@@ -257,7 +264,7 @@ class ViewIndex extends JSXComponent {
 			incidentsLoading: loading
 		} = props;
 
-		const {selectedIds} = this.state;
+		const {filterActive, selectedIds} = this.state;
 
 		if (disableDataFetch) {
 			data = forwardedData;
@@ -307,7 +314,7 @@ class ViewIndex extends JSXComponent {
 						<div class="view-index">
 							<IndexList
 								data={data}
-								filterActive={this.state.filterActive}
+								filterActive={filterActive}
 								hasMoreResults={data.size < modelCount}
 								keysToOmit={keysToOmit}
 								loading={loading}
@@ -393,7 +400,8 @@ class ViewIndex extends JSXComponent {
 }
 
 ViewIndex.PROPS = {
-	action: Config.string(),
+	action: Config.string().value('index'),
+	buttonData: Config.any(),
 	disableDataFetch: Config.bool().value(false),
 	filter: Config.value(new Map()),
 	filterActiveCallback: Config.func().value(noop),
@@ -516,7 +524,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state, props) {
-	const {model = 'incidents', watsonIncidentId = 0} = props;
+	const {action, model = 'incidents', watsonIncidentId = 0} = props;
 	const incidentsData = state.getIn(['incidents', 'data']) || new Map();
 	const incidentsLoading = state.getIn(['incidents', 'loading']);
 	const modelLoading = state.getIn([model, 'loading']);
@@ -526,6 +534,7 @@ function mapStateToProps(state, props) {
 	const sortBy = state.getIn(['display', 'sortBy', watsonIncidentId, model]) || WatsonConstants.inputConfig[model].sortByDefault;
 
 	return {
+		action,
 		filter: state.getIn(['display', 'filter', watsonIncidentId, model]),
 		hideLoadingOverlay: state.getIn(['display', 'hideLoadingOverlay']),
 		incidentsData,

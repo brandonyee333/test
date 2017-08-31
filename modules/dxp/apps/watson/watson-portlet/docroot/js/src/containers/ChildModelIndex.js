@@ -77,6 +77,7 @@ class ChildModelIndex extends JSXComponent {
 
 	render() {
 		const {
+			action = 'view',
 			affiliationData,
 			entryId = 0,
 			model,
@@ -97,6 +98,7 @@ class ChildModelIndex extends JSXComponent {
 				</div>
 
 				<ViewIndex
+					action={action}
 					buttonData={[]}
 					disableDataFetch={true}
 					entryId={entryId}
@@ -113,6 +115,7 @@ class ChildModelIndex extends JSXComponent {
 }
 
 ChildModelIndex.PROPS = {
+	action: Config.string().value('view'),
 	affiliationData: Config.any(),
 	entryId: Config.value(''),
 	filter: Config.value(new Map()),

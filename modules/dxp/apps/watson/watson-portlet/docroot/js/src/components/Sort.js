@@ -25,7 +25,11 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 	}
 	else if (sortBy === 'name') {
 		sorted = data.sort(
-			(a, b) => b.get('name').localeCompare(a.get('name'))
+			(a, b) => (b.get('name') || '').localeCompare(
+				a.get('name'),
+				{},
+				{ignorePunctuation: true, numeric: true}
+			)
 		);
 	}
 	else if (sortBy === 'reportDate') {
@@ -35,7 +39,19 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 	}
 	else if (sortBy === 'incidentStatus') {
 		sorted = data.sort(
-			(a, b) => b.get('incidentStatus').localeCompare(a.get('incidentStatus'))
+			(a, b) => {
+				let sortVal = b.get('incidentStatus').localeCompare(a.get('incidentStatus'));
+
+				if (sortVal === 0) {
+					sortVal = b.get('name').localeCompare(
+						a.get('name'),
+						{},
+						{ignorePunctuation: true, numeric: true}
+					);
+				}
+
+				return sortVal;
+			}
 		);
 	}
 	else if (sortBy === 'typeWatsonListTypeId') {

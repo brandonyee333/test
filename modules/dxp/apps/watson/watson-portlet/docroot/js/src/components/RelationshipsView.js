@@ -76,22 +76,28 @@ class RelationshipsView extends JSXComponent {
 		const unformattedConnections = [];
 		const unformattedNodes = [];
 
+		const allNodes = [];
+
 		modelTypes.forEach(
 			model => {
 				const modelData = props[`${model}Data`];
 
 				modelData.forEach(
 					watsonModel => {
+						const id = watsonModel.get('id');
+
 						const watsonModelNode = {
 							font: {
 								color: 'darkgray',
 								size: 14
 							},
 							group: model,
-							id: watsonModel.get('id'),
+							id,
 							label: watsonModel.get('name'),
 							physics: false
 						};
+
+						allNodes.push(id);
 
 						unformattedNodes.push(watsonModelNode);
 					}
@@ -145,6 +151,18 @@ class RelationshipsView extends JSXComponent {
 					to: watsonModel2ClassPK
 				};
 
+				const watsonModel1Index = allNodes.indexOf(watsonModel1ClassPK);
+
+				if (watsonModel1Index > -1) {
+					allNodes.splice(watsonModel1Index, 1);
+				}
+
+				const watsonModel2Index = allNodes.indexOf(watsonModel2ClassPK);
+
+				if (watsonModel2Index > -1) {
+					allNodes.splice(watsonModel2Index, 1);
+				}
+
 				unformattedConnections.push(relationshipConnection);
 
 				if (!relationshipPrimaryKeys.includes(watsonModel1ClassPK)) {
@@ -159,6 +177,19 @@ class RelationshipsView extends JSXComponent {
 				}
 
 				relationshipPrimaryKeys.push(watsonModel1ClassPK, watsonModel2ClassPK);
+			}
+		);
+
+		allNodes.forEach(
+			(item, index) => {
+				const orphanedModelConnection = {
+					color: 'LightGray',
+					dashes: true,
+					from: watsonIncidentId,
+					to: item
+				};
+
+				unformattedConnections.push(orphanedModelConnection);
 			}
 		);
 

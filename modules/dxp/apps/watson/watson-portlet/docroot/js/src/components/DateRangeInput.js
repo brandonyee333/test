@@ -41,22 +41,24 @@ class DateRangeInput extends JSXComponent {
 		const outsideRangeBypass = () => false;
 
 		return (
-			<MetalDateRangeInput
-				className="watson-input"
-				disabled={disabled}
-				endDate={endDate}
-				endDatePlaceholderText={Liferay.Language.get('end-date')}
-				focusedInput={focusedInput}
-				isOutsideRange={outsideRangeBypass}
-				numberOfMonths={1}
-				onDatesChange={this.onDatesChange}
-				onFocusChange={this.onFocusChange}
-				orientation="vertical"
-				reopenPickerOnClearDates={true}
-				showKeyboardShortcuts={false}
-				startDate={startDate}
-				startDatePlaceholderText={Liferay.Language.get('start-date')}
-			/>
+			<div class="date-range-wrapper">
+				<MetalDateRangeInput
+					className="watson-input"
+					disabled={disabled}
+					endDate={endDate}
+					endDatePlaceholderText={Liferay.Language.get('end-date')}
+					focusedInput={focusedInput}
+					isOutsideRange={outsideRangeBypass}
+					numberOfMonths={1}
+					onDatesChange={this.onDatesChange}
+					onFocusChange={this.onFocusChange}
+					orientation="vertical"
+					reopenPickerOnClearDates={true}
+					showKeyboardShortcuts={false}
+					startDate={startDate}
+					startDatePlaceholderText={Liferay.Language.get('start-date')}
+				/>
+			</div>
 		);
 	}
 

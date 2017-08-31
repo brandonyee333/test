@@ -73,7 +73,7 @@ RichTextEditor.STATE = {
 		{
 			toolbar: [
 				[
-					{'header': [1, 2, false]}
+					{'size': [false, 'large', 'huge']}
 				],
 				[
 					'bold',
@@ -104,5 +104,7 @@ RichTextEditor.STATE = {
 		}
 	)
 };
+
+RichTextEditor.SYNC_UPDATES = true;
 
 export default RichTextEditor;

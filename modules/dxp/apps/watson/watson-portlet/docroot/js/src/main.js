@@ -130,7 +130,7 @@ class Watson extends JSXComponent {
 Liferay.Watson = {
 	initialize() {
 		if (!this.initialized) {
-			new Watson({}, document.body);
+			new Watson();
 
 			this.initialized = true;
 

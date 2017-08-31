@@ -1,4 +1,4 @@
-import {bindAll, isEqual} from 'lodash';
+import {bindAll, isEqual, noop} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
 import sub from 'string-sub';
 
@@ -11,10 +11,15 @@ import TextAreaInput from './TextAreaInput';
 import Tooltip from './Tooltip';
 
 class TranslationForm extends JSXComponent {
+	attached() {
+		this.state.intervalId = setInterval(() => this.handleSoftSave(), 60000);
+	}
+
 	created() {
 		bindAll(
 			this,
 			'handleCancel',
+			'handleSoftSave',
 			'handleSubmit',
 			'handleUpdateValue'
 		);
@@ -24,11 +29,41 @@ class TranslationForm extends JSXComponent {
 		this.state.translatedFormData = {};
 	}
 
+	disposed() {
+		const {intervalId} = this.state;
+
+		clearInterval(intervalId);
+	}
+
 	handleCancel() {
 		const {redirect: cancelMethod} = this.props;
 
 		if (cancelMethod) {
 			cancelMethod();
+		}
+	}
+
+	handleSoftSave() {
+		const {props, state} = this;
+
+		if (props.autoSaveEnabled && props.autoSaveMethod) {
+			let {formData = {}} = state;
+
+			props.formConfig.forEach(
+				inputId => {
+					const {[inputId]: {translatable}} = props.fieldConfig;
+
+					formData = this.handleUntranslatableFields(formData, inputId, translatable);
+				}
+			);
+
+			formData.id = props.id;
+			formData.return = true;
+			formData.translatingTo = WatsonConstants.otherLanguageId;
+
+			props.autoSaveMethod(formData);
+
+			this.state.changedFields = [];
 		}
 	}
 
@@ -167,7 +202,12 @@ class TranslationForm extends JSXComponent {
 
 		const inputs = [];
 
-		const {disabled: incidentDisabled = false, fieldConfig, formConfig} = props;
+		const {
+			autoSaveResponse,
+			disabled: incidentDisabled = false,
+			fieldConfig,
+			formConfig
+		} = props;
 
 		formConfig.forEach(
 			(inputId, index) => {
@@ -227,7 +267,7 @@ class TranslationForm extends JSXComponent {
 
 				const fieldIndex = state.changedFields.indexOf(inputId);
 
-				if (!isEqual(formData[inputId], state.translatedFormData[inputId])) {
+				if ((!isEqual(formData[inputId], state.translatedFormData[inputId]) && !autoSaveResponse) || (autoSaveResponse && !isEqual(formData[inputId], autoSaveResponse[inputId]))) {
 					cssClass += 'changed';
 
 					if (fieldIndex === -1) {
@@ -277,22 +317,25 @@ class TranslationForm extends JSXComponent {
 		return inputs;
 	}
 
-	syncStoreData(newState) {
-		if (newState) {
+	syncStoreData(newState, oldState) {
+		if (newState && newState !== oldState) {
 			const originalFormData = convertMapToObject(newState);
 
 			this.setState({changedFields: [], originalFormData});
 		}
 	}
 
-	syncTranslatedData(newState) {
-		if (newState) {
+	syncTranslatedData(newState, oldState) {
+		if (newState && newState !== oldState) {
 			this.setState({formData: newState, translatedFormData: newState});
 		}
 	}
 }
 
 TranslationForm.PROPS = {
+	autoSaveEnabled: Config.bool(),
+	autoSaveMethod: Config.func().value(noop),
+	autoSaveResponse: Config.object(),
 	disabled: Config.bool(),
 	fieldConfig: Config.object(),
 	formConfig: Config.array(),
@@ -309,6 +352,7 @@ TranslationForm.STATE = {
 	changedFields: Config.array().value([]),
 	dataSent: Config.bool().value(false),
 	formData: Config.object().value({}),
+	intervalId: Config.number(),
 	originalFormData: Config.object().value({}),
 	submitted: Config.bool().value(false),
 	translatedFormData: Config.object().value({})
