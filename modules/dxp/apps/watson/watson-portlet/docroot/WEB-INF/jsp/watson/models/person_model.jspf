@@ -89,6 +89,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 
 		jsonObject.put("countryWatsonListTypeId", watsonPerson.getCountryWatsonListTypeId());
 		jsonObject.put("dateAccepted", getFormattedDate(watsonPerson.getDateAccepted(), locale));
+		jsonObject.put("dateRescued", getFormattedDate(watsonPerson.getDateRescued(), locale));
 		jsonObject.put("description", watsonPerson.getDescription(locale));
 		jsonObject.put("endAge", watsonPerson.getEndAge());
 
@@ -146,6 +147,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		jsonObject.put("primaryNameString", watsonPerson.getPrimaryName());
 		jsonObject.put("reportDate", getFormattedDate(watsonPerson.getCreateDate(), locale));
 		jsonObject.put("reportedBy", watsonPerson.getUserName());
+		jsonObject.put("rescued", watsonPerson.getRescued());
 
 		watsonListType = WatsonListType.fetch(watsonPerson.getSexWatsonListTypeId());
 
@@ -184,6 +186,41 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		jsonObject.put("weight", watsonPerson.getWeight());
 
 		return jsonObject;
+	}
+
+	public static JSONArray getMetricsArray() throws Exception {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		JSONObject formattedJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject yearJSONObject = JSONFactoryUtil.createJSONObject();
+
+		for (int year = 2010; year < 2018; year++) {
+			DynamicQuery personDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "rescued", true});
+
+			Calendar calendar = Calendar.getInstance();
+
+			calendar.set(Calendar.YEAR, year);
+			calendar.set(Calendar.DAY_OF_YEAR, 1);
+
+			Date startDate = calendar.getTime();
+
+			calendar.set(Calendar.MONTH, 11);
+			calendar.set(Calendar.DAY_OF_MONTH, 31);
+
+			Date endDate = calendar.getTime();
+
+			personDynamicQuery.add(RestrictionsFactoryUtil.between("dateRescued", startDate, endDate));
+
+			yearJSONObject.put(String.valueOf(year), baseModelAlloyServiceInvoker.executeDynamicQueryCount(personDynamicQuery));
+		}
+
+		formattedJSONObject.put("numberRescued", "number rescued");
+		formattedJSONObject.put("year", yearJSONObject);
+
+		jsonArray.put(formattedJSONObject);
+
+		return jsonArray;
 	}
 
 	public static List<WatsonListTypeRel> getCountryIds(long watsonPersonId) throws Exception {

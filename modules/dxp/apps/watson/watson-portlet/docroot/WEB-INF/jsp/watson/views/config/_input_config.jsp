@@ -101,7 +101,7 @@
 				},
 				relationshipObjectOptions: {
 					addresses: {
-						key: '${ClassNameLocalService.getClassNameId(WatsonAddress.class)}',
+						key : '${ClassNameLocalService.getClassNameId(WatsonAddress.class)}',
 							label: '${AlloyLanguageUtil.formatUnicode("addresses")}',
 							options: {
 							<c:set value='${WatsonListType.getWatsonListTypes(WatsonRelationship.modelClassName.concat(".addressActivityRelationshipTypes"))}' var="addressActivityTypes" />
@@ -237,9 +237,7 @@
 						parentInputId: 'provinceWatsonListTypeId',
 						translatable: ${false},
 						type: 'DEPENDENT_SELECT_INPUT',
-						validations: [
-							'required'
-						]
+						validations: []
 					},
 					floor: {
 						filterable: ${false},
@@ -298,9 +296,7 @@
 						label: '${AlloyLanguageUtil.formatUnicode("latitude")}',
 						translatable: ${false},
 						type: 'INPUT',
-						validations: [
-							'required'
-						]
+						validations: []
 					},
 					longitude: {
 						cssClass: 'columnize',
@@ -309,9 +305,7 @@
 						label: '${AlloyLanguageUtil.formatUnicode("longitude")}',
 						translatable: ${false},
 						type: 'INPUT',
-						validations: [
-							'required'
-						]
+						validations: []
 					},
 					name: {
 						filterable: ${true},
@@ -339,9 +333,7 @@
 						parentInputId: 'districtWatsonListTypeId',
 						translatable: ${false},
 						type: 'DEPENDENT_INPUT',
-						validations: [
-							'required'
-						]
+						validations: []
 					},
 					provinceWatsonListTypeId: {
 						cssClass: 'columnize',
@@ -361,9 +353,7 @@
 						},
 						translatable: ${false},
 						type: 'SELECT_INPUT',
-						validations: [
-							'required'
-						]
+						validations: []
 					},
 					region: {
 						controlledInputs: [
@@ -398,9 +388,7 @@
 						label: '${AlloyLanguageUtil.formatUnicode("street")}',
 						translatable: ${true},
 						type: 'INPUT',
-						validations: [
-							'required'
-						]
+						validations: []
 					},
 					subDistrictWatsonListTypeId: {
 						cssClass: 'columnize',
@@ -667,6 +655,28 @@
 						},
 						type: 'MULTI_SELECT_INPUT'
 					},
+					typeWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("incident-type")}',
+							options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonIncident.modelClassName.concat(".type"))}' var="watsonIncidentTypes" />
+
+							<c:forEach items="${watsonIncidentTypes}" var="watsonIncidentType" varStatus="watsonIncidentTypeIndex">
+							<c:set value='${watsonIncidentTypeIndex.last ? "" : ","}' var="delimiter" />
+
+							${watsonIncidentType.watsonListTypeId}: {
+								label: '${watsonIncidentType.getName(locale)}',
+									value: '${watsonIncidentType.watsonListTypeId}'
+							}${delimiter}
+							</c:forEach>
+						},
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-type-of-report-that-best-describes-this-incident")}',
+							translatable: ${false},
+						type: 'SELECT_INPUT',
+							validations: [
+							'required'
+						]
+					},
 					subtypeWatsonListTypeId: {
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("type-of-report")}',
@@ -689,6 +699,20 @@
 			},
 			incidents: {
 				inputs: {
+					audienceKey: {
+						controlledInputs: [],
+						dependentKey: '10457',
+						filterable: ${false},
+						htmlType: 'input',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode('audience-number')}',
+						parentInputId: 'typeWatsonListTypeId',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: [
+							'required'
+						]
+					},
 					createDate: {
 						filterable: ${false},
 						htmlType: 'date',
@@ -1053,12 +1077,29 @@
 					},
 					dateAccepted: {
 						controlledInputs: [],
+						defaultValue: new Date().toISOString().substr(0,10),
 						dependentKey: ${true},
 						filterable: ${true},
 						htmlType: 'date',
 						invertHidden: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode('date-accepted-to-zoe')}',
 						parentInputId: 'accepted',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: [
+							'date',
+							'required'
+						]
+					},
+					dateRescued: {
+						controlledInputs: [],
+						defaultValue: new Date().toISOString().substr(0,10),
+						dependentKey: ${true},
+						filterable: ${true},
+						htmlType: 'date',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode('date-rescued')}',
+						parentInputId: 'rescued',
 						translatable: ${false},
 						type: 'DEPENDENT_KEYED_INPUT',
 						validations: [
@@ -1250,6 +1291,19 @@
 						translatable: ${false},
 						type: 'INPUT'
 					},
+					rescued: {
+						controlledInputs: [
+							'dateRescued'
+						],
+						dependentKey: '9500',
+						filterable: ${false},
+						htmlType: 'checkbox',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode('rescued')}',
+						parentInputId: 'typeWatsonListTypeId',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT'
+					},
 					sexWatsonListTypeId: {
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("gender")}',
@@ -1311,6 +1365,7 @@
 						]
 					},
 					typeWatsonListTypeId: {
+						controlledInputs: [],
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("involvement")}',
 						options: {

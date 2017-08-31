@@ -188,32 +188,43 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		List<WatsonAddress> watsonAddresses = new ArrayList<>();
+		String actionType = ParamUtil.getString(request, "actionType");
 
-		String[] fields = ParamUtil.getStringValues(request, "fields");
-		String[] keywords = ParamUtil.getStringValues(request, "keywords");
-		long typeWatsonListTypeId = ParamUtil.getLong(request, "type");
+		JSONArray responseObject = JSONFactoryUtil.createJSONArray();
 
-		if ((fields.length > 0) && (keywords.length > 0)) {
-			SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass);
+		if (actionType.equals("report")) {
+			responseObject = WatsonPerson.getMetricsArray();
+		}
+		else {
+			List<WatsonAddress> watsonAddresses = new ArrayList<>();
 
-			List<Long> watsonIncidentIds = _doSearchForClassPKs(searchContext);
+			String[] fields = ParamUtil.getStringValues(request, "fields");
+			String[] keywords = ParamUtil.getStringValues(request, "keywords");
+			long typeWatsonListTypeId = ParamUtil.getLong(request, "type");
 
-			if (!watsonIncidentIds.isEmpty()) {
-				List<WatsonAddress> typeWatsonAddresses = WatsonAddress.query("typeWatsonListTypeId", typeWatsonListTypeId);
+			if ((fields.length > 0) && (keywords.length > 0)) {
+				SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass);
 
-				for (WatsonAddress watsonAddress : typeWatsonAddresses) {
-					if (watsonIncidentIds.contains(watsonAddress.getWatsonIncidentId())) {
-						watsonAddresses.add(watsonAddress);
+				List<Long> watsonIncidentIds = _doSearchForClassPKs(searchContext);
+
+				if (!watsonIncidentIds.isEmpty()) {
+					List<WatsonAddress> typeWatsonAddresses = WatsonAddress.query("typeWatsonListTypeId", typeWatsonListTypeId);
+
+					for (WatsonAddress watsonAddress : typeWatsonAddresses) {
+						if (watsonIncidentIds.contains(watsonAddress.getWatsonIncidentId())) {
+							watsonAddresses.add(watsonAddress);
+						}
 					}
 				}
 			}
-		}
-		else {
-			watsonAddresses = WatsonAddress.query("typeWatsonListTypeId", typeWatsonListTypeId);
+			else {
+				watsonAddresses = WatsonAddress.query("typeWatsonListTypeId", typeWatsonListTypeId);
+			}
+
+			responseObject = WatsonAddress.getAsMetricsArray(watsonAddresses);
 		}
 
-		respondWith(WatsonAddress.getAsMetricsArray(watsonAddresses));
+		respondWith(responseObject);
 	}
 
 	public void fetchTranslation() throws Exception {

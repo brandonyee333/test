@@ -312,7 +312,18 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			watsonActivity.updateTranslations(request, locale);
 
-			respondWith(LanguageUtil.get(request, "activity-saved-successfully"), WatsonActivity.getAsJSONObject(watsonActivity));
+			boolean returnTranslatedValue = ParamUtil.getBoolean(request, "return", false);
+
+			JSONObject watsonActivityJSONObject = null;
+
+			if (returnTranslatedValue) {
+				watsonActivityJSONObject = WatsonActivity.getAsJSONObject(watsonActivity, locale);
+			}
+			else {
+				watsonActivityJSONObject = WatsonActivity.getAsJSONObject(watsonActivity);
+			}
+
+			respondWith(LanguageUtil.get(request, "activity-saved-successfully"), watsonActivityJSONObject);
 
 			return;
 		}

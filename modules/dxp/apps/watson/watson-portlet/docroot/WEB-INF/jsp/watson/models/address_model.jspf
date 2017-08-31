@@ -266,11 +266,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonAddressDistrict(long districtWatsonListTypeId) throws Exception {
-		if (districtWatsonListTypeId <= 0) {
-			return new KeyValuePair("districtWatsonListTypeId", "the-address-district-is-invalid");
-		}
-
-		if (WatsonListType.fetch(districtWatsonListTypeId) == null) {
+		if ((districtWatsonListTypeId > 0) && (WatsonListType.fetch(districtWatsonListTypeId) == null)) {
 			return new KeyValuePair("districtWatsonListTypeId", "the-address-district-is-invalid");
 		}
 
@@ -300,7 +296,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonAddressLatitude(double latitude) {
-		if (Validator.isNull(latitude)) {
+		if ((latitude != 0) && (latitude < 1)) {
 			return new KeyValuePair("latitude", "latitude-is-required");
 		}
 
@@ -308,7 +304,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonAddressLongitude(double longitude) {
-		if (Validator.isNull(longitude)) {
+		if ((longitude != 0) && (longitude < 1)) {
 			return new KeyValuePair("longitude", "longitude-is-required");
 		}
 
@@ -324,11 +320,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonAddressPostalCode(String postalCode) {
-		if (Validator.isNull(postalCode)) {
-			return new KeyValuePair("postalCode", "postalCode-is-required");
-		}
-
-		if (!Validator.isNumber(postalCode)) {
+		if (Validator.isNotNull(postalCode) && !Validator.isNumber(postalCode)) {
 			return new KeyValuePair("postalCode", "postalCode-must-be-a-number");
 		}
 
@@ -336,11 +328,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonAddressProvince(long provinceWatsonListTypeId) throws Exception {
-		if (provinceWatsonListTypeId <= 0) {
-			return new KeyValuePair("provinceWatsonListTypeId", "the-address-province-is-invalid");
-		}
-
-		if (WatsonListType.fetch(provinceWatsonListTypeId) == null) {
+		if ((provinceWatsonListTypeId > 0) && (WatsonListType.fetch(provinceWatsonListTypeId) == null)) {
 			return new KeyValuePair("provinceWatsonListTypeId", "the-address-province-is-invalid");
 		}
 
@@ -362,14 +350,6 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 					return new KeyValuePair("watsonRelationships", "the-relationships-were-invalid");
 				}
 			}
-		}
-
-		return null;
-	}
-
-	public static KeyValuePair validateWatsonAddressStreet(String street) {
-		if (Validator.isNull(street)) {
-			return new KeyValuePair("street", "street-is-required");
 		}
 
 		return null;
@@ -469,7 +449,6 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		pushError(validateWatsonAddressLongitude(getLongitude()));
 		pushError(validateWatsonAddressName(getName()));
 		pushError(validateWatsonAddressPostalCode(getPostalCode()));
-		pushError(validateWatsonAddressStreet(getStreet()));
 		pushError(validateWatsonAddressType(getTypeWatsonListTypeId()));
 
 		return errors.isEmpty();
@@ -481,7 +460,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		}
 	}
 
-	protected HashMap<String, String> errors = new HashMap<String, String>();
+	protected HashMap<String, String> errors = new HashMap<>();
 
 }
 %>
