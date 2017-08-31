@@ -368,12 +368,14 @@ public class WatsonPersonPersistenceImpl extends BasePersistenceImpl<WatsonPerso
 		watsonPersonImpl.setImagePayload(watsonPerson.getImagePayload());
 		watsonPersonImpl.setBirthDate(watsonPerson.getBirthDate());
 		watsonPersonImpl.setDateAccepted(watsonPerson.getDateAccepted());
+		watsonPersonImpl.setDateRescued(watsonPerson.getDateRescued());
 		watsonPersonImpl.setStartAge(watsonPerson.getStartAge());
 		watsonPersonImpl.setEndAge(watsonPerson.getEndAge());
 		watsonPersonImpl.setOccupation(watsonPerson.getOccupation());
 		watsonPersonImpl.setHeight(watsonPerson.getHeight());
 		watsonPersonImpl.setWeight(watsonPerson.getWeight());
 		watsonPersonImpl.setAccepted(watsonPerson.isAccepted());
+		watsonPersonImpl.setRescued(watsonPerson.isRescued());
 		watsonPersonImpl.setStatus(watsonPerson.getStatus());
 
 		return watsonPersonImpl;

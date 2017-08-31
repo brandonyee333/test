@@ -465,6 +465,20 @@ public interface WatsonPersonModel extends AuditedModel, BaseModel<WatsonPerson>
 	public void setDateAccepted(Date dateAccepted);
 
 	/**
+	 * Returns the date rescued of this watson person.
+	 *
+	 * @return the date rescued of this watson person
+	 */
+	public Date getDateRescued();
+
+	/**
+	 * Sets the date rescued of this watson person.
+	 *
+	 * @param dateRescued the date rescued of this watson person
+	 */
+	public void setDateRescued(Date dateRescued);
+
+	/**
 	 * Returns the start age of this watson person.
 	 *
 	 * @return the start age of this watson person
@@ -645,6 +659,27 @@ public interface WatsonPersonModel extends AuditedModel, BaseModel<WatsonPerson>
 	 * @param accepted the accepted of this watson person
 	 */
 	public void setAccepted(boolean accepted);
+
+	/**
+	 * Returns the rescued of this watson person.
+	 *
+	 * @return the rescued of this watson person
+	 */
+	public boolean getRescued();
+
+	/**
+	 * Returns <code>true</code> if this watson person is rescued.
+	 *
+	 * @return <code>true</code> if this watson person is rescued; <code>false</code> otherwise
+	 */
+	public boolean isRescued();
+
+	/**
+	 * Sets whether this watson person is rescued.
+	 *
+	 * @param rescued the rescued of this watson person
+	 */
+	public void setRescued(boolean rescued);
 
 	/**
 	 * Returns the status of this watson person.

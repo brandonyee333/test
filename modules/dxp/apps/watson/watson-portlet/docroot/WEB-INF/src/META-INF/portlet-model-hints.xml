@@ -73,6 +73,7 @@
 		<field name="sourceWatsonListTypeId" type="long" />
 		<field name="typeWatsonListTypeId" type="long" />
 		<field name="subtypeWatsonListTypeId" type="long" />
+		<field name="audienceKey" type="String" />
 		<field name="name" type="String" />
 		<field localized="true" name="description" type="String">
 			<hint-collection name="TEXTAREA" />
@@ -149,12 +150,14 @@
 		</field>
 		<field name="birthDate" type="Date" />
 		<field name="dateAccepted" type="Date" />
+		<field name="dateRescued" type="Date" />
 		<field name="startAge" type="String" />
 		<field name="endAge" type="String" />
 		<field localized="true" name="occupation" type="String" />
 		<field name="height" type="String" />
 		<field name="weight" type="String" />
 		<field name="accepted" type="boolean" />
+		<field name="rescued" type="boolean" />
 		<field name="status" type="int" />
 	</model>
 	<model name="com.liferay.watson.model.WatsonRelationship">

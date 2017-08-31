@@ -82,6 +82,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			{ "sourceWatsonListTypeId", Types.BIGINT },
 			{ "typeWatsonListTypeId", Types.BIGINT },
 			{ "subtypeWatsonListTypeId", Types.BIGINT },
+			{ "audienceKey", Types.VARCHAR },
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
 			{ "reportDate", Types.TIMESTAMP },
@@ -102,6 +103,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		TABLE_COLUMNS_MAP.put("sourceWatsonListTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("typeWatsonListTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("subtypeWatsonListTypeId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("audienceKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("reportDate", Types.TIMESTAMP);
@@ -111,7 +113,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonIncident (watsonIncidentId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,name VARCHAR(75) null,description STRING null,reportDate DATE null,startDate DATE null,endDate DATE null,incidentStatus INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonIncident (watsonIncidentId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,audienceKey VARCHAR(75) null,name VARCHAR(75) null,description STRING null,reportDate DATE null,startDate DATE null,endDate DATE null,incidentStatus INTEGER,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonIncident";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonIncident.watsonIncidentId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonIncident.watsonIncidentId ASC";
@@ -174,6 +176,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		attributes.put("sourceWatsonListTypeId", getSourceWatsonListTypeId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
+		attributes.put("audienceKey", getAudienceKey());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("reportDate", getReportDate());
@@ -244,6 +247,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 		if (subtypeWatsonListTypeId != null) {
 			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
+		}
+
+		String audienceKey = (String)attributes.get("audienceKey");
+
+		if (audienceKey != null) {
+			setAudienceKey(audienceKey);
 		}
 
 		String name = (String)attributes.get("name");
@@ -404,6 +413,21 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	@Override
 	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId) {
 		_subtypeWatsonListTypeId = subtypeWatsonListTypeId;
+	}
+
+	@Override
+	public String getAudienceKey() {
+		if (_audienceKey == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _audienceKey;
+		}
+	}
+
+	@Override
+	public void setAudienceKey(String audienceKey) {
+		_audienceKey = audienceKey;
 	}
 
 	@Override
@@ -671,6 +695,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		watsonIncidentImpl.setSourceWatsonListTypeId(getSourceWatsonListTypeId());
 		watsonIncidentImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
 		watsonIncidentImpl.setSubtypeWatsonListTypeId(getSubtypeWatsonListTypeId());
+		watsonIncidentImpl.setAudienceKey(getAudienceKey());
 		watsonIncidentImpl.setName(getName());
 		watsonIncidentImpl.setDescription(getDescription());
 		watsonIncidentImpl.setReportDate(getReportDate());
@@ -785,6 +810,14 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 		watsonIncidentCacheModel.subtypeWatsonListTypeId = getSubtypeWatsonListTypeId();
 
+		watsonIncidentCacheModel.audienceKey = getAudienceKey();
+
+		String audienceKey = watsonIncidentCacheModel.audienceKey;
+
+		if ((audienceKey != null) && (audienceKey.length() == 0)) {
+			watsonIncidentCacheModel.audienceKey = null;
+		}
+
 		watsonIncidentCacheModel.name = getName();
 
 		String name = watsonIncidentCacheModel.name;
@@ -837,7 +870,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{watsonIncidentId=");
 		sb.append(getWatsonIncidentId());
@@ -857,6 +890,8 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		sb.append(getTypeWatsonListTypeId());
 		sb.append(", subtypeWatsonListTypeId=");
 		sb.append(getSubtypeWatsonListTypeId());
+		sb.append(", audienceKey=");
+		sb.append(getAudienceKey());
 		sb.append(", name=");
 		sb.append(getName());
 		sb.append(", description=");
@@ -878,7 +913,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonIncident");
@@ -919,6 +954,10 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		sb.append(
 			"<column><column-name>subtypeWatsonListTypeId</column-name><column-value><![CDATA[");
 		sb.append(getSubtypeWatsonListTypeId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>audienceKey</column-name><column-value><![CDATA[");
+		sb.append(getAudienceKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
@@ -968,6 +1007,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	private long _sourceWatsonListTypeId;
 	private long _typeWatsonListTypeId;
 	private long _subtypeWatsonListTypeId;
+	private String _audienceKey;
 	private String _name;
 	private String _description;
 	private String _descriptionCurrentLanguageId;

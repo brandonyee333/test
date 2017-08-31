@@ -42,6 +42,7 @@ public class WatsonIncidentSoap implements Serializable {
 		soapModel.setSourceWatsonListTypeId(model.getSourceWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
+		soapModel.setAudienceKey(model.getAudienceKey());
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setReportDate(model.getReportDate());
@@ -173,6 +174,14 @@ public class WatsonIncidentSoap implements Serializable {
 		_subtypeWatsonListTypeId = subtypeWatsonListTypeId;
 	}
 
+	public String getAudienceKey() {
+		return _audienceKey;
+	}
+
+	public void setAudienceKey(String audienceKey) {
+		_audienceKey = audienceKey;
+	}
+
 	public String getName() {
 		return _name;
 	}
@@ -238,6 +247,7 @@ public class WatsonIncidentSoap implements Serializable {
 	private long _sourceWatsonListTypeId;
 	private long _typeWatsonListTypeId;
 	private long _subtypeWatsonListTypeId;
+	private String _audienceKey;
 	private String _name;
 	private String _description;
 	private Date _reportDate;

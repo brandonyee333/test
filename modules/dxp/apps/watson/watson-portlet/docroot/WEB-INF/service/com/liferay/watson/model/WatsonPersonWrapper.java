@@ -80,12 +80,14 @@ public class WatsonPersonWrapper implements WatsonPerson,
 		attributes.put("imagePayload", getImagePayload());
 		attributes.put("birthDate", getBirthDate());
 		attributes.put("dateAccepted", getDateAccepted());
+		attributes.put("dateRescued", getDateRescued());
 		attributes.put("startAge", getStartAge());
 		attributes.put("endAge", getEndAge());
 		attributes.put("occupation", getOccupation());
 		attributes.put("height", getHeight());
 		attributes.put("weight", getWeight());
 		attributes.put("accepted", getAccepted());
+		attributes.put("rescued", getRescued());
 		attributes.put("status", getStatus());
 
 		return attributes;
@@ -217,6 +219,12 @@ public class WatsonPersonWrapper implements WatsonPerson,
 			setDateAccepted(dateAccepted);
 		}
 
+		Date dateRescued = (Date)attributes.get("dateRescued");
+
+		if (dateRescued != null) {
+			setDateRescued(dateRescued);
+		}
+
 		String startAge = (String)attributes.get("startAge");
 
 		if (startAge != null) {
@@ -251,6 +259,12 @@ public class WatsonPersonWrapper implements WatsonPerson,
 
 		if (accepted != null) {
 			setAccepted(accepted);
+		}
+
+		Boolean rescued = (Boolean)attributes.get("rescued");
+
+		if (rescued != null) {
+			setRescued(rescued);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -353,6 +367,16 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public Date getDateAccepted() {
 		return _watsonPerson.getDateAccepted();
+	}
+
+	/**
+	* Returns the date rescued of this watson person.
+	*
+	* @return the date rescued of this watson person
+	*/
+	@Override
+	public Date getDateRescued() {
+		return _watsonPerson.getDateRescued();
 	}
 
 	@Override
@@ -617,6 +641,16 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	}
 
 	/**
+	* Returns the rescued of this watson person.
+	*
+	* @return the rescued of this watson person
+	*/
+	@Override
+	public boolean getRescued() {
+		return _watsonPerson.getRescued();
+	}
+
+	/**
 	* Returns the sex watson list type ID of this watson person.
 	*
 	* @return the sex watson list type ID of this watson person
@@ -746,6 +780,16 @@ public class WatsonPersonWrapper implements WatsonPerson,
 		return _watsonPerson.isNew();
 	}
 
+	/**
+	* Returns <code>true</code> if this watson person is rescued.
+	*
+	* @return <code>true</code> if this watson person is rescued; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isRescued() {
+		return _watsonPerson.isRescued();
+	}
+
 	@Override
 	public void persist() {
 		_watsonPerson.persist();
@@ -847,6 +891,16 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public void setDateAccepted(Date dateAccepted) {
 		_watsonPerson.setDateAccepted(dateAccepted);
+	}
+
+	/**
+	* Sets the date rescued of this watson person.
+	*
+	* @param dateRescued the date rescued of this watson person
+	*/
+	@Override
+	public void setDateRescued(Date dateRescued) {
+		_watsonPerson.setDateRescued(dateRescued);
 	}
 
 	/**
@@ -1091,6 +1145,16 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_watsonPerson.setPrimaryKeyObj(primaryKeyObj);
+	}
+
+	/**
+	* Sets whether this watson person is rescued.
+	*
+	* @param rescued the rescued of this watson person
+	*/
+	@Override
+	public void setRescued(boolean rescued) {
+		_watsonPerson.setRescued(rescued);
 	}
 
 	/**

@@ -66,7 +66,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{watsonIncidentId=");
 		sb.append(watsonIncidentId);
@@ -86,6 +86,8 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		sb.append(typeWatsonListTypeId);
 		sb.append(", subtypeWatsonListTypeId=");
 		sb.append(subtypeWatsonListTypeId);
+		sb.append(", audienceKey=");
+		sb.append(audienceKey);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", description=");
@@ -137,6 +139,13 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		watsonIncidentImpl.setSourceWatsonListTypeId(sourceWatsonListTypeId);
 		watsonIncidentImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonIncidentImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
+
+		if (audienceKey == null) {
+			watsonIncidentImpl.setAudienceKey(StringPool.BLANK);
+		}
+		else {
+			watsonIncidentImpl.setAudienceKey(audienceKey);
+		}
 
 		if (name == null) {
 			watsonIncidentImpl.setName(StringPool.BLANK);
@@ -197,6 +206,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		typeWatsonListTypeId = objectInput.readLong();
 
 		subtypeWatsonListTypeId = objectInput.readLong();
+		audienceKey = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		reportDate = objectInput.readLong();
@@ -233,6 +243,13 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 
 		objectOutput.writeLong(subtypeWatsonListTypeId);
 
+		if (audienceKey == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(audienceKey);
+		}
+
 		if (name == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
@@ -265,6 +282,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 	public long sourceWatsonListTypeId;
 	public long typeWatsonListTypeId;
 	public long subtypeWatsonListTypeId;
+	public String audienceKey;
 	public String name;
 	public String description;
 	public long reportDate;

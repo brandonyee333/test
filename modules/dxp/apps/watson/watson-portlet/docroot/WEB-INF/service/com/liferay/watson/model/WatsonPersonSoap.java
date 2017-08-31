@@ -53,12 +53,14 @@ public class WatsonPersonSoap implements Serializable {
 		soapModel.setImagePayload(model.getImagePayload());
 		soapModel.setBirthDate(model.getBirthDate());
 		soapModel.setDateAccepted(model.getDateAccepted());
+		soapModel.setDateRescued(model.getDateRescued());
 		soapModel.setStartAge(model.getStartAge());
 		soapModel.setEndAge(model.getEndAge());
 		soapModel.setOccupation(model.getOccupation());
 		soapModel.setHeight(model.getHeight());
 		soapModel.setWeight(model.getWeight());
 		soapModel.setAccepted(model.getAccepted());
+		soapModel.setRescued(model.getRescued());
 		soapModel.setStatus(model.getStatus());
 
 		return soapModel;
@@ -272,6 +274,14 @@ public class WatsonPersonSoap implements Serializable {
 		_dateAccepted = dateAccepted;
 	}
 
+	public Date getDateRescued() {
+		return _dateRescued;
+	}
+
+	public void setDateRescued(Date dateRescued) {
+		_dateRescued = dateRescued;
+	}
+
 	public String getStartAge() {
 		return _startAge;
 	}
@@ -324,6 +334,18 @@ public class WatsonPersonSoap implements Serializable {
 		_accepted = accepted;
 	}
 
+	public boolean getRescued() {
+		return _rescued;
+	}
+
+	public boolean isRescued() {
+		return _rescued;
+	}
+
+	public void setRescued(boolean rescued) {
+		_rescued = rescued;
+	}
+
 	public int getStatus() {
 		return _status;
 	}
@@ -352,11 +374,13 @@ public class WatsonPersonSoap implements Serializable {
 	private String _imagePayload;
 	private Date _birthDate;
 	private Date _dateAccepted;
+	private Date _dateRescued;
 	private String _startAge;
 	private String _endAge;
 	private String _occupation;
 	private String _height;
 	private String _weight;
 	private boolean _accepted;
+	private boolean _rescued;
 	private int _status;
 }

@@ -223,6 +223,21 @@ public interface WatsonIncidentModel extends AuditedModel,
 	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId);
 
 	/**
+	 * Returns the audience key of this watson incident.
+	 *
+	 * @return the audience key of this watson incident
+	 */
+	@AutoEscape
+	public String getAudienceKey();
+
+	/**
+	 * Sets the audience key of this watson incident.
+	 *
+	 * @param audienceKey the audience key of this watson incident
+	 */
+	public void setAudienceKey(String audienceKey);
+
+	/**
 	 * Returns the name of this watson incident.
 	 *
 	 * @return the name of this watson incident

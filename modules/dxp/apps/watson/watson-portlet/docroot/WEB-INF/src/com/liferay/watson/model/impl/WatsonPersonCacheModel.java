@@ -66,7 +66,7 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(59);
 
 		sb.append("{watsonPersonId=");
 		sb.append(watsonPersonId);
@@ -108,6 +108,8 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		sb.append(birthDate);
 		sb.append(", dateAccepted=");
 		sb.append(dateAccepted);
+		sb.append(", dateRescued=");
+		sb.append(dateRescued);
 		sb.append(", startAge=");
 		sb.append(startAge);
 		sb.append(", endAge=");
@@ -120,6 +122,8 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		sb.append(weight);
 		sb.append(", accepted=");
 		sb.append(accepted);
+		sb.append(", rescued=");
+		sb.append(rescued);
 		sb.append(", status=");
 		sb.append(status);
 		sb.append("}");
@@ -195,6 +199,13 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 			watsonPersonImpl.setDateAccepted(new Date(dateAccepted));
 		}
 
+		if (dateRescued == Long.MIN_VALUE) {
+			watsonPersonImpl.setDateRescued(null);
+		}
+		else {
+			watsonPersonImpl.setDateRescued(new Date(dateRescued));
+		}
+
 		if (startAge == null) {
 			watsonPersonImpl.setStartAge(StringPool.BLANK);
 		}
@@ -231,6 +242,7 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		}
 
 		watsonPersonImpl.setAccepted(accepted);
+		watsonPersonImpl.setRescued(rescued);
 		watsonPersonImpl.setStatus(status);
 
 		watsonPersonImpl.resetOriginalValues();
@@ -272,6 +284,7 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		imagePayload = objectInput.readUTF();
 		birthDate = objectInput.readLong();
 		dateAccepted = objectInput.readLong();
+		dateRescued = objectInput.readLong();
 		startAge = objectInput.readUTF();
 		endAge = objectInput.readUTF();
 		occupation = objectInput.readUTF();
@@ -279,6 +292,8 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		weight = objectInput.readUTF();
 
 		accepted = objectInput.readBoolean();
+
+		rescued = objectInput.readBoolean();
 
 		status = objectInput.readInt();
 	}
@@ -338,6 +353,7 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 
 		objectOutput.writeLong(birthDate);
 		objectOutput.writeLong(dateAccepted);
+		objectOutput.writeLong(dateRescued);
 
 		if (startAge == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
@@ -376,6 +392,8 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 
 		objectOutput.writeBoolean(accepted);
 
+		objectOutput.writeBoolean(rescued);
+
 		objectOutput.writeInt(status);
 	}
 
@@ -399,11 +417,13 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 	public String imagePayload;
 	public long birthDate;
 	public long dateAccepted;
+	public long dateRescued;
 	public String startAge;
 	public String endAge;
 	public String occupation;
 	public String height;
 	public String weight;
 	public boolean accepted;
+	public boolean rescued;
 	public int status;
 }

@@ -67,6 +67,7 @@ create table WatsonIncident (
 	sourceWatsonListTypeId LONG,
 	typeWatsonListTypeId LONG,
 	subtypeWatsonListTypeId LONG,
+	audienceKey VARCHAR(75) null,
 	name VARCHAR(75) null,
 	description STRING null,
 	reportDate DATE null,
@@ -139,12 +140,14 @@ create table WatsonPerson (
 	imagePayload TEXT null,
 	birthDate DATE null,
 	dateAccepted DATE null,
+	dateRescued DATE null,
 	startAge VARCHAR(75) null,
 	endAge VARCHAR(75) null,
 	occupation STRING null,
 	height VARCHAR(75) null,
 	weight VARCHAR(75) null,
 	accepted BOOLEAN,
+	rescued BOOLEAN,
 	status INTEGER
 );
 

@@ -111,12 +111,14 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 		attributes.put("imagePayload", getImagePayload());
 		attributes.put("birthDate", getBirthDate());
 		attributes.put("dateAccepted", getDateAccepted());
+		attributes.put("dateRescued", getDateRescued());
 		attributes.put("startAge", getStartAge());
 		attributes.put("endAge", getEndAge());
 		attributes.put("occupation", getOccupation());
 		attributes.put("height", getHeight());
 		attributes.put("weight", getWeight());
 		attributes.put("accepted", getAccepted());
+		attributes.put("rescued", getRescued());
 		attributes.put("status", getStatus());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -251,6 +253,12 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 			setDateAccepted(dateAccepted);
 		}
 
+		Date dateRescued = (Date)attributes.get("dateRescued");
+
+		if (dateRescued != null) {
+			setDateRescued(dateRescued);
+		}
+
 		String startAge = (String)attributes.get("startAge");
 
 		if (startAge != null) {
@@ -285,6 +293,12 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 
 		if (accepted != null) {
 			setAccepted(accepted);
+		}
+
+		Boolean rescued = (Boolean)attributes.get("rescued");
+
+		if (rescued != null) {
+			setRescued(rescued);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -888,6 +902,29 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 	}
 
 	@Override
+	public Date getDateRescued() {
+		return _dateRescued;
+	}
+
+	@Override
+	public void setDateRescued(Date dateRescued) {
+		_dateRescued = dateRescued;
+
+		if (_watsonPersonRemoteModel != null) {
+			try {
+				Class<?> clazz = _watsonPersonRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setDateRescued", Date.class);
+
+				method.invoke(_watsonPersonRemoteModel, dateRescued);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public String getStartAge() {
 		return _startAge;
 	}
@@ -1133,6 +1170,34 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 	}
 
 	@Override
+	public boolean getRescued() {
+		return _rescued;
+	}
+
+	@Override
+	public boolean isRescued() {
+		return _rescued;
+	}
+
+	@Override
+	public void setRescued(boolean rescued) {
+		_rescued = rescued;
+
+		if (_watsonPersonRemoteModel != null) {
+			try {
+				Class<?> clazz = _watsonPersonRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setRescued", boolean.class);
+
+				method.invoke(_watsonPersonRemoteModel, rescued);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public int getStatus() {
 		return _status;
 	}
@@ -1320,12 +1385,14 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 		clone.setImagePayload(getImagePayload());
 		clone.setBirthDate(getBirthDate());
 		clone.setDateAccepted(getDateAccepted());
+		clone.setDateRescued(getDateRescued());
 		clone.setStartAge(getStartAge());
 		clone.setEndAge(getEndAge());
 		clone.setOccupation(getOccupation());
 		clone.setHeight(getHeight());
 		clone.setWeight(getWeight());
 		clone.setAccepted(getAccepted());
+		clone.setRescued(getRescued());
 		clone.setStatus(getStatus());
 
 		return clone;
@@ -1389,7 +1456,7 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(59);
 
 		sb.append("{watsonPersonId=");
 		sb.append(getWatsonPersonId());
@@ -1431,6 +1498,8 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 		sb.append(getBirthDate());
 		sb.append(", dateAccepted=");
 		sb.append(getDateAccepted());
+		sb.append(", dateRescued=");
+		sb.append(getDateRescued());
 		sb.append(", startAge=");
 		sb.append(getStartAge());
 		sb.append(", endAge=");
@@ -1443,6 +1512,8 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 		sb.append(getWeight());
 		sb.append(", accepted=");
 		sb.append(getAccepted());
+		sb.append(", rescued=");
+		sb.append(getRescued());
 		sb.append(", status=");
 		sb.append(getStatus());
 		sb.append("}");
@@ -1452,7 +1523,7 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(85);
+		StringBundler sb = new StringBundler(91);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonPerson");
@@ -1539,6 +1610,10 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 		sb.append(getDateAccepted());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>dateRescued</column-name><column-value><![CDATA[");
+		sb.append(getDateRescued());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>startAge</column-name><column-value><![CDATA[");
 		sb.append(getStartAge());
 		sb.append("]]></column-value></column>");
@@ -1561,6 +1636,10 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 		sb.append(
 			"<column><column-name>accepted</column-name><column-value><![CDATA[");
 		sb.append(getAccepted());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>rescued</column-name><column-value><![CDATA[");
+		sb.append(getRescued());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
@@ -1593,6 +1672,7 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 	private String _imagePayload;
 	private Date _birthDate;
 	private Date _dateAccepted;
+	private Date _dateRescued;
 	private String _startAge;
 	private String _endAge;
 	private String _occupation;
@@ -1600,6 +1680,7 @@ public class WatsonPersonClp extends BaseModelImpl<WatsonPerson>
 	private String _height;
 	private String _weight;
 	private boolean _accepted;
+	private boolean _rescued;
 	private int _status;
 	private BaseModel<?> _watsonPersonRemoteModel;
 	private Class<?> _clpSerializerClass = ClpSerializer.class;

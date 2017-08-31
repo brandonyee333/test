@@ -98,6 +98,7 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 		attributes.put("sourceWatsonListTypeId", getSourceWatsonListTypeId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
+		attributes.put("audienceKey", getAudienceKey());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("reportDate", getReportDate());
@@ -168,6 +169,12 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 
 		if (subtypeWatsonListTypeId != null) {
 			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
+		}
+
+		String audienceKey = (String)attributes.get("audienceKey");
+
+		if (audienceKey != null) {
+			setAudienceKey(audienceKey);
 		}
 
 		String name = (String)attributes.get("name");
@@ -437,6 +444,29 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 
 				method.invoke(_watsonIncidentRemoteModel,
 					subtypeWatsonListTypeId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public String getAudienceKey() {
+		return _audienceKey;
+	}
+
+	@Override
+	public void setAudienceKey(String audienceKey) {
+		_audienceKey = audienceKey;
+
+		if (_watsonIncidentRemoteModel != null) {
+			try {
+				Class<?> clazz = _watsonIncidentRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setAudienceKey", String.class);
+
+				method.invoke(_watsonIncidentRemoteModel, audienceKey);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -843,6 +873,7 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 		clone.setSourceWatsonListTypeId(getSourceWatsonListTypeId());
 		clone.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
 		clone.setSubtypeWatsonListTypeId(getSubtypeWatsonListTypeId());
+		clone.setAudienceKey(getAudienceKey());
 		clone.setName(getName());
 		clone.setDescription(getDescription());
 		clone.setReportDate(getReportDate());
@@ -912,7 +943,7 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(33);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{watsonIncidentId=");
 		sb.append(getWatsonIncidentId());
@@ -932,6 +963,8 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 		sb.append(getTypeWatsonListTypeId());
 		sb.append(", subtypeWatsonListTypeId=");
 		sb.append(getSubtypeWatsonListTypeId());
+		sb.append(", audienceKey=");
+		sb.append(getAudienceKey());
 		sb.append(", name=");
 		sb.append(getName());
 		sb.append(", description=");
@@ -953,7 +986,7 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(52);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonIncident");
@@ -994,6 +1027,10 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 		sb.append(
 			"<column><column-name>subtypeWatsonListTypeId</column-name><column-value><![CDATA[");
 		sb.append(getSubtypeWatsonListTypeId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>audienceKey</column-name><column-value><![CDATA[");
+		sb.append(getAudienceKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
@@ -1038,6 +1075,7 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 	private long _sourceWatsonListTypeId;
 	private long _typeWatsonListTypeId;
 	private long _subtypeWatsonListTypeId;
+	private String _audienceKey;
 	private String _name;
 	private String _description;
 	private String _descriptionCurrentLanguageId;

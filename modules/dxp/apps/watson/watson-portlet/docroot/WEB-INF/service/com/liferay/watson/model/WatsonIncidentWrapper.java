@@ -67,6 +67,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		attributes.put("sourceWatsonListTypeId", getSourceWatsonListTypeId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
+		attributes.put("audienceKey", getAudienceKey());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("reportDate", getReportDate());
@@ -136,6 +137,12 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		}
 
+		String audienceKey = (String)attributes.get("audienceKey");
+
+		if (audienceKey != null) {
+			setAudienceKey(audienceKey);
+		}
+
 		String name = (String)attributes.get("name");
 
 		if (name != null) {
@@ -187,6 +194,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public int compareTo(WatsonIncident watsonIncident) {
 		return _watsonIncident.compareTo(watsonIncident);
+	}
+
+	/**
+	* Returns the audience key of this watson incident.
+	*
+	* @return the audience key of this watson incident
+	*/
+	@Override
+	public java.lang.String getAudienceKey() {
+		return _watsonIncident.getAudienceKey();
 	}
 
 	@Override
@@ -493,6 +510,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		java.util.Locale defaultImportLocale)
 		throws com.liferay.portal.kernel.exception.LocaleException {
 		_watsonIncident.prepareLocalizedFieldsForImport(defaultImportLocale);
+	}
+
+	/**
+	* Sets the audience key of this watson incident.
+	*
+	* @param audienceKey the audience key of this watson incident
+	*/
+	@Override
+	public void setAudienceKey(java.lang.String audienceKey) {
+		_watsonIncident.setAudienceKey(audienceKey);
 	}
 
 	@Override

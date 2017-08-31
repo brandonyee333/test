@@ -87,6 +87,7 @@
 		<property name="sourceWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="typeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="subtypeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="audienceKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="reportDate" type="org.hibernate.type.TimestampType" />
@@ -163,12 +164,14 @@
 		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="birthDate" type="org.hibernate.type.TimestampType" />
 		<property name="dateAccepted" type="org.hibernate.type.TimestampType" />
+		<property name="dateRescued" type="org.hibernate.type.TimestampType" />
 		<property name="startAge" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="endAge" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="occupation" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="height" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="weight" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="accepted" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="rescued" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.watson.model.impl.WatsonRelationshipImpl" table="WatsonRelationship">

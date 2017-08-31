@@ -93,12 +93,14 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			{ "imagePayload", Types.CLOB },
 			{ "birthDate", Types.TIMESTAMP },
 			{ "dateAccepted", Types.TIMESTAMP },
+			{ "dateRescued", Types.TIMESTAMP },
 			{ "startAge", Types.VARCHAR },
 			{ "endAge", Types.VARCHAR },
 			{ "occupation", Types.VARCHAR },
 			{ "height", Types.VARCHAR },
 			{ "weight", Types.VARCHAR },
 			{ "accepted", Types.BOOLEAN },
+			{ "rescued", Types.BOOLEAN },
 			{ "status", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
@@ -124,16 +126,18 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("birthDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("dateAccepted", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("dateRescued", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("startAge", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("endAge", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("occupation", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("height", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("weight", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("accepted", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("rescued", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonPerson (watsonPersonId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,eyesWatsonListTypeId LONG,hairWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,description STRING null,imagePayload TEXT null,birthDate DATE null,dateAccepted DATE null,startAge VARCHAR(75) null,endAge VARCHAR(75) null,occupation STRING null,height VARCHAR(75) null,weight VARCHAR(75) null,accepted BOOLEAN,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonPerson (watsonPersonId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,eyesWatsonListTypeId LONG,hairWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,description STRING null,imagePayload TEXT null,birthDate DATE null,dateAccepted DATE null,dateRescued DATE null,startAge VARCHAR(75) null,endAge VARCHAR(75) null,occupation STRING null,height VARCHAR(75) null,weight VARCHAR(75) null,accepted BOOLEAN,rescued BOOLEAN,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonPerson";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonPerson.watsonPersonId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonPerson.watsonPersonId ASC";
@@ -209,12 +213,14 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		attributes.put("imagePayload", getImagePayload());
 		attributes.put("birthDate", getBirthDate());
 		attributes.put("dateAccepted", getDateAccepted());
+		attributes.put("dateRescued", getDateRescued());
 		attributes.put("startAge", getStartAge());
 		attributes.put("endAge", getEndAge());
 		attributes.put("occupation", getOccupation());
 		attributes.put("height", getHeight());
 		attributes.put("weight", getWeight());
 		attributes.put("accepted", getAccepted());
+		attributes.put("rescued", getRescued());
 		attributes.put("status", getStatus());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -349,6 +355,12 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			setDateAccepted(dateAccepted);
 		}
 
+		Date dateRescued = (Date)attributes.get("dateRescued");
+
+		if (dateRescued != null) {
+			setDateRescued(dateRescued);
+		}
+
 		String startAge = (String)attributes.get("startAge");
 
 		if (startAge != null) {
@@ -383,6 +395,12 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 		if (accepted != null) {
 			setAccepted(accepted);
+		}
+
+		Boolean rescued = (Boolean)attributes.get("rescued");
+
+		if (rescued != null) {
+			setRescued(rescued);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -717,6 +735,16 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	}
 
 	@Override
+	public Date getDateRescued() {
+		return _dateRescued;
+	}
+
+	@Override
+	public void setDateRescued(Date dateRescued) {
+		_dateRescued = dateRescued;
+	}
+
+	@Override
 	public String getStartAge() {
 		if (_startAge == null) {
 			return StringPool.BLANK;
@@ -893,6 +921,21 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	}
 
 	@Override
+	public boolean getRescued() {
+		return _rescued;
+	}
+
+	@Override
+	public boolean isRescued() {
+		return _rescued;
+	}
+
+	@Override
+	public void setRescued(boolean rescued) {
+		_rescued = rescued;
+	}
+
+	@Override
 	public int getStatus() {
 		return _status;
 	}
@@ -1032,12 +1075,14 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		watsonPersonImpl.setImagePayload(getImagePayload());
 		watsonPersonImpl.setBirthDate(getBirthDate());
 		watsonPersonImpl.setDateAccepted(getDateAccepted());
+		watsonPersonImpl.setDateRescued(getDateRescued());
 		watsonPersonImpl.setStartAge(getStartAge());
 		watsonPersonImpl.setEndAge(getEndAge());
 		watsonPersonImpl.setOccupation(getOccupation());
 		watsonPersonImpl.setHeight(getHeight());
 		watsonPersonImpl.setWeight(getWeight());
 		watsonPersonImpl.setAccepted(getAccepted());
+		watsonPersonImpl.setRescued(getRescued());
 		watsonPersonImpl.setStatus(getStatus());
 
 		watsonPersonImpl.resetOriginalValues();
@@ -1194,6 +1239,15 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			watsonPersonCacheModel.dateAccepted = Long.MIN_VALUE;
 		}
 
+		Date dateRescued = getDateRescued();
+
+		if (dateRescued != null) {
+			watsonPersonCacheModel.dateRescued = dateRescued.getTime();
+		}
+		else {
+			watsonPersonCacheModel.dateRescued = Long.MIN_VALUE;
+		}
+
 		watsonPersonCacheModel.startAge = getStartAge();
 
 		String startAge = watsonPersonCacheModel.startAge;
@@ -1236,6 +1290,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 		watsonPersonCacheModel.accepted = getAccepted();
 
+		watsonPersonCacheModel.rescued = getRescued();
+
 		watsonPersonCacheModel.status = getStatus();
 
 		return watsonPersonCacheModel;
@@ -1243,7 +1299,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(59);
 
 		sb.append("{watsonPersonId=");
 		sb.append(getWatsonPersonId());
@@ -1285,6 +1341,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		sb.append(getBirthDate());
 		sb.append(", dateAccepted=");
 		sb.append(getDateAccepted());
+		sb.append(", dateRescued=");
+		sb.append(getDateRescued());
 		sb.append(", startAge=");
 		sb.append(getStartAge());
 		sb.append(", endAge=");
@@ -1297,6 +1355,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		sb.append(getWeight());
 		sb.append(", accepted=");
 		sb.append(getAccepted());
+		sb.append(", rescued=");
+		sb.append(getRescued());
 		sb.append(", status=");
 		sb.append(getStatus());
 		sb.append("}");
@@ -1306,7 +1366,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(85);
+		StringBundler sb = new StringBundler(91);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonPerson");
@@ -1393,6 +1453,10 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		sb.append(getDateAccepted());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>dateRescued</column-name><column-value><![CDATA[");
+		sb.append(getDateRescued());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>startAge</column-name><column-value><![CDATA[");
 		sb.append(getStartAge());
 		sb.append("]]></column-value></column>");
@@ -1415,6 +1479,10 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		sb.append(
 			"<column><column-name>accepted</column-name><column-value><![CDATA[");
 		sb.append(getAccepted());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>rescued</column-name><column-value><![CDATA[");
+		sb.append(getRescued());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
@@ -1452,6 +1520,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	private String _imagePayload;
 	private Date _birthDate;
 	private Date _dateAccepted;
+	private Date _dateRescued;
 	private String _startAge;
 	private String _endAge;
 	private String _occupation;
@@ -1459,6 +1528,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	private String _height;
 	private String _weight;
 	private boolean _accepted;
+	private boolean _rescued;
 	private int _status;
 	private WatsonPerson _escapedModel;
 }
