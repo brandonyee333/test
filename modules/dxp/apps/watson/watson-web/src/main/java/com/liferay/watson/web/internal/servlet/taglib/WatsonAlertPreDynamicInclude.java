@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.login.web.watson.web.internal.servlet.taglib;
+package com.liferay.watson.web.internal.servlet.taglib;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
