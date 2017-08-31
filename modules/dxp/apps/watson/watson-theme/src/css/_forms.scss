@@ -124,29 +124,6 @@
 						}
 					}
 				}
-
-				.select-wrapper {
-					&.narrow {
-						height: 55px;
-						width: 145px;
-
-						.Select-control {
-							height: 55px;
-							width: 145px;
-						}
-					}
-
-					&.wide {
-						height: 55px;
-						margin-right: 10px;
-						width: 235px;
-
-						.Select-control {
-							height: 55px;
-							width: 235px;
-						}
-					}
-				}
 			}
 
 			.metal-react-container {
@@ -339,7 +316,10 @@
 					width: 100%;
 
 					.file {
-						margin-top: 5%;
+						max-height: 99.5%;
+						max-width: 99.5%;
+						padding-bottom: 1%;
+						padding-top: 1%;
 					}
 				}
 
@@ -380,6 +360,29 @@
 			max-width: 270px;
 			min-width: 175px;
 			width: 100%;
+
+			&.narrow {
+				height: 55px;
+				margin-right: 10px;
+				min-width: 145px;
+				width: 145px;
+
+				.Select-control {
+					height: 55px;
+					width: 145px;
+				}
+			}
+
+			&.wide {
+				height: 55px;
+				margin-right: 10px;
+				width: 235px;
+
+				.Select-control {
+					height: 55px;
+					width: 235px;
+				}
+			}
 		}
 
 		&.textarea {
@@ -558,11 +561,10 @@
 
 	.watson-input {
 		&.rich-editor {
-			flex-direction: column;
-			height: auto;
-
 			@include input-text();
 
+			color: $darkest;
+			flex-direction: column;
 			justify-content: flex-start;
 			max-width: 850px;
 			min-height: 400px;
@@ -579,7 +581,6 @@
 					width: 100%;
 
 					.ql-editor {
-						overflow-y: visible;
 						padding: 12px 0 0;
 					}
 				}

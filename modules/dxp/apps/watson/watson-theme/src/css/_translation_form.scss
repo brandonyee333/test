@@ -138,7 +138,7 @@
 	.input {
 		display: flex;
 		font-size: 16px;
-		max-width: 430px;
+		max-width: 450px;
 		padding-bottom: 5px;
 		padding-left: 4%;
 		position: relative;
@@ -239,7 +239,7 @@
 
 			&.rich-editor {
 				.input-value {
-					margin-top: 35px;
+					margin-top: 10px;
 					max-width: 400px;
 					width: 100%;
 				}
@@ -261,11 +261,10 @@
 
 	.watson-input {
 		&.rich-editor {
-			flex-direction: column;
-			height: auto;
-
 			@include input-text();
 
+			color: $darkest;
+			flex-direction: column;
 			justify-content: flex-start;
 			max-width: 430px;
 			min-height: 520px;
@@ -283,7 +282,6 @@
 					width: 100%;
 
 					.ql-editor {
-						overflow-y: visible;
 						padding: 12px 0 0;
 					}
 				}

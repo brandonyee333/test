@@ -257,9 +257,15 @@
 		.filter-input {
 			padding: 0 0 20px;
 
+			.date-range-wrapper.metal-react-container {
+				.DateRangePicker {
+					max-width: 275px;
+				}
+			}
+
 			.dynamic-select-input-group {
 				.metal-react-container {
-					max-width: 180px;
+					max-width: 215px;
 					width: 100%;
 
 					&:nth-child(2) .Select-control {
@@ -282,7 +288,7 @@
 
 				.watson-button.remove-button {
 					left: unset;
-					right: 16px;
+					right: 0;
 					top: 6px;
 				}
 			}

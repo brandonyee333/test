@@ -2,31 +2,46 @@
 	height: 100%;
 	width: 100%;
 
-	.content {
-		display: block;
-		margin-top: 15px;
+	.metrics-content {
+		height: 100%;
+		width: 100%;
 
-		.map-wrapper {
-			height: 500px;
-			max-height: 900px;
-			max-width: 900px;
-			min-height: 200px;
-			min-width: 200px;
-			width: 100%;
+		.text {
+			@include input-text;
 
-			.map-container {
-				box-shadow: $mapShadow;
-				height: 100%;
+			margin: 60px 0 0 300px;
+		}
+
+		.content {
+			display: block;
+			margin-top: 15px;
+
+			.datatable-type {
+				display: none;
+			}
+
+			.map-wrapper {
+				height: 500px;
+				max-height: 900px;
+				max-width: 900px;
+				min-height: 200px;
+				min-width: 200px;
 				width: 100%;
 
-				.metal-react-container {
+				.map-container {
+					box-shadow: $mapShadow;
 					height: 100%;
 					width: 100%;
 
-					.infoWindow {
-						a {
-							color: $neutralDark;
-							font-size: 17px;
+					.metal-react-container {
+						height: 100%;
+						width: 100%;
+
+						.infoWindow {
+							a {
+								color: $neutralDark;
+								font-size: 17px;
+							}
 						}
 					}
 				}

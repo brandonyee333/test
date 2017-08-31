@@ -6,7 +6,7 @@
 .ql-container {
 	box-sizing: border-box;
 	font-family: Helvetica, Arial, sans-serif;
-	font-size: 13px;
+	font-size: 15px;
 	height: 100%;
 	margin: 0px;
 	position: relative;
@@ -703,7 +703,7 @@
 	content: attr(data-label);
 }
 .ql-snow .ql-picker.ql-header {
-	width: 98px;
+	width: 110px;
 }
 .ql-snow .ql-picker.ql-header .ql-picker-label::before,
 .ql-snow .ql-picker.ql-header .ql-picker-item::before {
@@ -851,7 +851,7 @@
 .ql-snow .ql-tooltip input[type=text] {
 	border: 1px solid #CCC;
 	display: none;
-	font-size: 13px;
+	font-size: 15px;
 	height: 26px;
 	margin: 0px;
 	padding: 3px 5px;
