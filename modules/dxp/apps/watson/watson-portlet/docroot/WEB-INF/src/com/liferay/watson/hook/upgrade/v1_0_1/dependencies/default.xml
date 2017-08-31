@@ -21,8 +21,8 @@
 			<name locale="th">ค้ามนุษย์</name>
 		</watsonListType>
 		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10462">
-			<name locale="en_US">Child Abuse</name>
-			<name locale="th">ทารุณกรรม</name>
+			<name locale="en_US">Sexual Abuse</name>
+			<name locale="th">ล่วงละเมิดทางเพศ</name>
 		</watsonListType>
 		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10463">
 			<name locale="en_US">Informational</name>

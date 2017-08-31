@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<table name="WatsonListType">
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10468">
+		<name locale="en_US">Suspect</name>
+		<name locale="th">ผู้ต้องหา</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10469">
+		<name locale="en_US">Witness</name>
+		<name locale="th">พยาน</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10470">
+		<name locale="en_US">Arrestee</name>
+		<name locale="th">ประชุมการเขียนรายงานสรุป</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10471">
+		<name locale="en_US">Victim</name>
+		<name locale="th">เหยื่อ</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10472">
+		<name locale="en_US">Reporting party</name>
+		<name locale="th">ประชุมการเขียนรายงานสรุป</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10473">
+		<name locale="en_US">Mentioned</name>
+		<name locale="th">กล่าวถึง</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10474">
+		<name locale="en_US">Mentioned</name>
+		<name locale="th">กล่าวถึง</name>
+	</watsonListType>
+</table>
