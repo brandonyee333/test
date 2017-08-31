@@ -85,7 +85,7 @@
 	"private": true,
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/liferay/liferay-plugins-ee.git"
+		"url": "git+https://github.com/liferay/liferay-portal-ee.git"
 	},
 	"scripts": {
 		"build": "NODE_ENV=production webpack",

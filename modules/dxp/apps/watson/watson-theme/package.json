@@ -1,4 +1,5 @@
 {
+	"description": "Watson Theme",
 	"devDependencies": {
 		"gulp": "^3.8.10",
 		"liferay-theme-deps-7.0": "*",
@@ -17,6 +18,10 @@
 	"name": "watson-theme",
 	"publishConfig": {
 		"tag": "7_0_x"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/liferay/liferay-portal-ee.git"
 	},
 	"version": "1.0.0"
 }
