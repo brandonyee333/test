@@ -108,29 +108,30 @@ if (offeringEntryId > 0) {
 	<portlet:namespace />navSelect('newTicket');
 
 	function <portlet:namespace />updateSupportMessage(envLFR, section) {
-		var supportMessageDisplay_5_2 = AUI().one('#<portlet:namespace />support' + section + 'MessageDisplay_5_2');
-		var supportMessageDisplay_6_0 = AUI().one('#<portlet:namespace />support' + section + 'MessageDisplay_6_0');
-		var supportMessageDisplay_6_1 = AUI().one('#<portlet:namespace />support' + section + 'MessageDisplay_6_1');
+		var A = AUI();
 
-		if ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>)) {
-			supportMessageDisplay_5_2.show();
-		}
-		else {
-			supportMessageDisplay_5_2.hide();
-		}
+		var supportMessageDisplay_5_2 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_5_2');
 
-		if ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>)) {
-			supportMessageDisplay_6_0.show();
-		}
-		else {
-			supportMessageDisplay_6_0.hide();
+		if (supportMessageDisplay_5_2) {
+			var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>);
+
+			supportMessageDisplay_5_2.toggle(condition);
 		}
 
-		if ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>)) {
-			supportMessageDisplay_6_1.show();
+		var supportMessageDisplay_6_0 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_0');
+
+		if (supportMessageDisplay_6_0) {
+			var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>);
+
+			supportMessageDisplay_6_0.toggle(condition);
 		}
-		else {
-			supportMessageDisplay_6_1.hide();
+
+		var supportMessageDisplay_6_1 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_1');
+
+		if (supportMessageDisplay_6_1) {
+			var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>);
+
+			supportMessageDisplay_6_1.toggle(condition);
 		}
 	}
 
