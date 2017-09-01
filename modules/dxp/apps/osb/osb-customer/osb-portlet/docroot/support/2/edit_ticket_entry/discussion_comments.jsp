@@ -187,8 +187,8 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 						}
 						%>
 
-						<span class="comment-menu three-dot">
-							<c:if test="<%= !menuOptions.isEmpty() %>">
+						<c:if test="<%= !menuOptions.isEmpty() %>">
+							<span class="comment-menu three-dot">
 								<span class="three-dot-icon">
 									<span style="top: 2px"></span>
 									<span style="top: 8px;"></span>
@@ -218,8 +218,8 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 
 									</ul>
 								</div>
-							</c:if>
-						</span>
+							</span>
+						</c:if>
 
 						<c:if test="<%= ticketEntryDiscussion.getStatus() != WorkflowConstants.STATUS_DRAFT %>">
 
