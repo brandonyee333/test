@@ -320,7 +320,7 @@
 						</div>
 
 						<div class="fl foot-details single-line">
-							<aui:button cssClass="aui-button-input fl" onClick='<%= renderResponse.getNamespace() + "cancel();" %>' value="cancel" />
+							<aui:button cssClass="aui-button-input fl" onClick="Liferay.Util.getWindow().close();" value="cancel" />
 
 							<aui:button cssClass="aui-button-input fr" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value='<%= (accountEnvironmentId == 0) ? "create" : "update" %>' />
 						</div>
@@ -329,158 +329,53 @@
 			</aui:form>
 
 			<c:if test="<%= accountEnvironment != null %>">
-				<aui:script use="aui-base,aui-io">
+				<aui:script>
 					<portlet:namespace />selectPortalVersion(<%= envLFR %>, <%= envAS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envAS)) %>', <%= envDB %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envOS)) %>');
 				</aui:script>
 			</c:if>
 
 			<aui:script>
-				var server = document.getElementById('<portlet:namespace />offeringEntryId');
+				function <portlet:namespace />focusNode(node) {
+					node.focus();
 
-				if (server.options[server.selectedIndex].text.includes('<liferay-ui:message key="social-office" />')) {
-					<portlet:namespace />toggleProduct(false);
-				}
-
-				function <portlet:namespace />cancel() {
-					Liferay.Util.getWindow().close();
+					return false;
 				}
 
 				function <portlet:namespace />toggleProduct(liferay) {
 					var envLFR = document.getElementById("<portlet:namespace />portalVersion");
 
-					if (liferay == false) {
-						envLFR.innerHTML = '*<liferay-ui:message key="so" />:';
-						envLFR.title = '<liferay-ui:message key="social-office" />';
-					}
-					else if (envLFR.innerHTML != '*<liferay-ui:message key="lr" />:') {
-						envLFR.innerHTML = '*<liferay-ui:message key="lr" />:';
-						envLFR.title = '<liferay-ui:message key="liferay-version" />';
-					}
-				}
-
-				function <portlet:namespace />selectEnvOS(envOS) {
-					var envOSCustom = AUI().one('#<portlet:namespace />envOSCustom');
-
-					if (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>') {
-						envOSCustom.show();
-					}
-					else {
-						envOSCustom.hide();
-
-						envOSCustom.val('');
-					}
-				}
-
-				function <portlet:namespace />updateEnvironmentField(selectId, selectDataKey, selectData, selectVal, selectName) {
-					var A = AUI();
-
-					var selectElement = A.one('#' + selectId);
-
-					if (selectElement.getData('key') == selectDataKey) {
-						return;
-					}
-
-					var selectValExists = false;
-
-					selectElement.setData('key', selectDataKey);
-
-					var selectOptions = [];
-
-					selectOptions.push('<option value="0"></option>');
-
-					if (selectData) {
-						for (var i = 0; i < selectData.length; i++) {
-							var value = selectData[i].value;
-							var name = selectData[i].name;
-
-							selectOptions.push('<option value="' + value + '">' + name + '</option>');
-
-							if (value == selectVal) {
-								selectValExists = true;
-							}
+					if (envLFR) {
+						if (liferay == false) {
+							envLFR.innerHTML = '*<liferay-ui:message key="so" />:';
+							envLFR.title = '<liferay-ui:message key="social-office" />';
+						}
+						else if (envLFR.innerHTML != '*<liferay-ui:message key="lr" />:') {
+							envLFR.innerHTML = '*<liferay-ui:message key="lr" />:';
+							envLFR.title = '<liferay-ui:message key="liferay-version" />';
 						}
 					}
-
-					if (!selectValExists && (selectVal > 0)) {
-						selectOptions.push('<option value="' + selectVal + '">' + selectName + '</option>');
-					}
-
-					selectOptions = selectOptions.join('');
-
-					selectElement.empty();
-
-					selectElement.append(selectOptions);
-
-					selectElement.val(String(selectVal));
 				}
 
-				function <portlet:namespace />updateSupportMessage(envLFR) {
-					var supportMessageDisplay_5_2 = AUI().one('#<portlet:namespace />supportMessageDisplay_5_2');
-					var supportMessageDisplay_6_0 = AUI().one('#<portlet:namespace />supportMessageDisplay_6_0');
-					var supportMessageDisplay_6_1 = AUI().one('#<portlet:namespace />supportMessageDisplay_6_1');
+				Liferay.provide(
+					window,
+					'<portlet:namespace />selectEnvOS',
+					function(envOS) {
+						var A = AUI();
 
-					if ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>)) {
-						supportMessageDisplay_5_2.show();
-					}
-					else {
-						supportMessageDisplay_5_2.hide();
-					}
+						var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
 
-					if ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>)) {
-						supportMessageDisplay_6_0.show();
-					}
-					else {
-						supportMessageDisplay_6_0.hide();
-					}
+						if (envOSCustom) {
+							var condition = (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>');
 
-					if ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>)) {
-						supportMessageDisplay_6_1.show();
-					}
-					else {
-						supportMessageDisplay_6_1.hide();
-					}
-				}
+							envOSCustom.toggle(condition);
 
-				function <portlet:namespace />updateTicketEnvLFR(envLFRKey, envLFRData) {
-					var envLFR = AUI().one("#<portlet:namespace />envLFR");
-
-					if (envLFR.getData('key') == envLFRKey) {
-						return;
-					}
-
-					envLFR.setData('key', envLFRKey);
-
-					var envLFROptions = [];
-
-					envLFROptions.push('<option value="0"><liferay-ui:message key="select" /></option>');
-
-					if (envLFRData) {
-						var previousNamePrefix = '';
-
-						for (var i = 0; i < envLFRData.length; i++) {
-							var value = envLFRData[i].value;
-							var name = envLFRData[i].name;
-
-							var namePrefix = name.substring(0, 3);
-
-							if (namePrefix != previousNamePrefix) {
-								envLFROptions.push('<option disabled>--------</option>');
+							if (!condition) {
+								envOSCustom.val('');
 							}
-
-							envLFROptions.push('<option value="' + value + '">' + name + '</option>');
-
-							previousNamePrefix = namePrefix;
 						}
-					}
-
-					envLFROptions = envLFROptions.join('');
-
-					envLFR.empty();
-
-					envLFR.append(envLFROptions);
-
-					envLFR.val(0);
-				}
+					},
+					['aui-base']
+				);
 
 				Liferay.provide(
 					window,
@@ -511,7 +406,7 @@
 								dataType: 'json',
 								method: 'post',
 								on: {
-									success: function(event, id, obj) {
+									success: function() {
 										var response = this.get('responseData');
 
 										<portlet:namespace />updateEnvironmentField("<portlet:namespace />envAS", response["ENV_AS#key"], response["ENV_AS"], envAS, envASName);
@@ -533,9 +428,13 @@
 						var A = AUI();
 
 						if (offeringEntryId <= 0) {
-							A.one("#<portlet:namespace />envLFR").empty();
+							var envLFR = A.one("#<portlet:namespace />envLFR");
 
-							A.one("#<portlet:namespace />envLFR").setData('key', '');
+							if (envLFR) {
+								envLFR.empty();
+
+								envLFR.setData('key', '');
+							}
 
 							return;
 						}
@@ -549,7 +448,7 @@
 								dataType: 'json',
 								method: 'post',
 								on: {
-									success: function(event, id, obj) {
+									success: function() {
 										var response = this.get('responseData');
 
 										<portlet:namespace />toggleProduct(response.portal);
@@ -570,67 +469,61 @@
 						var A = AUI();
 
 						var name = A.one("#<portlet:namespace />name");
-						var offering = A.one('#<portlet:namespace />offeringEntryId');
-						var envLFR = A.one('#<portlet:namespace />envLFR');
-						var envAS = A.one('#<portlet:namespace />envAS');
-						var envDB = A.one('#<portlet:namespace />envDB');
-						var envJVM = A.one('#<portlet:namespace />envJVM');
-						var envOS = A.one('#<portlet:namespace />envOS');
 
-						if (name.val().trim().length == 0) {
+						if (name && name.val().trim().length == 0) {
 							alert('<liferay-ui:message key="please-provide-a-unique-environment-name" />');
 
-							name.focus();
-
-							return false;
+							return <portlet:namespace />focusNode(name);
 						}
 
-						if (offering.val() == 0) {
+						var offering = A.one('#<portlet:namespace />offeringEntryId');
+
+						if (offering && offering.val() == 0) {
 							alert('<liferay-ui:message key="please-choose-a-product" />');
 
-							offering.focus();
-
-							return false;
+							return <portlet:namespace />focusNode(offering);
 						}
 
-						if (envLFR.val() == 0) {
-							alert('<liferay-ui:message key="please-choose-a-liferay-portal-version" />');
+						var envLFR = A.one('#<portlet:namespace />envLFR');
 
-							envLFR.focus();
+						if (envLFR) {
+							if (envLFR.val() == 0) {
+								alert('<liferay-ui:message key="please-choose-a-liferay-portal-version" />');
 
-							return false;
-						}
+								return <portlet:namespace />focusNode(envLFR);
+							}
 
-						if (envOS.val() == 0) {
-							alert('<liferay-ui:message key="please-choose-an-operating-system" />');
+							var envAS = A.one('#<portlet:namespace />envAS');
 
-							envLFR.focus();
+							if (envAS && envAS.val() == 0) {
+								alert('<liferay-ui:message key="please-choose-an-application-server" />');
 
-							return false;
-						}
+								return <portlet:namespace />focusNode(envLFR);
+							}
 
-						if (envJVM.val() == 0) {
-							alert('<liferay-ui:message key="please-choose-a-java-virtual-machine" />');
+							var envDB = A.one('#<portlet:namespace />envDB');
 
-							envLFR.focus();
+							if (envDB && envDB.val() == 0) {
+								alert('<liferay-ui:message key="please-choose-a-database" />');
 
-							return false;
-						}
+								return <portlet:namespace />focusNode(envLFR);
+							}
 
-						if (envAS.val() == 0) {
-							alert('<liferay-ui:message key="please-choose-an-application-server" />');
+							var envJVM = A.one('#<portlet:namespace />envJVM');
 
-							envLFR.focus();
+							if (envJVM && envJVM.val() == 0) {
+								alert('<liferay-ui:message key="please-choose-a-java-virtual-machine" />');
 
-							return false;
-						}
+								return <portlet:namespace />focusNode(envLFR);
+							}
 
-						if (envDB.val() == 0) {
-							alert('<liferay-ui:message key="please-choose-a-database" />');
+							var envOS = A.one('#<portlet:namespace />envOS');
 
-							envLFR.focus();
+							if (envOS && envOS.val() == 0) {
+								alert('<liferay-ui:message key="please-choose-an-operating-system" />');
 
-							return false;
+								return <portlet:namespace />focusNode(envLFR);
+							}
 						}
 
 						A.io.request(
@@ -663,6 +556,137 @@
 					},
 					['aui-io']
 				);
+
+				Liferay.provide(
+					window,
+					'<portlet:namespace />updateEnvironmentField',
+					function(selectId, selectDataKey, selectData, selectVal, selectName) {
+						var A = AUI();
+
+						var selectElement = A.one('#' + selectId);
+
+						if (selectElement && (selectElement.getData('key') != selectDataKey)) {
+							selectElement.setData('key', selectDataKey);
+
+							var selectOptions = [];
+
+							selectOptions.push('<option value="0"></option>');
+
+							var selectValExists = false;
+
+							if (selectData) {
+								for (var i = 0; i < selectData.length; i++) {
+									var value = selectData[i].value;
+									var name = selectData[i].name;
+
+									selectOptions.push('<option value="' + value + '">' + name + '</option>');
+
+									if (value == selectVal) {
+										selectValExists = true;
+									}
+								}
+							}
+
+							if (!selectValExists && (selectVal > 0)) {
+								selectOptions.push('<option value="' + selectVal + '">' + selectName + '</option>');
+							}
+
+							selectOptions = selectOptions.join('');
+
+							selectElement.empty();
+
+							selectElement.append(selectOptions);
+
+							selectElement.val(String(selectVal));
+						}
+					},
+					['aui-base']
+				);
+
+				Liferay.provide(
+					window,
+					'<portlet:namespace />updateSupportMessage',
+					function(envLFR) {
+						var A = AUI();
+
+						var supportMessageDisplay_5_2 = A.one('#<portlet:namespace />supportMessageDisplay_5_2');
+
+						if (supportMessageDisplay_5_2) {
+							var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>);
+
+							supportMessageDisplay_5_2.toggle(condition);
+						}
+
+						var supportMessageDisplay_6_0 = A.one('#<portlet:namespace />supportMessageDisplay_6_0');
+
+						if (supportMessageDisplay_6_0) {
+							var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>);
+
+							supportMessageDisplay_6_0.toggle(condition);
+						}
+
+						var supportMessageDisplay_6_1 = A.one('#<portlet:namespace />supportMessageDisplay_6_1');
+
+						if (supportMessageDisplay_6_1) {
+							var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>);
+
+							supportMessageDisplay_6_1.toggle(condition);
+						}
+					},
+					['aui-base']
+				);
+
+				Liferay.provide(
+					window,
+					'<portlet:namespace />updateTicketEnvLFR',
+					function(envLFRKey, envLFRData) {
+						var A = AUI();
+
+						var envLFR = A.one("#<portlet:namespace />envLFR");
+
+						if (envLFR && (envLFR.getData('key') != envLFRKey)) {
+							envLFR.setData('key', envLFRKey);
+
+							var envLFROptions = [];
+
+							envLFROptions.push('<option value="0"><liferay-ui:message key="select" /></option>');
+
+							if (envLFRData) {
+								var previousNamePrefix = '';
+
+								for (var i = 0; i < envLFRData.length; i++) {
+									var value = envLFRData[i].value;
+									var name = envLFRData[i].name;
+
+									var namePrefix = name.substring(0, 3);
+
+									if (namePrefix != previousNamePrefix) {
+										envLFROptions.push('<option disabled>--------</option>');
+									}
+
+									envLFROptions.push('<option value="' + value + '">' + name + '</option>');
+
+									previousNamePrefix = namePrefix;
+								}
+							}
+
+							envLFROptions = envLFROptions.join('');
+
+							envLFR.empty();
+
+							envLFR.append(envLFROptions);
+
+							envLFR.val(0);
+						}
+					},
+					['aui-base']
+				);
+
+				var server = document.getElementById('<portlet:namespace />offeringEntryId');
+
+				if (server.options[server.selectedIndex].text.includes('<liferay-ui:message key="social-office" />')) {
+					<portlet:namespace />toggleProduct(false);
+				}
 			</aui:script>
 		</c:otherwise>
 	</c:choose>

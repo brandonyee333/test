@@ -94,11 +94,36 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 </c:if>
 
 <aui:script>
-	<portlet:namespace />setUpThreeDotMenus();
+	Liferay.provide(
+		window,
+		'<portlet:namespace />reveal',
+		function(selector, id) {
+			var A = AUI();
 
+			A.all(selector + ' .tab-content-tab').hide();
+
+			var contentId = id.charAt(0).toUpperCase() + id.substr(1);
+
+			var tabContent = A.one(selector + ' .tab-content #<portlet:namespace />content' + contentId);
+
+			if (tabContent) {
+				tabContent.show();
+			}
+
+			A.all(selector + ' .tabs span').removeClass('selected');
+
+			var tab = A.one(selector + ' .tabs #<portlet:namespace />' + id);
+
+			tab.addClass('selected');
+
+			window.scroll(0, 0);
+		},
+		['aui-base']
+	);
+</aui:script>
+
+<aui:script use="aui-base">
 	function <portlet:namespace />setUpThreeDotMenus() {
-		var A = AUI();
-
 		A.all('.three-dot-icon').each(
 			function(icon) {
 				var event = A.Event.getListeners(icon, 'click');
@@ -124,28 +149,5 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		);
 	}
 
-	Liferay.provide(
-		window,
-		'<portlet:namespace />reveal',
-		function(selector, id) {
-			var A = AUI();
-
-			A.all(selector + ' .tab-content-tab').hide();
-
-			var contentId = id.charAt(0).toUpperCase() + id.substr(1);
-
-			var tabContent = A.one(selector + ' .tab-content #<portlet:namespace />content' + contentId);
-
-			tabContent.show();
-
-			A.all(selector + ' .tabs span').removeClass('selected');
-
-			var tab = A.one(selector + ' .tabs #<portlet:namespace />' + id);
-
-			tab.addClass('selected');
-
-			window.scroll(0, 0);
-		},
-		['aui-base']
-	);
+	<portlet:namespace />setUpThreeDotMenus();
 </aui:script>

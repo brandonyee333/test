@@ -165,28 +165,19 @@
 				</div>
 			</aui:form>
 
-			<aui:script use="aui-base">
-				for (var i = 1; i < 4; i++) {
-					var fileField = A.one('#<portlet:namespace />file' + i);
-
-					if (fileField) {
-						fileField.on('change', <portlet:namespace />onFileChange);
-
-						<portlet:namespace />validateFile(fileField);
-					}
-				}
-			</aui:script>
-
 			<aui:script>
 				function <portlet:namespace />onFileChange(event) {
 					<portlet:namespace />validateFile(event.currentTarget);
 				}
+			</aui:script>
 
+			<aui:script use="aui-base">
 				function <portlet:namespace />validateFile(fileField) {
 					var value = fileField.val();
 
 					if (value) {
 						var extension = value.substring(value.lastIndexOf('.')).toLowerCase();
+
 						var validExtensions = ['<%= StringUtil.merge(PrefsPropsUtil.getStringArray(PropsKeys.DL_FILE_EXTENSIONS, StringPool.COMMA), "', '") %>'];
 
 						if ((A.Array.indexOf(validExtensions, '*') == -1) && (A.Array.indexOf(validExtensions, extension) == -1)) {
@@ -194,6 +185,16 @@
 
 							fileField.val('');
 						}
+					}
+				}
+
+				for (var i = 1; i < 4; i++) {
+					var fileField = A.one('#<portlet:namespace />file' + i);
+
+					if (fileField) {
+						fileField.on('change', <portlet:namespace />onFileChange);
+
+						<portlet:namespace />validateFile(fileField);
 					}
 				}
 			</aui:script>

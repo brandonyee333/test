@@ -220,8 +220,8 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 	</aui:form>
 </c:if>
 
-<aui:script>
-	<c:if test='<%= SessionMessages.contains(renderRequest, "requestProcessed") %>'>
+<c:if test='<%= SessionMessages.contains(renderRequest, "requestProcessed") %>'>
+	<aui:script>
 		Liferay.Util.getWindow().close();
-	</c:if>
-</aui:script>
+	</aui:script>
+</c:if>

@@ -179,26 +179,22 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 %>
 
 <aui:script>
-	if (window.parent.document.getElementById('<portlet:namespace />loginDialog')) {
-		window.parent.<portlet:namespace />openDialog(3);
-	}
-
 	function <portlet:namespace />closeTicket(resolution, addCommentBody) {
 		document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
 		document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
 		document.<portlet:namespace />fm1.<portlet:namespace />resolution.value = resolution;
 		document.<portlet:namespace />fm1.<portlet:namespace />body.value = addCommentBody;
+
 		submitForm(document.<portlet:namespace />fm1);
 	}
 
 	function <portlet:namespace />pinElement(id, pinOffset) {
 		var element = document.getElementById(id);
 
+		element.classList.remove('pinned');
+
 		if (window.pageYOffset >= pinOffset) {
 			element.classList.add('pinned');
-		}
-		else {
-			element.classList.remove('pinned');
 		}
 	}
 
@@ -216,42 +212,17 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 		}
 	}
 
-	function <portlet:namespace />setUpThreeDotMenus() {
-		var A = AUI();
-
-		A.all('.three-dot-icon').each(
-			function(icon) {
-				var event = A.Event.getListeners(icon, 'click');
-
-				var parent = icon.get('parentNode');
-
-				if (!event) {
-					icon.on(
-						'click',
-						function() {
-							parent.toggleClass('open-drop-down');
-						}
-					);
-
-					icon.on(
-						'clickoutside',
-						function() {
-							parent.removeClass('open-drop-down');
-						}
-					);
-				}
-			}
-		);
+	if (window.parent.document.getElementById('<portlet:namespace />loginDialog')) {
+		window.parent.<portlet:namespace />openDialog(3);
 	}
 </aui:script>
 
 <aui:script use="aui-base">
-	var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />ticketFade', '<portlet:namespace />ticketFilter'];
-	var offsetElementIds = ['<portlet:namespace />showMoreButtonContainer', '<portlet:namespace />ticketTabContent'];
+	var advSearchIcon = A.one('#<portlet:namespace />advSearchIcon');
 
-	var advSearchIcon = document.getElementById('<portlet:namespace />advSearchIcon');
-
-	advSearchIcon.classList.add('active');
+	if (advSearchIcon) {
+		advSearchIcon.classList.add('active');
+	}
 
 	window.addEventListener(
 		'resize',
@@ -260,6 +231,10 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 		},
 		false
 	);
+
+	var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />ticketFade', '<portlet:namespace />ticketFilter'];
+
+	var offsetElementIds = ['<portlet:namespace />showMoreButtonContainer', '<portlet:namespace />ticketTabContent'];
 
 	window.addEventListener(
 		'scroll',
@@ -270,6 +245,32 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 	);
 
 	<c:if test="<%= clockedIn %>">
+		function <portlet:namespace />setUpThreeDotMenus() {
+			A.all('.three-dot-icon').each(
+				function(icon) {
+					var event = A.Event.getListeners(icon, 'click');
+
+					var parent = icon.get('parentNode');
+
+					if (!event) {
+						icon.on(
+							'click',
+							function() {
+								parent.toggleClass('open-drop-down');
+							}
+						);
+
+						icon.on(
+							'clickoutside',
+							function() {
+								parent.removeClass('open-drop-down');
+							}
+						);
+					}
+				}
+			);
+		}
+
 		<portlet:namespace />setUpThreeDotMenus();
 	</c:if>
 </aui:script>

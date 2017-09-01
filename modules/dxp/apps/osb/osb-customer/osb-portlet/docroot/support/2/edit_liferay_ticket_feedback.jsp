@@ -78,20 +78,33 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEnt
 </aui:form>
 
 <aui:script>
-	function <portlet:namespace />toggleLiferayFeedback(satisfied) {
-		var A = AUI();
+	Liferay.provide(
+		window,
+		'<portlet:namespace />toggleLiferayFeedback',
+		function(satisfied) {
+			var A = AUI();
 
-		if (satisfied == <%= TicketFeedbackConstants.SATISFIED_YES %>) {
-			A.one('#<portlet:namespace />answerNotSatisfied').hide();
-		}
-		else {
-			A.one('#<portlet:namespace />answerSatisfied').hide();
-		}
+			if (satisfied == <%= TicketFeedbackConstants.SATISFIED_YES %>) {
+				A.one('#<portlet:namespace />answerNotSatisfied').hide();
+			}
+			else {
+				A.one('#<portlet:namespace />answerSatisfied').hide();
+			}
 
-		A.one('#<portlet:namespace />commentSection').show();
+			var commentSection = A.one('#<portlet:namespace />commentSection');
 
-		A.one('#<portlet:namespace />liferayTicketFeedbackButtons').hide();
-	}
+			if (commentSection) {
+				commentSection.show();
+			}
+
+			var liferayTicketFeedbackButtons = A.one('#<portlet:namespace />liferayTicketFeedbackButtons');
+
+			if (liferayTicketFeedbackButtons) {
+				liferayTicketFeedbackButtons.hide();
+			}
+		},
+		['aui-base']
+	);
 
 	Liferay.provide(
 		window,
@@ -111,7 +124,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEnt
 					dataType: 'json',
 					method: 'post',
 					on: {
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							document.<portlet:namespace />fm.<portlet:namespace />satisfied.value = response.satisfied;

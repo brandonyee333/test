@@ -182,8 +182,8 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 	</div>
 </aui:form>
 
-<aui:script>
-	<c:if test="<%= ticketCallId > 0 %>">
+<c:if test="<%= ticketCallId > 0 %>">
+	<aui:script>
 		window.close();
-	</c:if>
-</aui:script>
+	</aui:script>
+</c:if>

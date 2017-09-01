@@ -31,13 +31,13 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 		</div>
 
 		<div>
-			<aui:input checked="true" name="dialogRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_YES %>" />
+			<aui:input checked="true" name="dialogYesRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_YES %>" />
 
 			<liferay-ui:message key="yes" />
 		</div>
 
 		<div>
-			<aui:input name="dialogRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_NO + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_NO %>" />
+			<aui:input name="dialogNoRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_NO + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_NO %>" />
 
 			<liferay-ui:message key="no" />
 		</div>
@@ -63,19 +63,6 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 </div>
 
 <aui:script>
-	function <portlet:namespace />toggleDialogSatisfied(satisfied) {
-		var A = AUI();
-
-		if (satisfied == <%= TicketFeedbackConstants.SATISFIED_YES %>) {
-			A.one('#<portlet:namespace />dialogAnswerNotSatisfied').hide();
-			A.one('#<portlet:namespace />dialogAnswerSatisfied').show();
-		}
-		else {
-			A.one('#<portlet:namespace />dialogAnswerNotSatisfied').show();
-			A.one('#<portlet:namespace />dialogAnswerSatisfied').hide();
-		}
-	}
-
 	Liferay.provide(
 		window,
 		'<portlet:namespace />submitLiferayTicketFeedback',
@@ -84,13 +71,10 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 
 			<portlet:namespace />closeDialog(1);
 
-			var satisfied = '';
+			var satisfied = document.getElementById('<portlet:namespace />dialogNoRadioButton').value;
 
 			if (document.getElementById('<portlet:namespace />dialogYesRadioButton').checked) {
 				satisfied = document.getElementById('<portlet:namespace />dialogYesRadioButton').value;
-			}
-			else {
-				satisfied = document.getElementById('<portlet:namespace />dialogNoRadioButton').value;
 			}
 
 			A.io.request(
@@ -117,5 +101,28 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 			);
 		},
 		['aui-io']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />toggleDialogSatisfied,'
+		function(satisfaction) {
+			var A = AUI();
+
+			var satisfied = (satisfaction == <%= TicketFeedbackConstants.SATISFIED_YES %>);
+
+			var dialogAnswerSatisfied = A.one('#<portlet:namespace />dialogAnswerSatisfied');
+
+			if (dialogAnswerSatisfied) {
+				dialogAnswerSatisfied.toggle(satisfied);
+			}
+
+			var dialogAnswerNotSatisfied = A.one('#<portlet:namespace />dialogAnswerNotSatisfied');
+
+			if (dialogAnswerNotSatisfied) {
+				dialogAnswerNotSatisfied.toggle(!satisfied);
+			}
+		},
+		['aui-base']
 	);
 </aui:script>
