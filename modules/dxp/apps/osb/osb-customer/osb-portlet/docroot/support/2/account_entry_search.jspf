@@ -430,7 +430,7 @@ Date lastEnabledDate = calendar.getTime();
 					else if ((type == 'hidden') || (type == 'select-one') || (type == 'text') || (type == 'textarea')) {
 						var name = item.get('name');
 
-						if (name == '<portlet:namespace /><%= displayTerms.COUNTRY_ID %>' || name == '<portlet:namespace /><%= displayTerms.REGION_ID %>') {
+						if ((name == '<portlet:namespace /><%= displayTerms.COUNTRY_ID %>') || (name == '<portlet:namespace /><%= displayTerms.REGION_ID %>')) {
 							item.val(0);
 						}
 						else {
