@@ -30,6 +30,14 @@ apply plugin: CoverallsPlugin
 allprojects {
 	apply plugin: JacocoPlugin
 
+	configurations {
+		jolokiaAgent
+	}
+
+	dependencies {
+		jolokiaAgent group: 'org.jolokia', name: 'jolokia-jvm', version: '1.3.7', classifier: 'agent'
+	}
+
 	jacoco {
 		toolVersion = "0.7.8"
 	}
@@ -40,6 +48,11 @@ allprojects {
 		maven {
 			url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
 		}
+	}
+
+	task copyJolokiaAgent(type: Copy) {
+		from configurations.jolokiaAgent
+		into "${rootDir}/pulpo-connector-de-docker/jolokia/lib"
 	}
 }
 
@@ -131,6 +144,8 @@ if (GradleUtil.getProperty(project, "com.liferay.pulpo.connector.de.docker.apply
 	}
 
 	buildAppDockerImage {
+		dependsOn copyJolokiaAgent
+
 		buildAppDockerImage.dependsOn subprojects.findAll{!it.childProjects}.deploy
 	}
 
@@ -201,12 +216,13 @@ task runDocker(type: Exec) {
 
 	javaOpts += ' ' + project.getProperty('com.liferay.pulpo.connector.de.jacoco.opts')
 
+	javaOpts += ' ' + project.getProperty('com.liferay.pulpo.connector.de.jolokia.opts')
+
 	if (project.hasProperty('debug')) {
 		javaOpts += ' ' + project.getProperty('com.liferay.pulpo.connector.de.debug.opts')
 	}
 
 	commandLine 'docker', 'run',
-			'-h', "localhost",
  			'--add-host', "lcs-portal-pulpo:$osbLcsPortletIp",
 			'--add-host', "lcs-gateway-pulpo:$osbLcsGatewayWebIp",
 			'-e', "JACOCO_DIR=${rootDir}/build/jacoco",
@@ -227,6 +243,7 @@ task runDocker(type: Exec) {
 			'-p', '5005:5005',
 			'-p', '8080:8080',
 			'-p', '8098:8098',
+			'-p', '8778:8778',
 			'-p', '11311:11311',
 			'-v', "${rootDir}/build/jacoco:/jacoco",
 			'-v', "${getClientDeployDir()}:/liferay/deploy",
