@@ -5,10 +5,6 @@ addons:
         packages:
             - google-chrome-stable
 
-cache.directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-
 jdk: oraclejdk8
 
 language: java
@@ -60,17 +56,25 @@ before_script:
     # Build Docker Image
     - ./gradlew buildAppDockerImage
 
+script:
+    # Fail when a line fails
+    - set pipefail
+
     # Run Docker Image
     - export PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME=dev
     - export PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME=dev
     - travis_wait ./gradlew runDocker
 
-script:
     - ./gradlew testIntegration
 
 before_cache:
     - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
     - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 after_success:
     - ./gradlew dumpJacoco

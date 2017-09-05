@@ -53,6 +53,11 @@ allprojects {
 	task copyJolokiaAgent(type: Copy) {
 		from configurations.jolokiaAgent
 		into "${rootDir}/pulpo-connector-de-docker/jolokia/lib"
+		rename { fileName ->
+			def artifacts = configurations.jolokiaAgent.resolvedConfiguration.resolvedArtifacts
+			def artifact = artifacts.find { it.file.name == fileName }
+			"jolokia-${artifact.classifier}.${artifact.extension}"
+		}
 	}
 }
 
