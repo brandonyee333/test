@@ -345,6 +345,14 @@ public class FileEntryStagedModelDataHandler
 			return;
 		}
 
+		Map<Long, Long> repositoryIds =
+			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
+				Repository.class);
+
+		long repositoryId = MapUtil.getLong(
+			repositoryIds, fileEntry.getRepositoryId(),
+			portletDataContext.getScopeGroupId());
+
 		Map<Long, Long> folderIds =
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
 				Folder.class);
@@ -421,14 +429,13 @@ public class FileEntryStagedModelDataHandler
 
 						FileEntry existingTitleFileEntry =
 							FileEntryUtil.fetchByR_F_T(
-								portletDataContext.getScopeGroupId(), folderId,
-								fileEntry.getTitle());
+								repositoryId, folderId, fileEntry.getTitle());
 
 						if (existingTitleFileEntry == null) {
 							existingTitleFileEntry =
 								FileEntryUtil.fetchByR_F_FN(
-									portletDataContext.getScopeGroupId(),
-									folderId, fileEntry.getFileName());
+									repositoryId, folderId,
+									fileEntry.getFileName());
 						}
 
 						if (existingTitleFileEntry != null) {
@@ -447,9 +454,9 @@ public class FileEntryStagedModelDataHandler
 							fileEntry.getTitle(), fileEntry.getExtension());
 
 					importedFileEntry = _dlAppLocalService.addFileEntry(
-						userId, portletDataContext.getScopeGroupId(), folderId,
-						fileEntry.getFileName(), fileEntry.getMimeType(),
-						fileEntryTitle, fileEntry.getDescription(), null, is,
+						userId, repositoryId, folderId, fileEntry.getFileName(),
+						fileEntry.getMimeType(), fileEntryTitle,
+						fileEntry.getDescription(), null, is,
 						fileEntry.getSize(), serviceContext);
 
 					if (fileEntry.isInTrash()) {
@@ -595,10 +602,10 @@ public class FileEntryStagedModelDataHandler
 					fileEntry.getTitle(), fileEntry.getExtension());
 
 				importedFileEntry = _dlAppLocalService.addFileEntry(
-					userId, portletDataContext.getScopeGroupId(), folderId,
-					fileEntry.getFileName(), fileEntry.getMimeType(),
-					fileEntryTitle, fileEntry.getDescription(), null, is,
-					fileEntry.getSize(), serviceContext);
+					userId, repositoryId, folderId, fileEntry.getFileName(),
+					fileEntry.getMimeType(), fileEntryTitle,
+					fileEntry.getDescription(), null, is, fileEntry.getSize(),
+					serviceContext);
 			}
 
 			for (DLPluggableContentDataHandler dlPluggableContentDataHandler :
