@@ -123,7 +123,7 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 	}
 
 	protected void removeOldWatsonListTypes() throws Exception {
-		long[] deleteableListTypeIds = new long[] {9369, 9370, 9371, 9372};
+		long[] deleteableListTypeIds = {9369, 9370, 9371, 9372};
 
 		for (long listTypeId : deleteableListTypeIds) {
 			WatsonListTypeLocalServiceUtil.deleteWatsonListType(listTypeId);
