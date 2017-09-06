@@ -136,8 +136,6 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 			Set<Long> addedWatsonIncidentIds = new HashSet<>();
 
 			for (WatsonResource currentWatsonResource : watsonResources) {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 				long watsonIncidentId = currentWatsonResource.getWatsonIncidentId();
 
 				if ((watsonIncidentId > 0) && !addedWatsonIncidentIds.contains(watsonIncidentId)) {
@@ -265,7 +263,7 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 		}
 	}
 
-	protected HashMap<String, String> errors = new HashMap<String, String>();
+	protected HashMap<String, String> errors = new HashMap<>();
 
 }
 %>

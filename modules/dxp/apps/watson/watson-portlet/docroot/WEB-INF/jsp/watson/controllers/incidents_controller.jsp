@@ -193,7 +193,11 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		JSONArray responseObject = JSONFactoryUtil.createJSONArray();
 
 		if (actionType.equals("report")) {
-			responseObject = WatsonPerson.getMetricsArray();
+			String field = ParamUtil.getString(request, "field", "rescued");
+
+			String dateField = ParamUtil.getString(request, "dateField", "dateRescued");
+
+			responseObject = WatsonPerson.getMetricsArray(field, dateField);
 		}
 		else {
 			List<WatsonAddress> watsonAddresses = new ArrayList<>();

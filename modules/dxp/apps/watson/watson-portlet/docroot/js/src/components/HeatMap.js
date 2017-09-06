@@ -31,14 +31,15 @@ class HeatMap extends JSXComponent {
 			Liferay.Watson.mapComponent.heatMap = new google.maps.visualization.HeatmapLayer(
 				{
 					data: this.formatHeatMapData(data),
-					map: Liferay.Watson.mapComponent.map
+					map: Liferay.Watson.mapComponent.map,
+					radius: 40
 				}
 			);
 
 			Liferay.Watson.mapComponent.markers = new MarkerClusterer(
 				Liferay.Watson.mapComponent.map,
 				this.formatMarkerData(data),
-				{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'}
+				{imagePath: ''}
 			);
 		}
 		else {
@@ -112,7 +113,7 @@ class HeatMap extends JSXComponent {
 		return (
 			<div class="content-container">
 				<div class="content-header">
-					<ContentHeader headerStringLeft={Liferay.Language.get('heat-map')} headerStringRight={Liferay.Language.get('view')} />
+					<ContentHeader headerStringLeft={Liferay.Language.get('heatmap')} headerStringRight={Liferay.Language.get('view')} />
 
 					<SelectInput
 						omitBlankOption={true}

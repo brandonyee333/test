@@ -616,7 +616,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		}
 	}
 
-	protected HashMap<String, String> errors = new HashMap<String, String>();
+	protected HashMap<String, String> errors = new HashMap<>();
 
 	private static long _increment(String year) throws Exception {
 		return CounterLocalServiceUtil.increment(getBaseModelClass().getName() + StringPool.POUND + year);

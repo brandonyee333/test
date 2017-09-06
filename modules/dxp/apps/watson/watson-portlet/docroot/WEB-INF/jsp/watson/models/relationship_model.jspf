@@ -17,6 +17,22 @@
 <%!
 public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 
+	WatsonRelationship() {
+		super(new com.liferay.watson.model.impl.WatsonRelationshipImpl());
+	}
+
+	WatsonRelationship(com.liferay.watson.model.WatsonRelationship watsonRelationship) {
+		super(watsonRelationship);
+	}
+
+	WatsonRelationship(WatsonRelationship watsonRelationship) {
+		super(watsonRelationship);
+	}
+
+	WatsonRelationship(WatsonRelationshipBaseModel watsonRelationship) {
+		super(watsonRelationship);
+	}
+
 	public static final int MAX_FIELD_LENGTH_TEXTAREA = 4000;
 
 	public static void clearWatsonRelationships(long watsonIncidentId, long classPK) throws Exception {
@@ -433,22 +449,6 @@ public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 	}
 
 	protected HashMap<String, String> errors = new HashMap<>();
-
-	WatsonRelationship() {
-		super(new com.liferay.watson.model.impl.WatsonRelationshipImpl());
-	}
-
-	WatsonRelationship(com.liferay.watson.model.WatsonRelationship watsonRelationship) {
-		super(watsonRelationship);
-	}
-
-	WatsonRelationship(WatsonRelationship watsonRelationship) {
-		super(watsonRelationship);
-	}
-
-	WatsonRelationship(WatsonRelationshipBaseModel watsonRelationship) {
-		super(watsonRelationship);
-	}
 
 	private static Object[] getPropertiesFromJSONObject(JSONObject jsonObject) throws Exception {
 		Iterator<?> keys = jsonObject.keys();

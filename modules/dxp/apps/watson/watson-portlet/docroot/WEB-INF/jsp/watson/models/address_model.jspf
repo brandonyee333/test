@@ -207,8 +207,6 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 			Set<Long> addedWatsonIncidentIds = new HashSet<>();
 
 			for (WatsonAddress currentWatsonAddress : watsonAddresses) {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 				long watsonIncidentId = currentWatsonAddress.getWatsonIncidentId();
 
 				if ((watsonIncidentId > 0) && !addedWatsonIncidentIds.contains(watsonIncidentId)) {

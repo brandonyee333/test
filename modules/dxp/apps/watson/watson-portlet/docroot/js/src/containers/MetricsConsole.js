@@ -9,7 +9,7 @@ import MetricsReport from '../components/MetricsReport';
 import Navigation from '../components/Navigation';
 import SidebarHeader from '../components/SidebarHeader';
 
-import {fetchIncidentMetrics} from '../actions/incidents';
+import {fetchIncidentMetrics, updateIncidentsDataManually} from '../actions/incidents';
 import {updateFilter} from '../actions/display';
 
 class MetricsConsole extends JSXComponent {
@@ -31,8 +31,10 @@ class MetricsConsole extends JSXComponent {
 		);
 	}
 
-	disposed() {
+	detached() {
 		this.clearHeatmap();
+
+		this.props.updateIncidentsDataManually();
 	}
 
 	getCurrentView(action, data, loading, viewBy) {
@@ -52,6 +54,7 @@ class MetricsConsole extends JSXComponent {
 			currentView = (
 				<MetricsReport
 					data={data}
+					loading={loading}
 				/>
 			);
 		}
@@ -87,7 +90,7 @@ class MetricsConsole extends JSXComponent {
 
 		const {viewBy} = state;
 
-		const nav = [
+		const consoleNav = [
 			{
 				collapsible: false,
 				href: `${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`,
@@ -122,7 +125,7 @@ class MetricsConsole extends JSXComponent {
 					}
 
 					{!action &&
-						<Navigation entries={nav} />
+						<Navigation entries={consoleNav} />
 					}
 				</div>
 
@@ -205,6 +208,11 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				updateFilter(action)
+			);
+		},
+		updateIncidentsDataManually: () => {
+			dispatch(
+				updateIncidentsDataManually({metricsData: []})
 			);
 		}
 	};

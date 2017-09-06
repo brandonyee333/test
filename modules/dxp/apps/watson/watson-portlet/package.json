@@ -46,6 +46,7 @@
 		"metal-soy": "^2.6.3",
 		"metal-state": "^2.6.0",
 		"metal-structs": "^1.0.1",
+		"metal-tabs": "^2.3.1",
 		"metal-uri": "^2.0.2",
 		"metal-useragent": "^2.1.3",
 		"moment": "^2.18.1",

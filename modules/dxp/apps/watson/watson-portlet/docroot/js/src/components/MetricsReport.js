@@ -1,12 +1,26 @@
-import {isArray} from 'lodash';
+import {bindAll, isArray} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
 import Table from 'metal-datatable';
+import Tabs from 'metal-tabs';
 
 import ContentHeader from './ContentHeader';
 
 class MetricsReport extends JSXComponent {
+	created() {
+		bindAll(
+			this,
+			'handleUpdateView'
+		);
+	}
+
+	handleUpdateView(event) {
+		console.log(event);
+	}
+
 	render() {
-		const {data} = this.props;
+		const {data, loading} = this.props;
+
+		const {tabs} = this.state;
 
 		return (
 			<div class="content-container">
@@ -15,10 +29,21 @@ class MetricsReport extends JSXComponent {
 				</div>
 
 				<div class="content" id="table">
-					<Table
-						data={isArray(data) ? data : [{loading: Liferay.Language.get('loading')}]}
-						elementClasses="table-wrapper"
+					<Tabs
+						onClickItem={this.handleUpdateView}
+						tabs={tabs}
+						types="pills"
 					/>
+
+					{!loading &&
+						<Table
+							data={isArray(data) ? data : [{loading: Liferay.Language.get('loading')}]} elementClasses="table-wrapper"
+						/>
+					}
+
+					{loading &&
+						<span>{Liferay.Language.get('loading')}</span>
+					}
 				</div>
 			</div>
 		);
@@ -26,7 +51,24 @@ class MetricsReport extends JSXComponent {
 }
 
 MetricsReport.PROPS = {
-	data: Config.array()
+	data: Config.array(),
+	loading: Config.bool().value(false)
+};
+
+MetricsReport.STATE = {
+	tabs: Config.array().value(
+		[
+			{
+				label: Liferay.Language.get('rescued')
+			},
+			{
+				label: Liferay.Language.get('accepted-to-zoe')
+			},
+			{
+				label: Liferay.Language.get('active')
+			}
+		]
+	)
 };
 
 export default MetricsReport;

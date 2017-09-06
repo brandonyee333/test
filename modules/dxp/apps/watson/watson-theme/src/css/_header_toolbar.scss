@@ -25,6 +25,42 @@
 			}
 		}
 
+		.module-dropdown {
+			color: $neutralLight;
+			font-family: $primaryFontStack;
+			font-size: 15px;
+			margin-left: auto;
+			margin-right: 2%;
+			max-height: 55px;
+			min-width: 75px;
+			transition: color 0.2s $transitionSoft;
+
+			.dropdown {
+				color: $neutralLight;
+
+				.caret {
+					margin-left: 4px;
+				}
+
+				&:focus, &:hover {
+					color: $neutralDark;
+					text-decoration: none;
+				}
+
+				li {
+					text-align: center;
+
+					a {
+						color: $neutralLight;
+
+						&:focus, &:hover {
+							color: $neutralDark;
+						}
+					}
+				}
+			}
+		}
+
 		.watson-logout {
 			color: $neutralLight;
 			font-family: $primaryFontStack;
@@ -35,6 +71,10 @@
 
 			.dropdown {
 				color: $neutralLight;
+
+				.caret {
+					margin-left: 4px;
+				}
 
 				&:focus, &:hover {
 					color: $neutralDark;
@@ -54,7 +94,8 @@
 
 	.watson-toggle {
 		&.language-toggle {
-			margin-left: auto;
+			border-left: 1px solid $neutralLighter;
+			border-right: 1px solid $neutralLighter;
 			margin-right: 15px;
 		}
 	}

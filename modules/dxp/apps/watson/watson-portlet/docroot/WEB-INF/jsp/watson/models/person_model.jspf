@@ -188,15 +188,15 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return jsonObject;
 	}
 
-	public static JSONArray getMetricsArray() throws Exception {
+	public static JSONArray getMetricsArray(String field, String dateField) throws Exception {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		JSONObject formattedJSONObject = JSONFactoryUtil.createJSONObject();
 
 		JSONObject yearJSONObject = JSONFactoryUtil.createJSONObject();
 
-		for (int year = 2010; year < 2018; year++) {
-			DynamicQuery personDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "rescued", true});
+		for (int year = 2010; year <= 2018; year++) {
+			DynamicQuery personDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, field, true});
 
 			Calendar calendar = Calendar.getInstance();
 
@@ -210,21 +210,19 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 
 			Date endDate = calendar.getTime();
 
-			personDynamicQuery.add(RestrictionsFactoryUtil.between("dateRescued", startDate, endDate));
+			personDynamicQuery.add(RestrictionsFactoryUtil.between(dateField, startDate, endDate));
 
-			yearJSONObject.put(String.valueOf(year), baseModelAlloyServiceInvoker.executeDynamicQueryCount(personDynamicQuery));
+			List<WatsonPerson> watsonPeople = getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(personDynamicQuery));
+
+			yearJSONObject.put(String.valueOf(year), getIdJSONArray(watsonPeople));
 		}
 
-		formattedJSONObject.put("numberRescued", "number rescued");
+		formattedJSONObject.put("numberRescued", LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), "rescued", new String[0]));
 		formattedJSONObject.put("year", yearJSONObject);
 
 		jsonArray.put(formattedJSONObject);
 
 		return jsonArray;
-	}
-
-	public static List<WatsonListTypeRel> getCountryIds(long watsonPersonId) throws Exception {
-		return getRels(watsonPersonId, "countryID");
 	}
 
 	public static String getFormattedDate(Date date, Locale locale) {
@@ -253,6 +251,26 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return jsonArray;
 	}
 
+	public static JSONArray getIdJSONArray(List<WatsonPerson> watsonPeople) throws Exception {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (WatsonPerson watsonPerson : watsonPeople) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("id", watsonPerson.getWatsonPersonId());
+			jsonObject.put("name", watsonPerson.getPrimaryName());
+			jsonObject.put("watsonIncidentId", watsonPerson.getWatsonIncidentId());
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
+	}
+
+	public static List<WatsonListTypeRel> getCountryIds(long watsonPersonId) throws Exception {
+		return getRels(watsonPersonId, "countryID");
+	}
+
 	public static List<WatsonListTypeRel> getNames(long watsonPersonId) throws Exception {
 		return getRels(watsonPersonId, "name");
 	}
@@ -276,8 +294,6 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 			Set<Long> addedWatsonIncidentIds = new HashSet<>();
 
 			for (WatsonPerson currentWatsonPerson : watsonPeople) {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 				long watsonIncidentId = currentWatsonPerson.getWatsonIncidentId();
 
 				if ((watsonIncidentId > 0) && !addedWatsonIncidentIds.contains(watsonIncidentId)) {
@@ -450,16 +466,8 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return null;
 	}
 
-	public List<WatsonListTypeRel> getCountryIds() throws Exception {
-		return WatsonPerson.getCountryIds(getWatsonPersonId());
-	}
-
-	public List<WatsonListTypeRel> getNames() throws Exception {
-		return WatsonPerson.getNames(getWatsonPersonId());
-	}
-
 	public String getNamesString() throws Exception {
-		return WatsonListTypeRel.getRelValueString(getNames(), LocaleUtil.getMostRelevantLocale());
+		return WatsonListTypeRel.getRelValueString(getNames(getWatsonPersonId()), LocaleUtil.getMostRelevantLocale());
 	}
 
 	public JSONObject getPersonFormErrors() {
@@ -472,14 +480,10 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return jsonObject;
 	}
 
-	public List<WatsonListTypeRel> getPhoneNumbers() throws Exception {
-		return getPhoneNumbers(getWatsonPersonId());
-	}
-
 	public String getPrimaryName() throws Exception {
 		String secondaryName = StringPool.BLANK;
 
-		List<WatsonListTypeRel> names = getRels(getWatsonPersonId(), "name");
+		List<WatsonListTypeRel> names = getNames(getWatsonPersonId());
 
 		if (names.size() > 0) {
 			for (WatsonListTypeRel name : names) {
@@ -493,10 +497,6 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		}
 
 		return secondaryName;
-	}
-
-	public List<WatsonListTypeRel> getSocialMediaAccounts() throws Exception {
-		return getSocialMediaAccounts(getWatsonPersonId());
 	}
 
 	public boolean isValid(List<WatsonListTypeRel> countryIDWatsonListTypeRels, List<WatsonListTypeRel> nameWatsonListTypeRels, List<WatsonListTypeRel> phoneNumberWatsonListTypeRels, List<WatsonListTypeRel> socialMediaAccountWatsonListTypeRels, List<WatsonRelationship> watsonRelationships) throws Exception {
