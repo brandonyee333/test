@@ -237,23 +237,6 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 	</c:choose>
 </div>
 
-<aui:script use="aui-base">
-	<c:if test="<%= needsResponseCount > 0 %>">
-		<portlet:namespace />loadTickets('needsResponse');
-	</c:if>
-
-	<c:choose>
-		<c:when test="<%= liferayIncOrg || supportPartnerWorker %>">
-			<portlet:namespace />loadTickets('primary');
-			<portlet:namespace />loadTickets('auxiliary');
-			<portlet:namespace />loadTickets('watching');
-		</c:when>
-		<c:otherwise>
-			<portlet:namespace />loadTickets('openTickets');
-		</c:otherwise>
-	</c:choose>
-</aui:script>
-
 <aui:script>
 	function <portlet:namespace />checkOnClick(element, event) {
 		var node = <portlet:namespace />getSelectionNode();
@@ -310,12 +293,12 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 
 				headerElement.style.top = offsetFromPrev + 'px';
 
-				headerElement.classList.remove('aui-helper-hidden');
+				headerElement.classList.remove('hide');
 			}
 			else {
 				element.classList.remove('visibility-hidden');
 
-				headerElement.classList.add('aui-helper-hidden');
+				headerElement.classList.add('hide');
 			}
 		}
 	}
@@ -330,7 +313,7 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 	}
 
 	function <portlet:namespace />readyPinning(divId) {
-		var nodes = document.querySelectorAll(".section-title.pinned");
+		var nodes = document.querySelectorAll('.section-title.pinned');
 
 		var prevNode;
 
@@ -352,6 +335,21 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			false
 		);
 	}
+
+	<c:if test="<%= needsResponseCount > 0 %>">
+		<portlet:namespace />loadTickets('needsResponse');
+	</c:if>
+
+	<c:choose>
+		<c:when test="<%= liferayIncOrg || supportPartnerWorker %>">
+			<portlet:namespace />loadTickets('primary');
+			<portlet:namespace />loadTickets('auxiliary');
+			<portlet:namespace />loadTickets('watching');
+		</c:when>
+		<c:otherwise>
+			<portlet:namespace />loadTickets('openTickets');
+		</c:otherwise>
+	</c:choose>
 
 	Liferay.provide(
 		window,
@@ -377,10 +375,10 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 				ticketsURL,
 				{
 					on: {
-						start: function(event, id, obj) {
+						start: function() {
 							tabContentDiv.html('<img src="<%= themeDisplay.getPathThemeImages() + "/aui/loading_indicator.gif" %>" style="display: block; margin: auto;" />');
 						},
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							tabContentDiv.html(response);
