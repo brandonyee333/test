@@ -41,6 +41,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import org.openqa.selenium.By;
@@ -55,6 +56,7 @@ import org.openqa.selenium.WebElement;
 	features = "features/assets_end_to_end.feature",
 	plugin = {"com.cucumber.listener.ExtentCucumberFormatter", "pretty"}
 )
+@Ignore
 @RunAsClient
 @RunWith(CukeSpace.class)
 public class AssetConnectorTest {
