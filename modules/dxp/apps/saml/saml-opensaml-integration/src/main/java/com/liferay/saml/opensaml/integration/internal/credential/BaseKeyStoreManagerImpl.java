@@ -41,18 +41,13 @@ public abstract class BaseKeyStoreManagerImpl implements KeyStoreManager {
 	protected String getSamlKeyStorePath() {
 		String keyStorePath = samlConfiguration.keyStorePath();
 
+		String liferayHome = PropsUtil.get(PropsKeys.LIFERAY_HOME);
+
 		if (Validator.isNull(keyStorePath)) {
-			keyStorePath = _LIFERAY_HOME.concat("/data/keystore.jks");
+			return liferayHome.concat("/data/keystore.jks");
 		}
 
-		if (keyStorePath.contains(_LIFERAY_HOME)) {
-			String liferayHome = PropsUtil.get(PropsKeys.LIFERAY_HOME);
-
-			keyStorePath = StringUtil.replace(
-				keyStorePath, _LIFERAY_HOME, liferayHome);
-		}
-
-		return keyStorePath;
+		return StringUtil.replace(keyStorePath, _LIFERAY_HOME, liferayHome);
 	}
 
 	protected String getSamlKeyStoreType() {
