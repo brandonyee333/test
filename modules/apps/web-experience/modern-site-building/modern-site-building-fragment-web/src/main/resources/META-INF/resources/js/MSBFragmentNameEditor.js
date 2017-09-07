@@ -31,36 +31,33 @@ class MSBFragmentNameEditor extends Component {
 		const form = document.getElementById(`${this.namespace}addForm`);
 		const formData = new FormData(form);
 
-		fetch(
-			this.addMSBFragmentEntryURL,
-			{
-				body: formData,
-				credentials: 'include',
-				method: 'POST',
-			}
-		)
-		.then(response => response.json())
-		.then(({error = null, msbFragmentEntryId = null}) => {
-			this.error = error;
+		fetch(this.addMSBFragmentEntryURL, {
+			body: formData,
+			credentials: 'include',
+			method: 'POST',
+		})
+			.then(response => response.json())
+			.then(({ error = null, msbFragmentEntryId = null }) => {
+				this.error = error;
 
-			if (!error) {
-				const uri = new Uri(this.editMSBFragmentEntryURL);
+				if (!error) {
+					const uri = new Uri(this.editMSBFragmentEntryURL);
 
-				uri.addParameterValue(
-					`${this.namespace}msbFragmentEntryId`,
-					msbFragmentEntryId
-				);
+					uri.addParameterValue(
+						`${this.namespace}msbFragmentEntryId`,
+						msbFragmentEntryId,
+					);
 
-				const uriString = uri.toString();
+					const uriString = uri.toString();
 
-				if (Liferay.SPA) {
-					Liferay.SPA.app.navigate(uriString);
-					this.disposeInternal();
-				} else {
-					location.href = uriString;
+					if (Liferay.SPA) {
+						Liferay.SPA.app.navigate(uriString);
+						this.disposeInternal();
+					} else {
+						location.href = uriString;
+					}
 				}
-			}
-		});
+			});
 	}
 }
 
@@ -114,7 +111,7 @@ MSBFragmentNameEditor.STATE = {
 	 * @memberOf MSBFragmentEditor
 	 * @type {!string}
 	 */
-	spritemap: Config.string().required()
+	spritemap: Config.string().required(),
 };
 
 Soy.register(MSBFragmentNameEditor, templates);

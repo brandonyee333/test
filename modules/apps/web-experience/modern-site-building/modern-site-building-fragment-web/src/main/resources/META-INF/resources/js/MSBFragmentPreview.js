@@ -10,9 +10,9 @@ import templates from './MSBFragmentPreview.soy';
  * @type {Object}
  */
 const SIZE_RATIO = {
-	'desktop': {width: 16, height: 9},
-	'tablet-portrait': {width: 4, height: 3},
-	'mobile-portrait': {width: 10, height: 16},
+	desktop: { width: 16, height: 9 },
+	'tablet-portrait': { width: 4, height: 3 },
+	'mobile-portrait': { width: 10, height: 16 },
 };
 
 /**
@@ -30,14 +30,11 @@ class MSBFragmentPreview extends Component {
 	 * @inheritDoc
 	 */
 	attached() {
-		this._updatePreview = debounce(
-			this._updatePreview.bind(this),
-			100
-		);
+		this._updatePreview = debounce(this._updatePreview.bind(this), 100);
 
 		this._updatePreviewSize = debounce(
 			this._updatePreviewSize.bind(this),
-			100
+			100,
 		);
 
 		window.addEventListener('resize', this._updatePreviewSize);
@@ -70,7 +67,7 @@ class MSBFragmentPreview extends Component {
 	 * @param {{delegateTarget: Element}} event
 	 * @protected
 	 */
-	_handlePreviewSizeButtonClick({delegateTarget}) {
+	_handlePreviewSizeButtonClick({ delegateTarget }) {
 		this._currentPreviewSize = delegateTarget.dataset.previewSize || null;
 	}
 
@@ -91,7 +88,9 @@ class MSBFragmentPreview extends Component {
 	 * @protected
 	 */
 	_updatePreview() {
-		this._previewContent = 'data:text/html;charset=utf-8,' + encodeURI(`
+		this._previewContent =
+			'data:text/html;charset=utf-8,' +
+			encodeURI(`
 			<!DOCTYPE html>
 			<html>
 			<head>
@@ -120,10 +119,10 @@ class MSBFragmentPreview extends Component {
 				const wrapper = this.refs.wrapper;
 
 				if (ratio && wrapper) {
-					const {width, height} = wrapper.getBoundingClientRect();
+					const { width, height } = wrapper.getBoundingClientRect();
 					const scale = Math.min(
-						(width * 0.9) / ratio.width,
-						(height * 0.8) / ratio.height
+						width * 0.9 / ratio.width,
+						height * 0.8 / ratio.height,
 					);
 					preview.style.width = `${ratio.width * scale}px`;
 					preview.style.height = `${ratio.height * scale}px`;
@@ -182,7 +181,9 @@ MSBFragmentPreview.STATE = {
 	 * @protected
 	 * @type {?string}
 	 */
-	_previewContent: Config.string().internal().value(''),
+	_previewContent: Config.string()
+		.internal()
+		.value(''),
 
 	/**
 	 * Ratio of the preview being rendered.
@@ -194,8 +195,7 @@ MSBFragmentPreview.STATE = {
 	 * @protected
 	 * @type {?string}
 	 */
-	_currentPreviewSize: Config
-		.oneOf(PREVIEW_SIZES)
+	_currentPreviewSize: Config.oneOf(PREVIEW_SIZES)
 		.internal()
 		.value(null)
 		.setter('_setPreviewSize'),
@@ -208,7 +208,9 @@ MSBFragmentPreview.STATE = {
 	 * @protected
 	 * @type {?Array<string>}
 	 */
-	_previewSizes: Config.array().internal().value(PREVIEW_SIZES),
+	_previewSizes: Config.array()
+		.internal()
+		.value(PREVIEW_SIZES),
 };
 
 Soy.register(MSBFragmentPreview, templates);

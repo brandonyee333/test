@@ -16,7 +16,7 @@ class AceEditor extends Component {
 		this._editorDocument = null;
 		this._handleDocumentChanged = this._handleDocumentChanged.bind(this);
 
-		AUI().use('aui-ace-editor', (A) => {
+		AUI().use('aui-ace-editor', A => {
 			const editor = new A.AceEditor({
 				boundingBox: this.refs.wrapper,
 				mode: this.syntax,

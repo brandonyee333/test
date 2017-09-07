@@ -15,8 +15,8 @@ class SourceEditor extends Component {
 	 * modified. It simply propagates the event.
 	 * @param {{content:string}} Updated editor content.
 	 */
-	_handleContentChanged({content}) {
-		this.emit('contentChanged', {content});
+	_handleContentChanged({ content }) {
+		this.emit('contentChanged', { content });
 	}
 }
 

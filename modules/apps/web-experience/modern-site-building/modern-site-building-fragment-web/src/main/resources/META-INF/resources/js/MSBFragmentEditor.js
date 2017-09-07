@@ -36,7 +36,7 @@ class MSBFragmentEditor extends Component {
 	 * @param {string} content
 	 * @protected
 	 */
-	_handleCSSChanged({content}) {
+	_handleCSSChanged({ content }) {
 		this._css = content;
 		this._handleContentChanged();
 	}
@@ -46,7 +46,7 @@ class MSBFragmentEditor extends Component {
 	 * @param {string} content
 	 * @protected
 	 */
-	_handleHTMLChanged({content}) {
+	_handleHTMLChanged({ content }) {
 		this._html = content;
 		this._handleContentChanged();
 	}
@@ -56,7 +56,7 @@ class MSBFragmentEditor extends Component {
 	 * @param {string} content
 	 * @protected
 	 */
-	_handleJSChanged({content}) {
+	_handleJSChanged({ content }) {
 		this._js = content;
 		this._handleContentChanged();
 	}
@@ -118,7 +118,9 @@ MSBFragmentEditor.STATE = {
 	 * @protected
 	 * @type {?string}
 	 */
-	_css: Config.string().internal().value(''),
+	_css: Config.string()
+		.internal()
+		.value(''),
 
 	/**
 	 * Property that contains the updated HTML content of
@@ -129,7 +131,9 @@ MSBFragmentEditor.STATE = {
 	 * @protected
 	 * @type {?string}
 	 */
-	_html: Config.string().internal().value(''),
+	_html: Config.string()
+		.internal()
+		.value(''),
 
 	/**
 	 * Property that contains the updated JS content of
@@ -140,7 +144,9 @@ MSBFragmentEditor.STATE = {
 	 * @protected
 	 * @type {?string}
 	 */
-	_js: Config.string().internal().value(''),
+	_js: Config.string()
+		.internal()
+		.value(''),
 };
 
 Soy.register(MSBFragmentEditor, templates);
