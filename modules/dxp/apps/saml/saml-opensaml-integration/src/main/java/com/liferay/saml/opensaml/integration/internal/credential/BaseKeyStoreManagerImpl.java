@@ -18,6 +18,7 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.saml.runtime.configuration.SamlConfiguration;
 import com.liferay.saml.runtime.credential.KeyStoreManager;
@@ -41,9 +42,14 @@ public abstract class BaseKeyStoreManagerImpl implements KeyStoreManager {
 		String keyStorePath = samlConfiguration.keyStorePath();
 
 		if (Validator.isNull(keyStorePath)) {
+			keyStorePath = _LIFERAY_HOME.concat("/data/keystore.jks");
+		}
+
+		if (keyStorePath.contains(_LIFERAY_HOME)) {
 			String liferayHome = PropsUtil.get(PropsKeys.LIFERAY_HOME);
 
-			keyStorePath = liferayHome.concat("/data/keystore.jks");
+			keyStorePath = StringUtil.replace(
+				keyStorePath, _LIFERAY_HOME, liferayHome);
 		}
 
 		return keyStorePath;
@@ -61,5 +67,7 @@ public abstract class BaseKeyStoreManagerImpl implements KeyStoreManager {
 	}
 
 	protected SamlConfiguration samlConfiguration;
+
+	private static final String _LIFERAY_HOME = "${liferay.home}";
 
 }

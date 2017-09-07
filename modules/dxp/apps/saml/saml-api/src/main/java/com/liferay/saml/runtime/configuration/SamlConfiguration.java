@@ -29,7 +29,8 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface SamlConfiguration {
 
 	@Meta.AD(
-		deflt = "", description = "saml-key-store-path-description",
+		deflt = "${liferay.home}/data/keystore.jks",
+		description = "saml-key-store-path-description",
 		id = "saml.keystore.path", name = "saml-key-store-path",
 		required = false
 	)
