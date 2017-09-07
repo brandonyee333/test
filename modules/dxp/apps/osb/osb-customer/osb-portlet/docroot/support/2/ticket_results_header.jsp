@@ -48,7 +48,7 @@ if (banner) {
 		<div class="table <%= liferayIncOrg ? "view-liferay" : "" %>">
 			<div class="row">
 				<c:if test="<%= supportManager %>">
-					<div class="column search-results-header ticket-column select toggle-bulk-edit <%= bulkEdit ? "" : "aui-helper-hidden" %>"></div>
+					<div class="column search-results-header ticket-column select toggle-bulk-edit <%= bulkEdit ? "" : "hide" %>"></div>
 				</c:if>
 
 				<div class="column search-results-header severity ticket-column"></div>
@@ -154,7 +154,7 @@ if (banner) {
 </div>
 
 <c:if test="<%= !first %>">
-	<div class="aui-helper-hidden section-title pinned <%= first ? topCssClass : "other" %>" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(id) %>PinnedHeader">
+	<div class="hide section-title pinned <%= first ? topCssClass : "other" %>" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(id) %>PinnedHeader">
 		<liferay-ui:message key="<%= HtmlUtil.escape(label) %>" /> (<%= (count > 0) ? count : StringPool.DASH %>)
 
 		<c:if test="<%= (!advancedSearch && (count > 0)) || ((results != null) && !results.isEmpty()) %>">

@@ -30,10 +30,10 @@
 		</tr>
 		<tr>
 			<td>
-				<input id="<portlet:namespace /><%= displayTerms.NAME %>" name="<portlet:namespace /><%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
+				<aui:input name="<%= displayTerms.NAME %>" type="text" value="<%= displayTerms.getName() %>" />
 			</td>
 			<td>
-				<input id="<portlet:namespace /><%= displayTerms.CONTENT %>" name="<portlet:namespace /><%= displayTerms.CONTENT %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getContent()) %>" />
+				<aui:input name="<%= displayTerms.CONTENT %>" type="text" value="<%= displayTerms.getContent() %>" />
 			</td>
 		</tr>
 	</table>

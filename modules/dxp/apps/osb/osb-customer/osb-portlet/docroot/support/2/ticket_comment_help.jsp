@@ -112,6 +112,6 @@
 	</table>
 
 	<div>
-		<input class="aui-button-input" onClick="window.close();" type="button" value="<liferay-ui:message key="close" />" />
+		<aui:button cssClass="aui-button-input" onClick="window.close();" value="close" />
 	</div>
 </div>
