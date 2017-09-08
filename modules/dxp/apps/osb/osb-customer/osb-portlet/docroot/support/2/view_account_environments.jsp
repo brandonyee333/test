@@ -37,7 +37,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 	%>
 
 		<div class="account-environment">
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<div class="content-column-content">
 					<span class="txt-b txt-up"><liferay-ui:message key="name" />:</span>
 
@@ -47,7 +47,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 
 			<br />
 
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<div class="aui-w33 content-column">
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up"><liferay-ui:message key="liferay-version" />:</span>
@@ -93,7 +93,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 				</div>
 			</div>
 
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<div class="content-column-content">
 					<div class="fl">
 						<span class="txt-b txt-up"><liferay-ui:message key="portal-ext" />:</span>
@@ -146,9 +146,11 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 						editAccountEnvironmentURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						editAccountEnvironmentURL.setParameter("accountEnvironmentId", String.valueOf(accountEnvironment.getAccountEnvironmentId()));
 						editAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
+
+						String editEnvironmentConfigurationOnClick = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
 						%>
 
-						<input class="aui-button-input edit-button" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-environment-configuration" />', '<%= editAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" type="button" value="<liferay-ui:message key="edit" />" />
+						<aui:button cssClass="aui-button-input edit-button" onClick="<%= editEnvironmentConfigurationOnClick %>" value="edit" />
 					</c:if>
 
 					<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.DELETE) %>">
@@ -161,7 +163,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 						String deleteURL = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") +"')) { submitForm(document." + renderResponse.getNamespace() + "fm, '" + deleteAccountEnvironmentURL.toString() + "'); } else { return false; }";
 						%>
 
-						<input class="aui-button-input edit-button" onClick="<%= deleteURL %>" type="button" value="<liferay-ui:message key="delete" />" />
+						<aui:button cssClass="aui-button-input edit-button" onClick="<%= deleteURL %>" value="delete" />
 					</c:if>
 				</div>
 			</div>
@@ -180,30 +182,27 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 	addAccountEnvironmentURL.setParameter("mvcPath", "/support/2/edit_account_environment.jsp");
 	addAccountEnvironmentURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	addAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
+
+	String addEnvironmentDetailsOnClick = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "add-environment-details") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
 	%>
 
-	<input class="aui-button-input fr" onClick="<portlet:namespace />openDialog('<liferay-ui:message key="add-environment-details" />', '<%= addAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" type="button" value="<liferay-ui:message key="add" />" />
+	<aui:button cssClass="aui-button-input fr" onClick="<%= addEnvironmentDetailsOnClick %>" value="add" />
 </c:if>
 
 <aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />openDialog',
-		function(title, url, popupId) {
-			Liferay.Util.openWindow(
-				{
-					cache: false,
-					dialog: {
-						align: Liferay.Util.Window.ALIGN_CENTER,
-						centered: true,
-						resizable: true
-					},
-					id: popupId,
-					title: title,
-					uri: url
-				}
-			);
-		},
-		['aui-dialog', 'aui-overlay-manager', 'liferay-util-window']
-	);
+	function <portlet:namespace />openDialog(title, url, popupId) {
+		Liferay.Util.openWindow(
+			{
+				cache: false,
+				dialog: {
+					align: Liferay.Util.Window.ALIGN_CENTER,
+					centered: true,
+					resizable: true
+				},
+				id: popupId,
+				title: title,
+				uri: url
+			}
+		);
+	}
 </aui:script>
