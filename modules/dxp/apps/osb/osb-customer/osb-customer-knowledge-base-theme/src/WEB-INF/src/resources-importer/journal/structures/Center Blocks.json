@@ -11,7 +11,7 @@
 				"en_US": "Section Header"
 			},
 			"localizable": true,
-			"name": "sectionHeader",
+			"name": "section_header",
 			"nestedFields": [
 				{
 					"dataType": "link-to-page",
@@ -21,7 +21,7 @@
 						"en_US": "Section Page Link"
 					},
 					"localizable": true,
-					"name": "sectionPageLink",
+					"name": "section_page_link",
 					"predefinedValue": {
 						"en_US": ""
 					},
@@ -45,7 +45,7 @@
 						"en_US": "Section Image"
 					},
 					"localizable": true,
-					"name": "sectionImage",
+					"name": "section_image",
 					"predefinedValue": {
 						"en_US": ""
 					},
@@ -69,7 +69,7 @@
 						"en_US": "Section Content"
 					},
 					"localizable": true,
-					"name": "sectionContent",
+					"name": "section_content",
 					"predefinedValue": {
 						"en_US": ""
 					},
