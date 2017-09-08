@@ -11,7 +11,7 @@
 				"en_US": " Section Header "
 			},
 			"localizable": true,
-			"name": "sectionHeader",
+			"name": "section_header",
 			"nestedFields": [
 				{
 					"dataType": "html",
@@ -21,7 +21,7 @@
 						"en_US": " Section Content "
 					},
 					"localizable": true,
-					"name": "sectionContent",
+					"name": "section_content",
 					"predefinedValue": {
 						"en_US": " "
 					},

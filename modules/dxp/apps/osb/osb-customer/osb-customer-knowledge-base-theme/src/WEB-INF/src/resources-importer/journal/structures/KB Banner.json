@@ -11,7 +11,7 @@
 				"en_US": " Banner Header "
 			},
 			"localizable": true,
-			"name": "bannerHeader",
+			"name": "banner_header",
 			"nestedFields": [
 				{
 					"dataType": "document-library",
@@ -21,7 +21,7 @@
 						"en_US": " Banner Image "
 					},
 					"localizable": true,
-					"name": "bannerImage",
+					"name": "banner_image",
 					"predefinedValue": {
 						"en_US": " "
 					},
@@ -45,7 +45,7 @@
 						"en_US": " Banner Content "
 					},
 					"localizable": true,
-					"name": "bannerContent",
+					"name": "banner_content",
 					"predefinedValue": {
 						"en_US": " "
 					},
