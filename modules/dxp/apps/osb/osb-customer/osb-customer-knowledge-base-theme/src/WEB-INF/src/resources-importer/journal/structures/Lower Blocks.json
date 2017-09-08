@@ -8,7 +8,7 @@
 			"dataType": "string",
 			"indexType": "text",
 			"label": {
-				"en_US": " Section Header "
+				"en_US": "Section Header"
 			},
 			"localizable": true,
 			"name": "section_header",
@@ -18,12 +18,12 @@
 					"fieldNamespace": "ddm",
 					"indexType": "text",
 					"label": {
-						"en_US": " Section Content "
+						"en_US": "Section Content"
 					},
 					"localizable": true,
 					"name": "section_content",
 					"predefinedValue": {
-						"en_US": " "
+						"en_US": ""
 					},
 					"readOnly": false,
 					"repeatable": false,
@@ -33,13 +33,13 @@
 						"en_US": ""
 					},
 					"tip": {
-						"en_US": " The content for this section. "
+						"en_US": "The content for this section."
 					},
 					"type": "ddm-text-html"
 				}
 			],
 			"predefinedValue": {
-				"en_US": " "
+				"en_US": ""
 			},
 			"readOnly": false,
 			"repeatable": true,
@@ -49,7 +49,7 @@
 				"en_US": ""
 			},
 			"tip": {
-				"en_US": " The header for this section. "
+				"en_US": "The header for this section."
 			},
 			"type": "text"
 		}

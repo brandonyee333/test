@@ -8,7 +8,7 @@
 			"dataType": "string",
 			"indexType": "text",
 			"label": {
-				"en_US": " Banner Header "
+				"en_US": "Banner Header"
 			},
 			"localizable": true,
 			"name": "banner_header",
@@ -18,12 +18,12 @@
 					"fieldNamespace": "ddm",
 					"indexType": "keyword",
 					"label": {
-						"en_US": " Banner Image "
+						"en_US": "Banner Image"
 					},
 					"localizable": true,
 					"name": "banner_image",
 					"predefinedValue": {
-						"en_US": " "
+						"en_US": ""
 					},
 					"readOnly": false,
 					"repeatable": false,
@@ -33,7 +33,7 @@
 						"en_US": ""
 					},
 					"tip": {
-						"en_US": " The image for the banner. "
+						"en_US": "The image for the banner."
 					},
 					"type": "ddm-documentlibrary"
 				},
@@ -42,12 +42,12 @@
 					"fieldNamespace": "ddm",
 					"indexType": "text",
 					"label": {
-						"en_US": " Banner Content "
+						"en_US": "Banner Content"
 					},
 					"localizable": true,
 					"name": "banner_content",
 					"predefinedValue": {
-						"en_US": " "
+						"en_US": ""
 					},
 					"readOnly": false,
 					"repeatable": false,
@@ -57,13 +57,13 @@
 						"en_US": ""
 					},
 					"tip": {
-						"en_US": " The content for the banner. "
+						"en_US": "The content for the banner."
 					},
 					"type": "ddm-text-html"
 				}
 			],
 			"predefinedValue": {
-				"en_US": " "
+				"en_US": ""
 			},
 			"readOnly": false,
 			"repeatable": false,
@@ -73,7 +73,7 @@
 				"en_US": ""
 			},
 			"tip": {
-				"en_US": " The header for the banner. "
+				"en_US": "The header for the banner."
 			},
 			"type": "text"
 		}
