@@ -460,7 +460,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		}
 	}
 
-	protected HashMap<String, String> errors = new HashMap<>();
+	protected HashMap<String, String> errors = new HashMap<String, String>();
 
 }
 %>
