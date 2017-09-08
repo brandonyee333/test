@@ -1,4 +1,4 @@
-import {bindAll} from 'lodash';
+import {bindAll, isEmpty} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 
@@ -29,8 +29,17 @@ class DependentSelectInput extends JSXComponent {
 	render() {
 		const {props} = this;
 
+		const {
+			defaultOptions,
+			loading,
+			requestOptions,
+			showDefaultOptions
+		} = props;
+
+		const options = (showDefaultOptions && isEmpty(requestOptions)) ? defaultOptions : requestOptions;
+
 		return (
-			<SelectInput {...props} options={props.options} optionsLoading={props.loading} />
+			<SelectInput {...props} options={options} optionsLoading={loading} />
 		);
 	}
 
@@ -50,22 +59,22 @@ class DependentSelectInput extends JSXComponent {
 }
 
 DependentSelectInput.PROPS = {
+	defaultOptions: Config.object(),
 	inputId: Config.string(),
 	loading: Config.bool(),
 	onChange: Config.func(),
-	options: Config.object(),
 	parentInputValue: Config.string(),
+	requestOptions: Config.object(),
+	showDefaultOptions: Config.bool(),
 	value: Config.string().value('')
 };
 
-DependentSelectInput.STATE = {
-	inputOptions: Config.array().value([])
-};
+DependentSelectInput.STATE = {};
 
 function mapStateToProps(state, props) {
 	const {listTypeValue, parentInputValue} = props;
 
-	const options = state.getIn(['list_types', 'data', parentInputValue, listTypeValue]) || {};
+	const requestOptions = state.getIn(['list_types', 'data', parentInputValue, listTypeValue]) || {};
 
 	return {
 		loading: state.getIn(
@@ -74,7 +83,7 @@ function mapStateToProps(state, props) {
 				'loading'
 			]
 		),
-		options
+		requestOptions
 	};
 }
 

@@ -1132,12 +1132,15 @@
 						label: '${AlloyLanguageUtil.formatUnicode("ethnicity")}',
 						listTypeValue: '${WatsonPerson.modelClassName.concat(".ethnicityRegion")}',
 						options: {
-							${0}: {
-								label: '${AlloyLanguageUtil.formatUnicode("not-available")}',
-								value: ${0}
+							<c:set value='${WatsonListType.fetch(10475)}' var="ethnicityWatsonListTypeDefault" />
+
+							${ethnicityWatsonListTypeDefault.watsonListTypeId}: {
+								label: '${ethnicityWatsonListTypeDefault.getName(locale)}',
+								value: '${ethnicityWatsonListTypeDefault.watsonListTypeId}'
 							}
 						},
 						parentInputId: 'countryWatsonListTypeId',
+						showDefaultOptions: ${true},
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("if-the-country-of-ethnicity-is-thailand-or-burma-provide-a-more-specific-ethnicity")}',
 						translatable: ${false},
 						type: 'DEPENDENT_SELECT_INPUT',

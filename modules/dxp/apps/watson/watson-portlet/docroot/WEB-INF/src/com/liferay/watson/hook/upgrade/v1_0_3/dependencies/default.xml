@@ -29,4 +29,8 @@
 		<name locale="en_US">Mentioned</name>
 		<name locale="th">กล่าวถึง</name>
 	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.ethnicityRegion" watsonListTypeId="10475">
+		<name locale="en_US">Other</name>
+		<name locale="th">อื่นๆ</name>
+	</watsonListType>
 </table>

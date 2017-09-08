@@ -519,15 +519,22 @@ class Form extends JSXComponent {
 					);
 				}
 				else if (currentType === inputTypeConstants.dependentSelectInput) {
-					const {listTypeValue, parentInputId} = currentInputConfig;
+					const {
+						listTypeValue,
+						options: defaultOptions,
+						parentInputId,
+						showDefaultOptions
+					} = currentInputConfig;
 
 					const parentInputValue = formData[parentInputId];
 
 					inputComponent = (
 						<DependentSelectInput
 							{...config}
+							defaultOptions={defaultOptions}
 							listTypeValue={listTypeValue}
 							parentInputValue={parentInputValue}
+							showDefaultOptions={showDefaultOptions}
 						/>
 					);
 				}
