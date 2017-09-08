@@ -43,10 +43,8 @@ if (ticketEntry != null) {
 		<c:if test="<%= liferayIncOrg %>">
 			<c:choose>
 				<c:when test="<%= ticketFeedbacks.isEmpty() %>">
-					<div>
-						<span class="txt-b">
-							<liferay-ui:message key="no-feedback-was-provided" />
-						</span>
+					<div class="txt-b>
+						<liferay-ui:message key="no-feedback-was-provided" />
 					</div>
 				</c:when>
 				<c:otherwise>
@@ -57,7 +55,7 @@ if (ticketEntry != null) {
 					%>
 
 						<c:if test="<%= curTicketFeedback.getSatisfied() != TicketFeedbackConstants.SATISFIED_NOT_APPLICABLE %>">
-							<div class="aui-helper-clearfix">
+							<div class="clearfix">
 								<div class="aui-w100 content-column">
 									<div class="content-column-content">
 										<span class="display-name txt-b">
@@ -78,7 +76,7 @@ if (ticketEntry != null) {
 								</div>
 							</div>
 
-							<div class="aui-helper-clearfix">
+							<div class="clearfix">
 								<div class="aui-w50 content-column">
 									<div class="content-column-content left-column">
 										<span class="indent txt-b">
@@ -92,7 +90,7 @@ if (ticketEntry != null) {
 								</div>
 							</div>
 
-							<div class="aui-helper-clearfix">
+							<div class="clearfix">
 								<div class="content-column">
 									<div class="content-column-content left-column">
 										<span class="indent txt-b">
@@ -121,7 +119,7 @@ if (ticketEntry != null) {
 					%>
 
 					<c:if test="<%= (ticketFeedback != null) && (ticketFeedback.getSatisfied() == TicketFeedbackConstants.SATISFIED_NOT_APPLICABLE) %>">
-						<div class="aui-helper-clearfix">
+						<div class="clearfix">
 							<div class="aui-w100 content-column">
 								<div class="content-column-content">
 									<span class="txt-b txt-up">
@@ -134,7 +132,7 @@ if (ticketEntry != null) {
 							</div>
 						</div>
 
-						<div class="aui-helper-clearfix">
+						<div class="clearfix">
 							<div class="aui-w50 content-column">
 								<div class="content-column-content left-column">
 									<span class="txt-b txt-up">

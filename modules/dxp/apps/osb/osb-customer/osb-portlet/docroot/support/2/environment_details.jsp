@@ -45,11 +45,11 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 
 				<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 
-				<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 			</c:when>
 			<c:otherwise>
-				<select id="<portlet:namespace />accountEntryId" name="<portlet:namespace />accountEntryId" onChange="javascript:<portlet:namespace />selectAccountEnvironment();">
-					<option value=""></option>
+				<aui:select name="accountEntryId" onChange='<%= renderResponse.getNamespace() + "selectAccountEnvironment();" %>'>
+					<aui:option value="" />
 
 					<%
 					for (AccountEntry accountEntry : accountEntries) {
@@ -58,13 +58,13 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 						}
 					%>
 
-						<option <%= (accountEntry.getAccountEntryId() == accountEntryId) ? "selected" : "" %> value="<%= accountEntry.getAccountEntryId() %>"><%= HtmlUtil.escape(accountEntry.getName()) %></option>
+						<aui:option label="<%= accountEntry.getName() %>" selected="<%= accountEntry.getAccountEntryId() == accountEntryId %>" value="<%= accountEntry.getAccountEntryId() %>" />
 
 					<%
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</c:otherwise>
 		</c:choose>
 	</div>

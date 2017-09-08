@@ -47,13 +47,13 @@
 				</h1>
 
 				<div>
-					<textarea id="<portlet:namespace />body" name="<portlet:namespace />body" style="height: 250px; width: 750px;" wrap="soft"><%= SupportUtil.getEscalationDetails() %></textarea>
+					<aui:input label="<%= SupportUtil.getEscalationDetails() %>" name="body" style="height: 250px; width: 750px;" type="textarea" wrap="soft" />
 				</div>
 
 				<div>
-					<input class="aui-button-input" type="submit" value="<liferay-ui:message key="escalate" />" />
+					<aui:button cssClass="aui-button-input" type="submit" value="escalate" />
 
-					<input class="aui-button-input" onClick="window.close();" type="button" value="<liferay-ui:message key="cancel" />" />
+					<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
 				</div>
 			</div>
 		</aui:form>

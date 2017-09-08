@@ -162,7 +162,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 							</aui:fieldset>
 						</div>
 
-						<div class="aui-helper-clearfix aui-w75">
+						<div class="aui-w75 clearfix">
 
 							<%
 							Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
@@ -284,7 +284,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 					<aui:input helpMessage="choose-this-option-if-you-wish-to-show-newest-comments-first" ignoreRequestValue="<%= true %>" label="reverse-comment-order" name="reverseCommentOrder" type="checkbox" value="<%= reverseCommentOrder %>" />
 				</aui:fieldset>
 
-				<input class="aui-button-input" type="submit" value="<liferay-ui:message key="save" />" />
+				<aui:button cssClass="aui-button-input" type="submit" value="save" />
 			</aui:form>
 		</c:otherwise>
 	</c:choose>

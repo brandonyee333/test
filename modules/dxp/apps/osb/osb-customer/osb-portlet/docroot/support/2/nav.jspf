@@ -65,7 +65,7 @@
 		<span class="nav-label"><liferay-ui:message key="tickets" /></span>
 
 		<c:if test="<%= !searchFilters.isEmpty() || supportPartnerWorker || !developerAccountEntryIds.isEmpty() %>">
-			<ul class="aui-helper-hidden nav-submenu" id="<portlet:namespace />homeSubMenu">
+			<ul class="hide nav-submenu" id="<portlet:namespace />homeSubMenu">
 				<li class="arrow"></li>
 
 				<li>

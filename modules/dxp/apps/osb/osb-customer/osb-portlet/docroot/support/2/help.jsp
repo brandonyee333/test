@@ -38,8 +38,13 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 			<br />
 
 			<c:if test="<%= osbAdmin %>">
+
+				<%
+				String editOnclick = renderResponse.getNamespace() + "toggleSection('" + renderResponse.getNamespace() + "helpDisplay', '" + renderResponse.getNamespace() + "helpEditDisplay');";
+				%>
+
 				<div class="fr">
-					<input onClick="<portlet:namespace />toggleSection('<portlet:namespace />helpDisplay', '<portlet:namespace />helpEditDisplay');" type="button" value="<liferay-ui:message key="edit" />" />
+					<aui:button name="edit" onClick="<%= editOnclick %>" value="edit" />
 				</div>
 			</c:if>
 
@@ -81,8 +86,8 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 		</div>
 
 		<c:if test="<%= osbAdmin %>">
-			<div class="aui-helper-hidden help-edit-display" id="<portlet:namespace />helpEditDisplay">
-				<div class="aui-helper-clearfix callout-content">
+			<div class="help-edit-display hide" id="<portlet:namespace />helpEditDisplay">
+				<div class="callout-content clearfix">
 					<br />
 
 					<div class="aui-w30 content-column">
@@ -91,7 +96,7 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 						</div>
 
 						<div>
-							<input id="<portlet:namespace />customerUserGuide" name="<portlet:namespace />customerUserGuide" type="file" />
+							<aui:input name="customerUserGuide" type="file" />
 						</div>
 					</div>
 
@@ -101,7 +106,7 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 						</div>
 
 						<div>
-							<input id="<portlet:namespace />partnerUserGuide" name="<portlet:namespace />partnerUserGuide" type="file" />
+							<aui:input name="partnerUserGuide" type="file" />
 						</div>
 					</div>
 
@@ -111,14 +116,18 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 						</div>
 
 						<div>
-							<input id="<portlet:namespace />liferayUserGuide" name="<portlet:namespace />liferayUserGuide" type="file" />
+							<aui:input name="liferayUserGuide" type="file" />
 						</div>
 					</div>
 
 					<div class="aui-w10 content-column">
-						<input type="submit" value="<liferay-ui:message key="save" />" />
+						<aui:button name="save" type="submit" value="save" />
 
-						<input onClick="<portlet:namespace />toggleSection('<portlet:namespace />helpEditDisplay', '<portlet:namespace />helpDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
+						<%
+						String cancelOnClick = renderResponse.getNamespace() + "toggleSection('" + renderResponse.getNamespace() + "helpEditDisplay', '" + renderResponse.getNamespace() + "helpDisplay');";
+						%>
+
+						<aui:button name="cancel" onClick="<%= cancelOnClick %>" value="cancel" />
 					</div>
 				</div>
 			</div>

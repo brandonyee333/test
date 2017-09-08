@@ -76,21 +76,19 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getTicketSolution
 		%>
 
 		<div class="field-group">
-			<label id="<portlet:namespace />statusReasonLabel"><liferay-ui:message key="what-is-the-reason-for-rejecting-the-ticket-solution" /></label>
-
-			<select id="<portlet:namespace />statusReason" name="<portlet:namespace />statusReason">
+			<aui:select label="what-is-the-reason-for-rejecting-the-ticket-solution" name="statusReason">
 
 				<%
 				for (int statusReason : TicketSolutionConstants.STATUS_REASONS) {
 				%>
 
-					<option value="<%= statusReason %>"><%= LanguageUtil.get(request, TicketSolutionConstants.getStatusReasonLabel(statusReason)) %></option>
+					<aui:option label="<%= TicketSolutionConstants.getStatusReasonLabel(statusReason) %>" value="<%= statusReason %>" />
 
 				<%
 				}
 				%>
 
-			</select>
+			</aui:select>
 		</div>
 
 		<div class="field-group">
@@ -104,9 +102,9 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getTicketSolution
 		</div>
 
 		<div align="right">
-			<input class="aui-button-input buttons" onClick="<portlet:namespace />rejectTicketSolution();" type="button" value="<liferay-ui:message key="send" />" />
+			<aui:button cssClass="aui-button-input buttons" onClick='<%= renderResponse.getNamespace() + "rejectTicketSolution();" %>' value="send" />
 
-			<input class="aui-button-input buttons fl" onClick="<portlet:namespace />closePopup();" type="button" value="<liferay-ui:message key="cancel" />" />
+			<aui:button cssClass="aui-button-input buttons fl" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' value="cancel" />
 		</div>
 	</div>
 

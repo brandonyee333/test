@@ -18,7 +18,9 @@
 
 <div class="cleared section">
 	<div class="fr">
-		<a class="btn" href="javascript:history.go(-1);">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
+		<a class="btn" href="javascript:history.go(-1);">
+			&lt; <liferay-ui:message key="back-to-previous-page" />
+		</a>
 	</div>
 </div>
 
