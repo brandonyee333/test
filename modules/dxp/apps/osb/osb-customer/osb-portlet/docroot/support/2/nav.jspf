@@ -247,8 +247,6 @@
 
 <c:if test="<%= !searchFilters.isEmpty() || supportPartnerWorker || !developerAccountEntryIds.isEmpty() %>">
 	<aui:script use="aui-base">
-		var A = AUI();
-
 		var homeIcon = A.one('#<portlet:namespace />homeIcon');
 		var homeSubMenu = A.one('#<portlet:namespace />homeSubMenu');
 
@@ -256,9 +254,9 @@
 			homeIcon.on(
 				'click',
 				function() {
-					homeIcon.addClass('clicked');
+					homeIcon.toggleClass('clicked');
 
-					homeSubMenu.show();
+					homeSubMenu.toggle();
 				}
 			);
 

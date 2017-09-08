@@ -69,52 +69,51 @@ List<FileRepository> fileRepositories = SupportUtil.getFileRepositories();
 	</div>
 </div>
 
-<aui:script>
-	<c:if test="<%= availableFileRepositoryIds.size() < fileRepositories.size() %>">
+<c:if test="<%= availableFileRepositoryIds.size() < fileRepositories.size() %>">
+	<aui:script>
+		Liferay.provide(
+			window,
+			'<portlet:namespace />checkTicketAttachmentServerAvailability',
+			function(ticketAttachmentId, fileRepositoryId) {
+				var A = AUI();
 
-		<%
-		for (FileRepository fileRepository : fileRepositories) {
-			if (availableFileRepositoryIds.contains(fileRepository.getFileRepositoryId())) {
-				continue;
-			}
-		%>
+				A.io.request(
+					'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="ticketAttachmentServer" />',
+					{
+						data: {
+							<portlet:namespace />fileRepositoryId: fileRepositoryId,
+							<portlet:namespace />ticketAttachmentId: ticketAttachmentId
+						},
+						dataType: 'json',
+						method: 'post',
+						on: {
+							success: function() {
+								var response = this.get('responseData');
 
-			<portlet:namespace />checkTicketAttachmentServerAvailability('<%= ticketAttachmentId %>', '<%= fileRepository.getFileRepositoryId() %>');
-
-		<%
-		}
-		%>
-
-	</c:if>
-
-	Liferay.provide(
-		window,
-		'<portlet:namespace />checkTicketAttachmentServerAvailability',
-		function(ticketAttachmentId, fileRepositoryId) {
-			var A = AUI();
-
-			A.io.request(
-				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="ticketAttachmentServer" />',
-				{
-					data: {
-						<portlet:namespace />ticketAttachmentId: ticketAttachmentId,
-						<portlet:namespace />fileRepositoryId: fileRepositoryId
-					},
-					dataType: 'json',
-					method: 'post',
-					on: {
-						success: function(event, id, obj) {
-							var response = this.get('responseData');
-
-							if (response.available) {
-								A.one('#<portlet:namespace />' + fileRepositoryId + 'download').show();
-								A.one('#<portlet:namespace />' + fileRepositoryId + 'waiting').hide();
+								if (response.available) {
+									A.one('#<portlet:namespace />' + fileRepositoryId + 'download').show();
+									A.one('#<portlet:namespace />' + fileRepositoryId + 'waiting').hide();
+								}
 							}
 						}
 					}
-				}
-			);
-		},
-		['aui-io']
-	);
-</aui:script>
+				);
+			},
+			['aui-io']
+		);
+	</aui:script>
+
+	<%
+	for (FileRepository fileRepository : fileRepositories) {
+		if (availableFileRepositoryIds.contains(fileRepository.getFileRepositoryId())) {
+			continue;
+		}
+	%>
+
+		<portlet:namespace />checkTicketAttachmentServerAvailability('<%= ticketAttachmentId %>', '<%= fileRepository.getFileRepositoryId() %>');
+
+	<%
+	}
+	%>
+
+</c:if>

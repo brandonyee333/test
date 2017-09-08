@@ -38,13 +38,8 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 			<br />
 
 			<c:if test="<%= osbAdmin %>">
-
-				<%
-				String editOnclick = renderResponse.getNamespace() + "toggleSection('" + renderResponse.getNamespace() + "helpDisplay', '" + renderResponse.getNamespace() + "helpEditDisplay');";
-				%>
-
 				<div class="fr">
-					<aui:button name="edit" onClick="<%= editOnclick %>" value="edit" />
+					<aui:button name="edit" onClick='<%= renderResponse.getNamespace() + "toggleSection()" %>' value="edit" />
 				</div>
 			</c:if>
 
@@ -123,11 +118,7 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 					<div class="aui-w10 content-column">
 						<aui:button name="save" type="submit" value="save" />
 
-						<%
-						String cancelOnClick = renderResponse.getNamespace() + "toggleSection('" + renderResponse.getNamespace() + "helpEditDisplay', '" + renderResponse.getNamespace() + "helpDisplay');";
-						%>
-
-						<aui:button name="cancel" onClick="<%= cancelOnClick %>" value="cancel" />
+						<aui:button name="cancel" onClick='<%= renderResponse.getNamespace() + "toggleSection();" %>' value="cancel" />
 					</div>
 				</div>
 			</div>
@@ -138,10 +129,20 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 <aui:script>
 	<portlet:namespace />navSelect('help');
 
-	function <portlet:namespace />toggleSection(hideId, showId) {
-		var A = AUI();
+	Liferay.provide(
+		window,
+		'<portlet:namespace />toggleSection',
+		function() {
+			var A = AUI();
 
-		A.one('#' + hideId).hide();
-		A.one('#' + showId).show();
-	}
+			var helpDisplay = A.one('#<portlet:namespace />helpDisplay');
+			var helpEditDisplay = A.one('#<portlet:namespace />helpEditDisplay');
+
+			if (helpDisplay && helpEditDisplay) {
+				helpDisplay.toggle();
+				helpEditDisplay.toggle();
+			}
+		},
+		['aui-base']
+	);
 </aui:script>

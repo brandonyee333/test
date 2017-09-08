@@ -58,7 +58,7 @@ long now = System.currentTimeMillis();
 			</div>
 		</c:if>
 
-		<aui:script use="aui-overlay-mask,node">
+		<aui:script use="aui-overlay-mask-deprecated">
 			var centerOnPage = function(node) {
 				var WIN = A.getWin();
 
@@ -111,7 +111,7 @@ long now = System.currentTimeMillis();
 			};
 
 			var displayPopUp = function(node) {
-				node.removeClass('aui-helper-hidden');
+				node.removeClass('hide');
 
 				centerOnPage(node);
 
@@ -130,21 +130,24 @@ long now = System.currentTimeMillis();
 							overlayMask.remove();
 						}
 
-						node.addClass('aui-helper-hidden');
+						node.addClass('hide');
 
 						popUpContent.detach('clickoutside');
 					}
 				);
 			};
 
-			A.all('.close-announcement').on(
-				'click',
-				function(event) {
-					var announcementContainer = event.currentTarget.ancestor();
+			var announcementContainer = A.one('#lesaBanner');
 
-					announcementContainer.hide();
-				}
-			);
+			if (announcementContainer) {
+				announcementContainer.delegate(
+					'click',
+					function() {
+						announcementContainer.hide();
+					},
+					'.close-announcement'
+				);
+			}
 
 			var iOS = /iPad/i.test(navigator.userAgent) || /iPhone/i.test(navigator.userAgent);
 			var mouseEvent = 'click';
@@ -162,7 +165,9 @@ long now = System.currentTimeMillis();
 
 					var popUp = A.one(popDisplay);
 
-					displayPopUp(popUp);
+					if (popUp) {
+						displayPopUp(popUp);
+					}
 				}
 			);
 		</aui:script>

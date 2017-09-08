@@ -695,7 +695,7 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 				var radios = document.getElementsByName(element.name);
 
 				for (var i = 0; i < radios.length; i++) {
-					radios[i].parentElement.classList.remove('active')
+					radios[i].parentElement.classList.remove('active');
 				}
 			}
 
@@ -718,11 +718,11 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 
 		if ((resultsCount > 0) && (resultsCount < 5000)) {
 			exportButton.removeClass('disabled');
-			exportDropdown.removeClass('aui-helper-hidden');
+			exportDropdown.removeClass('hide');
 		}
 		else {
 			exportButton.addClass('disabled');
-			exportDropdown.addClass('aui-helper-hidden');
+			exportDropdown.addClass('hide');
 		}
 	}
 
@@ -742,8 +742,6 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 		}
 
 		var searchParam = element.getAttribute('searchParam');
-
-		var filterBox = null;
 
 		if (searchParam) {
 			if (element.classList.contains('selected')) {
@@ -808,10 +806,10 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 				tabURL,
 				{
 					on: {
-						start: function(event, id, obj) {
+						start: function() {
 							tabContentDiv.html('<img src="<%= themeDisplay.getPathThemeImages() + "/aui/loading_indicator.gif" %>" style="display: block; margin: auto;" />');
 						},
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							tabContentDiv.html(response);
@@ -964,17 +962,17 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 				resultsURL,
 				{
 					data: {
-						ticketWorker: '<%= ticketWorker %>',
-						pageURL: pageURL
+						pageURL: pageURL,
+						ticketWorker: '<%= ticketWorker %>'
 					},
 					on: {
-						error: function(event, id, obj) {
+						error: function() {
 							resultsContentDiv.html('<div class="portlet-msg-error"><liferay-ui:message key="an-error-occurred-while-searching-please-try-again" unicode="<%= true %>" /></div>');
 						},
-						start: function(event, id, obj) {
+						start: function() {
 							resultsContentDiv.html('<img src="<%= themeDisplay.getPathThemeImages() + "/aui/loading_indicator.gif" %>" style="display: block; margin: auto;" />');
 						},
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							if (!response) {

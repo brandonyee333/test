@@ -110,12 +110,12 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getTicketSolution
 
 	<aui:script>
 		function <portlet:namespace />closePopup() {
-			document.getElementById("closethick").click();
+			document.getElementById('closethick').click();
 		}
 
 		function <portlet:namespace />rejectTicketSolution() {
-			var statusReason = document.getElementById("<portlet:namespace />statusReason");
-			var statusMessage = document.getElementById("<portlet:namespace />statusMessage");
+			var statusMessage = document.getElementById('<portlet:namespace />statusMessage');
+			var statusReason = document.getElementById('<portlet:namespace />statusReason');
 
 			<portlet:namespace />updateTicketSolution('<%= TicketSolutionConstants.STATUS_UNRESOLVED %>', statusReason.value, statusMessage.value);
 		}

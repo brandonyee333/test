@@ -83,27 +83,6 @@ if (offeringEntryId > 0) {
 
 <%@ include file="/support/2/common/javascript/ticket_entry_validator_js.jspf" %>
 
-<aui:script use="aui-base,node">
-	A.all('select').each(
-		function() {
-			var selectedOption = this.one('option[selected]');
-
-			if (selectedOption != null) {
-				this.val(selectedOption.val());
-			}
-		}
-	);
-
-	var onValidate = function(e) {
-		<portlet:namespace />validateRequiredField(this);
-	};
-
-	var createTicket = A.one('#<portlet:namespace />createTicket');
-
-	createTicket.delegate('change', onValidate, 'select[data-field-required-status]');
-	createTicket.delegate('keyup', onValidate, 'input[data-field-required-status], textarea[data-field-required-status]');
-</aui:script>
-
 <aui:script>
 	<portlet:namespace />navSelect('newTicket');
 
@@ -178,4 +157,21 @@ if (offeringEntryId > 0) {
 
 		return node;
 	}
+</aui:script>
+
+<aui:script use="aui-base">
+	A.all('select').each(
+		function() {
+			var selectedOption = this.one('option[selected]');
+
+			if (selectedOption != null) {
+				this.val(selectedOption.val());
+			}
+		}
+	);
+
+	var createTicket = A.one('#<portlet:namespace />createTicket');
+
+	createTicket.delegate('change', <portlet:namespace />validateRequiredField(this), 'select[data-field-required-status]');
+	createTicket.delegate('keyup', <portlet:namespace />validateRequiredField(this), 'input[data-field-required-status], textarea[data-field-required-status]');
 </aui:script>
