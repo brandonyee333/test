@@ -47,7 +47,7 @@ public abstract class BaseKeyStoreManagerImpl implements KeyStoreManager {
 			return liferayHome.concat("/data/keystore.jks");
 		}
 
-		return StringUtil.replace(keyStorePath, _LIFERAY_HOME, liferayHome);
+		return StringUtil.replace(keyStorePath, "${liferay.home}", liferayHome);
 	}
 
 	protected String getSamlKeyStoreType() {
@@ -62,7 +62,5 @@ public abstract class BaseKeyStoreManagerImpl implements KeyStoreManager {
 	}
 
 	protected SamlConfiguration samlConfiguration;
-
-	private static final String _LIFERAY_HOME = "${liferay.home}";
 
 }
