@@ -421,8 +421,6 @@ public class FileEntryStagedModelDataHandler
 				FileEntry existingFileEntry = fetchStagedModelByUuidAndGroupId(
 					fileEntry.getUuid(), portletDataContext.getScopeGroupId());
 
-				FileVersion fileVersion = fileEntry.getFileVersion();
-
 				if (existingFileEntry == null) {
 					if (portletDataContext.
 							isDataStrategyMirrorWithOverwriting()) {
@@ -444,8 +442,6 @@ public class FileEntryStagedModelDataHandler
 						}
 					}
 
-					serviceContext.setAttribute(
-						"fileVersionUuid", fileVersion.getUuid());
 					serviceContext.setUuid(fileEntry.getUuid());
 
 					String fileEntryTitle =
@@ -475,8 +471,8 @@ public class FileEntryStagedModelDataHandler
 					boolean updateFileEntry = false;
 
 					if (!Objects.equals(
-							fileVersion.getUuid(),
-							latestExistingFileVersion.getUuid())) {
+							fileEntry.getVersion(),
+							latestExistingFileVersion.getVersion())) {
 
 						deleteFileEntry = true;
 						updateFileEntry = true;
@@ -510,10 +506,9 @@ public class FileEntryStagedModelDataHandler
 
 						if (updateFileEntry) {
 							DLFileVersion alreadyExistingFileVersion =
-								_dlFileVersionLocalService.
-									getFileVersionByUuidAndGroupId(
-										fileVersion.getUuid(),
-										existingFileEntry.getGroupId());
+								_dlFileVersionLocalService.getFileVersion(
+									existingFileEntry.getFileEntryId(),
+									existingFileEntry.getVersion());
 
 							if (alreadyExistingFileVersion != null) {
 								serviceContext.setAttribute(
@@ -522,7 +517,7 @@ public class FileEntryStagedModelDataHandler
 										getFileVersionId());
 							}
 
-							serviceContext.setUuid(fileVersion.getUuid());
+							serviceContext.setUuid(existingFileEntry.getUuid());
 
 							String fileEntryTitle =
 								_dlFileEntryLocalService.getUniqueTitle(
@@ -593,7 +588,7 @@ public class FileEntryStagedModelDataHandler
 
 				if (ExportImportThreadLocal.isStagingInProcess()) {
 					_overrideFileVersion(
-						importedFileEntry, fileVersion.getVersion());
+						importedFileEntry, fileEntry.getVersion());
 				}
 			}
 			else {
