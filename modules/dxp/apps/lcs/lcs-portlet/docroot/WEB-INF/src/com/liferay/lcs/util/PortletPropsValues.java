@@ -61,9 +61,6 @@ public class PortletPropsValues {
 				PortletPropsKeys.
 					COMMUNICATION_LCS_GATEWAY_UNAVAILABLE_WAIT_TIME));
 
-	public static final String DIGITAL_SIGNATURE_ALGORITHM_PROVIDER =
-		PortletProps.get(PortletPropsKeys.DIGITAL_SIGNATURE_ALGORITHM_PROVIDER);
-
 	public static final String DIGITAL_SIGNATURE_KEY_NAME = PortletProps.get(
 		PortletPropsKeys.DIGITAL_SIGNATURE_KEY_NAME);
 

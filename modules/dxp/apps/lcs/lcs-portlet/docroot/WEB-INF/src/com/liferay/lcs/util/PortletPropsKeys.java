@@ -47,9 +47,6 @@ public interface PortletPropsKeys {
 	public static final String COMMUNICATION_LCS_GATEWAY_UNAVAILABLE_WAIT_TIME =
 		"communication.lcs.gateway.unavailable.wait.time";
 
-	public static final String DIGITAL_SIGNATURE_ALGORITHM_PROVIDER =
-		"digital.signature.algorithm.provider";
-
 	public static final String DIGITAL_SIGNATURE_KEY_NAME =
 		"digital.signature.key.name";
 
