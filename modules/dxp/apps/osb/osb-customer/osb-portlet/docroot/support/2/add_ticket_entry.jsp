@@ -84,79 +84,141 @@ if (offeringEntryId > 0) {
 <%@ include file="/support/2/common/javascript/ticket_entry_validator_js.jspf" %>
 
 <aui:script>
-	<portlet:namespace />navSelect('newTicket');
-
-	function <portlet:namespace />updateSupportMessage(envLFR, section) {
-		var A = AUI();
-
-		var supportMessageDisplay_5_2 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_5_2');
-
-		if (supportMessageDisplay_5_2) {
-			var visibleSupportMessageDisplay_5_2 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>);
-
-			supportMessageDisplay_5_2.toggle(visibleSupportMessageDisplay_5_2);
-		}
-
-		var supportMessageDisplay_6_0 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_0');
-
-		if (supportMessageDisplay_6_0) {
-			var visibleSupportMessageDisplay_6_0 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>);
-
-			supportMessageDisplay_6_0.toggle(visibleSupportMessageDisplay_6_0);
-		}
-
-		var supportMessageDisplay_6_1 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_1');
-
-		if (supportMessageDisplay_6_1) {
-			var visibleSupportMessageDisplay_6_1 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>);
-
-			supportMessageDisplay_6_1.toggle(visibleSupportMessageDisplay_6_1);
-		}
-	}
-
 	function <portlet:namespace />validateFiles(field) {
 		var node = null;
-		var patchLevelMessage = A.one('#<portlet:namespace />patchLevelMessage');
-		var portalExtMessage = A.one('#<portlet:namespace />portalExtMessage');
 
-		if (!field || (field == 'portalExt')) {
-			if (!<portlet:namespace />validateFile('portalExt')) {
-				portalExtMessage.setContent('<%= UnicodeLanguageUtil.format(request, "please-upload-a-x-file", "portal-ext") %>');
-				portalExtMessage.show();
+		var portalExtMessage = document.getElementById('<portlet:namespace />portalExtMessage');
 
-				node = portalExtMessage;
-			}
-			else if (!<portlet:namespace />validateFileConfirmed('portalExt')) {
-				portalExtMessage.setContent('<%= UnicodeLanguageUtil.format(request, "please-confirm-the-current-x-attachment", "portal-ext") %>');
-				portalExtMessage.show();
+		if (portalExtMessage) {
+			if (!field || (field == 'portalExt')) {
+				if (!<portlet:namespace />validateFile('portalExt')) {
+					<portlet:namespace />displayMessage(
+						{
+							content: '<%= UnicodeLanguageUtil.format(request, "please-upload-a-x-file", "portal-ext") %>',
+							node: portalExtMessage,
+							visible: true
+						}
+					);
 
-				node = portalExtMessage;
-			}
-			else {
-				portalExtMessage.hide();
+					node = portalExtMessage;
+				}
+				else if (!<portlet:namespace />validateFileConfirmed('portalExt')) {
+					<portlet:namespace />displayMessage(
+						{
+							content: '<%= UnicodeLanguageUtil.format(request, "please-confirm-the-current-x-attachment", "portal-ext") %>',
+							node: portalExtMessage,
+							visible: true
+						}
+					);
+
+					node = portalExtMessage;
+				}
+				else {
+					<portlet:namespace />displayMessage(
+						{
+							node: portalExtMessage,
+							visible: false
+						}
+					);
+				}
 			}
 		}
 
-		if (!field || (field == 'patchLevel')) {
-			if (!<portlet:namespace />validateFile('patchLevel')) {
-				patchLevelMessage.setContent('<%= UnicodeLanguageUtil.format(request, "please-upload-a-x-file", "patch-level") %>');
-				patchLevelMessage.show();
+		var patchLevelMessage = document.getElementById('<portlet:namespace />patchLevelMessage');
 
-				node = patchLevelMessage;
-			}
-			else if (!<portlet:namespace />validateFileConfirmed('patchLevel')) {
-				patchLevelMessage.setContent('<%= UnicodeLanguageUtil.format(request, "please-confirm-the-current-x-attachment", "patch-level") %>');
-				patchLevelMessage.show();
+		if (patchLevelMessage) {
+			if (!field || (field == 'patchLevel')) {
+				if (!<portlet:namespace />validateFile('patchLevel')) {
+					<portlet:namespace />displayMessage(
+						{
+							content: '<%= UnicodeLanguageUtil.format(request, "please-upload-a-x-file", "patch-level") %>',
+							node: patchLevelMessage,
+							visible: true
+						}
+					);
 
-				node = patchLevelMessage;
-			}
-			else {
-				patchLevelMessage.hide();
+					node = patchLevelMessage;
+				}
+				else if (!<portlet:namespace />validateFileConfirmed('patchLevel')) {
+					<portlet:namespace />displayMessage(
+						{
+							content: '<%= UnicodeLanguageUtil.format(request, "please-confirm-the-current-x-attachment", "patch-level") %>',
+							node: patchLevelMessage,
+							visible: true
+						}
+					);
+
+					node = patchLevelMessage;
+				}
+				else {
+					<portlet:namespace />displayMessage(
+						{
+							node: patchLevelMessage,
+							visible: false
+						}
+					);
+				}
 			}
 		}
 
 		return node;
 	}
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />displayMessage',
+		function(options) {
+			var content = options.content || '';
+			var node = options.node;
+			var visible = options.visible;
+
+			node = A.one(node);
+
+			if (node) {
+				if (content) {
+					node.setContent(content);
+				}
+
+				node.toggle(visible);
+			}
+		},
+		['aui-node']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateSupportMessage',
+		function(envLFR, section) {
+			var A = AUI();
+
+			var supportMessageDisplay_5_2 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_5_2');
+
+			if (supportMessageDisplay_5_2) {
+				var visibleSupportMessageDisplay_5_2 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>);
+
+				supportMessageDisplay_5_2.toggle(visibleSupportMessageDisplay_5_2);
+			}
+
+			var supportMessageDisplay_6_0 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_0');
+
+			if (supportMessageDisplay_6_0) {
+				var visibleSupportMessageDisplay_6_0 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>);
+
+				supportMessageDisplay_6_0.toggle(visibleSupportMessageDisplay_6_0);
+			}
+
+			var supportMessageDisplay_6_1 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_1');
+
+			if (supportMessageDisplay_6_1) {
+				var visibleSupportMessageDisplay_6_1 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>);
+
+				supportMessageDisplay_6_1.toggle(visibleSupportMessageDisplay_6_1);
+			}
+		},
+		['aui-base']
+	);
+
+	<portlet:namespace />navSelect('newTicket');
 </aui:script>
 
 <aui:script use="aui-base">
@@ -164,7 +226,7 @@ if (offeringEntryId > 0) {
 		function() {
 			var selectedOption = this.one('option[selected]');
 
-			if (selectedOption != null) {
+			if (selectedOption) {
 				this.val(selectedOption.val());
 			}
 		}
@@ -172,6 +234,10 @@ if (offeringEntryId > 0) {
 
 	var createTicket = A.one('#<portlet:namespace />createTicket');
 
-	createTicket.delegate('change', <portlet:namespace />validateRequiredField(this), 'select[data-field-required-status]');
-	createTicket.delegate('keyup', <portlet:namespace />validateRequiredField(this), 'input[data-field-required-status], textarea[data-field-required-status]');
+	if (createTicket) {
+		createTicket.delegate('change', <portlet:namespace />validateRequiredField(this), 'select[data-field-required-status]');
+
+		createTicket.delegate('keyup', <portlet:namespace />validateRequiredField(this), 'input[data-field-required-status], textarea[data-field-required-status]');
+	}
+
 </aui:script>
