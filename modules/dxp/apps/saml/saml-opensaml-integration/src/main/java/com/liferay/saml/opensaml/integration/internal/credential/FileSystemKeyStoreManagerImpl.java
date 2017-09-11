@@ -146,7 +146,7 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 				_keyStore.load(null, samlKeyStorePassword.toCharArray());
 
 				if (Validator.isNotNull(samlConfiguration.keyStorePath()) &&
-					!SamlConfiguration.DEFAULT_KEYSTORE_PATH.equals(
+					!SamlConfiguration.KEYSTORE_PATH_DEFAULT.equals(
 						samlConfiguration.keyStorePath()) &&
 					_log.isWarnEnabled()) {
 

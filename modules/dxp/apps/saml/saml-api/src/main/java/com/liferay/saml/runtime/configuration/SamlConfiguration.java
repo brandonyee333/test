@@ -28,11 +28,11 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 public interface SamlConfiguration {
 
-	public static String DEFAULT_KEYSTORE_PATH =
+	public static String KEYSTORE_PATH_DEFAULT =
 		"${liferay.home}/data/keystore.jks";
 
 	@Meta.AD(
-		deflt = DEFAULT_KEYSTORE_PATH,
+		deflt = KEYSTORE_PATH_DEFAULT,
 		description = "saml-key-store-path-description",
 		id = "saml.keystore.path", name = "saml-key-store-path",
 		required = false
