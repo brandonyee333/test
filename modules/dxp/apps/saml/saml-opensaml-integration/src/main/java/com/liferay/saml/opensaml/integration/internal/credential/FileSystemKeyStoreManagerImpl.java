@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.saml.runtime.configuration.SamlConfiguration;
 import com.liferay.saml.runtime.credential.KeyStoreManager;
 
 import java.io.File;
@@ -145,6 +146,8 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 				_keyStore.load(null, samlKeyStorePassword.toCharArray());
 
 				if (Validator.isNotNull(samlConfiguration.keyStorePath()) &&
+					!SamlConfiguration.DEFAULT_KEYSTORE_PATH.equals(
+						samlConfiguration.keyStorePath()) &&
 					_log.isWarnEnabled()) {
 
 					_log.warn("No SAML keystore exists at " + samlKeyStoreFile);
