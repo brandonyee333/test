@@ -1316,7 +1316,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		try {
 			String methodName = "setLanguageIds";
 
-			Class<?>[] parameterTypes = new Class<?>[] { java.lang.String[].class };
+			Class<?>[] parameterTypes = new Class<?>[] { java.lang.String.class };
 
 			Object[] parameterValues = new Object[] { languageIds };
 
@@ -1332,7 +1332,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		try {
 			String methodName = "setSupportRegionIds";
 
-			Class<?>[] parameterTypes = new Class<?>[] { long[].class };
+			Class<?>[] parameterTypes = new Class<?>[] { long.class };
 
 			Object[] parameterValues = new Object[] { supportRegionIds };
 
