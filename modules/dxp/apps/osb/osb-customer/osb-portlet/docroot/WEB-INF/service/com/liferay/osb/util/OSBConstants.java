@@ -68,15 +68,15 @@ public class OSBConstants {
 
 	public static long ROLE_LIFERAY_EMPLOYEE_ID = 38751983;
 
-	public static long ROLE_OSB_ACCOUNT_ADMIN_ID = 10053303;
+	public static long ROLE_OSB_ACCOUNT_ADMIN_ID = 1546563;
 
-	public static long ROLE_OSB_ADMINISTRATOR_ID = 4444238;
+	public static long ROLE_OSB_ADMINISTRATOR_ID = 1546561;
 
-	public static long ROLE_OSB_SUPPORT_ADMIN_ID = 11496283;
+	public static long ROLE_OSB_SUPPORT_ADMIN_ID = 1546564;
 
-	public static long ROLE_OSB_TRIAL_LICENSE_ADMIN_ID = 80745250;
+	public static long ROLE_OSB_TRIAL_LICENSE_ADMIN_ID = 1546565;
 
-	public static long ROLE_VERIFIED_USER_ID = 81492058;
+	public static long ROLE_VERIFIED_USER_ID = 1546579;
 
 	public static long SUPPORT_REGION_CHINA_ID = 42356502;
 
