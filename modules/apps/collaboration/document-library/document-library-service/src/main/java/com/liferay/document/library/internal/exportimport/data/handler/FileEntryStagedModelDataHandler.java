@@ -253,6 +253,11 @@ public class FileEntryStagedModelDataHandler
 				PortletDataContext.REFERENCE_TYPE_PARENT);
 		}
 
+		FileVersion fileVersion = fileEntry.getFileVersion();
+
+		fileEntryElement.addAttribute("version", fileEntry.getVersion());
+		fileEntryElement.addAttribute("fileVersionUuid", fileVersion.getUuid());
+
 		LiferayFileEntry liferayFileEntry = (LiferayFileEntry)fileEntry;
 
 		liferayFileEntry.setCachedFileVersion(fileEntry.getFileVersion());
@@ -377,6 +382,11 @@ public class FileEntryStagedModelDataHandler
 
 		String binPath = fileEntryElement.attributeValue("bin-path");
 
+		String version = fileEntryElement.attributeValue("version");
+
+		String fileVersionUuid = fileEntryElement.attributeValue(
+			"fileVersionUuid");
+
 		InputStream is = null;
 
 		try {
@@ -442,6 +452,9 @@ public class FileEntryStagedModelDataHandler
 						}
 					}
 
+					serviceContext.setAttribute(
+						"fileVersionUuid", fileVersionUuid);
+
 					serviceContext.setUuid(fileEntry.getUuid());
 
 					String fileEntryTitle =
@@ -471,8 +484,8 @@ public class FileEntryStagedModelDataHandler
 					boolean updateFileEntry = false;
 
 					if (!Objects.equals(
-							fileEntry.getVersion(),
-							latestExistingFileVersion.getVersion())) {
+							fileVersionUuid,
+							latestExistingFileVersion.getUuid())) {
 
 						deleteFileEntry = true;
 						updateFileEntry = true;
@@ -506,9 +519,10 @@ public class FileEntryStagedModelDataHandler
 
 						if (updateFileEntry) {
 							DLFileVersion alreadyExistingFileVersion =
-								_dlFileVersionLocalService.getFileVersion(
-									existingFileEntry.getFileEntryId(),
-									existingFileEntry.getVersion());
+								_dlFileVersionLocalService.
+									getFileVersionByUuidAndGroupId(
+										fileVersionUuid,
+										existingFileEntry.getGroupId());
 
 							if (alreadyExistingFileVersion != null) {
 								serviceContext.setAttribute(
@@ -517,7 +531,7 @@ public class FileEntryStagedModelDataHandler
 										getFileVersionId());
 							}
 
-							serviceContext.setUuid(existingFileEntry.getUuid());
+							serviceContext.setUuid(fileVersionUuid);
 
 							String fileEntryTitle =
 								_dlFileEntryLocalService.getUniqueTitle(
@@ -587,8 +601,7 @@ public class FileEntryStagedModelDataHandler
 				}
 
 				if (ExportImportThreadLocal.isStagingInProcess()) {
-					_overrideFileVersion(
-						importedFileEntry, fileEntry.getVersion());
+					_overrideFileVersion(importedFileEntry, version);
 				}
 			}
 			else {
