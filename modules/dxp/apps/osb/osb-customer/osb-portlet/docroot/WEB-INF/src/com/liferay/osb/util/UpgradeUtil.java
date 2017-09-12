@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -66,6 +67,10 @@ public class UpgradeUtil {
 		File packageFile = new File(packageURL.getFile());
 
 		String[] fileNames = packageFile.list();
+
+		if (ArrayUtil.isEmpty(fileNames)) {
+			return Collections.emptyList();
+		}
 
 		Arrays.sort(fileNames);
 
