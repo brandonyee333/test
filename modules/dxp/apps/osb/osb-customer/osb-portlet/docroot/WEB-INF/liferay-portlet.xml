@@ -60,7 +60,6 @@
 		<preferences-unique-per-layout>false</preferences-unique-per-layout>
 		<header-portlet-css>/admin/css/main.css</header-portlet-css>
 		<header-portlet-javascript>/common/javascript/localized_input.js</header-portlet-javascript>
-		<footer-portal-javascript>/html/js/liferay/service.js</footer-portal-javascript>
 		<css-class-wrapper>osb-portlet-admin</css-class-wrapper>
 	</portlet>
 	<portlet>
