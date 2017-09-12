@@ -98,57 +98,6 @@ public class HolidayEntryLocalServiceUtil {
 		return getService().deleteHolidayEntry(holidayEntryId);
 	}
 
-	public static com.liferay.osb.model.HolidayEntry fetchHolidayEntry(
-		long holidayEntryId) {
-		return getService().fetchHolidayEntry(holidayEntryId);
-	}
-
-	/**
-	* Returns the holiday entry with the primary key.
-	*
-	* @param holidayEntryId the primary key of the holiday entry
-	* @return the holiday entry
-	* @throws PortalException if a holiday entry with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.HolidayEntry getHolidayEntry(
-		long holidayEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getHolidayEntry(holidayEntryId);
-	}
-
-	/**
-	* Updates the holiday entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param holidayEntry the holiday entry
-	* @return the holiday entry that was updated
-	*/
-	public static com.liferay.osb.model.HolidayEntry updateHolidayEntry(
-		com.liferay.osb.model.HolidayEntry holidayEntry) {
-		return getService().updateHolidayEntry(holidayEntry);
-	}
-
-	public static com.liferay.osb.model.HolidayEntry updateHolidayEntry(
-		long holidayEntryId, long holidayCalendarId, java.lang.String name,
-		java.lang.String description, java.util.Date startDate,
-		java.util.Date endDate, boolean repeatYearly)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateHolidayEntry(holidayEntryId, holidayCalendarId, name,
-			description, startDate, endDate, repeatYearly);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
 	/**
 	* @throws PortalException
 	*/
@@ -158,38 +107,8 @@ public class HolidayEntryLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of holiday entries.
-	*
-	* @return the number of holiday entries
-	*/
-	public static int getHolidayEntriesCount() {
-		return getService().getHolidayEntriesCount();
-	}
-
-	public static int getHolidayEntriesCount(long userId, java.util.Date date) {
-		return getService().getHolidayEntriesCount(userId, date);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
 	}
 
 	/**
@@ -243,6 +162,39 @@ public class HolidayEntryLocalServiceUtil {
 	}
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static com.liferay.osb.model.HolidayEntry fetchHolidayEntry(
+		long holidayEntryId) {
+		return getService().fetchHolidayEntry(holidayEntryId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	/**
 	* Returns a range of all the holiday entries.
 	*
 	* <p>
@@ -272,27 +224,75 @@ public class HolidayEntryLocalServiceUtil {
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of holiday entries.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of holiday entries
 	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
+	public static int getHolidayEntriesCount() {
+		return getService().getHolidayEntriesCount();
+	}
+
+	public static int getHolidayEntriesCount(long userId, java.util.Date date) {
+		return getService().getHolidayEntriesCount(userId, date);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the holiday entry with the primary key.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param holidayEntryId the primary key of the holiday entry
+	* @return the holiday entry
+	* @throws PortalException if a holiday entry with the primary key could not be found
 	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
+	public static com.liferay.osb.model.HolidayEntry getHolidayEntry(
+		long holidayEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getHolidayEntry(holidayEntryId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Updates the holiday entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param holidayEntry the holiday entry
+	* @return the holiday entry that was updated
+	*/
+	public static com.liferay.osb.model.HolidayEntry updateHolidayEntry(
+		com.liferay.osb.model.HolidayEntry holidayEntry) {
+		return getService().updateHolidayEntry(holidayEntry);
+	}
+
+	public static com.liferay.osb.model.HolidayEntry updateHolidayEntry(
+		long holidayEntryId, long holidayCalendarId, java.lang.String name,
+		java.lang.String description, java.util.Date startDate,
+		java.util.Date endDate, boolean repeatYearly)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateHolidayEntry(holidayEntryId, holidayCalendarId, name,
+			description, startDate, endDate, repeatYearly);
 	}
 
 	public static void clearService() {

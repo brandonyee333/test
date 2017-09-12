@@ -55,10 +55,7 @@ public interface TicketLinkService extends BaseService, InvokableService {
 		java.lang.Integer[] types, int visibility, ServiceContext serviceContext)
 		throws PortalException;
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
+	public void deleteTicketLink(long ticketLinkId) throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -67,5 +64,8 @@ public interface TicketLinkService extends BaseService, InvokableService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	public void deleteTicketLink(long ticketLinkId) throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 }

@@ -42,26 +42,9 @@ public class SearchFilterServiceWrapper implements SearchFilterService,
 	}
 
 	@Override
-	public com.liferay.osb.model.SearchFilter getSearchFilter(
-		long searchFilterId)
+	public void deleteSearchFilter(long searchFilterId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _searchFilterService.getSearchFilter(searchFilterId);
-	}
-
-	@Override
-	public com.liferay.osb.model.SearchFilter updateSearchFilter(
-		long searchFilterId, java.lang.String name, java.lang.String filter,
-		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _searchFilterService.updateSearchFilter(searchFilterId, name,
-			filter, visibility);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _searchFilterService.invokeMethod(name, parameterTypes, arguments);
+		_searchFilterService.deleteSearchFilter(searchFilterId);
 	}
 
 	/**
@@ -75,9 +58,26 @@ public class SearchFilterServiceWrapper implements SearchFilterService,
 	}
 
 	@Override
-	public void deleteSearchFilter(long searchFilterId)
+	public com.liferay.osb.model.SearchFilter getSearchFilter(
+		long searchFilterId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_searchFilterService.deleteSearchFilter(searchFilterId);
+		return _searchFilterService.getSearchFilter(searchFilterId);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _searchFilterService.invokeMethod(name, parameterTypes, arguments);
+	}
+
+	@Override
+	public com.liferay.osb.model.SearchFilter updateSearchFilter(
+		long searchFilterId, java.lang.String name, java.lang.String filter,
+		int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _searchFilterService.updateSearchFilter(searchFilterId, name,
+			filter, visibility);
 	}
 
 	@Override

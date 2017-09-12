@@ -41,6 +41,11 @@ public class TicketInformationLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketInformationLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.TicketInformation addTicketInformation(
+		long ticketEntryId, long fieldId, java.lang.String data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().addTicketInformation(ticketEntryId, fieldId, data);
+	}
 
 	/**
 	* Adds the ticket information to the database. Also notifies the appropriate model listeners.
@@ -51,12 +56,6 @@ public class TicketInformationLocalServiceUtil {
 	public static com.liferay.osb.model.TicketInformation addTicketInformation(
 		com.liferay.osb.model.TicketInformation ticketInformation) {
 		return getService().addTicketInformation(ticketInformation);
-	}
-
-	public static com.liferay.osb.model.TicketInformation addTicketInformation(
-		long ticketEntryId, long fieldId, java.lang.String data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().addTicketInformation(ticketEntryId, fieldId, data);
 	}
 
 	/**
@@ -71,14 +70,12 @@ public class TicketInformationLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the ticket information from the database. Also notifies the appropriate model listeners.
-	*
-	* @param ticketInformation the ticket information
-	* @return the ticket information that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.osb.model.TicketInformation deleteTicketInformation(
-		com.liferay.osb.model.TicketInformation ticketInformation) {
-		return getService().deleteTicketInformation(ticketInformation);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -94,89 +91,19 @@ public class TicketInformationLocalServiceUtil {
 		return getService().deleteTicketInformation(ticketInformationId);
 	}
 
-	public static com.liferay.osb.model.TicketInformation fetchTicketInformation(
-		long ticketInformationId) {
-		return getService().fetchTicketInformation(ticketInformationId);
-	}
-
 	/**
-	* Returns the ticket information with the primary key.
-	*
-	* @param ticketInformationId the primary key of the ticket information
-	* @return the ticket information
-	* @throws PortalException if a ticket information with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.TicketInformation getTicketInformation(
-		long ticketInformationId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getTicketInformation(ticketInformationId);
-	}
-
-	/**
-	* Updates the ticket information in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the ticket information from the database. Also notifies the appropriate model listeners.
 	*
 	* @param ticketInformation the ticket information
-	* @return the ticket information that was updated
+	* @return the ticket information that was removed
 	*/
-	public static com.liferay.osb.model.TicketInformation updateTicketInformation(
+	public static com.liferay.osb.model.TicketInformation deleteTicketInformation(
 		com.liferay.osb.model.TicketInformation ticketInformation) {
-		return getService().updateTicketInformation(ticketInformation);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
+		return getService().deleteTicketInformation(ticketInformation);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of ticket informations.
-	*
-	* @return the number of ticket informations
-	*/
-	public static int getTicketInformationsCount() {
-		return getService().getTicketInformationsCount();
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	public static java.lang.String getData(long ticketEntryId, long fieldId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getData(ticketEntryId, fieldId);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -229,49 +156,6 @@ public class TicketInformationLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
-	public static java.util.List<com.liferay.osb.model.TicketInformation> getTicketInformationList(
-		long ticketEntryId) {
-		return getService().getTicketInformationList(ticketEntryId);
-	}
-
-	/**
-	* Returns a range of all the ticket informations.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.TicketInformationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of ticket informations
-	* @param end the upper bound of the range of ticket informations (not inclusive)
-	* @return the range of ticket informations
-	*/
-	public static java.util.List<com.liferay.osb.model.TicketInformation> getTicketInformations(
-		int start, int end) {
-		return getService().getTicketInformations(start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketInformation> updateTicketInformation(
-		long ticketEntryId,
-		java.util.Map<java.lang.Long, java.lang.String> fieldsMap)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateTicketInformation(ticketEntryId, fieldsMap);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketInformation> updateTicketInformation(
-		long userId, java.lang.String userName, long ticketEntryId,
-		java.util.Map<java.lang.Long, java.lang.String> fieldsMap,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateTicketInformation(userId, userName, ticketEntryId,
-			fieldsMap, serviceContext);
-	}
-
-	public static java.util.Map<java.lang.Long, java.lang.String> getFieldsMap(
-		long ticketEntryId) {
-		return getService().getFieldsMap(ticketEntryId);
-	}
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -294,6 +178,121 @@ public class TicketInformationLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static com.liferay.osb.model.TicketInformation fetchTicketInformation(
+		long ticketInformationId) {
+		return getService().fetchTicketInformation(ticketInformationId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static java.lang.String getData(long ticketEntryId, long fieldId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getData(ticketEntryId, fieldId);
+	}
+
+	public static java.util.Map<java.lang.Long, java.lang.String> getFieldsMap(
+		long ticketEntryId) {
+		return getService().getFieldsMap(ticketEntryId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the ticket information with the primary key.
+	*
+	* @param ticketInformationId the primary key of the ticket information
+	* @return the ticket information
+	* @throws PortalException if a ticket information with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.TicketInformation getTicketInformation(
+		long ticketInformationId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getTicketInformation(ticketInformationId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketInformation> getTicketInformationList(
+		long ticketEntryId) {
+		return getService().getTicketInformationList(ticketEntryId);
+	}
+
+	/**
+	* Returns a range of all the ticket informations.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.TicketInformationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of ticket informations
+	* @param end the upper bound of the range of ticket informations (not inclusive)
+	* @return the range of ticket informations
+	*/
+	public static java.util.List<com.liferay.osb.model.TicketInformation> getTicketInformations(
+		int start, int end) {
+		return getService().getTicketInformations(start, end);
+	}
+
+	/**
+	* Returns the number of ticket informations.
+	*
+	* @return the number of ticket informations
+	*/
+	public static int getTicketInformationsCount() {
+		return getService().getTicketInformationsCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketInformation> updateTicketInformation(
+		long ticketEntryId,
+		java.util.Map<java.lang.Long, java.lang.String> fieldsMap)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateTicketInformation(ticketEntryId, fieldsMap);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketInformation> updateTicketInformation(
+		long userId, java.lang.String userName, long ticketEntryId,
+		java.util.Map<java.lang.Long, java.lang.String> fieldsMap,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateTicketInformation(userId, userName, ticketEntryId,
+			fieldsMap, serviceContext);
+	}
+
+	/**
+	* Updates the ticket information in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param ticketInformation the ticket information
+	* @return the ticket information that was updated
+	*/
+	public static com.liferay.osb.model.TicketInformation updateTicketInformation(
+		com.liferay.osb.model.TicketInformation ticketInformation) {
+		return getService().updateTicketInformation(ticketInformation);
 	}
 
 	public static void clearService() {

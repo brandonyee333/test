@@ -58,17 +58,29 @@ public interface TicketCommentService extends BaseService, InvokableService {
 	public TicketComment addTicketComment(long userId, long ticketEntryId,
 		java.lang.String body, int type, int visibility, int status,
 		long ticketCannedResponseId, int[] pendingTypes,
-		ServiceContext serviceContext) throws PortalException;
-
-	public TicketComment addTicketComment(long userId, long ticketEntryId,
-		java.lang.String body, int type, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
 		List<ObjectValuePair<java.lang.String, File>> files,
 		List<java.lang.Integer> types, ServiceContext serviceContext)
 		throws PortalException;
 
+	public TicketComment addTicketComment(long userId, long ticketEntryId,
+		java.lang.String body, int type, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		ServiceContext serviceContext) throws PortalException;
+
 	public TicketComment deleteTicketComment(long ticketCommentId)
 		throws PortalException;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	public TicketComment updateTicketComment(long userId, long ticketCommentId,
 		long ticketEntryId, java.lang.String body, int visibility, int status,
@@ -78,16 +90,4 @@ public interface TicketCommentService extends BaseService, InvokableService {
 
 	public TicketComment updateTicketCommentType(long ticketCommentId, int type)
 		throws PortalException;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
 }

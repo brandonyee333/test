@@ -41,13 +41,6 @@ public class AccountWorkerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountWorkerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasAccountWorker(long userId, long accountEntryId) {
-		return getService().hasAccountWorker(userId, accountEntryId);
-	}
-
-	public static boolean hasAccountWorkerRole(long userId, int role) {
-		return getService().hasAccountWorkerRole(userId, role);
-	}
 
 	/**
 	* Adds the account worker to the database. Also notifies the appropriate model listeners.
@@ -60,6 +53,14 @@ public class AccountWorkerLocalServiceUtil {
 		return getService().addAccountWorker(accountWorker);
 	}
 
+	public static void addAccountWorkers(long userId, long[] userIds,
+		long accountEntryId, int[] roles, int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.addAccountWorkers(userId, userIds, accountEntryId, roles,
+			notifications);
+	}
+
 	/**
 	* Creates a new account worker with the primary key. Does not add the account worker to the database.
 	*
@@ -69,6 +70,11 @@ public class AccountWorkerLocalServiceUtil {
 	public static com.liferay.osb.model.AccountWorker createAccountWorker(
 		long accountWorkerId) {
 		return getService().createAccountWorker(accountWorkerId);
+	}
+
+	public static void deleteAccountEntryAccountWorkers(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteAccountEntryAccountWorkers(accountEntryId);
 	}
 
 	/**
@@ -95,51 +101,15 @@ public class AccountWorkerLocalServiceUtil {
 		return getService().deleteAccountWorker(accountWorkerId);
 	}
 
-	public static com.liferay.osb.model.AccountWorker fetchAccountWorker(
-		long accountWorkerId) {
-		return getService().fetchAccountWorker(accountWorkerId);
-	}
-
-	/**
-	* Returns the account worker with the primary key.
-	*
-	* @param accountWorkerId the primary key of the account worker
-	* @return the account worker
-	* @throws PortalException if a account worker with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.AccountWorker getAccountWorker(
-		long accountWorkerId)
+	public static void deleteAccountWorkers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountWorker(accountWorkerId);
+		getService().deleteAccountWorkers(userId);
 	}
 
-	public static com.liferay.osb.model.AccountWorker getAccountWorker(
-		long userId, long accountEntryId)
+	public static void deleteAccountWorkers(long userId, long[] userIds,
+		long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountWorker(userId, accountEntryId);
-	}
-
-	/**
-	* Updates the account worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountWorker the account worker
-	* @return the account worker that was updated
-	*/
-	public static com.liferay.osb.model.AccountWorker updateAccountWorker(
-		com.liferay.osb.model.AccountWorker accountWorker) {
-		return getService().updateAccountWorker(accountWorker);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
+		getService().deleteAccountWorkers(userId, userIds, accountEntryId);
 	}
 
 	/**
@@ -151,34 +121,8 @@ public class AccountWorkerLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of account workers.
-	*
-	* @return the number of account workers
-	*/
-	public static int getAccountWorkersCount() {
-		return getService().getAccountWorkersCount();
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
 	}
 
 	/**
@@ -232,6 +176,54 @@ public class AccountWorkerLocalServiceUtil {
 	}
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static com.liferay.osb.model.AccountWorker fetchAccountWorker(
+		long accountWorkerId) {
+		return getService().fetchAccountWorker(accountWorkerId);
+	}
+
+	/**
+	* Returns the account worker with the primary key.
+	*
+	* @param accountWorkerId the primary key of the account worker
+	* @return the account worker
+	* @throws PortalException if a account worker with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.AccountWorker getAccountWorker(
+		long accountWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getAccountWorker(accountWorkerId);
+	}
+
+	public static com.liferay.osb.model.AccountWorker getAccountWorker(
+		long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getAccountWorker(userId, accountEntryId);
+	}
+
+	/**
 	* Returns a range of all the account workers.
 	*
 	* <p>
@@ -257,57 +249,66 @@ public class AccountWorkerLocalServiceUtil {
 		return getService().getAccountWorkers(accountEntryId, role);
 	}
 
+	/**
+	* Returns the number of account workers.
+	*
+	* @return the number of account workers
+	*/
+	public static int getAccountWorkersCount() {
+		return getService().getAccountWorkersCount();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
 	public static java.util.List<com.liferay.osb.model.AccountWorker> getUserAccountWorkers(
 		long userId) {
 		return getService().getUserAccountWorkers(userId);
 	}
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
+	public static boolean hasAccountWorker(long userId, long accountEntryId) {
+		return getService().hasAccountWorker(userId, accountEntryId);
+	}
+
+	public static boolean hasAccountWorkerRole(long userId, int role) {
+		return getService().hasAccountWorkerRole(userId, role);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the account worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param accountWorker the account worker
+	* @return the account worker that was updated
 	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static void addAccountWorkers(long userId, long[] userIds,
-		long accountEntryId, int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addAccountWorkers(userId, userIds, accountEntryId, roles,
-			notifications);
-	}
-
-	public static void deleteAccountEntryAccountWorkers(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteAccountEntryAccountWorkers(accountEntryId);
-	}
-
-	public static void deleteAccountWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteAccountWorkers(userId);
-	}
-
-	public static void deleteAccountWorkers(long userId, long[] userIds,
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteAccountWorkers(userId, userIds, accountEntryId);
+	public static com.liferay.osb.model.AccountWorker updateAccountWorker(
+		com.liferay.osb.model.AccountWorker accountWorker) {
+		return getService().updateAccountWorker(accountWorker);
 	}
 
 	public static void clearService() {

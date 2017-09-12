@@ -50,6 +50,14 @@ public interface SecurityPatchService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SecurityPatchServiceUtil} to access the security patch remote service. Add custom service methods to {@link com.liferay.osb.service.impl.SecurityPatchServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SecurityPatch getSecurityPatch(long securityPatchId)
 		throws PortalException;
@@ -58,11 +66,4 @@ public interface SecurityPatchService extends BaseService, InvokableService {
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
 }

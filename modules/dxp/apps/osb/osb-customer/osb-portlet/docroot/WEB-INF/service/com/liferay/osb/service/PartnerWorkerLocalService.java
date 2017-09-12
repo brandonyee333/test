@@ -61,14 +61,6 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link PartnerWorkerLocalServiceUtil} to access the partner worker local service. Add custom service methods to {@link com.liferay.osb.service.impl.PartnerWorkerLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasPartnerWorker(long userId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasPartnerWorker(long userId, long partnerEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasPartnerWorkerRole(long userId, int role);
 
 	/**
 	* Adds the partner worker to the database. Also notifies the appropriate model listeners.
@@ -79,6 +71,9 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public PartnerWorker addPartnerWorker(PartnerWorker partnerWorker);
 
+	public void addPartnerWorkers(long[] userIds, long partnerEntryId,
+		int[] roles, int[] notifications) throws PortalException;
+
 	/**
 	* Creates a new partner worker with the primary key. Does not add the partner worker to the database.
 	*
@@ -86,15 +81,6 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	* @return the new partner worker
 	*/
 	public PartnerWorker createPartnerWorker(long partnerWorkerId);
-
-	/**
-	* Deletes the partner worker from the database. Also notifies the appropriate model listeners.
-	*
-	* @param partnerWorker the partner worker
-	* @return the partner worker that was removed
-	*/
-	@Indexable(type = IndexableType.DELETE)
-	public PartnerWorker deletePartnerWorker(PartnerWorker partnerWorker);
 
 	/**
 	* Deletes the partner worker with the primary key from the database. Also notifies the appropriate model listeners.
@@ -107,43 +93,19 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	public PartnerWorker deletePartnerWorker(long partnerWorkerId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PartnerWorker fetchPartnerWorker(long partnerWorkerId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PartnerWorker fetchPartnerWorker(long userId, long partnerEntryId);
-
 	/**
-	* Returns the partner worker with the primary key.
-	*
-	* @param partnerWorkerId the primary key of the partner worker
-	* @return the partner worker
-	* @throws PortalException if a partner worker with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PartnerWorker getPartnerWorker(long partnerWorkerId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PartnerWorker getPartnerWorker(long userId, long partnerEntryId)
-		throws PortalException;
-
-	/**
-	* Updates the partner worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the partner worker from the database. Also notifies the appropriate model listeners.
 	*
 	* @param partnerWorker the partner worker
-	* @return the partner worker that was updated
+	* @return the partner worker that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public PartnerWorker updatePartnerWorker(PartnerWorker partnerWorker);
+	@Indexable(type = IndexableType.DELETE)
+	public PartnerWorker deletePartnerWorker(PartnerWorker partnerWorker);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
+	public void deletePartnerWorkers(long userId) throws PortalException;
 
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
+		throws PortalException;
 
 	/**
 	* @throws PortalException
@@ -152,30 +114,7 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of partner workers.
-	*
-	* @return the number of partner workers
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getPartnerWorkersCount();
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -217,6 +156,58 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PartnerWorker fetchPartnerWorker(long partnerWorkerId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PartnerWorker fetchPartnerWorker(long userId, long partnerEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	/**
+	* Returns the partner worker with the primary key.
+	*
+	* @param partnerWorkerId the primary key of the partner worker
+	* @return the partner worker
+	* @throws PortalException if a partner worker with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PartnerWorker getPartnerWorker(long partnerWorkerId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PartnerWorker getPartnerWorker(long userId, long partnerEntryId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the partner workers.
 	*
 	* <p>
@@ -236,32 +227,42 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<PartnerWorker> getPartnerWorkers(long partnerEntryId, int role);
 
+	/**
+	* Returns the number of partner workers.
+	*
+	* @return the number of partner workers
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getPartnerWorkersCount();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<PartnerWorker> getUserPartnerWorkers(long userId);
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasPartnerWorker(long userId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasPartnerWorker(long userId, long partnerEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasPartnerWorkerRole(long userId, int role);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the partner worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param partnerWorker the partner worker
+	* @return the partner worker that was updated
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	public void addPartnerWorkers(long[] userIds, long partnerEntryId,
-		int[] roles, int[] notifications) throws PortalException;
-
-	public void deletePartnerWorkers(long userId) throws PortalException;
-
-	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws PortalException;
+	@Indexable(type = IndexableType.REINDEX)
+	public PartnerWorker updatePartnerWorker(PartnerWorker partnerWorker);
 }

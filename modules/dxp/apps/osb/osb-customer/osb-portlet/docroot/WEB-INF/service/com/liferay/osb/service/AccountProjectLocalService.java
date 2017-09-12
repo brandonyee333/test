@@ -100,42 +100,6 @@ public interface AccountProjectLocalService extends BaseLocalService,
 	public AccountProject deleteAccountProject(long accountProjectId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountProject fetchAccountProject(long accountProjectId);
-
-	/**
-	* Returns the account project with the primary key.
-	*
-	* @param accountProjectId the primary key of the account project
-	* @return the account project
-	* @throws PortalException if a account project with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountProject getAccountProject(long accountProjectId)
-		throws PortalException;
-
-	/**
-	* Updates the account project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountProject the account project
-	* @return the account project that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public AccountProject updateAccountProject(AccountProject accountProject);
-
-	public AccountProject updateAccountProject(long userId,
-		long accountProjectId, long accountEntryId, java.lang.String name,
-		Map<java.lang.Integer, java.lang.String> data)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
 	/**
 	* @throws PortalException
 	*/
@@ -143,30 +107,7 @@ public interface AccountProjectLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of account projects.
-	*
-	* @return the number of account projects
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountProjectsCount();
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -208,6 +149,38 @@ public interface AccountProjectLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountProject fetchAccountProject(long accountProjectId);
+
+	/**
+	* Returns the account project with the primary key.
+	*
+	* @param accountProjectId the primary key of the account project
+	* @return the account project
+	* @throws PortalException if a account project with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountProject getAccountProject(long accountProjectId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the account projects.
 	*
 	* <p>
@@ -225,20 +198,47 @@ public interface AccountProjectLocalService extends BaseLocalService,
 	public List<AccountProject> getAccountProjects(long accountEntryId);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of account projects.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of account projects
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAccountProjectsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the OSGi service identifier.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @return the OSGi service identifier
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Updates the account project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountProject the account project
+	* @return the account project that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public AccountProject updateAccountProject(AccountProject accountProject);
+
+	public AccountProject updateAccountProject(long userId,
+		long accountProjectId, long accountEntryId, java.lang.String name,
+		Map<java.lang.Integer, java.lang.String> data)
+		throws PortalException;
 }

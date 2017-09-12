@@ -133,44 +133,8 @@ public class AccountEnvironmentAttachmentWrapper
 	}
 
 	@Override
-	public AccountEnvironmentAttachment toEscapedModel() {
-		return new AccountEnvironmentAttachmentWrapper(_accountEnvironmentAttachment.toEscapedModel());
-	}
-
-	@Override
-	public AccountEnvironmentAttachment toUnescapedModel() {
-		return new AccountEnvironmentAttachmentWrapper(_accountEnvironmentAttachment.toUnescapedModel());
-	}
-
-	@Override
-	public boolean fileExists()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEnvironmentAttachment.fileExists();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _accountEnvironmentAttachment.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _accountEnvironmentAttachment.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _accountEnvironmentAttachment.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountEnvironmentAttachment.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountEnvironmentAttachment> toCacheModel() {
-		return _accountEnvironmentAttachment.toCacheModel();
+	public java.lang.Object clone() {
+		return new AccountEnvironmentAttachmentWrapper((AccountEnvironmentAttachment)_accountEnvironmentAttachment.clone());
 	}
 
 	@Override
@@ -180,33 +144,49 @@ public class AccountEnvironmentAttachmentWrapper
 	}
 
 	@Override
+	public boolean fileExists()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEnvironmentAttachment.fileExists();
+	}
+
+	/**
+	* Returns the account environment attachment ID of this account environment attachment.
+	*
+	* @return the account environment attachment ID of this account environment attachment
+	*/
+	@Override
+	public long getAccountEnvironmentAttachmentId() {
+		return _accountEnvironmentAttachment.getAccountEnvironmentAttachmentId();
+	}
+
+	/**
+	* Returns the account environment ID of this account environment attachment.
+	*
+	* @return the account environment ID of this account environment attachment
+	*/
+	@Override
+	public long getAccountEnvironmentId() {
+		return _accountEnvironmentAttachment.getAccountEnvironmentId();
+	}
+
+	@Override
 	public int getContentLength() {
 		return _accountEnvironmentAttachment.getContentLength();
 	}
 
 	/**
-	* Returns the type of this account environment attachment.
+	* Returns the create date of this account environment attachment.
 	*
-	* @return the type of this account environment attachment
+	* @return the create date of this account environment attachment
 	*/
 	@Override
-	public int getType() {
-		return _accountEnvironmentAttachment.getType();
+	public Date getCreateDate() {
+		return _accountEnvironmentAttachment.getCreateDate();
 	}
 
 	@Override
-	public int hashCode() {
-		return _accountEnvironmentAttachment.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountEnvironmentAttachment.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new AccountEnvironmentAttachmentWrapper((AccountEnvironmentAttachment)_accountEnvironmentAttachment.clone());
+	public ExpandoBridge getExpandoBridge() {
+		return _accountEnvironmentAttachment.getExpandoBridge();
 	}
 
 	@Override
@@ -222,6 +202,61 @@ public class AccountEnvironmentAttachmentWrapper
 	@Override
 	public java.lang.String getFileName() {
 		return _accountEnvironmentAttachment.getFileName();
+	}
+
+	/**
+	* Returns the file size of this account environment attachment.
+	*
+	* @return the file size of this account environment attachment
+	*/
+	@Override
+	public long getFileSize() {
+		return _accountEnvironmentAttachment.getFileSize();
+	}
+
+	/**
+	* Returns the modified date of this account environment attachment.
+	*
+	* @return the modified date of this account environment attachment
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _accountEnvironmentAttachment.getModifiedDate();
+	}
+
+	/**
+	* Returns the primary key of this account environment attachment.
+	*
+	* @return the primary key of this account environment attachment
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _accountEnvironmentAttachment.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountEnvironmentAttachment.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the type of this account environment attachment.
+	*
+	* @return the type of this account environment attachment
+	*/
+	@Override
+	public int getType() {
+		return _accountEnvironmentAttachment.getType();
+	}
+
+	/**
+	* Returns the user ID of this account environment attachment.
+	*
+	* @return the user ID of this account environment attachment
+	*/
+	@Override
+	public long getUserId() {
+		return _accountEnvironmentAttachment.getUserId();
 	}
 
 	/**
@@ -245,83 +280,23 @@ public class AccountEnvironmentAttachmentWrapper
 	}
 
 	@Override
-	public java.lang.String toString() {
-		return _accountEnvironmentAttachment.toString();
+	public int hashCode() {
+		return _accountEnvironmentAttachment.hashCode();
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
-		return _accountEnvironmentAttachment.toXmlString();
+	public boolean isCachedModel() {
+		return _accountEnvironmentAttachment.isCachedModel();
 	}
 
-	/**
-	* Returns the create date of this account environment attachment.
-	*
-	* @return the create date of this account environment attachment
-	*/
 	@Override
-	public Date getCreateDate() {
-		return _accountEnvironmentAttachment.getCreateDate();
+	public boolean isEscapedModel() {
+		return _accountEnvironmentAttachment.isEscapedModel();
 	}
 
-	/**
-	* Returns the modified date of this account environment attachment.
-	*
-	* @return the modified date of this account environment attachment
-	*/
 	@Override
-	public Date getModifiedDate() {
-		return _accountEnvironmentAttachment.getModifiedDate();
-	}
-
-	/**
-	* Returns the account environment attachment ID of this account environment attachment.
-	*
-	* @return the account environment attachment ID of this account environment attachment
-	*/
-	@Override
-	public long getAccountEnvironmentAttachmentId() {
-		return _accountEnvironmentAttachment.getAccountEnvironmentAttachmentId();
-	}
-
-	/**
-	* Returns the account environment ID of this account environment attachment.
-	*
-	* @return the account environment ID of this account environment attachment
-	*/
-	@Override
-	public long getAccountEnvironmentId() {
-		return _accountEnvironmentAttachment.getAccountEnvironmentId();
-	}
-
-	/**
-	* Returns the file size of this account environment attachment.
-	*
-	* @return the file size of this account environment attachment
-	*/
-	@Override
-	public long getFileSize() {
-		return _accountEnvironmentAttachment.getFileSize();
-	}
-
-	/**
-	* Returns the primary key of this account environment attachment.
-	*
-	* @return the primary key of this account environment attachment
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _accountEnvironmentAttachment.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this account environment attachment.
-	*
-	* @return the user ID of this account environment attachment
-	*/
-	@Override
-	public long getUserId() {
-		return _accountEnvironmentAttachment.getUserId();
+	public boolean isNew() {
+		return _accountEnvironmentAttachment.isNew();
 	}
 
 	@Override
@@ -366,14 +341,14 @@ public class AccountEnvironmentAttachmentWrapper
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountEnvironmentAttachment.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_accountEnvironmentAttachment.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountEnvironmentAttachment.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -469,6 +444,31 @@ public class AccountEnvironmentAttachmentWrapper
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_accountEnvironmentAttachment.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountEnvironmentAttachment> toCacheModel() {
+		return _accountEnvironmentAttachment.toCacheModel();
+	}
+
+	@Override
+	public AccountEnvironmentAttachment toEscapedModel() {
+		return new AccountEnvironmentAttachmentWrapper(_accountEnvironmentAttachment.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _accountEnvironmentAttachment.toString();
+	}
+
+	@Override
+	public AccountEnvironmentAttachment toUnescapedModel() {
+		return new AccountEnvironmentAttachmentWrapper(_accountEnvironmentAttachment.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _accountEnvironmentAttachment.toXmlString();
 	}
 
 	@Override

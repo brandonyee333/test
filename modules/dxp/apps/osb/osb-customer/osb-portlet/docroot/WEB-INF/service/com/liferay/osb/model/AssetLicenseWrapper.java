@@ -164,168 +164,13 @@ public class AssetLicenseWrapper implements AssetLicense,
 	}
 
 	@Override
-	public AssetLicense toEscapedModel() {
-		return new AssetLicenseWrapper(_assetLicense.toEscapedModel());
-	}
-
-	@Override
-	public AssetLicense toUnescapedModel() {
-		return new AssetLicenseWrapper(_assetLicense.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _assetLicense.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _assetLicense.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _assetLicense.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _assetLicense.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AssetLicense> toCacheModel() {
-		return _assetLicense.toCacheModel();
-	}
-
-	/**
-	* Returns the required version of this asset license.
-	*
-	* @return the required version of this asset license
-	*/
-	@Override
-	public double getRequiredVersion() {
-		return _assetLicense.getRequiredVersion();
+	public java.lang.Object clone() {
+		return new AssetLicenseWrapper((AssetLicense)_assetLicense.clone());
 	}
 
 	@Override
 	public int compareTo(AssetLicense assetLicense) {
 		return _assetLicense.compareTo(assetLicense);
-	}
-
-	/**
-	* Returns the license type of this asset license.
-	*
-	* @return the license type of this asset license
-	*/
-	@Override
-	public int getLicenseType() {
-		return _assetLicense.getLicenseType();
-	}
-
-	/**
-	* Returns the status of this asset license.
-	*
-	* @return the status of this asset license
-	*/
-	@Override
-	public int getStatus() {
-		return _assetLicense.getStatus();
-	}
-
-	/**
-	* Returns the usage type of this asset license.
-	*
-	* @return the usage type of this asset license
-	*/
-	@Override
-	public int getUsageType() {
-		return _assetLicense.getUsageType();
-	}
-
-	@Override
-	public int hashCode() {
-		return _assetLicense.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _assetLicense.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new AssetLicenseWrapper((AssetLicense)_assetLicense.clone());
-	}
-
-	/**
-	* Returns the fully qualified class name of this asset license.
-	*
-	* @return the fully qualified class name of this asset license
-	*/
-	@Override
-	public java.lang.String getClassName() {
-		return _assetLicense.getClassName();
-	}
-
-	/**
-	* Returns the license ID of this asset license.
-	*
-	* @return the license ID of this asset license
-	*/
-	@Override
-	public java.lang.String getLicenseId() {
-		return _assetLicense.getLicenseId();
-	}
-
-	/**
-	* Returns the name of this asset license.
-	*
-	* @return the name of this asset license
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _assetLicense.getName();
-	}
-
-	/**
-	* Returns the user uuid of this asset license.
-	*
-	* @return the user uuid of this asset license
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _assetLicense.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _assetLicense.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _assetLicense.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this asset license.
-	*
-	* @return the create date of this asset license
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _assetLicense.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this asset license.
-	*
-	* @return the modified date of this asset license
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _assetLicense.getModifiedDate();
 	}
 
 	/**
@@ -336,6 +181,16 @@ public class AssetLicenseWrapper implements AssetLicense,
 	@Override
 	public long getAssetLicenseId() {
 		return _assetLicense.getAssetLicenseId();
+	}
+
+	/**
+	* Returns the fully qualified class name of this asset license.
+	*
+	* @return the fully qualified class name of this asset license
+	*/
+	@Override
+	public java.lang.String getClassName() {
+		return _assetLicense.getClassName();
 	}
 
 	/**
@@ -359,6 +214,41 @@ public class AssetLicenseWrapper implements AssetLicense,
 	}
 
 	/**
+	* Returns the create date of this asset license.
+	*
+	* @return the create date of this asset license
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _assetLicense.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _assetLicense.getExpandoBridge();
+	}
+
+	/**
+	* Returns the license ID of this asset license.
+	*
+	* @return the license ID of this asset license
+	*/
+	@Override
+	public java.lang.String getLicenseId() {
+		return _assetLicense.getLicenseId();
+	}
+
+	/**
+	* Returns the license type of this asset license.
+	*
+	* @return the license type of this asset license
+	*/
+	@Override
+	public int getLicenseType() {
+		return _assetLicense.getLicenseType();
+	}
+
+	/**
 	* Returns the license type allotment of this asset license.
 	*
 	* @return the license type allotment of this asset license
@@ -379,6 +269,26 @@ public class AssetLicenseWrapper implements AssetLicense,
 	}
 
 	/**
+	* Returns the modified date of this asset license.
+	*
+	* @return the modified date of this asset license
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _assetLicense.getModifiedDate();
+	}
+
+	/**
+	* Returns the name of this asset license.
+	*
+	* @return the name of this asset license
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _assetLicense.getName();
+	}
+
+	/**
 	* Returns the primary key of this asset license.
 	*
 	* @return the primary key of this asset license
@@ -386,6 +296,41 @@ public class AssetLicenseWrapper implements AssetLicense,
 	@Override
 	public long getPrimaryKey() {
 		return _assetLicense.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _assetLicense.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the required version of this asset license.
+	*
+	* @return the required version of this asset license
+	*/
+	@Override
+	public double getRequiredVersion() {
+		return _assetLicense.getRequiredVersion();
+	}
+
+	/**
+	* Returns the status of this asset license.
+	*
+	* @return the status of this asset license
+	*/
+	@Override
+	public int getStatus() {
+		return _assetLicense.getStatus();
+	}
+
+	/**
+	* Returns the usage type of this asset license.
+	*
+	* @return the usage type of this asset license
+	*/
+	@Override
+	public int getUsageType() {
+		return _assetLicense.getUsageType();
 	}
 
 	/**
@@ -396,6 +341,36 @@ public class AssetLicenseWrapper implements AssetLicense,
 	@Override
 	public long getUserId() {
 		return _assetLicense.getUserId();
+	}
+
+	/**
+	* Returns the user uuid of this asset license.
+	*
+	* @return the user uuid of this asset license
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _assetLicense.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _assetLicense.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _assetLicense.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _assetLicense.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _assetLicense.isNew();
 	}
 
 	@Override
@@ -454,14 +429,14 @@ public class AssetLicenseWrapper implements AssetLicense,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_assetLicense.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_assetLicense.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_assetLicense.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -597,6 +572,31 @@ public class AssetLicenseWrapper implements AssetLicense,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_assetLicense.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AssetLicense> toCacheModel() {
+		return _assetLicense.toCacheModel();
+	}
+
+	@Override
+	public AssetLicense toEscapedModel() {
+		return new AssetLicenseWrapper(_assetLicense.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _assetLicense.toString();
+	}
+
+	@Override
+	public AssetLicense toUnescapedModel() {
+		return new AssetLicenseWrapper(_assetLicense.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _assetLicense.toXmlString();
 	}
 
 	@Override

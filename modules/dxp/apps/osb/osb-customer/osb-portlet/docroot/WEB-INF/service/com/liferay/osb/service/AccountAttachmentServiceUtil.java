@@ -41,6 +41,16 @@ public class AccountAttachmentServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountAttachmentServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static java.util.List<com.liferay.osb.model.AccountAttachment> addAccountAttachments(
+		long accountEntryId, long accountProjectId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addAccountAttachments(accountEntryId, accountProjectId,
+			files, types);
+	}
+
 	public static com.liferay.osb.model.AccountAttachment deleteAccountAttachment(
 		long accountAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -53,10 +63,11 @@ public class AccountAttachmentServiceUtil {
 		return getService().getAccountAttachment(accountAttachmentId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
+	public static java.util.List<com.liferay.osb.model.AccountAttachment> getAccountAttachments(
+		long accountEntryId, long accountProjectId, int type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getAccountAttachments(accountEntryId, accountProjectId, type);
 	}
 
 	/**
@@ -68,21 +79,10 @@ public class AccountAttachmentServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountAttachment> addAccountAttachments(
-		long accountEntryId, long accountProjectId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addAccountAttachments(accountEntryId, accountProjectId,
-			files, types);
-	}
-
-	public static java.util.List<com.liferay.osb.model.AccountAttachment> getAccountAttachments(
-		long accountEntryId, long accountProjectId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getAccountAttachments(accountEntryId, accountProjectId, type);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static void clearService() {

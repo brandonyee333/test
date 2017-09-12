@@ -88,38 +88,8 @@ public class SupportWorkerComponentWrapper implements SupportWorkerComponent,
 	}
 
 	@Override
-	public SupportWorkerComponent toEscapedModel() {
-		return new SupportWorkerComponentWrapper(_supportWorkerComponent.toEscapedModel());
-	}
-
-	@Override
-	public SupportWorkerComponent toUnescapedModel() {
-		return new SupportWorkerComponentWrapper(_supportWorkerComponent.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _supportWorkerComponent.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _supportWorkerComponent.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _supportWorkerComponent.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _supportWorkerComponent.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SupportWorkerComponent> toCacheModel() {
-		return _supportWorkerComponent.toCacheModel();
+	public java.lang.Object clone() {
+		return new SupportWorkerComponentWrapper((SupportWorkerComponent)_supportWorkerComponent.clone());
 	}
 
 	@Override
@@ -138,28 +108,8 @@ public class SupportWorkerComponentWrapper implements SupportWorkerComponent,
 	}
 
 	@Override
-	public int hashCode() {
-		return _supportWorkerComponent.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _supportWorkerComponent.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new SupportWorkerComponentWrapper((SupportWorkerComponent)_supportWorkerComponent.clone());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _supportWorkerComponent.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _supportWorkerComponent.toXmlString();
+	public ExpandoBridge getExpandoBridge() {
+		return _supportWorkerComponent.getExpandoBridge();
 	}
 
 	/**
@@ -170,6 +120,11 @@ public class SupportWorkerComponentWrapper implements SupportWorkerComponent,
 	@Override
 	public long getPrimaryKey() {
 		return _supportWorkerComponent.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _supportWorkerComponent.getPrimaryKeyObj();
 	}
 
 	/**
@@ -193,6 +148,26 @@ public class SupportWorkerComponentWrapper implements SupportWorkerComponent,
 	}
 
 	@Override
+	public int hashCode() {
+		return _supportWorkerComponent.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _supportWorkerComponent.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _supportWorkerComponent.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _supportWorkerComponent.isNew();
+	}
+
+	@Override
 	public void persist() {
 		_supportWorkerComponent.persist();
 	}
@@ -213,14 +188,14 @@ public class SupportWorkerComponentWrapper implements SupportWorkerComponent,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_supportWorkerComponent.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_supportWorkerComponent.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_supportWorkerComponent.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -266,6 +241,31 @@ public class SupportWorkerComponentWrapper implements SupportWorkerComponent,
 	@Override
 	public void setSupportWorkerId(long supportWorkerId) {
 		_supportWorkerComponent.setSupportWorkerId(supportWorkerId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SupportWorkerComponent> toCacheModel() {
+		return _supportWorkerComponent.toCacheModel();
+	}
+
+	@Override
+	public SupportWorkerComponent toEscapedModel() {
+		return new SupportWorkerComponentWrapper(_supportWorkerComponent.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _supportWorkerComponent.toString();
+	}
+
+	@Override
+	public SupportWorkerComponent toUnescapedModel() {
+		return new SupportWorkerComponentWrapper(_supportWorkerComponent.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _supportWorkerComponent.toXmlString();
 	}
 
 	@Override

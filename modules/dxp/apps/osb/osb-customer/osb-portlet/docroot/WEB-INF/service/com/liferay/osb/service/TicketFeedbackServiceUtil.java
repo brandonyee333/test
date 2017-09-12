@@ -60,53 +60,6 @@ public class TicketFeedbackServiceUtil {
 		return getService().fetchFirstTicketFeedback(ticketEntryId, subject);
 	}
 
-	public static com.liferay.osb.model.TicketFeedback getTicketFeedback(
-		long ticketFeedbackId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getTicketFeedback(ticketFeedbackId);
-	}
-
-	public static com.liferay.osb.model.TicketFeedback updateTicketFeedback(
-		long ticketFeedbackId, int satisfied, int answer1, int answer2,
-		int answer3, int rating1, int rating2, int rating3, int rating4,
-		java.lang.String comments)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateTicketFeedback(ticketFeedbackId, satisfied, answer1,
-			answer2, answer3, rating1, rating2, rating3, rating4, comments);
-	}
-
-	public static int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().searchCount(keywords, params);
-	}
-
-	public static int searchCount(java.lang.String name, int createdGTDay,
-		int createdGTMonth, int createdGTYear, int createdLTDay,
-		int createdLTMonth, int createdLTYear, int modifiedGTDay,
-		int modifiedGTMonth, int modifiedGTYear, int modifiedLTDay,
-		int modifiedLTMonth, int modifiedLTYear, java.lang.Integer satisfied,
-		java.lang.String comments, java.lang.Integer status,
-		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
-		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .searchCount(name, createdGTDay, createdGTMonth,
-			createdGTYear, createdLTDay, createdLTMonth, createdLTYear,
-			modifiedGTDay, modifiedGTMonth, modifiedGTYear, modifiedLTDay,
-			modifiedLTMonth, modifiedLTYear, satisfied, comments, status,
-			ratings1, ratings2, ratings3, ratings4, params, andSearch);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -116,18 +69,22 @@ public class TicketFeedbackServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static com.liferay.osb.model.TicketFeedback getTicketFeedback(
+		long ticketFeedbackId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getTicketFeedback(ticketFeedbackId);
+	}
+
 	public static java.util.List<com.liferay.osb.model.TicketFeedback> getTicketFeedbacks(
 		long ticketEntryId, int subject)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTicketFeedbacks(ticketEntryId, subject);
 	}
 
-	public static java.util.List<com.liferay.osb.model.TicketFeedback> search(
-		java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().search(keywords, params, start, end, obc);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketFeedback> search(
@@ -149,6 +106,49 @@ public class TicketFeedbackServiceUtil {
 			modifiedGTMonth, modifiedGTYear, modifiedLTDay, modifiedLTMonth,
 			modifiedLTYear, satisfied, comments, status, ratings1, ratings2,
 			ratings3, ratings4, params, andSearch, start, end, obc);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketFeedback> search(
+		java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().search(keywords, params, start, end, obc);
+	}
+
+	public static int searchCount(java.lang.String name, int createdGTDay,
+		int createdGTMonth, int createdGTYear, int createdLTDay,
+		int createdLTMonth, int createdLTYear, int modifiedGTDay,
+		int modifiedGTMonth, int modifiedGTYear, int modifiedLTDay,
+		int modifiedLTMonth, int modifiedLTYear, java.lang.Integer satisfied,
+		java.lang.String comments, java.lang.Integer status,
+		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
+		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .searchCount(name, createdGTDay, createdGTMonth,
+			createdGTYear, createdLTDay, createdLTMonth, createdLTYear,
+			modifiedGTDay, modifiedGTMonth, modifiedGTYear, modifiedLTDay,
+			modifiedLTMonth, modifiedLTYear, satisfied, comments, status,
+			ratings1, ratings2, ratings3, ratings4, params, andSearch);
+	}
+
+	public static int searchCount(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().searchCount(keywords, params);
+	}
+
+	public static com.liferay.osb.model.TicketFeedback updateTicketFeedback(
+		long ticketFeedbackId, int satisfied, int answer1, int answer2,
+		int answer3, int rating1, int rating2, int rating3, int rating4,
+		java.lang.String comments)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateTicketFeedback(ticketFeedbackId, satisfied, answer1,
+			answer2, answer3, rating1, rating2, rating3, rating4, comments);
 	}
 
 	public static void clearService() {

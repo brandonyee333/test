@@ -112,6 +112,9 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		java.lang.String fullName, java.lang.String additionalInfo)
 		throws java.lang.Exception;
 
+	public void buyLicenseKey(long companyId, long userId)
+		throws PortalException;
+
 	/**
 	* Creates a new license key with the primary key. Does not add the license key to the database.
 	*
@@ -140,50 +143,6 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	public LicenseKey deleteLicenseKey(long licenseKeyId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public LicenseKey fetchLicenseKey(long licenseKeyId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public LicenseKey getFirstLicenseKey(long accountEntryId,
-		OrderByComparator obc) throws PortalException;
-
-	/**
-	* Returns the license key with the primary key.
-	*
-	* @param licenseKeyId the primary key of the license key
-	* @return the license key
-	* @throws PortalException if a license key with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public LicenseKey getLicenseKey(long licenseKeyId)
-		throws PortalException;
-
-	public LicenseKey renewLicenseKey(long userId, long licenseKeyId)
-		throws PortalException;
-
-	public LicenseKey renewLicenseKey(long userId, long licenseKeyId,
-		Date startDate, int renewTime) throws java.lang.Exception;
-
-	public LicenseKey renewTrialLicenseKey(long userId)
-		throws java.lang.Exception;
-
-	/**
-	* Updates the license key in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param licenseKey the license key
-	* @return the license key that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public LicenseKey updateLicenseKey(LicenseKey licenseKey);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
 	/**
 	* @throws PortalException
 	*/
@@ -191,82 +150,7 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAssetReceiptLicenseLicenseKeysCount(
-		long assetReceiptLicenseId, boolean complimentary, boolean active);
-
-	/**
-	* Returns the number of license keies.
-	*
-	* @return the number of license keies
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getLicenseKeiesCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryGroupLicenseKeysCount(long[] offeringEntryIds,
-		boolean complimentary, boolean active);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		boolean complimentary, boolean active);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		long clusterId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		long clusterId, boolean active);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getUserLicenseKeysCount(long userId, long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
-		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
-		int createDateLTMonth, int createDateLTYear,
-		java.lang.Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear,
-		java.lang.String accountEntryName, java.lang.String licenseKeySetName,
-		int startDateGTDay, int startDateGTMonth, int startDateGTYear,
-		int startDateLTDay, int startDateLTMonth, int startDateLTYear,
-		long[] licenseEntryIds, long[] productEntryIds,
-		java.lang.String productEntryName, java.lang.String productId,
-		int[] productVersions, java.lang.String owner,
-		java.lang.String description, java.lang.String hostName,
-		java.lang.String ipAddress, java.lang.String macAddress,
-		java.lang.String serverId, java.lang.String key,
-		int expirationDateGTDay, int expirationDateGTMonth,
-		int expirationDateGTYear, int expirationDateLTDay,
-		int expirationDateLTMonth, int expirationDateLTYear,
-		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params);
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -307,8 +191,32 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LicenseKey fetchLicenseKey(long licenseKeyId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getAccountEntryLicenseKeys(long accountEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
@@ -317,6 +225,17 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
 		long assetReceiptLicenseId, boolean complimentary, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAssetReceiptLicenseLicenseKeysCount(
+		long assetReceiptLicenseId, boolean complimentary, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LicenseKey getFirstLicenseKey(long accountEntryId,
+		OrderByComparator obc) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
 	* Returns a range of all the license keies.
@@ -332,12 +251,31 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeies(int start, int end);
 
+	/**
+	* Returns the number of license keies.
+	*
+	* @return the number of license keies
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId);
+	public int getLicenseKeiesCount();
+
+	/**
+	* Returns the license key with the primary key.
+	*
+	* @param licenseKeyId the primary key of the license key
+	* @return the license key
+	* @throws PortalException if a license key with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LicenseKey getLicenseKey(long licenseKeyId)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(java.lang.String productId,
-		java.lang.String serverId);
+	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getLicenseKeys(long userId,
+		java.lang.String productId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long assetReceiptLicenseId,
@@ -345,11 +283,8 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		int start, int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(long userId,
-		java.lang.String productId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId);
+	public List<LicenseKey> getLicenseKeys(java.lang.String productId,
+		java.lang.String serverId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeysByName(
@@ -357,9 +292,16 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		boolean active, int start, int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
 		long[] offeringEntryIds, boolean complimentary, boolean active,
 		int start, int end, OrderByComparator obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOfferingEntryGroupLicenseKeysCount(long[] offeringEntryIds,
+		boolean complimentary, boolean active);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId);
@@ -375,6 +317,50 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getOfferingEntryLicenseKeys(long offeringEntryId,
 		long clusterId, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
+		boolean complimentary, boolean active);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
+		long clusterId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
+		long clusterId, boolean active);
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getUserLicenseKeysCount(long userId, long accountEntryId);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	public LicenseKey renewLicenseKey(long userId, long licenseKeyId)
+		throws PortalException;
+
+	public LicenseKey renewLicenseKey(long userId, long licenseKeyId,
+		Date startDate, int renewTime) throws java.lang.Exception;
+
+	public LicenseKey renewTrialLicenseKey(long userId)
+		throws java.lang.Exception;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> search(java.lang.Long createUserId,
@@ -403,26 +389,31 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
 		int end, OrderByComparator obc);
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
+		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
+		int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.String accountEntryName, java.lang.String licenseKeySetName,
+		int startDateGTDay, int startDateGTMonth, int startDateGTYear,
+		int startDateLTDay, int startDateLTMonth, int startDateLTYear,
+		long[] licenseEntryIds, long[] productEntryIds,
+		java.lang.String productEntryName, java.lang.String productId,
+		int[] productVersions, java.lang.String owner,
+		java.lang.String description, java.lang.String hostName,
+		java.lang.String ipAddress, java.lang.String macAddress,
+		java.lang.String serverId, java.lang.String key,
+		int expirationDateGTDay, int expirationDateGTMonth,
+		int expirationDateGTYear, int expirationDateLTDay,
+		int expirationDateLTMonth, int expirationDateLTYear,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch);
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	public void buyLicenseKey(long companyId, long userId)
-		throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	public void sendRegisteredEmail(User user, LicenseKey licenseKey)
 		throws java.lang.Exception;
@@ -431,11 +422,20 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		java.lang.String emailAddress, long accountEntryId)
 		throws java.lang.Exception;
 
-	public void updateLicenseKey(long licenseKeyId, long accountEntryId,
-		long offeringEntryId, long orderEntryId) throws PortalException;
+	/**
+	* Updates the license key in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param licenseKey the license key
+	* @return the license key that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public LicenseKey updateLicenseKey(LicenseKey licenseKey);
 
 	public void updateLicenseKey(long userId, long licenseKeyId,
 		long assetReceiptLicenseId, boolean active) throws PortalException;
+
+	public void updateLicenseKey(long licenseKeyId, long accountEntryId,
+		long offeringEntryId, long orderEntryId) throws PortalException;
 
 	public void updateLicenseKey(long userId, long licenseKeyId,
 		long licenseKeySetId, long offeringEntryId, java.lang.String name,

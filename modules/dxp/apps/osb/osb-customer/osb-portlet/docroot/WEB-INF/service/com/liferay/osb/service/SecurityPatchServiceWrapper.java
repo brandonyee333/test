@@ -33,6 +33,16 @@ public class SecurityPatchServiceWrapper implements SecurityPatchService,
 		_securityPatchService = securityPatchService;
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _securityPatchService.getOSGiServiceIdentifier();
+	}
+
 	@Override
 	public com.liferay.osb.model.SecurityPatch getSecurityPatch(
 		long securityPatchId)
@@ -46,16 +56,6 @@ public class SecurityPatchServiceWrapper implements SecurityPatchService,
 		throws java.lang.Throwable {
 		return _securityPatchService.invokeMethod(name, parameterTypes,
 			arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _securityPatchService.getOSGiServiceIdentifier();
 	}
 
 	@Override

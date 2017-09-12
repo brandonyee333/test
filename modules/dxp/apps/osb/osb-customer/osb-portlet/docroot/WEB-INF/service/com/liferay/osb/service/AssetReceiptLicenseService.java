@@ -47,10 +47,6 @@ public interface AssetReceiptLicenseService extends BaseService, InvokableServic
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AssetReceiptLicenseServiceUtil} to access the asset receipt license remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AssetReceiptLicenseServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -58,4 +54,9 @@ public interface AssetReceiptLicenseService extends BaseService, InvokableServic
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 }

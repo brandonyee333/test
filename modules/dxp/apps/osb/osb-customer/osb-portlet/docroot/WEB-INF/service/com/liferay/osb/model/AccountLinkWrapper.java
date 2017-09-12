@@ -108,108 +108,13 @@ public class AccountLinkWrapper implements AccountLink,
 	}
 
 	@Override
-	public AccountLink toEscapedModel() {
-		return new AccountLinkWrapper(_accountLink.toEscapedModel());
-	}
-
-	@Override
-	public AccountLink toUnescapedModel() {
-		return new AccountLinkWrapper(_accountLink.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _accountLink.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _accountLink.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _accountLink.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountLink.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountLink> toCacheModel() {
-		return _accountLink.toCacheModel();
+	public java.lang.Object clone() {
+		return new AccountLinkWrapper((AccountLink)_accountLink.clone());
 	}
 
 	@Override
 	public int compareTo(AccountLink accountLink) {
 		return _accountLink.compareTo(accountLink);
-	}
-
-	@Override
-	public int hashCode() {
-		return _accountLink.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountLink.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new AccountLinkWrapper((AccountLink)_accountLink.clone());
-	}
-
-	/**
-	* Returns the url of this account link.
-	*
-	* @return the url of this account link
-	*/
-	@Override
-	public java.lang.String getUrl() {
-		return _accountLink.getUrl();
-	}
-
-	/**
-	* Returns the user name of this account link.
-	*
-	* @return the user name of this account link
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _accountLink.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this account link.
-	*
-	* @return the user uuid of this account link
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _accountLink.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _accountLink.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _accountLink.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this account link.
-	*
-	* @return the create date of this account link
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _accountLink.getCreateDate();
 	}
 
 	/**
@@ -233,6 +138,21 @@ public class AccountLinkWrapper implements AccountLink,
 	}
 
 	/**
+	* Returns the create date of this account link.
+	*
+	* @return the create date of this account link
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _accountLink.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _accountLink.getExpandoBridge();
+	}
+
+	/**
 	* Returns the primary key of this account link.
 	*
 	* @return the primary key of this account link
@@ -240,6 +160,21 @@ public class AccountLinkWrapper implements AccountLink,
 	@Override
 	public long getPrimaryKey() {
 		return _accountLink.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountLink.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the url of this account link.
+	*
+	* @return the url of this account link
+	*/
+	@Override
+	public java.lang.String getUrl() {
+		return _accountLink.getUrl();
 	}
 
 	/**
@@ -250,6 +185,46 @@ public class AccountLinkWrapper implements AccountLink,
 	@Override
 	public long getUserId() {
 		return _accountLink.getUserId();
+	}
+
+	/**
+	* Returns the user name of this account link.
+	*
+	* @return the user name of this account link
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _accountLink.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this account link.
+	*
+	* @return the user uuid of this account link
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _accountLink.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _accountLink.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _accountLink.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _accountLink.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _accountLink.isNew();
 	}
 
 	@Override
@@ -293,14 +268,14 @@ public class AccountLinkWrapper implements AccountLink,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountLink.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_accountLink.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountLink.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -366,6 +341,31 @@ public class AccountLinkWrapper implements AccountLink,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_accountLink.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountLink> toCacheModel() {
+		return _accountLink.toCacheModel();
+	}
+
+	@Override
+	public AccountLink toEscapedModel() {
+		return new AccountLinkWrapper(_accountLink.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _accountLink.toString();
+	}
+
+	@Override
+	public AccountLink toUnescapedModel() {
+		return new AccountLinkWrapper(_accountLink.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _accountLink.toXmlString();
 	}
 
 	@Override

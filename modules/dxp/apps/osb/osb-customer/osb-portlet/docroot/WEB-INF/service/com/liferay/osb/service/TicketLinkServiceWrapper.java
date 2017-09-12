@@ -43,10 +43,9 @@ public class TicketLinkServiceWrapper implements TicketLinkService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketLinkService.invokeMethod(name, parameterTypes, arguments);
+	public void deleteTicketLink(long ticketLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_ticketLinkService.deleteTicketLink(ticketLinkId);
 	}
 
 	/**
@@ -60,9 +59,10 @@ public class TicketLinkServiceWrapper implements TicketLinkService,
 	}
 
 	@Override
-	public void deleteTicketLink(long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_ticketLinkService.deleteTicketLink(ticketLinkId);
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _ticketLinkService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	@Override

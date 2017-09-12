@@ -33,6 +33,16 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 		_ticketLinkLocalService = ticketLinkLocalService;
 	}
 
+	@Override
+	public com.liferay.osb.model.TicketLink addTicketLink(long userId,
+		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
+		java.lang.Integer[] types, int visibility,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketLinkLocalService.addTicketLink(userId, ticketEntryId,
+			ticketSolutionId, urls, types, visibility, serviceContext);
+	}
+
 	/**
 	* Adds the ticket link to the database. Also notifies the appropriate model listeners.
 	*
@@ -43,16 +53,6 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 	public com.liferay.osb.model.TicketLink addTicketLink(
 		com.liferay.osb.model.TicketLink ticketLink) {
 		return _ticketLinkLocalService.addTicketLink(ticketLink);
-	}
-
-	@Override
-	public com.liferay.osb.model.TicketLink addTicketLink(long userId,
-		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
-		java.lang.Integer[] types, int visibility,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketLinkLocalService.addTicketLink(userId, ticketEntryId,
-			ticketSolutionId, urls, types, visibility, serviceContext);
 	}
 
 	/**
@@ -67,15 +67,13 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 	}
 
 	/**
-	* Deletes the ticket link from the database. Also notifies the appropriate model listeners.
-	*
-	* @param ticketLink the ticket link
-	* @return the ticket link that was removed
+	* @throws PortalException
 	*/
 	@Override
-	public com.liferay.osb.model.TicketLink deleteTicketLink(
-		com.liferay.osb.model.TicketLink ticketLink) {
-		return _ticketLinkLocalService.deleteTicketLink(ticketLink);
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketLinkLocalService.deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -92,99 +90,33 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 	}
 
 	@Override
-	public com.liferay.osb.model.TicketLink fetchTicketLink(long ticketLinkId) {
-		return _ticketLinkLocalService.fetchTicketLink(ticketLinkId);
-	}
-
-	/**
-	* Returns the ticket link with the primary key.
-	*
-	* @param ticketLinkId the primary key of the ticket link
-	* @return the ticket link
-	* @throws PortalException if a ticket link with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.TicketLink getTicketLink(long ticketLinkId)
+	public void deleteTicketLink(long userId, long ticketLinkId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketLinkLocalService.getTicketLink(ticketLinkId);
+		_ticketLinkLocalService.deleteTicketLink(userId, ticketLinkId);
+	}
+
+	@Override
+	public void deleteTicketLink(long userId,
+		com.liferay.osb.model.TicketLink ticketLink)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_ticketLinkLocalService.deleteTicketLink(userId, ticketLink);
 	}
 
 	/**
-	* Updates the ticket link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the ticket link from the database. Also notifies the appropriate model listeners.
 	*
 	* @param ticketLink the ticket link
-	* @return the ticket link that was updated
+	* @return the ticket link that was removed
 	*/
 	@Override
-	public com.liferay.osb.model.TicketLink updateTicketLink(
+	public com.liferay.osb.model.TicketLink deleteTicketLink(
 		com.liferay.osb.model.TicketLink ticketLink) {
-		return _ticketLinkLocalService.updateTicketLink(ticketLink);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _ticketLinkLocalService.getActionableDynamicQuery();
+		return _ticketLinkLocalService.deleteTicketLink(ticketLink);
 	}
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _ticketLinkLocalService.dynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _ticketLinkLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketLinkLocalService.deletePersistedModel(persistedModel);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketLinkLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of ticket links.
-	*
-	* @return the number of ticket links
-	*/
-	@Override
-	public int getTicketLinksCount() {
-		return _ticketLinkLocalService.getTicketLinksCount();
-	}
-
-	@Override
-	public int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
-		return _ticketLinkLocalService.getTicketLinksCount(ticketEntryId,
-			visibilities);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketLinkLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _ticketLinkLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -241,6 +173,78 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 	}
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _ticketLinkLocalService.dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _ticketLinkLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketLink fetchTicketLink(long ticketLinkId) {
+		return _ticketLinkLocalService.fetchTicketLink(ticketLinkId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _ticketLinkLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _ticketLinkLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _ticketLinkLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketLinkLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the ticket link with the primary key.
+	*
+	* @param ticketLinkId the primary key of the ticket link
+	* @return the ticket link
+	* @throws PortalException if a ticket link with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.TicketLink getTicketLink(long ticketLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketLinkLocalService.getTicketLink(ticketLinkId);
+	}
+
+	/**
 	* Returns a range of all the ticket links.
 	*
 	* <p>
@@ -272,43 +276,39 @@ public class TicketLinkLocalServiceWrapper implements TicketLinkLocalService,
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of ticket links.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of ticket links
 	*/
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _ticketLinkLocalService.dynamicQueryCount(dynamicQuery);
+	public int getTicketLinksCount() {
+		return _ticketLinkLocalService.getTicketLinksCount();
+	}
+
+	@Override
+	public int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
+		return _ticketLinkLocalService.getTicketLinksCount(ticketEntryId,
+			visibilities);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _ticketLinkLocalService.invokeMethod(name, parameterTypes,
+			arguments);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the ticket link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param ticketLink the ticket link
+	* @return the ticket link that was updated
 	*/
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _ticketLinkLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
-	}
-
-	@Override
-	public void deleteTicketLink(long userId,
-		com.liferay.osb.model.TicketLink ticketLink)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_ticketLinkLocalService.deleteTicketLink(userId, ticketLink);
-	}
-
-	@Override
-	public void deleteTicketLink(long userId, long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_ticketLinkLocalService.deleteTicketLink(userId, ticketLinkId);
+	public com.liferay.osb.model.TicketLink updateTicketLink(
+		com.liferay.osb.model.TicketLink ticketLink) {
+		return _ticketLinkLocalService.updateTicketLink(ticketLink);
 	}
 
 	@Override

@@ -42,24 +42,24 @@ public class AccountEnvironmentServiceClp implements AccountEnvironmentService {
 
 		_methodParameterTypes2 = new String[] { "long" };
 
-		_methodName3 = "updateAccountEnvironment";
+		_methodName3 = "getAccountEnvironments";
 
-		_methodParameterTypes3 = new String[] {
-				"long", "long", "java.lang.String", "int", "java.lang.String",
-				"int", "int", "int", "int", "java.util.List", "java.util.List"
-			};
+		_methodParameterTypes3 = new String[] { "long" };
+
+		_methodName4 = "getAccountEnvironmentsMap";
+
+		_methodParameterTypes4 = new String[] { "long" };
 
 		_methodName5 = "getOSGiServiceIdentifier";
 
 		_methodParameterTypes5 = new String[] {  };
 
-		_methodName6 = "getAccountEnvironments";
+		_methodName7 = "updateAccountEnvironment";
 
-		_methodParameterTypes6 = new String[] { "long" };
-
-		_methodName7 = "getAccountEnvironmentsMap";
-
-		_methodParameterTypes7 = new String[] { "long" };
+		_methodParameterTypes7 = new String[] {
+				"long", "long", "java.lang.String", "int", "java.lang.String",
+				"int", "int", "int", "int", "java.util.List", "java.util.List"
+			};
 	}
 
 	@Override
@@ -179,6 +179,94 @@ public class AccountEnvironmentServiceClp implements AccountEnvironmentService {
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3, new Object[] { accountEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.AccountEnvironment>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName4,
+					_methodParameterTypes4, new Object[] { accountEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName5,
+					_methodParameterTypes5, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
 		long accountEnvironmentId, long productEntryId, java.lang.String name,
 		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
@@ -189,8 +277,8 @@ public class AccountEnvironmentServiceClp implements AccountEnvironmentService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName3,
-					_methodParameterTypes3,
+			returnObj = _invokableService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
 					new Object[] {
 						accountEnvironmentId,
 						
@@ -234,94 +322,6 @@ public class AccountEnvironmentServiceClp implements AccountEnvironmentService {
 		return (com.liferay.osb.model.AccountEnvironment)ClpSerializer.translateOutput(returnObj);
 	}
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName6,
-					_methodParameterTypes6, new Object[] { accountEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.AccountEnvironment>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] { accountEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>>)ClpSerializer.translateOutput(returnObj);
-	}
-
 	private InvokableService _invokableService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -331,10 +331,10 @@ public class AccountEnvironmentServiceClp implements AccountEnvironmentService {
 	private String[] _methodParameterTypes2;
 	private String _methodName3;
 	private String[] _methodParameterTypes3;
+	private String _methodName4;
+	private String[] _methodParameterTypes4;
 	private String _methodName5;
 	private String[] _methodParameterTypes5;
-	private String _methodName6;
-	private String[] _methodParameterTypes6;
 	private String _methodName7;
 	private String[] _methodParameterTypes7;
 }

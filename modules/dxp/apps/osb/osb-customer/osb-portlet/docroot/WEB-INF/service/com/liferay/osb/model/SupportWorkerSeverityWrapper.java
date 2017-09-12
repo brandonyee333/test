@@ -88,38 +88,8 @@ public class SupportWorkerSeverityWrapper implements SupportWorkerSeverity,
 	}
 
 	@Override
-	public SupportWorkerSeverity toEscapedModel() {
-		return new SupportWorkerSeverityWrapper(_supportWorkerSeverity.toEscapedModel());
-	}
-
-	@Override
-	public SupportWorkerSeverity toUnescapedModel() {
-		return new SupportWorkerSeverityWrapper(_supportWorkerSeverity.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _supportWorkerSeverity.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _supportWorkerSeverity.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _supportWorkerSeverity.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _supportWorkerSeverity.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SupportWorkerSeverity> toCacheModel() {
-		return _supportWorkerSeverity.toCacheModel();
+	public java.lang.Object clone() {
+		return new SupportWorkerSeverityWrapper((SupportWorkerSeverity)_supportWorkerSeverity.clone());
 	}
 
 	@Override
@@ -127,39 +97,9 @@ public class SupportWorkerSeverityWrapper implements SupportWorkerSeverity,
 		return _supportWorkerSeverity.compareTo(supportWorkerSeverity);
 	}
 
-	/**
-	* Returns the severity of this support worker severity.
-	*
-	* @return the severity of this support worker severity
-	*/
 	@Override
-	public int getSeverity() {
-		return _supportWorkerSeverity.getSeverity();
-	}
-
-	@Override
-	public int hashCode() {
-		return _supportWorkerSeverity.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _supportWorkerSeverity.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new SupportWorkerSeverityWrapper((SupportWorkerSeverity)_supportWorkerSeverity.clone());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _supportWorkerSeverity.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _supportWorkerSeverity.toXmlString();
+	public ExpandoBridge getExpandoBridge() {
+		return _supportWorkerSeverity.getExpandoBridge();
 	}
 
 	/**
@@ -170,6 +110,21 @@ public class SupportWorkerSeverityWrapper implements SupportWorkerSeverity,
 	@Override
 	public long getPrimaryKey() {
 		return _supportWorkerSeverity.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _supportWorkerSeverity.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the severity of this support worker severity.
+	*
+	* @return the severity of this support worker severity
+	*/
+	@Override
+	public int getSeverity() {
+		return _supportWorkerSeverity.getSeverity();
 	}
 
 	/**
@@ -193,6 +148,26 @@ public class SupportWorkerSeverityWrapper implements SupportWorkerSeverity,
 	}
 
 	@Override
+	public int hashCode() {
+		return _supportWorkerSeverity.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _supportWorkerSeverity.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _supportWorkerSeverity.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _supportWorkerSeverity.isNew();
+	}
+
+	@Override
 	public void persist() {
 		_supportWorkerSeverity.persist();
 	}
@@ -203,14 +178,14 @@ public class SupportWorkerSeverityWrapper implements SupportWorkerSeverity,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_supportWorkerSeverity.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_supportWorkerSeverity.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_supportWorkerSeverity.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -266,6 +241,31 @@ public class SupportWorkerSeverityWrapper implements SupportWorkerSeverity,
 	@Override
 	public void setSupportWorkerSeverityId(long supportWorkerSeverityId) {
 		_supportWorkerSeverity.setSupportWorkerSeverityId(supportWorkerSeverityId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SupportWorkerSeverity> toCacheModel() {
+		return _supportWorkerSeverity.toCacheModel();
+	}
+
+	@Override
+	public SupportWorkerSeverity toEscapedModel() {
+		return new SupportWorkerSeverityWrapper(_supportWorkerSeverity.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _supportWorkerSeverity.toString();
+	}
+
+	@Override
+	public SupportWorkerSeverity toUnescapedModel() {
+		return new SupportWorkerSeverityWrapper(_supportWorkerSeverity.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _supportWorkerSeverity.toXmlString();
 	}
 
 	@Override

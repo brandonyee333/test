@@ -51,10 +51,9 @@ public class TicketLinkServiceUtil {
 			urls, types, visibility, serviceContext);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
+	public static void deleteTicketLink(long ticketLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteTicketLink(ticketLinkId);
 	}
 
 	/**
@@ -66,9 +65,10 @@ public class TicketLinkServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static void deleteTicketLink(long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteTicketLink(ticketLinkId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static void clearService() {

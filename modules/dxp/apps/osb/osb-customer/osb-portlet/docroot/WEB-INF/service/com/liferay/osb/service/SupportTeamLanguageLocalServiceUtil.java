@@ -65,14 +65,12 @@ public class SupportTeamLanguageLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the support team language from the database. Also notifies the appropriate model listeners.
-	*
-	* @param supportTeamLanguage the support team language
-	* @return the support team language that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.osb.model.SupportTeamLanguage deleteSupportTeamLanguage(
-		com.liferay.osb.model.SupportTeamLanguage supportTeamLanguage) {
-		return getService().deleteSupportTeamLanguage(supportTeamLanguage);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -88,84 +86,19 @@ public class SupportTeamLanguageLocalServiceUtil {
 		return getService().deleteSupportTeamLanguage(supportTeamLanguageId);
 	}
 
-	public static com.liferay.osb.model.SupportTeamLanguage fetchSupportTeamLanguage(
-		long supportTeamLanguageId) {
-		return getService().fetchSupportTeamLanguage(supportTeamLanguageId);
-	}
-
 	/**
-	* Returns the support team language with the primary key.
-	*
-	* @param supportTeamLanguageId the primary key of the support team language
-	* @return the support team language
-	* @throws PortalException if a support team language with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.SupportTeamLanguage getSupportTeamLanguage(
-		long supportTeamLanguageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSupportTeamLanguage(supportTeamLanguageId);
-	}
-
-	/**
-	* Updates the support team language in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the support team language from the database. Also notifies the appropriate model listeners.
 	*
 	* @param supportTeamLanguage the support team language
-	* @return the support team language that was updated
+	* @return the support team language that was removed
 	*/
-	public static com.liferay.osb.model.SupportTeamLanguage updateSupportTeamLanguage(
+	public static com.liferay.osb.model.SupportTeamLanguage deleteSupportTeamLanguage(
 		com.liferay.osb.model.SupportTeamLanguage supportTeamLanguage) {
-		return getService().updateSupportTeamLanguage(supportTeamLanguage);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
+		return getService().deleteSupportTeamLanguage(supportTeamLanguage);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of support team languages.
-	*
-	* @return the number of support team languages
-	*/
-	public static int getSupportTeamLanguagesCount() {
-		return getService().getSupportTeamLanguagesCount();
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -219,27 +152,6 @@ public class SupportTeamLanguageLocalServiceUtil {
 	}
 
 	/**
-	* Returns a range of all the support team languages.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportTeamLanguageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of support team languages
-	* @param end the upper bound of the range of support team languages (not inclusive)
-	* @return the range of support team languages
-	*/
-	public static java.util.List<com.liferay.osb.model.SupportTeamLanguage> getSupportTeamLanguages(
-		int start, int end) {
-		return getService().getSupportTeamLanguages(start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.SupportTeamLanguage> getSupportTeamLanguages(
-		long supportTeamId) {
-		return getService().getSupportTeamLanguages(supportTeamId);
-	}
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -263,9 +175,97 @@ public class SupportTeamLanguageLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
+	public static com.liferay.osb.model.SupportTeamLanguage fetchSupportTeamLanguage(
+		long supportTeamLanguageId) {
+		return getService().fetchSupportTeamLanguage(supportTeamLanguageId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the support team language with the primary key.
+	*
+	* @param supportTeamLanguageId the primary key of the support team language
+	* @return the support team language
+	* @throws PortalException if a support team language with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.SupportTeamLanguage getSupportTeamLanguage(
+		long supportTeamLanguageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getSupportTeamLanguage(supportTeamLanguageId);
+	}
+
+	/**
+	* Returns a range of all the support team languages.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportTeamLanguageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of support team languages
+	* @param end the upper bound of the range of support team languages (not inclusive)
+	* @return the range of support team languages
+	*/
+	public static java.util.List<com.liferay.osb.model.SupportTeamLanguage> getSupportTeamLanguages(
+		int start, int end) {
+		return getService().getSupportTeamLanguages(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.SupportTeamLanguage> getSupportTeamLanguages(
+		long supportTeamId) {
+		return getService().getSupportTeamLanguages(supportTeamId);
+	}
+
+	/**
+	* Returns the number of support team languages.
+	*
+	* @return the number of support team languages
+	*/
+	public static int getSupportTeamLanguagesCount() {
+		return getService().getSupportTeamLanguagesCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
 	public static void setSupportTeamLanguageIds(long supportTeamId,
 		java.lang.String[] languageIds) {
 		getService().setSupportTeamLanguageIds(supportTeamId, languageIds);
+	}
+
+	/**
+	* Updates the support team language in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param supportTeamLanguage the support team language
+	* @return the support team language that was updated
+	*/
+	public static com.liferay.osb.model.SupportTeamLanguage updateSupportTeamLanguage(
+		com.liferay.osb.model.SupportTeamLanguage supportTeamLanguage) {
+		return getService().updateSupportTeamLanguage(supportTeamLanguage);
 	}
 
 	public static void clearService() {

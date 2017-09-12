@@ -27,60 +27,60 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	public TicketAttachmentServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName0 = "checkAvailability";
+		_methodName0 = "addTicketAttachment";
 
-		_methodParameterTypes0 = new String[] { "long", "java.lang.String" };
-
-		_methodName1 = "addTicketAttachment";
-
-		_methodParameterTypes1 = new String[] {
+		_methodParameterTypes0 = new String[] {
 				"long", "long", "long", "java.lang.String", "long", "int", "int",
 				"java.lang.String", "int"
 			};
 
-		_methodName2 = "deleteTicketAttachment";
+		_methodName1 = "addTicketAttachments";
 
-		_methodParameterTypes2 = new String[] { "long" };
-
-		_methodName3 = "getTicketAttachment";
-
-		_methodParameterTypes3 = new String[] { "long" };
-
-		_methodName4 = "replicateTicketAttachment";
-
-		_methodParameterTypes4 = new String[] { "long" };
-
-		_methodName5 = "updateDeleteDate";
-
-		_methodParameterTypes5 = new String[] { "long", "java.util.Date" };
-
-		_methodName6 = "updateTicketAttachment";
-
-		_methodParameterTypes6 = new String[] {
-				"long", "long", "int", "int", "int[][]"
+		_methodParameterTypes1 = new String[] {
+				"long", "long", "long", "java.util.List", "java.util.List",
+				"int", "int", "int[][]",
+				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName8 = "getOSGiServiceIdentifier";
+		_methodName2 = "addTicketAttachments";
 
-		_methodParameterTypes8 = new String[] {  };
-
-		_methodName9 = "getUploadToken";
-
-		_methodParameterTypes9 = new String[] { "long", "java.lang.String" };
-
-		_methodName10 = "addTicketAttachments";
-
-		_methodParameterTypes10 = new String[] {
+		_methodParameterTypes2 = new String[] {
 				"long", "long", "long", "java.util.List", "java.util.List",
 				"int", "int", "com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName11 = "addTicketAttachments";
+		_methodName3 = "checkAvailability";
+
+		_methodParameterTypes3 = new String[] { "long", "java.lang.String" };
+
+		_methodName4 = "deleteTicketAttachment";
+
+		_methodParameterTypes4 = new String[] { "long" };
+
+		_methodName5 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes5 = new String[] {  };
+
+		_methodName6 = "getTicketAttachment";
+
+		_methodParameterTypes6 = new String[] { "long" };
+
+		_methodName7 = "getUploadToken";
+
+		_methodParameterTypes7 = new String[] { "long", "java.lang.String" };
+
+		_methodName9 = "replicateTicketAttachment";
+
+		_methodParameterTypes9 = new String[] { "long" };
+
+		_methodName10 = "updateDeleteDate";
+
+		_methodParameterTypes10 = new String[] { "long", "java.util.Date" };
+
+		_methodName11 = "updateTicketAttachment";
 
 		_methodParameterTypes11 = new String[] {
-				"long", "long", "long", "java.util.List", "java.util.List",
-				"int", "int", "int[][]",
-				"com.liferay.portal.kernel.service.ServiceContext"
+				"long", "long", "int", "int", "int[][]"
 			};
 
 		_methodName12 = "updateTicketAttachments";
@@ -92,40 +92,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	}
 
 	@Override
-	public boolean checkAvailability(long ticketAttachmentId,
-		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName0,
-					_methodParameterTypes0,
-					new Object[] {
-						ticketAttachmentId,
-						
-					ClpSerializer.translateInput(fileRepositoryId)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Boolean)returnObj).booleanValue();
-	}
-
-	@Override
 	public com.liferay.osb.model.TicketAttachment addTicketAttachment(
 		long userId, long ticketEntryId, long ticketSolutionId,
 		java.lang.String fileName, long fileSize, int type, int visibility,
@@ -134,8 +100,8 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1,
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0,
 					new Object[] {
 						userId,
 						
@@ -176,281 +142,6 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	}
 
 	@Override
-	public com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
-		long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName2,
-					_methodParameterTypes2, new Object[] { ticketAttachmentId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.TicketAttachment)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.TicketAttachment getTicketAttachment(
-		long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] { ticketAttachmentId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.TicketAttachment)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
-		long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { ticketAttachmentId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.TicketAttachment)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.TicketAttachment updateDeleteDate(
-		long ticketAttachmentId, java.util.Date deleteDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName5,
-					_methodParameterTypes5,
-					new Object[] {
-						ticketAttachmentId,
-						
-					ClpSerializer.translateInput(deleteDate)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.TicketAttachment)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.TicketAttachment updateTicketAttachment(
-		long ticketAttachmentId, long ticketEntryId, int type, int visibility,
-		int[] pendingTypes)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
-					new Object[] {
-						ticketAttachmentId,
-						
-					ticketEntryId,
-						
-					type,
-						
-					visibility,
-						
-					ClpSerializer.translateInput(pendingTypes)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.TicketAttachment)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName8,
-					_methodParameterTypes8, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.lang.String getUploadToken(long ticketEntryId,
-		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName9,
-					_methodParameterTypes9,
-					new Object[] {
-						ticketEntryId,
-						
-					ClpSerializer.translateInput(fileRepositoryId)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
-		long userId, long ticketEntryId, long ticketSolutionId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types, int visibility, int status,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
-					new Object[] {
-						userId,
-						
-					ticketEntryId,
-						
-					ticketSolutionId,
-						
-					ClpSerializer.translateInput(files),
-						
-					ClpSerializer.translateInput(types),
-						
-					visibility,
-						
-					status,
-						
-					ClpSerializer.translateInput(serviceContext)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.TicketAttachment>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
 		long userId, long ticketEntryId, long ticketSolutionId,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
@@ -461,8 +152,8 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
 					new Object[] {
 						userId,
 						
@@ -500,6 +191,315 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 		}
 
 		return (java.util.List<com.liferay.osb.model.TicketAttachment>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types, int visibility, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName2,
+					_methodParameterTypes2,
+					new Object[] {
+						userId,
+						
+					ticketEntryId,
+						
+					ticketSolutionId,
+						
+					ClpSerializer.translateInput(files),
+						
+					ClpSerializer.translateInput(types),
+						
+					visibility,
+						
+					status,
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.TicketAttachment>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public boolean checkAvailability(long ticketAttachmentId,
+		java.lang.String fileRepositoryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
+					new Object[] {
+						ticketAttachmentId,
+						
+					ClpSerializer.translateInput(fileRepositoryId)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Boolean)returnObj).booleanValue();
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
+		long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName4,
+					_methodParameterTypes4, new Object[] { ticketAttachmentId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketAttachment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName5,
+					_methodParameterTypes5, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment getTicketAttachment(
+		long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName6,
+					_methodParameterTypes6, new Object[] { ticketAttachmentId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketAttachment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.String getUploadToken(long ticketEntryId,
+		java.lang.String fileRepositoryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
+					new Object[] {
+						ticketEntryId,
+						
+					ClpSerializer.translateInput(fileRepositoryId)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
+		long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName9,
+					_methodParameterTypes9, new Object[] { ticketAttachmentId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketAttachment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment updateDeleteDate(
+		long ticketAttachmentId, java.util.Date deleteDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
+					new Object[] {
+						ticketAttachmentId,
+						
+					ClpSerializer.translateInput(deleteDate)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketAttachment)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.TicketAttachment updateTicketAttachment(
+		long ticketAttachmentId, long ticketEntryId, int type, int visibility,
+		int[] pendingTypes)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName11,
+					_methodParameterTypes11,
+					new Object[] {
+						ticketAttachmentId,
+						
+					ticketEntryId,
+						
+					type,
+						
+					visibility,
+						
+					ClpSerializer.translateInput(pendingTypes)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.TicketAttachment)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -559,8 +559,8 @@ public class TicketAttachmentServiceClp implements TicketAttachmentService {
 	private String[] _methodParameterTypes5;
 	private String _methodName6;
 	private String[] _methodParameterTypes6;
-	private String _methodName8;
-	private String[] _methodParameterTypes8;
+	private String _methodName7;
+	private String[] _methodParameterTypes7;
 	private String _methodName9;
 	private String[] _methodParameterTypes9;
 	private String _methodName10;

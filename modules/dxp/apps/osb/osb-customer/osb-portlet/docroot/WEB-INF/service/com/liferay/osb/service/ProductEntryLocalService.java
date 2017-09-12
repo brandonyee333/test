@@ -62,6 +62,9 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ProductEntryLocalServiceUtil} to access the product entry local service. Add custom service methods to {@link com.liferay.osb.service.impl.ProductEntryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public ProductEntry addProductEntry(long userId, java.lang.String name,
+		int type, int environment, java.lang.String versionsListType,
+		java.lang.String[] dossieraIdMappings) throws PortalException;
 
 	/**
 	* Adds the product entry to the database. Also notifies the appropriate model listeners.
@@ -72,10 +75,6 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public ProductEntry addProductEntry(ProductEntry productEntry);
 
-	public ProductEntry addProductEntry(long userId, java.lang.String name,
-		int type, int environment, java.lang.String versionsListType,
-		java.lang.String[] dossieraIdMappings) throws PortalException;
-
 	/**
 	* Creates a new product entry with the primary key. Does not add the product entry to the database.
 	*
@@ -85,13 +84,11 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	public ProductEntry createProductEntry(long productEntryId);
 
 	/**
-	* Deletes the product entry from the database. Also notifies the appropriate model listeners.
-	*
-	* @param productEntry the product entry
-	* @return the product entry that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public ProductEntry deleteProductEntry(ProductEntry productEntry);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the product entry with the primary key from the database. Also notifies the appropriate model listeners.
@@ -104,84 +101,16 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	public ProductEntry deleteProductEntry(long productEntryId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ProductEntry fetchProductEntry(long productEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ProductEntry fetchProductEntryByName(java.lang.String name);
-
 	/**
-	* Returns the product entry with the primary key.
-	*
-	* @param productEntryId the primary key of the product entry
-	* @return the product entry
-	* @throws PortalException if a product entry with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ProductEntry getProductEntry(long productEntryId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ProductEntry getProductEntryByName(java.lang.String name)
-		throws PortalException;
-
-	/**
-	* Updates the product entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the product entry from the database. Also notifies the appropriate model listeners.
 	*
 	* @param productEntry the product entry
-	* @return the product entry that was updated
+	* @return the product entry that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public ProductEntry updateProductEntry(ProductEntry productEntry);
-
-	public ProductEntry updateProductEntry(long productEntryId,
-		java.lang.String name, int type, int environment,
-		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
+	@Indexable(type = IndexableType.DELETE)
+	public ProductEntry deleteProductEntry(ProductEntry productEntry);
 
 	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of product entries.
-	*
-	* @return the number of product entries
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getProductEntriesCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String name,
-		LinkedHashMap<java.lang.String, java.lang.Object> params);
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -223,28 +152,6 @@ public interface ProductEntryLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns a range of all the product entries.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.ProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of product entries
-	* @param end the upper bound of the range of product entries (not inclusive)
-	* @return the range of product entries
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ProductEntry> getProductEntries(int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ProductEntry> getProductEntries(long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ProductEntry> search(java.lang.String name,
-		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end);
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -261,4 +168,96 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ProductEntry fetchProductEntry(long productEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ProductEntry fetchProductEntryByName(java.lang.String name);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns a range of all the product entries.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.ProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of product entries
+	* @param end the upper bound of the range of product entries (not inclusive)
+	* @return the range of product entries
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ProductEntry> getProductEntries(int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ProductEntry> getProductEntries(long accountEntryId);
+
+	/**
+	* Returns the number of product entries.
+	*
+	* @return the number of product entries
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getProductEntriesCount();
+
+	/**
+	* Returns the product entry with the primary key.
+	*
+	* @param productEntryId the primary key of the product entry
+	* @return the product entry
+	* @throws PortalException if a product entry with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ProductEntry getProductEntry(long productEntryId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ProductEntry getProductEntryByName(java.lang.String name)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ProductEntry> search(java.lang.String name,
+		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
+		int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String name,
+		LinkedHashMap<java.lang.String, java.lang.Object> params);
+
+	public ProductEntry updateProductEntry(long productEntryId,
+		java.lang.String name, int type, int environment,
+		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		throws PortalException;
+
+	/**
+	* Updates the product entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param productEntry the product entry
+	* @return the product entry that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public ProductEntry updateProductEntry(ProductEntry productEntry);
 }

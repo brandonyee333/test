@@ -47,10 +47,7 @@ public interface SupportWorkerService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SupportWorkerServiceUtil} to access the support worker remote service. Add custom service methods to {@link com.liferay.osb.service.impl.SupportWorkerServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
+	public void clockInOut(long supportWorkerId) throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -59,5 +56,8 @@ public interface SupportWorkerService extends BaseService, InvokableService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	public void clockInOut(long supportWorkerId) throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 }

@@ -27,13 +27,36 @@ public class SecurityPatchServiceClp implements SecurityPatchService {
 	public SecurityPatchServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName0 = "getSecurityPatch";
+		_methodName0 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes0 = new String[] { "long" };
+		_methodParameterTypes0 = new String[] {  };
 
-		_methodName2 = "getOSGiServiceIdentifier";
+		_methodName1 = "getSecurityPatch";
 
-		_methodParameterTypes2 = new String[] {  };
+		_methodParameterTypes1 = new String[] { "long" };
+	}
+
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -43,8 +66,8 @@ public class SecurityPatchServiceClp implements SecurityPatchService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName0,
-					_methodParameterTypes0, new Object[] { securityPatchId });
+			returnObj = _invokableService.invokeMethod(_methodName1,
+					_methodParameterTypes1, new Object[] { securityPatchId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -72,32 +95,9 @@ public class SecurityPatchServiceClp implements SecurityPatchService {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName2,
-					_methodParameterTypes2, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
-	}
-
 	private InvokableService _invokableService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
-	private String _methodName2;
-	private String[] _methodParameterTypes2;
+	private String _methodName1;
+	private String[] _methodParameterTypes1;
 }

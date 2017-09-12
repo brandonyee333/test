@@ -114,19 +114,18 @@ public class TicketWorkerWrapper implements TicketWorker,
 	}
 
 	@Override
-	public TicketEntry getTicketEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketWorker.getTicketEntry();
+	public java.lang.Object clone() {
+		return new TicketWorkerWrapper((TicketWorker)_ticketWorker.clone());
 	}
 
 	@Override
-	public TicketWorker toEscapedModel() {
-		return new TicketWorkerWrapper(_ticketWorker.toEscapedModel());
+	public int compareTo(TicketWorker ticketWorker) {
+		return _ticketWorker.compareTo(ticketWorker);
 	}
 
 	@Override
-	public TicketWorker toUnescapedModel() {
-		return new TicketWorkerWrapper(_ticketWorker.toUnescapedModel());
+	public ExpandoBridge getExpandoBridge() {
+		return _ticketWorker.getExpandoBridge();
 	}
 
 	/**
@@ -139,44 +138,19 @@ public class TicketWorkerWrapper implements TicketWorker,
 		return _ticketWorker.getPrimary();
 	}
 
-	@Override
-	public boolean isCachedModel() {
-		return _ticketWorker.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _ticketWorker.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _ticketWorker.isNew();
-	}
-
 	/**
-	* Returns <code>true</code> if this ticket worker is primary.
+	* Returns the primary key of this ticket worker.
 	*
-	* @return <code>true</code> if this ticket worker is primary; <code>false</code> otherwise
+	* @return the primary key of this ticket worker
 	*/
 	@Override
-	public boolean isPrimary() {
-		return _ticketWorker.isPrimary();
+	public long getPrimaryKey() {
+		return _ticketWorker.getPrimaryKey();
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ticketWorker.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketWorker> toCacheModel() {
-		return _ticketWorker.toCacheModel();
-	}
-
-	@Override
-	public int compareTo(TicketWorker ticketWorker) {
-		return _ticketWorker.compareTo(ticketWorker);
+	public Serializable getPrimaryKeyObj() {
+		return _ticketWorker.getPrimaryKeyObj();
 	}
 
 	/**
@@ -190,53 +164,8 @@ public class TicketWorkerWrapper implements TicketWorker,
 	}
 
 	@Override
-	public int hashCode() {
-		return _ticketWorker.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ticketWorker.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TicketWorkerWrapper((TicketWorker)_ticketWorker.clone());
-	}
-
-	@Override
 	public java.lang.String getRoleLabel() {
 		return _ticketWorker.getRoleLabel();
-	}
-
-	/**
-	* Returns the user uuid of this ticket worker.
-	*
-	* @return the user uuid of this ticket worker
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _ticketWorker.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ticketWorker.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ticketWorker.toXmlString();
-	}
-
-	/**
-	* Returns the primary key of this ticket worker.
-	*
-	* @return the primary key of this ticket worker
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _ticketWorker.getPrimaryKey();
 	}
 
 	/**
@@ -257,6 +186,12 @@ public class TicketWorkerWrapper implements TicketWorker,
 	@Override
 	public long getSourceClassPK() {
 		return _ticketWorker.getSourceClassPK();
+	}
+
+	@Override
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketWorker.getTicketEntry();
 	}
 
 	/**
@@ -289,6 +224,46 @@ public class TicketWorkerWrapper implements TicketWorker,
 		return _ticketWorker.getUserId();
 	}
 
+	/**
+	* Returns the user uuid of this ticket worker.
+	*
+	* @return the user uuid of this ticket worker
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _ticketWorker.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _ticketWorker.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _ticketWorker.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _ticketWorker.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _ticketWorker.isNew();
+	}
+
+	/**
+	* Returns <code>true</code> if this ticket worker is primary.
+	*
+	* @return <code>true</code> if this ticket worker is primary; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isPrimary() {
+		return _ticketWorker.isPrimary();
+	}
+
 	@Override
 	public void persist() {
 		_ticketWorker.persist();
@@ -300,14 +275,14 @@ public class TicketWorkerWrapper implements TicketWorker,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ticketWorker.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_ticketWorker.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ticketWorker.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -413,6 +388,31 @@ public class TicketWorkerWrapper implements TicketWorker,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_ticketWorker.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TicketWorker> toCacheModel() {
+		return _ticketWorker.toCacheModel();
+	}
+
+	@Override
+	public TicketWorker toEscapedModel() {
+		return new TicketWorkerWrapper(_ticketWorker.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _ticketWorker.toString();
+	}
+
+	@Override
+	public TicketWorker toUnescapedModel() {
+		return new TicketWorkerWrapper(_ticketWorker.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ticketWorker.toXmlString();
 	}
 
 	@Override

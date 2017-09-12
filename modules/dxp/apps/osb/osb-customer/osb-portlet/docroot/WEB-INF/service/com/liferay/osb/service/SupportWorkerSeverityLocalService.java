@@ -82,14 +82,11 @@ public interface SupportWorkerSeverityLocalService extends BaseLocalService,
 		long supportWorkerSeverityId);
 
 	/**
-	* Deletes the support worker severity from the database. Also notifies the appropriate model listeners.
-	*
-	* @param supportWorkerSeverity the support worker severity
-	* @return the support worker severity that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public SupportWorkerSeverity deleteSupportWorkerSeverity(
-		SupportWorkerSeverity supportWorkerSeverity);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the support worker severity with the primary key from the database. Also notifies the appropriate model listeners.
@@ -102,70 +99,17 @@ public interface SupportWorkerSeverityLocalService extends BaseLocalService,
 	public SupportWorkerSeverity deleteSupportWorkerSeverity(
 		long supportWorkerSeverityId) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportWorkerSeverity fetchSupportWorkerSeverity(
-		long supportWorkerSeverityId);
-
 	/**
-	* Returns the support worker severity with the primary key.
-	*
-	* @param supportWorkerSeverityId the primary key of the support worker severity
-	* @return the support worker severity
-	* @throws PortalException if a support worker severity with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportWorkerSeverity getSupportWorkerSeverity(
-		long supportWorkerSeverityId) throws PortalException;
-
-	/**
-	* Updates the support worker severity in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the support worker severity from the database. Also notifies the appropriate model listeners.
 	*
 	* @param supportWorkerSeverity the support worker severity
-	* @return the support worker severity that was updated
+	* @return the support worker severity that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public SupportWorkerSeverity updateSupportWorkerSeverity(
+	@Indexable(type = IndexableType.DELETE)
+	public SupportWorkerSeverity deleteSupportWorkerSeverity(
 		SupportWorkerSeverity supportWorkerSeverity);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
 	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of support worker severities.
-	*
-	* @return the number of support worker severities
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportWorkerSeveritiesCount();
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -207,6 +151,46 @@ public interface SupportWorkerSeverityLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportWorkerSeverity fetchSupportWorkerSeverity(
+		long supportWorkerSeverityId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the support worker severities.
 	*
 	* <p>
@@ -226,23 +210,39 @@ public interface SupportWorkerSeverityLocalService extends BaseLocalService,
 		long supportWorkerId);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of support worker severities.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of support worker severities
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSupportWorkerSeveritiesCount();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the support worker severity with the primary key.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param supportWorkerSeverityId the primary key of the support worker severity
+	* @return the support worker severity
+	* @throws PortalException if a support worker severity with the primary key could not be found
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportWorkerSeverity getSupportWorkerSeverity(
+		long supportWorkerSeverityId) throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	public void setSupportWorkerSeverities(long supportWorkerId,
 		int[] severities);
+
+	/**
+	* Updates the support worker severity in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param supportWorkerSeverity the support worker severity
+	* @return the support worker severity that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public SupportWorkerSeverity updateSupportWorkerSeverity(
+		SupportWorkerSeverity supportWorkerSeverity);
 }

@@ -45,18 +45,6 @@ public class TicketCommentServiceUtil {
 		long userId, long ticketEntryId, java.lang.String body, int type,
 		int visibility, int status, long ticketCannedResponseId,
 		int[] pendingTypes,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addTicketComment(userId, ticketEntryId, body, type,
-			visibility, status, ticketCannedResponseId, pendingTypes,
-			serviceContext);
-	}
-
-	public static com.liferay.osb.model.TicketComment addTicketComment(
-		long userId, long ticketEntryId, java.lang.String body, int type,
-		int visibility, int status, long ticketCannedResponseId,
-		int[] pendingTypes,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -67,10 +55,37 @@ public class TicketCommentServiceUtil {
 			types, serviceContext);
 	}
 
+	public static com.liferay.osb.model.TicketComment addTicketComment(
+		long userId, long ticketEntryId, java.lang.String body, int type,
+		int visibility, int status, long ticketCannedResponseId,
+		int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addTicketComment(userId, ticketEntryId, body, type,
+			visibility, status, ticketCannedResponseId, pendingTypes,
+			serviceContext);
+	}
+
 	public static com.liferay.osb.model.TicketComment deleteTicketComment(
 		long ticketCommentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteTicketComment(ticketCommentId);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static com.liferay.osb.model.TicketComment updateTicketComment(
@@ -90,21 +105,6 @@ public class TicketCommentServiceUtil {
 		long ticketCommentId, int type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().updateTicketCommentType(ticketCommentId, type);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static void clearService() {

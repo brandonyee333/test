@@ -37,17 +37,6 @@ public class TicketCommentServiceWrapper implements TicketCommentService,
 	public com.liferay.osb.model.TicketComment addTicketComment(long userId,
 		long ticketEntryId, java.lang.String body, int type, int visibility,
 		int status, long ticketCannedResponseId, int[] pendingTypes,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketCommentService.addTicketComment(userId, ticketEntryId,
-			body, type, visibility, status, ticketCannedResponseId,
-			pendingTypes, serviceContext);
-	}
-
-	@Override
-	public com.liferay.osb.model.TicketComment addTicketComment(long userId,
-		long ticketEntryId, java.lang.String body, int type, int visibility,
-		int status, long ticketCannedResponseId, int[] pendingTypes,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -58,10 +47,39 @@ public class TicketCommentServiceWrapper implements TicketCommentService,
 	}
 
 	@Override
+	public com.liferay.osb.model.TicketComment addTicketComment(long userId,
+		long ticketEntryId, java.lang.String body, int type, int visibility,
+		int status, long ticketCannedResponseId, int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketCommentService.addTicketComment(userId, ticketEntryId,
+			body, type, visibility, status, ticketCannedResponseId,
+			pendingTypes, serviceContext);
+	}
+
+	@Override
 	public com.liferay.osb.model.TicketComment deleteTicketComment(
 		long ticketCommentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketCommentService.deleteTicketComment(ticketCommentId);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _ticketCommentService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _ticketCommentService.invokeMethod(name, parameterTypes,
+			arguments);
 	}
 
 	@Override
@@ -83,24 +101,6 @@ public class TicketCommentServiceWrapper implements TicketCommentService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketCommentService.updateTicketCommentType(ticketCommentId,
 			type);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketCommentService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _ticketCommentService.getOSGiServiceIdentifier();
 	}
 
 	@Override

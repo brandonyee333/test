@@ -1853,7 +1853,7 @@ public class TicketEntryClp extends BaseModelImpl<TicketEntry>
 		try {
 			String methodName = "getTicketAttachments";
 
-			Class<?>[] parameterTypes = new Class<?>[] { int.class, int.class };
+			Class<?>[] parameterTypes = new Class<?>[] { int[].class, int[].class };
 
 			Object[] parameterValues = new Object[] { types, visibilities };
 
@@ -1872,7 +1872,7 @@ public class TicketEntryClp extends BaseModelImpl<TicketEntry>
 		try {
 			String methodName = "getTicketAttachmentsCount";
 
-			Class<?>[] parameterTypes = new Class<?>[] { int.class };
+			Class<?>[] parameterTypes = new Class<?>[] { int[].class };
 
 			Object[] parameterValues = new Object[] { visibilities };
 

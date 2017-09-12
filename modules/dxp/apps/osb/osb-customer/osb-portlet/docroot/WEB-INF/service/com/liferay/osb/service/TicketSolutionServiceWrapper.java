@@ -53,13 +53,14 @@ public class TicketSolutionServiceWrapper implements TicketSolutionService,
 			ticketAttachments);
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
 	@Override
-	public com.liferay.osb.model.TicketSolution updateTicketSolution(
-		long ticketSolutionId, long ticketEntryId, int status,
-		long statusByUserId, java.lang.String statusMessage, int statusReason)
-		throws java.lang.Exception {
-		return _ticketSolutionService.updateTicketSolution(ticketSolutionId,
-			ticketEntryId, status, statusByUserId, statusMessage, statusReason);
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _ticketSolutionService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -70,14 +71,13 @@ public class TicketSolutionServiceWrapper implements TicketSolutionService,
 			arguments);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _ticketSolutionService.getOSGiServiceIdentifier();
+	public com.liferay.osb.model.TicketSolution updateTicketSolution(
+		long ticketSolutionId, long ticketEntryId, int status,
+		long statusByUserId, java.lang.String statusMessage, int statusReason)
+		throws java.lang.Exception {
+		return _ticketSolutionService.updateTicketSolution(ticketSolutionId,
+			ticketEntryId, status, statusByUserId, statusMessage, statusReason);
 	}
 
 	@Override

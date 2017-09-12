@@ -41,6 +41,15 @@ public class TicketLinkLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketLinkLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.TicketLink addTicketLink(long userId,
+		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
+		java.lang.Integer[] types, int visibility,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addTicketLink(userId, ticketEntryId, ticketSolutionId,
+			urls, types, visibility, serviceContext);
+	}
 
 	/**
 	* Adds the ticket link to the database. Also notifies the appropriate model listeners.
@@ -51,16 +60,6 @@ public class TicketLinkLocalServiceUtil {
 	public static com.liferay.osb.model.TicketLink addTicketLink(
 		com.liferay.osb.model.TicketLink ticketLink) {
 		return getService().addTicketLink(ticketLink);
-	}
-
-	public static com.liferay.osb.model.TicketLink addTicketLink(long userId,
-		long ticketEntryId, long ticketSolutionId, java.lang.String[] urls,
-		java.lang.Integer[] types, int visibility,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addTicketLink(userId, ticketEntryId, ticketSolutionId,
-			urls, types, visibility, serviceContext);
 	}
 
 	/**
@@ -75,14 +74,12 @@ public class TicketLinkLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the ticket link from the database. Also notifies the appropriate model listeners.
-	*
-	* @param ticketLink the ticket link
-	* @return the ticket link that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.osb.model.TicketLink deleteTicketLink(
-		com.liferay.osb.model.TicketLink ticketLink) {
-		return getService().deleteTicketLink(ticketLink);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -98,88 +95,30 @@ public class TicketLinkLocalServiceUtil {
 		return getService().deleteTicketLink(ticketLinkId);
 	}
 
-	public static com.liferay.osb.model.TicketLink fetchTicketLink(
-		long ticketLinkId) {
-		return getService().fetchTicketLink(ticketLinkId);
-	}
-
-	/**
-	* Returns the ticket link with the primary key.
-	*
-	* @param ticketLinkId the primary key of the ticket link
-	* @return the ticket link
-	* @throws PortalException if a ticket link with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.TicketLink getTicketLink(
-		long ticketLinkId)
+	public static void deleteTicketLink(long userId, long ticketLinkId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getTicketLink(ticketLinkId);
+		getService().deleteTicketLink(userId, ticketLinkId);
+	}
+
+	public static void deleteTicketLink(long userId,
+		com.liferay.osb.model.TicketLink ticketLink)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteTicketLink(userId, ticketLink);
 	}
 
 	/**
-	* Updates the ticket link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the ticket link from the database. Also notifies the appropriate model listeners.
 	*
 	* @param ticketLink the ticket link
-	* @return the ticket link that was updated
+	* @return the ticket link that was removed
 	*/
-	public static com.liferay.osb.model.TicketLink updateTicketLink(
+	public static com.liferay.osb.model.TicketLink deleteTicketLink(
 		com.liferay.osb.model.TicketLink ticketLink) {
-		return getService().updateTicketLink(ticketLink);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
+		return getService().deleteTicketLink(ticketLink);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of ticket links.
-	*
-	* @return the number of ticket links
-	*/
-	public static int getTicketLinksCount() {
-		return getService().getTicketLinksCount();
-	}
-
-	public static int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
-		return getService().getTicketLinksCount(ticketEntryId, visibilities);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -233,6 +172,71 @@ public class TicketLinkLocalServiceUtil {
 	}
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static com.liferay.osb.model.TicketLink fetchTicketLink(
+		long ticketLinkId) {
+		return getService().fetchTicketLink(ticketLinkId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the ticket link with the primary key.
+	*
+	* @param ticketLinkId the primary key of the ticket link
+	* @return the ticket link
+	* @throws PortalException if a ticket link with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.TicketLink getTicketLink(
+		long ticketLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getTicketLink(ticketLinkId);
+	}
+
+	/**
 	* Returns a range of all the ticket links.
 	*
 	* <p>
@@ -259,38 +263,33 @@ public class TicketLinkLocalServiceUtil {
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of ticket links.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of ticket links
 	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
+	public static int getTicketLinksCount() {
+		return getService().getTicketLinksCount();
+	}
+
+	public static int getTicketLinksCount(long ticketEntryId, int[] visibilities) {
+		return getService().getTicketLinksCount(ticketEntryId, visibilities);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the ticket link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param ticketLink the ticket link
+	* @return the ticket link that was updated
 	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static void deleteTicketLink(long userId,
-		com.liferay.osb.model.TicketLink ticketLink)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteTicketLink(userId, ticketLink);
-	}
-
-	public static void deleteTicketLink(long userId, long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteTicketLink(userId, ticketLinkId);
+	public static com.liferay.osb.model.TicketLink updateTicketLink(
+		com.liferay.osb.model.TicketLink ticketLink) {
+		return getService().updateTicketLink(ticketLink);
 	}
 
 	public static void clearService() {

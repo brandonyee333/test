@@ -60,18 +60,18 @@ public interface LicenseKeySetService extends BaseService, InvokableService {
 	public LicenseKeySet getLicenseKeySet(long licenseKeySetId)
 		throws PortalException;
 
-	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId,
-		java.lang.String name) throws PortalException;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId,
+		java.lang.String name) throws PortalException;
 }

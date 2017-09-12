@@ -65,6 +65,11 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	public TicketComment addAwayMessageTicketComment(long userId,
 		long ticketEntryId) throws PortalException;
 
+	public TicketComment addTicketComment(long userId, long ticketEntryId,
+		java.lang.String body, int type, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		ServiceContext serviceContext) throws PortalException;
+
 	/**
 	* Adds the ticket comment to the database. Also notifies the appropriate model listeners.
 	*
@@ -73,11 +78,6 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketComment addTicketComment(TicketComment ticketComment);
-
-	public TicketComment addTicketComment(long userId, long ticketEntryId,
-		java.lang.String body, int type, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
-		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Creates a new ticket comment with the primary key. Does not add the ticket comment to the database.
@@ -88,13 +88,11 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	public TicketComment createTicketComment(long ticketCommentId);
 
 	/**
-	* Deletes the ticket comment from the database. Also notifies the appropriate model listeners.
-	*
-	* @param ticketComment the ticket comment
-	* @return the ticket comment that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public TicketComment deleteTicketComment(TicketComment ticketComment);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the ticket comment with the primary key from the database. Also notifies the appropriate model listeners.
@@ -107,107 +105,22 @@ public interface TicketCommentLocalService extends BaseLocalService,
 	public TicketComment deleteTicketComment(long ticketCommentId)
 		throws PortalException;
 
-	public TicketComment deleteTicketComment(long userId,
-		TicketComment ticketComment) throws PortalException;
-
 	public TicketComment deleteTicketComment(long userId, long ticketCommentId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketComment fetchLastTicketComment(long userId,
-		long ticketEntryId, int visibility, int status, OrderByComparator obc);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketComment fetchLastTicketComment(long userId,
-		long ticketEntryId, int visibility, int status, int type,
-		OrderByComparator obc);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketComment fetchTicketComment(long ticketCommentId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketComment getLastTicketComment(long ticketEntryId,
-		int visibility, OrderByComparator obc) throws PortalException;
+	public TicketComment deleteTicketComment(long userId,
+		TicketComment ticketComment) throws PortalException;
 
 	/**
-	* Returns the ticket comment with the primary key.
-	*
-	* @param ticketCommentId the primary key of the ticket comment
-	* @return the ticket comment
-	* @throws PortalException if a ticket comment with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketComment getTicketComment(long ticketCommentId)
-		throws PortalException;
-
-	/**
-	* Updates the ticket comment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the ticket comment from the database. Also notifies the appropriate model listeners.
 	*
 	* @param ticketComment the ticket comment
-	* @return the ticket comment that was updated
+	* @return the ticket comment that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public TicketComment updateTicketComment(TicketComment ticketComment);
-
-	public TicketComment updateTicketComment(long userId, long ticketCommentId,
-		long ticketEntryId, java.lang.String body, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
-		ServiceContext serviceContext) throws PortalException;
-
-	public TicketComment updateTicketCommentType(long ticketCommentId, int type)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
+	@Indexable(type = IndexableType.DELETE)
+	public TicketComment deleteTicketComment(TicketComment ticketComment);
 
 	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOrganizationTicketCommentsCount(long[] organizationIds,
-		long ticketEntryId, int visibility);
-
-	/**
-	* Returns the number of ticket comments.
-	*
-	* @return the number of ticket comments
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketCommentsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketCommentsCount(long ticketEntryId, int[] visibilities,
-		int[] statuses);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketCommentsCount(long userId, long ticketEntryId,
-		int[] visibilities, int[] statuses);
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -249,6 +162,73 @@ public interface TicketCommentLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketComment fetchLastTicketComment(long userId,
+		long ticketEntryId, int visibility, int status, int type,
+		OrderByComparator obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketComment fetchLastTicketComment(long userId,
+		long ticketEntryId, int visibility, int status, OrderByComparator obc);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketComment fetchTicketComment(long ticketCommentId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketComment getLastTicketComment(long ticketEntryId,
+		int visibility, OrderByComparator obc) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOrganizationTicketCommentsCount(long[] organizationIds,
+		long ticketEntryId, int visibility);
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the ticket comment with the primary key.
+	*
+	* @param ticketCommentId the primary key of the ticket comment
+	* @return the ticket comment
+	* @throws PortalException if a ticket comment with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketComment getTicketComment(long ticketCommentId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the ticket comments.
 	*
 	* <p>
@@ -271,22 +251,42 @@ public interface TicketCommentLocalService extends BaseLocalService,
 		long ticketEntryId, int[] visibilities, int[] statuses);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of ticket comments.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of ticket comments
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketCommentsCount();
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketCommentsCount(long ticketEntryId, int[] visibilities,
+		int[] statuses);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketCommentsCount(long userId, long ticketEntryId,
+		int[] visibilities, int[] statuses);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	public void resetSolutionTicketComment(long ticketEntryId);
+
+	public TicketComment updateTicketComment(long userId, long ticketCommentId,
+		long ticketEntryId, java.lang.String body, int visibility, int status,
+		long ticketCannedResponseId, int[] pendingTypes,
+		ServiceContext serviceContext) throws PortalException;
+
+	/**
+	* Updates the ticket comment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param ticketComment the ticket comment
+	* @return the ticket comment that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public TicketComment updateTicketComment(TicketComment ticketComment);
+
+	public TicketComment updateTicketCommentType(long ticketCommentId, int type)
+		throws PortalException;
 }

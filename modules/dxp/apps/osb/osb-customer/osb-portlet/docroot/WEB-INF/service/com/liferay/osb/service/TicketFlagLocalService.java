@@ -61,12 +61,6 @@ public interface TicketFlagLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketFlagLocalServiceUtil} to access the ticket flag local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketFlagLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasTicketFlag(long ticketEntryId, int type, int flag);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasTicketFlag(long userId, long accountEntryId,
-		long ticketEntryId, int type, int flag);
 
 	/**
 	* Adds the ticket flag to the database. Also notifies the appropriate model listeners.
@@ -86,13 +80,11 @@ public interface TicketFlagLocalService extends BaseLocalService,
 	public TicketFlag createTicketFlag(long ticketFlagId);
 
 	/**
-	* Deletes the ticket flag from the database. Also notifies the appropriate model listeners.
-	*
-	* @param ticketFlag the ticket flag
-	* @return the ticket flag that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public TicketFlag deleteTicketFlag(TicketFlag ticketFlag);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the ticket flag with the primary key from the database. Also notifies the appropriate model listeners.
@@ -105,77 +97,21 @@ public interface TicketFlagLocalService extends BaseLocalService,
 	public TicketFlag deleteTicketFlag(long ticketFlagId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketFlag fetchTicketFlag(long ticketFlagId);
+	public void deleteTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type) throws PortalException;
 
 	/**
-	* Returns the ticket flag with the primary key.
-	*
-	* @param ticketFlagId the primary key of the ticket flag
-	* @return the ticket flag
-	* @throws PortalException if a ticket flag with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketFlag getTicketFlag(long ticketFlagId)
-		throws PortalException;
-
-	/**
-	* Updates the ticket flag in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the ticket flag from the database. Also notifies the appropriate model listeners.
 	*
 	* @param ticketFlag the ticket flag
-	* @return the ticket flag that was updated
+	* @return the ticket flag that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public TicketFlag updateTicketFlag(TicketFlag ticketFlag);
+	@Indexable(type = IndexableType.DELETE)
+	public TicketFlag deleteTicketFlag(TicketFlag ticketFlag);
 
-	public TicketFlag updateTicketFlag(long userId, long accountEntryId,
-		long ticketEntryId, int type, int flag) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
+	public void deleteTicketFlags(long ticketEntryId, int type, int flag);
 
 	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of ticket flags.
-	*
-	* @return the number of ticket flags
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketFlagsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketFlagsCount(long ticketEntryId, int type, int flag);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int[] getTicketFlagTypes(long ticketEntryId, int[] types, int flag);
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -217,6 +153,56 @@ public interface TicketFlagLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketFlag fetchTicketFlag(long ticketFlagId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the ticket flag with the primary key.
+	*
+	* @param ticketFlagId the primary key of the ticket flag
+	* @return the ticket flag
+	* @throws PortalException if a ticket flag with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketFlag getTicketFlag(long ticketFlagId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the ticket flags.
 	*
 	* <p>
@@ -239,25 +225,40 @@ public interface TicketFlagLocalService extends BaseLocalService,
 		int flag);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of ticket flags.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of ticket flags
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketFlagsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketFlagsCount(long ticketEntryId, int type, int flag);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int[] getTicketFlagTypes(long ticketEntryId, int[] types, int flag);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasTicketFlag(long ticketEntryId, int type, int flag);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type, int flag);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	public TicketFlag updateTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type, int flag) throws PortalException;
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the ticket flag in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param ticketFlag the ticket flag
+	* @return the ticket flag that was updated
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	public void deleteTicketFlag(long userId, long accountEntryId,
-		long ticketEntryId, int type) throws PortalException;
-
-	public void deleteTicketFlags(long ticketEntryId, int type, int flag);
+	@Indexable(type = IndexableType.REINDEX)
+	public TicketFlag updateTicketFlag(TicketFlag ticketFlag);
 }

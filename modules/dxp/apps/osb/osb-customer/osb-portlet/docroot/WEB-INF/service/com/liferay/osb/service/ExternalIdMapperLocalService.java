@@ -104,41 +104,7 @@ public interface ExternalIdMapperLocalService extends BaseLocalService,
 	public ExternalIdMapper deleteExternalIdMapper(long externalIdMapperId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ExternalIdMapper fetchExternalIdMapper(long externalIdMapperId);
-
-	/**
-	* Returns the external ID mapper with the primary key.
-	*
-	* @param externalIdMapperId the primary key of the external ID mapper
-	* @return the external ID mapper
-	* @throws PortalException if a external ID mapper with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ExternalIdMapper getExternalIdMapper(long externalIdMapperId)
-		throws PortalException;
-
-	/**
-	* Updates the external ID mapper in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param externalIdMapper the external ID mapper
-	* @return the external ID mapper that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public ExternalIdMapper updateExternalIdMapper(
-		ExternalIdMapper externalIdMapper);
-
-	public ExternalIdMapper updateExternalIdMapper(long externalIdMapperId,
-		long classNameId, long classPK, int type, java.lang.String externalId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	public void deleteExternalIdMapper(long classNameId, long classPK, int type);
 
 	/**
 	* @throws PortalException
@@ -147,30 +113,7 @@ public interface ExternalIdMapperLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of external ID mappers.
-	*
-	* @return the number of external ID mappers
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getExternalIdMappersCount();
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -212,6 +155,41 @@ public interface ExternalIdMapperLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExternalIdMapper fetchExternalIdMapper(long externalIdMapperId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	/**
+	* Returns the external ID mapper with the primary key.
+	*
+	* @param externalIdMapperId the primary key of the external ID mapper
+	* @return the external ID mapper
+	* @throws PortalException if a external ID mapper with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ExternalIdMapper getExternalIdMapper(long externalIdMapperId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the external ID mappers.
 	*
 	* <p>
@@ -234,22 +212,44 @@ public interface ExternalIdMapperLocalService extends BaseLocalService,
 		long classPK, int type);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of external ID mappers.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of external ID mappers
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getExternalIdMappersCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the OSGi service identifier.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @return the OSGi service identifier
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public java.lang.String getOSGiServiceIdentifier();
 
-	public void deleteExternalIdMapper(long classNameId, long classPK, int type);
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Updates the external ID mapper in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param externalIdMapper the external ID mapper
+	* @return the external ID mapper that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public ExternalIdMapper updateExternalIdMapper(
+		ExternalIdMapper externalIdMapper);
+
+	public ExternalIdMapper updateExternalIdMapper(long externalIdMapperId,
+		long classNameId, long classPK, int type, java.lang.String externalId)
+		throws PortalException;
 }

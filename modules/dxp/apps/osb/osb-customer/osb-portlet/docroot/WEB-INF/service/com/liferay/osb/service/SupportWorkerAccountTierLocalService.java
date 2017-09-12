@@ -82,14 +82,11 @@ public interface SupportWorkerAccountTierLocalService extends BaseLocalService,
 		long supportWorkerAccountTierId);
 
 	/**
-	* Deletes the support worker account tier from the database. Also notifies the appropriate model listeners.
-	*
-	* @param supportWorkerAccountTier the support worker account tier
-	* @return the support worker account tier that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public SupportWorkerAccountTier deleteSupportWorkerAccountTier(
-		SupportWorkerAccountTier supportWorkerAccountTier);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the support worker account tier with the primary key from the database. Also notifies the appropriate model listeners.
@@ -102,70 +99,17 @@ public interface SupportWorkerAccountTierLocalService extends BaseLocalService,
 	public SupportWorkerAccountTier deleteSupportWorkerAccountTier(
 		long supportWorkerAccountTierId) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportWorkerAccountTier fetchSupportWorkerAccountTier(
-		long supportWorkerAccountTierId);
-
 	/**
-	* Returns the support worker account tier with the primary key.
-	*
-	* @param supportWorkerAccountTierId the primary key of the support worker account tier
-	* @return the support worker account tier
-	* @throws PortalException if a support worker account tier with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportWorkerAccountTier getSupportWorkerAccountTier(
-		long supportWorkerAccountTierId) throws PortalException;
-
-	/**
-	* Updates the support worker account tier in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the support worker account tier from the database. Also notifies the appropriate model listeners.
 	*
 	* @param supportWorkerAccountTier the support worker account tier
-	* @return the support worker account tier that was updated
+	* @return the support worker account tier that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public SupportWorkerAccountTier updateSupportWorkerAccountTier(
+	@Indexable(type = IndexableType.DELETE)
+	public SupportWorkerAccountTier deleteSupportWorkerAccountTier(
 		SupportWorkerAccountTier supportWorkerAccountTier);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
 	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of support worker account tiers.
-	*
-	* @return the number of support worker account tiers
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportWorkerAccountTiersCount();
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -207,6 +151,57 @@ public interface SupportWorkerAccountTierLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportWorkerAccountTier fetchSupportWorkerAccountTier(
+		long supportWorkerAccountTierId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the support worker account tier with the primary key.
+	*
+	* @param supportWorkerAccountTierId the primary key of the support worker account tier
+	* @return the support worker account tier
+	* @throws PortalException if a support worker account tier with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportWorkerAccountTier getSupportWorkerAccountTier(
+		long supportWorkerAccountTierId) throws PortalException;
+
+	/**
 	* Returns a range of all the support worker account tiers.
 	*
 	* <p>
@@ -226,23 +221,28 @@ public interface SupportWorkerAccountTierLocalService extends BaseLocalService,
 		long supportWorkerId);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of support worker account tiers.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of support worker account tiers
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSupportWorkerAccountTiersCount();
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	public void setSupportWorkerAccountTiers(long supportWorkerId,
 		int[] accountTiers);
+
+	/**
+	* Updates the support worker account tier in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param supportWorkerAccountTier the support worker account tier
+	* @return the support worker account tier that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public SupportWorkerAccountTier updateSupportWorkerAccountTier(
+		SupportWorkerAccountTier supportWorkerAccountTier);
 }

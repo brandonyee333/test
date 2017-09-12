@@ -28,16 +28,9 @@ public class AccountEntryLanguageServiceClp
 	public AccountEntryLanguageServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName1 = "getOSGiServiceIdentifier";
+		_methodName0 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes1 = new String[] {  };
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		throw new UnsupportedOperationException();
+		_methodParameterTypes0 = new String[] {  };
 	}
 
 	@Override
@@ -45,8 +38,8 @@ public class AccountEntryLanguageServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -63,7 +56,14 @@ public class AccountEntryLanguageServiceClp
 		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		throw new UnsupportedOperationException();
+	}
+
 	private InvokableService _invokableService;
-	private String _methodName1;
-	private String[] _methodParameterTypes1;
+	private String _methodName0;
+	private String[] _methodParameterTypes0;
 }

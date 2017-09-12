@@ -28,221 +28,151 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		InvokableLocalService invokableLocalService) {
 		_invokableLocalService = invokableLocalService;
 
-		_methodName0 = "hasPartnerWorker";
+		_methodName0 = "addPartnerWorker";
 
-		_methodParameterTypes0 = new String[] { "long" };
-
-		_methodName1 = "hasPartnerWorker";
-
-		_methodParameterTypes1 = new String[] { "long", "long" };
-
-		_methodName2 = "hasPartnerWorkerRole";
-
-		_methodParameterTypes2 = new String[] { "long", "int" };
-
-		_methodName3 = "addPartnerWorker";
-
-		_methodParameterTypes3 = new String[] {
+		_methodParameterTypes0 = new String[] {
 				"com.liferay.osb.model.PartnerWorker"
 			};
 
-		_methodName4 = "createPartnerWorker";
+		_methodName1 = "addPartnerWorkers";
 
-		_methodParameterTypes4 = new String[] { "long" };
+		_methodParameterTypes1 = new String[] {
+				"long[][]", "long", "int[][]", "int[][]"
+			};
 
-		_methodName5 = "deletePartnerWorker";
+		_methodName2 = "createPartnerWorker";
 
-		_methodParameterTypes5 = new String[] {
+		_methodParameterTypes2 = new String[] { "long" };
+
+		_methodName3 = "deletePartnerWorker";
+
+		_methodParameterTypes3 = new String[] { "long" };
+
+		_methodName4 = "deletePartnerWorker";
+
+		_methodParameterTypes4 = new String[] {
 				"com.liferay.osb.model.PartnerWorker"
 			};
 
-		_methodName6 = "deletePartnerWorker";
+		_methodName5 = "deletePartnerWorkers";
 
-		_methodParameterTypes6 = new String[] { "long" };
+		_methodParameterTypes5 = new String[] { "long" };
 
-		_methodName7 = "fetchPartnerWorker";
+		_methodName6 = "deletePartnerWorkers";
 
-		_methodParameterTypes7 = new String[] { "long" };
+		_methodParameterTypes6 = new String[] { "long[][]", "long" };
 
-		_methodName8 = "fetchPartnerWorker";
+		_methodName7 = "deletePersistedModel";
 
-		_methodParameterTypes8 = new String[] { "long", "long" };
-
-		_methodName9 = "getPartnerWorker";
-
-		_methodParameterTypes9 = new String[] { "long" };
-
-		_methodName10 = "getPartnerWorker";
-
-		_methodParameterTypes10 = new String[] { "long", "long" };
-
-		_methodName11 = "updatePartnerWorker";
-
-		_methodParameterTypes11 = new String[] {
-				"com.liferay.osb.model.PartnerWorker"
-			};
-
-		_methodName12 = "getActionableDynamicQuery";
-
-		_methodParameterTypes12 = new String[] {  };
-
-		_methodName13 = "dynamicQuery";
-
-		_methodParameterTypes13 = new String[] {  };
-
-		_methodName14 = "getIndexableActionableDynamicQuery";
-
-		_methodParameterTypes14 = new String[] {  };
-
-		_methodName15 = "deletePersistedModel";
-
-		_methodParameterTypes15 = new String[] {
+		_methodParameterTypes7 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName16 = "getPersistedModel";
+		_methodName8 = "dynamicQuery";
 
-		_methodParameterTypes16 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes8 = new String[] {  };
 
-		_methodName17 = "getPartnerWorkersCount";
+		_methodName9 = "dynamicQuery";
 
-		_methodParameterTypes17 = new String[] {  };
-
-		_methodName19 = "getOSGiServiceIdentifier";
-
-		_methodParameterTypes19 = new String[] {  };
-
-		_methodName20 = "dynamicQuery";
-
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes9 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName21 = "dynamicQuery";
+		_methodName10 = "dynamicQuery";
 
-		_methodParameterTypes21 = new String[] {
+		_methodParameterTypes10 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
-		_methodName22 = "dynamicQuery";
+		_methodName11 = "dynamicQuery";
 
-		_methodParameterTypes22 = new String[] {
+		_methodParameterTypes11 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
+		_methodName12 = "dynamicQueryCount";
+
+		_methodParameterTypes12 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName13 = "dynamicQueryCount";
+
+		_methodParameterTypes13 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
+				"com.liferay.portal.kernel.dao.orm.Projection"
+			};
+
+		_methodName14 = "fetchPartnerWorker";
+
+		_methodParameterTypes14 = new String[] { "long" };
+
+		_methodName15 = "fetchPartnerWorker";
+
+		_methodParameterTypes15 = new String[] { "long", "long" };
+
+		_methodName16 = "getActionableDynamicQuery";
+
+		_methodParameterTypes16 = new String[] {  };
+
+		_methodName17 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes17 = new String[] {  };
+
+		_methodName18 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes18 = new String[] {  };
+
+		_methodName19 = "getPartnerWorker";
+
+		_methodParameterTypes19 = new String[] { "long" };
+
+		_methodName20 = "getPartnerWorker";
+
+		_methodParameterTypes20 = new String[] { "long", "long" };
+
+		_methodName21 = "getPartnerWorkers";
+
+		_methodParameterTypes21 = new String[] { "int", "int" };
+
+		_methodName22 = "getPartnerWorkers";
+
+		_methodParameterTypes22 = new String[] { "long" };
+
 		_methodName23 = "getPartnerWorkers";
 
-		_methodParameterTypes23 = new String[] { "int", "int" };
+		_methodParameterTypes23 = new String[] { "long", "int" };
 
-		_methodName24 = "getPartnerWorkers";
+		_methodName24 = "getPartnerWorkersCount";
 
-		_methodParameterTypes24 = new String[] { "long" };
+		_methodParameterTypes24 = new String[] {  };
 
-		_methodName25 = "getPartnerWorkers";
+		_methodName25 = "getPersistedModel";
 
-		_methodParameterTypes25 = new String[] { "long", "int" };
+		_methodParameterTypes25 = new String[] { "java.io.Serializable" };
 
 		_methodName26 = "getUserPartnerWorkers";
 
 		_methodParameterTypes26 = new String[] { "long" };
 
-		_methodName27 = "dynamicQueryCount";
+		_methodName27 = "hasPartnerWorker";
 
-		_methodParameterTypes27 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+		_methodParameterTypes27 = new String[] { "long" };
+
+		_methodName28 = "hasPartnerWorker";
+
+		_methodParameterTypes28 = new String[] { "long", "long" };
+
+		_methodName29 = "hasPartnerWorkerRole";
+
+		_methodParameterTypes29 = new String[] { "long", "int" };
+
+		_methodName31 = "updatePartnerWorker";
+
+		_methodParameterTypes31 = new String[] {
+				"com.liferay.osb.model.PartnerWorker"
 			};
-
-		_methodName28 = "dynamicQueryCount";
-
-		_methodParameterTypes28 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
-				"com.liferay.portal.kernel.dao.orm.Projection"
-			};
-
-		_methodName29 = "addPartnerWorkers";
-
-		_methodParameterTypes29 = new String[] {
-				"long[][]", "long", "int[][]", "int[][]"
-			};
-
-		_methodName30 = "deletePartnerWorkers";
-
-		_methodParameterTypes30 = new String[] { "long" };
-
-		_methodName31 = "deletePartnerWorkers";
-
-		_methodParameterTypes31 = new String[] { "long[][]", "long" };
-	}
-
-	@Override
-	public boolean hasPartnerWorker(long userId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName0,
-					_methodParameterTypes0, new Object[] { userId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Boolean)returnObj).booleanValue();
-	}
-
-	@Override
-	public boolean hasPartnerWorker(long userId, long partnerEntryId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1,
-					new Object[] { userId, partnerEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Boolean)returnObj).booleanValue();
-	}
-
-	@Override
-	public boolean hasPartnerWorkerRole(long userId, int role) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2, new Object[] { userId, role });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Boolean)returnObj).booleanValue();
 	}
 
 	@Override
@@ -251,8 +181,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3,
+			returnObj = _invokableLocalService.invokeMethod(_methodName0,
+					_methodParameterTypes0,
 					new Object[] { ClpSerializer.translateInput(partnerWorker) });
 		}
 		catch (Throwable t) {
@@ -268,6 +198,40 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		}
 
 		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public void addPartnerWorkers(long[] userIds, long partnerEntryId,
+		int[] roles, int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName1,
+				_methodParameterTypes1,
+				new Object[] {
+					ClpSerializer.translateInput(userIds),
+					
+				partnerEntryId,
+					
+				ClpSerializer.translateInput(roles),
+					
+				ClpSerializer.translateInput(notifications)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
 	}
 
 	@Override
@@ -276,32 +240,61 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] { partnerWorkerId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.PartnerWorker deletePartnerWorker(
+		long partnerWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3, new Object[] { partnerWorkerId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.PartnerWorker deletePartnerWorker(
+		com.liferay.osb.model.PartnerWorker partnerWorker) {
+		Object returnObj = null;
+
+		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { partnerWorkerId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.PartnerWorker deletePartnerWorker(
-		com.liferay.osb.model.PartnerWorker partnerWorker) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5,
+					_methodParameterTypes4,
 					new Object[] { ClpSerializer.translateInput(partnerWorker) });
 		}
 		catch (Throwable t) {
@@ -320,14 +313,11 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	}
 
 	@Override
-	public com.liferay.osb.model.PartnerWorker deletePartnerWorker(
-		long partnerWorkerId)
+	public void deletePartnerWorkers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6, new Object[] { partnerWorkerId });
+			_invokableLocalService.invokeMethod(_methodName5,
+				_methodParameterTypes5, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -344,68 +334,19 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 					" is not a valid exception");
 			}
 		}
-
-		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
-	public com.liferay.osb.model.PartnerWorker fetchPartnerWorker(
-		long partnerWorkerId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] { partnerWorkerId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.PartnerWorker fetchPartnerWorker(long userId,
-		long partnerEntryId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8,
-					new Object[] { userId, partnerEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.PartnerWorker getPartnerWorker(
-		long partnerWorkerId)
+	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] { partnerWorkerId });
+			_invokableLocalService.invokeMethod(_methodName6,
+				_methodParameterTypes6,
+				new Object[] {
+					ClpSerializer.translateInput(userIds),
+					
+				partnerEntryId
+				});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -422,132 +363,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 					" is not a valid exception");
 			}
 		}
-
-		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.PartnerWorker getPartnerWorker(long userId,
-		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
-					new Object[] { userId, partnerEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.PartnerWorker updatePartnerWorker(
-		com.liferay.osb.model.PartnerWorker partnerWorker) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
-					new Object[] { ClpSerializer.translateInput(partnerWorker) });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.portal.kernel.dao.orm.DynamicQuery)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -557,8 +372,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -581,42 +396,12 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
-					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.portal.kernel.model.PersistedModel)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public int getPartnerWorkersCount() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -630,37 +415,7 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 			}
 		}
 
-		return ((Integer)returnObj).intValue();
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
+		return (com.liferay.portal.kernel.dao.orm.DynamicQuery)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -669,8 +424,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -695,8 +450,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21,
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -728,8 +483,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -756,13 +511,245 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	}
 
 	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12,
+					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Long)returnObj).longValue();
+	}
+
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13,
+					new Object[] {
+						ClpSerializer.translateInput(dynamicQuery),
+						
+					ClpSerializer.translateInput(projection)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Long)returnObj).longValue();
+	}
+
+	@Override
+	public com.liferay.osb.model.PartnerWorker fetchPartnerWorker(
+		long partnerWorkerId) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14, new Object[] { partnerWorkerId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.PartnerWorker fetchPartnerWorker(long userId,
+		long partnerEntryId) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
+					new Object[] { userId, partnerEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.PartnerWorker getPartnerWorker(
+		long partnerWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19, new Object[] { partnerWorkerId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.PartnerWorker getPartnerWorker(long userId,
+		long partnerEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
+					new Object[] { userId, partnerEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.model.PartnerWorker> getPartnerWorkers(
 		int start, int end) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -785,8 +772,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24, new Object[] { partnerEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -809,8 +796,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] { partnerEntryId, role });
 		}
 		catch (Throwable t) {
@@ -826,6 +813,59 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		}
 
 		return (java.util.List<com.liferay.osb.model.PartnerWorker>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public int getPartnerWorkersCount() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
+					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.portal.kernel.model.PersistedModel)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -853,14 +893,12 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	}
 
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+	public boolean hasPartnerWorker(long userId) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27,
-					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
+					_methodParameterTypes27, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -874,23 +912,17 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 			}
 		}
 
-		return ((Long)returnObj).longValue();
+		return ((Boolean)returnObj).booleanValue();
 	}
 
 	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
+	public boolean hasPartnerWorker(long userId, long partnerEntryId) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName28,
 					_methodParameterTypes28,
-					new Object[] {
-						ClpSerializer.translateInput(dynamicQuery),
-						
-					ClpSerializer.translateInput(projection)
-					});
+					new Object[] { userId, partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -904,32 +936,19 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 			}
 		}
 
-		return ((Long)returnObj).longValue();
+		return ((Boolean)returnObj).booleanValue();
 	}
 
 	@Override
-	public void addPartnerWorkers(long[] userIds, long partnerEntryId,
-		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public boolean hasPartnerWorkerRole(long userId, int role) {
+		Object returnObj = null;
+
 		try {
-			_invokableLocalService.invokeMethod(_methodName29,
-				_methodParameterTypes29,
-				new Object[] {
-					ClpSerializer.translateInput(userIds),
-					
-				partnerEntryId,
-					
-				ClpSerializer.translateInput(roles),
-					
-				ClpSerializer.translateInput(notifications)
-				});
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29, new Object[] { userId, role });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -939,50 +958,29 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 					" is not a valid exception");
 			}
 		}
+
+		return ((Boolean)returnObj).booleanValue();
 	}
 
 	@Override
-	public void deletePartnerWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			_invokableLocalService.invokeMethod(_methodName30,
-				_methodParameterTypes30, new Object[] { userId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
+	public com.liferay.osb.model.PartnerWorker updatePartnerWorker(
+		com.liferay.osb.model.PartnerWorker partnerWorker) {
+		Object returnObj = null;
+
 		try {
-			_invokableLocalService.invokeMethod(_methodName31,
-				_methodParameterTypes31,
-				new Object[] {
-					ClpSerializer.translateInput(userIds),
-					
-				partnerEntryId
-				});
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31,
+					new Object[] { ClpSerializer.translateInput(partnerWorker) });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -992,6 +990,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 					" is not a valid exception");
 			}
 		}
+
+		return (com.liferay.osb.model.PartnerWorker)ClpSerializer.translateOutput(returnObj);
 	}
 
 	private InvokableLocalService _invokableLocalService;
@@ -1031,6 +1031,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	private String[] _methodParameterTypes16;
 	private String _methodName17;
 	private String[] _methodParameterTypes17;
+	private String _methodName18;
+	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
@@ -1053,8 +1055,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	private String[] _methodParameterTypes28;
 	private String _methodName29;
 	private String[] _methodParameterTypes29;
-	private String _methodName30;
-	private String[] _methodParameterTypes30;
 	private String _methodName31;
 	private String[] _methodParameterTypes31;
 }

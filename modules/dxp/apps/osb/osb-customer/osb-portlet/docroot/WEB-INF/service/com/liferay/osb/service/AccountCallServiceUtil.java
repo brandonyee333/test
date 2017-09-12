@@ -47,6 +47,21 @@ public class AccountCallServiceUtil {
 		return getService().deleteAccountCall(accountCallId);
 	}
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
 	public static com.liferay.osb.model.AccountCall updateAccountCall(
 		long accountCallId, long accountEntryId, int type, int callDateMonth,
 		int callDateDay, int callDateYear, int callDateHour,
@@ -59,21 +74,6 @@ public class AccountCallServiceUtil {
 			callDateMonth, callDateDay, callDateYear, callDateHour,
 			callDateMinute, callLength, summary, clientsPresent, notes,
 			actionItems);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static void clearService() {

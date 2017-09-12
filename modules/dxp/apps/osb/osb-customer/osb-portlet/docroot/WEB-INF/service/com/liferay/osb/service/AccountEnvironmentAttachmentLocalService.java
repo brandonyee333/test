@@ -80,6 +80,11 @@ public interface AccountEnvironmentAttachmentLocalService
 		ObjectValuePair<java.lang.String, File> fileOVP, int type)
 		throws PortalException;
 
+	public void addAccountEnvironmentAttachments(long userId,
+		long accountEnvironmentId,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException;
+
 	/**
 	* Creates a new account environment attachment with the primary key. Does not add the account environment attachment to the database.
 	*
@@ -112,48 +117,6 @@ public interface AccountEnvironmentAttachmentLocalService
 	public AccountEnvironmentAttachment deleteAccountEnvironmentAttachment(
 		long accountEnvironmentAttachmentId) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
-		long accountEnvironmentAttachmentId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
-		long accountEnvironmentId, int type);
-
-	/**
-	* Returns the account environment attachment with the primary key.
-	*
-	* @param accountEnvironmentAttachmentId the primary key of the account environment attachment
-	* @return the account environment attachment
-	* @throws PortalException if a account environment attachment with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEnvironmentAttachment getAccountEnvironmentAttachment(
-		long accountEnvironmentAttachmentId) throws PortalException;
-
-	/**
-	* Updates the account environment attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountEnvironmentAttachment the account environment attachment
-	* @return the account environment attachment that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
-		AccountEnvironmentAttachment accountEnvironmentAttachment);
-
-	public AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
-		long accountEnvironmentAttachmentId, long accountEnvironmentId,
-		ObjectValuePair<java.lang.String, File> fileOVP, int type)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
 	/**
 	* @throws PortalException
 	*/
@@ -161,40 +124,7 @@ public interface AccountEnvironmentAttachmentLocalService
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of account environment attachments.
-	*
-	* @return the number of account environment attachments
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountEnvironmentAttachmentsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public File getFile(
-		AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public InputStream getFileAsStream(
-		AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws PortalException;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -236,6 +166,43 @@ public interface AccountEnvironmentAttachmentLocalService
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
+		long accountEnvironmentAttachmentId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
+		long accountEnvironmentId, int type);
+
+	/**
+	* Returns the account environment attachment with the primary key.
+	*
+	* @param accountEnvironmentAttachmentId the primary key of the account environment attachment
+	* @return the account environment attachment
+	* @throws PortalException if a account environment attachment with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEnvironmentAttachment getAccountEnvironmentAttachment(
+		long accountEnvironmentAttachmentId) throws PortalException;
+
+	/**
 	* Returns a range of all the account environment attachments.
 	*
 	* <p>
@@ -255,27 +222,60 @@ public interface AccountEnvironmentAttachmentLocalService
 		long accountEnvironmentId);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of account environment attachments.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of account environment attachments
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAccountEnvironmentAttachmentsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public File getFile(
+		AccountEnvironmentAttachment accountEnvironmentAttachment)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public InputStream getFileAsStream(
+		AccountEnvironmentAttachment accountEnvironmentAttachment)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the OSGi service identifier.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @return the OSGi service identifier
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public java.lang.String getOSGiServiceIdentifier();
 
-	public void addAccountEnvironmentAttachments(long userId,
-		long accountEnvironmentId,
-		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException;
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Updates the account environment attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountEnvironmentAttachment the account environment attachment
+	* @return the account environment attachment that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
+		AccountEnvironmentAttachment accountEnvironmentAttachment);
+
+	public AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
+		long accountEnvironmentAttachmentId, long accountEnvironmentId,
+		ObjectValuePair<java.lang.String, File> fileOVP, int type)
+		throws PortalException;
 
 	public void updateAccountEnvironmentAttachments(long userId,
 		long accountEnvironmentId,

@@ -34,14 +34,6 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 	}
 
 	@Override
-	public boolean checkAvailability(long ticketAttachmentId,
-		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketAttachmentService.checkAvailability(ticketAttachmentId,
-			fileRepositoryId);
-	}
-
-	@Override
 	public com.liferay.osb.model.TicketAttachment addTicketAttachment(
 		long userId, long ticketEntryId, long ticketSolutionId,
 		java.lang.String fileName, long fileSize, int type, int visibility,
@@ -53,10 +45,53 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types, int visibility, int status,
+		int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketAttachmentService.addTicketAttachments(userId,
+			ticketEntryId, ticketSolutionId, files, types, visibility, status,
+			pendingTypes, serviceContext);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types, int visibility, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketAttachmentService.addTicketAttachments(userId,
+			ticketEntryId, ticketSolutionId, files, types, visibility, status,
+			serviceContext);
+	}
+
+	@Override
+	public boolean checkAvailability(long ticketAttachmentId,
+		java.lang.String fileRepositoryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketAttachmentService.checkAvailability(ticketAttachmentId,
+			fileRepositoryId);
+	}
+
+	@Override
 	public com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
 		long ticketAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketAttachmentService.deleteTicketAttachment(ticketAttachmentId);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _ticketAttachmentService.getOSGiServiceIdentifier();
 	}
 
 	@Override
@@ -64,6 +99,22 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 		long ticketAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketAttachmentService.getTicketAttachment(ticketAttachmentId);
+	}
+
+	@Override
+	public java.lang.String getUploadToken(long ticketEntryId,
+		java.lang.String fileRepositoryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketAttachmentService.getUploadToken(ticketEntryId,
+			fileRepositoryId);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _ticketAttachmentService.invokeMethod(name, parameterTypes,
+			arguments);
 	}
 
 	@Override
@@ -88,57 +139,6 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketAttachmentService.updateTicketAttachment(ticketAttachmentId,
 			ticketEntryId, type, visibility, pendingTypes);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketAttachmentService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _ticketAttachmentService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public java.lang.String getUploadToken(long ticketEntryId,
-		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketAttachmentService.getUploadToken(ticketEntryId,
-			fileRepositoryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
-		long userId, long ticketEntryId, long ticketSolutionId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types, int visibility, int status,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketAttachmentService.addTicketAttachments(userId,
-			ticketEntryId, ticketSolutionId, files, types, visibility, status,
-			serviceContext);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
-		long userId, long ticketEntryId, long ticketSolutionId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types, int visibility, int status,
-		int[] pendingTypes,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketAttachmentService.addTicketAttachments(userId,
-			ticketEntryId, ticketSolutionId, files, types, visibility, status,
-			pendingTypes, serviceContext);
 	}
 
 	@Override

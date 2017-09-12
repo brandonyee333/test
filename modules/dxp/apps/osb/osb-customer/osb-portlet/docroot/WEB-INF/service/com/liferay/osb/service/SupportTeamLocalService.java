@@ -61,19 +61,34 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SupportTeamLocalServiceUtil} to access the support team local service. Add custom service methods to {@link com.liferay.osb.service.impl.SupportTeamLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasAccountEntrySupportTeam(long accountEntryId,
+	public void addAccountEntrySupportTeam(long accountEntryId,
 		long supportTeamId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasAccountEntrySupportTeams(long accountEntryId);
+	public void addAccountEntrySupportTeam(long accountEntryId,
+		SupportTeam supportTeam);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportRegionSupportTeam(long supportRegionId,
+	public void addAccountEntrySupportTeams(long accountEntryId,
+		List<SupportTeam> supportTeams);
+
+	public void addAccountEntrySupportTeams(long accountEntryId,
+		long[] supportTeamIds);
+
+	public void addSupportRegionSupportTeam(long supportRegionId,
 		long supportTeamId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportRegionSupportTeams(long supportRegionId);
+	public void addSupportRegionSupportTeam(long supportRegionId,
+		SupportTeam supportTeam);
+
+	public void addSupportRegionSupportTeams(long supportRegionId,
+		List<SupportTeam> supportTeams);
+
+	public void addSupportRegionSupportTeams(long supportRegionId,
+		long[] supportTeamIds);
+
+	public SupportTeam addSupportTeam(long userId, long parentSupportTeamId,
+		long supportLaborId, long locationSupportRegionId,
+		java.lang.String name, java.lang.String description, int type)
+		throws PortalException;
 
 	/**
 	* Adds the support team to the database. Also notifies the appropriate model listeners.
@@ -84,10 +99,9 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportTeam addSupportTeam(SupportTeam supportTeam);
 
-	public SupportTeam addSupportTeam(long userId, long parentSupportTeamId,
-		long supportLaborId, long locationSupportRegionId,
-		java.lang.String name, java.lang.String description, int type)
-		throws PortalException;
+	public void clearAccountEntrySupportTeams(long accountEntryId);
+
+	public void clearSupportRegionSupportTeams(long supportRegionId);
 
 	/**
 	* Creates a new support team with the primary key. Does not add the support team to the database.
@@ -97,14 +111,36 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	*/
 	public SupportTeam createSupportTeam(long supportTeamId);
 
+	public void deleteAccountEntrySupportTeam(long accountEntryId,
+		long supportTeamId);
+
+	public void deleteAccountEntrySupportTeam(long accountEntryId,
+		SupportTeam supportTeam);
+
+	public void deleteAccountEntrySupportTeams(long accountEntryId,
+		List<SupportTeam> supportTeams);
+
+	public void deleteAccountEntrySupportTeams(long accountEntryId,
+		long[] supportTeamIds);
+
 	/**
-	* Deletes the support team from the database. Also notifies the appropriate model listeners.
-	*
-	* @param supportTeam the support team
-	* @return the support team that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public SupportTeam deleteSupportTeam(SupportTeam supportTeam);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
+
+	public void deleteSupportRegionSupportTeam(long supportRegionId,
+		long supportTeamId);
+
+	public void deleteSupportRegionSupportTeam(long supportRegionId,
+		SupportTeam supportTeam);
+
+	public void deleteSupportRegionSupportTeams(long supportRegionId,
+		List<SupportTeam> supportTeams);
+
+	public void deleteSupportRegionSupportTeams(long supportRegionId,
+		long[] supportTeamIds);
 
 	/**
 	* Deletes the support team with the primary key from the database. Also notifies the appropriate model listeners.
@@ -117,87 +153,16 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	public SupportTeam deleteSupportTeam(long supportTeamId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportTeam fetchSupportTeam(long supportTeamId);
-
 	/**
-	* Returns the support team with the primary key.
-	*
-	* @param supportTeamId the primary key of the support team
-	* @return the support team
-	* @throws PortalException if a support team with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportTeam getSupportTeam(long supportTeamId)
-		throws PortalException;
-
-	/**
-	* Updates the support team in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the support team from the database. Also notifies the appropriate model listeners.
 	*
 	* @param supportTeam the support team
-	* @return the support team that was updated
+	* @return the support team that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public SupportTeam updateSupportTeam(SupportTeam supportTeam);
-
-	public SupportTeam updateSupportTeam(long supportTeamId,
-		long parentSupportTeamId, long supportLaborId,
-		long locationSupportRegionId, java.lang.String name,
-		java.lang.String description, int type, long[] accountEntryIds,
-		long[] supportRegionIds) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
+	@Indexable(type = IndexableType.DELETE)
+	public SupportTeam deleteSupportTeam(SupportTeam supportTeam);
 
 	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountEntrySupportTeamsCount(long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportRegionSupportTeamsCount(long supportRegionId);
-
-	/**
-	* Returns the number of support teams.
-	*
-	* @return the number of support teams
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportTeamsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String name, java.lang.Integer type,
-		boolean andOperator);
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -238,6 +203,36 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportTeam fetchSupportTeam(long supportTeamId);
+
+	/**
+	* Returns the accountEntryIds of the account entries associated with the support team.
+	*
+	* @param supportTeamId the supportTeamId of the support team
+	* @return long[] the accountEntryIds of account entries associated with the support team
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long[] getAccountEntryPrimaryKeys(long supportTeamId);
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> getAccountEntrySupportTeams(long accountEntryId);
 
@@ -250,11 +245,41 @@ public interface SupportTeamLocalService extends BaseLocalService,
 		int start, int end, OrderByComparator<SupportTeam> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAccountEntrySupportTeamsCount(long accountEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> getChildSupportTeams(long supportTeamId,
 		boolean recursive);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> getSupportLaborSupportTeams(long supportLaborId);
+
+	/**
+	* Returns the supportRegionIds of the support regions associated with the support team.
+	*
+	* @param supportTeamId the supportTeamId of the support team
+	* @return long[] the supportRegionIds of support regions associated with the support team
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public long[] getSupportRegionPrimaryKeys(long supportTeamId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> getSupportRegionSupportTeams(long supportRegionId);
@@ -267,6 +292,20 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	public List<SupportTeam> getSupportRegionSupportTeams(
 		long supportRegionId, int start, int end,
 		OrderByComparator<SupportTeam> orderByComparator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSupportRegionSupportTeamsCount(long supportRegionId);
+
+	/**
+	* Returns the support team with the primary key.
+	*
+	* @param supportTeamId the primary key of the support team
+	* @return the support team
+	* @throws PortalException if a support team with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportTeam getSupportTeam(long supportTeamId)
+		throws PortalException;
 
 	/**
 	* Returns a range of all the support teams.
@@ -286,8 +325,35 @@ public interface SupportTeamLocalService extends BaseLocalService,
 	public List<SupportTeam> getSupportTeams(int start, int end,
 		OrderByComparator obc);
 
+	/**
+	* Returns the number of support teams.
+	*
+	* @return the number of support teams
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSupportTeamsCount();
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> getUserRoleSupportTeams(long userId, int role);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasAccountEntrySupportTeam(long accountEntryId,
+		long supportTeamId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasAccountEntrySupportTeams(long accountEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasSupportRegionSupportTeam(long supportRegionId,
+		long supportTeamId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasSupportRegionSupportTeams(long supportRegionId);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SupportTeam> search(java.lang.String keywords, int start,
@@ -298,93 +364,12 @@ public interface SupportTeamLocalService extends BaseLocalService,
 		java.lang.Integer type, boolean andSearch, int start, int end,
 		OrderByComparator obc);
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	/**
-	* Returns the accountEntryIds of the account entries associated with the support team.
-	*
-	* @param supportTeamId the supportTeamId of the support team
-	* @return long[] the accountEntryIds of account entries associated with the support team
-	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getAccountEntryPrimaryKeys(long supportTeamId);
+	public int searchCount(java.lang.String keywords);
 
-	/**
-	* Returns the supportRegionIds of the support regions associated with the support team.
-	*
-	* @param supportTeamId the supportTeamId of the support team
-	* @return long[] the supportRegionIds of support regions associated with the support team
-	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getSupportRegionPrimaryKeys(long supportTeamId);
-
-	public void addAccountEntrySupportTeam(long accountEntryId,
-		SupportTeam supportTeam);
-
-	public void addAccountEntrySupportTeam(long accountEntryId,
-		long supportTeamId);
-
-	public void addAccountEntrySupportTeams(long accountEntryId,
-		List<SupportTeam> supportTeams);
-
-	public void addAccountEntrySupportTeams(long accountEntryId,
-		long[] supportTeamIds);
-
-	public void addSupportRegionSupportTeam(long supportRegionId,
-		SupportTeam supportTeam);
-
-	public void addSupportRegionSupportTeam(long supportRegionId,
-		long supportTeamId);
-
-	public void addSupportRegionSupportTeams(long supportRegionId,
-		List<SupportTeam> supportTeams);
-
-	public void addSupportRegionSupportTeams(long supportRegionId,
-		long[] supportTeamIds);
-
-	public void clearAccountEntrySupportTeams(long accountEntryId);
-
-	public void clearSupportRegionSupportTeams(long supportRegionId);
-
-	public void deleteAccountEntrySupportTeam(long accountEntryId,
-		SupportTeam supportTeam);
-
-	public void deleteAccountEntrySupportTeam(long accountEntryId,
-		long supportTeamId);
-
-	public void deleteAccountEntrySupportTeams(long accountEntryId,
-		List<SupportTeam> supportTeams);
-
-	public void deleteAccountEntrySupportTeams(long accountEntryId,
-		long[] supportTeamIds);
-
-	public void deleteSupportRegionSupportTeam(long supportRegionId,
-		SupportTeam supportTeam);
-
-	public void deleteSupportRegionSupportTeam(long supportRegionId,
-		long supportTeamId);
-
-	public void deleteSupportRegionSupportTeams(long supportRegionId,
-		List<SupportTeam> supportTeams);
-
-	public void deleteSupportRegionSupportTeams(long supportRegionId,
-		long[] supportTeamIds);
+	public int searchCount(java.lang.String name, java.lang.Integer type,
+		boolean andOperator);
 
 	public void setAccountEntrySupportTeams(long accountEntryId,
 		long[] supportTeamIds);
@@ -397,4 +382,19 @@ public interface SupportTeamLocalService extends BaseLocalService,
 
 	public void setSupportRegionSupportTeams(long supportRegionId,
 		long[] supportTeamIds);
+
+	public SupportTeam updateSupportTeam(long supportTeamId,
+		long parentSupportTeamId, long supportLaborId,
+		long locationSupportRegionId, java.lang.String name,
+		java.lang.String description, int type, long[] accountEntryIds,
+		long[] supportRegionIds) throws PortalException;
+
+	/**
+	* Updates the support team in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param supportTeam the support team
+	* @return the support team that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public SupportTeam updateSupportTeam(SupportTeam supportTeam);
 }

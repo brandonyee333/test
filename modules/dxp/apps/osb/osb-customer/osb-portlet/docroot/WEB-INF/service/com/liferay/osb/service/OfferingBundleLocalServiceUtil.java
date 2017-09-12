@@ -41,17 +41,11 @@ public class OfferingBundleLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.OfferingBundleLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasOfferingDefinitionOfferingBundle(
-		long offeringDefinitionId, long offeringBundleId) {
+	public static com.liferay.osb.model.OfferingBundle addOfferingBundle(
+		long userId, java.lang.String name, long[] offeringDefinitionIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .hasOfferingDefinitionOfferingBundle(offeringDefinitionId,
-			offeringBundleId);
-	}
-
-	public static boolean hasOfferingDefinitionOfferingBundles(
-		long offeringDefinitionId) {
-		return getService()
-				   .hasOfferingDefinitionOfferingBundles(offeringDefinitionId);
+				   .addOfferingBundle(userId, name, offeringDefinitionIds);
 	}
 
 	/**
@@ -65,11 +59,39 @@ public class OfferingBundleLocalServiceUtil {
 		return getService().addOfferingBundle(offeringBundle);
 	}
 
-	public static com.liferay.osb.model.OfferingBundle addOfferingBundle(
-		long userId, java.lang.String name, long[] offeringDefinitionIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addOfferingBundle(userId, name, offeringDefinitionIds);
+	public static void addOfferingDefinitionOfferingBundle(
+		long offeringDefinitionId, long offeringBundleId) {
+		getService()
+			.addOfferingDefinitionOfferingBundle(offeringDefinitionId,
+			offeringBundleId);
+	}
+
+	public static void addOfferingDefinitionOfferingBundle(
+		long offeringDefinitionId,
+		com.liferay.osb.model.OfferingBundle offeringBundle) {
+		getService()
+			.addOfferingDefinitionOfferingBundle(offeringDefinitionId,
+			offeringBundle);
+	}
+
+	public static void addOfferingDefinitionOfferingBundles(
+		long offeringDefinitionId,
+		java.util.List<com.liferay.osb.model.OfferingBundle> offeringBundles) {
+		getService()
+			.addOfferingDefinitionOfferingBundles(offeringDefinitionId,
+			offeringBundles);
+	}
+
+	public static void addOfferingDefinitionOfferingBundles(
+		long offeringDefinitionId, long[] offeringBundleIds) {
+		getService()
+			.addOfferingDefinitionOfferingBundles(offeringDefinitionId,
+			offeringBundleIds);
+	}
+
+	public static void clearOfferingDefinitionOfferingBundles(
+		long offeringDefinitionId) {
+		getService().clearOfferingDefinitionOfferingBundles(offeringDefinitionId);
 	}
 
 	/**
@@ -81,17 +103,6 @@ public class OfferingBundleLocalServiceUtil {
 	public static com.liferay.osb.model.OfferingBundle createOfferingBundle(
 		long offeringBundleId) {
 		return getService().createOfferingBundle(offeringBundleId);
-	}
-
-	/**
-	* Deletes the offering bundle from the database. Also notifies the appropriate model listeners.
-	*
-	* @param offeringBundle the offering bundle
-	* @return the offering bundle that was removed
-	*/
-	public static com.liferay.osb.model.OfferingBundle deleteOfferingBundle(
-		com.liferay.osb.model.OfferingBundle offeringBundle) {
-		return getService().deleteOfferingBundle(offeringBundle);
 	}
 
 	/**
@@ -107,54 +118,45 @@ public class OfferingBundleLocalServiceUtil {
 		return getService().deleteOfferingBundle(offeringBundleId);
 	}
 
-	public static com.liferay.osb.model.OfferingBundle fetchOfferingBundle(
-		long offeringBundleId) {
-		return getService().fetchOfferingBundle(offeringBundleId);
-	}
-
 	/**
-	* Returns the offering bundle with the primary key.
-	*
-	* @param offeringBundleId the primary key of the offering bundle
-	* @return the offering bundle
-	* @throws PortalException if a offering bundle with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.OfferingBundle getOfferingBundle(
-		long offeringBundleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getOfferingBundle(offeringBundleId);
-	}
-
-	/**
-	* Updates the offering bundle in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the offering bundle from the database. Also notifies the appropriate model listeners.
 	*
 	* @param offeringBundle the offering bundle
-	* @return the offering bundle that was updated
+	* @return the offering bundle that was removed
 	*/
-	public static com.liferay.osb.model.OfferingBundle updateOfferingBundle(
+	public static com.liferay.osb.model.OfferingBundle deleteOfferingBundle(
 		com.liferay.osb.model.OfferingBundle offeringBundle) {
-		return getService().updateOfferingBundle(offeringBundle);
+		return getService().deleteOfferingBundle(offeringBundle);
 	}
 
-	public static com.liferay.osb.model.OfferingBundle updateOfferingBundle(
-		long offeringBundleId, java.lang.String name,
-		long[] offeringDefinitionIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateOfferingBundle(offeringBundleId, name,
-			offeringDefinitionIds);
+	public static void deleteOfferingDefinitionOfferingBundle(
+		long offeringDefinitionId, long offeringBundleId) {
+		getService()
+			.deleteOfferingDefinitionOfferingBundle(offeringDefinitionId,
+			offeringBundleId);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
+	public static void deleteOfferingDefinitionOfferingBundle(
+		long offeringDefinitionId,
+		com.liferay.osb.model.OfferingBundle offeringBundle) {
+		getService()
+			.deleteOfferingDefinitionOfferingBundle(offeringDefinitionId,
+			offeringBundle);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
+	public static void deleteOfferingDefinitionOfferingBundles(
+		long offeringDefinitionId,
+		java.util.List<com.liferay.osb.model.OfferingBundle> offeringBundles) {
+		getService()
+			.deleteOfferingDefinitionOfferingBundles(offeringDefinitionId,
+			offeringBundles);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
+	public static void deleteOfferingDefinitionOfferingBundles(
+		long offeringDefinitionId, long[] offeringBundleIds) {
+		getService()
+			.deleteOfferingDefinitionOfferingBundles(offeringDefinitionId,
+			offeringBundleIds);
 	}
 
 	/**
@@ -166,40 +168,8 @@ public class OfferingBundleLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of offering bundles.
-	*
-	* @return the number of offering bundles
-	*/
-	public static int getOfferingBundlesCount() {
-		return getService().getOfferingBundlesCount();
-	}
-
-	public static int getOfferingDefinitionOfferingBundlesCount(
-		long offeringDefinitionId) {
-		return getService()
-				   .getOfferingDefinitionOfferingBundlesCount(offeringDefinitionId);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
 	}
 
 	/**
@@ -253,43 +223,6 @@ public class OfferingBundleLocalServiceUtil {
 	}
 
 	/**
-	* Returns a range of all the offering bundles.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.OfferingBundleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of offering bundles
-	* @param end the upper bound of the range of offering bundles (not inclusive)
-	* @return the range of offering bundles
-	*/
-	public static java.util.List<com.liferay.osb.model.OfferingBundle> getOfferingBundles(
-		int start, int end) {
-		return getService().getOfferingBundles(start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.OfferingBundle> getOfferingDefinitionOfferingBundles(
-		long offeringDefinitionId) {
-		return getService()
-				   .getOfferingDefinitionOfferingBundles(offeringDefinitionId);
-	}
-
-	public static java.util.List<com.liferay.osb.model.OfferingBundle> getOfferingDefinitionOfferingBundles(
-		long offeringDefinitionId, int start, int end) {
-		return getService()
-				   .getOfferingDefinitionOfferingBundles(offeringDefinitionId,
-			start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.OfferingBundle> getOfferingDefinitionOfferingBundles(
-		long offeringDefinitionId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.OfferingBundle> orderByComparator) {
-		return getService()
-				   .getOfferingDefinitionOfferingBundles(offeringDefinitionId,
-			start, end, orderByComparator);
-	}
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -313,6 +246,84 @@ public class OfferingBundleLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
+	public static com.liferay.osb.model.OfferingBundle fetchOfferingBundle(
+		long offeringBundleId) {
+		return getService().fetchOfferingBundle(offeringBundleId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the offering bundle with the primary key.
+	*
+	* @param offeringBundleId the primary key of the offering bundle
+	* @return the offering bundle
+	* @throws PortalException if a offering bundle with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.OfferingBundle getOfferingBundle(
+		long offeringBundleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getOfferingBundle(offeringBundleId);
+	}
+
+	/**
+	* Returns a range of all the offering bundles.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.OfferingBundleModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of offering bundles
+	* @param end the upper bound of the range of offering bundles (not inclusive)
+	* @return the range of offering bundles
+	*/
+	public static java.util.List<com.liferay.osb.model.OfferingBundle> getOfferingBundles(
+		int start, int end) {
+		return getService().getOfferingBundles(start, end);
+	}
+
+	/**
+	* Returns the number of offering bundles.
+	*
+	* @return the number of offering bundles
+	*/
+	public static int getOfferingBundlesCount() {
+		return getService().getOfferingBundlesCount();
+	}
+
+	public static java.util.List<com.liferay.osb.model.OfferingBundle> getOfferingDefinitionOfferingBundles(
+		long offeringDefinitionId) {
+		return getService()
+				   .getOfferingDefinitionOfferingBundles(offeringDefinitionId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.OfferingBundle> getOfferingDefinitionOfferingBundles(
+		long offeringDefinitionId, int start, int end) {
+		return getService()
+				   .getOfferingDefinitionOfferingBundles(offeringDefinitionId,
+			start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.OfferingBundle> getOfferingDefinitionOfferingBundles(
+		long offeringDefinitionId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.OfferingBundle> orderByComparator) {
+		return getService()
+				   .getOfferingDefinitionOfferingBundles(offeringDefinitionId,
+			start, end, orderByComparator);
+	}
+
+	public static int getOfferingDefinitionOfferingBundlesCount(
+		long offeringDefinitionId) {
+		return getService()
+				   .getOfferingDefinitionOfferingBundlesCount(offeringDefinitionId);
+	}
+
 	/**
 	* Returns the offeringDefinitionIds of the offering definitions associated with the offering bundle.
 	*
@@ -323,69 +334,38 @@ public class OfferingBundleLocalServiceUtil {
 		return getService().getOfferingDefinitionPrimaryKeys(offeringBundleId);
 	}
 
-	public static void addOfferingDefinitionOfferingBundle(
-		long offeringDefinitionId,
-		com.liferay.osb.model.OfferingBundle offeringBundle) {
-		getService()
-			.addOfferingDefinitionOfferingBundle(offeringDefinitionId,
-			offeringBundle);
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static void addOfferingDefinitionOfferingBundle(
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static boolean hasOfferingDefinitionOfferingBundle(
 		long offeringDefinitionId, long offeringBundleId) {
-		getService()
-			.addOfferingDefinitionOfferingBundle(offeringDefinitionId,
+		return getService()
+				   .hasOfferingDefinitionOfferingBundle(offeringDefinitionId,
 			offeringBundleId);
 	}
 
-	public static void addOfferingDefinitionOfferingBundles(
-		long offeringDefinitionId,
-		java.util.List<com.liferay.osb.model.OfferingBundle> offeringBundles) {
-		getService()
-			.addOfferingDefinitionOfferingBundles(offeringDefinitionId,
-			offeringBundles);
-	}
-
-	public static void addOfferingDefinitionOfferingBundles(
-		long offeringDefinitionId, long[] offeringBundleIds) {
-		getService()
-			.addOfferingDefinitionOfferingBundles(offeringDefinitionId,
-			offeringBundleIds);
-	}
-
-	public static void clearOfferingDefinitionOfferingBundles(
+	public static boolean hasOfferingDefinitionOfferingBundles(
 		long offeringDefinitionId) {
-		getService().clearOfferingDefinitionOfferingBundles(offeringDefinitionId);
+		return getService()
+				   .hasOfferingDefinitionOfferingBundles(offeringDefinitionId);
 	}
 
-	public static void deleteOfferingDefinitionOfferingBundle(
-		long offeringDefinitionId,
-		com.liferay.osb.model.OfferingBundle offeringBundle) {
-		getService()
-			.deleteOfferingDefinitionOfferingBundle(offeringDefinitionId,
-			offeringBundle);
-	}
-
-	public static void deleteOfferingDefinitionOfferingBundle(
-		long offeringDefinitionId, long offeringBundleId) {
-		getService()
-			.deleteOfferingDefinitionOfferingBundle(offeringDefinitionId,
-			offeringBundleId);
-	}
-
-	public static void deleteOfferingDefinitionOfferingBundles(
-		long offeringDefinitionId,
-		java.util.List<com.liferay.osb.model.OfferingBundle> offeringBundles) {
-		getService()
-			.deleteOfferingDefinitionOfferingBundles(offeringDefinitionId,
-			offeringBundles);
-	}
-
-	public static void deleteOfferingDefinitionOfferingBundles(
-		long offeringDefinitionId, long[] offeringBundleIds) {
-		getService()
-			.deleteOfferingDefinitionOfferingBundles(offeringDefinitionId,
-			offeringBundleIds);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static void setOfferingDefinitionOfferingBundles(
@@ -393,6 +373,26 @@ public class OfferingBundleLocalServiceUtil {
 		getService()
 			.setOfferingDefinitionOfferingBundles(offeringDefinitionId,
 			offeringBundleIds);
+	}
+
+	public static com.liferay.osb.model.OfferingBundle updateOfferingBundle(
+		long offeringBundleId, java.lang.String name,
+		long[] offeringDefinitionIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateOfferingBundle(offeringBundleId, name,
+			offeringDefinitionIds);
+	}
+
+	/**
+	* Updates the offering bundle in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param offeringBundle the offering bundle
+	* @return the offering bundle that was updated
+	*/
+	public static com.liferay.osb.model.OfferingBundle updateOfferingBundle(
+		com.liferay.osb.model.OfferingBundle offeringBundle) {
+		return getService().updateOfferingBundle(offeringBundle);
 	}
 
 	public static void clearService() {

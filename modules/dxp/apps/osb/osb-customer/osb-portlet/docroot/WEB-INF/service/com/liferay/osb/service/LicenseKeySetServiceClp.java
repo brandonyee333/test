@@ -39,13 +39,13 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 
 		_methodParameterTypes2 = new String[] { "long" };
 
-		_methodName3 = "updateLicenseKeySet";
+		_methodName3 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes3 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes3 = new String[] {  };
 
-		_methodName5 = "getOSGiServiceIdentifier";
+		_methodName5 = "updateLicenseKeySet";
 
-		_methodParameterTypes5 = new String[] {  };
+		_methodParameterTypes5 = new String[] { "long", "java.lang.String" };
 	}
 
 	@Override
@@ -143,14 +143,44 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 	}
 
 	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
 		long licenseKeySetId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName3,
-					_methodParameterTypes3,
+			returnObj = _invokableService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
 					new Object[] {
 						licenseKeySetId,
 						
@@ -174,36 +204,6 @@ public class LicenseKeySetServiceClp implements LicenseKeySetService {
 		}
 
 		return (com.liferay.osb.model.LicenseKeySet)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
 	private InvokableService _invokableService;

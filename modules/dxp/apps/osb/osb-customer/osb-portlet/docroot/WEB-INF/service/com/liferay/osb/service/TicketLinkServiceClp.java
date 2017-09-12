@@ -35,13 +35,13 @@ public class TicketLinkServiceClp implements TicketLinkService {
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
+		_methodName1 = "deleteTicketLink";
+
+		_methodParameterTypes1 = new String[] { "long" };
+
 		_methodName2 = "getOSGiServiceIdentifier";
 
 		_methodParameterTypes2 = new String[] {  };
-
-		_methodName3 = "deleteTicketLink";
-
-		_methodParameterTypes3 = new String[] { "long" };
 	}
 
 	@Override
@@ -91,10 +91,27 @@ public class TicketLinkServiceClp implements TicketLinkService {
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		throw new UnsupportedOperationException();
+	public void deleteTicketLink(long ticketLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			_invokableService.invokeMethod(_methodName1,
+				_methodParameterTypes1, new Object[] { ticketLinkId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
 	}
 
 	@Override
@@ -121,34 +138,17 @@ public class TicketLinkServiceClp implements TicketLinkService {
 	}
 
 	@Override
-	public void deleteTicketLink(long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			_invokableService.invokeMethod(_methodName3,
-				_methodParameterTypes3, new Object[] { ticketLinkId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		throw new UnsupportedOperationException();
 	}
 
 	private InvokableService _invokableService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
+	private String _methodName1;
+	private String[] _methodParameterTypes1;
 	private String _methodName2;
 	private String[] _methodParameterTypes2;
-	private String _methodName3;
-	private String[] _methodParameterTypes3;
 }

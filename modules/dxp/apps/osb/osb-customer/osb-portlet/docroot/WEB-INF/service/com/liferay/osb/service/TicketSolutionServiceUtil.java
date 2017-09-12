@@ -60,13 +60,13 @@ public class TicketSolutionServiceUtil {
 			ticketLinkURLs, ticketLinkTypes, ticketAttachments);
 	}
 
-	public static com.liferay.osb.model.TicketSolution updateTicketSolution(
-		long ticketSolutionId, long ticketEntryId, int status,
-		long statusByUserId, java.lang.String statusMessage, int statusReason)
-		throws java.lang.Exception {
-		return getService()
-				   .updateTicketSolution(ticketSolutionId, ticketEntryId,
-			status, statusByUserId, statusMessage, statusReason);
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -75,13 +75,13 @@ public class TicketSolutionServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.osb.model.TicketSolution updateTicketSolution(
+		long ticketSolutionId, long ticketEntryId, int status,
+		long statusByUserId, java.lang.String statusMessage, int statusReason)
+		throws java.lang.Exception {
+		return getService()
+				   .updateTicketSolution(ticketSolutionId, ticketEntryId,
+			status, statusByUserId, statusMessage, statusReason);
 	}
 
 	public static void clearService() {

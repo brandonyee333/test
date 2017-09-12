@@ -108,38 +108,8 @@ public class OfferingBundleWrapper implements OfferingBundle,
 	}
 
 	@Override
-	public OfferingBundle toEscapedModel() {
-		return new OfferingBundleWrapper(_offeringBundle.toEscapedModel());
-	}
-
-	@Override
-	public OfferingBundle toUnescapedModel() {
-		return new OfferingBundleWrapper(_offeringBundle.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _offeringBundle.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _offeringBundle.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _offeringBundle.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _offeringBundle.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<OfferingBundle> toCacheModel() {
-		return _offeringBundle.toCacheModel();
+	public java.lang.Object clone() {
+		return new OfferingBundleWrapper((OfferingBundle)_offeringBundle.clone());
 	}
 
 	@Override
@@ -147,19 +117,29 @@ public class OfferingBundleWrapper implements OfferingBundle,
 		return _offeringBundle.compareTo(offeringBundle);
 	}
 
+	/**
+	* Returns the company ID of this offering bundle.
+	*
+	* @return the company ID of this offering bundle
+	*/
 	@Override
-	public int hashCode() {
-		return _offeringBundle.hashCode();
+	public long getCompanyId() {
+		return _offeringBundle.getCompanyId();
+	}
+
+	/**
+	* Returns the create date of this offering bundle.
+	*
+	* @return the create date of this offering bundle
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _offeringBundle.getCreateDate();
 	}
 
 	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _offeringBundle.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new OfferingBundleWrapper((OfferingBundle)_offeringBundle.clone());
+	public ExpandoBridge getExpandoBridge() {
+		return _offeringBundle.getExpandoBridge();
 	}
 
 	/**
@@ -170,6 +150,46 @@ public class OfferingBundleWrapper implements OfferingBundle,
 	@Override
 	public java.lang.String getName() {
 		return _offeringBundle.getName();
+	}
+
+	/**
+	* Returns the offering bundle ID of this offering bundle.
+	*
+	* @return the offering bundle ID of this offering bundle
+	*/
+	@Override
+	public long getOfferingBundleId() {
+		return _offeringBundle.getOfferingBundleId();
+	}
+
+	@Override
+	public java.util.List<OfferingDefinition> getOfferingDefinitions() {
+		return _offeringBundle.getOfferingDefinitions();
+	}
+
+	/**
+	* Returns the primary key of this offering bundle.
+	*
+	* @return the primary key of this offering bundle
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _offeringBundle.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _offeringBundle.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the user ID of this offering bundle.
+	*
+	* @return the user ID of this offering bundle
+	*/
+	@Override
+	public long getUserId() {
+		return _offeringBundle.getUserId();
 	}
 
 	/**
@@ -193,68 +213,23 @@ public class OfferingBundleWrapper implements OfferingBundle,
 	}
 
 	@Override
-	public java.lang.String toString() {
-		return _offeringBundle.toString();
+	public int hashCode() {
+		return _offeringBundle.hashCode();
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
-		return _offeringBundle.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this offering bundle.
-	*
-	* @return the create date of this offering bundle
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _offeringBundle.getCreateDate();
+	public boolean isCachedModel() {
+		return _offeringBundle.isCachedModel();
 	}
 
 	@Override
-	public java.util.List<OfferingDefinition> getOfferingDefinitions() {
-		return _offeringBundle.getOfferingDefinitions();
+	public boolean isEscapedModel() {
+		return _offeringBundle.isEscapedModel();
 	}
 
-	/**
-	* Returns the company ID of this offering bundle.
-	*
-	* @return the company ID of this offering bundle
-	*/
 	@Override
-	public long getCompanyId() {
-		return _offeringBundle.getCompanyId();
-	}
-
-	/**
-	* Returns the offering bundle ID of this offering bundle.
-	*
-	* @return the offering bundle ID of this offering bundle
-	*/
-	@Override
-	public long getOfferingBundleId() {
-		return _offeringBundle.getOfferingBundleId();
-	}
-
-	/**
-	* Returns the primary key of this offering bundle.
-	*
-	* @return the primary key of this offering bundle
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _offeringBundle.getPrimaryKey();
-	}
-
-	/**
-	* Returns the user ID of this offering bundle.
-	*
-	* @return the user ID of this offering bundle
-	*/
-	@Override
-	public long getUserId() {
-		return _offeringBundle.getUserId();
+	public boolean isNew() {
+		return _offeringBundle.isNew();
 	}
 
 	@Override
@@ -288,14 +263,14 @@ public class OfferingBundleWrapper implements OfferingBundle,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_offeringBundle.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_offeringBundle.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_offeringBundle.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -371,6 +346,31 @@ public class OfferingBundleWrapper implements OfferingBundle,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_offeringBundle.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<OfferingBundle> toCacheModel() {
+		return _offeringBundle.toCacheModel();
+	}
+
+	@Override
+	public OfferingBundle toEscapedModel() {
+		return new OfferingBundleWrapper(_offeringBundle.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _offeringBundle.toString();
+	}
+
+	@Override
+	public OfferingBundle toUnescapedModel() {
+		return new OfferingBundleWrapper(_offeringBundle.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _offeringBundle.toXmlString();
 	}
 
 	@Override

@@ -65,19 +65,43 @@ public interface TicketFeedbackService extends BaseService, InvokableService {
 	public TicketFeedback fetchFirstTicketFeedback(long ticketEntryId,
 		int subject) throws PortalException;
 
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketFeedback getTicketFeedback(long ticketFeedbackId)
 		throws PortalException;
 
-	public TicketFeedback updateTicketFeedback(long ticketFeedbackId,
-		int satisfied, int answer1, int answer2, int answer3, int rating1,
-		int rating2, int rating3, int rating4, java.lang.String comments)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketFeedback> getTicketFeedbacks(long ticketEntryId,
+		int subject) throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketFeedback> search(java.lang.String name, int createdGTDay,
+		int createdGTMonth, int createdGTYear, int createdLTDay,
+		int createdLTMonth, int createdLTYear, int modifiedGTDay,
+		int modifiedGTMonth, int modifiedGTYear, int modifiedLTDay,
+		int modifiedLTMonth, int modifiedLTYear, java.lang.Integer satisfied,
+		java.lang.String comments, java.lang.Integer status,
+		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
+		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch, int start, int end, OrderByComparator obc)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws PortalException;
+	public List<TicketFeedback> search(java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
+		int end, OrderByComparator obc) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String name, int createdGTDay,
@@ -91,37 +115,13 @@ public interface TicketFeedbackService extends BaseService, InvokableService {
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch) throws PortalException;
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketFeedback> getTicketFeedbacks(long ticketEntryId,
-		int subject) throws PortalException;
+	public int searchCount(java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketFeedback> search(java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, OrderByComparator obc) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketFeedback> search(java.lang.String name, int createdGTDay,
-		int createdGTMonth, int createdGTYear, int createdLTDay,
-		int createdLTMonth, int createdLTYear, int modifiedGTDay,
-		int modifiedGTMonth, int modifiedGTYear, int modifiedLTDay,
-		int modifiedLTMonth, int modifiedLTYear, java.lang.Integer satisfied,
-		java.lang.String comments, java.lang.Integer status,
-		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
-		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
-		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch, int start, int end, OrderByComparator obc)
+	public TicketFeedback updateTicketFeedback(long ticketFeedbackId,
+		int satisfied, int answer1, int answer2, int answer3, int rating1,
+		int rating2, int rating3, int rating4, java.lang.String comments)
 		throws PortalException;
 }

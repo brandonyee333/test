@@ -51,10 +51,12 @@ public interface TicketWorkerService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketWorkerServiceUtil} to access the ticket worker remote service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketWorkerServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
+	public List<TicketWorker> addTicketWorkers(long[] userIds,
+		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
+		int[] roles, long primaryUserId) throws PortalException;
+
+	public void deleteTicketWorkers(long[] userIds, long ticketEntryId,
+		long primaryUserId) throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -63,15 +65,13 @@ public interface TicketWorkerService extends BaseService, InvokableService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	public List<TicketWorker> addTicketWorkers(long[] userIds,
-		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
-		int[] roles, long primaryUserId) throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	public List<TicketWorker> updateTicketWorkers(long[] addUserIds,
 		int[] addRoles, long[] removeUserIds, long ticketEntryId,
 		long[] sourceClassNameIds, long[] sourceClassPKs, long primaryUserId)
 		throws PortalException;
-
-	public void deleteTicketWorkers(long[] userIds, long ticketEntryId,
-		long primaryUserId) throws PortalException;
 }

@@ -47,13 +47,13 @@ public class AccountProjectServiceUtil {
 		return getService().deleteAccountProject(accountProjectId);
 	}
 
-	public static com.liferay.osb.model.AccountProject updateAccountProject(
-		long accountProjectId, long accountEntryId, java.lang.String name,
-		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateAccountProject(accountProjectId, accountEntryId,
-			name, data);
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -62,13 +62,13 @@ public class AccountProjectServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.osb.model.AccountProject updateAccountProject(
+		long accountProjectId, long accountEntryId, java.lang.String name,
+		java.util.Map<java.lang.Integer, java.lang.String> data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateAccountProject(accountProjectId, accountEntryId,
+			name, data);
 	}
 
 	public static void clearService() {

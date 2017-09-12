@@ -100,55 +100,18 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	}
 
 	@Override
-	public PartnerEntry getPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _partnerWorker.getPartnerEntry();
-	}
-
-	@Override
-	public PartnerWorker toEscapedModel() {
-		return new PartnerWorkerWrapper(_partnerWorker.toEscapedModel());
-	}
-
-	@Override
-	public PartnerWorker toUnescapedModel() {
-		return new PartnerWorkerWrapper(_partnerWorker.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isActive()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _partnerWorker.isActive();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _partnerWorker.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _partnerWorker.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _partnerWorker.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _partnerWorker.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<PartnerWorker> toCacheModel() {
-		return _partnerWorker.toCacheModel();
+	public java.lang.Object clone() {
+		return new PartnerWorkerWrapper((PartnerWorker)_partnerWorker.clone());
 	}
 
 	@Override
 	public int compareTo(PartnerWorker partnerWorker) {
 		return _partnerWorker.compareTo(partnerWorker);
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _partnerWorker.getExpandoBridge();
 	}
 
 	/**
@@ -161,59 +124,15 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 		return _partnerWorker.getNotifications();
 	}
 
-	/**
-	* Returns the role of this partner worker.
-	*
-	* @return the role of this partner worker
-	*/
-	@Override
-	public int getRole() {
-		return _partnerWorker.getRole();
-	}
-
-	@Override
-	public int hashCode() {
-		return _partnerWorker.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _partnerWorker.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new PartnerWorkerWrapper((PartnerWorker)_partnerWorker.clone());
-	}
-
 	@Override
 	public java.lang.String getNotificationsLabel() {
 		return _partnerWorker.getNotificationsLabel();
 	}
 
 	@Override
-	public java.lang.String getRoleLabel() {
-		return _partnerWorker.getRoleLabel();
-	}
-
-	/**
-	* Returns the user uuid of this partner worker.
-	*
-	* @return the user uuid of this partner worker
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _partnerWorker.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _partnerWorker.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _partnerWorker.toXmlString();
+	public PartnerEntry getPartnerEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _partnerWorker.getPartnerEntry();
 	}
 
 	/**
@@ -246,6 +165,26 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 		return _partnerWorker.getPrimaryKey();
 	}
 
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _partnerWorker.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the role of this partner worker.
+	*
+	* @return the role of this partner worker
+	*/
+	@Override
+	public int getRole() {
+		return _partnerWorker.getRole();
+	}
+
+	@Override
+	public java.lang.String getRoleLabel() {
+		return _partnerWorker.getRoleLabel();
+	}
+
 	/**
 	* Returns the user ID of this partner worker.
 	*
@@ -254,6 +193,42 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	@Override
 	public long getUserId() {
 		return _partnerWorker.getUserId();
+	}
+
+	/**
+	* Returns the user uuid of this partner worker.
+	*
+	* @return the user uuid of this partner worker
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _partnerWorker.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _partnerWorker.hashCode();
+	}
+
+	@Override
+	public boolean isActive()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _partnerWorker.isActive();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _partnerWorker.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _partnerWorker.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _partnerWorker.isNew();
 	}
 
 	@Override
@@ -267,14 +242,14 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_partnerWorker.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_partnerWorker.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_partnerWorker.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -360,6 +335,31 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_partnerWorker.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<PartnerWorker> toCacheModel() {
+		return _partnerWorker.toCacheModel();
+	}
+
+	@Override
+	public PartnerWorker toEscapedModel() {
+		return new PartnerWorkerWrapper(_partnerWorker.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _partnerWorker.toString();
+	}
+
+	@Override
+	public PartnerWorker toUnescapedModel() {
+		return new PartnerWorkerWrapper(_partnerWorker.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _partnerWorker.toXmlString();
 	}
 
 	@Override

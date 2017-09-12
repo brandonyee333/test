@@ -27,43 +27,66 @@ public class PartnerEntryServiceClp implements PartnerEntryService {
 	public PartnerEntryServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName0 = "getPartnerEntry";
+		_methodName0 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes0 = new String[] { "long" };
+		_methodParameterTypes0 = new String[] {  };
 
-		_methodName1 = "searchCount";
+		_methodName1 = "getPartnerEntry";
 
-		_methodParameterTypes1 = new String[] {
-				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
-				"boolean"
-			};
+		_methodParameterTypes1 = new String[] { "long" };
 
-		_methodName2 = "searchCount";
-
-		_methodParameterTypes2 = new String[] { "java.lang.String" };
-
-		_methodName3 = "searchCount";
+		_methodName3 = "search";
 
 		_methodParameterTypes3 = new String[] {
-				"java.lang.String", "java.util.LinkedHashMap"
-			};
-
-		_methodName5 = "getOSGiServiceIdentifier";
-
-		_methodParameterTypes5 = new String[] {  };
-
-		_methodName6 = "search";
-
-		_methodParameterTypes6 = new String[] {
 				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
 				"boolean", "int", "int"
 			};
 
-		_methodName7 = "search";
+		_methodName4 = "search";
 
-		_methodParameterTypes7 = new String[] {
+		_methodParameterTypes4 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int"
 			};
+
+		_methodName5 = "searchCount";
+
+		_methodParameterTypes5 = new String[] { "java.lang.String" };
+
+		_methodName6 = "searchCount";
+
+		_methodParameterTypes6 = new String[] {
+				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
+				"boolean"
+			};
+
+		_methodName7 = "searchCount";
+
+		_methodParameterTypes7 = new String[] {
+				"java.lang.String", "java.util.LinkedHashMap"
+			};
+	}
+
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -73,8 +96,8 @@ public class PartnerEntryServiceClp implements PartnerEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName0,
-					_methodParameterTypes0, new Object[] { partnerEntryId });
+			returnObj = _invokableService.invokeMethod(_methodName1,
+					_methodParameterTypes1, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -96,135 +119,10 @@ public class PartnerEntryServiceClp implements PartnerEntryService {
 	}
 
 	@Override
-	public int searchCount(java.lang.String code, int[] statuses,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1,
-					new Object[] {
-						ClpSerializer.translateInput(code),
-						
-					ClpSerializer.translateInput(statuses),
-						
-					ClpSerializer.translateInput(params),
-						
-					andOperator
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Integer)returnObj).intValue();
-	}
-
-	@Override
-	public int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName2,
-					_methodParameterTypes2,
-					new Object[] { ClpSerializer.translateInput(keywords) });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Integer)returnObj).intValue();
-	}
-
-	@Override
-	public int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName3,
-					_methodParameterTypes3,
-					new Object[] {
-						ClpSerializer.translateInput(keywords),
-						
-					ClpSerializer.translateInput(params)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Integer)returnObj).intValue();
-	}
-
-	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
 		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -236,8 +134,8 @@ public class PartnerEntryServiceClp implements PartnerEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
 					new Object[] {
 						ClpSerializer.translateInput(code),
 						
@@ -280,8 +178,8 @@ public class PartnerEntryServiceClp implements PartnerEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName7,
-					_methodParameterTypes7,
+			returnObj = _invokableService.invokeMethod(_methodName4,
+					_methodParameterTypes4,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -311,15 +209,117 @@ public class PartnerEntryServiceClp implements PartnerEntryService {
 		return (java.util.List<com.liferay.osb.model.PartnerEntry>)ClpSerializer.translateOutput(returnObj);
 	}
 
+	@Override
+	public int searchCount(java.lang.String keywords)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
+					new Object[] { ClpSerializer.translateInput(keywords) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int searchCount(java.lang.String code, int[] statuses,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName6,
+					_methodParameterTypes6,
+					new Object[] {
+						ClpSerializer.translateInput(code),
+						
+					ClpSerializer.translateInput(statuses),
+						
+					ClpSerializer.translateInput(params),
+						
+					andOperator
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int searchCount(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
+					new Object[] {
+						ClpSerializer.translateInput(keywords),
+						
+					ClpSerializer.translateInput(params)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
 	private InvokableService _invokableService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
-	private String _methodName2;
-	private String[] _methodParameterTypes2;
 	private String _methodName3;
 	private String[] _methodParameterTypes3;
+	private String _methodName4;
+	private String[] _methodParameterTypes4;
 	private String _methodName5;
 	private String[] _methodParameterTypes5;
 	private String _methodName6;

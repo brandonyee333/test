@@ -41,10 +41,10 @@ public class AccountCustomerServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountCustomerServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
+	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCorpProjectAccountCustomerUUIDs(corpProjectId);
 	}
 
 	/**
@@ -56,10 +56,10 @@ public class AccountCustomerServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getCorpProjectAccountCustomerUUIDs(corpProjectId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static void toggleNotifications(long accountCustomerId)

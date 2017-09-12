@@ -62,6 +62,10 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketLinkLocalServiceUtil} to access the ticket link local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketLinkLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public TicketLink addTicketLink(long userId, long ticketEntryId,
+		long ticketSolutionId, java.lang.String[] urls,
+		java.lang.Integer[] types, int visibility, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	* Adds the ticket link to the database. Also notifies the appropriate model listeners.
@@ -72,11 +76,6 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketLink addTicketLink(TicketLink ticketLink);
 
-	public TicketLink addTicketLink(long userId, long ticketEntryId,
-		long ticketSolutionId, java.lang.String[] urls,
-		java.lang.Integer[] types, int visibility, ServiceContext serviceContext)
-		throws PortalException;
-
 	/**
 	* Creates a new ticket link with the primary key. Does not add the ticket link to the database.
 	*
@@ -86,13 +85,11 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	public TicketLink createTicketLink(long ticketLinkId);
 
 	/**
-	* Deletes the ticket link from the database. Also notifies the appropriate model listeners.
-	*
-	* @param ticketLink the ticket link
-	* @return the ticket link that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public TicketLink deleteTicketLink(TicketLink ticketLink);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the ticket link with the primary key from the database. Also notifies the appropriate model listeners.
@@ -105,71 +102,22 @@ public interface TicketLinkLocalService extends BaseLocalService,
 	public TicketLink deleteTicketLink(long ticketLinkId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketLink fetchTicketLink(long ticketLinkId);
+	public void deleteTicketLink(long userId, long ticketLinkId)
+		throws PortalException;
 
-	/**
-	* Returns the ticket link with the primary key.
-	*
-	* @param ticketLinkId the primary key of the ticket link
-	* @return the ticket link
-	* @throws PortalException if a ticket link with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketLink getTicketLink(long ticketLinkId)
+	public void deleteTicketLink(long userId, TicketLink ticketLink)
 		throws PortalException;
 
 	/**
-	* Updates the ticket link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the ticket link from the database. Also notifies the appropriate model listeners.
 	*
 	* @param ticketLink the ticket link
-	* @return the ticket link that was updated
+	* @return the ticket link that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public TicketLink updateTicketLink(TicketLink ticketLink);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
+	@Indexable(type = IndexableType.DELETE)
+	public TicketLink deleteTicketLink(TicketLink ticketLink);
 
 	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of ticket links.
-	*
-	* @return the number of ticket links
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketLinksCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketLinksCount(long ticketEntryId, int[] visibilities);
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -211,6 +159,56 @@ public interface TicketLinkLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketLink fetchTicketLink(long ticketLinkId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the ticket link with the primary key.
+	*
+	* @param ticketLinkId the primary key of the ticket link
+	* @return the ticket link
+	* @throws PortalException if a ticket link with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketLink getTicketLink(long ticketLinkId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the ticket links.
 	*
 	* <p>
@@ -233,26 +231,27 @@ public interface TicketLinkLocalService extends BaseLocalService,
 		long ticketSolutionId);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of ticket links.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of ticket links
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketLinksCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketLinksCount(long ticketEntryId, int[] visibilities);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the ticket link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param ticketLink the ticket link
+	* @return the ticket link that was updated
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	public void deleteTicketLink(long userId, TicketLink ticketLink)
-		throws PortalException;
-
-	public void deleteTicketLink(long userId, long ticketLinkId)
-		throws PortalException;
+	@Indexable(type = IndexableType.REINDEX)
+	public TicketLink updateTicketLink(TicketLink ticketLink);
 }

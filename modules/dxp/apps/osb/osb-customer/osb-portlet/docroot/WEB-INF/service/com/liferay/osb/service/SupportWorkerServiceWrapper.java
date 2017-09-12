@@ -34,11 +34,9 @@ public class SupportWorkerServiceWrapper implements SupportWorkerService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _supportWorkerService.invokeMethod(name, parameterTypes,
-			arguments);
+	public void clockInOut(long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_supportWorkerService.clockInOut(supportWorkerId);
 	}
 
 	/**
@@ -52,9 +50,11 @@ public class SupportWorkerServiceWrapper implements SupportWorkerService,
 	}
 
 	@Override
-	public void clockInOut(long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_supportWorkerService.clockInOut(supportWorkerId);
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _supportWorkerService.invokeMethod(name, parameterTypes,
+			arguments);
 	}
 
 	@Override

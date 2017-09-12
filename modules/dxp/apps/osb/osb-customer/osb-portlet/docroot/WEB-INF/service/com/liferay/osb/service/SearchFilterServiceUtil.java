@@ -50,24 +50,9 @@ public class SearchFilterServiceUtil {
 			visibility);
 	}
 
-	public static com.liferay.osb.model.SearchFilter getSearchFilter(
-		long searchFilterId)
+	public static void deleteSearchFilter(long searchFilterId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSearchFilter(searchFilterId);
-	}
-
-	public static com.liferay.osb.model.SearchFilter updateSearchFilter(
-		long searchFilterId, java.lang.String name, java.lang.String filter,
-		int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateSearchFilter(searchFilterId, name, filter, visibility);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
+		getService().deleteSearchFilter(searchFilterId);
 	}
 
 	/**
@@ -79,9 +64,24 @@ public class SearchFilterServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static void deleteSearchFilter(long searchFilterId)
+	public static com.liferay.osb.model.SearchFilter getSearchFilter(
+		long searchFilterId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteSearchFilter(searchFilterId);
+		return getService().getSearchFilter(searchFilterId);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	public static com.liferay.osb.model.SearchFilter updateSearchFilter(
+		long searchFilterId, java.lang.String name, java.lang.String filter,
+		int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateSearchFilter(searchFilterId, name, filter, visibility);
 	}
 
 	public static void clearService() {

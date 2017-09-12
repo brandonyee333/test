@@ -62,20 +62,20 @@ public interface TicketSolutionService extends BaseService, InvokableService {
 		List<java.lang.Integer> ticketLinkTypes,
 		List<TicketAttachment> ticketAttachments) throws java.lang.Exception;
 
-	public TicketSolution updateTicketSolution(long ticketSolutionId,
-		long ticketEntryId, int status, long statusByUserId,
-		java.lang.String statusMessage, int statusReason)
-		throws java.lang.Exception;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	public TicketSolution updateTicketSolution(long ticketSolutionId,
+		long ticketEntryId, int status, long statusByUserId,
+		java.lang.String statusMessage, int statusReason)
+		throws java.lang.Exception;
 }

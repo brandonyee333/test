@@ -99,44 +99,6 @@ public interface AccountCallLocalService extends BaseLocalService,
 	public AccountCall deleteAccountCall(long accountCallId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountCall fetchAccountCall(long accountCallId);
-
-	/**
-	* Returns the account call with the primary key.
-	*
-	* @param accountCallId the primary key of the account call
-	* @return the account call
-	* @throws PortalException if a account call with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountCall getAccountCall(long accountCallId)
-		throws PortalException;
-
-	/**
-	* Updates the account call in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountCall the account call
-	* @return the account call that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public AccountCall updateAccountCall(AccountCall accountCall);
-
-	public AccountCall updateAccountCall(long userId, long accountCallId,
-		long accountEntryId, int type, int callDateMonth, int callDateDay,
-		int callDateYear, int callDateHour, int callDateMinute,
-		long callLength, java.lang.String summary,
-		java.lang.String clientsPresent, java.lang.String notes,
-		java.lang.String actionItems) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
 	/**
 	* @throws PortalException
 	*/
@@ -144,30 +106,7 @@ public interface AccountCallLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of account calls.
-	*
-	* @return the number of account calls
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountCallsCount();
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -209,6 +148,38 @@ public interface AccountCallLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountCall fetchAccountCall(long accountCallId);
+
+	/**
+	* Returns the account call with the primary key.
+	*
+	* @param accountCallId the primary key of the account call
+	* @return the account call
+	* @throws PortalException if a account call with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountCall getAccountCall(long accountCallId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the account calls.
 	*
 	* <p>
@@ -226,20 +197,49 @@ public interface AccountCallLocalService extends BaseLocalService,
 	public List<AccountCall> getAccountCalls(long accountEntryId);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of account calls.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of account calls
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAccountCallsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the OSGi service identifier.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @return the OSGi service identifier
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Updates the account call in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountCall the account call
+	* @return the account call that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public AccountCall updateAccountCall(AccountCall accountCall);
+
+	public AccountCall updateAccountCall(long userId, long accountCallId,
+		long accountEntryId, int type, int callDateMonth, int callDateDay,
+		int callDateYear, int callDateHour, int callDateMinute,
+		long callLength, java.lang.String summary,
+		java.lang.String clientsPresent, java.lang.String notes,
+		java.lang.String actionItems) throws PortalException;
 }

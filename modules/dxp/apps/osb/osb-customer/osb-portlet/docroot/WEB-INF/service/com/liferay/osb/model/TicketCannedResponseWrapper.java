@@ -124,38 +124,8 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 	}
 
 	@Override
-	public TicketCannedResponse toEscapedModel() {
-		return new TicketCannedResponseWrapper(_ticketCannedResponse.toEscapedModel());
-	}
-
-	@Override
-	public TicketCannedResponse toUnescapedModel() {
-		return new TicketCannedResponseWrapper(_ticketCannedResponse.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _ticketCannedResponse.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _ticketCannedResponse.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _ticketCannedResponse.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ticketCannedResponse.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketCannedResponse> toCacheModel() {
-		return _ticketCannedResponse.toCacheModel();
+	public java.lang.Object clone() {
+		return new TicketCannedResponseWrapper((TicketCannedResponse)_ticketCannedResponse.clone());
 	}
 
 	@Override
@@ -163,29 +133,14 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 		return _ticketCannedResponse.compareTo(ticketCannedResponse);
 	}
 
-	/**
-	* Returns the use count of this ticket canned response.
-	*
-	* @return the use count of this ticket canned response
-	*/
 	@Override
-	public int getUseCount() {
-		return _ticketCannedResponse.getUseCount();
+	public java.lang.String[] getAvailableLanguageIds() {
+		return _ticketCannedResponse.getAvailableLanguageIds();
 	}
 
 	@Override
-	public int hashCode() {
-		return _ticketCannedResponse.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ticketCannedResponse.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new TicketCannedResponseWrapper((TicketCannedResponse)_ticketCannedResponse.clone());
+	public java.lang.String[] getAvailableLocales() {
+		return _ticketCannedResponse.getAvailableLocales();
 	}
 
 	/**
@@ -196,30 +151,6 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 	@Override
 	public java.lang.String getContent() {
 		return _ticketCannedResponse.getContent();
-	}
-
-	/**
-	* Returns the localized content of this ticket canned response in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @return the localized content of this ticket canned response
-	*/
-	@Override
-	public java.lang.String getContent(java.lang.String languageId) {
-		return _ticketCannedResponse.getContent(languageId);
-	}
-
-	/**
-	* Returns the localized content of this ticket canned response in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param languageId the ID of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized content of this ticket canned response
-	*/
-	@Override
-	public java.lang.String getContent(java.lang.String languageId,
-		boolean useDefault) {
-		return _ticketCannedResponse.getContent(languageId, useDefault);
 	}
 
 	/**
@@ -246,6 +177,30 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 		return _ticketCannedResponse.getContent(locale, useDefault);
 	}
 
+	/**
+	* Returns the localized content of this ticket canned response in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized content of this ticket canned response
+	*/
+	@Override
+	public java.lang.String getContent(java.lang.String languageId) {
+		return _ticketCannedResponse.getContent(languageId);
+	}
+
+	/**
+	* Returns the localized content of this ticket canned response in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized content of this ticket canned response
+	*/
+	@Override
+	public java.lang.String getContent(java.lang.String languageId,
+		boolean useDefault) {
+		return _ticketCannedResponse.getContent(languageId, useDefault);
+	}
+
 	@Override
 	public java.lang.String getContentCurrentLanguageId() {
 		return _ticketCannedResponse.getContentCurrentLanguageId();
@@ -254,6 +209,26 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 	@Override
 	public java.lang.String getContentCurrentValue() {
 		return _ticketCannedResponse.getContentCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized contents of this ticket canned response.
+	*
+	* @return the locales and localized contents of this ticket canned response
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getContentMap() {
+		return _ticketCannedResponse.getContentMap();
+	}
+
+	/**
+	* Returns the create date of this ticket canned response.
+	*
+	* @return the create date of this ticket canned response
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _ticketCannedResponse.getCreateDate();
 	}
 
 	@Override
@@ -266,6 +241,21 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 		return _ticketCannedResponse.getDefaultLocale();
 	}
 
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ticketCannedResponse.getExpandoBridge();
+	}
+
+	/**
+	* Returns the modified date of this ticket canned response.
+	*
+	* @return the modified date of this ticket canned response
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _ticketCannedResponse.getModifiedDate();
+	}
+
 	/**
 	* Returns the name of this ticket canned response.
 	*
@@ -274,6 +264,29 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 	@Override
 	public java.lang.String getName() {
 		return _ticketCannedResponse.getName();
+	}
+
+	/**
+	* Returns the localized name of this ticket canned response in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param locale the locale of the language
+	* @return the localized name of this ticket canned response
+	*/
+	@Override
+	public java.lang.String getName(java.util.Locale locale) {
+		return _ticketCannedResponse.getName(locale);
+	}
+
+	/**
+	* Returns the localized name of this ticket canned response in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized name of this ticket canned response. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
+		return _ticketCannedResponse.getName(locale, useDefault);
 	}
 
 	/**
@@ -300,29 +313,6 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 		return _ticketCannedResponse.getName(languageId, useDefault);
 	}
 
-	/**
-	* Returns the localized name of this ticket canned response in the language. Uses the default language if no localization exists for the requested language.
-	*
-	* @param locale the locale of the language
-	* @return the localized name of this ticket canned response
-	*/
-	@Override
-	public java.lang.String getName(java.util.Locale locale) {
-		return _ticketCannedResponse.getName(locale);
-	}
-
-	/**
-	* Returns the localized name of this ticket canned response in the language, optionally using the default language if no localization exists for the requested language.
-	*
-	* @param locale the local of the language
-	* @param useDefault whether to use the default language if no localization exists for the requested language
-	* @return the localized name of this ticket canned response. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
-	*/
-	@Override
-	public java.lang.String getName(java.util.Locale locale, boolean useDefault) {
-		return _ticketCannedResponse.getName(locale, useDefault);
-	}
-
 	@Override
 	public java.lang.String getNameCurrentLanguageId() {
 		return _ticketCannedResponse.getNameCurrentLanguageId();
@@ -331,6 +321,61 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 	@Override
 	public java.lang.String getNameCurrentValue() {
 		return _ticketCannedResponse.getNameCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized names of this ticket canned response.
+	*
+	* @return the locales and localized names of this ticket canned response
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getNameMap() {
+		return _ticketCannedResponse.getNameMap();
+	}
+
+	/**
+	* Returns the primary key of this ticket canned response.
+	*
+	* @return the primary key of this ticket canned response
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _ticketCannedResponse.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ticketCannedResponse.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the ticket canned response ID of this ticket canned response.
+	*
+	* @return the ticket canned response ID of this ticket canned response
+	*/
+	@Override
+	public long getTicketCannedResponseId() {
+		return _ticketCannedResponse.getTicketCannedResponseId();
+	}
+
+	/**
+	* Returns the use count of this ticket canned response.
+	*
+	* @return the use count of this ticket canned response
+	*/
+	@Override
+	public int getUseCount() {
+		return _ticketCannedResponse.getUseCount();
+	}
+
+	/**
+	* Returns the user ID of this ticket canned response.
+	*
+	* @return the user ID of this ticket canned response
+	*/
+	@Override
+	public long getUserId() {
+		return _ticketCannedResponse.getUserId();
 	}
 
 	/**
@@ -354,93 +399,23 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 	}
 
 	@Override
-	public java.lang.String toString() {
-		return _ticketCannedResponse.toString();
+	public int hashCode() {
+		return _ticketCannedResponse.hashCode();
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
-		return _ticketCannedResponse.toXmlString();
+	public boolean isCachedModel() {
+		return _ticketCannedResponse.isCachedModel();
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLanguageIds() {
-		return _ticketCannedResponse.getAvailableLanguageIds();
+	public boolean isEscapedModel() {
+		return _ticketCannedResponse.isEscapedModel();
 	}
 
 	@Override
-	public java.lang.String[] getAvailableLocales() {
-		return _ticketCannedResponse.getAvailableLocales();
-	}
-
-	/**
-	* Returns the create date of this ticket canned response.
-	*
-	* @return the create date of this ticket canned response
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _ticketCannedResponse.getCreateDate();
-	}
-
-	/**
-	* Returns the modified date of this ticket canned response.
-	*
-	* @return the modified date of this ticket canned response
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _ticketCannedResponse.getModifiedDate();
-	}
-
-	/**
-	* Returns a map of the locales and localized contents of this ticket canned response.
-	*
-	* @return the locales and localized contents of this ticket canned response
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getContentMap() {
-		return _ticketCannedResponse.getContentMap();
-	}
-
-	/**
-	* Returns a map of the locales and localized names of this ticket canned response.
-	*
-	* @return the locales and localized names of this ticket canned response
-	*/
-	@Override
-	public Map<java.util.Locale, java.lang.String> getNameMap() {
-		return _ticketCannedResponse.getNameMap();
-	}
-
-	/**
-	* Returns the primary key of this ticket canned response.
-	*
-	* @return the primary key of this ticket canned response
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _ticketCannedResponse.getPrimaryKey();
-	}
-
-	/**
-	* Returns the ticket canned response ID of this ticket canned response.
-	*
-	* @return the ticket canned response ID of this ticket canned response
-	*/
-	@Override
-	public long getTicketCannedResponseId() {
-		return _ticketCannedResponse.getTicketCannedResponseId();
-	}
-
-	/**
-	* Returns the user ID of this ticket canned response.
-	*
-	* @return the user ID of this ticket canned response
-	*/
-	@Override
-	public long getUserId() {
-		return _ticketCannedResponse.getUserId();
+	public boolean isNew() {
+		return _ticketCannedResponse.isNew();
 	}
 
 	@Override
@@ -540,14 +515,14 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ticketCannedResponse.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_ticketCannedResponse.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ticketCannedResponse.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -694,6 +669,31 @@ public class TicketCannedResponseWrapper implements TicketCannedResponse,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_ticketCannedResponse.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TicketCannedResponse> toCacheModel() {
+		return _ticketCannedResponse.toCacheModel();
+	}
+
+	@Override
+	public TicketCannedResponse toEscapedModel() {
+		return new TicketCannedResponseWrapper(_ticketCannedResponse.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _ticketCannedResponse.toString();
+	}
+
+	@Override
+	public TicketCannedResponse toUnescapedModel() {
+		return new TicketCannedResponseWrapper(_ticketCannedResponse.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ticketCannedResponse.toXmlString();
 	}
 
 	@Override

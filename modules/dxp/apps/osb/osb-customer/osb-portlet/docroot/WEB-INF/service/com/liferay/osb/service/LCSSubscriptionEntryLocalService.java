@@ -102,39 +102,6 @@ public interface LCSSubscriptionEntryLocalService extends BaseLocalService,
 	public LCSSubscriptionEntry deleteLCSSubscriptionEntry(
 		long lcsSubscriptionEntryId) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public LCSSubscriptionEntry fetchLCSSubscriptionEntry(
-		long lcsSubscriptionEntryId);
-
-	/**
-	* Returns the lcs subscription entry with the primary key.
-	*
-	* @param lcsSubscriptionEntryId the primary key of the lcs subscription entry
-	* @return the lcs subscription entry
-	* @throws PortalException if a lcs subscription entry with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public LCSSubscriptionEntry getLCSSubscriptionEntry(
-		long lcsSubscriptionEntryId) throws PortalException;
-
-	/**
-	* Updates the lcs subscription entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param lcsSubscriptionEntry the lcs subscription entry
-	* @return the lcs subscription entry that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public LCSSubscriptionEntry updateLCSSubscriptionEntry(
-		LCSSubscriptionEntry lcsSubscriptionEntry);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
 	/**
 	* @throws PortalException
 	*/
@@ -142,30 +109,7 @@ public interface LCSSubscriptionEntryLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of lcs subscription entries.
-	*
-	* @return the number of lcs subscription entries
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getLCSSubscriptionEntriesCount();
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -207,6 +151,34 @@ public interface LCSSubscriptionEntryLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LCSSubscriptionEntry fetchLCSSubscriptionEntry(
+		long lcsSubscriptionEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
 	* Returns a range of all the lcs subscription entries.
 	*
 	* <p>
@@ -226,22 +198,50 @@ public interface LCSSubscriptionEntryLocalService extends BaseLocalService,
 		long corpProjectId) throws PortalException;
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of lcs subscription entries.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of lcs subscription entries
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getLCSSubscriptionEntriesCount();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the lcs subscription entry with the primary key.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param lcsSubscriptionEntryId the primary key of the lcs subscription entry
+	* @return the lcs subscription entry
+	* @throws PortalException if a lcs subscription entry with the primary key could not be found
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LCSSubscriptionEntry getLCSSubscriptionEntry(
+		long lcsSubscriptionEntryId) throws PortalException;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	public void syncToLCS(long corpProjectId) throws PortalException;
+
+	/**
+	* Updates the lcs subscription entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param lcsSubscriptionEntry the lcs subscription entry
+	* @return the lcs subscription entry that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public LCSSubscriptionEntry updateLCSSubscriptionEntry(
+		LCSSubscriptionEntry lcsSubscriptionEntry);
 }

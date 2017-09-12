@@ -52,22 +52,22 @@ public interface AccountCallService extends BaseService, InvokableService {
 	public AccountCall deleteAccountCall(long accountCallId)
 		throws PortalException;
 
-	public AccountCall updateAccountCall(long accountCallId,
-		long accountEntryId, int type, int callDateMonth, int callDateDay,
-		int callDateYear, int callDateHour, int callDateMinute,
-		long callLength, java.lang.String summary,
-		java.lang.String clientsPresent, java.lang.String notes,
-		java.lang.String actionItems) throws PortalException;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	public AccountCall updateAccountCall(long accountCallId,
+		long accountEntryId, int type, int callDateMonth, int callDateDay,
+		int callDateYear, int callDateHour, int callDateMinute,
+		long callLength, java.lang.String summary,
+		java.lang.String clientsPresent, java.lang.String notes,
+		java.lang.String actionItems) throws PortalException;
 }

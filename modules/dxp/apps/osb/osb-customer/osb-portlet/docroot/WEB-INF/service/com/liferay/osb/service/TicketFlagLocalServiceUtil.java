@@ -41,16 +41,6 @@ public class TicketFlagLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketFlagLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasTicketFlag(long ticketEntryId, int type, int flag) {
-		return getService().hasTicketFlag(ticketEntryId, type, flag);
-	}
-
-	public static boolean hasTicketFlag(long userId, long accountEntryId,
-		long ticketEntryId, int type, int flag) {
-		return getService()
-				   .hasTicketFlag(userId, accountEntryId, ticketEntryId, type,
-			flag);
-	}
 
 	/**
 	* Adds the ticket flag to the database. Also notifies the appropriate model listeners.
@@ -75,14 +65,12 @@ public class TicketFlagLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the ticket flag from the database. Also notifies the appropriate model listeners.
-	*
-	* @param ticketFlag the ticket flag
-	* @return the ticket flag that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.osb.model.TicketFlag deleteTicketFlag(
-		com.liferay.osb.model.TicketFlag ticketFlag) {
-		return getService().deleteTicketFlag(ticketFlag);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -98,101 +86,30 @@ public class TicketFlagLocalServiceUtil {
 		return getService().deleteTicketFlag(ticketFlagId);
 	}
 
-	public static com.liferay.osb.model.TicketFlag fetchTicketFlag(
-		long ticketFlagId) {
-		return getService().fetchTicketFlag(ticketFlagId);
-	}
-
-	/**
-	* Returns the ticket flag with the primary key.
-	*
-	* @param ticketFlagId the primary key of the ticket flag
-	* @return the ticket flag
-	* @throws PortalException if a ticket flag with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.TicketFlag getTicketFlag(
-		long ticketFlagId)
+	public static void deleteTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getTicketFlag(ticketFlagId);
+		getService()
+			.deleteTicketFlag(userId, accountEntryId, ticketEntryId, type);
 	}
 
 	/**
-	* Updates the ticket flag in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the ticket flag from the database. Also notifies the appropriate model listeners.
 	*
 	* @param ticketFlag the ticket flag
-	* @return the ticket flag that was updated
+	* @return the ticket flag that was removed
 	*/
-	public static com.liferay.osb.model.TicketFlag updateTicketFlag(
+	public static com.liferay.osb.model.TicketFlag deleteTicketFlag(
 		com.liferay.osb.model.TicketFlag ticketFlag) {
-		return getService().updateTicketFlag(ticketFlag);
+		return getService().deleteTicketFlag(ticketFlag);
 	}
 
-	public static com.liferay.osb.model.TicketFlag updateTicketFlag(
-		long userId, long accountEntryId, long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateTicketFlag(userId, accountEntryId, ticketEntryId,
-			type, flag);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
+	public static void deleteTicketFlags(long ticketEntryId, int type, int flag) {
+		getService().deleteTicketFlags(ticketEntryId, type, flag);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of ticket flags.
-	*
-	* @return the number of ticket flags
-	*/
-	public static int getTicketFlagsCount() {
-		return getService().getTicketFlagsCount();
-	}
-
-	public static int getTicketFlagsCount(long ticketEntryId, int type, int flag) {
-		return getService().getTicketFlagsCount(ticketEntryId, type, flag);
-	}
-
-	public static int[] getTicketFlagTypes(long ticketEntryId, int[] types,
-		int flag) {
-		return getService().getTicketFlagTypes(ticketEntryId, types, flag);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -246,6 +163,71 @@ public class TicketFlagLocalServiceUtil {
 	}
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static com.liferay.osb.model.TicketFlag fetchTicketFlag(
+		long ticketFlagId) {
+		return getService().fetchTicketFlag(ticketFlagId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the ticket flag with the primary key.
+	*
+	* @param ticketFlagId the primary key of the ticket flag
+	* @return the ticket flag
+	* @throws PortalException if a ticket flag with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.TicketFlag getTicketFlag(
+		long ticketFlagId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getTicketFlag(ticketFlagId);
+	}
+
+	/**
 	* Returns a range of all the ticket flags.
 	*
 	* <p>
@@ -272,38 +254,57 @@ public class TicketFlagLocalServiceUtil {
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of ticket flags.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of ticket flags
 	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
+	public static int getTicketFlagsCount() {
+		return getService().getTicketFlagsCount();
+	}
+
+	public static int getTicketFlagsCount(long ticketEntryId, int type, int flag) {
+		return getService().getTicketFlagsCount(ticketEntryId, type, flag);
+	}
+
+	public static int[] getTicketFlagTypes(long ticketEntryId, int[] types,
+		int flag) {
+		return getService().getTicketFlagTypes(ticketEntryId, types, flag);
+	}
+
+	public static boolean hasTicketFlag(long ticketEntryId, int type, int flag) {
+		return getService().hasTicketFlag(ticketEntryId, type, flag);
+	}
+
+	public static boolean hasTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type, int flag) {
+		return getService()
+				   .hasTicketFlag(userId, accountEntryId, ticketEntryId, type,
+			flag);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	public static com.liferay.osb.model.TicketFlag updateTicketFlag(
+		long userId, long accountEntryId, long ticketEntryId, int type, int flag)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateTicketFlag(userId, accountEntryId, ticketEntryId,
+			type, flag);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Updates the ticket flag in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @param ticketFlag the ticket flag
+	* @return the ticket flag that was updated
 	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static void deleteTicketFlag(long userId, long accountEntryId,
-		long ticketEntryId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.deleteTicketFlag(userId, accountEntryId, ticketEntryId, type);
-	}
-
-	public static void deleteTicketFlags(long ticketEntryId, int type, int flag) {
-		getService().deleteTicketFlags(ticketEntryId, type, flag);
+	public static com.liferay.osb.model.TicketFlag updateTicketFlag(
+		com.liferay.osb.model.TicketFlag ticketFlag) {
+		return getService().updateTicketFlag(ticketFlag);
 	}
 
 	public static void clearService() {

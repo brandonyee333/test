@@ -59,10 +59,13 @@ public class LicenseKeySetServiceUtil {
 		return getService().getLicenseKeySet(licenseKeySetId);
 	}
 
-	public static com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
-		long licenseKeySetId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateLicenseKeySet(licenseKeySetId, name);
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -71,13 +74,10 @@ public class LicenseKeySetServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
+		long licenseKeySetId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateLicenseKeySet(licenseKeySetId, name);
 	}
 
 	public static void clearService() {

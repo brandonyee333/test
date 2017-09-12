@@ -65,23 +65,16 @@ public class AccountEnvironmentServiceUtil {
 		return getService().getAccountEnvironment(accountEnvironmentId);
 	}
 
-	public static com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
-		long accountEnvironmentId, long productEntryId, java.lang.String name,
-		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
-		int envAS, int envLFR,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types)
+	public static java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
+		long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateAccountEnvironment(accountEnvironmentId,
-			productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
-			envLFR, files, types);
+		return getService().getAccountEnvironments(accountEntryId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
+	public static java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getAccountEnvironmentsMap(accountEntryId);
 	}
 
 	/**
@@ -93,16 +86,23 @@ public class AccountEnvironmentServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountEnvironments(accountEntryId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
-	public static java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
-		long accountEntryId)
+	public static com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
+		long accountEnvironmentId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountEnvironmentsMap(accountEntryId);
+		return getService()
+				   .updateAccountEnvironment(accountEnvironmentId,
+			productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
+			envLFR, files, types);
 	}
 
 	public static void clearService() {

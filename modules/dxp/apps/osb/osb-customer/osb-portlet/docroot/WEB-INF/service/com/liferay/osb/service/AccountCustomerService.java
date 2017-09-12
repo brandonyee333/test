@@ -50,10 +50,10 @@ public interface AccountCustomerService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountCustomerServiceUtil} to access the account customer remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountCustomerServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
+		long corpProjectId) throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -62,10 +62,10 @@ public interface AccountCustomerService extends BaseService, InvokableService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	@JSONWebService
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
-		long corpProjectId) throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	public void toggleNotifications(long accountCustomerId)
 		throws PortalException;

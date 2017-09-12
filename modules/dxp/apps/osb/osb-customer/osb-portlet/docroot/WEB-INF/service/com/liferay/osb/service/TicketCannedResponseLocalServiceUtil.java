@@ -41,6 +41,14 @@ public class TicketCannedResponseLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketCannedResponseLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.TicketCannedResponse addTicketCannedResponse(
+		long userId, java.lang.String defaultLanguageId, java.lang.String name,
+		java.lang.String content)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addTicketCannedResponse(userId, defaultLanguageId, name,
+			content);
+	}
 
 	/**
 	* Adds the ticket canned response to the database. Also notifies the appropriate model listeners.
@@ -51,15 +59,6 @@ public class TicketCannedResponseLocalServiceUtil {
 	public static com.liferay.osb.model.TicketCannedResponse addTicketCannedResponse(
 		com.liferay.osb.model.TicketCannedResponse ticketCannedResponse) {
 		return getService().addTicketCannedResponse(ticketCannedResponse);
-	}
-
-	public static com.liferay.osb.model.TicketCannedResponse addTicketCannedResponse(
-		long userId, java.lang.String defaultLanguageId, java.lang.String name,
-		java.lang.String content)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addTicketCannedResponse(userId, defaultLanguageId, name,
-			content);
 	}
 
 	/**
@@ -74,14 +73,12 @@ public class TicketCannedResponseLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the ticket canned response from the database. Also notifies the appropriate model listeners.
-	*
-	* @param ticketCannedResponse the ticket canned response
-	* @return the ticket canned response that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.osb.model.TicketCannedResponse deleteTicketCannedResponse(
-		com.liferay.osb.model.TicketCannedResponse ticketCannedResponse) {
-		return getService().deleteTicketCannedResponse(ticketCannedResponse);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -97,103 +94,19 @@ public class TicketCannedResponseLocalServiceUtil {
 		return getService().deleteTicketCannedResponse(ticketCannedResponseId);
 	}
 
-	public static com.liferay.osb.model.TicketCannedResponse fetchTicketCannedResponse(
-		long ticketCannedResponseId) {
-		return getService().fetchTicketCannedResponse(ticketCannedResponseId);
-	}
-
 	/**
-	* Returns the ticket canned response with the primary key.
-	*
-	* @param ticketCannedResponseId the primary key of the ticket canned response
-	* @return the ticket canned response
-	* @throws PortalException if a ticket canned response with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.TicketCannedResponse getTicketCannedResponse(
-		long ticketCannedResponseId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getTicketCannedResponse(ticketCannedResponseId);
-	}
-
-	/**
-	* Updates the ticket canned response in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the ticket canned response from the database. Also notifies the appropriate model listeners.
 	*
 	* @param ticketCannedResponse the ticket canned response
-	* @return the ticket canned response that was updated
+	* @return the ticket canned response that was removed
 	*/
-	public static com.liferay.osb.model.TicketCannedResponse updateTicketCannedResponse(
+	public static com.liferay.osb.model.TicketCannedResponse deleteTicketCannedResponse(
 		com.liferay.osb.model.TicketCannedResponse ticketCannedResponse) {
-		return getService().updateTicketCannedResponse(ticketCannedResponse);
-	}
-
-	public static com.liferay.osb.model.TicketCannedResponse updateTicketCannedResponse(
-		long ticketCannedResponseId, java.lang.String defaultLanguageId,
-		java.lang.String languageId, java.lang.String name,
-		java.lang.String content)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateTicketCannedResponse(ticketCannedResponseId,
-			defaultLanguageId, languageId, name, content);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
+		return getService().deleteTicketCannedResponse(ticketCannedResponse);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of ticket canned responses.
-	*
-	* @return the number of ticket canned responses
-	*/
-	public static int getTicketCannedResponsesCount() {
-		return getService().getTicketCannedResponsesCount();
-	}
-
-	public static int searchCount(java.lang.String keywords) {
-		return getService().searchCount(keywords);
-	}
-
-	public static int searchCount(java.lang.String name,
-		java.lang.String content, boolean andSearch) {
-		return getService().searchCount(name, content, andSearch);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -247,33 +160,6 @@ public class TicketCannedResponseLocalServiceUtil {
 	}
 
 	/**
-	* Returns a range of all the ticket canned responses.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.TicketCannedResponseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of ticket canned responses
-	* @param end the upper bound of the range of ticket canned responses (not inclusive)
-	* @return the range of ticket canned responses
-	*/
-	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> getTicketCannedResponses(
-		int start, int end) {
-		return getService().getTicketCannedResponses(start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
-		java.lang.String keywords, int start, int end) {
-		return getService().search(keywords, start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
-		java.lang.String name, java.lang.String content, boolean andSearch,
-		int start, int end) {
-		return getService().search(name, content, andSearch, start, end);
-	}
-
-	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -297,9 +183,81 @@ public class TicketCannedResponseLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
+	public static com.liferay.osb.model.TicketCannedResponse fetchTicketCannedResponse(
+		long ticketCannedResponseId) {
+		return getService().fetchTicketCannedResponse(ticketCannedResponseId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the ticket canned response with the primary key.
+	*
+	* @param ticketCannedResponseId the primary key of the ticket canned response
+	* @return the ticket canned response
+	* @throws PortalException if a ticket canned response with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.TicketCannedResponse getTicketCannedResponse(
+		long ticketCannedResponseId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getTicketCannedResponse(ticketCannedResponseId);
+	}
+
+	/**
+	* Returns a range of all the ticket canned responses.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.TicketCannedResponseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of ticket canned responses
+	* @param end the upper bound of the range of ticket canned responses (not inclusive)
+	* @return the range of ticket canned responses
+	*/
+	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> getTicketCannedResponses(
+		int start, int end) {
+		return getService().getTicketCannedResponses(start, end);
+	}
+
+	/**
+	* Returns the number of ticket canned responses.
+	*
+	* @return the number of ticket canned responses
+	*/
+	public static int getTicketCannedResponsesCount() {
+		return getService().getTicketCannedResponsesCount();
+	}
+
 	public static void incrementUseCount(long ticketCannedResponseId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().incrementUseCount(ticketCannedResponseId);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static void removeCannedResponseLocale(long ticketCannedResponseId,
@@ -307,6 +265,47 @@ public class TicketCannedResponseLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService()
 			.removeCannedResponseLocale(ticketCannedResponseId, languageId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
+		java.lang.String keywords, int start, int end) {
+		return getService().search(keywords, start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
+		java.lang.String name, java.lang.String content, boolean andSearch,
+		int start, int end) {
+		return getService().search(name, content, andSearch, start, end);
+	}
+
+	public static int searchCount(java.lang.String keywords) {
+		return getService().searchCount(keywords);
+	}
+
+	public static int searchCount(java.lang.String name,
+		java.lang.String content, boolean andSearch) {
+		return getService().searchCount(name, content, andSearch);
+	}
+
+	public static com.liferay.osb.model.TicketCannedResponse updateTicketCannedResponse(
+		long ticketCannedResponseId, java.lang.String defaultLanguageId,
+		java.lang.String languageId, java.lang.String name,
+		java.lang.String content)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateTicketCannedResponse(ticketCannedResponseId,
+			defaultLanguageId, languageId, name, content);
+	}
+
+	/**
+	* Updates the ticket canned response in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param ticketCannedResponse the ticket canned response
+	* @return the ticket canned response that was updated
+	*/
+	public static com.liferay.osb.model.TicketCannedResponse updateTicketCannedResponse(
+		com.liferay.osb.model.TicketCannedResponse ticketCannedResponse) {
+		return getService().updateTicketCannedResponse(ticketCannedResponse);
 	}
 
 	public static void clearService() {

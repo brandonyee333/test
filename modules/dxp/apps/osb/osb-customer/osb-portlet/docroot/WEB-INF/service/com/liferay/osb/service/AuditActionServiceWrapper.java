@@ -32,13 +32,6 @@ public class AuditActionServiceWrapper implements AuditActionService,
 		_auditActionService = auditActionService;
 	}
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _auditActionService.invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -47,6 +40,13 @@ public class AuditActionServiceWrapper implements AuditActionService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _auditActionService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _auditActionService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	@Override

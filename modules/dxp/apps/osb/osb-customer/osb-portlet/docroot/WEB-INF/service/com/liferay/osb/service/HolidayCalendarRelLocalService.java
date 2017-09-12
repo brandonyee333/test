@@ -61,8 +61,6 @@ public interface HolidayCalendarRelLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link HolidayCalendarRelLocalServiceUtil} to access the holiday calendar rel local service. Add custom service methods to {@link com.liferay.osb.service.impl.HolidayCalendarRelLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId);
 
 	/**
 	* Adds the holiday calendar rel to the database. Also notifies the appropriate model listeners.
@@ -73,6 +71,9 @@ public interface HolidayCalendarRelLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public HolidayCalendarRel addHolidayCalendarRel(
 		HolidayCalendarRel holidayCalendarRel);
+
+	public void addUsers(long holidayCalendarId, long[] userIds)
+		throws PortalException;
 
 	/**
 	* Creates a new holiday calendar rel with the primary key. Does not add the holiday calendar rel to the database.
@@ -104,41 +105,9 @@ public interface HolidayCalendarRelLocalService extends BaseLocalService,
 	public HolidayCalendarRel deleteHolidayCalendarRel(
 		long holidayCalendarRelId) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public HolidayCalendarRel fetchHolidayCalendarRel(long holidayCalendarRelId);
+	public void deleteHolidayCalendarRels(long holidayCalendarId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public HolidayCalendarRel getHolidayCalendarRel(long holidayCalendarId,
-		long userId) throws PortalException;
-
-	/**
-	* Returns the holiday calendar rel with the primary key.
-	*
-	* @param holidayCalendarRelId the primary key of the holiday calendar rel
-	* @return the holiday calendar rel
-	* @throws PortalException if a holiday calendar rel with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public HolidayCalendarRel getHolidayCalendarRel(long holidayCalendarRelId)
-		throws PortalException;
-
-	/**
-	* Updates the holiday calendar rel in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param holidayCalendarRel the holiday calendar rel
-	* @return the holiday calendar rel that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public HolidayCalendarRel updateHolidayCalendarRel(
-		HolidayCalendarRel holidayCalendarRel);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	public void deleteHolidayCalendarRels(long holidayCalendarId, long[] userIds);
 
 	/**
 	* @throws PortalException
@@ -147,30 +116,7 @@ public interface HolidayCalendarRelLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of holiday calendar rels.
-	*
-	* @return the number of holiday calendar rels
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getHolidayCalendarRelsCount();
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -212,6 +158,45 @@ public interface HolidayCalendarRelLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public HolidayCalendarRel fetchHolidayCalendarRel(long holidayCalendarRelId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	/**
+	* Returns the holiday calendar rel with the primary key.
+	*
+	* @param holidayCalendarRelId the primary key of the holiday calendar rel
+	* @return the holiday calendar rel
+	* @throws PortalException if a holiday calendar rel with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public HolidayCalendarRel getHolidayCalendarRel(long holidayCalendarRelId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public HolidayCalendarRel getHolidayCalendarRel(long holidayCalendarId,
+		long userId) throws PortalException;
+
+	/**
 	* Returns a range of all the holiday calendar rels.
 	*
 	* <p>
@@ -230,27 +215,43 @@ public interface HolidayCalendarRelLocalService extends BaseLocalService,
 		long holidayCalendarId);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of holiday calendar rels.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of holiday calendar rels
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getHolidayCalendarRelsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the OSGi service identifier.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @return the OSGi service identifier
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public java.lang.String getOSGiServiceIdentifier();
 
-	public void addUsers(long holidayCalendarId, long[] userIds)
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	public void deleteHolidayCalendarRels(long holidayCalendarId);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId);
 
-	public void deleteHolidayCalendarRels(long holidayCalendarId, long[] userIds);
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Updates the holiday calendar rel in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param holidayCalendarRel the holiday calendar rel
+	* @return the holiday calendar rel that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public HolidayCalendarRel updateHolidayCalendarRel(
+		HolidayCalendarRel holidayCalendarRel);
 }

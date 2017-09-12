@@ -32,13 +32,6 @@ public class LicenseEntryServiceWrapper implements LicenseEntryService,
 		_licenseEntryService = licenseEntryService;
 	}
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _licenseEntryService.invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -47,6 +40,13 @@ public class LicenseEntryServiceWrapper implements LicenseEntryService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _licenseEntryService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _licenseEntryService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	@Override

@@ -54,18 +54,8 @@ public interface SearchFilterService extends BaseService, InvokableService {
 		java.lang.String name, java.lang.String filter, int visibility)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SearchFilter getSearchFilter(long searchFilterId)
+	public void deleteSearchFilter(long searchFilterId)
 		throws PortalException;
-
-	public SearchFilter updateSearchFilter(long searchFilterId,
-		java.lang.String name, java.lang.String filter, int visibility)
-		throws PortalException;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -74,6 +64,16 @@ public interface SearchFilterService extends BaseService, InvokableService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	public void deleteSearchFilter(long searchFilterId)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SearchFilter getSearchFilter(long searchFilterId)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	public SearchFilter updateSearchFilter(long searchFilterId,
+		java.lang.String name, java.lang.String filter, int visibility)
 		throws PortalException;
 }

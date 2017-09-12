@@ -69,17 +69,13 @@ public interface AccountEnvironmentService extends BaseService, InvokableService
 	public AccountEnvironment getAccountEnvironment(long accountEnvironmentId)
 		throws PortalException;
 
-	public AccountEnvironment updateAccountEnvironment(
-		long accountEnvironmentId, long productEntryId, java.lang.String name,
-		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
-		int envAS, int envLFR,
-		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEnvironment> getAccountEnvironments(long accountEntryId)
+		throws PortalException;
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Map<java.lang.String, List<AccountEnvironment>> getAccountEnvironmentsMap(
+		long accountEntryId) throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -88,11 +84,15 @@ public interface AccountEnvironmentService extends BaseService, InvokableService
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEnvironment> getAccountEnvironments(long accountEntryId)
-		throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Map<java.lang.String, List<AccountEnvironment>> getAccountEnvironmentsMap(
-		long accountEntryId) throws PortalException;
+	public AccountEnvironment updateAccountEnvironment(
+		long accountEnvironmentId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException;
 }

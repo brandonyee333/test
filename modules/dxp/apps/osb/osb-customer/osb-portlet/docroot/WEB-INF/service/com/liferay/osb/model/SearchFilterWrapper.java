@@ -129,68 +129,13 @@ public class SearchFilterWrapper implements SearchFilter,
 	}
 
 	@Override
-	public SearchFilter toEscapedModel() {
-		return new SearchFilterWrapper(_searchFilter.toEscapedModel());
-	}
-
-	@Override
-	public SearchFilter toUnescapedModel() {
-		return new SearchFilterWrapper(_searchFilter.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _searchFilter.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _searchFilter.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _searchFilter.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _searchFilter.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SearchFilter> toCacheModel() {
-		return _searchFilter.toCacheModel();
+	public java.lang.Object clone() {
+		return new SearchFilterWrapper((SearchFilter)_searchFilter.clone());
 	}
 
 	@Override
 	public int compareTo(SearchFilter searchFilter) {
 		return _searchFilter.compareTo(searchFilter);
-	}
-
-	/**
-	* Returns the visibility of this search filter.
-	*
-	* @return the visibility of this search filter
-	*/
-	@Override
-	public int getVisibility() {
-		return _searchFilter.getVisibility();
-	}
-
-	@Override
-	public int hashCode() {
-		return _searchFilter.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _searchFilter.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new SearchFilterWrapper((SearchFilter)_searchFilter.clone());
 	}
 
 	/**
@@ -204,6 +149,31 @@ public class SearchFilterWrapper implements SearchFilter,
 	}
 
 	/**
+	* Returns the class name ID of this search filter.
+	*
+	* @return the class name ID of this search filter
+	*/
+	@Override
+	public long getClassNameId() {
+		return _searchFilter.getClassNameId();
+	}
+
+	/**
+	* Returns the create date of this search filter.
+	*
+	* @return the create date of this search filter
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _searchFilter.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _searchFilter.getExpandoBridge();
+	}
+
+	/**
 	* Returns the filter of this search filter.
 	*
 	* @return the filter of this search filter
@@ -214,6 +184,16 @@ public class SearchFilterWrapper implements SearchFilter,
 	}
 
 	/**
+	* Returns the modified date of this search filter.
+	*
+	* @return the modified date of this search filter
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _searchFilter.getModifiedDate();
+	}
+
+	/**
 	* Returns the name of this search filter.
 	*
 	* @return the name of this search filter
@@ -221,6 +201,41 @@ public class SearchFilterWrapper implements SearchFilter,
 	@Override
 	public java.lang.String getName() {
 		return _searchFilter.getName();
+	}
+
+	/**
+	* Returns the primary key of this search filter.
+	*
+	* @return the primary key of this search filter
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _searchFilter.getPrimaryKey();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _searchFilter.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the search filter ID of this search filter.
+	*
+	* @return the search filter ID of this search filter
+	*/
+	@Override
+	public long getSearchFilterId() {
+		return _searchFilter.getSearchFilterId();
+	}
+
+	/**
+	* Returns the user ID of this search filter.
+	*
+	* @return the user ID of this search filter
+	*/
+	@Override
+	public long getUserId() {
+		return _searchFilter.getUserId();
 	}
 
 	/**
@@ -243,74 +258,34 @@ public class SearchFilterWrapper implements SearchFilter,
 		return _searchFilter.getUserUuid();
 	}
 
-	@Override
-	public java.lang.String toString() {
-		return _searchFilter.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _searchFilter.toXmlString();
-	}
-
 	/**
-	* Returns the create date of this search filter.
+	* Returns the visibility of this search filter.
 	*
-	* @return the create date of this search filter
+	* @return the visibility of this search filter
 	*/
 	@Override
-	public Date getCreateDate() {
-		return _searchFilter.getCreateDate();
+	public int getVisibility() {
+		return _searchFilter.getVisibility();
 	}
 
-	/**
-	* Returns the modified date of this search filter.
-	*
-	* @return the modified date of this search filter
-	*/
 	@Override
-	public Date getModifiedDate() {
-		return _searchFilter.getModifiedDate();
+	public int hashCode() {
+		return _searchFilter.hashCode();
 	}
 
-	/**
-	* Returns the class name ID of this search filter.
-	*
-	* @return the class name ID of this search filter
-	*/
 	@Override
-	public long getClassNameId() {
-		return _searchFilter.getClassNameId();
+	public boolean isCachedModel() {
+		return _searchFilter.isCachedModel();
 	}
 
-	/**
-	* Returns the primary key of this search filter.
-	*
-	* @return the primary key of this search filter
-	*/
 	@Override
-	public long getPrimaryKey() {
-		return _searchFilter.getPrimaryKey();
+	public boolean isEscapedModel() {
+		return _searchFilter.isEscapedModel();
 	}
 
-	/**
-	* Returns the search filter ID of this search filter.
-	*
-	* @return the search filter ID of this search filter
-	*/
 	@Override
-	public long getSearchFilterId() {
-		return _searchFilter.getSearchFilterId();
-	}
-
-	/**
-	* Returns the user ID of this search filter.
-	*
-	* @return the user ID of this search filter
-	*/
-	@Override
-	public long getUserId() {
-		return _searchFilter.getUserId();
+	public boolean isNew() {
+		return _searchFilter.isNew();
 	}
 
 	@Override
@@ -349,14 +324,14 @@ public class SearchFilterWrapper implements SearchFilter,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_searchFilter.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_searchFilter.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_searchFilter.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -462,6 +437,31 @@ public class SearchFilterWrapper implements SearchFilter,
 	@Override
 	public void setVisibility(int visibility) {
 		_searchFilter.setVisibility(visibility);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SearchFilter> toCacheModel() {
+		return _searchFilter.toCacheModel();
+	}
+
+	@Override
+	public SearchFilter toEscapedModel() {
+		return new SearchFilterWrapper(_searchFilter.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _searchFilter.toString();
+	}
+
+	@Override
+	public SearchFilter toUnescapedModel() {
+		return new SearchFilterWrapper(_searchFilter.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _searchFilter.toXmlString();
 	}
 
 	@Override

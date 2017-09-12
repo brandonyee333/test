@@ -207,168 +207,13 @@ public class AssetReceiptLicenseWrapper implements AssetReceiptLicense,
 	}
 
 	@Override
-	public AssetReceiptLicense toEscapedModel() {
-		return new AssetReceiptLicenseWrapper(_assetReceiptLicense.toEscapedModel());
-	}
-
-	@Override
-	public AssetReceiptLicense toUnescapedModel() {
-		return new AssetReceiptLicenseWrapper(_assetReceiptLicense.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _assetReceiptLicense.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _assetReceiptLicense.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _assetReceiptLicense.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _assetReceiptLicense.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AssetReceiptLicense> toCacheModel() {
-		return _assetReceiptLicense.toCacheModel();
+	public java.lang.Object clone() {
+		return new AssetReceiptLicenseWrapper((AssetReceiptLicense)_assetReceiptLicense.clone());
 	}
 
 	@Override
 	public int compareTo(AssetReceiptLicense assetReceiptLicense) {
 		return _assetReceiptLicense.compareTo(assetReceiptLicense);
-	}
-
-	/**
-	* Returns the license type of this asset receipt license.
-	*
-	* @return the license type of this asset receipt license
-	*/
-	@Override
-	public int getLicenseType() {
-		return _assetReceiptLicense.getLicenseType();
-	}
-
-	/**
-	* Returns the usage type of this asset receipt license.
-	*
-	* @return the usage type of this asset receipt license
-	*/
-	@Override
-	public int getUsageType() {
-		return _assetReceiptLicense.getUsageType();
-	}
-
-	@Override
-	public int hashCode() {
-		return _assetReceiptLicense.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _assetReceiptLicense.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new AssetReceiptLicenseWrapper((AssetReceiptLicense)_assetReceiptLicense.clone());
-	}
-
-	/**
-	* Returns the product ID of this asset receipt license.
-	*
-	* @return the product ID of this asset receipt license
-	*/
-	@Override
-	public java.lang.String getProductId() {
-		return _assetReceiptLicense.getProductId();
-	}
-
-	/**
-	* Returns the user name of this asset receipt license.
-	*
-	* @return the user name of this asset receipt license
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _assetReceiptLicense.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this asset receipt license.
-	*
-	* @return the user uuid of this asset receipt license
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _assetReceiptLicense.getUserUuid();
-	}
-
-	/**
-	* Returns the uuid of this asset receipt license.
-	*
-	* @return the uuid of this asset receipt license
-	*/
-	@Override
-	public java.lang.String getUuid() {
-		return _assetReceiptLicense.getUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _assetReceiptLicense.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _assetReceiptLicense.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this asset receipt license.
-	*
-	* @return the create date of this asset receipt license
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _assetReceiptLicense.getCreateDate();
-	}
-
-	/**
-	* Returns the end date of this asset receipt license.
-	*
-	* @return the end date of this asset receipt license
-	*/
-	@Override
-	public Date getEndDate() {
-		return _assetReceiptLicense.getEndDate();
-	}
-
-	/**
-	* Returns the modified date of this asset receipt license.
-	*
-	* @return the modified date of this asset receipt license
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _assetReceiptLicense.getModifiedDate();
-	}
-
-	/**
-	* Returns the start date of this asset receipt license.
-	*
-	* @return the start date of this asset receipt license
-	*/
-	@Override
-	public Date getStartDate() {
-		return _assetReceiptLicense.getStartDate();
 	}
 
 	/**
@@ -412,6 +257,31 @@ public class AssetReceiptLicenseWrapper implements AssetReceiptLicense,
 	}
 
 	/**
+	* Returns the create date of this asset receipt license.
+	*
+	* @return the create date of this asset receipt license
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _assetReceiptLicense.getCreateDate();
+	}
+
+	/**
+	* Returns the end date of this asset receipt license.
+	*
+	* @return the end date of this asset receipt license
+	*/
+	@Override
+	public Date getEndDate() {
+		return _assetReceiptLicense.getEndDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _assetReceiptLicense.getExpandoBridge();
+	}
+
+	/**
 	* Returns the license lifetime of this asset receipt license.
 	*
 	* @return the license lifetime of this asset receipt license
@@ -422,6 +292,16 @@ public class AssetReceiptLicenseWrapper implements AssetReceiptLicense,
 	}
 
 	/**
+	* Returns the license type of this asset receipt license.
+	*
+	* @return the license type of this asset receipt license
+	*/
+	@Override
+	public int getLicenseType() {
+		return _assetReceiptLicense.getLicenseType();
+	}
+
+	/**
 	* Returns the license type allotment of this asset receipt license.
 	*
 	* @return the license type allotment of this asset receipt license
@@ -429,6 +309,16 @@ public class AssetReceiptLicenseWrapper implements AssetReceiptLicense,
 	@Override
 	public long getLicenseTypeAllotment() {
 		return _assetReceiptLicense.getLicenseTypeAllotment();
+	}
+
+	/**
+	* Returns the modified date of this asset receipt license.
+	*
+	* @return the modified date of this asset receipt license
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _assetReceiptLicense.getModifiedDate();
 	}
 
 	/**
@@ -461,6 +351,11 @@ public class AssetReceiptLicenseWrapper implements AssetReceiptLicense,
 		return _assetReceiptLicense.getPrimaryKey();
 	}
 
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _assetReceiptLicense.getPrimaryKeyObj();
+	}
+
 	/**
 	* Returns the product class name ID of this asset receipt license.
 	*
@@ -482,6 +377,36 @@ public class AssetReceiptLicenseWrapper implements AssetReceiptLicense,
 	}
 
 	/**
+	* Returns the product ID of this asset receipt license.
+	*
+	* @return the product ID of this asset receipt license
+	*/
+	@Override
+	public java.lang.String getProductId() {
+		return _assetReceiptLicense.getProductId();
+	}
+
+	/**
+	* Returns the start date of this asset receipt license.
+	*
+	* @return the start date of this asset receipt license
+	*/
+	@Override
+	public Date getStartDate() {
+		return _assetReceiptLicense.getStartDate();
+	}
+
+	/**
+	* Returns the usage type of this asset receipt license.
+	*
+	* @return the usage type of this asset receipt license
+	*/
+	@Override
+	public int getUsageType() {
+		return _assetReceiptLicense.getUsageType();
+	}
+
+	/**
 	* Returns the user ID of this asset receipt license.
 	*
 	* @return the user ID of this asset receipt license
@@ -489,6 +414,56 @@ public class AssetReceiptLicenseWrapper implements AssetReceiptLicense,
 	@Override
 	public long getUserId() {
 		return _assetReceiptLicense.getUserId();
+	}
+
+	/**
+	* Returns the user name of this asset receipt license.
+	*
+	* @return the user name of this asset receipt license
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _assetReceiptLicense.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this asset receipt license.
+	*
+	* @return the user uuid of this asset receipt license
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _assetReceiptLicense.getUserUuid();
+	}
+
+	/**
+	* Returns the uuid of this asset receipt license.
+	*
+	* @return the uuid of this asset receipt license
+	*/
+	@Override
+	public java.lang.String getUuid() {
+		return _assetReceiptLicense.getUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _assetReceiptLicense.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _assetReceiptLicense.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _assetReceiptLicense.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _assetReceiptLicense.isNew();
 	}
 
 	@Override
@@ -562,14 +537,14 @@ public class AssetReceiptLicenseWrapper implements AssetReceiptLicense,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_assetReceiptLicense.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_assetReceiptLicense.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_assetReceiptLicense.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -745,6 +720,31 @@ public class AssetReceiptLicenseWrapper implements AssetReceiptLicense,
 	@Override
 	public void setUuid(java.lang.String uuid) {
 		_assetReceiptLicense.setUuid(uuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AssetReceiptLicense> toCacheModel() {
+		return _assetReceiptLicense.toCacheModel();
+	}
+
+	@Override
+	public AssetReceiptLicense toEscapedModel() {
+		return new AssetReceiptLicenseWrapper(_assetReceiptLicense.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _assetReceiptLicense.toString();
+	}
+
+	@Override
+	public AssetReceiptLicense toUnescapedModel() {
+		return new AssetReceiptLicenseWrapper(_assetReceiptLicense.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _assetReceiptLicense.toXmlString();
 	}
 
 	@Override

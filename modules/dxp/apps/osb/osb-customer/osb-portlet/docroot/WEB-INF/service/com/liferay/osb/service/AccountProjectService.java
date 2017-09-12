@@ -54,20 +54,20 @@ public interface AccountProjectService extends BaseService, InvokableService {
 	public AccountProject deleteAccountProject(long accountProjectId)
 		throws PortalException;
 
-	public AccountProject updateAccountProject(long accountProjectId,
-		long accountEntryId, java.lang.String name,
-		Map<java.lang.Integer, java.lang.String> data)
-		throws PortalException;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	public AccountProject updateAccountProject(long accountProjectId,
+		long accountEntryId, java.lang.String name,
+		Map<java.lang.Integer, java.lang.String> data)
+		throws PortalException;
 }

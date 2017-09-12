@@ -68,42 +68,34 @@ public interface TicketEntryService extends BaseService, InvokableService {
 		Map<java.lang.Long, java.lang.String> ticketInformationFieldsMap,
 		List<TicketAttachment> ticketAttachments) throws PortalException;
 
+	public void closeTicketEntry(long ticketEntryId, int resolution,
+		java.lang.String body) throws PortalException;
+
+	public void escalateTicketEntry(long ticketEntryId)
+		throws PortalException;
+
 	public TicketEntry forwardTicketEntry(long ticketEntryId,
 		java.lang.String commentBody) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketEntry getTicketEntry(long accountEntryId, long ticketId)
-		throws PortalException;
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketEntry getTicketEntry(long ticketEntryId)
 		throws PortalException;
 
-	public TicketEntry updatePendingTypes(long ticketEntryId, int[] pendingTypes)
-		throws PortalException;
-
-	public TicketEntry updateTicketEntry(long userId, long ticketEntryId,
-		long assigneeUserId, long supportRegionId, int dueDateMonth,
-		int dueDateDay, int dueDateYear, int dueDateHour, int dueDateMinute)
-		throws PortalException;
-
-	public TicketEntry updateTicketEntry(long userId, long ticketEntryId,
-		long reportedByUserId, long offeringEntryId, long supportRegionId,
-		java.lang.String languageId, java.lang.String subject,
-		java.lang.String description, java.lang.String reproductionSteps,
-		int severity, int status, int weight, int escalationLevel,
-		int component, int subcomponent, java.lang.String subcomponentCustom,
-		int resolution, int dueDateMonth, int dueDateDay, int dueDateYear,
-		int dueDateHour, int dueDateMinute, boolean ignoreDueDate,
-		Map<java.lang.Long, java.lang.String> ticketInformationFieldsMap,
-		int[] pendingTypes, List<TicketAttachment> ticketAttachments,
-		ServiceContext serviceContext) throws PortalException;
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Hits search(long reportedByUserId, long accountEntryId,
-		java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, Sort[] sorts) throws PortalException;
+	public TicketEntry getTicketEntry(long accountEntryId, long ticketId)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Hits search(long reportedByUserId, long accountEntryId,
@@ -119,40 +111,10 @@ public interface TicketEntryService extends BaseService, InvokableService {
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords) throws PortalException;
-
-	@JSONWebService
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(long reportedByUserId, java.lang.String name,
-		int[] accountEntryTier, java.lang.Boolean satisfiedDueDate,
-		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
-		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
-		java.lang.String subject, java.lang.String description,
-		java.lang.String body, int[] status, int[] severity, int[] weights,
-		int[] escalationLevel, long[] envOS, long[] envDB, long[] envJVM,
-		long[] envAS, long[] envLFR, int[] components, int[] resolution,
-		int closedDateGTDay, int closedDateGTMonth, int closedDateGTYear,
-		int closedDateLTDay, int closedDateLTMonth, int closedDateLTYear,
-		int dueDateGTDay, int dueDateGTMonth, int dueDateGTYear,
-		int dueDateLTDay, int dueDateLTMonth, int dueDateLTYear,
-		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch) throws PortalException;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketEntry> search(java.lang.String keywords, int start,
-		int end, OrderByComparator obc) throws PortalException;
+	public Hits search(long reportedByUserId, long accountEntryId,
+		java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
+		int end, Sort[] sorts) throws PortalException;
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -173,9 +135,47 @@ public interface TicketEntryService extends BaseService, InvokableService {
 		boolean andSearch, int start, int end, OrderByComparator obc)
 		throws PortalException;
 
-	public void closeTicketEntry(long ticketEntryId, int resolution,
-		java.lang.String body) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<TicketEntry> search(java.lang.String keywords, int start,
+		int end, OrderByComparator obc) throws PortalException;
 
-	public void escalateTicketEntry(long ticketEntryId)
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(long reportedByUserId, java.lang.String name,
+		int[] accountEntryTier, java.lang.Boolean satisfiedDueDate,
+		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
+		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
+		java.lang.String subject, java.lang.String description,
+		java.lang.String body, int[] status, int[] severity, int[] weights,
+		int[] escalationLevel, long[] envOS, long[] envDB, long[] envJVM,
+		long[] envAS, long[] envLFR, int[] components, int[] resolution,
+		int closedDateGTDay, int closedDateGTMonth, int closedDateGTYear,
+		int closedDateLTDay, int closedDateLTMonth, int closedDateLTYear,
+		int dueDateGTDay, int dueDateGTMonth, int dueDateGTYear,
+		int dueDateLTDay, int dueDateLTMonth, int dueDateLTYear,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String keywords) throws PortalException;
+
+	public TicketEntry updatePendingTypes(long ticketEntryId, int[] pendingTypes)
 		throws PortalException;
+
+	public TicketEntry updateTicketEntry(long userId, long ticketEntryId,
+		long assigneeUserId, long supportRegionId, int dueDateMonth,
+		int dueDateDay, int dueDateYear, int dueDateHour, int dueDateMinute)
+		throws PortalException;
+
+	public TicketEntry updateTicketEntry(long userId, long ticketEntryId,
+		long reportedByUserId, long offeringEntryId, long supportRegionId,
+		java.lang.String languageId, java.lang.String subject,
+		java.lang.String description, java.lang.String reproductionSteps,
+		int severity, int status, int weight, int escalationLevel,
+		int component, int subcomponent, java.lang.String subcomponentCustom,
+		int resolution, int dueDateMonth, int dueDateDay, int dueDateYear,
+		int dueDateHour, int dueDateMinute, boolean ignoreDueDate,
+		Map<java.lang.Long, java.lang.String> ticketInformationFieldsMap,
+		int[] pendingTypes, List<TicketAttachment> ticketAttachments,
+		ServiceContext serviceContext) throws PortalException;
 }

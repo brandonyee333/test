@@ -41,9 +41,6 @@ public class AccountCustomerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountCustomerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasAccountCustomer(long userId, long accountEntryId) {
-		return getService().hasAccountCustomer(userId, accountEntryId);
-	}
 
 	/**
 	* Adds the account customer to the database. Also notifies the appropriate model listeners.
@@ -54,6 +51,14 @@ public class AccountCustomerLocalServiceUtil {
 	public static com.liferay.osb.model.AccountCustomer addAccountCustomer(
 		com.liferay.osb.model.AccountCustomer accountCustomer) {
 		return getService().addAccountCustomer(accountCustomer);
+	}
+
+	public static void addAccountCustomers(long userId, long[] userIds,
+		long accountEntryId, int[] roles, int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.addAccountCustomers(userId, userIds, accountEntryId, roles,
+			notifications);
 	}
 
 	/**
@@ -97,56 +102,20 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().deleteAccountCustomer(userId, accountCustomer);
 	}
 
-	public static com.liferay.osb.model.AccountCustomer fetchAccountCustomer(
-		long accountCustomerId) {
-		return getService().fetchAccountCustomer(accountCustomerId);
-	}
-
-	public static com.liferay.osb.model.AccountCustomer fetchAccountCustomer(
-		long userId, long accountEntryId) {
-		return getService().fetchAccountCustomer(userId, accountEntryId);
-	}
-
-	/**
-	* Returns the account customer with the primary key.
-	*
-	* @param accountCustomerId the primary key of the account customer
-	* @return the account customer
-	* @throws PortalException if a account customer with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.AccountCustomer getAccountCustomer(
-		long accountCustomerId)
+	public static void deleteAccountCustomers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountCustomer(accountCustomerId);
+		getService().deleteAccountCustomers(userId);
 	}
 
-	public static com.liferay.osb.model.AccountCustomer getAccountCustomer(
-		long userId, long accountEntryId)
+	public static void deleteAccountCustomers(long userId, long[] userIds,
+		long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountCustomer(userId, accountEntryId);
+		getService().deleteAccountCustomers(userId, userIds, accountEntryId);
 	}
 
-	/**
-	* Updates the account customer in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountCustomer the account customer
-	* @return the account customer that was updated
-	*/
-	public static com.liferay.osb.model.AccountCustomer updateAccountCustomer(
-		com.liferay.osb.model.AccountCustomer accountCustomer) {
-		return getService().updateAccountCustomer(accountCustomer);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
+	public static void deleteAccountEntryAccountCustomers(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteAccountEntryAccountCustomers(accountEntryId);
 	}
 
 	/**
@@ -158,34 +127,8 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of account customers.
-	*
-	* @return the number of account customers
-	*/
-	public static int getAccountCustomersCount() {
-		return getService().getAccountCustomersCount();
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
 	}
 
 	/**
@@ -239,6 +182,59 @@ public class AccountCustomerLocalServiceUtil {
 	}
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static com.liferay.osb.model.AccountCustomer fetchAccountCustomer(
+		long accountCustomerId) {
+		return getService().fetchAccountCustomer(accountCustomerId);
+	}
+
+	public static com.liferay.osb.model.AccountCustomer fetchAccountCustomer(
+		long userId, long accountEntryId) {
+		return getService().fetchAccountCustomer(userId, accountEntryId);
+	}
+
+	/**
+	* Returns the account customer with the primary key.
+	*
+	* @param accountCustomerId the primary key of the account customer
+	* @return the account customer
+	* @throws PortalException if a account customer with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.AccountCustomer getAccountCustomer(
+		long accountCustomerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getAccountCustomer(accountCustomerId);
+	}
+
+	public static com.liferay.osb.model.AccountCustomer getAccountCustomer(
+		long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getAccountCustomer(userId, accountEntryId);
+	}
+
+	/**
 	* Returns a range of all the account customers.
 	*
 	* <p>
@@ -264,6 +260,38 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().getAccountCustomers(accountEntryId, role);
 	}
 
+	/**
+	* Returns the number of account customers.
+	*
+	* @return the number of account customers
+	*/
+	public static int getAccountCustomersCount() {
+		return getService().getAccountCustomersCount();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
 	public static java.util.List<com.liferay.osb.model.AccountCustomer> getUserAccountCustomers(
 		long userId) {
 		return getService().getUserAccountCustomers(userId);
@@ -274,57 +302,30 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().getUserAccountCustomers(userId, roles);
 	}
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
+	public static boolean hasAccountCustomer(long userId, long accountEntryId) {
+		return getService().hasAccountCustomer(userId, accountEntryId);
 	}
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static void addAccountCustomers(long userId, long[] userIds,
-		long accountEntryId, int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addAccountCustomers(userId, userIds, accountEntryId, roles,
-			notifications);
-	}
-
-	public static void deleteAccountCustomers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteAccountCustomers(userId);
-	}
-
-	public static void deleteAccountCustomers(long userId, long[] userIds,
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteAccountCustomers(userId, userIds, accountEntryId);
-	}
-
-	public static void deleteAccountEntryAccountCustomers(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteAccountEntryAccountCustomers(accountEntryId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static void toggleNotifications(long accountCustomerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().toggleNotifications(accountCustomerId);
+	}
+
+	/**
+	* Updates the account customer in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountCustomer the account customer
+	* @return the account customer that was updated
+	*/
+	public static com.liferay.osb.model.AccountCustomer updateAccountCustomer(
+		com.liferay.osb.model.AccountCustomer accountCustomer) {
+		return getService().updateAccountCustomer(accountCustomer);
 	}
 
 	public static void clearService() {

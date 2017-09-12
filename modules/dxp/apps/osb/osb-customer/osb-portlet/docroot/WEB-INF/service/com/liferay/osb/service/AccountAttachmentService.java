@@ -55,6 +55,11 @@ public interface AccountAttachmentService extends BaseService, InvokableService 
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountAttachmentServiceUtil} to access the account attachment remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountAttachmentServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	public List<AccountAttachment> addAccountAttachments(long accountEntryId,
+		long accountProjectId,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException;
+
 	public AccountAttachment deleteAccountAttachment(long accountAttachmentId)
 		throws PortalException;
 
@@ -62,10 +67,9 @@ public interface AccountAttachmentService extends BaseService, InvokableService 
 	public AccountAttachment getAccountAttachment(long accountAttachmentId)
 		throws PortalException;
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountAttachment> getAccountAttachments(long accountEntryId,
+		long accountProjectId, int type) throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -74,12 +78,8 @@ public interface AccountAttachmentService extends BaseService, InvokableService 
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	public List<AccountAttachment> addAccountAttachments(long accountEntryId,
-		long accountProjectId,
-		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountAttachment> getAccountAttachments(long accountEntryId,
-		long accountProjectId, int type) throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 }

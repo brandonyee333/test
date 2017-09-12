@@ -27,20 +27,42 @@ public class OrderEntryServiceClp implements OrderEntryService {
 	public OrderEntryServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
+		_methodName0 = "getOrderEntries";
+
+		_methodParameterTypes0 = new String[] { "long" };
+
 		_methodName1 = "getOSGiServiceIdentifier";
 
 		_methodParameterTypes1 = new String[] {  };
-
-		_methodName2 = "getOrderEntries";
-
-		_methodParameterTypes2 = new String[] { "long" };
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		throw new UnsupportedOperationException();
+	public java.util.List<com.liferay.osb.model.OrderEntry> getOrderEntries(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0, new Object[] { corpProjectId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.OrderEntry>)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -67,37 +89,15 @@ public class OrderEntryServiceClp implements OrderEntryService {
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.OrderEntry> getOrderEntries(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName2,
-					_methodParameterTypes2, new Object[] { corpProjectId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.OrderEntry>)ClpSerializer.translateOutput(returnObj);
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		throw new UnsupportedOperationException();
 	}
 
 	private InvokableService _invokableService;
+	private String _methodName0;
+	private String[] _methodParameterTypes0;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
-	private String _methodName2;
-	private String[] _methodParameterTypes2;
 }

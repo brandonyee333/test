@@ -67,8 +67,11 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketAttachmentLocalServiceUtil} to access the ticket attachment local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketAttachmentLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public boolean checkAvailability(long ticketAttachmentId,
-		java.lang.String fileRepositoryId) throws PortalException;
+	public TicketAttachment addTicketAttachment(long userId,
+		long ticketEntryId, long ticketSolutionId, java.lang.String fileName,
+		long fileSize, int type, int visibility,
+		java.lang.String fileRepositoryId, int status)
+		throws PortalException;
 
 	/**
 	* Adds the ticket attachment to the database. Also notifies the appropriate model listeners.
@@ -80,11 +83,16 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	public TicketAttachment addTicketAttachment(
 		TicketAttachment ticketAttachment);
 
-	public TicketAttachment addTicketAttachment(long userId,
-		long ticketEntryId, long ticketSolutionId, java.lang.String fileName,
-		long fileSize, int type, int visibility,
-		java.lang.String fileRepositoryId, int status)
-		throws PortalException;
+	public List<TicketAttachment> addTicketAttachments(long userId,
+		long ticketEntryId, long ticketSolutionId,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types, int visibility, int status,
+		ServiceContext serviceContext) throws PortalException;
+
+	public boolean checkAvailability(long ticketAttachmentId,
+		java.lang.String fileRepositoryId) throws PortalException;
+
+	public void cleanTicketAttachments() throws PortalException;
 
 	/**
 	* Creates a new ticket attachment with the primary key. Does not add the ticket attachment to the database.
@@ -95,14 +103,11 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	public TicketAttachment createTicketAttachment(long ticketAttachmentId);
 
 	/**
-	* Deletes the ticket attachment from the database. Also notifies the appropriate model listeners.
-	*
-	* @param ticketAttachment the ticket attachment
-	* @return the ticket attachment that was removed
+	* @throws PortalException
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public TicketAttachment deleteTicketAttachment(
-		TicketAttachment ticketAttachment);
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
 
 	/**
 	* Deletes the ticket attachment with the primary key from the database. Also notifies the appropriate model listeners.
@@ -116,112 +121,25 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public TicketAttachment deleteTicketAttachment(long userId,
-		TicketAttachment ticketAttachment) throws PortalException;
+		long ticketAttachmentId) throws PortalException;
+
+	public void deleteTicketAttachment(long userId, long ticketEntryId, int type)
+		throws PortalException;
 
 	public TicketAttachment deleteTicketAttachment(long userId,
-		long ticketAttachmentId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketAttachment fetchTicketAttachment(long ticketAttachmentId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketAttachment fetchTicketAttachment(long ticketEntryId, int type);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketAttachment fetchTicketAttachment(long ticketEntryId,
-		java.lang.String fileName, int visibility, int status);
+		TicketAttachment ticketAttachment) throws PortalException;
 
 	/**
-	* Returns the ticket attachment with the primary key.
-	*
-	* @param ticketAttachmentId the primary key of the ticket attachment
-	* @return the ticket attachment
-	* @throws PortalException if a ticket attachment with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketAttachment getTicketAttachment(long ticketAttachmentId)
-		throws PortalException;
-
-	public TicketAttachment replicateTicketAttachment(long userId,
-		long ticketAttachmentId) throws PortalException;
-
-	public TicketAttachment updateDeleteDate(long userId,
-		long ticketAttachmentId, Date deleteDate) throws PortalException;
-
-	/**
-	* Updates the ticket attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the ticket attachment from the database. Also notifies the appropriate model listeners.
 	*
 	* @param ticketAttachment the ticket attachment
-	* @return the ticket attachment that was updated
+	* @return the ticket attachment that was removed
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public TicketAttachment updateTicketAttachment(
+	@Indexable(type = IndexableType.DELETE)
+	public TicketAttachment deleteTicketAttachment(
 		TicketAttachment ticketAttachment);
 
-	public TicketAttachment updateTicketAttachment(long ticketAttachmentId,
-		long ticketEntryId, int type, int visibility) throws PortalException;
-
-	public TicketAttachment updateTicketAttachment(long ticketAttachmentId,
-		long ticketEntryId, long ticketSolutionId, int type, int visibility)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
 	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* @throws PortalException
-	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of ticket attachments.
-	*
-	* @return the number of ticket attachments
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketAttachmentsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketAttachmentsCount(long ticketEntryId, int[] types,
-		int[] visibilities);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public File getTicketAttachmentsZipFile(long ticketEntryId,
-		int[] visibilities) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public InputStream getFileAsStream(TicketAttachment ticketAttachment)
-		throws PortalException;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	public List<TicketAttachment> addTicketAttachments(long userId,
-		long ticketEntryId, long ticketSolutionId,
-		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types, int visibility, int status,
-		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -263,6 +181,67 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketAttachment fetchTicketAttachment(long ticketAttachmentId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketAttachment fetchTicketAttachment(long ticketEntryId, int type);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketAttachment fetchTicketAttachment(long ticketEntryId,
+		java.lang.String fileName, int visibility, int status);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public InputStream getFileAsStream(TicketAttachment ticketAttachment)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the ticket attachment with the primary key.
+	*
+	* @param ticketAttachmentId the primary key of the ticket attachment
+	* @return the ticket attachment
+	* @throws PortalException if a ticket attachment with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketAttachment getTicketAttachment(long ticketAttachmentId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the ticket attachments.
 	*
 	* <p>
@@ -291,37 +270,58 @@ public interface TicketAttachmentLocalService extends BaseLocalService,
 	public List<TicketAttachment> getTicketAttachments(long userId,
 		long ticketEntryId, int visibility, int status);
 
-	public List<TicketAttachment> updateTicketAttachments(
-		List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
-		List<java.lang.Integer> types, List<java.lang.Integer> visibilities)
-		throws PortalException;
-
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of ticket attachments.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of ticket attachments
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketAttachmentsCount();
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketAttachmentsCount(long ticketEntryId, int[] types,
+		int[] visibilities);
 
-	public void cleanTicketAttachments() throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public File getTicketAttachmentsZipFile(long ticketEntryId,
+		int[] visibilities) throws PortalException;
 
-	public void deleteTicketAttachment(long userId, long ticketEntryId, int type)
-		throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	public TicketAttachment replicateTicketAttachment(long userId,
+		long ticketAttachmentId) throws PortalException;
+
+	public TicketAttachment updateDeleteDate(long userId,
+		long ticketAttachmentId, Date deleteDate) throws PortalException;
 
 	public void updateExtractedText(TicketAttachment ticketAttachment);
 
 	public void updateStatus(User user,
 		List<TicketAttachment> ticketAttachments, long ticketEntryId,
 		int status, ServiceContext serviceContext) throws PortalException;
+
+	public TicketAttachment updateTicketAttachment(long ticketAttachmentId,
+		long ticketEntryId, int type, int visibility) throws PortalException;
+
+	public TicketAttachment updateTicketAttachment(long ticketAttachmentId,
+		long ticketEntryId, long ticketSolutionId, int type, int visibility)
+		throws PortalException;
+
+	/**
+	* Updates the ticket attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param ticketAttachment the ticket attachment
+	* @return the ticket attachment that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public TicketAttachment updateTicketAttachment(
+		TicketAttachment ticketAttachment);
+
+	public List<TicketAttachment> updateTicketAttachments(
+		List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
+		List<java.lang.Integer> types, List<java.lang.Integer> visibilities)
+		throws PortalException;
 }

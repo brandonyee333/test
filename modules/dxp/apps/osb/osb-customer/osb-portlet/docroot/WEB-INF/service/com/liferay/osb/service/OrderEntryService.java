@@ -52,10 +52,9 @@ public interface OrderEntryService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OrderEntryServiceUtil} to access the order entry remote service. Add custom service methods to {@link com.liferay.osb.service.impl.OrderEntryServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<OrderEntry> getOrderEntries(long corpProjectId)
+		throws PortalException;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -64,7 +63,8 @@ public interface OrderEntryService extends BaseService, InvokableService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<OrderEntry> getOrderEntries(long corpProjectId)
-		throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 }

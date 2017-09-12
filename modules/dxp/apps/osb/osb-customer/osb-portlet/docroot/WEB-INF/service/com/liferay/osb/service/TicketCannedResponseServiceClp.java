@@ -28,105 +28,33 @@ public class TicketCannedResponseServiceClp
 	public TicketCannedResponseServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName0 = "searchCount";
+		_methodName0 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes0 = new String[] { "java.lang.String" };
+		_methodParameterTypes0 = new String[] {  };
 
-		_methodName1 = "searchCount";
+		_methodName1 = "incrementUseCount";
 
-		_methodParameterTypes1 = new String[] {
-				"java.lang.String", "java.lang.String", "boolean"
-			};
+		_methodParameterTypes1 = new String[] { "long" };
 
-		_methodName3 = "getOSGiServiceIdentifier";
+		_methodName3 = "search";
 
-		_methodParameterTypes3 = new String[] {  };
+		_methodParameterTypes3 = new String[] { "java.lang.String", "int", "int" };
 
 		_methodName4 = "search";
 
-		_methodParameterTypes4 = new String[] { "java.lang.String", "int", "int" };
-
-		_methodName5 = "search";
-
-		_methodParameterTypes5 = new String[] {
+		_methodParameterTypes4 = new String[] {
 				"java.lang.String", "java.lang.String", "boolean", "int", "int"
 			};
 
-		_methodName6 = "incrementUseCount";
+		_methodName5 = "searchCount";
 
-		_methodParameterTypes6 = new String[] { "long" };
-	}
+		_methodParameterTypes5 = new String[] { "java.lang.String" };
 
-	@Override
-	public int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
+		_methodName6 = "searchCount";
 
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName0,
-					_methodParameterTypes0,
-					new Object[] { ClpSerializer.translateInput(keywords) });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Integer)returnObj).intValue();
-	}
-
-	@Override
-	public int searchCount(java.lang.String name, java.lang.String content,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1,
-					new Object[] {
-						ClpSerializer.translateInput(name),
-						
-					ClpSerializer.translateInput(content),
-						
-					andSearch
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Integer)returnObj).intValue();
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		throw new UnsupportedOperationException();
+		_methodParameterTypes6 = new String[] {
+				"java.lang.String", "java.lang.String", "boolean"
+			};
 	}
 
 	@Override
@@ -134,8 +62,8 @@ public class TicketCannedResponseServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName0,
+					_methodParameterTypes0, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -153,14 +81,45 @@ public class TicketCannedResponseServiceClp
 	}
 
 	@Override
+	public void incrementUseCount(long ticketCannedResponseId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			_invokableService.invokeMethod(_methodName1,
+				_methodParameterTypes1, new Object[] { ticketCannedResponseId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
 		java.lang.String keywords, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName4,
-					_methodParameterTypes4,
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -196,8 +155,8 @@ public class TicketCannedResponseServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName5,
-					_methodParameterTypes5,
+			returnObj = _invokableService.invokeMethod(_methodName4,
+					_methodParameterTypes4,
 					new Object[] {
 						ClpSerializer.translateInput(name),
 						
@@ -230,11 +189,14 @@ public class TicketCannedResponseServiceClp
 	}
 
 	@Override
-	public void incrementUseCount(long ticketCannedResponseId)
+	public int searchCount(java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
 		try {
-			_invokableService.invokeMethod(_methodName6,
-				_methodParameterTypes6, new Object[] { ticketCannedResponseId });
+			returnObj = _invokableService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
+					new Object[] { ClpSerializer.translateInput(keywords) });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -251,6 +213,44 @@ public class TicketCannedResponseServiceClp
 					" is not a valid exception");
 			}
 		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int searchCount(java.lang.String name, java.lang.String content,
+		boolean andSearch)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName6,
+					_methodParameterTypes6,
+					new Object[] {
+						ClpSerializer.translateInput(name),
+						
+					ClpSerializer.translateInput(content),
+						
+					andSearch
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
 	}
 
 	private InvokableService _invokableService;

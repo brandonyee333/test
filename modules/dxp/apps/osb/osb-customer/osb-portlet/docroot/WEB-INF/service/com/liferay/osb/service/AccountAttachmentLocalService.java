@@ -80,6 +80,11 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 		ObjectValuePair<java.lang.String, File> fileOVP, int type)
 		throws PortalException;
 
+	public List<AccountAttachment> addAccountAttachments(long userId,
+		long accountEntryId, long accountProjectId,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException;
+
 	/**
 	* Creates a new account attachment with the primary key. Does not add the account attachment to the database.
 	*
@@ -110,37 +115,8 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	public AccountAttachment deleteAccountAttachment(long accountAttachmentId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountAttachment fetchAccountAttachment(long accountAttachmentId);
-
-	/**
-	* Returns the account attachment with the primary key.
-	*
-	* @param accountAttachmentId the primary key of the account attachment
-	* @return the account attachment
-	* @throws PortalException if a account attachment with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountAttachment getAccountAttachment(long accountAttachmentId)
-		throws PortalException;
-
-	/**
-	* Updates the account attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountAttachment the account attachment
-	* @return the account attachment that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public AccountAttachment updateAccountAttachment(
-		AccountAttachment accountAttachment);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	public DynamicQuery dynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	public void deleteAccountAttachments(long accountEntryId,
+		long accountProjectId) throws PortalException;
 
 	/**
 	* @throws PortalException
@@ -149,39 +125,7 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the number of account attachments.
-	*
-	* @return the number of account attachments
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountAttachmentsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public InputStream getFileAsStream(AccountAttachment accountAttachment)
-		throws PortalException;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	public List<AccountAttachment> addAccountAttachments(long userId,
-		long accountEntryId, long accountProjectId,
-		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException;
+	public DynamicQuery dynamicQuery();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -223,6 +167,38 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountAttachment fetchAccountAttachment(long accountAttachmentId);
+
+	/**
+	* Returns the account attachment with the primary key.
+	*
+	* @param accountAttachmentId the primary key of the account attachment
+	* @return the account attachment
+	* @throws PortalException if a account attachment with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountAttachment getAccountAttachment(long accountAttachmentId)
+		throws PortalException;
+
+	/**
 	* Returns a range of all the account attachments.
 	*
 	* <p>
@@ -248,23 +224,47 @@ public interface AccountAttachmentLocalService extends BaseLocalService,
 		long accountProjectId, int type);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the number of account attachments.
 	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
+	* @return the number of account attachments
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAccountAttachmentsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public InputStream getFileAsStream(AccountAttachment accountAttachment)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the number of rows matching the dynamic query.
+	* Returns the OSGi service identifier.
 	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
+	* @return the OSGi service identifier
 	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public java.lang.String getOSGiServiceIdentifier();
 
-	public void deleteAccountAttachments(long accountEntryId,
-		long accountProjectId) throws PortalException;
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Updates the account attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountAttachment the account attachment
+	* @return the account attachment that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public AccountAttachment updateAccountAttachment(
+		AccountAttachment accountAttachment);
 }

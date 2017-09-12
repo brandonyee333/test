@@ -41,22 +41,6 @@ public class TicketCannedResponseServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketCannedResponseServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().searchCount(keywords);
-	}
-
-	public static int searchCount(java.lang.String name,
-		java.lang.String content, boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().searchCount(name, content, andSearch);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
 
 	/**
 	* Returns the OSGi service identifier.
@@ -65,6 +49,17 @@ public class TicketCannedResponseServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static void incrementUseCount(long ticketCannedResponseId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().incrementUseCount(ticketCannedResponseId);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
@@ -80,9 +75,15 @@ public class TicketCannedResponseServiceUtil {
 		return getService().search(name, content, andSearch, start, end);
 	}
 
-	public static void incrementUseCount(long ticketCannedResponseId)
+	public static int searchCount(java.lang.String keywords)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().incrementUseCount(ticketCannedResponseId);
+		return getService().searchCount(keywords);
+	}
+
+	public static int searchCount(java.lang.String name,
+		java.lang.String content, boolean andSearch)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().searchCount(name, content, andSearch);
 	}
 
 	public static void clearService() {

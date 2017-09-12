@@ -36,15 +36,15 @@ public class TicketSolutionServiceClp implements TicketSolutionService {
 				"java.util.List", "java.util.List"
 			};
 
-		_methodName1 = "updateTicketSolution";
+		_methodName1 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes1 = new String[] {
+		_methodParameterTypes1 = new String[] {  };
+
+		_methodName3 = "updateTicketSolution";
+
+		_methodParameterTypes3 = new String[] {
 				"long", "long", "int", "long", "java.lang.String", "int"
 			};
-
-		_methodName3 = "getOSGiServiceIdentifier";
-
-		_methodParameterTypes3 = new String[] {  };
 	}
 
 	@Override
@@ -120,6 +120,36 @@ public class TicketSolutionServiceClp implements TicketSolutionService {
 	}
 
 	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName1,
+					_methodParameterTypes1, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public com.liferay.osb.model.TicketSolution updateTicketSolution(
 		long ticketSolutionId, long ticketEntryId, int status,
 		long statusByUserId, java.lang.String statusMessage, int statusReason)
@@ -127,8 +157,8 @@ public class TicketSolutionServiceClp implements TicketSolutionService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1,
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
 					new Object[] {
 						ticketSolutionId,
 						
@@ -160,36 +190,6 @@ public class TicketSolutionServiceClp implements TicketSolutionService {
 		}
 
 		return (com.liferay.osb.model.TicketSolution)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName3,
-					_methodParameterTypes3, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
 	private InvokableService _invokableService;

@@ -41,18 +41,6 @@ public class SecurityPatchLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SecurityPatchLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-
-	/**
-	* Adds the security patch to the database. Also notifies the appropriate model listeners.
-	*
-	* @param securityPatch the security patch
-	* @return the security patch that was added
-	*/
-	public static com.liferay.osb.model.SecurityPatch addSecurityPatch(
-		com.liferay.osb.model.SecurityPatch securityPatch) {
-		return getService().addSecurityPatch(securityPatch);
-	}
-
 	public static com.liferay.osb.model.SecurityPatch addSecurityPatch(
 		long userId, long accountEntryId, long ticketAttachmentId,
 		java.lang.String portletId, int envLFR, java.lang.String name,
@@ -73,6 +61,17 @@ public class SecurityPatchLocalServiceUtil {
 	}
 
 	/**
+	* Adds the security patch to the database. Also notifies the appropriate model listeners.
+	*
+	* @param securityPatch the security patch
+	* @return the security patch that was added
+	*/
+	public static com.liferay.osb.model.SecurityPatch addSecurityPatch(
+		com.liferay.osb.model.SecurityPatch securityPatch) {
+		return getService().addSecurityPatch(securityPatch);
+	}
+
+	/**
 	* Creates a new security patch with the primary key. Does not add the security patch to the database.
 	*
 	* @param securityPatchId the primary key for the new security patch
@@ -84,14 +83,12 @@ public class SecurityPatchLocalServiceUtil {
 	}
 
 	/**
-	* Deletes the security patch from the database. Also notifies the appropriate model listeners.
-	*
-	* @param securityPatch the security patch
-	* @return the security patch that was removed
+	* @throws PortalException
 	*/
-	public static com.liferay.osb.model.SecurityPatch deleteSecurityPatch(
-		com.liferay.osb.model.SecurityPatch securityPatch) {
-		return getService().deleteSecurityPatch(securityPatch);
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
 	}
 
 	/**
@@ -107,95 +104,23 @@ public class SecurityPatchLocalServiceUtil {
 		return getService().deleteSecurityPatch(securityPatchId);
 	}
 
-	public static com.liferay.osb.model.SecurityPatch fetchSecurityPatch(
-		long securityPatchId) {
-		return getService().fetchSecurityPatch(securityPatchId);
-	}
-
 	/**
-	* Returns the security patch with the primary key.
-	*
-	* @param securityPatchId the primary key of the security patch
-	* @return the security patch
-	* @throws PortalException if a security patch with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.SecurityPatch getSecurityPatch(
-		long securityPatchId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSecurityPatch(securityPatchId);
-	}
-
-	/**
-	* Updates the security patch in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Deletes the security patch from the database. Also notifies the appropriate model listeners.
 	*
 	* @param securityPatch the security patch
-	* @return the security patch that was updated
+	* @return the security patch that was removed
 	*/
-	public static com.liferay.osb.model.SecurityPatch updateSecurityPatch(
+	public static com.liferay.osb.model.SecurityPatch deleteSecurityPatch(
 		com.liferay.osb.model.SecurityPatch securityPatch) {
-		return getService().updateSecurityPatch(securityPatch);
+		return getService().deleteSecurityPatch(securityPatch);
 	}
 
-	public static com.liferay.osb.model.SecurityPatch updateSecurityPatch(
-		long securityPatchId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateSecurityPatch(securityPatchId, name);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
+	public static void deleteSecurityPatches(java.lang.String portletId) {
+		getService().deleteSecurityPatches(portletId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* @throws PortalException
-	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the number of security patchs.
-	*
-	* @return the number of security patchs
-	*/
-	public static int getSecurityPatchsCount() {
-		return getService().getSecurityPatchsCount();
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static java.lang.String getSecurityPatchName(int envLFR,
-		com.liferay.osb.model.TicketAttachment ticketAttachment) {
-		return getService().getSecurityPatchName(envLFR, ticketAttachment);
 	}
 
 	/**
@@ -248,27 +173,6 @@ public class SecurityPatchLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
-	public static java.util.List<com.liferay.osb.model.SecurityPatch> getSecurityPatches(
-		long accountEntryId, java.lang.String portletId) {
-		return getService().getSecurityPatches(accountEntryId, portletId);
-	}
-
-	/**
-	* Returns a range of all the security patchs.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SecurityPatchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of security patchs
-	* @param end the upper bound of the range of security patchs (not inclusive)
-	* @return the range of security patchs
-	*/
-	public static java.util.List<com.liferay.osb.model.SecurityPatch> getSecurityPatchs(
-		int start, int end) {
-		return getService().getSecurityPatchs(start, end);
-	}
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -293,8 +197,103 @@ public class SecurityPatchLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static void deleteSecurityPatches(java.lang.String portletId) {
-		getService().deleteSecurityPatches(portletId);
+	public static com.liferay.osb.model.SecurityPatch fetchSecurityPatch(
+		long securityPatchId) {
+		return getService().fetchSecurityPatch(securityPatchId);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the security patch with the primary key.
+	*
+	* @param securityPatchId the primary key of the security patch
+	* @return the security patch
+	* @throws PortalException if a security patch with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.SecurityPatch getSecurityPatch(
+		long securityPatchId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getSecurityPatch(securityPatchId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.SecurityPatch> getSecurityPatches(
+		long accountEntryId, java.lang.String portletId) {
+		return getService().getSecurityPatches(accountEntryId, portletId);
+	}
+
+	public static java.lang.String getSecurityPatchName(int envLFR,
+		com.liferay.osb.model.TicketAttachment ticketAttachment) {
+		return getService().getSecurityPatchName(envLFR, ticketAttachment);
+	}
+
+	/**
+	* Returns a range of all the security patchs.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SecurityPatchModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of security patchs
+	* @param end the upper bound of the range of security patchs (not inclusive)
+	* @return the range of security patchs
+	*/
+	public static java.util.List<com.liferay.osb.model.SecurityPatch> getSecurityPatchs(
+		int start, int end) {
+		return getService().getSecurityPatchs(start, end);
+	}
+
+	/**
+	* Returns the number of security patchs.
+	*
+	* @return the number of security patchs
+	*/
+	public static int getSecurityPatchsCount() {
+		return getService().getSecurityPatchsCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	public static com.liferay.osb.model.SecurityPatch updateSecurityPatch(
+		long securityPatchId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateSecurityPatch(securityPatchId, name);
+	}
+
+	/**
+	* Updates the security patch in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param securityPatch the security patch
+	* @return the security patch that was updated
+	*/
+	public static com.liferay.osb.model.SecurityPatch updateSecurityPatch(
+		com.liferay.osb.model.SecurityPatch securityPatch) {
+		return getService().updateSecurityPatch(securityPatch);
 	}
 
 	public static void clearService() {

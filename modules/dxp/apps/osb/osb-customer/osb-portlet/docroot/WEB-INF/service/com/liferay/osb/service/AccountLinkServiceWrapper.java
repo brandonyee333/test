@@ -33,17 +33,16 @@ public class AccountLinkServiceWrapper implements AccountLinkService,
 	}
 
 	@Override
+	public void addAccountLinks(long accountEntryId, java.lang.String[] urls)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_accountLinkService.addAccountLinks(accountEntryId, urls);
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountLink deleteAccountLink(
 		long accountLinkId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountLinkService.deleteAccountLink(accountLinkId);
-	}
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountLinkService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -57,9 +56,10 @@ public class AccountLinkServiceWrapper implements AccountLinkService,
 	}
 
 	@Override
-	public void addAccountLinks(long accountEntryId, java.lang.String[] urls)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountLinkService.addAccountLinks(accountEntryId, urls);
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountLinkService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	@Override

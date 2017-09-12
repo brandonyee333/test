@@ -41,10 +41,10 @@ public class OrderEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.OrderEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
+	public static java.util.List<com.liferay.osb.model.OrderEntry> getOrderEntries(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getOrderEntries(corpProjectId);
 	}
 
 	/**
@@ -56,10 +56,10 @@ public class OrderEntryServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<com.liferay.osb.model.OrderEntry> getOrderEntries(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getOrderEntries(corpProjectId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static void clearService() {

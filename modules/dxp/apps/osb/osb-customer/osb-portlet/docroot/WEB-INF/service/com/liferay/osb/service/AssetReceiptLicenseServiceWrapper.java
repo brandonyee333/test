@@ -34,14 +34,6 @@ public class AssetReceiptLicenseServiceWrapper
 		_assetReceiptLicenseService = assetReceiptLicenseService;
 	}
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _assetReceiptLicenseService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -50,6 +42,14 @@ public class AssetReceiptLicenseServiceWrapper
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _assetReceiptLicenseService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _assetReceiptLicenseService.invokeMethod(name, parameterTypes,
+			arguments);
 	}
 
 	@Override

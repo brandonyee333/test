@@ -129,68 +129,13 @@ public class FeedbackEntryWrapper implements FeedbackEntry,
 	}
 
 	@Override
-	public FeedbackEntry toEscapedModel() {
-		return new FeedbackEntryWrapper(_feedbackEntry.toEscapedModel());
-	}
-
-	@Override
-	public FeedbackEntry toUnescapedModel() {
-		return new FeedbackEntryWrapper(_feedbackEntry.toUnescapedModel());
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _feedbackEntry.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _feedbackEntry.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _feedbackEntry.isNew();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _feedbackEntry.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<FeedbackEntry> toCacheModel() {
-		return _feedbackEntry.toCacheModel();
+	public java.lang.Object clone() {
+		return new FeedbackEntryWrapper((FeedbackEntry)_feedbackEntry.clone());
 	}
 
 	@Override
 	public int compareTo(FeedbackEntry feedbackEntry) {
 		return _feedbackEntry.compareTo(feedbackEntry);
-	}
-
-	/**
-	* Returns the satisfied of this feedback entry.
-	*
-	* @return the satisfied of this feedback entry
-	*/
-	@Override
-	public int getSatisfied() {
-		return _feedbackEntry.getSatisfied();
-	}
-
-	@Override
-	public int hashCode() {
-		return _feedbackEntry.hashCode();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _feedbackEntry.getPrimaryKeyObj();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new FeedbackEntryWrapper((FeedbackEntry)_feedbackEntry.clone());
 	}
 
 	/**
@@ -201,66 +146,6 @@ public class FeedbackEntryWrapper implements FeedbackEntry,
 	@Override
 	public java.lang.String getClassName() {
 		return _feedbackEntry.getClassName();
-	}
-
-	/**
-	* Returns the comments of this feedback entry.
-	*
-	* @return the comments of this feedback entry
-	*/
-	@Override
-	public java.lang.String getComments() {
-		return _feedbackEntry.getComments();
-	}
-
-	/**
-	* Returns the page url of this feedback entry.
-	*
-	* @return the page url of this feedback entry
-	*/
-	@Override
-	public java.lang.String getPageURL() {
-		return _feedbackEntry.getPageURL();
-	}
-
-	/**
-	* Returns the user name of this feedback entry.
-	*
-	* @return the user name of this feedback entry
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _feedbackEntry.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this feedback entry.
-	*
-	* @return the user uuid of this feedback entry
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _feedbackEntry.getUserUuid();
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _feedbackEntry.toString();
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _feedbackEntry.toXmlString();
-	}
-
-	/**
-	* Returns the create date of this feedback entry.
-	*
-	* @return the create date of this feedback entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _feedbackEntry.getCreateDate();
 	}
 
 	/**
@@ -284,6 +169,31 @@ public class FeedbackEntryWrapper implements FeedbackEntry,
 	}
 
 	/**
+	* Returns the comments of this feedback entry.
+	*
+	* @return the comments of this feedback entry
+	*/
+	@Override
+	public java.lang.String getComments() {
+		return _feedbackEntry.getComments();
+	}
+
+	/**
+	* Returns the create date of this feedback entry.
+	*
+	* @return the create date of this feedback entry
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _feedbackEntry.getCreateDate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _feedbackEntry.getExpandoBridge();
+	}
+
+	/**
 	* Returns the feedback entry ID of this feedback entry.
 	*
 	* @return the feedback entry ID of this feedback entry
@@ -291,6 +201,16 @@ public class FeedbackEntryWrapper implements FeedbackEntry,
 	@Override
 	public long getFeedbackEntryId() {
 		return _feedbackEntry.getFeedbackEntryId();
+	}
+
+	/**
+	* Returns the page url of this feedback entry.
+	*
+	* @return the page url of this feedback entry
+	*/
+	@Override
+	public java.lang.String getPageURL() {
+		return _feedbackEntry.getPageURL();
 	}
 
 	/**
@@ -303,6 +223,21 @@ public class FeedbackEntryWrapper implements FeedbackEntry,
 		return _feedbackEntry.getPrimaryKey();
 	}
 
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _feedbackEntry.getPrimaryKeyObj();
+	}
+
+	/**
+	* Returns the satisfied of this feedback entry.
+	*
+	* @return the satisfied of this feedback entry
+	*/
+	@Override
+	public int getSatisfied() {
+		return _feedbackEntry.getSatisfied();
+	}
+
 	/**
 	* Returns the user ID of this feedback entry.
 	*
@@ -311,6 +246,46 @@ public class FeedbackEntryWrapper implements FeedbackEntry,
 	@Override
 	public long getUserId() {
 		return _feedbackEntry.getUserId();
+	}
+
+	/**
+	* Returns the user name of this feedback entry.
+	*
+	* @return the user name of this feedback entry
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _feedbackEntry.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this feedback entry.
+	*
+	* @return the user uuid of this feedback entry
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _feedbackEntry.getUserUuid();
+	}
+
+	@Override
+	public int hashCode() {
+		return _feedbackEntry.hashCode();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _feedbackEntry.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _feedbackEntry.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _feedbackEntry.isNew();
 	}
 
 	@Override
@@ -369,14 +344,14 @@ public class FeedbackEntryWrapper implements FeedbackEntry,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_feedbackEntry.setExpandoBridgeAttributes(expandoBridge);
-	}
-
-	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
 		_feedbackEntry.setExpandoBridgeAttributes(baseModel);
+	}
+
+	@Override
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_feedbackEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
@@ -462,6 +437,31 @@ public class FeedbackEntryWrapper implements FeedbackEntry,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_feedbackEntry.setUserUuid(userUuid);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<FeedbackEntry> toCacheModel() {
+		return _feedbackEntry.toCacheModel();
+	}
+
+	@Override
+	public FeedbackEntry toEscapedModel() {
+		return new FeedbackEntryWrapper(_feedbackEntry.toEscapedModel());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _feedbackEntry.toString();
+	}
+
+	@Override
+	public FeedbackEntry toUnescapedModel() {
+		return new FeedbackEntryWrapper(_feedbackEntry.toUnescapedModel());
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _feedbackEntry.toXmlString();
 	}
 
 	@Override

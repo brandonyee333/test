@@ -53,17 +53,6 @@ public interface TicketCannedResponseService extends BaseService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketCannedResponseServiceUtil} to access the ticket canned response remote service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketCannedResponseServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String name, java.lang.String content,
-		boolean andSearch) throws PortalException;
-
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -71,6 +60,14 @@ public interface TicketCannedResponseService extends BaseService,
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public void incrementUseCount(long ticketCannedResponseId)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketCannedResponse> search(java.lang.String keywords,
@@ -81,6 +78,10 @@ public interface TicketCannedResponseService extends BaseService,
 		java.lang.String content, boolean andSearch, int start, int end)
 		throws PortalException;
 
-	public void incrementUseCount(long ticketCannedResponseId)
-		throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String keywords) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String name, java.lang.String content,
+		boolean andSearch) throws PortalException;
 }

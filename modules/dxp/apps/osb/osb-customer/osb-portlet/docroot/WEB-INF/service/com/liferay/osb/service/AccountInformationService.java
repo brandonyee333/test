@@ -52,10 +52,6 @@ public interface AccountInformationService extends BaseService, InvokableService
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountInformationServiceUtil} to access the account information remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountInformationServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -63,6 +59,11 @@ public interface AccountInformationService extends BaseService, InvokableService
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	public List<AccountInformation> updateAccountInformation(
 		long accountEntryId, long accountProjectId,

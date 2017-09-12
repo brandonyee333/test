@@ -41,10 +41,9 @@ public class SupportWorkerServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SupportWorkerServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
+	public static void clockInOut(long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().clockInOut(supportWorkerId);
 	}
 
 	/**
@@ -56,9 +55,10 @@ public class SupportWorkerServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static void clockInOut(long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().clockInOut(supportWorkerId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static void clearService() {
