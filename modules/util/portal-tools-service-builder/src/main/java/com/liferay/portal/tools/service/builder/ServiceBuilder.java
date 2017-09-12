@@ -2628,7 +2628,8 @@ public class ServiceBuilder {
 			_serviceOutputPath + "/model/" + entity.getName() + "Model.java");
 
 		ToolsUtil.writeFile(
-			modelFile, content, _author, _jalopySettings, _modifiedFileNames);
+			modelFile, content, _author, _jalopySettings, _modifiedFileNames,
+			_packagePath + ".model");
 	}
 
 	private void _createModelCache(Entity entity) throws Exception {
@@ -2915,7 +2916,7 @@ public class ServiceBuilder {
 				"PersistenceImpl.java");
 
 		ToolsUtil.writeFile(
-			ejbFile, content, _author, _jalopySettings, _modifiedFileNames);
+			ejbFile, content, _author, _jalopySettings, _modifiedFileNames, _packagePath);
 
 		ejbFile = new File(
 			_outputPath + "/service/persistence/" + entity.getName() +
