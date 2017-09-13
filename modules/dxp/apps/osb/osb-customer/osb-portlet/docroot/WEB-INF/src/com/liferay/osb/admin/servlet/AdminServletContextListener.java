@@ -343,8 +343,8 @@ public class AdminServletContextListener
 			customerOrganization = OrganizationLocalServiceUtil.addOrganization(
 				OSBConstants.USER_DEFAULT_USER_ID,
 				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
-				"Customer", OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L,
-				0L, (long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
+				"Customer", OrganizationConstants.TYPE_ORGANIZATION, 0L, 0L,
+				(long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
 				StringPool.BLANK, false, new ServiceContext());
 		}
 
@@ -365,8 +365,8 @@ public class AdminServletContextListener
 				OrganizationLocalServiceUtil.addOrganization(
 					OSBConstants.USER_DEFAULT_USER_ID,
 					OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
-					"Liferay, Inc.",
-					OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 5L, 19L,
+					"Liferay, Inc.", OrganizationConstants.TYPE_ORGANIZATION,
+					5L, 19L,
 					(long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
 					StringPool.BLANK, false, new ServiceContext());
 		}
@@ -386,7 +386,7 @@ public class AdminServletContextListener
 			partnerOrganization = OrganizationLocalServiceUtil.addOrganization(
 				OSBConstants.USER_DEFAULT_USER_ID,
 				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID, "Partner",
-				OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0L, 19L,
+				OrganizationConstants.TYPE_ORGANIZATION, 0L, 19L,
 				(long)ListTypeConstants.ORGANIZATION_STATUS_DEFAULT,
 				StringPool.BLANK, false, new ServiceContext());
 		}
