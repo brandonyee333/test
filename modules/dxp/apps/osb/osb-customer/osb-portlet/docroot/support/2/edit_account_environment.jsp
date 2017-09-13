@@ -189,7 +189,7 @@
 											%>
 
 												<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-													<aui:option disabled="true" label="--------" />
+													<aui:option disabled="<%= true %>" label="--------" />
 												</c:if>
 
 												<aui:option label="<%= envLFRType.getName() %>" selected="<%= envLFRType.getListTypeId() == envLFR %>" value="<%= envLFRType.getListTypeId() %>" />
@@ -342,7 +342,7 @@
 				}
 
 				function <portlet:namespace />toggleProduct(liferay) {
-					var envLFR = document.getElementById("<portlet:namespace />portalVersion");
+					var envLFR = document.getElementById('<portlet:namespace />portalVersion');
 
 					if (envLFR) {
 						if (liferay == false) {
@@ -384,10 +384,10 @@
 						var A = AUI();
 
 						if (envLFR <= 0) {
-							var envTypes = ["envAS", "envDB", "envJVM", "envOS"];
+							var envTypes = ['envAS', 'envDB', 'envJVM', 'envOS'];
 
 							for (var envType in envTypes) {
-								var envElement = A.one("#<portlet:namespace />" + envTypes[envType]);
+								var envElement = A.one('#<portlet:namespace />' + envTypes[envType]);
 
 								envElement.empty();
 
@@ -409,10 +409,10 @@
 									success: function() {
 										var response = this.get('responseData');
 
-										<portlet:namespace />updateEnvironmentField("<portlet:namespace />envAS", response["ENV_AS#key"], response["ENV_AS"], envAS, envASName);
-										<portlet:namespace />updateEnvironmentField("<portlet:namespace />envDB", response["ENV_DB#key"], response["ENV_DB"], envDB, envDBName);
-										<portlet:namespace />updateEnvironmentField("<portlet:namespace />envJVM", response["ENV_JVM#key"], response["ENV_JVM"], envJVM, envJVMName);
-										<portlet:namespace />updateEnvironmentField("<portlet:namespace />envOS", response["ENV_OS#key"], response["ENV_OS"], envOS, envOSName);
+										<portlet:namespace />updateEnvironmentField('<portlet:namespace />envAS', response['ENV_AS#key'], response['ENV_AS'], envAS, envASName);
+										<portlet:namespace />updateEnvironmentField('<portlet:namespace />envDB', response['ENV_DB#key'], response['ENV_DB'], envDB, envDBName);
+										<portlet:namespace />updateEnvironmentField('<portlet:namespace />envJVM', response['ENV_JVM#key'], response['ENV_JVM'], envJVM, envJVMName);
+										<portlet:namespace />updateEnvironmentField('<portlet:namespace />envOS', response['ENV_OS#key'], response['ENV_OS'], envOS, envOSName);
 									}
 								}
 							}
@@ -428,7 +428,7 @@
 						var A = AUI();
 
 						if (offeringEntryId <= 0) {
-							var envLFR = A.one("#<portlet:namespace />envLFR");
+							var envLFR = A.one('#<portlet:namespace />envLFR');
 
 							if (envLFR) {
 								envLFR.empty();
@@ -453,7 +453,7 @@
 
 										<portlet:namespace />toggleProduct(response.portal);
 
-										<portlet:namespace />updateTicketEnvLFR(response["ENV_LFR#key"], response["ENV_LFR"]);
+										<portlet:namespace />updateTicketEnvLFR(response['ENV_LFR#key'], response['ENV_LFR']);
 									}
 								}
 							}
@@ -468,7 +468,7 @@
 					function() {
 						var A = AUI();
 
-						var name = A.one("#<portlet:namespace />name");
+						var name = A.one('#<portlet:namespace />name');
 
 						if (name && name.val().trim().length == 0) {
 							alert('<liferay-ui:message key="please-provide-a-unique-environment-name" />');
@@ -612,25 +612,25 @@
 						var supportMessageDisplay_5_2 = A.one('#<portlet:namespace />supportMessageDisplay_5_2');
 
 						if (supportMessageDisplay_5_2) {
-							var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>);
+							var visibleSupportMessageDisplay_5_2 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>);
 
-							supportMessageDisplay_5_2.toggle(condition);
+							supportMessageDisplay_5_2.toggle(visibleSupportMessageDisplay_5_2);
 						}
 
 						var supportMessageDisplay_6_0 = A.one('#<portlet:namespace />supportMessageDisplay_6_0');
 
 						if (supportMessageDisplay_6_0) {
-							var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>);
+							var visibleSupportMessageDisplay_6_0 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>);
 
-							supportMessageDisplay_6_0.toggle(condition);
+							supportMessageDisplay_6_0.toggle(visibleSupportMessageDisplay_6_0);
 						}
 
 						var supportMessageDisplay_6_1 = A.one('#<portlet:namespace />supportMessageDisplay_6_1');
 
 						if (supportMessageDisplay_6_1) {
-							var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>);
+							var visibleSupportMessageDisplay_6_1 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>);
 
-							supportMessageDisplay_6_1.toggle(condition);
+							supportMessageDisplay_6_1.toggle(visibleSupportMessageDisplay_6_1);
 						}
 					},
 					['aui-base']
@@ -642,7 +642,7 @@
 					function(envLFRKey, envLFRData) {
 						var A = AUI();
 
-						var envLFR = A.one("#<portlet:namespace />envLFR");
+						var envLFR = A.one('#<portlet:namespace />envLFR');
 
 						if (envLFR && (envLFR.getData('key') != envLFRKey)) {
 							envLFR.setData('key', envLFRKey);

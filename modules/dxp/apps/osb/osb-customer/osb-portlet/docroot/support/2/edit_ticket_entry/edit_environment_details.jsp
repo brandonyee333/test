@@ -272,7 +272,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 						<portlet:namespace />getEarlierLFRVersions(toEnvLFR);
 					}
 
-					envLFREl = A.one("#<portlet:namespace />toEnvLFR");
+					envLFREl = A.one('#<portlet:namespace />toEnvLFR');
 				</c:when>
 				<c:otherwise>
 					<portlet:namespace />getLaterLFRVersions(envLFREl.val(), <%= offeringEntryId %>);
@@ -286,13 +286,14 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 	function <portlet:namespace />selectBrowser(envBrowser) {
 		var envBrowserCustom = AUI().one('#<portlet:namespace />envBrowserCustom');
 
-		if (envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>') {
-			envBrowserCustom.show();
-		}
-		else {
-			envBrowserCustom.hide();
+		if (envBrowserCustom) {
+			var other = envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>';
 
-			envBrowserCustom.val('');
+			envBrowserCustom.toggle(other);
+
+			if (!other) {
+				envBrowserCustom.val('');
+			}
 		}
 	}
 
@@ -312,20 +313,20 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 	function <portlet:namespace />selectPortalVersionRetainValues(envLFR) {
 		var A = AUI();
 
-		var envAS = A.one("#<portlet:namespace />envAS").val();
-		var envASText = A.one("#<portlet:namespace />envASLabel").html();
+		var envAS = A.one('#<portlet:namespace />envAS').val();
+		var envASText = A.one('#<portlet:namespace />envASLabel').html();
 
-		var envBR = A.one("#<portlet:namespace />envBrowser").val();
-		var envBRText = A.one("#<portlet:namespace />envBrowserLabel").html();
+		var envBR = A.one('#<portlet:namespace />envBrowser').val();
+		var envBRText = A.one('#<portlet:namespace />envBrowserLabel').html();
 
-		var envDB = A.one("#<portlet:namespace />envDB").val();
-		var envDBText = A.one("#<portlet:namespace />envDBLabel").html();
+		var envDB = A.one('#<portlet:namespace />envDB').val();
+		var envDBText = A.one('#<portlet:namespace />envDBLabel').html();
 
-		var envJVM = A.one("#<portlet:namespace />envJVM").val();
-		var envJVMText = A.one("#<portlet:namespace />envJVMLabel").html();
+		var envJVM = A.one('#<portlet:namespace />envJVM').val();
+		var envJVMText = A.one('#<portlet:namespace />envJVMLabel').html();
 
-		var envOS = A.one("#<portlet:namespace />envOS").val();
-		var envOSText = A.one("#<portlet:namespace />envOSLabel").html();
+		var envOS = A.one('#<portlet:namespace />envOS').val();
+		var envOSText = A.one('#<portlet:namespace />envOSLabel').html();
 
 		<portlet:namespace />selectPortalVersion(envLFR, envAS, envASText, envBR, envBRText, envDB, envDBText, envJVM, envJVMText, envOS, envOSText);
 	}
@@ -412,7 +413,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 		var selectOptions = [];
 
 		if (selectData) {
-			var previousNamePrefix = "";
+			var previousNamePrefix = '';
 
 			for (var i = 0; i < selectData.length; i++) {
 				var value = selectData[i].value;
@@ -426,7 +427,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 
 				var namePrefix = name.substring(0, 3);
 
-				if ((previousNamePrefix != "") && (previousNamePrefix != namePrefix)) {
+				if ((previousNamePrefix != '') && (previousNamePrefix != namePrefix)) {
 					selectOptions.push('<option disabled>--------</option>');
 				}
 
@@ -557,10 +558,10 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 			var A = AUI();
 
 			if (envLFR <= 0) {
-				var envTypes = ["envAS", "envBrowser", "envDB", "envJVM", "envOS"];
+				var envTypes = ['envAS', 'envBrowser', 'envDB', 'envJVM', 'envOS'];
 
 				for (var envType in envTypes) {
-					var envElement = A.one("#<portlet:namespace />" + envTypes[envType]);
+					var envElement = A.one('#<portlet:namespace />' + envTypes[envType]);
 
 					envElement.empty();
 
@@ -582,11 +583,11 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 						success: function(event, id, obj) {
 							var response = this.get('responseData');
 
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envAS", response["ENV_AS#key"], response["ENV_AS"], envAS, envASName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envBrowser", response["ENV_Browser#key"], response["ENV_Browser"], envBrowser, envBrowserName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envDB", response["ENV_DB#key"], response["ENV_DB"], envDB, envDBName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envJVM", response["ENV_JVM#key"], response["ENV_JVM"], envJVM, envJVMName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envOS", response["ENV_OS#key"], response["ENV_OS"], envOS, envOSName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envAS', response['ENV_AS#key'], response['ENV_AS'], envAS, envASName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envBrowser', response['ENV_Browser#key'], response['ENV_Browser'], envBrowser, envBrowserName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envDB', response['ENV_DB#key'], response['ENV_DB'], envDB, envDBName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envJVM', response['ENV_JVM#key'], response['ENV_JVM'], envJVM, envJVMName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envOS', response['ENV_OS#key'], response['ENV_OS'], envOS, envOSName);
 						}
 					}
 				}

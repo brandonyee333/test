@@ -135,7 +135,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 			}
 		%>
 
-			<div class="ticket-comment cleared <%= cssClass %>" id="<portlet:namespace />commentContainer<%= i %>">
+			<div class="cleared ticket-comment <%= cssClass %>" id="<portlet:namespace />commentContainer<%= i %>">
 				<div class="content-column" onClick="<portlet:namespace />toggleComment(event, <%= i %>);">
 					<div>
 						<div class="user-avatar" style="background-image: url('<%= ticketEntryDiscussion.getUserPortraitURL(themeDisplay) %>&height=70&width=70')"></div>
@@ -413,7 +413,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 									}
 									%>
 
-									<div class="fr comment-pending <%= (ticketComment.getStatus() == WorkflowConstants.STATUS_DRAFT) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />pendingTypesDisplay<%= i %>">
+									<div class="comment-pending fr <%= (ticketComment.getStatus() == WorkflowConstants.STATUS_DRAFT) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />pendingTypesDisplay<%= i %>">
 										<liferay-ui:message key="need-response-from" />:
 
 										<c:if test='<%= discussionTab.equals("public") %>'>

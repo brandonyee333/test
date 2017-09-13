@@ -31,7 +31,7 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 		</div>
 
 		<div>
-			<aui:input checked="true" name="dialogYesRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_YES %>" />
+			<aui:input checked="<%= true %>" name="dialogYesRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_YES %>" />
 
 			<liferay-ui:message key="yes" />
 		</div>
@@ -71,10 +71,22 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 
 			<portlet:namespace />closeDialog(1);
 
-			var satisfied = document.getElementById('<portlet:namespace />dialogNoRadioButton').value;
+			var satisfied;
 
-			if (document.getElementById('<portlet:namespace />dialogYesRadioButton').checked) {
-				satisfied = document.getElementById('<portlet:namespace />dialogYesRadioButton').value;
+			var dialogNoRadioButton = A.one('#<portlet:namespace />dialogNoRadioButton');
+
+			if (dialogNoRadioButton) {
+				satisfied = dialogNoRadioButton.val();
+			}
+
+			var dialogYesRadioButton = A.one('#<portlet:namespace />dialogYesRadioButton');
+
+			if (dialogYesRadioButton) {
+				var checked = dialogYesRadioButton.get('checked');
+
+				if (checked) {
+					satisfied = dialogYesRadioButton.val();
+				}
 			}
 
 			A.io.request(
@@ -105,7 +117,7 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 
 	Liferay.provide(
 		window,
-		'<portlet:namespace />toggleDialogSatisfied,'
+		'<portlet:namespace />toggleDialogSatisfied',
 		function(satisfaction) {
 			var A = AUI();
 

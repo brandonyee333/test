@@ -84,11 +84,14 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEnt
 		function(satisfied) {
 			var A = AUI();
 
+			var answer = A.one('#<portlet:namespace />answerSatisfied');
+
 			if (satisfied == <%= TicketFeedbackConstants.SATISFIED_YES %>) {
-				A.one('#<portlet:namespace />answerNotSatisfied').hide();
+				answer = A.one('#<portlet:namespace />answerNotSatisfied');
 			}
-			else {
-				A.one('#<portlet:namespace />answerSatisfied').hide();
+
+			if (answer) {
+				answer.hide();
 			}
 
 			var commentSection = A.one('#<portlet:namespace />commentSection');

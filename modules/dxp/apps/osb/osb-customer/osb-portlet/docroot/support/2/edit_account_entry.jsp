@@ -114,7 +114,9 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 			var tab = A.one(selector + ' .tabs #<portlet:namespace />' + id);
 
-			tab.addClass('selected');
+			if (tab) {
+				tab.addClass('selected');
+			}
 
 			window.scroll(0, 0);
 		},
