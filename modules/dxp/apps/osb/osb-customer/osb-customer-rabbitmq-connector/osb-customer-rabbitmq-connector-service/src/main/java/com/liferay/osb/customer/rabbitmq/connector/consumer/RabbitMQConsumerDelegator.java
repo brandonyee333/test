@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.rabbitmq.consumer;
+package com.liferay.osb.customer.rabbitmq.connector.consumer;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -66,8 +66,8 @@ public class RabbitMQConsumerDelegator extends DefaultConsumer {
 		try {
 			message = new String(body, "UTF-8");
 		}
-		catch (UnsupportedEncodingException uoe) {
-			_log.error(uoe, uoe);
+		catch (UnsupportedEncodingException uee) {
+			_log.error(uee, uee);
 
 			basicAck(envelope);
 
@@ -131,7 +131,7 @@ public class RabbitMQConsumerDelegator extends DefaultConsumer {
 			Map<String, Object> headers = properties.getHeaders();
 
 			if (headers == null) {
-				headers = new HashMap<String, Object>();
+				headers = new HashMap<>();
 			}
 
 			int republishCount = GetterUtil.getInteger(
@@ -168,8 +168,7 @@ public class RabbitMQConsumerDelegator extends DefaultConsumer {
 	}
 
 	protected Map<String, Object> translate(AMQP.BasicProperties properties) {
-		Map<String, Object> translatedProperties =
-			new HashMap<String, Object>();
+		Map<String, Object> translatedProperties = new HashMap<>();
 
 		translatedProperties.put(
 			RabbitMQProperties.APP_ID, properties.getAppId());
@@ -212,7 +211,7 @@ public class RabbitMQConsumerDelegator extends DefaultConsumer {
 	private static Log _log = LogFactoryUtil.getLog(
 		RabbitMQConsumerDelegator.class);
 
-	private Object _delegate;
-	private Method _delegateMethod;
+	private final Object _delegate;
+	private final Method _delegateMethod;
 
 }

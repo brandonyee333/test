@@ -12,30 +12,30 @@
  * details.
  */
 
-package com.liferay.rabbitmq.util;
+package com.liferay.osb.customer.rabbitmq.connector.configuration;
 
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.util.portlet.PortletProps;
 
 /**
- * @author Amos Fong
+ * @author Andrew Madrazo
  */
-public class PortletPropsValues {
+public class RabbitMQConnectorConfigurationValues {
 
 	public static final boolean RABBITMQ_DEBUG_MODE_ENABLED =
 		GetterUtil.getBoolean(
-			PortletProps.get(PortletPropsKeys.RABBITMQ_DEBUG_MODE_ENABLED));
+			RabbitMQConnectorConfigurationUtil.get(
+				"rabbitmq.debug.mode.enabled"));
 
-	public static final String RABBITMQ_LOGIN_PASSWORD = PortletProps.get(
-		PortletPropsKeys.RABBITMQ_LOGIN_PASSWORD);
+	public static final String RABBITMQ_LOGIN_PASSWORD = GetterUtil.getString(
+		RabbitMQConnectorConfigurationUtil.get("rabbitmq.login.password"));
 
-	public static final String RABBITMQ_LOGIN_USERNAME = PortletProps.get(
-		PortletPropsKeys.RABBITMQ_LOGIN_USERNAME);
+	public static final String RABBITMQ_LOGIN_USERNAME = GetterUtil.getString(
+		RabbitMQConnectorConfigurationUtil.get("rabbitmq.login.username"));
 
-	public static final String RABBITMQ_SERVER_HOST = PortletProps.get(
-		PortletPropsKeys.RABBITMQ_SERVER_HOST);
+	public static final String RABBITMQ_SERVER_HOST = GetterUtil.getString(
+		RabbitMQConnectorConfigurationUtil.get("rabbitmq.server.host"));
 
 	public static final int RABBITMQ_SERVER_PORT = GetterUtil.getInteger(
-		PortletProps.get(PortletPropsKeys.RABBITMQ_SERVER_PORT));
+		RabbitMQConnectorConfigurationUtil.get("rabbitmq.server.port"));
 
 }

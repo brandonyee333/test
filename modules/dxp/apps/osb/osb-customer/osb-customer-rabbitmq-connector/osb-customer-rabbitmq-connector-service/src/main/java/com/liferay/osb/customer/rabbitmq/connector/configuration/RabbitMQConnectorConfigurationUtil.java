@@ -12,24 +12,23 @@
  * details.
  */
 
-package com.liferay.rabbitmq.util;
+package com.liferay.osb.customer.rabbitmq.connector.configuration;
+
+import com.liferay.portal.kernel.configuration.Configuration;
+import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 
 /**
- * @author Amos Fong
+ * @author Andrew Madrazo
  */
-public interface PortletPropsKeys {
+public class RabbitMQConnectorConfigurationUtil {
 
-	public static final String RABBITMQ_DEBUG_MODE_ENABLED =
-		"rabbitmq.debug.mode.enabled";
+	public static String get(String key) {
+		return _configuration.get(key);
+	}
 
-	public static final String RABBITMQ_LOGIN_PASSWORD =
-		"rabbitmq.login.password";
-
-	public static final String RABBITMQ_LOGIN_USERNAME =
-		"rabbitmq.login.username";
-
-	public static final String RABBITMQ_SERVER_HOST = "rabbitmq.server.host";
-
-	public static final String RABBITMQ_SERVER_PORT = "rabbitmq.server.port";
+	private static final Configuration _configuration =
+		ConfigurationFactoryUtil.getConfiguration(
+			RabbitMQConnectorConfigurationUtil.class.getClassLoader(),
+			"portlet");
 
 }

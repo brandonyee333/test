@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.rabbitmq.consumer;
+package com.liferay.osb.customer.rabbitmq.connector.consumer;
 
 /**
  * @author Amos Fong

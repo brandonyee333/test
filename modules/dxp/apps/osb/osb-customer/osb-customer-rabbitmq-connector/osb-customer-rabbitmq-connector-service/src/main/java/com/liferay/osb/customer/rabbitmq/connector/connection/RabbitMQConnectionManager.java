@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.rabbitmq.connection;
+package com.liferay.osb.customer.rabbitmq.connector.connection;
 
+import com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.rabbitmq.util.PortletPropsValues;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -39,18 +39,18 @@ public class RabbitMQConnectionManager {
 	}
 
 	public void connect() {
-		String host = PortletPropsValues.RABBITMQ_SERVER_HOST;
-		int port = PortletPropsValues.RABBITMQ_SERVER_PORT;
+		String host = RabbitMQConnectorConfigurationValues.RABBITMQ_SERVER_HOST;
+		int port = RabbitMQConnectorConfigurationValues.RABBITMQ_SERVER_PORT;
 
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 
 		connectionFactory.setAutomaticRecoveryEnabled(true);
 		connectionFactory.setHost(host);
 		connectionFactory.setPassword(
-			PortletPropsValues.RABBITMQ_LOGIN_PASSWORD);
+			RabbitMQConnectorConfigurationValues.RABBITMQ_LOGIN_PASSWORD);
 		connectionFactory.setPort(port);
 		connectionFactory.setUsername(
-			PortletPropsValues.RABBITMQ_LOGIN_USERNAME);
+			RabbitMQConnectorConfigurationValues.RABBITMQ_LOGIN_USERNAME);
 
 		try {
 			if (_log.isInfoEnabled()) {

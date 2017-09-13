@@ -12,13 +12,13 @@
  * details.
  */
 
-package com.liferay.rabbitmq.util;
+package com.liferay.osb.customer.rabbitmq.connector.constants;
 
 /**
  * @author Amos Fong
  */
-public class PortletKeys extends com.liferay.portal.util.PortletKeys {
+public class RabbitMQPortletKeys {
 
-	public static final String RAABIT_MQ = "1_WAR_rabbitmqportlet";
+	public static final String RABBIT_MQ = "1_WAR_rabbitmqportlet";
 
 }

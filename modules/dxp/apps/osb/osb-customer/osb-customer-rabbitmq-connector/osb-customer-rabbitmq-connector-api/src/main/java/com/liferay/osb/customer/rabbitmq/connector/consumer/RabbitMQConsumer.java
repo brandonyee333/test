@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.rabbitmq.consumer;
+package com.liferay.osb.customer.rabbitmq.connector.consumer;
 
 import java.util.Map;
 
@@ -27,9 +27,8 @@ public interface RabbitMQConsumer {
 
 	public static final int RESPONSE_REPUBLISH = 3;
 
-	public static final int[] RESPONSES = {
-		RESPONSE_ACK, RESPONSE_REJECT, RESPONSE_REPUBLISH
-	};
+	public static final int[] RESPONSES =
+		{RESPONSE_ACK, RESPONSE_REJECT, RESPONSE_REPUBLISH};
 
 	public int parse(
 		String routingKey, String message, Map<String, Object> properties);

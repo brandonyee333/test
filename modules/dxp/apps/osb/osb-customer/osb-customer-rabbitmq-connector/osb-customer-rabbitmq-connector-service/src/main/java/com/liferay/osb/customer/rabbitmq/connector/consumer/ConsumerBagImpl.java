@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.rabbitmq.consumer;
+package com.liferay.osb.customer.rabbitmq.connector.consumer;
 
 import com.liferay.portal.kernel.util.StringBundler;
 
@@ -23,14 +23,18 @@ import com.rabbitmq.client.Channel;
  */
 public class ConsumerBagImpl implements ConsumerBag {
 
+	public ConsumerBagImpl() {
+		this(null, null, 0, null);
+	}
+
 	public ConsumerBagImpl(
 		Object rabbitMQConsumer, Channel channel, int prefetchCount,
 		String queue) {
 
+		_rabbitMQConsumer = rabbitMQConsumer;
 		_channel = channel;
 		_prefetchCount = prefetchCount;
 		_queue = queue;
-		_rabbitMQConsumer = rabbitMQConsumer;
 	}
 
 	public Channel getChannel() {
@@ -66,6 +70,7 @@ public class ConsumerBagImpl implements ConsumerBag {
 
 	public String toString() {
 		StringBundler sb = new StringBundler(9);
+		Class<?> rabbitMQClass = _rabbitMQConsumer.getClass();
 
 		sb.append("{active=");
 		sb.append(_active);
@@ -80,7 +85,7 @@ public class ConsumerBagImpl implements ConsumerBag {
 		sb.append(", queue=");
 		sb.append(_queue);
 		sb.append(", rabbitMQConsumer=");
-		sb.append(_rabbitMQConsumer.getClass().getName());
+		sb.append(rabbitMQClass.getName());
 		sb.append("}");
 
 		return sb.toString();
@@ -88,8 +93,8 @@ public class ConsumerBagImpl implements ConsumerBag {
 
 	private boolean _active = true;
 	private Channel _channel;
-	private int _prefetchCount;
-	private String _queue;
-	private Object _rabbitMQConsumer;
+	private final int _prefetchCount;
+	private final String _queue;
+	private final Object _rabbitMQConsumer;
 
 }

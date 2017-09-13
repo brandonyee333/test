@@ -12,17 +12,17 @@
  * details.
  */
 
-package com.liferay.rabbitmq.service.impl;
+package com.liferay.osb.customer.rabbitmq.connector.service.impl;
 
+import com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues;
+import com.liferay.osb.customer.rabbitmq.connector.connection.RabbitMQConnectionManager;
+import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBag;
+import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBagImpl;
+import com.liferay.osb.customer.rabbitmq.connector.consumer.RabbitMQConsumerDelegator;
+import com.liferay.osb.customer.rabbitmq.connector.service.base.ConsumerManagerLocalServiceBaseImpl;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.rabbitmq.connection.RabbitMQConnectionManager;
-import com.liferay.rabbitmq.consumer.ConsumerBag;
-import com.liferay.rabbitmq.consumer.ConsumerBagImpl;
-import com.liferay.rabbitmq.consumer.RabbitMQConsumerDelegator;
-import com.liferay.rabbitmq.service.base.ConsumerManagerLocalServiceBaseImpl;
-import com.liferay.rabbitmq.util.PortletPropsValues;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Consumer;
@@ -56,7 +56,7 @@ public class ConsumerManagerLocalServiceImpl
 	}
 
 	public void consumeMessage() {
-		if (!PortletPropsValues.RABBITMQ_DEBUG_MODE_ENABLED) {
+		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
 			return;
 		}
 
@@ -139,6 +139,15 @@ public class ConsumerManagerLocalServiceImpl
 		}
 	}
 
+	/**
+	 * Returns the Spring bean ID for this bean.
+	 *
+	 * @return the Spring bean ID for this bean
+	 */
+	public String getBeanIdentifier() {
+		return _beanIdentifier;
+	}
+
 	public Map<String, ConsumerBag> getConsumersMap() {
 		return _consumers;
 	}
@@ -148,12 +157,13 @@ public class ConsumerManagerLocalServiceImpl
 		throws Exception {
 
 		Channel channel = createChannel(queue, prefetchCount, rabbitMQConsumer);
+		Class<?> rabbitMQClass = rabbitMQConsumer.getClass();
 
 		ConsumerBag consumerBag = new ConsumerBagImpl(
 			rabbitMQConsumer, channel, prefetchCount, queue);
 
 		String rabbitMQConsumerKey =
-			rabbitMQConsumer.getClass().getName() + StringPool.POUND + queue;
+			rabbitMQClass.getName() + StringPool.POUND + queue;
 
 		_consumers.put(rabbitMQConsumerKey, consumerBag);
 
@@ -178,6 +188,15 @@ public class ConsumerManagerLocalServiceImpl
 				_log.info("Reset channel for " + consumerBag.toString());
 			}
 		}
+	}
+
+	/**
+	 * Sets the Spring bean ID for this bean.
+	 *
+	 * @param beanIdentifier the Spring bean ID for this bean
+	 */
+	public void setBeanIdentifier(String beanIdentifier) {
+		_beanIdentifier = beanIdentifier;
 	}
 
 	public void unregisterConsumer(String rabbitMQConsumerKey) {
@@ -222,7 +241,7 @@ public class ConsumerManagerLocalServiceImpl
 
 		Channel channel = connectionManager.createChannel(prefetchCount);
 
-		if (!PortletPropsValues.RABBITMQ_DEBUG_MODE_ENABLED) {
+		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
 			Consumer consumer = new RabbitMQConsumerDelegator(
 				channel, rabbitMQConsumer);
 
@@ -232,10 +251,11 @@ public class ConsumerManagerLocalServiceImpl
 		return channel;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
+	private static final Log _log = LogFactoryUtil.getLog(
 		ConsumerManagerLocalServiceImpl.class);
 
-	private Map<String, ConsumerBag> _consumers =
-		new ConcurrentHashMap<String, ConsumerBag>();
+	private String _beanIdentifier;
+	private final Map<String, ConsumerBag> _consumers =
+		new ConcurrentHashMap<>();
 
 }
