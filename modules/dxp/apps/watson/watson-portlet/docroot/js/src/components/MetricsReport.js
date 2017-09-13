@@ -16,13 +16,13 @@ class MetricsReport extends JSXComponent {
 	handleUpdateView({target}) {
 		const tabClicked = target.getAttribute('ref').toString();
 
-		const tabIndex = tabClicked[tabClicked.length -1];
+		const tabIndex = tabClicked[tabClicked.length - 1];
 
 		const tabs = WatsonConstants.inputConfig.metrics.reports.types;
 
 		const {key, modelKey} = tabs[tabIndex];
 
-		this.props.onChange(key, modelKey)
+		this.props.onChange(key, modelKey);
 	}
 
 	render() {
