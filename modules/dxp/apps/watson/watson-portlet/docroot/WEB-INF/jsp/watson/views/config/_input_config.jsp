@@ -630,73 +630,6 @@
 					}
 				}
 			},
-			heatmaps: {
-				inputs: {
-					startDate: {
-						filterable: ${true},
-						htmlType: 'date',
-						label: '${AlloyLanguageUtil.formatUnicode("date-range")}',
-						type: 'INPUT'
-					},
-					natureWatsonListType: {
-						filterable: ${true},
-						label: '${AlloyLanguageUtil.formatUnicode("nature")}',
-							options: {
-								<c:set value='${WatsonListType.getWatsonListTypes(WatsonIncident.modelClassName.concat(".nature"))}' var="watsonIncidentNatures" />
-
-								<c:forEach items="${watsonIncidentNatures}" var="watsonIncidentNature" varStatus="watsonIncidentNatureIndex">
-								<c:set value='${watsonIncidentNatureIndex.last ? "" : ","}' var="delimiter" />
-
-								${watsonIncidentNature.watsonListTypeId}: {
-									label: '${watsonIncidentNature.getName(locale)}',
-									value: '${watsonIncidentNature.watsonListTypeId}'
-								}${delimiter}
-							</c:forEach>
-						},
-						type: 'MULTI_SELECT_INPUT'
-					},
-					typeWatsonListTypeId: {
-						filterable: ${true},
-						label: '${AlloyLanguageUtil.formatUnicode("incident-type")}',
-							options: {
-							<c:set value='${WatsonListType.getWatsonListTypes(WatsonIncident.modelClassName.concat(".type"))}' var="watsonIncidentTypes" />
-
-							<c:forEach items="${watsonIncidentTypes}" var="watsonIncidentType" varStatus="watsonIncidentTypeIndex">
-							<c:set value='${watsonIncidentTypeIndex.last ? "" : ","}' var="delimiter" />
-
-							${watsonIncidentType.watsonListTypeId}: {
-								label: '${watsonIncidentType.getName(locale)}',
-									value: '${watsonIncidentType.watsonListTypeId}'
-							}${delimiter}
-							</c:forEach>
-						},
-						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-type-of-report-that-best-describes-this-incident")}',
-							translatable: ${false},
-						type: 'SELECT_INPUT',
-							validations: [
-							'required'
-						]
-					},
-					subtypeWatsonListTypeId: {
-						filterable: ${true},
-						label: '${AlloyLanguageUtil.formatUnicode("type-of-report")}',
-							listTypeValue: '${WatsonIncident.modelClassName.concat(".subtype")}',
-							options: {
-								<c:set value='${WatsonListType.getWatsonListTypes(WatsonIncident.modelClassName.concat(".subtype"))}' var="watsonIncidentSubtypes" />
-
-								<c:forEach items="${watsonIncidentSubtypes}" var="watsonIncidentSubtype" varStatus="watsonIncidentSubtypeIndex">
-								<c:set value='${watsonIncidentSubtypeIndex.last ? "" : ","}' var="delimiter" />
-
-								${watsonIncidentSubtype.watsonListTypeId}: {
-									label: '${watsonIncidentSubtype.getName(locale)}',
-									value: '${watsonIncidentSubtype.watsonListTypeId}'
-								}${delimiter}
-							</c:forEach>
-						},
-						type: 'SELECT_INPUT'
-					}
-				}
-			},
 			incidents: {
 				inputs: {
 					audienceKey: {
@@ -952,6 +885,89 @@
 				richTextEditor: 'RICH_TEXT_EDITOR',
 				selectInput: 'SELECT_INPUT',
 				textareaInput: 'TEXT_AREA_INPUT'
+			},
+			metrics: {
+				heatmaps: {
+					inputs: {
+						startDate: {
+							filterable: ${true},
+							htmlType: 'date',
+							label: '${AlloyLanguageUtil.formatUnicode("date-range")}',
+							type: 'INPUT'
+						},
+						natureWatsonListType: {
+							filterable: ${true},
+							label: '${AlloyLanguageUtil.formatUnicode("nature")}',
+							options: {
+								<c:set value='${WatsonListType.getWatsonListTypes(WatsonIncident.modelClassName.concat(".nature"))}' var="watsonIncidentNatures" />
+
+								<c:forEach items="${watsonIncidentNatures}" var="watsonIncidentNature" varStatus="watsonIncidentNatureIndex">
+									<c:set value='${watsonIncidentNatureIndex.last ? "" : ","}' var="delimiter" />
+
+									${watsonIncidentNature.watsonListTypeId}: {
+										label: '${watsonIncidentNature.getName(locale)}',
+										value: '${watsonIncidentNature.watsonListTypeId}'
+									}${delimiter}
+								</c:forEach>
+							},
+							type: 'MULTI_SELECT_INPUT'
+						},
+						typeWatsonListTypeId: {
+							filterable: ${true},
+							label: '${AlloyLanguageUtil.formatUnicode("incident-type")}',
+							options: {
+								<c:set value='${WatsonListType.getWatsonListTypes(WatsonIncident.modelClassName.concat(".type"))}' var="watsonIncidentTypes" />
+
+								<c:forEach items="${watsonIncidentTypes}" var="watsonIncidentType" varStatus="watsonIncidentTypeIndex">
+									<c:set value='${watsonIncidentTypeIndex.last ? "" : ","}' var="delimiter" />
+
+									${watsonIncidentType.watsonListTypeId}: {
+										label: '${watsonIncidentType.getName(locale)}',
+										value: '${watsonIncidentType.watsonListTypeId}'
+									}${delimiter}
+								</c:forEach>
+							},
+							tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-type-of-report-that-best-describes-this-incident")}',
+							translatable: ${false},
+							type: 'SELECT_INPUT',
+								validations: [
+								'required'
+							]
+						},
+						subtypeWatsonListTypeId: {
+							filterable: ${true},
+							label: '${AlloyLanguageUtil.formatUnicode("type-of-report")}',
+							listTypeValue: '${WatsonIncident.modelClassName.concat(".subtype")}',
+							options: {
+								<c:set value='${WatsonListType.getWatsonListTypes(WatsonIncident.modelClassName.concat(".subtype"))}' var="watsonIncidentSubtypes" />
+
+								<c:forEach items="${watsonIncidentSubtypes}" var="watsonIncidentSubtype" varStatus="watsonIncidentSubtypeIndex">
+									<c:set value='${watsonIncidentSubtypeIndex.last ? "" : ","}' var="delimiter" />
+
+									${watsonIncidentSubtype.watsonListTypeId}: {
+										label: '${watsonIncidentSubtype.getName(locale)}',
+										value: '${watsonIncidentSubtype.watsonListTypeId}'
+									}${delimiter}
+								</c:forEach>
+							},
+							type: 'SELECT_INPUT'
+						}
+					}
+				},
+				reports: {
+					types: [
+						{
+							key: 'rescued',
+							label: '${AlloyLanguageUtil.formatUnicode('rescued')}',
+							modelKey: 'person'
+						},
+						{
+							key: 'accepted',
+							label: '${AlloyLanguageUtil.formatUnicode('accepted-to-zoe')}',
+							modelKey: 'person'
+						}
+					]
+				}
 			},
 			people: {
 				inputs: {

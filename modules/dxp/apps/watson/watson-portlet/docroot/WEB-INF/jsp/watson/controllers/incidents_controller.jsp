@@ -190,12 +190,12 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		String actionType = ParamUtil.getString(request, "actionType");
 
-		JSONArray responseObject = JSONFactoryUtil.createJSONArray();
+		JSONArray responseObject = null;
 
 		if (actionType.equals("report")) {
-			String field = ParamUtil.getString(request, "field", "rescued");
+			String field = ParamUtil.getString(request, "reportsKey");
 
-			String dateField = ParamUtil.getString(request, "dateField", "dateRescued");
+			String dateField = "date" + TextFormatter.formatName(field);
 
 			responseObject = WatsonPerson.getMetricsArray(field, dateField);
 		}

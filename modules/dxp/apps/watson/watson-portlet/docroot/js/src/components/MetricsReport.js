@@ -13,14 +13,24 @@ class MetricsReport extends JSXComponent {
 		);
 	}
 
-	handleUpdateView(event) {
-		console.log(event);
+	handleUpdateView({target}) {
+		const tabClicked = target.getAttribute('ref').toString();
+
+		const tabIndex = tabClicked[tabClicked.length -1];
+
+		const tabs = WatsonConstants.inputConfig.metrics.reports.types;
+
+		const {key, modelKey} = tabs[tabIndex];
+
+		this.props.onChange(key, modelKey)
 	}
 
 	render() {
 		const {data, loading} = this.props;
 
-		const {tabs} = this.state;
+		const onClickEvent = {
+			click: this.handleUpdateView
+		};
 
 		return (
 			<div class="content-container">
@@ -29,11 +39,13 @@ class MetricsReport extends JSXComponent {
 				</div>
 
 				<div class="content" id="table">
-					<Tabs
-						onClickItem={this.handleUpdateView}
-						tabs={tabs}
-						types="pills"
-					/>
+					<div class="tabs-wrapper">
+						<Tabs
+							events={onClickEvent}
+							tabs={WatsonConstants.inputConfig.metrics.reports.types}
+							types="pills"
+						/>
+					</div>
 
 					{!loading &&
 						<Table
@@ -52,23 +64,8 @@ class MetricsReport extends JSXComponent {
 
 MetricsReport.PROPS = {
 	data: Config.array(),
-	loading: Config.bool().value(false)
-};
-
-MetricsReport.STATE = {
-	tabs: Config.array().value(
-		[
-			{
-				label: Liferay.Language.get('rescued')
-			},
-			{
-				label: Liferay.Language.get('accepted-to-zoe')
-			},
-			{
-				label: Liferay.Language.get('active')
-			}
-		]
-	)
+	loading: Config.bool().value(false),
+	onChange: Config.func()
 };
 
 export default MetricsReport;

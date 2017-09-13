@@ -40,6 +40,27 @@
 					}
 				}
 			}
+
+			.tabs-wrapper {
+				margin-bottom: 3%;
+
+				.nav-tabs {
+					margin-bottom: 0;
+
+					li {
+						margin-right: 10px;
+
+						button {
+							@include default-button;
+
+							height: 57px;
+							justify-content: center;
+							max-width: 270px;
+							width: 100%;
+						}
+					}
+				}
+			}
 		}
 
 		.text {

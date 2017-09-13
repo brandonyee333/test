@@ -26,6 +26,7 @@ class MetricsConsole extends JSXComponent {
 	created() {
 		bindAll(
 			this,
+			'handleOnChange',
 			'handleUpdateFilter',
 			'handleUpdateViewBy'
 		);
@@ -55,11 +56,24 @@ class MetricsConsole extends JSXComponent {
 				<MetricsReport
 					data={data}
 					loading={loading}
+					onChange={this.handleOnChange}
 				/>
 			);
 		}
 
 		return currentView;
+	}
+
+	handleOnChange(modelKey, reportsKey) {
+		if (this.state.reportsKey !== reportsKey) {
+			this.setState(
+				{
+					modelKey,
+					reportsKey,
+					resendRequest: true
+				}
+			);
+		}
 	}
 
 	handleUpdateFilter(filterData) {
@@ -118,7 +132,7 @@ class MetricsConsole extends JSXComponent {
 						<DynamicSelectInput
 							elementClasses="filter-input"
 							filter={incidentsFilter}
-							inputConfig={WatsonConstants.inputConfig.heatmaps.inputs}
+							inputConfig={WatsonConstants.inputConfig.metrics.heatmaps.inputs}
 							label={Liferay.Language.get('add-filter')}
 							onChange={this.handleUpdateFilter}
 						/>
@@ -162,6 +176,8 @@ class MetricsConsole extends JSXComponent {
 					actionType: action,
 					fields: fieldsArray,
 					keywords: keywordsArray,
+					modelKey: state.modelKey,
+					reportsKey: state.reportsKey,
 					type: state.viewBy
 				}
 			);
@@ -188,6 +204,8 @@ MetricsConsole.PROPS = {
 
 MetricsConsole.STATE = {
 	actionDisplayed: Config.string().value(''),
+	modelKey: Config.string(),
+	reportsKey: Config.string().value('rescued'),
 	resendRequest: Config.bool().value(true),
 	viewBy: Config.string().value('9361')
 };

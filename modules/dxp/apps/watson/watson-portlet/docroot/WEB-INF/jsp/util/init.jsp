@@ -119,6 +119,8 @@ page import="java.awt.image.AffineTransformOp" %><%@
 page import="java.awt.image.BufferedImage" %><%@
 page import="java.awt.image.RenderedImage" %>
 
+<%@ page import="com.liferay.portal.kernel.util.TextFormatter" %>
+
 <%@ page import="java.io.File" %><%@
 page import="java.io.IOException" %>
 

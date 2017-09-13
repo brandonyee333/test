@@ -217,7 +217,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 			yearJSONObject.put(String.valueOf(year), getIdJSONArray(watsonPeople));
 		}
 
-		formattedJSONObject.put("numberRescued", LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), "rescued", new String[0]));
+		formattedJSONObject.put(field, LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), field, new String[0]));
 		formattedJSONObject.put("year", yearJSONObject);
 
 		jsonArray.put(formattedJSONObject);
