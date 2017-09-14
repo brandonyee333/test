@@ -17,13 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String tabs1 = ParamUtil.getString(request, "tabs1");
-
-String tabsNames = "admin";
-
-if (PortletPropsValues.RABBITMQ_DEBUG_MODE_ENABLED) {
-	tabsNames += ",debug";
-}
+String tabs1 = ParamUtil.getString(request, "tabs1", "admin");
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
@@ -32,125 +26,170 @@ portletURL.setParameter("tabs1", tabs1);
 portletURL.setWindowState(WindowState.MAXIMIZED);
 %>
 
-<liferay-ui:tabs
-	names="<%= tabsNames %>"
-	param="tabs1"
-	url="<%= portletURL.toString() %>"
-/>
+<aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
+	<portlet:renderURL var="adminURL">
+		<portlet:param name="mvcPath" value="/view.jsp" />
+		<portlet:param name="tabs1" value="admin" />
+	</portlet:renderURL>
 
-<c:choose>
-	<c:when test='<%= tabs1.equals("debug") %>'>
-		<liferay-portlet:actionURL name="consumeMessage" var="actionURL" />
+	<aui:nav cssClass="navbar-nav">
+		<aui:nav-item
+			href="<%= adminURL %>"
+			label="admin"
+			selected='<%= tabs1.equals("admin") %>'
+		/>
+	</aui:nav>
+	<% if (RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) { %>
+	<portlet:renderURL var="debugURL">
+		<portlet:param name="mvcPath" value="/view.jsp" />
+		<portlet:param name="tabs1" value="debug" />
+	</portlet:renderURL>
 
-		<aui:form action="<%= actionURL %>" method="post" name="fm">
-			<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+	<aui:nav cssClass="navbar-nav">
+		<aui:nav-item
+			href="<%= debugURL %>"
+			label="debug"
+			selected='<%= tabs1.equals("debug") %>'
+		/>
+	</aui:nav>
+	<% } %>
+</aui:nav-bar>
 
-			<aui:fieldset>
-				<aui:button-row>
-					<aui:button type="submit" value="consume-message" />
-				</aui:button-row>
-			</aui:fieldset>
-		</aui:form>
-	</c:when>
-	<c:otherwise>
-		<liferay-portlet:actionURL name="restart" var="actionURL" />
+<div class="container-fluid-1280">
+	<liferay-portlet:actionURL name="restart" var="actionURL" />
 
-		<aui:form action="<%= actionURL %>" method="post" name="fm">
-			<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+	<aui:form action="<%= actionURL %>" method="post" name="fm">
+		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
 
-			<aui:fieldset>
-				<liferay-ui:message key="restarting-will-close-all-channels-reopen-a-new-connection-and-then-reregister-all-consumers" />
+		<aui:fieldset>
+			<liferay-ui:message key="restarting-will-close-all-channels-reopen-a-new-connection-and-then-reregister-all-consumers" />
 
-				<aui:button-row>
-					<aui:button type="submit" value="restart" />
-				</aui:button-row>
-			</aui:fieldset>
-		</aui:form>
+			<aui:button-row>
+				<aui:button type="submit" value="restart" />
+			</aui:button-row>
+		</aui:fieldset>
+	</aui:form>
 
-		<liferay-ui:search-container
-			emptyResultsMessage="there-are-no-consumers"
-			headerNames="class,queue,channel,active"
-		>
+	<c:choose>
+		<c:when test='<%= tabs1.equals("debug") %>'>
+			<liferay-portlet:actionURL name="consumeMessage" var="actionURL" />
+
+			<aui:form action="<%= actionURL %>" method="post" name="fm">
+				<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+
+				<aui:fieldset>
+					<aui:button-row>
+						<aui:button type="submit" value="consume-message" />
+					</aui:button-row>
+				</aui:fieldset>
+			</aui:form>
+		</c:when>
+		<c:otherwise>
 
 			<%
 			Map<String, ConsumerBag> consumers = ConsumerManagerLocalServiceUtil.getConsumersMap();
 			%>
 
-			<liferay-ui:search-container-results
-				results="<%= ListUtil.fromCollection(consumers.entrySet()) %>"
+			<liferay-frontend:management-bar>
+				<liferay-frontend:management-bar-buttons>
+					<liferay-frontend:management-bar-filters>
+						<liferay-frontend:management-bar-navigation
+							navigationKeys='<%= new String[] {"all"} %>'
+							portletURL="<%= renderResponse.createRenderURL() %>"
+						/>
+					</liferay-frontend:management-bar-filters>
+
+					<liferay-frontend:management-bar-display-buttons
+						displayViews='<%= new String[] {"list"} %>'
+						portletURL="<%= renderResponse.createRenderURL() %>"
+						selectedDisplayStyle="list"
+					/>
+				</liferay-frontend:management-bar-buttons>
+			</liferay-frontend:management-bar>
+
+			<liferay-ui:search-container
+				emptyResultsMessage="there-are-no-consumers"
+				emptyResultsMessageCssClass="taglib-empty-result-message-header"
+				headerNames="class,queue,channel,active"
 				total="<%= consumers.size() %>"
-			/>
-
-			<liferay-ui:search-container-row
-				className="java.util.Map.Entry"
-				modelVar="consumerEntry"
 			>
-
-				<%
-				String rabbitMQConsumerKey = (String)consumerEntry.getKey();
-				ConsumerBag consumerBag = (ConsumerBag)consumerEntry.getValue();
-
-				Object rabbitMQConsumer = consumerBag.getRabbitMQConsumer();
-				%>
-
-				<liferay-ui:search-container-column-text
-					name="class"
-					value="<%= rabbitMQConsumer.getClass().getName() %>"
+				<liferay-ui:search-container-results
+					results="<%= ListUtil.fromCollection(consumers.entrySet()) %>"
 				/>
 
-				<liferay-ui:search-container-column-text
-					name="queue"
-					value="<%= consumerBag.getQueue() %>"
-				/>
-
-				<liferay-ui:search-container-column-text
-					name="channel"
+				<liferay-ui:search-container-row
+					className="java.util.Map.Entry"
+					modelVar="consumerEntry"
 				>
 
 					<%
-					Channel channel = consumerBag.getChannel();
+					String rabbitMQConsumerKey = (String)consumerEntry.getKey();
+					ConsumerBag consumerBag = (ConsumerBag)consumerEntry.getValue();
+
+					Object rabbitMQConsumer = consumerBag.getRabbitMQConsumer();
+
+					Class<?> rabbitMQClass = rabbitMQConsumer.getClass();
 					%>
 
-					<c:if test="<%= channel != null %>">
-						<%= channel.getChannelNumber() %>
-					</c:if>
-				</liferay-ui:search-container-column-text>
+					<liferay-ui:search-container-column-text
+						name="class"
+						value="<%= rabbitMQClass.getName() %>"
+					/>
 
-				<liferay-ui:search-container-column-text
-					name="active"
-					value="<%= String.valueOf(consumerBag.isActive()) %>"
-				/>
+					<liferay-ui:search-container-column-text
+						name="queue"
+						value="<%= consumerBag.getQueue() %>"
+					/>
 
-				<liferay-ui:search-container-column-text>
-					<liferay-ui:icon-menu>
-						<c:choose>
-							<c:when test="<%= consumerBag.isActive() %>">
-								<portlet:actionURL name="deactivateConsumer" var="deactivateURL">
-									<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-									<portlet:param name="rabbitMQConsumerKey" value="<%= rabbitMQConsumerKey %>" />
-								</portlet:actionURL>
+					<liferay-ui:search-container-column-text
+						name="channel"
+					>
 
-								<liferay-ui:icon-deactivate
-									url="<%= deactivateURL %>"
-								/>
-							</c:when>
-							<c:otherwise>
-								<portlet:actionURL name="activateConsumer" var="activateURL">
-									<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-									<portlet:param name="rabbitMQConsumerKey" value="<%= rabbitMQConsumerKey %>" />
-								</portlet:actionURL>
+						<%
+						Channel channel = consumerBag.getChannel();
+						%>
 
-								<liferay-ui:icon
-									image="activate"
-									url="<%= activateURL %>"
-								/>
-							</c:otherwise>
-						</c:choose>
-					</liferay-ui:icon-menu>
-				</liferay-ui:search-container-column-text>
-			</liferay-ui:search-container-row>
+						<c:if test="<%= channel != null %>">
+							<%= channel.getChannelNumber() %>
+						</c:if>
+					</liferay-ui:search-container-column-text>
 
-			<liferay-ui:search-iterator paginate="<%= false %>" />
-		</liferay-ui:search-container>
-	</c:otherwise>
-</c:choose>
+					<liferay-ui:search-container-column-text
+						name="active"
+						value="<%= String.valueOf(consumerBag.isActive()) %>"
+					/>
+
+					<liferay-ui:search-container-column-text>
+						<liferay-ui:icon-menu>
+							<c:choose>
+								<c:when test="<%= consumerBag.isActive() %>">
+									<portlet:actionURL name="deactivateConsumer" var="deactivateURL">
+										<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+										<portlet:param name="rabbitMQConsumerKey" value="<%= rabbitMQConsumerKey %>" />
+									</portlet:actionURL>
+
+									<liferay-ui:icon-deactivate
+										url="<%= deactivateURL %>"
+									/>
+								</c:when>
+								<c:otherwise>
+									<portlet:actionURL name="activateConsumer" var="activateURL">
+										<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+										<portlet:param name="rabbitMQConsumerKey" value="<%= rabbitMQConsumerKey %>" />
+									</portlet:actionURL>
+
+									<liferay-ui:icon
+										image="activate"
+										url="<%= activateURL %>"
+									/>
+								</c:otherwise>
+							</c:choose>
+						</liferay-ui:icon-menu>
+					</liferay-ui:search-container-column-text>
+				</liferay-ui:search-container-row>
+
+				<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+			</liferay-ui:search-container>
+		</c:otherwise>
+	</c:choose>
+</div>

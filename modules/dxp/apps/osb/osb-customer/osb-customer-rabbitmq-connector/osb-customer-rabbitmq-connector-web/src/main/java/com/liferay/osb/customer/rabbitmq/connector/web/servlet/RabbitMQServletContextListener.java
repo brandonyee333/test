@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.rabbitmq.servlet;
+package com.liferay.osb.customer.rabbitmq.connector.web.servlet;
 
+import com.liferay.osb.customer.rabbitmq.connector.connection.RabbitMQConnectionManager;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
-import com.liferay.rabbitmq.connection.RabbitMQConnectionManager;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

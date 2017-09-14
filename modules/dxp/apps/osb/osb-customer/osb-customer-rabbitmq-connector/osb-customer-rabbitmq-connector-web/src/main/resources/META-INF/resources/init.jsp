@@ -18,18 +18,18 @@
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
-<%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %>
-<%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
+<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
+taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
+taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
+taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
-
-<%@ page import="com.liferay.compat.portal.kernel.util.ListUtil" %><%@
-page import="com.liferay.compat.portal.util.PortalUtil" %><%@
+<%@ page import="com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues" %><%@
+page import="com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBag" %><%@
+page import="com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalServiceUtil" %><%@
+page import="com.liferay.portal.kernel.util.ListUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
-page import="com.liferay.rabbitmq.consumer.ConsumerBag" %><%@
-page import="com.liferay.rabbitmq.service.ConsumerManagerLocalServiceUtil" %><%@
-page import="com.liferay.rabbitmq.util.PortletPropsValues" %>
+page import="com.liferay.portal.kernel.util.PortalUtil" %>
 
 <%@ page import="com.rabbitmq.client.Channel" %>
 
@@ -38,9 +38,9 @@ page import="com.liferay.rabbitmq.util.PortletPropsValues" %>
 <%@ page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>
 
-<portlet:defineObjects />
-
 <liferay-theme:defineObjects />
+
+<portlet:defineObjects />
 
 <%
 String currentURL = PortalUtil.getCurrentURL(request);

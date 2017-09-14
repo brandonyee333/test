@@ -12,26 +12,45 @@
  * details.
  */
 
-package com.liferay.rabbitmq.portlet;
+package com.liferay.osb.customer.rabbitmq.connector.web.portlet;
 
-import com.liferay.compat.util.bridges.mvc.MVCPortlet;
+import com.liferay.osb.customer.rabbitmq.connector.connection.RabbitMQConnectionManager;
+import com.liferay.osb.customer.rabbitmq.connector.constants.RabbitMQPortletKeys;
+import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
-import com.liferay.portal.kernel.cluster.ClusterLinkUtil;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.messaging.proxy.MessageValuesThreadLocal;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.rabbitmq.connection.RabbitMQConnectionManager;
-import com.liferay.rabbitmq.service.ConsumerManagerLocalServiceUtil;
-import com.liferay.rabbitmq.util.PortletKeys;
+import com.liferay.portal.kernel.util.PortletClassInvoker;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.Portlet;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
  */
+@Component(
+	immediate = true,
+	property = {
+		"com.liferay.portlet.css-class-wrapper=rabbitmq-portlet",
+		"com.liferay.portlet.display-category=category.osb",
+		"javax.portlet.display-name=OSB RabbitMQ Connector",
+		"javax.portlet.expiration-cache=0",
+		"javax.portlet.init-param.template-path=/",
+		"javax.portlet.init-param.view-template=/view.jsp",
+		"javax.portlet.name=" + RabbitMQPortletKeys.RABBIT_MQ,
+		"javax.portlet.resource-bundle=content.Language",
+		"javax.portlet.security-role-ref=administrator,guest,power-user,user"
+	},
+	service = Portlet.class
+)
 public class RabbitMQPortlet extends MVCPortlet {
 
 	public void activateConsumer(
@@ -41,13 +60,12 @@ public class RabbitMQPortlet extends MVCPortlet {
 		String rabbitMQConsumerKey = ParamUtil.getString(
 			actionRequest, "rabbitMQConsumerKey");
 
-		ConsumerManagerLocalServiceUtil.activateConsumer(rabbitMQConsumerKey);
+		_consumerManagerLocalService.activateConsumer(rabbitMQConsumerKey);
 
-		MessageValuesThreadLocal.setValue(
-			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);
+		MessageValuesThreadLocal.setValue("CLUSTER_FORWARD_MESSAGE", true);
 
 		MethodHandler invokeMethodHandler = new MethodHandler(
-			_invokeMethodKey, false, PortletKeys.RAABIT_MQ,
+			_invokeMethodKey, false, RabbitMQPortletKeys.RABBIT_MQ,
 			_activateConsumerMethodKey, new Object[] {rabbitMQConsumerKey});
 
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
@@ -59,7 +77,7 @@ public class RabbitMQPortlet extends MVCPortlet {
 	public void consumeMessage(
 		ActionRequest actionRequest, ActionResponse actionResponse) {
 
-		ConsumerManagerLocalServiceUtil.consumeMessage();
+		_consumerManagerLocalService.consumeMessage();
 	}
 
 	public void deactivateConsumer(
@@ -69,13 +87,12 @@ public class RabbitMQPortlet extends MVCPortlet {
 		String rabbitMQConsumerKey = ParamUtil.getString(
 			actionRequest, "rabbitMQConsumerKey");
 
-		ConsumerManagerLocalServiceUtil.deactivateConsumer(rabbitMQConsumerKey);
+		_consumerManagerLocalService.deactivateConsumer(rabbitMQConsumerKey);
 
-		MessageValuesThreadLocal.setValue(
-			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);
+		MessageValuesThreadLocal.setValue("CLUSTER_FORWARD_MESSAGE", true);
 
 		MethodHandler invokeMethodHandler = new MethodHandler(
-			_invokeMethodKey, false, PortletKeys.RAABIT_MQ,
+			_invokeMethodKey, false, RabbitMQPortletKeys.RABBIT_MQ,
 			_deactivateConsumerMethodKey, new Object[] {rabbitMQConsumerKey});
 
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
@@ -93,17 +110,23 @@ public class RabbitMQPortlet extends MVCPortlet {
 
 		connectionManager.reconnect();
 
-		ConsumerManagerLocalServiceUtil.resetChannels();
+		_consumerManagerLocalService.resetChannels();
+	}
+
+	@Reference(unbind = "-")
+	protected void setConsumerManagerLocalService(
+		ConsumerManagerLocalService consumerManagerLocalService) {
+
+		_consumerManagerLocalService = consumerManagerLocalService;
 	}
 
 	private final MethodKey _activateConsumerMethodKey = new MethodKey(
-		ConsumerManagerLocalServiceUtil.class.getName(), "activateConsumer",
-		String.class);
+		ConsumerManagerLocalService.class, "activateConsumer", String.class);
+	private ConsumerManagerLocalService _consumerManagerLocalService;
 	private final MethodKey _deactivateConsumerMethodKey = new MethodKey(
-		ConsumerManagerLocalServiceUtil.class.getName(), "deactivateConsumer",
-		String.class);
-	private MethodKey _invokeMethodKey = new MethodKey(
-		"com.liferay.portal.kernel.util.PortletClassInvoker", "invoke",
-		boolean.class, String.class, MethodKey.class, Object[].class);
+		ConsumerManagerLocalService.class, "deactivateConsumer", String.class);
+	private final MethodKey _invokeMethodKey = new MethodKey(
+		PortletClassInvoker.class, "invoke", boolean.class, String.class,
+		MethodKey.class, Object[].class);
 
 }
