@@ -93,11 +93,15 @@
 		var comments = commentsNode && commentsNode.value;
 		var summary = summaryNode && summaryNode.value;
 
-		if (summary || comments) {
-			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-cancel-submitting-feedback") %>');
+		var hasCommentsSummary = (summary || comments);
+
+		var cancelEdit = false;
+
+		if (hasCommentsSummary) {
+			cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-cancel-submitting-feedback") %>');
 		}
 
-		if (cancelEdit || !(summary || comments)) {
+		if (cancelEdit || !hasCommentsSummary) {
 			dialog.hide();
 
 			<portlet:namespace />resetFeedback();
@@ -112,7 +116,7 @@
 	}
 </aui:script>
 
-<aui:script use="aui-modal">
+<aui:script use="aui-base,aui-modal,aui-io">
 	var lesaFeedbackDialog = A.one('#<portlet:namespace />lesaFeedbackContainer');
 
 	if (lesaFeedbackDialog) {
@@ -160,7 +164,6 @@
 			function() {
 				var lesaFeedbackComments = A.one('#<portlet:namespace />lesaFeedbackComments').val();
 				var lesaFeedbackCommentsMessage = A.one('#<portlet:namespace />lesaFeedbackCommentsMessage');
-
 				var lesaFeedbackSummary = A.one('#<portlet:namespace />lesaFeedbackSummary').val();
 				var lesaFeedbackSummaryMessage = A.one('#<portlet:namespace />lesaFeedbackSummaryMessage');
 
@@ -187,15 +190,14 @@
 
 				var lesaFeedbackType = '';
 
-				var lesaFeedbackRadioButton = A.one('#<portlet:namespace />lesaFeedbackRadioButton');
 				var lesaFeedbackBugRadioButton = A.one('#<portlet:namespace />lesaFeedbackBugRadioButton');
+				var lesaFeedbackRadioButton = A.one('#<portlet:namespace />lesaFeedbackRadioButton');
 
-				if (lesaFeedbackRadioButton && lesaFeedbackBugRadioButton) {
-					if (lesaFeedbackRadioButton.get('checked') {
+				if (lesaFeedbackBugRadioButton && lesaFeedbackRadioButton) {
+					lesaFeedbackType = lesaFeedbackBugRadioButton.val();
+
+					if (lesaFeedbackRadioButton.get('checked')) {
 						lesaFeedbackType = lesaFeedbackRadioButton.val();
-					}
-					else {
-						lesaFeedbackType = lesaFeedbackBugRadioButton.val();
 					}
 				}
 
