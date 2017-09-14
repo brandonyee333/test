@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder package-path="com.liferay.osb.customer.release.notes">
+	<namespace>RN</namespace>
+	<entity name="JIRAComponent" table="component" local-service="true" remote-service="false" data-source="jiraDataSource" session-factory="jiraSessionFactory" tx-manager="jiraTransactionManager">
+
+		<!-- PK fields -->
+
+		<column name="jiraComponentId" db-name="id" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="jiraProjectId" db-name="project" type="long" />
+		<column name="name" db-name="cname" type="String" />
+	</entity>
+	<entity name="JIRAIssue" table="jiraissue" local-service="true" remote-service="false" data-source="jiraDataSource" session-factory="jiraSessionFactory" tx-manager="jiraTransactionManager">
+
+		<!-- PK fields -->
+
+		<column name="jiraIssueId" db-name="id" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="jiraProjectId" db-name="project" type="long" />
+		<column name="issueNumber" db-name="issuenum" type="long" />
+		<column name="type" db-name="issuetype" type="int" />
+		<column name="summary" db-name="summary" type="String" />
+		<column name="description" db-name="description" type="String" />
+		<column name="priority" db-name="priority" type="int" />
+	</entity>
+	<entity name="JIRAProject" table="project" local-service="true" remote-service="false" data-source="jiraDataSource" session-factory="jiraSessionFactory" tx-manager="jiraTransactionManager">
+
+		<!-- PK fields -->
+
+		<column name="jiraProjectId" db-name="id" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="key" db-name="pkey" type="String" />
+		<column name="name" db-name="pname" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="Key" return-type="JIRAProject">
+			<finder-column name="key" />
+		</finder>
+	</entity>
+	<entity name="JIRAProjectVersion" table="projectversion" local-service="true" remote-service="false" data-source="jiraDataSource" session-factory="jiraSessionFactory" tx-manager="jiraTransactionManager">
+
+		<!-- PK fields -->
+
+		<column name="jiraProjectVersionId" db-name="id" type="long" primary="true" />
+
+		<!-- Other fields -->
+
+		<column name="jiraProjectId" db-name="project" type="long" />
+		<column name="name" db-name="vname" type="String" />
+		<column name="released" type="String" />
+		<column name="archived" type="String" />
+	</entity>
+	<entity name="ReleaseNotes" uuid="true" local-service="true" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="releaseNotesId" type="long" primary="true" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="jiraIssueKeys" type="String" />
+
+		<!-- Order -->
+
+		<order by="desc">
+			<order-column name="releaseNotesId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="LikeName" return-type="Collection">
+			<finder-column name="name" comparator="LIKE" />
+		</finder>
+		<finder name="Name" return-type="ReleaseNotes">
+			<finder-column name="name" />
+		</finder>
+		<finder name="JIRAIssueKeys" return-type="ReleaseNotes">
+			<finder-column name="jiraIssueKeys" />
+		</finder>
+	</entity>
+	<exceptions>
+		<exception>DuplicateJIRAIssueKeys</exception>
+		<exception>RequiredJIRAIssueKeys</exception>
+		<exception>RequiredName</exception>
+	</exceptions>
+</service-builder>
