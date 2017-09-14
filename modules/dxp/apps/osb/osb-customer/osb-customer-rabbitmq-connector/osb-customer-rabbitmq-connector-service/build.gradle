@@ -1,0 +1,22 @@
+buildService {
+	apiDir = "../osb-customer-rabbitmq-connector-api/src/main/java"
+}
+
+dependencies {
+	provided group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
+	provided group: "com.liferay", name: "com.liferay.osgi.util", version: "3.0.0"
+	provided group: "com.liferay", name: "com.liferay.portal.spring.extender", version: "2.0.0"
+	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.28.0"
+	provided group: "com.liferay.portal", name: "com.liferay.util.java", version: "2.0.0"
+	provided group: "com.liferay.portal", name: "portal-kernel", version: "5.2.3"
+	provided group: "com.liferay.portal", name: "util-java", version: "6.2.5"
+	provided group: "com.rabbitmq", name: "amqp-client", version: "3.6.1"
+	provided group: "org.osgi", name: "org.osgi.core", version: "5.0.0"
+	provided project(":private:apps:osb-customer:osb-customer-rabbitmq-connector:osb-customer-rabbitmq-connector-api")
+}
+
+deployDependencies {
+	from configurations.provided
+
+	include "amqp-client-*.jar"
+}
