@@ -1519,15 +1519,6 @@
 				(OSB_TicketWorker.userId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.filterByStatusId">
-		<![CDATA[
-			WHERE
-				(
-					(User_.status = ?) OR
-					(User_.status = ?)
-				)
-		]]>
-	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountCustomer">
 		<![CDATA[
 			INNER JOIN
@@ -1607,30 +1598,6 @@
 					(OSB_AccountWorker.userId = User_.userId)
 			WHERE
 				(OSB_AccountWorker.accountEntryId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByCorpEntry">
-		<![CDATA[
-			INNER JOIN
-				Users_Orgs ON
-					(Users_Orgs.userId = User_.userId)
-			INNER JOIN
-				OSB_CorpEntry ON
-					(OSB_CorpEntry.organizationId = Users_Orgs.organizationId)
-			WHERE
-				(OSB_CorpEntry.corpEntryId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByCorpProject">
-		<![CDATA[
-			INNER JOIN
-				Users_Orgs ON
-					(Users_Orgs.userId = User_.userId)
-			INNER JOIN
-				OSB_CorpProject ON
-					(OSB_CorpProject.organizationId = Users_Orgs.organizationId)
-			WHERE
-				(OSB_CorpProject.corpProjectId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyCreateUser">
