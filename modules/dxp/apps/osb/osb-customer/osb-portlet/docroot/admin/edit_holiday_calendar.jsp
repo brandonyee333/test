@@ -199,8 +199,8 @@ Date lastEnabledDate = calendar.getTime();
 										cssClass="aui-w100"
 										dayParam='<%= "holidayEntryStartDay" + holidayEntriesIndex %>'
 										dayValue="<%= holidayEntryStartDay %>"
-										firstEnabledDate="<%= holidayEntryStartDate.after(firstEnabledDate) ? holidayEntryStartDate : firstEnabledDate %>"
-										lastEnabledDate="<%= holidayEntryStartDate.after(lastEnabledDate) ? holidayEntryStartDate : lastEnabledDate %>"
+										firstEnabledDate="<%= ((holidayEntryStartDate != null) && holidayEntryStartDate.after(firstEnabledDate)) ? holidayEntryStartDate : firstEnabledDate %>"
+										lastEnabledDate="<%= ((holidayEntryStartDate != null) && holidayEntryStartDate.after(lastEnabledDate)) ? holidayEntryStartDate : lastEnabledDate %>"
 										monthParam='<%= "holidayEntryStartMonth" + holidayEntriesIndex %>'
 										monthValue="<%= holidayEntryStartMonth %>"
 										nullable="<%= false %>"
@@ -213,8 +213,8 @@ Date lastEnabledDate = calendar.getTime();
 										cssClass="aui-w100"
 										dayParam='<%= "holidayEntryEndDay" + holidayEntriesIndex %>'
 										dayValue="<%= holidayEntryEndDay %>"
-										firstEnabledDate="<%= holidayEntryEndDate.after(firstEnabledDate) ? holidayEntryEndDate : firstEnabledDate %>"
-										lastEnabledDate="<%= holidayEntryEndDate.after(lastEnabledDate) ? holidayEntryEndDate : lastEnabledDate %>"
+										firstEnabledDate="<%= ((holidayEntryEndDate != null) && holidayEntryEndDate.after(firstEnabledDate)) ? holidayEntryEndDate : firstEnabledDate %>"
+										lastEnabledDate="<%= ((holidayEntryEndDate != null) && holidayEntryEndDate.after(lastEnabledDate)) ? holidayEntryEndDate : lastEnabledDate %>"
 										monthParam='<%= "holidayEntryEndMonth" + holidayEntriesIndex %>'
 										monthValue="<%= holidayEntryEndMonth %>"
 										nullable="<%= false %>"
