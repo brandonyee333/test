@@ -269,9 +269,13 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 	function <portlet:namespace />getSelectionNode() {
 		var selection = window.getSelection();
 
+		var returnVal;
+
 		if (selection.toString() != '') {
-			return selection.anchorNode;
+			returnVal = selection.anchorNode;
 		}
+
+		return returnVal;
 	}
 
 	function <portlet:namespace />pinElement(id, prevNode) {
@@ -284,9 +288,9 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 
 			var offsetFromPrev = prevNode.getBoundingClientRect().bottom - tableColumnHeaderHeight;
 
-			var element = document.getElementById("<portlet:namespace />" + id);
+			var element = document.getElementById('<portlet:namespace />' + id);
 
-			var headerElement = document.getElementById("<portlet:namespace />" + id + "PinnedHeader");
+			var headerElement = document.getElementById('<portlet:namespace />' + id + 'PinnedHeader');
 
 			if (element.getBoundingClientRect().top <= offsetFromPrev) {
 				element.classList.add('visibility-hidden');

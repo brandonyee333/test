@@ -48,14 +48,14 @@ if (banner) {
 		<div class="table <%= liferayIncOrg ? "view-liferay" : "" %>">
 			<div class="row">
 				<c:if test="<%= supportManager %>">
-					<div class="column search-results-header ticket-column select toggle-bulk-edit <%= bulkEdit ? "" : "hide" %>"></div>
+					<div class="column search-results-header select ticket-column toggle-bulk-edit <%= bulkEdit ? "" : "hide" %>"></div>
 				</c:if>
 
 				<div class="column search-results-header severity ticket-column"></div>
 
 				<div class="column img search-results-header ticket-column"></div>
 
-				<div class="column search-results-header ticket-column number toggle-bulk <%= bulkEdit ? "bulk-edit" : "" %> <%= _getCSSClass("display-id", orderByCol, orderByType) %>">
+				<div class="column number search-results-header ticket-column toggle-bulk <%= bulkEdit ? "bulk-edit" : "" %> <%= _getCSSClass("display-id", orderByCol, orderByType) %>">
 					<c:if test='<%= ArrayUtil.contains(orderableColumns, "display-id") %>'>
 						<a href="javascript:<portlet:namespace />columnSort('display-id', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 					</c:if>
@@ -67,7 +67,7 @@ if (banner) {
 					</c:if>
 				</div>
 
-				<div class="column search-results-header ticket-column subject <%= _getCSSClass("subject", orderByCol, orderByType) %>">
+				<div class="column search-results-header subject ticket-column <%= _getCSSClass("subject", orderByCol, orderByType) %>">
 					<c:if test='<%= ArrayUtil.contains(orderableColumns, "subject") %>'>
 						<a href="javascript:<portlet:namespace />columnSort('subject', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 					</c:if>
@@ -79,7 +79,7 @@ if (banner) {
 					</c:if>
 				</div>
 
-				<div class="column search-results-header ticket-column assignee toggle-bulk <%= bulkEdit ? "bulk-edit" : "" %> <%= _getCSSClass("assignee", orderByCol, orderByType) %>">
+				<div class="assignee column search-results-header ticket-column toggle-bulk <%= bulkEdit ? "bulk-edit" : "" %> <%= _getCSSClass("assignee", orderByCol, orderByType) %>">
 					<c:if test='<%= ArrayUtil.contains(orderableColumns, "assignee") %>'>
 						<a href="javascript:<portlet:namespace />columnSort('assignee', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 					</c:if>
@@ -91,7 +91,7 @@ if (banner) {
 					</c:if>
 				</div>
 
-				<div class="column search-results-header ticket-column created <%= _getCSSClass("create-date", orderByCol, orderByType) %>">
+				<div class="column created search-results-header ticket-column <%= _getCSSClass("create-date", orderByCol, orderByType) %>">
 					<c:if test='<%= ArrayUtil.contains(orderableColumns, "create-date") %>'>
 						<a href="javascript:<portlet:namespace />columnSort('create-date', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 					</c:if>
@@ -103,7 +103,7 @@ if (banner) {
 					</c:if>
 				</div>
 
-				<div class="column search-results-header ticket-column last-updated <%= _getCSSClass("modified-date", orderByCol, orderByType) %>">
+				<div class="column last-updated search-results-header ticket-column <%= _getCSSClass("modified-date", orderByCol, orderByType) %>">
 					<c:if test='<%= ArrayUtil.contains(orderableColumns, "modified-date") %>'>
 						<a href="javascript:<portlet:namespace />columnSort('modified-date', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 					</c:if>
@@ -116,7 +116,7 @@ if (banner) {
 				</div>
 
 				<c:if test="<%= liferayIncOrg %>">
-					<div class="column search-results-header ticket-column due-date <%= _getCSSClass("due-date", orderByCol, orderByType) %>">
+					<div class="column due-date search-results-header ticket-column <%= _getCSSClass("due-date", orderByCol, orderByType) %>">
 						<c:if test='<%= ArrayUtil.contains(orderableColumns, "due-date") %>'>
 							<a href="javascript:<portlet:namespace />columnSort('due-date', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 						</c:if>
@@ -129,7 +129,7 @@ if (banner) {
 					</div>
 				</c:if>
 
-				<div class="column search-results-header ticket-column status <%= _getCSSClass("status", orderByCol, orderByType) %>">
+				<div class="column search-results-header status ticket-column <%= _getCSSClass("status", orderByCol, orderByType) %>">
 					<c:if test='<%= ArrayUtil.contains(orderableColumns, "status") %>'>
 						<a href="javascript:<portlet:namespace />columnSort('status', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 					</c:if>
@@ -154,7 +154,7 @@ if (banner) {
 </div>
 
 <c:if test="<%= !first %>">
-	<div class="hide section-title pinned <%= first ? topCssClass : "other" %>" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(id) %>PinnedHeader">
+	<div class="hide pinned section-title <%= first ? topCssClass : "other" %>" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(id) %>PinnedHeader">
 		<liferay-ui:message key="<%= HtmlUtil.escape(label) %>" /> (<%= (count > 0) ? count : StringPool.DASH %>)
 
 		<c:if test="<%= (!advancedSearch && (count > 0)) || ((results != null) && !results.isEmpty()) %>">
@@ -164,7 +164,7 @@ if (banner) {
 
 					<div class="column img search-results-header ticket-column"></div>
 
-					<div class="column search-results-header ticket-column number <%= _getCSSClass("display-id", orderByCol, orderByType) %>">
+					<div class="column number search-results-header ticket-column <%= _getCSSClass("display-id", orderByCol, orderByType) %>">
 						<c:if test='<%= ArrayUtil.contains(orderableColumns, "display-id") %>'>
 							<a href="javascript:<portlet:namespace />columnSort('display-id', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 						</c:if>
@@ -176,7 +176,7 @@ if (banner) {
 						</c:if>
 					</div>
 
-					<div class="column search-results-header ticket-column subject <%= _getCSSClass("subject", orderByCol, orderByType) %>">
+					<div class="column search-results-header subject ticket-column <%= _getCSSClass("subject", orderByCol, orderByType) %>">
 						<c:if test='<%= ArrayUtil.contains(orderableColumns, "subject") %>'>
 							<a href="javascript:<portlet:namespace />columnSort('subject', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 						</c:if>
@@ -188,7 +188,7 @@ if (banner) {
 						</c:if>
 					</div>
 
-					<div class="column search-results-header ticket-column assignee <%= _getCSSClass("assignee", orderByCol, orderByType) %>">
+					<div class="assignee column search-results-header ticket-column <%= _getCSSClass("assignee", orderByCol, orderByType) %>">
 						<c:if test='<%= ArrayUtil.contains(orderableColumns, "assignee") %>'>
 							<a href="javascript:<portlet:namespace />columnSort('assignee', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 						</c:if>
@@ -200,7 +200,7 @@ if (banner) {
 						</c:if>
 					</div>
 
-					<div class="column search-results-header ticket-column created <%= _getCSSClass("create-date", orderByCol, orderByType) %>">
+					<div class="column created search-results-header ticket-column <%= _getCSSClass("create-date", orderByCol, orderByType) %>">
 						<c:if test='<%= ArrayUtil.contains(orderableColumns, "create-date") %>'>
 							<a href="javascript:<portlet:namespace />columnSort('create-date', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 						</c:if>
@@ -212,7 +212,7 @@ if (banner) {
 						</c:if>
 					</div>
 
-					<div class="column search-results-header ticket-column last-updated <%= _getCSSClass("modified-date", orderByCol, orderByType) %>">
+					<div class="column last-updated search-results-header ticket-column <%= _getCSSClass("modified-date", orderByCol, orderByType) %>">
 						<c:if test='<%= ArrayUtil.contains(orderableColumns, "modified-date") %>'>
 							<a href="javascript:<portlet:namespace />columnSort('modified-date', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 						</c:if>
@@ -225,7 +225,7 @@ if (banner) {
 					</div>
 
 					<c:if test="<%= liferayIncOrg %>">
-						<div class="column search-results-header ticket-column due-date <%= _getCSSClass("due-date", orderByCol, orderByType) %>">
+						<div class="column due-date search-results-header ticket-column <%= _getCSSClass("due-date", orderByCol, orderByType) %>">
 							<c:if test='<%= ArrayUtil.contains(orderableColumns, "due-date") %>'>
 								<a href="javascript:<portlet:namespace />columnSort('due-date', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 							</c:if>
@@ -238,7 +238,7 @@ if (banner) {
 						</div>
 					</c:if>
 
-					<div class="column search-results-header ticket-column status <%= _getCSSClass("status", orderByCol, orderByType) %>">
+					<div class="column search-results-header status ticket-column <%= _getCSSClass("status", orderByCol, orderByType) %>">
 						<c:if test='<%= ArrayUtil.contains(orderableColumns, "status") %>'>
 							<a href="javascript:<portlet:namespace />columnSort('status', '<%= HtmlUtil.escapeAttribute(orderByCol) %>', '<%= HtmlUtil.escapeAttribute(orderByType) %>');">
 						</c:if>
