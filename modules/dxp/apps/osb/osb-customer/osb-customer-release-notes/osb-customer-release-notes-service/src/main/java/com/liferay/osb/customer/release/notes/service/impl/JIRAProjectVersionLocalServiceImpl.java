@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.release.notes.service.impl;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.osb.customer.release.notes.model.JIRAProjectVersion;
 import com.liferay.osb.customer.release.notes.service.base.JIRAProjectVersionLocalServiceBaseImpl;
 
@@ -27,8 +26,7 @@ public class JIRAProjectVersionLocalServiceImpl
 	extends JIRAProjectVersionLocalServiceBaseImpl {
 
 	public List<JIRAProjectVersion> getJIRAProjectJIRAProjectVersion(
-			long jiraProjectId, String name)
-		throws SystemException {
+		long jiraProjectId, String name) {
 
 		return jiraProjectVersionFinder.findByP_N(jiraProjectId, name);
 	}

@@ -14,14 +14,14 @@
 
 package com.liferay.osb.customer.release.notes.util.apichange;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.osb.customer.release.notes.model.JIRAIssue;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.osb.customer.release.notes.model.JIRAIssue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class APIChangeBase {
 
 	public void addDetail(KeyValuePair detail) {
 		if (_details == null) {
-			_details = new ArrayList<KeyValuePair>();
+			_details = new ArrayList<>();
 		}
 
 		_details.add(detail);
@@ -92,7 +92,7 @@ public class APIChangeBase {
 		_jiraIssue = jiraIssue;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(APIChangeBase.class);
+	private static final Log _log = LogFactoryUtil.getLog(APIChangeBase.class);
 
 	private List<KeyValuePair> _details;
 	private JIRAIssue _jiraIssue;

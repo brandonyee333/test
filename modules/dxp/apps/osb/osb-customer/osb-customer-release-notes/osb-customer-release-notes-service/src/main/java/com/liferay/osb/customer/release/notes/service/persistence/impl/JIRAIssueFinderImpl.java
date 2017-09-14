@@ -14,10 +14,10 @@
 
 package com.liferay.osb.customer.release.notes.service.persistence.impl;
 
+import com.liferay.osb.customer.release.notes.model.JIRAIssue;
+import com.liferay.osb.customer.release.notes.model.impl.JIRAIssueImpl;
 import com.liferay.osb.customer.release.notes.service.persistence.JIRAIssueFinder;
-import com.liferay.osb.customer.release.notes.service.persistence.JIRAIssueUtil;
-
-import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -25,10 +25,7 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.osb.customer.release.notes.model.JIRAIssue;
-import com.liferay.osb.customer.release.notes.model.impl.JIRAIssueImpl;
-import com.liferay.util.dao.orm.CustomSQLUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Iterator;
 import java.util.List;
@@ -60,17 +57,16 @@ public class JIRAIssueFinderImpl
 	public static final String FIND_BY_L_K =
 		JIRAIssueFinder.class.getName() + ".findByL_K";
 
-	public int countByIsRelatedToJIRAIssue(long jiraIssueId)
-		throws SystemException {
-
+	public int countByIsRelatedToJIRAIssue(long jiraIssueId) {
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(COUNT_BY_IS_RELATED_TO_JIRA_ISSUE);
+			String sql = CustomSQLUtil.get(
+				getClass(), COUNT_BY_IS_RELATED_TO_JIRA_ISSUE);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -98,17 +94,16 @@ public class JIRAIssueFinderImpl
 		}
 	}
 
-	public int countByJIRAProjectVersion(long jiraProjectVersionId)
-		throws SystemException {
-
+	public int countByJIRAProjectVersion(long jiraProjectVersionId) {
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(COUNT_BY_JIRA_PROJECT_VERSION);
+			String sql = CustomSQLUtil.get(
+				getClass(), COUNT_BY_JIRA_PROJECT_VERSION);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -136,17 +131,15 @@ public class JIRAIssueFinderImpl
 		}
 	}
 
-	public int countByL_K(String label, String jiraProjectKey)
-		throws SystemException {
-
+	public int countByL_K(String label, String jiraProjectKey) {
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(COUNT_BY_L_K);
+			String sql = CustomSQLUtil.get(getClass(), COUNT_BY_L_K);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -175,25 +168,23 @@ public class JIRAIssueFinderImpl
 		}
 	}
 
-	public List<JIRAIssue> findByIsRelatedToJIRAIssue(long jiraIssueId)
-		throws SystemException {
-
+	public List<JIRAIssue> findByIsRelatedToJIRAIssue(long jiraIssueId) {
 		return findByIsRelatedToJIRAIssue(
 			jiraIssueId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
 	public List<JIRAIssue> findByIsRelatedToJIRAIssue(
-			long jiraIssueId, int start, int end)
-		throws SystemException {
+		long jiraIssueId, int start, int end) {
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_IS_RELATED_TO_JIRA_ISSUE);
+			String sql = CustomSQLUtil.get(
+				getClass(), FIND_BY_IS_RELATED_TO_JIRA_ISSUE);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("jiraissue", JIRAIssueImpl.class);
 
@@ -211,25 +202,23 @@ public class JIRAIssueFinderImpl
 		}
 	}
 
-	public List<JIRAIssue> findByJIRAProjectVersion(long jiraProjectVersionId)
-		throws SystemException {
-
+	public List<JIRAIssue> findByJIRAProjectVersion(long jiraProjectVersionId) {
 		return findByJIRAProjectVersion(
 			jiraProjectVersionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
 	public List<JIRAIssue> findByJIRAProjectVersion(
-			long jiraProjectVersionId, int start, int end)
-		throws SystemException {
+		long jiraProjectVersionId, int start, int end) {
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_JIRA_PROJECT_VERSION);
+			String sql = CustomSQLUtil.get(
+				getClass(), FIND_BY_JIRA_PROJECT_VERSION);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("jiraissue", JIRAIssueImpl.class);
 
@@ -247,7 +236,7 @@ public class JIRAIssueFinderImpl
 		}
 	}
 
-	public JIRAIssue findByKey(String jiraIssueKey) throws SystemException {
+	public JIRAIssue findByKey(String jiraIssueKey) {
 		String[] jiraIssueKeyArray = StringUtil.split(
 			jiraIssueKey, StringPool.DASH);
 
@@ -260,9 +249,9 @@ public class JIRAIssueFinderImpl
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_KEY);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_KEY);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("jiraissue", JIRAIssueImpl.class);
 
@@ -287,25 +276,22 @@ public class JIRAIssueFinderImpl
 		}
 	}
 
-	public List<JIRAIssue> findByL_K(String label, String jiraProjectKey)
-		throws SystemException {
-
+	public List<JIRAIssue> findByL_K(String label, String jiraProjectKey) {
 		return findByL_K(
 			label, jiraProjectKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
 	public List<JIRAIssue> findByL_K(
-			String label, String jiraProjectKey, int start, int end)
-		throws SystemException {
+		String label, String jiraProjectKey, int start, int end) {
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_L_K);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_L_K);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("jiraissue", JIRAIssueImpl.class);
 

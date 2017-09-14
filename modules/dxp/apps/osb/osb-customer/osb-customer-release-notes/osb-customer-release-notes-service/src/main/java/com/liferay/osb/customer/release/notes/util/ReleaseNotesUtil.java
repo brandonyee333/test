@@ -14,16 +14,6 @@
 
 package com.liferay.osb.customer.release.notes.util;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.SystemProperties;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.customer.release.notes.model.JIRAComponent;
 import com.liferay.osb.customer.release.notes.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.model.JIRAProjectVersion;
@@ -34,6 +24,16 @@ import com.liferay.osb.customer.release.notes.util.comparator.ClassNameComparato
 import com.liferay.osb.customer.release.notes.util.comparator.JIRAComponentComparator;
 import com.liferay.osb.customer.release.notes.util.comparator.JIRAIssueComparator;
 import com.liferay.osb.customer.release.notes.util.filter.JIRAComponentFilter;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,7 +83,7 @@ public class ReleaseNotesUtil {
 	public static String[] filterJIRAIssueKeys(
 		String[] jiraIssueKeys, boolean allowed) {
 
-		List<String> filteredJIRAIssueKeys = new ArrayList<String>();
+		List<String> filteredJIRAIssueKeys = new ArrayList<>();
 
 		for (String jiraIssueKey : jiraIssueKeys) {
 			String projectKey = jiraIssueKey.split(StringPool.DASH)[0];
@@ -103,8 +103,8 @@ public class ReleaseNotesUtil {
 			List<JIRAIssue> jiraIssues)
 		throws Exception {
 
-		Map<String, APIChangeClass> apiChangeClasses =
-			new TreeMap<String, APIChangeClass>(new ClassNameComparator());
+		Map<String, APIChangeClass> apiChangeClasses = new TreeMap<>(
+			new ClassNameComparator());
 
 		for (JIRAIssue jiraIssue : jiraIssues) {
 			String apiChangeText = jiraIssue.getAPIChange();
@@ -157,7 +157,7 @@ public class ReleaseNotesUtil {
 	public static List<JIRAIssue> getJIRAIssuesWithUpgradeNote(
 		List<JIRAIssue> jiraIssues) {
 
-		List<JIRAIssue> jiraIssuesWithUpgradeNotes = new ArrayList<JIRAIssue>();
+		List<JIRAIssue> jiraIssuesWithUpgradeNotes = new ArrayList<>();
 
 		for (JIRAIssue jiraIssue : jiraIssues) {
 			if (Validator.isNotNull(jiraIssue.getUpgradeNote())) {
@@ -171,9 +171,8 @@ public class ReleaseNotesUtil {
 	public static Map<JIRAComponent, Set<JIRAIssue>> sortJIRAIssues(
 		List<JIRAIssue> jiraIssues) {
 
-		Map<JIRAComponent, Set<JIRAIssue>> jiraComponentMap =
-			new TreeMap<JIRAComponent, Set<JIRAIssue>>(
-				new JIRAComponentComparator());
+		Map<JIRAComponent, Set<JIRAIssue>> jiraComponentMap = new TreeMap<>(
+			new JIRAComponentComparator());
 
 		for (JIRAIssue jiraIssue : jiraIssues) {
 			try {
@@ -182,7 +181,7 @@ public class ReleaseNotesUtil {
 						jiraIssue.getJiraIssueId());
 
 				if (jiraComponents.isEmpty()) {
-					jiraComponents = new ArrayList<JIRAComponent>();
+					jiraComponents = new ArrayList<>();
 
 					JIRAComponent jiraComponent = new JIRAComponentImpl();
 
@@ -197,8 +196,7 @@ public class ReleaseNotesUtil {
 						jiraComponent);
 
 					if (jiraIssueSet == null) {
-						jiraIssueSet = new TreeSet<JIRAIssue>(
-							new JIRAIssueComparator());
+						jiraIssueSet = new TreeSet<>(new JIRAIssueComparator());
 
 						jiraComponentMap.put(jiraComponent, jiraIssueSet);
 					}
@@ -232,14 +230,14 @@ public class ReleaseNotesUtil {
 				StringPool.UNDERLINE, StringPool.UNDERLINE,
 				StringPool.UNDERLINE, StringPool.UNDERLINE,
 				StringPool.UNDERLINE, StringPool.UNDERLINE, StringPool.UNDERLINE
-			}
-		);
+			});
 	}
 
 	private static final String _CACHE_DIR =
 		SystemProperties.get(SystemProperties.TMP_DIR) +
 			"/liferay/releasenotes/";
 
-	private static Log _log = LogFactoryUtil.getLog(ReleaseNotesUtil.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		ReleaseNotesUtil.class);
 
 }

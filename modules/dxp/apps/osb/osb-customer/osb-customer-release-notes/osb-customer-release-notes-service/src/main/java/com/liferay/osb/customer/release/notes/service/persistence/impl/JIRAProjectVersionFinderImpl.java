@@ -14,19 +14,16 @@
 
 package com.liferay.osb.customer.release.notes.service.persistence.impl;
 
+import com.liferay.osb.customer.release.notes.model.JIRAProjectVersion;
+import com.liferay.osb.customer.release.notes.model.impl.JIRAProjectVersionImpl;
 import com.liferay.osb.customer.release.notes.service.persistence.JIRAProjectVersionFinder;
-import com.liferay.osb.customer.release.notes.service.persistence.JIRAProjectVersionUtil;
-
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.osb.customer.release.notes.model.JIRAProjectVersion;
-import com.liferay.osb.customer.release.notes.model.impl.JIRAProjectVersionImpl;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +32,7 @@ import java.util.List;
  * @author Samuel Kong
  */
 public class JIRAProjectVersionFinderImpl
-		extends JIRAProjectVersionFinderBaseImpl
+	extends JIRAProjectVersionFinderBaseImpl
 	implements JIRAProjectVersionFinder {
 
 	public static final String COUNT_BY_P_N =
@@ -44,17 +41,15 @@ public class JIRAProjectVersionFinderImpl
 	public static final String FIND_BY_P_N =
 		JIRAProjectVersionFinder.class.getName() + ".findByP_N";
 
-	public int countByP_N(long jiraProjectId, String name)
-		throws SystemException {
-
+	public int countByP_N(long jiraProjectId, String name) {
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(COUNT_BY_P_N);
+			String sql = CustomSQLUtil.get(getClass(), COUNT_BY_P_N);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -83,25 +78,22 @@ public class JIRAProjectVersionFinderImpl
 		}
 	}
 
-	public List<JIRAProjectVersion> findByP_N(long jiraProjectId, String name)
-		throws SystemException {
-
+	public List<JIRAProjectVersion> findByP_N(long jiraProjectId, String name) {
 		return findByP_N(
 			jiraProjectId, name, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
 	public List<JIRAProjectVersion> findByP_N(
-			long jiraProjectId, String name, int start, int end)
-		throws SystemException {
+		long jiraProjectId, String name, int start, int end) {
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_P_N);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_P_N);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("projectversion", JIRAProjectVersionImpl.class);
 

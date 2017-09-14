@@ -14,10 +14,10 @@
 
 package com.liferay.osb.customer.release.notes.util.filter;
 
-import com.liferay.compat.portal.kernel.util.ArrayUtil;
 import com.liferay.osb.customer.release.notes.model.JIRAComponent;
 import com.liferay.osb.customer.release.notes.model.JIRAProjectVersion;
 import com.liferay.osb.customer.release.notes.util.JIRAConstants;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 /**
  * @author Samuel Kong

@@ -14,11 +14,11 @@
 
 package com.liferay.osb.customer.release.notes.util.apichange;
 
+import com.liferay.osb.customer.release.notes.model.JIRAIssue;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.osb.customer.release.notes.model.JIRAIssue;
 
 /**
  * @author Samuel Kong
@@ -61,6 +61,6 @@ public class APIChangeMethod extends APIChangeBase {
 
 	private static Log _log = LogFactoryUtil.getLog(APIChangeMethod.class);
 
-	private String _signature;
+	private final String _signature;
 
 }

@@ -14,10 +14,9 @@
 
 package com.liferay.osb.customer.release.notes.service.impl;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.osb.customer.release.notes.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.service.base.JIRAIssueLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +26,18 @@ import java.util.List;
  */
 public class JIRAIssueLocalServiceImpl extends JIRAIssueLocalServiceBaseImpl {
 
-	public List<JIRAIssue> getIsRelatedToJIRAIssues(long jiraIssueId)
-		throws SystemException {
-
+	public List<JIRAIssue> getIsRelatedToJIRAIssues(long jiraIssueId) {
 		return jiraIssueFinder.findByIsRelatedToJIRAIssue(jiraIssueId);
 	}
 
-	public JIRAIssue getJIRAIssue(String jiraIssueKey) throws SystemException {
+	public JIRAIssue getJIRAIssue(String jiraIssueKey) {
 		return jiraIssueFinder.findByKey(jiraIssueKey);
 	}
 
 	public List<JIRAIssue> getJIRAIssues(String[] jiraIssueKeys)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		List<JIRAIssue> jiraIssues = new ArrayList<JIRAIssue>();
+		List<JIRAIssue> jiraIssues = new ArrayList<>();
 
 		for (String jiraIssueKey : jiraIssueKeys) {
 			JIRAIssue jiraIssue = getJIRAIssue(jiraIssueKey);
@@ -54,15 +51,13 @@ public class JIRAIssueLocalServiceImpl extends JIRAIssueLocalServiceBaseImpl {
 	}
 
 	public List<JIRAIssue> getJIRALabelJIRAIssues(
-			String label, String jiraProjectKey)
-		throws SystemException {
+		String label, String jiraProjectKey) {
 
 		return jiraIssueFinder.findByL_K(label, jiraProjectKey);
 	}
 
 	public List<JIRAIssue> getJIRAProjectVersionJIRAIssues(
-			long jiraProjectVersionId)
-		throws SystemException {
+		long jiraProjectVersionId) {
 
 		return jiraIssueFinder.findByJIRAProjectVersion(jiraProjectVersionId);
 	}

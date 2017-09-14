@@ -14,20 +14,19 @@
 
 package com.liferay.osb.customer.release.notes.service.impl;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
-import com.liferay.osb.customer.release.notes.DuplicateJIRAIssueKeysException;
-import com.liferay.osb.customer.release.notes.NoSuchReleaseNotesException;
-import com.liferay.osb.customer.release.notes.RequiredJIRAIssueKeysException;
-import com.liferay.osb.customer.release.notes.RequiredNameException;
+import com.liferay.osb.customer.release.notes.exception.DuplicateJIRAIssueKeysException;
+import com.liferay.osb.customer.release.notes.exception.NoSuchReleaseNotesException;
+import com.liferay.osb.customer.release.notes.exception.RequiredJIRAIssueKeysException;
+import com.liferay.osb.customer.release.notes.exception.RequiredNameException;
 import com.liferay.osb.customer.release.notes.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.model.ReleaseNotes;
 import com.liferay.osb.customer.release.notes.service.base.ReleaseNotesLocalServiceBaseImpl;
 import com.liferay.osb.customer.release.notes.util.ReleaseNotesUtil;
-import com.liferay.util.dao.orm.CustomSQLUtil;
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -42,9 +41,9 @@ public class ReleaseNotesLocalServiceImpl
 
 	public ReleaseNotes addReleaseNotes(
 			long userId, String name, String jiraIssueKeys)
-		throws PortalException, SystemException {
+		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		jiraIssueKeys = normalize(jiraIssueKeys);
 		Date now = new Date();
 
@@ -62,12 +61,12 @@ public class ReleaseNotesLocalServiceImpl
 		releaseNotes.setName(name);
 		releaseNotes.setJiraIssueKeys(jiraIssueKeys);
 
-		return releaseNotesPersistence.update(releaseNotes, false);
+		return releaseNotesPersistence.update(releaseNotes);
 	}
 
 	@Override
 	public ReleaseNotes deleteReleaseNotes(long releaseNotesId)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		ReleaseNotes releaseNotes = releaseNotesPersistence.findByPrimaryKey(
 			releaseNotesId);
@@ -76,20 +75,18 @@ public class ReleaseNotesLocalServiceImpl
 	}
 
 	@Override
-	public ReleaseNotes deleteReleaseNotes(ReleaseNotes releaseNotes)
-		throws SystemException {
-
+	public ReleaseNotes deleteReleaseNotes(ReleaseNotes releaseNotes) {
 		clearCacheFile(releaseNotes);
 
 		return releaseNotesPersistence.remove(releaseNotes);
 	}
 
-	public ReleaseNotes fetchReleaseNotes(String name) throws SystemException {
+	public ReleaseNotes fetchReleaseNotes(String name) {
 		return releaseNotesPersistence.fetchByName(name);
 	}
 
 	public ReleaseNotes getReleaseNotesByUuid(String uuid)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		List<ReleaseNotes> releaseNotes = releaseNotesPersistence.findByUuid(
 			uuid);
@@ -102,9 +99,7 @@ public class ReleaseNotesLocalServiceImpl
 		}
 	}
 
-	public List<ReleaseNotes> search(String name, int start, int end)
-		throws SystemException {
-
+	public List<ReleaseNotes> search(String name, int start, int end) {
 		if (Validator.isNotNull(name)) {
 			name = CustomSQLUtil.keywords(name)[0];
 
@@ -115,13 +110,13 @@ public class ReleaseNotesLocalServiceImpl
 		}
 	}
 
-	public int searchCount(String name) throws SystemException {
+	public int searchCount(String name) {
 		return releaseNotesPersistence.countByName(name);
 	}
 
 	public ReleaseNotes updateReleaseNotes(
 			long releaseNotesId, String name, String jiraIssueKeys)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		jiraIssueKeys = normalize(jiraIssueKeys);
 
@@ -134,7 +129,7 @@ public class ReleaseNotesLocalServiceImpl
 		releaseNotes.setName(name);
 		releaseNotes.setJiraIssueKeys(jiraIssueKeys);
 
-		releaseNotes = releaseNotesPersistence.update(releaseNotes, false);
+		releaseNotes = releaseNotesPersistence.update(releaseNotes);
 
 		clearCacheFile(releaseNotes);
 
@@ -148,13 +143,13 @@ public class ReleaseNotesLocalServiceImpl
 		ReleaseNotesUtil.clearCacheFile(cacheFilePath);
 	}
 
-	protected String normalize(String jiraIssueKeys) throws SystemException {
-		Set<String> jiraIssueKeysSet = new TreeSet<String>();
+	protected String normalize(String jiraIssueKeys) {
+		Set<String> jiraIssueKeysSet = new TreeSet<>();
 
 		String[] jiraIssueKeysArray = StringUtil.split(jiraIssueKeys);
 
 		for (String jiraIssueKey : jiraIssueKeysArray) {
-			jiraIssueKey = jiraIssueKey.trim().toUpperCase();
+			jiraIssueKey = StringUtil.toUpperCase(jiraIssueKey.trim());
 
 			JIRAIssue jiraIssue = jiraIssueLocalService.getJIRAIssue(
 				jiraIssueKey);
@@ -169,7 +164,7 @@ public class ReleaseNotesLocalServiceImpl
 
 	protected void validate(
 			long releaseNotesId, String name, String jiraIssueKeys)
-		throws PortalException, SystemException {
+		throws PortalException {
 
 		if (Validator.isNull(name)) {
 			throw new RequiredNameException();

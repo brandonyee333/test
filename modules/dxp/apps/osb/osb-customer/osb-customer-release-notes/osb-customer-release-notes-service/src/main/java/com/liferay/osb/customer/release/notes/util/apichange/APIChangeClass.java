@@ -14,15 +14,15 @@
 
 package com.liferay.osb.customer.release.notes.util.apichange;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.osb.customer.release.notes.model.JIRAIssue;
+import com.liferay.osb.customer.release.notes.util.comparator.APIChangeMethodComparator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.osb.customer.release.notes.model.JIRAIssue;
-import com.liferay.osb.customer.release.notes.util.comparator.APIChangeMethodComparator;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -37,24 +37,23 @@ public class APIChangeClass extends APIChangeBase {
 
 		String[] tokens = StringUtil.split(apiChangeClassText, "\n\n");
 
-		for (int i = 0; i < tokens.length; i++) {
-			String curToken = tokens[i].trim();
+		String curToken = tokens[0].trim();
 
-			if (i == 0) {
-				int x = curToken.indexOf(StringPool.NEW_LINE);
+		int x = curToken.indexOf(StringPool.NEW_LINE);
 
-				if (x == -1) {
-					_className = curToken;
-				}
-				else {
-					_className = curToken.substring(0, x);
+		if (x == -1) {
+			_className = curToken;
+		}
+		else {
+			_className = curToken.substring(0, x);
 
-					String details = curToken.substring(x);
+			String details = curToken.substring(x);
 
-					setDetails(details.trim());
-				}
-			}
-			else if (Validator.isNotNull(curToken)) {
+			setDetails(details.trim());
+		}
+
+		for (int i = 1; i < tokens.length; i++) {
+			if (Validator.isNotNull(curToken)) {
 				addAPIChangeMethod(new APIChangeMethod(curToken, jiraIssue));
 			}
 		}
@@ -62,8 +61,7 @@ public class APIChangeClass extends APIChangeBase {
 
 	public void addAPIChangeMethod(APIChangeMethod apiChangeMethod) {
 		if (_apiChangeMethods == null) {
-			_apiChangeMethods = new TreeSet<APIChangeMethod>(
-				new APIChangeMethodComparator());
+			_apiChangeMethods = new TreeSet<>(new APIChangeMethodComparator());
 		}
 
 		_apiChangeMethods.add(apiChangeMethod);
@@ -143,6 +141,6 @@ public class APIChangeClass extends APIChangeBase {
 	private static Log _log = LogFactoryUtil.getLog(APIChangeClass.class);
 
 	private Set<APIChangeMethod> _apiChangeMethods;
-	private String _className;
+	private final String _className;
 
 }

@@ -14,19 +14,16 @@
 
 package com.liferay.osb.customer.release.notes.service.persistence.impl;
 
+import com.liferay.osb.customer.release.notes.model.JIRAComponent;
+import com.liferay.osb.customer.release.notes.model.impl.JIRAComponentImpl;
 import com.liferay.osb.customer.release.notes.service.persistence.JIRAComponentFinder;
-import com.liferay.osb.customer.release.notes.service.persistence.JIRAComponentUtil;
-
+import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.Type;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.osb.customer.release.notes.model.JIRAComponent;
-import com.liferay.osb.customer.release.notes.model.impl.JIRAComponentImpl;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Iterator;
 import java.util.List;
@@ -43,15 +40,15 @@ public class JIRAComponentFinderImpl
 	public static final String FIND_BY_JIRA_ISSUE =
 		JIRAComponentFinder.class.getName() + ".findByJIRAIssue";
 
-	public int countByJIRAIssue(long jiraIssueId) throws SystemException {
+	public int countByJIRAIssue(long jiraIssueId) {
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(COUNT_BY_JIRA_ISSUE);
+			String sql = CustomSQLUtil.get(getClass(), COUNT_BY_JIRA_ISSUE);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
 
@@ -79,25 +76,22 @@ public class JIRAComponentFinderImpl
 		}
 	}
 
-	public List<JIRAComponent> findByJIRAIssue(long jiraIssueId)
-		throws SystemException {
-
+	public List<JIRAComponent> findByJIRAIssue(long jiraIssueId) {
 		return findByJIRAIssue(
 			jiraIssueId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
 	public List<JIRAComponent> findByJIRAIssue(
-			long jiraIssueId, int start, int end)
-		throws SystemException {
+		long jiraIssueId, int start, int end) {
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			String sql = CustomSQLUtil.get(FIND_BY_JIRA_ISSUE);
+			String sql = CustomSQLUtil.get(getClass(), FIND_BY_JIRA_ISSUE);
 
-			SQLQuery q = session.createSQLQuery(sql);
+			SQLQuery q = session.createSynchronizedSQLQuery(sql);
 
 			q.addEntity("component", JIRAComponentImpl.class);
 

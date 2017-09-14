@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.release.notes.model.impl;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Alan Zhang

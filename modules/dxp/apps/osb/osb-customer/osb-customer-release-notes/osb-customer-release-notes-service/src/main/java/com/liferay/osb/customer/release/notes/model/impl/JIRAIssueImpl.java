@@ -14,16 +14,15 @@
 
 package com.liferay.osb.customer.release.notes.model.impl;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.osb.customer.release.notes.model.JIRAComponent;
 import com.liferay.osb.customer.release.notes.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.model.JIRAProject;
 import com.liferay.osb.customer.release.notes.service.JIRAComponentLocalServiceUtil;
 import com.liferay.osb.customer.release.notes.service.JIRAIssueLocalServiceUtil;
 import com.liferay.osb.customer.release.notes.service.JIRAProjectLocalServiceUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -46,13 +45,9 @@ public class JIRAIssueImpl extends JIRAIssueBaseImpl {
 	public List<JIRAIssue> getIsRelatedToJiraIssues() {
 		List<JIRAIssue> isRelatedToJiraIssues = null;
 
-		try {
-			isRelatedToJiraIssues =
-				JIRAIssueLocalServiceUtil.getIsRelatedToJIRAIssues(
-					getJiraIssueId());
-		}
-		catch (SystemException se) {
-		}
+		isRelatedToJiraIssues =
+			JIRAIssueLocalServiceUtil.getIsRelatedToJIRAIssues(
+				getJiraIssueId());
 
 		return isRelatedToJiraIssues;
 	}
@@ -60,13 +55,9 @@ public class JIRAIssueImpl extends JIRAIssueBaseImpl {
 	public List<JIRAComponent> getJIRAComponents() {
 		List<JIRAComponent> jiraComponents = null;
 
-		try {
-			jiraComponents =
-				JIRAComponentLocalServiceUtil.getJIRAIssueJIRAComponents(
-					getJiraIssueId());
-		}
-		catch (SystemException se) {
-		}
+		jiraComponents =
+			JIRAComponentLocalServiceUtil.getJIRAIssueJIRAComponents(
+				getJiraIssueId());
 
 		return jiraComponents;
 	}
@@ -162,8 +153,7 @@ public class JIRAIssueImpl extends JIRAIssueBaseImpl {
 	private String _normalizeLineBreaks(String s) {
 		return StringUtil.replace(
 			s, new String[] {StringPool.RETURN_NEW_LINE, StringPool.RETURN},
-			new String[] {StringPool.NEW_LINE, StringPool.NEW_LINE}
-		);
+			new String[] {StringPool.NEW_LINE, StringPool.NEW_LINE});
 	}
 
 	private static final String _API_CHANGE_IDENTIFIER = "API CHANGE";

@@ -58,6 +58,6 @@ public class DataURIUtil {
 		return encode(new File(fileName));
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(DataURIUtil.class);
+	private static final Log _log = LogFactoryUtil.getLog(DataURIUtil.class);
 
 }

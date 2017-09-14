@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.release.notes.service.impl;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.osb.customer.release.notes.model.JIRAComponent;
 import com.liferay.osb.customer.release.notes.service.base.JIRAComponentLocalServiceBaseImpl;
 
@@ -26,9 +25,7 @@ import java.util.List;
 public class JIRAComponentLocalServiceImpl
 	extends JIRAComponentLocalServiceBaseImpl {
 
-	public List<JIRAComponent> getJIRAIssueJIRAComponents(long jiraIssueId)
-		throws SystemException {
-
+	public List<JIRAComponent> getJIRAIssueJIRAComponents(long jiraIssueId) {
 		return jiraComponentFinder.findByJIRAIssue(jiraIssueId);
 	}
 

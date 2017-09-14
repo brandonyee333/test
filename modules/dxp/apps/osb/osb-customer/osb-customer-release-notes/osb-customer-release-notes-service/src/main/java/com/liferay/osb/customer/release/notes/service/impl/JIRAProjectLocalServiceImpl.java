@@ -14,10 +14,9 @@
 
 package com.liferay.osb.customer.release.notes.service.impl;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.osb.customer.release.notes.model.JIRAProject;
 import com.liferay.osb.customer.release.notes.service.base.JIRAProjectLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Samuel Kong
@@ -25,9 +24,7 @@ import com.liferay.osb.customer.release.notes.service.base.JIRAProjectLocalServi
 public class JIRAProjectLocalServiceImpl
 	extends JIRAProjectLocalServiceBaseImpl {
 
-	public JIRAProject getJIRAProject(String key)
-		throws PortalException, SystemException {
-
+	public JIRAProject getJIRAProject(String key) throws PortalException {
 		return jiraProjectPersistence.findByKey(key);
 	}
 

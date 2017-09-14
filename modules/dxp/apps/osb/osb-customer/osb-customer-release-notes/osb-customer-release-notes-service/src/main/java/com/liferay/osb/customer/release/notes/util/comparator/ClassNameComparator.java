@@ -14,8 +14,8 @@
 
 package com.liferay.osb.customer.release.notes.util.comparator;
 
-import com.liferay.compat.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Comparator;
