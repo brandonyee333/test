@@ -66,29 +66,29 @@ for (SupportRegion supportRegion : supportRegions) {
 <aui:input name="supportRegionIds" type="hidden" value="<%= supportRegionsValue %>" />
 
 <div class="account details tab-view">
-	<ul class="aui-tabview-list tabs">
+	<ul class="lfr-nav nav nav-tabs">
 		<c:if test="<%= accountEntry != null %>">
-			<li class="aui-tab" data-content="<portlet:namespace />offeringsContent" id="<portlet:namespace />offerings">
-				<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('offerings');"><liferay-ui:message key="offerings" /></a>
+			<li class="tab" data-content="<portlet:namespace />offeringsContent" id="<portlet:namespace />offerings">
+				<a href="javascript:<portlet:namespace />revealTab('offerings');"><liferay-ui:message key="offerings" /></a>
 			</li>
-			<li class="aui-tab" data-content="<portlet:namespace />environmentDetailsContent" id="<portlet:namespace />environmentDetails">
-				<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('environmentDetails');"><liferay-ui:message key="environment-details" /></a>
+			<li class="tab" data-content="<portlet:namespace />environmentDetailsContent" id="<portlet:namespace />environmentDetails">
+				<a href="javascript:<portlet:namespace />revealTab('environmentDetails');"><liferay-ui:message key="environment-details" /></a>
 			</li>
-			<li class="aui-tab" data-content="<portlet:namespace />projectMessagesContent" id="<portlet:namespace />projectMessages">
-				<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('projectMessages');"><liferay-ui:message key="project-messages" /></a>
+			<li class="tab" data-content="<portlet:namespace />projectMessagesContent" id="<portlet:namespace />projectMessages">
+				<a href="javascript:<portlet:namespace />revealTab('projectMessages');"><liferay-ui:message key="project-messages" /></a>
 			</li>
 		</c:if>
 
-		<li class="aui-tab" data-content="<portlet:namespace />supportRegionsContent" id="<portlet:namespace />supportRegions">
-			<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('supportRegions');"><liferay-ui:message key="support-regions" /></a>
+		<li class="tab" data-content="<portlet:namespace />supportRegionsContent" id="<portlet:namespace />supportRegions">
+			<a href="javascript:<portlet:namespace />revealTab('supportRegions');"><liferay-ui:message key="support-regions" /></a>
 		</li>
-		<li class="aui-tab" data-content="<portlet:namespace />supportLanguagesContent" id="<portlet:namespace />supportLanguages">
-			<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('supportLanguages');"><liferay-ui:message key="support-languages" /></a>
+		<li class="tab" data-content="<portlet:namespace />supportLanguagesContent" id="<portlet:namespace />supportLanguages">
+			<a href="javascript:<portlet:namespace />revealTab('supportLanguages');"><liferay-ui:message key="support-languages" /></a>
 		</li>
 
 		<c:if test="<%= accountEntry != null %>">
-			<li class="aui-tab" data-content="<portlet:namespace />historyContent" id="<portlet:namespace />history">
-				<a class="aui-tab-content aui-tab-label" href="javascript:<portlet:namespace />revealTab('history');"><liferay-ui:message key="history" /></a>
+			<li class="tab" data-content="<portlet:namespace />historyContent" id="<portlet:namespace />history">
+				<a href="javascript:<portlet:namespace />revealTab('history');"><liferay-ui:message key="history" /></a>
 			</li>
 		</c:if>
 	</ul>
@@ -730,9 +730,9 @@ for (SupportRegion supportRegion : supportRegions) {
 
 			tabContent.show();
 
-			A.all('.details .tabs .aui-tab').removeClass('aui-tab-active');
+			A.all('.details .nav-tabs .tab').removeClass('active');
 
-			tab.addClass('aui-tab-active');
+			tab.addClass('active');
 		},
 		['aui-base']
 	);

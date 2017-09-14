@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String detailTab = ParamUtil.getString(request, "detailTab");
+String detailTab = ParamUtil.getString(request, "detailTab", "offerings");
 
 String redirect = ParamUtil.getString(request, "redirect");
 
