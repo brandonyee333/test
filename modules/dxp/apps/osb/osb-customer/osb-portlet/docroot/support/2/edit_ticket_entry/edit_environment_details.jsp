@@ -474,25 +474,25 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 		var supportMessageDisplay_5_2 = A.one('#<portlet:namespace />supportMessageDisplay_5_2');
 
 		if (supportMessageDisplay_5_2) {
-			var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>);
+			var visibleSupportMessageDisplay_5_2 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>);
 
-			supportMessageDisplay_5_2.toggle(condition);
+			supportMessageDisplay_5_2.toggle(visibleSupportMessageDisplay_5_2);
 		}
 
 		var supportMessageDisplay_6_0 = A.one('#<portlet:namespace />supportMessageDisplay_6_0');
 
 		if (supportMessageDisplay_6_0) {
-			var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>);
+			var visibleSupportMessageDisplay_6_0 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>);
 
-			supportMessageDisplay_6_0.toggle(condition);
+			supportMessageDisplay_6_0.toggle(visibleSupportMessageDisplay_6_0);
 		}
 
 		var supportMessageDisplay_6_1 = A.one('#<portlet:namespace />supportMessageDisplay_6_1');
 
 		if (supportMessageDisplay_6_1) {
-			var condition = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>);
+			var visibleSupportMessageDisplay_6_1 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>);
 
-			supportMessageDisplay_6_1.toggle(condition);
+			supportMessageDisplay_6_1.toggle(visibleSupportMessageDisplay_6_1);
 		}
 	}
 

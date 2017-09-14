@@ -116,7 +116,7 @@
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="product" />:</span>
 
-									<aui:select name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectProductEntry(this.value);" %>' />
+									<aui:select name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectProductEntry(this.value);" %>'>
 										<aui:option label="select" value="0" />
 
 										<%
@@ -147,7 +147,7 @@
 										}
 										%>
 
-									</select>
+									</aui:select>
 
 									<c:if test="<%= productEntryId > 0 %>">
 										<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
@@ -576,8 +576,8 @@
 
 							if (selectData) {
 								for (var i = 0; i < selectData.length; i++) {
-									var value = selectData[i].value;
 									var name = selectData[i].name;
+									var value = selectData[i].value;
 
 									selectOptions.push('<option value="' + value + '">' + name + '</option>');
 
@@ -655,8 +655,8 @@
 								var previousNamePrefix = '';
 
 								for (var i = 0; i < envLFRData.length; i++) {
-									var value = envLFRData[i].value;
 									var name = envLFRData[i].name;
+									var value = envLFRData[i].value;
 
 									var namePrefix = name.substring(0, 3);
 
