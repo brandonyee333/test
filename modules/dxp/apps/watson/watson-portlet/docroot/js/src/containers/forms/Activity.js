@@ -333,6 +333,7 @@ class ActivityForm extends JSXComponent {
 		}
 
 		let deleteMethod;
+		let message;
 		let reportHref;
 		let requestTranslationMethod;
 		let translateHref;
@@ -353,6 +354,8 @@ class ActivityForm extends JSXComponent {
 			headerStringLeft = storeData.get('name') || Liferay.Language.get('edit-activity');
 
 			headerStringRight = !autoSaved ? getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp')) : getModifiedMoment(storeData.get('modifiedUserName'), autoSaved);
+
+			message = autoSaved ? Liferay.Language.get('activity-automatically-saved') : message;
 		}
 		else if (action === 'create' && watsonIncidentId) {
 			cancelMethod = this.handleCancel;
@@ -389,6 +392,7 @@ class ActivityForm extends JSXComponent {
 						formConfig={this.getConfig()}
 						formData={formData}
 						loading={loading}
+						message={message}
 						model={model}
 						reportHref={reportHref}
 						requestTranslationMethod={requestTranslationMethod}
