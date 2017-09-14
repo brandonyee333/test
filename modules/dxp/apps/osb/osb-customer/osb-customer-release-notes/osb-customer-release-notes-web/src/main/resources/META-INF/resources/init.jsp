@@ -22,13 +22,10 @@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.compat.portal.kernel.util.ArrayUtil" %><%@
-page import="com.liferay.compat.portal.kernel.util.StringUtil" %><%@
-page import="com.liferay.compat.portal.util.PortalUtil" %><%@
-page import="com.liferay.osb.customer.release.notes.DuplicateJIRAIssueKeysException" %><%@
-page import="com.liferay.osb.customer.release.notes.NoSuchJIRAProjectException" %><%@
-page import="com.liferay.osb.customer.release.notes.RequiredJIRAIssueKeysException" %><%@
-page import="com.liferay.osb.customer.release.notes.RequiredNameException" %><%@
+<%@ page import="com.liferay.osb.customer.release.notes.exception.DuplicateJIRAIssueKeysException" %><%@
+page import="com.liferay.osb.customer.release.notes.exception.NoSuchJIRAProjectException" %><%@
+page import="com.liferay.osb.customer.release.notes.exception.RequiredJIRAIssueKeysException" %><%@
+page import="com.liferay.osb.customer.release.notes.exception.RequiredNameException" %><%@
 page import="com.liferay.osb.customer.release.notes.model.JIRAProject" %><%@
 page import="com.liferay.osb.customer.release.notes.model.JIRAProjectVersion" %><%@
 page import="com.liferay.osb.customer.release.notes.model.ReleaseNotes" %><%@
@@ -41,12 +38,15 @@ page import="com.liferay.osb.customer.release.notes.util.PortletPropsValues" %><
 page import="com.liferay.osb.customer.release.notes.util.ReleaseNotesUtil" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
+page import="com.liferay.portal.kernel.model.ModelHintsConstants" %><%@
+page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
+page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
-page import="com.liferay.portal.kernel.util.WebKeys" %><%@
-page import="com.liferay.portal.model.ModelHintsConstants" %>
+page import="com.liferay.portal.kernel.util.StringUtil" %><%@
+page import="com.liferay.portal.kernel.util.WebKeys" %>
 
 <%@ page import="java.text.DateFormat" %>
 

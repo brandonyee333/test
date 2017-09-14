@@ -18,7 +18,11 @@ import com.liferay.osb.customer.release.notes.exception.DuplicateJIRAIssueKeysEx
 import com.liferay.osb.customer.release.notes.exception.NoSuchReleaseNotesException;
 import com.liferay.osb.customer.release.notes.exception.RequiredJIRAIssueKeysException;
 import com.liferay.osb.customer.release.notes.exception.RequiredNameException;
-import com.liferay.osb.customer.release.notes.model.*;
+import com.liferay.osb.customer.release.notes.model.JIRAComponent;
+import com.liferay.osb.customer.release.notes.model.JIRAIssue;
+import com.liferay.osb.customer.release.notes.model.JIRAProject;
+import com.liferay.osb.customer.release.notes.model.JIRAProjectVersion;
+import com.liferay.osb.customer.release.notes.model.ReleaseNotes;
 import com.liferay.osb.customer.release.notes.service.JIRAIssueLocalServiceUtil;
 import com.liferay.osb.customer.release.notes.service.JIRAProjectLocalServiceUtil;
 import com.liferay.osb.customer.release.notes.service.JIRAProjectVersionLocalServiceUtil;
@@ -30,23 +34,45 @@ import com.liferay.osb.customer.release.notes.util.ReleaseNotesUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.StringUtil_IW;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.util.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
-import java.io.*;
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.portlet.*;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletContext;
+import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletURL;
+import javax.portlet.RenderRequest;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -81,7 +107,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		throws IOException {
 
 		String jiraLabel = ParamUtil.getString(resourceRequest, "jiraLabel");
-		long jiraProjectVersionId = ParamUtil.getLong(
+		Long jiraProjectVersionId = ParamUtil.getLong(
 			resourceRequest, "jiraProjectVersionId");
 		String uuid = ParamUtil.getString(resourceRequest, "uuid");
 
@@ -475,7 +501,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		VelocityEngine velocityEngine = new VelocityEngine();
 
 		VelocityContext velocityContext = getVelocityContext(
-		jiraIssues, jiraComponentMap, version);
+			jiraIssues, jiraComponentMap, version);
 
 		Writer writer = new StringWriter();
 

@@ -1,4 +1,4 @@
-Bundle-Name: Liferay OSB Customer RabbitMQ Connector Web
+Bundle-Name: Liferay OSB Customer Release Notes Web
 Bundle-SymbolicName: com.liferay.osb.customer.release.notes.web
 Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Description:
