@@ -53,9 +53,9 @@
 @mixin default-button {
 	align-items: center;
 	background-color: $lightest;
-	border: 1px solid $neutralLight;
+	border: 1px solid $neutralMedium;
 	border-radius: $standardBorderRadius;
-	color: $neutralLight;
+	color: $neutralMedium;
 	display: flex;
 	justify-content: center;
 
@@ -163,7 +163,7 @@
 }
 
 @mixin small-info-text {
-	color: $neutralLight;
+	color: $neutralMedium;
 	font-family: $primaryFontStack;
 	font-size: 12px;
 	font-weight: 200;

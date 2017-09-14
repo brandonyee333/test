@@ -71,11 +71,11 @@
 
 .CalendarDay--selected-span.CalendarDay--hovered, .CalendarDay--selected-span:active {
 	background: $neutralLightOverlay;
-	border: 1px double $neutralLight;
+	border: 1px double $neutralMedium;
 }
 
 .CalendarDay--selected-span.CalendarDay--last-in-range {
-	border-right: $neutralLight;
+	border-right: $neutralMedium;
 }
 
 .CalendarDay--hovered-span,
@@ -87,21 +87,21 @@
 
 .CalendarDay--hovered-span:active,
 .CalendarDay--after-hovered-start:active {
-	background: $neutralLight;
+	background: $neutralMedium;
 }
 
 .CalendarDay--selected-start,
 .CalendarDay--selected-end,
 .CalendarDay--selected {
-	background: $neutralLight;
-	border: 1px double $neutralLight;
+	background: $neutralMedium;
+	border: 1px double $neutralMedium;
 	color: $lightest;
 }
 
 .CalendarDay--selected-start:active,
 .CalendarDay--selected-end:active,
 .CalendarDay--selected:active {
-	background: $neutralLight;
+	background: $neutralMedium;
 }
 
 .CalendarDay--blocked-calendar {
@@ -449,7 +449,7 @@
 }
 
 .DayPickerKeyboardShortcuts__show--bottom-right {
-	border-right: 33px solid $neutralLight;
+	border-right: 33px solid $neutralMedium;
 	border-top: 26px solid transparent;
 	bottom: 0;
 	right: 0;
@@ -466,7 +466,7 @@
 
 .DayPickerKeyboardShortcuts__show--top-right {
 	border-bottom: 26px solid transparent;
-	border-right: 33px solid $neutralLight;
+	border-right: 33px solid $neutralMedium;
 	right: 0;
 	top: 0;
 }
@@ -482,7 +482,7 @@
 
 .DayPickerKeyboardShortcuts__show--top-left {
 	border-bottom: 26px solid transparent;
-	border-left: 33px solid $neutralLight;
+	border-left: 33px solid $neutralMedium;
 	left: 0;
 	top: 0;
 }

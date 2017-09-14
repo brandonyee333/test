@@ -42,7 +42,7 @@
 		}
 
 		.bottom-bar-message {
-			color: $neutralLight;
+			color: $neutralMedium;
 			font-size: 17px;
 
 			&.failure {
@@ -464,7 +464,7 @@
 
 			.metal-react-container {
 				.metal-file-uploader {
-					border: 1px solid $neutralLight;
+					border: 1px solid $neutralMedium;
 					border-radius: 4px;
 					cursor: pointer;
 					height: 57px;

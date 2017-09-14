@@ -28,7 +28,7 @@
 
 	.Select-control {
 		background-color: $lightest;
-		border: 1px solid $neutralLight;
+		border: 1px solid $neutralMedium;
 		border-radius: $standardBorderRadius;
 		height: 57px;
 		max-width: 270px;
@@ -152,7 +152,7 @@
 		height: auto;
 
 		& > .Select-aria-only {
-			color: $neutralLight;
+			color: $neutralMedium;
 			display: block;
 			font-size: 0.8em;
 		}

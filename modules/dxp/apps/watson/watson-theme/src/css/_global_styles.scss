@@ -93,12 +93,12 @@
 		position: relative;
 
 		.sub-header {
-			color: $neutralLight;
+			color: $neutralMedium;
 			position: absolute;
 			top: 10px;
 
 			.sub-header-text {
-				color: $neutralLight;
+				color: $neutralMedium;
 			}
 		}
 	}
@@ -226,9 +226,9 @@
 .watson-input {
 	align-items: center;
 	background-color: $lightest;
-	border: 1px solid $neutralLight;
+	border: 1px solid $neutralMedium;
 	border-radius: $standardBorderRadius;
-	color: $neutralLight;
+	color: $neutralMedium;
 	display: flex;
 	height: 57px;
 	justify-content: center;

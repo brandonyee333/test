@@ -25,7 +25,7 @@ html body {
 					width: 285px;
 
 					label {
-						color: $neutralLight;
+						color: $neutralMedium;
 						font-size: 12px;
 						font-weight: 500;
 						letter-spacing: 0.15em;
@@ -45,9 +45,9 @@ html body {
 					}
 
 					.form-control {
-						border-color: $neutralLight;
+						border-color: $neutralMedium;
 						border-radius: $standardBorderRadius;
-						color: $neutralLight;
+						color: $neutralMedium;
 						font-size: 18px;
 						height: auto;
 						padding: 14px 18px;
