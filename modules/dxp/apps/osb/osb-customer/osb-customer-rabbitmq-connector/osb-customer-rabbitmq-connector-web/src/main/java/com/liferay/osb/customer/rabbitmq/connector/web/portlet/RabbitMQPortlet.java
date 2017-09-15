@@ -41,6 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"com.liferay.portlet.css-class-wrapper=rabbitmq-portlet",
 		"com.liferay.portlet.display-category=category.osb",
+		"com.liferay.portlet.preferences-unique-per-layout=false",
 		"javax.portlet.display-name=OSB RabbitMQ Connector",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.template-path=/",

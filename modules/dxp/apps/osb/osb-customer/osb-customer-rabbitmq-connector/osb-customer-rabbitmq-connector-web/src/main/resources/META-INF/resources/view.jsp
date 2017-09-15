@@ -39,37 +39,24 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 			selected='<%= tabs1.equals("admin") %>'
 		/>
 	</aui:nav>
-	<% if (RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) { %>
-	<portlet:renderURL var="debugURL">
-		<portlet:param name="mvcPath" value="/view.jsp" />
-		<portlet:param name="tabs1" value="debug" />
-	</portlet:renderURL>
 
-	<aui:nav cssClass="navbar-nav">
-		<aui:nav-item
-			href="<%= debugURL %>"
-			label="debug"
-			selected='<%= tabs1.equals("debug") %>'
-		/>
-	</aui:nav>
-	<% } %>
+	<c:if test="<%= RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED %>">
+		<portlet:renderURL var="debugURL">
+			<portlet:param name="mvcPath" value="/view.jsp" />
+			<portlet:param name="tabs1" value="debug" />
+		</portlet:renderURL>
+
+		<aui:nav cssClass="navbar-nav">
+			<aui:nav-item
+				href="<%= debugURL %>"
+				label="debug"
+				selected='<%= tabs1.equals("debug") %>'
+			/>
+		</aui:nav>
+	</c:if>
 </aui:nav-bar>
 
 <div class="container-fluid-1280">
-	<liferay-portlet:actionURL name="restart" var="actionURL" />
-
-	<aui:form action="<%= actionURL %>" method="post" name="fm">
-		<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
-
-		<aui:fieldset>
-			<liferay-ui:message key="restarting-will-close-all-channels-reopen-a-new-connection-and-then-reregister-all-consumers" />
-
-			<aui:button-row>
-				<aui:button type="submit" value="restart" />
-			</aui:button-row>
-		</aui:fieldset>
-	</aui:form>
-
 	<c:choose>
 		<c:when test='<%= tabs1.equals("debug") %>'>
 			<liferay-portlet:actionURL name="consumeMessage" var="actionURL" />
@@ -85,6 +72,19 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 			</aui:form>
 		</c:when>
 		<c:otherwise>
+			<liferay-portlet:actionURL name="restart" var="actionURL" />
+
+			<aui:form action="<%= actionURL %>" method="post" name="fm">
+				<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+
+				<aui:fieldset>
+					<liferay-ui:message key="restarting-will-close-all-channels-reopen-a-new-connection-and-then-reregister-all-consumers" />
+
+					<aui:button-row>
+						<aui:button type="submit" value="restart" />
+					</aui:button-row>
+				</aui:fieldset>
+			</aui:form>
 
 			<%
 			Map<String, ConsumerBag> consumers = ConsumerManagerLocalServiceUtil.getConsumersMap();
