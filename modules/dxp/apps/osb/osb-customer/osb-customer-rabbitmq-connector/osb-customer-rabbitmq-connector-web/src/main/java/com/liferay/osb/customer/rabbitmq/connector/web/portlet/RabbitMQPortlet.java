@@ -19,7 +19,6 @@ import com.liferay.osb.customer.rabbitmq.connector.constants.RabbitMQPortletKeys
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
-import com.liferay.portal.kernel.messaging.proxy.MessageValuesThreadLocal;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
@@ -63,7 +62,8 @@ public class RabbitMQPortlet extends MVCPortlet {
 
 		_consumerManagerLocalService.activateConsumer(rabbitMQConsumerKey);
 
-		MessageValuesThreadLocal.setValue("CLUSTER_FORWARD_MESSAGE", true);
+		/*MessageValuesThreadLocal.setValue(
+			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);*/
 
 		MethodHandler invokeMethodHandler = new MethodHandler(
 			_invokeMethodKey, false, RabbitMQPortletKeys.RABBIT_MQ,
@@ -90,7 +90,8 @@ public class RabbitMQPortlet extends MVCPortlet {
 
 		_consumerManagerLocalService.deactivateConsumer(rabbitMQConsumerKey);
 
-		MessageValuesThreadLocal.setValue("CLUSTER_FORWARD_MESSAGE", true);
+		/*MessageValuesThreadLocal.setValue(
+			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);*/
 
 		MethodHandler invokeMethodHandler = new MethodHandler(
 			_invokeMethodKey, false, RabbitMQPortletKeys.RABBIT_MQ,
