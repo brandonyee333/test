@@ -340,21 +340,6 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 		);
 	}
 
-	<c:if test="<%= needsResponseCount > 0 %>">
-		<portlet:namespace />loadTickets('needsResponse');
-	</c:if>
-
-	<c:choose>
-		<c:when test="<%= liferayIncOrg || supportPartnerWorker %>">
-			<portlet:namespace />loadTickets('primary');
-			<portlet:namespace />loadTickets('auxiliary');
-			<portlet:namespace />loadTickets('watching');
-		</c:when>
-		<c:otherwise>
-			<portlet:namespace />loadTickets('openTickets');
-		</c:otherwise>
-	</c:choose>
-
 	Liferay.provide(
 		window,
 		'<portlet:namespace />loadTickets',
@@ -395,4 +380,19 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 		},
 		['aui-io']
 	);
+
+	<c:if test="<%= needsResponseCount > 0 %>">
+		<portlet:namespace />loadTickets('needsResponse');
+	</c:if>
+
+	<c:choose>
+		<c:when test="<%= liferayIncOrg || supportPartnerWorker %>">
+			<portlet:namespace />loadTickets('primary');
+			<portlet:namespace />loadTickets('auxiliary');
+			<portlet:namespace />loadTickets('watching');
+		</c:when>
+		<c:otherwise>
+			<portlet:namespace />loadTickets('openTickets');
+		</c:otherwise>
+	</c:choose>
 </aui:script>
