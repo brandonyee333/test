@@ -19,6 +19,8 @@ package com.liferay.osb.customer.rabbitmq.connector.constants;
  */
 public class RabbitMQPortletKeys {
 
-	public static final String RABBIT_MQ = "1_WAR_rabbitmqportlet";
+	public static final String RABBIT_MQ =
+		"com_liferay_osb_customer_rabbitmq_connector_web_portlet_" +
+			"RabbitMQPortlet";
 
 }

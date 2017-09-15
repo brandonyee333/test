@@ -3,7 +3,7 @@
 
 <resource-action-mapping>
 	<portlet-resource>
-		<portlet-name>1</portlet-name>
+		<portlet-name>com_liferay_osb_customer_rabbitmq_connector_web_portlet_RabbitMQPortlet</portlet-name>
 		<permissions>
 			<supports>
 				<action-key>ACCESS_IN_CONTROL_PANEL</action-key>
