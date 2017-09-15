@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.rabbitmq.connector.constants;
+package com.liferay.osb.customer.rabbitmq.connector.web.internal.constants;
 
 /**
  * @author Amos Fong

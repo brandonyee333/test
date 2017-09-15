@@ -15,8 +15,8 @@
 package com.liferay.osb.customer.rabbitmq.connector.web.portlet;
 
 import com.liferay.osb.customer.rabbitmq.connector.connection.RabbitMQConnectionManager;
-import com.liferay.osb.customer.rabbitmq.connector.constants.RabbitMQPortletKeys;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
+import com.liferay.osb.customer.rabbitmq.connector.web.internal.constants.RabbitMQPortletKeys;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
