@@ -60,7 +60,7 @@ if (productEntry != null) {
 }
 %>
 
-<div class="aui-helper-clearfix">
+<div class="clearfix">
 	<liferay-util:include page="/support/2/common/eosl_environment_liferay.jsp" servletContext="<%= application %>">
 		<portlet:param name="envLFR" value="<%= String.valueOf(envLFR) %>" />
 	</liferay-util:include>
@@ -88,7 +88,7 @@ if (productEntry != null) {
 			</c:when>
 			<c:otherwise>
 				<c:if test="<%= Validator.isNotNull(envName) %>">
-					<input name="<portlet:namespace />envName" type="hidden" value="<%= HtmlUtil.escapeAttribute(envName) %>" />
+					<aui:input name="envName" type="hidden" value="<%= envName %>" />
 				</c:if>
 			</c:otherwise>
 		</c:choose>
@@ -130,8 +130,8 @@ if (productEntry != null) {
 								}
 								%>
 
-								<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "liferay-version") %>" id="<portlet:namespace />envLFR" name="<%= envLFRName %>" onChange="<%= envLFROnChange %>">
-									<option value="0"></option>
+								<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "liferay-version") %>' name="<%= envLFRName %>" onChange="<%= envLFROnChange %>">
+									<aui:option value="0" />
 
 									<%
 									long[] listTypesDeprecated = Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).asLongStream().toArray();
@@ -153,17 +153,17 @@ if (productEntry != null) {
 									%>
 
 										<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-											<option disabled>--------</option>
+											<aui:option disabled="<%= true %>" label="--------" />
 										</c:if>
 
-										<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %><%= limited ? " (" + LanguageUtil.get(request, "limited") + ")" : StringPool.BLANK %></option>
+										<aui:option label='<%= envLFRType.getName() + (limited ? "(limited)" : StringPool.BLANK) %>' selected="<%= (envLFRType.getListTypeId() == envLFR) %>" value="<%= envLFRType.getListTypeId() %>" />
 
 									<%
 										previousNamePrefix = namePrefix;
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</c:when>
 							<c:otherwise>
 								<%= LanguageUtil.get(request, accountEnvironment.getEnvLFRLabel()) %>
@@ -179,12 +179,11 @@ if (productEntry != null) {
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "operating-system") %>" id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
-							</select>
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "operating-system") %>' name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>' />
 
 							<br />
 
-							<input class="<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />envOSCustom" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="<portlet:namespace />envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" />
+							<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= envOSCustom %>" />
 						</c:when>
 						<c:otherwise>
 							<%= LanguageUtil.get(request, accountEnvironment.getEnvOSLabel()) %>
@@ -199,8 +198,7 @@ if (productEntry != null) {
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "jvm") %>" id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
-							</select>
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "jvm") %>' name="envJVM" />
 						</c:when>
 						<c:otherwise>
 							<%= LanguageUtil.get(request, accountEnvironment.getEnvJVMLabel()) %>
@@ -216,8 +214,7 @@ if (productEntry != null) {
 					<span class="field-label txt-b" title="<liferay-ui:message key="application-server" />"><%= edit ? "*" : "" %><liferay-ui:message key="as" />:</span>
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "application-server") %>" id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
-							</select>
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "application-server") %>' name="envAS" />
 						</c:when>
 						<c:otherwise>
 							<%= LanguageUtil.get(request, accountEnvironment.getEnvASLabel()) %>
@@ -232,8 +229,7 @@ if (productEntry != null) {
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "database") %>" id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
-							</select>
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "database") %>' name="envDB" />
 						</c:when>
 						<c:otherwise>
 							<%= LanguageUtil.get(request, accountEnvironment.getEnvDBLabel()) %>
@@ -247,9 +243,9 @@ if (productEntry != null) {
 					<div class="content-column-content env">
 						<span class="field-label txt-b" title="<liferay-ui:message key="browser" />"><liferay-ui:message key="br" />:</span>
 
-						<select id="<portlet:namespace />envBrowser" name="<portlet:namespace />envBrowser" onChange="<portlet:namespace />selectBrowser(this.value);">
+						<aui:select name="envBrowser" onChange='<%= renderResponse.getNamespace() + "selectBrowser(this.value);" %>'>
 							<c:if test="<%= accountEnvironment != null %>">
-								<option value="0"></option>
+								<aui:option value="0" />
 
 								<%
 								List<ListType> envBrowserTypes = SupportUtil.getPortalEnvListTypes(accountEnvironment.getEnvLFR(), TicketEntryConstants.LIST_TYPE_ENV_BROWSER);
@@ -257,18 +253,18 @@ if (productEntry != null) {
 								for (ListType envBrowserType : envBrowserTypes) {
 								%>
 
-									<option <%= (envBrowser == envBrowserType.getListTypeId()) ? "selected" : "" %> value="<%= envBrowserType.getListTypeId() %>"><%= LanguageUtil.get(request, envBrowserType.getName()) %></option>
+									<aui:option label="<%= envBrowserType.getName() %>" selected="<%= envBrowser == envBrowserType.getListTypeId() %>" value="<%= envBrowserType.getListTypeId() %>" />
 
 								<%
 								}
 								%>
 
 							</c:if>
-						</select>
+						</aui:select>
 
 						<br />
 
-						<input class="<%= (envBrowser == TicketEntryConstants.ENV_BROWSER_OTHER) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />envBrowserCustom" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_BROWSER_CUSTOM) %>" name="<portlet:namespace />envBrowserCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envBrowserCustom) %>" />
+						<aui:input cssClass='<%= (envBrowser == TicketEntryConstants.ENV_BROWSER_OTHER) ? "" : "hide" %>' maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_BROWSER_CUSTOM) %>" name="envBrowserCustom" type="text" value="<%= envBrowserCustom %>" />
 					</div>
 				</div>
 			</c:if>
@@ -278,33 +274,31 @@ if (productEntry != null) {
 			<c:when test="<%= edit %>">
 				<div class="fl single-line">
 					<div class="aui-w33 content-column">
-						<div class="aui-helper-hidden content-column-content env" id="<portlet:namespace />envCSColumn">
+						<div class="content-column-content env hide" id="<portlet:namespace />envCSColumn">
 							<span class="field-label txt-b" title="<liferay-ui:message key="cloud-services" />"><liferay-ui:message key="cs" />:</span>
 
-							<select id="<portlet:namespace />envCS" name="<portlet:namespace />envCS">
-							</select>
+							<aui:select name="envCS" />
 						</div>
 					</div>
 
 					<div class="aui-w66 content-column">
-						<div class="aui-helper-hidden content-column-content env" id="<portlet:namespace />envSearchColumn">
+						<div class="content-column-content env hide" id="<portlet:namespace />envSearchColumn">
 							<span class="field-label txt-b" title="<liferay-ui:message key="search" />">
 								<liferay-ui:message key="sh" />:
 
 								<liferay-ui:icon-help message="you-may-select-multiple-options" />
 							</span>
 
-							<select id="<portlet:namespace />envSearch" name="<portlet:namespace />envSearch" multiple>
-							</select>
+							<aui:select multiple="<%= true %>" name="envSearch" />
 						</div>
 					</div>
 				</div>
 
 				<br />
 
-				<div class="aui-helper-hidden portlet-msg-error" id="<portlet:namespace />portalExtMessage"></div>
+				<div class="hide portlet-msg-error" id="<portlet:namespace />portalExtMessage"></div>
 
-				<div class="aui-helper-clearfix">
+				<div class="clearfix">
 					<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 						<liferay-util:param name="accountEnvironmentAttachmentType" value="<%= String.valueOf(AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT) %>" />
 						<liferay-util:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironmentId) %>" />
@@ -318,9 +312,9 @@ if (productEntry != null) {
 					</liferay-util:include>
 				</div>
 
-				<div class="aui-helper-hidden portlet-msg-error" id="<portlet:namespace />patchLevelMessage"></div>
+				<div class="hide portlet-msg-error" id="<portlet:namespace />patchLevelMessage"></div>
 
-				<div class="aui-helper-clearfix">
+				<div class="clearfix">
 					<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 						<liferay-util:param name="accountEnvironmentAttachmentType" value="<%= String.valueOf(AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL) %>" />
 						<liferay-util:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironmentId) %>" />
@@ -386,13 +380,17 @@ if (productEntry != null) {
 		</c:choose>
 
 		<c:if test="<%= edit %>">
-			<input id="<portlet:namespace />name" type="hidden" value="<%= (accountEnvironment != null) ? HtmlUtil.escapeAttribute(accountEnvironment.getName()) : "" %>" />
-			<input id="<portlet:namespace />productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
+			<aui:input name="name" type="hidden" value='<%= (accountEnvironment != null) ? accountEnvironment.getName() : "" %>' />
+			<aui:input name="productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
 
 			<div class="create-env-button">
-				<input class="aui-button-input fl" id="<portlet:namespace />createEnvironment" onClick="<portlet:namespace />updateAccountEnvironment(0, '');" type="button" value="<liferay-ui:message key="create-environment" />" />
+				<aui:button cssClass="aui-button-input fl" onClick='<%= renderResponse.getNamespace() + "updateAccountEnvironment(0, '');" %>' value="create-environment" />
 
-				<input class="aui-button-input aui-helper-hidden fl" id="<portlet:namespace />updateEnvironment" onClick="<portlet:namespace />updateAccountEnvironment(document.getElementById('<portlet:namespace />accountEnvironmentId').value, document.getElementById('<portlet:namespace />name').value);" type="button" value="<liferay-ui:message key="update-environment" />" />
+				<%
+				String updateEnvironmentOnclick = renderResponse.getNamespace() + "updateAccountEnvironment(document.getElementById('" + renderResponse.getNamespace() + "accountEnvironmentId').value, document.getElementById('" + renderResponse.getNamespace() + "name').value);";
+				%>
+
+				<aui:button cssClass="aui-button-input fl hide" onClick="<%= updateEnvironmentOnclick %>" value="update-environment" />
 			</div>
 		</c:if>
 	</div>

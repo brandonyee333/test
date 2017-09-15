@@ -120,7 +120,7 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 			:
 		</span>
 
-		<input id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>TicketAttachmentId" name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>TicketAttachmentId" type="hidden" value="<%= ticketAttachmentId %>" />
+		<aui:input name='<%= fieldName + "TicketAttachmentId" %>' type="hidden" value="<%= ticketAttachmentId %>" />
 
 		<span class="attachment-new" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>FileName"></span>
 
@@ -147,20 +147,34 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 					<div class="attachment-text fl">
 						*<liferay-ui:message arguments="<%= LanguageUtil.get(request, TicketAttachmentConstants.getTypeLabel(ticketAttachmentType)) %>" key="this-x-is-current" />
 
-						<input <%= ((accountEnvironmentAttachment == null) && (ticketAttachment == null)) ? "disabled" : "" %> <%= confirmCheckbox ? "checked" : "" %> id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>Checkbox" name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>Checkbox" onclick="<portlet:namespace />validateFiles();" type="checkbox" />
+						<aui:input checked="<%= confirmCheckbox %>" disabled="<%= ((accountEnvironmentAttachment == null) && (ticketAttachment == null)) %>" name='<%= fieldName + "Checkbox" %>' onclick='<%= renderResponse.getNamespace() + "validateFiles();" %>' type="checkbox" />
 					</div>
 				</c:if>
 
 				<div class="buttons fr">
-					<input class="upload" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>" name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>" onChange="<portlet:namespace />uploadUpdate('<%= HtmlUtil.escapeAttribute(fieldName) %>');" type="file" />
+
+					<%
+					String uploadFileOnChange = renderResponse.getNamespace() + "uploadUpdate('" + HtmlUtil.escapeAttribute(fieldName) + "');";
+					%>
+
+					<aui:input cssClass="upload" name="<%= fieldName %>" onChange="<%= uploadFileOnChange %>" type="file" />
 
 					<a class="btn" href="javascript:;" id="<portlet:namespace />select<%= HtmlUtil.escapeAttribute(fieldName) %>File"><liferay-ui:message key="upload" /></a>
 				</div>
 			</c:when>
 			<c:otherwise>
-				<input id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>" name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>" onChange="<portlet:namespace />uploadUpdate('<%= HtmlUtil.escapeAttribute(fieldName) %>');" style="display: none;" type="file" />
 
-				<input class="btn" onClick="javascript:document.getElementById('<portlet:namespace /><%= HtmlUtil.escapeAttribute(fieldName) %>').click(); return;" type="button" value="<liferay-ui:message key="upload-new" />" />
+				<%
+				String uploadFileonChange = renderResponse.getNamespace() + "uploadUpdate('" + HtmlUtil.escapeAttribute(fieldName) + "');";
+				%>
+
+				<aui:input cssClass="hide" name="<%= fieldName %>" onChange="<%= uploadFileonChange %>" type="file" />
+
+				<%
+				String uploadNewBtnOnClick = "javascript:document.getElementById('" + renderResponse.getNamespace() + HtmlUtil.escapeAttribute(fieldName) + "').click(); return;";
+				%>
+
+				<aui:button cssClass="btn" onClick="<%= uploadNewBtnOnClick %>" value="upload-new" />
 			</c:otherwise>
 		</c:choose>
 	</div>
