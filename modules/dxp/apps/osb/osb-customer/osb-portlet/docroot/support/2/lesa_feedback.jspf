@@ -93,7 +93,7 @@
 		var comments = commentsNode && commentsNode.value;
 		var summary = summaryNode && summaryNode.value;
 
-		var hasCommentsSummary = (summary || comments);
+		var hasCommentsSummary = (comments || summary);
 
 		var cancelEdit = false;
 
@@ -116,7 +116,7 @@
 	}
 </aui:script>
 
-<aui:script use="aui-base,aui-modal,aui-io">
+<aui:script use="aui-base,aui-io,aui-modal">
 	var lesaFeedbackDialog = A.one('#<portlet:namespace />lesaFeedbackContainer');
 
 	if (lesaFeedbackDialog) {
