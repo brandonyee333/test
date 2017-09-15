@@ -17,9 +17,6 @@
 <%@ include file="/support/2/init.jsp" %>
 
 <%
-//TODO no direct replacement for setIncludeServiceJs
-//themeDisplay.setIncludeServiceJs(true);
-
 AccountEntry accountEntry = (AccountEntry)request.getAttribute("edit_account_entry_dialog.jsp-accountEntry");
 
 Address address = accountEntry.getAddress();

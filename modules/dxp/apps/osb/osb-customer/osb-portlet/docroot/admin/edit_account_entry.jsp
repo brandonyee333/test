@@ -17,9 +17,6 @@
 <%@ include file="/init.jsp" %>
 
 <%
-//TODO no direct replacement for setIncludeServiceJS
-//themeDisplay.setIncludeServiceJs(true);
-
 String detailTab = ParamUtil.getString(request, "detailTab");
 
 String redirect = ParamUtil.getString(request, "redirect");
