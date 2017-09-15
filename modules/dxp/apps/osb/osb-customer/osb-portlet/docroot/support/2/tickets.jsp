@@ -53,7 +53,7 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
 			<liferay-util:param name="cssClass" value="lesa-announcements-dialog" />
 			<liferay-util:param name="draggable" value="<%= Boolean.FALSE.toString() %>" />
-			<liferay-util:param name="mvcPath" value="/support/2/lesa-announcements-dialog.jsp" />
+			<liferay-util:param name="mvcPath" value="/support/2/lesa_announcements_dialog.jsp" />
 			<liferay-util:param name="shadow" value="<%= Boolean.FALSE.toString() %>" />
 			<liferay-util:param name="width" value="750" />
 			<liferay-util:param name="visible" value="<%= Boolean.TRUE.toString() %>" />
