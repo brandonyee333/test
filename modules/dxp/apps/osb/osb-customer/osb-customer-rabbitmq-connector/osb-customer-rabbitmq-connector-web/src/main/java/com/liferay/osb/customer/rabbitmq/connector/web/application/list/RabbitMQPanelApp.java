@@ -48,7 +48,7 @@ public class RabbitMQPanelApp extends BasePanelApp {
 	public boolean isShow(PermissionChecker permissionChecker, Group group)
 		throws PortalException {
 
-		return true;
+		return permissionChecker.isOmniadmin();
 	}
 
 	@Override
