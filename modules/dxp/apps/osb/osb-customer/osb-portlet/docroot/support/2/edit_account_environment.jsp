@@ -576,8 +576,10 @@
 
 							if (selectData) {
 								for (var i = 0; i < selectData.length; i++) {
-									var name = selectData[i].name;
-									var value = selectData[i].value;
+									var currentItem = selectData[i];
+
+									var name = currentItem.name;
+									var value = currentItem.value;
 
 									selectOptions.push('<option value="' + value + '">' + name + '</option>');
 
@@ -655,8 +657,10 @@
 								var previousNamePrefix = '';
 
 								for (var i = 0; i < envLFRData.length; i++) {
-									var name = envLFRData[i].name;
-									var value = envLFRData[i].value;
+									var currentItem = envLFRData[i];
+
+									var name = currentItem.name;
+									var value = currentItem.value;
 
 									var namePrefix = name.substring(0, 3);
 

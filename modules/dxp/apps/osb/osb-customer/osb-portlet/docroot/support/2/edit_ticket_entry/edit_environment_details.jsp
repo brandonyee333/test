@@ -300,12 +300,11 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 	function <portlet:namespace />selectEnvOS(envOS) {
 		var envOSCustom = AUI().one('#<portlet:namespace />envOSCustom');
 
-		if (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>') {
-			envOSCustom.show();
-		}
-		else {
-			envOSCustom.hide();
+		var other = envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>';
 
+		envOsCustom.toggle(other);
+
+		if (!other) {
 			envOSCustom.val('');
 		}
 	}
