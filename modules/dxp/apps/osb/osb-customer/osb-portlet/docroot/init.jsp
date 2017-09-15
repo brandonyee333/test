@@ -436,7 +436,6 @@ page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.HttpUtil" %><%@
 page import="com.liferay.portal.kernel.util.ListUtil" %><%@
 page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
-page import="com.liferay.portal.kernel.util.LocalizationUtil" %><%@
 page import="com.liferay.portal.kernel.util.MathUtil" %><%@
 page import="com.liferay.portal.kernel.util.OrderByComparator" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
@@ -463,13 +462,8 @@ page import="com.liferay.portal.kernel.workflow.WorkflowInstanceManagerUtil" %><
 page import="com.liferay.portal.kernel.workflow.WorkflowTask" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowTaskAssignee" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil" %><%@
-page import="com.liferay.taglib.search.ResultRow" %>
-
-<%-- TODO implement release-notes-portlet
-page import="com.liferay.releasenotes.model.ReleaseNotes" %><%@
-page import="com.liferay.releasenotes.service.ReleaseNotesLocalServiceUtil" %> --%>
-
-<%@ page import="com.liferay.util.dao.orm.CustomSQLUtil" %>
+page import="com.liferay.taglib.search.ResultRow" %><%@
+page import="com.liferay.util.dao.orm.CustomSQLUtil" %>
 
 <%@ page import="java.io.File" %><%@
 page import="java.io.Serializable" %>
@@ -480,10 +474,9 @@ page import="java.text.NumberFormat" %><%@
 page import="java.text.SimpleDateFormat" %>
 
 <%@ page import="java.util.ArrayList" %><%@
+page import="java.util.Arrays" %><%@
 page import="java.util.Calendar" %><%@
-page import="java.util.Collections" %>
-
-<%@ page import="java.util.Arrays" %><%@
+page import="java.util.Collections" %><%@
 page import="java.util.Date" %><%@
 page import="java.util.HashMap" %><%@
 page import="java.util.Iterator" %><%@

@@ -52,7 +52,7 @@
 		<div>
 			<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "closeTicket();" %>' value="close-ticket" />
 
-			<aui:button cssClass="aui-button-input" onClick="window.close();" type="button" value="cancel" />
+			<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
 		</div>
 	</div>
 </aui:form>

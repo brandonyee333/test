@@ -45,7 +45,7 @@ Map<String, String> oldAccountEntryAttributes = (TreeMap<String, String>)request
 
 			<tr class="results-row">
 				<td>
-					<%= _getFieldLabel(locale, field) %>
+					<%= _getFieldLabel(request, field) %>
 				</td>
 				<td>
 					<%= _getValueLabel(request, themeDisplay, field, oldAccountEntryAttributes.get(field)) %>
@@ -63,7 +63,7 @@ Map<String, String> oldAccountEntryAttributes = (TreeMap<String, String>)request
 </c:if>
 
 <%!
-private String _getFieldLabel(Locale locale, String field) {
+private String _getFieldLabel(HttpServletRequest request, String field) {
 	String label = field;
 
 	if (field.equals("languageIds")) {
@@ -79,7 +79,7 @@ private String _getFieldLabel(Locale locale, String field) {
 		label = "support-regions";
 	}
 
-	return LanguageUtil.get(locale, label);
+	return LanguageUtil.get(request, label);
 }
 
 private String _getValueLabel(HttpServletRequest request, ThemeDisplay themeDisplay, String field, String value) throws Exception {

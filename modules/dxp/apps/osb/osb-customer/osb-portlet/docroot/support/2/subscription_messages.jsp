@@ -17,7 +17,9 @@
 <%@ include file="/support/2/init.jsp" %>
 
 <%
+
 //Map<Integer, List<CorpProjectMessage>> corpProjectMessagesMap = CorpProjectMessageLocalServiceUtil.getCorpProjectMessagesMap(user.getUserId(), false, true);
+
 %>
 
 <div class="margin-container subscription-messages">

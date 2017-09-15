@@ -98,9 +98,9 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 				</div>
 
 				<div align="right">
-					<aui:button cssClass="aui-button-input buttons" onClick='<%= renderResponse.getNamespace() + "submit();" %>' type="button" value="save" />
+					<aui:button cssClass="aui-button-input buttons" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="save" />
 
-					<aui:button cssClass="aui-button-input buttons fl" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' type="button" value="cancel" />
+					<aui:button cssClass="aui-button-input buttons fl" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' value="cancel" />
 				</div>
 			</aui:form>
 		</div>

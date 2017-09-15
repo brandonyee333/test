@@ -164,7 +164,9 @@
 	<c:if test="<%= lesaAccountCustomer %>">
 
 		<%
+
 		//Map<Integer, List<CorpProjectMessage>> corpProjectMessagesMap = CorpProjectMessageLocalServiceUtil.getCorpProjectMessagesMap(user.getUserId(), false, true);
+
 		%>
 
 		<portlet:renderURL var="subscriptionMessagesURL">
