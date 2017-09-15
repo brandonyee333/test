@@ -388,7 +388,9 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 	<c:choose>
 		<c:when test="<%= liferayIncOrg || supportPartnerWorker %>">
 			<portlet:namespace />loadTickets('primary');
+
 			<portlet:namespace />loadTickets('auxiliary');
+
 			<portlet:namespace />loadTickets('watching');
 		</c:when>
 		<c:otherwise>
