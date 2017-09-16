@@ -10,7 +10,12 @@ dependencies {
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.6.0"
 	provided group: "com.liferay.portal", name: "com.liferay.util.java", version: "2.0.0"
 	provided group: "com.liferay.portal", name: "portal-impl", version: "6.2.1"
-	provided group: "com.liferay.portal", name: "util-java", version: "7.0.0-nightly"
 	provided group: "org.osgi", name: "org.osgi.util.tracker", version: "1.5.1"
 	provided project(":private:apps:osb-customer:osb-customer-release-notes:osb-customer-release-notes-api")
+}
+
+deployDependencies {
+	from configurations.provided
+
+	include "com.liferay.util.java-*.jar"
 }
