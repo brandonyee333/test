@@ -20,31 +20,32 @@
 
 		var status = true;
 
-		if ((node.get("name") == '<portlet:namespace />resolution') || (node.get("name") == '<portlet:namespace />status')) {
+		if ((node.get('name') == '<portlet:namespace />resolution') || (node.get('name'
+			) == '<portlet:namespace />status')) {
 			var resolution = document.getElementById('<portlet:namespace />resolution');
 			var ticketStatus = document.getElementById('<portlet:namespace />status').value;
 
 			node = A.one(resolution);
 
 			if ((ticketStatus != <%= TicketEntryConstants.STATUS_CLOSED %>) || ((ticketStatus == <%= TicketEntryConstants.STATUS_CLOSED %>) && (resolution.value != 0))) {
-				node.setAttribute("data-field-required-status", "true");
+				node.setAttribute('data-field-required-status', 'true');
 
 				status = false;
 			}
 			else {
-				node.setAttribute("data-field-required-status", "false");
+				node.setAttribute('data-field-required-status', 'false');
 			}
 		}
-		else if ((A.Lang.trim(node.get("value")) && !node.test("select")) || (node.test("select") && (node.get("value") != 0) && (node.get("value") != ''))) {
-			node.setAttribute("data-field-required-status", "true");
+		else if ((A.Lang.trim(node.get('value')) && !node.test('select')) || (node.test('select') && (node.get('value') != 0) && (node.get('value') != ''))) {
+			node.setAttribute('data-field-required-status', 'true');
 
 			status = false;
 		}
 		else {
-			node.setAttribute("data-field-required-status", "false");
+			node.setAttribute('data-field-required-status', 'false');
 		}
 
-		var messageDisplayName = node.getAttribute("name") + "Message";
+		var messageDisplayName = node.getAttribute('name') + 'Message';
 
 		var messageDisplay = A.one('#' + messageDisplayName);
 
@@ -57,17 +58,17 @@
 		else if (!messageDisplay && status) {
 			messageDisplay = A.Node.create('<div class="portlet-msg-error" />');
 
-			messageDisplay.setAttribute("id", messageDisplayName);
-			messageDisplay.setContent(node.getAttribute("field-required-message"));
+			messageDisplay.setAttribute('id', messageDisplayName);
+			messageDisplay.setContent(node.getAttribute('field-required-message'));
 
 			var childNode = node;
-			var parentNode = node.get("parentNode");
+			var parentNode = node.get('parentNode');
 
-			while (!parentNode.test("div")) {
+			while (!parentNode.test('div')) {
 				childNode = parentNode;
-				parentNode = parentNode.get("parentNode");
+				parentNode = parentNode.get('parentNode');
 
-				messageDisplay.setContent(parentNode.getAttribute("field-required-message"));
+				messageDisplay.setContent(parentNode.getAttribute('field-required-message'));
 			}
 
 			parentNode.insertBefore(messageDisplay, childNode);

@@ -17,8 +17,6 @@
 <aui:script>
 	var A = AUI();
 
-	var Lang = A.Lang;
-
 	function <portlet:namespace />toggleCheckbox(id) {
 		var checkbox = A.one('#<portlet:namespace />' + id + 'Checkbox');
 
@@ -31,13 +29,18 @@
 	}
 
 	function <portlet:namespace />uploadUpdate(id) {
-		var filePath = A.one('#<portlet:namespace />' + id).val();
+		var file = A.one('#<portlet:namespace />' + id + 'File');
+		var filePath = A.one('#<portlet:namespace />' + id);
 
-		var fileName = filePath.split("\\").pop();
+		if (file && filePath) {
+			var filePathValue = filePath.val();
 
-		var fileNameDisplay = '<span>' + fileName + '</span>';
+			var fileName = filePathValue.split('\\').pop();
 
-		A.one('#<portlet:namespace />' + id + 'File').setContent(fileNameDisplay);
+			var fileNameDisplay = '<span>' + fileName + '</span>';
+
+			file.setContent(fileNameDisplay);
+		}
 
 		<portlet:namespace />toggleCheckbox(id);
 	}
@@ -45,11 +48,13 @@
 	function <portlet:namespace />validateFile(fileType) {
 		var fileList = document.getElementById('<portlet:namespace />' + fileType + 'FileList');
 
-		var elementCount = fileList.getElementsByTagName("li");
+		if (fileList) {
+			var elementCount = fileList.getElementsByTagName('li');
+		}
 
 		var fileInput = document.getElementById('<portlet:namespace />' + fileType);
 
-		if ((elementCount.length <= 0) && !fileInput.value) {
+		if (elementCount && (elementCount.length <= 0) && !fileInput.value) {
 			return false;
 		}
 
