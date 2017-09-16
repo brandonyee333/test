@@ -86,6 +86,7 @@ public interface AssetEntryService extends BaseService {
 	public void incrementViewCounter(AssetEntry assetEntry)
 		throws PortalException;
 
+	@AccessControlled(guestAccessEnabled = true)
 	public AssetEntry incrementViewCounter(java.lang.String className,
 		long classPK) throws PortalException;
 
