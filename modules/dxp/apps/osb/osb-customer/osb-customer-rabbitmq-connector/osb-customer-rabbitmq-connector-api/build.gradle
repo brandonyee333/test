@@ -8,6 +8,5 @@ dependencies {
 
 deployDependencies {
 	from configurations.provided
-
 	include "amqp-client-*.jar"
 }

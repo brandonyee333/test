@@ -38,7 +38,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"com.liferay.portlet.css-class-wrapper=rabbitmq-portlet",
+		"com.liferay.portlet.css-class-wrapper=portlet-rabbitmq",
 		"com.liferay.portlet.display-category=category.osb",
 		"com.liferay.portlet.preferences-unique-per-layout=false",
 		"javax.portlet.display-name=OSB RabbitMQ Connector",

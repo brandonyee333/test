@@ -139,15 +139,6 @@ public class ConsumerManagerLocalServiceImpl
 		}
 	}
 
-	/**
-	 * Returns the Spring bean ID for this bean.
-	 *
-	 * @return the Spring bean ID for this bean
-	 */
-	public String getBeanIdentifier() {
-		return _beanIdentifier;
-	}
-
 	public Map<String, ConsumerBag> getConsumersMap() {
 		return _consumers;
 	}
@@ -188,15 +179,6 @@ public class ConsumerManagerLocalServiceImpl
 				_log.info("Reset channel for " + consumerBag.toString());
 			}
 		}
-	}
-
-	/**
-	 * Sets the Spring bean ID for this bean.
-	 *
-	 * @param beanIdentifier the Spring bean ID for this bean
-	 */
-	public void setBeanIdentifier(String beanIdentifier) {
-		_beanIdentifier = beanIdentifier;
 	}
 
 	public void unregisterConsumer(String rabbitMQConsumerKey) {
@@ -254,7 +236,6 @@ public class ConsumerManagerLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConsumerManagerLocalServiceImpl.class);
 
-	private String _beanIdentifier;
 	private final Map<String, ConsumerBag> _consumers =
 		new ConcurrentHashMap<>();
 
