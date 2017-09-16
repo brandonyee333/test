@@ -21,14 +21,17 @@ import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.petra.model.adapter.util.ModelAdapterUtil;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.service.ServiceWrapper;
 
 import java.util.List;
 
+import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eudaldo Alonso
  */
+@Component(immediate = true, service = ServiceWrapper.class)
 public class ModularAssetLinkLocalServiceWrapper
 	extends AssetLinkLocalServiceWrapper {
 
