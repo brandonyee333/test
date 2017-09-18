@@ -245,8 +245,10 @@
 
 <c:if test="<%= !searchFilters.isEmpty() || supportPartnerWorker || !developerAccountEntryIds.isEmpty() %>">
 	<aui:script use="aui-base">
-		var homeIcon = AUI().one('#<portlet:namespace />homeIcon');
-		var homeSubMenu = AUI().one('#<portlet:namespace />homeSubMenu');
+		var A = AUI();
+
+		var homeIcon = A.one('#<portlet:namespace />homeIcon');
+		var homeSubMenu = A.one('#<portlet:namespace />homeSubMenu');
 
 		if (homeIcon && homeSubMenu) {
 			homeIcon.on(

@@ -271,10 +271,12 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 	}
 
 	function <portlet:namespace />loadBulkEditToggle(searchTab) {
-		var bulkEditToggle = AUI().one('#<portlet:namespace />bulkEditToggle');
+		var A = AUI();
+
+		var bulkEditToggle = A.one('#<portlet:namespace />bulkEditToggle');
 
 		if (searchTab == 'tickets') {
-			var multipleTicketSelect = AUI().one('#<portlet:namespace />multipleTicketSelect');
+			var multipleTicketSelect = A.one('#<portlet:namespace />multipleTicketSelect');
 
 			multipleTicketSelect.on(
 				'click',
@@ -308,7 +310,9 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 	}
 
 	function <portlet:namespace />loadExportToggle() {
-		var exportMenu = AUI().one('#<portlet:namespace />exportMenu');
+		var A = AUI();
+
+		var exportMenu = A.one('#<portlet:namespace />exportMenu');
 
 		exportMenu.on(
 			'click',
@@ -326,9 +330,11 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 	}
 
 	function <portlet:namespace />multipleTicketSelect(selection) {
-		var checkmark = AUI().one('.multiple-ticket-checkmark');
-		var ticketRows = AUI().all('#<portlet:namespace />advancedSearchResultsContent .ticket-row');
-		var tickets = AUI().all('#<portlet:namespace />advancedSearchResultsContent input[type="checkbox"]');
+		var A = AUI();
+
+		var checkmark = A.one('.multiple-ticket-checkmark');
+		var ticketRows = A.all('#<portlet:namespace />advancedSearchResultsContent .ticket-row');
+		var tickets = A.all('#<portlet:namespace />advancedSearchResultsContent input[type="checkbox"]');
 
 		if (selection == 'all') {
 			checkmark.show();

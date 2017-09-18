@@ -26,7 +26,9 @@
 
 <aui:script>
 	function <portlet:namespace />checkFeedback() {
-		var satisfied = AUI().one("input[name=<portlet:namespace/>feedback]:checked").get("value");
+		var A = AUI();
+
+		var satisfied = A.one("input[name=<portlet:namespace/>feedback]:checked").get("value");
 
 		var radioButtons = document.getElementsByName('<portlet:namespace />feedback');
 

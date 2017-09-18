@@ -314,7 +314,9 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 	<portlet:namespace />toggleIssueSummary(useCustomerSummary.val());
 
 	function <portlet:namespace />selectTicketEntrySubcomponent(subcomponent) {
-		var subcomponentCustom = AUI().one('#<portlet:namespace />ticketEntrySubcomponentCustom');
+		var A = AUI();
+
+		var subcomponentCustom = A.one('#<portlet:namespace />ticketEntrySubcomponentCustom');
 
 		if (subcomponent == '<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>') {
 			subcomponentCustom.show();

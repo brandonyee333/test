@@ -301,38 +301,37 @@
 	<liferay-ui:search-iterator />
 </liferay-ui:search-container>
 
-<aui:script>
-	AUI().ready(
-		'aui-tooltip',
-		function(A) {
-			var warningTypes = ['assigned-support-regions', 'labor-hours', 'languages', 'support-workers'];
+<aui:script use="aui-tooltip">
+	var A = AUI();
 
-			var warningMessages = [
-				'<liferay-ui:message arguments='<%= new String[] {"assigned-support-regions"} %>' key="the-x-for-this-team-are-not-set-this-may-negatively-impact-ticket-assignment-logic" translateArguments="true" />',
-				'<liferay-ui:message arguments='<%= new String[] {"labor-hours"} %>' key="the-x-for-this-team-are-not-set-this-may-negatively-impact-ticket-assignment-logic" translateArguments="true" />',
-				'<liferay-ui:message arguments='<%= new String[] {"languages"} %>' key="the-x-for-this-team-are-not-set-this-may-negatively-impact-ticket-assignment-logic" translateArguments="true" />',
-				'<liferay-ui:message arguments='<%= new String[] {"support-workers"} %>' key="the-x-for-this-team-are-not-set-this-may-negatively-impact-ticket-assignment-logic" translateArguments="true" />'
-			];
+	var warningTypes = ['assigned-support-regions', 'labor-hours', 'languages', 'support-workers'];
 
-			for (var i = 0; i < warningTypes.length; i++ ) {
-				var warnings = A.all('.' + warningTypes[i] + '-warning');
+	var warningMessages = [
+		'<liferay-ui:message arguments='<%= new String[] {"assigned-support-regions"} %>' key="the-x-for-this-team-are-not-set-this-may-negatively-impact-ticket-assignment-logic" translateArguments="true" />',
+		'<liferay-ui:message arguments='<%= new String[] {"labor-hours"} %>' key="the-x-for-this-team-are-not-set-this-may-negatively-impact-ticket-assignment-logic" translateArguments="true" />',
+		'<liferay-ui:message arguments='<%= new String[] {"languages"} %>' key="the-x-for-this-team-are-not-set-this-may-negatively-impact-ticket-assignment-logic" translateArguments="true" />',
+		'<liferay-ui:message arguments='<%= new String[] {"support-workers"} %>' key="the-x-for-this-team-are-not-set-this-may-negatively-impact-ticket-assignment-logic" translateArguments="true" />'
+	];
 
-				warnings.each(
-					function() {
-						var img = this.one('img');
+	for (var i = 0; i < warningTypes.length; i++ ) {
+		var warnings = A.all('.' + warningTypes[i] + '-warning');
 
-						new A.Tooltip(
-							{
-								bodyContent: warningMessages[i],
-								trigger: '#' + img.get('id')
-							}
-						).render();
+		warnings.each(
+			function() {
+				var img = this.one('img');
+
+				new A.Tooltip(
+					{
+						bodyContent: warningMessages[i],
+						trigger: '#' + img.get('id')
 					}
-				);
+				).render();
 			}
-		}
-	);
+		);
+	}
+</aui:script>
 
+<aui:script>
 	function <portlet:namespace />toggleAccountEntries(supportTeamId, expand) {
 		var A = AUI();
 

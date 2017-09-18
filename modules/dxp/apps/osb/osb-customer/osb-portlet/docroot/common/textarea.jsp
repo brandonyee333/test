@@ -129,14 +129,6 @@ String textareaEventHandlers = StringUtil.trim(sb.toString());
 </div>
 
 <aui:script>
-	<c:if test="<%= showCounter %>">
-		AUI().ready(
-			function(A) {
-				<portlet:namespace />updateCharactersRemaining("<%= HtmlUtil.escape(editorId) %>", "charactersRemaining_<%= HtmlUtil.escape(editorId) %>", <%= ModelHintsConstants.TEXTAREA_MAX_LENGTH %>);
-			}
-		);
-	</c:if>
-
 	function <portlet:namespace />enforceTextAreaMaxLength(textAreaId) {
 		var textArea = document.getElementById('<portlet:namespace />' + textAreaId);
 
@@ -153,4 +145,8 @@ String textareaEventHandlers = StringUtil.trim(sb.toString());
 
 		charactersRemaining.innerHTML = count;
 	}
+
+	<c:if test="<%= showCounter %>">
+		<portlet:namespace />updateCharactersRemaining("<%= HtmlUtil.escape(editorId) %>", "charactersRemaining_<%= HtmlUtil.escape(editorId) %>", <%= ModelHintsConstants.TEXTAREA_MAX_LENGTH %>);
+	</c:if>
 </aui:script>

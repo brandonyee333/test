@@ -381,7 +381,9 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 
 <aui:script>
 	function <portlet:namespace />toggleMessage(status) {
-		var statusMessageDisplay = AUI().one('#<portlet:namespace />statusMessageDisplay');
+		var A = AUI();
+
+		var statusMessageDisplay = A.one('#<portlet:namespace />statusMessageDisplay');
 
 		if (status == <%= WorkflowConstants.STATUS_INACTIVE %>) {
 			statusMessageDisplay.show();

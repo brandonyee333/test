@@ -84,8 +84,10 @@ if (liferayIncOrg) {
 	</span>
 
 	<aui:script use="aui-base">
-		var threeDotIcon = AUI().one('#<portlet:namespace />threeDotIcon');
-		var threeDotMenu = AUI().one('#<portlet:namespace />threeDotMenu');
+		var A = AUI();
+
+		var threeDotIcon = A.one('#<portlet:namespace />threeDotIcon');
+		var threeDotMenu = A.one('#<portlet:namespace />threeDotMenu');
 
 		if (threeDotIcon && threeDotMenu) {
 			threeDotIcon.on(

@@ -226,7 +226,9 @@ else {
 		}
 
 		function <portlet:namespace />clearInterval() {
-			var intervalId = AUI().one('#<portlet:namespace />intervalId');
+			var A = AUI();
+
+			var intervalId = A.one('#<portlet:namespace />intervalId');
 
 			if (intervalId.get('value')) {
 				clearInterval(intervalId.get('value'));
@@ -313,7 +315,9 @@ else {
 		}
 
 		function <portlet:namespace />disableAutoUpdateComment() {
-			var intervalId = AUI().one('#<portlet:namespace />intervalId');
+			var A = AUI();
+
+			var intervalId = A.one('#<portlet:namespace />intervalId');
 
 			intervalId.set('value', "disabled");
 		}
@@ -436,7 +440,9 @@ else {
 		}
 
 		function <portlet:namespace />updateMessageDisplay(suffix, className, message) {
-			var messageDisplay = AUI().one('#<portlet:namespace />commentMessageDisplay' + suffix);
+			var A = AUI();
+
+			var messageDisplay = A.one('#<portlet:namespace />commentMessageDisplay' + suffix);
 
 			if (className) {
 				messageDisplay.set("className", className);

@@ -718,12 +718,6 @@ for (SupportRegion supportRegion : supportRegions) {
 </div>
 
 <aui:script>
-	AUI().ready(
-		function() {
-			<portlet:namespace />revealTab('<%= HtmlUtil.escape(detailTab) %>');
-		}
-	);
-
 	Liferay.provide(
 		window,
 		'<portlet:namespace />reveal',
@@ -747,17 +741,21 @@ for (SupportRegion supportRegion : supportRegions) {
 		window,
 		'<portlet:namespace />revealTab',
 		function(tabName) {
+			var A = AUI();
+
 			var tab;
 
 			if (tabName) {
-				tab = AUI().one('#<portlet:namespace />' + tabName);
+				tab = A.one('#<portlet:namespace />' + tabName);
 			}
 
 			if (!tab) {
-				tab = AUI().one('.details .tabs .aui-tab');
+				tab = A.one('.details .tabs .aui-tab');
 			}
 
 			<portlet:namespace />reveal(tab);
 		}
 	);
+
+	<portlet:namespace />revealTab('<%= HtmlUtil.escape(detailTab) %>');
 </aui:script>

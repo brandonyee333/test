@@ -236,17 +236,15 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 	</div>
 </aui:form>
 
-<aui:script>
-	AUI().ready(
-		'aui-base',
-		'aui-io',
-		function(A) {
-			<portlet:namespace />selectPortalVersion(<%= envLFR %>, <%= envAS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envAS)) %>', <%= envDB %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envOS)) %>');
-		}
-	);
+<aui:script use="aui-base,aui-io">
+	<portlet:namespace />selectPortalVersion(<%= envLFR %>, <%= envAS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envAS)) %>', <%= envDB %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envOS)) %>');
+</aui:script>
 
+<aui:script>
 	function <portlet:namespace />selectEnvOS(envOS) {
-		var envOSCustom = AUI().one('#<portlet:namespace />envOSCustom');
+		var A = AUI();
+
+		var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
 
 		if (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>') {
 			envOSCustom.show();

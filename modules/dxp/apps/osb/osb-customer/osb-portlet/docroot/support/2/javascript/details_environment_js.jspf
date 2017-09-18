@@ -30,8 +30,10 @@
 </aui:script>
 
 <aui:script>
-	var createButton = AUI().one('#<portlet:namespace />createEnvironment');
-	var updateButton = AUI().one('#<portlet:namespace />updateEnvironment');
+	var A = AUI();
+
+	var createButton = A.one('#<portlet:namespace />createEnvironment');
+	var updateButton = A.one('#<portlet:namespace />updateEnvironment');
 
 	<c:if test="<%= accountEnvironmentId > 0 %>">
 		<portlet:namespace />validateFiles();
@@ -41,7 +43,7 @@
 	</c:if>
 
 	function <portlet:namespace />selectBrowser(envBrowser) {
-		var envBrowserCustom = AUI().one('#<portlet:namespace />envBrowserCustom');
+		var envBrowserCustom = A.one('#<portlet:namespace />envBrowserCustom');
 
 		if (envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>') {
 			envBrowserCustom.show();
@@ -54,7 +56,7 @@
 	}
 
 	function <portlet:namespace />selectCS(envCS) {
-		var envCSColumn = AUI().one('#<portlet:namespace />envCSColumn');
+		var envCSColumn = A.one('#<portlet:namespace />envCSColumn');
 
 		if (envCS) {
 			envCSColumn.show();
@@ -65,7 +67,7 @@
 	}
 
 	function <portlet:namespace />selectEnvOS(envOS) {
-		var envOSCustom = AUI().one('#<portlet:namespace />envOSCustom');
+		var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
 
 		if (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>') {
 			envOSCustom.show();
@@ -102,7 +104,7 @@
 	}
 
 	function <portlet:namespace />selectSearch(envSearch) {
-		var envSearchColumn = AUI().one('#<portlet:namespace />envSearchColumn');
+		var envSearchColumn = A.one('#<portlet:namespace />envSearchColumn');
 
 		if (envSearch) {
 			envSearchColumn.show();
@@ -113,8 +115,6 @@
 	}
 
 	function <portlet:namespace />updateEnvironmentField(selectId, selectDataKey, selectData, selectVal, selectName) {
-		var A = AUI();
-
 		var selectElement = A.one('#' + selectId);
 
 		if (selectElement.getData('key') == selectDataKey) {
@@ -166,8 +166,6 @@
 	}
 
 	function <portlet:namespace />updateEnvLFR(selectData, envLFRId) {
-		var A = AUI();
-
 		var selectElement = A.one(envLFRId);
 
 		var selectVal = selectElement.val();
@@ -222,8 +220,6 @@
 	}
 
 	function <portlet:namespace />updateUpgradeEnvLFR(envLFR, digitalEnterprise) {
-		var A = AUI();
-
 		var envLFRText = A.one("#<portlet:namespace />envLFR option:checked").html();
 
 		if (digitalEnterprise) {
@@ -242,8 +238,6 @@
 		window,
 		'<portlet:namespace />getEarlierLFRVersions',
 		function(envLFR) {
-			var A = AUI();
-
 			A.io.request(
 				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="earlierLFRVersions" />',
 				{
@@ -269,8 +263,6 @@
 		window,
 		'<portlet:namespace />getLaterLFRVersions',
 		function(envLFR) {
-			var A = AUI();
-
 			A.io.request(
 				'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="laterLFRVersions" />',
 				{
@@ -297,8 +289,6 @@
 		window,
 		'<portlet:namespace />selectPortalVersion',
 		function(envLFR, envAS, envASName, envBrowser, envBrowserName, envCS, envCSName, envDB, envDBName, envJVM, envJVMName, envOS, envOSName, envSearch) {
-			var A = AUI();
-
 			if (envLFR <= 0) {
 				<c:if test="<%= validateEnvironment %>">
 					<portlet:namespace />validateFiles();
@@ -379,8 +369,6 @@
 		window,
 		'<portlet:namespace />doUpdateAccountEnvironment',
 		function(accountEntryId, accountEnvironmentId, name, offeringEntryId, productEntryId) {
-			var A = AUI();
-
 			var envLFR = A.one('#<portlet:namespace />envLFR').val();
 			var envOS = A.one('#<portlet:namespace />envOS').val();
 			var envOSCustom = A.one('#<portlet:namespace />envOSCustom').val();
@@ -455,8 +443,6 @@
 		window,
 		'<portlet:namespace />updateAccountEnvironment',
 		function(accountEnvironmentId, name) {
-			var A = AUI();
-
 			var requiredFields = A.all("#<portlet:namespace />environmentDetail select[data-field-required-status='false'], #<portlet:namespace />environmentDetail input[data-field-required-status='false']");
 
 			if (requiredFields.size() > 0) {

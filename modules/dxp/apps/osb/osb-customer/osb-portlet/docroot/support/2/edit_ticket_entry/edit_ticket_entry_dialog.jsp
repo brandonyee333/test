@@ -122,27 +122,29 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 <%@ include file="/support/2/common/javascript/ticket_entry_validator_js.jspf" %>
 
 <aui:script use="node">
-	AUI().all('.component-tab').hide();
+	var A = AUI();
+
+	A.all('.component-tab').hide();
 
 	var serverTypeNode = A.one('#<portlet:namespace />serverCommunicationType');
 
 	<c:choose>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_CLUSTERING %>">
-			var clusteringDetails = AUI().one('.component-tab#<portlet:namespace />clusteringDetails');
+			var clusteringDetails = A.one('.component-tab#<portlet:namespace />clusteringDetails');
 
 			clusteringDetails.show();
 
 			serverTypeNode.setAttribute('data-field-required-status', 'false');
 		</c:when>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_LICENSE %>">
-			var activationKeyDetails = AUI().one('.component-tab#<portlet:namespace />activationKeyDetails');
+			var activationKeyDetails = A.one('.component-tab#<portlet:namespace />activationKeyDetails');
 
 			activationKeyDetails.show();
 
 			serverTypeNode.setAttribute('data-field-required-status', 'true');
 		</c:when>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_UPGRADE %>">
-			var upgradeDetails = AUI().one('.component-tab#<portlet:namespace />upgradeDetails');
+			var upgradeDetails = A.one('.component-tab#<portlet:namespace />upgradeDetails');
 
 			upgradeDetails.show();
 
@@ -228,8 +230,10 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 	}
 
 	function <portlet:namespace />submit() {
+		var A = AUI();
+
 		var firstNode = null;
-		var requiredFields = AUI().all('#<portlet:namespace />editTicketDetails input[data-field-required-status="false"], select[data-field-required-status="false"], textarea[data-field-required-status="false"]');
+		var requiredFields = A.all('#<portlet:namespace />editTicketDetails input[data-field-required-status="false"], select[data-field-required-status="false"], textarea[data-field-required-status="false"]');
 
 		if (requiredFields.size() > 0) {
 			requiredFields.each(

@@ -307,51 +307,47 @@ if (!screenShareMode) {
 	</span>
 </c:if>
 
-<aui:script>
-	<c:if test="<%= liferayIncOrg %>">
+<c:if test="<%= liferayIncOrg %>">
+	<aui:script use="aui-dialog,aui-io">
 		function <portlet:namespace />setupJIRADialog(element) {
-			AUI().use(
-				'aui-dialog',
-				'aui-io',
-				function(A) {
-					var dialog = new A.Dialog(
-						{
-							bodyContent:
-								'<div style="text-align: center;">' +
-									'<br />' +
-									'<input class="aui-button-input" issueType="3" type="button" value="<%= UnicodeLanguageUtil.get(request, "task") %>" />' +
-									'<br /><br />' +
-									'<input class="aui-button-input" issueType="11" type="button" value="<%= UnicodeLanguageUtil.get(request, "patch") %>" />' +
-									'<br /><br />' +
-									'<input class="aui-button-input" issueType="46" type="button" value="<%= UnicodeLanguageUtil.get(request, "l1-escalation") %>" />' +
-									'<br /><br />' +
-								'</div>',
-							centered: true,
-							cssClass: 'jira-issue-dialog',
-							destroyOnClose: true,
-							draggable: true,
-							modal: true,
-							resizable: false,
-							title: '<liferay-ui:message key="select-issue-type" unicode="<%= true %>" />',
-							visible: false
-						}
-					).render();
+			var A = AUI();
 
-					var jiraIssueTypeButtons = A.all('.jira-issue-dialog .aui-button-input');
-
-					var handleButtonClick = function(e) {
-						var issueType = e.currentTarget.getAttribute('issueType');
-
-						window.open('<%= SupportUtil.createJIRAIssueURL(request, ticketEntry) %>&issuetype=' + issueType);
-
-						dialog.destroy();
-					}
-
-					A.one('.jira-issue-dialog').delegate('click', handleButtonClick, '.aui-button-input');
-
-					dialog.show();
+			var dialog = new A.Dialog(
+				{
+					bodyContent:
+						'<div style="text-align: center;">' +
+							'<br />' +
+							'<input class="aui-button-input" issueType="3" type="button" value="<%= UnicodeLanguageUtil.get(request, "task") %>" />' +
+							'<br /><br />' +
+							'<input class="aui-button-input" issueType="11" type="button" value="<%= UnicodeLanguageUtil.get(request, "patch") %>" />' +
+							'<br /><br />' +
+							'<input class="aui-button-input" issueType="46" type="button" value="<%= UnicodeLanguageUtil.get(request, "l1-escalation") %>" />' +
+							'<br /><br />' +
+						'</div>',
+					centered: true,
+					cssClass: 'jira-issue-dialog',
+					destroyOnClose: true,
+					draggable: true,
+					modal: true,
+					resizable: false,
+					title: '<liferay-ui:message key="select-issue-type" unicode="<%= true %>" />',
+					visible: false
 				}
-			);
+			).render();
+
+			var jiraIssueTypeButtons = A.all('.jira-issue-dialog .aui-button-input');
+
+			var handleButtonClick = function(e) {
+				var issueType = e.currentTarget.getAttribute('issueType');
+
+				window.open('<%= SupportUtil.createJIRAIssueURL(request, ticketEntry) %>&issuetype=' + issueType);
+
+				dialog.destroy();
+			}
+
+			A.one('.jira-issue-dialog').delegate('click', handleButtonClick, '.aui-button-input');
+
+			dialog.show();
 		}
 
 		function <portlet:namespace />updateReproductionSteps(reproductionSteps) {
@@ -361,8 +357,8 @@ if (!screenShareMode) {
 
 			submitForm(document.<portlet:namespace />fm1);
 		}
-	</c:if>
-</aui:script>
+	</aui:script>
+</c:if>
 
 <%!
 private static final String _POP_UP_WINDOW_PARAMETERS = "directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800";

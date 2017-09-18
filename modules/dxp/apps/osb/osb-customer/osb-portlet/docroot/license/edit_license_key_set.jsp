@@ -593,7 +593,9 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 
 	<c:if test="<%= inactiveLicensesCount > 3 %>">
 		<aui:script>
-			AUI().one('#<portlet:namespace />inactiveLicenses').addClass('lfr-collapsed');
+			var A = AUI();
+
+			A.one('#<portlet:namespace />inactiveLicenses').addClass('lfr-collapsed');
 		</aui:script>
 	</c:if>
 </aui:form>
