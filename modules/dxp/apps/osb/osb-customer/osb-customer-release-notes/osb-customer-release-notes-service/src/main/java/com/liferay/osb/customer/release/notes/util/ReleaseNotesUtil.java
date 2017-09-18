@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.release.notes.util;
 
+import com.liferay.osb.customer.release.notes.configuration.ReleaseNotesConfigurationValues;
 import com.liferay.osb.customer.release.notes.model.JIRAComponent;
 import com.liferay.osb.customer.release.notes.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.model.JIRAProjectVersion;
@@ -62,7 +63,7 @@ public class ReleaseNotesUtil {
 		Map<JIRAComponent, Set<JIRAIssue>> jiraComponentMap,
 		JIRAProjectVersion jiraProjectVersion) {
 
-		for (String className : PortletPropsValues.JIRA_COMPONENT_FILTERS) {
+		for (String className : ReleaseNotesConfigurationValues.JIRA_COMPONENT_FILTERS) {
 			try {
 				JIRAComponentFilter jiraComponentFilter =
 					(JIRAComponentFilter)Class.forName(className).newInstance();
@@ -89,7 +90,7 @@ public class ReleaseNotesUtil {
 			String projectKey = jiraIssueKey.split(StringPool.DASH)[0];
 
 			if (ArrayUtil.contains(
-					PortletPropsValues.JIRA_PROJECT_KEYS_ALLOWED, projectKey) ==
+				ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED, projectKey) ==
 						allowed) {
 
 				filteredJIRAIssueKeys.add(jiraIssueKey);

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.release.notes.portlet;
 
+import com.liferay.osb.customer.release.notes.configuration.ReleaseNotesConfigurationValues;
 import com.liferay.osb.customer.release.notes.exception.DuplicateJIRAIssueKeysException;
 import com.liferay.osb.customer.release.notes.exception.NoSuchReleaseNotesException;
 import com.liferay.osb.customer.release.notes.exception.RequiredJIRAIssueKeysException;
@@ -29,7 +30,6 @@ import com.liferay.osb.customer.release.notes.service.JIRAProjectVersionLocalSer
 import com.liferay.osb.customer.release.notes.service.ReleaseNotesLocalServiceUtil;
 import com.liferay.osb.customer.release.notes.util.DataURIUtil;
 import com.liferay.osb.customer.release.notes.util.JIRAConstants;
-import com.liferay.osb.customer.release.notes.util.PortletPropsValues;
 import com.liferay.osb.customer.release.notes.util.ReleaseNotesUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -230,7 +230,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			resourceRequest, "jiraProjectKey", "LPE");
 
 		if (!ArrayUtil.contains(
-				PortletPropsValues.JIRA_PROJECT_KEYS_ALLOWED, jiraProjectKey)) {
+			ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED, jiraProjectKey)) {
 
 			return "The project is restricted.";
 		}
@@ -280,7 +280,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			jiraProjectVersion.getJiraProjectId());
 
 		if (!ArrayUtil.contains(
-				PortletPropsValues.JIRA_PROJECT_KEYS_ALLOWED,
+			ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED,
 				jiraProject.getKey())) {
 
 			return "The project is restricted.";
@@ -373,24 +373,24 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			"jiraIssueTypeNewFeature", JIRAConstants.ISSUE_TYPE_NEW_FEATURE);
 
 		velocityContext.put(
-			"bugIcon", encodeToDataURI(PortletPropsValues.IMAGE_ICON_BUG));
+			"bugIcon", encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_BUG));
 		velocityContext.put(
 			"improvementIcon",
-			encodeToDataURI(PortletPropsValues.IMAGE_ICON_IMPROVEMENT));
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_IMPROVEMENT));
 		velocityContext.put(
 			"newFeatureIcon",
-			encodeToDataURI(PortletPropsValues.IMAGE_ICON_NEW_FEATURE));
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_NEW_FEATURE));
 		velocityContext.put(
-			"otherIcon", encodeToDataURI(PortletPropsValues.IMAGE_ICON_OTHER));
+			"otherIcon", encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_OTHER));
 		velocityContext.put(
-			"logo", encodeToDataURI(PortletPropsValues.IMAGE_LOGO));
+			"logo", encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_LOGO));
 
-		velocityContext.put("css", mergeFiles(PortletPropsValues.TEMPLATE_CSS));
+		velocityContext.put("css", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_CSS));
 
 		velocityContext.put(
-			"jsBottom", mergeFiles(PortletPropsValues.TEMPLATE_JS_BOTTOM));
+			"jsBottom", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_BOTTOM));
 		velocityContext.put(
-			"jsTop", mergeFiles(PortletPropsValues.TEMPLATE_JS_TOP));
+			"jsTop", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_TOP));
 
 		velocityContext.put("version", version);
 
@@ -496,7 +496,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 
 		String velocityTemplateId =
 			_portletContextName + _SERVLET_SEPARATOR +
-				PortletPropsValues.TEMPLATE_VELOCITY;
+				ReleaseNotesConfigurationValues.TEMPLATE_VELOCITY;
 
 		VelocityEngine velocityEngine = new VelocityEngine();
 
