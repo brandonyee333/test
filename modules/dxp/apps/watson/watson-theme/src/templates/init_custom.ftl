@@ -17,6 +17,8 @@
 </#if>
 
 <#assign
+	css_class = css_class + " data-senna data-senna-surface"
+
 	the_title = languageUtil.get(locale, "incident-report")
 
 	company_name = languageUtil.get(locale, "watson")

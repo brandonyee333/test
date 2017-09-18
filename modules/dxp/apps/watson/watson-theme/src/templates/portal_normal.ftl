@@ -26,10 +26,6 @@
 	<section id="content">
 		<h1 class="hide-accessible">${the_title}</h1>
 
-		<#if !is_signed_in>
-			<a class="click-to-sign-in hidden" data-redirect="${is_login_redirect_required?string}" href="${sign_in_url}" id="sign-in-click" rel="nofollow">${sign_in_text}</a>
-		</#if>
-
 		<#if selectable>
 			<@liferay_util["include"] page=content_include />
 		<#else>
@@ -38,6 +34,10 @@
 			<@liferay_theme["wrap-portlet"] page="portlet.ftl">
 				<@liferay_util["include"] page=content_include />
 			</@>
+		</#if>
+
+		<#if !is_signed_in>
+			<a class="sign-in" data-redirect="${is_login_redirect_required?string}" href="${sign_in_url}" id="sign-in" rel="nofollow">${sign_in_text}</a>
 		</#if>
 	</section>
 </div>

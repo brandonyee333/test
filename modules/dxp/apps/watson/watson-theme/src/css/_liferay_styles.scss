@@ -109,3 +109,19 @@ html body {
 		height: 65px;
 	}
 }
+
+#content {
+	#sign-in {
+		color: gray;
+		font-size: 22px;
+		margin-right: 1%;
+	}
+
+	 .columns-max ~ #sign-in{
+		 display: none;
+	}
+
+	.columns-2 {
+		display: none;
+	}
+}

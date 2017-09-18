@@ -86,7 +86,7 @@ class Watson extends JSXComponent {
 
 			retVal = (
 				<Provider store={store}>
-					<div class="watson-app" data-senna data-senna-surface>
+					<div class="watson-app">
 
 						<HeaderToolbar
 							languageToggleOnChange={this.languageToggleOnChange}
