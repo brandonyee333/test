@@ -287,7 +287,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 		var envBrowserCustom = AUI().one('#<portlet:namespace />envBrowserCustom');
 
 		if (envBrowserCustom) {
-			var other = envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>';
+			var other = (envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>');
 
 			envBrowserCustom.toggle(other);
 
@@ -300,7 +300,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 	function <portlet:namespace />selectEnvOS(envOS) {
 		var envOSCustom = AUI().one('#<portlet:namespace />envOSCustom');
 
-		var other = envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>';
+		var other = (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>');
 
 		envOsCustom.toggle(other);
 

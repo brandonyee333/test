@@ -538,7 +538,7 @@
 								dataType: 'json',
 								method: 'post',
 								on: {
-									success: function(event, id, obj) {
+									success: function() {
 										var response = this.get('responseData');
 
 										if (response && (response.exists == 'true')) {

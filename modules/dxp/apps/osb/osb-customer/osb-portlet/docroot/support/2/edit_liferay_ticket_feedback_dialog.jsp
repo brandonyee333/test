@@ -31,13 +31,13 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 		</div>
 
 		<div>
-			<aui:input checked="<%= true %>" name="dialogYesRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_YES %>" />
+			<aui:input checked="<%= true %>" id="dialogYesRadioButton" name="dialogRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_YES %>" />
 
 			<liferay-ui:message key="yes" />
 		</div>
 
 		<div>
-			<aui:input name="dialogNoRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_NO + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_NO %>" />
+			<aui:input id="dialogNoRadioButton" name="dialogRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_NO + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_NO %>" />
 
 			<liferay-ui:message key="no" />
 		</div>
@@ -99,7 +99,7 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 					dataType: 'json',
 					method: 'post',
 					on: {
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							document.<portlet:namespace />fm.<portlet:namespace />satisfied.value = response.satisfied;

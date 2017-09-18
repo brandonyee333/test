@@ -126,7 +126,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 
 			<aui:input checked="<%= answer3 == TicketFeedbackConstants.ANSWER_YES %>" disabled="<%= !hasUpdate %>" label="<%= TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_YES) %>" name="answer3" type="radio" value="<%= TicketFeedbackConstants.ANSWER_YES %>" />
 			<aui:input checked="<%= answer3 == TicketFeedbackConstants.ANSWER_NO %>" disabled="<%= !hasUpdate %>" label="<%= TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NO) %>" name="answer3" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NO %>" />
-			<aui:input checked="<%= answer3 == TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" disabled="<%= !hasUpdate %>" label="TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NOT_APPLICABLE) %>" name="answer3" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" />
+			<aui:input checked="<%= answer3 == TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" disabled="<%= !hasUpdate %>" label="<%= TicketFeedbackConstants.getAnswerLabel(TicketFeedbackConstants.ANSWER_NOT_APPLICABLE) %>" name="answer3" type="radio" value="<%= TicketFeedbackConstants.ANSWER_NOT_APPLICABLE %>" />
 
 			<br />
 

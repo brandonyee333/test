@@ -221,7 +221,7 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 	var advSearchIcon = A.one('#<portlet:namespace />advSearchIcon');
 
 	if (advSearchIcon) {
-		advSearchIcon.classList.add('active');
+		advSearchIcon.addClass('active');
 	}
 
 	window.addEventListener(
@@ -233,7 +233,6 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 	);
 
 	var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />ticketFade', '<portlet:namespace />ticketFilter'];
-
 	var offsetElementIds = ['<portlet:namespace />showMoreButtonContainer', '<portlet:namespace />ticketTabContent'];
 
 	window.addEventListener(
