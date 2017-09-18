@@ -112,13 +112,13 @@ html body {
 
 #content {
 	#sign-in {
-		color: gray;
+		color: #808080;
 		font-size: 22px;
 		margin-right: 1%;
 	}
 
-	 .columns-max ~ #sign-in{
-		 display: none;
+	.columns-max ~ #sign-in {
+		display: none;
 	}
 
 	.columns-2 {
