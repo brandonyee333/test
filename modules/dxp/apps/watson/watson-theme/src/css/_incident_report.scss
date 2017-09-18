@@ -96,10 +96,6 @@
 }
 
 @media print {
-	.no-print {
-		display: none;
-	}
-
 	.print-helper-message {
 		@include center(both);
 		@include row-header-text;

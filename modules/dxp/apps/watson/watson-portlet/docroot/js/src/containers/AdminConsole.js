@@ -39,7 +39,7 @@ class AdminConsole extends JSXComponent {
 		];
 
 		return (
-			<div class="page-container incidents-admin no-print">
+			<div class="page-container incidents-admin hidden-print">
 				<div class="sidebar">
 					<SidebarHeader subHeader={Liferay.Language.get('administrator-console')} />
 

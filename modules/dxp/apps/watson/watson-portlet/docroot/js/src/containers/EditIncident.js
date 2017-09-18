@@ -716,7 +716,7 @@ class EditIncident extends JSXComponent {
 		];
 
 		return (
-			<div class="incidents-edit page-container no-print">
+			<div class="incidents-edit page-container hidden-print">
 				<div class="sidebar">
 					<Button label={Liferay.Language.get('print-report')} onClick={this.handlePrintReport} />
 

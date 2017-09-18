@@ -92,7 +92,7 @@ class ChildModelIndex extends JSXComponent {
 		const modelTypeLabel = getOptionsLabelFromWatsonConstants(model, 'typeWatsonListTypeId', modelData.get('typeWatsonListTypeId'));
 
 		return (
-			<div class="model-index page-container no-print">
+			<div class="model-index page-container hidden-print">
 				<div class="sidebar">
 					<SidebarHeader mainHeader={modelName} metaHeader={modelMetaHeader} subHeader={modelTypeLabel} />
 				</div>

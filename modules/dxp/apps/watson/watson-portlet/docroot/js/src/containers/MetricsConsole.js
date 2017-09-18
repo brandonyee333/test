@@ -120,7 +120,7 @@ class MetricsConsole extends JSXComponent {
 		];
 
 		return (
-			<div class="page-container incidents-metrics no-print">
+			<div class="page-container incidents-metrics hidden-print">
 				<div class="sidebar">
 					<SidebarHeader mainHeader={Liferay.Language.get('watson-metrics')} />
 

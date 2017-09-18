@@ -249,7 +249,7 @@ class Index extends JSXComponent {
 		}
 
 		return (
-			<div class="incidents-index page-container no-print">
+			<div class="incidents-index page-container hidden-print">
 				<div class="sidebar">
 					<SidebarHeader mainHeader={Liferay.Language.get('incidents')} />
 
