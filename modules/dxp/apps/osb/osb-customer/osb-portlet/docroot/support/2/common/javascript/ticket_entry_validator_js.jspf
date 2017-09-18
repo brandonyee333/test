@@ -16,64 +16,78 @@
 
 <aui:script>
 	function <portlet:namespace />validateRequiredField(node) {
-		var A = AUI();
+		var returnVal = true;
 
-		var status = true;
+		if (node) {
+			if ((node.get('name') == '<portlet:namespace />resolution') || (node.get('name') == '<portlet:namespace />status')) {
+				var resolution = document.getElementById('<portlet:namespace />resolution');
+				var status = document.getElementById('<portlet:namespace />status');
 
-		if ((node.get('name') == '<portlet:namespace />resolution') || (node.get('name'
-			) == '<portlet:namespace />status')) {
-			var resolution = document.getElementById('<portlet:namespace />resolution');
-			var ticketStatus = document.getElementById('<portlet:namespace />status').value;
+				var ticketStatus;
 
-			node = A.one(resolution);
+				if (status) {
+					ticketStatus = status.value;
+				}
 
-			if ((ticketStatus != <%= TicketEntryConstants.STATUS_CLOSED %>) || ((ticketStatus == <%= TicketEntryConstants.STATUS_CLOSED %>) && (resolution.value != 0))) {
+				var requiredStatus = 'false';
+
+				if ((ticketStatus != <%= TicketEntryConstants.STATUS_CLOSED %>) || ((ticketStatus == <%= TicketEntryConstants.STATUS_CLOSED %>) && (resolution && resolution.value != 0))) {
+					requiredStatus = 'true';
+
+					returnVal = false;
+				}
+
+				resolution.setAttribute('data-field-required-status', requiredStatus);
+			}
+			else if (node.get('value').trim() && !node.test('select') || (node.test('select') && (node.get('value') != 0) && (node.get('value') != ''))) {
 				node.setAttribute('data-field-required-status', 'true');
 
-				status = false;
+				returnVal = false;
 			}
 			else {
 				node.setAttribute('data-field-required-status', 'false');
 			}
-		}
-		else if ((A.Lang.trim(node.get('value')) && !node.test('select')) || (node.test('select') && (node.get('value') != 0) && (node.get('value') != ''))) {
-			node.setAttribute('data-field-required-status', 'true');
 
-			status = false;
-		}
-		else {
-			node.setAttribute('data-field-required-status', 'false');
+			<portlet:namespace />displayValidation(node, returnVal);
 		}
 
-		var messageDisplayName = node.getAttribute('name') + 'Message';
-
-		var messageDisplay = A.one('#' + messageDisplayName);
-
-		if (messageDisplay && status) {
-			messageDisplay.show();
-		}
-		else if (messageDisplay && !status) {
-			messageDisplay.hide();
-		}
-		else if (!messageDisplay && status) {
-			messageDisplay = A.Node.create('<div class="portlet-msg-error" />');
-
-			messageDisplay.setAttribute('id', messageDisplayName);
-			messageDisplay.setContent(node.getAttribute('field-required-message'));
-
-			var childNode = node;
-			var parentNode = node.get('parentNode');
-
-			while (!parentNode.test('div')) {
-				childNode = parentNode;
-				parentNode = parentNode.get('parentNode');
-
-				messageDisplay.setContent(parentNode.getAttribute('field-required-message'));
-			}
-
-			parentNode.insertBefore(messageDisplay, childNode);
-		}
-
-		return !status;
+		return !returnVal;
 	}
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />displayValidation',
+		function(node, status) {
+			var A = AUI();
+
+			var messageDisplayName = node.getAttribute('name') + 'Message';
+
+			var messageDisplay = A.one('#' + messageDisplayName);
+
+			if (messageDisplay) {
+				messageDisplay.toggle(status);
+			}
+			else if (status) {
+				messageDisplay = A.Node.create('<div class="portlet-msg-error" />');
+
+				messageDisplay.setAttribute('id', messageDisplayName);
+				messageDisplay.setContent(node.getAttribute('field-required-message'));
+
+				var childNode = node;
+
+				var parentNode = node.get('parentNode');
+
+				while (!parentNode.test('div')) {
+					childNode = parentNode;
+
+					parentNode = parentNode.get('parentNode');
+
+					messageDisplay.setContent(parentNode.getAttribute('field-required-message'));
+				}
+
+				parentNode.insertBefore(messageDisplay, childNode);
+			}
+		},
+		['aui-node']
+	);
 </aui:script>
