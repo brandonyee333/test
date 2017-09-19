@@ -89,10 +89,10 @@ public class FolderStagedModelDataHandler
 
 	@Override
 	public Folder fetchStagedModelByUuidAndGroupId(String uuid, long groupId) {
-		DLFolder folder = _dlFolderLocalService.fetchFolder(uuid, groupId);
+		DLFolder dlFolder = _dlFolderLocalService.fetchFolder(uuid, groupId);
 
-		if (folder != null) {
-			return new LiferayFolder(folder);
+		if (dlFolder != null) {
+			return new LiferayFolder(dlFolder);
 		}
 
 		return null;
