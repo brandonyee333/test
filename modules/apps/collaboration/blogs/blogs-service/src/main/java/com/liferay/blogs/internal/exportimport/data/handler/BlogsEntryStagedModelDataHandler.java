@@ -246,10 +246,6 @@ public class BlogsEntryStagedModelDataHandler
 
 		BlogsEntry importedEntry = null;
 
-		Map<Long, Long> fileEntryIds =
-			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
-				FileEntry.class);
-
 		if (portletDataContext.isDataStrategyMirror()) {
 			serviceContext.setAttribute("urlTitle", entry.getUrlTitle());
 
@@ -302,6 +298,9 @@ public class BlogsEntryStagedModelDataHandler
 
 		ImageSelector coverImageSelector = null;
 
+		Map<Long, Long> fileEntryIds =
+			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
+				FileEntry.class);
 		List<Element> attachmentElements =
 			portletDataContext.getReferenceDataElements(
 				entry, DLFileEntry.class,
