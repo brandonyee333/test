@@ -254,9 +254,9 @@
 			homeIcon.on(
 				'click',
 				function() {
-					homeIcon.toggleClass('clicked');
+					homeIcon.addClass('clicked');
 
-					homeSubMenu.toggle();
+					homeSubMenu.show();
 				}
 			);
 
