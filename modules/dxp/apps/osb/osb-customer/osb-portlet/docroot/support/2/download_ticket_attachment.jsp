@@ -101,19 +101,19 @@ List<FileRepository> fileRepositories = SupportUtil.getFileRepositories();
 			},
 			['aui-io']
 		);
-	</aui:script>
 
-	<%
-	for (FileRepository fileRepository : fileRepositories) {
-		if (availableFileRepositoryIds.contains(fileRepository.getFileRepositoryId())) {
-			continue;
+		<%
+		for (FileRepository fileRepository : fileRepositories) {
+			if (availableFileRepositoryIds.contains(fileRepository.getFileRepositoryId())) {
+				continue;
+			}
+		%>
+
+			<portlet:namespace />checkTicketAttachmentServerAvailability('<%= ticketAttachmentId %>', '<%= fileRepository.getFileRepositoryId() %>');
+
+		<%
 		}
-	%>
+		%>
 
-		<portlet:namespace />checkTicketAttachmentServerAvailability('<%= ticketAttachmentId %>', '<%= fileRepository.getFileRepositoryId() %>');
-
-	<%
-	}
-	%>
-
+	</aui:script>
 </c:if>
