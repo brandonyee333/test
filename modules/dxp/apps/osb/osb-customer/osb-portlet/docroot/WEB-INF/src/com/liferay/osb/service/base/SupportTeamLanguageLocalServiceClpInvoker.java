@@ -123,17 +123,17 @@ public class SupportTeamLanguageLocalServiceClpInvoker {
 				"com.liferay.osb.model.SupportTeamLanguage"
 			};
 
-		_methodName278 = "getOSGiServiceIdentifier";
+		_methodName280 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes278 = new String[] {  };
+		_methodParameterTypes280 = new String[] {  };
 
-		_methodName283 = "getSupportTeamLanguages";
+		_methodName285 = "getSupportTeamLanguages";
 
-		_methodParameterTypes283 = new String[] { "long" };
+		_methodParameterTypes285 = new String[] { "long" };
 
-		_methodName284 = "setSupportTeamLanguageIds";
+		_methodName286 = "setSupportTeamLanguageIds";
 
-		_methodParameterTypes284 = new String[] { "long", "java.lang.String[][]" };
+		_methodParameterTypes286 = new String[] { "long", "java.lang.String[][]" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -240,18 +240,18 @@ public class SupportTeamLanguageLocalServiceClpInvoker {
 			return SupportTeamLanguageLocalServiceUtil.updateSupportTeamLanguage((com.liferay.osb.model.SupportTeamLanguage)arguments[0]);
 		}
 
-		if (_methodName278.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return SupportTeamLanguageLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName283.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
+		if (_methodName285.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
 			return SupportTeamLanguageLocalServiceUtil.getSupportTeamLanguages(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			SupportTeamLanguageLocalServiceUtil.setSupportTeamLanguageIds(((Long)arguments[0]).longValue(),
 				(java.lang.String[])arguments[1]);
 
@@ -299,10 +299,10 @@ public class SupportTeamLanguageLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName278;
-	private String[] _methodParameterTypes278;
-	private String _methodName283;
-	private String[] _methodParameterTypes283;
-	private String _methodName284;
-	private String[] _methodParameterTypes284;
+	private String _methodName280;
+	private String[] _methodParameterTypes280;
+	private String _methodName285;
+	private String[] _methodParameterTypes285;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
 }

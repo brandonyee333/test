@@ -123,65 +123,65 @@ public class AccountCustomerLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountCustomer"
 			};
 
-		_methodName286 = "getOSGiServiceIdentifier";
+		_methodName288 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes286 = new String[] {  };
+		_methodParameterTypes288 = new String[] {  };
 
-		_methodName291 = "addAccountCustomers";
+		_methodName293 = "addAccountCustomers";
 
-		_methodParameterTypes291 = new String[] {
+		_methodParameterTypes293 = new String[] {
 				"long", "long[][]", "long", "int[][]", "int[][]"
 			};
 
-		_methodName292 = "deleteAccountCustomer";
+		_methodName294 = "deleteAccountCustomer";
 
-		_methodParameterTypes292 = new String[] {
+		_methodParameterTypes294 = new String[] {
 				"long", "com.liferay.osb.model.AccountCustomer"
 			};
 
-		_methodName293 = "deleteAccountCustomers";
-
-		_methodParameterTypes293 = new String[] { "long" };
-
-		_methodName294 = "deleteAccountCustomers";
-
-		_methodParameterTypes294 = new String[] { "long", "long[][]", "long" };
-
-		_methodName295 = "deleteAccountEntryAccountCustomers";
+		_methodName295 = "deleteAccountCustomers";
 
 		_methodParameterTypes295 = new String[] { "long" };
 
-		_methodName296 = "fetchAccountCustomer";
+		_methodName296 = "deleteAccountCustomers";
 
-		_methodParameterTypes296 = new String[] { "long", "long" };
+		_methodParameterTypes296 = new String[] { "long", "long[][]", "long" };
 
-		_methodName297 = "getAccountCustomer";
+		_methodName297 = "deleteAccountEntryAccountCustomers";
 
-		_methodParameterTypes297 = new String[] { "long", "long" };
+		_methodParameterTypes297 = new String[] { "long" };
 
-		_methodName298 = "getAccountCustomers";
+		_methodName298 = "fetchAccountCustomer";
 
-		_methodParameterTypes298 = new String[] { "long" };
+		_methodParameterTypes298 = new String[] { "long", "long" };
 
-		_methodName299 = "getAccountCustomers";
+		_methodName299 = "getAccountCustomer";
 
-		_methodParameterTypes299 = new String[] { "long", "int" };
+		_methodParameterTypes299 = new String[] { "long", "long" };
 
-		_methodName300 = "getUserAccountCustomers";
+		_methodName300 = "getAccountCustomers";
 
 		_methodParameterTypes300 = new String[] { "long" };
 
-		_methodName301 = "getUserAccountCustomers";
+		_methodName301 = "getAccountCustomers";
 
-		_methodParameterTypes301 = new String[] { "long", "int[][]" };
+		_methodParameterTypes301 = new String[] { "long", "int" };
 
-		_methodName302 = "hasAccountCustomer";
+		_methodName302 = "getUserAccountCustomers";
 
-		_methodParameterTypes302 = new String[] { "long", "long" };
+		_methodParameterTypes302 = new String[] { "long" };
 
-		_methodName303 = "toggleNotifications";
+		_methodName303 = "getUserAccountCustomers";
 
-		_methodParameterTypes303 = new String[] { "long" };
+		_methodParameterTypes303 = new String[] { "long", "int[][]" };
+
+		_methodName304 = "hasAccountCustomer";
+
+		_methodParameterTypes304 = new String[] { "long", "long" };
+
+		_methodName305 = "toggleNotifications";
+
+		_methodParameterTypes305 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -288,13 +288,13 @@ public class AccountCustomerLocalServiceClpInvoker {
 			return AccountCustomerLocalServiceUtil.updateAccountCustomer((com.liferay.osb.model.AccountCustomer)arguments[0]);
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName288.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
 			return AccountCustomerLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName291.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+		if (_methodName293.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
 			AccountCustomerLocalServiceUtil.addAccountCustomers(((Long)arguments[0]).longValue(),
 				(long[])arguments[1], ((Long)arguments[2]).longValue(),
 				(int[])arguments[3], (int[])arguments[4]);
@@ -302,76 +302,76 @@ public class AccountCustomerLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName292.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+		if (_methodName294.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
 			return AccountCustomerLocalServiceUtil.deleteAccountCustomer(((Long)arguments[0]).longValue(),
 				(com.liferay.osb.model.AccountCustomer)arguments[1]);
 		}
 
-		if (_methodName293.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
-			AccountCustomerLocalServiceUtil.deleteAccountCustomers(((Long)arguments[0]).longValue());
-
-			return null;
-		}
-
-		if (_methodName294.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
-			AccountCustomerLocalServiceUtil.deleteAccountCustomers(((Long)arguments[0]).longValue(),
-				(long[])arguments[1], ((Long)arguments[2]).longValue());
-
-			return null;
-		}
-
 		if (_methodName295.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
-			AccountCustomerLocalServiceUtil.deleteAccountEntryAccountCustomers(((Long)arguments[0]).longValue());
+			AccountCustomerLocalServiceUtil.deleteAccountCustomers(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
 		if (_methodName296.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
-			return AccountCustomerLocalServiceUtil.fetchAccountCustomer(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
+			AccountCustomerLocalServiceUtil.deleteAccountCustomers(((Long)arguments[0]).longValue(),
+				(long[])arguments[1], ((Long)arguments[2]).longValue());
+
+			return null;
 		}
 
 		if (_methodName297.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
-			return AccountCustomerLocalServiceUtil.getAccountCustomer(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
+			AccountCustomerLocalServiceUtil.deleteAccountEntryAccountCustomers(((Long)arguments[0]).longValue());
+
+			return null;
 		}
 
 		if (_methodName298.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
-			return AccountCustomerLocalServiceUtil.getAccountCustomers(((Long)arguments[0]).longValue());
+			return AccountCustomerLocalServiceUtil.fetchAccountCustomer(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName299.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
-			return AccountCustomerLocalServiceUtil.getAccountCustomers(((Long)arguments[0]).longValue(),
-				((Integer)arguments[1]).intValue());
+			return AccountCustomerLocalServiceUtil.getAccountCustomer(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName300.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
-			return AccountCustomerLocalServiceUtil.getUserAccountCustomers(((Long)arguments[0]).longValue());
+			return AccountCustomerLocalServiceUtil.getAccountCustomers(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName301.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
-			return AccountCustomerLocalServiceUtil.getUserAccountCustomers(((Long)arguments[0]).longValue(),
-				(int[])arguments[1]);
+			return AccountCustomerLocalServiceUtil.getAccountCustomers(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue());
 		}
 
 		if (_methodName302.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
-			return AccountCustomerLocalServiceUtil.hasAccountCustomer(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
+			return AccountCustomerLocalServiceUtil.getUserAccountCustomers(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName303.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes303, parameterTypes)) {
+			return AccountCustomerLocalServiceUtil.getUserAccountCustomers(((Long)arguments[0]).longValue(),
+				(int[])arguments[1]);
+		}
+
+		if (_methodName304.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes304, parameterTypes)) {
+			return AccountCustomerLocalServiceUtil.hasAccountCustomer(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName305.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes305, parameterTypes)) {
 			AccountCustomerLocalServiceUtil.toggleNotifications(((Long)arguments[0]).longValue());
 
 			return null;
@@ -418,12 +418,8 @@ public class AccountCustomerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
-	private String _methodName291;
-	private String[] _methodParameterTypes291;
-	private String _methodName292;
-	private String[] _methodParameterTypes292;
+	private String _methodName288;
+	private String[] _methodParameterTypes288;
 	private String _methodName293;
 	private String[] _methodParameterTypes293;
 	private String _methodName294;
@@ -446,4 +442,8 @@ public class AccountCustomerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes302;
 	private String _methodName303;
 	private String[] _methodParameterTypes303;
+	private String _methodName304;
+	private String[] _methodParameterTypes304;
+	private String _methodName305;
+	private String[] _methodParameterTypes305;
 }

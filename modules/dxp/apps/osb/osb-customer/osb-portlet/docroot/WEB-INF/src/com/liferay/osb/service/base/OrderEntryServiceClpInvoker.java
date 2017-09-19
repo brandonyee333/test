@@ -27,32 +27,32 @@ import java.util.Arrays;
 @ProviderType
 public class OrderEntryServiceClpInvoker {
 	public OrderEntryServiceClpInvoker() {
-		_methodName370 = "getOSGiServiceIdentifier";
+		_methodName372 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes370 = new String[] {  };
+		_methodParameterTypes372 = new String[] {  };
 
-		_methodName375 = "getOrderEntries";
+		_methodName377 = "getOrderEntries";
 
-		_methodParameterTypes375 = new String[] { "long" };
+		_methodParameterTypes377 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName370.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes370, parameterTypes)) {
+		if (_methodName372.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
 			return OrderEntryServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName375.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes375, parameterTypes)) {
+		if (_methodName377.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes377, parameterTypes)) {
 			return OrderEntryServiceUtil.getOrderEntries(((Long)arguments[0]).longValue());
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName370;
-	private String[] _methodParameterTypes370;
-	private String _methodName375;
-	private String[] _methodParameterTypes375;
+	private String _methodName372;
+	private String[] _methodParameterTypes372;
+	private String _methodName377;
+	private String[] _methodParameterTypes377;
 }

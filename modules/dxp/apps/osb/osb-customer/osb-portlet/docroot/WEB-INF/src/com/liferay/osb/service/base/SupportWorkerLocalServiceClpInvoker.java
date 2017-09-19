@@ -123,168 +123,168 @@ public class SupportWorkerLocalServiceClpInvoker {
 				"com.liferay.osb.model.SupportWorker"
 			};
 
-		_methodName278 = "getOSGiServiceIdentifier";
+		_methodName280 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes278 = new String[] {  };
+		_methodParameterTypes280 = new String[] {  };
 
-		_methodName283 = "addSupportWorkers";
+		_methodName285 = "addSupportWorkers";
 
-		_methodParameterTypes283 = new String[] {
+		_methodParameterTypes285 = new String[] {
 				"long[][]", "long", "double[][]", "int[][]", "int[][]",
 				"int[][]"
 			};
 
-		_methodName284 = "clockInOut";
+		_methodName286 = "clockInOut";
 
-		_methodParameterTypes284 = new String[] { "long" };
+		_methodParameterTypes286 = new String[] { "long" };
 
-		_methodName285 = "decreaseAssignedWork";
+		_methodName287 = "decreaseAssignedWork";
 
-		_methodParameterTypes285 = new String[] { "long", "double" };
+		_methodParameterTypes287 = new String[] { "long", "double" };
 
-		_methodName286 = "decreaseTicketEntryAssignedWork";
+		_methodName288 = "decreaseTicketEntryAssignedWork";
 
-		_methodParameterTypes286 = new String[] { "long", "double" };
+		_methodParameterTypes288 = new String[] { "long", "double" };
 
-		_methodName287 = "deleteSupportWorkers";
-
-		_methodParameterTypes287 = new String[] { "long" };
-
-		_methodName288 = "deleteSupportWorkers";
-
-		_methodParameterTypes288 = new String[] { "long[][]", "long" };
-
-		_methodName289 = "getAssignedWork";
+		_methodName289 = "deleteSupportWorkers";
 
 		_methodParameterTypes289 = new String[] { "long" };
 
-		_methodName290 = "getAvailableSupportWorker";
+		_methodName290 = "deleteSupportWorkers";
 
-		_methodParameterTypes290 = new String[] {
+		_methodParameterTypes290 = new String[] { "long[][]", "long" };
+
+		_methodName291 = "getAssignedWork";
+
+		_methodParameterTypes291 = new String[] { "long" };
+
+		_methodName292 = "getAvailableSupportWorker";
+
+		_methodParameterTypes292 = new String[] {
 				"com.liferay.osb.model.TicketEntry"
 			};
 
-		_methodName291 = "getLongestOpenSupportWorker";
-
-		_methodParameterTypes291 = new String[] {
-				"java.util.List", "com.liferay.osb.model.TicketEntry"
-			};
-
-		_methodName292 = "getMostAvailableSupportWorker";
-
-		_methodParameterTypes292 = new String[] {
-				"com.liferay.osb.model.TicketEntry", "java.util.LinkedHashMap"
-			};
-
-		_methodName293 = "getNextOpenSupportWorker";
+		_methodName293 = "getLongestOpenSupportWorker";
 
 		_methodParameterTypes293 = new String[] {
 				"java.util.List", "com.liferay.osb.model.TicketEntry"
 			};
 
-		_methodName294 = "getSupportWorker";
+		_methodName294 = "getMostAvailableSupportWorker";
 
-		_methodParameterTypes294 = new String[] { "long", "long" };
+		_methodParameterTypes294 = new String[] {
+				"com.liferay.osb.model.TicketEntry", "java.util.LinkedHashMap"
+			};
 
-		_methodName295 = "getSupportWorkersBySupportLaborId";
+		_methodName295 = "getNextOpenSupportWorker";
 
-		_methodParameterTypes295 = new String[] { "long" };
+		_methodParameterTypes295 = new String[] {
+				"java.util.List", "com.liferay.osb.model.TicketEntry"
+			};
 
-		_methodName296 = "getSupportWorkersBySupportRegionId";
+		_methodName296 = "getSupportWorker";
 
-		_methodParameterTypes296 = new String[] { "long" };
+		_methodParameterTypes296 = new String[] { "long", "long" };
 
-		_methodName297 = "getSupportWorkersCountBySupportLaborId";
+		_methodName297 = "getSupportWorkersBySupportLaborId";
 
 		_methodParameterTypes297 = new String[] { "long" };
 
-		_methodName298 = "getTeamSupportWorkers";
+		_methodName298 = "getSupportWorkersBySupportRegionId";
 
 		_methodParameterTypes298 = new String[] { "long" };
 
-		_methodName299 = "getUserSupportTeamManagers";
+		_methodName299 = "getSupportWorkersCountBySupportLaborId";
 
-		_methodParameterTypes299 = new String[] { "long", "java.lang.Integer" };
+		_methodParameterTypes299 = new String[] { "long" };
 
-		_methodName300 = "getUserSupportWorkers";
+		_methodName300 = "getTeamSupportWorkers";
 
 		_methodParameterTypes300 = new String[] { "long" };
 
-		_methodName301 = "hasSupportWorker";
+		_methodName301 = "getUserSupportTeamManagers";
 
-		_methodParameterTypes301 = new String[] { "long", "int" };
+		_methodParameterTypes301 = new String[] { "long", "java.lang.Integer" };
 
-		_methodName302 = "hasSupportWorker";
+		_methodName302 = "getUserSupportWorkers";
 
-		_methodParameterTypes302 = new String[] {
-				"long", "int", "long", "java.lang.Integer"
-			};
+		_methodParameterTypes302 = new String[] { "long" };
 
 		_methodName303 = "hasSupportWorker";
 
-		_methodParameterTypes303 = new String[] { "long", "long" };
+		_methodParameterTypes303 = new String[] { "long", "int" };
 
-		_methodName304 = "hasSupportWorkerRole";
+		_methodName304 = "hasSupportWorker";
 
-		_methodParameterTypes304 = new String[] { "long", "int" };
-
-		_methodName305 = "increaseAssignedWork";
-
-		_methodParameterTypes305 = new String[] { "long", "double" };
-
-		_methodName306 = "increaseTicketEntryAssignedWork";
-
-		_methodParameterTypes306 = new String[] { "long", "double" };
-
-		_methodName307 = "isClockedIn";
-
-		_methodParameterTypes307 = new String[] { "long" };
-
-		_methodName308 = "isManagerOfWorker";
-
-		_methodParameterTypes308 = new String[] { "long", "long" };
-
-		_methodName309 = "recalculateUtilization";
-
-		_methodParameterTypes309 = new String[] {  };
-
-		_methodName310 = "search";
-
-		_methodParameterTypes310 = new String[] {
-				"java.lang.Boolean", "int", "java.util.LinkedHashMap"
+		_methodParameterTypes304 = new String[] {
+				"long", "int", "long", "java.lang.Integer"
 			};
 
-		_methodName311 = "search";
+		_methodName305 = "hasSupportWorker";
 
-		_methodParameterTypes311 = new String[] {
-				"long", "java.lang.String", "int", "int",
-				"com.liferay.portal.kernel.util.OrderByComparator"
-			};
+		_methodParameterTypes305 = new String[] { "long", "long" };
+
+		_methodName306 = "hasSupportWorkerRole";
+
+		_methodParameterTypes306 = new String[] { "long", "int" };
+
+		_methodName307 = "increaseAssignedWork";
+
+		_methodParameterTypes307 = new String[] { "long", "double" };
+
+		_methodName308 = "increaseTicketEntryAssignedWork";
+
+		_methodParameterTypes308 = new String[] { "long", "double" };
+
+		_methodName309 = "isClockedIn";
+
+		_methodParameterTypes309 = new String[] { "long" };
+
+		_methodName310 = "isManagerOfWorker";
+
+		_methodParameterTypes310 = new String[] { "long", "long" };
+
+		_methodName311 = "recalculateUtilization";
+
+		_methodParameterTypes311 = new String[] {  };
 
 		_methodName312 = "search";
 
 		_methodParameterTypes312 = new String[] {
+				"java.lang.Boolean", "int", "java.util.LinkedHashMap"
+			};
+
+		_methodName313 = "search";
+
+		_methodParameterTypes313 = new String[] {
+				"long", "java.lang.String", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName314 = "search";
+
+		_methodParameterTypes314 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String", "boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName313 = "searchCount";
+		_methodName315 = "searchCount";
 
-		_methodParameterTypes313 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes315 = new String[] { "long", "java.lang.String" };
 
-		_methodName314 = "searchCount";
+		_methodName316 = "searchCount";
 
-		_methodParameterTypes314 = new String[] {
+		_methodParameterTypes316 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String", "boolean"
 			};
 
-		_methodName315 = "updateSupportWorker";
+		_methodName317 = "updateSupportWorker";
 
-		_methodParameterTypes315 = new String[] {
+		_methodParameterTypes317 = new String[] {
 				"long", "long", "boolean", "double", "int", "int", "int"
 			};
 	}
@@ -393,13 +393,13 @@ public class SupportWorkerLocalServiceClpInvoker {
 			return SupportWorkerLocalServiceUtil.updateSupportWorker((com.liferay.osb.model.SupportWorker)arguments[0]);
 		}
 
-		if (_methodName278.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName283.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
+		if (_methodName285.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
 			SupportWorkerLocalServiceUtil.addSupportWorkers((long[])arguments[0],
 				((Long)arguments[1]).longValue(), (double[])arguments[2],
 				(int[])arguments[3], (int[])arguments[4], (int[])arguments[5]);
@@ -407,178 +407,178 @@ public class SupportWorkerLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
-			SupportWorkerLocalServiceUtil.clockInOut(((Long)arguments[0]).longValue());
-
-			return null;
-		}
-
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
-			SupportWorkerLocalServiceUtil.decreaseAssignedWork(((Long)arguments[0]).longValue(),
-				((Double)arguments[1]).doubleValue());
-
-			return null;
-		}
-
 		if (_methodName286.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
-			SupportWorkerLocalServiceUtil.decreaseTicketEntryAssignedWork(((Long)arguments[0]).longValue(),
-				((Double)arguments[1]).doubleValue());
+			SupportWorkerLocalServiceUtil.clockInOut(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
 		if (_methodName287.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
-			SupportWorkerLocalServiceUtil.deleteSupportWorkers(((Long)arguments[0]).longValue());
+			SupportWorkerLocalServiceUtil.decreaseAssignedWork(((Long)arguments[0]).longValue(),
+				((Double)arguments[1]).doubleValue());
 
 			return null;
 		}
 
 		if (_methodName288.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
-			SupportWorkerLocalServiceUtil.deleteSupportWorkers((long[])arguments[0],
-				((Long)arguments[1]).longValue());
+			SupportWorkerLocalServiceUtil.decreaseTicketEntryAssignedWork(((Long)arguments[0]).longValue(),
+				((Double)arguments[1]).doubleValue());
 
 			return null;
 		}
 
 		if (_methodName289.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getAssignedWork(((Long)arguments[0]).longValue());
+			SupportWorkerLocalServiceUtil.deleteSupportWorkers(((Long)arguments[0]).longValue());
+
+			return null;
 		}
 
 		if (_methodName290.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getAvailableSupportWorker((com.liferay.osb.model.TicketEntry)arguments[0]);
+			SupportWorkerLocalServiceUtil.deleteSupportWorkers((long[])arguments[0],
+				((Long)arguments[1]).longValue());
+
+			return null;
 		}
 
 		if (_methodName291.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getLongestOpenSupportWorker((java.util.List<com.liferay.osb.model.SupportWorker>)arguments[0],
-				(com.liferay.osb.model.TicketEntry)arguments[1]);
+			return SupportWorkerLocalServiceUtil.getAssignedWork(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName292.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getMostAvailableSupportWorker((com.liferay.osb.model.TicketEntry)arguments[0],
-				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
+			return SupportWorkerLocalServiceUtil.getAvailableSupportWorker((com.liferay.osb.model.TicketEntry)arguments[0]);
 		}
 
 		if (_methodName293.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getNextOpenSupportWorker((java.util.List<com.liferay.osb.model.SupportWorker>)arguments[0],
+			return SupportWorkerLocalServiceUtil.getLongestOpenSupportWorker((java.util.List<com.liferay.osb.model.SupportWorker>)arguments[0],
 				(com.liferay.osb.model.TicketEntry)arguments[1]);
 		}
 
 		if (_methodName294.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getSupportWorker(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
+			return SupportWorkerLocalServiceUtil.getMostAvailableSupportWorker((com.liferay.osb.model.TicketEntry)arguments[0],
+				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
 		}
 
 		if (_methodName295.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getSupportWorkersBySupportLaborId(((Long)arguments[0]).longValue());
+			return SupportWorkerLocalServiceUtil.getNextOpenSupportWorker((java.util.List<com.liferay.osb.model.SupportWorker>)arguments[0],
+				(com.liferay.osb.model.TicketEntry)arguments[1]);
 		}
 
 		if (_methodName296.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getSupportWorkersBySupportRegionId(((Long)arguments[0]).longValue());
+			return SupportWorkerLocalServiceUtil.getSupportWorker(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName297.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getSupportWorkersCountBySupportLaborId(((Long)arguments[0]).longValue());
+			return SupportWorkerLocalServiceUtil.getSupportWorkersBySupportLaborId(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName298.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getTeamSupportWorkers(((Long)arguments[0]).longValue());
+			return SupportWorkerLocalServiceUtil.getSupportWorkersBySupportRegionId(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName299.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getUserSupportTeamManagers(((Long)arguments[0]).longValue(),
-				(java.lang.Integer)arguments[1]);
+			return SupportWorkerLocalServiceUtil.getSupportWorkersCountBySupportLaborId(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName300.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.getUserSupportWorkers(((Long)arguments[0]).longValue());
+			return SupportWorkerLocalServiceUtil.getTeamSupportWorkers(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName301.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
-			return SupportWorkerLocalServiceUtil.hasSupportWorker(((Long)arguments[0]).longValue(),
-				((Integer)arguments[1]).intValue());
+			return SupportWorkerLocalServiceUtil.getUserSupportTeamManagers(((Long)arguments[0]).longValue(),
+				(java.lang.Integer)arguments[1]);
 		}
 
 		if (_methodName302.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
+			return SupportWorkerLocalServiceUtil.getUserSupportWorkers(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName303.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes303, parameterTypes)) {
+			return SupportWorkerLocalServiceUtil.hasSupportWorker(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue());
+		}
+
+		if (_methodName304.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes304, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.hasSupportWorker(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Long)arguments[2]).longValue(),
 				(java.lang.Integer)arguments[3]);
 		}
 
-		if (_methodName303.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes303, parameterTypes)) {
+		if (_methodName305.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes305, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.hasSupportWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName304.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes304, parameterTypes)) {
+		if (_methodName306.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes306, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.hasSupportWorkerRole(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
 
-		if (_methodName305.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes305, parameterTypes)) {
+		if (_methodName307.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes307, parameterTypes)) {
 			SupportWorkerLocalServiceUtil.increaseAssignedWork(((Long)arguments[0]).longValue(),
 				((Double)arguments[1]).doubleValue());
 
 			return null;
 		}
 
-		if (_methodName306.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes306, parameterTypes)) {
+		if (_methodName308.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes308, parameterTypes)) {
 			SupportWorkerLocalServiceUtil.increaseTicketEntryAssignedWork(((Long)arguments[0]).longValue(),
 				((Double)arguments[1]).doubleValue());
 
 			return null;
 		}
 
-		if (_methodName307.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes307, parameterTypes)) {
+		if (_methodName309.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes309, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.isClockedIn(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName308.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes308, parameterTypes)) {
+		if (_methodName310.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes310, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.isManagerOfWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName309.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes309, parameterTypes)) {
+		if (_methodName311.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes311, parameterTypes)) {
 			SupportWorkerLocalServiceUtil.recalculateUtilization();
 
 			return null;
 		}
 
-		if (_methodName310.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes310, parameterTypes)) {
+		if (_methodName312.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes312, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.search((java.lang.Boolean)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[2]);
 		}
 
-		if (_methodName311.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes311, parameterTypes)) {
+		if (_methodName313.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes313, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.search(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Integer)arguments[2]).intValue(),
@@ -586,8 +586,8 @@ public class SupportWorkerLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[4]);
 		}
 
-		if (_methodName312.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes312, parameterTypes)) {
+		if (_methodName314.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes314, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.search(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3], (java.lang.String)arguments[4],
@@ -598,14 +598,14 @@ public class SupportWorkerLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[10]);
 		}
 
-		if (_methodName313.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes313, parameterTypes)) {
+		if (_methodName315.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes315, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.searchCount(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
 
-		if (_methodName314.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes314, parameterTypes)) {
+		if (_methodName316.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes316, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.searchCount(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3], (java.lang.String)arguments[4],
@@ -613,8 +613,8 @@ public class SupportWorkerLocalServiceClpInvoker {
 				((Boolean)arguments[7]).booleanValue());
 		}
 
-		if (_methodName315.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes315, parameterTypes)) {
+		if (_methodName317.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes317, parameterTypes)) {
 			return SupportWorkerLocalServiceUtil.updateSupportWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Boolean)arguments[2]).booleanValue(),
@@ -665,12 +665,8 @@ public class SupportWorkerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName278;
-	private String[] _methodParameterTypes278;
-	private String _methodName283;
-	private String[] _methodParameterTypes283;
-	private String _methodName284;
-	private String[] _methodParameterTypes284;
+	private String _methodName280;
+	private String[] _methodParameterTypes280;
 	private String _methodName285;
 	private String[] _methodParameterTypes285;
 	private String _methodName286;
@@ -733,4 +729,8 @@ public class SupportWorkerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes314;
 	private String _methodName315;
 	private String[] _methodParameterTypes315;
+	private String _methodName316;
+	private String[] _methodParameterTypes316;
+	private String _methodName317;
+	private String[] _methodParameterTypes317;
 }

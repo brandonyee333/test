@@ -123,23 +123,23 @@ public class AuditActionLocalServiceClpInvoker {
 				"com.liferay.osb.model.AuditAction"
 			};
 
-		_methodName278 = "getOSGiServiceIdentifier";
+		_methodName280 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes278 = new String[] {  };
+		_methodParameterTypes280 = new String[] {  };
 
-		_methodName283 = "deleteAuditActions";
+		_methodName285 = "deleteAuditActions";
 
-		_methodParameterTypes283 = new String[] { "java.util.Date" };
+		_methodParameterTypes285 = new String[] { "java.util.Date" };
 
-		_methodName284 = "getAuditActions";
+		_methodName286 = "getAuditActions";
 
-		_methodParameterTypes284 = new String[] {
+		_methodParameterTypes286 = new String[] {
 				"java.util.Date", "long", "boolean", "int"
 			};
 
-		_methodName285 = "updateAuditAction";
+		_methodName287 = "updateAuditAction";
 
-		_methodParameterTypes285 = new String[] { "long", "long", "long", "int" };
+		_methodParameterTypes287 = new String[] { "long", "long", "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -246,28 +246,28 @@ public class AuditActionLocalServiceClpInvoker {
 			return AuditActionLocalServiceUtil.updateAuditAction((com.liferay.osb.model.AuditAction)arguments[0]);
 		}
 
-		if (_methodName278.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return AuditActionLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName283.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
+		if (_methodName285.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
 			AuditActionLocalServiceUtil.deleteAuditActions((java.util.Date)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return AuditActionLocalServiceUtil.getAuditActions((java.util.Date)arguments[0],
 				((Long)arguments[1]).longValue(),
 				((Boolean)arguments[2]).booleanValue(),
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName287.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
 			return AuditActionLocalServiceUtil.updateAuditAction(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -315,12 +315,12 @@ public class AuditActionLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName278;
-	private String[] _methodParameterTypes278;
-	private String _methodName283;
-	private String[] _methodParameterTypes283;
-	private String _methodName284;
-	private String[] _methodParameterTypes284;
+	private String _methodName280;
+	private String[] _methodParameterTypes280;
 	private String _methodName285;
 	private String[] _methodParameterTypes285;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName287;
+	private String[] _methodParameterTypes287;
 }

@@ -119,13 +119,13 @@ public class TicketCallLocalServiceClpInvoker {
 				"com.liferay.osb.model.TicketCall"
 			};
 
-		_methodName278 = "getOSGiServiceIdentifier";
+		_methodName280 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes278 = new String[] {  };
+		_methodParameterTypes280 = new String[] {  };
 
-		_methodName283 = "addTicketCall";
+		_methodName285 = "addTicketCall";
 
-		_methodParameterTypes283 = new String[] {
+		_methodParameterTypes285 = new String[] {
 				"long", "long", "int", "int", "int", "int", "int", "int", "long",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String"
@@ -236,13 +236,13 @@ public class TicketCallLocalServiceClpInvoker {
 			return TicketCallLocalServiceUtil.updateTicketCall((com.liferay.osb.model.TicketCall)arguments[0]);
 		}
 
-		if (_methodName278.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return TicketCallLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName283.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
+		if (_methodName285.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
 			return TicketCallLocalServiceUtil.addTicketCall(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
@@ -298,8 +298,8 @@ public class TicketCallLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName278;
-	private String[] _methodParameterTypes278;
-	private String _methodName283;
-	private String[] _methodParameterTypes283;
+	private String _methodName280;
+	private String[] _methodParameterTypes280;
+	private String _methodName285;
+	private String[] _methodParameterTypes285;
 }

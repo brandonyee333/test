@@ -123,23 +123,23 @@ public class HolidayCalendarLocalServiceClpInvoker {
 				"com.liferay.osb.model.HolidayCalendar"
 			};
 
-		_methodName278 = "getOSGiServiceIdentifier";
+		_methodName280 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes278 = new String[] {  };
+		_methodParameterTypes280 = new String[] {  };
 
-		_methodName283 = "addHolidayCalendar";
+		_methodName285 = "addHolidayCalendar";
 
-		_methodParameterTypes283 = new String[] {
+		_methodParameterTypes285 = new String[] {
 				"java.lang.String", "java.lang.String", "java.util.List"
 			};
 
-		_methodName284 = "deleteHolidayCalendar";
+		_methodName286 = "deleteHolidayCalendar";
 
-		_methodParameterTypes284 = new String[] { "long" };
+		_methodParameterTypes286 = new String[] { "long" };
 
-		_methodName285 = "updateHolidayCalendar";
+		_methodName287 = "updateHolidayCalendar";
 
-		_methodParameterTypes285 = new String[] {
+		_methodParameterTypes287 = new String[] {
 				"long", "java.lang.String", "java.lang.String", "java.util.List"
 			};
 	}
@@ -248,25 +248,25 @@ public class HolidayCalendarLocalServiceClpInvoker {
 			return HolidayCalendarLocalServiceUtil.updateHolidayCalendar((com.liferay.osb.model.HolidayCalendar)arguments[0]);
 		}
 
-		if (_methodName278.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return HolidayCalendarLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName283.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
+		if (_methodName285.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
 			return HolidayCalendarLocalServiceUtil.addHolidayCalendar((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1],
 				(java.util.List<com.liferay.osb.model.HolidayEntry>)arguments[2]);
 		}
 
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return HolidayCalendarLocalServiceUtil.deleteHolidayCalendar(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName287.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
 			return HolidayCalendarLocalServiceUtil.updateHolidayCalendar(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.util.List<com.liferay.osb.model.HolidayEntry>)arguments[3]);
@@ -313,12 +313,12 @@ public class HolidayCalendarLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName278;
-	private String[] _methodParameterTypes278;
-	private String _methodName283;
-	private String[] _methodParameterTypes283;
-	private String _methodName284;
-	private String[] _methodParameterTypes284;
+	private String _methodName280;
+	private String[] _methodParameterTypes280;
 	private String _methodName285;
 	private String[] _methodParameterTypes285;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName287;
+	private String[] _methodParameterTypes287;
 }

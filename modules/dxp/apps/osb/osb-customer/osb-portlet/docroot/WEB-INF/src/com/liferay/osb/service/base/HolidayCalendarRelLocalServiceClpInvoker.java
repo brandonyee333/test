@@ -123,33 +123,33 @@ public class HolidayCalendarRelLocalServiceClpInvoker {
 				"com.liferay.osb.model.HolidayCalendarRel"
 			};
 
-		_methodName278 = "getOSGiServiceIdentifier";
+		_methodName280 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes278 = new String[] {  };
+		_methodParameterTypes280 = new String[] {  };
 
-		_methodName283 = "addUsers";
-
-		_methodParameterTypes283 = new String[] { "long", "long[][]" };
-
-		_methodName284 = "deleteHolidayCalendarRels";
-
-		_methodParameterTypes284 = new String[] { "long" };
-
-		_methodName285 = "deleteHolidayCalendarRels";
+		_methodName285 = "addUsers";
 
 		_methodParameterTypes285 = new String[] { "long", "long[][]" };
 
-		_methodName286 = "getHolidayCalendarRel";
+		_methodName286 = "deleteHolidayCalendarRels";
 
-		_methodParameterTypes286 = new String[] { "long", "long" };
+		_methodParameterTypes286 = new String[] { "long" };
 
-		_methodName287 = "getHolidayCalendarRels";
+		_methodName287 = "deleteHolidayCalendarRels";
 
-		_methodParameterTypes287 = new String[] { "long" };
+		_methodParameterTypes287 = new String[] { "long", "long[][]" };
 
-		_methodName288 = "hasHolidayCalendarRel";
+		_methodName288 = "getHolidayCalendarRel";
 
 		_methodParameterTypes288 = new String[] { "long", "long" };
+
+		_methodName289 = "getHolidayCalendarRels";
+
+		_methodParameterTypes289 = new String[] { "long" };
+
+		_methodName290 = "hasHolidayCalendarRel";
+
+		_methodParameterTypes290 = new String[] { "long", "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -256,29 +256,14 @@ public class HolidayCalendarRelLocalServiceClpInvoker {
 			return HolidayCalendarRelLocalServiceUtil.updateHolidayCalendarRel((com.liferay.osb.model.HolidayCalendarRel)arguments[0]);
 		}
 
-		if (_methodName278.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return HolidayCalendarRelLocalServiceUtil.getOSGiServiceIdentifier();
-		}
-
-		if (_methodName283.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
-			HolidayCalendarRelLocalServiceUtil.addUsers(((Long)arguments[0]).longValue(),
-				(long[])arguments[1]);
-
-			return null;
-		}
-
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
-			HolidayCalendarRelLocalServiceUtil.deleteHolidayCalendarRels(((Long)arguments[0]).longValue());
-
-			return null;
 		}
 
 		if (_methodName285.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
-			HolidayCalendarRelLocalServiceUtil.deleteHolidayCalendarRels(((Long)arguments[0]).longValue(),
+			HolidayCalendarRelLocalServiceUtil.addUsers(((Long)arguments[0]).longValue(),
 				(long[])arguments[1]);
 
 			return null;
@@ -286,17 +271,32 @@ public class HolidayCalendarRelLocalServiceClpInvoker {
 
 		if (_methodName286.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
-			return HolidayCalendarRelLocalServiceUtil.getHolidayCalendarRel(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
+			HolidayCalendarRelLocalServiceUtil.deleteHolidayCalendarRels(((Long)arguments[0]).longValue());
+
+			return null;
 		}
 
 		if (_methodName287.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
-			return HolidayCalendarRelLocalServiceUtil.getHolidayCalendarRels(((Long)arguments[0]).longValue());
+			HolidayCalendarRelLocalServiceUtil.deleteHolidayCalendarRels(((Long)arguments[0]).longValue(),
+				(long[])arguments[1]);
+
+			return null;
 		}
 
 		if (_methodName288.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
+			return HolidayCalendarRelLocalServiceUtil.getHolidayCalendarRel(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName289.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
+			return HolidayCalendarRelLocalServiceUtil.getHolidayCalendarRels(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName290.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
 			return HolidayCalendarRelLocalServiceUtil.hasHolidayCalendarRel(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
@@ -342,12 +342,8 @@ public class HolidayCalendarRelLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName278;
-	private String[] _methodParameterTypes278;
-	private String _methodName283;
-	private String[] _methodParameterTypes283;
-	private String _methodName284;
-	private String[] _methodParameterTypes284;
+	private String _methodName280;
+	private String[] _methodParameterTypes280;
 	private String _methodName285;
 	private String[] _methodParameterTypes285;
 	private String _methodName286;
@@ -356,4 +352,8 @@ public class HolidayCalendarRelLocalServiceClpInvoker {
 	private String[] _methodParameterTypes287;
 	private String _methodName288;
 	private String[] _methodParameterTypes288;
+	private String _methodName289;
+	private String[] _methodParameterTypes289;
+	private String _methodName290;
+	private String[] _methodParameterTypes290;
 }

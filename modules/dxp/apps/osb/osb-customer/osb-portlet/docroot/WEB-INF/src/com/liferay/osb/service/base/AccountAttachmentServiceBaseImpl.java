@@ -2014,6 +2014,25 @@ public abstract class AccountAttachmentServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
+	 * Returns the remote corp project local service.
+	 *
+	 * @return the remote corp project local service
+	 */
+	public com.liferay.osb.service.RemoteCorpProjectLocalService getRemoteCorpProjectLocalService() {
+		return remoteCorpProjectLocalService;
+	}
+
+	/**
+	 * Sets the remote corp project local service.
+	 *
+	 * @param remoteCorpProjectLocalService the remote corp project local service
+	 */
+	public void setRemoteCorpProjectLocalService(
+		com.liferay.osb.service.RemoteCorpProjectLocalService remoteCorpProjectLocalService) {
+		this.remoteCorpProjectLocalService = remoteCorpProjectLocalService;
+	}
+
+	/**
 	 * Returns the search filter local service.
 	 *
 	 * @return the search filter local service
@@ -3876,6 +3895,8 @@ public abstract class AccountAttachmentServiceBaseImpl extends BaseServiceImpl
 	protected ProductEntryPersistence productEntryPersistence;
 	@BeanReference(type = ProductEntryFinder.class)
 	protected ProductEntryFinder productEntryFinder;
+	@BeanReference(type = com.liferay.osb.service.RemoteCorpProjectLocalService.class)
+	protected com.liferay.osb.service.RemoteCorpProjectLocalService remoteCorpProjectLocalService;
 	@BeanReference(type = com.liferay.osb.service.SearchFilterLocalService.class)
 	protected com.liferay.osb.service.SearchFilterLocalService searchFilterLocalService;
 	@BeanReference(type = com.liferay.osb.service.SearchFilterService.class)

@@ -123,9 +123,9 @@ public class AssetReceiptLicenseLocalServiceClpInvoker {
 				"com.liferay.osb.model.AssetReceiptLicense"
 			};
 
-		_methodName278 = "getOSGiServiceIdentifier";
+		_methodName280 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes278 = new String[] {  };
+		_methodParameterTypes280 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,8 +232,8 @@ public class AssetReceiptLicenseLocalServiceClpInvoker {
 			return AssetReceiptLicenseLocalServiceUtil.updateAssetReceiptLicense((com.liferay.osb.model.AssetReceiptLicense)arguments[0]);
 		}
 
-		if (_methodName278.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return AssetReceiptLicenseLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
@@ -278,6 +278,6 @@ public class AssetReceiptLicenseLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName278;
-	private String[] _methodParameterTypes278;
+	private String _methodName280;
+	private String[] _methodParameterTypes280;
 }

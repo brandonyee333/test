@@ -123,35 +123,35 @@ public class TicketInformationLocalServiceClpInvoker {
 				"com.liferay.osb.model.TicketInformation"
 			};
 
-		_methodName278 = "getOSGiServiceIdentifier";
+		_methodName280 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes278 = new String[] {  };
+		_methodParameterTypes280 = new String[] {  };
 
-		_methodName283 = "addTicketInformation";
+		_methodName285 = "addTicketInformation";
 
-		_methodParameterTypes283 = new String[] {
+		_methodParameterTypes285 = new String[] {
 				"long", "long", "java.lang.String"
 			};
 
-		_methodName284 = "getData";
+		_methodName286 = "getData";
 
-		_methodParameterTypes284 = new String[] { "long", "long" };
+		_methodParameterTypes286 = new String[] { "long", "long" };
 
-		_methodName285 = "getFieldsMap";
+		_methodName287 = "getFieldsMap";
 
-		_methodParameterTypes285 = new String[] { "long" };
+		_methodParameterTypes287 = new String[] { "long" };
 
-		_methodName286 = "getTicketInformationList";
+		_methodName288 = "getTicketInformationList";
 
-		_methodParameterTypes286 = new String[] { "long" };
+		_methodParameterTypes288 = new String[] { "long" };
 
-		_methodName287 = "updateTicketInformation";
+		_methodName289 = "updateTicketInformation";
 
-		_methodParameterTypes287 = new String[] { "long", "java.util.Map" };
+		_methodParameterTypes289 = new String[] { "long", "java.util.Map" };
 
-		_methodName288 = "updateTicketInformation";
+		_methodName290 = "updateTicketInformation";
 
-		_methodParameterTypes288 = new String[] {
+		_methodParameterTypes290 = new String[] {
 				"long", "java.lang.String", "long", "java.util.Map",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
@@ -261,41 +261,41 @@ public class TicketInformationLocalServiceClpInvoker {
 			return TicketInformationLocalServiceUtil.updateTicketInformation((com.liferay.osb.model.TicketInformation)arguments[0]);
 		}
 
-		if (_methodName278.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return TicketInformationLocalServiceUtil.getOSGiServiceIdentifier();
-		}
-
-		if (_methodName283.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
-			return TicketInformationLocalServiceUtil.addTicketInformation(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
-		}
-
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
-			return TicketInformationLocalServiceUtil.getData(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName285.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
-			return TicketInformationLocalServiceUtil.getFieldsMap(((Long)arguments[0]).longValue());
+			return TicketInformationLocalServiceUtil.addTicketInformation(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
 		}
 
 		if (_methodName286.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
-			return TicketInformationLocalServiceUtil.getTicketInformationList(((Long)arguments[0]).longValue());
+			return TicketInformationLocalServiceUtil.getData(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName287.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
-			return TicketInformationLocalServiceUtil.updateTicketInformation(((Long)arguments[0]).longValue(),
-				(java.util.Map<java.lang.Long, java.lang.String>)arguments[1]);
+			return TicketInformationLocalServiceUtil.getFieldsMap(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName288.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
+			return TicketInformationLocalServiceUtil.getTicketInformationList(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName289.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
+			return TicketInformationLocalServiceUtil.updateTicketInformation(((Long)arguments[0]).longValue(),
+				(java.util.Map<java.lang.Long, java.lang.String>)arguments[1]);
+		}
+
+		if (_methodName290.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
 			return TicketInformationLocalServiceUtil.updateTicketInformation(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Long)arguments[2]).longValue(),
@@ -344,12 +344,8 @@ public class TicketInformationLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName278;
-	private String[] _methodParameterTypes278;
-	private String _methodName283;
-	private String[] _methodParameterTypes283;
-	private String _methodName284;
-	private String[] _methodParameterTypes284;
+	private String _methodName280;
+	private String[] _methodParameterTypes280;
 	private String _methodName285;
 	private String[] _methodParameterTypes285;
 	private String _methodName286;
@@ -358,4 +354,8 @@ public class TicketInformationLocalServiceClpInvoker {
 	private String[] _methodParameterTypes287;
 	private String _methodName288;
 	private String[] _methodParameterTypes288;
+	private String _methodName289;
+	private String[] _methodParameterTypes289;
+	private String _methodName290;
+	private String[] _methodParameterTypes290;
 }

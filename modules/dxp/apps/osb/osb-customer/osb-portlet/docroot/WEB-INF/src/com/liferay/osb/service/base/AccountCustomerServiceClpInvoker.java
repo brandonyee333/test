@@ -27,33 +27,33 @@ import java.util.Arrays;
 @ProviderType
 public class AccountCustomerServiceClpInvoker {
 	public AccountCustomerServiceClpInvoker() {
-		_methodName376 = "getOSGiServiceIdentifier";
+		_methodName378 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes376 = new String[] {  };
+		_methodParameterTypes378 = new String[] {  };
 
-		_methodName381 = "getCorpProjectAccountCustomerUUIDs";
+		_methodName383 = "getCorpProjectAccountCustomerUUIDs";
 
-		_methodParameterTypes381 = new String[] { "long" };
+		_methodParameterTypes383 = new String[] { "long" };
 
-		_methodName382 = "toggleNotifications";
+		_methodName384 = "toggleNotifications";
 
-		_methodParameterTypes382 = new String[] { "long" };
+		_methodParameterTypes384 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName376.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes376, parameterTypes)) {
+		if (_methodName378.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes378, parameterTypes)) {
 			return AccountCustomerServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName381.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes381, parameterTypes)) {
+		if (_methodName383.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes383, parameterTypes)) {
 			return AccountCustomerServiceUtil.getCorpProjectAccountCustomerUUIDs(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName382.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes382, parameterTypes)) {
+		if (_methodName384.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes384, parameterTypes)) {
 			AccountCustomerServiceUtil.toggleNotifications(((Long)arguments[0]).longValue());
 
 			return null;
@@ -62,10 +62,10 @@ public class AccountCustomerServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName376;
-	private String[] _methodParameterTypes376;
-	private String _methodName381;
-	private String[] _methodParameterTypes381;
-	private String _methodName382;
-	private String[] _methodParameterTypes382;
+	private String _methodName378;
+	private String[] _methodParameterTypes378;
+	private String _methodName383;
+	private String[] _methodParameterTypes383;
+	private String _methodName384;
+	private String[] _methodParameterTypes384;
 }

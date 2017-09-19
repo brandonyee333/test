@@ -119,22 +119,22 @@ public class LicenseKeyLocalServiceClpInvoker {
 				"com.liferay.osb.model.LicenseKey"
 			};
 
-		_methodName300 = "getOSGiServiceIdentifier";
+		_methodName302 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes300 = new String[] {  };
+		_methodParameterTypes302 = new String[] {  };
 
-		_methodName305 = "addLicenseKey";
+		_methodName307 = "addLicenseKey";
 
-		_methodParameterTypes305 = new String[] {
+		_methodParameterTypes307 = new String[] {
 				"long", "com.liferay.osb.model.AssetReceiptLicense",
 				"java.lang.String", "java.lang.String", "java.lang.String[][]",
 				"java.lang.String[][]", "java.lang.String[][]",
 				"java.lang.String[][]", "int", "int", "int"
 			};
 
-		_methodName306 = "addLicenseKey";
+		_methodName308 = "addLicenseKey";
 
-		_methodParameterTypes306 = new String[] {
+		_methodParameterTypes308 = new String[] {
 				"long", "com.liferay.osb.model.LicenseKeySet",
 				"java.lang.String", "com.liferay.osb.model.OfferingEntry",
 				"com.liferay.osb.model.LicenseEntry",
@@ -145,9 +145,9 @@ public class LicenseKeyLocalServiceClpInvoker {
 				"int", "java.lang.String", "boolean", "boolean"
 			};
 
-		_methodName307 = "addLicenseKey";
+		_methodName309 = "addLicenseKey";
 
-		_methodParameterTypes307 = new String[] {
+		_methodParameterTypes309 = new String[] {
 				"long", "long", "java.lang.String", "long", "long", "long",
 				"int", "long", "java.lang.String", "int", "int",
 				"java.lang.String", "java.lang.String[][]",
@@ -156,135 +156,135 @@ public class LicenseKeyLocalServiceClpInvoker {
 				"boolean"
 			};
 
-		_methodName308 = "addSingleUseLicenseKey";
+		_methodName310 = "addSingleUseLicenseKey";
 
-		_methodParameterTypes308 = new String[] {
+		_methodParameterTypes310 = new String[] {
 				"java.lang.String", "int", "java.lang.String",
 				"java.lang.String", "java.lang.String"
 			};
 
-		_methodName309 = "buyLicenseKey";
+		_methodName311 = "buyLicenseKey";
 
-		_methodParameterTypes309 = new String[] { "long", "long" };
+		_methodParameterTypes311 = new String[] { "long", "long" };
 
-		_methodName310 = "getAccountEntryLicenseKeys";
+		_methodName312 = "getAccountEntryLicenseKeys";
 
-		_methodParameterTypes310 = new String[] { "long" };
+		_methodParameterTypes312 = new String[] { "long" };
 
-		_methodName311 = "getAssetReceiptLicenseLicenseKeys";
+		_methodName313 = "getAssetReceiptLicenseLicenseKeys";
 
-		_methodParameterTypes311 = new String[] { "long", "boolean" };
+		_methodParameterTypes313 = new String[] { "long", "boolean" };
 
-		_methodName312 = "getAssetReceiptLicenseLicenseKeys";
+		_methodName314 = "getAssetReceiptLicenseLicenseKeys";
 
-		_methodParameterTypes312 = new String[] { "long", "boolean", "boolean" };
+		_methodParameterTypes314 = new String[] { "long", "boolean", "boolean" };
 
-		_methodName313 = "getAssetReceiptLicenseLicenseKeysCount";
+		_methodName315 = "getAssetReceiptLicenseLicenseKeysCount";
 
-		_methodParameterTypes313 = new String[] { "long", "boolean", "boolean" };
+		_methodParameterTypes315 = new String[] { "long", "boolean", "boolean" };
 
-		_methodName314 = "getFirstLicenseKey";
+		_methodName316 = "getFirstLicenseKey";
 
-		_methodParameterTypes314 = new String[] {
+		_methodParameterTypes316 = new String[] {
 				"long", "com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName315 = "getLicenseKeys";
-
-		_methodParameterTypes315 = new String[] { "long", "long" };
-
-		_methodName316 = "getLicenseKeys";
-
-		_methodParameterTypes316 = new String[] { "long", "java.lang.String" };
-
 		_methodName317 = "getLicenseKeys";
 
-		_methodParameterTypes317 = new String[] {
+		_methodParameterTypes317 = new String[] { "long", "long" };
+
+		_methodName318 = "getLicenseKeys";
+
+		_methodParameterTypes318 = new String[] { "long", "java.lang.String" };
+
+		_methodName319 = "getLicenseKeys";
+
+		_methodParameterTypes319 = new String[] {
 				"long", "java.lang.String", "java.lang.String", "boolean", "int",
 				"int", "com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName318 = "getLicenseKeys";
+		_methodName320 = "getLicenseKeys";
 
-		_methodParameterTypes318 = new String[] {
+		_methodParameterTypes320 = new String[] {
 				"java.lang.String", "java.lang.String"
 			};
 
-		_methodName319 = "getLicenseKeysByName";
+		_methodName321 = "getLicenseKeysByName";
 
-		_methodParameterTypes319 = new String[] {
+		_methodParameterTypes321 = new String[] {
 				"java.lang.String", "java.lang.String", "boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName320 = "getLicenseKeySetLicenseKeys";
+		_methodName322 = "getLicenseKeySetLicenseKeys";
 
-		_methodParameterTypes320 = new String[] { "long" };
+		_methodParameterTypes322 = new String[] { "long" };
 
-		_methodName321 = "getOfferingEntryGroupLicenseKeys";
+		_methodName323 = "getOfferingEntryGroupLicenseKeys";
 
-		_methodParameterTypes321 = new String[] {
+		_methodParameterTypes323 = new String[] {
 				"long[][]", "boolean", "boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName322 = "getOfferingEntryGroupLicenseKeysCount";
+		_methodName324 = "getOfferingEntryGroupLicenseKeysCount";
 
-		_methodParameterTypes322 = new String[] { "long[][]", "boolean", "boolean" };
-
-		_methodName323 = "getOfferingEntryLicenseKeys";
-
-		_methodParameterTypes323 = new String[] { "long" };
-
-		_methodName324 = "getOfferingEntryLicenseKeys";
-
-		_methodParameterTypes324 = new String[] { "long", "boolean", "boolean" };
+		_methodParameterTypes324 = new String[] { "long[][]", "boolean", "boolean" };
 
 		_methodName325 = "getOfferingEntryLicenseKeys";
 
-		_methodParameterTypes325 = new String[] { "long", "long" };
+		_methodParameterTypes325 = new String[] { "long" };
 
 		_methodName326 = "getOfferingEntryLicenseKeys";
 
-		_methodParameterTypes326 = new String[] { "long", "long", "boolean" };
+		_methodParameterTypes326 = new String[] { "long", "boolean", "boolean" };
 
-		_methodName327 = "getOfferingEntryLicenseKeysCount";
+		_methodName327 = "getOfferingEntryLicenseKeys";
 
-		_methodParameterTypes327 = new String[] { "long" };
+		_methodParameterTypes327 = new String[] { "long", "long" };
 
-		_methodName328 = "getOfferingEntryLicenseKeysCount";
+		_methodName328 = "getOfferingEntryLicenseKeys";
 
-		_methodParameterTypes328 = new String[] { "long", "boolean", "boolean" };
+		_methodParameterTypes328 = new String[] { "long", "long", "boolean" };
 
 		_methodName329 = "getOfferingEntryLicenseKeysCount";
 
-		_methodParameterTypes329 = new String[] { "long", "long" };
+		_methodParameterTypes329 = new String[] { "long" };
 
 		_methodName330 = "getOfferingEntryLicenseKeysCount";
 
-		_methodParameterTypes330 = new String[] { "long", "long", "boolean" };
+		_methodParameterTypes330 = new String[] { "long", "boolean", "boolean" };
 
-		_methodName331 = "getUserLicenseKeysCount";
+		_methodName331 = "getOfferingEntryLicenseKeysCount";
 
 		_methodParameterTypes331 = new String[] { "long", "long" };
 
-		_methodName332 = "renewLicenseKey";
+		_methodName332 = "getOfferingEntryLicenseKeysCount";
 
-		_methodParameterTypes332 = new String[] { "long", "long" };
+		_methodParameterTypes332 = new String[] { "long", "long", "boolean" };
 
-		_methodName333 = "renewLicenseKey";
+		_methodName333 = "getUserLicenseKeysCount";
 
-		_methodParameterTypes333 = new String[] {
+		_methodParameterTypes333 = new String[] { "long", "long" };
+
+		_methodName334 = "renewLicenseKey";
+
+		_methodParameterTypes334 = new String[] { "long", "long" };
+
+		_methodName335 = "renewLicenseKey";
+
+		_methodParameterTypes335 = new String[] {
 				"long", "long", "java.util.Date", "int"
 			};
 
-		_methodName334 = "renewTrialLicenseKey";
+		_methodName336 = "renewTrialLicenseKey";
 
-		_methodParameterTypes334 = new String[] { "long" };
+		_methodParameterTypes336 = new String[] { "long" };
 
-		_methodName335 = "search";
+		_methodName337 = "search";
 
-		_methodParameterTypes335 = new String[] {
+		_methodParameterTypes337 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "int", "int", "int",
@@ -297,16 +297,16 @@ public class LicenseKeyLocalServiceClpInvoker {
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName336 = "search";
+		_methodName338 = "search";
 
-		_methodParameterTypes336 = new String[] {
+		_methodParameterTypes338 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName337 = "searchCount";
+		_methodName339 = "searchCount";
 
-		_methodParameterTypes337 = new String[] {
+		_methodParameterTypes339 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "int", "int", "int",
@@ -318,36 +318,36 @@ public class LicenseKeyLocalServiceClpInvoker {
 				"java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName338 = "searchCount";
+		_methodName340 = "searchCount";
 
-		_methodParameterTypes338 = new String[] {
+		_methodParameterTypes340 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName339 = "sendRegisteredEmail";
+		_methodName341 = "sendRegisteredEmail";
 
-		_methodParameterTypes339 = new String[] {
+		_methodParameterTypes341 = new String[] {
 				"com.liferay.portal.kernel.model.User",
 				"com.liferay.osb.model.LicenseKey"
 			};
 
-		_methodName340 = "sendTrialRenewalNotificationEmail";
+		_methodName342 = "sendTrialRenewalNotificationEmail";
 
-		_methodParameterTypes340 = new String[] { "java.lang.String", "long" };
-
-		_methodName341 = "updateLicenseKey";
-
-		_methodParameterTypes341 = new String[] {
-				"long", "long", "long", "boolean"
-			};
-
-		_methodName342 = "updateLicenseKey";
-
-		_methodParameterTypes342 = new String[] { "long", "long", "long", "long" };
+		_methodParameterTypes342 = new String[] { "java.lang.String", "long" };
 
 		_methodName343 = "updateLicenseKey";
 
 		_methodParameterTypes343 = new String[] {
+				"long", "long", "long", "boolean"
+			};
+
+		_methodName344 = "updateLicenseKey";
+
+		_methodParameterTypes344 = new String[] { "long", "long", "long", "long" };
+
+		_methodName345 = "updateLicenseKey";
+
+		_methodParameterTypes345 = new String[] {
 				"long", "long", "long", "long", "java.lang.String", "boolean"
 			};
 	}
@@ -456,13 +456,13 @@ public class LicenseKeyLocalServiceClpInvoker {
 			return LicenseKeyLocalServiceUtil.updateLicenseKey((com.liferay.osb.model.LicenseKey)arguments[0]);
 		}
 
-		if (_methodName300.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
+		if (_methodName302.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName305.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes305, parameterTypes)) {
+		if (_methodName307.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes307, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.addLicenseKey(((Long)arguments[0]).longValue(),
 				(com.liferay.osb.model.AssetReceiptLicense)arguments[1],
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
@@ -475,8 +475,8 @@ public class LicenseKeyLocalServiceClpInvoker {
 				((Integer)arguments[10]).intValue());
 		}
 
-		if (_methodName306.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes306, parameterTypes)) {
+		if (_methodName308.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes308, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.addLicenseKey(((Long)arguments[0]).longValue(),
 				(com.liferay.osb.model.LicenseKeySet)arguments[1],
 				(java.lang.String)arguments[2],
@@ -501,8 +501,8 @@ public class LicenseKeyLocalServiceClpInvoker {
 				((Boolean)arguments[21]).booleanValue());
 		}
 
-		if (_methodName307.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes307, parameterTypes)) {
+		if (_methodName309.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes309, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.addLicenseKey(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2],
@@ -526,67 +526,67 @@ public class LicenseKeyLocalServiceClpInvoker {
 				((Boolean)arguments[20]).booleanValue());
 		}
 
-		if (_methodName308.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes308, parameterTypes)) {
+		if (_methodName310.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes310, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.addSingleUseLicenseKey((java.lang.String)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
 				(java.lang.String)arguments[4]);
 		}
 
-		if (_methodName309.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes309, parameterTypes)) {
+		if (_methodName311.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes311, parameterTypes)) {
 			LicenseKeyLocalServiceUtil.buyLicenseKey(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 
 			return null;
 		}
 
-		if (_methodName310.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes310, parameterTypes)) {
+		if (_methodName312.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes312, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getAccountEntryLicenseKeys(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName311.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes311, parameterTypes)) {
+		if (_methodName313.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes313, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getAssetReceiptLicenseLicenseKeys(((Long)arguments[0]).longValue(),
 				((Boolean)arguments[1]).booleanValue());
 		}
 
-		if (_methodName312.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes312, parameterTypes)) {
+		if (_methodName314.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes314, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getAssetReceiptLicenseLicenseKeys(((Long)arguments[0]).longValue(),
 				((Boolean)arguments[1]).booleanValue(),
 				((Boolean)arguments[2]).booleanValue());
 		}
 
-		if (_methodName313.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes313, parameterTypes)) {
+		if (_methodName315.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes315, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getAssetReceiptLicenseLicenseKeysCount(((Long)arguments[0]).longValue(),
 				((Boolean)arguments[1]).booleanValue(),
 				((Boolean)arguments[2]).booleanValue());
 		}
 
-		if (_methodName314.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes314, parameterTypes)) {
+		if (_methodName316.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes316, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getFirstLicenseKey(((Long)arguments[0]).longValue(),
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[1]);
 		}
 
-		if (_methodName315.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes315, parameterTypes)) {
+		if (_methodName317.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes317, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getLicenseKeys(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName316.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes316, parameterTypes)) {
+		if (_methodName318.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes318, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getLicenseKeys(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
 
-		if (_methodName317.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes317, parameterTypes)) {
+		if (_methodName319.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes319, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getLicenseKeys(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				((Boolean)arguments[3]).booleanValue(),
@@ -595,14 +595,14 @@ public class LicenseKeyLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[6]);
 		}
 
-		if (_methodName318.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes318, parameterTypes)) {
+		if (_methodName320.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes320, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getLicenseKeys((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1]);
 		}
 
-		if (_methodName319.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes319, parameterTypes)) {
+		if (_methodName321.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes321, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getLicenseKeysByName((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1],
 				((Boolean)arguments[2]).booleanValue(),
@@ -611,13 +611,13 @@ public class LicenseKeyLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[5]);
 		}
 
-		if (_methodName320.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes320, parameterTypes)) {
+		if (_methodName322.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes322, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getLicenseKeySetLicenseKeys(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName321.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes321, parameterTypes)) {
+		if (_methodName323.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes323, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getOfferingEntryGroupLicenseKeys((long[])arguments[0],
 				((Boolean)arguments[1]).booleanValue(),
 				((Boolean)arguments[2]).booleanValue(),
@@ -626,89 +626,89 @@ public class LicenseKeyLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[5]);
 		}
 
-		if (_methodName322.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes322, parameterTypes)) {
-			return LicenseKeyLocalServiceUtil.getOfferingEntryGroupLicenseKeysCount((long[])arguments[0],
-				((Boolean)arguments[1]).booleanValue(),
-				((Boolean)arguments[2]).booleanValue());
-		}
-
-		if (_methodName323.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes323, parameterTypes)) {
-			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(((Long)arguments[0]).longValue());
-		}
-
 		if (_methodName324.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes324, parameterTypes)) {
-			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(((Long)arguments[0]).longValue(),
+			return LicenseKeyLocalServiceUtil.getOfferingEntryGroupLicenseKeysCount((long[])arguments[0],
 				((Boolean)arguments[1]).booleanValue(),
 				((Boolean)arguments[2]).booleanValue());
 		}
 
 		if (_methodName325.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes325, parameterTypes)) {
-			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
+			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName326.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes326, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
+				((Boolean)arguments[1]).booleanValue(),
 				((Boolean)arguments[2]).booleanValue());
 		}
 
 		if (_methodName327.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes327, parameterTypes)) {
-			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeysCount(((Long)arguments[0]).longValue());
+			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName328.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes328, parameterTypes)) {
-			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeysCount(((Long)arguments[0]).longValue(),
-				((Boolean)arguments[1]).booleanValue(),
+			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
 				((Boolean)arguments[2]).booleanValue());
 		}
 
 		if (_methodName329.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes329, parameterTypes)) {
-			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeysCount(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
+			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeysCount(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName330.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes330, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeysCount(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
+				((Boolean)arguments[1]).booleanValue(),
 				((Boolean)arguments[2]).booleanValue());
 		}
 
 		if (_methodName331.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes331, parameterTypes)) {
-			return LicenseKeyLocalServiceUtil.getUserLicenseKeysCount(((Long)arguments[0]).longValue(),
+			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeysCount(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName332.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes332, parameterTypes)) {
-			return LicenseKeyLocalServiceUtil.renewLicenseKey(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
+			return LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeysCount(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Boolean)arguments[2]).booleanValue());
 		}
 
 		if (_methodName333.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes333, parameterTypes)) {
+			return LicenseKeyLocalServiceUtil.getUserLicenseKeysCount(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName334.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes334, parameterTypes)) {
+			return LicenseKeyLocalServiceUtil.renewLicenseKey(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName335.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes335, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.renewLicenseKey(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(), (java.util.Date)arguments[2],
 				((Integer)arguments[3]).intValue());
 		}
 
-		if (_methodName334.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes334, parameterTypes)) {
+		if (_methodName336.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes336, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.renewTrialLicenseKey(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName335.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes335, parameterTypes)) {
+		if (_methodName337.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes337, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.search((java.lang.Long)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -753,8 +753,8 @@ public class LicenseKeyLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[44]);
 		}
 
-		if (_methodName336.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes336, parameterTypes)) {
+		if (_methodName338.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes338, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.search((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1],
 				((Integer)arguments[2]).intValue(),
@@ -762,8 +762,8 @@ public class LicenseKeyLocalServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[4]);
 		}
 
-		if (_methodName337.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes337, parameterTypes)) {
+		if (_methodName339.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes339, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.searchCount((java.lang.Long)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -805,30 +805,30 @@ public class LicenseKeyLocalServiceClpInvoker {
 				((Boolean)arguments[41]).booleanValue());
 		}
 
-		if (_methodName338.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes338, parameterTypes)) {
+		if (_methodName340.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes340, parameterTypes)) {
 			return LicenseKeyLocalServiceUtil.searchCount((java.lang.String)arguments[0],
 				(java.util.LinkedHashMap<java.lang.String, java.lang.Object>)arguments[1]);
 		}
 
-		if (_methodName339.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes339, parameterTypes)) {
+		if (_methodName341.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes341, parameterTypes)) {
 			LicenseKeyLocalServiceUtil.sendRegisteredEmail((com.liferay.portal.kernel.model.User)arguments[0],
 				(com.liferay.osb.model.LicenseKey)arguments[1]);
 
 			return null;
 		}
 
-		if (_methodName340.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes340, parameterTypes)) {
+		if (_methodName342.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes342, parameterTypes)) {
 			LicenseKeyLocalServiceUtil.sendTrialRenewalNotificationEmail((java.lang.String)arguments[0],
 				((Long)arguments[1]).longValue());
 
 			return null;
 		}
 
-		if (_methodName341.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes341, parameterTypes)) {
+		if (_methodName343.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes343, parameterTypes)) {
 			LicenseKeyLocalServiceUtil.updateLicenseKey(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -837,8 +837,8 @@ public class LicenseKeyLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName342.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes342, parameterTypes)) {
+		if (_methodName344.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes344, parameterTypes)) {
 			LicenseKeyLocalServiceUtil.updateLicenseKey(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -847,8 +847,8 @@ public class LicenseKeyLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName343.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes343, parameterTypes)) {
+		if (_methodName345.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes345, parameterTypes)) {
 			LicenseKeyLocalServiceUtil.updateLicenseKey(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -900,12 +900,8 @@ public class LicenseKeyLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName300;
-	private String[] _methodParameterTypes300;
-	private String _methodName305;
-	private String[] _methodParameterTypes305;
-	private String _methodName306;
-	private String[] _methodParameterTypes306;
+	private String _methodName302;
+	private String[] _methodParameterTypes302;
 	private String _methodName307;
 	private String[] _methodParameterTypes307;
 	private String _methodName308;
@@ -980,4 +976,8 @@ public class LicenseKeyLocalServiceClpInvoker {
 	private String[] _methodParameterTypes342;
 	private String _methodName343;
 	private String[] _methodParameterTypes343;
+	private String _methodName344;
+	private String[] _methodParameterTypes344;
+	private String _methodName345;
+	private String[] _methodParameterTypes345;
 }
