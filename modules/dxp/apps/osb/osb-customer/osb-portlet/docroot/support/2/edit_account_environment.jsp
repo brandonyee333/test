@@ -470,7 +470,7 @@
 
 						var name = A.one('#<portlet:namespace />name');
 
-						if (name && name.val().trim().length == 0) {
+						if (name && (name.val().trim().length == 0)) {
 							alert('<liferay-ui:message key="please-provide-a-unique-environment-name" />');
 
 							return <portlet:namespace />focusNode(name);
@@ -478,7 +478,7 @@
 
 						var offering = A.one('#<portlet:namespace />offeringEntryId');
 
-						if (offering && offering.val() == 0) {
+						if (offering && (offering.val() == 0)) {
 							alert('<liferay-ui:message key="please-choose-a-product" />');
 
 							return <portlet:namespace />focusNode(offering);
@@ -495,7 +495,7 @@
 
 							var envAS = A.one('#<portlet:namespace />envAS');
 
-							if (envAS && envAS.val() == 0) {
+							if (envAS && (envAS.val() == 0)) {
 								alert('<liferay-ui:message key="please-choose-an-application-server" />');
 
 								return <portlet:namespace />focusNode(envLFR);
@@ -503,7 +503,7 @@
 
 							var envDB = A.one('#<portlet:namespace />envDB');
 
-							if (envDB && envDB.val() == 0) {
+							if (envDB && (envDB.val() == 0)) {
 								alert('<liferay-ui:message key="please-choose-a-database" />');
 
 								return <portlet:namespace />focusNode(envLFR);
@@ -511,7 +511,7 @@
 
 							var envJVM = A.one('#<portlet:namespace />envJVM');
 
-							if (envJVM && envJVM.val() == 0) {
+							if (envJVM && (envJVM.val() == 0)) {
 								alert('<liferay-ui:message key="please-choose-a-java-virtual-machine" />');
 
 								return <portlet:namespace />focusNode(envLFR);
@@ -519,7 +519,7 @@
 
 							var envOS = A.one('#<portlet:namespace />envOS');
 
-							if (envOS && envOS.val() == 0) {
+							if (envOS && (envOS.val() == 0)) {
 								alert('<liferay-ui:message key="please-choose-an-operating-system" />');
 
 								return <portlet:namespace />focusNode(envLFR);
