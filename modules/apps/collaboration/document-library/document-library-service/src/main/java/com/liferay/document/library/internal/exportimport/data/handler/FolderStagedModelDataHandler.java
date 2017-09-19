@@ -231,10 +231,6 @@ public class FolderStagedModelDataHandler
 
 		long userId = portletDataContext.getUserId(folder.getUserUuid());
 
-		Map<Long, Long> folderIds =
-			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
-				Folder.class);
-
 		Map<Long, Long> repositoryIds =
 			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
 				Repository.class);
@@ -242,6 +238,10 @@ public class FolderStagedModelDataHandler
 		long repositoryId = MapUtil.getLong(
 			repositoryIds, folder.getRepositoryId(),
 			portletDataContext.getScopeGroupId());
+
+		Map<Long, Long> folderIds =
+			(Map<Long, Long>)portletDataContext.getNewPrimaryKeysMap(
+				Folder.class);
 
 		long parentFolderId = MapUtil.getLong(
 			folderIds, folder.getParentFolderId(), folder.getParentFolderId());
@@ -253,12 +253,12 @@ public class FolderStagedModelDataHandler
 
 		Element folderElement = portletDataContext.getImportDataElement(folder);
 
-		boolean rootFolder = GetterUtil.getBoolean(
-			folderElement.attributeValue("rootFolder"));
-
 		Folder importedFolder = null;
 
 		if (portletDataContext.isDataStrategyMirror()) {
+			boolean rootFolder = GetterUtil.getBoolean(
+				folderElement.attributeValue("rootFolder"));
+
 			if (rootFolder) {
 				Repository repository = _repositoryLocalService.getRepository(
 					repositoryId);
