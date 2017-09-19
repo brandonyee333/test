@@ -575,7 +575,7 @@ public class FolderStagedModelDataHandler
 		return externalRepositoryClassNames.contains(repository.getClassName());
 	}
 
-	private static final String _IS_ROOT_FOLDER_ATTR = "isRootFolder";
+	private static final String _IS_ROOT_FOLDER_ATTR = "rootFolder";
 
 	private DLAppLocalService _dlAppLocalService;
 	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;
