@@ -24,13 +24,14 @@ import com.liferay.osb.customer.release.notes.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.model.JIRAProject;
 import com.liferay.osb.customer.release.notes.model.JIRAProjectVersion;
 import com.liferay.osb.customer.release.notes.model.ReleaseNotes;
-import com.liferay.osb.customer.release.notes.service.JIRAIssueLocalServiceUtil;
-import com.liferay.osb.customer.release.notes.service.JIRAProjectLocalServiceUtil;
-import com.liferay.osb.customer.release.notes.service.JIRAProjectVersionLocalServiceUtil;
-import com.liferay.osb.customer.release.notes.service.ReleaseNotesLocalServiceUtil;
+import com.liferay.osb.customer.release.notes.service.JIRAIssueLocalService;
+import com.liferay.osb.customer.release.notes.service.JIRAProjectLocalService;
+import com.liferay.osb.customer.release.notes.service.JIRAProjectVersionLocalService;
+import com.liferay.osb.customer.release.notes.service.ReleaseNotesLocalService;
 import com.liferay.osb.customer.release.notes.util.DataURIUtil;
 import com.liferay.osb.customer.release.notes.util.JIRAConstants;
 import com.liferay.osb.customer.release.notes.util.ReleaseNotesUtil;
+import com.liferay.osb.customer.release.notes.web.internal.constants.ReleaseNotesPortletKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -44,7 +45,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -65,6 +66,7 @@ import java.util.Set;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.Portlet;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
@@ -77,9 +79,32 @@ import javax.portlet.ResourceResponse;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Samuel Kong
  */
+@Component(
+	immediate = true,
+	property = {
+		"com.liferay.portlet.add-default-resource=true",
+		"com.liferay.portlet.css-class-wrapper=release-notes-portlet",
+		"com.liferay.portlet.display-category=category.osb",
+		"com.liferay.portlet.icon=/icon.png",
+		"com.liferay.portlet.instanceable=false",
+		"javax.portlet.display-name=OSB Release Notes",
+		"javax.portlet.expiration-cache=0",
+		"javax.portlet.init-param.copy-request-parameters=true",
+		"javax.portlet.init-param.template-path=/",
+		"javax.portlet.init-param.view-template=/view.jsp",
+		"javax.portlet.name=" + ReleaseNotesPortletKeys.RELEASE_NOTES,
+		"javax.portlet.resource-bundle=content.Language",
+		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
+		"javax.portlet.supports.mime-type=text/html"
+	},
+	service = Portlet.class
+)
 public class ReleaseNotesPortlet extends MVCPortlet {
 
 	public void deleteReleaseNotes(
@@ -89,7 +114,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		long releaseNotesId = ParamUtil.getLong(
 			actionRequest, "releaseNotesId");
 
-		ReleaseNotesLocalServiceUtil.deleteReleaseNotes(releaseNotesId);
+		_releaseNotesLocalService.deleteReleaseNotes(releaseNotesId);
 	}
 
 	@Override
@@ -152,12 +177,12 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			actionRequest, "jiraIssueKeys");
 
 		if (releaseNotesId > 0) {
-			ReleaseNotesLocalServiceUtil.updateReleaseNotes(
+			_releaseNotesLocalService.updateReleaseNotes(
 				releaseNotesId, name, jiraIssueKeys);
 		}
 		else {
 			ReleaseNotes releaseNotes =
-				ReleaseNotesLocalServiceUtil.addReleaseNotes(
+				_releaseNotesLocalService.addReleaseNotes(
 					themeDisplay.getUserId(), name, jiraIssueKeys);
 
 			releaseNotesId = releaseNotes.getReleaseNotesId();
@@ -166,7 +191,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		String redirect = getRedirect(actionRequest, actionResponse);
 
 		PortletURL redirectURL = PortletURLFactoryUtil.create(
-			actionRequest, "1_WAR_osb.customer.release.notesportlet",
+			actionRequest, ReleaseNotesPortletKeys.RELEASE_NOTES,
 			themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
 		redirectURL.setParameter("mvcPath", "/edit_release_notes.jsp");
@@ -237,7 +262,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		}
 
 		List<JIRAIssue> jiraIssues =
-			JIRAIssueLocalServiceUtil.getJIRALabelJIRAIssues(
+			_jiraIssueLocalService.getJIRALabelJIRAIssues(
 				jiraLabel, jiraProjectKey);
 
 		if (jiraIssues.isEmpty()) {
@@ -274,10 +299,10 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		}
 
 		JIRAProjectVersion jiraProjectVersion =
-			JIRAProjectVersionLocalServiceUtil.getJIRAProjectVersion(
+			_jiraProjectVersionLocalService.getJIRAProjectVersion(
 				jiraProjectVersionId);
 
-		JIRAProject jiraProject = JIRAProjectLocalServiceUtil.getJIRAProject(
+		JIRAProject jiraProject = _jiraProjectLocalService.getJIRAProject(
 			jiraProjectVersion.getJiraProjectId());
 
 		if (!ArrayUtil.contains(
@@ -288,7 +313,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		}
 
 		List<JIRAIssue> jiraIssues =
-			JIRAIssueLocalServiceUtil.getJIRAProjectVersionJIRAIssues(
+			_jiraIssueLocalService.getJIRAProjectVersionJIRAIssues(
 				jiraProjectVersion.getJiraProjectVersionId());
 
 		if (jiraIssues.isEmpty()) {
@@ -313,7 +338,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		ReleaseNotes releaseNotes = null;
 
 		try {
-			releaseNotes = ReleaseNotesLocalServiceUtil.getReleaseNotesByUuid(
+			releaseNotes = _releaseNotesLocalService.getReleaseNotesByUuid(
 				uuid);
 		}
 		catch (NoSuchReleaseNotesException nsrne) {
@@ -336,7 +361,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		String[] jiraIssueKeys = ReleaseNotesUtil.filterJIRAIssueKeys(
 			releaseNotes.getJiraIssueKeysArray(), true);
 
-		List<JIRAIssue> jiraIssues = JIRAIssueLocalServiceUtil.getJIRAIssues(
+		List<JIRAIssue> jiraIssues = _jiraIssueLocalService.getJIRAIssues(
 			jiraIssueKeys);
 
 		if (jiraIssues.isEmpty()) {
@@ -439,7 +464,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 				(ThemeDisplay)portletRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
 
-			String portletId = PortalUtil.getPortletId(portletRequest);
+			String portletId = _portal.getPortletId(portletRequest);
 
 			return PortletPermissionUtil.contains(
 				themeDisplay.getPermissionChecker(), themeDisplay.getPlid(),
@@ -525,6 +550,21 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ReleaseNotesPortlet.class);
 
+	@Reference
+	private JIRAIssueLocalService _jiraIssueLocalService;
+
+	@Reference
+	private JIRAProjectLocalService _jiraProjectLocalService;
+
+	@Reference
+	private JIRAProjectVersionLocalService _jiraProjectVersionLocalService;
+
+	@Reference
+	private Portal _portal;
+
 	private String _portletContextName;
+
+	@Reference
+	private ReleaseNotesLocalService _releaseNotesLocalService;
 
 }
