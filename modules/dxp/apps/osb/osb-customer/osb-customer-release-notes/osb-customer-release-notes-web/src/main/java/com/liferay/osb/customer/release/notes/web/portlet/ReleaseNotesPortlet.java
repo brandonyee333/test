@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.release.notes.portlet;
+package com.liferay.osb.customer.release.notes.web.portlet;
 
 import com.liferay.osb.customer.release.notes.configuration.ReleaseNotesConfigurationValues;
 import com.liferay.osb.customer.release.notes.exception.DuplicateJIRAIssueKeysException;
@@ -230,7 +230,8 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			resourceRequest, "jiraProjectKey", "LPE");
 
 		if (!ArrayUtil.contains(
-			ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED, jiraProjectKey)) {
+				ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED,
+				jiraProjectKey)) {
 
 			return "The project is restricted.";
 		}
@@ -280,7 +281,7 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			jiraProjectVersion.getJiraProjectId());
 
 		if (!ArrayUtil.contains(
-			ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED,
+				ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED,
 				jiraProject.getKey())) {
 
 			return "The project is restricted.";
@@ -373,24 +374,32 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			"jiraIssueTypeNewFeature", JIRAConstants.ISSUE_TYPE_NEW_FEATURE);
 
 		velocityContext.put(
-			"bugIcon", encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_BUG));
+			"bugIcon",
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_BUG));
 		velocityContext.put(
 			"improvementIcon",
-			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_IMPROVEMENT));
+			encodeToDataURI(
+				ReleaseNotesConfigurationValues.IMAGE_ICON_IMPROVEMENT));
 		velocityContext.put(
 			"newFeatureIcon",
-			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_NEW_FEATURE));
+			encodeToDataURI(
+				ReleaseNotesConfigurationValues.IMAGE_ICON_NEW_FEATURE));
 		velocityContext.put(
-			"otherIcon", encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_OTHER));
+			"otherIcon",
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_OTHER));
 		velocityContext.put(
-			"logo", encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_LOGO));
+			"logo",
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_LOGO));
 
-		velocityContext.put("css", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_CSS));
+		velocityContext.put(
+			"css", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_CSS));
 
 		velocityContext.put(
-			"jsBottom", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_BOTTOM));
+			"jsBottom",
+			mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_BOTTOM));
 		velocityContext.put(
-			"jsTop", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_TOP));
+			"jsTop",
+			mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_TOP));
 
 		velocityContext.put("version", version);
 

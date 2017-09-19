@@ -63,7 +63,9 @@ public class ReleaseNotesUtil {
 		Map<JIRAComponent, Set<JIRAIssue>> jiraComponentMap,
 		JIRAProjectVersion jiraProjectVersion) {
 
-		for (String className : ReleaseNotesConfigurationValues.JIRA_COMPONENT_FILTERS) {
+		for (String className :
+				ReleaseNotesConfigurationValues.JIRA_COMPONENT_FILTERS) {
+
 			try {
 				JIRAComponentFilter jiraComponentFilter =
 					(JIRAComponentFilter)Class.forName(className).newInstance();
@@ -90,8 +92,8 @@ public class ReleaseNotesUtil {
 			String projectKey = jiraIssueKey.split(StringPool.DASH)[0];
 
 			if (ArrayUtil.contains(
-				ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED, projectKey) ==
-						allowed) {
+					ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED,
+					projectKey) == allowed) {
 
 				filteredJIRAIssueKeys.add(jiraIssueKey);
 			}

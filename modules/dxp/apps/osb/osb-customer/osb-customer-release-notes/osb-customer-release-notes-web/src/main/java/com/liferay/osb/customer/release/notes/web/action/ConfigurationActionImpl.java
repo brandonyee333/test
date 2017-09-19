@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.release.notes.action;
+package com.liferay.osb.customer.release.notes.web.action;
 
 import com.liferay.osb.customer.release.notes.exception.NoSuchJIRAProjectException;
 import com.liferay.osb.customer.release.notes.service.JIRAProjectLocalServiceUtil;

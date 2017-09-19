@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.release.notes.search;
+package com.liferay.osb.customer.release.notes.web.search;
 
 import com.liferay.osb.customer.release.notes.model.ReleaseNotes;
 import com.liferay.portal.kernel.dao.search.SearchContainer;

@@ -26,11 +26,12 @@ public class ReleaseNotesConfigurationUtil {
 		return _configuration.get(key);
 	}
 
-	public static String[] getArray(String key) { return _configuration.getArray(key); }
+	public static String[] getArray(String key) {
+		return _configuration.getArray(key);
+	}
 
 	private static final Configuration _configuration =
 		ConfigurationFactoryUtil.getConfiguration(
-			ReleaseNotesConfigurationUtil.class.getClassLoader(),
-			"portlet");
+			ReleaseNotesConfigurationUtil.class.getClassLoader(), "portlet");
 
 }
