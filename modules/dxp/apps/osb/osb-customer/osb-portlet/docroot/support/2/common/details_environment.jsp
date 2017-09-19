@@ -156,7 +156,7 @@ if (productEntry != null) {
 											<aui:option disabled="<%= true %>" label="--------" />
 										</c:if>
 
-										<aui:option label='<%= envLFRType.getName() + (limited ? "(limited)" : StringPool.BLANK) %>' selected="<%= (envLFRType.getListTypeId() == envLFR) %>" value="<%= envLFRType.getListTypeId() %>" />
+										<aui:option label='<%= envLFRType.getName() + (limited ? "(limited)" : StringPool.BLANK) %>' selected="<%= envLFRType.getListTypeId() == envLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 
 									<%
 										previousNamePrefix = namePrefix;
@@ -387,10 +387,10 @@ if (productEntry != null) {
 				<aui:button cssClass="aui-button-input fl" onClick='<%= renderResponse.getNamespace() + "updateAccountEnvironment(0, '');" %>' value="create-environment" />
 
 				<%
-				String updateEnvironmentOnclick = renderResponse.getNamespace() + "updateAccountEnvironment(document.getElementById('" + renderResponse.getNamespace() + "accountEnvironmentId').value, document.getElementById('" + renderResponse.getNamespace() + "name').value);";
+				String updateEnvironmentOnClick = renderResponse.getNamespace() + "updateAccountEnvironment(document.getElementById('" + renderResponse.getNamespace() + "accountEnvironmentId').value, document.getElementById('" + renderResponse.getNamespace() + "name').value);";
 				%>
 
-				<aui:button cssClass="aui-button-input fl hide" onClick="<%= updateEnvironmentOnclick %>" value="update-environment" />
+				<aui:button cssClass="aui-button-input fl hide" onClick="<%= updateEnvironmentOnClick %>" value="update-environment" />
 			</div>
 		</c:if>
 	</div>

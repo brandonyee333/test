@@ -165,10 +165,10 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 			<c:otherwise>
 
 				<%
-				String uploadFileonChange = renderResponse.getNamespace() + "uploadUpdate('" + HtmlUtil.escapeAttribute(fieldName) + "');";
+				String uploadFileOnChange = renderResponse.getNamespace() + "uploadUpdate('" + HtmlUtil.escapeAttribute(fieldName) + "');";
 				%>
 
-				<aui:input cssClass="hide" name="<%= fieldName %>" onChange="<%= uploadFileonChange %>" type="file" />
+				<aui:input cssClass="hide" name="<%= fieldName %>" onChange="<%= uploadFileOnChange %>" type="file" />
 
 				<%
 				String uploadNewBtnOnClick = "javascript:document.getElementById('" + renderResponse.getNamespace() + HtmlUtil.escapeAttribute(fieldName) + "').click(); return;";
