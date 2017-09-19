@@ -113,7 +113,7 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 			<td>
 
 				<%
-				String taglibLicensesOnClick = renderResponse.getNamespace() + "disableInput('unlimitedLicensesCheckbox', !this.checked);";
+				String taglibLicensesOnClick = renderResponse.getNamespace() + "disableInput('unlimitedLicenses', !this.checked);";
 				%>
 
 				<liferay-ui:input-checkbox defaultValue="<%= licenses %>" onClick="<%= taglibLicensesOnClick %>" param="licenses" />
@@ -170,9 +170,3 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 
 	<input onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
 </aui:form>
-
-<c:if test="<%= windowState.equals(WindowState.MAXIMIZED) %>">
-	<script type="text/javascript">
-		Liferay.Util.focusFormField(document.<portlet:namespace />fm.<portlet:namespace />name);
-	</script>
-</c:if>
