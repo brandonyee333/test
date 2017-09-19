@@ -648,6 +648,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<liferay-util:include page="/admin/edit_account_entry/details_tabs.jsp" servletContext="<%= application %>" />
 </aui:form>
 
+<%-- LRIS-27792
 <aui:script use="liferay-dynamic-select">
 	new Liferay.DynamicSelect(
 		[
@@ -667,7 +668,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			}
 		]
 	);
-</aui:script>
+</aui:script> --%>
 
 <aui:script>
 	function <portlet:namespace />addColumn(row, html) {

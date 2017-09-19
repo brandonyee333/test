@@ -682,6 +682,7 @@ Date lastEnabledDate = calendar.getTime();
 </aui:script>
 --%>
 
+<%-- LRIS-27792
 <aui:script use="liferay-dynamic-select">
 	new Liferay.DynamicSelect(
 		[
@@ -701,4 +702,4 @@ Date lastEnabledDate = calendar.getTime();
 			}
 		]
 	);
-</aui:script>
+</aui:script> --%>
