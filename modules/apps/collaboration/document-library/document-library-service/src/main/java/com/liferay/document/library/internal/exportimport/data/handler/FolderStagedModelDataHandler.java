@@ -162,9 +162,6 @@ public class FolderStagedModelDataHandler
 			portletDataContext.addClassedModel(
 				folderElement, folderPath, folder);
 
-			long portletRepositoryClassNameId = _portal.getClassNameId(
-				PortletRepository.class.getName());
-
 			boolean rootFolder = false;
 
 			if (folder.getFolderId() == repository.getDlFolderId()) {
@@ -173,6 +170,9 @@ public class FolderStagedModelDataHandler
 
 			folderElement.addAttribute(
 				"rootFolder", String.valueOf(rootFolder));
+
+			long portletRepositoryClassNameId = _portal.getClassNameId(
+				PortletRepository.class.getName());
 
 			if (repository.getClassNameId() != portletRepositoryClassNameId) {
 				return;
