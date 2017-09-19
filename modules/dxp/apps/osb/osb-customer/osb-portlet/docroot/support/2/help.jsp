@@ -140,6 +140,7 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 
 			if (helpDisplay && helpEditDisplay) {
 				helpDisplay.toggle();
+
 				helpEditDisplay.toggle();
 			}
 		},

@@ -160,20 +160,22 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 	}
 
 	function <portlet:namespace />columnSort(orderByCol, curOrderByCol, orderByType) {
+		var orderByColVal = '';
+		var orderByTypeVal = '';
+
 		if (orderByCol != curOrderByCol) {
-			document.getElementById('<portlet:namespace />orderByCol').value = orderByCol;
-			document.getElementById('<portlet:namespace />orderByType').value = 'asc';
+			orderByColVal = orderByCol;
+
+			orderByTypeVal = 'asc';
 		}
-		else {
-			if (orderByType == 'asc') {
-				document.getElementById('<portlet:namespace />orderByCol').value = orderByCol;
-				document.getElementById('<portlet:namespace />orderByType').value = 'desc';
-			}
-			else {
-				document.getElementById('<portlet:namespace />orderByCol').value = '';
-				document.getElementById('<portlet:namespace />orderByType').value = '';
-			}
+		else if (orderByCol == curOrderByCol && orderByType == 'asc') {
+			orderByColVal = orderByCol;
+
+			orderByTypeVal = 'desc';
 		}
+
+		document.getElementById('<portlet:namespace />orderByCol').value = orderByColVal;
+		document.getElementById('<portlet:namespace />orderByType').value = orderByTypeVal;
 
 		<portlet:namespace />updateSearchResults();
 	}

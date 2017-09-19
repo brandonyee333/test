@@ -239,5 +239,4 @@ if (offeringEntryId > 0) {
 
 		createTicket.delegate('keyup', <portlet:namespace />validateRequiredField(this), 'input[data-field-required-status], textarea[data-field-required-status]');
 	}
-
 </aui:script>
