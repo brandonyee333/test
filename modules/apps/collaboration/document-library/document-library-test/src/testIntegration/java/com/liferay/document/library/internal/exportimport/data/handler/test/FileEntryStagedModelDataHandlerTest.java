@@ -218,7 +218,7 @@ public class FileEntryStagedModelDataHandlerTest
 	}
 
 	@Test
-	public void testsExportImportNonDefaultRepository() throws Exception {
+	public void testsExportImportNondefaultRepository() throws Exception {
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				stagingGroup.getGroupId(), TestPropsValues.getUserId());
