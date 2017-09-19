@@ -96,4 +96,10 @@ public class PortletPropsValues {
 		PortletProps.getArray(
 			PortletPropsKeys.TICKET_ATTACHMENT_PREVIEW_EXTENSIONS);
 
+	public static final String WEB_API_TOKEN = PortletProps.get(
+		PortletPropsKeys.WEB_API_TOKEN);
+
+	public static final String WEB_DOMAIN_NAME = PortletProps.get(
+		PortletPropsKeys.WEB_DOMAIN_NAME);
+
 }

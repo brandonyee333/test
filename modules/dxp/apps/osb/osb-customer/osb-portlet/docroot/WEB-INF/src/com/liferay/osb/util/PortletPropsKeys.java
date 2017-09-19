@@ -92,4 +92,8 @@ public interface PortletPropsKeys {
 	public static final String TICKET_ATTACHMENT_PREVIEW_EXTENSIONS =
 		"ticket.attachment.preview.extensions";
 
+	public static final String WEB_API_TOKEN = "web.api.token";
+
+	public static final String WEB_DOMAIN_NAME = "web.domain.name";
+
 }

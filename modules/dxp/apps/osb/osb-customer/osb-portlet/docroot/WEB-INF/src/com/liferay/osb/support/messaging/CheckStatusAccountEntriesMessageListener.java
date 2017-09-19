@@ -21,6 +21,7 @@ import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
+import com.liferay.osb.service.RemoteCorpProjectLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -65,10 +66,10 @@ public class CheckStatusAccountEntriesMessageListener
 				accountEntry.getUserId(), accountEntry.getCorpProjectId(),
 				new long[] {accountEntry.getUserId()},
 				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
-
-			CorpProjectLocalServiceUtil.deleteCorpProject(
-				accountEntry.getCorpProjectId());
 			*/
+
+			RemoteCorpProjectLocalServiceUtil.deleteCorpProject(
+				accountEntry.getCorpProjectId());
 		}
 	}
 
