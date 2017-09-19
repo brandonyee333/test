@@ -172,7 +172,7 @@ public class FolderStagedModelDataHandler
 			}
 
 			folderElement.addAttribute(
-				_IS_ROOT_FOLDER_ATTR, String.valueOf(rootFolder));
+				"rootFolder", String.valueOf(rootFolder));
 
 			if (repository.getClassNameId() != portletRepositoryClassNameId) {
 				return;
@@ -254,7 +254,7 @@ public class FolderStagedModelDataHandler
 		Element folderElement = portletDataContext.getImportDataElement(folder);
 
 		boolean rootFolder = GetterUtil.getBoolean(
-			folderElement.attributeValue(_IS_ROOT_FOLDER_ATTR));
+			folderElement.attributeValue("rootFolder"));
 
 		Folder importedFolder = null;
 
@@ -574,8 +574,6 @@ public class FolderStagedModelDataHandler
 
 		return externalRepositoryClassNames.contains(repository.getClassName());
 	}
-
-	private static final String _IS_ROOT_FOLDER_ATTR = "rootFolder";
 
 	private DLAppLocalService _dlAppLocalService;
 	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;
