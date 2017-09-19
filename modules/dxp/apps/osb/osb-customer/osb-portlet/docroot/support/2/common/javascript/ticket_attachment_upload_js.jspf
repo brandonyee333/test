@@ -48,8 +48,10 @@
 	function <portlet:namespace />validateFile(fileType) {
 		var fileList = document.getElementById('<portlet:namespace />' + fileType + 'FileList');
 
+		var elementCount;
+
 		if (fileList) {
-			var elementCount = fileList.getElementsByTagName('li');
+			elementCount = fileList.getElementsByTagName('li');
 		}
 
 		var fileInput = document.getElementById('<portlet:namespace />' + fileType);
