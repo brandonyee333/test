@@ -613,6 +613,7 @@ Date lastEnabledDate = calendar.getTime();
 	}
 </aui:script>
 
+<%-- LRIS-28071
 <aui:script use="aui-autocomplete">
 	var dataSource = new A.DataSource.IO(
 		{
@@ -679,6 +680,7 @@ Date lastEnabledDate = calendar.getTime();
 
 	codeAutoComplete.render();
 </aui:script>
+--%>
 
 <aui:script use="liferay-dynamic-select">
 	new Liferay.DynamicSelect(
