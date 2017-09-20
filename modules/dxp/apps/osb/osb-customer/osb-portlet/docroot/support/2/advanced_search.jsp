@@ -101,7 +101,6 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 					<span id="<portlet:namespace />accounts" onClick="<portlet:namespace />loadTab('accounts');" searchTab="account"><liferay-ui:message key="projects" />
 						<span class="count" id="<portlet:namespace />accountTabCount">(-)</span>
 					</span>
-
 					<span id="<portlet:namespace />feedback" onClick="<portlet:namespace />loadTab('feedback');" searchTab="feedback"><liferay-ui:message key="feedback" />
 						<span class="count" id="<portlet:namespace />feedbackTabCount">(-)</span>
 					</span>
@@ -168,7 +167,7 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 
 			orderByTypeVal = 'asc';
 		}
-		else if (orderByCol == curOrderByCol && orderByType == 'asc') {
+		else if ((orderByCol == curOrderByCol) && (orderByType == 'asc')) {
 			orderByColVal = orderByCol;
 
 			orderByTypeVal = 'desc';
@@ -883,7 +882,7 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 						dataType: 'json',
 						method: 'post',
 						on: {
-							success: function(event, id, obj) {
+							success: function() {
 								var response = this.get('responseData');
 
 								if (response.duplicateSearchFilterName) {
