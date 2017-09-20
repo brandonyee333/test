@@ -93,21 +93,29 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 	<div class="advanced-search tab-view" id="<portlet:namespace />advancedSearchTabs">
 		<div class="tabs" id="<portlet:namespace />advancedSearchTabHeaders">
 			<div>
-				<span class="first" id="<portlet:namespace />tickets" onClick="<portlet:namespace />loadTab('tickets');" searchTab="ticket"><liferay-ui:message key="tickets" />
+				<span class="first" id="<portlet:namespace />tickets" onClick="<portlet:namespace />loadTab('tickets');" searchTab="ticket">
+					<liferay-ui:message key="tickets" />
+
 					<span class="count" id="<portlet:namespace />ticketTabCount">(-)</span>
 				</span>
 
 				<c:if test="<%= liferayIncOrg || supportPartnerWorker %>">
-					<span id="<portlet:namespace />accounts" onClick="<portlet:namespace />loadTab('accounts');" searchTab="account"><liferay-ui:message key="projects" />
+					<span id="<portlet:namespace />accounts" onClick="<portlet:namespace />loadTab('accounts');" searchTab="account">
+						<liferay-ui:message key="projects" />
+
 						<span class="count" id="<portlet:namespace />accountTabCount">(-)</span>
 					</span>
-					<span id="<portlet:namespace />feedback" onClick="<portlet:namespace />loadTab('feedback');" searchTab="feedback"><liferay-ui:message key="feedback" />
+					<span id="<portlet:namespace />feedback" onClick="<portlet:namespace />loadTab('feedback');" searchTab="feedback">
+						<liferay-ui:message key="feedback" />
+
 						<span class="count" id="<portlet:namespace />feedbackTabCount">(-)</span>
 					</span>
 				</c:if>
 
 				<c:if test="<%= liferayIncOrg %>">
-					<span id="<portlet:namespace />partners" onClick="<portlet:namespace />loadTab('partners');" searchTab="partner"><liferay-ui:message key="partners" />
+					<span id="<portlet:namespace />partners" onClick="<portlet:namespace />loadTab('partners');" searchTab="partner">
+						<liferay-ui:message key="partners" />
+
 						<span class="count" id="<portlet:namespace />partnerTabCount">(-)</span>
 					</span>
 				</c:if>
