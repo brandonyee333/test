@@ -63,7 +63,7 @@ class HeaderToolbar extends JSXComponent {
 						<div class="watson-logo" />
 					</a>
 
-					<div class="module-dropdown" >
+					<div class="metal-dropdown-menu keep-left" >
 						<DropDown
 							alignElementSelector="button"
 							body={moduleDropDown}
@@ -79,7 +79,7 @@ class HeaderToolbar extends JSXComponent {
 						onChange={languageToggleOnChange}
 					/>
 
-					<div class="watson-logout" >
+					<div class="metal-dropdown-menu" >
 						<DropDown
 							alignElementSelector="button"
 							body={userNameDropDown}

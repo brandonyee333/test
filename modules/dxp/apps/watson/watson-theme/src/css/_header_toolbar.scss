@@ -25,12 +25,15 @@
 			}
 		}
 
-		.module-dropdown {
+		.keep-left {
+			margin-left: auto;
+		}
+
+		.metal-dropdown-menu {
 			color: $neutralMedium;
 			font-family: $primaryFontStack;
 			font-size: 15px;
-			margin-left: auto;
-			margin-right: 2%;
+			margin-right: 1%;
 			max-height: 55px;
 			min-width: 75px;
 			transition: color 0.2s $transitionSoft;
@@ -47,6 +50,10 @@
 					text-decoration: none;
 				}
 
+				.dropdown-menu {
+					position: fixed;
+				}
+
 				li {
 					text-align: center;
 
@@ -56,36 +63,6 @@
 						&:focus, &:hover {
 							color: $neutralDark;
 						}
-					}
-				}
-			}
-		}
-
-		.watson-logout {
-			color: $neutralMedium;
-			font-family: $primaryFontStack;
-			font-size: 15px;
-			max-height: 55px;
-			min-width: 125px;
-			transition: color 0.2s $transitionSoft;
-
-			.dropdown {
-				color: $neutralMedium;
-
-				.caret {
-					margin-left: 4px;
-				}
-
-				&:focus, &:hover {
-					color: $neutralDark;
-					text-decoration: none;
-				}
-
-				a {
-					color: $neutralMedium;
-
-					&:focus, &:hover {
-						color: $neutralDark;
 					}
 				}
 			}
