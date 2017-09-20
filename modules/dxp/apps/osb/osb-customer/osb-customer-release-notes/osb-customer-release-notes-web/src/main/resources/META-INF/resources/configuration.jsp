@@ -27,7 +27,7 @@
 		<aui:select label="jira-project-key" name="preferences--jiraProjectKey--">
 
 			<%
-			for (String curJiraProjectKey : PortletPropsValues.JIRA_PROJECT_KEYS_ALLOWED) {
+			for (String curJiraProjectKey : ReleaseNotesConfigurationValues.JIRA_PROJECT_KEYS_ALLOWED) {
 			%>
 
 				<aui:option label="<%= curJiraProjectKey %>" selected="<%= curJiraProjectKey.equals(jiraProjectKey) %>" value="<%= curJiraProjectKey %>" />
