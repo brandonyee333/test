@@ -25,60 +25,84 @@ portletURL.setParameter("mvcPath", "/view.jsp");
 portletURL.setParameter("tabs1", tabs1);
 %>
 
-<liferay-ui:tabs
-	names="based-on-project,based-on-issue"
-	param="tabs1"
-	url="<%= portletURL.toString() %>"
-/>
+<aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
+	<portlet:renderURL var="projectURL">
+		<portlet:param name="mvcPath" value="/view.jsp" />
+		<portlet:param name="tabs1" value="based-on-project" />
+	</portlet:renderURL>
 
-<c:choose>
-	<c:when test='<%= tabs1.equals("based-on-project") %>'>
+	<aui:nav cssClass="navbar-nav">
+		<aui:nav-item
+			href="<%= projectURL %>"
+			label="based-on-project"
+			selected='<%= tabs1.equals("based-on-project") %>'
+		/>
+	</aui:nav>
 
-		<%
-		JIRAProject jiraProject = null;
+	<portlet:renderURL var="issueURL">
+		<portlet:param name="mvcPath" value="/view.jsp" />
+		<portlet:param name="tabs1" value="based-on-issue" />
+	</portlet:renderURL>
 
-		try {
-			jiraProject = JIRAProjectLocalServiceUtil.getJIRAProject(jiraProjectKey);
-		}
-		catch (NoSuchJIRAProjectException nsjpe) {
-		}
-		%>
+	<aui:nav cssClass="navbar-nav">
+		<aui:nav-item
+			href="<%= issueURL %>"
+			label="based-on-issue"
+			selected='<%= tabs1.equals("based-on-issue") %>'
+		/>
+	</aui:nav>
+</aui:nav-bar>
 
-		<c:choose>
-			<c:when test="<%= jiraProject == null %>">
-				<div class="portlet-msg-error">Invalid JIRA project selected.</div>
-			</c:when>
-			<c:otherwise>
+<div class="container-fluid-1280">
+	<c:choose>
+		<c:when test='<%= tabs1.equals("based-on-project") %>'>
 
-				<%
-				List<JIRAProjectVersion> jiraProjectVersions = JIRAProjectVersionLocalServiceUtil.getJIRAProjectJIRAProjectVersion(jiraProject.getJiraProjectId(), jiraProjectVersionNamePrefix + StringPool.PERCENT);
+			<%
+			JIRAProject jiraProject = null;
 
-				for (JIRAProjectVersion jiraProjectVersion : jiraProjectVersions) {
-					jiraProjectVersion = jiraProjectVersion.toEscapedModel();
+			try {
+				jiraProject = JIRAProjectLocalServiceUtil.getJIRAProject(jiraProjectKey);
+			}
+			catch (NoSuchJIRAProjectException nsjpe) {
+			}
+			%>
 
-					ResourceURL viewReleaseNotesURL = renderResponse.createResourceURL();
+			<c:choose>
+				<c:when test="<%= jiraProject == null %>">
+					<div class="portlet-msg-error">Invalid JIRA project selected.</div>
+				</c:when>
+				<c:otherwise>
 
-					viewReleaseNotesURL.setParameter("jiraProjectVersionId", String.valueOf(jiraProjectVersion.getJiraProjectVersionId()));
-				%>
+					<%
+					List<JIRAProjectVersion> jiraProjectVersions = JIRAProjectVersionLocalServiceUtil.getJIRAProjectJIRAProjectVersion(jiraProject.getJiraProjectId(), jiraProjectVersionNamePrefix + StringPool.PERCENT);
 
-					<a href="javascript:<portlet:namespace/>viewReleaseNotes('<%= HtmlUtil.escapeJS(viewReleaseNotesURL.toString()) %>')"><liferay-ui:message arguments="<%= jiraProjectVersion.getName() %>" key="liferay-portal-x-release-notes" /></a><br />
+					for (JIRAProjectVersion jiraProjectVersion : jiraProjectVersions) {
+						jiraProjectVersion = jiraProjectVersion.toEscapedModel();
 
-				<%
-				}
-				%>
+						ResourceURL viewReleaseNotesURL = renderResponse.createResourceURL();
 
-			</c:otherwise>
-		</c:choose>
-	</c:when>
-	<c:when test='<%= tabs1.equals("based-on-issue") %>'>
-		<%@ include file="/view_release_notes.jspf" %>
-	</c:when>
-</c:choose>
+						viewReleaseNotesURL.setParameter("jiraProjectVersionId", String.valueOf(jiraProjectVersion.getJiraProjectVersionId()));
+					%>
 
-<liferay-util:html-bottom>
-	<script type="text/javascript">
-		function <portlet:namespace />viewReleaseNotes(url) {
-			window.open(url);
-		}
-	</script>
-</liferay-util:html-bottom>
+						<a href="javascript:<portlet:namespace/>viewReleaseNotes('<%= HtmlUtil.escapeJS(viewReleaseNotesURL.toString()) %>')"><liferay-ui:message arguments="<%= jiraProjectVersion.getName() %>" key="liferay-portal-x-release-notes" /></a><br />
+
+					<%
+					}
+					%>
+
+				</c:otherwise>
+			</c:choose>
+		</c:when>
+		<c:when test='<%= tabs1.equals("based-on-issue") %>'>
+			<%@ include file="/view_release_notes.jspf" %>
+		</c:when>
+	</c:choose>
+
+	<liferay-util:html-bottom>
+		<script type="text/javascript">
+			function <portlet:namespace />viewReleaseNotes(url) {
+				window.open(url);
+			}
+		</script>
+	</liferay-util:html-bottom>
+</div>

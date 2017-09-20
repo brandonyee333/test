@@ -15,19 +15,21 @@
 --%>
 
 <aui:form method="post" name="<portlet:namespace />fm" onSubmit="submitForm(this); return false;">
+
+	<%
+	ReleaseNotesDisplayTerms displayTerms = (ReleaseNotesDisplayTerms)searchContainer.getDisplayTerms();
+	%>
+
 	<liferay-ui:search-container
+		emptyResultsMessage="no-release-notes-were-found"
+		emptyResultsMessageCssClass="taglib-empty-result-message-header"
 		searchContainer="<%= new ReleaseNotesSearch(renderRequest, portletURL) %>"
+		total="<%= ReleaseNotesLocalServiceUtil.searchCount(displayTerms.getName()) %>"
 	>
-
-		<%
-		ReleaseNotesDisplayTerms displayTerms = (ReleaseNotesDisplayTerms)searchContainer.getDisplayTerms();
-		%>
-
 		<%@ include file="/release_notes_search.jspf" %>
 
 		<liferay-ui:search-container-results
 			results="<%= ReleaseNotesLocalServiceUtil.search(displayTerms.getName(), searchContainer.getStart(), searchContainer.getEnd()) %>"
-			total="<%= ReleaseNotesLocalServiceUtil.searchCount(displayTerms.getName()) %>"
 		/>
 
 		<liferay-ui:search-container-row
@@ -61,6 +63,6 @@
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator />
+		<liferay-ui:search-iterator markupView="lexicon" />
 	</liferay-ui:search-container>
 </aui:form>
