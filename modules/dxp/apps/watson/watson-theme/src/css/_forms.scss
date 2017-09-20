@@ -143,6 +143,16 @@
 		margin: 25px 0;
 		position: relative;
 
+		.date-wrapper .SingleDatePicker {
+			height: 57px;
+			width: 270px;
+
+			.DateInput {
+				margin-top: 7px;
+				width: 80%;
+			}
+		}
+
 		&.rich-editor {
 			display: block;
 			top: -25px;

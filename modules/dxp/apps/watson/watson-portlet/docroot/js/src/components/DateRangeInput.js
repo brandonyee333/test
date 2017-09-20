@@ -81,6 +81,7 @@ class DateRangeInput extends JSXComponent {
 
 DateRangeInput.Props = {
 	disabled: Config.bool(),
+	inputId: Config.string(),
 	value: Config.string().value('')
 };
 

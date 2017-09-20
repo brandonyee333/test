@@ -52,36 +52,18 @@ const validators = {
 	},
 
 	date(value) {
-		const dateRegex = /^(\d{4})-(\d{2})-(\d{2})$/;
-
 		let errorMessage = '';
 
 		if (value) {
-			errorMessage = Liferay.Language.get('invalid-date');
+			const dateValue = new Date(value);
 
-			if (dateRegex.test(value)) {
-				const matches = dateRegex.exec(value);
-
-				if (matches[1].length == 4) {
-					const month = parseInt(matches[2], 10);
-
-					if (month >= 1 && month <= 12) {
-						const day = parseInt(matches[3], 10);
-
-						if (day >= 1 && day <= 31) {
-							errorMessage = '';
-						}
-					}
-				}
+			if (dateValue === 'Invalid Date') {
+				errorMessage = Liferay.Language.get('invalid-date');
 			}
-		}
 
-		if (!errorMessage) {
 			const now = Date.now();
 
-			const dateValue = Date.parse(value);
-
-			if (dateValue > now) {
+			if (!errorMessage && (dateValue > now)) {
 				errorMessage = Liferay.Language.get('the-date-cannot-be-in-the-future');
 			}
 		}

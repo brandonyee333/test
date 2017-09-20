@@ -1,6 +1,7 @@
 import {bindAll, debounce} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
 
+import DateInput from './DateInput';
 import Toggle from './Toggle';
 
 class Input extends JSXComponent {
@@ -53,6 +54,16 @@ class Input extends JSXComponent {
 					disabled={disabled}
 					label={[Liferay.Language.get('no'), Liferay.Language.get('yes')]}
 					onChange={this.handleOnChange}
+				/>
+			);
+		}
+		else if (htmlType === 'date') {
+			retVal = (
+				<DateInput
+					autoFocus={autoFocus}
+					disabled={disabled}
+					onChange={this.handleOnChange}
+					value={value}
 				/>
 			);
 		}
