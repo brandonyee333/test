@@ -104,22 +104,37 @@ class ActivityForm extends JSXComponent {
 	handleAutoCreate() {
 		const {
 			autoCreateActivity,
-			formData,
+			formData = {},
 			watsonActivityId = 0,
 			watsonIncidentId
 		} = this.props;
 
-		formData.id = watsonActivityId;
-		formData.watsonIncidentId = watsonIncidentId;
+		if (formData) {
+			let autoSavePermitted = false;
 
-		autoCreateActivity(formData);
+			const activityKeys = this.getConfig();
 
-		this.setState(
-			{
-				autoCreated: true,
-				dataSent: true
+			activityKeys.forEach(
+				key => {
+					autoSavePermitted = autoSavePermitted ? autoSavePermitted : formData[key];
+				}
+			);
+
+			if (autoSavePermitted) {
+				formData.id = watsonActivityId;
+				formData.watsonIncidentId = watsonIncidentId;
+
+				autoCreateActivity(formData);
+
+				this.setState(
+					{
+						autoCreated: true,
+						autoSaved: Date.now(),
+						dataSent: true
+					}
+				);
 			}
-		);
+		}
 	}
 
 	handleAutoSave() {
@@ -355,7 +370,7 @@ class ActivityForm extends JSXComponent {
 
 			headerStringRight = !autoSaved ? getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp')) : getModifiedMoment(storeData.get('modifiedUserName'), autoSaved);
 
-			message = autoSaved ? Liferay.Language.get('activity-automatically-saved') : message;
+			message = autoSaved ? Liferay.Language.get('activity-automatically-saved') : '';
 		}
 		else if (action === 'create' && watsonIncidentId) {
 			cancelMethod = this.handleCancel;
