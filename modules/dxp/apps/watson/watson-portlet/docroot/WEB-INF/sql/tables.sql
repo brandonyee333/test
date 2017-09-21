@@ -69,6 +69,7 @@ create table WatsonIncident (
 	subtypeWatsonListTypeId LONG,
 	audienceKey VARCHAR(75) null,
 	name VARCHAR(75) null,
+	externalCaseId VARCHAR(75) null,
 	description STRING null,
 	reportDate DATE null,
 	startDate DATE null,

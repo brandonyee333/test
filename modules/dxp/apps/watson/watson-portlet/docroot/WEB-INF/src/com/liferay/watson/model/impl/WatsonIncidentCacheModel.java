@@ -66,7 +66,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{watsonIncidentId=");
 		sb.append(watsonIncidentId);
@@ -90,6 +90,8 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		sb.append(audienceKey);
 		sb.append(", name=");
 		sb.append(name);
+		sb.append(", externalCaseId=");
+		sb.append(externalCaseId);
 		sb.append(", description=");
 		sb.append(description);
 		sb.append(", reportDate=");
@@ -154,6 +156,13 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			watsonIncidentImpl.setName(name);
 		}
 
+		if (externalCaseId == null) {
+			watsonIncidentImpl.setExternalCaseId(StringPool.BLANK);
+		}
+		else {
+			watsonIncidentImpl.setExternalCaseId(externalCaseId);
+		}
+
 		if (description == null) {
 			watsonIncidentImpl.setDescription(StringPool.BLANK);
 		}
@@ -208,6 +217,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		subtypeWatsonListTypeId = objectInput.readLong();
 		audienceKey = objectInput.readUTF();
 		name = objectInput.readUTF();
+		externalCaseId = objectInput.readUTF();
 		description = objectInput.readUTF();
 		reportDate = objectInput.readLong();
 		startDate = objectInput.readLong();
@@ -257,6 +267,13 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			objectOutput.writeUTF(name);
 		}
 
+		if (externalCaseId == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(externalCaseId);
+		}
+
 		if (description == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
@@ -284,6 +301,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 	public long subtypeWatsonListTypeId;
 	public String audienceKey;
 	public String name;
+	public String externalCaseId;
 	public String description;
 	public long reportDate;
 	public long startDate;

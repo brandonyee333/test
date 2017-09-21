@@ -253,6 +253,21 @@ public interface WatsonIncidentModel extends AuditedModel,
 	public void setName(String name);
 
 	/**
+	 * Returns the external case ID of this watson incident.
+	 *
+	 * @return the external case ID of this watson incident
+	 */
+	@AutoEscape
+	public String getExternalCaseId();
+
+	/**
+	 * Sets the external case ID of this watson incident.
+	 *
+	 * @param externalCaseId the external case ID of this watson incident
+	 */
+	public void setExternalCaseId(String externalCaseId);
+
+	/**
 	 * Returns the description of this watson incident.
 	 *
 	 * @return the description of this watson incident

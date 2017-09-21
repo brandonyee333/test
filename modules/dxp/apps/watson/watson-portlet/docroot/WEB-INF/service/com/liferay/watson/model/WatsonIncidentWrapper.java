@@ -69,6 +69,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("audienceKey", getAudienceKey());
 		attributes.put("name", getName());
+		attributes.put("externalCaseId", getExternalCaseId());
 		attributes.put("description", getDescription());
 		attributes.put("reportDate", getReportDate());
 		attributes.put("startDate", getStartDate());
@@ -147,6 +148,12 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 
 		if (name != null) {
 			setName(name);
+		}
+
+		String externalCaseId = (String)attributes.get("externalCaseId");
+
+		if (externalCaseId != null) {
+			setExternalCaseId(externalCaseId);
 		}
 
 		String description = (String)attributes.get("description");
@@ -327,6 +334,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _watsonIncident.getExpandoBridge();
+	}
+
+	/**
+	* Returns the external case ID of this watson incident.
+	*
+	* @return the external case ID of this watson incident
+	*/
+	@Override
+	public java.lang.String getExternalCaseId() {
+		return _watsonIncident.getExternalCaseId();
 	}
 
 	/**
@@ -635,6 +652,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonIncident.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the external case ID of this watson incident.
+	*
+	* @param externalCaseId the external case ID of this watson incident
+	*/
+	@Override
+	public void setExternalCaseId(java.lang.String externalCaseId) {
+		_watsonIncident.setExternalCaseId(externalCaseId);
 	}
 
 	/**

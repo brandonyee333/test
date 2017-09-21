@@ -100,6 +100,7 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("audienceKey", getAudienceKey());
 		attributes.put("name", getName());
+		attributes.put("externalCaseId", getExternalCaseId());
 		attributes.put("description", getDescription());
 		attributes.put("reportDate", getReportDate());
 		attributes.put("startDate", getStartDate());
@@ -181,6 +182,12 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 
 		if (name != null) {
 			setName(name);
+		}
+
+		String externalCaseId = (String)attributes.get("externalCaseId");
+
+		if (externalCaseId != null) {
+			setExternalCaseId(externalCaseId);
 		}
 
 		String description = (String)attributes.get("description");
@@ -490,6 +497,30 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 				Method method = clazz.getMethod("setName", String.class);
 
 				method.invoke(_watsonIncidentRemoteModel, name);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public String getExternalCaseId() {
+		return _externalCaseId;
+	}
+
+	@Override
+	public void setExternalCaseId(String externalCaseId) {
+		_externalCaseId = externalCaseId;
+
+		if (_watsonIncidentRemoteModel != null) {
+			try {
+				Class<?> clazz = _watsonIncidentRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setExternalCaseId",
+						String.class);
+
+				method.invoke(_watsonIncidentRemoteModel, externalCaseId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -875,6 +906,7 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 		clone.setSubtypeWatsonListTypeId(getSubtypeWatsonListTypeId());
 		clone.setAudienceKey(getAudienceKey());
 		clone.setName(getName());
+		clone.setExternalCaseId(getExternalCaseId());
 		clone.setDescription(getDescription());
 		clone.setReportDate(getReportDate());
 		clone.setStartDate(getStartDate());
@@ -943,7 +975,7 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(35);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("{watsonIncidentId=");
 		sb.append(getWatsonIncidentId());
@@ -967,6 +999,8 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 		sb.append(getAudienceKey());
 		sb.append(", name=");
 		sb.append(getName());
+		sb.append(", externalCaseId=");
+		sb.append(getExternalCaseId());
 		sb.append(", description=");
 		sb.append(getDescription());
 		sb.append(", reportDate=");
@@ -986,7 +1020,7 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(58);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonIncident");
@@ -1037,6 +1071,10 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 		sb.append(getName());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>externalCaseId</column-name><column-value><![CDATA[");
+		sb.append(getExternalCaseId());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>description</column-name><column-value><![CDATA[");
 		sb.append(getDescription());
 		sb.append("]]></column-value></column>");
@@ -1077,6 +1115,7 @@ public class WatsonIncidentClp extends BaseModelImpl<WatsonIncident>
 	private long _subtypeWatsonListTypeId;
 	private String _audienceKey;
 	private String _name;
+	private String _externalCaseId;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private Date _reportDate;

@@ -75,6 +75,7 @@
 		<field name="subtypeWatsonListTypeId" type="long" />
 		<field name="audienceKey" type="String" />
 		<field name="name" type="String" />
+		<field name="externalCaseId" type="String" />
 		<field localized="true" name="description" type="String">
 			<hint-collection name="TEXTAREA" />
 		</field>
