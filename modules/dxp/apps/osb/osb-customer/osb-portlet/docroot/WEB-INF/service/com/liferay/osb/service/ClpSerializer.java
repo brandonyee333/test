@@ -3522,6 +3522,11 @@ public class ClpSerializer {
 				throwable.getCause());
 		}
 
+		if (className.equals("com.liferay.osb.exception.RemoteServiceException")) {
+			return new com.liferay.osb.exception.RemoteServiceException(throwable.getMessage(),
+				throwable.getCause());
+		}
+
 		if (className.equals(
 					"com.liferay.osb.exception.RequiredAccountEntryException")) {
 			return new com.liferay.osb.exception.RequiredAccountEntryException(throwable.getMessage(),

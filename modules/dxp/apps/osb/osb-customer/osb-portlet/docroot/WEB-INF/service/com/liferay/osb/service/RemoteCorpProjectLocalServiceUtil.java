@@ -41,7 +41,16 @@ public class RemoteCorpProjectLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.portal.kernel.json.JSONObject deleteCorpProject(
+	public static com.liferay.osb.model.CorpProject addCorpProject(
+		java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addCorpProject(dossieraProjectKey, salesforceProjectKey,
+			name);
+	}
+
+	public static com.liferay.osb.model.CorpProject deleteCorpProject(
 		long corpProjectId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteCorpProject(corpProjectId);
@@ -60,6 +69,12 @@ public class RemoteCorpProjectLocalServiceUtil {
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
 		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	public static com.liferay.osb.model.CorpProject updateCorpProject(
+		long corpProjectId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateCorpProject(corpProjectId, name);
 	}
 
 	public static void clearService() {

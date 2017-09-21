@@ -29,24 +29,42 @@ public class RemoteCorpProjectLocalServiceClp
 		InvokableLocalService invokableLocalService) {
 		_invokableLocalService = invokableLocalService;
 
-		_methodName0 = "deleteCorpProject";
+		_methodName0 = "addCorpProject";
 
-		_methodParameterTypes0 = new String[] { "long" };
+		_methodParameterTypes0 = new String[] {
+				"java.lang.String", "java.lang.String", "java.lang.String"
+			};
 
-		_methodName1 = "getOSGiServiceIdentifier";
+		_methodName1 = "deleteCorpProject";
 
-		_methodParameterTypes1 = new String[] {  };
+		_methodParameterTypes1 = new String[] { "long" };
+
+		_methodName2 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes2 = new String[] {  };
+
+		_methodName4 = "updateCorpProject";
+
+		_methodParameterTypes4 = new String[] { "long", "java.lang.String" };
 	}
 
 	@Override
-	public com.liferay.portal.kernel.json.JSONObject deleteCorpProject(
-		long corpProjectId)
+	public com.liferay.osb.model.CorpProject addCorpProject(
+		java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName0,
-					_methodParameterTypes0, new Object[] { corpProjectId });
+					_methodParameterTypes0,
+					new Object[] {
+						ClpSerializer.translateInput(dossieraProjectKey),
+						
+					ClpSerializer.translateInput(salesforceProjectKey),
+						
+					ClpSerializer.translateInput(name)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -64,7 +82,36 @@ public class RemoteCorpProjectLocalServiceClp
 			}
 		}
 
-		return (com.liferay.portal.kernel.json.JSONObject)ClpSerializer.translateOutput(returnObj);
+		return (com.liferay.osb.model.CorpProject)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProject deleteCorpProject(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName1,
+					_methodParameterTypes1, new Object[] { corpProjectId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.CorpProject)ClpSerializer.translateOutput(returnObj);
 	}
 
 	@Override
@@ -72,8 +119,8 @@ public class RemoteCorpProjectLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -97,9 +144,47 @@ public class RemoteCorpProjectLocalServiceClp
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public com.liferay.osb.model.CorpProject updateCorpProject(
+		long corpProjectId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4,
+					new Object[] {
+						corpProjectId,
+						
+					ClpSerializer.translateInput(name)
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.CorpProject)ClpSerializer.translateOutput(returnObj);
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
+	private String _methodName2;
+	private String[] _methodParameterTypes2;
+	private String _methodName4;
+	private String[] _methodParameterTypes4;
 }

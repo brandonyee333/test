@@ -16,9 +16,10 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.CorpProject;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -46,7 +47,11 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RemoteCorpProjectLocalServiceUtil} to access the remote corp project local service. Add custom service methods to {@link com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public JSONObject deleteCorpProject(long corpProjectId)
+	public CorpProject addCorpProject(java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name)
+		throws PortalException;
+
+	public CorpProject deleteCorpProject(long corpProjectId)
 		throws PortalException;
 
 	/**
@@ -60,4 +65,7 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService,
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
+
+	public CorpProject updateCorpProject(long corpProjectId,
+		java.lang.String name) throws PortalException;
 }

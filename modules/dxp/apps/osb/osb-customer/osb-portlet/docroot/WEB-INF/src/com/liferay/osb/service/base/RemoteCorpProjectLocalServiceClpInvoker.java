@@ -31,9 +31,19 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 
 		_methodParameterTypes260 = new String[] {  };
 
-		_methodName263 = "deleteCorpProject";
+		_methodName263 = "addCorpProject";
 
-		_methodParameterTypes263 = new String[] { "long" };
+		_methodParameterTypes263 = new String[] {
+				"java.lang.String", "java.lang.String", "java.lang.String"
+			};
+
+		_methodName264 = "deleteCorpProject";
+
+		_methodParameterTypes264 = new String[] { "long" };
+
+		_methodName265 = "updateCorpProject";
+
+		_methodParameterTypes265 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -45,7 +55,19 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 
 		if (_methodName263.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes263, parameterTypes)) {
+			return RemoteCorpProjectLocalServiceUtil.addCorpProject((java.lang.String)arguments[0],
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2]);
+		}
+
+		if (_methodName264.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes264, parameterTypes)) {
 			return RemoteCorpProjectLocalServiceUtil.deleteCorpProject(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName265.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes265, parameterTypes)) {
+			return RemoteCorpProjectLocalServiceUtil.updateCorpProject(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -55,4 +77,8 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 	private String[] _methodParameterTypes260;
 	private String _methodName263;
 	private String[] _methodParameterTypes263;
+	private String _methodName264;
+	private String[] _methodParameterTypes264;
+	private String _methodName265;
+	private String[] _methodParameterTypes265;
 }
