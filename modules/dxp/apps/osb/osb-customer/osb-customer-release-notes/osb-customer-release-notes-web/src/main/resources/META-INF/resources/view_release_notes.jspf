@@ -17,13 +17,15 @@
 <aui:form method="post" name="<portlet:namespace />fm" onSubmit="submitForm(this); return false;">
 
 	<%
-	ReleaseNotesDisplayTerms displayTerms = (ReleaseNotesDisplayTerms)searchContainer.getDisplayTerms();
+	ReleaseNotesSearch releaseNotesSearch = new ReleaseNotesSearch(renderRequest, portletURL);
+
+	ReleaseNotesDisplayTerms displayTerms = (ReleaseNotesDisplayTerms)releaseNotesSearch.getDisplayTerms();
 	%>
 
 	<liferay-ui:search-container
 		emptyResultsMessage="no-release-notes-were-found"
 		emptyResultsMessageCssClass="taglib-empty-result-message-header"
-		searchContainer="<%= new ReleaseNotesSearch(renderRequest, portletURL) %>"
+		searchContainer="<%= releaseNotesSearch %>"
 		total="<%= ReleaseNotesLocalServiceUtil.searchCount(displayTerms.getName()) %>"
 	>
 		<%@ include file="/release_notes_search.jspf" %>
