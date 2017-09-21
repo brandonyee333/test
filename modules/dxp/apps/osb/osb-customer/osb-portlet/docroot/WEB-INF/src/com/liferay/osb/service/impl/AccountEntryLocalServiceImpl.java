@@ -202,21 +202,17 @@ public class AccountEntryLocalServiceImpl
 			ArrayList<User> users, ServiceContext serviceContext)
 		throws PortalException {
 
-		/* TODO corp project dependencies
-
 		// Corp project
 
 		if (corpProject.getCorpProjectId() > 0) {
-			corpProject = corpProjectLocalService.updateCorpProject(
+			corpProject = remoteCorpProjectLocalService.updateCorpProject(
 				corpProject.getCorpProjectId(), corpProject.getName());
 		}
 		else {
-			corpProject = corpProjectLocalService.addCorpProject(
-				corpProject.getUserId(), 0, corpProject.getDossieraProjectKey(),
+			corpProject = remoteCorpProjectLocalService.addCorpProject(
+				corpProject.getDossieraProjectKey(),
 				corpProject.getSalesforceProjectKey(), corpProject.getName());
 		}
-
-		**/
 
 		// Partner entry
 
@@ -289,15 +285,15 @@ public class AccountEntryLocalServiceImpl
 			corpProjectLocalService.addUserCorpProjectRoles(
 				accountEntry.getUserId(), corpProject.getCorpProjectId(),
 				new long[] {user.getUserId()},
-				OSBConstants.ROLE_OSB_CORP_ADMIN_ID);
+				OSBWebConstants.ROLE_OSB_CORP_ADMIN_ID);
 			corpProjectLocalService.addUserCorpProjectRoles(
 				accountEntry.getUserId(), corpProject.getCorpProjectId(),
 				new long[] {user.getUserId()},
-				OSBConstants.ROLE_OSB_CORP_BUYER_ID);
+				OSBWebConstants.ROLE_OSB_CORP_BUYER_ID);
 			corpProjectLocalService.addUserCorpProjectRoles(
 				accountEntry.getUserId(), corpProject.getCorpProjectId(),
 				new long[] {user.getUserId()},
-				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
+				OSBWebConstants.ROLE_OSB_CORP_LCS_USER_ID);
 			**/
 
 			accountCustomerLocalService.addAccountCustomers(

@@ -102,4 +102,7 @@
 		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="RemoteCorpProject" remote-service="false" />
+	<exceptions>
+		<exception>RemoteService</exception>
+	</exceptions>
 </service-builder>
