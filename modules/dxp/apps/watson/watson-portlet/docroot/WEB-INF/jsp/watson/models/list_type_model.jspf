@@ -34,7 +34,7 @@ public static class WatsonListType extends WatsonListTypeBaseModel {
 	}
 
 	public static WatsonListType fetch(long watsonListTypeId) throws Exception {
-		WatsonListType watsonListType = create(0);
+		WatsonListType watsonListType = null;
 
 		if (watsonListTypeId > 0) {
 			try {
