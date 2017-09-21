@@ -116,6 +116,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		jsonObject.put("description", watsonIncident.getDescription(locale));
 		jsonObject.put("disabled", hasDisabled(watsonIncident.getIncidentStatus()));
 		jsonObject.put("endDate", getFormattedDate(watsonIncident.getEndDate(), locale));
+		jsonObject.put("externalCaseId", watsonIncident.getExternalCaseId());
 		jsonObject.put("histories", JSONFactoryUtil.createJSONArray());
 		jsonObject.put("id", watsonIncident.getPrimaryKey());
 		jsonObject.put("incidentName", watsonIncident.getName());

@@ -676,6 +676,15 @@
 							'date'
 						]
 					},
+					externalCaseId: {
+						filterable: ${true},
+						htmlType: 'input',
+						label: '${AlloyLanguageUtil.formatUnicode("ticac-id")}',
+						translatable: ${false},
+						tooltipLabel: '',
+						type: 'INPUT',
+						validations: []
+					},
 					incidentStatus: {
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("status")}',
