@@ -33,4 +33,16 @@
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่นๆ</name>
 	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonActivity.type" watsonListTypeId="10476">
+		<name locale="en_US">Court Proceeding</name>
+		<name locale="th">การดำเนินการของศาล</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonActivity.subType" watsonListTypeId="10477">
+		<name locale="en_US">Criminal</name>
+		<name locale="th">อาชญากร</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonActivity.subType" watsonListTypeId="10477">
+		<name locale="en_US">Civil</name>
+		<name locale="th">พลเรือน</name>
+	</watsonListType>
 </table>
