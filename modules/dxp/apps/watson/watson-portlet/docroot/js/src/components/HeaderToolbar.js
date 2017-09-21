@@ -37,7 +37,7 @@ class HeaderToolbar extends JSXComponent {
 
 		userName = userName.length > 20 ? `${userName.substring(0, 20)}...` : userName;
 
-		const userNameDiv = (<button class="watson-button dropdown" data-onclick="toggle">{userName} <span class="caret" /></button>);
+		const userNameDiv = (<button class="dropdown watson-button" data-onclick="toggle">{userName} <span class="caret" /></button>);
 
 		const userNameDropDown = (
 			<ul class="items">
@@ -46,7 +46,7 @@ class HeaderToolbar extends JSXComponent {
 			</ul>
 		);
 
-		const moduleDiv = (<button class="watson-button dropdown" data-onclick="toggle">{currentView} <span class="caret" /></button>);
+		const moduleDiv = (<button class="dropdown watson-button" data-onclick="toggle">{currentView} <span class="caret" /></button>);
 
 		const moduleDropDown = (
 			<ul class="items">
@@ -63,7 +63,7 @@ class HeaderToolbar extends JSXComponent {
 						<div class="watson-logo" />
 					</a>
 
-					<div class="metal-dropdown-menu keep-left" >
+					<div class="keep-left metal-dropdown-menu">
 						<DropDown
 							alignElementSelector="button"
 							body={moduleDropDown}
@@ -79,7 +79,7 @@ class HeaderToolbar extends JSXComponent {
 						onChange={languageToggleOnChange}
 					/>
 
-					<div class="metal-dropdown-menu" >
+					<div class="metal-dropdown-menu">
 						<DropDown
 							alignElementSelector="button"
 							body={userNameDropDown}
