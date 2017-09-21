@@ -108,6 +108,7 @@
 		<column name="subtypeWatsonListTypeId" type="long" />
 		<column name="audienceKey" type="String" />
 		<column name="name" type="String" />
+		<column name="externalCaseId" type="String" />
 		<column localized="true" name="description" type="String" />
 		<column name="reportDate" type="Date" />
 		<column name="startDate" type="Date" />
