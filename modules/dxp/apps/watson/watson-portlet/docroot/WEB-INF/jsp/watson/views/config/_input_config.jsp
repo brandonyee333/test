@@ -717,8 +717,8 @@
 						filterable: ${true},
 						htmlType: 'input',
 						label: '${AlloyLanguageUtil.formatUnicode("ticac-id")}',
-						translatable: ${false},
 						tooltipLabel: '',
+						translatable: ${false},
 						type: 'INPUT',
 						validations: []
 					},
