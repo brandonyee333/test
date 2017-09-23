@@ -36,6 +36,7 @@ public static class WatsonActivityIndexer extends BaseAlloyIndexer {
 		document.addDate("startDate", watsonActivity.getStartDate());
 		document.addKeyword("status", watsonActivity.getStatus());
 		document.addKeyword("typeWatsonListTypeId", watsonActivity.getTypeWatsonListTypeId());
+		document.addKeyword("subtypeWatsonListTypeId", watsonActivity.getSubtypeWatsonListTypeId());
 		document.addKeyword("watsonActivityId", watsonActivity.getWatsonActivityId());
 		document.addKeyword("watsonIncidentId", watsonActivity.getWatsonIncidentId());
 

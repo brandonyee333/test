@@ -511,12 +511,37 @@ class Form extends JSXComponent {
 						this.handleConditionalInput(inputId, hiddenInput, controlledInputs);
 					}
 
-					inputComponent = (
-						<Input
-							{...config}
-							htmlType={htmlType}
-						/>
-					);
+					if (currentInputConfig.inputType === inputTypeConstants.microForm) {
+						config.onChange = this.handleMultiInputChange;
+
+						inputComponent = (
+							<DynamicInputGenerator
+								{...config}
+								inputConfig={currentInputConfig}
+								label={Liferay.Language.get('add-document')}
+								type="microForm"
+								watsonIncidentId={props.watsonIncidentId}
+								watsonPrimaryKey={props.watsonPrimaryKey}
+							/>
+						);
+					}
+					else if (currentInputConfig.inputType === inputTypeConstants.selectInput) {
+						inputComponent = (
+							<SelectInput
+								{...config}
+								options={currentInputConfig.options}
+								sortOptions={currentInputConfig.sortOptions}
+							/>
+						);
+					}
+					else {
+						inputComponent = (
+							<Input
+								{...config}
+								htmlType={htmlType}
+							/>
+						);
+					}
 				}
 				else if (currentType === inputTypeConstants.dependentSelectInput) {
 					const {

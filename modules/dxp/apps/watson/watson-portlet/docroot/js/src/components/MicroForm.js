@@ -1,8 +1,9 @@
-import {bindAll} from 'lodash';
+import {bindAll, isEmpty} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
-import sub from 'string-sub';
 
 import BottomBar from './BottomBar';
+import FileUploader from './FileUploader';
+import FileViewer from './FileViewer';
 import Input from './Input';
 import SelectInput from './SelectInput';
 import TextAreaInput from './TextAreaInput';
@@ -35,7 +36,7 @@ class MicroForm extends JSXComponent {
 	}
 
 	handleCancel() {
-		const {redirect: cancelMethod} = this.props;
+		const {cancelMethod} = this.props;
 
 		if (cancelMethod) {
 			cancelMethod();
@@ -45,7 +46,7 @@ class MicroForm extends JSXComponent {
 	handleSubmit() {
 		const {props, state} = this;
 
-		const {fieldConfig, id, submitMethod} = props;
+		const {fieldConfig, id, submitMethod, watsonIncidentId} = props;
 
 		const {microFormData} = state;
 
@@ -64,6 +65,7 @@ class MicroForm extends JSXComponent {
 				const postData = microFormData;
 
 				postData.id = id;
+				postData.watsonIncidentId = watsonIncidentId;
 
 				submitMethod(postData);
 
@@ -144,7 +146,7 @@ class MicroForm extends JSXComponent {
 		);
 
 		if (formErrorsCount > 0) {
-			message = sub(Liferay.Language.get('x-errors-on-form'), formErrorsCount);
+			message = Liferay.Language.get('error');
 			status = 'failure';
 		}
 
@@ -178,9 +180,9 @@ class MicroForm extends JSXComponent {
 
 				let {label} = currentInputConfig;
 
-				const {formData = {}} = state;
+				const {microFormData = {}} = state;
 
-				const value = formData[inputId] || '';
+				const value = microFormData[inputId] || '';
 
 				const {inputTypes: inputTypeConstants} = WatsonConstants.inputConfig;
 
@@ -212,6 +214,38 @@ class MicroForm extends JSXComponent {
 							sortOptions={currentInputConfig.sortOptions}
 						/>
 					);
+				}
+				else if (currentType === inputTypeConstants.file) {
+					if (isEmpty(value)) {
+						const {
+							enableCropperTool,
+							uploaderLabel
+						} = currentInputConfig;
+
+						let {acceptedTypes} = currentInputConfig;
+
+						if (isEmpty(acceptedTypes)) {
+							acceptedTypes = WatsonConstants.uploadSettings.acceptedTypes[9561].type;
+						}
+
+						inputComponent = (
+							<FileUploader
+								{...config}
+								acceptedTypes={acceptedTypes}
+								classPK={props.watsonIncidentId}
+								enableCropperTool={enableCropperTool}
+								multiple={false}
+								uploaderLabel={uploaderLabel}
+							/>
+						);
+					}
+					else {
+						inputComponent = (
+							<FileViewer
+								{...config}
+							/>
+						);
+					}
 				}
 
 				let {cssClass = ''} = currentInputConfig;
@@ -261,16 +295,17 @@ class MicroForm extends JSXComponent {
 }
 
 MicroForm.PROPS = {
+	cancelMethod: Config.func(),
 	disabled: Config.bool(),
 	fieldConfig: Config.object(),
 	formConfig: Config.array(),
 	id: Config.string(),
 	loading: Config.bool().value(false),
-	redirect: Config.func(),
 	response: Config.value(new Map()),
 	storeData: Config.value(null),
 	submitMethod: Config.func(),
-	triggerSubmit: Config.bool().value(false)
+	triggerSubmit: Config.bool().value(false),
+	watsonIncidentId: Config.any()
 };
 
 MicroForm.STATE = {

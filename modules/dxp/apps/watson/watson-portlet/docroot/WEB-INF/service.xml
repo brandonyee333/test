@@ -21,6 +21,7 @@
 		<!-- Other fields -->
 
 		<column name="typeWatsonListTypeId" type="long" />
+		<column name="subtypeWatsonListTypeId" type="long" />
 		<column name="watsonIncidentId" type="long" />
 		<column localized="true" name="narrative" type="String" />
 		<column name="reportDate" type="Date" />

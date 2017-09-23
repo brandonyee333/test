@@ -45,6 +45,28 @@ public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 		}
 	}
 
+	public static WatsonRelationship create(HttpServletRequest request, AuditedModel ownerModel, AuditedModel foreignModel, Object... properties) throws Exception {
+		WatsonRelationship watsonRelationship = create(request);
+
+		if (ownerModel != null) {
+			long classNameId1 = ClassNameLocalServiceUtil.getClassNameId(ownerModel.getModelClass());
+
+			properties = ArrayUtil.append(properties, new Object[] {"classNameId1", classNameId1, "classPK1", ownerModel.getPrimaryKeyObj()});
+		}
+
+		if (foreignModel != null) {
+			long classNameId2 = ClassNameLocalServiceUtil.getClassNameId(foreignModel.getModelClass());
+
+			properties = ArrayUtil.append(properties, new Object[] {"classNameId2", classNameId2, "classPK2", foreignModel.getPrimaryKeyObj()});
+		}
+
+		watsonRelationship.setFields(request, properties);
+
+		watsonRelationship.setTypeWatsonListTypeId(10479);
+
+		return watsonRelationship;
+	}
+
 	public static WatsonRelationship create(HttpServletRequest request, long watsonIncidentId, Object... properties) throws Exception {
 		WatsonRelationship watsonRelationship = create(0, request);
 
@@ -113,7 +135,7 @@ public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 				}
 			}
 
-			Object[] properties = getPropertiesFromJSONObject(watsonRelationshipEntity);
+			Object[] properties = WatsonAlloyControllerImpl.getPropertiesFromJSONObject(watsonRelationshipEntity);
 
 			if (matchingWatsonRelationship != null) {
 				setFields(matchingWatsonRelationship, request, watsonIncidentId, properties);
@@ -152,7 +174,7 @@ public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 				}
 			}
 
-			Object[] properties = getPropertiesFromJSONObject(watsonRelationshipEntity);
+			Object[] properties = WatsonAlloyControllerImpl.getPropertiesFromJSONObject(watsonRelationshipEntity);
 
 			if (matchingWatsonRelationship != null) {
 				setFields(matchingWatsonRelationship, request, ownerModel, properties);
@@ -449,23 +471,6 @@ public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 	}
 
 	protected HashMap<String, String> errors = new HashMap<>();
-
-	private static Object[] getPropertiesFromJSONObject(JSONObject jsonObject) throws Exception {
-		Iterator<?> keys = jsonObject.keys();
-
-		List<Object> properties = new ArrayList<>();
-
-		while (keys.hasNext()) {
-			String key = GetterUtil.getString(keys.next());
-
-			Object object = jsonObject.get(key);
-
-			properties.add(key);
-			properties.add(object);
-		}
-
-		return properties.toArray();
-	}
 
 }
 %>

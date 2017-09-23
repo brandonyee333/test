@@ -55,6 +55,8 @@ class Modal extends JSXComponent {
 
 	hide() {
 		this.props.close();
+
+		this.element.style.display = '';
 	}
 
 	restrictFocus_() {
@@ -147,6 +149,7 @@ class Modal extends JSXComponent {
 Modal.PROPS = {
 	autoFocus: Config.string().value('.close'),
 	body: Config.value(''),
+	close: Config.func(),
 	footer: Config.value(''),
 	header: Config.value(''),
 	hideOnEscape: Config.bool().value(true),
@@ -156,7 +159,8 @@ Modal.PROPS = {
 		initOnly: true,
 		valueFn: 'valueOverlayElementFn_'
 	},
-	role: Config.string().value('.dialog')
+	role: Config.string().value('.dialog'),
+	visible: Config.bool().value(false)
 };
 
 export default Modal;

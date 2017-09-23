@@ -45,6 +45,16 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
+		JSONArray watsonResourcesJSONArray = JSONFactoryUtil.createJSONArray(ParamUtil.getString(request, "activityResource"));
+
+		for (int i = 0; i < watsonResourcesJSONArray.length(); i++) {
+			WatsonResource watsonResource = WatsonResource.createFromJSON(request, watsonResourcesJSONArray.getJSONObject(i));
+
+			if (watsonResource.isValid(null)) {
+				WatsonRelationship.create(request, watsonActivity, watsonResource, "watsonIncidentId", watsonActivity.getWatsonIncidentId());
+			}
+		}
+
 		if (watsonActivity.getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
 			watsonActivity.setStatus(WorkflowConstants.STATUS_APPROVED);
 		}
@@ -283,6 +293,16 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			respondWith(HttpServletResponse.SC_BAD_REQUEST, LanguageUtil.get(request, "activity-was-not-saved"), jsonObject);
 
 			return;
+		}
+
+		JSONArray watsonResourcesJSONArray = JSONFactoryUtil.createJSONArray(ParamUtil.getString(request, "activityResource"));
+
+		for (int i = 0; i < watsonResourcesJSONArray.length(); i++) {
+			WatsonResource watsonResource = WatsonResource.createFromJSON(request, watsonResourcesJSONArray.getJSONObject(i));
+
+			if (watsonResource.isValid(null)) {
+				watsonRelationships.add(WatsonRelationship.create(request, watsonActivity, watsonResource, "watsonIncidentId", watsonIncidentId));
+			}
 		}
 
 		watsonActivity.update();

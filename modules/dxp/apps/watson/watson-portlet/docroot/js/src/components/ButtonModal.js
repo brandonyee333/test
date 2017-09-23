@@ -61,7 +61,7 @@ class ButtonModal extends JSXComponent {
 	}
 
 	syncRemoteCloseModal(newState) {
-		if (newState == true) {
+		if (newState === true) {
 			this.handleClose();
 		}
 	}

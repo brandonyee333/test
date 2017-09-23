@@ -37,12 +37,20 @@
 		<name locale="en_US">Court Proceeding</name>
 		<name locale="th">การดำเนินการของศาล</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonActivity.subType" watsonListTypeId="10477">
+	<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10477">
 		<name locale="en_US">Criminal</name>
 		<name locale="th">อาชญากร</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonActivity.subType" watsonListTypeId="10477">
+	<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10477">
 		<name locale="en_US">Civil</name>
 		<name locale="th">พลเรือน</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonResource.resourceType" watsonListTypeId="10478">
+		<name locale="en_US">Court Document</name>
+		<name locale="th">เอกสารศาล</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.activityResourceRelationshipTypes" watsonListTypeId="10479">
+		<name locale="en_US">Court Document</name>
+		<name locale="th">เอกสารศาล</name>
 	</watsonListType>
 </table>

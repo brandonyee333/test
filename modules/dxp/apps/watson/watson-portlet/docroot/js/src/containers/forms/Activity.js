@@ -94,6 +94,8 @@ class ActivityForm extends JSXComponent {
 		return [
 			'id',
 			'typeWatsonListTypeId',
+			'subtypeWatsonListTypeId',
+			'activityResource',
 			'startDate',
 			'reportDate',
 			'watsonRelationships',

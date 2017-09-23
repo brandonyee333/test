@@ -19,6 +19,17 @@
 		inputConfig: {
 			activities: {
 				inputs: {
+					activityResource: {
+						dependentKey: '10476',
+						filterable: ${false},
+						inputType: 'MICRO_FORM',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("resources")}',
+						parentInputId: 'typeWatsonListTypeId',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: []
+					},
 					id: {
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("id")}',
@@ -80,6 +91,32 @@
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-type-of-report-that-best-describes-this-activity")}',
 						translatable: ${false},
 						type: 'SELECT_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					subtypeWatsonListTypeId: {
+						dependentKey: '10476',
+						filterable: ${true},
+						inputType: 'SELECT_INPUT',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("activity-sub-type")}',
+						parentInputId: 'typeWatsonListTypeId',
+						options: {
+								<c:set value='${WatsonListType.getWatsonListTypes(WatsonActivity.modelClassName.concat(".subtype"))}' var="watsonActivitySubtypes" />
+
+								<c:forEach items="${watsonActivitySubtypes}" var="watsonActivitySubtype" varStatus="watsonActivitySubtypeIndex">
+									<c:set value='${watsonActivitySubtypeIndex.last ? "" : ","}' var="delimiter" />
+
+									${watsonActivitySubtype.watsonListTypeId}: {
+										label: '${watsonActivitySubtype.getName(locale)}',
+										value: '${watsonActivitySubtype.watsonListTypeId}'
+									}${delimiter}
+								</c:forEach>
+						},
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-type-of-report-that-best-describes-this-activity")}',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
 						validations: [
 							'required'
 						]
@@ -890,6 +927,7 @@
 				googleMap : 'GOOGLE_MAP',
 				input: 'INPUT',
 				inputView: 'INPUT_VIEW',
+				microForm: 'MICRO_FORM',
 				multiSelectInput: 'MULTI_SELECT_INPUT',
 				richTextEditor: 'RICH_TEXT_EDITOR',
 				selectInput: 'SELECT_INPUT',

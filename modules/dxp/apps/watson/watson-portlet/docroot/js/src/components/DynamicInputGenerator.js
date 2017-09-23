@@ -3,12 +3,13 @@ import {connect} from 'metal-redux';
 import {List} from 'immutable';
 import JSXComponent, {Config} from 'metal-jsx';
 
-import Button from '../components/Button';
+import Button from './Button';
 import DateRangeInput from './DateRangeInput';
 import DoubleDependentSelectInput from './DoubleDependentSelectInput';
-import Input from '../components/Input';
-import SelectInput from '../components/SelectInput';
-import DynamicRelationshipInput from '../components/DynamicRelationshipInput';
+import DynamicMicroFormModal from './DynamicMicroFormModal';
+import DynamicRelationshipInput from './DynamicRelationshipInput';
+import Input from './Input';
+import SelectInput from './SelectInput';
 
 class DynamicInputGenerator extends JSXComponent {
 	addInput() {
@@ -118,6 +119,15 @@ class DynamicInputGenerator extends JSXComponent {
 					/>
 				);
 			}
+			else if (inputConfig.inputType === inputTypeConstants.microForm) {
+				generatedInput = (
+					<DynamicMicroFormModal
+						{...config}
+						watsonIncidentId={props.watsonIncidentId}
+						watsonPrimaryKey={props.watsonPrimaryKey}
+					/>
+				);
+			}
 			else if (inputType === inputTypeConstants.input && htmlType === 'date') {
 				generatedInput = (
 					<DateRangeInput {...config} />
@@ -166,6 +176,7 @@ class DynamicInputGenerator extends JSXComponent {
 				if (watsonModel) {
 					name = watsonModel.get('name');
 					watsonIncidentId = watsonModel.get('watsonIncidentId');
+
 					const watsonListTypeId = watsonModel.get('typeWatsonListTypeId');
 
 					if (inputConfig && watsonListTypeId > 0) {

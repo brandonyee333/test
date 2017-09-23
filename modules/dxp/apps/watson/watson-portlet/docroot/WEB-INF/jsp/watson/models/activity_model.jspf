@@ -78,6 +78,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 		jsonObject.put("reportDate", getFormattedDate(watsonActivity.getReportDate(), locale));
 		jsonObject.put("reportedBy", watsonActivity.getUserName());
 		jsonObject.put("startDate", getFormattedDate(watsonActivity.getStartDate(), locale));
+		jsonObject.put("subtypeWatsonListTypeId", watsonActivity.getSubtypeWatsonListTypeId());
 		jsonObject.put("typeWatsonListTypeId", watsonActivity.getTypeWatsonListTypeId());
 		jsonObject.put("watsonActivityId", watsonActivity.getWatsonActivityId());
 		jsonObject.put("watsonIncidentId", watsonActivity.getWatsonIncidentId());

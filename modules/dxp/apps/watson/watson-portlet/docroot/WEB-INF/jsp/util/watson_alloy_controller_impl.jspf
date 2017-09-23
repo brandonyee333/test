@@ -263,5 +263,22 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		}
 	}
 
+	private static Object[] getPropertiesFromJSONObject(JSONObject jsonObject) throws Exception {
+		Iterator<?> keys = jsonObject.keys();
+
+		List<Object> properties = new ArrayList<>();
+
+		while (keys.hasNext()) {
+			String key = GetterUtil.getString(keys.next());
+
+			Object object = jsonObject.get(key);
+
+			properties.add(key);
+			properties.add(object);
+		}
+
+		return properties.toArray();
+	}
+
 }
 %>

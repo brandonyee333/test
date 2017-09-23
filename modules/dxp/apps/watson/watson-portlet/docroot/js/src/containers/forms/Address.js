@@ -216,7 +216,7 @@ class AddressForm extends JSXComponent {
 			watsonIncidentId
 		} = this.props;
 
-		if (!watsonIncidentId || watsonIncidentId == 0) {
+		if (!watsonIncidentId || watsonIncidentId === 0) {
 			updateIncidentAddressFormData(formData);
 		}
 		else {
