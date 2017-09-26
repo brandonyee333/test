@@ -32,6 +32,17 @@ AUI.add(
 
 		var SELECTOR_PREFIX_CELLEDITOR_VIEW_TYPE = STR_DOT + CSS_CELLEDITOR_VIEW_TYPE + STR_DASH;
 
+		var TPL_SELECT_MULTIPLE = [
+		  '<tpl if="values.label !== undefined">',
+		   '<label class="{[A.TplSnippets.getClassName(values.auiLabelCssClass, values.labelCssClass)]}" for="{id}" id="{labelId}" name="{labelName}" style="{labelStyle}">{label}</label>',
+		  '</tpl>',
+		  '<select class="{[A.TplSnippets.getClassName(values.auiCssClass, values.cssClass)]}" <tpl if="values.disabled">disabled="disabled"</tpl> <tpl if="values.multiple">multiple="multiple"</tpl> id="{id}" name="{name}" style="{style}">',
+		    '<tpl for="options">',
+		     '<option value="{value}">{label}</option>',
+		    '</tpl>',
+		  '</select>'
+		 ];
+
 		var BaseAbstractEditor = A.Component.create(
 			{
 				ATTRS: {
@@ -446,6 +457,13 @@ AUI.add(
 										if (item2.test('input[type=checkbox],input[type=radio]')) {
 											item2.set('checked', A.DataType.Boolean.parse(value));
 										}
+										else if (item2.test('select[multiple]') && Lang.isArray(value)) {
+											value.forEach(function(option) {
+												for (key in option) {
+													item2.one('option[value=' + option[key] + ']').set('selected', true);
+												}
+											});
+										}
 										else {
 											item2.val(value);
 										}
@@ -636,7 +654,6 @@ AUI.add(
 						var strings = instance.getStrings();
 
 						var assignmentsViewTpl = instance.get('viewTemplate');
-
 						var inputTpl = Template.get('input');
 						var selectTpl = Template.get('select');
 						var textareaTpl = Template.get('textarea');
@@ -1493,6 +1510,7 @@ AUI.add(
 					var inputTpl = Template.get('input');
 					var selectTpl = Template.get('select');
 					var textareaTpl = Template.get('textarea');
+					var selectMultipleTpl = new Template(TPL_SELECT_MULTIPLE);
 
 					var buffer = [];
 
@@ -1541,13 +1559,14 @@ AUI.add(
 								}
 							),
 
-							selectTpl.parse(
+							selectMultipleTpl.parse(
 								{
 									auiCssClass: 'form-control input-sm',
 									auiLabelCssClass: 'celleditor-label',
 									id: A.guid(),
 									label: strings.notificationType,
-									name: 'notificationType',
+									name: 'notificationTypes',
+									multiple: true,
 									options: instance.get('notificationTypes')
 								}
 							),
@@ -1664,7 +1683,7 @@ AUI.add(
 					var count = 0;
 
 					if (val) {
-						count = val.notificationType ? val.notificationType.filter(isValue).length : 1;
+						count = val.notificationTypes ? val.notificationTypes.filter(isValue).length : 1;
 					}
 
 					return count;
