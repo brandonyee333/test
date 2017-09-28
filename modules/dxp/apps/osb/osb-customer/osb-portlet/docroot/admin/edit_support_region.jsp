@@ -223,12 +223,3 @@ if (supportRegion != null) {
 		<portlet:namespace />selectRow('supportTeamIds', supportTeamId, '<portlet:namespace />supportTeamSearchContainer', [supportTeamName]);
 	}
 </aui:script>
-
-<aui:script use="liferay-auto-fields">
-	new Liferay.AutoFields(
-		{
-			contentBox: '#<portlet:namespace />holidayEntries > fieldset',
-			fieldIndexes: '<portlet:namespace />holidayEntriesIndexes'
-		}
-	).render();
-</aui:script>

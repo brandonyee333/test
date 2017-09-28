@@ -216,7 +216,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				%>
 
 				<div id="<portlet:namespace />phoneNumbers">
-					<liferay-util:include page="/html/portlet/users_admin/common/phone_numbers.jsp" />
+					<liferay-util:include page="/common/phone_numbers.jsp" portletId="<%= PortletProviderUtil.getPortletId(User.class.getName(), PortletProvider.Action.VIEW) %>" />
 				</div>
 			</td>
 		</tr>
@@ -229,7 +229,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				%>
 
 				<div id="<portlet:namespace />addresses">
-					<liferay-util:include page="/html/portlet/users_admin/common/addresses.jsp" />
+					<liferay-util:include page="/common/addresses.jsp" portletId="<%= PortletProviderUtil.getPortletId(User.class.getName(), PortletProvider.Action.VIEW) %>" />
 				</div>
 			</td>
 		</tr>
@@ -395,14 +395,16 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 	new Liferay.AutoFields(
 		{
 			contentBox: '#<portlet:namespace />addresses > fieldset',
-			fieldIndexes: '<portlet:namespace />addressesIndexes'
+			fieldIndexes: '<portlet:namespace />addressesIndexes',
+			namespace: '<portlet:namespace />'
 		}
 	).render();
 
 	new Liferay.AutoFields(
 		{
 			contentBox: '#<portlet:namespace />phoneNumbers > fieldset',
-			fieldIndexes: '<portlet:namespace />phonesIndexes'
+			fieldIndexes: '<portlet:namespace />phonesIndexes',
+			namespace: '<portlet:namespace />'
 		}
 	).render();
 </aui:script>
