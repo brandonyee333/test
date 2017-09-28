@@ -190,14 +190,14 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		String actionType = ParamUtil.getString(request, "actionType");
 
-		JSONArray responseObject = null;
-
 		if (actionType.equals("report")) {
 			String field = ParamUtil.getString(request, "reportsKey");
 
 			String dateField = "date" + TextFormatter.formatName(field);
 
-			responseObject = WatsonPerson.getMetricsArray(field, dateField);
+			respondWith(WatsonPerson.getMetricsArray(field, dateField));
+
+			return;
 		}
 		else {
 			List<WatsonAddress> watsonAddresses = new ArrayList<>();
@@ -225,10 +225,8 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 				watsonAddresses = WatsonAddress.query("typeWatsonListTypeId", typeWatsonListTypeId);
 			}
 
-			responseObject = WatsonAddress.getAsMetricsArray(watsonAddresses);
+			respondWith(WatsonAddress.getAsMetricsArray(watsonAddresses));
 		}
-
-		respondWith(responseObject);
 	}
 
 	public void fetchTranslation() throws Exception {

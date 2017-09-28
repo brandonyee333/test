@@ -1,6 +1,6 @@
-import {bindAll, isArray} from 'lodash';
+import {bindAll} from 'lodash';
+import Charts from 'metal-charts';
 import JSXComponent, {Config} from 'metal-jsx';
-import Table from 'metal-datatable';
 import Tabs from 'metal-tabs';
 
 import ContentHeader from './ContentHeader';
@@ -26,7 +26,7 @@ class MetricsReport extends JSXComponent {
 	}
 
 	render() {
-		const {data, loading} = this.props;
+		const {data = {}, loading} = this.props;
 
 		const onClickEvent = {
 			click: this.handleUpdateView
@@ -48,8 +48,16 @@ class MetricsReport extends JSXComponent {
 					</div>
 
 					{!loading &&
-						<Table
-							data={isArray(data) ? data : [{loading: Liferay.Language.get('loading')}]} elementClasses="table-wrapper"
+						<Charts
+							columns={[
+								{
+									data: data.values,
+									id: data[data.key],
+									name: data[data.key],
+									type: 'line'
+								}
+							]}
+							elementClasses="table-wrapper"
 						/>
 					}
 
@@ -64,8 +72,21 @@ class MetricsReport extends JSXComponent {
 
 MetricsReport.PROPS = {
 	data: Config.array(),
-	loading: Config.bool().value(false),
+	loading: Config.bool().value(true),
 	onChange: Config.func()
+};
+
+MetricsReport.STATE = {
+	axis: Config.object().value(
+		{
+			x: {
+				tick: {
+					format: '%Y'
+				},
+				type: 'timeseries'
+			}
+		}
+	)
 };
 
 export default MetricsReport;

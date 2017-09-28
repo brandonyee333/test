@@ -188,12 +188,11 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return jsonObject;
 	}
 
-	public static JSONArray getMetricsArray(String field, String dateField) throws Exception {
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
+	public static JSONObject getMetricsArray(String field, String dateField) throws Exception {
 		JSONObject formattedJSONObject = JSONFactoryUtil.createJSONObject();
 
-		JSONObject yearJSONObject = JSONFactoryUtil.createJSONObject();
+		long[] yearsArray = new long[] {};
+		long[] dataArray = new long[] {};
 
 		for (int year = 2010; year <= 2018; year++) {
 			DynamicQuery personDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, field, true});
@@ -212,17 +211,16 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 
 			personDynamicQuery.add(RestrictionsFactoryUtil.between(dateField, startDate, endDate));
 
-			List<WatsonPerson> watsonPeople = getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(personDynamicQuery));
-
-			yearJSONObject.put(String.valueOf(year), getIdJSONArray(watsonPeople));
+			dataArray = ArrayUtil.append(dataArray, baseModelAlloyServiceInvoker.executeDynamicQueryCount(personDynamicQuery));
+			yearsArray = ArrayUtil.append(yearsArray, year);
 		}
 
 		formattedJSONObject.put(field, LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), field, new String[0]));
-		formattedJSONObject.put("year", yearJSONObject);
+		formattedJSONObject.put("key", field);
+		formattedJSONObject.put("values", dataArray);
+		formattedJSONObject.put("year", yearsArray);
 
-		jsonArray.put(formattedJSONObject);
-
-		return jsonArray;
+		return formattedJSONObject;
 	}
 
 	public static String getFormattedDate(Date date, Locale locale) {
