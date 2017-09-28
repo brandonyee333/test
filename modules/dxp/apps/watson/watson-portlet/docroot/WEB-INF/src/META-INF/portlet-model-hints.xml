@@ -9,6 +9,7 @@
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 		<field name="typeWatsonListTypeId" type="long" />
+		<field name="subtypeWatsonListTypeId" type="long" />
 		<field name="watsonIncidentId" type="long" />
 		<field localized="true" name="narrative" type="String">
 			<hint-collection name="TEXTAREA" />

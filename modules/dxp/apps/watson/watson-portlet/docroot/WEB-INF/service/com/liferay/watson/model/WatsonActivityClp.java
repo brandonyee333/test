@@ -96,6 +96,7 @@ public class WatsonActivityClp extends BaseModelImpl<WatsonActivity>
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
+		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("watsonIncidentId", getWatsonIncidentId());
 		attributes.put("narrative", getNarrative());
 		attributes.put("reportDate", getReportDate());
@@ -150,6 +151,13 @@ public class WatsonActivityClp extends BaseModelImpl<WatsonActivity>
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
+		}
+
+		Long subtypeWatsonListTypeId = (Long)attributes.get(
+				"subtypeWatsonListTypeId");
+
+		if (subtypeWatsonListTypeId != null) {
+			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		}
 
 		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
@@ -358,6 +366,31 @@ public class WatsonActivityClp extends BaseModelImpl<WatsonActivity>
 						long.class);
 
 				method.invoke(_watsonActivityRemoteModel, typeWatsonListTypeId);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public long getSubtypeWatsonListTypeId() {
+		return _subtypeWatsonListTypeId;
+	}
+
+	@Override
+	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId) {
+		_subtypeWatsonListTypeId = subtypeWatsonListTypeId;
+
+		if (_watsonActivityRemoteModel != null) {
+			try {
+				Class<?> clazz = _watsonActivityRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setSubtypeWatsonListTypeId",
+						long.class);
+
+				method.invoke(_watsonActivityRemoteModel,
+					subtypeWatsonListTypeId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -716,6 +749,7 @@ public class WatsonActivityClp extends BaseModelImpl<WatsonActivity>
 		clone.setCreateDate(getCreateDate());
 		clone.setModifiedDate(getModifiedDate());
 		clone.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
+		clone.setSubtypeWatsonListTypeId(getSubtypeWatsonListTypeId());
 		clone.setWatsonIncidentId(getWatsonIncidentId());
 		clone.setNarrative(getNarrative());
 		clone.setReportDate(getReportDate());
@@ -783,7 +817,7 @@ public class WatsonActivityClp extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{watsonActivityId=");
 		sb.append(getWatsonActivityId());
@@ -799,6 +833,8 @@ public class WatsonActivityClp extends BaseModelImpl<WatsonActivity>
 		sb.append(getModifiedDate());
 		sb.append(", typeWatsonListTypeId=");
 		sb.append(getTypeWatsonListTypeId());
+		sb.append(", subtypeWatsonListTypeId=");
+		sb.append(getSubtypeWatsonListTypeId());
 		sb.append(", watsonIncidentId=");
 		sb.append(getWatsonIncidentId());
 		sb.append(", narrative=");
@@ -816,7 +852,7 @@ public class WatsonActivityClp extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonActivity");
@@ -851,6 +887,10 @@ public class WatsonActivityClp extends BaseModelImpl<WatsonActivity>
 		sb.append(getTypeWatsonListTypeId());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>subtypeWatsonListTypeId</column-name><column-value><![CDATA[");
+		sb.append(getSubtypeWatsonListTypeId());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>watsonIncidentId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonIncidentId());
 		sb.append("]]></column-value></column>");
@@ -883,6 +923,7 @@ public class WatsonActivityClp extends BaseModelImpl<WatsonActivity>
 	private Date _createDate;
 	private Date _modifiedDate;
 	private long _typeWatsonListTypeId;
+	private long _subtypeWatsonListTypeId;
 	private long _watsonIncidentId;
 	private String _narrative;
 	private String _narrativeCurrentLanguageId;

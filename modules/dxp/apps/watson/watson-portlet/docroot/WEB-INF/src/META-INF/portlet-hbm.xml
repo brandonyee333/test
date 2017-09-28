@@ -23,6 +23,7 @@
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
 		<property name="typeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="subtypeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="watsonIncidentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="narrative" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="reportDate" type="org.hibernate.type.TimestampType" />

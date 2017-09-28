@@ -359,6 +359,7 @@ public class WatsonActivityPersistenceImpl extends BasePersistenceImpl<WatsonAct
 		watsonActivityImpl.setCreateDate(watsonActivity.getCreateDate());
 		watsonActivityImpl.setModifiedDate(watsonActivity.getModifiedDate());
 		watsonActivityImpl.setTypeWatsonListTypeId(watsonActivity.getTypeWatsonListTypeId());
+		watsonActivityImpl.setSubtypeWatsonListTypeId(watsonActivity.getSubtypeWatsonListTypeId());
 		watsonActivityImpl.setWatsonIncidentId(watsonActivity.getWatsonIncidentId());
 		watsonActivityImpl.setNarrative(watsonActivity.getNarrative());
 		watsonActivityImpl.setReportDate(watsonActivity.getReportDate());

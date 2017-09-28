@@ -65,6 +65,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
+		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("watsonIncidentId", getWatsonIncidentId());
 		attributes.put("narrative", getNarrative());
 		attributes.put("reportDate", getReportDate());
@@ -116,6 +117,13 @@ public class WatsonActivityWrapper implements WatsonActivity,
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
+		}
+
+		Long subtypeWatsonListTypeId = (Long)attributes.get(
+				"subtypeWatsonListTypeId");
+
+		if (subtypeWatsonListTypeId != null) {
+			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		}
 
 		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
@@ -325,6 +333,16 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	@Override
 	public int getStatus() {
 		return _watsonActivity.getStatus();
+	}
+
+	/**
+	* Returns the subtype watson list type ID of this watson activity.
+	*
+	* @return the subtype watson list type ID of this watson activity
+	*/
+	@Override
+	public long getSubtypeWatsonListTypeId() {
+		return _watsonActivity.getSubtypeWatsonListTypeId();
 	}
 
 	/**
@@ -587,6 +605,16 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	@Override
 	public void setStatus(int status) {
 		_watsonActivity.setStatus(status);
+	}
+
+	/**
+	* Sets the subtype watson list type ID of this watson activity.
+	*
+	* @param subtypeWatsonListTypeId the subtype watson list type ID of this watson activity
+	*/
+	@Override
+	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId) {
+		_watsonActivity.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 	}
 
 	/**

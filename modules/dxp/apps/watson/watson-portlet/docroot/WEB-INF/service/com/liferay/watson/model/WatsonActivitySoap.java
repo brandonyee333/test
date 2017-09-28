@@ -40,6 +40,7 @@ public class WatsonActivitySoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
+		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
 		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
 		soapModel.setNarrative(model.getNarrative());
 		soapModel.setReportDate(model.getReportDate());
@@ -153,6 +154,14 @@ public class WatsonActivitySoap implements Serializable {
 		_typeWatsonListTypeId = typeWatsonListTypeId;
 	}
 
+	public long getSubtypeWatsonListTypeId() {
+		return _subtypeWatsonListTypeId;
+	}
+
+	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId) {
+		_subtypeWatsonListTypeId = subtypeWatsonListTypeId;
+	}
+
 	public long getWatsonIncidentId() {
 		return _watsonIncidentId;
 	}
@@ -200,6 +209,7 @@ public class WatsonActivitySoap implements Serializable {
 	private Date _createDate;
 	private Date _modifiedDate;
 	private long _typeWatsonListTypeId;
+	private long _subtypeWatsonListTypeId;
 	private long _watsonIncidentId;
 	private String _narrative;
 	private Date _reportDate;

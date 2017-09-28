@@ -195,6 +195,20 @@ public interface WatsonActivityModel extends AuditedModel,
 	public void setTypeWatsonListTypeId(long typeWatsonListTypeId);
 
 	/**
+	 * Returns the subtype watson list type ID of this watson activity.
+	 *
+	 * @return the subtype watson list type ID of this watson activity
+	 */
+	public long getSubtypeWatsonListTypeId();
+
+	/**
+	 * Sets the subtype watson list type ID of this watson activity.
+	 *
+	 * @param subtypeWatsonListTypeId the subtype watson list type ID of this watson activity
+	 */
+	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId);
+
+	/**
 	 * Returns the watson incident ID of this watson activity.
 	 *
 	 * @return the watson incident ID of this watson activity

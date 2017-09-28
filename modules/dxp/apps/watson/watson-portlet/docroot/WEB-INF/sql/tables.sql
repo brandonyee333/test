@@ -6,6 +6,7 @@ create table WatsonActivity (
 	createDate DATE null,
 	modifiedDate DATE null,
 	typeWatsonListTypeId LONG,
+	subtypeWatsonListTypeId LONG,
 	watsonIncidentId LONG,
 	narrative STRING null,
 	reportDate DATE null,

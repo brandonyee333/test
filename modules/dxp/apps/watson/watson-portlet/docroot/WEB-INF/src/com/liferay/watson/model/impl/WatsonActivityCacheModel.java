@@ -66,7 +66,7 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{watsonActivityId=");
 		sb.append(watsonActivityId);
@@ -82,6 +82,8 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 		sb.append(modifiedDate);
 		sb.append(", typeWatsonListTypeId=");
 		sb.append(typeWatsonListTypeId);
+		sb.append(", subtypeWatsonListTypeId=");
+		sb.append(subtypeWatsonListTypeId);
 		sb.append(", watsonIncidentId=");
 		sb.append(watsonIncidentId);
 		sb.append(", narrative=");
@@ -127,6 +129,7 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 		}
 
 		watsonActivityImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
+		watsonActivityImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		watsonActivityImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (narrative == null) {
@@ -170,6 +173,8 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 
 		typeWatsonListTypeId = objectInput.readLong();
 
+		subtypeWatsonListTypeId = objectInput.readLong();
+
 		watsonIncidentId = objectInput.readLong();
 		narrative = objectInput.readUTF();
 		reportDate = objectInput.readLong();
@@ -199,6 +204,8 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 
 		objectOutput.writeLong(typeWatsonListTypeId);
 
+		objectOutput.writeLong(subtypeWatsonListTypeId);
+
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (narrative == null) {
@@ -221,6 +228,7 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 	public long createDate;
 	public long modifiedDate;
 	public long typeWatsonListTypeId;
+	public long subtypeWatsonListTypeId;
 	public long watsonIncidentId;
 	public String narrative;
 	public long reportDate;

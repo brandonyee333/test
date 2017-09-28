@@ -80,6 +80,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "typeWatsonListTypeId", Types.BIGINT },
+			{ "subtypeWatsonListTypeId", Types.BIGINT },
 			{ "watsonIncidentId", Types.BIGINT },
 			{ "narrative", Types.VARCHAR },
 			{ "reportDate", Types.TIMESTAMP },
@@ -96,6 +97,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("typeWatsonListTypeId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("subtypeWatsonListTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("watsonIncidentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("narrative", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("reportDate", Types.TIMESTAMP);
@@ -103,7 +105,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonActivity (watsonActivityId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,typeWatsonListTypeId LONG,watsonIncidentId LONG,narrative STRING null,reportDate DATE null,startDate DATE null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonActivity (watsonActivityId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,watsonIncidentId LONG,narrative STRING null,reportDate DATE null,startDate DATE null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonActivity";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonActivity.watsonActivityId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonActivity.watsonActivityId ASC";
@@ -164,6 +166,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
+		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("watsonIncidentId", getWatsonIncidentId());
 		attributes.put("narrative", getNarrative());
 		attributes.put("reportDate", getReportDate());
@@ -218,6 +221,13 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 		if (typeWatsonListTypeId != null) {
 			setTypeWatsonListTypeId(typeWatsonListTypeId);
+		}
+
+		Long subtypeWatsonListTypeId = (Long)attributes.get(
+				"subtypeWatsonListTypeId");
+
+		if (subtypeWatsonListTypeId != null) {
+			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		}
 
 		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
@@ -346,6 +356,16 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	@Override
 	public void setTypeWatsonListTypeId(long typeWatsonListTypeId) {
 		_typeWatsonListTypeId = typeWatsonListTypeId;
+	}
+
+	@Override
+	public long getSubtypeWatsonListTypeId() {
+		return _subtypeWatsonListTypeId;
+	}
+
+	@Override
+	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId) {
+		_subtypeWatsonListTypeId = subtypeWatsonListTypeId;
 	}
 
 	@Override
@@ -585,6 +605,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		watsonActivityImpl.setCreateDate(getCreateDate());
 		watsonActivityImpl.setModifiedDate(getModifiedDate());
 		watsonActivityImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
+		watsonActivityImpl.setSubtypeWatsonListTypeId(getSubtypeWatsonListTypeId());
 		watsonActivityImpl.setWatsonIncidentId(getWatsonIncidentId());
 		watsonActivityImpl.setNarrative(getNarrative());
 		watsonActivityImpl.setReportDate(getReportDate());
@@ -693,6 +714,8 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 		watsonActivityCacheModel.typeWatsonListTypeId = getTypeWatsonListTypeId();
 
+		watsonActivityCacheModel.subtypeWatsonListTypeId = getSubtypeWatsonListTypeId();
+
 		watsonActivityCacheModel.watsonIncidentId = getWatsonIncidentId();
 
 		watsonActivityCacheModel.narrative = getNarrative();
@@ -728,7 +751,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(25);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{watsonActivityId=");
 		sb.append(getWatsonActivityId());
@@ -744,6 +767,8 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		sb.append(getModifiedDate());
 		sb.append(", typeWatsonListTypeId=");
 		sb.append(getTypeWatsonListTypeId());
+		sb.append(", subtypeWatsonListTypeId=");
+		sb.append(getSubtypeWatsonListTypeId());
 		sb.append(", watsonIncidentId=");
 		sb.append(getWatsonIncidentId());
 		sb.append(", narrative=");
@@ -761,7 +786,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(40);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonActivity");
@@ -794,6 +819,10 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		sb.append(
 			"<column><column-name>typeWatsonListTypeId</column-name><column-value><![CDATA[");
 		sb.append(getTypeWatsonListTypeId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>subtypeWatsonListTypeId</column-name><column-value><![CDATA[");
+		sb.append(getSubtypeWatsonListTypeId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>watsonIncidentId</column-name><column-value><![CDATA[");
@@ -833,6 +862,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _typeWatsonListTypeId;
+	private long _subtypeWatsonListTypeId;
 	private long _watsonIncidentId;
 	private String _narrative;
 	private String _narrativeCurrentLanguageId;
