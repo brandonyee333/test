@@ -171,39 +171,40 @@ public class RabbitMQConsumerDelegator extends DefaultConsumer {
 		Map<String, Object> translatedProperties = new HashMap<>();
 
 		translatedProperties.put(
-			RabbitMQProperties.APP_ID, properties.getAppId());
+			RabbitMQPropertyKeys.APP_ID, properties.getAppId());
 		translatedProperties.put(
-			RabbitMQProperties.BODY_SIZE, properties.getBodySize());
+			RabbitMQPropertyKeys.BODY_SIZE, properties.getBodySize());
 		translatedProperties.put(
-			RabbitMQProperties.CLASS_ID, properties.getClassId());
+			RabbitMQPropertyKeys.CLASS_ID, properties.getClassId());
 		translatedProperties.put(
-			RabbitMQProperties.CLASS_NAME, properties.getClassName());
+			RabbitMQPropertyKeys.CLASS_NAME, properties.getClassName());
 		translatedProperties.put(
-			RabbitMQProperties.CLUSTER_ID, properties.getClusterId());
+			RabbitMQPropertyKeys.CLUSTER_ID, properties.getClusterId());
 		translatedProperties.put(
-			RabbitMQProperties.CONTENT_ENCODING,
+			RabbitMQPropertyKeys.CONTENT_ENCODING,
 			properties.getContentEncoding());
 		translatedProperties.put(
-			RabbitMQProperties.CONTENT_TYPE, properties.getContentType());
+			RabbitMQPropertyKeys.CONTENT_TYPE, properties.getContentType());
 		translatedProperties.put(
-			RabbitMQProperties.CORRELATION_ID, properties.getCorrelationId());
+			RabbitMQPropertyKeys.CORRELATION_ID, properties.getCorrelationId());
 		translatedProperties.put(
-			RabbitMQProperties.DELIVERY_MODE, properties.getDeliveryMode());
+			RabbitMQPropertyKeys.DELIVERY_MODE, properties.getDeliveryMode());
 		translatedProperties.put(
-			RabbitMQProperties.EXPIRATION, properties.getExpiration());
+			RabbitMQPropertyKeys.EXPIRATION, properties.getExpiration());
 		translatedProperties.put(
-			RabbitMQProperties.HEADERS, properties.getHeaders());
+			RabbitMQPropertyKeys.HEADERS, properties.getHeaders());
 		translatedProperties.put(
-			RabbitMQProperties.MESSAGE_ID, properties.getMessageId());
+			RabbitMQPropertyKeys.MESSAGE_ID, properties.getMessageId());
 		translatedProperties.put(
-			RabbitMQProperties.PRIORITY, properties.getPriority());
+			RabbitMQPropertyKeys.PRIORITY, properties.getPriority());
 		translatedProperties.put(
-			RabbitMQProperties.REPLY_TO, properties.getReplyTo());
+			RabbitMQPropertyKeys.REPLY_TO, properties.getReplyTo());
 		translatedProperties.put(
-			RabbitMQProperties.TIMESTAMP, properties.getTimestamp());
-		translatedProperties.put(RabbitMQProperties.TYPE, properties.getType());
+			RabbitMQPropertyKeys.TIMESTAMP, properties.getTimestamp());
 		translatedProperties.put(
-			RabbitMQProperties.USER_ID, properties.getUserId());
+			RabbitMQPropertyKeys.TYPE, properties.getType());
+		translatedProperties.put(
+			RabbitMQPropertyKeys.USER_ID, properties.getUserId());
 
 		return translatedProperties;
 	}
