@@ -56,7 +56,7 @@ public class OfferingEntryLocalServiceImpl
 			int quantity, int status)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
 			orderEntryId);
 
@@ -296,7 +296,7 @@ public class OfferingEntryLocalServiceImpl
 			long userId, long offeringEntryId, int status)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(

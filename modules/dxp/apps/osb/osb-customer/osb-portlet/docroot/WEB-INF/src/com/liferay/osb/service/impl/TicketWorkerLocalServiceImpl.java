@@ -48,7 +48,7 @@ public class TicketWorkerLocalServiceImpl
 			long primaryUserId)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		TicketEntry ticketEntry = ticketEntryPersistence.fetchByPrimaryKey(
@@ -68,7 +68,7 @@ public class TicketWorkerLocalServiceImpl
 			long curUserId = userIds[i];
 			int role = roles[i];
 
-			User curUser = userPersistence.findByPrimaryKey(curUserId);
+			User curUser = userLocalService.getUser(curUserId);
 
 			TicketWorker ticketWorker = ticketWorkerPersistence.fetchByU_TEI(
 				curUserId, ticketEntryId);
@@ -200,7 +200,7 @@ public class TicketWorkerLocalServiceImpl
 			long userId, long[] userIds, long ticketEntryId, long primaryUserId)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		TicketEntry ticketEntry = ticketEntryPersistence.fetchByPrimaryKey(
@@ -232,7 +232,7 @@ public class TicketWorkerLocalServiceImpl
 
 				// Audit entry
 
-				User curUser = userPersistence.findByPrimaryKey(curUserId);
+				User curUser = userLocalService.getUser(curUserId);
 
 				auditEntryLocalService.addAuditEntry(
 					userId, user.getFullName(), now, classNameId, ticketEntryId,

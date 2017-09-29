@@ -71,7 +71,7 @@ public class TicketSolutionLocalServiceImpl
 
 		// Ticket solution
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
@@ -317,7 +317,7 @@ public class TicketSolutionLocalServiceImpl
 
 		// Ticket solution
 
-		User statusByUser = userPersistence.findByPrimaryKey(statusByUserId);
+		User statusByUser = userLocalService.getUser(statusByUserId);
 
 		TicketSolution ticketSolution =
 			ticketSolutionPersistence.findByPrimaryKey(ticketSolutionId);

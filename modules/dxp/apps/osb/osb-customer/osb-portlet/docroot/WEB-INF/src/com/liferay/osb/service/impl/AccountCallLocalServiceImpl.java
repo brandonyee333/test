@@ -50,7 +50,7 @@ public class AccountCallLocalServiceImpl
 			String actionItems)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		Date callDate = PortalUtil.getDate(
 			callDateMonth, callDateDay, callDateYear, callDateHour,

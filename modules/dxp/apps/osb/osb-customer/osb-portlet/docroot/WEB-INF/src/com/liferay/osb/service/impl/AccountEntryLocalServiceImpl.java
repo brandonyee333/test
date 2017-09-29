@@ -63,6 +63,7 @@ import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.comparator.AccountEntryLastAuditDateComparator;
 import com.liferay.osb.util.comparator.AccountEntryNameComparator;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchCountryException;
@@ -80,6 +81,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Constants;
@@ -140,7 +142,7 @@ public class AccountEntryLocalServiceImpl
 
 		// Account entry
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		code = getCode(corpEntryName, name, code);
 		Date now = new Date();
 
@@ -387,7 +389,7 @@ public class AccountEntryLocalServiceImpl
 
 		// Corp project
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		ExpandoBridge expandoBridge = user.getExpandoBridge();
 
@@ -430,7 +432,7 @@ public class AccountEntryLocalServiceImpl
 			}
 
 			try {
-				Country country = countryPersistence.findByName(countryName);
+				Country country = countryService.getCountryByName(countryName);
 
 				countryId = country.getCountryId();
 			}
@@ -988,7 +990,7 @@ public class AccountEntryLocalServiceImpl
 			String ewsaDossieraProjectKey)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		code = StringUtil.toUpperCase(code);
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
@@ -1336,7 +1338,7 @@ public class AccountEntryLocalServiceImpl
 			long userId, long accountEntryId, String instructions)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
@@ -1359,7 +1361,7 @@ public class AccountEntryLocalServiceImpl
 			String auditValue)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
@@ -1418,7 +1420,7 @@ public class AccountEntryLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
@@ -1603,7 +1605,7 @@ public class AccountEntryLocalServiceImpl
 	public AccountEntry updateTier(long userId, long accountEntryId, int tier)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
@@ -2163,7 +2165,7 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		if (oldAccountEntry.getStatus() != accountEntry.getStatus()) {
-			User statusByUser = userPersistence.findByPrimaryKey(
+			User statusByUser = userLocalService.getUser(
 				accountEntry.getStatusByUserId());
 
 			auditEntryLocalService.addAuditEntry(
@@ -2422,6 +2424,9 @@ public class AccountEntryLocalServiceImpl
 			throw new PrincipalException();
 		}
 	}
+
+	@BeanReference(type = CountryService.class)
+	protected CountryService countryService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountEntryLocalServiceImpl.class);

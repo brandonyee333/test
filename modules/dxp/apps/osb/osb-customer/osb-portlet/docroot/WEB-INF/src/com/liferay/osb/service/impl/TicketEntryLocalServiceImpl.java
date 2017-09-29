@@ -470,7 +470,7 @@ public class TicketEntryLocalServiceImpl
 	public void escalateTicketEntry(long userId, long ticketEntryId)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
@@ -558,7 +558,7 @@ public class TicketEntryLocalServiceImpl
 
 		// Ticket worker
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
@@ -1105,8 +1105,7 @@ public class TicketEntryLocalServiceImpl
 			}
 
 			try {
-				User user = userPersistence.findByPrimaryKey(
-					ticketWorker.getUserId());
+				User user = userLocalService.getUser(ticketWorker.getUserId());
 
 				if (partnerWorkerLocalService.hasPartnerWorker(
 						user.getUserId(), accountEntry.getPartnerEntryId())) {
@@ -1134,7 +1133,7 @@ public class TicketEntryLocalServiceImpl
 		}
 
 		if (primaryTicketWorker != null) {
-			User user = userPersistence.findByPrimaryKey(
+			User user = userLocalService.getUser(
 				primaryTicketWorker.getUserId());
 
 			if (partnerWorkerLocalService.hasPartnerWorker(
@@ -1193,7 +1192,7 @@ public class TicketEntryLocalServiceImpl
 			ticketEntry.setHoldDate(getHoldDate(ticketEntry));
 			ticketEntry.setDueDate(dueDate);
 
-			User user = userPersistence.findByPrimaryKey(userId);
+			User user = userLocalService.getUser(userId);
 
 			long auditSetId = auditEntryLocalService.getNextAuditSetId(
 				TicketEntry.class.getName(), ticketEntryId);
@@ -1419,7 +1418,7 @@ public class TicketEntryLocalServiceImpl
 
 		// Ticket entry
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			offeringEntryId);
 
@@ -1894,7 +1893,7 @@ public class TicketEntryLocalServiceImpl
 			int dueDateYear, int dueDateHour, int dueDateMinute)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		Date dueDate = PortalUtil.getDate(
 			dueDateMonth, dueDateDay, dueDateYear, dueDateHour, dueDateMinute,
@@ -1992,7 +1991,7 @@ public class TicketEntryLocalServiceImpl
 
 		// Ticket entry
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			offeringEntryId);
 
@@ -2072,8 +2071,7 @@ public class TicketEntryLocalServiceImpl
 		Date workerModifiedDate = getWorkerModifiedDate(ticketEntry, status);
 
 		if (ticketEntry.getUserId() != reportedByUserId) {
-			User reportedByUser = userPersistence.findByPrimaryKey(
-				reportedByUserId);
+			User reportedByUser = userLocalService.getUser(reportedByUserId);
 
 			ticketEntry.setUserId(reportedByUserId);
 			ticketEntry.setUserName(reportedByUser.getFullName());
@@ -2324,8 +2322,7 @@ public class TicketEntryLocalServiceImpl
 		Company company = companyLocalService.getCompany(
 			OSBConstants.COMPANY_ID);
 
-		User commentUser = userPersistence.findByPrimaryKey(
-			ticketComment.getUserId());
+		User commentUser = userLocalService.getUser(ticketComment.getUserId());
 
 		String portalURL = PortalUtil.getPortalURL(
 			company.getVirtualHostname(), PortalUtil.getPortalPort(false),
@@ -2941,7 +2938,7 @@ public class TicketEntryLocalServiceImpl
 		String fromName = null;
 
 		if (userId > 0) {
-			User user = userPersistence.findByPrimaryKey(userId);
+			User user = userLocalService.getUser(userId);
 
 			fromName = user.getFullName();
 		}

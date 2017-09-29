@@ -53,7 +53,7 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 			String customerContact, String confirmation, String instructions)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		Date callDate = PortalUtil.getDate(
 			callDateMonth, callDateDay, callDateYear, callDateHour,

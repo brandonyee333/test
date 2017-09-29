@@ -35,7 +35,7 @@ public class SearchFilterLocalServiceImpl
 			int visibility)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		validate(name);

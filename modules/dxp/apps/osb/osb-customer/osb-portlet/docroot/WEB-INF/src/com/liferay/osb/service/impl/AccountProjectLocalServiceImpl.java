@@ -103,7 +103,7 @@ public class AccountProjectLocalServiceImpl
 			String name, Map<Integer, String> data)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		validate(name);
 

@@ -36,7 +36,7 @@ public class SupportRegionLocalServiceImpl
 			long userId, String name, String description, String timeZoneId)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		validate(0, name);

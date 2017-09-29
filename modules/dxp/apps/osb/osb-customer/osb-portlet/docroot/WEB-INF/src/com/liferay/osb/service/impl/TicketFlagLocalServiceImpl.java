@@ -138,7 +138,7 @@ public class TicketFlagLocalServiceImpl extends TicketFlagLocalServiceBaseImpl {
 			long userId, long accountEntryId, long ticketEntryId, int type)
 		throws PortalException {
 
-		userPersistence.findByPrimaryKey(userId);
+		userLocalService.getUser(userId);
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);

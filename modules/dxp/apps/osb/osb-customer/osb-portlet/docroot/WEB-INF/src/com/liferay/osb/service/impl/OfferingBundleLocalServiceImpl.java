@@ -34,7 +34,7 @@ public class OfferingBundleLocalServiceImpl
 			long userId, String name, long[] offeringDefinitionIds)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		validate(0, name);
 

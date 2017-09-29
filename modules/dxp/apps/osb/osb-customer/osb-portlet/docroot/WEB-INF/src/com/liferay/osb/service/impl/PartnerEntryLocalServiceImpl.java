@@ -47,7 +47,7 @@ public class PartnerEntryLocalServiceImpl
 			String code, String notes, long[] supportRegionIds)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		validate(
@@ -184,7 +184,7 @@ public class PartnerEntryLocalServiceImpl
 			String code, String notes, int status, long[] supportRegionIds)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		validate(partnerEntryId, 0, dossieraAccountKey, code, status);

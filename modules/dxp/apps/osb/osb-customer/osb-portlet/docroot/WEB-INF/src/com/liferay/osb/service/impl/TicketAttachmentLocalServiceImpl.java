@@ -81,7 +81,7 @@ public class TicketAttachmentLocalServiceImpl
 			String fileRepositoryId, int status)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		validate(ticketEntryId, fileName, fileSize, type, visibility);
 
@@ -140,7 +140,7 @@ public class TicketAttachmentLocalServiceImpl
 			int visibility, int status, ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = serviceContext.getCreateDate(new Date());
 
 		List<TicketAttachment> ticketAttachments = new ArrayList<>();
@@ -360,7 +360,7 @@ public class TicketAttachmentLocalServiceImpl
 
 		// Audit entry
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		long classNameId = classNameLocalService.getClassNameId(
 			TicketEntry.class.getName());
@@ -468,7 +468,7 @@ public class TicketAttachmentLocalServiceImpl
 			long userId, long ticketAttachmentId)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentPersistence.fetchByPrimaryKey(ticketAttachmentId);
@@ -513,7 +513,7 @@ public class TicketAttachmentLocalServiceImpl
 			long userId, long ticketAttachmentId, Date deleteDate)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		TicketAttachment ticketAttachment =
 			ticketAttachmentPersistence.findByPrimaryKey(ticketAttachmentId);

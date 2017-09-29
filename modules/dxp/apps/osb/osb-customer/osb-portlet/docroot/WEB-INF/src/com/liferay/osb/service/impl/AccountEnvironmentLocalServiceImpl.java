@@ -54,7 +54,7 @@ public class AccountEnvironmentLocalServiceImpl
 			List<Integer> types)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		validate(

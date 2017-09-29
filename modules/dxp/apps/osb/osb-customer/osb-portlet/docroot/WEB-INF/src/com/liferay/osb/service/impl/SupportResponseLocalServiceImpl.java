@@ -42,7 +42,7 @@ public class SupportResponseLocalServiceImpl
 			int severity3Resolution)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		validate(0, name, supportLevel);

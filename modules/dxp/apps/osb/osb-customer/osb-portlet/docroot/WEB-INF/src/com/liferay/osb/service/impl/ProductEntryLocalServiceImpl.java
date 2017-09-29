@@ -44,7 +44,7 @@ public class ProductEntryLocalServiceImpl
 			String versionsListType, String[] dossieraIdMappings)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		validate(0, name, environment);

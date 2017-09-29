@@ -43,7 +43,7 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = serviceContext.getCreateDate(new Date());
 
 		validate(ticketEntryId, urls, types, visibility);
@@ -108,7 +108,7 @@ public class TicketLinkLocalServiceImpl extends TicketLinkLocalServiceBaseImpl {
 	public void deleteTicketLink(long userId, TicketLink ticketLink)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		ticketLinkPersistence.remove(ticketLink);
 

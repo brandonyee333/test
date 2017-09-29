@@ -47,7 +47,7 @@ public class AccountCustomerLocalServiceImpl
 			int[] notifications)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
@@ -64,7 +64,7 @@ public class AccountCustomerLocalServiceImpl
 		for (int i = 0; i < userIds.length; i++) {
 			long curUserId = userIds[i];
 
-			User curUser = userPersistence.findByPrimaryKey(curUserId);
+			User curUser = userLocalService.getUser(curUserId);
 
 			AccountCustomer accountCustomer =
 				accountCustomerPersistence.fetchByU_AEI(
@@ -294,8 +294,8 @@ public class AccountCustomerLocalServiceImpl
 			long userId, AccountCustomer accountCustomer)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
-		User accountCustomerUser = userPersistence.findByPrimaryKey(
+		User user = userLocalService.getUser(userId);
+		User accountCustomerUser = userLocalService.getUser(
 			accountCustomer.getUserId());
 		Date now = new Date();
 

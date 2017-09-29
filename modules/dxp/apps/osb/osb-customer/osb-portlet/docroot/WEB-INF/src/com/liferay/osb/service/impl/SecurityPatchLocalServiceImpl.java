@@ -40,7 +40,7 @@ public class SecurityPatchLocalServiceImpl
 			String portletId, int envLFR, String name, String fileName)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		validate(envLFR);
 

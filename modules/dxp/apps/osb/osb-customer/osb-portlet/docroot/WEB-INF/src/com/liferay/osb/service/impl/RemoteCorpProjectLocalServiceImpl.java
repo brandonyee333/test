@@ -18,6 +18,7 @@ import com.liferay.osb.exception.RemoteServiceException;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.impl.CorpProjectImpl;
 import com.liferay.osb.service.base.RemoteCorpProjectLocalServiceBaseImpl;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -36,7 +37,6 @@ import java.io.IOException;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -168,11 +168,10 @@ public class RemoteCorpProjectLocalServiceImpl
 
 		String userUuid = jsonObject.getString("userUuid");
 
-		List<User> users = userPersistence.findByUuid(userUuid);
+		User user = userLocalService.fetchUserByUuidAndCompanyId(
+			userUuid, OSBConstants.COMPANY_ID);
 
-		if (!users.isEmpty()) {
-			User user = users.get(0);
-
+		if (user != null) {
 			corpProject.setUserId(user.getUserId());
 			corpProject.setUserName(user.getFullName());
 		}

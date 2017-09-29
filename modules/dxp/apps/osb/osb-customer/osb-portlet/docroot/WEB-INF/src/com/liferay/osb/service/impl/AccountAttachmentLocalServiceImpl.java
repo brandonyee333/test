@@ -50,7 +50,7 @@ public class AccountAttachmentLocalServiceImpl
 
 		// Account attachment
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		String fileName = fileOVP.getKey();
 		File file = fileOVP.getValue();

@@ -81,7 +81,7 @@ public class TicketFeedbackLocalServiceImpl
 			long userId, long ticketEntryId, int subject, int satisfied)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
 		Date now = new Date();
@@ -461,7 +461,7 @@ public class TicketFeedbackLocalServiceImpl
 			int rating4, String comments)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		TicketFeedback ticketFeedback =

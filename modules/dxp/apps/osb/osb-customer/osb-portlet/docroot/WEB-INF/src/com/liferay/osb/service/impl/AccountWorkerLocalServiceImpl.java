@@ -41,7 +41,7 @@ public class AccountWorkerLocalServiceImpl
 			int[] notifications)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
@@ -55,7 +55,7 @@ public class AccountWorkerLocalServiceImpl
 		for (int i = 0; i < userIds.length; i++) {
 			long curUserId = userIds[i];
 
-			User curUser = userPersistence.findByPrimaryKey(curUserId);
+			User curUser = userLocalService.getUser(curUserId);
 
 			AccountWorker accountWorker = accountWorkerPersistence.fetchByU_AEI(
 				curUserId, accountEntryId);
@@ -153,7 +153,7 @@ public class AccountWorkerLocalServiceImpl
 			long userId, long[] userIds, long accountEntryId)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
@@ -170,7 +170,7 @@ public class AccountWorkerLocalServiceImpl
 					accountWorkerPersistence.removeByU_AEI(
 						curUserId, accountEntryId);
 
-				User curUser = userPersistence.findByPrimaryKey(curUserId);
+				User curUser = userLocalService.getUser(curUserId);
 
 				auditEntryLocalService.addAuditEntry(
 					userId, user.getFullName(), now, classNameId,

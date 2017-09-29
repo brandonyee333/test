@@ -53,11 +53,13 @@ import com.liferay.osb.service.base.LicenseKeyLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -102,7 +104,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			int startDateDay, int startDateYear)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		/* TODO update AssetReceiptLicense missing placeholder method
 		AssetEntry assetEntry = assetReceiptLicense.getAssetEntry();
@@ -254,7 +256,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			boolean complimentary, boolean active)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		AccountEntry accountEntry = offeringEntry.getAccountEntry();
 		OrderEntry orderEntry = offeringEntry.getOrderEntry();
 
@@ -593,7 +595,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			long userId, long licenseKeyId, Date startDate, int renewTime)
 		throws Exception {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
 
@@ -647,8 +649,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			offeringEntryPersistence.update(offeringEntry);
 
-			User trialUser = userPersistence.findByPrimaryKey(
-				accountEntry.getUserId());
+			User trialUser = userLocalService.getUser(accountEntry.getUserId());
 
 			sendRegisteredEmail(
 				trialUser.getEmailAddress(), trialUser.getFullName(),
@@ -659,7 +660,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	public LicenseKey renewTrialLicenseKey(long userId) throws Exception {
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		AccountEntry accountEntry =
 			accountEntryLocalService.fetchUserTrialAccountEntry(userId);
 
@@ -844,9 +845,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			subjectEntry.setValue(subject);
 		}
 
-		User user = userPersistence.findByPrimaryKey(licenseKey.getUserId());
+		User user = userLocalService.getUser(licenseKey.getUserId());
 
-		Country country = countryPersistence.findByPrimaryKey(
+		Country country = countryService.getCountry(
 			accountEntry.getCountryId());
 
 		for (Map.Entry<Locale, String> bodyEntry : bodyMap.entrySet()) {
@@ -887,7 +888,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			boolean active)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
@@ -1315,7 +1316,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			boolean active)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		if (licenseKeySetId <= 0) {
 			LicenseKeySet licenseKeySet =
@@ -1360,7 +1361,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			boolean active)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 
 		if (licenseKeySetId <= 0) {
 			LicenseKeySet licenseKeySet =
@@ -1814,5 +1815,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			throw new PrincipalException();
 		}
 	}
+
+	@BeanReference(type = CountryService.class)
+	protected CountryService countryService;
 
 }

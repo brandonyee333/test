@@ -38,7 +38,7 @@ public class TicketCannedResponseLocalServiceImpl
 			long userId, String defaultLanguageId, String name, String content)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
 		validate(0, name, content);

@@ -160,7 +160,7 @@ public class TicketCommentLocalServiceImpl
 			int[] pendingTypes, ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
 		Date now = serviceContext.getCreateDate(new Date());
@@ -234,7 +234,7 @@ public class TicketCommentLocalServiceImpl
 		ticketCommentPersistence.remove(ticketComment);
 
 		if (ticketComment.getStatus() != WorkflowConstants.STATUS_DRAFT) {
-			User user = userPersistence.findByPrimaryKey(userId);
+			User user = userLocalService.getUser(userId);
 
 			long classNameId = classNameLocalService.getClassNameId(
 				TicketEntry.class.getName());
@@ -349,7 +349,7 @@ public class TicketCommentLocalServiceImpl
 
 		EntityCacheUtil.clearLocalCache();
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
 			ticketEntryId);
 
