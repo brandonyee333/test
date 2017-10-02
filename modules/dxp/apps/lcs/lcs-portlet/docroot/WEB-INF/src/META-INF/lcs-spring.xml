@@ -147,7 +147,6 @@
 	<!-- Security -->
 
 	<bean class="com.liferay.lcs.security.impl.DigitalSignatureImpl" name="com.liferay.lcs.security.DigitalSignature">
-		<property name="algorithmProvider" value="#{T(com.liferay.lcs.util.PortletPropsValues).DIGITAL_SIGNATURE_ALGORITHM_PROVIDER}" />
 		<property name="keyName" value="#{T(com.liferay.lcs.util.PortletPropsValues).DIGITAL_SIGNATURE_KEY_NAME}" />
 		<property name="keyStorePath" value="#{T(com.liferay.lcs.util.PortletPropsValues).DIGITAL_SIGNATURE_KEY_STORE_PATH}" />
 		<property name="keyStoreType" value="#{T(com.liferay.lcs.util.PortletPropsValues).DIGITAL_SIGNATURE_KEY_STORE_TYPE}" />
