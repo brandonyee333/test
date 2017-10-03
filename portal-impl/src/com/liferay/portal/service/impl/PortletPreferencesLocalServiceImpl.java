@@ -49,6 +49,7 @@ import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.portlet.exportimport.staging.ProxiedLayoutsThreadLocal;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -408,14 +409,22 @@ public class PortletPreferencesLocalServiceImpl
 		Map<String, javax.portlet.PortletPreferences> portletPreferencesMap =
 			new HashMap<>();
 
-		List<PortletPreferences> portletPreferencesList =
+		List<PortletPreferences> portletPreferencesList = new ArrayList<>();
+
+		portletPreferencesList.addAll(
+			portletPreferencesPersistence.findByO_O_P(
+				layout.getGroupId(), PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+				PortletKeys.PREFS_PLID_SHARED));
+
+		portletPreferencesList.addAll(
 			portletPreferencesPersistence.findByO_O_P(
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
-				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, plid);
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, plid));
 
 		for (Portlet portlet : portlets) {
 			long ownerId = PortletKeys.PREFS_OWNER_ID_DEFAULT;
 			int ownerType = PortletKeys.PREFS_OWNER_TYPE_LAYOUT;
+			long preferencesPlid = plid;
 			String portletId = portlet.getPortletId();
 
 			String preferences = portlet.getDefaultPreferences();
@@ -437,6 +446,8 @@ public class PortletPreferencesLocalServiceImpl
 						portletPreferencesList) {
 
 					if (portletId.equals(portletPreferences.getPortletId())) {
+						ownerId = portletPreferences.getOwnerId();
+						preferencesPlid = portletPreferences.getPlid();
 						preferences = portletPreferences.getPreferences();
 
 						break;
@@ -447,8 +458,8 @@ public class PortletPreferencesLocalServiceImpl
 			portletPreferencesMap.put(
 				portletId,
 				PortletPreferencesFactoryUtil.strictFromXML(
-					layout.getCompanyId(), ownerId, ownerType, plid, portletId,
-					preferences));
+					layout.getCompanyId(), ownerId, ownerType, preferencesPlid,
+					portletId, preferences));
 		}
 
 		return portletPreferencesMap;
