@@ -53,4 +53,8 @@
 		<name locale="en_US">Court Document</name>
 		<name locale="th">เอกสารศาล</name>
 	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="10480">
+		<name locale="en_US">Citizenship</name>
+		<name locale="th">สัญชาติ</name>
+	</watsonListType>
 </table>
