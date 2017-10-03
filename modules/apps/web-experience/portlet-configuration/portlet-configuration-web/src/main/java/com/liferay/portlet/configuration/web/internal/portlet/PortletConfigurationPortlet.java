@@ -202,8 +202,19 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 		Portlet portlet = ActionUtil.getPortlet(actionRequest);
 
-		PortletPreferences portletPreferences =
-			ActionUtil.getLayoutPortletSetup(actionRequest, portlet);
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		String settingsScope = ParamUtil.getString(
+			actionRequest, "settingsScope");
+
+		PortletPreferences portletPreferences = getPortletPreferences(
+			themeDisplay, portlet.getPortletId(), settingsScope);
+
+		if (portletPreferences == null) {
+			portletPreferences = ActionUtil.getLayoutPortletSetup(
+				actionRequest, portlet);
+		}
 
 		actionRequest = ActionUtil.getWrappedActionRequest(
 			actionRequest, portletPreferences);
@@ -630,7 +641,9 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 			Portlet portlet = ActionUtil.getPortlet(renderRequest);
 
-			if (mvcPath.endsWith("edit_configuration.jsp")) {
+			if (mvcPath.endsWith("edit_configuration.jsp") ||
+				mvcPath.endsWith("edit_public_render_parameters.jsp")) {
+
 				ThemeDisplay themeDisplay =
 					(ThemeDisplay)renderRequest.getAttribute(
 						WebKeys.THEME_DISPLAY);
@@ -644,7 +657,12 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 				renderRequest = ActionUtil.getWrappedRenderRequest(
 					renderRequest, portletPreferences);
 
-				renderEditConfiguration(renderRequest, portlet);
+				if (mvcPath.endsWith("edit_configuration.jsp")) {
+					renderEditConfiguration(renderRequest, portlet);
+				}
+				else {
+					renderEditPublicParameters(renderRequest, portlet);
+				}
 			}
 			else {
 				PortletPreferences portletPreferences =
@@ -652,10 +670,6 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 				renderRequest = ActionUtil.getWrappedRenderRequest(
 					renderRequest, portletPreferences);
-
-				if (mvcPath.endsWith("edit_public_render_parameters.jsp")) {
-					renderEditPublicParameters(renderRequest, portlet);
-				}
 			}
 
 			renderResponse.setTitle(
