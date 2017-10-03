@@ -3,7 +3,7 @@
 
 <service-builder package-path="com.liferay.osb.customer.release.notes">
 	<namespace>RN</namespace>
-	<entity data-source="jiraDataSource" local-service="true" name="JIRAComponent" remote-service="false" session-factory="jiraSessionFactory" table="component" tx-manager="jiraTransactionManager">
+	<entity data-source="jiraDataSource" local-service="true" name="JIRAComponent" remote-service="false" table="component">
 
 		<!-- PK fields -->
 
@@ -14,7 +14,7 @@
 		<column db-name="project" name="jiraProjectId" type="long" />
 		<column db-name="cname" name="name" type="String" />
 	</entity>
-	<entity data-source="jiraDataSource" local-service="true" name="JIRAIssue" remote-service="false" session-factory="jiraSessionFactory" table="jiraissue" tx-manager="jiraTransactionManager">
+	<entity data-source="jiraDataSource" local-service="true" name="JIRAIssue" remote-service="false" table="jiraissue">
 
 		<!-- PK fields -->
 
@@ -29,7 +29,7 @@
 		<column name="description" db-name="description" type="String" />
 		<column name="priority" db-name="priority" type="int" />
 	</entity>
-	<entity data-source="jiraDataSource" local-service="true" name="JIRAProject" remote-service="false" session-factory="jiraSessionFactory" table="project" tx-manager="jiraTransactionManager">
+	<entity data-source="jiraDataSource" local-service="true" name="JIRAProject" remote-service="false" table="project">
 
 		<!-- PK fields -->
 
@@ -46,7 +46,7 @@
 			<finder-column name="key" />
 		</finder>
 	</entity>
-	<entity data-source="jiraDataSource" local-service="true" name="JIRAProjectVersion" remote-service="false" session-factory="jiraSessionFactory" table="projectversion" tx-manager="jiraTransactionManager">
+	<entity data-source="jiraDataSource" local-service="true" name="JIRAProjectVersion" remote-service="false" table="projectversion">
 
 		<!-- PK fields -->
 
