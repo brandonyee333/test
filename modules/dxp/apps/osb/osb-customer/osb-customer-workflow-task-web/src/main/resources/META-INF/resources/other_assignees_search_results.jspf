@@ -54,8 +54,8 @@ if (Validator.isNotNull(assigneeClassName)) {
 	}
 }
 
-if (workflowTask.isCompleted() != null) {
-	fullQuery.addRequiredTerm("completed", workflowTask.isCompleted());
+if (completed != null) {
+	fullQuery.addRequiredTerm("completed", completed);
 }
 
 if (salesforceOpportunityType > 0) {

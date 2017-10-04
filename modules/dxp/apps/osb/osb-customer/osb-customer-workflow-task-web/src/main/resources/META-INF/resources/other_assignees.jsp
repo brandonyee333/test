@@ -28,7 +28,13 @@ String roleName = ParamUtil.getString(request, "roleName");
 int salesforceOpportunityType = ParamUtil.getInteger(request, "salesforceOpportunityType");
 String userEmailAddress = ParamUtil.getString(request, "userEmailAddress");
 
-WorkflowTask workflowTask = workflowTaskDisplayContext.getWorkflowTask();
+Boolean completed = null;
+
+String completedString = ParamUtil.getString(request, "completed");
+
+if (Validator.isNotNull(completedString)) {
+	completed = GetterUtil.getBoolean(completedString);
+}
 
 Role role = null;
 User searchUser = null;
@@ -48,11 +54,6 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("tabs1", tabs1);
 %>
-
-<liferay-ui:tabs
-	names="assigned-to-me,assigned-to-my-roles,other-assignees"
-	portletURL="<%= portletURL %>"
-/>
 
 <c:choose>
 	<c:when test="<%= assigneeClassName.equals(Role.class.getName()) && Validator.isNotNull(roleName) && (role == null) %>">
@@ -75,7 +76,7 @@ iteratorURL.setParameter("tabs1", tabs1);
 iteratorURL.setParameter("accountEntryCode", accountEntryCode);
 iteratorURL.setParameter("accountEntryName", accountEntryName);
 iteratorURL.setParameter("assigneeClassName", assigneeClassName);
-iteratorURL.setParameter("completed", String.valueOf(workflowTask.isCompleted()));
+iteratorURL.setParameter("completed", completedString);
 iteratorURL.setParameter("roleName", roleName);
 iteratorURL.setParameter("salesforceOpportunityType", String.valueOf(salesforceOpportunityType));
 iteratorURL.setParameter("userEmailAddress", userEmailAddress);
@@ -93,6 +94,9 @@ iteratorURL.setParameter("userEmailAddress", userEmailAddress);
 		className="com.liferay.portal.kernel.search.Document"
 		modelVar="document"
 	>
+		<%
+		WorkflowTask workflowTask = workflowTaskDisplayContext.getWorkflowTask();
+		%>
 
 		<liferay-ui:search-container-row-parameter
 			name="workflowTask"
@@ -155,15 +159,13 @@ iteratorURL.setParameter("userEmailAddress", userEmailAddress);
 
 		</liferay-ui:search-container-column-text>
 
-		<liferay-ui:search-container-column-text
-			buffer="buffer"
+		<liferay-ui:search-container-column-date
 			href="<%= rowURL %>"
 			name="last-activity-date"
 			value="<%= workflowTaskDisplayContext.getLastActivityDate(workflowTask) %>"
 		/>
 
-		<liferay-ui:search-container-column-text
-			buffer="buffer"
+		<liferay-ui:search-container-column-date
 			href="<%= rowURL %>"
 			name="due-date"
 			value="<%= workflowTaskDisplayContext.getDueDate(workflowTask) %>"
