@@ -64,7 +64,7 @@ class MetricsConsole extends JSXComponent {
 		return currentView;
 	}
 
-	handleOnChange(modelKey, reportsKey) {
+	handleOnChange(reportsKey, modelKey) {
 		if (this.state.reportsKey !== reportsKey) {
 			this.setState(
 				{
