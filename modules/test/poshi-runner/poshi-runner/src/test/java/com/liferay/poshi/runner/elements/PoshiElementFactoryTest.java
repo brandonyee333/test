@@ -93,7 +93,7 @@ public class PoshiElementFactoryTest {
 			sb.append(Dom4JUtil.format(poshiElement));
 
 			throw new Exception(
-				"Poshi syntax does not translate to XML." + sb.toString());
+				"Poshi syntax does not translate to XML" + sb.toString());
 		}
 	}
 
