@@ -334,7 +334,7 @@ public class ArticleSearcher extends BaseSearcher {
 
 					if (Validator.isNotNull(userLanguageId)) {
 						userLanguageIdQuery.addTerm(
-							Field.DEFAULT_LANGUAGE_ID, userLanguageId);
+							"availableLanguageIds", userLanguageId);
 					}
 
 					if (userLanguageIdQuery.hasClauses()) {
