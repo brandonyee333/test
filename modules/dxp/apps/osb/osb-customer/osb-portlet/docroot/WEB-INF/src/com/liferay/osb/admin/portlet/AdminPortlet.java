@@ -1780,11 +1780,11 @@ public class AdminPortlet extends MVCPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws IOException {
 
-		String name = ParamUtil.getString(resourceRequest, "name");
 		String code = ParamUtil.getString(resourceRequest, "code");
+		String name = ParamUtil.getString(resourceRequest, "name");
 
-		name = name + StringPool.PERCENT;
 		code = code + StringPool.PERCENT;
+		name = name + StringPool.PERCENT;
 
 		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(
 			name, code);
@@ -1794,8 +1794,13 @@ public class AdminPortlet extends MVCPortlet {
 		for (AccountEntry accountEntry : accountEntries) {
 			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-			jsonArray.put(accountEntry.getName());
-			jsonArray.put(accountEntry.getCode());
+			if (!code.equals(StringPool.PERCENT)) {
+				jsonArray.put(accountEntry.getCode());
+			}
+
+			if (!name.equals(StringPool.PERCENT)) {
+				jsonArray.put(accountEntry.getName());
+			}
 
 			accountEntriesArray.put(jsonArray);
 		}
