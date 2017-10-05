@@ -275,6 +275,8 @@ AssetCategory knowledgeBaseCategory = articleTypeCategories.get(0);
 			var keywords = document.getElementById('<portlet:namespace />keywords').value;
 
 			if (keywords.length > 0) {
+				keywords = encodeURIComponent(keywords);
+
 				resultsURL += '&<portlet:namespace />keywords=' + keywords;
 			}
 		}
