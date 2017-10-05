@@ -191,8 +191,8 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 	public static JSONObject getMetricsArray(String field, String dateField) throws Exception {
 		JSONObject formattedJSONObject = JSONFactoryUtil.createJSONObject();
 
-		long[] yearsArray = new long[] {};
-		long[] dataArray = new long[] {};
+		long[] yearsArray = {};
+		long[] dataArray = {};
 
 		for (int year = 2010; year <= 2018; year++) {
 			DynamicQuery personDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, field, true});
