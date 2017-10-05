@@ -55,155 +55,140 @@ PortletURL portletURL = renderResponse.createRenderURL();
 portletURL.setParameter("tabs1", tabs1);
 %>
 
-<c:choose>
-	<c:when test="<%= assigneeClassName.equals(Role.class.getName()) && Validator.isNotNull(roleName) && (role == null) %>">
-		<div class="portlet-msg-error">
-			<liferay-ui:message key="that-role-does-not-exist" />
-		</div>
-	</c:when>
-	<c:when test="<%= assigneeClassName.equals(User.class.getName()) && Validator.isNotNull(userEmailAddress) && (searchUser == null) %>">
-		<div class="portlet-msg-error">
-			<liferay-ui:message key="that-user-does-not-exist" />
-		</div>
-	</c:when>
-</c:choose>
+<div class="container-fluid-1280 main-content-body">
+	<c:choose>
+		<c:when test="<%= assigneeClassName.equals(Role.class.getName()) && Validator.isNotNull(roleName) && (role == null) %>">
+			<div class="portlet-msg-error">
+				<liferay-ui:message key="that-role-does-not-exist" />
+			</div>
+		</c:when>
+		<c:when test="<%= assigneeClassName.equals(User.class.getName()) && Validator.isNotNull(userEmailAddress) && (searchUser == null) %>">
+			<div class="portlet-msg-error">
+				<liferay-ui:message key="that-user-does-not-exist" />
+			</div>
+		</c:when>
+	</c:choose>
 
-<%
-PortletURL iteratorURL = renderResponse.createRenderURL();
+	<%
+	PortletURL iteratorURL = renderResponse.createRenderURL();
 
-iteratorURL.setParameter("tabs1", tabs1);
+	iteratorURL.setParameter("tabs1", tabs1);
 
-iteratorURL.setParameter("accountEntryCode", accountEntryCode);
-iteratorURL.setParameter("accountEntryName", accountEntryName);
-iteratorURL.setParameter("assigneeClassName", assigneeClassName);
-iteratorURL.setParameter("completed", completedString);
-iteratorURL.setParameter("roleName", roleName);
-iteratorURL.setParameter("salesforceOpportunityType", String.valueOf(salesforceOpportunityType));
-iteratorURL.setParameter("userEmailAddress", userEmailAddress);
-%>
+	iteratorURL.setParameter("accountEntryCode", accountEntryCode);
+	iteratorURL.setParameter("accountEntryName", accountEntryName);
+	iteratorURL.setParameter("assigneeClassName", assigneeClassName);
+	iteratorURL.setParameter("completed", completedString);
+	iteratorURL.setParameter("roleName", roleName);
+	iteratorURL.setParameter("salesforceOpportunityType", String.valueOf(salesforceOpportunityType));
+	iteratorURL.setParameter("userEmailAddress", userEmailAddress);
+	%>
 
-<liferay-ui:search-container
-	emptyResultsMessage="there-are-no-tasks"
-	iteratorURL="<%= iteratorURL %>"
->
-	<liferay-ui:search-container-results>
-		<%@ include file="/other_assignees_search_results.jspf" %>
-	</liferay-ui:search-container-results>
-
-	<liferay-ui:search-container-row
-		className="com.liferay.portal.kernel.search.Document"
-		modelVar="document"
+	<liferay-ui:search-container
+		emptyResultsMessage="there-are-no-tasks"
+		iteratorURL="<%= iteratorURL %>"
 	>
-		<%
-		WorkflowTask workflowTask = workflowTaskDisplayContext.getWorkflowTask();
-		%>
+		<liferay-ui:search-container-results>
+			<%@ include file="/other_assignees_search_results.jspf" %>
+		</liferay-ui:search-container-results>
 
-		<liferay-ui:search-container-row-parameter
-			name="workflowTask"
-			value="<%= workflowTask %>"
-		/>
-
-		<portlet:renderURL var="rowURL">
-			<portlet:param name="mvcPath" value="/edit_workflow_task.jsp" />
-			<portlet:param name="backURL" value="<%= currentURL %>" />
-			<portlet:param name="workflowTaskId" value="<%= String.valueOf(workflowTask.getWorkflowTaskId()) %>" />
-		</portlet:renderURL>
-
-		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
-			name="opportunity-type"
-			translate="<%= true %>"
-			value='<%= document.get("salesforceOpportunityTaskName") %>'
-		/>
-
-		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
-			name="asset-title"
-			value="<%= workflowTaskDisplayContext.getAssetTitle(workflowTask) %>"
-		/>
-
-		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
-			name="assigned-to"
+		<liferay-ui:search-container-row
+			className="com.liferay.portal.kernel.search.Document"
+			cssClass="entry-display-style"
+			modelVar="document"
 		>
 
 			<%
-			List<WorkflowTaskAssignee> workflowTaskAssignees = workflowTask.getWorkflowTaskAssignees();
-
-			for (WorkflowTaskAssignee workflowTaskAssignee : workflowTaskAssignees) {
-				String curAssigneeClassName = workflowTaskAssignee.getAssigneeClassName();
-
-				String assigneeName = StringPool.BLANK;
-
-				if (curAssigneeClassName.equals(Role.class.getName())) {
-					Role curRole = RoleLocalServiceUtil.fetchRole(workflowTaskAssignee.getAssigneeClassPK());
-
-					if (curRole != null) {
-						assigneeName = curRole.getName();
-					}
-				}
-				else if (curAssigneeClassName.equals(User.class.getName())) {
-					User curUser = UserLocalServiceUtil.fetchUser(workflowTaskAssignee.getAssigneeClassPK());
-
-					if (curUser != null) {
-						assigneeName = curUser.getFullName();
-					}
-				}
+			WorkflowTask workflowTask = workflowTaskDisplayContext.getWorkflowTask();
 			%>
 
-				<%= HtmlUtil.escape(assigneeName) %><br />
+			<liferay-ui:search-container-row-parameter
+				name="workflowTask"
+				value="<%= workflowTask %>"
+			/>
 
-			<%
-			}
-			%>
+			<portlet:renderURL var="rowURL">
+				<portlet:param name="mvcPath" value="/edit_workflow_task.jsp" />
+				<portlet:param name="backURL" value="<%= currentURL %>" />
+				<portlet:param name="workflowTaskId" value="<%= String.valueOf(workflowTask.getWorkflowTaskId()) %>" />
+			</portlet:renderURL>
 
-		</liferay-ui:search-container-column-text>
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="opportunity-type"
+				translate="<%= true %>"
+				value='<%= document.get("salesforceOpportunityTaskName") %>'
+			/>
 
-		<liferay-ui:search-container-column-date
-			href="<%= rowURL %>"
-			name="last-activity-date"
-			value="<%= workflowTaskDisplayContext.getLastActivityDate(workflowTask) %>"
-		/>
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="asset-title"
+				value="<%= workflowTaskDisplayContext.getAssetTitle(workflowTask) %>"
+			/>
 
-		<liferay-ui:search-container-column-date
-			href="<%= rowURL %>"
-			name="due-date"
-			value="<%= workflowTaskDisplayContext.getDueDate(workflowTask) %>"
-		/>
+			<liferay-ui:search-container-column-text
+				href="<%= rowURL %>"
+				name="assigned-to"
+			>
 
-		<c:choose>
-			<c:when test="<%= !workflowTask.isCompleted() %>">
-				<liferay-ui:search-container-column-jsp
-					align="right"
-					path="/workflow_task_action.jsp"
-				/>
-			</c:when>
-			<c:otherwise>
-				<liferay-ui:search-container-column-text
-					value="<%= StringPool.BLANK %>"
-				/>
-			</c:otherwise>
-		</c:choose>
-	</liferay-ui:search-container-row>
+				<%
+				List<WorkflowTaskAssignee> workflowTaskAssignees = workflowTask.getWorkflowTaskAssignees();
 
-	<liferay-ui:search-iterator />
-</liferay-ui:search-container>
+				for (WorkflowTaskAssignee workflowTaskAssignee : workflowTaskAssignees) {
+					String curAssigneeClassName = workflowTaskAssignee.getAssigneeClassName();
 
-<aui:script>
-	function <portlet:namespace />selectAssigneeClassName(assigneeClassName) {
-		var A = AUI();
+					String assigneeName = StringPool.BLANK;
 
-		if (assigneeClassName == '<%= Role.class.getName() %>') {
-			A.one('#<portlet:namespace />assigneeClassNameRole').show();
-			A.one('#<portlet:namespace />assigneeClassNameUser').hide();
-		}
-		else if (assigneeClassName == '<%= User.class.getName() %>') {
-			A.one('#<portlet:namespace />assigneeClassNameRole').hide();
-			A.one('#<portlet:namespace />assigneeClassNameUser').show();
-		}
-		else {
-			A.one('#<portlet:namespace />assigneeClassNameRole').hide();
-			A.one('#<portlet:namespace />assigneeClassNameUser').hide();
-		}
-	}
-</aui:script>
+					if (curAssigneeClassName.equals(Role.class.getName())) {
+						Role curRole = RoleLocalServiceUtil.fetchRole(workflowTaskAssignee.getAssigneeClassPK());
+
+						if (curRole != null) {
+							assigneeName = curRole.getName();
+						}
+					}
+					else if (curAssigneeClassName.equals(User.class.getName())) {
+						User curUser = UserLocalServiceUtil.fetchUser(workflowTaskAssignee.getAssigneeClassPK());
+
+						if (curUser != null) {
+							assigneeName = curUser.getFullName();
+						}
+					}
+				%>
+
+					<%= HtmlUtil.escape(assigneeName) %><br />
+
+				<%
+				}
+				%>
+
+			</liferay-ui:search-container-column-text>
+
+			<liferay-ui:search-container-column-date
+				href="<%= rowURL %>"
+				name="last-activity-date"
+				value="<%= workflowTaskDisplayContext.getLastActivityDate(workflowTask) %>"
+			/>
+
+			<liferay-ui:search-container-column-date
+				href="<%= rowURL %>"
+				name="due-date"
+				value="<%= workflowTaskDisplayContext.getDueDate(workflowTask) %>"
+			/>
+
+			<c:choose>
+				<c:when test="<%= !workflowTask.isCompleted() %>">
+					<liferay-ui:search-container-column-jsp
+						align="right"
+						path="/workflow_task_action.jsp"
+					/>
+				</c:when>
+				<c:otherwise>
+					<liferay-ui:search-container-column-text
+						value="<%= StringPool.BLANK %>"
+					/>
+				</c:otherwise>
+			</c:choose>
+		</liferay-ui:search-container-row>
+
+		<liferay-ui:search-iterator markupView="lexicon" />
+	</liferay-ui:search-container>
+</div>
