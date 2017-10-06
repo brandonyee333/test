@@ -16,7 +16,6 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorkerConstants;
-import com.liferay.osb.model.AssetReceiptLicense;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
@@ -24,6 +23,7 @@ import com.liferay.osb.model.LicenseKeyConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
+import com.liferay.osb.service.permission.OSBAssetReceiptPermission;
 import com.liferay.osb.service.permission.OSBLicenseKeyPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
@@ -40,13 +40,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-
-/* TODO implement assetReceipt
-import com.liferay.osb.model.AssetReceipt;
-
-TODO implement assetReceipt
-import com.liferay.osb.service.permission.OSBAssetReceiptPermission;
-*/
 
 /**
  * @author Amos Fong
@@ -112,28 +105,20 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public LicenseKey addLicenseKey(
-			long userId, long assetReceiptLicenseId, String owner,
-			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, int startDateMonth,
-			int startDateDay, int startDateYear)
+			long userId, long assetReceiptLicenseId, String licenseEntryType,
+			String productEntryName, String productId, int productVersion,
+			String owner, long maxUsers, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			Date startDate, Date expirationDate)
 		throws PortalException {
 
-		AssetReceiptLicense assetReceiptLicense =
-			assetReceiptLicensePersistence.findByPrimaryKey(
-				assetReceiptLicenseId);
-
-		/* TODO implement assetReceipt
-		AssetReceipt assetReceipt = assetReceiptPersistence.findByPrimaryKey(
-			assetReceiptLicense.getAssetReceiptId());
-
 		OSBAssetReceiptPermission.check(
-			getPermissionChecker(), assetReceipt, OSBActionKeys.ADD_LICENSE);
-		*/
+			getPermissionChecker(), OSBActionKeys.ADD_LICENSE);
 
 		return licenseKeyLocalService.addLicenseKey(
-			userId, assetReceiptLicense, owner, description, hostNames,
-			ipAddresses, macAddresses, serverIds, startDateMonth, startDateDay,
-			startDateYear);
+			userId, assetReceiptLicenseId, licenseEntryType, productEntryName,
+			productId, productVersion, owner, maxUsers, description, hostNames,
+			ipAddresses, macAddresses, serverIds, startDate, expirationDate);
 	}
 
 	public LicenseKey getLicenseKey(long licenseKeyId) throws PortalException {
@@ -141,18 +126,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			licenseKeyId);
 
 		if (licenseKey.getAssetReceiptLicenseId() > 0) {
-			AssetReceiptLicense assetReceiptLicense =
-				assetReceiptLicensePersistence.findByPrimaryKey(
-					licenseKey.getAssetReceiptLicenseId());
-
-			/* TODO implement assetReceipt
-			AssetReceipt assetReceipt =
-				assetReceiptPersistence.findByPrimaryKey(
-					assetReceiptLicense.getAssetReceiptId());
-
 			OSBAssetReceiptPermission.check(
-				getPermissionChecker(), assetReceipt, OSBActionKeys.VIEW);
-			*/
+				getPermissionChecker(), OSBActionKeys.VIEW);
 		}
 		else {
 			OSBLicenseKeyPermission.check(
@@ -211,25 +186,15 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			offeringEntryIds, complimentary, active);
 	}
 
-	public LicenseKey renewLicenseKey(long licenseKeyId)
+	public LicenseKey renewLicenseKey(
+			long licenseKeyId, Date startDate, Date expirationDate)
 		throws PortalException {
 
-		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
-			licenseKeyId);
-
-		AssetReceiptLicense assetReceiptLicense =
-			assetReceiptLicensePersistence.findByPrimaryKey(
-				licenseKey.getAssetReceiptLicenseId());
-
-		/* TODO implement assetReceipt
-		AssetReceipt assetReceipt = assetReceiptLicense.getAssetReceipt();
-
 		OSBAssetReceiptPermission.check(
-			getPermissionChecker(), assetReceipt, OSBActionKeys.RENEW_LICENSE);
-		*/
+			getPermissionChecker(), OSBActionKeys.RENEW_LICENSE);
 
 		return licenseKeyLocalService.renewLicenseKey(
-			getUserId(), licenseKeyId);
+			getUserId(), licenseKeyId, startDate, expirationDate);
 	}
 
 	public LicenseKey renewLicenseKey(
@@ -357,18 +322,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 					OSBActionKeys.UPDATE_ADVANCED);
 			}
 			else {
-				AssetReceiptLicense assetReceiptLicense =
-					assetReceiptLicensePersistence.findByPrimaryKey(
-						licenseKey.getAssetReceiptLicenseId());
-
-				/* TODO implement assetReceipt
-				AssetReceipt assetReceipt =
-					assetReceiptPersistence.findByPrimaryKey(
-						assetReceiptLicense.getAssetReceiptId());
-
 				OSBAssetReceiptPermission.check(
-					getPermissionChecker(), assetReceipt, OSBActionKeys.MANAGE);
-				*/
+					getPermissionChecker(), OSBActionKeys.MANAGE);
 			}
 		}
 		else {

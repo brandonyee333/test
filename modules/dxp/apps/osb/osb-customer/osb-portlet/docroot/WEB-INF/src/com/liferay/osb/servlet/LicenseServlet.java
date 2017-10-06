@@ -14,16 +14,13 @@
 
 package com.liferay.osb.servlet;
 
-import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.exception.LicenseKeyRegistrationException;
 import com.liferay.osb.exception.LicenseKeyServerIdException;
 import com.liferay.osb.exception.MaximumLicenseKeyException;
-import com.liferay.osb.exception.NoSuchAssetReceiptLicenseException;
 import com.liferay.osb.exception.NoSuchOrderEntryException;
 import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AssetReceiptLicense;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
@@ -35,10 +32,8 @@ import com.liferay.osb.model.OfferingEntryGroupFactoryUtil;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.service.AssetReceiptLicenseLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
-import com.liferay.osb.util.comparator.LicenseKeyExpirationDateComparator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -126,7 +121,7 @@ public class LicenseServlet extends HttpServlet {
 				getLicenseState(jsonObject, responseJSONObject);
 			}
 			else if (cmd.equals("GET_ORDER")) {
-				getOrder(jsonObject, responseJSONObject);
+				//getOrder(jsonObject, responseJSONObject);
 			}
 			else if (cmd.equals("QUERY")) {
 				query(jsonObject, responseJSONObject);
@@ -143,10 +138,6 @@ public class LicenseServlet extends HttpServlet {
 				"errorMessage",
 				"Server Id matching failed. Please clear your license folder.");
 		}
-		catch (NoSuchAssetReceiptLicenseException nsarle) {
-			responseJSONObject.put(
-				"errorMessage", "Order does not exist. Please check your ID.");
-		}
 		catch (NoSuchOrderEntryException nsoee) {
 			responseJSONObject.put(
 				"errorMessage", "Order does not exist. Please check your ID.");
@@ -161,7 +152,13 @@ public class LicenseServlet extends HttpServlet {
 				"errorMessage",
 				"Server encountered an error. Please try again.");
 		}
+		/* TODO check License/Marketplace dependency
+		catch (NoSuchAssetReceiptLicenseException nsarle) {
+			responseJSONObject.put(
+				"errorMessage", "Order does not exist. Please check your ID.");
+		}
 
+		*/
 		String responseJSON = responseJSONObject.toString();
 
 		if (_log.isDebugEnabled()) {
@@ -497,13 +494,12 @@ public class LicenseServlet extends HttpServlet {
 				continue;
 			}
 
+			/* TODO check License/Marketplace dependency
 			AssetReceiptLicense assetReceiptLicense =
 				AssetReceiptLicenseLocalServiceUtil.getAssetReceiptLicense(
 					licenseKey.getAssetReceiptLicenseId());
 
 			int licenseEntryType = assetReceiptLicense.getLicenseType();
-
-			/* TODO check License/Marketplace dependency
 
 			if (licenseEntryType ==
 					AssetLicenseConstants.LICENSE_TYPE_PER_USER) {
@@ -536,6 +532,7 @@ public class LicenseServlet extends HttpServlet {
 		responseJSONObject.put("randomUuid", randomUuid);
 	}
 
+	/* TODO check License/Marketplace dependency
 	protected void getOrder(
 			JSONObject jsonObject, JSONObject responseJSONObject)
 		throws Exception {
@@ -583,6 +580,8 @@ public class LicenseServlet extends HttpServlet {
 		}
 	}
 
+	*/
+
 	protected PrivateKey getPrivateKey() {
 		if (_privateKey != null) {
 			return _privateKey;
@@ -611,6 +610,7 @@ public class LicenseServlet extends HttpServlet {
 		return _privateKey;
 	}
 
+	/* TODO AssetReceiptLicense placeholder methods missing
 	protected JSONObject getProductsJSONObject(
 			AssetReceiptLicense assetReceiptLicense)
 		throws PortalException {
@@ -618,8 +618,6 @@ public class LicenseServlet extends HttpServlet {
 		JSONObject productsJSONObject = JSONFactoryUtil.createJSONObject();
 
 		String licensesLeft = StringPool.BLANK;
-
-		/* TODO AssetReceiptLicense placeholder methods missing
 
 		if (assetReceiptLicense.hasUnlimitedServers()) {
 			licensesLeft = "unlimited";
@@ -643,10 +641,11 @@ public class LicenseServlet extends HttpServlet {
 		AssetEntry assetEntry = assetReceiptLicense.getAssetEntry();
 
 		productsJSONObject.put(assetEntry.getTitle(), licensesLeft);
-		**/
 
 		return productsJSONObject;
 	}
+
+	**/
 
 	protected JSONObject getProductsJSONObject(OrderEntry orderEntry)
 		throws PortalException {
@@ -855,6 +854,7 @@ public class LicenseServlet extends HttpServlet {
 		registerServer(jsonObject, responseJSONObject, orderEntry);
 	}
 
+	/* TODO AssetReceiptLicense placeholder methods missing
 	protected void registerApp(
 			JSONObject jsonObject, JSONObject responseJSONObject,
 			AssetReceiptLicense assetReceiptLicense)
@@ -864,10 +864,8 @@ public class LicenseServlet extends HttpServlet {
 			return;
 		}
 
-		/* TODO AssetReceiptLicense placeholder methods missing
 		AssetReceipt assetReceipt = assetReceiptLicense.getAssetReceipt();
 		AssetLicense assetLicense = assetReceiptLicense.getAssetLicense();
-		**/
 
 		int version = jsonObject.getInt("version");
 		String hostName = jsonObject.getString("hostName");
@@ -907,8 +905,6 @@ public class LicenseServlet extends HttpServlet {
 
 		LicenseKey licenseKey = null;
 
-		/* TODO AssetReceiptLicense placeholder methods missing
-
 		if (licenseKeys.isEmpty()) {
 			licenseKey = LicenseKeyLocalServiceUtil.addLicenseKey(
 				assetReceiptLicense.getUserId(), assetReceiptLicense,
@@ -922,11 +918,11 @@ public class LicenseServlet extends HttpServlet {
 			licenseKey = licenseKeys.get(0);
 		}
 
-		**/
-
 		responseJSONObject.put(
 			"licenseXML", LicenseUtil.exportToXML(licenseKey));
 	}
+
+	**/
 
 	protected void registerServer(
 			JSONObject jsonObject, JSONObject responseJSONObject,

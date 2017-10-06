@@ -36,7 +36,6 @@ import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
-import com.liferay.osb.model.AssetReceiptLicense;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
@@ -86,11 +85,6 @@ import java.util.TimeZone;
 
 import org.apache.commons.lang.time.DateUtils;
 
-/* TODO update app license integration
-import com.liferay.osb.model.AppVersion;
-import com.liferay.osb.model.AssetLicenseConstants;
-*/
-
 /**
  * @author Brian Wing Shun Chan
  * @author Amos Fong
@@ -98,61 +92,24 @@ import com.liferay.osb.model.AssetLicenseConstants;
 public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	public LicenseKey addLicenseKey(
-			long userId, AssetReceiptLicense assetReceiptLicense, String owner,
-			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses, String[] serverIds, int startDateMonth,
-			int startDateDay, int startDateYear)
+			long userId, long assetReceiptLicenseId, String licenseEntryType,
+			String productEntryName, String productId, int productVersion,
+			String owner, long maxUsers, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			Date startDate, Date expirationDate)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
-
-		/* TODO update AssetReceiptLicense missing placeholder method
-		AssetEntry assetEntry = assetReceiptLicense.getAssetEntry();
-		**/
-
+		Date now = new Date();
 		int licenseVersion = 3;
 
+		productEntryName = LicenseUtil.trimText(productEntryName);
 		owner = LicenseUtil.trimText(owner);
 		description = LicenseUtil.trimText(description);
-
-		/* TODO update AssetReceiptLicense missing placeholder method
-		String productEntryName = LicenseUtil.trimText(assetEntry.getTitle());
-		String productId = assetEntry.getClassUuid();
-		**/
-
-		int productVersion = 0;
-
-		String productClassName = PortalUtil.getClassName(
-			assetReceiptLicense.getProductClassNameId());
-
-		/* TODO update app license integration
-
-		if (productClassName.equals(AppVersion.class.getName())) {
-			long productClassPK = assetReceiptLicense.getProductClassPK();
-
-			AppVersion appVersion = appVersionLocalService.getAppVersion(
-				productClassPK);
-
-			productVersion = appVersion.getVersionId();
-		}
-
-		*/
-
-		Date startDate = getLicenseKeyStartDate(
-			startDateMonth, startDateDay, startDateYear, user.getTimeZone(),
-			assetReceiptLicense.getStartDate());
-
 		startDate = DateUtils.round(startDate, Calendar.SECOND);
-
-		Date expirationDate = assetReceiptLicense.getEndDate();
-
 		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
 
-		Date now = new Date();
-
-		validate(
-			assetReceiptLicense, owner, description, hostNames, ipAddresses,
-			macAddresses);
+		validate(owner, description, hostNames, ipAddresses, macAddresses);
 
 		LicenseKey licenseKey = null;
 
@@ -181,24 +138,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				serverId = serverIds[i];
 			}
 
-			// TODO remove temp update app license integration
-
-			String licenseType = StringPool.BLANK;
-
-			/* TODO update app license integration
-			String licenseKeyType = AssetLicenseConstants.getLicenseKeyType(
-				assetReceiptLicense.getLicenseType());
-			*/
-
-			/* TODO AssetReceiptLicense dependency
 			String key = KeyGenerator.generate(
-				StringPool.BLANK, StringPool.BLANK, licenseKeyType,
+				StringPool.BLANK, StringPool.BLANK, licenseEntryType,
 				licenseVersion, productEntryName, productId,
-				String.valueOf(productVersion), owner, 0, 0, 0,
-				assetReceiptLicense.getMaxUsers(), description, hostName,
-				curIpAddresses, curMacAddresses, new String[] {serverId},
-				startDate, expirationDate);
-			**/
+				String.valueOf(productVersion), owner, 0, 0, 0, maxUsers,
+				description, hostName, curIpAddresses, curMacAddresses,
+				new String[] {serverId}, startDate, expirationDate);
 
 			long licenseKeyId = counterLocalService.increment();
 
@@ -210,30 +155,21 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			licenseKey.setModifiedUserId(user.getUserId());
 			licenseKey.setModifiedUserName(user.getFullName());
 			licenseKey.setModifiedDate(now);
-			licenseKey.setAssetReceiptLicenseId(
-				assetReceiptLicense.getAssetReceiptLicenseId());
-			/* TODO AssetReceiptLicense dependency
-			licenseKey.setLicenseEntryType(licenseKeyType);
-			**/
+			licenseKey.setAssetReceiptLicenseId(assetReceiptLicenseId);
+			licenseKey.setLicenseEntryType(licenseEntryType);
 			licenseKey.setLicenseVersion(licenseVersion);
-			/* TODO AssetReceiptLicense dependency
 			licenseKey.setProductEntryName(productEntryName);
 			licenseKey.setProductId(productId);
-			**/
 			licenseKey.setProductVersion(productVersion);
 			licenseKey.setProductVersionLabel(String.valueOf(productVersion));
 			licenseKey.setOwner(owner);
-			/* TODO AssetReceiptLicense dependency
-			licenseKey.setMaxUsers(assetReceiptLicense.getMaxUsers());
-			**/
+			licenseKey.setMaxUsers(maxUsers);
 			licenseKey.setDescription(description);
 			licenseKey.setHostName(hostName);
 			licenseKey.setIpAddresses(curIpAddresses);
 			licenseKey.setMacAddresses(curMacAddresses);
 			licenseKey.setServerId(serverId);
-			/* TODO AssetReceiptLicense dependency
 			licenseKey.setKey(key);
-			**/
 			licenseKey.setStartDate(startDate);
 			licenseKey.setExpirationDate(expirationDate);
 			licenseKey.setComplimentary(false);
@@ -559,7 +495,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		return licenseKeyPersistence.countByU_AEI(userId, accountEntryId);
 	}
 
-	public LicenseKey renewLicenseKey(long userId, long licenseKeyId)
+	public LicenseKey renewLicenseKey(
+			long userId, long licenseKeyId, Date startDate, Date expirationDate)
 		throws PortalException {
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
@@ -569,26 +506,19 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			throw new LicenseKeyActiveException();
 		}
 
-		AssetReceiptLicense assetReceiptLicense =
-			assetReceiptLicensePersistence.findByPrimaryKey(
-				licenseKey.getAssetReceiptLicenseId());
-
 		updateLicenseKey(
-			userId, licenseKeyId,
-			assetReceiptLicense.getAssetReceiptLicenseId(), false);
-
-		Calendar cal = Calendar.getInstance();
-
-		cal.setTime(assetReceiptLicense.getStartDate());
+			userId, licenseKeyId, licenseKey.getAssetReceiptLicenseId(), false);
 
 		return addLicenseKey(
-			userId, assetReceiptLicense, licenseKey.getOwner(),
+			userId, licenseKey.getAssetReceiptLicenseId(),
+			licenseKey.getLicenseEntryType(), licenseKey.getProductEntryName(),
+			licenseKey.getProductId(), licenseKey.getProductVersion(),
+			licenseKey.getOwner(), licenseKey.getMaxUsers(),
 			licenseKey.getDescription(),
 			new String[] {licenseKey.getHostName()},
 			new String[] {licenseKey.getIpAddresses()},
 			new String[] {licenseKey.getMacAddresses()},
-			new String[] {licenseKey.getServerId()}, cal.get(Calendar.MONTH),
-			cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
+			new String[] {licenseKey.getServerId()}, startDate, expirationDate);
 	}
 
 	public LicenseKey renewLicenseKey(
@@ -892,14 +822,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
-
-		AssetReceiptLicense assetReceiptLicense =
-			assetReceiptLicensePersistence.findByPrimaryKey(
-				assetReceiptLicenseId);
-
-		if (active && !licenseKey.isActive()) {
-			validate(assetReceiptLicense, 1);
-		}
 
 		licenseKey.setModifiedUserId(user.getUserId());
 		licenseKey.setModifiedUserName(user.getFullName());
@@ -1524,90 +1446,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		subscriptionSender.flushNotificationsAsync();
 	}
 
-	protected void validate(
-			AssetReceiptLicense assetReceiptLicense, int numberOfKeys)
-		throws PortalException {
-
-		/* TODO update AssetReceiptLicense missing placeholder method
-
-		if (assetReceiptLicense.hasUnlimitedServers()) {
-			return;
-		}
-
-		if (assetReceiptLicense.getAvailableLicenseKeyCount() < numberOfKeys) {
-			throw new MaximumLicenseKeyException();
-		}
-
-		**/
-	}
-
-	protected void validate(
-			AssetReceiptLicense assetReceiptLicense, String owner,
-			String description, String[] hostNames, String[] ipAddresses,
-			String[] macAddresses)
-		throws PortalException {
-
-		if (Validator.isNull(owner)) {
-			throw new LicenseKeyOwnerException();
-		}
-
-		if (Validator.isNull(description)) {
-			throw new LicenseKeyDescriptionException();
-		}
-
-		if (hostNames.length <= 0) {
-			throw new LicenseKeyHostNameException();
-		}
-
-		Set<String> distinctHostNames = new HashSet<>();
-		Set<String> distinctIpAddresses = new HashSet<>();
-		Set<String> distinctMacAddresses = new HashSet<>();
-
-		for (int i = 0; i < hostNames.length; i++) {
-			String hostName = hostNames[i];
-
-			if (distinctHostNames.contains(hostName)) {
-				throw new DuplicateHostNameException();
-			}
-
-			if (Validator.isNotNull(hostName)) {
-				distinctHostNames.add(hostName);
-			}
-
-			String[] curIpAddresses = StringUtil.split(ipAddresses[i]);
-
-			for (String ipAddress : curIpAddresses) {
-				validateIpAddress(ipAddress);
-
-				if (distinctIpAddresses.contains(ipAddress)) {
-					throw new DuplicateIPAddressException();
-				}
-
-				distinctIpAddresses.add(ipAddress);
-			}
-
-			String[] curMacAddresses = StringUtil.split(macAddresses[i]);
-
-			for (String macAddress : curMacAddresses) {
-				validateMacAddress(macAddress);
-
-				if (distinctMacAddresses.contains(macAddress)) {
-					throw new DuplicateMACAddressException();
-				}
-
-				distinctMacAddresses.add(macAddress);
-			}
-		}
-
-		if (distinctHostNames.isEmpty() && distinctIpAddresses.isEmpty() &&
-			distinctMacAddresses.isEmpty()) {
-
-			throw new LicenseKeyServerInfoException();
-		}
-
-		validate(assetReceiptLicense, 1);
-	}
-
 	protected void validate(OfferingEntry offeringEntry, int numberOfKeys)
 		throws PortalException {
 
@@ -1734,6 +1572,70 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			}
 
 			validate(offeringEntry, hostNames.length);
+		}
+	}
+
+	protected void validate(
+			String owner, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses)
+		throws PortalException {
+
+		if (Validator.isNull(owner)) {
+			throw new LicenseKeyOwnerException();
+		}
+
+		if (Validator.isNull(description)) {
+			throw new LicenseKeyDescriptionException();
+		}
+
+		if (hostNames.length <= 0) {
+			throw new LicenseKeyHostNameException();
+		}
+
+		Set<String> distinctHostNames = new HashSet<>();
+		Set<String> distinctIpAddresses = new HashSet<>();
+		Set<String> distinctMacAddresses = new HashSet<>();
+
+		for (int i = 0; i < hostNames.length; i++) {
+			String hostName = hostNames[i];
+
+			if (distinctHostNames.contains(hostName)) {
+				throw new DuplicateHostNameException();
+			}
+
+			if (Validator.isNotNull(hostName)) {
+				distinctHostNames.add(hostName);
+			}
+
+			String[] curIpAddresses = StringUtil.split(ipAddresses[i]);
+
+			for (String ipAddress : curIpAddresses) {
+				validateIpAddress(ipAddress);
+
+				if (distinctIpAddresses.contains(ipAddress)) {
+					throw new DuplicateIPAddressException();
+				}
+
+				distinctIpAddresses.add(ipAddress);
+			}
+
+			String[] curMacAddresses = StringUtil.split(macAddresses[i]);
+
+			for (String macAddress : curMacAddresses) {
+				validateMacAddress(macAddress);
+
+				if (distinctMacAddresses.contains(macAddress)) {
+					throw new DuplicateMACAddressException();
+				}
+
+				distinctMacAddresses.add(macAddress);
+			}
+		}
+
+		if (distinctHostNames.isEmpty() && distinctIpAddresses.isEmpty() &&
+			distinctMacAddresses.isEmpty()) {
+
+			throw new LicenseKeyServerInfoException();
 		}
 	}
 

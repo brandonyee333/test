@@ -368,7 +368,7 @@ public class LicensePortlet extends MVCPortlet {
 
 		if (licenseKeyId <= 0) {
 			if (assetReceiptLicenseId > 0) {
-				LicenseKey licenseKey = LicenseKeyServiceUtil.addLicenseKey(
+				/*LicenseKey licenseKey = LicenseKeyServiceUtil.addLicenseKey(
 					themeDisplay.getUserId(), assetReceiptLicenseId, owner,
 					description,
 					hostNames.toArray(new String[hostNames.size()]),
@@ -377,7 +377,7 @@ public class LicensePortlet extends MVCPortlet {
 					serverIds, startDateMonth, startDateDay, startDateYear);
 
 				actionRequest.setAttribute(
-					"licenseKeyId", licenseKey.getLicenseKeyId());
+					"licenseKeyId", licenseKey.getLicenseKeyId());*/
 			}
 			else {
 				LicenseKey licenseKey = LicenseKeyServiceUtil.addLicenseKey(

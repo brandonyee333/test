@@ -30,14 +30,6 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 
-/* TODO update app license integration
-import com.liferay.osb.model.AppEntry;
-import com.liferay.osb.model.AssetReceipt;
-
-TODO update app license integration
-import com.liferay.osb.service.AssetReceiptLocalServiceUtil;
-*/
-
 /**
  * @author Amos Fong
  */
@@ -117,39 +109,6 @@ public class OSBLicenseKeyPermission {
 		}
 
 		if (actionId.equals(OSBActionKeys.UPDATE_ADVANCED)) {
-
-			/* TODO update app license integration
-
-			if (RoleLocalServiceUtil.hasUserRole(
-					permissionChecker.getUserId(),
-					OSBConstants.ROLE_OSB_MARKETPLACE_ADMIN_ID)) {
-
-				AssetReceiptLicense assetReceiptLicense =
-					AssetReceiptLicenseLocalServiceUtil.
-						fetchAssetReceiptLicense(
-							licenseKey.getAssetReceiptLicenseId());
-
-				if (assetReceiptLicense == null) {
-					return false;
-				}
-
-				AssetReceipt assetReceipt =
-					AssetReceiptLocalServiceUtil.fetchAssetReceipt(
-						assetReceiptLicense.getAssetReceiptId());
-
-				if (assetReceipt == null) {
-					return false;
-				}
-
-				if (PortalUtil.getClassNameId(AppEntry.class) ==
-						assetReceipt.getProductClassNameId()) {
-
-					return true;
-				}
-			}
-
-			*/
-
 			return false;
 		}
 
