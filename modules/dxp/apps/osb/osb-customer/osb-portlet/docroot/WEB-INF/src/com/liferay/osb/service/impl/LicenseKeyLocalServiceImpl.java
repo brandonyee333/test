@@ -92,96 +92,6 @@ import org.apache.commons.lang.time.DateUtils;
 public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	public LicenseKey addLicenseKey(
-			long userId, long assetReceiptLicenseId, String licenseEntryType,
-			String productEntryName, String productId, int productVersion,
-			String owner, long maxUsers, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, Date expirationDate)
-		throws PortalException {
-
-		User user = userLocalService.getUser(userId);
-		Date now = new Date();
-		int licenseVersion = 3;
-
-		productEntryName = LicenseUtil.trimText(productEntryName);
-		owner = LicenseUtil.trimText(owner);
-		description = LicenseUtil.trimText(description);
-		startDate = DateUtils.round(startDate, Calendar.SECOND);
-		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
-
-		validate(owner, description, hostNames, ipAddresses, macAddresses);
-
-		LicenseKey licenseKey = null;
-
-		int keyCount = 0;
-
-		if (ArrayUtil.isNotEmpty(serverIds)) {
-			keyCount = serverIds.length;
-		}
-		else if (hostNames != null) {
-			keyCount = hostNames.length;
-		}
-
-		for (int i = 0; i < keyCount; i++) {
-			String hostName = StringPool.BLANK;
-			String curIpAddresses = StringPool.BLANK;
-			String curMacAddresses = StringPool.BLANK;
-			String serverId = StringPool.BLANK;
-
-			if (hostNames.length > i) {
-				hostName = hostNames[i];
-				curIpAddresses = ipAddresses[i];
-				curMacAddresses = macAddresses[i];
-			}
-
-			if ((serverIds != null) && (serverIds.length > i)) {
-				serverId = serverIds[i];
-			}
-
-			String key = KeyGenerator.generate(
-				StringPool.BLANK, StringPool.BLANK, licenseEntryType,
-				licenseVersion, productEntryName, productId,
-				String.valueOf(productVersion), owner, 0, 0, 0, maxUsers,
-				description, hostName, curIpAddresses, curMacAddresses,
-				new String[] {serverId}, startDate, expirationDate);
-
-			long licenseKeyId = counterLocalService.increment();
-
-			licenseKey = licenseKeyPersistence.create(licenseKeyId);
-
-			licenseKey.setUserId(user.getUserId());
-			licenseKey.setUserName(user.getFullName());
-			licenseKey.setCreateDate(now);
-			licenseKey.setModifiedUserId(user.getUserId());
-			licenseKey.setModifiedUserName(user.getFullName());
-			licenseKey.setModifiedDate(now);
-			licenseKey.setAssetReceiptLicenseId(assetReceiptLicenseId);
-			licenseKey.setLicenseEntryType(licenseEntryType);
-			licenseKey.setLicenseVersion(licenseVersion);
-			licenseKey.setProductEntryName(productEntryName);
-			licenseKey.setProductId(productId);
-			licenseKey.setProductVersion(productVersion);
-			licenseKey.setProductVersionLabel(String.valueOf(productVersion));
-			licenseKey.setOwner(owner);
-			licenseKey.setMaxUsers(maxUsers);
-			licenseKey.setDescription(description);
-			licenseKey.setHostName(hostName);
-			licenseKey.setIpAddresses(curIpAddresses);
-			licenseKey.setMacAddresses(curMacAddresses);
-			licenseKey.setServerId(serverId);
-			licenseKey.setKey(key);
-			licenseKey.setStartDate(startDate);
-			licenseKey.setExpirationDate(expirationDate);
-			licenseKey.setComplimentary(false);
-			licenseKey.setActive(true);
-
-			licenseKeyPersistence.update(licenseKey);
-		}
-
-		return licenseKey;
-	}
-
-	public LicenseKey addLicenseKey(
 			long userId, LicenseKeySet licenseKeySet, String name,
 			OfferingEntry offeringEntry, LicenseEntry licenseEntry,
 			ProductEntry productEntry, int productVersion, long clusterId,
@@ -287,6 +197,96 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
 			serverIds, startDateMonth, startDateDay, startDateYear,
 			StringPool.BLANK, complimentary, active);
+	}
+
+	public LicenseKey addLicenseKey(
+			long userId, long assetReceiptLicenseId, String licenseEntryType,
+			String productEntryName, String productId, int productVersion,
+			String owner, long maxUsers, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			Date startDate, Date expirationDate)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+		Date now = new Date();
+		int licenseVersion = 3;
+
+		productEntryName = LicenseUtil.trimText(productEntryName);
+		owner = LicenseUtil.trimText(owner);
+		description = LicenseUtil.trimText(description);
+		startDate = DateUtils.round(startDate, Calendar.SECOND);
+		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
+
+		validate(owner, description, hostNames, ipAddresses, macAddresses);
+
+		LicenseKey licenseKey = null;
+
+		int keyCount = 0;
+
+		if (ArrayUtil.isNotEmpty(serverIds)) {
+			keyCount = serverIds.length;
+		}
+		else if (hostNames != null) {
+			keyCount = hostNames.length;
+		}
+
+		for (int i = 0; i < keyCount; i++) {
+			String hostName = StringPool.BLANK;
+			String curIpAddresses = StringPool.BLANK;
+			String curMacAddresses = StringPool.BLANK;
+			String serverId = StringPool.BLANK;
+
+			if (hostNames.length > i) {
+				hostName = hostNames[i];
+				curIpAddresses = ipAddresses[i];
+				curMacAddresses = macAddresses[i];
+			}
+
+			if ((serverIds != null) && (serverIds.length > i)) {
+				serverId = serverIds[i];
+			}
+
+			String key = KeyGenerator.generate(
+				StringPool.BLANK, StringPool.BLANK, licenseEntryType,
+				licenseVersion, productEntryName, productId,
+				String.valueOf(productVersion), owner, 0, 0, 0, maxUsers,
+				description, hostName, curIpAddresses, curMacAddresses,
+				new String[] {serverId}, startDate, expirationDate);
+
+			long licenseKeyId = counterLocalService.increment();
+
+			licenseKey = licenseKeyPersistence.create(licenseKeyId);
+
+			licenseKey.setUserId(user.getUserId());
+			licenseKey.setUserName(user.getFullName());
+			licenseKey.setCreateDate(now);
+			licenseKey.setModifiedUserId(user.getUserId());
+			licenseKey.setModifiedUserName(user.getFullName());
+			licenseKey.setModifiedDate(now);
+			licenseKey.setAssetReceiptLicenseId(assetReceiptLicenseId);
+			licenseKey.setLicenseEntryType(licenseEntryType);
+			licenseKey.setLicenseVersion(licenseVersion);
+			licenseKey.setProductEntryName(productEntryName);
+			licenseKey.setProductId(productId);
+			licenseKey.setProductVersion(productVersion);
+			licenseKey.setProductVersionLabel(String.valueOf(productVersion));
+			licenseKey.setOwner(owner);
+			licenseKey.setMaxUsers(maxUsers);
+			licenseKey.setDescription(description);
+			licenseKey.setHostName(hostName);
+			licenseKey.setIpAddresses(curIpAddresses);
+			licenseKey.setMacAddresses(curMacAddresses);
+			licenseKey.setServerId(serverId);
+			licenseKey.setKey(key);
+			licenseKey.setStartDate(startDate);
+			licenseKey.setExpirationDate(expirationDate);
+			licenseKey.setComplimentary(false);
+			licenseKey.setActive(true);
+
+			licenseKeyPersistence.update(licenseKey);
+		}
+
+		return licenseKey;
 	}
 
 	public LicenseKey addSingleUseLicenseKey(
