@@ -36,24 +36,24 @@
 	<watsonListType type="com.liferay.watson.model.WatsonActivity.type" watsonListTypeId="10476">
 		<name locale="en_US">Court Proceeding</name>
 		<name locale="th">การดำเนินการของศาล</name>
+		<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10477">
+			<name locale="en_US">Criminal</name>
+			<name locale="th">อาชญากร</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10478">
+			<name locale="en_US">Civil</name>
+			<name locale="th">พลเรือน</name>
+		</watsonListType>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10477">
-		<name locale="en_US">Criminal</name>
-		<name locale="th">อาชญากร</name>
-	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10477">
-		<name locale="en_US">Civil</name>
-		<name locale="th">พลเรือน</name>
-	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonResource.resourceType" watsonListTypeId="10478">
+	<watsonListType type="com.liferay.watson.model.WatsonResource.resourceType" watsonListTypeId="10479">
 		<name locale="en_US">Court Document</name>
 		<name locale="th">เอกสารศาล</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonRelationship.activityResourceRelationshipTypes" watsonListTypeId="10479">
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.activityResourceRelationshipTypes" watsonListTypeId="10480">
 		<name locale="en_US">Court Document</name>
 		<name locale="th">เอกสารศาล</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="10480">
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="10481">
 		<name locale="en_US">Citizenship</name>
 		<name locale="th">สัญชาติ</name>
 	</watsonListType>
