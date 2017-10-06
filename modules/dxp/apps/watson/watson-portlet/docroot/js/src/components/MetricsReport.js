@@ -47,7 +47,7 @@ class MetricsReport extends JSXComponent {
 						/>
 					</div>
 
-					{!loading &&
+					{(!loading && data.key) &&
 						<Charts
 							columns={[
 								{
