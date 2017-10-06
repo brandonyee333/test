@@ -152,46 +152,6 @@ create table OSB_AccountWorker (
 	notifications INTEGER
 );
 
-create table OSB_AssetLicense (
-	assetLicenseId LONG not null primary key,
-	userId LONG,
-	createDate DATE null,
-	modifiedDate DATE null,
-	classNameId LONG,
-	classPK LONG,
-	licenseId VARCHAR(75) null,
-	name VARCHAR(75) null,
-	requiredVersion DOUBLE,
-	usageType INTEGER,
-	licenseType INTEGER,
-	licenseTypeAllotment LONG,
-	lifetime LONG,
-	status INTEGER
-);
-
-create table OSB_AssetReceiptLicense (
-	uuid_ VARCHAR(75) null,
-	assetReceiptLicenseId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	assetReceiptId LONG,
-	assetLicenseId LONG,
-	assetEntryId LONG,
-	ownerClassNameId LONG,
-	ownerClassPK LONG,
-	productClassNameId LONG,
-	productClassPK LONG,
-	productId VARCHAR(75) null,
-	startDate DATE null,
-	endDate DATE null,
-	usageType INTEGER,
-	licenseType INTEGER,
-	licenseTypeAllotment LONG,
-	licenseLifetime LONG
-);
-
 create table OSB_AuditAction (
 	auditActionId LONG not null primary key,
 	modifiedDate DATE null,

@@ -123,19 +123,19 @@ public class FeedbackEntryLocalServiceClpInvoker {
 				"com.liferay.osb.model.FeedbackEntry"
 			};
 
-		_methodName280 = "getOSGiServiceIdentifier";
+		_methodName272 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes280 = new String[] {  };
+		_methodParameterTypes272 = new String[] {  };
 
-		_methodName285 = "addFeedbackEntry";
+		_methodName277 = "addFeedbackEntry";
 
-		_methodParameterTypes285 = new String[] {
+		_methodParameterTypes277 = new String[] {
 				"long", "long", "long", "int", "java.lang.String"
 			};
 
-		_methodName286 = "updateFeedbackEntry";
+		_methodName278 = "updateFeedbackEntry";
 
-		_methodParameterTypes286 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes278 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -242,13 +242,13 @@ public class FeedbackEntryLocalServiceClpInvoker {
 			return FeedbackEntryLocalServiceUtil.updateFeedbackEntry((com.liferay.osb.model.FeedbackEntry)arguments[0]);
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName272.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes272, parameterTypes)) {
 			return FeedbackEntryLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName277.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes277, parameterTypes)) {
 			return FeedbackEntryLocalServiceUtil.addFeedbackEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -256,8 +256,8 @@ public class FeedbackEntryLocalServiceClpInvoker {
 				(java.lang.String)arguments[4]);
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName278.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
 			return FeedbackEntryLocalServiceUtil.updateFeedbackEntry(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -303,10 +303,10 @@ public class FeedbackEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName280;
-	private String[] _methodParameterTypes280;
-	private String _methodName285;
-	private String[] _methodParameterTypes285;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
+	private String _methodName272;
+	private String[] _methodParameterTypes272;
+	private String _methodName277;
+	private String[] _methodParameterTypes277;
+	private String _methodName278;
+	private String[] _methodParameterTypes278;
 }

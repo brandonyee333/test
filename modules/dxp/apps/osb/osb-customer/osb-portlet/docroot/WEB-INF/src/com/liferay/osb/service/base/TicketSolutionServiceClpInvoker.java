@@ -27,35 +27,35 @@ import java.util.Arrays;
 @ProviderType
 public class TicketSolutionServiceClpInvoker {
 	public TicketSolutionServiceClpInvoker() {
-		_methodName372 = "getOSGiServiceIdentifier";
+		_methodName362 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes372 = new String[] {  };
+		_methodParameterTypes362 = new String[] {  };
 
-		_methodName377 = "addTicketSolution";
+		_methodName367 = "addTicketSolution";
 
-		_methodParameterTypes377 = new String[] {
+		_methodParameterTypes367 = new String[] {
 				"long", "long", "java.lang.String", "boolean", "int",
 				"java.lang.String", "int", "boolean", "boolean", "boolean",
 				"boolean", "int", "int", "java.lang.String", "java.util.List",
 				"java.util.List", "java.util.List"
 			};
 
-		_methodName378 = "updateTicketSolution";
+		_methodName368 = "updateTicketSolution";
 
-		_methodParameterTypes378 = new String[] {
+		_methodParameterTypes368 = new String[] {
 				"long", "long", "int", "long", "java.lang.String", "int"
 			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName372.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
+		if (_methodName362.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes362, parameterTypes)) {
 			return TicketSolutionServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName377.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes377, parameterTypes)) {
+		if (_methodName367.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes367, parameterTypes)) {
 			return TicketSolutionServiceUtil.addTicketSolution(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2],
@@ -75,8 +75,8 @@ public class TicketSolutionServiceClpInvoker {
 				(java.util.List<com.liferay.osb.model.TicketAttachment>)arguments[16]);
 		}
 
-		if (_methodName378.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes378, parameterTypes)) {
+		if (_methodName368.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes368, parameterTypes)) {
 			return TicketSolutionServiceUtil.updateTicketSolution(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
@@ -88,10 +88,10 @@ public class TicketSolutionServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName372;
-	private String[] _methodParameterTypes372;
-	private String _methodName377;
-	private String[] _methodParameterTypes377;
-	private String _methodName378;
-	private String[] _methodParameterTypes378;
+	private String _methodName362;
+	private String[] _methodParameterTypes362;
+	private String _methodName367;
+	private String[] _methodParameterTypes367;
+	private String _methodName368;
+	private String[] _methodParameterTypes368;
 }

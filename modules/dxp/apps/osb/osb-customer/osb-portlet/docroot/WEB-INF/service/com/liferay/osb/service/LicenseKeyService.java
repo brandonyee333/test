@@ -66,11 +66,12 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		throws PortalException;
 
 	public LicenseKey addLicenseKey(long userId, long assetReceiptLicenseId,
-		java.lang.String owner, java.lang.String description,
+		java.lang.String licenseEntryType, java.lang.String productEntryName,
+		java.lang.String productId, int productVersion, java.lang.String owner,
+		long maxUsers, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear)
-		throws PortalException;
+		Date startDate, Date expirationDate) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKey getLicenseKey(long licenseKeyId)
@@ -105,8 +106,8 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
 
-	public LicenseKey renewLicenseKey(long licenseKeyId)
-		throws PortalException;
+	public LicenseKey renewLicenseKey(long licenseKeyId, Date startDate,
+		Date expirationDate) throws PortalException;
 
 	public LicenseKey renewLicenseKey(long licenseKeyId, Date startDate,
 		int renewTime) throws java.lang.Exception;

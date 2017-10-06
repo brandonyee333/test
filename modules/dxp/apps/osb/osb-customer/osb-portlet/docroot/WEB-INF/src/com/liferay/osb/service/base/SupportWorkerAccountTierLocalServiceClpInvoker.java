@@ -123,17 +123,17 @@ public class SupportWorkerAccountTierLocalServiceClpInvoker {
 				"com.liferay.osb.model.SupportWorkerAccountTier"
 			};
 
-		_methodName280 = "getOSGiServiceIdentifier";
+		_methodName272 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes280 = new String[] {  };
+		_methodParameterTypes272 = new String[] {  };
 
-		_methodName285 = "getSupportWorkerAccountTiers";
+		_methodName277 = "getSupportWorkerAccountTiers";
 
-		_methodParameterTypes285 = new String[] { "long" };
+		_methodParameterTypes277 = new String[] { "long" };
 
-		_methodName286 = "setSupportWorkerAccountTiers";
+		_methodName278 = "setSupportWorkerAccountTiers";
 
-		_methodParameterTypes286 = new String[] { "long", "int[][]" };
+		_methodParameterTypes278 = new String[] { "long", "int[][]" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -240,18 +240,18 @@ public class SupportWorkerAccountTierLocalServiceClpInvoker {
 			return SupportWorkerAccountTierLocalServiceUtil.updateSupportWorkerAccountTier((com.liferay.osb.model.SupportWorkerAccountTier)arguments[0]);
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName272.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes272, parameterTypes)) {
 			return SupportWorkerAccountTierLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName277.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes277, parameterTypes)) {
 			return SupportWorkerAccountTierLocalServiceUtil.getSupportWorkerAccountTiers(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName278.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
 			SupportWorkerAccountTierLocalServiceUtil.setSupportWorkerAccountTiers(((Long)arguments[0]).longValue(),
 				(int[])arguments[1]);
 
@@ -299,10 +299,10 @@ public class SupportWorkerAccountTierLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName280;
-	private String[] _methodParameterTypes280;
-	private String _methodName285;
-	private String[] _methodParameterTypes285;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
+	private String _methodName272;
+	private String[] _methodParameterTypes272;
+	private String _methodName277;
+	private String[] _methodParameterTypes277;
+	private String _methodName278;
+	private String[] _methodParameterTypes278;
 }

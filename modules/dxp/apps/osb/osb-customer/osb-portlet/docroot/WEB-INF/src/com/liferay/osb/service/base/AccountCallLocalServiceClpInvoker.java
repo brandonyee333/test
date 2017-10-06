@@ -123,17 +123,17 @@ public class AccountCallLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountCall"
 			};
 
-		_methodName280 = "getOSGiServiceIdentifier";
+		_methodName272 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes280 = new String[] {  };
+		_methodParameterTypes272 = new String[] {  };
 
-		_methodName285 = "getAccountCalls";
+		_methodName277 = "getAccountCalls";
 
-		_methodParameterTypes285 = new String[] { "long" };
+		_methodParameterTypes277 = new String[] { "long" };
 
-		_methodName286 = "updateAccountCall";
+		_methodName278 = "updateAccountCall";
 
-		_methodParameterTypes286 = new String[] {
+		_methodParameterTypes278 = new String[] {
 				"long", "long", "long", "int", "int", "int", "int", "int", "int",
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String"
@@ -244,18 +244,18 @@ public class AccountCallLocalServiceClpInvoker {
 			return AccountCallLocalServiceUtil.updateAccountCall((com.liferay.osb.model.AccountCall)arguments[0]);
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName272.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes272, parameterTypes)) {
 			return AccountCallLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName277.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes277, parameterTypes)) {
 			return AccountCallLocalServiceUtil.getAccountCalls(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName278.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
 			return AccountCallLocalServiceUtil.updateAccountCall(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -312,10 +312,10 @@ public class AccountCallLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName280;
-	private String[] _methodParameterTypes280;
-	private String _methodName285;
-	private String[] _methodParameterTypes285;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
+	private String _methodName272;
+	private String[] _methodParameterTypes272;
+	private String _methodName277;
+	private String[] _methodParameterTypes277;
+	private String _methodName278;
+	private String[] _methodParameterTypes278;
 }

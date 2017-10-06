@@ -27,32 +27,32 @@ import java.util.Arrays;
 @ProviderType
 public class SecurityPatchServiceClpInvoker {
 	public SecurityPatchServiceClpInvoker() {
-		_methodName378 = "getOSGiServiceIdentifier";
+		_methodName368 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes378 = new String[] {  };
+		_methodParameterTypes368 = new String[] {  };
 
-		_methodName383 = "getSecurityPatch";
+		_methodName373 = "getSecurityPatch";
 
-		_methodParameterTypes383 = new String[] { "long" };
+		_methodParameterTypes373 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName378.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes378, parameterTypes)) {
+		if (_methodName368.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes368, parameterTypes)) {
 			return SecurityPatchServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName383.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes383, parameterTypes)) {
+		if (_methodName373.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes373, parameterTypes)) {
 			return SecurityPatchServiceUtil.getSecurityPatch(((Long)arguments[0]).longValue());
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName378;
-	private String[] _methodParameterTypes378;
-	private String _methodName383;
-	private String[] _methodParameterTypes383;
+	private String _methodName368;
+	private String[] _methodParameterTypes368;
+	private String _methodName373;
+	private String[] _methodParameterTypes373;
 }

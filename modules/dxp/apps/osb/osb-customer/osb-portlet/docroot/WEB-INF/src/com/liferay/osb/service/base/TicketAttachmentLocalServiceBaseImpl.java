@@ -30,8 +30,6 @@ import com.liferay.osb.service.persistence.AccountInformationPersistence;
 import com.liferay.osb.service.persistence.AccountLinkPersistence;
 import com.liferay.osb.service.persistence.AccountProjectPersistence;
 import com.liferay.osb.service.persistence.AccountWorkerPersistence;
-import com.liferay.osb.service.persistence.AssetLicensePersistence;
-import com.liferay.osb.service.persistence.AssetReceiptLicensePersistence;
 import com.liferay.osb.service.persistence.AuditActionPersistence;
 import com.liferay.osb.service.persistence.AuditEntryPersistence;
 import com.liferay.osb.service.persistence.CorpProjectPersistence;
@@ -818,82 +816,6 @@ public abstract class TicketAttachmentLocalServiceBaseImpl
 	public void setAccountWorkerPersistence(
 		AccountWorkerPersistence accountWorkerPersistence) {
 		this.accountWorkerPersistence = accountWorkerPersistence;
-	}
-
-	/**
-	 * Returns the asset license local service.
-	 *
-	 * @return the asset license local service
-	 */
-	public com.liferay.osb.service.AssetLicenseLocalService getAssetLicenseLocalService() {
-		return assetLicenseLocalService;
-	}
-
-	/**
-	 * Sets the asset license local service.
-	 *
-	 * @param assetLicenseLocalService the asset license local service
-	 */
-	public void setAssetLicenseLocalService(
-		com.liferay.osb.service.AssetLicenseLocalService assetLicenseLocalService) {
-		this.assetLicenseLocalService = assetLicenseLocalService;
-	}
-
-	/**
-	 * Returns the asset license persistence.
-	 *
-	 * @return the asset license persistence
-	 */
-	public AssetLicensePersistence getAssetLicensePersistence() {
-		return assetLicensePersistence;
-	}
-
-	/**
-	 * Sets the asset license persistence.
-	 *
-	 * @param assetLicensePersistence the asset license persistence
-	 */
-	public void setAssetLicensePersistence(
-		AssetLicensePersistence assetLicensePersistence) {
-		this.assetLicensePersistence = assetLicensePersistence;
-	}
-
-	/**
-	 * Returns the asset receipt license local service.
-	 *
-	 * @return the asset receipt license local service
-	 */
-	public com.liferay.osb.service.AssetReceiptLicenseLocalService getAssetReceiptLicenseLocalService() {
-		return assetReceiptLicenseLocalService;
-	}
-
-	/**
-	 * Sets the asset receipt license local service.
-	 *
-	 * @param assetReceiptLicenseLocalService the asset receipt license local service
-	 */
-	public void setAssetReceiptLicenseLocalService(
-		com.liferay.osb.service.AssetReceiptLicenseLocalService assetReceiptLicenseLocalService) {
-		this.assetReceiptLicenseLocalService = assetReceiptLicenseLocalService;
-	}
-
-	/**
-	 * Returns the asset receipt license persistence.
-	 *
-	 * @return the asset receipt license persistence
-	 */
-	public AssetReceiptLicensePersistence getAssetReceiptLicensePersistence() {
-		return assetReceiptLicensePersistence;
-	}
-
-	/**
-	 * Sets the asset receipt license persistence.
-	 *
-	 * @param assetReceiptLicensePersistence the asset receipt license persistence
-	 */
-	public void setAssetReceiptLicensePersistence(
-		AssetReceiptLicensePersistence assetReceiptLicensePersistence) {
-		this.assetReceiptLicensePersistence = assetReceiptLicensePersistence;
 	}
 
 	/**
@@ -2984,14 +2906,6 @@ public abstract class TicketAttachmentLocalServiceBaseImpl
 	protected com.liferay.osb.service.AccountWorkerLocalService accountWorkerLocalService;
 	@BeanReference(type = AccountWorkerPersistence.class)
 	protected AccountWorkerPersistence accountWorkerPersistence;
-	@BeanReference(type = com.liferay.osb.service.AssetLicenseLocalService.class)
-	protected com.liferay.osb.service.AssetLicenseLocalService assetLicenseLocalService;
-	@BeanReference(type = AssetLicensePersistence.class)
-	protected AssetLicensePersistence assetLicensePersistence;
-	@BeanReference(type = com.liferay.osb.service.AssetReceiptLicenseLocalService.class)
-	protected com.liferay.osb.service.AssetReceiptLicenseLocalService assetReceiptLicenseLocalService;
-	@BeanReference(type = AssetReceiptLicensePersistence.class)
-	protected AssetReceiptLicensePersistence assetReceiptLicensePersistence;
 	@BeanReference(type = com.liferay.osb.service.AuditActionLocalService.class)
 	protected com.liferay.osb.service.AuditActionLocalService auditActionLocalService;
 	@BeanReference(type = AuditActionPersistence.class)

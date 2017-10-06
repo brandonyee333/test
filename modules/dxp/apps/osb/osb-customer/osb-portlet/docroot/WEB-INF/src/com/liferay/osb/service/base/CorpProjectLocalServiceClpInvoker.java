@@ -123,9 +123,9 @@ public class CorpProjectLocalServiceClpInvoker {
 				"com.liferay.osb.model.CorpProject"
 			};
 
-		_methodName280 = "getOSGiServiceIdentifier";
+		_methodName272 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes280 = new String[] {  };
+		_methodParameterTypes272 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -232,8 +232,8 @@ public class CorpProjectLocalServiceClpInvoker {
 			return CorpProjectLocalServiceUtil.updateCorpProject((com.liferay.osb.model.CorpProject)arguments[0]);
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName272.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes272, parameterTypes)) {
 			return CorpProjectLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
@@ -278,6 +278,6 @@ public class CorpProjectLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName280;
-	private String[] _methodParameterTypes280;
+	private String _methodName272;
+	private String[] _methodParameterTypes272;
 }

@@ -27,56 +27,56 @@ import java.util.Arrays;
 @ProviderType
 public class AccountAttachmentServiceClpInvoker {
 	public AccountAttachmentServiceClpInvoker() {
-		_methodName372 = "getOSGiServiceIdentifier";
+		_methodName362 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes372 = new String[] {  };
+		_methodParameterTypes362 = new String[] {  };
 
-		_methodName377 = "addAccountAttachments";
+		_methodName367 = "addAccountAttachments";
 
-		_methodParameterTypes377 = new String[] {
+		_methodParameterTypes367 = new String[] {
 				"long", "long", "java.util.List", "java.util.List"
 			};
 
-		_methodName378 = "deleteAccountAttachment";
+		_methodName368 = "deleteAccountAttachment";
 
-		_methodParameterTypes378 = new String[] { "long" };
+		_methodParameterTypes368 = new String[] { "long" };
 
-		_methodName379 = "getAccountAttachment";
+		_methodName369 = "getAccountAttachment";
 
-		_methodParameterTypes379 = new String[] { "long" };
+		_methodParameterTypes369 = new String[] { "long" };
 
-		_methodName380 = "getAccountAttachments";
+		_methodName370 = "getAccountAttachments";
 
-		_methodParameterTypes380 = new String[] { "long", "long", "int" };
+		_methodParameterTypes370 = new String[] { "long", "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName372.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
+		if (_methodName362.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes362, parameterTypes)) {
 			return AccountAttachmentServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName377.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes377, parameterTypes)) {
+		if (_methodName367.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes367, parameterTypes)) {
 			return AccountAttachmentServiceUtil.addAccountAttachments(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>>)arguments[2],
 				(java.util.List<java.lang.Integer>)arguments[3]);
 		}
 
-		if (_methodName378.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes378, parameterTypes)) {
+		if (_methodName368.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes368, parameterTypes)) {
 			return AccountAttachmentServiceUtil.deleteAccountAttachment(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName379.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes379, parameterTypes)) {
+		if (_methodName369.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes369, parameterTypes)) {
 			return AccountAttachmentServiceUtil.getAccountAttachment(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName380.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
+		if (_methodName370.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes370, parameterTypes)) {
 			return AccountAttachmentServiceUtil.getAccountAttachments(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue());
@@ -85,14 +85,14 @@ public class AccountAttachmentServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName372;
-	private String[] _methodParameterTypes372;
-	private String _methodName377;
-	private String[] _methodParameterTypes377;
-	private String _methodName378;
-	private String[] _methodParameterTypes378;
-	private String _methodName379;
-	private String[] _methodParameterTypes379;
-	private String _methodName380;
-	private String[] _methodParameterTypes380;
+	private String _methodName362;
+	private String[] _methodParameterTypes362;
+	private String _methodName367;
+	private String[] _methodParameterTypes367;
+	private String _methodName368;
+	private String[] _methodParameterTypes368;
+	private String _methodName369;
+	private String[] _methodParameterTypes369;
+	private String _methodName370;
+	private String[] _methodParameterTypes370;
 }

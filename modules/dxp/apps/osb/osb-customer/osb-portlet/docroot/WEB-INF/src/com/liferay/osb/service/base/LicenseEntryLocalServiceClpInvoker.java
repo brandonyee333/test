@@ -123,32 +123,32 @@ public class LicenseEntryLocalServiceClpInvoker {
 				"com.liferay.osb.model.LicenseEntry"
 			};
 
-		_methodName284 = "getOSGiServiceIdentifier";
+		_methodName276 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes284 = new String[] {  };
+		_methodParameterTypes276 = new String[] {  };
 
-		_methodName289 = "addLicenseEntry";
+		_methodName281 = "addLicenseEntry";
 
-		_methodParameterTypes289 = new String[] {
+		_methodParameterTypes281 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String", "int",
 				"int"
 			};
 
-		_methodName290 = "getLicenseEntries";
+		_methodName282 = "getLicenseEntries";
 
-		_methodParameterTypes290 = new String[] { "long" };
+		_methodParameterTypes282 = new String[] { "long" };
 
-		_methodName291 = "getLicenseEntries";
+		_methodName283 = "getLicenseEntries";
 
-		_methodParameterTypes291 = new String[] { "long", "int" };
+		_methodParameterTypes283 = new String[] { "long", "int" };
 
-		_methodName292 = "getLicenseEntry";
+		_methodName284 = "getLicenseEntry";
 
-		_methodParameterTypes292 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes284 = new String[] { "long", "java.lang.String" };
 
-		_methodName293 = "updateLicenseEntry";
+		_methodName285 = "updateLicenseEntry";
 
-		_methodParameterTypes293 = new String[] {
+		_methodParameterTypes285 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String", "int",
 				"int"
 			};
@@ -258,13 +258,13 @@ public class LicenseEntryLocalServiceClpInvoker {
 			return LicenseEntryLocalServiceUtil.updateLicenseEntry((com.liferay.osb.model.LicenseEntry)arguments[0]);
 		}
 
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
+		if (_methodName276.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes276, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName289.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
+		if (_methodName281.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes281, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.addLicenseEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
@@ -272,25 +272,25 @@ public class LicenseEntryLocalServiceClpInvoker {
 				((Integer)arguments[5]).intValue());
 		}
 
-		if (_methodName290.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
+		if (_methodName282.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.getLicenseEntries(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName291.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+		if (_methodName283.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.getLicenseEntries(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
 
-		if (_methodName292.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+		if (_methodName284.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.getLicenseEntry(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
 
-		if (_methodName293.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+		if (_methodName285.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
 			return LicenseEntryLocalServiceUtil.updateLicenseEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
@@ -339,16 +339,16 @@ public class LicenseEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
+	private String _methodName276;
+	private String[] _methodParameterTypes276;
+	private String _methodName281;
+	private String[] _methodParameterTypes281;
+	private String _methodName282;
+	private String[] _methodParameterTypes282;
+	private String _methodName283;
+	private String[] _methodParameterTypes283;
 	private String _methodName284;
 	private String[] _methodParameterTypes284;
-	private String _methodName289;
-	private String[] _methodParameterTypes289;
-	private String _methodName290;
-	private String[] _methodParameterTypes290;
-	private String _methodName291;
-	private String[] _methodParameterTypes291;
-	private String _methodName292;
-	private String[] _methodParameterTypes292;
-	private String _methodName293;
-	private String[] _methodParameterTypes293;
+	private String _methodName285;
+	private String[] _methodParameterTypes285;
 }

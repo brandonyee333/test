@@ -123,51 +123,51 @@ public class AccountWorkerLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountWorker"
 			};
 
-		_methodName280 = "getOSGiServiceIdentifier";
+		_methodName272 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes280 = new String[] {  };
+		_methodParameterTypes272 = new String[] {  };
 
-		_methodName285 = "addAccountWorkers";
+		_methodName277 = "addAccountWorkers";
 
-		_methodParameterTypes285 = new String[] {
+		_methodParameterTypes277 = new String[] {
 				"long", "long[][]", "long", "int[][]", "int[][]"
 			};
 
-		_methodName286 = "deleteAccountEntryAccountWorkers";
+		_methodName278 = "deleteAccountEntryAccountWorkers";
 
-		_methodParameterTypes286 = new String[] { "long" };
+		_methodParameterTypes278 = new String[] { "long" };
 
-		_methodName287 = "deleteAccountWorkers";
+		_methodName279 = "deleteAccountWorkers";
 
-		_methodParameterTypes287 = new String[] { "long" };
+		_methodParameterTypes279 = new String[] { "long" };
 
-		_methodName288 = "deleteAccountWorkers";
+		_methodName280 = "deleteAccountWorkers";
 
-		_methodParameterTypes288 = new String[] { "long", "long[][]", "long" };
+		_methodParameterTypes280 = new String[] { "long", "long[][]", "long" };
 
-		_methodName289 = "getAccountWorker";
+		_methodName281 = "getAccountWorker";
 
-		_methodParameterTypes289 = new String[] { "long", "long" };
+		_methodParameterTypes281 = new String[] { "long", "long" };
 
-		_methodName290 = "getAccountWorkers";
+		_methodName282 = "getAccountWorkers";
 
-		_methodParameterTypes290 = new String[] { "long" };
+		_methodParameterTypes282 = new String[] { "long" };
 
-		_methodName291 = "getAccountWorkers";
+		_methodName283 = "getAccountWorkers";
 
-		_methodParameterTypes291 = new String[] { "long", "int" };
+		_methodParameterTypes283 = new String[] { "long", "int" };
 
-		_methodName292 = "getUserAccountWorkers";
+		_methodName284 = "getUserAccountWorkers";
 
-		_methodParameterTypes292 = new String[] { "long" };
+		_methodParameterTypes284 = new String[] { "long" };
 
-		_methodName293 = "hasAccountWorker";
+		_methodName285 = "hasAccountWorker";
 
-		_methodParameterTypes293 = new String[] { "long", "long" };
+		_methodParameterTypes285 = new String[] { "long", "long" };
 
-		_methodName294 = "hasAccountWorkerRole";
+		_methodName286 = "hasAccountWorkerRole";
 
-		_methodParameterTypes294 = new String[] { "long", "int" };
+		_methodParameterTypes286 = new String[] { "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -274,13 +274,13 @@ public class AccountWorkerLocalServiceClpInvoker {
 			return AccountWorkerLocalServiceUtil.updateAccountWorker((com.liferay.osb.model.AccountWorker)arguments[0]);
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName272.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes272, parameterTypes)) {
 			return AccountWorkerLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName277.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes277, parameterTypes)) {
 			AccountWorkerLocalServiceUtil.addAccountWorkers(((Long)arguments[0]).longValue(),
 				(long[])arguments[1], ((Long)arguments[2]).longValue(),
 				(int[])arguments[3], (int[])arguments[4]);
@@ -288,58 +288,58 @@ public class AccountWorkerLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName278.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
 			AccountWorkerLocalServiceUtil.deleteAccountEntryAccountWorkers(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName287.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
+		if (_methodName279.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes279, parameterTypes)) {
 			AccountWorkerLocalServiceUtil.deleteAccountWorkers(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName288.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			AccountWorkerLocalServiceUtil.deleteAccountWorkers(((Long)arguments[0]).longValue(),
 				(long[])arguments[1], ((Long)arguments[2]).longValue());
 
 			return null;
 		}
 
-		if (_methodName289.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
+		if (_methodName281.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes281, parameterTypes)) {
 			return AccountWorkerLocalServiceUtil.getAccountWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName290.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
+		if (_methodName282.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
 			return AccountWorkerLocalServiceUtil.getAccountWorkers(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName291.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+		if (_methodName283.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
 			return AccountWorkerLocalServiceUtil.getAccountWorkers(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
 
-		if (_methodName292.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+		if (_methodName284.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
 			return AccountWorkerLocalServiceUtil.getUserAccountWorkers(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName293.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+		if (_methodName285.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
 			return AccountWorkerLocalServiceUtil.hasAccountWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName294.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return AccountWorkerLocalServiceUtil.hasAccountWorkerRole(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
@@ -385,26 +385,26 @@ public class AccountWorkerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
+	private String _methodName272;
+	private String[] _methodParameterTypes272;
+	private String _methodName277;
+	private String[] _methodParameterTypes277;
+	private String _methodName278;
+	private String[] _methodParameterTypes278;
+	private String _methodName279;
+	private String[] _methodParameterTypes279;
 	private String _methodName280;
 	private String[] _methodParameterTypes280;
+	private String _methodName281;
+	private String[] _methodParameterTypes281;
+	private String _methodName282;
+	private String[] _methodParameterTypes282;
+	private String _methodName283;
+	private String[] _methodParameterTypes283;
+	private String _methodName284;
+	private String[] _methodParameterTypes284;
 	private String _methodName285;
 	private String[] _methodParameterTypes285;
 	private String _methodName286;
 	private String[] _methodParameterTypes286;
-	private String _methodName287;
-	private String[] _methodParameterTypes287;
-	private String _methodName288;
-	private String[] _methodParameterTypes288;
-	private String _methodName289;
-	private String[] _methodParameterTypes289;
-	private String _methodName290;
-	private String[] _methodParameterTypes290;
-	private String _methodName291;
-	private String[] _methodParameterTypes291;
-	private String _methodName292;
-	private String[] _methodParameterTypes292;
-	private String _methodName293;
-	private String[] _methodParameterTypes293;
-	private String _methodName294;
-	private String[] _methodParameterTypes294;
 }

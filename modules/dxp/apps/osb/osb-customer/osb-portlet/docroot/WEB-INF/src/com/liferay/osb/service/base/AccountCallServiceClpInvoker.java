@@ -27,17 +27,17 @@ import java.util.Arrays;
 @ProviderType
 public class AccountCallServiceClpInvoker {
 	public AccountCallServiceClpInvoker() {
-		_methodName366 = "getOSGiServiceIdentifier";
+		_methodName356 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes366 = new String[] {  };
+		_methodParameterTypes356 = new String[] {  };
 
-		_methodName371 = "deleteAccountCall";
+		_methodName361 = "deleteAccountCall";
 
-		_methodParameterTypes371 = new String[] { "long" };
+		_methodParameterTypes361 = new String[] { "long" };
 
-		_methodName372 = "updateAccountCall";
+		_methodName362 = "updateAccountCall";
 
-		_methodParameterTypes372 = new String[] {
+		_methodParameterTypes362 = new String[] {
 				"long", "long", "int", "int", "int", "int", "int", "int", "long",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String"
@@ -46,18 +46,18 @@ public class AccountCallServiceClpInvoker {
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName366.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes366, parameterTypes)) {
+		if (_methodName356.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes356, parameterTypes)) {
 			return AccountCallServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName371.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes371, parameterTypes)) {
+		if (_methodName361.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes361, parameterTypes)) {
 			return AccountCallServiceUtil.deleteAccountCall(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName372.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
+		if (_methodName362.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes362, parameterTypes)) {
 			return AccountCallServiceUtil.updateAccountCall(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
@@ -75,10 +75,10 @@ public class AccountCallServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName366;
-	private String[] _methodParameterTypes366;
-	private String _methodName371;
-	private String[] _methodParameterTypes371;
-	private String _methodName372;
-	private String[] _methodParameterTypes372;
+	private String _methodName356;
+	private String[] _methodParameterTypes356;
+	private String _methodName361;
+	private String[] _methodParameterTypes361;
+	private String _methodName362;
+	private String[] _methodParameterTypes362;
 }

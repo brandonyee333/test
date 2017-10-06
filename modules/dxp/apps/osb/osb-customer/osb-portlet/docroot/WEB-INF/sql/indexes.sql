@@ -41,12 +41,6 @@ create index IX_9D0A292E on OSB_AccountWorker (accountEntryId, role);
 create index IX_72B97E on OSB_AccountWorker (userId, accountEntryId);
 create index IX_1224F534 on OSB_AccountWorker (userId, role);
 
-create index IX_519B1093 on OSB_AssetLicense (classNameId, classPK, status);
-create index IX_F8157850 on OSB_AssetLicense (classNameId, classPK, usageType, licenseType, licenseTypeAllotment, status);
-create index IX_53516693 on OSB_AssetLicense (classNameId, classPK, usageType, licenseType, status);
-
-create index IX_F61CD736 on OSB_AssetReceiptLicense (uuid_[$COLUMN_LENGTH:75$]);
-
 create index IX_2194BE84 on OSB_AuditAction (classNameId, classPK, mappingClassPK);
 create index IX_6E655F39 on OSB_AuditAction (modifiedDate, classNameId, classPK, mappingClassPK, action);
 create index IX_EA525690 on OSB_AuditAction (modifiedDate, classNameId, mappingClassPK, action);
@@ -144,7 +138,6 @@ create index IX_9FADBCC1 on OSB_SupportWorkerComponent (supportWorkerId);
 create index IX_58971029 on OSB_SupportWorkerSeverity (supportWorkerId);
 
 create index IX_61FA03D on OSB_TicketAttachment (createDate, ticketEntryId);
-create index IX_C5D75521 on OSB_TicketAttachment (createDate, type_);
 create index IX_26149242 on OSB_TicketAttachment (ticketEntryId, fileName[$COLUMN_LENGTH:255$], visibility, status);
 create index IX_CFC835A1 on OSB_TicketAttachment (ticketEntryId, status);
 create index IX_46E45E8F on OSB_TicketAttachment (ticketEntryId, ticketSolutionId);

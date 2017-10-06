@@ -123,34 +123,34 @@ public class HolidayEntryLocalServiceClpInvoker {
 				"com.liferay.osb.model.HolidayEntry"
 			};
 
-		_methodName280 = "getOSGiServiceIdentifier";
+		_methodName272 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes280 = new String[] {  };
+		_methodParameterTypes272 = new String[] {  };
 
-		_methodName285 = "addHolidayEntry";
+		_methodName277 = "addHolidayEntry";
 
-		_methodParameterTypes285 = new String[] {
+		_methodParameterTypes277 = new String[] {
 				"long", "java.lang.String", "java.lang.String", "java.util.Date",
 				"java.util.Date", "boolean"
 			};
 
-		_methodName286 = "getHolidayEntries";
+		_methodName278 = "getHolidayEntries";
 
-		_methodParameterTypes286 = new String[] { "long" };
+		_methodParameterTypes278 = new String[] { "long" };
 
-		_methodName287 = "getHolidayEntriesBetween";
+		_methodName279 = "getHolidayEntriesBetween";
 
-		_methodParameterTypes287 = new String[] {
+		_methodParameterTypes279 = new String[] {
 				"long", "java.util.Date", "java.util.Date", "java.util.TimeZone"
 			};
 
-		_methodName288 = "getHolidayEntriesCount";
+		_methodName280 = "getHolidayEntriesCount";
 
-		_methodParameterTypes288 = new String[] { "long", "java.util.Date" };
+		_methodParameterTypes280 = new String[] { "long", "java.util.Date" };
 
-		_methodName289 = "updateHolidayEntry";
+		_methodName281 = "updateHolidayEntry";
 
-		_methodParameterTypes289 = new String[] {
+		_methodParameterTypes281 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
 				"java.util.Date", "java.util.Date", "boolean"
 			};
@@ -260,39 +260,39 @@ public class HolidayEntryLocalServiceClpInvoker {
 			return HolidayEntryLocalServiceUtil.updateHolidayEntry((com.liferay.osb.model.HolidayEntry)arguments[0]);
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName272.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes272, parameterTypes)) {
 			return HolidayEntryLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName277.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes277, parameterTypes)) {
 			return HolidayEntryLocalServiceUtil.addHolidayEntry(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.util.Date)arguments[3], (java.util.Date)arguments[4],
 				((Boolean)arguments[5]).booleanValue());
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName278.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
 			return HolidayEntryLocalServiceUtil.getHolidayEntries(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName287.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
+		if (_methodName279.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes279, parameterTypes)) {
 			return HolidayEntryLocalServiceUtil.getHolidayEntriesBetween(((Long)arguments[0]).longValue(),
 				(java.util.Date)arguments[1], (java.util.Date)arguments[2],
 				(java.util.TimeZone)arguments[3]);
 		}
 
-		if (_methodName288.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return HolidayEntryLocalServiceUtil.getHolidayEntriesCount(((Long)arguments[0]).longValue(),
 				(java.util.Date)arguments[1]);
 		}
 
-		if (_methodName289.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
+		if (_methodName281.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes281, parameterTypes)) {
 			return HolidayEntryLocalServiceUtil.updateHolidayEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
@@ -341,16 +341,16 @@ public class HolidayEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
+	private String _methodName272;
+	private String[] _methodParameterTypes272;
+	private String _methodName277;
+	private String[] _methodParameterTypes277;
+	private String _methodName278;
+	private String[] _methodParameterTypes278;
+	private String _methodName279;
+	private String[] _methodParameterTypes279;
 	private String _methodName280;
 	private String[] _methodParameterTypes280;
-	private String _methodName285;
-	private String[] _methodParameterTypes285;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
-	private String _methodName287;
-	private String[] _methodParameterTypes287;
-	private String _methodName288;
-	private String[] _methodParameterTypes288;
-	private String _methodName289;
-	private String[] _methodParameterTypes289;
+	private String _methodName281;
+	private String[] _methodParameterTypes281;
 }

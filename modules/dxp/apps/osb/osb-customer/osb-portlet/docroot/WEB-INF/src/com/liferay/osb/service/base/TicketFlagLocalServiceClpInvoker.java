@@ -119,47 +119,47 @@ public class TicketFlagLocalServiceClpInvoker {
 				"com.liferay.osb.model.TicketFlag"
 			};
 
-		_methodName280 = "getOSGiServiceIdentifier";
+		_methodName272 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes280 = new String[] {  };
+		_methodParameterTypes272 = new String[] {  };
 
-		_methodName285 = "deleteTicketFlag";
+		_methodName277 = "deleteTicketFlag";
 
-		_methodParameterTypes285 = new String[] { "long", "long", "long", "int" };
+		_methodParameterTypes277 = new String[] { "long", "long", "long", "int" };
 
-		_methodName286 = "deleteTicketFlags";
+		_methodName278 = "deleteTicketFlags";
 
-		_methodParameterTypes286 = new String[] { "long", "int", "int" };
+		_methodParameterTypes278 = new String[] { "long", "int", "int" };
 
-		_methodName287 = "getTicketFlags";
+		_methodName279 = "getTicketFlags";
 
-		_methodParameterTypes287 = new String[] { "long", "int", "int" };
+		_methodParameterTypes279 = new String[] { "long", "int", "int" };
 
-		_methodName288 = "getTicketFlags";
+		_methodName280 = "getTicketFlags";
 
-		_methodParameterTypes288 = new String[] { "long", "int[][]", "int" };
+		_methodParameterTypes280 = new String[] { "long", "int[][]", "int" };
 
-		_methodName289 = "getTicketFlagsCount";
+		_methodName281 = "getTicketFlagsCount";
 
-		_methodParameterTypes289 = new String[] { "long", "int", "int" };
+		_methodParameterTypes281 = new String[] { "long", "int", "int" };
 
-		_methodName290 = "getTicketFlagTypes";
+		_methodName282 = "getTicketFlagTypes";
 
-		_methodParameterTypes290 = new String[] { "long", "int[][]", "int" };
+		_methodParameterTypes282 = new String[] { "long", "int[][]", "int" };
 
-		_methodName291 = "hasTicketFlag";
+		_methodName283 = "hasTicketFlag";
 
-		_methodParameterTypes291 = new String[] { "long", "int", "int" };
+		_methodParameterTypes283 = new String[] { "long", "int", "int" };
 
-		_methodName292 = "hasTicketFlag";
+		_methodName284 = "hasTicketFlag";
 
-		_methodParameterTypes292 = new String[] {
+		_methodParameterTypes284 = new String[] {
 				"long", "long", "long", "int", "int"
 			};
 
-		_methodName293 = "updateTicketFlag";
+		_methodName285 = "updateTicketFlag";
 
-		_methodParameterTypes293 = new String[] {
+		_methodParameterTypes285 = new String[] {
 				"long", "long", "long", "int", "int"
 			};
 	}
@@ -268,13 +268,13 @@ public class TicketFlagLocalServiceClpInvoker {
 			return TicketFlagLocalServiceUtil.updateTicketFlag((com.liferay.osb.model.TicketFlag)arguments[0]);
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName272.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes272, parameterTypes)) {
 			return TicketFlagLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName277.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes277, parameterTypes)) {
 			TicketFlagLocalServiceUtil.deleteTicketFlag(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -283,8 +283,8 @@ public class TicketFlagLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName278.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
 			TicketFlagLocalServiceUtil.deleteTicketFlags(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
@@ -292,41 +292,41 @@ public class TicketFlagLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName287.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
+		if (_methodName279.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes279, parameterTypes)) {
 			return TicketFlagLocalServiceUtil.getTicketFlags(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName288.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return TicketFlagLocalServiceUtil.getTicketFlags(((Long)arguments[0]).longValue(),
 				(int[])arguments[1], ((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName289.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
+		if (_methodName281.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes281, parameterTypes)) {
 			return TicketFlagLocalServiceUtil.getTicketFlagsCount(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName290.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
+		if (_methodName282.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
 			return TicketFlagLocalServiceUtil.getTicketFlagTypes(((Long)arguments[0]).longValue(),
 				(int[])arguments[1], ((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName291.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+		if (_methodName283.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
 			return TicketFlagLocalServiceUtil.hasTicketFlag(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName292.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+		if (_methodName284.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
 			return TicketFlagLocalServiceUtil.hasTicketFlag(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -334,8 +334,8 @@ public class TicketFlagLocalServiceClpInvoker {
 				((Integer)arguments[4]).intValue());
 		}
 
-		if (_methodName293.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+		if (_methodName285.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
 			return TicketFlagLocalServiceUtil.updateTicketFlag(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -384,24 +384,24 @@ public class TicketFlagLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
+	private String _methodName272;
+	private String[] _methodParameterTypes272;
+	private String _methodName277;
+	private String[] _methodParameterTypes277;
+	private String _methodName278;
+	private String[] _methodParameterTypes278;
+	private String _methodName279;
+	private String[] _methodParameterTypes279;
 	private String _methodName280;
 	private String[] _methodParameterTypes280;
+	private String _methodName281;
+	private String[] _methodParameterTypes281;
+	private String _methodName282;
+	private String[] _methodParameterTypes282;
+	private String _methodName283;
+	private String[] _methodParameterTypes283;
+	private String _methodName284;
+	private String[] _methodParameterTypes284;
 	private String _methodName285;
 	private String[] _methodParameterTypes285;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
-	private String _methodName287;
-	private String[] _methodParameterTypes287;
-	private String _methodName288;
-	private String[] _methodParameterTypes288;
-	private String _methodName289;
-	private String[] _methodParameterTypes289;
-	private String _methodName290;
-	private String[] _methodParameterTypes290;
-	private String _methodName291;
-	private String[] _methodParameterTypes291;
-	private String _methodName292;
-	private String[] _methodParameterTypes292;
-	private String _methodName293;
-	private String[] _methodParameterTypes293;
 }

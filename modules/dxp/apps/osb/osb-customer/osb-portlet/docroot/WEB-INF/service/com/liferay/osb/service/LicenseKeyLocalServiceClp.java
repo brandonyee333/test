@@ -35,15 +35,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		_methodName1 = "addLicenseKey";
 
 		_methodParameterTypes1 = new String[] {
-				"long", "com.liferay.osb.model.AssetReceiptLicense",
-				"java.lang.String", "java.lang.String", "java.lang.String[][]",
-				"java.lang.String[][]", "java.lang.String[][]",
-				"java.lang.String[][]", "int", "int", "int"
-			};
-
-		_methodName2 = "addLicenseKey";
-
-		_methodParameterTypes2 = new String[] {
 				"long", "com.liferay.osb.model.LicenseKeySet",
 				"java.lang.String", "com.liferay.osb.model.OfferingEntry",
 				"com.liferay.osb.model.LicenseEntry",
@@ -54,15 +45,25 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 				"int", "java.lang.String", "boolean", "boolean"
 			};
 
-		_methodName3 = "addLicenseKey";
+		_methodName2 = "addLicenseKey";
 
-		_methodParameterTypes3 = new String[] {
+		_methodParameterTypes2 = new String[] {
 				"long", "long", "java.lang.String", "long", "long", "long",
 				"int", "long", "java.lang.String", "int", "int",
 				"java.lang.String", "java.lang.String[][]",
 				"java.lang.String[][]", "java.lang.String[][]",
 				"java.lang.String[][]", "int", "int", "int", "boolean",
 				"boolean"
+			};
+
+		_methodName3 = "addLicenseKey";
+
+		_methodParameterTypes3 = new String[] {
+				"long", "long", "java.lang.String", "java.lang.String",
+				"java.lang.String", "int", "java.lang.String", "long",
+				"java.lang.String", "java.lang.String[][]",
+				"java.lang.String[][]", "java.lang.String[][]",
+				"java.lang.String[][]", "java.util.Date", "java.util.Date"
 			};
 
 		_methodName4 = "addSingleUseLicenseKey";
@@ -265,7 +266,9 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 		_methodName47 = "renewLicenseKey";
 
-		_methodParameterTypes47 = new String[] { "long", "long" };
+		_methodParameterTypes47 = new String[] {
+				"long", "long", "java.util.Date", "java.util.Date"
+			};
 
 		_methodName48 = "renewLicenseKey";
 
@@ -378,62 +381,6 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
-		com.liferay.osb.model.AssetReceiptLicense assetReceiptLicense,
-		java.lang.String owner, java.lang.String description,
-		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
-		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1,
-					new Object[] {
-						userId,
-						
-					ClpSerializer.translateInput(assetReceiptLicense),
-						
-					ClpSerializer.translateInput(owner),
-						
-					ClpSerializer.translateInput(description),
-						
-					ClpSerializer.translateInput(hostNames),
-						
-					ClpSerializer.translateInput(ipAddresses),
-						
-					ClpSerializer.translateInput(macAddresses),
-						
-					ClpSerializer.translateInput(serverIds),
-						
-					startDateMonth,
-						
-					startDateDay,
-						
-					startDateYear
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.LicenseKey)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
 		com.liferay.osb.model.LicenseKeySet licenseKeySet,
 		java.lang.String name,
 		com.liferay.osb.model.OfferingEntry offeringEntry,
@@ -449,8 +396,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2,
+			returnObj = _invokableLocalService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
 					new Object[] {
 						userId,
 						
@@ -530,8 +477,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3,
+			returnObj = _invokableLocalService.invokeMethod(_methodName2,
+					_methodParameterTypes2,
 					new Object[] {
 						userId,
 						
@@ -574,6 +521,72 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 					complimentary,
 						
 					active
+					});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.LicenseKey)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
+		long assetReceiptLicenseId, java.lang.String licenseEntryType,
+		java.lang.String productEntryName, java.lang.String productId,
+		int productVersion, java.lang.String owner, long maxUsers,
+		java.lang.String description, java.lang.String[] hostNames,
+		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
+		java.lang.String[] serverIds, java.util.Date startDate,
+		java.util.Date expirationDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
+					new Object[] {
+						userId,
+						
+					assetReceiptLicenseId,
+						
+					ClpSerializer.translateInput(licenseEntryType),
+						
+					ClpSerializer.translateInput(productEntryName),
+						
+					ClpSerializer.translateInput(productId),
+						
+					productVersion,
+						
+					ClpSerializer.translateInput(owner),
+						
+					maxUsers,
+						
+					ClpSerializer.translateInput(description),
+						
+					ClpSerializer.translateInput(hostNames),
+						
+					ClpSerializer.translateInput(ipAddresses),
+						
+					ClpSerializer.translateInput(macAddresses),
+						
+					ClpSerializer.translateInput(serverIds),
+						
+					ClpSerializer.translateInput(startDate),
+						
+					ClpSerializer.translateInput(expirationDate)
 					});
 		}
 		catch (Throwable t) {
@@ -1750,14 +1763,23 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 
 	@Override
 	public com.liferay.osb.model.LicenseKey renewLicenseKey(long userId,
-		long licenseKeyId)
+		long licenseKeyId, java.util.Date startDate,
+		java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName47,
 					_methodParameterTypes47,
-					new Object[] { userId, licenseKeyId });
+					new Object[] {
+						userId,
+						
+					licenseKeyId,
+						
+					ClpSerializer.translateInput(startDate),
+						
+					ClpSerializer.translateInput(expirationDate)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

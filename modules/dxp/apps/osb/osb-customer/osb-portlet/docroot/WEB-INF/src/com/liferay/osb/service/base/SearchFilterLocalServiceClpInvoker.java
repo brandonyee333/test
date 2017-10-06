@@ -123,27 +123,27 @@ public class SearchFilterLocalServiceClpInvoker {
 				"com.liferay.osb.model.SearchFilter"
 			};
 
-		_methodName284 = "getOSGiServiceIdentifier";
+		_methodName276 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes284 = new String[] {  };
+		_methodParameterTypes276 = new String[] {  };
 
-		_methodName289 = "addSearchFilter";
+		_methodName281 = "addSearchFilter";
 
-		_methodParameterTypes289 = new String[] {
+		_methodParameterTypes281 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String", "int"
 			};
 
-		_methodName290 = "deleteSearchFilters";
+		_methodName282 = "deleteSearchFilters";
 
-		_methodParameterTypes290 = new String[] { "long" };
+		_methodParameterTypes282 = new String[] { "long" };
 
-		_methodName291 = "getSearchFilters";
+		_methodName283 = "getSearchFilters";
 
-		_methodParameterTypes291 = new String[] { "long", "long" };
+		_methodParameterTypes283 = new String[] { "long", "long" };
 
-		_methodName292 = "updateSearchFilter";
+		_methodName284 = "updateSearchFilter";
 
-		_methodParameterTypes292 = new String[] {
+		_methodParameterTypes284 = new String[] {
 				"long", "java.lang.String", "java.lang.String", "int"
 			};
 	}
@@ -252,34 +252,34 @@ public class SearchFilterLocalServiceClpInvoker {
 			return SearchFilterLocalServiceUtil.updateSearchFilter((com.liferay.osb.model.SearchFilter)arguments[0]);
 		}
 
-		if (_methodName284.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
+		if (_methodName276.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes276, parameterTypes)) {
 			return SearchFilterLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName289.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
+		if (_methodName281.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes281, parameterTypes)) {
 			return SearchFilterLocalServiceUtil.addSearchFilter(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
 				((Integer)arguments[4]).intValue());
 		}
 
-		if (_methodName290.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
+		if (_methodName282.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
 			SearchFilterLocalServiceUtil.deleteSearchFilters(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName291.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+		if (_methodName283.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
 			return SearchFilterLocalServiceUtil.getSearchFilters(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName292.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
+		if (_methodName284.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
 			return SearchFilterLocalServiceUtil.updateSearchFilter(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				((Integer)arguments[3]).intValue());
@@ -326,14 +326,14 @@ public class SearchFilterLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
+	private String _methodName276;
+	private String[] _methodParameterTypes276;
+	private String _methodName281;
+	private String[] _methodParameterTypes281;
+	private String _methodName282;
+	private String[] _methodParameterTypes282;
+	private String _methodName283;
+	private String[] _methodParameterTypes283;
 	private String _methodName284;
 	private String[] _methodParameterTypes284;
-	private String _methodName289;
-	private String[] _methodParameterTypes289;
-	private String _methodName290;
-	private String[] _methodParameterTypes290;
-	private String _methodName291;
-	private String[] _methodParameterTypes291;
-	private String _methodName292;
-	private String[] _methodParameterTypes292;
 }

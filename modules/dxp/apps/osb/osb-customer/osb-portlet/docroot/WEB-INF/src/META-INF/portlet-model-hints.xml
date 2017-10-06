@@ -156,44 +156,6 @@
 		<field name="role" type="int" />
 		<field name="notifications" type="int" />
 	</model>
-	<model name="com.liferay.osb.model.AssetLicense">
-		<field name="assetLicenseId" type="long" />
-		<field name="userId" type="long" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="classNameId" type="long" />
-		<field name="classPK" type="long" />
-		<field name="licenseId" type="String" />
-		<field name="name" type="String" />
-		<field name="requiredVersion" type="double" />
-		<field name="usageType" type="int" />
-		<field name="licenseType" type="int" />
-		<field name="licenseTypeAllotment" type="long" />
-		<field name="lifetime" type="long" />
-		<field name="status" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.AssetReceiptLicense">
-		<field name="uuid" type="String" />
-		<field name="assetReceiptLicenseId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="assetReceiptId" type="long" />
-		<field name="assetLicenseId" type="long" />
-		<field name="assetEntryId" type="long" />
-		<field name="ownerClassNameId" type="long" />
-		<field name="ownerClassPK" type="long" />
-		<field name="productClassNameId" type="long" />
-		<field name="productClassPK" type="long" />
-		<field name="productId" type="String" />
-		<field name="startDate" type="Date" />
-		<field name="endDate" type="Date" />
-		<field name="usageType" type="int" />
-		<field name="licenseType" type="int" />
-		<field name="licenseTypeAllotment" type="long" />
-		<field name="licenseLifetime" type="long" />
-	</model>
 	<model name="com.liferay.osb.model.AuditAction">
 		<field name="auditActionId" type="long" />
 		<field name="modifiedDate" type="Date" />

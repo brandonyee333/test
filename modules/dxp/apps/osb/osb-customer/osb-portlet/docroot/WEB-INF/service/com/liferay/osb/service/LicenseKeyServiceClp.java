@@ -42,9 +42,10 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 
 		_methodParameterTypes1 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
+				"java.lang.String", "int", "java.lang.String", "long",
+				"java.lang.String", "java.lang.String[][]",
 				"java.lang.String[][]", "java.lang.String[][]",
-				"java.lang.String[][]", "java.lang.String[][]", "int", "int",
-				"int"
+				"java.lang.String[][]", "java.util.Date", "java.util.Date"
 			};
 
 		_methodName2 = "getLicenseKey";
@@ -76,7 +77,9 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 
 		_methodName9 = "renewLicenseKey";
 
-		_methodParameterTypes9 = new String[] { "long" };
+		_methodParameterTypes9 = new String[] {
+				"long", "java.util.Date", "java.util.Date"
+			};
 
 		_methodName10 = "renewLicenseKey";
 
@@ -216,11 +219,13 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 
 	@Override
 	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
-		long assetReceiptLicenseId, java.lang.String owner,
+		long assetReceiptLicenseId, java.lang.String licenseEntryType,
+		java.lang.String productEntryName, java.lang.String productId,
+		int productVersion, java.lang.String owner, long maxUsers,
 		java.lang.String description, java.lang.String[] hostNames,
 		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
-		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
-		int startDateYear)
+		java.lang.String[] serverIds, java.util.Date startDate,
+		java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -232,7 +237,17 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 						
 					assetReceiptLicenseId,
 						
+					ClpSerializer.translateInput(licenseEntryType),
+						
+					ClpSerializer.translateInput(productEntryName),
+						
+					ClpSerializer.translateInput(productId),
+						
+					productVersion,
+						
 					ClpSerializer.translateInput(owner),
+						
+					maxUsers,
 						
 					ClpSerializer.translateInput(description),
 						
@@ -244,11 +259,9 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 						
 					ClpSerializer.translateInput(serverIds),
 						
-					startDateMonth,
+					ClpSerializer.translateInput(startDate),
 						
-					startDateDay,
-						
-					startDateYear
+					ClpSerializer.translateInput(expirationDate)
 					});
 		}
 		catch (Throwable t) {
@@ -468,13 +481,21 @@ public class LicenseKeyServiceClp implements LicenseKeyService {
 	}
 
 	@Override
-	public com.liferay.osb.model.LicenseKey renewLicenseKey(long licenseKeyId)
+	public com.liferay.osb.model.LicenseKey renewLicenseKey(long licenseKeyId,
+		java.util.Date startDate, java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] { licenseKeyId });
+					_methodParameterTypes9,
+					new Object[] {
+						licenseKeyId,
+						
+					ClpSerializer.translateInput(startDate),
+						
+					ClpSerializer.translateInput(expirationDate)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

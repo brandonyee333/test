@@ -13,8 +13,6 @@
 	<import class="com.liferay.osb.model.AccountLink" />
 	<import class="com.liferay.osb.model.AccountProject" />
 	<import class="com.liferay.osb.model.AccountWorker" />
-	<import class="com.liferay.osb.model.AssetLicense" />
-	<import class="com.liferay.osb.model.AssetReceiptLicense" />
 	<import class="com.liferay.osb.model.AuditAction" />
 	<import class="com.liferay.osb.model.AuditEntry" />
 	<import class="com.liferay.osb.model.CorpProject" />
@@ -206,48 +204,6 @@
 		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="role" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="notifications" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetLicenseImpl" table="OSB_AssetLicense">
-		<id name="assetLicenseId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="licenseId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="requiredVersion" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="usageType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="licenseType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="licenseTypeAllotment" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="lifetime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.AssetReceiptLicenseImpl" table="OSB_AssetReceiptLicense">
-		<id name="assetReceiptLicenseId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property column="uuid_" name="uuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="assetReceiptId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="assetLicenseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="assetEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ownerClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="ownerClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="productClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="productClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="productId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="startDate" type="org.hibernate.type.TimestampType" />
-		<property name="endDate" type="org.hibernate.type.TimestampType" />
-		<property name="usageType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="licenseType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="licenseTypeAllotment" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="licenseLifetime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AuditActionImpl" table="OSB_AuditAction">
 		<id name="auditActionId" type="long">

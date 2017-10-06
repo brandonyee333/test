@@ -92,16 +92,20 @@ public class LicenseKeyServiceSoap {
 	}
 
 	public static com.liferay.osb.model.LicenseKeySoap addLicenseKey(
-		long userId, long assetReceiptLicenseId, java.lang.String owner,
-		java.lang.String description, java.lang.String[] hostNames,
-		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
-		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
-		int startDateYear) throws RemoteException {
+		long userId, long assetReceiptLicenseId,
+		java.lang.String licenseEntryType, java.lang.String productEntryName,
+		java.lang.String productId, int productVersion, java.lang.String owner,
+		long maxUsers, java.lang.String description,
+		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
+		java.lang.String[] macAddresses, java.lang.String[] serverIds,
+		java.util.Date startDate, java.util.Date expirationDate)
+		throws RemoteException {
 		try {
 			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.addLicenseKey(userId,
-					assetReceiptLicenseId, owner, description, hostNames,
-					ipAddresses, macAddresses, serverIds, startDateMonth,
-					startDateDay, startDateYear);
+					assetReceiptLicenseId, licenseEntryType, productEntryName,
+					productId, productVersion, owner, maxUsers, description,
+					hostNames, ipAddresses, macAddresses, serverIds, startDate,
+					expirationDate);
 
 			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
 		}
@@ -189,9 +193,11 @@ public class LicenseKeyServiceSoap {
 	}
 
 	public static com.liferay.osb.model.LicenseKeySoap renewLicenseKey(
-		long licenseKeyId) throws RemoteException {
+		long licenseKeyId, java.util.Date startDate,
+		java.util.Date expirationDate) throws RemoteException {
 		try {
-			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.renewLicenseKey(licenseKeyId);
+			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.renewLicenseKey(licenseKeyId,
+					startDate, expirationDate);
 
 			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
 		}

@@ -27,24 +27,24 @@ import java.util.Arrays;
 @ProviderType
 public class AccountInformationServiceClpInvoker {
 	public AccountInformationServiceClpInvoker() {
-		_methodName366 = "getOSGiServiceIdentifier";
+		_methodName356 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes366 = new String[] {  };
+		_methodParameterTypes356 = new String[] {  };
 
-		_methodName371 = "updateAccountInformation";
+		_methodName361 = "updateAccountInformation";
 
-		_methodParameterTypes371 = new String[] { "long", "long", "java.util.Map" };
+		_methodParameterTypes361 = new String[] { "long", "long", "java.util.Map" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName366.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes366, parameterTypes)) {
+		if (_methodName356.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes356, parameterTypes)) {
 			return AccountInformationServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName371.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes371, parameterTypes)) {
+		if (_methodName361.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes361, parameterTypes)) {
 			return AccountInformationServiceUtil.updateAccountInformation(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.util.Map<java.lang.Integer, java.lang.String>)arguments[2]);
@@ -53,8 +53,8 @@ public class AccountInformationServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName366;
-	private String[] _methodParameterTypes366;
-	private String _methodName371;
-	private String[] _methodParameterTypes371;
+	private String _methodName356;
+	private String[] _methodParameterTypes356;
+	private String _methodName361;
+	private String[] _methodParameterTypes361;
 }

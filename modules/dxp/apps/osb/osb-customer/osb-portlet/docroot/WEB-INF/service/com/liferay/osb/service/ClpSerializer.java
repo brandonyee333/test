@@ -27,8 +27,6 @@ import com.liferay.osb.model.AccountInformationClp;
 import com.liferay.osb.model.AccountLinkClp;
 import com.liferay.osb.model.AccountProjectClp;
 import com.liferay.osb.model.AccountWorkerClp;
-import com.liferay.osb.model.AssetLicenseClp;
-import com.liferay.osb.model.AssetReceiptLicenseClp;
 import com.liferay.osb.model.AuditActionClp;
 import com.liferay.osb.model.AuditEntryClp;
 import com.liferay.osb.model.CorpProjectClp;
@@ -199,14 +197,6 @@ public class ClpSerializer {
 
 		if (oldModelClassName.equals(AccountWorkerClp.class.getName())) {
 			return translateInputAccountWorker(oldModel);
-		}
-
-		if (oldModelClassName.equals(AssetLicenseClp.class.getName())) {
-			return translateInputAssetLicense(oldModel);
-		}
-
-		if (oldModelClassName.equals(AssetReceiptLicenseClp.class.getName())) {
-			return translateInputAssetReceiptLicense(oldModel);
 		}
 
 		if (oldModelClassName.equals(AuditActionClp.class.getName())) {
@@ -495,27 +485,6 @@ public class ClpSerializer {
 		AccountWorkerClp oldClpModel = (AccountWorkerClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getAccountWorkerRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputAssetLicense(BaseModel<?> oldModel) {
-		AssetLicenseClp oldClpModel = (AssetLicenseClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getAssetLicenseRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
-	}
-
-	public static Object translateInputAssetReceiptLicense(
-		BaseModel<?> oldModel) {
-		AssetReceiptLicenseClp oldClpModel = (AssetReceiptLicenseClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getAssetReceiptLicenseRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -1328,80 +1297,6 @@ public class ClpSerializer {
 		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.AccountWorkerImpl")) {
 			return translateOutputAccountWorker(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.AssetLicenseImpl")) {
-			return translateOutputAssetLicense(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.AssetReceiptLicenseImpl")) {
-			return translateOutputAssetReceiptLicense(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
 			try {
@@ -3941,18 +3836,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.NoSuchAssetLicenseException")) {
-			return new com.liferay.osb.exception.NoSuchAssetLicenseException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.NoSuchAssetReceiptLicenseException")) {
-			return new com.liferay.osb.exception.NoSuchAssetReceiptLicenseException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.NoSuchAuditActionException")) {
 			return new com.liferay.osb.exception.NoSuchAuditActionException(throwable.getMessage(),
 				throwable.getCause());
@@ -4311,27 +4194,6 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setAccountWorkerRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputAssetLicense(BaseModel<?> oldModel) {
-		AssetLicenseClp newModel = new AssetLicenseClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setAssetLicenseRemoteModel(oldModel);
-
-		return newModel;
-	}
-
-	public static Object translateOutputAssetReceiptLicense(
-		BaseModel<?> oldModel) {
-		AssetReceiptLicenseClp newModel = new AssetReceiptLicenseClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setAssetReceiptLicenseRemoteModel(oldModel);
 
 		return newModel;
 	}

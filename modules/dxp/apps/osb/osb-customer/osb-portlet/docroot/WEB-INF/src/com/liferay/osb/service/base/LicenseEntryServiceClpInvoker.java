@@ -27,21 +27,21 @@ import java.util.Arrays;
 @ProviderType
 public class LicenseEntryServiceClpInvoker {
 	public LicenseEntryServiceClpInvoker() {
-		_methodName372 = "getOSGiServiceIdentifier";
+		_methodName362 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes372 = new String[] {  };
+		_methodParameterTypes362 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName372.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
+		if (_methodName362.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes362, parameterTypes)) {
 			return LicenseEntryServiceUtil.getOSGiServiceIdentifier();
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName372;
-	private String[] _methodParameterTypes372;
+	private String _methodName362;
+	private String[] _methodParameterTypes362;
 }

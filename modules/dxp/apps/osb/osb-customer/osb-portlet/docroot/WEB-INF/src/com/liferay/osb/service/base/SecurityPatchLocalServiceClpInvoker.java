@@ -123,40 +123,40 @@ public class SecurityPatchLocalServiceClpInvoker {
 				"com.liferay.osb.model.SecurityPatch"
 			};
 
-		_methodName288 = "getOSGiServiceIdentifier";
+		_methodName280 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes288 = new String[] {  };
+		_methodParameterTypes280 = new String[] {  };
 
-		_methodName293 = "addSecurityPatch";
+		_methodName285 = "addSecurityPatch";
 
-		_methodParameterTypes293 = new String[] {
+		_methodParameterTypes285 = new String[] {
 				"long", "long", "long", "java.lang.String", "int",
 				"java.lang.String", "java.lang.String"
 			};
 
-		_methodName294 = "addSecurityPatch";
+		_methodName286 = "addSecurityPatch";
 
-		_methodParameterTypes294 = new String[] {
+		_methodParameterTypes286 = new String[] {
 				"long", "long", "java.lang.String", "int", "java.lang.String"
 			};
 
-		_methodName295 = "deleteSecurityPatches";
+		_methodName287 = "deleteSecurityPatches";
 
-		_methodParameterTypes295 = new String[] { "java.lang.String" };
+		_methodParameterTypes287 = new String[] { "java.lang.String" };
 
-		_methodName296 = "getSecurityPatches";
+		_methodName288 = "getSecurityPatches";
 
-		_methodParameterTypes296 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes288 = new String[] { "long", "java.lang.String" };
 
-		_methodName297 = "getSecurityPatchName";
+		_methodName289 = "getSecurityPatchName";
 
-		_methodParameterTypes297 = new String[] {
+		_methodParameterTypes289 = new String[] {
 				"int", "com.liferay.osb.model.TicketAttachment"
 			};
 
-		_methodName298 = "updateSecurityPatch";
+		_methodName290 = "updateSecurityPatch";
 
-		_methodParameterTypes298 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes290 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -263,13 +263,13 @@ public class SecurityPatchLocalServiceClpInvoker {
 			return SecurityPatchLocalServiceUtil.updateSecurityPatch((com.liferay.osb.model.SecurityPatch)arguments[0]);
 		}
 
-		if (_methodName288.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return SecurityPatchLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName293.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
+		if (_methodName285.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
 			return SecurityPatchLocalServiceUtil.addSecurityPatch(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -278,8 +278,8 @@ public class SecurityPatchLocalServiceClpInvoker {
 				(java.lang.String)arguments[5], (java.lang.String)arguments[6]);
 		}
 
-		if (_methodName294.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
+		if (_methodName286.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
 			return SecurityPatchLocalServiceUtil.addSecurityPatch(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2],
@@ -287,27 +287,27 @@ public class SecurityPatchLocalServiceClpInvoker {
 				(java.lang.String)arguments[4]);
 		}
 
-		if (_methodName295.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
+		if (_methodName287.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
 			SecurityPatchLocalServiceUtil.deleteSecurityPatches((java.lang.String)arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName296.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+		if (_methodName288.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
 			return SecurityPatchLocalServiceUtil.getSecurityPatches(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
 
-		if (_methodName297.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+		if (_methodName289.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
 			return SecurityPatchLocalServiceUtil.getSecurityPatchName(((Integer)arguments[0]).intValue(),
 				(com.liferay.osb.model.TicketAttachment)arguments[1]);
 		}
 
-		if (_methodName298.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
+		if (_methodName290.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
 			return SecurityPatchLocalServiceUtil.updateSecurityPatch(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -353,18 +353,18 @@ public class SecurityPatchLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
+	private String _methodName280;
+	private String[] _methodParameterTypes280;
+	private String _methodName285;
+	private String[] _methodParameterTypes285;
+	private String _methodName286;
+	private String[] _methodParameterTypes286;
+	private String _methodName287;
+	private String[] _methodParameterTypes287;
 	private String _methodName288;
 	private String[] _methodParameterTypes288;
-	private String _methodName293;
-	private String[] _methodParameterTypes293;
-	private String _methodName294;
-	private String[] _methodParameterTypes294;
-	private String _methodName295;
-	private String[] _methodParameterTypes295;
-	private String _methodName296;
-	private String[] _methodParameterTypes296;
-	private String _methodName297;
-	private String[] _methodParameterTypes297;
-	private String _methodName298;
-	private String[] _methodParameterTypes298;
+	private String _methodName289;
+	private String[] _methodParameterTypes289;
+	private String _methodName290;
+	private String[] _methodParameterTypes290;
 }

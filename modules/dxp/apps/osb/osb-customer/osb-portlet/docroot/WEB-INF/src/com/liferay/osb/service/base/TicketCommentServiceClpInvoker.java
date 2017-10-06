@@ -27,50 +27,50 @@ import java.util.Arrays;
 @ProviderType
 public class TicketCommentServiceClpInvoker {
 	public TicketCommentServiceClpInvoker() {
-		_methodName372 = "getOSGiServiceIdentifier";
+		_methodName362 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes372 = new String[] {  };
+		_methodParameterTypes362 = new String[] {  };
 
-		_methodName377 = "addTicketComment";
+		_methodName367 = "addTicketComment";
 
-		_methodParameterTypes377 = new String[] {
+		_methodParameterTypes367 = new String[] {
 				"long", "long", "java.lang.String", "int", "int", "int", "long",
 				"int[][]", "java.util.List", "java.util.List",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName378 = "addTicketComment";
+		_methodName368 = "addTicketComment";
 
-		_methodParameterTypes378 = new String[] {
+		_methodParameterTypes368 = new String[] {
 				"long", "long", "java.lang.String", "int", "int", "int", "long",
 				"int[][]", "com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName379 = "deleteTicketComment";
+		_methodName369 = "deleteTicketComment";
 
-		_methodParameterTypes379 = new String[] { "long" };
+		_methodParameterTypes369 = new String[] { "long" };
 
-		_methodName380 = "updateTicketComment";
+		_methodName370 = "updateTicketComment";
 
-		_methodParameterTypes380 = new String[] {
+		_methodParameterTypes370 = new String[] {
 				"long", "long", "long", "java.lang.String", "int", "int", "long",
 				"int[][]", "java.util.List", "java.util.List"
 			};
 
-		_methodName381 = "updateTicketCommentType";
+		_methodName371 = "updateTicketCommentType";
 
-		_methodParameterTypes381 = new String[] { "long", "int" };
+		_methodParameterTypes371 = new String[] { "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName372.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes372, parameterTypes)) {
+		if (_methodName362.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes362, parameterTypes)) {
 			return TicketCommentServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName377.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes377, parameterTypes)) {
+		if (_methodName367.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes367, parameterTypes)) {
 			return TicketCommentServiceUtil.addTicketComment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2],
@@ -83,8 +83,8 @@ public class TicketCommentServiceClpInvoker {
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[10]);
 		}
 
-		if (_methodName378.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes378, parameterTypes)) {
+		if (_methodName368.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes368, parameterTypes)) {
 			return TicketCommentServiceUtil.addTicketComment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2],
@@ -95,13 +95,13 @@ public class TicketCommentServiceClpInvoker {
 				(com.liferay.portal.kernel.service.ServiceContext)arguments[8]);
 		}
 
-		if (_methodName379.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes379, parameterTypes)) {
+		if (_methodName369.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes369, parameterTypes)) {
 			return TicketCommentServiceUtil.deleteTicketComment(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName380.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes380, parameterTypes)) {
+		if (_methodName370.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes370, parameterTypes)) {
 			return TicketCommentServiceUtil.updateTicketComment(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -113,8 +113,8 @@ public class TicketCommentServiceClpInvoker {
 				(java.util.List<java.lang.Integer>)arguments[9]);
 		}
 
-		if (_methodName381.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes381, parameterTypes)) {
+		if (_methodName371.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes371, parameterTypes)) {
 			return TicketCommentServiceUtil.updateTicketCommentType(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
@@ -122,16 +122,16 @@ public class TicketCommentServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName372;
-	private String[] _methodParameterTypes372;
-	private String _methodName377;
-	private String[] _methodParameterTypes377;
-	private String _methodName378;
-	private String[] _methodParameterTypes378;
-	private String _methodName379;
-	private String[] _methodParameterTypes379;
-	private String _methodName380;
-	private String[] _methodParameterTypes380;
-	private String _methodName381;
-	private String[] _methodParameterTypes381;
+	private String _methodName362;
+	private String[] _methodParameterTypes362;
+	private String _methodName367;
+	private String[] _methodParameterTypes367;
+	private String _methodName368;
+	private String[] _methodParameterTypes368;
+	private String _methodName369;
+	private String[] _methodParameterTypes369;
+	private String _methodName370;
+	private String[] _methodParameterTypes370;
+	private String _methodName371;
+	private String[] _methodParameterTypes371;
 }

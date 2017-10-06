@@ -16,7 +16,6 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.model.AssetReceiptLicense;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeySet;
@@ -79,13 +78,6 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(LicenseKey licenseKey);
 
-	public LicenseKey addLicenseKey(long userId,
-		AssetReceiptLicense assetReceiptLicense, java.lang.String owner,
-		java.lang.String description, java.lang.String[] hostNames,
-		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
-		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
-		int startDateYear) throws PortalException;
-
 	public LicenseKey addLicenseKey(long userId, LicenseKeySet licenseKeySet,
 		java.lang.String name, OfferingEntry offeringEntry,
 		LicenseEntry licenseEntry, ProductEntry productEntry,
@@ -106,6 +98,14 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		java.lang.String[] serverIds, int startDateMonth, int startDateDay,
 		int startDateYear, boolean complimentary, boolean active)
 		throws PortalException;
+
+	public LicenseKey addLicenseKey(long userId, long assetReceiptLicenseId,
+		java.lang.String licenseEntryType, java.lang.String productEntryName,
+		java.lang.String productId, int productVersion, java.lang.String owner,
+		long maxUsers, java.lang.String description,
+		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
+		java.lang.String[] macAddresses, java.lang.String[] serverIds,
+		Date startDate, Date expirationDate) throws PortalException;
 
 	public LicenseKey addSingleUseLicenseKey(java.lang.String orderUuid,
 		int productVersion, java.lang.String emailAddress,
@@ -353,8 +353,8 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
 
-	public LicenseKey renewLicenseKey(long userId, long licenseKeyId)
-		throws PortalException;
+	public LicenseKey renewLicenseKey(long userId, long licenseKeyId,
+		Date startDate, Date expirationDate) throws PortalException;
 
 	public LicenseKey renewLicenseKey(long userId, long licenseKeyId,
 		Date startDate, int renewTime) throws java.lang.Exception;

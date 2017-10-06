@@ -27,45 +27,45 @@ import java.util.Arrays;
 @ProviderType
 public class RemoteCorpProjectLocalServiceClpInvoker {
 	public RemoteCorpProjectLocalServiceClpInvoker() {
-		_methodName260 = "getOSGiServiceIdentifier";
+		_methodName252 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes260 = new String[] {  };
+		_methodParameterTypes252 = new String[] {  };
 
-		_methodName263 = "addCorpProject";
+		_methodName255 = "addCorpProject";
 
-		_methodParameterTypes263 = new String[] {
+		_methodParameterTypes255 = new String[] {
 				"java.lang.String", "java.lang.String", "java.lang.String"
 			};
 
-		_methodName264 = "deleteCorpProject";
+		_methodName256 = "deleteCorpProject";
 
-		_methodParameterTypes264 = new String[] { "long" };
+		_methodParameterTypes256 = new String[] { "long" };
 
-		_methodName265 = "updateCorpProject";
+		_methodName257 = "updateCorpProject";
 
-		_methodParameterTypes265 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes257 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName260.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes260, parameterTypes)) {
+		if (_methodName252.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes252, parameterTypes)) {
 			return RemoteCorpProjectLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName263.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes263, parameterTypes)) {
+		if (_methodName255.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes255, parameterTypes)) {
 			return RemoteCorpProjectLocalServiceUtil.addCorpProject((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2]);
 		}
 
-		if (_methodName264.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes264, parameterTypes)) {
+		if (_methodName256.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes256, parameterTypes)) {
 			return RemoteCorpProjectLocalServiceUtil.deleteCorpProject(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName265.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes265, parameterTypes)) {
+		if (_methodName257.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes257, parameterTypes)) {
 			return RemoteCorpProjectLocalServiceUtil.updateCorpProject(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -73,12 +73,12 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName260;
-	private String[] _methodParameterTypes260;
-	private String _methodName263;
-	private String[] _methodParameterTypes263;
-	private String _methodName264;
-	private String[] _methodParameterTypes264;
-	private String _methodName265;
-	private String[] _methodParameterTypes265;
+	private String _methodName252;
+	private String[] _methodParameterTypes252;
+	private String _methodName255;
+	private String[] _methodParameterTypes255;
+	private String _methodName256;
+	private String[] _methodParameterTypes256;
+	private String _methodName257;
+	private String[] _methodParameterTypes257;
 }

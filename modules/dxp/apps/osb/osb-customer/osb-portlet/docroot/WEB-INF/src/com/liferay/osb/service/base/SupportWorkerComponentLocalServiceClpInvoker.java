@@ -123,17 +123,17 @@ public class SupportWorkerComponentLocalServiceClpInvoker {
 				"com.liferay.osb.model.SupportWorkerComponent"
 			};
 
-		_methodName280 = "getOSGiServiceIdentifier";
+		_methodName272 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes280 = new String[] {  };
+		_methodParameterTypes272 = new String[] {  };
 
-		_methodName285 = "getSupportWorkerComponents";
+		_methodName277 = "getSupportWorkerComponents";
 
-		_methodParameterTypes285 = new String[] { "long" };
+		_methodParameterTypes277 = new String[] { "long" };
 
-		_methodName286 = "setSupportWorkerComponents";
+		_methodName278 = "setSupportWorkerComponents";
 
-		_methodParameterTypes286 = new String[] { "long", "int[][]" };
+		_methodParameterTypes278 = new String[] { "long", "int[][]" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -240,18 +240,18 @@ public class SupportWorkerComponentLocalServiceClpInvoker {
 			return SupportWorkerComponentLocalServiceUtil.updateSupportWorkerComponent((com.liferay.osb.model.SupportWorkerComponent)arguments[0]);
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName272.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes272, parameterTypes)) {
 			return SupportWorkerComponentLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName277.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes277, parameterTypes)) {
 			return SupportWorkerComponentLocalServiceUtil.getSupportWorkerComponents(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName278.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
 			SupportWorkerComponentLocalServiceUtil.setSupportWorkerComponents(((Long)arguments[0]).longValue(),
 				(int[])arguments[1]);
 
@@ -299,10 +299,10 @@ public class SupportWorkerComponentLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName280;
-	private String[] _methodParameterTypes280;
-	private String _methodName285;
-	private String[] _methodParameterTypes285;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
+	private String _methodName272;
+	private String[] _methodParameterTypes272;
+	private String _methodName277;
+	private String[] _methodParameterTypes277;
+	private String _methodName278;
+	private String[] _methodParameterTypes278;
 }

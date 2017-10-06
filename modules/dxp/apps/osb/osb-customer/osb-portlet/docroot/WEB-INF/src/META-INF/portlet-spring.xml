@@ -35,11 +35,6 @@
 	<bean class="com.liferay.osb.service.impl.AccountWorkerLocalServiceImpl" id="com.liferay.osb.service.AccountWorkerLocalService" />
 	<bean class="com.liferay.osb.service.impl.AccountWorkerServiceImpl" id="com.liferay.osb.service.AccountWorkerService" />
 	<bean class="com.liferay.osb.service.persistence.impl.AccountWorkerPersistenceImpl" id="com.liferay.osb.service.persistence.AccountWorkerPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AssetLicenseLocalServiceImpl" id="com.liferay.osb.service.AssetLicenseLocalService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AssetLicensePersistenceImpl" id="com.liferay.osb.service.persistence.AssetLicensePersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AssetReceiptLicenseLocalServiceImpl" id="com.liferay.osb.service.AssetReceiptLicenseLocalService" />
-	<bean class="com.liferay.osb.service.impl.AssetReceiptLicenseServiceImpl" id="com.liferay.osb.service.AssetReceiptLicenseService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AssetReceiptLicensePersistenceImpl" id="com.liferay.osb.service.persistence.AssetReceiptLicensePersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.AuditActionLocalServiceImpl" id="com.liferay.osb.service.AuditActionLocalService" />
 	<bean class="com.liferay.osb.service.impl.AuditActionServiceImpl" id="com.liferay.osb.service.AuditActionService" />
 	<bean class="com.liferay.osb.service.persistence.impl.AuditActionPersistenceImpl" id="com.liferay.osb.service.persistence.AuditActionPersistence" parent="basePersistence" />

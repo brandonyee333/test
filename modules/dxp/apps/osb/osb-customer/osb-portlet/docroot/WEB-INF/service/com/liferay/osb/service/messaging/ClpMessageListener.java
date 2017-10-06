@@ -38,9 +38,6 @@ import com.liferay.osb.service.AccountProjectLocalServiceUtil;
 import com.liferay.osb.service.AccountProjectServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerServiceUtil;
-import com.liferay.osb.service.AssetLicenseLocalServiceUtil;
-import com.liferay.osb.service.AssetReceiptLicenseLocalServiceUtil;
-import com.liferay.osb.service.AssetReceiptLicenseServiceUtil;
 import com.liferay.osb.service.AuditActionLocalServiceUtil;
 import com.liferay.osb.service.AuditActionServiceUtil;
 import com.liferay.osb.service.AuditEntryLocalServiceUtil;
@@ -176,11 +173,6 @@ public class ClpMessageListener extends BaseMessageListener {
 			AccountWorkerLocalServiceUtil.clearService();
 
 			AccountWorkerServiceUtil.clearService();
-			AssetLicenseLocalServiceUtil.clearService();
-
-			AssetReceiptLicenseLocalServiceUtil.clearService();
-
-			AssetReceiptLicenseServiceUtil.clearService();
 			AuditActionLocalServiceUtil.clearService();
 
 			AuditActionServiceUtil.clearService();

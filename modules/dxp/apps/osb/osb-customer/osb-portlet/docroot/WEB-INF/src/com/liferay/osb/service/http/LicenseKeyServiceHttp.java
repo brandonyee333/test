@@ -100,19 +100,22 @@ public class LicenseKeyServiceHttp {
 
 	public static com.liferay.osb.model.LicenseKey addLicenseKey(
 		HttpPrincipal httpPrincipal, long userId, long assetReceiptLicenseId,
-		java.lang.String owner, java.lang.String description,
+		java.lang.String licenseEntryType, java.lang.String productEntryName,
+		java.lang.String productId, int productVersion, java.lang.String owner,
+		long maxUsers, java.lang.String description,
 		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
 		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear)
+		java.util.Date startDate, java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"addLicenseKey", _addLicenseKeyParameterTypes1);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
-					assetReceiptLicenseId, owner, description, hostNames,
-					ipAddresses, macAddresses, serverIds, startDateMonth,
-					startDateDay, startDateYear);
+					assetReceiptLicenseId, licenseEntryType, productEntryName,
+					productId, productVersion, owner, maxUsers, description,
+					hostNames, ipAddresses, macAddresses, serverIds, startDate,
+					expirationDate);
 
 			Object returnObj = null;
 
@@ -303,14 +306,15 @@ public class LicenseKeyServiceHttp {
 	}
 
 	public static com.liferay.osb.model.LicenseKey renewLicenseKey(
-		HttpPrincipal httpPrincipal, long licenseKeyId)
+		HttpPrincipal httpPrincipal, long licenseKeyId,
+		java.util.Date startDate, java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"renewLicenseKey", _renewLicenseKeyParameterTypes7);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
-					licenseKeyId);
+					licenseKeyId, startDate, expirationDate);
 
 			Object returnObj = null;
 
@@ -631,9 +635,11 @@ public class LicenseKeyServiceHttp {
 		};
 	private static final Class<?>[] _addLicenseKeyParameterTypes1 = new Class[] {
 			long.class, long.class, java.lang.String.class,
-			java.lang.String.class, java.lang.String[].class,
+			java.lang.String.class, java.lang.String.class, int.class,
+			java.lang.String.class, long.class, java.lang.String.class,
 			java.lang.String[].class, java.lang.String[].class,
-			java.lang.String[].class, int.class, int.class, int.class
+			java.lang.String[].class, java.lang.String[].class,
+			java.util.Date.class, java.util.Date.class
 		};
 	private static final Class<?>[] _getLicenseKeyParameterTypes2 = new Class[] {
 			long.class
@@ -652,7 +658,7 @@ public class LicenseKeyServiceHttp {
 	private static final Class<?>[] _getOfferingEntryGroupLicenseKeysCountParameterTypes6 =
 		new Class[] { long[].class, boolean.class, boolean.class };
 	private static final Class<?>[] _renewLicenseKeyParameterTypes7 = new Class[] {
-			long.class
+			long.class, java.util.Date.class, java.util.Date.class
 		};
 	private static final Class<?>[] _renewLicenseKeyParameterTypes8 = new Class[] {
 			long.class, java.util.Date.class, int.class

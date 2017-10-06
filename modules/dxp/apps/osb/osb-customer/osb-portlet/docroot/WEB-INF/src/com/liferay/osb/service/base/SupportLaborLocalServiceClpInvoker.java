@@ -123,37 +123,37 @@ public class SupportLaborLocalServiceClpInvoker {
 				"com.liferay.osb.model.SupportLabor"
 			};
 
-		_methodName280 = "getOSGiServiceIdentifier";
+		_methodName272 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes280 = new String[] {  };
+		_methodParameterTypes272 = new String[] {  };
 
-		_methodName285 = "addSupportLabor";
+		_methodName277 = "addSupportLabor";
 
-		_methodParameterTypes285 = new String[] {
+		_methodParameterTypes277 = new String[] {
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"int", "int", "int", "int", "int", "int", "int", "int", "int",
 				"int", "int", "int", "int", "int"
 			};
 
-		_methodName286 = "addSupportWorkers";
+		_methodName278 = "addSupportWorkers";
 
-		_methodParameterTypes286 = new String[] { "long[][]", "long" };
+		_methodParameterTypes278 = new String[] { "long[][]", "long" };
 
-		_methodName287 = "deleteSupportLabor";
+		_methodName279 = "deleteSupportLabor";
 
-		_methodParameterTypes287 = new String[] { "long" };
+		_methodParameterTypes279 = new String[] { "long" };
 
-		_methodName288 = "hasSupportWorker";
+		_methodName280 = "hasSupportWorker";
 
-		_methodParameterTypes288 = new String[] { "long", "long" };
+		_methodParameterTypes280 = new String[] { "long", "long" };
 
-		_methodName289 = "removeSupportWorkers";
+		_methodName281 = "removeSupportWorkers";
 
-		_methodParameterTypes289 = new String[] { "long[][]" };
+		_methodParameterTypes281 = new String[] { "long[][]" };
 
-		_methodName290 = "updateSupportLabor";
+		_methodName282 = "updateSupportLabor";
 
-		_methodParameterTypes290 = new String[] {
+		_methodParameterTypes282 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "int", "int", "int", "int", "int", "int",
 				"int", "int", "int", "int", "int", "int", "int", "int"
@@ -264,13 +264,13 @@ public class SupportLaborLocalServiceClpInvoker {
 			return SupportLaborLocalServiceUtil.updateSupportLabor((com.liferay.osb.model.SupportLabor)arguments[0]);
 		}
 
-		if (_methodName280.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
+		if (_methodName272.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes272, parameterTypes)) {
 			return SupportLaborLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName285.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes285, parameterTypes)) {
+		if (_methodName277.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes277, parameterTypes)) {
 			return SupportLaborLocalServiceUtil.addSupportLabor((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				((Integer)arguments[3]).intValue(),
@@ -289,34 +289,34 @@ public class SupportLaborLocalServiceClpInvoker {
 				((Integer)arguments[16]).intValue());
 		}
 
-		if (_methodName286.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes286, parameterTypes)) {
+		if (_methodName278.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes278, parameterTypes)) {
 			SupportLaborLocalServiceUtil.addSupportWorkers((long[])arguments[0],
 				((Long)arguments[1]).longValue());
 
 			return null;
 		}
 
-		if (_methodName287.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes287, parameterTypes)) {
+		if (_methodName279.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes279, parameterTypes)) {
 			return SupportLaborLocalServiceUtil.deleteSupportLabor(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName288.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes288, parameterTypes)) {
+		if (_methodName280.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes280, parameterTypes)) {
 			return SupportLaborLocalServiceUtil.hasSupportWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName289.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes289, parameterTypes)) {
+		if (_methodName281.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes281, parameterTypes)) {
 			SupportLaborLocalServiceUtil.removeSupportWorkers((long[])arguments[0]);
 
 			return null;
 		}
 
-		if (_methodName290.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes290, parameterTypes)) {
+		if (_methodName282.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes282, parameterTypes)) {
 			return SupportLaborLocalServiceUtil.updateSupportLabor(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3],
@@ -377,18 +377,18 @@ public class SupportLaborLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
+	private String _methodName272;
+	private String[] _methodParameterTypes272;
+	private String _methodName277;
+	private String[] _methodParameterTypes277;
+	private String _methodName278;
+	private String[] _methodParameterTypes278;
+	private String _methodName279;
+	private String[] _methodParameterTypes279;
 	private String _methodName280;
 	private String[] _methodParameterTypes280;
-	private String _methodName285;
-	private String[] _methodParameterTypes285;
-	private String _methodName286;
-	private String[] _methodParameterTypes286;
-	private String _methodName287;
-	private String[] _methodParameterTypes287;
-	private String _methodName288;
-	private String[] _methodParameterTypes288;
-	private String _methodName289;
-	private String[] _methodParameterTypes289;
-	private String _methodName290;
-	private String[] _methodParameterTypes290;
+	private String _methodName281;
+	private String[] _methodParameterTypes281;
+	private String _methodName282;
+	private String[] _methodParameterTypes282;
 }

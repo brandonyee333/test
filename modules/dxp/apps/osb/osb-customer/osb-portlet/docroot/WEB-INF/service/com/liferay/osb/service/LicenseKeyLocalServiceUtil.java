@@ -54,19 +54,6 @@ public class LicenseKeyLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
-		com.liferay.osb.model.AssetReceiptLicense assetReceiptLicense,
-		java.lang.String owner, java.lang.String description,
-		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
-		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		int startDateMonth, int startDateDay, int startDateYear)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addLicenseKey(userId, assetReceiptLicense, owner,
-			description, hostNames, ipAddresses, macAddresses, serverIds,
-			startDateMonth, startDateDay, startDateYear);
-	}
-
-	public static com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
 		com.liferay.osb.model.LicenseKeySet licenseKeySet,
 		java.lang.String name,
 		com.liferay.osb.model.OfferingEntry offeringEntry,
@@ -103,6 +90,22 @@ public class LicenseKeyLocalServiceUtil {
 			clusterId, owner, maxServers, maxHttpSessions, description,
 			hostNames, ipAddresses, macAddresses, serverIds, startDateMonth,
 			startDateDay, startDateYear, complimentary, active);
+	}
+
+	public static com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
+		long assetReceiptLicenseId, java.lang.String licenseEntryType,
+		java.lang.String productEntryName, java.lang.String productId,
+		int productVersion, java.lang.String owner, long maxUsers,
+		java.lang.String description, java.lang.String[] hostNames,
+		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
+		java.lang.String[] serverIds, java.util.Date startDate,
+		java.util.Date expirationDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addLicenseKey(userId, assetReceiptLicenseId,
+			licenseEntryType, productEntryName, productId, productVersion,
+			owner, maxUsers, description, hostNames, ipAddresses, macAddresses,
+			serverIds, startDate, expirationDate);
 	}
 
 	public static com.liferay.osb.model.LicenseKey addSingleUseLicenseKey(
@@ -453,9 +456,12 @@ public class LicenseKeyLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.LicenseKey renewLicenseKey(
-		long userId, long licenseKeyId)
+		long userId, long licenseKeyId, java.util.Date startDate,
+		java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().renewLicenseKey(userId, licenseKeyId);
+		return getService()
+				   .renewLicenseKey(userId, licenseKeyId, startDate,
+			expirationDate);
 	}
 
 	public static com.liferay.osb.model.LicenseKey renewLicenseKey(
