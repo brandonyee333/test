@@ -1783,26 +1783,19 @@ public class AdminPortlet extends MVCPortlet {
 		String code = ParamUtil.getString(resourceRequest, "code");
 		String name = ParamUtil.getString(resourceRequest, "name");
 
-		code = code + StringPool.PERCENT;
-		name = name + StringPool.PERCENT;
-
 		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(
-			name, code);
+			name + StringPool.PERCENT, code + StringPool.PERCENT);
 
 		JSONArray accountEntriesArray = JSONFactoryUtil.createJSONArray();
 
 		for (AccountEntry accountEntry : accountEntries) {
-			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-			if (!code.equals(StringPool.PERCENT)) {
-				jsonArray.put(accountEntry.getCode());
+			if (Validator.isNotNull(code)) {
+				accountEntriesArray.put(accountEntry.getCode());
 			}
 
-			if (!name.equals(StringPool.PERCENT)) {
-				jsonArray.put(accountEntry.getName());
+			if (Validator.isNotNull(name)) {
+				accountEntriesArray.put(accountEntry.getName());
 			}
-
-			accountEntriesArray.put(jsonArray);
 		}
 
 		writeJSON(resourceRequest, resourceResponse, accountEntriesArray);
