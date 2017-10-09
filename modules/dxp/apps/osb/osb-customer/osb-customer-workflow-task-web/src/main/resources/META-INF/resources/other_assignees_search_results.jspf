@@ -45,7 +45,6 @@ if (Validator.isNotNull(assigneeClassName)) {
 		if (role != null) {
 			fullQuery.addRequiredTerm("assigneeClassPK", role.getRoleId());
 		}
-
 	}
 	else if (assigneeClassName.equals(User.class.getName())) {
 		if (searchUser != null) {
