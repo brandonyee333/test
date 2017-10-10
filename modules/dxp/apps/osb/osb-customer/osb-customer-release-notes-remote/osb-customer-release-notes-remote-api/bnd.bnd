@@ -1,0 +1,8 @@
+Bundle-Name: Liferay OSB Customer Release Notes Remote API
+Bundle-SymbolicName: com.liferay.osb.customer.release.notes.remote.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.customer.release.notes.remote.exception,\
+	com.liferay.osb.customer.release.notes.remote.model,\
+	com.liferay.osb.customer.release.notes.remote.service,\
+	com.liferay.osb.customer.release.notes.remote.service.persistence

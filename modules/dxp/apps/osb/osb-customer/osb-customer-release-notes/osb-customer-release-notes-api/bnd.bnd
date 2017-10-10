@@ -1,8 +1,0 @@
-Bundle-Name: Liferay OSB Customer Release Notes API
-Bundle-SymbolicName: com.liferay.osb.customer.release.notes.api
-Bundle-Version: 1.0.0
-Export-Package:\
-	com.liferay.osb.customer.release.notes.exception,\
-	com.liferay.osb.customer.release.notes.model,\
-	com.liferay.osb.customer.release.notes.service,\
-	com.liferay.osb.customer.release.notes.service.persistence
