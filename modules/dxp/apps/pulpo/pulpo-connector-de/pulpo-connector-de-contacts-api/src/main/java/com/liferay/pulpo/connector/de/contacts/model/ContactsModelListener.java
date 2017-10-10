@@ -260,7 +260,8 @@ public abstract class ContactsModelListener<T extends BaseModel<T>>
 		else {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			jsonObject.put("contactsProviderId", "test");
+			jsonObject.put("contactsProviderId", _CONTACTS_PROVIDER_ID);
+			jsonObject.put("projectId", _PROJECT_ID);
 			jsonObject.put("properties", jsonArray);
 
 			_contactsConnector.sendMessage(
@@ -340,8 +341,9 @@ public abstract class ContactsModelListener<T extends BaseModel<T>>
 
 		JSONObject rootJSONObject = JSONFactoryUtil.createJSONObject();
 
-		rootJSONObject.put("contactsProviderId", "test");
+		rootJSONObject.put("contactsProviderId", _CONTACTS_PROVIDER_ID);
 		rootJSONObject.put("idPropertyNames", new String[] {"userId"});
+		rootJSONObject.put("projectId", _PROJECT_ID);
 
 		JSONArray contactsJSONArray = JSONFactoryUtil.createJSONArray();
 
@@ -362,7 +364,12 @@ public abstract class ContactsModelListener<T extends BaseModel<T>>
 			rootJSONObject.toString());
 	}
 
+	private static final String _CONTACTS_PROVIDER_ID = System.getenv(
+		"PULPO_CONTACTS_PROVIDER_ID");
+
 	private static final String _EXPANDO_FIELD = "expando";
+
+	private static final String _PROJECT_ID = System.getenv("PULPO_PROJECT_ID");
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ContactsModelListener.class);

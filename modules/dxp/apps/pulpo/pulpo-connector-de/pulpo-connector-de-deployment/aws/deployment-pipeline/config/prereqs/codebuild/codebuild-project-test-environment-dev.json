@@ -4,6 +4,14 @@
     "type": "LINUX_CONTAINER",
     "environmentVariables": [
         {
+            "name": "PULPO_CONTACTS_PROVIDER_ID",
+            "value": "dev"
+        },
+        {
+            "name": "PULPO_PROJECT_ID",
+            "value": "dev"
+        },
+        {
             "name": "PULPO_TEST_BROWSER",
             "value": "chrome"
         },
@@ -21,10 +29,6 @@
         },
         {
             "name": "PULPO_TEST_ASSET_ELASTIC_SEARCH_URL",
-            "value": "https://search-pulpo-elasticsearch-dev-fowirqyosr5ljgr24rfuuqwmqm.eu-west-1.es.amazonaws.com/"
-        },
-        {
-            "name": "PULPO_TEST_CONTACT_ELASTIC_SEARCH_URL",
             "value": "https://search-pulpo-elasticsearch-dev-fowirqyosr5ljgr24rfuuqwmqm.eu-west-1.es.amazonaws.com/"
         }
     ]

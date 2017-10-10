@@ -27,7 +27,7 @@ Feature: Contacts can be added and retrieved
     And   I click in the Users and Organizations element
     Then  The contact containing the entered Screen Name is visible in the list of contacts on the client
 
-    And   There are at least 1 more contacts and at most 1 more contacts in the backend with the entered email
+    And   There are at least 1 more contacts and at most 2 more contacts in the contacts engine with the entered email
 
     Examples:
       | contact_screen_name |contact_email             |contact_first_name |contact_last_name|

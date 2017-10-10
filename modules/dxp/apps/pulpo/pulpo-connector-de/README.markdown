@@ -71,12 +71,14 @@ port to use any other.
 The connectors use the following environment variables (in addition to
 the previous ones) that should be set too:
 
-| Environment Variable Name                      | Value                 |
-|------------------------------------------------|-----------------------|
-| OSB_LCS_GATEWAY_WEB_IP                         | 54.235.215.13         |
-| OSB_LCS_PORTLET_IP                             | 54.243.198.186        |
-| PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME   | dev                   |
-| PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME | dev                   |
+| Environment Variable Name                      | Value                    |
+|------------------------------------------------|--------------------------|
+| OSB_LCS_GATEWAY_WEB_IP                         | 54.235.215.13            |
+| OSB_LCS_PORTLET_IP                             | 54.243.198.186           |
+| PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME   | dev                      |
+| PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME | dev                      |
+| PULPO_CONTACTS_PROVIDER_ID                     | <any value>              |
+| PULPO_PROJECT_ID                               | <any value>              |
 
 ## Testing the connectors
 In order to run the tests, the connectors should be deployed into a
@@ -99,7 +101,6 @@ a different environment.
 | PULPO_TEST_ASSET_ELASTIC_SEARCH_URL                     | Asset Engine Elastic Search URL         | https://search-pulpo-elasticsearch-dev-fowirqyosr5ljgr24rfuuqwmqm.eu-west-1.es.amazonaws.com |
 | PULPO_TEST_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME     | Contact Connector Environment UniqueName| dev                                                                                          |
 | PULPO_TEST_CONTACT_ENGINE_URL                           | Contact Engine URL                      | http://pulpo-engine-contacts-dev.eu-west-1.elasticbeanstalk.com                              |
-| PULPO_TEST_CONTACT_ELASTIC_SEARCH_URL                   | Contact Engine Elastic Search URL       | https://search-pulpo-elasticsearch-dev-fowirqyosr5ljgr24rfuuqwmqm.eu-west-1.es.amazonaws.com |
 
 If you want to reproduce the exactly same environment that it is use in
 Codebuild to run the tests, you should pull the docker image from

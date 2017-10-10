@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -89,6 +90,14 @@ public class FunctionalTestUtil {
 			Optional<String> password)
 		throws IOException {
 
+		return jsonFromURL(method, urlString, userName, password, null);
+	}
+
+	public static String jsonFromURL(
+			String method, String urlString, Optional<String> userName,
+			Optional<String> password, String body)
+		throws IOException {
+
 		URL url = new URL(urlString);
 
 		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -97,6 +106,17 @@ public class FunctionalTestUtil {
 
 		connection.setRequestMethod(method);
 		connection.setRequestProperty("Accept", "application/json");
+		connection.setRequestProperty("Content-Type", "application/json");
+
+		if (body != null) {
+			connection.setDoOutput(true);
+
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+				connection.getOutputStream());
+
+			outputStreamWriter.write(body);
+			outputStreamWriter.close();
+		}
 
 		if (connection.getResponseCode() != 200) {
 			throw new RuntimeException(
@@ -123,6 +143,14 @@ public class FunctionalTestUtil {
 		connection.disconnect();
 
 		return stringBuilder.toString();
+	}
+
+	public static String postJsonFromURL(
+			String urlString, Optional<String> userName,
+			Optional<String> password, String body)
+		throws IOException {
+
+		return jsonFromURL("POST", urlString, userName, password, body);
 	}
 
 	public static void scroll(WebDriver browser) {

@@ -18,15 +18,10 @@ import com.liferay.lcs.messaging.MessageBusMessage;
 import com.liferay.osb.lcs.messaging.LCSMessageBusService;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 import com.liferay.portal.kernel.bean.ClassLoaderBeanHandler;
-import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ModelListenerRegistrationUtil;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ProxyUtil;
@@ -38,8 +33,6 @@ import com.liferay.pulpo.connector.de.contacts.model.ContactsModelListener;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.osgi.framework.BundleContext;
@@ -64,73 +57,6 @@ public class ContactsConnectorImpl implements ContactsConnector {
 
 	public static final String PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME =
 		"PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME";
-
-	public JSONObject getAvailableFields() throws Exception {
-		JSONObject fieldsJSONObject = JSONFactoryUtil.createJSONObject();
-
-		for (Map.Entry<String, ContactsModelListener> entry :
-				_modelListeners.entrySet()) {
-
-			ContactsModelListener modelListener = entry.getValue();
-
-			JSONObject fieldNamesJSONObject =
-				modelListener.getFieldNamesJSONObject();
-
-			if (fieldNamesJSONObject.length() == 0) {
-				continue;
-			}
-
-			fieldsJSONObject.put(entry.getKey(), fieldNamesJSONObject);
-		}
-
-		return fieldsJSONObject;
-	}
-
-	public JSONObject getContacts(final Map<String, List<String>> fields)
-		throws Exception {
-
-		JSONObject contactsJSONObject = JSONFactoryUtil.createJSONObject();
-
-		ActionableDynamicQuery actionableDynamicQuery =
-			_userLocalService.getActionableDynamicQuery();
-
-		actionableDynamicQuery.setPerformActionMethod(
-			new ActionableDynamicQuery.PerformActionMethod<User>() {
-
-				@Override
-				public void performAction(User user) {
-					JSONArray fieldsJSONArray =
-						JSONFactoryUtil.createJSONArray();
-
-					for (Map.Entry<String, ContactsModelListener> entry :
-							_modelListeners.entrySet()) {
-
-						ContactsModelListener modelListener = entry.getValue();
-
-						List<String> modelFields = fields.get(entry.getKey());
-
-						if ((modelFields == null) || modelFields.isEmpty()) {
-							continue;
-						}
-
-						mergeJSONArrays(
-							fieldsJSONArray,
-							modelListener.getFieldValuesJSONArray(
-								user, modelFields, null));
-					}
-
-					if (fieldsJSONArray.length() > 0) {
-						contactsJSONObject.put(
-							String.valueOf(user.getUserId()), fieldsJSONArray);
-					}
-				}
-
-			});
-
-		actionableDynamicQuery.performActions();
-
-		return contactsJSONObject;
-	}
 
 	public Class<?> getModelClass(ContactsModelListener modelListener) {
 		Class<?> clazz = modelListener.getClass();
@@ -240,16 +166,6 @@ public class ContactsConnectorImpl implements ContactsConnector {
 				}
 
 			});
-	}
-
-	protected void mergeJSONArrays(JSONArray jsonArray1, JSONArray jsonArray2) {
-		Iterator<Object> iterator = jsonArray2.iterator();
-
-		while (iterator.hasNext()) {
-			Object object = iterator.next();
-
-			jsonArray1.put(object);
-		}
 	}
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")

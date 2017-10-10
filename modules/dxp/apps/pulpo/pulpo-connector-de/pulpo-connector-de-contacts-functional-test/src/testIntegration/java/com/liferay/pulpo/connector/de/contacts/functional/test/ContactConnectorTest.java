@@ -30,6 +30,7 @@ import cucumber.runtime.arquillian.CukeSpace;
 import java.io.IOException;
 
 import java.net.URL;
+import java.net.URLEncoder;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -40,8 +41,8 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import org.openqa.selenium.By;
@@ -57,7 +58,6 @@ import org.openqa.selenium.WebElement;
 	features = "features/contacts_end_to_end.feature",
 	plugin = {"com.cucumber.listener.ExtentCucumberFormatter", "pretty"}
 )
-@Ignore
 @RunAsClient
 @RunWith(CukeSpace.class)
 public class ContactConnectorTest {
@@ -67,13 +67,18 @@ public class ContactConnectorTest {
 
 	@BeforeClass
 	public static void setUpClass() throws IOException {
-		FunctionalTestUtil.createReports();
 		_contactCount = 0L;
+
+		Assume.assumeNotNull(_contactsEngineURL);
+		Assume.assumeNotNull(_contactsProviderId);
+		Assume.assumeNotNull(_projectId);
+
+		FunctionalTestUtil.createReports();
 	}
 
 	@AfterClass
 	public static void tearDownClass() throws Throwable {
-		_deleteContactByEmail(_email);
+		_deleteProjectContacts();
 	}
 
 	@When("^I click in the (.+) button$")
@@ -307,13 +312,13 @@ public class ContactConnectorTest {
 
 	@And(
 		"^There are at least (\\d+) more contacts and at most (\\d+) more " +
-			"contacts? in the backend with the entered email$"
+			"contacts? in the contacts engine with the entered email$"
 	)
 	public void thereAreMoreContactsInTheBackend(
 			long minContactsIncrement, long maxContactsIncrement)
 		throws Throwable {
 
-		long contactCountNow = _getNumberOfContactsFromElasticSearch(_email);
+		long contactCountNow = _countContactsByEmail(_email);
 
 		String message = String.format(
 			"Contacts before: %s. Contacts now: %s", _contactCount,
@@ -327,76 +332,25 @@ public class ContactConnectorTest {
 			contactCountNow <= (_contactCount + maxContactsIncrement));
 	}
 
-	protected static String elasticSearchUrl = System.getenv(
-		"ELASTIC_SEARCH_URL");
+	private static long _countContactsByEmail(String email) throws IOException {
+		String wrapperQuery = String.format(
+			_CONTACTS_PROVIDER_ENTRY_EMAIL_QUERY, email);
 
-	private static void _deleteContactByEmail(String email) throws Throwable {
-		String id = _getContactIdByEmail(email);
+		String queryString =
+			"wrapperQuery=" + URLEncoder.encode(wrapperQuery, "UTF-8");
 
-		if (id == null) {
-			return;
-		}
-
-		String deleteContactUrl =
-			elasticSearchUrl + "/" + _contactIndexName +
-				"/contactsProviderEntry/" + id;
-
-		System.out.println("Delete contact url: " + deleteContactUrl);
-
-		String response = FunctionalTestUtil.deleteJsonFromURL(
-			deleteContactUrl, Optional.empty(), Optional.empty());
-
-		System.out.println("Delete contact response: " + response);
-
-		Thread.sleep(2000);
-	}
-
-	private static String _getContactIdByEmail(String email)
-		throws IOException {
-
-		String contactSearchIdUrl = String.format(
-			"%s/%s/contactsProviderEntry/_search?q=propertiesMap." +
-				"User%%23emailAddress.value:\"%s\"&filter_path=hits.hits._id",
-			ContactConnectorTest.elasticSearchUrl,
-			ContactConnectorTest._contactIndexName, email);
-
-		System.out.println("Contact search id url: " + contactSearchIdUrl);
-
-		String hits = FunctionalTestUtil.getJsonFromURL(contactSearchIdUrl);
-
-		System.out.println("Contact search id response: " + hits);
-
-		if (hits.equals("{}")) {
-			System.out.println("Contact with email " + email + " not found");
-
-			return null;
-		}
-
-		// Expected response: {"hits":{"hits":[{"_id":"1"}]}}
-
-		return hits.split("_id\":\"")[1].split("\"}")[0].trim();
-	}
-
-	private static long _getNumberOfContactsFromElasticSearch(String email)
-		throws IOException {
-
-		String contactCountUrl = String.format(
-			"%s/%s/contactsProviderEntry/_search?q=propertiesMap." +
-				"User%%23emailAddress.value:\"%s\"&filter_path=hits.total",
-			ContactConnectorTest.elasticSearchUrl,
-			ContactConnectorTest._contactIndexName, email);
+		String contactSearchCountUrl = String.format(
+			"%s/%s/%s/search_count?%s", _contactsEngineURL, _projectId,
+			_CONTACTS_PROVIDER_ENTRY_SERVICE_PATH, queryString);
 
 		try {
-			System.out.println("Contact count url: " + contactCountUrl);
+			System.out.println("Contact count url: " + contactSearchCountUrl);
 
-			String hitsTotal = FunctionalTestUtil.getJsonFromURL(
-				contactCountUrl);
+			String hitsTotal = FunctionalTestUtil.postJsonFromURL(
+				contactSearchCountUrl, Optional.empty(), Optional.empty(),
+				null);
 
 			System.out.println("Contact count response: " + hitsTotal);
-
-			// Expected response: {"hits":{"total":1}}
-
-			hitsTotal = hitsTotal.split(":")[2].split("}")[0].trim();
 
 			return Long.parseLong(hitsTotal);
 		}
@@ -410,6 +364,21 @@ public class ContactConnectorTest {
 				throw re;
 			}
 		}
+	}
+
+	private static void _deleteProjectContacts() throws Throwable {
+		String deleteContactUrl = String.format(
+			"%s/%s/%s/delete_all", _contactsEngineURL, _projectId,
+			_CONTACTS_ENTRY_SERVICE_PATH);
+
+		System.out.println("Delete contact url: " + deleteContactUrl);
+
+		String response = FunctionalTestUtil.deleteJsonFromURL(
+			deleteContactUrl, Optional.empty(), Optional.empty());
+
+		System.out.println("Delete contact response: " + response);
+
+		Thread.sleep(2000);
 	}
 
 	private String _getRandomText(String text) {
@@ -453,16 +422,22 @@ public class ContactConnectorTest {
 		}
 	}
 
-	private static final int _INSTANCE_ID = 20116;
+	private static final String _CONTACTS_ENTRY_SERVICE_PATH = "contacts_entry";
+
+	private static final String _CONTACTS_PROVIDER_ENTRY_EMAIL_QUERY =
+		"{\"query\": {\"match_phrase\": " +
+			"{\"propertiesMap.User#emailAddress.value\" : \"%s" + "\"}}}";
+
+	private static final String _CONTACTS_PROVIDER_ENTRY_SERVICE_PATH =
+		"contacts_provider_entry";
 
 	private static Long _contactCount;
-	private static final String _contactEngineEnvironmentUniquename =
-		System.getenv("PULPO_TEST_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME");
-	private static final String _contactEngineUrl = System.getenv(
-		"PULPO_TEST_CONTACT_ELASTIC_SEARCH_URL");
-	private static final String _contactIndexName =
-		"pulpo_engine_contacts_" + _contactEngineEnvironmentUniquename;
+	private static final String _contactsEngineURL = System.getenv(
+		"PULPO_TEST_CONTACT_ENGINE_URL");
+	private static final String _contactsProviderId = System.getenv(
+		"PULPO_CONTACTS_PROVIDER_ID");
 	private static String _email;
+	private static final String _projectId = System.getenv("PULPO_PROJECT_ID");
 	private static String _screenName;
 
 	@ArquillianResource

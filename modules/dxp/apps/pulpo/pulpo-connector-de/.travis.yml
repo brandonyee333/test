@@ -36,7 +36,7 @@ before_install:
 
     # Install update_deployment_repository script
 
-    - curl -O https://raw.githubusercontent.com/liferay-labs/sepia-deployment-scripts/master/travis/update_deployment_repository.sh
+    - curl -O https://raw.githubusercontent.com/liferay-labs/sepia-deployment-scripts/pulpo-temporary/travis/update_deployment_repository.sh
     - chmod +x update_deployment_repository.sh
 
 install: true
@@ -63,6 +63,8 @@ script:
     # Run Docker Image
     - export PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME=dev
     - export PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME=dev
+    - export PULPO_CONTACTS_PROVIDER_ID=$TRAVIS_BUILD_ID
+    - export PULPO_PROJECT_ID=$TRAVIS_BUILD_ID
     - travis_wait ./gradlew runDocker
 
     - ./gradlew testIntegration

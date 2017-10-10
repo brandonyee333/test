@@ -14,7 +14,7 @@ import org.kt3k.gradle.plugin.CoverallsPlugin
 
 buildscript {
 	dependencies {
-		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.app.docker", version: "1.0.0"
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.app.docker", version: "1.0.1"
 		classpath group: "org.kt3k.gradle.plugin", name: "coveralls-gradle-plugin", version: "2.6.3"
 	}
 
@@ -213,6 +213,8 @@ def osbLcsPortletProcotol = System.getenv().get("OSB_LCS_PORTLET_PROTOCOL")
 def osbLcsPortletPwd = System.getenv().get("OSB_LCS_PORTLET_PWD")
 def pulpoAssetConnectorEnvironmentUniquename = System.getenv().get("PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME")
 def pulpoContactConnectorEnvironmentUniquename = System.getenv().get("PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME")
+def pulpoContactsProviderId = System.getenv().get("PULPO_CONTACTS_PROVIDER_ID")
+def pulpoProjectId = System.getenv().get("PULPO_PROJECT_ID")
 
 task runDocker(type: Exec) {
 	dependsOn subprojects.findAll {!it.childProjects}.copyJacocoAgent
@@ -244,6 +246,8 @@ task runDocker(type: Exec) {
 			'-e', "OSB_LCS_PORTLET_PWD=$osbLcsPortletPwd",
 			'-e', "PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoAssetConnectorEnvironmentUniquename}",
 			'-e', "PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoContactConnectorEnvironmentUniquename}",
+			'-e', "PULPO_CONTACTS_PROVIDER_ID=${pulpoContactsProviderId}",
+			'-e', "PULPO_PROJECT_ID=${pulpoProjectId}",
 			'-e', "ROOT_DIR=${rootDir}",
 			'-p', '5005:5005',
 			'-p', '8080:8080',
@@ -293,6 +297,7 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 		classDirectories = files(classDirectories.files.collect {
 			fileTree(dir: it,
 					exclude: [
+						'**/assets/*',
 						'**/constants/*',
 						'**/exception/*Exception*',
 						'**/model/*Model*',

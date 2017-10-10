@@ -15,6 +15,10 @@ dependencies {
 	provided project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-assets-url-provider")
 }
 
+deploy {
+	enabled = false
+}
+
 deployDependencies {
 	from configurations.provided
 	include "com.liferay.osb.lcs.messaging.osgi-*.jar"
