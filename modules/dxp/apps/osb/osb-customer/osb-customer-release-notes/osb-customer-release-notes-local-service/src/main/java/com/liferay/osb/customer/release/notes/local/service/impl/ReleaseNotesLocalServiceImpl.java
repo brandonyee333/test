@@ -24,7 +24,6 @@ import com.liferay.osb.customer.release.notes.remote.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.remote.service.JIRAIssueLocalService;
 import com.liferay.osb.customer.release.notes.remote.util.ReleaseNotesUtil;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -187,4 +186,5 @@ public class ReleaseNotesLocalServiceImpl
 	}
 
 	protected JIRAIssueLocalService jiraIssueLocalService;
+
 }
