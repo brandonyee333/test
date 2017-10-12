@@ -205,6 +205,12 @@ public class TopLevelBuild extends BaseBuild {
 	}
 
 	@Override
+	public void takeSlaveOffline(SlaveOfflineRule slaveOfflineRule) {
+		throw new RuntimeException(
+			"Top Level Build slaves should not be taken offline");
+	}
+
+	@Override
 	public void update() {
 		long start = System.currentTimeMillis();
 
@@ -524,6 +530,12 @@ public class TopLevelBuild extends BaseBuild {
 
 		int successCount = getDownstreamBuildCountByResult("SUCCESS");
 
+		String result = getResult();
+
+		if ((result != null) && result.equals("SUCCESS")) {
+			successCount++;
+		}
+
 		return Dom4JUtil.getNewElement(
 			"details", null,
 			Dom4JUtil.getNewElement(
@@ -560,6 +572,19 @@ public class TopLevelBuild extends BaseBuild {
 			Dom4JUtil.getNewElement("h4", null, "Base Branch:"),
 			getBaseBranchDetailsElement());
 
+		int successCount = getDownstreamBuildCountByResult("SUCCESS");
+
+		String result = getResult();
+
+		if ((result != null) && result.equals("SUCCESS")) {
+			successCount++;
+		}
+
+		Dom4JUtil.addToElement(
+			rootElement, Integer.toString(successCount), " out of ",
+			Integer.toString(getDownstreamBuildCountByResult(null) + 1),
+			" jobs PASSED");
+
 		if (!result.equals("SUCCESS")) {
 			Dom4JUtil.addToElement(rootElement, getFailedJobSummaryElement());
 		}
@@ -570,8 +595,6 @@ public class TopLevelBuild extends BaseBuild {
 		}
 
 		Dom4JUtil.addToElement(rootElement, getMoreDetailsElement());
-
-		String result = getResult();
 
 		if (!result.equals("SUCCESS")) {
 			if (isCompareToUpstream()) {

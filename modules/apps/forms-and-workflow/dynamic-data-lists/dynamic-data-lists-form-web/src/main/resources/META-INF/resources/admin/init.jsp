@@ -19,6 +19,7 @@
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+taglib uri="http://liferay.com/tld/form" prefix="liferay-form" %><%@
 taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/security" prefix="liferay-security" %><%@
@@ -28,6 +29,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.dynamic.data.lists.exception.RecordSetNameException" %><%@
 page import="com.liferay.dynamic.data.lists.exception.RecordSetSettingsRedirectURLException" %><%@
+page import="com.liferay.dynamic.data.lists.form.web.RecordSetDDMFormFieldSettingsException" %><%@
 page import="com.liferay.dynamic.data.lists.form.web.internal.display.context.DDLFormAdminDisplayContext" %><%@
 page import="com.liferay.dynamic.data.lists.form.web.internal.display.context.DDLFormViewRecordsDisplayContext" %><%@
 page import="com.liferay.dynamic.data.lists.model.DDLRecord" %><%@
@@ -62,7 +64,9 @@ page import="com.liferay.taglib.search.ResultRow" %>
 
 <%@ page import="java.util.List" %><%@
 page import="java.util.Locale" %><%@
-page import="java.util.Map" %>
+page import="java.util.Map" %><%@
+page import="java.util.Map.Entry" %><%@
+page import="java.util.Set" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
 

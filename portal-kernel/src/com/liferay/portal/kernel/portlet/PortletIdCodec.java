@@ -11,6 +11,7 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+
 package com.liferay.portal.kernel.portlet;
 
 import com.liferay.portal.kernel.util.CharPool;
@@ -200,8 +201,9 @@ public class PortletIdCodec {
 
 		if (keyword != null) {
 			throw new InvalidParameterException(
-				"The portlet name \"" + portletName +
-					"\" must not contain the keyword " + keyword);
+				StringBundler.concat(
+					"The portlet name \"", portletName,
+					"\" must not contain the keyword ", keyword));
 		}
 	}
 

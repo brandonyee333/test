@@ -77,7 +77,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.PortletURLImpl;
 import com.liferay.portlet.asset.service.permission.AssetCategoryPermission;
 import com.liferay.portlet.asset.service.permission.AssetVocabularyPermission;
-import com.liferay.portlet.asset.util.AssetPublisherAddItemHolder;
 import com.liferay.portlet.asset.util.AssetSearcher;
 
 import java.io.Serializable;
@@ -102,7 +101,10 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Brian Wing Shun Chan
  * @author Jorge Ferrer
+ * @deprecated As of 1.2.0, replaced by {@link
+ *             com.liferay.asset.util.AssetHelper}
  */
+@Deprecated
 public class AssetUtil {
 
 	public static final int ASSET_ENTRY_ABSTRACT_LENGTH = 200;

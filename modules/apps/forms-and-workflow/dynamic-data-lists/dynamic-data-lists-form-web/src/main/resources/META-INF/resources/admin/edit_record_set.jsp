@@ -138,6 +138,35 @@ renderResponse.setTitle((recordSet == null) ? LanguageUtil.get(request, "new-for
 			<liferay-ui:message arguments="<%= new Object[] {msvve.getVisibilityExpression(), msvve.getFieldName()} %>" key="the-visibility-expression-x-set-for-field-x-is-invalid" translateArguments="<%= false %>" />
 		</liferay-ui:error>
 
+		<liferay-ui:error exception="<%= RecordSetDDMFormFieldSettingsException.MustSetValidValueForProperties.class %>">
+
+			<%
+			RecordSetDDMFormFieldSettingsException.MustSetValidValueForProperties msvvfp = (RecordSetDDMFormFieldSettingsException.MustSetValidValueForProperties)errorException;
+
+			Map<String, Set<String>> fieldNamePropertiesMap = msvvfp.getFieldNamePropertiesMap();
+
+			StringBundler sb = new StringBundler(fieldNamePropertiesMap.size());
+
+			for (Entry<String, Set<String>> fieldNameProperties : fieldNamePropertiesMap.entrySet()) {
+				Set<String> value = fieldNameProperties.getValue();
+
+				sb.append(
+					LanguageUtil.format(
+						request,
+						(value.size() == 1 ? "the-setting-x-set-for-field-x-is-invalid" :"the-settings-x-set-for-field-x-are-invalid"),
+						new Object[] {StringUtil.merge(value, StringPool.COMMA_AND_SPACE), fieldNameProperties.getKey()},
+						false
+					));
+
+				sb.append(StringPool.SPACE);
+			}
+
+			sb.setIndex(sb.index() - 1);
+			%>
+
+			<%= sb.toString() %>
+		</liferay-ui:error>
+
 		<liferay-ui:error exception="<%= RecordSetNameException.class %>" message="please-enter-a-valid-form-name" />
 		<liferay-ui:error exception="<%= RecordSetSettingsRedirectURLException.class %>" message="the-specified-redirect-url-is-not-allowed" />
 		<liferay-ui:error exception="<%= StorageException.class %>" message="please-enter-a-valid-form-settings" />
@@ -200,27 +229,17 @@ renderResponse.setTitle((recordSet == null) ? LanguageUtil.get(request, "new-for
 			<portlet:param name="autoSave" value="<%= Boolean.TRUE.toString() %>" />
 		</liferay-portlet:resourceURL>
 
-		<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="getDataProviderInstances" var="getDataProviderInstancesURL" />
-
-		<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="getDataProviderParametersSettings" var="getDataProviderParametersSettings" />
-
-		<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="getFieldSettingsDDMFormContext" var="getFieldSettingsDDMFormContext" />
-
-		<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="getFunctions" var="getFunctions" />
-
-		<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="getRoles" var="getRoles" />
+		<liferay-form:ddm-form-builder
+			ddmStructureId="<%= ddlFormAdminDisplayContext.getDDMStrucutureId() %>"
+			defaultLanguageId="<%= ddlFormAdminDisplayContext.getDefaultLanguageId() %>"
+			editingLanguageId="<%= ddlFormAdminDisplayContext.getDefaultLanguageId() %>"
+			refererPortletNamespace="<%= liferayPortletResponse.getNamespace() %>"
+		/>
 
 		<aui:script>
 			Liferay.namespace('DDL').Settings = {
 				autosaveInterval: '<%= ddlFormAdminDisplayContext.getAutosaveInterval() %>',
 				autosaveURL: '<%= autoSaveRecordSetURL.toString() %>',
-				evaluatorURL: '<%= ddlFormAdminDisplayContext.getDDMFormContextProviderServletURL() %>',
-				functionsMetadata: <%= ddlFormAdminDisplayContext.getSerializedDDMExpressionFunctionsMetadata() %>,
-				getDataProviderInstancesURL: '<%= getDataProviderInstancesURL.toString() %>',
-				getDataProviderParametersSettingsURL: '<%= getDataProviderParametersSettings.toString() %>',
-				getFieldTypeSettingFormContextURL: '<%= getFieldSettingsDDMFormContext.toString() %>',
-				getFunctionsURL: '<%= getFunctions.toString() %>',
-				getRolesURL: '<%= getRoles.toString() %>',
 				portletNamespace: '<portlet:namespace />',
 				publishRecordSetURL: '<%= publishRecordSetURL.toString() %>',
 				restrictedFormURL: '<%= ddlFormAdminDisplayContext.getRestrictedFormURL() %>',
@@ -249,39 +268,43 @@ renderResponse.setTitle((recordSet == null) ? LanguageUtil.get(request, "new-for
 							window,
 							'<portlet:namespace />init',
 							function() {
-								Liferay.DDM.Renderer.FieldTypes.register(fieldTypes);
-
-								setTimeout(
+								Liferay.DDM.SoyTemplateUtil.loadModules(
 									function() {
-										Liferay.component(
-											'formPortlet',
-											new Liferay.DDL.Portlet(
-												{
-													context: <%= ddlFormAdminDisplayContext.getFormBuilderContext() %>,
-													localizedDescription: <%= ddlFormAdminDisplayContext.getFormLocalizedDescription() %>,
-													localizedName: <%= ddlFormAdminDisplayContext.getFormLocalizedName() %>,
-													defaultLanguageId: '<%= ddlFormAdminDisplayContext.getDefaultLanguageId() %>',
-													editingLanguageId: '<%= ddlFormAdminDisplayContext.getDefaultLanguageId() %>',
-													editForm: event.form,
-													namespace: '<portlet:namespace />',
-													published: !!<%= ddlFormAdminDisplayContext.isFormPublished() %>,
-													publishRecordSetURL: '<%= publishRecordSetURL.toString() %>',
-													recordSetId: <%= recordSetId %>,
-													rules: <%= ddlFormAdminDisplayContext.getSerializedDDMFormRules() %>,
-													translationManager: Liferay.component('<portlet:namespace />translationManager')
-												}
-											)
-										);
+										Liferay.DDM.Renderer.FieldTypes.register(fieldTypes);
+
+										<portlet:namespace />registerFormPortlet(event.form);
 									}
-									, 500);
+								);
 							},
-							['liferay-ddl-portlet'].concat(systemFieldModules)
+							['liferay-ddl-portlet','liferay-ddm-soy-template-util'].concat(systemFieldModules)
 						);
 
 						<portlet:namespace />init();
 					}
 				}
 			);
+
+			function <portlet:namespace />registerFormPortlet(form) {
+				Liferay.component(
+					'formPortlet',
+					new Liferay.DDL.Portlet(
+						{
+							localizedDescription: <%= ddlFormAdminDisplayContext.getFormLocalizedDescription() %>,
+							localizedName: <%= ddlFormAdminDisplayContext.getFormLocalizedName() %>,
+							defaultLanguageId: '<%= ddlFormAdminDisplayContext.getDefaultLanguageId() %>',
+							editingLanguageId: '<%= ddlFormAdminDisplayContext.getDefaultLanguageId() %>',
+							editForm: form,
+							namespace: '<portlet:namespace />',
+							formBuilder: Liferay.component('<portlet:namespace />formBuilder'),
+							published: !!<%= ddlFormAdminDisplayContext.isFormPublished() %>,
+							publishRecordSetURL: '<%= publishRecordSetURL.toString() %>',
+							recordSetId: <%= recordSetId %>,
+							ruleBuilder: Liferay.component('<portlet:namespace />ruleBuilder'),
+							translationManager: Liferay.component('<portlet:namespace />translationManager')
+						}
+					)
+				);
+			}
 
 			var clearPortletHandlers = function(event) {
 				if (event.portletId === '<%= portletDisplay.getRootPortletId() %>') {

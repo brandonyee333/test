@@ -70,9 +70,30 @@
 	<command name="gotoAddWithStructureCP">
 		<execute macro="LexiconEntry#gotoAdd" />
 
-		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="${structureName}">
-			<var name="key_menuItem" value="${structureName}" />
-		</execute>
+		<if>
+			<condition function="IsElementPresent" locator1="MenuItem#ANY_MENU_ITEM" value1="${structureName}">
+				<var name="key_menuItem" value="${structureName}" />
+			</condition>
+
+			<then>
+				<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="${structureName}">
+					<var name="key_menuItem" value="${structureName}" />
+				</execute>
+			</then>
+			<else>
+				<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="More">
+					<var name="key_menuItem" value="More" />
+				</execute>
+
+				<execute macro="IFrame#selectConfigurationFrame" />
+
+				<execute macro="LexiconEntry#gotoEntry">
+					<var name="rowEntry" value="${structureName}" />
+				</execute>
+
+				<execute macro="IFrame#selectTopFrame" />
+			</else>
+		</if>
 	</command>
 
 	<command name="gotoArticleMenuPGViaWCD">
@@ -110,11 +131,11 @@
 			<var name="webContentTitle" value="${webContentTitle}" />
 		</execute>
 
-		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Edit Web Content">
-			<var name="key_menuItem" value="Edit Web Content" />
+		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="${menuItem}">
+			<var name="key_menuItem" value="${menuItem}" />
 		</execute>
 
-		<execute function="SelectFrame" locator1="IFrame#MODAL_IFRAME" />
+		<execute macro="IFrame#selectEditAssetFrame" />
 
 		<execute function="AssertVisible" locator1="TextInput#TITLE" />
 	</command>
