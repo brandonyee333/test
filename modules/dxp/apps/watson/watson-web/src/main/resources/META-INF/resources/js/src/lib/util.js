@@ -160,9 +160,5 @@ export function getURLForLanguageId(languageId, uri) {
 }
 
 export function updateDOMTitle(newTitle) {
-	const {pageTitleUpdaterFn} = Liferay.Watson;
-
-	if (newTitle !== document.title && pageTitleUpdaterFn) {
-		pageTitleUpdaterFn(newTitle);
-	}
+	window.document.title = newTitle;
 }

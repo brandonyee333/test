@@ -7,7 +7,7 @@ import DynamicSelectInput from '../components/DynamicInputGenerator';
 import HeatMap from '../components/HeatMap';
 import MetricsReport from '../components/MetricsReport';
 import Navigation from '../components/Navigation';
-import SidebarHeader from '../components/SidebarHeader';
+import NavigationHeader from '../components/NavigationHeader';
 
 import {fetchIncidentMetrics, updateIncidentsDataManually} from '../actions/incidents';
 import {updateFilter} from '../actions/display';
@@ -121,8 +121,8 @@ class MetricsConsole extends JSXComponent {
 
 		return (
 			<div class="page-container incidents-metrics hidden-print">
-				<div class="sidebar">
-					<SidebarHeader mainHeader={Liferay.Language.get('watson-metrics')} />
+				<div class="navigation-sidebar">
+					<NavigationHeader mainHeader={Liferay.Language.get('watson-metrics')} />
 
 					{(action && action === 'heatmap') &&
 						<div class="filter-header">

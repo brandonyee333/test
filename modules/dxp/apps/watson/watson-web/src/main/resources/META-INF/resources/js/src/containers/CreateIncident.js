@@ -214,7 +214,7 @@ class CreateIncident extends JSXComponent {
 
 		return (
 			<div class="page-container incidents-create hidden-print">
-				<div class="sidebar">
+				<div class="navigation-sidebar">
 					<Navigation entries={nav} />
 				</div>
 

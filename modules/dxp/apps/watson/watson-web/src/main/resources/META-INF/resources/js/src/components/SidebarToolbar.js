@@ -6,7 +6,7 @@ import JSXComponent, {Config} from 'metal-jsx';
 import LoadingIndicator from './LoadingIndicator';
 import Toggle from './Toggle';
 
-class HeaderToolbar extends JSXComponent {
+class SidebarToolbar extends JSXComponent {
 	created() {
 		bindAll(
 			this,
@@ -57,8 +57,8 @@ class HeaderToolbar extends JSXComponent {
 		);
 
 		return (
-			<div class="watson-header-toolbar">
-				<div class="watson-header-toolbar-content">
+			<div class="watson-sidebar-toolbar">
+				<div class="watson-sidebar-toolbar-content">
 					<a class="watson-logo-link" href={`${WatsonConstants.urls.baseURL}/${displayBy}`}>
 						<div class="watson-logo" />
 					</a>
@@ -95,14 +95,14 @@ class HeaderToolbar extends JSXComponent {
 	}
 }
 
-HeaderToolbar.PROPS = {
+SidebarToolbar.PROPS = {
 	displayBy: Config.string().value(''),
 	languageToggleOnChange: Config.func(),
 	thaiIsChecked: Config.bool(),
 	toggleCSSClass: Config.string()
 };
 
-HeaderToolbar.STATE = {
+SidebarToolbar.STATE = {
 	currentView: Config.string().value(Liferay.Language.get('incident-report')),
 	userName: Config.string().value(Liferay.ThemeDisplay.getUserName() || '')
 };
@@ -113,4 +113,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps)(HeaderToolbar);
+export default connect(mapStateToProps)(SidebarToolbar);

@@ -181,7 +181,7 @@ class RelationshipsView extends JSXComponent {
 		);
 
 		allNodes.forEach(
-			(item, index) => {
+			item => {
 				const orphanedModelConnection = {
 					color: 'LightGray',
 					dashes: true,

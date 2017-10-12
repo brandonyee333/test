@@ -3,7 +3,7 @@ import JSXComponent from 'metal-jsx';
 import IncidentImporter from './views/IncidentImporter';
 
 import Navigation from '../components/Navigation';
-import SidebarHeader from '../components/SidebarHeader';
+import NavigationHeader from '../components/NavigationHeader';
 
 class AdminConsole extends JSXComponent {
 	getCurrentView(action) {
@@ -40,8 +40,8 @@ class AdminConsole extends JSXComponent {
 
 		return (
 			<div class="page-container incidents-admin hidden-print">
-				<div class="sidebar">
-					<SidebarHeader subHeader={Liferay.Language.get('administrator-console')} />
+				<div class="navigation-sidebar">
+					<NavigationHeader subHeader={Liferay.Language.get('administrator-console')} />
 
 					<Navigation entries={nav} />
 				</div>

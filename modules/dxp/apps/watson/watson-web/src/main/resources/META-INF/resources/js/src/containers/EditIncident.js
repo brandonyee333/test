@@ -10,10 +10,10 @@ import AddressForm from './forms/Address';
 import HistoryView from './views/History';
 import IncidentForm from './forms/Incident';
 import Navigation from '../components/Navigation';
+import NavigationHeader from '../components/NavigationHeader';
 import PersonForm from './forms/Person';
 import ResourceForm from './forms/Resource';
 import RelationshipsView from './views/Relationships';
-import SidebarHeader from '../components/SidebarHeader';
 import Sort from '../components/Sort';
 import TranslateActivityForm from './forms/TranslateActivity';
 import TranslateAddressForm from './forms/TranslateAddress';
@@ -717,8 +717,8 @@ class EditIncident extends JSXComponent {
 
 		return (
 			<div class="incidents-edit page-container hidden-print">
-				<div class="sidebar">
-					<SidebarHeader mainHeader={incidentName} metaHeader={incidentMetaHeader} subHeader={incidentTypeLabel} />
+				<div class="navigation-sidebar">
+					<NavigationHeader mainHeader={incidentName} metaHeader={incidentMetaHeader} subHeader={incidentTypeLabel} />
 
 					<Navigation entries={nav} navigationState={collapsedEntries} onChange={this.handleNavigationOnChange} />
 

@@ -1,4 +1,4 @@
-function SidebarHeader({mainHeader, subHeader, metaHeader}) {
+function NavigationHeader({mainHeader, subHeader, metaHeader}) {
 	return (
 		<div class="header-container">
 			<h1 class="main-header">
@@ -16,4 +16,4 @@ function SidebarHeader({mainHeader, subHeader, metaHeader}) {
 	);
 }
 
-export default SidebarHeader;
+export default NavigationHeader;

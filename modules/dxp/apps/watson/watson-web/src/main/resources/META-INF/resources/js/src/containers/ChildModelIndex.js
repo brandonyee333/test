@@ -3,7 +3,7 @@ import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import sub from 'string-sub';
 
-import SidebarHeader from '../components/SidebarHeader';
+import NavigationHeader from '../components/NavigationHeader';
 import ViewIndex from './views/ViewIndex';
 
 import {editAddress} from '../actions/addresses';
@@ -93,8 +93,8 @@ class ChildModelIndex extends JSXComponent {
 
 		return (
 			<div class="model-index page-container hidden-print">
-				<div class="sidebar">
-					<SidebarHeader mainHeader={modelName} metaHeader={modelMetaHeader} subHeader={modelTypeLabel} />
+				<div class="navigation-sidebar">
+					<NavigationHeader mainHeader={modelName} metaHeader={modelMetaHeader} subHeader={modelTypeLabel} />
 				</div>
 
 				<ViewIndex

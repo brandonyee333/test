@@ -10,8 +10,8 @@ import ContentHeader from '../components/ContentHeader';
 import DynamicSelectInput from '../components/DynamicInputGenerator';
 import IndexList from '../components/IndexList';
 import LinkButton from '../components/LinkButton';
+import NavigationHeader from '../components/NavigationHeader';
 import SelectInput from '../components/SelectInput';
-import SidebarHeader from '../components/SidebarHeader';
 
 import {indexActivities, searchActivities} from '../actions/activities';
 import {indexAddresses, searchAddresses} from '../actions/addresses';
@@ -250,8 +250,8 @@ class Index extends JSXComponent {
 
 		return (
 			<div class="incidents-index page-container hidden-print">
-				<div class="sidebar">
-					<SidebarHeader mainHeader={Liferay.Language.get('incidents')} />
+				<div class="navigation-sidebar">
+					<NavigationHeader mainHeader={Liferay.Language.get('incidents')} />
 
 					<LinkButton className="primary" href={`${WatsonConstants.urls.incidents}/incidents/create/`} label={Liferay.Language.get('create-incident')} />
 

@@ -2,13 +2,14 @@ import {debounce, noop} from 'lodash';
 import JSXComponent from 'metal-jsx';
 import {Map} from 'immutable';
 import moment from 'moment';
+import momentThai from 'moment/locale/th.js'
 import {Provider} from 'metal-redux';
 import Router from 'metal-router';
 
 import configureStore from './store/configure-store.js';
 
 import {getURLForLanguageId} from './lib/util';
-import HeaderToolbar from './components/HeaderToolbar';
+import SidebarToolbar from './components/SidebarToolbar';
 
 import AdminConsole from './containers/AdminConsole';
 import CreateIncident from './containers/CreateIncident';
@@ -20,11 +21,7 @@ import MetricsConsole from './containers/MetricsConsole';
 
 class Watson extends JSXComponent {
 	attached() {
-		const router = Router.router();
-
-		Liferay.Watson.router = router;
-
-		router.dispatch();
+		Router.router().dispatch();
 
 		Liferay.Watson.debouncedSessionExtend = debounce(this._handleSessionExtend, 3000);
 
@@ -55,12 +52,6 @@ class Watson extends JSXComponent {
 		}
 	}
 
-	_handleUpdatePageTitle(title) {
-		Liferay.Watson.router.setDefaultTitle(title);
-
-		document.title = title;
-	}
-
 	languageToggleOnChange() {
 		window.location.href = getURLForLanguageId(WatsonConstants.otherLanguageId);
 	}
@@ -81,14 +72,14 @@ class Watson extends JSXComponent {
 			const thaiIsChecked = WatsonConstants.otherLanguageId !== 'th';
 
 			if (thaiIsChecked) {
-				moment.locale('th');
+				moment.locale('th', momentThai);
 			}
 
 			retVal = (
 				<Provider store={store}>
 					<div class="watson-app">
 
-						<HeaderToolbar
+						<SidebarToolbar
 							languageToggleOnChange={this.languageToggleOnChange}
 							thaiIsChecked={thaiIsChecked}
 							toggleCSSClass="language-toggle"
@@ -119,12 +110,6 @@ class Watson extends JSXComponent {
 
 		return retVal;
 	}
-
-	rendered() {
-		if (!Liferay.Watson.pageTitleUpdaterFn) {
-			Liferay.Watson.pageTitleUpdaterFn = this._handleUpdatePageTitle;
-		}
-	}
 }
 
 Liferay.Watson = {
@@ -144,6 +129,5 @@ Liferay.Watson = {
 	},
 	debouncedSessionExtend: noop,
 	mapComponent: {},
-	pageTitleUpdaterFn: null,
 	router: null
 };
