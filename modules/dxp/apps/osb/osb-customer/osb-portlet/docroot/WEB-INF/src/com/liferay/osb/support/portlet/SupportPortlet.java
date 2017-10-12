@@ -3039,24 +3039,20 @@ public class SupportPortlet extends MVCPortlet {
 				return false;
 			}
 
-			Group group = themeDisplay.getScopeGroup();
+			if (OrganizationLocalServiceUtil.hasUserOrganization(
+					themeDisplay.getUserId(),
+					OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
-			if (themeDisplay.getUserId() == group.getClassPK()) {
-				if (OrganizationLocalServiceUtil.hasUserOrganization(
-						themeDisplay.getUserId(),
-						OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+				return true;
+			}
 
-					return true;
-				}
+			if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
+					themeDisplay.getUserId()) &&
+				RoleLocalServiceUtil.hasUserRole(
+					themeDisplay.getUserId(),
+					OSBConstants.ROLE_VERIFIED_USER_ID)) {
 
-				if (AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-						themeDisplay.getUserId()) &&
-					RoleLocalServiceUtil.hasUserRole(
-						themeDisplay.getUserId(),
-						OSBConstants.ROLE_VERIFIED_USER_ID)) {
-
-					return true;
-				}
+				return true;
 			}
 		}
 		catch (Exception e) {
