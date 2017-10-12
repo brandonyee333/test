@@ -72,14 +72,13 @@ portletURL.setParameter("tabs1", tabs1);
 	<%
 	PortletURL iteratorURL = renderResponse.createRenderURL();
 
-	iteratorURL.setParameter("tabs1", tabs1);
-
 	iteratorURL.setParameter("accountEntryCode", accountEntryCode);
 	iteratorURL.setParameter("accountEntryName", accountEntryName);
 	iteratorURL.setParameter("assigneeClassName", assigneeClassName);
 	iteratorURL.setParameter("completed", completedString);
 	iteratorURL.setParameter("roleName", roleName);
 	iteratorURL.setParameter("salesforceOpportunityType", String.valueOf(salesforceOpportunityType));
+	iteratorURL.setParameter("tabs1", tabs1);
 	iteratorURL.setParameter("userEmailAddress", userEmailAddress);
 	%>
 
