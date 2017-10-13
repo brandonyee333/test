@@ -15,6 +15,7 @@
 			}
 
 			.map-wrapper {
+				float: right;
 				height: 600px;
 				max-height: 900px;
 				max-width: 900px;
@@ -84,7 +85,8 @@
 			letter-spacing: 0.07em;
 			line-height: 1.6em;
 			margin: 40px 0 0;
-			width: 256px;
+			max-width: 256px;
+			width: 100%;
 		}
 
 		.filter-input {

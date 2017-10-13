@@ -1,11 +1,12 @@
 .content-container {
 	box-sizing: content-box;
 	display: inline-block;
-	margin: 10px 0 0 300px;
-	max-width: calc(100% - #{$sidebarWidth} - 65px);
+	margin: 10px 0 0 0;
+	max-width: calc(100% - #{$navigationSidebarWidth + $sidebarToolbarWidth} - 65px);
 	min-width: 65%;
-	padding-left: 5%;
+	padding-left: 1%;
 	width: 71%;
+	z-index: 400;
 
 	.content-header {
 		border-bottom: 1px solid $neutralLighter;
@@ -294,5 +295,22 @@ textarea.watson-input {
 
 	&:focus .icon.print-icon, &:hover .icon.print-icon {
 		background-image: url(../images/svg/print-focus.svg);
+	}
+}
+
+@media only screen and (min-width: 1023px) {
+	.navigation-sidebar {
+		height: auto;
+		position: fixed;
+	}
+
+	.content-container {
+		margin: 10px 0 0 ($navigationSidebarWidth + $sidebarToolbarWidth);
+	}
+
+	.form-container {
+		.map-wrapper {
+			float: right;
+		}
 	}
 }

@@ -151,7 +151,6 @@ class GoogleMapWrapper extends JSXComponent {
 
 			Liferay.Watson.mapComponent.marker = new google.maps.Marker(
 				{
-					icon: `${Liferay.ThemeDisplay.getPathThemeImages()}/marker.svg`,
 					map: Liferay.Watson.mapComponent.map,
 					position: latLng
 				}

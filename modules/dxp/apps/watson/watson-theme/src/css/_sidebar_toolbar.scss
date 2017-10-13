@@ -3,7 +3,7 @@
 	border-right: 1px solid $neutralLighter;
 	height: 100%;
 	position: fixed;
-	width: 60px;
+	width: $sidebarToolbarWidth;
 	z-index: 500;
 
 	.watson-sidebar-toolbar-content {
@@ -22,7 +22,7 @@
 			height: 24px;
 			width: 24px;
 		}
-		
+
 		#children-home {
 			background: url(../images/svg/children.svg) no-repeat;
 			background-size: cover;
@@ -38,7 +38,7 @@
 			height: 24px;
 			width: 24px;
 		}
-		
+
 		#language-toggle {
 			background: url(../images/svg/language-toggle.svg) no-repeat;
 			background-size: cover;
@@ -47,7 +47,7 @@
 			height: 24px;
 			width: 24px;
 		}
-		
+
 		#logout {
 			background: url(../images/svg/logout.svg) no-repeat;
 			background-size: cover;
@@ -71,7 +71,7 @@
 			height: 24px;
 			width: 24px;
 		}
-		
+
 		.watson-logo-link {
 			background: url(../images/zoe_logo.png) no-repeat;
 			background-size: cover;
@@ -82,6 +82,7 @@
 	}
 
 	svg:hover #admin:hover #children-home:hover #incidents-report:hover #language-toggle:hover #logout:hover #map:hover #reports:hover {
+		background-color: $neutralDark;
 		fill: $darkest;
 	}
 }
