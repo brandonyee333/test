@@ -288,11 +288,11 @@ textarea.watson-input {
 		width: 30px;
 
 		&.print-icon {
-			background-image: url(../images/print.svg);
+			background-image: url(../images/svg/print.svg);
 		}
 	}
 
 	&:focus .icon.print-icon, &:hover .icon.print-icon {
-		background-image: url(../images/print-focus.svg);
+		background-image: url(../images/svg/print-focus.svg);
 	}
 }

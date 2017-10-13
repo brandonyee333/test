@@ -172,12 +172,12 @@
 		}
 
 		&.changed:after {
-			background-image: url(../images/input-changed.svg);
+			background-image: url(../images/svg/input-changed.svg);
 		}
 
 		&.error, &.changed.error {
 			&:after {
-				background-image: url(../images/input-changed-error.svg);
+				background-image: url(../images/svg/input-changed-error.svg);
 			}
 
 			.input-label, .watson-button {
