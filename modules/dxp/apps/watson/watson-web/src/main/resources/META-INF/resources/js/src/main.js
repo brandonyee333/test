@@ -52,7 +52,7 @@ class Watson extends JSXComponent {
 		}
 	}
 
-	languageToggleOnChange() {
+	languageOnClick() {
 		window.location.href = getURLForLanguageId(WatsonConstants.otherLanguageId);
 	}
 
@@ -80,10 +80,8 @@ class Watson extends JSXComponent {
 					<div class="watson-app">
 
 						<SidebarToolbar
-							languageToggleOnChange={this.languageToggleOnChange}
+							languageOnClick={this.languageOnClick}
 							thaiIsChecked={thaiIsChecked}
-							toggleCSSClass="language-toggle"
-							toggleLabel={['EN', 'TH']}
 						/>
 
 						<div class="print-helper-message" id="print-helper-message">{Liferay.Language.get('this-page-is-not-printable')} </div>

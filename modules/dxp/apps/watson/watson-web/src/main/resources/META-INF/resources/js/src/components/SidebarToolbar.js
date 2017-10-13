@@ -1,60 +1,16 @@
 import {bindAll} from 'lodash';
 import {connect} from 'metal-redux';
-import DropDown from 'metal-dropdown';
 import JSXComponent, {Config} from 'metal-jsx';
 
 import LoadingIndicator from './LoadingIndicator';
-import Toggle from './Toggle';
 
 class SidebarToolbar extends JSXComponent {
-	created() {
-		bindAll(
-			this,
-			'handleOnClick'
-		);
-	}
-
-	handleOnClick(event) {
-		const {target} = event;
-
-		if (target) {
-			this.setState({currentView: target.attributes.id.value});
-		}
-	}
-
 	render() {
 		const {
 			displayBy = '',
-			languageToggleOnChange,
-			thaiIsChecked,
-			toggleCSSClass,
-			toggleLabel
+			languageOnClick,
+			thaiIsChecked
 		} = this.props;
-
-		const {currentView} = this.state;
-
-		let {userName} = this.state;
-
-		userName = userName.length > 20 ? `${userName.substring(0, 20)}...` : userName;
-
-		const userNameDiv = (<button class="dropdown watson-button" data-onclick="toggle">{userName} <span class="caret" /></button>);
-
-		const userNameDropDown = (
-			<ul class="items">
-				<li><a href={`${WatsonConstants.urls.baseURL}/incidents/admin`}>{Liferay.Language.get('administrator-console')}</a></li>
-				<li><a href={`${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`}>{Liferay.Language.get('logout')}</a></li>
-			</ul>
-		);
-
-		const moduleDiv = (<button class="dropdown watson-button" data-onclick="toggle">{currentView} <span class="caret" /></button>);
-
-		const moduleDropDown = (
-			<ul class="items">
-				<li><a href={`${WatsonConstants.urls.baseURL}/${displayBy}`} id={Liferay.Language.get('incident-report')} onclick={this.handleOnClick}>{Liferay.Language.get('incident-report')}</a></li>
-				<li><a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id={Liferay.Language.get('heatmap')} onclick={this.handleOnClick}>{Liferay.Language.get('heatmap')}</a></li>
-				<li><a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id={Liferay.Language.get('reports')} onclick={this.handleOnClick}>{Liferay.Language.get('reports')}</a></li>
-			</ul>
-		);
 
 		return (
 			<div class="watson-sidebar-toolbar">
@@ -63,30 +19,17 @@ class SidebarToolbar extends JSXComponent {
 						<div class="watson-logo" />
 					</a>
 
-					<div class="keep-left metal-dropdown-menu">
-						<DropDown
-							alignElementSelector="button"
-							body={moduleDropDown}
-							header={moduleDiv}
-							position="down"
-						/>
-					</div>
+					<ul>
+						<a href={`${WatsonConstants.urls.baseURL}/${displayBy}`} id="incidents-report" title={Liferay.Language.get('incident-report')}/>
+						<a href={`${WatsonConstants.urls.baseURL}/incidents`} id="children-home" title={Liferay.Language.get('children')}/>
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="map" title={Liferay.Language.get('heatmap')}/>
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="reports" title={Liferay.Language.get('reports')}/>
 
-					<Toggle
-						checked={thaiIsChecked}
-						cssClass={toggleCSSClass}
-						label={toggleLabel}
-						onChange={languageToggleOnChange}
-					/>
+						<a onClick={languageOnClick} id="language-toggle" title={Liferay.Language.get('switch-to-x')}/>
 
-					<div class="metal-dropdown-menu">
-						<DropDown
-							alignElementSelector="button"
-							body={userNameDropDown}
-							header={userNameDiv}
-							position="down"
-						/>
-					</div>
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/admin`} id="admin" title={Liferay.Language.get('administrator-console')}/>
+						<a href={`${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`} id="logout" title={Liferay.Language.get('logout')}/>
+					</ul>
 
 					<LoadingIndicator />
 				</div>
@@ -97,15 +40,11 @@ class SidebarToolbar extends JSXComponent {
 
 SidebarToolbar.PROPS = {
 	displayBy: Config.string().value(''),
-	languageToggleOnChange: Config.func(),
+	languageOnClick: Config.func(),
 	thaiIsChecked: Config.bool(),
-	toggleCSSClass: Config.string()
 };
 
-SidebarToolbar.STATE = {
-	currentView: Config.string().value(Liferay.Language.get('incident-report')),
-	userName: Config.string().value(Liferay.ThemeDisplay.getUserName() || '')
-};
+SidebarToolbar.STATE = {};
 
 function mapStateToProps(state) {
 	return {
