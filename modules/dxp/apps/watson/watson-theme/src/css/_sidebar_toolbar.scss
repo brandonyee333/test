@@ -4,28 +4,19 @@
 	height: 100%;
 	position: fixed;
 	width: 60px;
+	z-index: 500;
 
 	.watson-sidebar-toolbar-content {
 		align-items: center;
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
 		height: 100%;
+		justify-content: space-between;
 		margin-top: 20%;
 		width: 100%;
 
-		.watson-logo-link {
-			.watson-logo {
-				background: url(../images/zoe_logo.png) no-repeat;
-				background-size: cover;
-				content: '';
-				height: 21px;
-				width: 46px;
-			}
-		}
-		
-		#incidents-report {
-			background: url(../images/svg/incidents-report.svg) no-repeat;
+		#admin {
+			background: url(../images/svg/settings.svg) no-repeat;
 			background-size: cover;
 			content: '';
 			height: 24px;
@@ -39,27 +30,20 @@
 			height: 24px;
 			width: 24px;
 		}
-		
-		#map {
-			background: url(../images/svg/heatmap.svg) no-repeat;
+
+		#incidents-report {
+			background: url(../images/svg/incidents-report.svg) no-repeat;
 			background-size: cover;
 			content: '';
 			height: 24px;
 			width: 24px;
 		}
 		
-		#reports {
-			background: url(../images/svg/reports.svg) no-repeat;
+		#language-toggle {
+			background: url(../images/svg/language-toggle.svg) no-repeat;
 			background-size: cover;
 			content: '';
-			height: 24px;
-			width: 24px;
-		}
-		
-		#admin {
-			background: url(../images/svg/settings.svg) no-repeat;
-			background-size: cover;
-			content: '';
+			cursor: pointer;
 			height: 24px;
 			width: 24px;
 		}
@@ -71,14 +55,34 @@
 			height: 24px;
 			width: 24px;
 		}
+
+		#map {
+			background: url(../images/svg/heatmap.svg) no-repeat;
+			background-size: cover;
+			content: '';
+			height: 24px;
+			width: 24px;
+		}
+
+		#reports {
+			background: url(../images/svg/reports.svg) no-repeat;
+			background-size: cover;
+			content: '';
+			height: 24px;
+			width: 24px;
+		}
+		
+		.watson-logo-link {
+			background: url(../images/zoe_logo.png) no-repeat;
+			background-size: cover;
+			content: '';
+			height: 21px;
+			width: 46px;
+		}
 	}
 
-	.watson-toggle {
-		&.language-toggle {
-			border-left: 1px solid $neutralLighter;
-			border-right: 1px solid $neutralLighter;
-			margin-right: 15px;
-		}
+	svg:hover #admin:hover #children-home:hover #incidents-report:hover #language-toggle:hover #logout:hover #map:hover #reports:hover {
+		fill: $darkest;
 	}
 }
 

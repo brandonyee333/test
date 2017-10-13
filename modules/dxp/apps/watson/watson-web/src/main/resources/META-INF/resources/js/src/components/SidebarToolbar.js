@@ -1,35 +1,36 @@
-import {bindAll} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
+import sub from 'string-sub';
 
+import {getURLForLanguageId} from '../lib/util';
 import LoadingIndicator from './LoadingIndicator';
 
 class SidebarToolbar extends JSXComponent {
+	languageOnClick() {
+		window.location.href = getURLForLanguageId(WatsonConstants.otherLanguageId);
+	}
+
 	render() {
 		const {
-			displayBy = '',
-			languageOnClick,
-			thaiIsChecked
+			displayBy = ''
 		} = this.props;
 
 		return (
 			<div class="watson-sidebar-toolbar">
 				<div class="watson-sidebar-toolbar-content">
-					<a class="watson-logo-link" href={`${WatsonConstants.urls.baseURL}/${displayBy}`}>
-						<div class="watson-logo" />
-					</a>
+					<a class="watson-logo-link" href={`${WatsonConstants.urls.baseURL}/${displayBy}`} />
 
-					<ul>
-						<a href={`${WatsonConstants.urls.baseURL}/${displayBy}`} id="incidents-report" title={Liferay.Language.get('incident-report')}/>
-						<a href={`${WatsonConstants.urls.baseURL}/incidents`} id="children-home" title={Liferay.Language.get('children')}/>
-						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="map" title={Liferay.Language.get('heatmap')}/>
-						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="reports" title={Liferay.Language.get('reports')}/>
+					<a href={`${WatsonConstants.urls.baseURL}/${displayBy}`} id="incidents-report" title={Liferay.Language.get('incident-report')} />
+					<a href={`${WatsonConstants.urls.baseURL}/incidents`} id="children-home" title={Liferay.Language.get('children-home')} />
+					<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="map" title={Liferay.Language.get('heatmap')} />
+					<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="reports" title={Liferay.Language.get('reports')} />
+					<a id="language-toggle" onClick={this.languageOnClick} title={sub(Liferay.Language.get('switch-to-x'), (WatsonConstants.otherLanguageId).toUpperCase())} />
 
-						<a onClick={languageOnClick} id="language-toggle" title={Liferay.Language.get('switch-to-x')}/>
+					{WatsonConstants.currentUser.portalAdminRole &&
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/admin`} id="admin" title={Liferay.Language.get('administrator-console')} />
+					}
 
-						<a href={`${WatsonConstants.urls.baseURL}/incidents/admin`} id="admin" title={Liferay.Language.get('administrator-console')}/>
-						<a href={`${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`} id="logout" title={Liferay.Language.get('logout')}/>
-					</ul>
+					<a href={`${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`} id="logout" title={Liferay.Language.get('logout')} />
 
 					<LoadingIndicator />
 				</div>
@@ -39,9 +40,7 @@ class SidebarToolbar extends JSXComponent {
 }
 
 SidebarToolbar.PROPS = {
-	displayBy: Config.string().value(''),
-	languageOnClick: Config.func(),
-	thaiIsChecked: Config.bool(),
+	displayBy: Config.string().value('')
 };
 
 SidebarToolbar.STATE = {};

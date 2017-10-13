@@ -29,25 +29,25 @@
 			}
 		}
 	}
-	
+
 	.watson-button.remove-button {
 		height: 34px;
 		left: 70%;
 		position: absolute;
 		top: 11px;
 		width: 34px;
-		
+
 		&:after {
 			content: '\f00d';
-			
+
 			@include fontAwesomeIcon;
-			
+
 			font-size: 14px;
 			left: calc(50% - 5px);
 			position: absolute;
 			top: calc(50% - 10px);
 		}
-		
+
 		&:hover:after {
 			color: $neutralDark;
 		}

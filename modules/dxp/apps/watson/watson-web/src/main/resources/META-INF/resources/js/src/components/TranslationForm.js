@@ -164,14 +164,6 @@ class TranslationForm extends JSXComponent {
 
 				{this.renderInputs()}
 
-				<div class="tooltip-wrapper">
-					<Tooltip
-						delayHide={500}
-						effect="solid"
-						place="right"
-					/>
-				</div>
-
 				<BottomBar
 					buttons={bottomBarButtons}
 					formIsValid={!disabled}

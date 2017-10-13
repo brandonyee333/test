@@ -150,6 +150,7 @@
 
 	.Select--multi .Select-control {
 		height: auto;
+		min-height: 57px;
 
 		& > .Select-aria-only {
 			color: $neutralMedium;

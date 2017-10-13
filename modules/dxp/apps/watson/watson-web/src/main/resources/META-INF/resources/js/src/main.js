@@ -2,13 +2,12 @@ import {debounce, noop} from 'lodash';
 import JSXComponent from 'metal-jsx';
 import {Map} from 'immutable';
 import moment from 'moment';
-import momentThai from 'moment/locale/th.js'
+import momentThai from 'moment/locale/th.js';
 import {Provider} from 'metal-redux';
 import Router from 'metal-router';
 
 import configureStore from './store/configure-store.js';
 
-import {getURLForLanguageId} from './lib/util';
 import SidebarToolbar from './components/SidebarToolbar';
 
 import AdminConsole from './containers/AdminConsole';
@@ -52,10 +51,6 @@ class Watson extends JSXComponent {
 		}
 	}
 
-	languageOnClick() {
-		window.location.href = getURLForLanguageId(WatsonConstants.otherLanguageId);
-	}
-
 	render() {
 		let retVal = null;
 
@@ -69,9 +64,7 @@ class Watson extends JSXComponent {
 		else {
 			const store = configureStore(Map());
 
-			const thaiIsChecked = WatsonConstants.otherLanguageId !== 'th';
-
-			if (thaiIsChecked) {
+			if (WatsonConstants.otherLanguageId !== 'th') {
 				moment.locale('th', momentThai);
 			}
 
@@ -79,10 +72,7 @@ class Watson extends JSXComponent {
 				<Provider store={store}>
 					<div class="watson-app">
 
-						<SidebarToolbar
-							languageOnClick={this.languageOnClick}
-							thaiIsChecked={thaiIsChecked}
-						/>
+						<SidebarToolbar />
 
 						<div class="print-helper-message" id="print-helper-message">{Liferay.Language.get('this-page-is-not-printable')} </div>
 
