@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.watson.constants.WatsonPortletKeys;
 
 import java.io.InputStream;
 
@@ -206,7 +207,7 @@ public class WatsonServletContextListener
 		}
 	}
 
-	private static final String[] _PORTLET_IDS = {"1_WAR_watsonportlet"};
+	private static final String[] _PORTLET_IDS = {WatsonPortletKeys.WATSON};
 
 	private ServletContext _servletContext;
 

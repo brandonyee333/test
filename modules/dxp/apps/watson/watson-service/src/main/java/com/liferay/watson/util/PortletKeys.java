@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.watson.util;
+package com.liferay.watson.constants;
 
 /**
  * @author Steven Smith
  */
-public class PortletKeys {
+public class WatsonPortletKeys {
 
 	public static final String WATSON = "1_WAR_watsonportlet";
 
