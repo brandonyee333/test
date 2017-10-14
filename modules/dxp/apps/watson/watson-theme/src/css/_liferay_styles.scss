@@ -112,7 +112,7 @@ html body {
 
 #content {
 	#sign-in {
-		color: #808080;
+		color: $neutralDark;
 		font-size: 22px;
 		margin-right: 1%;
 	}
@@ -121,7 +121,7 @@ html body {
 		display: none;
 	}
 
-	.columns-2 {
+	.columns-1 {
 		display: none;
 	}
 }
