@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.watson.internal.hook.upgrade;
+package com.liferay.watson.internal.upgrade;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.watson.internal.hook.upgrade.v1_0_3.UpgradeWatsonListType;
+import com.liferay.watson.internal.upgrade.v1_0_3.UpgradeWatsonListType;
 
 /**
  * @author Steven Smith
