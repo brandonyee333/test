@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.watson.servlet;
+package com.liferay.osb.Watson.internal.util;
 
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
@@ -43,24 +43,11 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
- * @author Brent Krone-Schmidt
+ * @author Steven Smith
  */
-public class WatsonServletContextListener
-	extends BasePortalLifecycle implements ServletContextListener {
+public class WatsonRoleUtil {
 
-	@Override
-	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		portalDestroy();
-	}
-
-	@Override
-	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		_servletContext = servletContextEvent.getServletContext();
-
-		registerPortalLifecycle();
-	}
-
-	protected void addRole(Element roleElement) throws Exception {
+	protected static void addRole(Element roleElement) throws Exception {
 		long companyId = PortalUtil.getDefaultCompanyId();
 
 		String roleName = roleElement.elementText("name");
@@ -139,20 +126,17 @@ public class WatsonServletContextListener
 		}
 	}
 
-	@Override
-	protected void doPortalDestroy() throws Exception {
-	}
-
-	@Override
-	protected void doPortalInit() throws Exception {
-		Class<?> clazz = getClass();
-
-		ClassLoader classLoader = clazz.getClassLoader();
+	public static void initResourceActions() throws Exception {
+		ClassLoader classLoader = WatsonRoleUtil.class.getClassLoader();
 
 		importResourceActions(classLoader);
+	}
+
+	public static void initRoles() throws Exception {
+		ClassLoader classLoader = WatsonRoleUtil.class.getClassLoader();
 
 		InputStream inputStream = classLoader.getResourceAsStream(
-			"/com/liferay/watson/dependencies/roles.xml");
+				"com/liferay/Watson/util/roles.xml");
 
 		String xml = new String(FileUtil.getBytes(inputStream));
 
@@ -167,7 +151,7 @@ public class WatsonServletContextListener
 		}
 	}
 
-	protected int getRoleLabelType(String roleLabel) {
+	protected static int getRoleLabelType(String roleLabel) {
 		if (Objects.equals(roleLabel, RoleConstants.TYPE_ORGANIZATION_LABEL)) {
 			return RoleConstants.TYPE_ORGANIZATION;
 		}
@@ -179,13 +163,11 @@ public class WatsonServletContextListener
 		}
 	}
 
-	protected void importResourceActions(ClassLoader classLoader)
+	protected static void importResourceActions(ClassLoader classLoader)
 		throws Exception {
 
-		String servletContextName = _servletContext.getServletContextName();
-
 		ResourceActionsUtil.read(
-			servletContextName, classLoader, "resource-actions/default.xml");
+			null, classLoader, "resource-actions/default.xml");
 
 		for (String portletId : _PORTLET_IDS) {
 			List<String> portletActions =
@@ -208,7 +190,5 @@ public class WatsonServletContextListener
 	}
 
 	private static final String[] _PORTLET_IDS = {WatsonPortletKeys.WATSON};
-
-	private ServletContext _servletContext;
 
 }
