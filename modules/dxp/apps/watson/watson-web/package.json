@@ -82,7 +82,7 @@
 		"webpack": "^2.1.0-beta"
 	},
 	"homepage": "https://github.com/liferay/liferay-plugins-ee",
-	"main": "docroot/js/src/main.js",
+	"main": "src/main/resources/META-INF/resources/js/src/main.js",
 	"name": "liferay-watson-portlet",
 	"private": true,
 	"repository": {

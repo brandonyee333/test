@@ -1,6 +1,6 @@
 var webpack = require('webpack');
 
-var jsDirectory = `${__dirname}/docroot/js`;
+var jsDirectory = `${__dirname}/src/main/resources/META-INF/resources/js`;
 
 var plugins = [
 	new webpack.DefinePlugin(
