@@ -16,10 +16,14 @@ package com.liferay.osb.testray.portlet;
 
 import com.liferay.alloy.mvc.AlloyPortlet;
 import com.liferay.watson.constants.WatsonPortletKeys;
+import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
+
+import java.lang.reflect.Field;
 
 import javax.portlet.Portlet;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Steven Smith
@@ -29,9 +33,6 @@ import org.osgi.service.component.annotations.Component;
 		property = {
 				"com.liferay.portlet.css-class-wrapper=watson-portlet",
 				"com.liferay.portlet.display-category=category.tools",
-				"com.liferay.portlet.friendly-url-mapper-class=com.liferay.alloy.mvc.AlloyFriendlyURLMapper",
-				"com.liferay.portlet.friendly-url-mapping=watson",
-				"com.liferay.portlet.friendly-url-routes=com/liferay/watson/watson-friendly-url-routes.xml?controller=incidents",
 				"com.liferay.portlet.requires-namespaced-parameters=false",
 				"javax.portlet.display-name=Watson",
 				"javax.portlet.expiration-cache=0",
@@ -46,4 +47,13 @@ import org.osgi.service.component.annotations.Component;
 		service = Portlet.class
 )
 public class WatsonPortlet extends AlloyPortlet {
+
+	@Override
+	@Reference(
+			target = "(name=watson-friendly-url-mapper)",
+			unbind = "-"
+	)
+	protected void setFriendlyURLMapper(FriendlyURLMapper friendlyURLMapper) {
+		this.friendlyURLMapper = friendlyURLMapper;
+	}
 }
