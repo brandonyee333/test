@@ -1,4 +1,4 @@
 !/watson-web/docroot/WEB-INF/lib
 /watson-web/docroot/WEB-INF/lib/*
 !/watson-web/docroot/WEB-INF/lib/watson-portlet-service.jar
-!/watson-web/docroot/js/src/lib
+!watson-web/src/main/resources/META-INF/resources/js/src/lib
