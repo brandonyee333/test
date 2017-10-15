@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.watson.hook.upgrade.v1_0_0;
+package com.liferay.watson.internal.hook.upgrade.v1_0_3;
 
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
@@ -103,7 +103,7 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 		throws Exception {
 
 		InputStream inputStream = classLoader.getResourceAsStream(
-			"com/liferay/watson/hook/upgrade/v1_0_0/dependencies/default.xml");
+			"com/liferay/watson/hook/upgrade/v1_0_3/dependencies/default.xml");
 
 		String xml = new String(FileUtil.getBytes(inputStream));
 

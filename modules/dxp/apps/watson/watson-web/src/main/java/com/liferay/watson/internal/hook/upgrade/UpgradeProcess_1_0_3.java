@@ -12,19 +12,19 @@
  * details.
  */
 
-package com.liferay.watson.hook.upgrade;
+package com.liferay.watson.internal.hook.upgrade;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.watson.hook.upgrade.v1_0_0.UpgradeWatsonListType;
+import com.liferay.watson.internal.hook.upgrade.v1_0_3.UpgradeWatsonListType;
 
 /**
  * @author Steven Smith
  */
-public class UpgradeProcess_1_0_0 extends UpgradeProcess {
+public class UpgradeProcess_1_0_3 extends UpgradeProcess {
 
 	@Override
 	public int getThreshold() {
-		return 100;
+		return 103;
 	}
 
 	@Override

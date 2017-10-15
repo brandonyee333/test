@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.watson.hook.upgrade.v1_0_3;
+package com.liferay.watson.internal.hook.upgrade.v1_0_1;
 
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
@@ -25,7 +25,9 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
+import com.liferay.watson.model.WatsonIncident;
 import com.liferay.watson.model.WatsonListType;
+import com.liferay.watson.service.WatsonIncidentLocalServiceUtil;
 import com.liferay.watson.service.WatsonListTypeLocalServiceUtil;
 
 import java.io.InputStream;
@@ -97,13 +99,15 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 		long companyId = PortalUtil.getDefaultCompanyId();
 
 		importDefaultData(classLoader, companyId);
+
+		removeOldWatsonListTypes();
 	}
 
 	protected void importDefaultData(ClassLoader classLoader, long companyId)
 		throws Exception {
 
 		InputStream inputStream = classLoader.getResourceAsStream(
-			"com/liferay/watson/hook/upgrade/v1_0_3/dependencies/default.xml");
+			"com/liferay/watson/hook/upgrade/v1_0_1/dependencies/default.xml");
 
 		String xml = new String(FileUtil.getBytes(inputStream));
 
@@ -115,6 +119,39 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 
 		for (Element watsonListTypeElement : watsonListTypeElements) {
 			addWatsonListType(watsonListTypeElement, companyId, 0);
+		}
+	}
+
+	protected void removeOldWatsonListTypes() throws Exception {
+		long[] deleteableListTypeIds = {9369, 9370, 9371, 9372};
+
+		for (long listTypeId : deleteableListTypeIds) {
+			WatsonListTypeLocalServiceUtil.deleteWatsonListType(listTypeId);
+		}
+
+		List<WatsonIncident> watsonIncidents =
+			WatsonIncidentLocalServiceUtil.getWatsonIncidents(-1, -1);
+
+		for (WatsonIncident watsonIncident : watsonIncidents) {
+			long currentTypeWatsonListTypeId =
+				watsonIncident.getTypeWatsonListTypeId();
+
+			watsonIncident.setTypeWatsonListTypeId(10460);
+
+			if (currentTypeWatsonListTypeId == 9369) {
+				watsonIncident.setSubtypeWatsonListTypeId(10461);
+			}
+			else if (currentTypeWatsonListTypeId == 9370) {
+				watsonIncident.setSubtypeWatsonListTypeId(10462);
+			}
+			else if (currentTypeWatsonListTypeId == 9371) {
+				watsonIncident.setSubtypeWatsonListTypeId(10463);
+			}
+			else if (currentTypeWatsonListTypeId == 9372) {
+				watsonIncident.setSubtypeWatsonListTypeId(10464);
+			}
+
+			WatsonIncidentLocalServiceUtil.updateWatsonIncident(watsonIncident);
 		}
 	}
 
