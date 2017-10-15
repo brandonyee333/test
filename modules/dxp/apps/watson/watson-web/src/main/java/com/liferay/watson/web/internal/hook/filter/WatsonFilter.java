@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.watson.internal.hook.filter;
+package com.liferay.watson.web.web.internal.hook.filter;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

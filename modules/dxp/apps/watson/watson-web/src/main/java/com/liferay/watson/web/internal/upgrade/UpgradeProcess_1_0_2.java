@@ -12,20 +12,24 @@
  * details.
  */
 
-package com.liferay.watson.util;
+package com.liferay.watson.web.internal.upgrade;
+
+import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.watson.web.internal.upgrade.v1_0_2.UpgradeWatsonIncidents;
 
 /**
  * @author Steven Smith
  */
-public class RoleConstants
-	extends com.liferay.portal.kernel.model.RoleConstants {
+public class UpgradeProcess_1_0_2 extends UpgradeProcess {
 
-	public static final String ADMIN = "Watson Admin";
+	@Override
+	public int getThreshold() {
+		return 102;
+	}
 
-	public static final String MANAGER = "Watson Manager";
-
-	public static final String STAFF = "Watson Staff";
-
-	public static final String TRANSLATOR = "Watson Translator";
+	@Override
+	protected void doUpgrade() throws Exception {
+		upgrade(UpgradeWatsonIncidents.class);
+	}
 
 }

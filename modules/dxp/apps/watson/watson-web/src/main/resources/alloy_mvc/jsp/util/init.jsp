@@ -110,8 +110,8 @@ page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.watson.model.WatsonIncident" %><%@
 page import="com.liferay.watson.model.WatsonListType" %><%@
 page import="com.liferay.watson.model.WatsonListTypeRel" %><%@
-page import="com.liferay.watson.util.PortletKeys" %><%@
-page import="com.liferay.watson.util.RoleConstants" %>
+page import="com.liferay.watson.web.constants.WatsonPortletKeys" %><%@
+page import="com.liferay.liferay.watson.web.constants.RoleConstants" %>
 
 <%@ page import="java.awt.Rectangle" %><%@
 page import="java.awt.geom.AffineTransform" %><%@

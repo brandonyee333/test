@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.osb.testray.internal.portlet.route;
+package com.liferay.watson.web.internal.portlet.route;
 
 import com.liferay.alloy.mvc.AlloyFriendlyURLMapper;
-import com.liferay.watson.constants.WatsonPortletKeys;
+import com.liferay.watson.web.constants.WatsonPortletKeys;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
 
 import org.osgi.service.component.annotations.Activate;

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.Watson.internal.util;
+package com.liferay.osb.Watson.web.internal.util;
 
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.ResourcePermission;
@@ -30,7 +30,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
-import com.liferay.watson.constants.WatsonPortletKeys;
+import com.liferay.watson.web.constants.WatsonPortletKeys;
 
 import java.io.InputStream;
 

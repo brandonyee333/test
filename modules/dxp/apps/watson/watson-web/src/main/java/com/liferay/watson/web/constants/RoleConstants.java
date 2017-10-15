@@ -12,13 +12,20 @@
  * details.
  */
 
-package com.liferay.watson.constants;
+package com.liferay.watson.web.constants;
 
 /**
  * @author Steven Smith
  */
-public class WatsonPortletKeys {
+public class RoleConstants
+	extends com.liferay.portal.kernel.model.RoleConstants {
 
-	public static final String WATSON = "com_liferay_watson_portlet_WatsonPortlet";
+	public static final String ADMIN = "Watson Admin";
+
+	public static final String MANAGER = "Watson Manager";
+
+	public static final String STAFF = "Watson Staff";
+
+	public static final String TRANSLATOR = "Watson Translator";
 
 }

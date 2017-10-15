@@ -12,24 +12,13 @@
  * details.
  */
 
-package com.liferay.watson.internal.upgrade;
-
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.watson.internal.upgrade.v1_0_0.UpgradeWatsonListType;
+package com.liferay.watson.web.constants;
 
 /**
  * @author Steven Smith
  */
-public class UpgradeProcess_1_0_0 extends UpgradeProcess {
+public class WatsonPortletKeys {
 
-	@Override
-	public int getThreshold() {
-		return 100;
-	}
-
-	@Override
-	protected void doUpgrade() throws Exception {
-		upgrade(UpgradeWatsonListType.class);
-	}
+	public static final String WATSON = "com_liferay_watson_portlet_WatsonPortlet";
 
 }

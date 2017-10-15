@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.watson.internal.upgrade.v1_0_2;
+package com.liferay.watson.web.internal.upgrade.v1_0_2;
 
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;

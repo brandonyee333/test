@@ -12,24 +12,24 @@
  * details.
  */
 
-package com.liferay.watson.internal.upgrade;
+package com.liferay.watson.web.internal.upgrade;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.watson.internal.upgrade.v1_0_2.UpgradeWatsonIncidents;
+import com.liferay.watson.web.internal.upgrade.v1_0_3.UpgradeWatsonListType;
 
 /**
  * @author Steven Smith
  */
-public class UpgradeProcess_1_0_2 extends UpgradeProcess {
+public class UpgradeProcess_1_0_3 extends UpgradeProcess {
 
 	@Override
 	public int getThreshold() {
-		return 102;
+		return 103;
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgrade(UpgradeWatsonIncidents.class);
+		upgrade(UpgradeWatsonListType.class);
 	}
 
 }

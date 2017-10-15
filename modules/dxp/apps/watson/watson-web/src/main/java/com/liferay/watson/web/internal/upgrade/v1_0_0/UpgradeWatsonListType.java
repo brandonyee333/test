@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.watson.internal.upgrade.v1_0_0;
+package com.liferay.watson.web.internal.upgrade.v1_0_0;
 
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;

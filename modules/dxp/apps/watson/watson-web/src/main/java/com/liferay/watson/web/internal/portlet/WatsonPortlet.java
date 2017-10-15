@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.testray.portlet;
+package com.liferay.watson.web.interal.portlet;
 
 import com.liferay.alloy.mvc.AlloyPortlet;
 import com.liferay.watson.constants.WatsonPortletKeys;
