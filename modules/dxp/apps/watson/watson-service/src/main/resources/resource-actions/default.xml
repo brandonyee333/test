@@ -3,7 +3,7 @@
 
 <resource-action-mapping>
 	<portlet-resource>
-		<portlet-name>1</portlet-name>
+		<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		<permissions>
 			<supports>
 				<action-key>ADD</action-key>
@@ -34,7 +34,7 @@
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonActivity</model-name>
 		<portlet-ref>
-			<portlet-name>1</portlet-name>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		</portlet-ref>
 		<permissions>
 			<supports>
@@ -67,7 +67,7 @@
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonAddress</model-name>
 		<portlet-ref>
-			<portlet-name>1</portlet-name>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		</portlet-ref>
 		<permissions>
 			<supports>
@@ -100,7 +100,7 @@
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonHistory</model-name>
 		<portlet-ref>
-			<portlet-name>1</portlet-name>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		</portlet-ref>
 		<permissions>
 			<supports>
@@ -133,7 +133,7 @@
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonIncident</model-name>
 		<portlet-ref>
-			<portlet-name>1</portlet-name>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		</portlet-ref>
 		<permissions>
 			<supports>
@@ -166,7 +166,7 @@
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonListType</model-name>
 		<portlet-ref>
-			<portlet-name>1</portlet-name>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		</portlet-ref>
 		<permissions>
 			<supports>
@@ -199,7 +199,7 @@
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonPerson</model-name>
 		<portlet-ref>
-			<portlet-name>1</portlet-name>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		</portlet-ref>
 		<permissions>
 			<supports>
@@ -232,7 +232,7 @@
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonRelationship</model-name>
 		<portlet-ref>
-			<portlet-name>1</portlet-name>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		</portlet-ref>
 		<permissions>
 			<supports>
@@ -265,7 +265,7 @@
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonResource</model-name>
 		<portlet-ref>
-			<portlet-name>1</portlet-name>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		</portlet-ref>
 		<permissions>
 			<supports>
@@ -298,7 +298,7 @@
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonVehicle</model-name>
 		<portlet-ref>
-			<portlet-name>1</portlet-name>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		</portlet-ref>
 		<permissions>
 			<supports>

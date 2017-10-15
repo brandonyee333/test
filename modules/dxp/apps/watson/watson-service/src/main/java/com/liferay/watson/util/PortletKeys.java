@@ -19,6 +19,6 @@ package com.liferay.watson.constants;
  */
 public class WatsonPortletKeys {
 
-	public static final String WATSON = "1_WAR_watsonportlet";
+	public static final String WATSON = "com_liferay_watson_portlet_WatsonPortlet";
 
 }

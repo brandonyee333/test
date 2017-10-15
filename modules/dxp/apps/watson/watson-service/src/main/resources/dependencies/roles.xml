@@ -4,7 +4,7 @@
 	<role>
 		<name>Administrator</name>
 		<reset-permissions>false</reset-permissions>
-		<default-action-keys resourceName="1_WAR_watsonportlet">
+		<default-action-keys resourceName="com_liferay_watson_portlet_WatsonPortlet">
 			<action-key>ADD</action-key>
 			<action-key>CREATE</action-key>
 			<action-key>CONFIGURATION</action-key>
@@ -19,7 +19,7 @@
 	<role>
 		<name>Portal Content Reviewer</name>
 		<reset-permissions>false</reset-permissions>
-		<default-action-keys resourceName="1_WAR_watsonportlet">
+		<default-action-keys resourceName="com_liferay_watson_portlet_WatsonPortlet">
 			<action-key>ADD</action-key>
 			<action-key>CREATE</action-key>
 			<action-key>CONFIGURATION</action-key>
@@ -34,7 +34,7 @@
 	<role>
 		<name>Power User</name>
 		<reset-permissions>false</reset-permissions>
-		<default-action-keys resourceName="1_WAR_watsonportlet">
+		<default-action-keys resourceName="com_liferay_watson_portlet_WatsonPortlet">
 			<action-key>ADD</action-key>
 			<action-key>CREATE</action-key>
 			<action-key>CONFIGURATION</action-key>
@@ -49,7 +49,7 @@
 	<role>
 		<name>Staff</name>
 		<reset-permissions>false</reset-permissions>
-		<default-action-keys resourceName="1_WAR_watsonportlet">
+		<default-action-keys resourceName="com_liferay_watson_portlet_WatsonPortlet">
 			<action-key>ADD</action-key>
 			<action-key>CREATE</action-key>
 			<action-key>CONFIGURATION</action-key>
@@ -65,7 +65,7 @@
 		<name>Watson Admin</name>
 		<role-type>regular</role-type>
 		<reset-permissions>false</reset-permissions>
-		<default-action-keys resourceName="1_WAR_watsonportlet">
+		<default-action-keys resourceName="com_liferay_watson_portlet_WatsonPortlet">
 			<action-key>ADD</action-key>
 			<action-key>CREATE</action-key>
 			<action-key>CONFIGURATION</action-key>
@@ -81,7 +81,7 @@
 		<name>Watson Manager</name>
 		<role-type>regular</role-type>
 		<reset-permissions>false</reset-permissions>
-		<default-action-keys resourceName="1_WAR_watsonportlet">
+		<default-action-keys resourceName="com_liferay_watson_portlet_WatsonPortlet">
 			<action-key>ADD</action-key>
 			<action-key>CREATE</action-key>
 			<action-key>CONFIGURATION</action-key>
@@ -97,7 +97,7 @@
 		<name>Watson Staff</name>
 		<role-type>regular</role-type>
 		<reset-permissions>false</reset-permissions>
-		<default-action-keys resourceName="1_WAR_watsonportlet">
+		<default-action-keys resourceName="com_liferay_watson_portlet_WatsonPortlet">
 			<action-key>ADD</action-key>
 			<action-key>CREATE</action-key>
 			<action-key>CONFIGURATION</action-key>
@@ -113,7 +113,7 @@
 		<name>Watson Translator</name>
 		<role-type>regular</role-type>
 		<reset-permissions>false</reset-permissions>
-		<default-action-keys resourceName="1_WAR_watsonportlet">
+		<default-action-keys resourceName="com_liferay_watson_portlet_WatsonPortlet">
 			<action-key>ADD</action-key>
 			<action-key>CREATE</action-key>
 			<action-key>CONFIGURATION</action-key>
