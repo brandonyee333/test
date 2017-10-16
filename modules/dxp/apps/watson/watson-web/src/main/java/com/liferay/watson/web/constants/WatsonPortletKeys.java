@@ -19,6 +19,7 @@ package com.liferay.watson.web.constants;
  */
 public class WatsonPortletKeys {
 
-	public static final String WATSON = "com_liferay_watson_portlet_WatsonPortlet";
+	public static final String WATSON =
+		"com_liferay_watson_portlet_WatsonPortlet";
 
 }

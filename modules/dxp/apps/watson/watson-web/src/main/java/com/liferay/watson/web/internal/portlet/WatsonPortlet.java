@@ -15,8 +15,8 @@
 package com.liferay.watson.web.internal.portlet;
 
 import com.liferay.alloy.mvc.AlloyPortlet;
-import com.liferay.watson.constants.WatsonPortletKeys;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
+import com.liferay.watson.web.constants.WatsonPortletKeys;
 
 import javax.portlet.Portlet;
 
@@ -27,31 +27,27 @@ import org.osgi.service.component.annotations.Reference;
  * @author Steven Smith
  */
 @Component(
-		immediate = true,
-		property = {
-				"com.liferay.portlet.css-class-wrapper=watson-portlet",
-				"com.liferay.portlet.display-category=category.tools",
-				"com.liferay.portlet.requires-namespaced-parameters=false",
-				"javax.portlet.display-name=Watson",
-				"javax.portlet.expiration-cache=0",
-				"javax.portlet.info.keywords=Watson",
-				"javax.portlet.info.short-title=Watson",
-				"javax.portlet.info.title=Watson",
-				"javax.portlet.mime-type=text/html",
-				"javax.portlet.name=" + WatsonPortletKeys.WATSON,
-				"javax.portlet.resource-bundle=content.Language",
-				"javax.portlet.security-role-ref=administrator,guest,power-user,user",
-		},
-		service = Portlet.class
+	immediate = true,
+	property = {
+		"com.liferay.portlet.css-class-wrapper=watson-portlet",
+		"com.liferay.portlet.display-category=category.tools",
+		"com.liferay.portlet.requires-namespaced-parameters=false",
+		"javax.portlet.display-name=Watson", "javax.portlet.expiration-cache=0",
+		"javax.portlet.info.keywords=Watson",
+		"javax.portlet.info.short-title=Watson",
+		"javax.portlet.info.title=Watson", "javax.portlet.mime-type=text/html",
+		"javax.portlet.name=" + WatsonPortletKeys.WATSON,
+		"javax.portlet.resource-bundle=content.Language",
+		"javax.portlet.security-role-ref=administrator,guest,power-user,user"
+	},
+	service = Portlet.class
 )
 public class WatsonPortlet extends AlloyPortlet {
 
 	@Override
-	@Reference(
-			target = "(name=watson-friendly-url-mapper)",
-			unbind = "-"
-	)
+	@Reference(target = "(name=watson-friendly-url-mapper)", unbind = "-")
 	protected void setFriendlyURLMapper(FriendlyURLMapper friendlyURLMapper) {
 		this.friendlyURLMapper = friendlyURLMapper;
 	}
+
 }
