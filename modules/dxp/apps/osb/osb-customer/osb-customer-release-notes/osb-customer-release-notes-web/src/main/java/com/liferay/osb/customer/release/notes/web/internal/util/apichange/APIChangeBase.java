@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.release.notes.jira.util.apichange;
+package com.liferay.osb.customer.release.notes.web.internal.util.apichange;
 
 import com.liferay.osb.customer.release.notes.jira.model.JIRAIssue;
 import com.liferay.portal.kernel.log.Log;

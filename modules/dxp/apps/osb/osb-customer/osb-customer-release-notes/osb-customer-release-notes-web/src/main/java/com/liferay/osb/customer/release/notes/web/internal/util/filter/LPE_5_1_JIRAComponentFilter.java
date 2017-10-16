@@ -12,17 +12,17 @@
  * details.
  */
 
-package com.liferay.osb.customer.release.notes.jira.util.filter;
+package com.liferay.osb.customer.release.notes.web.internal.util.filter;
 
 import com.liferay.osb.customer.release.notes.jira.model.JIRAComponent;
 import com.liferay.osb.customer.release.notes.jira.model.JIRAProjectVersion;
-import com.liferay.osb.customer.release.notes.jira.util.JIRAConstants;
+import com.liferay.osb.customer.release.notes.web.internal.util.JIRAConstants;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 /**
  * @author Samuel Kong
  */
-public class LPE_5_2_JIRAComponentFilter extends JIRAComponentFilter {
+public class LPE_5_1_JIRAComponentFilter extends JIRAComponentFilter {
 
 	protected boolean isEnabled(JIRAProjectVersion jiraProjectVersion) {
 		String jiraProjectVersionName = jiraProjectVersion.getName();
@@ -41,27 +41,32 @@ public class LPE_5_2_JIRAComponentFilter extends JIRAComponentFilter {
 		if (jiraComponentId == JIRAConstants.COMPONENT_JAVASCRIPT) {
 			jiraComponent.setName("JavaScript");
 		}
+		else if (jiraComponentId ==
+					JIRAConstants.COMPONENT_PORTLET_COMMUNITIES) {
+
+			jiraComponent.setName("Portlet - Communities");
+		}
 		else if (jiraComponentId == JIRAConstants.COMPONENT_PORTLET_JOURNAL) {
-			jiraComponent.setName("Portlet - Web Content");
+			jiraComponent.setName("Portlet - Journal");
 		}
 	}
 
 	private static final long[] _IGNORED_COMPONENTS = {
+		JIRAConstants.COMPONENT_CONTROL_PANEL,
 		JIRAConstants.COMPONENT_PLUGIN_EXT,
 		JIRAConstants.COMPONENT_PLUGIN_HOOK_DEFAULT_WEB_CONTENT,
-		JIRAConstants.COMPONENT_PLUGIN_PORTLET_GOOGLE_SEARCH,
 		JIRAConstants.COMPONENT_PLUGIN_PORTLET_KNOWLEDGE_BASE,
 		JIRAConstants.COMPONENT_PLUGIN_PORTLET_OPEN_SOCIAL,
 		JIRAConstants.COMPONENT_PLUGIN_PORTLET_REPORTS,
 		JIRAConstants.COMPONENT_PLUGIN_PORTLET_SOCIAL_CODING,
 		JIRAConstants.COMPONENT_PLUGIN_PORTLET_SOCIAL_NETWORKING,
-		JIRAConstants.COMPONENT_PORTLET_ADMIN,
-		JIRAConstants.COMPONENT_PORTLET_ENTERPRISE_ADMIN,
-		JIRAConstants.COMPONENT_PORTLET_PLUGIN_INSTALLER,
-		JIRAConstants.COMPONENT_PORTLET_TAGS_ADMIN,
+		JIRAConstants.COMPONENT_PLUGIN_PORTLET_WEB_FORM,
+		JIRAConstants.COMPONENT_PORTLET_CATEGORIES_NAVIGATION,
+		JIRAConstants.COMPONENT_PORTLET_PAGE_FLAGS,
+		JIRAConstants.COMPONENT_PORTLET_TAGS_NAVIGATION,
 		JIRAConstants.COMPONENT_WORKFLOW
 	};
 
-	private static final String _PROJECT_VERSION_NAME_PREFIX = "5.2 EE";
+	private static final String _PROJECT_VERSION_NAME_PREFIX = "5.1 EE";
 
 }

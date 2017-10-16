@@ -22,8 +22,7 @@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.osb.customer.release.notes.jira.configuration.ReleaseNotesConfigurationValues" %><%@
-page import="com.liferay.osb.customer.release.notes.jira.exception.DuplicateJIRAIssueKeysException" %><%@
+<%@ page import="com.liferay.osb.customer.release.notes.jira.exception.DuplicateJIRAIssueKeysException" %><%@
 page import="com.liferay.osb.customer.release.notes.jira.exception.NoSuchJIRAProjectException" %><%@
 page import="com.liferay.osb.customer.release.notes.jira.exception.RequiredJIRAIssueKeysException" %><%@
 page import="com.liferay.osb.customer.release.notes.jira.exception.RequiredNameException" %><%@
@@ -31,9 +30,10 @@ page import="com.liferay.osb.customer.release.notes.jira.model.JIRAProject" %><%
 page import="com.liferay.osb.customer.release.notes.jira.model.JIRAProjectVersion" %><%@
 page import="com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalServiceUtil" %><%@
 page import="com.liferay.osb.customer.release.notes.jira.service.JIRAProjectVersionLocalServiceUtil" %><%@
-page import="com.liferay.osb.customer.release.notes.jira.util.ReleaseNotesUtil" %><%@
 page import="com.liferay.osb.customer.release.notes.model.ReleaseNotes" %><%@
 page import="com.liferay.osb.customer.release.notes.service.ReleaseNotesLocalServiceUtil" %><%@
+page import="com.liferay.osb.customer.release.notes.web.internal.configuration.ReleaseNotesConfigurationValues" %><%@
+page import="com.liferay.osb.customer.release.notes.web.internal.util.ReleaseNotesUtil" %><%@
 page import="com.liferay.osb.customer.release.notes.web.search.ReleaseNotesDisplayTerms" %><%@
 page import="com.liferay.osb.customer.release.notes.web.search.ReleaseNotesSearch" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@

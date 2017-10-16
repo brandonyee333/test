@@ -20,9 +20,9 @@ import com.liferay.osb.customer.release.notes.jira.exception.RequiredJIRAIssueKe
 import com.liferay.osb.customer.release.notes.jira.exception.RequiredNameException;
 import com.liferay.osb.customer.release.notes.jira.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.jira.service.JIRAIssueLocalService;
-import com.liferay.osb.customer.release.notes.jira.util.ReleaseNotesUtil;
 import com.liferay.osb.customer.release.notes.model.ReleaseNotes;
 import com.liferay.osb.customer.release.notes.service.base.ReleaseNotesLocalServiceBaseImpl;
+import com.liferay.osb.customer.release.notes.util.ReleaseNotesCacheUtil;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -138,10 +138,10 @@ public class ReleaseNotesLocalServiceImpl
 	}
 
 	protected void clearCacheFile(ReleaseNotes releaseNotes) {
-		String cacheFilePath = ReleaseNotesUtil.getCacheFilePath(
-			releaseNotes.getUuid(), ReleaseNotesUtil.CACHE_DIR_ISSUE);
+		String cacheFilePath = ReleaseNotesCacheUtil.getCacheFilePath(
+			releaseNotes.getUuid(), ReleaseNotesCacheUtil.CACHE_DIR_ISSUE);
 
-		ReleaseNotesUtil.clearCacheFile(cacheFilePath);
+		ReleaseNotesCacheUtil.clearCacheFile(cacheFilePath);
 	}
 
 	protected String normalize(String jiraIssueKeys) {

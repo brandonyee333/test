@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.release.notes.jira.util.filter;
+package com.liferay.osb.customer.release.notes.web.internal.util.filter;
 
 import com.liferay.osb.customer.release.notes.jira.model.JIRAComponent;
 import com.liferay.osb.customer.release.notes.jira.model.JIRAIssue;

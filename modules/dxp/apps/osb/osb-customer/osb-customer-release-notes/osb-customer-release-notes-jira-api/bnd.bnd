@@ -5,4 +5,5 @@ Export-Package:\
 	com.liferay.osb.customer.release.notes.jira.exception,\
 	com.liferay.osb.customer.release.notes.jira.model,\
 	com.liferay.osb.customer.release.notes.jira.service,\
-	com.liferay.osb.customer.release.notes.jira.service.persistence
+	com.liferay.osb.customer.release.notes.jira.service.persistence,\
+	com.liferay.osb.customer.release.notes.jira.util.comparator

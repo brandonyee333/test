@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.release.notes.jira.util;
+package com.liferay.osb.customer.release.notes.web.internal.util;
 
 /**
  * @author Samuel Kong

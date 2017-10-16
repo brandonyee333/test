@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.release.notes.web.portlet;
 
 import com.liferay.osb.customer.release.notes.exception.NoSuchReleaseNotesException;
-import com.liferay.osb.customer.release.notes.jira.configuration.ReleaseNotesConfigurationValues;
 import com.liferay.osb.customer.release.notes.jira.exception.DuplicateJIRAIssueKeysException;
 import com.liferay.osb.customer.release.notes.jira.exception.RequiredJIRAIssueKeysException;
 import com.liferay.osb.customer.release.notes.jira.exception.RequiredNameException;
@@ -26,12 +25,14 @@ import com.liferay.osb.customer.release.notes.jira.model.JIRAProjectVersion;
 import com.liferay.osb.customer.release.notes.jira.service.JIRAIssueLocalService;
 import com.liferay.osb.customer.release.notes.jira.service.JIRAProjectLocalService;
 import com.liferay.osb.customer.release.notes.jira.service.JIRAProjectVersionLocalService;
-import com.liferay.osb.customer.release.notes.jira.util.DataURIUtil;
-import com.liferay.osb.customer.release.notes.jira.util.JIRAConstants;
-import com.liferay.osb.customer.release.notes.jira.util.ReleaseNotesUtil;
 import com.liferay.osb.customer.release.notes.model.ReleaseNotes;
 import com.liferay.osb.customer.release.notes.service.ReleaseNotesLocalService;
+import com.liferay.osb.customer.release.notes.util.ReleaseNotesCacheUtil;
+import com.liferay.osb.customer.release.notes.web.internal.configuration.ReleaseNotesConfigurationValues;
 import com.liferay.osb.customer.release.notes.web.internal.constants.ReleaseNotesPortletKeys;
+import com.liferay.osb.customer.release.notes.web.internal.util.DataURIUtil;
+import com.liferay.osb.customer.release.notes.web.internal.util.JIRAConstants;
+import com.liferay.osb.customer.release.notes.web.internal.util.ReleaseNotesUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
@@ -241,8 +242,8 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		boolean clearCache = ParamUtil.getBoolean(
 			resourceRequest, "clearCache");
 
-		String cacheFileName = ReleaseNotesUtil.getCacheFilePath(
-			jiraLabel, ReleaseNotesUtil.CACHE_DIR_LABEL);
+		String cacheFileName = ReleaseNotesCacheUtil.getCacheFilePath(
+			jiraLabel, ReleaseNotesCacheUtil.CACHE_DIR_LABEL);
 
 		String cachedReleaseNotes = getCachedReleaseNotes(
 			cacheFileName, clearCache);
@@ -287,9 +288,9 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		boolean clearCache = ParamUtil.getBoolean(
 			resourceRequest, "clearCache");
 
-		String cacheFileName = ReleaseNotesUtil.getCacheFilePath(
+		String cacheFileName = ReleaseNotesCacheUtil.getCacheFilePath(
 			String.valueOf(jiraProjectVersionId),
-			ReleaseNotesUtil.CACHE_DIR_PROJECT_VERSION);
+			ReleaseNotesCacheUtil.CACHE_DIR_PROJECT_VERSION);
 
 		String cachedReleaseNotes = getCachedReleaseNotes(
 			cacheFileName, clearCache);
@@ -348,8 +349,8 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 		boolean clearCache = ParamUtil.getBoolean(
 			resourceRequest, "clearCache");
 
-		String cacheFileName = ReleaseNotesUtil.getCacheFilePath(
-			releaseNotes.getUuid(), ReleaseNotesUtil.CACHE_DIR_ISSUE);
+		String cacheFileName = ReleaseNotesCacheUtil.getCacheFilePath(
+			releaseNotes.getUuid(), ReleaseNotesCacheUtil.CACHE_DIR_ISSUE);
 
 		String cachedReleaseNotes = getCachedReleaseNotes(
 			cacheFileName, clearCache);

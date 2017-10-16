@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.release.notes.jira.configuration;
+package com.liferay.osb.customer.release.notes.web.internal.configuration;
 
 /**
  * @author Andrew Madrazo

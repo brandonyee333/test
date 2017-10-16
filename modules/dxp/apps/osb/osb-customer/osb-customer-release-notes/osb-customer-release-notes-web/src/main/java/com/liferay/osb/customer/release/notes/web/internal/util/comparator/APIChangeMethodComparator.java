@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.osb.customer.release.notes.jira.util.comparator;
+package com.liferay.osb.customer.release.notes.web.internal.util.comparator;
 
-import com.liferay.osb.customer.release.notes.jira.util.apichange.APIChangeMethod;
+import com.liferay.osb.customer.release.notes.web.internal.util.apichange.APIChangeMethod;
 
 import java.util.Comparator;
 

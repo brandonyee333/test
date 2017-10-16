@@ -12,28 +12,23 @@
  * details.
  */
 
-package com.liferay.osb.customer.release.notes.jira.util;
+package com.liferay.osb.customer.release.notes.web.internal.util;
 
-import com.liferay.osb.customer.release.notes.jira.configuration.ReleaseNotesConfigurationValues;
 import com.liferay.osb.customer.release.notes.jira.model.JIRAComponent;
 import com.liferay.osb.customer.release.notes.jira.model.JIRAIssue;
 import com.liferay.osb.customer.release.notes.jira.model.JIRAProjectVersion;
-import com.liferay.osb.customer.release.notes.jira.model.impl.JIRAComponentImpl;
 import com.liferay.osb.customer.release.notes.jira.service.JIRAComponentLocalServiceUtil;
-import com.liferay.osb.customer.release.notes.jira.util.apichange.APIChangeClass;
-import com.liferay.osb.customer.release.notes.jira.util.comparator.ClassNameComparator;
 import com.liferay.osb.customer.release.notes.jira.util.comparator.JIRAComponentComparator;
 import com.liferay.osb.customer.release.notes.jira.util.comparator.JIRAIssueComparator;
-import com.liferay.osb.customer.release.notes.jira.util.filter.JIRAComponentFilter;
+import com.liferay.osb.customer.release.notes.web.internal.configuration.ReleaseNotesConfigurationValues;
+import com.liferay.osb.customer.release.notes.web.internal.util.apichange.APIChangeClass;
+import com.liferay.osb.customer.release.notes.web.internal.util.comparator.ClassNameComparator;
+import com.liferay.osb.customer.release.notes.web.internal.util.filter.JIRAComponentFilter;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.SystemProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
@@ -48,16 +43,6 @@ import java.util.TreeSet;
  * @author Samuel Kong
  */
 public class ReleaseNotesUtil {
-
-	public static final String CACHE_DIR_ISSUE = "issue";
-
-	public static final String CACHE_DIR_LABEL = "label";
-
-	public static final String CACHE_DIR_PROJECT_VERSION = "projectVersion";
-
-	public static void clearCacheFile(String filePath) {
-		FileUtil.delete(filePath);
-	}
 
 	public static Map<JIRAComponent, Set<JIRAIssue>> filterJIRAComponentMap(
 		Map<JIRAComponent, Set<JIRAIssue>> jiraComponentMap,
@@ -145,18 +130,6 @@ public class ReleaseNotesUtil {
 		return apiChangeClasses.values();
 	}
 
-	public static String getCacheFilePath(String file, String directory) {
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(_CACHE_DIR);
-		sb.append(sterilizeFilePath(directory));
-		sb.append(StringPool.FORWARD_SLASH);
-		sb.append(sterilizeFilePath(file));
-		sb.append(".html");
-
-		return sb.toString();
-	}
-
 	public static List<JIRAIssue> getJIRAIssuesWithUpgradeNote(
 		List<JIRAIssue> jiraIssues) {
 
@@ -186,9 +159,9 @@ public class ReleaseNotesUtil {
 				if (jiraComponents.isEmpty()) {
 					jiraComponents = new ArrayList<>();
 
-					JIRAComponent jiraComponent = new JIRAComponentImpl();
+					JIRAComponent jiraComponent =
+						JIRAComponentLocalServiceUtil.createJIRAComponent(0);
 
-					jiraComponent.setJiraComponentId(0);
 					jiraComponent.setName("None");
 
 					jiraComponents.add(jiraComponent);
@@ -216,29 +189,6 @@ public class ReleaseNotesUtil {
 
 		return jiraComponentMap;
 	}
-
-	protected static String sterilizeFilePath(String filePath) {
-		return StringUtil.replace(
-			filePath,
-			new String[] {
-				StringPool.BACK_SLASH, StringPool.COLON,
-				StringPool.DOUBLE_QUOTE, StringPool.GREATER_THAN,
-				StringPool.LESS_THAN, StringPool.PERCENT, StringPool.PERIOD,
-				StringPool.PIPE, StringPool.QUESTION, StringPool.SLASH,
-				StringPool.STAR
-			},
-			new String[] {
-				StringPool.UNDERLINE, StringPool.UNDERLINE,
-				StringPool.UNDERLINE, StringPool.UNDERLINE,
-				StringPool.UNDERLINE, StringPool.UNDERLINE,
-				StringPool.UNDERLINE, StringPool.UNDERLINE,
-				StringPool.UNDERLINE, StringPool.UNDERLINE, StringPool.UNDERLINE
-			});
-	}
-
-	private static final String _CACHE_DIR =
-		SystemProperties.get(SystemProperties.TMP_DIR) +
-			"/liferay/releasenotes/";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ReleaseNotesUtil.class);
