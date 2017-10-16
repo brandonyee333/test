@@ -103,7 +103,7 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 		throws Exception {
 
 		InputStream inputStream = classLoader.getResourceAsStream(
-			"com/liferay/watson/hook/upgrade/v1_0_0/dependencies/default.xml");
+			"META-INF/upgrade/v1_0_0/dependencies/default.xml");
 
 		String xml = new String(FileUtil.getBytes(inputStream));
 

@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.TicketLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.BaseFilter;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -86,7 +86,7 @@ public class WatsonFilter extends BaseFilter {
 			FilterChain filterChain)
 		throws Exception {
 
-		User currentUser = PortalUtil.getUser(request);
+		User currentUser = _portal.getUser(request);
 
 		if (currentUser == null) {
 			String ticketKey = request.getParameter("ticketKey");
@@ -127,6 +127,9 @@ public class WatsonFilter extends BaseFilter {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(WatsonFilter.class);
+
+	@Reference
+	private Portal _portal;
 
 	private TicketLocalService _ticketLocalService;
 	private UserLocalService _userLocalService;

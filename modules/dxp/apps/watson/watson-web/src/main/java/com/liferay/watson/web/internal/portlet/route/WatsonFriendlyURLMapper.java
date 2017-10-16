@@ -25,15 +25,15 @@ import org.osgi.service.component.annotations.Component;
  * @author Steven Smith
  */
 @Component(
-		immediate = true,
-		property = {
-				"name=watson-friendly-url-mapper",
-				"com.liferay.portlet.friendly-url-routes=META-INF/watson-friendly-url-routes.xml?controller=incidents",
-				"javax.portlet.name=" + WatsonPortletKeys.WATSON
-		},
-		service = FriendlyURLMapper.class
+	immediate = true,
+	property = {
+		"com.liferay.portlet.friendly-url-routes=META-INF/friendly-url-routes/routes.xml?controller=incidents",
+		"javax.portlet.name=" + WatsonPortletKeys.WATSON,
+		"name=watson-friendly-url-mapper"
+	},
+	service = FriendlyURLMapper.class
 )
-public class TestrayFriendlyURLMapper extends AlloyFriendlyURLMapper {
+public class WatsonFriendlyURLMapper extends AlloyFriendlyURLMapper {
 
 	@Override
 	public String getMapping() {
