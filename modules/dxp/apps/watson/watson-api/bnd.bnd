@@ -5,5 +5,4 @@ Export-Package:\
 	com.liferay.watson.exception,\
 	com.liferay.watson.model,\
 	com.liferay.watson.service,\
-	com.liferay.watson.service.persistence,\
-	com.liferay.watson.util
+	com.liferay.watson.service.persistence
