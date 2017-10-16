@@ -16,11 +16,8 @@ package com.liferay.watson.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.dao.orm.Query;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -35,6 +32,7 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import com.liferay.watson.exception.NoSuchIncidentException;
 import com.liferay.watson.model.WatsonIncident;
@@ -60,7 +58,7 @@ import java.util.Set;
  * Caching information and settings can be found in <code>portal.properties</code>
  * </p>
  *
- * @author Eddie Olson
+ * @author Steven Smith
  * @see WatsonIncidentPersistence
  * @see com.liferay.watson.service.persistence.WatsonIncidentUtil
  * @generated
@@ -773,10 +771,12 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@BeanReference(type = CompanyProviderWrapper.class)
+	@ServiceReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
-	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
-	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
+	@ServiceReference(type = EntityCache.class)
+	protected EntityCache entityCache;
+	@ServiceReference(type = FinderCache.class)
+	protected FinderCache finderCache;
 	private static final String _SQL_SELECT_WATSONINCIDENT = "SELECT watsonIncident FROM WatsonIncident watsonIncident";
 	private static final String _SQL_SELECT_WATSONINCIDENT_WHERE_PKS_IN = "SELECT watsonIncident FROM WatsonIncident watsonIncident WHERE watsonIncidentId IN (";
 	private static final String _SQL_COUNT_WATSONINCIDENT = "SELECT COUNT(watsonIncident) FROM WatsonIncident watsonIncident";

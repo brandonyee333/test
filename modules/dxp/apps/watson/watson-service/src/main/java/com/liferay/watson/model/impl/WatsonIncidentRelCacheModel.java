@@ -33,7 +33,7 @@ import java.util.Date;
 /**
  * The cache model class for representing WatsonIncidentRel in entity cache.
  *
- * @author Eddie Olson
+ * @author Steven Smith
  * @see WatsonIncidentRel
  * @generated
  */
