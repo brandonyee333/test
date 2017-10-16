@@ -16,15 +16,10 @@ package com.liferay.watson.web.internal.portlet;
 
 import com.liferay.alloy.mvc.AlloyPortlet;
 import com.liferay.watson.constants.WatsonPortletKeys;
-import com.liferay.watson.internal.util.WatsonRoleUtil;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
-
-import java.lang.reflect.Field;
-import java.util.Map;
 
 import javax.portlet.Portlet;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -50,12 +45,6 @@ import org.osgi.service.component.annotations.Reference;
 		service = Portlet.class
 )
 public class WatsonPortlet extends AlloyPortlet {
-
-	@Activate
-	public void activate() throws Exception {
-		WatsonRoleUtil.initResourceActions();
-		WatsonRoleUtil.initRoles();
-	}
 
 	@Override
 	@Reference(

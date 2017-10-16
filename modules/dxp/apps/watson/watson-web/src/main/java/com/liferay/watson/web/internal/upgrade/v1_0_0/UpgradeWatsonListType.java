@@ -28,11 +28,13 @@ import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.watson.model.WatsonListType;
 import com.liferay.watson.service.WatsonListTypeLocalServiceUtil;
 
-import java.io.InputStream;
+import java.net.URL;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import org.osgi.framework.Bundle;
 
 /**
  * @author Steven Smith
@@ -102,10 +104,10 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 	protected void importDefaultData(ClassLoader classLoader, long companyId)
 		throws Exception {
 
-		InputStream inputStream = classLoader.getResourceAsStream(
-			"META-INF/upgrade/v1_0_0/dependencies/default.xml");
+		URL url = _bundle.getResource(
+			"com/liferay/watson/web/upgrade/v1_0_0/dependencies/default.xml");
 
-		String xml = new String(FileUtil.getBytes(inputStream));
+		String xml = new String(FileUtil.getBytes(url.openStream()));
 
 		Document document = SAXReaderUtil.read(xml);
 
@@ -117,5 +119,7 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 			addWatsonListType(watsonListTypeElement, companyId, 0);
 		}
 	}
+
+	private Bundle _bundle;
 
 }
