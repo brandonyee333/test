@@ -43,23 +43,13 @@ public class JIRAIssueImpl extends JIRAIssueBaseImpl {
 	}
 
 	public List<JIRAIssue> getIsRelatedToJiraIssues() {
-		List<JIRAIssue> isRelatedToJiraIssues = null;
-
-		isRelatedToJiraIssues =
-			JIRAIssueLocalServiceUtil.getIsRelatedToJIRAIssues(
-				getJiraIssueId());
-
-		return isRelatedToJiraIssues;
+		return JIRAIssueLocalServiceUtil.getIsRelatedToJIRAIssues(
+			getJiraIssueId());
 	}
 
 	public List<JIRAComponent> getJIRAComponents() {
-		List<JIRAComponent> jiraComponents = null;
-
-		jiraComponents =
-			JIRAComponentLocalServiceUtil.getJIRAIssueJIRAComponents(
-				getJiraIssueId());
-
-		return jiraComponents;
+		return JIRAComponentLocalServiceUtil.getJIRAIssueJIRAComponents(
+			getJiraIssueId());
 	}
 
 	public String getKey() {
@@ -118,9 +108,7 @@ public class JIRAIssueImpl extends JIRAIssueBaseImpl {
 			apiChangeText = description.substring(x, y);
 		}
 
-		apiChangeText = _normalizeLineBreaks(apiChangeText);
-
-		return apiChangeText;
+		return _normalizeLineBreaks(apiChangeText);
 	}
 
 	private String _getUpgradeNote(String description) {

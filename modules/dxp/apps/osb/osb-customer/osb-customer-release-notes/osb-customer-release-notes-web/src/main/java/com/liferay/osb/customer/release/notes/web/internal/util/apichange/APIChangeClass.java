@@ -116,14 +116,22 @@ public class APIChangeClass extends APIChangeBase {
 		}
 
 		if ((getDetails() != null) && (apiChangeClass.getDetails() != null)) {
-			StringBundler sb = new StringBundler();
+			StringBundler sb = new StringBundler(7);
 
 			sb.append("API change conflict with class ");
 			sb.append(getClassName());
 			sb.append(" (");
-			sb.append(getJIRAIssue().getKey());
+
+			JIRAIssue jiraIssue = getJIRAIssue();
+
+			sb.append(jiraIssue.getKey());
+
 			sb.append(", ");
-			sb.append(apiChangeClass.getJIRAIssue().getKey());
+
+			JIRAIssue apiChangeJIRAIssue = apiChangeClass.getJIRAIssue();
+
+			sb.append(apiChangeJIRAIssue.getKey());
+
 			sb.append(")");
 
 			throw new Exception(sb.toString());

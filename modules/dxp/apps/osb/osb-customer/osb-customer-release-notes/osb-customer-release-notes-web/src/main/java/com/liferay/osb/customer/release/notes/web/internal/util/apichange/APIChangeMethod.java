@@ -32,14 +32,16 @@ public class APIChangeMethod extends APIChangeBase {
 		int y = apiChangeMethodText.indexOf(StringPool.NEW_LINE);
 
 		if ((x == -1) || (y == -1) || (x > y)) {
-			StringBundler sb = new StringBundler(4);
+			if (_log.isWarnEnabled()) {
+				StringBundler sb = new StringBundler(4);
 
-			sb.append("API method not formatted correctly (");
-			sb.append(jiraIssue.getKey());
-			sb.append(") ");
-			sb.append(apiChangeMethodText);
+				sb.append("API method not formatted correctly (");
+				sb.append(jiraIssue.getKey());
+				sb.append(") ");
+				sb.append(apiChangeMethodText);
 
-			_log .warn(sb.toString());
+				_log.warn(sb.toString());
+			}
 
 			_signature = apiChangeMethodText;
 

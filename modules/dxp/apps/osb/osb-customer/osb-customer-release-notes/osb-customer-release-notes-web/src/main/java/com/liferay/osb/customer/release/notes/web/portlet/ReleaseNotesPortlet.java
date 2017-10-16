@@ -387,47 +387,45 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 
 		VelocityContext velocityContext = new VelocityContext();
 
+		velocityContext.put(
+			"apiChangeClasses", ReleaseNotesUtil.getAPIChanges(jiraIssues));
+		velocityContext.put(
+			"css", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_CSS));
+		velocityContext.put(
+			"bugIcon",
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_BUG));
 		velocityContext.put("htmlUtil", HtmlUtil.getHtml());
-		velocityContext.put("stringUtil", StringUtil_IW.getInstance());
-
-		velocityContext.put("newline", StringPool.NEW_LINE);
-		velocityContext.put("return", StringPool.RETURN);
-
+		velocityContext.put(
+			"improvementIcon",
+			encodeToDataURI(
+				ReleaseNotesConfigurationValues.IMAGE_ICON_IMPROVEMENT));
+		velocityContext.put("jiraComponentMap", jiraComponentMap);
+		velocityContext.put("jiraIssues", jiraIssues);
+		velocityContext.put(
+			"jiraIssuesWithUpgradeNote",
+			ReleaseNotesUtil.getJIRAIssuesWithUpgradeNote(jiraIssues));
 		velocityContext.put("jiraIssueTypeBug", JIRAConstants.ISSUE_TYPE_BUG);
 		velocityContext.put(
 			"jiraIssueTypeImprovement", JIRAConstants.ISSUE_TYPE_IMPROVEMENT);
 		velocityContext.put(
 			"jiraIssueTypeNewFeature", JIRAConstants.ISSUE_TYPE_NEW_FEATURE);
-
-		velocityContext.put(
-			"bugIcon",
-			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_BUG));
-		velocityContext.put(
-			"improvementIcon",
-			encodeToDataURI(
-				ReleaseNotesConfigurationValues.IMAGE_ICON_IMPROVEMENT));
-		velocityContext.put(
-			"newFeatureIcon",
-			encodeToDataURI(
-				ReleaseNotesConfigurationValues.IMAGE_ICON_NEW_FEATURE));
-		velocityContext.put(
-			"otherIcon",
-			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_OTHER));
-		velocityContext.put(
-			"logo",
-			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_LOGO));
-
-		velocityContext.put(
-			"css", mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_CSS));
-
 		velocityContext.put(
 			"jsBottom",
 			mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_BOTTOM));
 		velocityContext.put(
 			"jsTop",
 			mergeFiles(ReleaseNotesConfigurationValues.TEMPLATE_JS_TOP));
-
-		velocityContext.put("version", version);
+		velocityContext.put(
+			"logo",
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_LOGO));
+		velocityContext.put(
+			"newFeatureIcon",
+			encodeToDataURI(
+				ReleaseNotesConfigurationValues.IMAGE_ICON_NEW_FEATURE));
+		velocityContext.put("newline", StringPool.NEW_LINE);
+		velocityContext.put(
+			"otherIcon",
+			encodeToDataURI(ReleaseNotesConfigurationValues.IMAGE_ICON_OTHER));
 
 		String[] versionArray = StringUtil.split(version, StringPool.DASH);
 
@@ -445,16 +443,9 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 			}
 		}
 
-		velocityContext.put("jiraIssues", jiraIssues);
-
-		velocityContext.put("jiraComponentMap", jiraComponentMap);
-
-		velocityContext.put(
-			"apiChangeClasses", ReleaseNotesUtil.getAPIChanges(jiraIssues));
-
-		velocityContext.put(
-			"jiraIssuesWithUpgradeNote",
-			ReleaseNotesUtil.getJIRAIssuesWithUpgradeNote(jiraIssues));
+		velocityContext.put("return", StringPool.RETURN);
+		velocityContext.put("stringUtil", StringUtil_IW.getInstance());
+		velocityContext.put("version", version);
 
 		return velocityContext;
 	}

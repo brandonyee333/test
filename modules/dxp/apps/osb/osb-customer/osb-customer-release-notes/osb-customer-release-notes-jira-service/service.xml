@@ -25,9 +25,9 @@
 		<column db-name="project" name="jiraProjectId" type="long" />
 		<column db-name="issuenum" name="issueNumber" type="long" />
 		<column db-name="issuetype" name="type" type="int" />
-		<column name="summary" db-name="summary" type="String" />
-		<column name="description" db-name="description" type="String" />
-		<column name="priority" db-name="priority" type="int" />
+		<column db-name="summary" name="summary" type="String" />
+		<column db-name="description" name="description" type="String" />
+		<column db-name="priority" name="priority" type="int" />
 	</entity>
 	<entity data-source="jiraDataSource" local-service="true" name="JIRAProject" remote-service="false" table="project">
 
