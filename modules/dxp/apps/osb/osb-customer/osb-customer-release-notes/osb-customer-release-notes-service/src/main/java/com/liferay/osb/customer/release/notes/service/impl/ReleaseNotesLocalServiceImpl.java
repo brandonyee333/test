@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Alan Zhang
  */
@@ -185,6 +187,7 @@ public class ReleaseNotesLocalServiceImpl
 		}
 	}
 
+	@Reference
 	protected JIRAIssueLocalService jiraIssueLocalService;
 
 }
