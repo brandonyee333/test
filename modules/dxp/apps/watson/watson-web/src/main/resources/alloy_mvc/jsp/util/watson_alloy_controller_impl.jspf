@@ -222,7 +222,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		searchContext.setEnd(end);
 		searchContext.setEntryClassNames(new String[] {modelClass.getName()});
 		searchContext.setLike(true);
-		searchContext.setPortletIds(new String[] {PortletKeys.WATSON});
+		searchContext.setPortletIds(new String[] {WatsonPortletKeys.WATSON});
 
 		String sort = ParamUtil.getString(request, "sortBy", null);
 

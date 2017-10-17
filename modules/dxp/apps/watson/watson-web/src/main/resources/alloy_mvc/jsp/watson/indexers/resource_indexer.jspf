@@ -25,7 +25,7 @@ public static class WatsonResourceIndexer extends BaseAlloyIndexer {
 	protected Document doGetDocument(BaseModel<?> object) throws Exception {
 		WatsonResource watsonResource = new WatsonResource((com.liferay.watson.model.WatsonResource)object);
 
-		Document document = getBaseModelDocument(PortletKeys.WATSON, watsonResource);
+		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonResource);
 
 		document.addLocalizedText("description", watsonResource.getDescriptionMap());
 		document.addKeyword("id", watsonResource.getPrimaryKey());

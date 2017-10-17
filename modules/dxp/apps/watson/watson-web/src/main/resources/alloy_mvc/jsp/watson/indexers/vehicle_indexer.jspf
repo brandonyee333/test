@@ -25,7 +25,7 @@ public static class WatsonVehicleIndexer extends BaseAlloyIndexer {
 	protected Document doGetDocument(BaseModel<?> object) throws Exception {
 		WatsonVehicle watsonVehicle = new WatsonVehicle((com.liferay.watson.model.WatsonVehicle)object);
 
-		Document document = getBaseModelDocument(PortletKeys.WATSON, watsonVehicle);
+		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonVehicle);
 
 		document.addKeyword("colorWatsonListTypeId", watsonVehicle.getColorWatsonListTypeId());
 		document.addLocalizedText("description", watsonVehicle.getDescriptionMap());

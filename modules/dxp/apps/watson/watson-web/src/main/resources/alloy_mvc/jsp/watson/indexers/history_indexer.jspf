@@ -25,7 +25,7 @@ public static class WatsonHistoryIndexer extends BaseAlloyIndexer {
 	protected Document doGetDocument(BaseModel<?> object) throws Exception {
 		WatsonHistory watsonHistory = new WatsonHistory((com.liferay.watson.model.WatsonHistory)object);
 
-		return getBaseModelDocument(PortletKeys.WATSON, watsonHistory);
+		return getBaseModelDocument(WatsonPortletKeys.WATSON, watsonHistory);
 	}
 
 	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest, PortletResponse portletResponse) throws Exception {

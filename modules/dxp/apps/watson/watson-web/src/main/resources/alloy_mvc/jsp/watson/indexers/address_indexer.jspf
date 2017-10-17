@@ -25,7 +25,7 @@ public static class WatsonAddressIndexer extends BaseAlloyIndexer {
 	protected Document doGetDocument(BaseModel<?> object) throws Exception {
 		WatsonAddress watsonAddress = new WatsonAddress((com.liferay.watson.model.WatsonAddress)object);
 
-		Document document = getBaseModelDocument(PortletKeys.WATSON, watsonAddress);
+		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonAddress);
 
 		document.addLocalizedKeyword("building", watsonAddress.getBuildingMap());
 		document.addKeyword("countryId", watsonAddress.getCountryId());

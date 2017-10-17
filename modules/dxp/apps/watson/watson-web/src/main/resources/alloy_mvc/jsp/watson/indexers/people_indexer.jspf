@@ -25,7 +25,7 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 	protected Document doGetDocument(BaseModel<?> object) throws Exception {
 		WatsonPerson watsonPerson = new WatsonPerson((com.liferay.watson.model.WatsonPerson)object);
 
-		Document document = getBaseModelDocument(PortletKeys.WATSON, watsonPerson);
+		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonPerson);
 
 		document.addKeyword("accepted", watsonPerson.getAccepted());
 		document.addKeyword("birthCountryId", watsonPerson.getBirthCountryId());

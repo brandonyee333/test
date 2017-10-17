@@ -25,7 +25,7 @@ public static class WatsonListTypeIndexer extends BaseAlloyIndexer {
 	protected Document doGetDocument(BaseModel<?> object) throws Exception {
 		WatsonListType watsonListType = new WatsonListType((com.liferay.watson.model.WatsonListType)object);
 
-		Document document = getBaseModelDocument(PortletKeys.WATSON, watsonListType);
+		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonListType);
 
 		document.addLocalizedKeyword("name", watsonListType.getNameMap());
 		document.addKeyword("parentWatsonListTypeId", watsonListType.getParentWatsonListTypeId());

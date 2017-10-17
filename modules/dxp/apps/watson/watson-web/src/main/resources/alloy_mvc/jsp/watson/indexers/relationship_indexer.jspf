@@ -25,7 +25,7 @@ public static class WatsonRelationshipIndexer extends BaseAlloyIndexer {
 	protected Document doGetDocument(BaseModel<?> object) throws Exception {
 		WatsonRelationship watsonRelationship = new WatsonRelationship((com.liferay.watson.model.WatsonRelationship)object);
 
-		Document document = getBaseModelDocument(PortletKeys.WATSON, watsonRelationship);
+		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonRelationship);
 
 		document.addKeyword("classNameId2", watsonRelationship.getClassNameId1());
 		document.addKeyword("classPK2", watsonRelationship.getClassPK1());

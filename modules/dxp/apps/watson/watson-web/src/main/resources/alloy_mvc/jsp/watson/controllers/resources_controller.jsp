@@ -326,7 +326,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			String name = ParamUtil.getString(request, "name");
 
-			respondWith(WatsonFileUploaderUtil.addDLFileEntry(user.getUserId(), user.getGroupId(), PortalUtil.getClassNameId("com.liferay.watson.model.WatsonResource"), classPK, PortletKeys.WATSON, file, name));
+			respondWith(WatsonFileUploaderUtil.addDLFileEntry(user.getUserId(), user.getGroupId(), PortalUtil.getClassNameId("com.liferay.watson.model.WatsonResource"), classPK, WatsonPortletKeys.WATSON, file, name));
 
 			return;
 		}

@@ -25,7 +25,7 @@ public static class WatsonActivityIndexer extends BaseAlloyIndexer {
 	protected Document doGetDocument(BaseModel<?> object) throws Exception {
 		WatsonActivity watsonActivity = new WatsonActivity((com.liferay.watson.model.WatsonActivity)object);
 
-		Document document = getBaseModelDocument(PortletKeys.WATSON, watsonActivity);
+		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonActivity);
 
 		document.addKeyword("id", watsonActivity.getPrimaryKey());
 		document.addDate("modifiedDate", watsonActivity.getModifiedDate());
