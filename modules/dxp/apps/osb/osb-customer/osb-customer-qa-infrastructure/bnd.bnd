@@ -1,5 +1,12 @@
+Bundle-ClassPath:\
+.,\
+lib/osb-portlet-service.jar
 Bundle-Name: Liferay OSB Customer QA Infrastructure
 Bundle-SymbolicName: com.liferay.osb.customer.qa.infrastructure
 Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Description:
+
 Liferay-Releng-Module-Group-Title: Customer QA
+
+-includeresource:\
+lib/osb-portlet-service.jar=osb-portlet-service.jar

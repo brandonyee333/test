@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/qa/infrastructure/internal/events/StartupAction.java" />
+</suppressions>
