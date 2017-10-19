@@ -33,7 +33,6 @@ public class DeadLetterFilterRabbitMQConsumer {
 	}
 
 	/* TODO update rabbitMQ integration
-
 	public int parse(
 		String routingKey, String message, Map<String, Object> properties) {
 
