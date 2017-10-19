@@ -65,8 +65,6 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 	if (tabs2.equals("current")) {
 		userParams.put("usersPartnerWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerWorker"), Long.valueOf(partnerEntry.getPartnerEntryId())));
 	}
-
-	int usersTotal = UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true);
 	%>
 
 	<liferay-ui:search-container
@@ -74,15 +72,10 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 		id="usersSearchContainer"
 		iteratorURL="<%= portletURL %>"
 		rowChecker="<%= new UserPartnerWorkerChecker(renderResponse, partnerEntry) %>"
-		total="<%= usersTotal %>"
+		total="<%= UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true) %>"
 	>
-
-		<%
-		List<User> users = UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true));
-		%>
-
 		<liferay-ui:search-container-results
-			results="<%= users %>"
+			results="<%= UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)) %>"
 		/>
 
 		<liferay-ui:search-container-row

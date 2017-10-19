@@ -61,8 +61,6 @@ portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 	if (tabs3.equals("current")) {
 		userParams.put("usersSupportWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByHolidayCalendar"), Long.valueOf(holidayCalendarId)));
 	}
-
-	int usersTotal = UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true);
 	%>
 
 	<liferay-ui:search-container
@@ -70,15 +68,10 @@ portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 		id="usersSearchContainer"
 		iteratorURL="<%= portletURL %>"
 		rowChecker="<%= new UserHolidayCalendarChecker(renderResponse, holidayCalendar) %>"
-		total="<%= usersTotal %>"
+		total="<%= UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true) %>"
 	>
-
-		<%
-		List<User> users = UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true));
-		%>
-
 		<liferay-ui:search-container-results
-			results="<%= users %>"
+			results="<%= UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)) %>"
 		/>
 
 		<liferay-ui:search-container-row
