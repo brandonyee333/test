@@ -53,83 +53,80 @@ portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 		url="<%= portletURL.toString() %>"
 	/>
 
-	<%
-	UserHolidayCalendarChecker rowChecker = new UserHolidayCalendarChecker(renderResponse, holidayCalendar);
+	<%@ include file="/common/user_search_inputs.jspf" %>
 
+	<%
 	LinkedHashMap userParams = new LinkedHashMap();
 
 	if (tabs3.equals("current")) {
-		userParams.put("status", WorkflowConstants.STATUS_ANY);
 		userParams.put("usersSupportWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByHolidayCalendar"), Long.valueOf(holidayCalendarId)));
 	}
+
+	int usersTotal = UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true);
 	%>
 
-	<liferay-ui:user-search
-		portletURL="<%= portletURL %>"
-		rowChecker="<%= rowChecker %>"
-		userParams="<%= userParams %>"
+	<liferay-ui:search-container
+		emptyResultsMessage="no-users-were-found"
+		id="usersSearchContainer"
+		iteratorURL="<%= portletURL %>"
+		rowChecker="<%= new UserHolidayCalendarChecker(renderResponse, holidayCalendar) %>"
+		total="<%= usersTotal %>"
 	>
 
 		<%
-		SearchContainer userSearchContainer = (SearchContainer)request.getAttribute(WebKeys.SEARCH_CONTAINER);
+		List<User> users = UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true));
 		%>
 
-		<liferay-ui:search-container
-			headerNames="name,email-address"
-			rowChecker="<%= rowChecker %>"
-			searchContainer="<%= userSearchContainer %>"
+		<liferay-ui:search-container-results
+			results="<%= users %>"
+		/>
+
+		<liferay-ui:search-container-row
+			className="com.liferay.portal.kernel.model.User"
+			escapedModel="<%= true %>"
+			keyProperty="userId"
+			modelVar="curUser"
 		>
-			<liferay-ui:search-container-results
-				results="<%= userSearchContainer.getResults() %>"
+
+			<%
+			if (!curUser.isActive()) {
+				row.setClassName("inactive");
+			}
+			%>
+
+			<liferay-ui:search-container-column-text
+				name="name"
+				property="fullName"
 			/>
 
-			<liferay-ui:search-container-row
-				className="com.liferay.portal.kernel.model.User"
-				escapedModel="<%= true %>"
-				keyProperty="userId"
-				modelVar="curUser"
-			>
+			<liferay-ui:search-container-column-text
+				name="email-address"
+				property="emailAddress"
+			/>
 
-				<%
-				if (!curUser.isActive()) {
-					row.setClassName("inactive");
-				}
-				%>
+			<c:if test='<%= tabs3.equals("current") && (curUser != null) %>'>
+				<liferay-ui:search-container-column-text>
+					<liferay-ui:icon-menu>
+						<portlet:renderURL var="editURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+							<portlet:param name="mvcPath" value="/admin/edit_support_worker.jsp" />
+							<portlet:param name="redirect" value="<%= currentURL %>" />
+							<portlet:param name="userId" value="<%= String.valueOf(curUser.getUserId()) %>" />
+						</portlet:renderURL>
 
-				<liferay-ui:search-container-column-text
-					name="name"
-					property="fullName"
-				/>
+						<liferay-ui:icon image="edit" url="<%= editURL %>" />
+					</liferay-ui:icon-menu>
+				</liferay-ui:search-container-column-text>
+			</c:if>
+		</liferay-ui:search-container-row>
 
-				<liferay-ui:search-container-column-text
-					name="email-address"
-					property="emailAddress"
-				/>
+		<div class="separator"><!-- --></div>
 
-				<c:if test='<%= tabs3.equals("current") && (curUser != null) %>'>
-					<liferay-ui:search-container-column-text>
-						<liferay-ui:icon-menu>
-							<portlet:renderURL var="editURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-								<portlet:param name="mvcPath" value="/admin/edit_support_worker.jsp" />
-								<portlet:param name="redirect" value="<%= currentURL %>" />
-								<portlet:param name="userId" value="<%= String.valueOf(curUser.getUserId()) %>" />
-							</portlet:renderURL>
+		<input onClick="<portlet:namespace />updateHolidayCalendarUsers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
 
-							<liferay-ui:icon image="edit" url="<%= editURL %>" />
-						</liferay-ui:icon-menu>
-					</liferay-ui:search-container-column-text>
-				</c:if>
-			</liferay-ui:search-container-row>
+		<br /><br />
 
-			<div class="separator"><!-- --></div>
-
-			<input onClick="<portlet:namespace />updateHolidayCalendarUsers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
-
-			<br /><br />
-
-			<liferay-ui:search-iterator />
-		</liferay-ui:search-container>
-	</liferay-ui:user-search>
+		<liferay-ui:search-iterator markupView="lexicon" />
+	</liferay-ui:search-container>
 </aui:form>
 
 <aui:script>

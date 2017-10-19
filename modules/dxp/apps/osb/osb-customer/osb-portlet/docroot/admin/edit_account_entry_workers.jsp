@@ -59,129 +59,125 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		url="<%= portletURL.toString() %>"
 	/>
 
-	<%
-	UserAccountWorkerChecker rowChecker = new UserAccountWorkerChecker(renderResponse, accountEntry);
+	<%@ include file="/common/user_search_inputs.jspf" %>
 
+	<%
 	LinkedHashMap userParams = new LinkedHashMap();
 
 	if (tabs2.equals("current")) {
-		userParams.put("status", WorkflowConstants.STATUS_ANY);
 		userParams.put("usersAccountWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountWorker"), Long.valueOf(accountEntry.getAccountEntryId())));
 	}
+
+	int usersTotal = UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true);
 	%>
 
-	<liferay-ui:user-search
-		portletURL="<%= portletURL %>"
-		rowChecker="<%= rowChecker %>"
-		userParams="<%= userParams %>"
+	<liferay-ui:search-container
+		emptyResultsMessage="no-users-were-found"
+		id="usersSearchContainer"
+		iteratorURL="<%= portletURL %>"
+		rowChecker="<%= new UserAccountWorkerChecker(renderResponse, accountEntry) %>"
+		total="<%= usersTotal %>"
 	>
 
 		<%
-		SearchContainer userSearchContainer = (SearchContainer)request.getAttribute(WebKeys.SEARCH_CONTAINER);
+		List<User> users = UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true));
 		%>
 
-		<liferay-ui:search-container
-			headerNames="name,screen-name,email-address,role"
-			rowChecker="<%= rowChecker %>"
-			searchContainer="<%= userSearchContainer %>"
-			total="<%= userSearchContainer.getTotal() %>"
+		<liferay-ui:search-container-results
+			results="<%= users %>"
+		/>
+
+		<liferay-ui:search-container-row
+			className="com.liferay.portal.kernel.model.User"
+			escapedModel="<%= true %>"
+			keyProperty="userId"
+			modelVar="curUser"
 		>
-			<liferay-ui:search-container-results
-				results="<%= userSearchContainer.getResults() %>"
+
+			<%
+			AccountWorker accountWorker = null;
+
+			int role = 0;
+			int notifications = 0;
+
+			try {
+				accountWorker = AccountWorkerLocalServiceUtil.getAccountWorker(curUser.getUserId(), accountEntryId);
+
+				role = accountWorker.getRole();
+				notifications = accountWorker.getNotifications();
+			}
+			catch (Exception e) {
+			}
+
+			if (!curUser.isActive()) {
+				row.setClassName("inactive");
+			}
+			%>
+
+			<liferay-ui:search-container-column-text
+				name="name"
+				property="fullName"
 			/>
 
-			<liferay-ui:search-container-row
-				className="com.liferay.portal.kernel.model.User"
-				escapedModel="<%= true %>"
-				keyProperty="userId"
-				modelVar="curUser"
+			<liferay-ui:search-container-column-text
+				name="screen-name"
+				property="screenName"
+			/>
+
+			<liferay-ui:search-container-column-text
+				name="email-address"
+				property="emailAddress"
+			/>
+
+			<liferay-ui:search-container-column-text
+				name="notifications"
 			>
+				<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />notifications_<%= curUser.getUserId() %>">
 
-				<%
-				AccountWorker accountWorker = null;
+					<%
+					for (int i = 1; i <= 4; i++) {
+					%>
 
-				int role = 0;
-				int notifications = 0;
+						<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, AccountWorkerConstants.getNotificationsLabel(i)) %></option>
 
-				try {
-					accountWorker = AccountWorkerLocalServiceUtil.getAccountWorker(curUser.getUserId(), accountEntryId);
+					<%
+					}
+					%>
 
-					role = accountWorker.getRole();
-					notifications = accountWorker.getNotifications();
-				}
-				catch (Exception e) {
-				}
+				</select>
+			</liferay-ui:search-container-column-text>
 
-				if (!curUser.isActive()) {
-					row.setClassName("inactive");
-				}
-				%>
+			<liferay-ui:search-container-column-text
+				name="role"
+			>
+				<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
+					<option></option>
 
-				<liferay-ui:search-container-column-text
-					name="name"
-					property="fullName"
-				/>
-
-				<liferay-ui:search-container-column-text
-					name="screen-name"
-					property="screenName"
-				/>
-
-				<liferay-ui:search-container-column-text
-					name="email-address"
-					property="emailAddress"
-				/>
-
-				<liferay-ui:search-container-column-text
-					name="notifications"
-				>
-					<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />notifications_<%= curUser.getUserId() %>">
-
-						<%
-						for (int i = 1; i <= 4; i++) {
-						%>
-
-							<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, AccountWorkerConstants.getNotificationsLabel(i)) %></option>
-
-						<%
+					<%
+					for (int i = 1; i <= 5; i++) {
+						if (ArrayUtil.contains(AccountWorkerConstants.ROLES_DEPRECATED, i)) {
+							continue;
 						}
-						%>
+					%>
 
-					</select>
-				</liferay-ui:search-container-column-text>
+						<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, AccountWorkerConstants.getRoleLabel(i)) %></option>
 
-				<liferay-ui:search-container-column-text
-					name="role"
-				>
-					<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
-						<option></option>
+					<%
+					}
+					%>
 
-						<%
-						for (int i = 1; i <= 5; i++) {
-							if (ArrayUtil.contains(AccountWorkerConstants.ROLES_DEPRECATED, i)) {
-								continue;
-							}
-						%>
+				</select>
+			</liferay-ui:search-container-column-text>
+		</liferay-ui:search-container-row>
 
-							<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, AccountWorkerConstants.getRoleLabel(i)) %></option>
+		<div class="separator"><!-- --></div>
 
-						<%
-						}
-						%>
+		<input onClick="<portlet:namespace />updateAccountWorkers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
 
-					</select>
-				</liferay-ui:search-container-column-text>
-			</liferay-ui:search-container-row>
+		<br /><br />
 
-			<div class="separator"><!-- --></div>
-
-			<input onClick="<portlet:namespace />updateAccountWorkers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
-
-			<br /><br />
-
-			<liferay-ui:search-iterator />
-		</liferay-ui:search-container>
-	</liferay-ui:user-search>
+		<liferay-ui:search-iterator markupView="lexicon" />
+	</liferay-ui:search-container>
 </aui:form>
 
 <aui:script>

@@ -27,7 +27,7 @@
 	portletURL.setParameter("tabs1", tabs1);
 	%>
 
-	<aui:form action="<%= portletURL.toString() %>" method="post" name="<portlet:namespace />fm" onSubmit="submitForm(this); return false;">
+	<aui:form action="<%= portletURL.toString() %>" method="post" onSubmit="submitForm(this); return false;">
 		<div class="unit">
 			<div class="table-report unit-content">
 				<liferay-ui:tabs
@@ -37,77 +37,77 @@
 					url="<%= portletURL.toString() %>"
 				/>
 
+				<%@ include file="/common/user_search_inputs.jspf" %>
+
 				<%
 				long role = GetterUtil.getLong(tabs1, AccountWorkerConstants.ROLE_ADVOCACY_SPECIALIST);
 
 				LinkedHashMap userParams = new LinkedHashMap();
 
 				userParams.put("usersAccountWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountWorkerRole"), role));
+
+				int usersTotal = UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true);
 				%>
 
-				<liferay-ui:user-search
-					portletURL="<%= portletURL %>"
-					userParams="<%= userParams %>"
+				<liferay-ui:search-container
+					emptyResultsMessage="no-users-were-found"
+					id="usersSearchContainer"
+					iteratorURL="<%= portletURL %>"
+					total="<%= usersTotal %>"
 				>
 
 					<%
-					SearchContainer userSearchContainer = (SearchContainer)request.getAttribute(WebKeys.SEARCH_CONTAINER);
+					List<User> users = UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true));
 					%>
 
-					<liferay-ui:search-container
-						headerNames="name,screen-name,email-address"
-						searchContainer="<%= userSearchContainer %>"
-						total="<%= userSearchContainer.getTotal() %>"
+					<liferay-ui:search-container-results
+						results="<%= users %>"
+					/>
+
+					<liferay-ui:search-container-row
+						className="com.liferay.portal.kernel.model.User"
+						escapedModel="<%= true %>"
+						keyProperty="userId"
+						modelVar="curUser"
 					>
-						<liferay-ui:search-container-results
-							results="<%= userSearchContainer.getResults() %>"
+
+						<%
+						StringBuilder sb = new StringBuilder();
+
+						sb.append("javascript:opener.");
+						sb.append(renderResponse.getNamespace());
+						sb.append("selectAccountWorker('");
+						sb.append(curUser.getUserId());
+						sb.append("', '");
+						sb.append(UnicodeFormatter.toString(curUser.getFullName()));
+						sb.append("', '");
+						sb.append(role);
+						sb.append("'); window.close();");
+
+						String rowHREF = sb.toString();
+						%>
+
+						<liferay-ui:search-container-column-text
+							href="<%= rowHREF %>"
+							name="name"
+							property="fullName"
 						/>
 
-						<liferay-ui:search-container-row
-							className="com.liferay.portal.kernel.model.User"
-							escapedModel="<%= true %>"
-							keyProperty="userId"
-							modelVar="curUser"
-						>
+						<liferay-ui:search-container-column-text
+							href="<%= rowHREF %>"
+							name="screen-name"
+							property="screenName"
+						/>
 
-							<%
-							StringBuilder sb = new StringBuilder();
+						<liferay-ui:search-container-column-text
+							href="<%= rowHREF %>"
+							name="email-address"
+							property="emailAddress"
+						/>
+					</liferay-ui:search-container-row>
 
-							sb.append("javascript:opener.");
-							sb.append(renderResponse.getNamespace());
-							sb.append("selectAccountWorker('");
-							sb.append(curUser.getUserId());
-							sb.append("', '");
-							sb.append(UnicodeFormatter.toString(curUser.getFullName()));
-							sb.append("', '");
-							sb.append(role);
-							sb.append("'); window.close();");
-
-							String rowHREF = sb.toString();
-							%>
-
-							<liferay-ui:search-container-column-text
-								href="<%= rowHREF %>"
-								name="name"
-								property="fullName"
-							/>
-
-							<liferay-ui:search-container-column-text
-								href="<%= rowHREF %>"
-								name="screen-name"
-								property="screenName"
-							/>
-
-							<liferay-ui:search-container-column-text
-								href="<%= rowHREF %>"
-								name="email-address"
-								property="emailAddress"
-							/>
-						</liferay-ui:search-container-row>
-
-						<liferay-ui:search-iterator />
-					</liferay-ui:search-container>
-				</liferay-ui:user-search>
+					<liferay-ui:search-iterator markupView="lexicon" />
+				</liferay-ui:search-container>
 			</div>
 		</div>
 	</aui:form>
