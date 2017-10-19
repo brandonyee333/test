@@ -80,13 +80,13 @@ public class SetupWatsonRoles {
 	}
 
 	protected void addRole(Element roleElement) throws Exception {
-		List<Company> companies = _companyLocalService.getCompanies();
-
 		String roleName = roleElement.elementText("name");
 
 		String roleTypeLabel = roleElement.elementText("role-type");
 
 		int roleType = getRoleLabelType(roleTypeLabel);
+
+		List<Company> companies = _companyLocalService.getCompanies();
 
 		for (Company company : companies) {
 			Role role = _roleLocalService.fetchRole(
@@ -135,11 +135,11 @@ public class SetupWatsonRoles {
 				"default-action-keys");
 
 			for (Element defaultActionKeysElement : defaultActionKeysElements) {
-				String name = defaultActionKeysElement.attributeValue(
-					"resourceName");
-
 				List<Element> actionKeyElements =
 					defaultActionKeysElement.elements("action-key");
+
+				String name = defaultActionKeysElement.attributeValue(
+					"resourceName");
 
 				if (resetPermissions) {
 					List<String> actionIds = new ArrayList<>();
