@@ -31,7 +31,7 @@ ${"<%!"}
 public static class ${baseclassname} extends ${classname}Wrapper {
 
 	${baseclassname}() {
-		super(new ${modelpath}.impl.${classname}Impl());
+		super(new ${classname}Impl());
 	}
 
 	${baseclassname}(${modelpath}.${classname} ${instancename}) {

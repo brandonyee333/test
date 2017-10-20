@@ -105,11 +105,23 @@ page import="com.liferay.portal.kernel.util.PropsUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringBundler" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.StringUtil" %><%@
+page import="com.liferay.portal.kernel.util.TextFormatter" %><%@
 page import="com.liferay.portal.kernel.util.UnicodeProperties" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.watson.model.WatsonIncident" %><%@
 page import="com.liferay.watson.model.WatsonListType" %><%@
 page import="com.liferay.watson.model.WatsonListTypeRel" %><%@
+page import="com.liferay.watson.model.impl.WatsonActivityImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonAddressImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonHistoryImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonIncidentImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonIncidentRelImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonListTypeRelImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonListTypeImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonPersonImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonRelationshipImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonResourceImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonVehicleImpl" %><%@
 page import="com.liferay.watson.web.constants.WatsonPortletKeys" %><%@
 page import="com.liferay.watson.web.constants.RoleConstants" %>
 
@@ -118,8 +130,6 @@ page import="java.awt.geom.AffineTransform" %><%@
 page import="java.awt.image.AffineTransformOp" %><%@
 page import="java.awt.image.BufferedImage" %><%@
 page import="java.awt.image.RenderedImage" %>
-
-<%@ page import="com.liferay.portal.kernel.util.TextFormatter" %>
 
 <%@ page import="java.io.File" %><%@
 page import="java.io.IOException" %>
