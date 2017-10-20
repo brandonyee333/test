@@ -116,14 +116,14 @@ page import="com.liferay.watson.model.impl.WatsonAddressImpl" %><%@
 page import="com.liferay.watson.model.impl.WatsonHistoryImpl" %><%@
 page import="com.liferay.watson.model.impl.WatsonIncidentImpl" %><%@
 page import="com.liferay.watson.model.impl.WatsonIncidentRelImpl" %><%@
-page import="com.liferay.watson.model.impl.WatsonListTypeRelImpl" %><%@
 page import="com.liferay.watson.model.impl.WatsonListTypeImpl" %><%@
+page import="com.liferay.watson.model.impl.WatsonListTypeRelImpl" %><%@
 page import="com.liferay.watson.model.impl.WatsonPersonImpl" %><%@
 page import="com.liferay.watson.model.impl.WatsonRelationshipImpl" %><%@
 page import="com.liferay.watson.model.impl.WatsonResourceImpl" %><%@
 page import="com.liferay.watson.model.impl.WatsonVehicleImpl" %><%@
-page import="com.liferay.watson.web.constants.WatsonPortletKeys" %><%@
-page import="com.liferay.watson.web.constants.RoleConstants" %>
+page import="com.liferay.watson.web.constants.RoleConstants" %><%@
+page import="com.liferay.watson.web.constants.WatsonPortletKeys" %>
 
 <%@ page import="java.awt.Rectangle" %><%@
 page import="java.awt.geom.AffineTransform" %><%@

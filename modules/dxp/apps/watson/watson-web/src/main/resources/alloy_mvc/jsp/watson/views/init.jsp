@@ -16,18 +16,16 @@
 
 <%@ include file="/alloy_mvc/jsp/util/init.jsp" %>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %><%@
-taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %><%@
-taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
+<%@ taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
+taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.portal.kernel.bean.ConstantsBeanFactoryUtil" %><%@
-page import="com.liferay.portal.kernel.portlet.PortletURLUtil" %>
+<%@ page import="com.liferay.portal.kernel.bean.ConstantsBeanFactoryUtil" %>
 
 <%!
 public class AlloyLanguageUtil extends LanguageUtil {
@@ -86,17 +84,11 @@ public class AlloyLanguageUtil extends LanguageUtil {
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </liferay-util:html-top>
 
+<liferay-frontend:defineObjects />
+
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
-
-<%
-WindowState windowState = liferayPortletRequest.getWindowState();
-
-PortletURL currentURLObj = PortletURLUtil.getCurrent(liferayPortletRequest, liferayPortletResponse);
-
-String currentURL = currentURLObj.toString();
-%>
 
 <%@ include file="/alloy_mvc/jsp/watson/views/config/_input_config.jsp" %>
 
