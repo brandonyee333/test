@@ -66,7 +66,7 @@ insert into ListType (listTypeId, name, type_) values (26010, 'other', 'com.life
 insert into ListType (listTypeId, name, type_) values (26012, 'security', 'com.liferay.osb.model.TicketEntry.component');
 insert into ListType (listTypeId, name, type_) values (26015, 'ui', 'com.liferay.osb.model.TicketEntry.component');
 insert into ListType (listTypeId, name, type_) values (26016, 'upgrade', 'com.liferay.osb.model.TicketEntry.component');
-insert into ListType (listTypeId, name, type_) values (26017, 'developer-studio', 'com.liferay.osb.model.TicketEntry.component');
+insert into ListType (listTypeId, name, type_) values (26017, 'liferay-developer-studio', 'com.liferay.osb.model.TicketEntry.component');
 insert into ListType (listTypeId, name, type_) values (26018, 'search-indexing', 'com.liferay.osb.model.TicketEntry.component');
 insert into ListType (listTypeId, name, type_) values (26019, 'portal-administration', 'com.liferay.osb.model.TicketEntry.component');
 insert into ListType (listTypeId, name, type_) values (26020, 'liferay-api', 'com.liferay.osb.model.TicketEntry.component');
@@ -74,7 +74,7 @@ insert into ListType (listTypeId, name, type_) values (26021, 'liferay-faces', '
 insert into ListType (listTypeId, name, type_) values (26022, 'liferay-sync', 'com.liferay.osb.model.TicketEntry.component');
 insert into ListType (listTypeId, name, type_) values (26023, 'calendar', 'com.liferay.osb.model.TicketEntry.component');
 insert into ListType (listTypeId, name, type_) values (26024, 'liferay-mobile-sdk', 'com.liferay.osb.model.TicketEntry.component');
-insert into ListType (listTypeId, name, type_) values (26025, 'account-administration', 'com.liferay.osb.model.TicketEntry.component');
+insert into ListType (listTypeId, name, type_) values (26025, 'project-administration', 'com.liferay.osb.model.TicketEntry.component');
 insert into ListType (listTypeId, name, type_) values (26026, 'license', 'com.liferay.osb.model.TicketEntry.component');
 insert into ListType (listTypeId, name, type_) values (26027, 'patch-management', 'com.liferay.osb.model.TicketEntry.component');
 insert into ListType (listTypeId, name, type_) values (26028, 'workflows-forms', 'com.liferay.osb.model.TicketEntry.component');
