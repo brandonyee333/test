@@ -1,0 +1,267 @@
+@media all and (max-width: 965px) {
+	.responsive {
+		overflow-x: hidden;
+
+		body {
+			min-width: 200px;
+		}
+
+		img {
+			max-width: 100% !important;
+		}
+
+		#main-content, .banner-content {
+			padding: 0 10px;
+		}
+
+		#main-content {
+			padding-top: 20px;
+		}
+
+		.responsive720-hidden {
+			display: none !important;
+		}
+
+		.responsive720-w50 {
+			width: 50% !important;
+		}
+
+		.responsive720-w100 {
+			width: 100% !important;
+		}
+	}
+}
+
+@media all and (max-width: 720px) {
+	.responsive {
+		body, input, legend, select, textarea {
+			line-height: 1.375em;
+		}
+
+		#banner {
+			top: 0;
+
+			#mainSearch {
+				position: absolute;
+				right: 0;
+				top: 0;
+				width: 100%;
+
+				#mainSearchContent {
+					background: transparent;
+					border-width: 0;
+					right: 0;
+					width: 100%;
+
+					.doc-search-input {
+						background: #FFF url(../images/custom/search_icons.png) no-repeat left top;
+						background-size: 30px;
+						border: 1px solid $border-color;
+						padding-left: 30px;
+					}
+				}
+
+				.class-toggle-off-click-content {
+					display: block;
+					padding: 10px;
+					width: auto;
+				}
+			}
+
+			#navigationContainer {
+				background: #EFEFEF;
+				display: none;
+				max-height: 450px;
+				max-width: 100%;
+				min-width: 230px;
+				overflow: auto;
+				overflow-x: hidden;
+				padding: 50px 10px 0;
+				top: 57px;
+
+				&.class-toggle-active {
+					display: block;
+				}
+
+				#mainMenu, #mainNavigation, #mainSearch, .nav-item {
+					display: block;
+				}
+
+				#mainMenu {
+					background: none !important;
+					border-width: 1px 0 0;
+					display: block;
+					height: auto;
+					width: auto;
+
+					.drop-down-menu {
+						display: block;
+						max-height: none !important;
+						padding: 0;
+					}
+				}
+
+				#mainNavigation .child-menu .child-item {
+					float: none;
+					width: auto;
+				}
+
+				.child-item.class-toggle-active .grand-child-menu {
+					display: block;
+				}
+
+				.drop-down-menu, .grand-child-menu {
+					background: transparent;
+					min-width: 0;
+					padding: 0 0 0 15px;
+					position: static;
+				}
+
+				.grand-child-menu {
+					display: none;
+				}
+
+				.drop-down-menu, .nav-item {
+					border-width: 0;
+
+					a {
+						padding: 7px 5px;
+					}
+				}
+
+				.nav-menu .nav-item {
+					padding: 0;
+
+					a {
+						display: block;
+						font-weight: normal;
+					}
+				}
+
+				.parent-item.root-item:after, .parent-item.root-item:before {
+					display: none;
+				}
+			}
+
+			#navigationToggle {
+				background: url(../images/custom/menu_icon.png) no-repeat center;
+				border-left: 1px solid $border-color;
+				cursor: pointer;
+				height: 56px;
+				position: absolute;
+				right: 0;
+				width: 50px;
+			}
+
+			.doc-heading {
+				float: left;
+				margin: 13px 5px;
+
+				img {
+					height: 25px;
+					width: auto;
+				}
+			}
+		}
+
+		#main-content {
+			padding: 20px 0 0 0;
+		}
+
+		.column, .content-column, .portlet-column {
+			display: block !important;
+			width: 100% !important;
+
+			.content-column-content, .portlet-column-content {
+				padding: 15px !important;
+			}
+		}
+
+		.dockbar-ready.lfr-dockbar-pinned {
+			padding-top: 56px;
+		}
+
+		.portlet-dockbar, .responsive-hidden {
+			display: none !important;
+		}
+
+		.responsive-centered {
+			text-align: center !important;
+		}
+
+		.responsive-only {
+			display: block !important;
+		}
+
+		.tab-nav {
+			border-width: 0;
+
+			ul {
+				max-width: 320px;
+				width: 90%;
+			}
+
+			li {
+				margin: 0 5px;
+				width: 46%;
+			}
+		}
+
+		.unit {
+			margin: 0 !important;
+			width: 100% !important;
+		}
+
+		/* ---------- Footer ---------- */
+
+		.bottom-navigation {
+			margin: 0;
+
+			a {
+				border-bottom: 1px solid $border-color;
+				display: block;
+				padding: 10px;
+
+				&:hover {
+					background: #C7C8CA;
+					color: #FFF;
+				}
+			}
+
+			.child-menu {
+				padding: 0;
+				text-align: center;
+				width: 100%;
+			}
+
+			.children-marker {
+				display: none !important;
+			}
+
+			.nav-item {
+				display: block;
+			}
+
+			.root-item {
+				padding: 0;
+				text-align: center;
+			}
+		}
+	}
+}
+
+@media all and (max-width: 480px) {
+	.responsive {
+		.feedback-form {
+			width: 210px;
+		}
+
+		.responsive480-hidden {
+			display: none !important;
+		}
+
+		.social-media-panel {
+			display: none;
+		}
+	}
+}

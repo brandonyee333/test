@@ -1,0 +1,144 @@
+@font-face {
+	font-family: "Avenir Book";
+	src: url(../fonts/Avenir-Book.ttf);
+}
+
+@font-face {
+	font-family: "Avenir Medium";
+	src: url(../fonts/Avenir-Medium.ttf);
+}
+
+html {
+	overflow-x: auto;
+
+	> .lfr-dockbar-pinned:not(.aui-dialog-iframe-popup) {
+		padding-top: 56px;
+	}
+}
+
+body {
+	min-width: 965px;
+
+	&.html-editor, &.portal-popup {
+		min-width: 0;
+	}
+}
+
+body, input, legend, select, textarea {
+	color: $text-color;
+	font: 100 15px/1.5 "Avenir Book", myriad-pro, Arial, Helvetica, sans-serif;
+}
+
+a {
+	color: $blue;
+	cursor: pointer;
+	text-decoration: none;
+
+	&:active, &:focus, &:hover {
+		color: $hover-blue;
+	}
+}
+
+blockquote, h2, h3 {
+	line-height: 1.125;
+	margin: 0 0 0.5625em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-size: 1em;
+	font-weight: 100;
+}
+
+h1 {
+	font-size: 200%;
+	line-height: 1.2;
+	margin: 0 0 0.3em;
+}
+
+h2 {
+	font-size: 150%;
+}
+
+h3 {
+	font-size: 120%;
+}
+
+h4 {
+	font-size: 110%;
+}
+
+input, select, textarea {
+	background-color: #FFF;
+	border: 1px solid $text-color;
+	border-radius: 3px;
+	padding: 5px;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#dockbar {
+	.pin-dockbar, .user-toolbar {
+		display: none;
+	}
+}
+
+#wrapper {
+	min-width: 320px;
+
+	.centered {
+		text-align: center;
+	}
+
+	.default-text {
+		font-size: 15px;
+	}
+}
+
+.navigation {
+	font-size: 16px;
+	list-style: none;
+	margin-left: 10px;
+}
+
+.portlet-msg-error, .portlet-msg-info, .portlet-msg-success {
+	border-radius: 3px;
+	border-style: solid;
+	border-width: 1px;
+	left: 25%;
+	margin: 5px;
+	padding: 5px;
+	right: 25%;
+	text-align: center;
+	z-index: 101;
+}
+
+div.portlet-msg-error, div.portlet-msg-success {
+	height: 22px;
+	left: calc(25vw - -60px);
+	overflow: hidden;
+	position: fixed;
+	right: 25vw;
+	top: 55px;
+	transition: top 1s ease;
+	white-space: nowrap;
+}
+
+.portlet-msg-error {
+	background-color: rgba(255, 221, 221, 0.96);
+	border-color: #F00;
+	color: #D00;
+}
+
+.portlet-msg-info {
+	background-color: rgba(204, 233, 255, 0.96);
+	border-color: #89A;
+	display: inline-block;
+}
+
+.portlet-msg-success {
+	background-color: rgba(204, 255, 204, 0.96);
+	border-color: #8B8;
+}

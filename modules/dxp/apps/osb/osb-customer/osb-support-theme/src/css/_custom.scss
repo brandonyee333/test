@@ -1,6 +1,13 @@
-/* These inject tags are used for dynamically creating imports for themelet styles, you can place them where ever you like in this file. */
+@import "compass";
 
-/* inject:imports */
-/* endinject */
+@import "partials/variables";
 
-/* This file allows you to override default styles in one central location for easier upgrade and maintenance. */
+@import "partials/banner";
+@import "partials/base";
+@import "partials/buttons";
+@import "partials/content";
+@import "partials/extras";
+@import "partials/login";
+@import "partials/footer";
+@import "partials/responsive";
+@import "partials/taglibs";
