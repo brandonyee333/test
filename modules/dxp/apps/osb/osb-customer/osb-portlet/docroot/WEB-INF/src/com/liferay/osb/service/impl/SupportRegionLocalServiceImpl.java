@@ -19,6 +19,7 @@ import com.liferay.osb.exception.RequiredSupportRegionException;
 import com.liferay.osb.exception.SupportRegionNameException;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.service.base.SupportRegionLocalServiceBaseImpl;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.Validator;
@@ -46,6 +47,7 @@ public class SupportRegionLocalServiceImpl
 		SupportRegion supportRegion = supportRegionPersistence.create(
 			supportRegionId);
 
+		supportRegion.setCompanyId(OSBConstants.COMPANY_ID);
 		supportRegion.setUserId(user.getUserId());
 		supportRegion.setUserName(user.getFullName());
 		supportRegion.setCreateDate(now);

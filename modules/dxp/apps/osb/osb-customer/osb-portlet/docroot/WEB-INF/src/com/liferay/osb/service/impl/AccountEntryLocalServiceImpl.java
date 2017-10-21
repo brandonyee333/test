@@ -151,6 +151,7 @@ public class AccountEntryLocalServiceImpl
 		AccountEntry accountEntry = accountEntryPersistence.create(
 			accountEntryId);
 
+		accountEntry.setCompanyId(OSBConstants.COMPANY_ID);
 		accountEntry.setUserId(user.getUserId());
 		accountEntry.setUserName(user.getFullName());
 		accountEntry.setCreateDate(now);

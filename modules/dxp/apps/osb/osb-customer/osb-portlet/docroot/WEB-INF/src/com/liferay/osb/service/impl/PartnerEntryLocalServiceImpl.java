@@ -24,6 +24,7 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.base.PartnerEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -59,6 +60,7 @@ public class PartnerEntryLocalServiceImpl
 		PartnerEntry partnerEntry = partnerEntryPersistence.create(
 			partnerEntryId);
 
+		partnerEntry.setCompanyId(OSBConstants.COMPANY_ID);
 		partnerEntry.setUserId(user.getUserId());
 		partnerEntry.setUserName(user.getFullName());
 		partnerEntry.setCreateDate(now);

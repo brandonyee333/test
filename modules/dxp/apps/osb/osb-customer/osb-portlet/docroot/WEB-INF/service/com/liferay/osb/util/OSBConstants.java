@@ -52,7 +52,7 @@ public class OSBConstants {
 
 	public static long ORGANIZATION_CUSTOMER_DXP_ID = 77080573;
 
-	public static long ORGANIZATION_CUSTOMER_ID = 4821379;
+	public static long ORGANIZATION_CUSTOMER_ID = 1747330;
 
 	public static long ORGANIZATION_CUSTOMER_PORTAL_ID = 77080582;
 
@@ -60,9 +60,9 @@ public class OSBConstants {
 
 	public static long ORGANIZATION_CUSTOMER_SEARCH_STANDARD_ID = 77121201;
 
-	public static long ORGANIZATION_LIFERAY_INC_ID = 21;
+	public static long ORGANIZATION_LIFERAY_INC_ID = 1747318;
 
-	public static long ORGANIZATION_PARTNER_ID = 810654;
+	public static long ORGANIZATION_PARTNER_ID = 1747324;
 
 	public static long ORGANIZATION_TRIAL_ID = 76993481;
 
