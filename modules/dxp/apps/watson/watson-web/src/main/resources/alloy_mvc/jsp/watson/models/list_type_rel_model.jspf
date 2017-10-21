@@ -14,6 +14,8 @@
  */
 --%>
 
+<%@ include file="/alloy_mvc/jsp/watson/models/base/list_type_rel_base_model.jspf" %>
+
 <%!
 public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 
