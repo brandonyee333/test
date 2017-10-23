@@ -14,24 +14,11 @@
  */
 --%>
 
-<%@ page import="com.liferay.alloy.mvc.AlloyException" %><%@
-page import="com.liferay.alloy.mvc.AlloyServiceInvoker" %><%@
-page import="com.liferay.alloy.mvc.BaseAlloyControllerImpl" %><%@
-page import="com.liferay.counter.kernel.service.CounterLocalServiceUtil" %><%@
-page import="com.liferay.portal.kernel.bean.BeanPropertiesUtil" %><%@
-page import="com.liferay.portal.kernel.model.ModelHintsUtil" %><%@
-page import="com.liferay.portal.kernel.util.Validator" %><%@
-page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
-page import="com.liferay.watson.model.WatsonResourceWrapper" %>
-
-<%@ page import="java.util.ArrayList" %><%@
-page import="java.util.List" %>
-
 <%!
 public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 
 	WatsonResourceBaseModel() {
-		super(new com.liferay.watson.model.impl.WatsonResourceImpl());
+		super(new WatsonResourceImpl());
 	}
 
 	WatsonResourceBaseModel(com.liferay.watson.model.WatsonResource watsonResource) {
