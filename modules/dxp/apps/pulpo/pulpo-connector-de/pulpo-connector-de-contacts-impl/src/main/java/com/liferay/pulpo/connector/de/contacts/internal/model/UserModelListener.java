@@ -19,8 +19,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.pulpo.connector.de.contacts.model.ContactsModelListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,11 +31,6 @@ import org.osgi.service.component.annotations.Component;
 public class UserModelListener extends ContactsModelListener<User> {
 
 	@Override
-	public boolean isPrimary() {
-		return true;
-	}
-
-	@Override
 	public void onAfterAddAssociation(
 			Object classPK, String associationClassName,
 			Object associationClassPK)
@@ -46,32 +39,14 @@ public class UserModelListener extends ContactsModelListener<User> {
 
 	@Override
 	public void onBeforeCreate(User user) throws ModelListenerException {
-		JSONArray jsonArray = getFieldValuesJSONArray(
-			user, new ArrayList<String>(getAvailableFields()), null);
+		JSONArray jsonArray = getFieldValuesJSONArray(user, null);
 
 		updateUser(user, jsonArray);
-	}
-
-	@Override
-	protected List<String> getAvailableFields() {
-		return _availableFields;
 	}
 
 	@Override
 	protected List<User> getModels(User user) {
 		return Collections.singletonList(user);
 	}
-
-	@Override
-	protected List<String> getRequiredFields() {
-		return _requiredFields;
-	}
-
-	private static final List<String> _availableFields = Arrays.asList(
-		"emailAddress", "firstName", "googleId", "jobTitle", "languageId",
-		"lastName", "middleName", "openId", "portraitId", "screenName",
-		"status", "timeZoneId");
-	private static final List<String> _requiredFields =
-		Collections.singletonList("emailAddress");
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.pulpo.connector.de.contacts.internal.model;
 
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.Website;
 import com.liferay.pulpo.connector.de.contacts.model.ContactsModelListener;
@@ -27,6 +28,11 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(immediate = true, service = ContactsModelListener.class)
 public class WebsiteModelListener extends ContactsModelListener<Website> {
+
+	@Override
+	public void onAfterCreate(Website model) throws ModelListenerException {
+		onAfterUpdate(model);
+	}
 
 	@Override
 	protected List<Website> getModels(User user) {

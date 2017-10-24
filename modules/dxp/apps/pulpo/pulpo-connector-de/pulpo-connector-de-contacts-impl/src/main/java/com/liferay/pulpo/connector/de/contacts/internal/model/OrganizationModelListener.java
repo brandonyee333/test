@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.pulpo.connector.de.contacts.model.ContactsModelListener;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -31,16 +30,8 @@ public class OrganizationModelListener
 	extends ContactsModelListener<Organization> {
 
 	@Override
-	protected List<String> getAvailableFields() {
-		return _availableFields;
-	}
-
-	@Override
 	protected List<Organization> getModels(User user) throws Exception {
 		return user.getOrganizations();
 	}
-
-	private static final List<String> _availableFields = Arrays.asList(
-		"name", "type");
 
 }

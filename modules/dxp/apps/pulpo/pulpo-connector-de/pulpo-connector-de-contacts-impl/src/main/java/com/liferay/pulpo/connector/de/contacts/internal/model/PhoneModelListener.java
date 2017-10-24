@@ -14,11 +14,11 @@
 
 package com.liferay.pulpo.connector.de.contacts.internal.model;
 
+import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.pulpo.connector.de.contacts.model.ContactsModelListener;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -30,16 +30,13 @@ import org.osgi.service.component.annotations.Component;
 public class PhoneModelListener extends ContactsModelListener<Phone> {
 
 	@Override
-	protected List<String> getAvailableFields() {
-		return _availableFields;
+	public void onAfterCreate(Phone model) throws ModelListenerException {
+		onAfterUpdate(model);
 	}
 
 	@Override
 	protected List<Phone> getModels(User user) {
 		return user.getPhones();
 	}
-
-	private static final List<String> _availableFields = Arrays.asList(
-		"extension", "number", "primary", "typeId");
 
 }
