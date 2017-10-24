@@ -7,6 +7,8 @@
 		<version>7.1.0+</version>
 	</compatibility>
 	<theme id="watson" name="Watson">
-		<template-extension>ftl</template-extension>
+		<settings>
+			<setting configurable="true" key="google-tag-manager-id" value="" />
+		</settings>
 	</theme>
 </look-and-feel>
