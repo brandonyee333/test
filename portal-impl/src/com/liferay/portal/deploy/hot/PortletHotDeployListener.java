@@ -513,6 +513,8 @@ public class PortletHotDeployListener extends BaseHotDeployListener {
 			ServletContext servletContext, Portlet portlet,
 			Set<String> portletIds)
 		throws Exception {
+		
+		portlet.unsetReady();
 
 		portlet.unsetReady();
 
