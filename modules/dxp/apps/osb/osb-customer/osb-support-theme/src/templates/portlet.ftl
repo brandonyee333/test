@@ -1,9 +1,9 @@
 <#assign
 	group = layout.getGroup()
 
+	portlet_back_url = htmlUtil.escapeHREF(portletDisplay.getURLBack())
 	portlet_id = htmlUtil.escapeAttribute(portletDisplay.getId())
 	portlet_title = portletDisplay.getTitle()
-	portlet_back_url = htmlUtil.escapeHREF(portletDisplay.getURLBack())
 />
 
 <section class="portlet" id="portlet_$portlet_id">

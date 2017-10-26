@@ -28,6 +28,7 @@
 								namespace = "_${portlet_id}_"
 
 								portlet_url = portletURLFactory.create(request, portlet_id, themeDisplay.getPlid(), "ACTION_PHASE")
+
 								void = portlet_url.setParameter("javax.portlet.action", "search")
 								void = portlet_url.setWindowState("normal")
 							/>

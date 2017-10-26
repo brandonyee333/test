@@ -6,6 +6,7 @@
 	content_only_urls = stringUtil.split(theme.getSetting("content-only-urls"))
 
 	current_url = request.getAttribute("CURRENT_COMPLETE_URL")
+
 	struts_action = httpUtil.getParameter(current_url, "_58_struts_action", false)
 />
 

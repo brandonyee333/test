@@ -1,13 +1,10 @@
-#mainSearchContent input[type=search]::-webkit-search-cancel-button,
-#mainSearchContent input[type=search]::-webkit-search-decoration,
-#mainSearchContent input[type=search]::-webkit-search-results-button,
-#mainSearchContent input[type=search]::-webkit-search-results-decoration {
-	-webkit-appearance:none;
-}
-
 #mainSearchContent input[type=search] {
-	-webkit-appearance:textfield;
-	-webkit-box-sizing:content-box;
+	-webkit-appearance: textfield;
+	-webkit-box-sizing: content-box;
+
+	&::-webkit-search-cancel-button, &::-webkit-search-decoration, &::-webkit-search-results-button, &::-webkit-search-results-decoration {
+		-webkit-appearance: none;
+	}
 }
 
 .aui-overlay-content.aui-tooltip-content {
@@ -61,14 +58,14 @@
 		max-width: 480px;
 
 		h1 {
-			border-bottom: none;
+			border-bottom-width: 0;
 			display: inline;
 			padding-bottom: 9px;
 			text-align: center;
 		}
 
 		li {
-			border-bottom: none;
+			border-bottom-width: 0;
 			border-top: 1px solid #CCC;
 		}
 

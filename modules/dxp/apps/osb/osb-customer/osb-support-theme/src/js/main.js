@@ -100,7 +100,7 @@ AUI().use(
 						var dataOffset = parseInt(item.attr('data-offset'));
 
 						if (dataOffset) {
-							loadPos = loadPos + dataOffset;
+							loadPos += dataOffset;
 						}
 
 						if (currentScrollPos > loadPos) {
@@ -148,7 +148,7 @@ AUI().use(
 					var topEdgeOffset = topEdge;
 
 					if (dataOffsetTop) {
-						topEdgeOffset = topEdgeOffset - dataOffsetTop;
+						topEdgeOffset -= dataOffsetTop;
 					}
 
 					var bottomEdge = topEdge + item.get('clientHeight');
@@ -156,20 +156,20 @@ AUI().use(
 					var screenBottom = topEdge - winHeight;
 
 					if (dataOffsetBottom) {
-						screenBottom = screenBottom + dataOffsetBottom;
+						screenBottom += dataOffsetBottom;
 					}
 
 					if ((currentScrollPos > topEdgeOffset) && (currentScrollPos <= bottomEdge)) {
 						item.addClass('on-screen-top');
 					}
-					else if (dataRepeatTop == "true") {
+					else if (dataRepeatTop == 'true') {
 						item.removeClass('on-screen-top');
 					}
 
 					if ((currentScrollPos > screenBottom) && (currentScrollPos <= bottomEdge)) {
 						item.addClass('on-screen-bottom');
 					}
-					else if (dataRepeatBottom == "true") {
+					else if (dataRepeatBottom == 'true') {
 						item.removeClass('on-screen-bottom');
 					}
 				}
@@ -190,12 +190,13 @@ AUI().use(
 
 			var targetClass = currentTargetNode.attr('data-target-class');
 
+			var className = 'active';
+
 			if (targetClass) {
-				var className = baseClassName + targetClass;
+				className = targetClass;
 			}
-			else {
-				var className = baseClassName + 'active';
-			}
+
+			className = baseClassName + className;
 
 			var nodes = currentTargetNode.attr('data-target-node');
 
@@ -208,11 +209,13 @@ AUI().use(
 				nodes.push(currentTargetNode);
 			}
 
+			var contentClass = baseClassName + 'content';
+
 			nodes.each(
 				function(node) {
 					var active = false;
 
-					var nodeContent = node.one('.' + baseClassName + 'content');
+					var nodeContent = node.one('.' + contentClass);
 
 					if (!nodeContent) {
 						active = true;
@@ -220,7 +223,7 @@ AUI().use(
 						nodeContent = node;
 					}
 
-					if (event.target.hasClass(baseClassName + 'content') || event.target.ancestor('.' + baseClassName + 'content')) {
+					if (event.target.hasClass(contentClass) || event.target.ancestor('.' + contentClass)) {
 						active = true;
 					}
 
@@ -253,12 +256,13 @@ AUI().use(
 
 			var targetClass = currentTargetNode.attr('data-target-class');
 
+			var className = 'active';
+
 			if (targetClass) {
-				var className = baseClassName + targetClass;
+				className = targetClass;
 			}
-			else {
-				var className = baseClassName + 'active';
-			}
+
+			className = baseClassName + className;
 
 			var nodes = currentTargetNode.attr('data-target-node');
 
@@ -293,14 +297,15 @@ AUI().use(
 
 			var baseClassName = 'class-toggle-';
 
+			var className = 'active';
+
 			var targetClass = currentTargetNode.attr('data-target-class');
 
 			if (targetClass) {
-				var className = baseClassName + targetClass;
+				className = targetClass;
 			}
-			else {
-				var className = baseClassName + 'active';
-			}
+
+			className = baseClassName + className;
 
 			var nodes = currentTargetNode.attr('data-target-node');
 
@@ -329,11 +334,7 @@ AUI().use(
 						transitionDuration = 0.5;
 					}
 
-					var transitionStart = currentTargetNode.getAttribute('data-transition-start');
-
-					if (!transitionStart) {
-						var transitionStart = 0;
-					}
+					var transitionStart = currentTargetNode.getAttribute('data-transition-start') || 0;
 
 					var transitionEnd = currentTargetNode.getAttribute('data-transition-end');
 
@@ -343,14 +344,13 @@ AUI().use(
 
 					var config = [];
 
+					config[transitionProperty] = transitionStart;
+
 					if (node.hasClass(className)) {
 						config[transitionProperty] = transitionEnd;
 					}
-					else {
-						config[transitionProperty] = transitionStart;
-					}
 
-					config["duration"] = transitionDuration;
+					config['duration'] = transitionDuration;
 
 					node.transition(config);
 
@@ -373,13 +373,13 @@ AUI().use(
 			var bannerHeight = A.one('#banner').get('clientHeight');
 
 			if (bannerHeight) {
-				winHeight = winHeight - bannerHeight;
+				winHeight -= bannerHeight;
 			}
 
-			winHeight = winHeight - 75;
+			winHeight -= 75;
 
 			responsiveContentHightNodes.setStyle('max-height', winHeight);
-		}
+		};
 
 		if (!responsiveContentHightNodes.isEmpty()) {
 			A.on('load', setResponsiveContentHeight);

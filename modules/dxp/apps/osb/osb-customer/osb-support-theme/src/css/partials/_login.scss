@@ -145,7 +145,7 @@
 			@include appearance(none);
 			@include border-radius(3px);
 			@include box-sizing(content-box);
-			@include transition(all .25s);
+			@include transition(all 0.25s);
 		}
 
 		input[type='checkbox'] {
@@ -175,7 +175,7 @@
 			pointer-events: none;
 			z-index: 1;
 
-			@include transition(all .25s);
+			@include transition(all 0.25s);
 		}
 
 		.aui-form-validator-message {
@@ -191,7 +191,7 @@
 			top: 10px;
 			width: auto;
 
-			@include transition(top .5s);
+			@include transition(top 0.5s);
 		}
 
 		.aui-form-validator-stack-error {
@@ -269,5 +269,4 @@
 		border-bottom: 1px solid #939598;
 		padding: 15px;
 	}
-
 }
