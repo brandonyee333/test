@@ -49,33 +49,36 @@ AUI().use(
 	function(A) {
 		var WIN = A.getWin();
 
+		var Lang = A.Lang;
+
 		A.all('.animate-scroll').on(
 			'click',
 			function(event) {
 				event.preventDefault();
 
-				var node = event.currentTarget;
+				var currentTarget = event.currentTarget;
 
-				var section = A.one(node.get('hash'));
+				var section = A.one(currentTarget.get('hash'));
 
-				var offset = parseInt(node.attr('data-offset'));
+				if (section) {
+					var offset = Lang.toInt(currentTarget.attr('data-offset'));
+					var scrollTo = Lang.toInt(section.getY());
 
-				var scrollTo = parseInt(section.getY());
-
-				if (offset) {
-					scrollTo -= offset;
-				}
-
-				new A.Anim(
-					{
-						duration: 0.5,
-						easing: 'easeBoth',
-						node: 'win',
-						to: {
-							scroll: [0, scrollTo]
-						}
+					if (offset) {
+						scrollTo -= offset;
 					}
-				).run();
+
+					new A.Anim(
+						{
+							duration: 0.5,
+							easing: 'easeBoth',
+							node: 'win',
+							to: {
+								scroll: [0, scrollTo]
+							}
+						}
+					).run();
+				}
 			}
 		);
 
@@ -85,19 +88,18 @@ AUI().use(
 
 		var lazyLoad = function() {
 			var currentScrollPos = WIN.get('docScrollY');
-
 			var winHeight = WIN.get('innerHeight');
 
-			if (winHeight == undefined) {
+			if (Lang.isUndefined(winHeight)) {
 				winHeight = document.documentElement.clientHeight;
 			}
 
 			lazyLoadNodes.each(
-				function(item, index, collection) {
+				function(item) {
 					if (!item.hasClass('lazy-loaded')) {
 						var loadPos = item.getY() - winHeight;
 
-						var dataOffset = parseInt(item.attr('data-offset'));
+						var dataOffset = Lang.toInt(item.attr('data-offset'));
 
 						if (dataOffset) {
 							loadPos += dataOffset;
@@ -129,17 +131,17 @@ AUI().use(
 
 		var updateOnScreen = function() {
 			var currentScrollPos = WIN.get('docScrollY');
-
 			var winHeight = WIN.get('innerHeight');
 
-			if (winHeight == undefined) {
+			if (Lang.isUndefined(winHeight)) {
 				winHeight = document.documentElement.clientHeight;
 			}
 
 			onScreenHelperNodes.each(
-				function(item, index, collection) {
-					var dataOffsetBottom = parseInt(item.attr('data-offset-bottom'));
-					var dataOffsetTop = parseInt(item.attr('data-offset-top'));
+				function(item) {
+					var dataOffsetBottom = Lang.toInt(item.attr('data-offset-bottom'));
+					var dataOffsetTop = Lang.toInt(item.attr('data-offset-top'));
+
 					var dataRepeatBottom = item.attr('data-repeat-bottom');
 					var dataRepeatTop = item.attr('data-repeat-top');
 
@@ -232,15 +234,14 @@ AUI().use(
 					nodeContent.on(
 						'clickoutside',
 						function(event) {
-							if (!active) {
-								active = true;
+							if (active) {
+								node.removeClass(className);
 
-								return;
+								nodeContent.detach('clickoutside');
 							}
-
-							node.removeClass(className);
-
-							nodeContent.detach('clickoutside');
+							else {
+								active = true;
+							}
 						}
 					);
 				}
@@ -322,39 +323,42 @@ AUI().use(
 				function(node) {
 					node.toggleClass(className);
 
-					if (!currentTargetNode.hasAttribute('data-transition-property')) {
-						return;
+					if (currentTargetNode.hasAttribute('data-transition-property')) {
+						var transitionProperty = currentTargetNode.getAttribute('data-transition-property');
+
+						var transitionDuration = Lang.toInt(currentTargetNode.getAttribute('data-transition-duration'));
+
+						if (!transitionDuration) {
+							transitionDuration = 0.5;
+						}
+
+						var transitionEnd = currentTargetNode.getAttribute('data-transition-end');
+						var transitionStart = currentTargetNode.getAttribute('data-transition-start') || 0;
+
+						if (!transitionEnd) {
+							var content = node.one('.' + baseClassName + 'content');
+
+							if (content) {
+								var clientHeight = content.get('clientHeight');
+
+								transitionEnd = Lang.toInt(clientHeight);
+							}
+						}
+
+						var config = [];
+
+						config[transitionProperty] = transitionStart;
+
+						if (node.hasClass(className)) {
+							config[transitionProperty] = transitionEnd;
+						}
+
+						config['duration'] = transitionDuration;
+
+						node.transition(config);
+
+						node.setStyle(transitionProperty, config[transitionProperty]);
 					}
-
-					var transitionProperty = currentTargetNode.getAttribute('data-transition-property');
-
-					var transitionDuration = parseInt(currentTargetNode.getAttribute('data-transition-duration'));
-
-					if (!transitionDuration) {
-						transitionDuration = 0.5;
-					}
-
-					var transitionStart = currentTargetNode.getAttribute('data-transition-start') || 0;
-
-					var transitionEnd = currentTargetNode.getAttribute('data-transition-end');
-
-					if (!transitionEnd) {
-						transitionEnd = parseInt(node.one('.' + baseClassName + 'content').get('clientHeight'));
-					}
-
-					var config = [];
-
-					config[transitionProperty] = transitionStart;
-
-					if (node.hasClass(className)) {
-						config[transitionProperty] = transitionEnd;
-					}
-
-					config['duration'] = transitionDuration;
-
-					node.transition(config);
-
-					node.setStyle(transitionProperty, config[transitionProperty]);
 				}
 			);
 		};
@@ -366,19 +370,23 @@ AUI().use(
 		var setResponsiveContentHeight = function() {
 			var winHeight = WIN.get('innerHeight');
 
-			if (winHeight == undefined) {
+			if (Lang.isUndefined(winHeight)) {
 				winHeight = document.documentElement.clientHeight;
 			}
 
-			var bannerHeight = A.one('#banner').get('clientHeight');
+			var banner = A.one('#banner');
 
-			if (bannerHeight) {
-				winHeight -= bannerHeight;
+			if (banner) {
+				var bannerHeight = banner.get('clientHeight');
+
+				if (bannerHeight) {
+					winHeight -= bannerHeight;
+				}
+
+				winHeight -= 75;
+
+				responsiveContentHightNodes.setStyle('max-height', winHeight);
 			}
-
-			winHeight -= 75;
-
-			responsiveContentHightNodes.setStyle('max-height', winHeight);
 		};
 
 		if (!responsiveContentHightNodes.isEmpty()) {
