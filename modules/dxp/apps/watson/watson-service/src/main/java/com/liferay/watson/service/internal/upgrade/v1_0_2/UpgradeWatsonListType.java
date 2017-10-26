@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.watson.web.internal.upgrade.v1_0_1;
+package com.liferay.watson.service.internal.upgrade.v1_0_2;
 
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Steven Smith
@@ -52,64 +53,72 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 			watsonListTypeElement.attributeValue("watsonListTypeId"));
 
 		WatsonListType watsonListType =
-			WatsonListTypeLocalServiceUtil.createWatsonListType(
+			WatsonListTypeLocalServiceUtil.fetchWatsonListType(
 				watsonListTypeId);
 
-		watsonListType.setCompanyId(companyId);
+		if (watsonListType == null) {
+			watsonListType =
+				WatsonListTypeLocalServiceUtil.createWatsonListType(
+					watsonListTypeId);
 
-		User defaultUser = UserLocalServiceUtil.getDefaultUser(companyId);
+			watsonListType.setCompanyId(companyId);
 
-		watsonListType.setUserId(defaultUser.getUserId());
-		watsonListType.setUserName(defaultUser.getFullName());
+			User defaultUser = UserLocalServiceUtil.getDefaultUser(companyId);
 
-		watsonListType.setCreateDate(new Date());
-		watsonListType.setModifiedDate(watsonListType.getCreateDate());
-		watsonListType.setParentWatsonListTypeId(parentWatsonListTypeId);
+			watsonListType.setUserId(defaultUser.getUserId());
+			watsonListType.setUserName(defaultUser.getFullName());
 
-		List<Element> nameElements = watsonListTypeElement.elements("name");
+			watsonListType.setCreateDate(new Date());
+			watsonListType.setModifiedDate(watsonListType.getCreateDate());
+			watsonListType.setParentWatsonListTypeId(parentWatsonListTypeId);
 
-		for (Element nameElement : nameElements) {
-			Locale nameLocale = LocaleUtil.fromLanguageId(
-				nameElement.attributeValue("locale"));
+			List<Element> nameElements = watsonListTypeElement.elements("name");
 
-			watsonListType.setName(nameElement.getText(), nameLocale);
-		}
+			for (Element nameElement : nameElements) {
+				Locale nameLocale = LocaleUtil.fromLanguageId(
+					nameElement.attributeValue("locale"));
 
-		String type = watsonListTypeElement.attributeValue("type");
+				watsonListType.setName(nameElement.getText(), nameLocale);
+			}
 
-		watsonListType.setType(type);
+			String type = watsonListTypeElement.attributeValue("type");
 
-		watsonListType.setStatus(WorkflowConstants.STATUS_APPROVED);
+			watsonListType.setType(type);
 
-		watsonListType = WatsonListTypeLocalServiceUtil.updateWatsonListType(
-			watsonListType);
+			watsonListType.setStatus(WorkflowConstants.STATUS_APPROVED);
 
-		List<Element> childWatsonListTypeElements =
-			watsonListTypeElement.elements("watsonListType");
+			watsonListType =
+				WatsonListTypeLocalServiceUtil.updateWatsonListType(
+					watsonListType);
 
-		for (Element childWatsonListTypeElement : childWatsonListTypeElements) {
-			addWatsonListType(
-				childWatsonListTypeElement, companyId,
-				watsonListType.getWatsonListTypeId());
+			List<Element> childWatsonListTypeElements =
+				watsonListTypeElement.elements("watsonListType");
+
+			for (Element childWatsonListTypeElement :
+					childWatsonListTypeElements) {
+
+				addWatsonListType(
+					childWatsonListTypeElement, companyId,
+					watsonListType.getWatsonListTypeId());
+			}
 		}
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		ClassLoader classLoader = WatsonListType.class.getClassLoader();
-
 		long companyId = PortalUtil.getDefaultCompanyId();
 
-		importDefaultData(classLoader, companyId);
+		importDefaultData(companyId);
 
 		removeOldWatsonListTypes();
 	}
 
-	protected void importDefaultData(ClassLoader classLoader, long companyId)
-		throws Exception {
+	protected void importDefaultData(long companyId) throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
 
-		URL url = _bundle.getResource(
-			"com/liferay/watson/web/upgrade/v1_0_1/dependencies/default.xml");
+		URL url = bundle.getResource(
+			"com/liferay/watson/service/internal/upgrade/v1_0_2/dependencies" +
+				"/default.xml");
 
 		String xml = new String(FileUtil.getBytes(url.openStream()));
 
@@ -156,7 +165,5 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 			WatsonIncidentLocalServiceUtil.updateWatsonIncident(watsonIncident);
 		}
 	}
-
-	private Bundle _bundle;
 
 }
