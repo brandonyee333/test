@@ -13,24 +13,25 @@ class RichTextEditor extends JSXComponent {
 		);
 	}
 
-	handleOnChange(newValue) {
+	handleOnChange(newValue, delta, source) {
 		const {disabled, inputId, onChange} = this.props;
 
 		const emptyEditorValue = newValue === '<p><br></p>';
 
-		if (!disabled && onChange && !emptyEditorValue) {
+		if (!disabled && onChange && !emptyEditorValue && source === 'user') {
 			onChange(newValue, inputId);
 		}
 	}
 
 	render() {
-		const {autoFocus = true, disabled, value} = this.props;
+		const {autoFocus = false, disabled, value} = this.props;
 
 		const {formats, modules} = this.state;
 
 		return (
 			<div autoFocus={autoFocus} class="rich-editor-wrapper">
 				<MetalQuill
+					bounds={this.element}
 					className="watson-input rich-editor"
 					formats={formats}
 					modules={modules}

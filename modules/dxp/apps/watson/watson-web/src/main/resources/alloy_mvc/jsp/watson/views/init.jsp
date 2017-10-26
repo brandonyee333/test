@@ -150,6 +150,9 @@ expiredSessionPortletURL.setWindowState(WindowState.MAXIMIZED);
 				},
 				${WatsonListTypeConstants.RESOURCE_TYPE_OTHER}: {
 					type: '.doc, .docx, .gif, .jpg, .odb, .odf, .odg, .odp, .ods, .odt, .pdf, .png, .ppt, .pptx, .rtf, .tar, .tiff, .tgz, .txt, .xls, .xlsx, .zip'
+				},
+				${WatsonListTypeConstants.RESOURCE_TYPE_COURT_DOCUMENT}: {
+					type: '.doc, .docx, .gif, .jpg, .odb, .odf, .odg, .odp, .ods, .odt, .pdf, .png, .ppt, .pptx, .rtf, .tar, .tiff, .tgz, .txt, .xls, .xlsx, .zip'
 				}
 			},
 			maxFileCount: ${25},

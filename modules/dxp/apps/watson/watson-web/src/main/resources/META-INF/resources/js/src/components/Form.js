@@ -248,6 +248,7 @@ class Form extends JSXComponent {
 		const {
 			action,
 			additionalTopBarButtons,
+			autoSaved,
 			button,
 			buttonLabel = Liferay.Language.get('save'),
 			cancelMethod,
@@ -336,7 +337,7 @@ class Form extends JSXComponent {
 			message = sub(Liferay.Language.get('x-errors-on-form'), formErrorsCount);
 			status = 'failure';
 		}
-		else if (!message && originalFormData && Object.keys(originalFormData).length && changedFieldsLength) {
+		else if ((!message || autoSaved) && originalFormData && Object.keys(originalFormData).length && changedFieldsLength) {
 			message = sub(Liferay.Language.get('x-unsaved-changes'), changedFieldsLength);
 		}
 		else if (!message && originalFormData && formDataReset && !changedFieldsLength) {
