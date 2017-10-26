@@ -14,6 +14,7 @@ var plugins = [
 
 if (process.env.NODE_ENV === 'production') {
 	plugins.push(
+		new webpack.optimize.ModuleConcatenationPlugin(),
 		new webpack.optimize.OccurrenceOrderPlugin(),
 		new webpack.optimize.UglifyJsPlugin(
 			{
@@ -52,7 +53,7 @@ module.exports = {
 		alias: {
 			cropperjs: 'cropperjs/dist/cropper.min',
 			quill: 'quill/dist/quill.min',
-			vis: 'vis/dist/vis.min'
+			vis: 'vis/dist/vis-network.min.js'
 		}
 	}
 };
