@@ -14,7 +14,6 @@ var plugins = [
 
 if (process.env.NODE_ENV === 'production') {
 	plugins.push(
-		new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(th)$/),
 		new webpack.optimize.OccurrenceOrderPlugin(),
 		new webpack.optimize.UglifyJsPlugin(
 			{
