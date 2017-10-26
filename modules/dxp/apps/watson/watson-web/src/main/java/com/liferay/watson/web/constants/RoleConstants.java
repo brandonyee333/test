@@ -22,6 +22,8 @@ public class RoleConstants
 
 	public static final String ADMIN = "Watson Admin";
 
+	public static final String CITIZENSHIP = "Watson Citizenship";
+
 	public static final String MANAGER = "Watson Manager";
 
 	public static final String STAFF = "Watson Staff";

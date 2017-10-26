@@ -20,10 +20,11 @@ public static class WatsonUtil {
 	public static JSONObject getCompositeUser(User user) throws Exception {
 		JSONObject watsonUserJSONObject = JSONFactoryUtil.createJSONObject();
 
+		watsonUserJSONObject.put("citizenshipRole", WatsonPermission.check(user, RoleConstants.CITIZENSHIP));
 		watsonUserJSONObject.put("languageId", user.getLanguageId());
-		watsonUserJSONObject.put("portalAdmin", WatsonPermission.hasPermission(user, RoleConstants.ADMINISTRATOR));
-		watsonUserJSONObject.put("translator", WatsonPermission.hasPermission(user, RoleConstants.TRANSLATOR));
-		watsonUserJSONObject.put("watsonAdmin", WatsonPermission.hasPermission(user, RoleConstants.ADMIN));
+		watsonUserJSONObject.put("portalAdminRole", WatsonPermission.check(user, RoleConstants.ADMINISTRATOR));
+		watsonUserJSONObject.put("translatorRole", WatsonPermission.check(user, RoleConstants.TRANSLATOR));
+		watsonUserJSONObject.put("watsonAdminRole", WatsonPermission.check(user, RoleConstants.ADMIN));
 
 		return watsonUserJSONObject;
 	}
