@@ -19,6 +19,26 @@
 <%!
 public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 
+	WatsonListTypeRel() {
+		super(new com.liferay.watson.model.impl.WatsonListTypeRelImpl());
+	}
+
+	WatsonListTypeRel(com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
+		super(watsonListTypeRel);
+	}
+
+	WatsonListTypeRel(WatsonListTypeRel watsonListTypeRel) {
+		super(watsonListTypeRel);
+	}
+
+	WatsonListTypeRel(WatsonListTypeRelBaseModel watsonListTypeRel) {
+		super(watsonListTypeRel);
+	}
+
+	public WatsonListTypeRel copy(HttpServletRequest request) throws Exception {
+		return copy(request, this);
+	}
+
 	public static WatsonListTypeRel add(HttpServletRequest request, AuditedModel ownerModel, Object... properties) throws Exception {
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(ownerModel.getModelClass());
 
@@ -344,26 +364,6 @@ public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 		}
 
 		deleteMissing(watsonModel, watsonListTypeRelType, watsonListTypeRelIds);
-	}
-
-	WatsonListTypeRel() {
-		super(new com.liferay.watson.model.impl.WatsonListTypeRelImpl());
-	}
-
-	WatsonListTypeRel(com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
-		super(watsonListTypeRel);
-	}
-
-	WatsonListTypeRel(WatsonListTypeRel watsonListTypeRel) {
-		super(watsonListTypeRel);
-	}
-
-	WatsonListTypeRel(WatsonListTypeRelBaseModel watsonListTypeRel) {
-		super(watsonListTypeRel);
-	}
-
-	public WatsonListTypeRel copy(HttpServletRequest request) throws Exception {
-		return copy(request, this);
 	}
 
 	public WatsonListTypeRel setFields(String watsonListTypeRelType, Object... properties) throws Exception {

@@ -239,11 +239,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 
 		watsonActivity.setNarrative(narrative);
 
-		List<WatsonListType> watsonListTypes = WatsonListType.query("type", WatsonActivity.getBaseModelClass().getName().concat(".type"));
-
-		WatsonListType watsonListType = watsonListTypes.get(0);
-
-		watsonActivity.setTypeWatsonListTypeId(watsonListType.getWatsonListTypeId());
+		watsonActivity.setTypeWatsonListTypeId(WatsonListType.ACTIVITY_TYPE_INITIAL_REPORT);
 
 		watsonActivity = add(watsonActivity);
 

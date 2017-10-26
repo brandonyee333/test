@@ -64,6 +64,7 @@ public class AlloyLanguageUtil extends LanguageUtil {
 <c:set value="<%= ConstantsBeanFactoryUtil.getConstantsBean(PropsKeys.class) %>" var="PropsKeys" />
 <c:set value="<%= ConstantsBeanFactoryUtil.getConstantsBean(WatsonHistory.class) %>" var="WatsonHistoryConstants" />
 <c:set value="<%= ConstantsBeanFactoryUtil.getConstantsBean(WatsonIncident.class) %>" var="WatsonIncidentConstants" />
+<c:set value="<%= ConstantsBeanFactoryUtil.getConstantsBean(WatsonListType.class) %>" var="WatsonListTypeConstants" />
 
 <c:set value="<%= new ClassNameLocalServiceUtil() %>" var="ClassNameLocalService" />
 <c:set value="<%= new CountryServiceUtil() %>" var="CountryServiceUtil" />
@@ -135,19 +136,19 @@ expiredSessionPortletURL.setWindowState(WindowState.MAXIMIZED);
 		otherLanguageId: otherLanguageId,
 		uploadSettings: {
 			acceptedTypes: {
-				9557: {
+				${WatsonListTypeConstants.RESOURCE_TYPE_EVIDENCE}: {
 					type: '.doc, .docx, .gif, .jpg, .odb, .odf, .odg, .odp, .ods, .odt, .pdf, .png, .ppt, .pptx, .rtf, .tar, .tiff, .tgz, .txt, .xls, .xlsx, .zip'
 				},
-				9558: {
+				${WatsonListTypeConstants.RESOURCE_TYPE_AUDIO}: {
 					type: 'audio/*'
 				},
-				9559: {
+				${WatsonListTypeConstants.RESOURCE_TYPE_VIDEO}: {
 					type: 'video/*'
 				},
-				9560: {
+				${WatsonListTypeConstants.RESOURCE_TYPE_PHOTO}: {
 					type: 'image/*'
 				},
-				9561: {
+				${WatsonListTypeConstants.RESOURCE_TYPE_OTHER}: {
 					type: '.doc, .docx, .gif, .jpg, .odb, .odf, .odg, .odp, .ods, .odt, .pdf, .png, .ppt, .pptx, .rtf, .tar, .tiff, .tgz, .txt, .xls, .xlsx, .zip'
 				}
 			},

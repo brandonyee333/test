@@ -64,7 +64,7 @@ public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 
 		watsonRelationship.setFields(request, properties);
 
-		watsonRelationship.setTypeWatsonListTypeId(10479);
+		watsonRelationship.setTypeWatsonListTypeId(WatsonListType.ACTIVITY_RESOURCE_RELATIONSHIP_TYPE);
 
 		return watsonRelationship;
 	}

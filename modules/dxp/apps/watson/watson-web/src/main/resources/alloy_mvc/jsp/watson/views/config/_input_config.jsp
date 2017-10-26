@@ -20,7 +20,7 @@
 			activities: {
 				inputs: {
 					activityResource: {
-						dependentKey: '10476',
+						dependentKey: '${WatsonListTypeConstants.ACTIVITY_TYPE_COURT_PROCEEDING}',
 						filterable: ${false},
 						inputType: 'MICRO_FORM',
 						invertHidden: ${true},
@@ -96,7 +96,7 @@
 						]
 					},
 					subtypeWatsonListTypeId: {
-						dependentKey: '10476',
+						dependentKey: '${WatsonListTypeConstants.ACTIVITY_TYPE_COURT_PROCEEDING}',
 						filterable: ${true},
 						inputType: 'SELECT_INPUT',
 						invertHidden: ${true},
@@ -313,7 +313,7 @@
 					},
 					lastSeenDate: {
 						controlledInputs: [],
-						dependentKey: '9367',
+						dependentKey: '${WatsonListTypeConstants.ADDRESS_TYPE_LAST_SEEN}',
 						filterable: ${false},
 						htmlType: 'date',
 						invertHidden: ${true},
@@ -671,7 +671,7 @@
 				inputs: {
 					audienceKey: {
 						controlledInputs: [],
-						dependentKey: '10457',
+						dependentKey: '${WatsonListTypeConstants.INCIDENT_TYPE_PREVENTION_OUTREACH}',
 						filterable: ${false},
 						htmlType: 'input',
 						invertHidden: ${true},
@@ -1022,7 +1022,7 @@
 						controlledInputs: [
 							'dateAccepted'
 						],
-						dependentKey: '9500',
+						dependentKey: '${WatsonListTypeConstants.PERSON_TYPE_VICTIM}',
 						filterable: ${false},
 						htmlType: 'checkbox',
 						invertHidden: ${true},
@@ -1195,7 +1195,7 @@
 						label: '${AlloyLanguageUtil.formatUnicode("ethnicity")}',
 						listTypeValue: '${WatsonPerson.modelClassName.concat(".ethnicityRegion")}',
 						options: {
-							<c:set value='${WatsonListType.fetch(10475)}' var="ethnicityWatsonListTypeDefault" />
+							<c:set value="${WatsonListType.fetch(WatsonListTypeConstants.PERSON_ETHNICITY_OTHER)}" var="ethnicityWatsonListTypeDefault" />
 
 							${ethnicityWatsonListTypeDefault.watsonListTypeId}: {
 								label: '${ethnicityWatsonListTypeDefault.getName(locale)}',
@@ -1361,7 +1361,7 @@
 						controlledInputs: [
 							'dateRescued'
 						],
-						dependentKey: '9500',
+						dependentKey: '${WatsonListTypeConstants.PERSON_TYPE_VICTIM}',
 						filterable: ${false},
 						htmlType: 'checkbox',
 						invertHidden: ${true},

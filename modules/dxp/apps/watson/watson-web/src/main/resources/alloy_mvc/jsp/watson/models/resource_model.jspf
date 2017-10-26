@@ -44,7 +44,7 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 
 		watsonResource.setFields(request, properties);
 
-		watsonResource.setTypeWatsonListTypeId(10478);
+		watsonResource.setTypeWatsonListTypeId(WatsonListType.RESOURCE_TYPE_COURT_DOCUMENT);
 
 		watsonResource.update();
 

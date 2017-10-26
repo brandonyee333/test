@@ -35,6 +35,43 @@ public static class WatsonListType extends WatsonListTypeBaseModel {
 		super(watsonListType);
 	}
 
+	public static final long ACTIVITY_RESOURCE_RELATIONSHIP_TYPE = 10480;
+
+	public static final long ACTIVITY_TYPE_COURT_PROCEEDING = 10476;
+
+	public static final long ACTIVITY_TYPE_INITIAL_REPORT = 1;
+
+	public static final long ADDRESS_TYPE_LAST_SEEN = 9367;
+
+	public static final long INCIDENT_TYPE_CITIZENSHIP = 10481;
+
+	public static final long INCIDENT_TYPE_PREVENTION_OUTREACH = 10457;
+
+	public static final long PERSON_ETHNICITY_OTHER = 10475;
+
+	public static final long PERSON_TYPE_VICTIM = 9500;
+
+	public static final long RESOURCE_TYPE_AUDIO = 9558;
+
+	public static final long RESOURCE_TYPE_COURT_DOCUMENT = 10479;
+
+	public static final long RESOURCE_TYPE_EVIDENCE = 9557;
+
+	public static final long RESOURCE_TYPE_OTHER = 9561;
+
+	public static final long RESOURCE_TYPE_PHOTO = 9560;
+
+	public static final long RESOURCE_TYPE_VIDEO = 9559;
+
+	public static final long[] WATSON_LIST_TYPE_CONSTANTS = {
+		ACTIVITY_RESOURCE_RELATIONSHIP_TYPE, ACTIVITY_TYPE_COURT_PROCEEDING,
+		ACTIVITY_TYPE_INITIAL_REPORT, ADDRESS_TYPE_LAST_SEEN,
+		INCIDENT_TYPE_CITIZENSHIP, INCIDENT_TYPE_PREVENTION_OUTREACH, PERSON_ETHNICITY_OTHER,
+		PERSON_TYPE_VICTIM, RESOURCE_TYPE_AUDIO, RESOURCE_TYPE_COURT_DOCUMENT,
+		RESOURCE_TYPE_EVIDENCE, RESOURCE_TYPE_OTHER, RESOURCE_TYPE_PHOTO,
+		RESOURCE_TYPE_VIDEO
+	};
+
 	public static WatsonListType fetch(long watsonListTypeId) throws Exception {
 		WatsonListType watsonListType = null;
 
@@ -56,14 +93,14 @@ public static class WatsonListType extends WatsonListTypeBaseModel {
 	private static JSONObject getAsJSONDataArray(List<WatsonListType> watsonListTypes, long count) throws Exception {
 		JSONObject returnJSONObject = JSONFactoryUtil.createJSONObject();
 
-		JSONObject watsonListTypesJSONOject = JSONFactoryUtil.createJSONObject();
+		JSONObject watsonListTypesJSONObject = JSONFactoryUtil.createJSONObject();
 
 		for (WatsonListType watsonListType : watsonListTypes) {
-			watsonListTypesJSONOject.put(String.valueOf(watsonListType.getWatsonListTypeId()), getAsJSONObject(watsonListType));
+			watsonListTypesJSONObject.put(String.valueOf(watsonListType.getWatsonListTypeId()), getAsJSONObject(watsonListType));
 		}
 
 		returnJSONObject.put("count", count);
-		returnJSONObject.put("items", watsonListTypesJSONOject);
+		returnJSONObject.put("items", watsonListTypesJSONObject);
 
 		return returnJSONObject;
 	}
