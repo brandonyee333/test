@@ -65,6 +65,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		long watsonIncidentId = ParamUtil.getLong(request, "id");
 
+		if (!WatsonPermission.check(user, watsonIncidentId)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
+
 		List<WatsonRelationship> watsonRelationships = WatsonRelationship.getIncidentRelationships(watsonIncidentId);
 
 		JSONObject watsonRelationshipsJSONObject = JSONFactoryUtil.createJSONObject();
@@ -83,6 +87,11 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		long watsonIncidentId = ParamUtil.getLong(request, "watsonIncidentId");
+
+		if (!WatsonPermission.check(user, watsonIncidentId)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
+
 		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
 		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
 		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
@@ -99,7 +108,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		long watsonIncidentId = ParamUtil.getLong(request, "watsonIncidentId");
 
-		if (WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonIncidentId))) {
+		if (!WatsonPermission.check(user, watsonIncidentId) || WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonIncidentId))) {
 			this.edit();
 
 			return;

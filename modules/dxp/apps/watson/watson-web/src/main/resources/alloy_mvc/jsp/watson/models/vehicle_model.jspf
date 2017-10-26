@@ -390,6 +390,28 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 		return update(this);
 	}
 
+	public static List<WatsonVehicle> getWatsonVehiclesByWatsonIncidentIds(List<Long> watsonIncidentIds, int start, int end) throws Exception {
+		DynamicQuery watsonVehiclesDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery();
+
+		Property watsonIncidentIdsProperty = PropertyFactoryUtil.forName("watsonIncidentId");
+
+		watsonVehiclesDynamicQuery.add(watsonIncidentIdsProperty.in(watsonIncidentIds));
+
+		return getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(watsonVehiclesDynamicQuery, start, end));
+	}
+
+	public static List<WatsonVehicle> filterVehicles(List<WatsonVehicle> watsonVehicles, User user) throws Exception {
+		List<WatsonVehicle> returnWatsonVehicles = ListUtil.copy(watsonVehicles);
+
+		for (WatsonVehicle watsonVehicle : watsonVehicles) {
+			if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId())) {
+				returnWatsonVehicles.remove(watsonVehicle);
+			}
+		}
+
+		return returnWatsonVehicles;
+	}
+
 	protected HashMap<String, String> errors = new HashMap<>();
 }
 %>

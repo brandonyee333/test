@@ -82,6 +82,11 @@
 			}
 
 			long watsonIncidentId = ParamUtil.getLong(request, "id");
+
+			if (!WatsonPermission.check(user, watsonIncidentId)) {
+				respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+			}
+
 			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
 			int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
 			int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);

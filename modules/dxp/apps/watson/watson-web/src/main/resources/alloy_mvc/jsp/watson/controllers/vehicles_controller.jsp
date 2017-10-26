@@ -33,6 +33,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonVehicle watsonVehicle = WatsonVehicle.create(request);
 
+		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId())) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
+
 		if (!watsonVehicle.isValid(null)) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -67,6 +71,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonVehicle watsonVehicle = WatsonVehicle.fetch(watsonVehicleId);
 
+		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId())) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
+
 		watsonVehicle.delete();
 
 		WatsonRelationship.clearWatsonRelationships(watsonVehicle.getWatsonIncidentId(), watsonVehicleId);
@@ -84,6 +92,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		long watsonVehicleId = ParamUtil.getLong(request, "id");
 
 		WatsonVehicle watsonVehicle = WatsonVehicle.fetch(watsonVehicleId);
+
+		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId())) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
 
 		respondWith(WatsonVehicle.getAsJSONObject(watsonVehicle));
 	}
@@ -129,7 +141,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonPermission.hasPermission(user, RoleConstants.TRANSLATOR)) {
+		if (WatsonPermission.check(user, RoleConstants.TRANSLATOR)) {
 			long watsonVehicleId = ParamUtil.getLong(request, "id");
 
 			WatsonVehicle watsonVehicle = WatsonVehicle.fetch(watsonVehicleId);
@@ -171,7 +183,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
 			String sort = ParamUtil.getString(request, "sortBy", null);
 
-			watsonVehicles = WatsonIncident.getWatsonVehicles(watsonIncidentId, includeInactive, sort, start, end);
+			watsonVehicles = WatsonIncident.getWatsonVehicles(watsonIncidentId, includeInactive, sort, start, end, user);
 
 			watsonVehiclesCount = WatsonIncident.getWatsonVehiclesCount(watsonIncidentId);
 		}
@@ -236,7 +248,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonVehicle watsonVehicle = WatsonVehicle.fetch(watsonVehicleId);
 
-		if (WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonVehicle.getWatsonIncidentId()))) {
+		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId()) || WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonVehicle.getWatsonIncidentId()))) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), WatsonVehicle.getAsJSONObject(watsonVehicle));
 
 			return;
@@ -280,7 +292,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonPermission.hasPermission(user, RoleConstants.TRANSLATOR)) {
+		if (WatsonPermission.check(user, RoleConstants.TRANSLATOR)) {
 			long watsonVehicleId = ParamUtil.getLong(request, "id");
 
 			WatsonVehicle watsonVehicle = WatsonVehicle.fetch(watsonVehicleId);
@@ -307,6 +319,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		long watsonVehicleId = ParamUtil.getLong(request, "id");
 
 		WatsonVehicle watsonVehicle = WatsonVehicle.fetch(watsonVehicleId);
+
+		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId())) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
 
 		respondWith(WatsonVehicle.getAsJSONObject(watsonVehicle));
 	}

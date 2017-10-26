@@ -33,6 +33,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonIncident watsonIncident = WatsonIncident.create(request);
 
+		if (!WatsonPermission.check(user, watsonIncident)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
+
 		long[] natureWatsonListTypeIdLongs = ParamUtil.getLongValues(request, "natureWatsonListType");
 
 		List<Long> natureWatsonListTypeIds = new ArrayList<>();
@@ -101,6 +105,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
 
+		if (!WatsonPermission.check(user, watsonIncident)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
+
 		WatsonIncidentRel.clear(watsonIncident);
 
 		WatsonListTypeRel.clear(watsonIncident);
@@ -124,6 +132,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		long watsonIncidentId = ParamUtil.getLong(request, "id");
 
 		WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
+
+		if (!WatsonPermission.check(user, watsonIncident)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
 
 		respondWith(WatsonIncident.getAsJSONObject(watsonIncident));
 	}
@@ -188,6 +200,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
+		if (!WatsonPermission.check(user, RoleConstants.STAFF)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
+
 		String actionType = ParamUtil.getString(request, "actionType");
 
 		if (actionType.equals("report")) {
@@ -234,7 +250,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonPermission.hasPermission(user, RoleConstants.TRANSLATOR)) {
+		if (WatsonPermission.check(user, RoleConstants.TRANSLATOR)) {
 			long watsonIncidentId = ParamUtil.getLong(request, "id");
 
 			WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
@@ -256,13 +272,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		boolean hasAdminRole = false;
-
-		if (Validator.isNotNull(user)) {
-			hasAdminRole = RoleLocalServiceUtil.hasUserRole(user.getUserId(), user.getCompanyId(), RoleConstants.ADMINISTRATOR, true);
-		}
-
-		if (hasAdminRole) {
+		if (WatsonPermission.check(user, RoleConstants.ADMINISTRATOR)) {
 			UploadPortletRequest uploadPortletRequest = PortalUtil.getUploadPortletRequest(actionRequest);
 
 			File file = uploadPortletRequest.getFile("file");
@@ -292,17 +302,26 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
 		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
 
-		List<WatsonIncident> watsonIncidents = WatsonIncident.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
+		List<WatsonIncident> watsonIncidents = null;
 
-		String actionType = ParamUtil.getString(request, "actionType");
+		if (WatsonPermission.check(user, RoleConstants.CITIZENSHIP)) {
+			watsonIncidents = WatsonIncident.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_CITIZENSHIP);
 
-		if ((start == 0) && actionType.equals("relate")) {
-			long watsonIncidentId = ParamUtil.getLong(request, "id", 0);
-
-			watsonIncidents.add(WatsonIncident.fetch(watsonIncidentId));
+			respondWith(WatsonIncident.getAsJSONDataArray(watsonIncidents, WatsonIncident.count("status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_CITIZENSHIP)));
 		}
+		else {
+			watsonIncidents = WatsonIncident.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
 
-		respondWith(WatsonIncident.getAsJSONDataArray(watsonIncidents, WatsonIncident.count("status", WorkflowConstants.STATUS_APPROVED)));
+			String actionType = ParamUtil.getString(request, "actionType");
+
+			if ((start == 0) && actionType.equals("relate")) {
+				long watsonIncidentId = ParamUtil.getLong(request, "id", 0);
+
+				watsonIncidents.add(WatsonIncident.fetch(watsonIncidentId));
+			}
+
+			respondWith(WatsonIncident.getAsJSONDataArray(watsonIncidents, WatsonIncident.count("status", WorkflowConstants.STATUS_APPROVED)));
+		}
 	}
 
 	public void refreshSubModel() throws Exception {
@@ -363,7 +382,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass);
 
-		respondWith(WatsonIncident.getAsJSONDataArray(_doSearch(searchContext), getTotalHits(searchContext)));
+		respondWith(WatsonIncident.getAsJSONDataArray(WatsonIncident.filterIncidents(_doSearch(searchContext), user), getTotalHits(searchContext)));
 	}
 
 	public void update() throws Exception {
@@ -375,7 +394,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
 
-		if (WatsonIncident.hasDisabled(user.getUserId(), watsonIncident.getIncidentStatus())) {
+		if (!WatsonPermission.check(user, watsonIncident) || WatsonIncident.hasDisabled(user.getUserId(), watsonIncident.getIncidentStatus())) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), WatsonIncident.getAsJSONObject(watsonIncident));
 
 			return;
@@ -437,7 +456,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonPermission.hasPermission(user, RoleConstants.TRANSLATOR)) {
+		if (WatsonPermission.check(user, RoleConstants.TRANSLATOR)) {
 			long watsonIncidentId = ParamUtil.getLong(request, "id");
 
 			WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
@@ -464,6 +483,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		long watsonIncidentId = ParamUtil.getLong(request, "id");
 
 		WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
+
+		if (!WatsonPermission.check(user, watsonIncident)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
 
 		respondWith(WatsonIncident.getAsJSONObject(watsonIncident));
 	}

@@ -485,7 +485,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 
 		List<WatsonListTypeRel> names = getNames(getWatsonPersonId());
 
-		if (names.size() > 0) {
+		if (!names.isEmpty()) {
 			for (WatsonListTypeRel name : names) {
 				if (name.getPrimary()) {
 					return name.getValue();
@@ -507,12 +507,12 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		pushError(validateWatsonPersonEthnicity(getEthnicityWatsonListTypeId()));
 		pushError(validateWatsonPersonEyes(getEyesWatsonListTypeId()));
 		pushError(validateWatsonPersonHair(getHairWatsonListTypeId()));
-		pushError(validateWatsonPersonType(getTypeWatsonListTypeId()));
 		pushError(validateWatsonPersonNames(nameWatsonListTypeRels));
 		pushError(validateWatsonPersonPhoneNumbers(phoneNumberWatsonListTypeRels));
+		pushError(validateWatsonPersonRelationships(watsonRelationships));
 		pushError(validateWatsonPersonSocialMediaAccounts(socialMediaAccountWatsonListTypeRels));
 		pushError(validateWatsonPersonSex(getSexWatsonListTypeId()));
-		pushError(validateWatsonPersonRelationships(watsonRelationships));
+		pushError(validateWatsonPersonType(getTypeWatsonListTypeId()));
 
 		return errors.isEmpty();
 	}
@@ -603,6 +603,28 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		}
 
 		return unrelatedWatsonPeople;
+	}
+
+	public static List<WatsonPerson> getWatsonPeopleByWatsonIncidentIds(List<Long> watsonIncidentIds, int start, int end) throws Exception {
+		DynamicQuery watsonPeopleDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery();
+
+		Property watsonIncidentIdsProperty = PropertyFactoryUtil.forName("watsonIncidentId");
+
+		watsonPeopleDynamicQuery.add(watsonIncidentIdsProperty.in(watsonIncidentIds));
+
+		return getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(watsonPeopleDynamicQuery, start, end));
+	}
+
+	public static List<WatsonPerson> filterPeople(List<WatsonPerson> watsonPeople, User user) throws Exception {
+		List<WatsonPerson> returnWatsonPeople = ListUtil.copy(watsonPeople);
+
+		for (WatsonPerson watsonPerson : watsonPeople) {
+			if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId())) {
+				returnWatsonPeople.remove(watsonPerson);
+			}
+		}
+
+		return returnWatsonPeople;
 	}
 
 	protected HashMap<String, String> errors = new HashMap<>();

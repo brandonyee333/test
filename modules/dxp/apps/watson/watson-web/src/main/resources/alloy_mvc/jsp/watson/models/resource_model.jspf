@@ -279,6 +279,28 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 		}
 	}
 
+	public static List<WatsonResource> getWatsonResourcesByWatsonIncidentIds(List<Long> watsonIncidentIds, int start, int end) throws Exception {
+		DynamicQuery watsonResourcesDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery();
+
+		Property watsonIncidentIdsProperty = PropertyFactoryUtil.forName("watsonIncidentId");
+
+		watsonResourcesDynamicQuery.add(watsonIncidentIdsProperty.in(watsonIncidentIds));
+
+		return getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(watsonResourcesDynamicQuery, start, end));
+	}
+
+	public static List<WatsonResource> filterResources(List<WatsonResource> watsonResources, User user) throws Exception {
+		List<WatsonResource> returnWatsonResources = ListUtil.copy(watsonResources);
+
+		for (WatsonResource watsonResource : watsonResources) {
+			if (!WatsonPermission.check(user, watsonResource.getWatsonIncidentId())) {
+				returnWatsonResources.remove(watsonResource);
+			}
+		}
+
+		return returnWatsonResources;
+	}
+
 	protected HashMap<String, String> errors = new HashMap<>();
 
 }

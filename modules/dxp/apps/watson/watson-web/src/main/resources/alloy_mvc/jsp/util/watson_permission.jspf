@@ -17,8 +17,37 @@
 <%!
 public static class WatsonPermission extends AlloyPermission {
 
-	public static boolean hasPermission(User user, String role) throws Exception {
-		if (role != null) {
+	public static boolean check(User user, long watsonIncidentId) throws Exception {
+		if (Validator.isNotNull(watsonIncidentId)) {
+			return check(user, WatsonIncident.fetch(watsonIncidentId));
+		}
+
+		return false;
+	}
+
+	public static boolean check(User user, WatsonIncident watsonIncident) throws Exception {
+		if (Validator.isNotNull(watsonIncident)) {
+			long watsonListTypeId = watsonIncident.getTypeWatsonListTypeId();
+
+			if (WatsonPermission.check(user, RoleConstants.ADMIN)) {
+				return true;
+			}
+			else if (WatsonPermission.check(user, RoleConstants.MANAGER)) {
+				return true;
+			}
+			else if (WatsonPermission.check(user, RoleConstants.STAFF)) {
+				return true;
+			}
+			else {
+				return (WatsonPermission.check(user, RoleConstants.CITIZENSHIP) && (watsonListTypeId != WatsonListType.INCIDENT_TYPE_CITIZENSHIP));
+			}
+		}
+
+		return false;
+	}
+
+	public static boolean check(User user, String role) throws Exception {
+		if (Validator.isNotNull(role) && Validator.isNotNull(user)) {
 			return RoleLocalServiceUtil.hasUserRole(user.getUserId(), user.getCompanyId(), role, true);
 		}
 

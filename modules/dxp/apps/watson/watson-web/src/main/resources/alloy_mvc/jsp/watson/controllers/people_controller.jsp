@@ -33,6 +33,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonPerson watsonPerson = WatsonPerson.create(request);
 
+		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId())) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
+
 		JSONArray countryIDWatsonListTypeRelJSONArray = JSONFactoryUtil.createJSONArray(ParamUtil.getString(request, "countryIDWatsonListTypeRels"));
 
 		Object[] generatedCountryIDWatsonListTypeRelChanges = WatsonListTypeRel.generateValidationData(request, watsonPerson, watsonPerson.getModelClassName() + ".countryIDType", countryIDWatsonListTypeRelJSONArray);
@@ -99,6 +103,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
 
+		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId())) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
+
 		WatsonListTypeRel.clear(watsonPerson);
 
 		WatsonRelationship.clearWatsonRelationships(watsonPerson.getWatsonIncidentId(), watsonPersonId);
@@ -118,6 +126,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		long watsonPersonId = ParamUtil.getLong(request, "id");
 
 		WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
+
+		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId())) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
 
 		respondWith(WatsonPerson.getAsJSONObject(watsonPerson));
 	}
@@ -165,7 +177,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonPermission.hasPermission(user, RoleConstants.TRANSLATOR)) {
+		if (WatsonPermission.check(user, RoleConstants.TRANSLATOR)) {
 			long watsonPersonId = ParamUtil.getLong(request, "id");
 
 			WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
@@ -197,7 +209,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		String actionType = ParamUtil.getString(request, "actionType");
 
 		if (actionType.equals("import")) {
-			watsonPeople = WatsonPerson.getUnrelatedWatsonPeople(watsonIncidentId, start, end);
+			watsonPeople = WatsonPerson.filterPeople(WatsonPerson.getUnrelatedWatsonPeople(watsonIncidentId, start, end), user);
 
 			List<WatsonPerson> tempWatsonPeople = WatsonPerson.getUnrelatedWatsonPeople(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
@@ -207,7 +219,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
 			String sort = ParamUtil.getString(request, "sortBy", null);
 
-			watsonPeople = WatsonIncident.getWatsonPeople(watsonIncidentId, includeInactive, sort, start, end);
+			watsonPeople = WatsonIncident.getWatsonPeople(watsonIncidentId, includeInactive, sort, start, end, user);
 
 			watsonPeopleCount = WatsonIncident.getWatsonPeopleCount(watsonIncidentId);
 		}
@@ -254,7 +266,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			}
 		}
 
-		respondWith(WatsonPerson.getAsJSONDataArray(searchResultWatsonPeople, getTotalHits(searchContext)));
+		respondWith(WatsonPerson.getAsJSONDataArray(WatsonPerson.filterPeople(searchResultWatsonPeople, user), getTotalHits(searchContext)));
 	}
 
 	public void update() throws Exception {
@@ -272,7 +284,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
 
-		if (WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonPerson.getWatsonIncidentId()))) {
+		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId()) || WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonPerson.getWatsonIncidentId()))) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), WatsonPerson.getAsJSONObject(watsonPerson));
 
 			return;
@@ -366,7 +378,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonPermission.hasPermission(user, RoleConstants.TRANSLATOR)) {
+		if (WatsonPermission.check(user, RoleConstants.TRANSLATOR)) {
 			long watsonPersonId = ParamUtil.getLong(request, "id");
 
 			WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
@@ -393,6 +405,10 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		long watsonPersonId = ParamUtil.getLong(request, "id");
 
 		WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
+
+		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId())) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		}
 
 		respondWith(WatsonPerson.getAsJSONObject(watsonPerson));
 	}

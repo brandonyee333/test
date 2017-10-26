@@ -240,32 +240,40 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		return INCIDENT_STATUS_LABEL_OPEN;
 	}
 
-	public static List<WatsonActivity> getWatsonActivities(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+	public static List<WatsonActivity> getWatsonActivities(long watsonIncidentId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+		List<WatsonActivity> returnWatsonActivities = null;
+
 		if (watsonIncidentId > 0) {
 			if (includeInactive) {
-				return WatsonActivity.queryAll("watsonIncidentId", watsonIncidentId);
+				returnWatsonActivities = WatsonActivity.queryAll("watsonIncidentId", watsonIncidentId);
 			}
 			else {
-				return WatsonActivity.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+				returnWatsonActivities = WatsonActivity.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
 			}
 		}
 		else {
-			return WatsonActivity.get(start, end);
+			returnWatsonActivities = WatsonActivity.get(start, end);
 		}
+
+		return WatsonActivity.filterActivities(returnWatsonActivities, user);
 	}
 
-	public static List<WatsonAddress> getWatsonAddresses(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+	public static List<WatsonAddress> getWatsonAddresses(long watsonIncidentId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+		List<WatsonAddress> returnWatsonAddresses = null;
+
 		if (watsonIncidentId > 0) {
 			if (includeInactive) {
-				return WatsonAddress.queryAll("watsonIncidentId", watsonIncidentId);
+				returnWatsonAddresses = WatsonAddress.queryAll("watsonIncidentId", watsonIncidentId);
 			}
 			else {
-				return WatsonAddress.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+				returnWatsonAddresses = WatsonAddress.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
 			}
 		}
 		else {
-			return WatsonAddress.get(start, end);
+			returnWatsonAddresses = WatsonAddress.get(start, end);
 		}
+
+		return WatsonAddress.filterAddresses(returnWatsonAddresses, user);
 	}
 
 	public static List<WatsonHistory> getWatsonHistories(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
@@ -282,18 +290,22 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		}
 	}
 
-	public static List<WatsonPerson> getWatsonPeople(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+	public static List<WatsonPerson> getWatsonPeople(long watsonIncidentId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+		List<WatsonPerson> returnWatsonPeople = null;
+
 		if (watsonIncidentId > 0) {
 			if (includeInactive) {
-				return WatsonPerson.queryAll("watsonIncidentId", watsonIncidentId);
+				returnWatsonPeople = WatsonPerson.queryAll("watsonIncidentId", watsonIncidentId);
 			}
 			else {
-				return WatsonPerson.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+				returnWatsonPeople = WatsonPerson.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
 			}
 		}
 		else {
-			return WatsonPerson.get(start, end);
+			returnWatsonPeople = WatsonPerson.get(start, end);
 		}
+
+		return WatsonPerson.filterPeople(returnWatsonPeople, user);
 	}
 
 	public static List<WatsonRelationship> getWatsonRelationships(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
@@ -310,32 +322,40 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		}
 	}
 
-	public static List<WatsonResource> getWatsonResources(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+	public static List<WatsonResource> getWatsonResources(long watsonIncidentId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+		List<WatsonResource> returnWatsonResources = null;
+
 		if (watsonIncidentId > 0) {
 			if (includeInactive) {
-				return WatsonResource.queryAll("watsonIncidentId", watsonIncidentId);
+				returnWatsonResources = WatsonResource.queryAll("watsonIncidentId", watsonIncidentId);
 			}
 			else {
-				return WatsonResource.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+				returnWatsonResources = WatsonResource.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
 			}
 		}
 		else {
-			return WatsonResource.get(start, end);
+			returnWatsonResources = WatsonResource.get(start, end);
 		}
+
+		return WatsonResource.filterResources(returnWatsonResources, user);
 	}
 
-	public static List<WatsonVehicle> getWatsonVehicles(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+	public static List<WatsonVehicle> getWatsonVehicles(long watsonIncidentId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+		List<WatsonVehicle> returnWatsonVehicles = null;
+
 		if (watsonIncidentId > 0) {
 			if (includeInactive) {
-				return WatsonVehicle.queryAll("watsonIncidentId", watsonIncidentId);
+				returnWatsonVehicles = WatsonVehicle.queryAll("watsonIncidentId", watsonIncidentId);
 			}
 			else {
-				return WatsonVehicle.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+				returnWatsonVehicles = WatsonVehicle.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
 			}
 		}
 		else {
-			return WatsonVehicle.get(start, end);
+			returnWatsonVehicles = WatsonVehicle.get(start, end);
 		}
+
+		return WatsonVehicle.filterVehicles(returnWatsonVehicles, user);
 	}
 
 	public static long getWatsonActivitiesCount(long watsonIncidentId) throws Exception {
@@ -402,12 +422,10 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 	}
 
 	public static boolean hasDisabled(long currentUserId, long incidentStatus) throws Exception {
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
-
 		User user = UserLocalServiceUtil.fetchUser(currentUserId);
 
 		if (Validator.isNotNull(user)) {
-			boolean hasAdminRole = RoleLocalServiceUtil.hasUserRole(user.getUserId(), user.getCompanyId(), RoleConstants.ADMIN, true);
+			boolean hasAdminRole = WatsonPermission.check(user, RoleConstants.ADMIN);
 
 			if (hasAdminRole) {
 				return false;
@@ -566,7 +584,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 	public static WatsonIncident queryFirst(Object... properties) throws Exception {
 		List<WatsonIncident> watsonIncidents = WatsonIncident.query(properties);
 
-		if (watsonIncidents.size() > 0) {
+		if (!watsonIncidents.isEmpty()) {
 			return watsonIncidents.get(0);
 		}
 
@@ -604,11 +622,11 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		pushError(validateWatsonIncidentIncidentStatus(getIncidentStatus()));
 		pushError(validateWatsonIncidentNatures(natures, this.isNew()));
 		pushError(validateWatsonIncidentOccurrenceDates(getStartDate(), getEndDate()));
+		pushError(validateWatsonIncidentRels(watsonIncidentRels));
 		pushError(validateWatsonIncidentReportDate(getReportDate()));
 		pushError(validateWatsonIncidentSource(getSourceWatsonListTypeId()));
-		pushError(validateWatsonIncidentType(getTypeWatsonListTypeId()));
 		pushError(validateWatsonIncidentSubtype(getSubtypeWatsonListTypeId()));
-		pushError(validateWatsonIncidentRels(watsonIncidentRels));
+		pushError(validateWatsonIncidentType(getTypeWatsonListTypeId()));
 
 		return errors.isEmpty();
 	}
@@ -617,6 +635,28 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		if (keyValuePair != null) {
 			errors.put(keyValuePair.getKey(), keyValuePair.getValue());
 		}
+	}
+
+	public static List<Long> getWatsonIncidentIdsByType(long typeWatsonListTypeId) throws Exception {
+		DynamicQuery watsonIncidentIdsDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"typeWatsonListTypeId", typeWatsonListTypeId});
+
+		Projection watsonIncidentIdProjection = ProjectionFactoryUtil.property("watsonIncidentId");
+
+		watsonIncidentIdsDynamicQuery.setProjection(ProjectionFactoryUtil.distinct(watsonIncidentIdProjection));
+
+		return baseModelAlloyServiceInvoker.executeDynamicQuery(watsonIncidentIdsDynamicQuery);
+	}
+
+	public static List<WatsonIncident> filterIncidents(List<WatsonIncident> watsonIncidents, User user) throws Exception {
+		List<WatsonIncident> returnWatsonIncidents = ListUtil.copy(watsonIncidents);
+
+		for (WatsonIncident watsonIncident : watsonIncidents) {
+			if (!WatsonPermission.check(user, watsonIncident)) {
+				returnWatsonIncidents.remove(watsonIncident);
+			}
+		}
+
+		return returnWatsonIncidents;
 	}
 
 	protected HashMap<String, String> errors = new HashMap<>();
