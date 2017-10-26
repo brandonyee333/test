@@ -194,7 +194,7 @@ class IncidentForm extends JSXComponent {
 
 			requestTranslationMethod = this.handleTranslationRequest;
 
-			translateHref = (disabled || !WatsonConstants.currentUser.translator) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/translate`;
+			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/translate`;
 		}
 
 		const modalFooter = [

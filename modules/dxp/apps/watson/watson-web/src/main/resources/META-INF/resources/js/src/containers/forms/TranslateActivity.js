@@ -76,7 +76,7 @@ class TranslateActivityForm extends JSXComponent {
 
 	render() {
 		const {
-			disabled = !WatsonConstants.currentUser.translator,
+			disabled = !WatsonConstants.currentUser.translatorRole,
 			errors,
 			loading,
 			response,

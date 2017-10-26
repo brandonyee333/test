@@ -262,7 +262,7 @@ class PersonForm extends JSXComponent {
 
 			requestTranslationMethod = this.handleTranslationRequest;
 
-			translateHref = (disabled || !WatsonConstants.currentUser.translator) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/people/${watsonPersonId}/translate`;
+			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/people/${watsonPersonId}/translate`;
 		}
 		else if (action === 'create' && watsonIncidentId) {
 			cancelMethod = this.handleCancel;

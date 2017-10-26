@@ -314,7 +314,7 @@ class AddressForm extends JSXComponent {
 				<ButtonModal action={noop} buttons={optionButtons} modalData={modal} remoteCloseModal={closeMicroFormModal} />
 			);
 
-			translateHref = (disabled || !WatsonConstants.currentUser.translator) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/addresses/${watsonAddressId}/translate`;
+			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/addresses/${watsonAddressId}/translate`;
 		}
 		else if (action === 'create') {
 			if (watsonIncidentId) {

@@ -242,7 +242,7 @@ class ResourceForm extends JSXComponent {
 
 			requestTranslationMethod = this.handleTranslationRequest;
 
-			translateHref = (disabled || !WatsonConstants.currentUser.translator) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/${watsonResourceId}/translate`;
+			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/${watsonResourceId}/translate`;
 		}
 		else if (action === 'create' && watsonIncidentId) {
 			cancelMethod = this.handleCancel;

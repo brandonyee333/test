@@ -244,7 +244,7 @@ class VehicleForm extends JSXComponent {
 
 			requestTranslationMethod = this.handleTranslationRequest;
 
-			translateHref = (disabled || !WatsonConstants.currentUser.translator) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/vehicles/${watsonVehicleId}/translate`;
+			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/vehicles/${watsonVehicleId}/translate`;
 		}
 		else if (action === 'create' && watsonIncidentId) {
 			cancelMethod = this.handleCancel;
