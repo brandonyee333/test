@@ -56,5 +56,9 @@
 	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="10481">
 		<name locale="en_US">Citizenship</name>
 		<name locale="th">สัญชาติ</name>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10482">
+			<name locale="en_US">Citizenship Sub Type</name>
+			<name locale="th">สัญชาติ</name>
+		</watsonListType>
 	</watsonListType>
 </table>
