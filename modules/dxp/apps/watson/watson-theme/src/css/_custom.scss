@@ -15,7 +15,6 @@
 	@import "cropper.nocsf";
 	@import "forms";
 	@import "global_styles";
-	@import "header_toolbar";
 	@import "history_view";
 	@import "html_defaults";
 	@import "incidents_list";
@@ -24,9 +23,10 @@
 	@import "metrics_console";
 	@import "micro_form";
 	@import "modal";
+	@import "navigation_sidebar";
 	@import "quill.snow.nocsf";
 	@import "select_input";
-	@import "sidebar";
+	@import "sidebar_toolbar";
 	@import "toggle";
 	@import "translation_form";
 	@import "view_index_list";

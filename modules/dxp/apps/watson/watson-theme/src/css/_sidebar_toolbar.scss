@@ -1,4 +1,4 @@
-.watson-header-toolbar {
+.watson-sidebar-toolbar {
 	background-color: $lightest;
 	border-bottom: 1px solid $neutralLighter;
 	height: 60px;
@@ -7,7 +7,7 @@
 	width: 100%;
 	z-index: 500;
 
-	.watson-header-toolbar-content {
+	.watson-sidebar-toolbar-content {
 		align-items: center;
 		display: flex;
 		height: 100%;
@@ -79,7 +79,7 @@
 }
 
 @media print {
-	.watson-header-toolbar {
+	.watson-sidebar-toolbar {
 		display: none;
 	}
 }
