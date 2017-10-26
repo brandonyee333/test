@@ -718,11 +718,11 @@ class EditIncident extends JSXComponent {
 		return (
 			<div class="incidents-edit page-container hidden-print">
 				<div class="sidebar">
-					<Button label={Liferay.Language.get('print-report')} onClick={this.handlePrintReport} />
-
 					<SidebarHeader mainHeader={incidentName} metaHeader={incidentMetaHeader} subHeader={incidentTypeLabel} />
 
 					<Navigation entries={nav} navigationState={collapsedEntries} onChange={this.handleNavigationOnChange} />
+
+					<Button label={Liferay.Language.get('print-report')} onClick={this.handlePrintReport} />
 				</div>
 
 				{this.getCurrentView(action, entryId, incidentDisabled, incidentName, model, watsonIncidentId)}
