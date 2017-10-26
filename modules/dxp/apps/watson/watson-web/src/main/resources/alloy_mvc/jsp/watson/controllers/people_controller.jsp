@@ -64,7 +64,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			jsonObject.put("errors", watsonPerson.getPersonFormErrors());
 
-			respondWith(HttpServletResponse.SC_BAD_REQUEST, LanguageUtil.get(request, "person-was-not-saved"), jsonObject);
+			respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("person-was-not-saved"), jsonObject);
 
 			return;
 		}
@@ -81,7 +81,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonHistory.add(watsonPerson.getWatsonIncidentId(), watsonPerson, request, WatsonHistory.HISTORY_TYPE_CREATED);
 
-		respondWith(LanguageUtil.get(request, "person-saved-successfully"), WatsonPerson.getAsJSONObject(watsonPerson));
+		respondWith(translate("person-saved-successfully"), WatsonPerson.getAsJSONObject(watsonPerson));
 	}
 
 	public void create() throws Exception {
@@ -157,7 +157,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			addedPeople.add(newWatsonPerson);
 		}
 
-		respondWith(LanguageUtil.get(request, "people-saved-successfully"), WatsonPerson.getAsJSONDataArray(addedPeople, WatsonIncident.getWatsonPeopleCount(watsonIncidentId)));
+		respondWith(translate("people-saved-successfully"), WatsonPerson.getAsJSONDataArray(addedPeople, WatsonIncident.getWatsonPeopleCount(watsonIncidentId)));
 	}
 
 	public void fetchTranslation() throws Exception {
@@ -179,7 +179,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 	}
 
 	public void index() throws Exception {
@@ -273,7 +273,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
 
 		if (WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonPerson.getWatsonIncidentId()))) {
-			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), WatsonPerson.getAsJSONObject(watsonPerson));
+			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), WatsonPerson.getAsJSONObject(watsonPerson));
 
 			return;
 		}
@@ -329,7 +329,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			jsonObject.put("model", WatsonPerson.getAsJSONObject(watsonPerson, countryIDWatsonListTypeRels, nameWatsonListTypeRels, phoneNumberWatsonListTypeRels, socialMediaAccountWatsonListTypeRels, watsonRelationships));
 
-			respondWith(HttpServletResponse.SC_BAD_REQUEST, LanguageUtil.get(request, "person-was-not-saved"), jsonObject);
+			respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("person-was-not-saved"), jsonObject);
 
 			return;
 		}
@@ -358,7 +358,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonHistory.add(watsonPerson.getWatsonIncidentId(), watsonPerson, request, WatsonHistory.HISTORY_TYPE_UPDATED);
 
-		respondWith(LanguageUtil.get(request, "person-saved-successfully"), WatsonPerson.getAsJSONObject(watsonPerson));
+		respondWith(translate("person-saved-successfully"), WatsonPerson.getAsJSONObject(watsonPerson));
 	}
 
 	public void updateTranslation() throws Exception {
@@ -377,12 +377,12 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			watsonPerson.updateTranslations(request, locale);
 
-			respondWith(LanguageUtil.get(request, "person-saved-successfully"), WatsonPerson.getAsJSONObject(watsonPerson));
+			respondWith(translate("person-saved-successfully"), WatsonPerson.getAsJSONObject(watsonPerson));
 
 			return;
 		}
 
-		respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 	}
 
 	public void view() throws Exception {

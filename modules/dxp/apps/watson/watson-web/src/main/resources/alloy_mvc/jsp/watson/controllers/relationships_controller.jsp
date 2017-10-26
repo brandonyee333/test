@@ -126,7 +126,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			responseJSONObject.put("model", WatsonRelationship.getAsJSONArray(watsonRelationships));
 
-			respondWith(HttpServletResponse.SC_BAD_REQUEST, LanguageUtil.get(request, "relationships-were-not-saved"), responseJSONObject);
+			respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("relationships-were-not-saved"), responseJSONObject);
 
 			return;
 		}
@@ -137,7 +137,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		responseJSONObject.put("watsonRelationships", WatsonRelationship.getAsJSONArray(watsonRelationships));
 
-		respondWith(LanguageUtil.get(request, "relationships-saved-successfully"), responseJSONObject);
+		respondWith(translate("relationships-saved-successfully"), responseJSONObject);
 	}
 
 	public void view() throws Exception {

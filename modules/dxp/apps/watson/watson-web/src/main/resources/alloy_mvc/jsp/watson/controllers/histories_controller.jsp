@@ -40,14 +40,14 @@
 
 				jsonObject.put("model", WatsonHistory.getAsJSONObject(watsonHistory));
 
-				respondWith(HttpServletResponse.SC_BAD_REQUEST, LanguageUtil.get(request, "history-was-not-saved"), jsonObject);
+				respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("history-was-not-saved"), jsonObject);
 
 				return;
 			}
 
 			watsonHistory.add();
 
-			respondWith(LanguageUtil.get(request, "history-saved-successfully"), WatsonHistory.getAsJSONObject(watsonHistory));
+			respondWith(translate("history-saved-successfully"), WatsonHistory.getAsJSONObject(watsonHistory));
 		}
 
 		public void create() throws Exception {
@@ -122,14 +122,14 @@
 
 				jsonObject.put("model", WatsonHistory.getAsJSONObject(watsonHistory));
 
-				respondWith(HttpServletResponse.SC_BAD_REQUEST, LanguageUtil.get(request, "history-was-not-saved"), jsonObject);
+				respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("history-was-not-saved"), jsonObject);
 
 				return;
 			}
 
 			watsonHistory.update();
 
-			respondWith(LanguageUtil.get(request, "history-saved-successfully"), WatsonHistory.getAsJSONObject(watsonHistory));
+			respondWith(translate("history-saved-successfully"), WatsonHistory.getAsJSONObject(watsonHistory));
 		}
 
 		public void view() throws Exception {

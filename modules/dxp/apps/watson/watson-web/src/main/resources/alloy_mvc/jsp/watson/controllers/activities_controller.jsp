@@ -40,7 +40,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			jsonObject.put("model", WatsonActivity.getAsJSONObject(watsonActivity));
 
-			respondWith(HttpServletResponse.SC_BAD_REQUEST, LanguageUtil.get(request, "activity-was-not-saved"), jsonObject);
+			respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("activity-was-not-saved"), jsonObject);
 
 			return;
 		}
@@ -63,7 +63,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonHistory.add(watsonActivity.getWatsonIncidentId(), watsonActivity, request, WatsonHistory.HISTORY_TYPE_CREATED);
 
-		respondWith(LanguageUtil.get(request, "activity-saved-successfully"), WatsonActivity.getAsJSONObject(watsonActivity));
+		respondWith(translate("activity-saved-successfully"), WatsonActivity.getAsJSONObject(watsonActivity));
 	}
 
 	public void autoCreate() throws Exception {
@@ -99,7 +99,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		watsonActivity.update();
 
-		respondWith(LanguageUtil.get(request, "activity-automatically-saved"), WatsonActivity.getAsJSONObject(watsonActivity));
+		respondWith(translate("activity-automatically-saved"), WatsonActivity.getAsJSONObject(watsonActivity));
 	}
 
 	public void autoSave() throws Exception {
@@ -119,13 +119,13 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			if (watsonActivity.isValid(null)) {
 				watsonActivity.update();
 
-				respondWith(LanguageUtil.get(request, "activity-automatically-saved"), WatsonActivity.getAsJSONObject(watsonActivity));
+				respondWith(translate("activity-automatically-saved"), WatsonActivity.getAsJSONObject(watsonActivity));
 
 				return;
 			}
 		}
 
-		respondWith(HttpServletResponse.SC_BAD_REQUEST, LanguageUtil.get(request, "activity-was-not-saved"), WatsonActivity.getAsJSONObject(watsonActivity));
+		respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("activity-was-not-saved"), WatsonActivity.getAsJSONObject(watsonActivity));
 	}
 
 	public void create() throws Exception {
@@ -201,7 +201,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 	}
 
 	public void index() throws Exception {
@@ -262,7 +262,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		WatsonActivity watsonActivity = WatsonActivity.fetch(watsonActivityId);
 
 		if (!WatsonActivity.hasEditableStatus(user.getUserId(), watsonActivity.getUserId())) {
-			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), WatsonActivity.getAsJSONObject(watsonActivity));
+			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), WatsonActivity.getAsJSONObject(watsonActivity));
 
 			return;
 		}
@@ -290,7 +290,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			jsonObject.put("model", WatsonActivity.getAsJSONObject(watsonActivity, watsonRelationships));
 
-			respondWith(HttpServletResponse.SC_BAD_REQUEST, LanguageUtil.get(request, "activity-was-not-saved"), jsonObject);
+			respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("activity-was-not-saved"), jsonObject);
 
 			return;
 		}
@@ -313,7 +313,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonHistory.add(watsonActivity.getWatsonIncidentId(), watsonActivity, request, WatsonHistory.HISTORY_TYPE_UPDATED);
 
-		respondWith(LanguageUtil.get(request, "activity-saved-successfully"), WatsonActivity.getAsJSONObject(watsonActivity));
+		respondWith(translate("activity-saved-successfully"), WatsonActivity.getAsJSONObject(watsonActivity));
 	}
 
 	public void updateTranslation() throws Exception {
@@ -343,12 +343,12 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 				watsonActivityJSONObject = WatsonActivity.getAsJSONObject(watsonActivity);
 			}
 
-			respondWith(LanguageUtil.get(request, "activity-saved-successfully"), watsonActivityJSONObject);
+			respondWith(translate("activity-saved-successfully"), watsonActivityJSONObject);
 
 			return;
 		}
 
-		respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+		respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 	}
 
 	public void view() throws Exception {
