@@ -68,7 +68,7 @@
 		"string-sub": "^0.0.1",
 		"vis": "^4.20.1"
 	},
-	"description": "Watson Portlet",
+	"description": "Watson Web",
 	"devDependencies": {
 		"babel-cli": "^6.24.1",
 		"babel-core": "^6.4.5",
@@ -84,7 +84,7 @@
 	},
 	"homepage": "https://github.com/liferay/liferay-plugins-ee",
 	"main": "src/main/resources/META-INF/resources/js/src/main.js",
-	"name": "liferay-watson-portlet",
+	"name": "liferay-watson-web",
 	"private": true,
 	"repository": {
 		"type": "git",
