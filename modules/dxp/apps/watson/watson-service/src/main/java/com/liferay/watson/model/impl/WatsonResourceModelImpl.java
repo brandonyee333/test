@@ -84,7 +84,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			{ "watsonIncidentId", Types.BIGINT },
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
-			{ "imagePayload", Types.VARCHAR },
+			{ "imagePayload", Types.CLOB },
 			{ "status", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
@@ -101,11 +101,11 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		TABLE_COLUMNS_MAP.put("watsonIncidentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("imagePayload", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonResource (watsonResourceId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonResourceId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,description STRING null,imagePayload VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonResource (watsonResourceId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonResourceId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,description STRING null,imagePayload TEXT null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonResource";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonResource.watsonResourceId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonResource.watsonResourceId ASC";

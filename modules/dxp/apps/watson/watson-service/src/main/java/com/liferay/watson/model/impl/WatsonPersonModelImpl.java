@@ -90,7 +90,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			{ "typeWatsonListTypeId", Types.BIGINT },
 			{ "watsonIncidentId", Types.BIGINT },
 			{ "description", Types.VARCHAR },
-			{ "imagePayload", Types.VARCHAR },
+			{ "imagePayload", Types.CLOB },
 			{ "birthDate", Types.TIMESTAMP },
 			{ "dateAccepted", Types.TIMESTAMP },
 			{ "dateRescued", Types.TIMESTAMP },
@@ -123,7 +123,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		TABLE_COLUMNS_MAP.put("typeWatsonListTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("watsonIncidentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("imagePayload", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("birthDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("dateAccepted", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("dateRescued", Types.TIMESTAMP);
@@ -137,7 +137,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonPerson (watsonPersonId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,eyesWatsonListTypeId LONG,hairWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,description STRING null,imagePayload VARCHAR(75) null,birthDate DATE null,dateAccepted DATE null,dateRescued DATE null,startAge VARCHAR(75) null,endAge VARCHAR(75) null,occupation STRING null,height VARCHAR(75) null,weight VARCHAR(75) null,accepted BOOLEAN,rescued BOOLEAN,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonPerson (watsonPersonId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,eyesWatsonListTypeId LONG,hairWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,description STRING null,imagePayload TEXT null,birthDate DATE null,dateAccepted DATE null,dateRescued DATE null,startAge VARCHAR(75) null,endAge VARCHAR(75) null,occupation STRING null,height VARCHAR(75) null,weight VARCHAR(75) null,accepted BOOLEAN,rescued BOOLEAN,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonPerson";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonPerson.watsonPersonId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonPerson.watsonPersonId ASC";

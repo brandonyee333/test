@@ -99,7 +99,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonRelationship (watsonRelationshipId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonRelationship (watsonRelationshipId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description STRING null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonRelationship";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonRelationship.watsonRelationshipId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonRelationship.watsonRelationshipId ASC";
