@@ -38,7 +38,7 @@ module.exports = {
 				query: {
 					babelrc: false,
 					plugins: ['lodash'],
-					presets: ['es2015', 'metal-jsx', 'stage-2']
+					presets: ['env', 'metal-jsx', 'stage-2']
 				},
 				test: /\.js$/
 			}
