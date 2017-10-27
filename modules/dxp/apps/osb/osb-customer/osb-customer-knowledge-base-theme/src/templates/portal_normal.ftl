@@ -44,6 +44,30 @@
 
 <body class="${css_class}">
 
+<#if theme_settings["google-tag-manager-id"] != "">
+	<script>
+		(function(w, d, s, l, i) {
+			w[l] = w[l] || [];
+
+			w[l].push(
+				{
+					event: 'gtm.js',
+					'gtm.start': new Date().getTime()
+				}
+			);
+
+			var dl = l != 'dataLayer' ? '&l=' + l : '';
+			var f = d.getElementsByTagName(s)[0];
+			var j = d.createElement(s);
+
+			j.async = true;
+			j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+
+			f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', getterUtil.getString(theme_settings["google-tag-manager-id"], ""));
+	</script>
+</#if>
+
 <a class="hide-accessible" href="#main-content" id="skip-to-content"><@liferay.language key="skip-to-content" /></a>
 
 <@liferay_util["include"] page=body_top_include />
