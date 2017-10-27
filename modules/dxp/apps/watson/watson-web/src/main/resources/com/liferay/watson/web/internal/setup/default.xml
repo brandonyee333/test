@@ -36545,22 +36545,6 @@
 		<name locale="en_US">Other</name>
 		<name locale="th">สถานที่อื่นๆ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="9369">
-		<name locale="en_US">Human Trafficking</name>
-		<name locale="th">การค้ามนุษย์</name>
-	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="9370">
-		<name locale="en_US">Child Abuse</name>
-		<name locale="th">การล่วงละเมิดเด็ก</name>
-	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="9371">
-		<name locale="en_US">Informational</name>
-		<name locale="th">ข้อมูล</name>
-	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="9372">
-		<name locale="en_US">Missing Person</name>
-		<name locale="th">คนสูญหาย</name>
-	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonIncident.source" watsonListTypeId="9373">
 		<name locale="en_US">ZCR Team</name>
 		<name locale="th">ทีมช่วยกู้เด็ก</name>
@@ -40029,5 +40013,109 @@
 	<watsonListType type="com.liferay.watson.model.WatsonVehicle.year" watsonListTypeId="10456">
 		<name locale="en_US">Before 1991</name>
 		<name locale="th">ก่อนปี 1991</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="10457">
+		<name locale="en_US">Prevention Outreach</name>
+		<name locale="th">รณรงค์ป้องกัน</name>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10458">
+			<name locale="en_US">ZCR Team</name>
+			<name locale="th">ทีมช่วยกู้เด็ก</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10459">
+			<name locale="en_US">ZMS Team</name>
+			<name locale="th">ทีมพระคริสธรรม</name>
+		</watsonListType>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="10460">
+		<name locale="en_US">Investigation</name>
+		<name locale="th">ตรวจสอบ</name>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10461">
+			<name locale="en_US">Human Trafficking</name>
+			<name locale="th">ค้ามนุษย์</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10462">
+			<name locale="en_US">Sexual Abuse</name>
+			<name locale="th">ล่วงละเมิดทางเพศ</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10463">
+			<name locale="en_US">Informational</name>
+			<name locale="th">ข้อมูลข่าวสาร</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10464">
+			<name locale="en_US">Missing Person</name>
+			<name locale="th">บุคคลสูญหาย</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10465">
+			<name locale="en_US">Orphan</name>
+			<name locale="th">เด็กกำพร้า</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10466">
+			<name locale="en_US">Other</name>
+			<name locale="th">อื่นๆ</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonActivity.type" watsonListTypeId="10467">
+			<name locale="en_US">Report</name>
+			<name locale="th">รายงาน</name>
+		</watsonListType>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10468">
+		<name locale="en_US">Suspect</name>
+		<name locale="th">ผู้ต้องหา</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10469">
+		<name locale="en_US">Witness</name>
+		<name locale="th">พยาน</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10470">
+		<name locale="en_US">Arrestee</name>
+		<name locale="th">ประชุมการเขียนรายงานสรุป</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10471">
+		<name locale="en_US">Victim</name>
+		<name locale="th">เหยื่อ</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10472">
+		<name locale="en_US">Reporting party</name>
+		<name locale="th">ประชุมการเขียนรายงานสรุป</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10473">
+		<name locale="en_US">Mentioned</name>
+		<name locale="th">กล่าวถึง</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10474">
+		<name locale="en_US">Mentioned</name>
+		<name locale="th">กล่าวถึง</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.ethnicityRegion" watsonListTypeId="10475">
+		<name locale="en_US">Other</name>
+		<name locale="th">อื่นๆ</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonActivity.type" watsonListTypeId="10476">
+		<name locale="en_US">Court Proceeding</name>
+		<name locale="th">การดำเนินการของศาล</name>
+		<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10477">
+			<name locale="en_US">Criminal</name>
+			<name locale="th">อาชญากร</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10478">
+			<name locale="en_US">Civil</name>
+			<name locale="th">พลเรือน</name>
+		</watsonListType>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonResource.resourceType" watsonListTypeId="10479">
+		<name locale="en_US">Court Document</name>
+		<name locale="th">เอกสารศาล</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.activityResourceRelationshipTypes" watsonListTypeId="10480">
+		<name locale="en_US">Court Document</name>
+		<name locale="th">เอกสารศาล</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="10481">
+		<name locale="en_US">Citizenship</name>
+		<name locale="th">สัญชาติ</name>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10482">
+			<name locale="en_US">Citizenship Sub Type</name>
+			<name locale="th">สัญชาติ</name>
+		</watsonListType>
 	</watsonListType>
 </table>

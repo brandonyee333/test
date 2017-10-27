@@ -12,21 +12,22 @@
  * details.
  */
 
-package com.liferay.watson.service.internal.upgrade.v1_0_1;
+package com.liferay.watson.web.internal.setup;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.watson.model.WatsonListType;
-import com.liferay.watson.service.WatsonListTypeLocalServiceUtil;
+import com.liferay.watson.service.WatsonListTypeLocalService;
 
 import java.net.URL;
 
@@ -35,12 +36,25 @@ import java.util.List;
 import java.util.Locale;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Steven Smith
  */
-public class UpgradeWatsonListType extends UpgradeProcess {
+@Component(immediate = true, service = SetupWatsonListTypes.class)
+public class SetupWatsonListTypes {
+
+	@Activate
+	public void activate(BundleContext bundleContext) throws Exception {
+		_bundle = bundleContext.getBundle();
+
+		long companyId = _portal.getDefaultCompanyId();
+
+		importDefaultData(companyId);
+	}
 
 	protected void addWatsonListType(
 			Element watsonListTypeElement, long companyId,
@@ -51,17 +65,15 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 			watsonListTypeElement.attributeValue("watsonListTypeId"));
 
 		WatsonListType watsonListType =
-			WatsonListTypeLocalServiceUtil.fetchWatsonListType(
-				watsonListTypeId);
+			_watsonListTypeLocalService.fetchWatsonListType(watsonListTypeId);
 
 		if (watsonListType == null) {
-			watsonListType =
-				WatsonListTypeLocalServiceUtil.createWatsonListType(
-					watsonListTypeId);
+			watsonListType = _watsonListTypeLocalService.createWatsonListType(
+				watsonListTypeId);
 
 			watsonListType.setCompanyId(companyId);
 
-			User defaultUser = UserLocalServiceUtil.getDefaultUser(companyId);
+			User defaultUser = _userLocalService.getDefaultUser(companyId);
 
 			watsonListType.setUserId(defaultUser.getUserId());
 			watsonListType.setUserName(defaultUser.getFullName());
@@ -85,9 +97,8 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 
 			watsonListType.setStatus(WorkflowConstants.STATUS_APPROVED);
 
-			watsonListType =
-				WatsonListTypeLocalServiceUtil.updateWatsonListType(
-					watsonListType);
+			watsonListType = _watsonListTypeLocalService.updateWatsonListType(
+				watsonListType);
 
 			List<Element> childWatsonListTypeElements =
 				watsonListTypeElement.elements("watsonListType");
@@ -102,19 +113,9 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 		}
 	}
 
-	@Override
-	protected void doUpgrade() throws Exception {
-		long companyId = PortalUtil.getDefaultCompanyId();
-
-		importDefaultData(companyId);
-	}
-
 	protected void importDefaultData(long companyId) throws Exception {
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-
-		URL url = bundle.getResource(
-			"com/liferay/watson/service/internal/upgrade/v1_0_1/dependencies" +
-				"/default.xml");
+		URL url = _bundle.getResource(
+			"com/liferay/watson/web/internal/setup/default.xml");
 
 		String xml = new String(FileUtil.getBytes(url.openStream()));
 
@@ -128,5 +129,19 @@ public class UpgradeWatsonListType extends UpgradeProcess {
 			addWatsonListType(watsonListTypeElement, companyId, 0);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		SetupWatsonListTypes.class);
+
+	private Bundle _bundle;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private UserLocalService _userLocalService;
+
+	@Reference
+	private WatsonListTypeLocalService _watsonListTypeLocalService;
 
 }

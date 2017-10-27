@@ -12,9 +12,12 @@
  * details.
  */
 
-package com.liferay.watson.service.internal.upgrade;
+package com.liferay.watson.upgrade;
 
+import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
+import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
+import com.liferay.portal.upgrade.release.BaseUpgradeWebModuleRelease;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -26,24 +29,31 @@ public class WatsonServiceUpgrade implements UpgradeStepRegistrator {
 
 	@Override
 	public void register(Registry registry) {
-		registry.register(
-			"com.liferay.watson.service", "1.0.0", "1.0.1",
-			new com.liferay.watson.service.internal.upgrade.v1_0_1.
-				UpgradeWatsonListType());
+		BaseUpgradeWebModuleRelease upgradeWebModuleRelease =
+			new BaseUpgradeWebModuleRelease() {
+
+				@Override
+				protected String getBundleSymbolicName() {
+					return "com.liferay.watson.service";
+				}
+
+				@Override
+				protected String[] getPortletIds() {
+					return new String[] {"1_WAR_watsonportlet"};
+				}
+
+			};
+
+		try {
+			upgradeWebModuleRelease.upgrade();
+		}
+		catch (UpgradeException ue) {
+			throw new RuntimeException(ue);
+		}
 
 		registry.register(
-			"com.liferay.watson.service", "1.0.1", "1.0.2",
-			new com.liferay.watson.service.internal.upgrade.v1_0_2.
-				UpgradeWatsonListType());
-		registry.register(
-			"com.liferay.watson.service", "1.0.2", "1.0.3",
-			new com.liferay.watson.service.internal.upgrade.v1_0_3.
-				UpgradeWatsonIncidents());
-
-		registry.register(
-			"com.liferay.watson.service", "1.0.3", "1.0.4",
-			new com.liferay.watson.service.internal.upgrade.v1_0_4.
-				UpgradeWatsonListType());
+			"com.liferay.watson.service", "0.0.0", "1.0.0",
+			new DummyUpgradeStep());
 	}
 
 }
