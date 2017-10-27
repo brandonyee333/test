@@ -530,21 +530,17 @@ public class LicensePortlet extends MVCPortlet {
 				return false;
 			}
 
-			Group group = themeDisplay.getScopeGroup();
+			if (OrganizationLocalServiceUtil.hasUserOrganization(
+					themeDisplay.getUserId(),
+					OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
-			if (themeDisplay.getUserId() == group.getClassPK()) {
-				if (OrganizationLocalServiceUtil.hasUserOrganization(
-						themeDisplay.getUserId(),
-						OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+				return true;
+			}
 
-					return true;
-				}
+			if (AccountEntryLocalServiceUtil.hasValidLicenseAccountEntry(
+					themeDisplay.getUserId())) {
 
-				if (AccountEntryLocalServiceUtil.hasValidLicenseAccountEntry(
-						themeDisplay.getUserId())) {
-
-					return true;
-				}
+				return true;
 			}
 		}
 		catch (Exception e) {
