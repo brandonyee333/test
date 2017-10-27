@@ -29,9 +29,12 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
+		"com.liferay.portlet.application-type=full-page-application",
 		"com.liferay.portlet.css-class-wrapper=watson-portlet",
 		"com.liferay.portlet.display-category=category.tools",
+		"com.liferay.portlet.layout-cacheable=true",
 		"com.liferay.portlet.requires-namespaced-parameters=false",
+		"com.liferay.portlet.single-page-application=false",
 		"javax.portlet.display-name=Watson", "javax.portlet.expiration-cache=0",
 		"javax.portlet.info.keywords=Watson",
 		"javax.portlet.info.short-title=Watson",
