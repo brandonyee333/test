@@ -1,7 +1,6 @@
 import {isEqual} from 'lodash';
 import {List, Map} from 'immutable';
 import moment from 'moment';
-import {parse} from 'metal-uri';
 import sub from 'string-sub';
 
 export function compareObjectsData(originalObject = {}, newObject = {}) {
@@ -137,14 +136,10 @@ export function getPluralMessage(singular, plural, count = 0) {
 	return count === 1 ? singular : plural;
 }
 
-export function getURLForLanguageId(languageId, uri) {
-	uri = uri || window.location.href;
+export function getURLForLanguageId(languageId) {
+	const origin = `${window.location.protocol}//${window.location.host}`;
 
-	const uriObject = parse(uri);
-
-	const {origin} = uriObject;
-
-	let {pathname: pathName} = uriObject;
+	let {pathname: pathName} = window.location;
 
 	let portalMainPath = themeDisplay.getPathMain();
 

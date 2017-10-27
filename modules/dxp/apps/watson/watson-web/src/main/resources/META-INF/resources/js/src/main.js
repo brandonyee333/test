@@ -116,6 +116,5 @@ Liferay.Watson = {
 		}
 	},
 	debouncedSessionExtend: noop,
-	mapComponent: {},
-	router: null
+	mapComponent: {}
 };
