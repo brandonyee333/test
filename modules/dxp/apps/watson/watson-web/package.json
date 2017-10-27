@@ -91,9 +91,9 @@
 		"url": "git+https://github.com/liferay/liferay-portal-ee.git"
 	},
 	"scripts": {
-		"build": "cross-env NODE_ENV=production webpack",
-		"build:dev": "cross-env NODE_ENV=developement webpack",
-		"watch": "cross-env NODE_ENV=development webpack --watch"
+		"webpack": "cross-env NODE_ENV=production webpack --progress",
+		"webpack:dev": "cross-env NODE_ENV=developement webpack --progress",
+		"webpack:watch": "cross-env NODE_ENV=development webpack --watch"
 	},
 	"version": "1.0.0"
 }
