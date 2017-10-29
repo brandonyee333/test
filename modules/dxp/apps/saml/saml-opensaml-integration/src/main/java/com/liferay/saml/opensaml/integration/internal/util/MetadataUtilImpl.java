@@ -25,6 +25,7 @@ import com.liferay.saml.runtime.configuration.MetadataUtilConfiguration;
 import com.liferay.saml.util.MetadataUtil;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
@@ -149,7 +150,14 @@ public class MetadataUtilImpl implements MetadataUtil {
 		}
 		finally {
 			if (inputStream != null) {
-				StreamUtil.cleanUp(inputStream);
+				try {
+					inputStream.close();
+				}
+				catch (IOException ioe) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(ioe, ioe);
+					}
+				}
 			}
 		}
 	}
