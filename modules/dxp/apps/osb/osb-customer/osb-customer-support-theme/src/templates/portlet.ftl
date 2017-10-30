@@ -17,11 +17,8 @@
 				<a class="portlet-icon-back" href="${portlet_back_url}">
 					<@liferay.language key="return-to-full-page" />
 				</a>
-			<#elseif !group.isUser() || (permissionChecker.getUserId() == group.getClassPK()) || permissionChecker.isGroupAdmin(layout.getGroupId())>
-				theme.iconOptions()
-				theme.iconMinimize()
-				theme.iconMaximize()
-				theme.iconClose()
+			<#elseif !group.isUser() || permissionChecker.getUserId() == group.getClassPK() || permissionChecker.isGroupAdmin(layout.getGroupId())>
+				theme.portletIconOptions()
 			</#if>
 		</menu>
 	</header>
