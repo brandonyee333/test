@@ -10,6 +10,10 @@
 
 		<column name="watsonActivityId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
@@ -33,6 +37,10 @@
 		<!-- PK fields -->
 
 		<column name="watsonAddressId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
 
 		<!-- Audit fields -->
 
@@ -72,6 +80,10 @@
 
 		<column name="watsonHistoryId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
@@ -93,6 +105,10 @@
 		<!-- PK fields -->
 
 		<column name="watsonIncidentId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
 
 		<!-- Audit fields -->
 
@@ -123,6 +139,10 @@
 
 		<column name="watsonIncidentRelId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
@@ -144,6 +164,10 @@
 
 		<column name="watsonListTypeId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
@@ -164,6 +188,10 @@
 		<!-- PK fields -->
 
 		<column name="watsonListTypeRelId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
 
 		<!-- Audit fields -->
 
@@ -188,6 +216,10 @@
 		<!-- PK fields -->
 
 		<column name="watsonPersonId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
 
 		<!-- Audit fields -->
 
@@ -229,6 +261,10 @@
 
 		<column name="watsonRelationshipId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
@@ -254,6 +290,10 @@
 
 		<column name="watsonResourceId" primary="true" type="long" />
 
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
 		<!-- Audit fields -->
 
 		<column name="companyId" type="long" />
@@ -277,6 +317,10 @@
 		<!-- PK fields -->
 
 		<column name="watsonVehicleId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
 
 		<!-- Audit fields -->
 
