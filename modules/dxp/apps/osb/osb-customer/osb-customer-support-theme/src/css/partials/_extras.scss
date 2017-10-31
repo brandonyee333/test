@@ -1,22 +1,9 @@
-#mainSearchContent input[type=search] {
-	-webkit-appearance: textfield;
-	-webkit-box-sizing: content-box;
-
-	&::-webkit-search-cancel-button, &::-webkit-search-decoration, &::-webkit-search-results-button, &::-webkit-search-results-decoration {
-		-webkit-appearance: none;
-	}
-}
-
-.aui-overlay-content.aui-tooltip-content {
-	@include box-shadow(none);
-}
-
-.aui-overlay-content.aui-tooltip-content, .btn, .sign-in-button a {
-	@include border-radius(2px);
-}
-
-.circle-image {
-	@include border-radius(50%);
+#toggle_id_account_entry_searchbasic,
+#toggle_id_partner_entry_searchbasic,
+#toggle_id_ticket_entry_searchbasic,
+#toggle_id_ticket_feedback_searchbasic input,
+.temp-flag {
+		@include border-radius(2px);
 }
 
 .cleared {
@@ -41,6 +28,12 @@
 	}
 }
 
+.unselectable {
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+}
+
 .webkit {
 	#navigationContainer #mainNavigation .root-item {
 		padding: 19px 0;
@@ -48,33 +41,5 @@
 
 	.aui-w33 {
 		width: 33.325%;
-	}
-}
-
-@media (max-width: 720px) {
-	.doc-sub-nav {
-		line-height: 3em;
-		margin: 0 auto;
-		max-width: 480px;
-
-		h1 {
-			border-bottom-width: 0;
-			display: inline;
-			padding-bottom: 9px;
-			text-align: center;
-		}
-
-		li {
-			border-bottom-width: 0;
-			border-top: 1px solid #CCC;
-		}
-
-		#osbSideNav.class-toggle-active, .children-marker, .regular-heading {
-			display: none;
-		}
-
-		.has-sub-nav .sub-nav, .mobile-heading, .side-nav-item {
-			display: block;
-		}
 	}
 }

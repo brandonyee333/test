@@ -54,12 +54,26 @@ a.btn, input.btn, input[type="button"].aui-button-input, input[type="button"].bt
 	}
 }
 
+.aui-button-input-reset {
+	float: right;
+	margin-right: 10px;
+}
+
 .btn {
 	margin: 0;
 }
 
 .btn-content {
 	display: block;
+}
+
+.comment-buttons {
+	margin-top: 10px;
+}
+
+.show-more-button {
+	margin-left: 2vw;
+	padding-top: 20px;
 }
 
 /* ---------- Icon links ---------- */

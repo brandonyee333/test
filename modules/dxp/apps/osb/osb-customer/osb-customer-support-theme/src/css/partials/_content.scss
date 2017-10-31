@@ -34,6 +34,22 @@
 	}
 }
 
+.auto-complete-container #trigger {
+	display: none;
+}
+
+.aui-tooltip {
+	word-wrap: break-word;
+}
+
+.aui-overlay-content.aui-tooltip-content {
+	@include box-shadow(none);
+}
+
+.aui-overlay-content.aui-tooltip-content, .btn, .sign-in-button a {
+	@include border-radius(2px);
+}
+
 .aui-overlaycontextpanel-arrow-bl .aui-overlaycontextpanel-pointer .aui-overlaycontextpanel-pointer-inner {
 	border-right: 16px dashed transparent;
 	border-top: 12px solid #FFF !important;
@@ -49,6 +65,22 @@
 .aui-overlay-content.aui-tooltip-content {
 	background: #FFF;
 	border: 1px solid #C8C9CA;
+}
+
+.aui-tabview-list .aui-tab {
+	background-color: #FFF;
+
+	& a, & a * {
+		color: #383838;
+	}
+
+	&.aui-tab-active {
+		background-color: $blue;
+
+		& a, & a * {
+			color: #FFF;
+		}
+	}
 }
 
 .aui-tooltip-content div {
@@ -75,6 +107,7 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
+	border-radius: 50%;
 
 	&.large {
 		height: 100px;
@@ -161,11 +194,6 @@
 	.portlet-column {
 		max-width: none;
 	}
-}
-
-.nav-menu .nav-item {
-	display: inline-block;
-	vertical-align: top;
 }
 
 .opens-new-window-accessible {

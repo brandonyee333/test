@@ -39,32 +39,40 @@ a {
 	}
 }
 
+a.disabled {
+	color: #333;
+	text-decoration: line-through;
+}
+
+a.help-link img {
+	padding-top: 3px;
+}
+
+b, strong, .txt-b {
+	font-family: "Avenir Medium";
+	font-weight: bold;
+}
+
 blockquote, h2, h3 {
 	line-height: 1.125;
 	margin: 0 0 0.5625em;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	font-size: 1em;
-	font-weight: 100;
-}
+div.table {
+	border-collapse: collapse;
+	display: table;
+	table-layout: fixed;
+	width: 100%;
 
-h1 {
-	font-size: 200%;
-	line-height: 1.2;
-	margin: 0 0 0.3em;
-}
+	.row-url, div.row {
+		display: table-row;
+		width: 100%;
+	}
 
-h2 {
-	font-size: 150%;
-}
-
-h3 {
-	font-size: 120%;
-}
-
-h4 {
-	font-size: 110%;
+	div.column {
+		display: table-cell;
+		vertical-align: middle;
+	}
 }
 
 input, select, textarea {
@@ -74,9 +82,40 @@ input, select, textarea {
 	padding: 5px;
 }
 
+input[readonly="readonly"] {
+	border: 2px solid #DFDFDF;
+}
+
+input[type=button]:disabled {
+	background: none repeat scroll 0 0 #EEE;
+	border: 1px solid #CCC;
+	color: #CCC;
+	cursor: default;
+}
+
+input[type=checkbox] {
+	vertical-align: middle;
+}
+
+pre {
+	background-color: transparent;
+	border-width: 0;
+	color: inherit;
+	font-family: "Avenir Book";
+	white-space: pre-wrap;
+}
+
 table {
 	border-collapse: collapse;
 	width: 100%;
+
+	.inactive td {
+		background-color: #FCC;
+	}
+}
+
+textarea {
+	margin-top: 10px;
 }
 
 #dockbar {
@@ -97,10 +136,30 @@ table {
 	}
 }
 
+div.portlet-msg-error, div.portlet-msg-success {
+	height: 22px;
+	left: calc(25vw - -60px);
+	overflow: hidden;
+	position: fixed;
+	right: 25vw;
+	top: 55px;
+	transition: top 1s ease;
+	white-space: nowrap;
+}
+
+.info {
+	background-color: #A4A4A4;
+	color: #FFF;
+}
+
 .navigation {
 	font-size: 16px;
 	list-style: none;
 	margin-left: 10px;
+}
+
+.portal-popup .portlet-msg-info {
+	top: inherit;
 }
 
 .portlet-msg-error, .portlet-msg-info, .portlet-msg-success {
@@ -113,17 +172,6 @@ table {
 	right: 25%;
 	text-align: center;
 	z-index: 101;
-}
-
-div.portlet-msg-error, div.portlet-msg-success {
-	height: 22px;
-	left: calc(25vw - -60px);
-	overflow: hidden;
-	position: fixed;
-	right: 25vw;
-	top: 55px;
-	transition: top 1s ease;
-	white-space: nowrap;
 }
 
 .portlet-msg-error {
@@ -141,4 +189,18 @@ div.portlet-msg-error, div.portlet-msg-success {
 .portlet-msg-success {
 	background-color: rgba(204, 255, 204, 0.96);
 	border-color: #8B8;
+}
+
+.txt-sb, .txt-sb * {
+	font-family: "Avenir Medium";
+}
+
+.urgent {
+	background-color: #FF5454;
+	color: #FFF;
+}
+
+.warning {
+	background-color: #FFC;
+	color: #000;
 }

@@ -280,6 +280,160 @@
 	}
 }
 
+.lesa-nav {
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	text-align: center;
+	top: 60px;
+	width: 60px;
+	z-index: 12;
+
+	.nav-icon {
+		cursor: pointer;
+		height: 27px;
+		margin: 30px auto;
+		position: relative;
+		width: 27px;
+
+		&:hover:not(.clicked) .nav-label {
+			display: block;
+		}
+
+		&:hover svg, &.active svg, &.active.unread svg, &.clicked svg {
+			stroke: $blue;
+		}
+
+		&.bottom {
+			bottom: 0;
+			left: 16px;
+			margin: 0 0 35px;
+			position: absolute;
+
+			&.help-icon {
+				margin: 0 0 155px;
+			}
+
+			&.lesa-feedback-icon {
+				margin: 0 0 92px;
+			}
+
+			&.messages-icon {
+				margin: 0 0 218px;
+			}
+		}
+
+		&.unread svg {
+			stroke: #F00;
+		}
+
+		svg {
+			fill: none;
+			stroke: $medium-gray;
+			stroke-width: 1.5;
+		}
+
+		.nav-label {
+			background-color: rgba(0, 0, 0, 0.8);
+			border-radius: 3px;
+			color: #FFF;
+			display: none;
+			font-size: 16px;
+			left: 100%;
+			margin-left: 10px;
+			margin-top: -13px;
+			padding: 3px;
+			position: absolute;
+			top: 50%;
+			white-space: nowrap;
+			z-index: 13;
+
+			&:before {
+				border-bottom: 3px solid transparent;
+				border-right: 4px solid rgba(0, 0, 0, 0.8);
+				border-top: 3px solid transparent;
+				content: "";
+				height: 0;
+				left: -4px;
+				margin: 0;
+				padding: 0;
+				position: absolute;
+				top: 12px;
+				width: 0;
+			}
+		}
+
+		.nav-submenu {
+			background-color: #FFF;
+			border: 1px solid $medium-gray;
+			cursor: default;
+			display: block;
+			left: 52px;
+			max-height: 80vh;
+			outline: none;
+			overflow: auto;
+			padding: 10px;
+			position: absolute;
+			top: -22px;
+			z-index: 14;
+
+			.arrow {
+				border-bottom: 9px solid transparent;
+				border-right: 9px solid $medium-gray;
+				border-top: 9px solid transparent;
+				content: "";
+				height: 0;
+				left: -9px;
+				margin: 0;
+				padding: 0;
+				position: absolute;
+				top: 12px;
+				width: 0;
+				z-index: 15;
+
+				&:before {
+					border-bottom: 8px solid transparent;
+					border-right: 8px solid #FFF;
+					border-top: 8px solid transparent;
+					content: "";
+					height: 0;
+					left: 1px;
+					margin: 0;
+					padding: 0;
+					position: absolute;
+					top: -8px;
+					width: 0;
+					z-index: 16;
+				}
+			}
+
+			li {
+				color: $medium-gray;
+				font-family: "Avenir Medium";
+				font-size: 16px;
+				list-style-type: none;
+				padding: 10px;
+				white-space: nowrap;
+
+				a {
+					color: $medium-gray;
+					display: block;
+					text-decoration: none;
+
+					&.active, &:hover {
+						color: $text-color;
+					}
+				}
+			}
+		}
+	}
+}
+
+.nav-menu .nav-item {
+	display: inline-block;
+	vertical-align: top;
+}
+
 .tab-nav {
 	text-align: center;
 
@@ -314,5 +468,94 @@
 
 	.l a {
 		border-right-width: 1px;
+	}
+}
+
+.sidebar {
+	background-color: $light-bg;
+	height: 60%;
+	overflow: auto;
+	padding: 20px;
+	position: fixed;
+	right: 3%;
+	top: 230px;
+	width: 15%;
+	z-index: 2;
+
+	.section {
+		margin: 0 0 30px;
+
+		&.last {
+			margin: 0;
+		}
+
+		select {
+			font-size: 11px;
+		}
+
+		.heading {
+			font-family: "Avenir Medium";
+			font-size: 18px;
+			margin: 0 0 15px;
+		}
+
+		.sub-section {
+			color: $medium-gray;
+			margin: 0 0 15px;
+
+			&.last {
+				margin: 0;
+			}
+
+			.footnote {
+				color: #999;
+			}
+
+			.txt-sb {
+				color: $text-color;
+			}
+		}
+	}
+}
+
+.three-dot {
+	display: inline-block;
+	height: 32px;
+	position: relative;
+	text-align: right;
+	vertical-align: middle;
+	width: 30px;
+
+	.three-dot-icon {
+		cursor: pointer;
+		display: block;
+		height: 32px;
+		position: absolute;
+		right: 0;
+		width: 30px;
+
+		span {
+			border: 2px solid #383838;
+			border-radius: 50%;
+			height: 0;
+			position: absolute;
+			right: 13px;
+			width: 0;
+		}
+	}
+
+	&.attachment-link, &.comment-menu {
+		float: right;
+		font-size: 14px !important;
+		height: 21px;
+
+		.three-dot-icon {
+			height: 21px;
+
+			span {
+				border: 1px solid #383838;
+				right: 14px;
+			}
+		}
 	}
 }

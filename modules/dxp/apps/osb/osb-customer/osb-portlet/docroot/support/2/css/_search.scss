@@ -1,3 +1,39 @@
+#mainSearchContent input[type=search] {
+	-webkit-appearance: textfield;
+	-webkit-box-sizing: content-box;
+
+	&::-webkit-search-cancel-button, &::-webkit-search-decoration, &::-webkit-search-results-button, &::-webkit-search-results-decoration {
+		-webkit-appearance: none;
+	}
+}
+
+#toggle_id_account_entry_searchadvanced,
+#toggle_id_ticket_entry_searchadvanced {
+	padding-top: 10px;
+}
+
+#toggle_id_account_entry_searchbasic,
+#toggle_id_partner_entry_searchbasic,
+#toggle_id_ticket_entry_searchbasic,
+#toggle_id_ticket_feedback_searchbasic {
+	input {
+		font: 18px/1.33 Arial;
+		height: 32px;
+		padding: 1px;
+
+		&.aui-button-input-submit {
+			height: 34px;
+			width: 160px;
+		}
+
+		&.aui-field-input {
+			border: 1px solid #BBB;
+			margin: 0 20px 0 0;
+			width: auto;
+		}
+	}
+}
+
 .advanced-search {
 	&.keywords {
 		border: 1px solid #CCC;

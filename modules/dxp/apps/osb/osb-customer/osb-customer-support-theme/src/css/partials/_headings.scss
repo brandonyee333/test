@@ -1,0 +1,113 @@
+h1, h2, h3, h4, h5, h6 {
+	font-size: 1em;
+	font-weight: 100;
+}
+
+h1 {
+	font-size: 200%;
+	line-height: 1.2;
+	margin: 0 0 0.3em;
+}
+
+h2 {
+	font-size: 150%;
+}
+
+h3 {
+	font-size: 120%;
+}
+
+h4 {
+	font-size: 110%;
+}
+
+.section-heading {
+	color: #3A3A3A;
+	font-size: 16px;
+	font-weight: normal;
+	line-height: 1.5em;
+	padding-top: 15px;
+
+	&.steps {
+		font-size: 24px;
+	}
+}
+
+.section-title {
+	background: #FFF;
+	font-size: 18px;
+	font-weight: bold;
+	position: relative;
+
+	a {
+		color: $text-color;
+	}
+
+	&.other {
+		z-index: 2;
+	}
+
+	&.pinned, &.top {
+		left: 0;
+		margin-left: 110px;
+		margin-right: 50px;
+		margin-top: 0 !important;
+		position: fixed;
+		right: 0;
+	}
+
+	&.top {
+		padding-top: 70px;
+		z-index: 1;
+
+		&.banner-top {
+			top: 105px;
+		}
+
+		&.normal-top {
+			top: 70px;
+		}
+	}
+}
+
+.sub-header {
+	margin-right: -20px;
+
+	div {
+		display: inline-block;
+	}
+
+	.segment {
+		color: $medium-gray;
+		margin: 0 10px;
+
+		&.first {
+			margin-left: 0;
+		}
+
+		&.last {
+			margin-right: 0;
+		}
+
+		select {
+			font-size: 11px;
+		}
+
+		.ticket-img {
+			vertical-align: middle;
+		}
+
+		.txt-sb {
+			color: $text-color;
+		}
+	}
+
+	.spacer {
+		background: $medium-gray;
+		border-radius: 2.5px;
+		display: inline-block;
+		height: 5px;
+		vertical-align: middle;
+		width: 5px;
+	}
+}

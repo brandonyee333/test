@@ -63,3 +63,33 @@
 		}
 	}
 }
+
+.away-message {
+	textarea {
+		height: 250px;
+		width: 500px;
+	}
+}
+
+.away-message-checkbox {
+	padding-bottom: 25px;
+}
+
+.away-message-end-date {
+	display: block;
+	float: right;
+}
+
+.away-message-header {
+	display: inline;
+}
+
+.away-message-start-date {
+	display: block;
+	float: left;
+}
+
+.away-message-text-area {
+	padding-bottom: 25px;
+	padding-top: 25px;
+}
