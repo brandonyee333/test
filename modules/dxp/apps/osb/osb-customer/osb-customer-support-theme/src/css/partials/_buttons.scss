@@ -38,15 +38,6 @@ a.btn, input.btn, input[type="button"].aui-button-input, input[type="button"].bt
 		cursor: default;
 	}
 
-	&.large {
-		font-size: 15px;
-		padding: 5px 20px;
-	}
-
-	&.small {
-		padding: 2px 15px;
-	}
-
 	&.style-a {
 		border-color: #1BAAE1;
 		color: #1BAAE1;
@@ -61,74 +52,14 @@ a.btn, input.btn, input[type="button"].aui-button-input, input[type="button"].bt
 			color: #FFF;
 		}
 	}
+}
 
-	&.style-b {
-		background: #0E4681;
-		border-color: #0E4681;
-		color: #FFF;
-
-		&:hover {
-			background: #FFF;
-			color: #0E4681;
-		}
-
-		&:active, &:focus {
-			background: #89A4C1;
-			color: #0E4681;
-		}
-	}
+.btn {
+	margin: 0;
 }
 
 .btn-content {
 	display: block;
-}
-
-.btn-a, .btn-b, .btn-c, .btn-d {
-	background-color: #00ADEF;
-	color: #FFF;
-	display: inline-block;
-	font-weight: normal;
-	padding: 2px 8px;
-	text-align: center;
-	vertical-align: top;
-
-	&:active, &:focus, &:hover {
-		color: #FFF;
-	}
-}
-
-.btn-a {
-	background-color: #00ADEF;
-	margin: -2px 0;
-}
-
-.btn-b {
-	background-color: #F08000;
-}
-
-.btn-c {
-	background-color: #EF000B;
-}
-
-.btn-d {
-	margin: 0;
-	padding: 0 4px;
-
-	&.Community {
-		background-color: #4CC417;
-	}
-
-	&.grey {
-		background-color: #CCC;
-	}
-
-	&.Staff {
-		background-color: #1D6799;
-	}
-}
-
-.btn *, .btn-a *, .btn-b *, .btn-c * {
-	margin: 0;
 }
 
 /* ---------- Icon links ---------- */

@@ -310,40 +310,6 @@ div.table {
 		display: block;
 	}
 
-	.btn-d {
-		&.support-btn {
-			background: #FFF;
-			border: 1px solid $blue;
-			color: $blue;
-			float: left;
-			margin-bottom: 10px;
-			padding: 0.25em 0.5em;
-			text-decoration: none;
-			text-transform: uppercase;
-
-			&:hover {
-				background: $blue;
-			}
-
-			&:hover div {
-				color: #FFF;
-			}
-		}
-	}
-
-	.button-row {
-		overflow: hidden;
-
-		& .aui-button-input {
-			margin-bottom: 5px;
-		}
-
-		& .bottom-row {
-			clear: both;
-			width: 100%;
-		}
-	}
-
 	.canned-response-results .taglib-search-iterator td a {
 		color: #CD171D;
 	}
@@ -1777,36 +1743,6 @@ div.table {
 		background: #FFF;
 		font-size: 16px;
 		margin-right: 5px;
-
-		&.v1 {
-			border-color: #00ADEF;
-			color: #00ADEF;
-
-			&:hover {
-				background: #00ADEF;
-				color: #FFF;
-			}
-		}
-
-		&.v2 {
-			border-color: #F08000;
-			color: #F08000;
-
-			&:hover {
-				background: #F08000;
-				color: #FFF;
-			}
-		}
-
-		&.v3 {
-			border-color: #EF000B;
-			color: #EF000B;
-
-			&:hover {
-				background: #EF000B;
-				color: #FFF;
-			}
-		}
 	}
 
 	.solution-details {
@@ -1873,21 +1809,6 @@ div.table {
 			height: 5px;
 			vertical-align: middle;
 			width: 5px;
-		}
-	}
-
-	.support-btn {
-		&:hover .plus-sign {
-			color: #FFF;
-		}
-
-		.plus-sign {
-			display: block;
-			float: left;
-			font-size: 2em;
-			font-weight: normal;
-			line-height: 0.7em;
-			padding-right: 5px;
 		}
 	}
 
@@ -2118,14 +2039,6 @@ div.table {
 			top: 150px;
 			z-index: 2;
 		}
-	}
-
-	.temp-flag {
-		background-color: #F08000;
-		color: #FFF;
-		display: inline;
-		padding: 0 4px;
-		text-align: center;
 	}
 
 	.three-dot {
@@ -2400,18 +2313,6 @@ div.table {
 		* {
 			vertical-align: top;
 		}
-	}
-
-	.v1 {
-		background: #66BC58;
-	}
-
-	.v2 {
-		background: #F9D35F;
-	}
-
-	.v3 {
-		background: #EA5B60;
 	}
 
 	.view-liferay {
