@@ -112,15 +112,15 @@ ul.aui-tabview-list {
 }
 
 .aui-panel {
+	.aui-icon-closethick {
+		background: url(../images/custom/close_icon_white.png) no-repeat center;
+	}
+
 	.aui-panel-content .aui-panel-hd {
 		background: #939598;
 		border-width: 0;
 		color: #FFF;
 		padding: 5px 5px 5px 10px;
-	}
-
-	.aui-icon-closethick {
-		background: url(../images/custom/close_icon_white.png) no-repeat center;
 	}
 
 	.aui-panel-hd {

@@ -29,14 +29,14 @@
 		}
 
 		&.aui-field-focused, &.aui-form-validator-error-container, &.aui-form-validator-valid-container, &.field-filled, &.field-focused {
+			input, select {
+				padding: 12px 8px 3px;
+			}
+
 			.aui-field-label {
 				font-size: 12px;
 				left: 9px;
 				top: 3px;
-			}
-
-			input, select {
-				padding: 12px 8px 3px;
 			}
 		}
 

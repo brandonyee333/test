@@ -34,11 +34,6 @@
 	}
 }
 
-.sub-grid {
-	clear: both;
-	margin: 0 auto;
-}
-
 .aui-overlaycontextpanel-arrow-bl .aui-overlaycontextpanel-pointer .aui-overlaycontextpanel-pointer-inner {
 	border-right: 16px dashed transparent;
 	border-top: 12px solid #FFF !important;
@@ -238,10 +233,6 @@
 		}
 	}
 
-	ul {
-		padding: 0;
-	}
-
 	li {
 		border-bottom: 1px solid #CACED2;
 		list-style: none;
@@ -251,9 +242,18 @@
 		}
 	}
 
+	ul {
+		padding: 0;
+	}
+
 	.selected a {
 		color: $hover-blue;
 	}
+}
+
+.sub-grid {
+	clear: both;
+	margin: 0 auto;
 }
 
 .unit {
