@@ -67,49 +67,51 @@ public class SetupWatsonListTypes {
 		WatsonListType watsonListType =
 			_watsonListTypeLocalService.fetchWatsonListType(watsonListTypeId);
 
-		if (watsonListType == null) {
-			watsonListType = _watsonListTypeLocalService.createWatsonListType(
-				watsonListTypeId);
+		if (watsonListType != null) {
+			return;
+		}
 
-			watsonListType.setCompanyId(companyId);
+		watsonListType = _watsonListTypeLocalService.createWatsonListType(
+			watsonListTypeId);
 
-			User defaultUser = _userLocalService.getDefaultUser(companyId);
+		watsonListType.setCompanyId(companyId);
 
-			watsonListType.setUserId(defaultUser.getUserId());
-			watsonListType.setUserName(defaultUser.getFullName());
+		User defaultUser = _userLocalService.getDefaultUser(companyId);
 
-			watsonListType.setCreateDate(new Date());
-			watsonListType.setModifiedDate(watsonListType.getCreateDate());
-			watsonListType.setParentWatsonListTypeId(parentWatsonListTypeId);
+		watsonListType.setUserId(defaultUser.getUserId());
+		watsonListType.setUserName(defaultUser.getFullName());
 
-			List<Element> nameElements = watsonListTypeElement.elements("name");
+		watsonListType.setCreateDate(new Date());
+		watsonListType.setModifiedDate(watsonListType.getCreateDate());
+		watsonListType.setParentWatsonListTypeId(parentWatsonListTypeId);
 
-			for (Element nameElement : nameElements) {
-				Locale nameLocale = LocaleUtil.fromLanguageId(
-					nameElement.attributeValue("locale"));
+		List<Element> nameElements = watsonListTypeElement.elements("name");
 
-				watsonListType.setName(nameElement.getText(), nameLocale);
-			}
+		for (Element nameElement : nameElements) {
+			Locale nameLocale = LocaleUtil.fromLanguageId(
+				nameElement.attributeValue("locale"));
 
-			String type = watsonListTypeElement.attributeValue("type");
+			watsonListType.setName(nameElement.getText(), nameLocale);
+		}
 
-			watsonListType.setType(type);
+		String type = watsonListTypeElement.attributeValue("type");
 
-			watsonListType.setStatus(WorkflowConstants.STATUS_APPROVED);
+		watsonListType.setType(type);
 
-			watsonListType = _watsonListTypeLocalService.updateWatsonListType(
-				watsonListType);
+		watsonListType.setStatus(WorkflowConstants.STATUS_APPROVED);
 
-			List<Element> childWatsonListTypeElements =
-				watsonListTypeElement.elements("watsonListType");
+		watsonListType = _watsonListTypeLocalService.updateWatsonListType(
+			watsonListType);
 
-			for (Element childWatsonListTypeElement :
-					childWatsonListTypeElements) {
+		List<Element> childWatsonListTypeElements =
+			watsonListTypeElement.elements("watsonListType");
 
-				addWatsonListType(
-					childWatsonListTypeElement, companyId,
-					watsonListType.getWatsonListTypeId());
-			}
+		for (Element childWatsonListTypeElement :
+				childWatsonListTypeElements) {
+
+			addWatsonListType(
+				childWatsonListTypeElement, companyId,
+				watsonListType.getWatsonListTypeId());
 		}
 	}
 
