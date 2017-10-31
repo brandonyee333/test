@@ -74,6 +74,42 @@
 		<column name="longitude" type="double" />
 		<column name="status" type="int" />
 	</entity>
+	<entity local-service="true" name="WatsonChild" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="watsonChildId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="birthCountryId" type="long" />
+		<column name="citizenshipWatsonListTypeId" type="long" />
+		<column name="countryWatsonListTypeId" type="long" />
+		<column name="dischargeWatsonListTypeId" type="long" />
+		<column name="ethnicityWatsonListTypeId" type="long" />
+		<column name="originalWatsonChildId" type="long" />
+		<column name="sexWatsonListTypeId" type="long" />
+		<column name="sourceWatsonListTypeId" type="long" />
+		<column name="sourceSubtypeWatsonListTypeId" type="long" />
+		<column name="typeWatsonListTypeId" type="long" />
+		<column name="dateAccepted" type="Date" />
+		<column name="dateDischarged" type="Date" />
+		<column name="dateFollowUp" type="Date" />
+		<column name="source" type="String" />
+		<column name="status" type="int" />
+	</entity>
 	<entity local-service="true" name="WatsonHistory" remote-service="false">
 
 		<!-- PK fields -->
