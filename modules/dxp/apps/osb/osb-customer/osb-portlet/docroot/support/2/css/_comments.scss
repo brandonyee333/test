@@ -1,0 +1,221 @@
+.comment-body {
+	pre {
+		margin: 0;
+		overflow: hidden;
+		padding: 0;
+		word-wrap: break-word;
+	}
+
+	&.type-game-plan {
+		background-color: #FAEBC8;
+	}
+}
+
+.comment-buttons {
+	margin-top: 10px;
+}
+
+.comment-collapsed {
+	.code, .quote, .quote-content {
+		display: inline;
+	}
+
+	&.ticket-comment {
+		.comment-body {
+			height: 1.5em;
+			margin: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			width: 100%;
+
+			* {
+				color: #AAA;
+				display: inline;
+				font-style: italic;
+				white-space: nowrap;
+				word-wrap: normal;
+			}
+
+			b, strong {
+				font-weight: normal;
+			}
+
+			br {
+				display: none;
+			}
+
+			.comment-body-wrapper {
+				width: 1200px;
+			}
+
+			&.rejected-comment-body {
+				background-color: #FCC;
+
+				* {
+					color: #999;
+				}
+			}
+
+			&.type-game-plan {
+				background-color: #FAEBC8;
+			}
+		}
+
+		.permalink {
+			display: none;
+		}
+
+		.post-date {
+			color: #AAA;
+		}
+
+		.small-user-avatar {
+			background-position: center;
+
+			@include border-radius(50%);
+
+			display: block;
+			filter: grayscale(100%);
+			height: 30px;
+			margin: 0 8px;
+			opacity: 0.5;
+			padding: 0;
+			width: 30px;
+		}
+
+		.user-avatar {
+			display: none;
+		}
+
+		.user-name span {
+			color: #AAA;
+			filter: grayscale(100%);
+			font-family: "Avenir Book";
+			font-size: 14px;
+
+			.badge {
+				opacity: 0.5;
+			}
+		}
+	}
+
+	div.post-date {
+		display: none;
+	}
+
+	span.post-date {
+		display: inline;
+		font-family: "Avenir Book";
+		font-size: 12px;
+	}
+
+	.user-name {
+		display: inline-block;
+
+		.three-dot {
+			display: none;
+		}
+	}
+}
+
+.comment-draft-border {
+	border: 1px solid #F00;
+}
+
+.comment-draft-hint {
+	color: #EF000B;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.comment-expanded, .comment-help, .preview {
+	.code {
+		background: none repeat scroll 0 0 #FFF;
+		border: 1px solid #777;
+		font-family: monospace;
+		max-height: 180px;
+		overflow-x: auto;
+		white-space: pre;
+	}
+
+	.code-lines {
+		border-right: 1px solid #CCC;
+		color: #000;
+		margin-right: 5px;
+		padding: 0 5px;
+	}
+
+	div.post-date {
+		display: block;
+	}
+
+	span.post-date {
+		display: none;
+	}
+
+	.quote {
+		background: url(@theme_image_path@/message_boards/quoteleft.png) no-repeat scroll left top white;
+		border: 1px solid #777;
+		padding: 5px 0 0 5px;
+	}
+
+	.quote-content {
+		background: url(@theme_image_path@/message_boards/quoteright.png) no-repeat scroll right bottom;
+		padding: 5px 30px 10px;
+		word-wrap: break-word;
+	}
+
+	.small-user-avatar {
+		display: none;
+	}
+}
+
+.comment-footer {
+	padding: 0 10px;
+
+	table {
+		margin-bottom: 3px;
+	}
+}
+
+.comment-help {
+	margin: 0 10px;
+
+	table {
+		background-color: #FFF;
+		margin-bottom: 0;
+	}
+
+	td {
+		border: 1px solid black;
+		padding: 10px;
+		vertical-align: middle;
+	}
+
+	th {
+		border: 1px solid black;
+		padding: 10px;
+		text-align: center;
+	}
+
+	.col-2 {
+		text-align: center;
+	}
+
+	.first {
+		width: 40%;
+	}
+}
+
+.common-textarea {
+	overflow: hidden;
+
+	textarea {
+		margin-bottom: 15px;
+		width: calc(100% - 12px);
+	}
+}
+
+.comment-scroll {
+	background-color: #D9D9D9;
+}

@@ -1,0 +1,96 @@
+.lfr-dynamic-uploader {
+	.lfr-message-container {
+		margin-bottom: 10px;
+
+		.message {
+			border: 1px solid;
+			border-radius: 5px;
+			display: block;
+			font-weight: normal;
+			padding: 5px 25px;
+			text-shadow: 1px 1px #FFF;
+
+			&.error-message {
+				background: url(/html/themes/classic/images/messages/error.png) no-repeat 5px #FDD;
+				border-color: #900;
+				color: #900;
+			}
+
+			&.progress-message {
+				background: url(@theme_image_path@/application/loading_indicator.gif) no-repeat 5px #D3E8F1;
+				border-color: #38F;
+				color: #34404F;
+			}
+
+			&.success-message {
+				background: url(/html/themes/classic/images/messages/success.png) no-repeat 5px #D3E8F1;
+				border-color: #38F;
+				color: #047;
+			}
+
+			&.warn-message {
+				background: url(/html/themes/classic/images/messages/info.png) no-repeat 5px #D3E8F1;
+				border-color: #38F;
+				color: #34404F;
+			}
+		}
+	}
+
+	.lfr-upload-container {
+		margin-bottom: 0;
+
+		.toolbar {
+			.progress-bar {
+				background: #FFF;
+				border: 1px solid #83A8D9;
+				display: block;
+				height: 15px;
+			}
+
+			.progress {
+				background: #8DB2E3;
+				display: block;
+				height: 15px;
+				width: 0;
+			}
+
+			.cancel-button {
+				background-image: url(@theme_image_path@/common/delete.png);
+				display: block;
+				height: 16px;
+				width: 16px;
+			}
+
+			.pause-button {
+				background-image: url(@theme_image_path@/aui/pause.png);
+				display: block;
+				height: 18px;
+				width: 18px;
+			}
+
+			.resume-button {
+				background-image: url(@theme_image_path@/aui/play.png);
+				display: block;
+				height: 18px;
+				width: 18px;
+			}
+		}
+
+		.upload-area {
+			border: 3px dashed #DDD;
+			margin: 10px 0;
+			padding: 5px 0;
+			text-align: center;
+
+			.drop-file-text {
+				font-size: 17.5px;
+				font-weight: normal;
+			}
+
+			&.dragging {
+				background-color: #A7CEDF;
+				transform: scale(0.9);
+			}
+		}
+	}
+}

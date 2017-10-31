@@ -1,0 +1,65 @@
+#lesaBanner {
+	bottom: 0;
+	left: 60px;
+	position: fixed;
+	right: 0;
+	z-index: 3;
+
+	.announcement {
+		color: #FFF;
+		padding: 10px 5px;
+		text-align: center;
+
+		&.info {
+			border-top: 1px solid #565656;
+
+			.btn {
+				background-color: #A4A4A4;
+			}
+
+			.btn:hover {
+				color: #A4A4A4;
+			}
+		}
+
+		&.maintenance {
+			background-color: #DBA901;
+			border-top: 1px solid #A08116;
+
+			.btn {
+				background-color: #DBA901;
+			}
+
+			.btn:hover {
+				color: #DBA901;
+			}
+		}
+
+		.announcement-text {
+			line-height: 2;
+			padding: 0 20px;
+			vertical-align: middle;
+		}
+
+		.btn {
+			border: 1px solid #FFF;
+			color: #FFF;
+		}
+
+		.btn:hover {
+			background-color: #FFF;
+		}
+
+		.btn.close-announcement {
+			background: url(@theme_image_path@/custom/close_icon_white.png) no-repeat center;
+			border-width: 0;
+			cursor: pointer;
+			float: right;
+			width: 20px;
+		}
+
+		.btn.close-announcement:hover {
+			background-color: #BDBDBD;
+		}
+	}
+}
