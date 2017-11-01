@@ -127,6 +127,7 @@
 			</trigger>
 		</scheduler-entry>
 		<friendly-url-mapper-class>com.liferay.osb.support.SupportFriendlyURLMapper</friendly-url-mapper-class>
+		<header-portlet-css>/support/2/css/main.css</header-portlet-css>
 		<header-portlet-javascript>/common/javascript/attachment_upload.js</header-portlet-javascript>
 		<header-portlet-javascript>/common/javascript/dynamic_uploader.js</header-portlet-javascript>
 		<header-portlet-javascript>/common/javascript/querystring_util.js</header-portlet-javascript>
