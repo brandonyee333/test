@@ -112,6 +112,18 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		}
 	}
 
+	public static void setGroupedModel(BaseModel<?> baseModel, HttpServletRequest request) throws Exception {
+		if (!(baseModel instanceof GroupedModel) || !baseModel.isNew() || (request == null)) {
+			return;
+		}
+
+		GroupedModel groupedModel = (GroupedModel)baseModel;
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+
+		groupedModel.setGroupId(themeDisplay.getScopeGroupId());
+	}
+
 	@Override
 	protected void executeResource(Method method) throws Exception {
 		Class<?> tempClass = clazz;
