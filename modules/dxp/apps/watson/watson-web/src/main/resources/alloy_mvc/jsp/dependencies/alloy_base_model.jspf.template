@@ -48,6 +48,8 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(${instancename}, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(${instancename}, request);
+
 		validateAdd(${instancename});
 
 		${instancename}.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -138,6 +140,8 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(${instancename}, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(${instancename}, request);
+
 		return ${instancename};
 	}
 
@@ -150,6 +154,8 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(${instancename}, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(${instancename}, request);
+
 		return ${instancename};
 	}
 
@@ -159,6 +165,8 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 		${instancename}.setNew(true);
 
 		BaseAlloyControllerImpl.setAuditedModel(${instancename}, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(${instancename}, request);
 
 		${instancename}.set${classname}Id(CounterLocalServiceUtil.increment());
 
@@ -268,11 +276,15 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(${instancename}, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(${instancename}, request);
+
 		return ${instancename};
 	}
 
 	public static ${classname} setFields(${classname} ${instancename}, HttpServletRequest request, Object... properties) throws Exception {
 		BaseAlloyControllerImpl.setAuditedModel(${instancename}, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(${instancename}, request);
 
 		WatsonAlloyControllerImpl.setBaseModelProperties(${instancename}, properties);
 
@@ -309,6 +321,8 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 		}
 
 		BaseAlloyControllerImpl.setAuditedModel(${instancename}, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(${instancename}, request);
 
 		validateUpdate(${instancename});
 
