@@ -106,9 +106,7 @@ public class SetupWatsonListTypes {
 		List<Element> childWatsonListTypeElements =
 			watsonListTypeElement.elements("watsonListType");
 
-		for (Element childWatsonListTypeElement :
-				childWatsonListTypeElements) {
-
+		for (Element childWatsonListTypeElement : childWatsonListTypeElements) {
 			addWatsonListType(
 				childWatsonListTypeElement, companyId,
 				watsonListType.getWatsonListTypeId());
