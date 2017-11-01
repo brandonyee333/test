@@ -58,7 +58,7 @@ else {
 				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 			</c:when>
 			<c:otherwise>
-				<aui:select name="accountEntryId" onChange='<%= renderResponse.getNamespace() + "selectAccountEntry();" %>'>
+				<aui:select label="" name="accountEntryId" onChange='<%= renderResponse.getNamespace() + "selectAccountEntry();" %>'>
 					<aui:option value="" />
 
 					<%

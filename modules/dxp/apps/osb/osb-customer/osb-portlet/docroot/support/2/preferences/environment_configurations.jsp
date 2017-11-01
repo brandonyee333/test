@@ -76,7 +76,7 @@ else {
 				String accountEntryOnChange = "submitForm(document." + renderResponse.getNamespace() + "fm, '" + preferencesRenderURL.toString() + "');";
 				%>
 
-				<aui:select name="accountEntryId" onChange="<%= accountEntryOnChange %>">
+				<aui:select label="" name="accountEntryId" onChange="<%= accountEntryOnChange %>">
 					<aui:option value="" />
 
 					<%
