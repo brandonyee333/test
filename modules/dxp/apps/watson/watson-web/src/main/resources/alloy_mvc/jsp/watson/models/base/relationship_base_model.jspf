@@ -48,6 +48,8 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonRelationship, request);
+
 		validateAdd(watsonRelationship);
 
 		watsonRelationship.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -138,6 +140,8 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonRelationship, request);
+
 		return watsonRelationship;
 	}
 
@@ -150,6 +154,8 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonRelationship, request);
+
 		return watsonRelationship;
 	}
 
@@ -159,6 +165,8 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 		watsonRelationship.setNew(true);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonRelationship, request);
 
 		watsonRelationship.setWatsonRelationshipId(CounterLocalServiceUtil.increment());
 
@@ -268,11 +276,15 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonRelationship, request);
+
 		return watsonRelationship;
 	}
 
 	public static WatsonRelationship setFields(WatsonRelationship watsonRelationship, HttpServletRequest request, Object... properties) throws Exception {
 		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonRelationship, request);
 
 		WatsonAlloyControllerImpl.setBaseModelProperties(watsonRelationship, properties);
 
@@ -309,6 +321,8 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 		}
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonRelationship, request);
 
 		validateUpdate(watsonRelationship);
 

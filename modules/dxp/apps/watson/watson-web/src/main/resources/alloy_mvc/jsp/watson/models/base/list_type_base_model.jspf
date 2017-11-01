@@ -48,6 +48,8 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListType, request);
+
 		validateAdd(watsonListType);
 
 		watsonListType.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -138,6 +140,8 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListType, request);
+
 		return watsonListType;
 	}
 
@@ -150,6 +154,8 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListType, request);
+
 		return watsonListType;
 	}
 
@@ -159,6 +165,8 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 		watsonListType.setNew(true);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListType, request);
 
 		watsonListType.setWatsonListTypeId(CounterLocalServiceUtil.increment());
 
@@ -268,11 +276,15 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListType, request);
+
 		return watsonListType;
 	}
 
 	public static WatsonListType setFields(WatsonListType watsonListType, HttpServletRequest request, Object... properties) throws Exception {
 		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListType, request);
 
 		WatsonAlloyControllerImpl.setBaseModelProperties(watsonListType, properties);
 
@@ -309,6 +321,8 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 		}
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListType, request);
 
 		validateUpdate(watsonListType);
 

@@ -48,6 +48,8 @@ public static class WatsonPersonBaseModel extends WatsonPersonWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonPerson, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonPerson, request);
+
 		validateAdd(watsonPerson);
 
 		watsonPerson.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -138,6 +140,8 @@ public static class WatsonPersonBaseModel extends WatsonPersonWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonPerson, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonPerson, request);
+
 		return watsonPerson;
 	}
 
@@ -150,6 +154,8 @@ public static class WatsonPersonBaseModel extends WatsonPersonWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonPerson, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonPerson, request);
+
 		return watsonPerson;
 	}
 
@@ -159,6 +165,8 @@ public static class WatsonPersonBaseModel extends WatsonPersonWrapper {
 		watsonPerson.setNew(true);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonPerson, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonPerson, request);
 
 		watsonPerson.setWatsonPersonId(CounterLocalServiceUtil.increment());
 
@@ -268,11 +276,15 @@ public static class WatsonPersonBaseModel extends WatsonPersonWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonPerson, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonPerson, request);
+
 		return watsonPerson;
 	}
 
 	public static WatsonPerson setFields(WatsonPerson watsonPerson, HttpServletRequest request, Object... properties) throws Exception {
 		BaseAlloyControllerImpl.setAuditedModel(watsonPerson, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonPerson, request);
 
 		WatsonAlloyControllerImpl.setBaseModelProperties(watsonPerson, properties);
 
@@ -309,6 +321,8 @@ public static class WatsonPersonBaseModel extends WatsonPersonWrapper {
 		}
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonPerson, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonPerson, request);
 
 		validateUpdate(watsonPerson);
 

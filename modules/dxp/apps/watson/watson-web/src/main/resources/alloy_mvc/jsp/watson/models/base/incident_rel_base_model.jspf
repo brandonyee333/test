@@ -48,6 +48,8 @@ public static class WatsonIncidentRelBaseModel extends WatsonIncidentRelWrapper 
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonIncidentRel, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonIncidentRel, request);
+
 		validateAdd(watsonIncidentRel);
 
 		watsonIncidentRel.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -138,6 +140,8 @@ public static class WatsonIncidentRelBaseModel extends WatsonIncidentRelWrapper 
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonIncidentRel, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonIncidentRel, request);
+
 		return watsonIncidentRel;
 	}
 
@@ -150,6 +154,8 @@ public static class WatsonIncidentRelBaseModel extends WatsonIncidentRelWrapper 
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonIncidentRel, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonIncidentRel, request);
+
 		return watsonIncidentRel;
 	}
 
@@ -159,6 +165,8 @@ public static class WatsonIncidentRelBaseModel extends WatsonIncidentRelWrapper 
 		watsonIncidentRel.setNew(true);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonIncidentRel, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonIncidentRel, request);
 
 		watsonIncidentRel.setWatsonIncidentRelId(CounterLocalServiceUtil.increment());
 
@@ -268,11 +276,15 @@ public static class WatsonIncidentRelBaseModel extends WatsonIncidentRelWrapper 
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonIncidentRel, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonIncidentRel, request);
+
 		return watsonIncidentRel;
 	}
 
 	public static WatsonIncidentRel setFields(WatsonIncidentRel watsonIncidentRel, HttpServletRequest request, Object... properties) throws Exception {
 		BaseAlloyControllerImpl.setAuditedModel(watsonIncidentRel, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonIncidentRel, request);
 
 		WatsonAlloyControllerImpl.setBaseModelProperties(watsonIncidentRel, properties);
 
@@ -309,6 +321,8 @@ public static class WatsonIncidentRelBaseModel extends WatsonIncidentRelWrapper 
 		}
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonIncidentRel, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonIncidentRel, request);
 
 		validateUpdate(watsonIncidentRel);
 

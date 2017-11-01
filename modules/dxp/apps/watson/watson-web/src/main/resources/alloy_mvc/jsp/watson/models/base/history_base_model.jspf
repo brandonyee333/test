@@ -48,6 +48,8 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonHistory, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonHistory, request);
+
 		validateAdd(watsonHistory);
 
 		watsonHistory.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -138,6 +140,8 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonHistory, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonHistory, request);
+
 		return watsonHistory;
 	}
 
@@ -150,6 +154,8 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonHistory, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonHistory, request);
+
 		return watsonHistory;
 	}
 
@@ -159,6 +165,8 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 		watsonHistory.setNew(true);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonHistory, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonHistory, request);
 
 		watsonHistory.setWatsonHistoryId(CounterLocalServiceUtil.increment());
 
@@ -268,11 +276,15 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonHistory, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonHistory, request);
+
 		return watsonHistory;
 	}
 
 	public static WatsonHistory setFields(WatsonHistory watsonHistory, HttpServletRequest request, Object... properties) throws Exception {
 		BaseAlloyControllerImpl.setAuditedModel(watsonHistory, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonHistory, request);
 
 		WatsonAlloyControllerImpl.setBaseModelProperties(watsonHistory, properties);
 
@@ -309,6 +321,8 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 		}
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonHistory, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonHistory, request);
 
 		validateUpdate(watsonHistory);
 

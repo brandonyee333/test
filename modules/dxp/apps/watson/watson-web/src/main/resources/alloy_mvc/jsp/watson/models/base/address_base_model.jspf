@@ -48,6 +48,8 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonAddress, request);
+
 		validateAdd(watsonAddress);
 
 		watsonAddress.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -138,6 +140,8 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonAddress, request);
+
 		return watsonAddress;
 	}
 
@@ -150,6 +154,8 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonAddress, request);
+
 		return watsonAddress;
 	}
 
@@ -159,6 +165,8 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 		watsonAddress.setNew(true);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonAddress, request);
 
 		watsonAddress.setWatsonAddressId(CounterLocalServiceUtil.increment());
 
@@ -268,11 +276,15 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonAddress, request);
+
 		return watsonAddress;
 	}
 
 	public static WatsonAddress setFields(WatsonAddress watsonAddress, HttpServletRequest request, Object... properties) throws Exception {
 		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonAddress, request);
 
 		WatsonAlloyControllerImpl.setBaseModelProperties(watsonAddress, properties);
 
@@ -309,6 +321,8 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 		}
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonAddress, request);
 
 		validateUpdate(watsonAddress);
 

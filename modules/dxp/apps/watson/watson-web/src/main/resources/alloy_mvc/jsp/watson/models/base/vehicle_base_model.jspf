@@ -48,6 +48,8 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonVehicle, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonVehicle, request);
+
 		validateAdd(watsonVehicle);
 
 		watsonVehicle.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -138,6 +140,8 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonVehicle, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonVehicle, request);
+
 		return watsonVehicle;
 	}
 
@@ -150,6 +154,8 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonVehicle, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonVehicle, request);
+
 		return watsonVehicle;
 	}
 
@@ -159,6 +165,8 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 		watsonVehicle.setNew(true);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonVehicle, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonVehicle, request);
 
 		watsonVehicle.setWatsonVehicleId(CounterLocalServiceUtil.increment());
 
@@ -268,11 +276,15 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonVehicle, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonVehicle, request);
+
 		return watsonVehicle;
 	}
 
 	public static WatsonVehicle setFields(WatsonVehicle watsonVehicle, HttpServletRequest request, Object... properties) throws Exception {
 		BaseAlloyControllerImpl.setAuditedModel(watsonVehicle, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonVehicle, request);
 
 		WatsonAlloyControllerImpl.setBaseModelProperties(watsonVehicle, properties);
 
@@ -309,6 +321,8 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 		}
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonVehicle, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonVehicle, request);
 
 		validateUpdate(watsonVehicle);
 

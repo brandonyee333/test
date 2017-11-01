@@ -48,6 +48,8 @@ public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonResource, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonResource, request);
+
 		validateAdd(watsonResource);
 
 		watsonResource.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -138,6 +140,8 @@ public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonResource, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonResource, request);
+
 		return watsonResource;
 	}
 
@@ -150,6 +154,8 @@ public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonResource, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonResource, request);
+
 		return watsonResource;
 	}
 
@@ -159,6 +165,8 @@ public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 		watsonResource.setNew(true);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonResource, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonResource, request);
 
 		watsonResource.setWatsonResourceId(CounterLocalServiceUtil.increment());
 
@@ -268,11 +276,15 @@ public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonResource, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonResource, request);
+
 		return watsonResource;
 	}
 
 	public static WatsonResource setFields(WatsonResource watsonResource, HttpServletRequest request, Object... properties) throws Exception {
 		BaseAlloyControllerImpl.setAuditedModel(watsonResource, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonResource, request);
 
 		WatsonAlloyControllerImpl.setBaseModelProperties(watsonResource, properties);
 
@@ -309,6 +321,8 @@ public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 		}
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonResource, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonResource, request);
 
 		validateUpdate(watsonResource);
 

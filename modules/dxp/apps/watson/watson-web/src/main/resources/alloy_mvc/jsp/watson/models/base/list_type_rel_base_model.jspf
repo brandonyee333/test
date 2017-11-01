@@ -48,6 +48,8 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListTypeRel, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListTypeRel, request);
+
 		validateAdd(watsonListTypeRel);
 
 		watsonListTypeRel.setStatus(WorkflowConstants.STATUS_APPROVED);
@@ -138,6 +140,8 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListTypeRel, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListTypeRel, request);
+
 		return watsonListTypeRel;
 	}
 
@@ -150,6 +154,8 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListTypeRel, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListTypeRel, request);
+
 		return watsonListTypeRel;
 	}
 
@@ -159,6 +165,8 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 		watsonListTypeRel.setNew(true);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListTypeRel, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListTypeRel, request);
 
 		watsonListTypeRel.setWatsonListTypeRelId(CounterLocalServiceUtil.increment());
 
@@ -268,11 +276,15 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListTypeRel, request);
 
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListTypeRel, request);
+
 		return watsonListTypeRel;
 	}
 
 	public static WatsonListTypeRel setFields(WatsonListTypeRel watsonListTypeRel, HttpServletRequest request, Object... properties) throws Exception {
 		BaseAlloyControllerImpl.setAuditedModel(watsonListTypeRel, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListTypeRel, request);
 
 		WatsonAlloyControllerImpl.setBaseModelProperties(watsonListTypeRel, properties);
 
@@ -309,6 +321,8 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 		}
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListTypeRel, request);
+
+		WatsonAlloyControllerImpl.setGroupedModel(watsonListTypeRel, request);
 
 		validateUpdate(watsonListTypeRel);
 
