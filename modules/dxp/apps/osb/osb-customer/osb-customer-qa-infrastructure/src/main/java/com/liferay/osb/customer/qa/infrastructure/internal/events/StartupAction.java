@@ -469,7 +469,7 @@ public class StartupAction extends SimpleAction {
 		try {
 			PartnerEntryLocalServiceUtil.getPartnerEntryByCode(code);
 		}
-		catch (Exception nspee) {
+		catch (Exception e) {
 			PartnerEntryLocalServiceUtil.addPartnerEntry(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, 0, StringPool.BLANK,
 				code, StringPool.BLANK, supportRegionIds);
