@@ -522,7 +522,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				}
 				%>
 
-				<aui:input id="accountAttachmentField" inputCssClass='<%= (accountAttachment != null) ? "aui-helper-hidden" : "" %>' label="" name="accountAttachment" type="file" />
+				<aui:input id="accountAttachmentField" inputCssClass='<%= (accountAttachment != null) ? "hide" : "" %>' label="" name="accountAttachment" type="file" />
 			</td>
 		</tr>
 		<tr>

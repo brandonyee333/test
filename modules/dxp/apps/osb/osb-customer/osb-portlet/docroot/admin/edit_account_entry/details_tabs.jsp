@@ -95,7 +95,7 @@ for (SupportRegion supportRegion : supportRegions) {
 
 	<div class="tab-content">
 		<c:if test="<%= accountEntry != null %>">
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />offeringsContent">
+			<div class="hide tab-content-tab" id="<portlet:namespace />offeringsContent">
 				<liferay-ui:search-container
 					deltaParam="offeringEntryDelta"
 					searchContainer="<%= new OfferingEntrySearch(renderRequest, portletURL) %>"
@@ -226,7 +226,7 @@ for (SupportRegion supportRegion : supportRegions) {
 				</liferay-ui:search-container>
 			</div>
 
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />projectMessagesContent">
+			<div class="hide tab-content-tab" id="<portlet:namespace />projectMessagesContent">
 				<%-- <c:choose>
 					<c:when test="<%= corpProjectId > 0 %>">
 						<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_CORP_PROJECT_ADMIN %>" var="corpProjectURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
@@ -318,7 +318,7 @@ for (SupportRegion supportRegion : supportRegions) {
 				</c:choose> --%>
 			</div>
 
-			<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />environmentDetailsContent">
+			<div class="hide tab-content-tab" id="<portlet:namespace />environmentDetailsContent">
 				<div class="account-environment">
 					<div class="environment-detail">
 						<ul class="list">

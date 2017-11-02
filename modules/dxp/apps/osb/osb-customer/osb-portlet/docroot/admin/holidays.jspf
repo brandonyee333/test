@@ -56,11 +56,11 @@
 				<span class="expand" id="<portlet:namespace />expand_<%= holidayCalendar.getHolidayCalendarId() %>">
 					<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHolidayEntries(" + holidayCalendar.getHolidayCalendarId() + ", true);" %>' />
 				</span>
-				<span class="aui-helper-hidden collapse" id="<portlet:namespace />collapse_<%= holidayCalendar.getHolidayCalendarId() %>">
+				<span class="collapse hide" id="<portlet:namespace />collapse_<%= holidayCalendar.getHolidayCalendarId() %>">
 					<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHolidayEntries(" + holidayCalendar.getHolidayCalendarId() + ", false);" %>' />
 				</span>
 
-				<div class="aui-helper-hidden" id="<portlet:namespace />holidayEntries_<%= holidayCalendar.getHolidayCalendarId() %>">
+				<div class="hide" id="<portlet:namespace />holidayEntries_<%= holidayCalendar.getHolidayCalendarId() %>">
 
 					<%
 					for (int i = 0; i < holidayEntries.size(); i++) {
@@ -91,11 +91,11 @@
 				<span class="expand" id="<portlet:namespace />expand_<%= holidayCalendar.getHolidayCalendarId() %>_users">
 					<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleUsers(" + holidayCalendar.getHolidayCalendarId() + ", true);" %>' />
 				</span>
-				<span class="aui-helper-hidden collapse" id="<portlet:namespace />collapse_<%= holidayCalendar.getHolidayCalendarId() %>_users">
+				<span class="collapse hide" id="<portlet:namespace />collapse_<%= holidayCalendar.getHolidayCalendarId() %>_users">
 					<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleUsers(" + holidayCalendar.getHolidayCalendarId() + ", false);" %>' />
 				</span>
 
-				<div class="aui-helper-hidden" id="<portlet:namespace />users_<%= holidayCalendar.getHolidayCalendarId() %>">
+				<div class="hide" id="<portlet:namespace />users_<%= holidayCalendar.getHolidayCalendarId() %>">
 
 					<%
 					for (int i = 0; i < holidayCalendarRels.size(); i++) {

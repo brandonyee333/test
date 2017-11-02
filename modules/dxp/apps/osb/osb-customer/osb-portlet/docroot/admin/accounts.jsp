@@ -134,11 +134,11 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 					<span class="expand" id="<portlet:namespace />expand_<%= accountEntry.getAccountEntryId() %>_supportRegions">
 						<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + accountEntry.getAccountEntryId() + ", true);" %>' />
 					</span>
-					<span class="aui-helper-hidden collapse" id="<portlet:namespace />collapse_<%= accountEntry.getAccountEntryId() %>_supportRegions">
+					<span class="collapse hide" id="<portlet:namespace />collapse_<%= accountEntry.getAccountEntryId() %>_supportRegions">
 						<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + accountEntry.getAccountEntryId() + ", false);" %>' />
 					</span>
 
-					<div class="aui-helper-hidden" id="<portlet:namespace />supportRegions_<%= accountEntry.getAccountEntryId() %>">
+					<div class="hide" id="<portlet:namespace />supportRegions_<%= accountEntry.getAccountEntryId() %>">
 
 						<%
 						for (int i = 0; i < supportRegions.size(); i++) {

@@ -132,7 +132,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 		<c:if test="<%= partnerEntry != null %>">
 			<tr>
 				<td colspan="2">
-					<div class="aui-helper-hidden portlet-msg-info" id="<portlet:namespace />statusMessageDisplay">
+					<div class="hide portlet-msg-info" id="<portlet:namespace />statusMessageDisplay">
 						<liferay-ui:message key="there-are-child-partner-accounts-that-are-open" />
 					</div>
 				</td>
