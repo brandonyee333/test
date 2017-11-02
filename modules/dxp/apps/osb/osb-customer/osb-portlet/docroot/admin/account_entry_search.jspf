@@ -683,15 +683,15 @@ Date lastEnabledDate = calendar.getTime();
 	);
 </aui:script>
 
-<%-- LRIS-27792
-<aui:script use="liferay-dynamic-select">
+<aui:script use="liferay-address,liferay-dynamic-select">
 	new Liferay.DynamicSelect(
 		[
 			{
 				select: '<portlet:namespace /><%= displayTerms.COUNTRY_ID %>',
 				selectData: Liferay.Address.getCountries,
-				selectDesc: 'name',
+				selectDesc: 'nameCurrentValue',
 				selectId: 'countryId',
+				selectSort: '<%= true %>',
 				selectVal: '<%= displayTerms.getCountryId() %>'
 			},
 			{
@@ -703,4 +703,4 @@ Date lastEnabledDate = calendar.getTime();
 			}
 		]
 	);
-</aui:script> --%>
+</aui:script>

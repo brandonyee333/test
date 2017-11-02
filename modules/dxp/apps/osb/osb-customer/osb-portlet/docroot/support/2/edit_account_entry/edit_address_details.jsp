@@ -62,14 +62,15 @@ long regionId = BeanParamUtil.getLong(address, request, "regionId");
 	</div>
 </div>
 
-<aui:script use="liferay-dynamic-select">
+<aui:script use="liferay-address,liferay-dynamic-select">
 	new Liferay.DynamicSelect(
 		[
 			{
 				select: '<portlet:namespace />countryId',
 				selectData: Liferay.Address.getCountries,
-				selectDesc: 'name',
+				selectDesc: 'nameCurrentValue',
 				selectId: 'countryId',
+				selectSort: '<%= true %>',
 				selectVal: '<%= countryId %>'
 			},
 			{

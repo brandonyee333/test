@@ -562,7 +562,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="country" />
 			</td>
 			<td>
-				<aui:select bean="<%= address %>" field="countryId" name="countryId" />
+				<aui:select bean="<%= address %>" field="countryId" label="country" name="countryId" />
 			</td>
 		</tr>
 		<tr>
@@ -570,7 +570,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="state-province" />
 			</td>
 			<td>
-				<aui:select bean="<%= address %>" field="regionId" name="regionId" />
+				<aui:select bean="<%= address %>" field="regionId" label="region" name="regionId" />
 			</td>
 		</tr>
 		<tr>
@@ -648,15 +648,15 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<liferay-util:include page="/admin/edit_account_entry/details_tabs.jsp" servletContext="<%= application %>" />
 </aui:form>
 
-<%-- LRIS-27792
-<aui:script use="liferay-dynamic-select">
+<aui:script use="liferay-address,liferay-dynamic-select">
 	new Liferay.DynamicSelect(
 		[
 			{
 				select: '<portlet:namespace />countryId',
 				selectData: Liferay.Address.getCountries,
-				selectDesc: 'name',
+				selectDesc: 'nameCurrentValue',
 				selectId: 'countryId',
+				selectSort: '<%= true %>',
 				selectVal: '<%= countryId %>'
 			},
 			{
@@ -668,7 +668,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			}
 		]
 	);
-</aui:script> --%>
+</aui:script>
 
 <aui:script>
 	function <portlet:namespace />addColumn(row, html) {
