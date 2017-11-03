@@ -72,7 +72,7 @@ class IncidentReport extends JSXComponent {
 	}
 
 	handleBack() {
-		const {entryId, model, watsonIncidentId} = this.props.router.params;
+		const {entryId, model, watsonIncidentId} = this.props;
 
 		if (model) {
 			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${entryId}/edit`);
@@ -321,7 +321,7 @@ class IncidentReport extends JSXComponent {
 	}
 
 	render() {
-		const {entryId, model} = this.props.router.params;
+		const {entryId, model} = this.props;
 
 		return (
 			<div class="incident-report page-container printable">
@@ -423,6 +423,7 @@ IncidentReport.STATE = {
 		]
 	),
 	elementStyle: Config.value(''),
+	entryId: Config.any(),
 	incidentsConfig: Config.array().value(
 		[
 			'incidentStatus',
@@ -436,6 +437,7 @@ IncidentReport.STATE = {
 			'description'
 		]
 	),
+	model: Config.string(),
 	peopleConfig: Config.array().value(
 		[
 			'imagePayload',
@@ -524,7 +526,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state, props) {
-	const {watsonIncidentId} = props.router.params;
+	const {entryId, model, watsonIncidentId} = props.router.params;
 
 	const activitiesData = state.getIn(['activities', 'data']) || new Map();
 	const activitiesLoading = state.getIn(['activities', 'loading']);
@@ -547,8 +549,10 @@ function mapStateToProps(state, props) {
 		addressesData,
 		addressesLoading,
 		currentIncidentData,
+		entryId,
 		incidentsData,
 		incidentsLoading,
+		model,
 		peopleData,
 		peopleLoading,
 		resourcesData,
