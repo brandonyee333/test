@@ -76,21 +76,80 @@ class Watson extends JSXComponent {
 
 						<div class="print-helper-message" id="print-helper-message">{Liferay.Language.get('this-page-is-not-printable')} </div>
 
-						<Router component={CreateIncident} path={`${WatsonConstants.urls.basePath}/incidents/create`} />
-						<Router component={CreateIncident} path={`${WatsonConstants.urls.basePath}/incidents/create/:model([a-zA-Z]+)`} />
-						<Router component={IncidentReport} path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/report`} />
-						<Router component={EditIncident} path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/:action([a-zA-Z]+)`} />
-						<Router component={EditIncident} path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)`} />
-						<Router component={EditIncident} path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:action([a-zA-Z]+)`} />
-						<Router component={IncidentReport} path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/report`} />
-						<Router component={ChildModelIndex} path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/view`} />
-						<Router component={EditIncident} path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/:action([a-zA-Z]+)`} />
-						<Router component={AdminConsole} path={`${WatsonConstants.urls.basePath}/incidents/admin`} />
-						<Router component={AdminConsole} path={`${WatsonConstants.urls.basePath}/incidents/admin/:action([a-zA-Z]+)`} />
-						<Router component={MetricsConsole} path={`${WatsonConstants.urls.basePath}/incidents/metrics`} />
-						<Router component={MetricsConsole} path={`${WatsonConstants.urls.basePath}/incidents/metrics/:action([a-zA-Z]+)`} />
-						<Router component={Index} path={`${WatsonConstants.urls.basePath}/:model([a-zA-Z]+)`} />
-						<Router component={Index} path={this._defaultRoute} />
+						<Router
+							component={CreateIncident}
+							path={`${WatsonConstants.urls.basePath}/incidents/create`}
+						/>
+
+						<Router
+							component={CreateIncident}
+							path={`${WatsonConstants.urls.basePath}/incidents/create/:model([a-zA-Z]+)`}
+						/>
+
+						<Router
+							component={IncidentReport}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/report`}
+						/>
+
+						<Router
+							component={EditIncident}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/:action([a-zA-Z]+)`}
+						/>
+
+						<Router
+							component={EditIncident}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)`}
+						/>
+
+						<Router
+							component={EditIncident}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:action([a-zA-Z]+)`}
+						/>
+
+						<Router
+							component={IncidentReport}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/report`}
+						/>
+
+						<Router
+							component={ChildModelIndex}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/view`}
+						/>
+
+						<Router
+							component={EditIncident}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/:action([a-zA-Z]+)`}
+						/>
+
+						<Router
+							component={AdminConsole}
+							path={`${WatsonConstants.urls.basePath}/incidents/admin`}
+						/>
+
+						<Router
+							component={AdminConsole}
+							path={`${WatsonConstants.urls.basePath}/incidents/admin/:action([a-zA-Z]+)`}
+						/>
+
+						<Router
+							component={MetricsConsole}
+							path={`${WatsonConstants.urls.basePath}/incidents/metrics`}
+						/>
+
+						<Router
+							component={MetricsConsole}
+							path={`${WatsonConstants.urls.basePath}/incidents/metrics/:action([a-zA-Z]+)`}
+						/>
+
+						<Router
+							component={Index}
+							path={`${WatsonConstants.urls.basePath}/:model([a-zA-Z]+)`}
+						/>
+
+						<Router
+							component={Index}
+							path={this._defaultRoute}
+						/>
 					</div>
 				</Provider>
 			);
