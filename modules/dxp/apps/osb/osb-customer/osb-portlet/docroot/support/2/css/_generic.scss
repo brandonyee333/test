@@ -1,0 +1,263 @@
+.dropdown {
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+.drop-down-arrow {
+	display: none;
+}
+
+.drop-down-menu {
+	display: none;
+}
+
+.dropdown ul a {
+	color: #333;
+	display: block;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 32px;
+	padding: 0 15px;
+	text-decoration: none;
+}
+
+.dropdown ul li {
+	float: left;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+.fr {
+	.buttons {
+		height: 24px;
+		position: relative;
+		width: 110px;
+
+		a {
+			&.btn {
+				height: 24px;
+				left: 0;
+				position: absolute;
+				top: 0;
+				width: 87px;
+				z-index: 1;
+			}
+
+			&.hover {
+				background: none repeat scroll 0 0 $blue;
+				color: #FFF;
+			}
+		}
+
+		input.upload {
+			cursor: pointer;
+			filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+			height: 34px;
+			left: 0;
+			opacity: 0;
+			position: absolute;
+			top: 0;
+			width: 110px;
+			z-index: 99;
+		}
+	}
+}
+
+.lfr-table {
+	width: auto;
+
+	tr td, tr th {
+		word-break: normal;
+	}
+}
+
+.open-drop-down {
+	display: inline-block;
+
+	.drop-down-arrow {
+		background-color: transparent;
+		border: 14px solid #D0D1D3;
+		border-left: 18px dashed transparent;
+		border-right-width: 0;
+		border-top-width: 0;
+		display: block;
+		height: 0;
+		line-height: 0;
+		padding: 0;
+		position: absolute;
+		right: -1px;
+		top: -14px;
+		width: 0;
+
+		div {
+			background-color: transparent;
+			border-bottom: 12px solid #FFF;
+			border-left: 16px dashed transparent;
+			bottom: -14px;
+			height: 0;
+			line-height: 0;
+			margin: 0;
+			padding: 0;
+			position: absolute;
+			right: 1px;
+			width: 0;
+		}
+	}
+
+	.drop-down-menu {
+		background-color: #FFF;
+		border: 1px solid #D0D1D3;
+		box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
+		display: block;
+		list-style: none;
+		margin: 16px 0 0 0;
+		padding: 0;
+		position: absolute;
+		right: 15px;
+		top: 100%;
+		white-space: nowrap;
+		z-index: 1;
+
+		ul {
+			margin: 0;
+			padding: 0;
+
+			li {
+				list-style: none;
+
+				a {
+					color: #000;
+					display: block;
+					font-family: "Avenir Book";
+					padding: 5px 10px;
+					text-decoration: none;
+
+					&:hover {
+						background-color: $blue;
+						color: #FFF;
+					}
+				}
+			}
+		}
+
+		&.ticket-search {
+			z-index: 3;
+		}
+	}
+}
+
+.overlay {
+	background-color: #333;
+	display: block;
+	opacity: 0.3;
+	pointer-events: none;
+	position: absolute;
+	z-index: 10;
+
+	& div {
+		color: #FFF;
+		display: block;
+		font-size: 16px;
+		font-style: italic;
+		font-weight: bold;
+		margin: 0 auto;
+		text-align: center;
+		width: 470px;
+	}
+}
+
+.toggle-on-off-switch {
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-user-select: none;
+	position: relative;
+	text-align: center;
+	width: 50px;
+
+	.toggle-on-off-switch-ctrl {
+		border-radius: 2px;
+		cursor: pointer;
+		display: block;
+		overflow: hidden;
+		transition: border 0.3s ease-in 0s;
+
+		&.on {
+			border: 1px solid #1BADF2;
+		}
+
+		&.off {
+			border: 1px solid #1B3A6A;
+		}
+
+		&:hover.on {
+			border: 1px solid #1B3A6A;
+		}
+
+		&:hover.off {
+			border: 1px solid #1BADF2;
+		}
+
+		&:hover.on .toggle-on-off-switch-inner {
+			margin-left: -100%;
+		}
+
+		&:hover.off .toggle-on-off-switch-inner {
+			margin-left: 0;
+		}
+
+		&.on .toggle-on-off-switch-inner {
+			margin-left: 0;
+		}
+	}
+
+	.toggle-on-off-switch-inner {
+		-moz-transition: margin 0.3s ease-in 0s;
+		-o-transition: margin 0.3s ease-in 0s;
+		-webkit-transition: margin 0.3s ease-in 0s;
+		display: block;
+		font-size: 11px;
+		line-height: 10px;
+		margin-left: -100%;
+		transition: margin 0.3s ease-in 0s;
+		width: 200%;
+
+		& * {
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			display: block;
+			float: left;
+			padding: 3px 6px;
+			text-align: center;
+			width: 50%;
+		}
+
+		& .toggle-on-off-switch-on {
+			background-color: #1BADF2;
+			border-right: 8px solid #FFF;
+			color: #FFF;
+			text-transform: uppercase;
+		}
+
+		& .toggle-on-off-switch-off, & .toggle-on-off-switch-on-pto {
+			background-color: #FFF;
+			border-left: 8px solid #1B3A6A;
+			color: #1B3A6A;
+			padding-left: 2px;
+			padding-right: 2px;
+			text-transform: uppercase;
+		}
+
+		& .toggle-on-off-switch-off {
+			font-size: 9px;
+		}
+
+		& .toggle-on-off-switch-on-pto {
+			font-size: 8px;
+		}
+	}
+}

@@ -98,3 +98,28 @@
 		margin-top: 10px;
 	}
 }
+
+.customer-info {
+	.customer-info-display {
+		border: 1px solid #777;
+		margin-bottom: 10px;
+		max-height: 300px;
+		max-width: 730px;
+		min-height: 50px;
+		overflow: auto;
+		word-wrap: break-word;
+	}
+
+	input {
+		margin-bottom: 10px;
+		width: 100%;
+	}
+
+	textarea {
+		height: 50px;
+		margin-bottom: 10px;
+		margin-top: 0;
+		width: 100%;
+		wrap: soft;
+	}
+}

@@ -1,3 +1,53 @@
+.lfr-panel {
+	background-color: #D5EFF9;
+	border-width: 0;
+	margin-top: 20px;
+
+	&.lfr-collapsed {
+		background-color: transparent;
+		border-width: 0;
+	}
+
+	&.lfr-collapsible {
+		&.info {
+			background-color: #A4A4A4;
+			border-bottom: 1px solid #565656;
+		}
+
+		&.urgent {
+			background-color: #FF5454;
+			border-bottom: 1px solid #980000;
+		}
+
+		&.warning {
+			background-color: #FFC;
+			border-bottom: 1px solid #FC0;
+		}
+	}
+
+	.lfr-panel-button {
+		float: none;
+		margin-top: 1px;
+	}
+
+	.lfr-panel-title {
+		margin-left: 25px;
+	}
+
+	.lfr-panel-titlebar {
+		background: none;
+		border-width: 0;
+	}
+
+	.support-input-heading {
+		padding-top: 20px;
+	}
+}
+
+.lfr-panel-container {
+	border-width: 0;
+}
+
 .subscription-messages {
 	.lfr-panel, .lfr-panel-title {
 		margin: 0;

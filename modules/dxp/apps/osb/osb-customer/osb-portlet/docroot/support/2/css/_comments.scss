@@ -215,3 +215,218 @@
 .comment-scroll {
 	background-color: #D9D9D9;
 }
+
+.discussion {
+	margin: 0 23vw 0 2vw;
+
+	.tab-container {
+		display: block;
+		height: 35px;
+		margin: 45px 0 25px;
+		padding: 0;
+
+		.tabs {
+			&.pinned {
+				left: calc(2vw - -80px);
+				margin: 0;
+				position: fixed;
+				right: calc(23vw - -20px);
+				top: 235px;
+				z-index: 2;
+			}
+
+			span {
+				margin: 0 20px;
+
+				.first {
+					margin-left: 0;
+				}
+			}
+		}
+	}
+
+	.tab-content {
+		margin-bottom: 20px;
+
+		.expand-collapse {
+			text-align: right;
+		}
+
+		.portlet-msg-error {
+			height: auto;
+			white-space: normal;
+		}
+
+		.tab-content-tab {
+			margin-top: 20px;
+		}
+	}
+}
+
+.editor {
+	margin-top: 10px;
+
+	.body {
+		box-sizing: border-box;
+	}
+
+	&.edit {
+		.edit-icon, .preview-container {
+			display: none;
+		}
+	}
+
+	&.loading .preview-container {
+		background-image: url(@theme_image_path@/application/loading_indicator.gif);
+		background-position: center center;
+		background-repeat: no-repeat;
+	}
+
+	&.preview {
+		.bb-code-icons {
+			a {
+				filter: alpha(opacity=40);
+				opacity: 0.4;
+				pointer-events: none;
+			}
+
+			.edit-icon a {
+				filter: none;
+				opacity: 1;
+				pointer-events: auto;
+			}
+		}
+
+		.body, .preview-icon {
+			display: none;
+		}
+	}
+
+	textarea {
+		border: 1px solid #CCC;
+		border-radius: 0;
+		height: 250px;
+		margin-top: 0;
+		padding: 5px 10px;
+		width: 100%;
+	}
+
+	.lfr-toolbar {
+		background: transparent;
+		position: relative;
+
+		.bb-code-icons {
+			position: absolute;
+			top: 5px;
+
+			.lfr-button {
+				float: none;
+			}
+		}
+
+		.lfr-button {
+			border: 1px solid transparent;
+		}
+	}
+
+	.preview-container {
+		background-color: $light-bg;
+		border: 1px solid $medium-gray;
+		margin-top: 0;
+		padding: 10px;
+	}
+}
+
+.history {
+	a {
+		text-decoration: none;
+	}
+
+	pre {
+		margin: 0;
+		padding: 0;
+	}
+
+	.audit-entry-set {
+		margin: 15px 0;
+		overflow: hidden;
+
+		.content {
+			margin: 5px;
+		}
+
+		.create-date {
+			color: #AAA;
+			font-size: 12px;
+		}
+
+		.summary {
+			font-style: italic;
+		}
+
+		.user-name {
+			float: left;
+			margin: 0 0 0 5px;
+		}
+
+		.user-profile-image {
+			margin-right: 0;
+
+			img {
+				height: 20px;
+				width: 20px;
+			}
+		}
+	}
+}
+
+.lfr-toolbar {
+	padding: 1px;
+	width: 99%;
+
+	.edit-icon a, .preview-icon a {
+		float: right;
+	}
+}
+
+.ticket-comment {
+	clear: both;
+	padding: 10px 5px;
+
+	&.comment-scroll {
+		background-color: #EEF7FF;
+		border-radius: 3px;
+	}
+
+	.comment-text-container {
+		float: left;
+		width: calc(100% - 70px);
+
+		.comment-body {
+			margin: 10px 0;
+		}
+
+		.permalink {
+			float: right;
+		}
+
+		.post-date {
+			color: #8D9093;
+			font-family: "Avenir Medium";
+		}
+
+		.user-name span {
+			color: $blue;
+			font-family: "Avenir Medium";
+			font-size: 16px;
+		}
+	}
+}
+
+.type-solution {
+	background-color: #98FB98;
+
+	.solution-flag {
+		display: block;
+	}
+}

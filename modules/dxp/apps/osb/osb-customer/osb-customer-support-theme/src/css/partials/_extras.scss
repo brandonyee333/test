@@ -6,34 +6,6 @@
 		@include border-radius(2px);
 }
 
-.cleared {
-	clear: both;
-
-	&:before, &:after {
-		clear: both;
-		content: '.';
-		display: block;
-		height: 0;
-		visibility: hidden;
-	}
-}
-
-.portlet {
-	.portlet-content {
-		@include border-bottom-radius(2px);
-	}
-
-	.portlet-topper {
-		@include border-top-radius(2px);
-	}
-}
-
-.unselectable {
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-webkit-user-select: none;
-}
-
 .webkit {
 	#navigationContainer #mainNavigation .root-item {
 		padding: 19px 0;

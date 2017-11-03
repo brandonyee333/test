@@ -1,0 +1,20 @@
+.attachment .footnote {
+	float: none;
+}
+
+.attachment-text {
+	margin: 5px 0;
+
+	input[type='checkbox'] {
+		margin: 2px 10px 2px 2px;
+	}
+}
+
+.attachment-download-server {
+	float: left;
+	text-align: center;
+}
+
+.attachment-syncing {
+	border: 1px solid #F49B45;
+}

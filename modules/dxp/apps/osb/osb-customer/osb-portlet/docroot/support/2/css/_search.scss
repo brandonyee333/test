@@ -489,3 +489,32 @@
 .taglib-search-toggle {
 	padding: 0 10px;
 }
+
+.view-liferay {
+	.ticket-column {
+		&.assignee, &.number {
+			width: 18%;
+
+			&.bulk-edit {
+				width: 16.5%;
+			}
+		}
+
+		&.created, &.due-date, &.last-updated {
+			width: 7%;
+		}
+
+		&.select {
+			text-align: center;
+			width: 3%;
+		}
+
+		&.status {
+			width: 10%;
+		}
+
+		&.subject {
+			width: 22.5%;
+		}
+	}
+}

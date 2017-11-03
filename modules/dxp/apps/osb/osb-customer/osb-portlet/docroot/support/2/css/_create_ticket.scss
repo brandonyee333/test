@@ -1,0 +1,136 @@
+.add-ticket {
+	text-align: center;
+
+	.btn {
+		line-height: 0.75;
+	}
+}
+
+.create-date {
+	float: right;
+}
+
+.create-ticket {
+	color: $medium-gray;
+	margin: 0 auto;
+
+	input[type=text], textarea {
+		color: #3A3A3A;
+		width: calc(100% - 12px);
+	}
+
+	select {
+		color: #3A3A3A;
+		width: 100%;
+	}
+
+	span.portlet-msg-info, span.portlet-msg-error {
+		position: inherit;
+	}
+
+	.btn {
+		display: block;
+		margin: 0 auto;
+	}
+
+	.create-env-button {
+		padding-top: 15px;
+	}
+
+	.foot-details {
+		float: left;
+		margin: 20px 0;
+		width: 100%;
+
+		.aui-button-input {
+			text-transform: none;
+		}
+	}
+
+	.component-detail-environment {
+		padding: 10px;
+
+		.attachment-text .txt-sb {
+			color: $medium-gray;
+		}
+
+		.environment-detail {
+			.env {
+				position: relative;
+
+				select {
+					margin-left: 50px;
+					width: calc(100% - 80px);
+				}
+
+				span {
+					text-align: right;
+				}
+
+				.field-label {
+					max-width: 80px;
+					position: absolute;
+					top: calc(50% - 0.75em);
+					width: 45px;
+				}
+			}
+		}
+	}
+
+	.dxp-message {
+		color: $blue;
+		cursor: pointer;
+		display: inline-block;
+		padding-top: 15px;
+	}
+
+	.portlet-msg-error {
+		height: auto;
+		position: inherit;
+		white-space: normal;
+	}
+
+	.portlet-msg-info {
+		color: $text-color;
+	}
+
+	.section-heading {
+		color: #3A3A3A;
+		font-size: 1em;
+		font-weight: bold;
+		line-height: 1em;
+		padding-top: 15px;
+
+		&.create-ticket-title {
+			font-size: 2em;
+			text-align: center;
+		}
+	}
+
+	.ticket-detail {
+		.attachment-text .txt-sb {
+			color: $medium-gray;
+		}
+
+		.common-textarea {
+			textarea {
+				margin-bottom: 0;
+				margin-top: 0;
+			}
+		}
+
+		.component-details {
+			.component-title {
+				font-size: 1.5em;
+			}
+
+			.file-container {
+				padding: 5px 0;
+			}
+		}
+	}
+
+	.txt-sb {
+		color: #3A3A3A;
+	}
+}

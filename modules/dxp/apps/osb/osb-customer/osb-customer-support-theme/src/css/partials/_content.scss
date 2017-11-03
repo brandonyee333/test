@@ -19,8 +19,6 @@
 	}
 }
 
-/* ---------- Main content ---------- */
-
 #main-content {
 	margin: 0 20px;
 	padding-top: 20px;
@@ -103,28 +101,6 @@
 	}
 }
 
-.circle-image {
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	border-radius: 50%;
-
-	&.large {
-		height: 100px;
-		width: 100px;
-	}
-
-	&.medium {
-		height: 60px;
-		width: 60px;
-	}
-
-	&.small {
-		height: 45px;
-		width: 45px;
-	}
-}
-
 .class-toggle {
 	cursor: pointer;
 }
@@ -163,22 +139,6 @@
 	}
 }
 
-.doc-sub-nav {
-	.mobile-heading {
-		display: none;
-	}
-}
-
-.dockbar {
-	.manage-content-menu a {
-		padding-left: 25px;
-	}
-
-	.user-toolbar .my-sites {
-		display: none;
-	}
-}
-
 .external-link:after {
 	background: url(../images/custom/external_link_icon.svg) no-repeat;
 	content: "";
@@ -188,12 +148,30 @@
 	width: 11px;
 }
 
-.full-screen {
-	max-width: none !important;
+.home-page {
+	padding-top: 20px;
 
-	.portlet-column {
-		max-width: none;
+	.home-page-topper {
+		background: #FFF;
+		height: 197px;
+		left: 60px;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 1;
 	}
+}
+
+.home-page-banner-margin {
+	margin: 30px;
+}
+
+.home-page-margin {
+	margin: 0 30px;
+}
+
+.margin-container {
+	margin: 0 30px;
 }
 
 .opens-new-window-accessible {
@@ -206,11 +184,14 @@
 
 .portlet {
 	.portlet-content {
+		background-color: transparent;
+		border-bottom-radius: 2px;
 		border-color: $border-color;
 		padding: 10px 20px;
 	}
 
 	.portlet-topper {
+		border-top-radius: 2px;
 		background: $text-color;
 		border-color: $text-color;
 		padding: 12px 0;
@@ -244,7 +225,7 @@
 	}
 }
 
-.portlet .portlet-content, .portlet-login .navigation {
+.portlet-login .navigation {
 	background: transparent;
 }
 
@@ -279,14 +260,12 @@
 	}
 }
 
+.portlet-section-header {
+	color: $text-color;
+	text-decoration: none;
+}
+
 .sub-grid {
 	clear: both;
 	margin: 0 auto;
-}
-
-.unit {
-	display: block;
-	float: left;
-	margin: 0 10px;
-	min-height: 9px;
 }
