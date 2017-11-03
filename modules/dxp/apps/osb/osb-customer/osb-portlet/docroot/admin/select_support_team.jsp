@@ -71,8 +71,8 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				total = SupportTeamLocalServiceUtil.searchCount(searchTerms.getKeywords());
 			}
 
-			pageContext.setAttribute("results", results);
-			pageContext.setAttribute("total", total);
+			searchContainer.setResults(results);
+			searchContainer.setTotal(total);
 			%>
 
 		</liferay-ui:search-container-results>

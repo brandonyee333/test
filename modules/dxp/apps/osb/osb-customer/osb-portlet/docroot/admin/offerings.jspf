@@ -41,7 +41,15 @@ pageContext.setAttribute("searchURL", searchURL);
 		<%@ include file="/admin/offering_definition_search.jspf" %>
 
 		<liferay-ui:search-container-results>
-			<%@ include file="/admin/offering_definition_search_results.jspf" %>
+
+			<%
+			results = OfferingDefinitionLocalServiceUtil.getOfferingDefinitions(searchTerms.getProductEntryIds(), searchTerms.getSupportResponseIds(), searchContainer.getStart(), searchContainer.getEnd());
+			total = OfferingDefinitionLocalServiceUtil.getOfferingDefinitionsCount(searchTerms.getProductEntryIds(), searchTerms.getSupportResponseIds());
+
+			searchContainer.setResults(results);
+			searchContainer.setTotal(total);
+			%>
+
 		</liferay-ui:search-container-results>
 
 		<liferay-ui:search-container-row

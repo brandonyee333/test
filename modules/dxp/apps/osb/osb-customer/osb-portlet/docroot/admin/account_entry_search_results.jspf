@@ -24,6 +24,6 @@ else {
 	total = AccountEntryLocalServiceUtil.searchCount(searchTerms.getKeywords(), searchTerms.getParams());
 }
 
-pageContext.setAttribute("results", results);
-pageContext.setAttribute("total", total);
+searchContainer.setResults(results);
+searchContainer.setTotal(total);
 %>

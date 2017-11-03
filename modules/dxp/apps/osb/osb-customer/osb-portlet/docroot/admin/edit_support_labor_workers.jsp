@@ -103,8 +103,8 @@ portletURL.setParameter("supportLaborId", String.valueOf(supportLaborId));
 				total = SupportWorkerLocalServiceUtil.searchCount(searchSupportLaborId, searchTerms.getKeywords());
 			}
 
-			pageContext.setAttribute("results", results);
-			pageContext.setAttribute("total", total);
+			searchContainer.setResults(results);
+			searchContainer.setTotal(total);
 			%>
 
 		</liferay-ui:search-container-results>

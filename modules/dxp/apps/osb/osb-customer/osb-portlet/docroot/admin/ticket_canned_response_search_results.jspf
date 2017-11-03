@@ -17,18 +17,13 @@
 <%
 if (displayTerms.isAdvancedSearch()) {
 	results = TicketCannedResponseServiceUtil.search(displayTerms.getName(), displayTerms.getContent(), displayTerms.isAndOperator(), searchContainer.getStart(), searchContainer.getEnd());
-}
-else {
-	results = TicketCannedResponseServiceUtil.search(displayTerms.getKeywords(), searchContainer.getStart(), searchContainer.getEnd());
-}
-
-if (displayTerms.isAdvancedSearch()) {
 	total = TicketCannedResponseServiceUtil.searchCount(displayTerms.getName(), displayTerms.getContent(), displayTerms.isAndOperator());
 }
 else {
+	results = TicketCannedResponseServiceUtil.search(displayTerms.getKeywords(), searchContainer.getStart(), searchContainer.getEnd());
 	total = TicketCannedResponseServiceUtil.searchCount(displayTerms.getKeywords());
 }
 
-pageContext.setAttribute("results", results);
-pageContext.setAttribute("total", total);
+searchContainer.setResults(results);
+searchContainer.setTotal(total);
 %>

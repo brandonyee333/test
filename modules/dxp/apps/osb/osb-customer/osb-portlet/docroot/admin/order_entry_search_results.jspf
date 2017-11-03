@@ -17,18 +17,13 @@
 <%
 if (searchTerms.isAdvancedSearch()) {
 	results = OrderEntryLocalServiceUtil.search(searchTerms.getCreateUserIdObj(), searchTerms.getCreateDateGTDay(), searchTerms.getCreateDateGTMonth(), searchTerms.getCreateDateGTYear(), searchTerms.getCreateDateLTDay(), searchTerms.getCreateDateLTMonth(), searchTerms.getCreateDateLTYear(), searchTerms.getModifiedUserIdObj(), searchTerms.getModifiedDateGTDay(), searchTerms.getModifiedDateGTMonth(), searchTerms.getModifiedDateGTYear(), searchTerms.getModifiedDateLTDay(), searchTerms.getModifiedDateLTMonth(), searchTerms.getModifiedDateLTYear(), searchTerms.getAccountEntryIdObj(), searchTerms.getPurchaseOrderKey(), searchTerms.getStatuses(), searchTerms.getStartDateGTDay(), searchTerms.getStartDateGTMonth(), searchTerms.getStartDateGTYear(), searchTerms.getStartDateLTDay(), searchTerms.getStartDateLTMonth(), searchTerms.getStartDateLTYear(), searchTerms.getProrated(), searchTerms.getActualStartDateGTDay(), searchTerms.getActualStartDateGTMonth(), searchTerms.getActualStartDateGTYear(), searchTerms.getActualStartDateLTDay(), searchTerms.getActualStartDateLTMonth(), searchTerms.getActualStartDateLTYear(), searchTerms.getParams(), searchTerms.isAndOperator(), searchContainer.getStart(), searchContainer.getEnd(), new OrderEntryStartDateComparator(true));
-}
-else {
-	results = OrderEntryLocalServiceUtil.search(searchTerms.getKeywords(), searchTerms.getParams(), searchContainer.getStart(), searchContainer.getEnd(), new OrderEntryStartDateComparator(true));
-}
-
-if (searchTerms.isAdvancedSearch()) {
 	total = OrderEntryLocalServiceUtil.searchCount(searchTerms.getCreateUserIdObj(), searchTerms.getCreateDateGTDay(), searchTerms.getCreateDateGTMonth(), searchTerms.getCreateDateGTYear(), searchTerms.getCreateDateLTDay(), searchTerms.getCreateDateLTMonth(), searchTerms.getCreateDateLTYear(), searchTerms.getModifiedUserIdObj(), searchTerms.getModifiedDateGTDay(), searchTerms.getModifiedDateGTMonth(), searchTerms.getModifiedDateGTYear(), searchTerms.getModifiedDateLTDay(), searchTerms.getModifiedDateLTMonth(), searchTerms.getModifiedDateLTYear(), searchTerms.getAccountEntryIdObj(), searchTerms.getPurchaseOrderKey(), searchTerms.getStatuses(), searchTerms.getStartDateGTDay(), searchTerms.getStartDateGTMonth(), searchTerms.getStartDateGTYear(), searchTerms.getStartDateLTDay(), searchTerms.getStartDateLTMonth(), searchTerms.getStartDateLTYear(), searchTerms.getProrated(), searchTerms.getActualStartDateGTDay(), searchTerms.getActualStartDateGTMonth(), searchTerms.getActualStartDateGTYear(), searchTerms.getActualStartDateLTDay(), searchTerms.getActualStartDateLTMonth(), searchTerms.getActualStartDateLTYear(), searchTerms.getParams(), searchTerms.isAndOperator());
 }
 else {
+	results = OrderEntryLocalServiceUtil.search(searchTerms.getKeywords(), searchTerms.getParams(), searchContainer.getStart(), searchContainer.getEnd(), new OrderEntryStartDateComparator(true));
 	total = OrderEntryLocalServiceUtil.searchCount(searchTerms.getKeywords(), searchTerms.getParams());
 }
 
-pageContext.setAttribute("results", results);
-pageContext.setAttribute("total", total);
+searchContainer.setResults(results);
+searchContainer.setTotal(total);
 %>

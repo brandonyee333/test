@@ -127,8 +127,8 @@ for (SupportRegion supportRegion : supportRegions) {
 							total = offeringEntryGroups.size();
 						}
 
-						pageContext.setAttribute("results", results);
-						pageContext.setAttribute("total", total);
+						searchContainer.setResults(results);
+						searchContainer.setTotal(total);
 						%>
 
 					</liferay-ui:search-container-results>

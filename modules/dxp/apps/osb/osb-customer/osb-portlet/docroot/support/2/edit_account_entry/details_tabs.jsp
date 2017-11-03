@@ -159,8 +159,8 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 							total = results.size();
 						}
 
-						pageContext.setAttribute("results", results);
-						pageContext.setAttribute("total", total);
+						searchContainer.setResults(results);
+						searchContainer.setTotal(total);
 						%>
 
 					</liferay-ui:search-container-results>
