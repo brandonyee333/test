@@ -1769,18 +1769,3 @@ $text-color: #474A4B;
 		background-color: #FFC;
 	}
 }
-
-/* ---------- IE ---------- */
-
-.ie7, .ie8 {
-	.osb-portlet-support .ticket-results {
-		.support-input-column, .ticket-description {
-			display: block;
-			float: left;
-		}
-
-		.ticket-information {
-			float: none;
-		}
-	}
-}
