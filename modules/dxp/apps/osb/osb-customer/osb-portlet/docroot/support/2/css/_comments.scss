@@ -67,9 +67,7 @@
 
 		.small-user-avatar {
 			background-position: center;
-
-			@include border-radius(50%);
-
+			border-radius: 50%;
 			display: block;
 			filter: grayscale(100%);
 			height: 30px;
