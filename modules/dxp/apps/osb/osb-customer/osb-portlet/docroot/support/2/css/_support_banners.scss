@@ -11,27 +11,27 @@
 		text-align: center;
 
 		&.info {
-			border-top: 1px solid #565656;
+			border-top: 1px solid $text-color;
 
 			.btn {
-				background-color: $info-message;
+				background-color: $info;
 			}
 
 			.btn:hover {
-				color: $info-message;
+				color: $info;
 			}
 		}
 
 		&.maintenance {
-			background-color: $maintenance-message;
-			border-top: 1px solid #A08116;
+			background-color: $maintenance;
+			border-top: 1px solid $maintenance-border;
 
 			.btn {
-				background-color: $maintenance-message;
+				background-color: $maintenance;
 			}
 
 			.btn:hover {
-				color: $maintenance-message;
+				color: $maintenance;
 			}
 		}
 
@@ -59,7 +59,7 @@
 		}
 
 		.btn.close-announcement:hover {
-			background-color: #BDBDBD;
+			background-color: $medium-gray;
 		}
 	}
 }

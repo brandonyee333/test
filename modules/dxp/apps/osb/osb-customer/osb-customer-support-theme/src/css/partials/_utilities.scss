@@ -62,7 +62,7 @@
 }
 
 .disabled {
-	background-color: #CCC;
+	background-color: $border-color;
 }
 
 .double-indent {
@@ -70,7 +70,7 @@
 }
 
 .expired-text {
-	color: #EF000B;
+	color: $urgent;
 	font-weight: bold;
 	text-transform: uppercase;
 }
@@ -171,5 +171,5 @@
 }
 
 .visibility-workers {
-	background-color: #FFC;
+	background-color: $error;
 }

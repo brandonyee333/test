@@ -7,7 +7,7 @@ ul.aui-tabview-list {
 	vertical-align: bottom;
 
 	.aui-tab {
-		border: 1px solid #CCC;
+		border: 1px solid $border-color;
 		display: inline-block;
 		float: none;
 		margin: -1px -2px;
@@ -34,7 +34,7 @@ ul.aui-tabview-list {
 		a {
 			&.aui-tab-label, &.aui-tab-label:hover, &.aui-tab-label:selected {
 				background: none;
-				border: 1px solid #CCC;
+				border: 1px solid $border-color;
 				color: $text-color;
 				text-decoration: none;
 				text-shadow: none;
@@ -59,7 +59,7 @@ ul.aui-tabview-list {
 	}
 
 	.last {
-		border-right-color: #CCC !important;
+		border-right-color: $border-color !important;
 	}
 }
 
@@ -99,7 +99,7 @@ ul.aui-tabview-list {
 			}
 
 			.disabled {
-				color: #999;
+				color: $medium-gray;
 			}
 		}
 	}

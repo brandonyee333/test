@@ -7,7 +7,7 @@
 	}
 
 	&.type-game-plan {
-		background-color: #FAEBC8;
+		background-color: $game-plan-comment;
 	}
 }
 
@@ -25,7 +25,7 @@
 			width: 100%;
 
 			* {
-				color: #AAA;
+				color: $info;
 				display: inline;
 				font-style: italic;
 				white-space: nowrap;
@@ -41,15 +41,15 @@
 			}
 
 			&.rejected-comment-body {
-				background-color: #FCC;
+				background-color: $error;
 
 				* {
-					color: #999;
+					color: $medium-gray;
 				}
 			}
 
 			&.type-game-plan {
-				background-color: #FAEBC8;
+				background-color: $game-plan-comment;
 			}
 
 			.comment-body-wrapper {
@@ -62,7 +62,7 @@
 		}
 
 		.post-date {
-			color: #AAA;
+			color: $info;
 		}
 
 		.small-user-avatar {
@@ -82,7 +82,7 @@
 		}
 
 		.user-name span {
-			color: #AAA;
+			color: $info;
 			filter: grayscale(100%);
 			font-family: "Avenir Book";
 			font-size: 14px;
@@ -113,11 +113,11 @@
 }
 
 .comment-draft-border {
-	border: 1px solid #F00;
+	border: 1px solid $error;
 }
 
 .comment-draft-hint {
-	color: #EF000B;
+	color: $urgent;
 	font-size: 15px;
 	font-weight: bold;
 }
@@ -141,7 +141,7 @@
 	}
 
 	.code-lines {
-		border-right: 1px solid #CCC;
+		border-right: 1px solid $border-color;
 		color: #000;
 		margin-right: 5px;
 		padding: 0 5px;
@@ -211,7 +211,7 @@
 }
 
 .comment-scroll {
-	background-color: #D9D9D9;
+	background-color: $light-bg;
 }
 
 .discussion {
@@ -297,7 +297,7 @@
 	}
 
 	textarea {
-		border: 1px solid #CCC;
+		border: 1px solid $border-color;
 		border-radius: 0;
 		height: 250px;
 		margin-top: 0;
@@ -354,7 +354,7 @@
 		}
 
 		.create-date {
-			color: #AAA;
+			color: $info;
 			font-size: 12px;
 		}
 
@@ -392,7 +392,7 @@
 	padding: 10px 5px;
 
 	&.comment-scroll {
-		background-color: #F3FBFE;
+		background-color: $manager-dashboard-bg;
 		border-radius: 3px;
 	}
 
@@ -409,12 +409,12 @@
 		}
 
 		.post-date {
-			color: #8D9093;
+			color: $medium-gray;
 			font-family: "Avenir Medium";
 		}
 
 		.user-name span {
-			color: $blue;
+			color: $primary-blue;
 			font-family: "Avenir Medium";
 			font-size: 16px;
 		}
@@ -422,7 +422,7 @@
 }
 
 .type-solution {
-	background-color: #98FB98;
+	background-color: $comment-type-bg;
 
 	.solution-flag {
 		display: block;

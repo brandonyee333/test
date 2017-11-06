@@ -27,7 +27,7 @@
 		}
 
 		&.aui-field-input {
-			border: 1px solid #BBB;
+			border: 1px solid $border-color;
 			margin: 0 20px 0 0;
 			width: auto;
 		}
@@ -36,7 +36,7 @@
 
 .advanced-search {
 	&.keywords {
-		border: 1px solid #CCC;
+		border: 1px solid $border-color;
 		border-radius: 0;
 		font-size: 18px;
 		width: 100%;
@@ -50,7 +50,7 @@
 			cursor: pointer;
 
 			&.active {
-				color: $blue;
+				color: $primary-blue;
 			}
 		}
 
@@ -79,10 +79,10 @@
 		}
 
 		&.active, &.selected {
-			color: $blue;
+			color: $primary-blue;
 
 			svg {
-				stroke: $blue;
+				stroke: $primary-blue;
 			}
 		}
 	}
@@ -164,13 +164,13 @@
 
 					&:active, &:focus {
 						background: none;
-						color: #6D91E6;
+						color: $hover-blue;
 						cursor: pointer;
 					}
 
 					&:hover {
 						background: none;
-						color: #6D91E6;
+						color: $hover-blue;
 						cursor: pointer;
 					}
 				}
@@ -293,8 +293,8 @@
 	}
 
 	.search-row {
-		border: 1px solid #CCC;
-		color: #8C8F95;
+		border: 1px solid $border-color;
+		color: $medium-gray;
 	}
 
 	.search-title {
@@ -431,15 +431,15 @@
 
 	.ticket-row {
 		background-color: $light-bg;
-		border: 1px solid #CCC;
-		color: #8C8F95;
+		border: 1px solid $border-color;
+		color: $medium-gray;
 
 		&.need-response {
 			background-color: #FFF;
 		}
 
 		&.selected {
-			background-color: #D3E8F1;
+			background-color: $dynamic-upload-bg;
 		}
 	}
 
@@ -473,12 +473,12 @@
 	}
 
 	th {
-		border-bottom: 1px solid #BABEC1;
+		border-bottom: 1px solid $border-color;
 		font-weight: bold;
 	}
 
 	.collapsed .col {
-		border-bottom: 1px solid #BABEC2;
+		border-bottom: 1px solid $border-color;
 	}
 
 	.results-header th.first {

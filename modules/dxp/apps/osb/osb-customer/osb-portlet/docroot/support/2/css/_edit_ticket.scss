@@ -1,5 +1,5 @@
 .canned-response-results .taglib-search-iterator td a {
-	color: #CD171D;
+	color: $error;
 }
 
 .component-details {
@@ -56,7 +56,7 @@
 	}
 
 	.field-modified {
-		color: #383838;
+		color: $text-color;
 		font-weight: bold;
 	}
 
@@ -89,8 +89,8 @@
 		padding: 0 0 0 3px;
 
 		&.error {
-			background: url(@theme_image_path@/images/messages/error.png) no-repeat scroll 6px 50% #FDD;
-			border: 1px solid #F00;
+			background: url(@theme_image_path@/images/messages/error.png) no-repeat scroll 6px 50% $error;
+			border: 1px solid $error;
 			margin-left: 10px;
 			padding: 6px 6px 6px 30px;
 		}
@@ -106,7 +106,7 @@
 			padding-right: 20px;
 
 			.msg {
-				color: #999;
+				color: $medium-gray;
 			}
 		}
 	}
@@ -123,9 +123,9 @@
 }
 
 .link-type {
-	border: 2px solid #1BAAE1;
+	border: 2px solid $hover-blue;
 	border-radius: 2px;
-	color: #1BAAE1;
+	color: $hover-blue;
 	font-weight: bold;
 	margin-left: 5px;
 }
@@ -144,7 +144,7 @@
 
 .results-row a {
 	&, & * {
-		color: #383838;
+		color: $text-color;
 	}
 }
 

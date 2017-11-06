@@ -11,27 +11,27 @@
 			text-shadow: 1px 1px #FFF;
 
 			&.error-message {
-				background: url(/html/themes/classic/images/messages/error.png) no-repeat 5px #FDD;
+				background: url(/html/themes/classic/images/messages/error.png) no-repeat 5px $error;
 				border-color: #900;
 				color: #900;
 			}
 
 			&.progress-message {
-				background: url(@theme_image_path@/application/loading_indicator.gif) no-repeat 5px #D3E8F1;
-				border-color: #38F;
-				color: #34404F;
+				background: url(@theme_image_path@/application/loading_indicator.gif) no-repeat 5px $dynamic-upload-bg;
+				border-color: $text-color;
+				color: $text-color;
 			}
 
 			&.success-message {
-				background: url(/html/themes/classic/images/messages/success.png) no-repeat 5px #D3E8F1;
-				border-color: #38F;
+				background: url(/html/themes/classic/images/messages/success.png) no-repeat 5px $dynamic-upload-bg;
+				border-color: $text-color;
 				color: #047;
 			}
 
 			&.warn-message {
-				background: url(/html/themes/classic/images/messages/info.png) no-repeat 5px #D3E8F1;
-				border-color: #38F;
-				color: #34404F;
+				background: url(/html/themes/classic/images/messages/info.png) no-repeat 5px $dynamic-upload-bg;
+				border-color: $text-color;
+				color: $text-color;
 			}
 		}
 	}
@@ -55,7 +55,7 @@
 			}
 
 			.progress {
-				background: #8DB2E3;
+				background: $progress-bg;
 				display: block;
 				height: 15px;
 				width: 0;
@@ -63,7 +63,7 @@
 
 			.progress-bar {
 				background: #FFF;
-				border: 1px solid #83A8D9;
+				border: 1px solid $progress-border;
 				display: block;
 				height: 15px;
 			}
@@ -77,13 +77,13 @@
 		}
 
 		.upload-area {
-			border: 3px dashed #DDD;
+			border: 3px dashed $light-bg;
 			margin: 10px 0;
 			padding: 5px 0;
 			text-align: center;
 
 			&.dragging {
-				background-color: #A7CEDF;
+				background-color: $dynamic-upload-bg;
 				transform: scale(0.9);
 			}
 

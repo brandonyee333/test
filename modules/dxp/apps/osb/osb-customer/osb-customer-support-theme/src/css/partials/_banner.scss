@@ -1,5 +1,5 @@
 #banner {
-	background: $blue;
+	background: $primary-blue;
 	border-bottom: 1px solid $border-color;
 	height: 56px;
 	left: 0;
@@ -60,7 +60,7 @@
 		text-decoration: none;
 
 		&:hover {
-			color: #F49B45;
+			color: $primary-blue;
 		}
 	}
 }
@@ -93,7 +93,7 @@
 		}
 
 		.selected {
-			background: #EEE;
+			background: $light-bg;
 		}
 	}
 
@@ -138,7 +138,7 @@
 			&.parent-item {
 				&:before {
 					border: 4px solid transparent;
-					border-top-color: #777;
+					border-top-color: $medium-gray;
 					content: "";
 					display: block;
 					height: 0;
@@ -197,7 +197,7 @@
 
 		.doc-search-input {
 			background-color: transparent;
-			border: 0 solid #DFDFDF;
+			border: 0 solid $border-color;
 			box-sizing: border-box;
 			color: transparent;
 			font-size: 1.3em;
@@ -305,7 +305,7 @@
 		}
 
 		&:hover svg, &.active svg, &.active.unread svg, &.clicked svg {
-			stroke: $blue;
+			stroke: $primary-blue;
 		}
 
 		&.bottom {
@@ -328,7 +328,7 @@
 		}
 
 		&.unread svg {
-			stroke: #F00;
+			stroke: $error;
 		}
 
 		svg {
@@ -512,7 +512,7 @@
 			}
 
 			.footnote {
-				color: #999;
+				color: $medium-gray;
 			}
 
 			.txt-sb {
@@ -539,7 +539,7 @@
 			height: 21px;
 
 			span {
-				border: 1px solid #383838;
+				border: 1px solid $text-color;
 				right: 14px;
 			}
 		}
@@ -554,7 +554,7 @@
 		width: 30px;
 
 		span {
-			border: 2px solid #383838;
+			border: 2px solid $text-color;
 			border-radius: 50%;
 			height: 0;
 			position: absolute;

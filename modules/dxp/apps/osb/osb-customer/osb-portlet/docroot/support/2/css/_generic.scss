@@ -48,7 +48,7 @@
 			}
 
 			&.hover {
-				background: none repeat scroll 0 0 $blue;
+				background: none repeat scroll 0 0 $primary-blue;
 				color: #FFF;
 			}
 		}
@@ -137,7 +137,7 @@
 					text-decoration: none;
 
 					&:hover {
-						background-color: $blue;
+						background-color: $primary-blue;
 						color: #FFF;
 					}
 				}
@@ -186,15 +186,15 @@
 		transition: border 0.3s ease-in 0s;
 
 		&.off {
-			border: 1px solid #1B3A6A;
+			border: 1px solid $manager-pref-toggler;
 		}
 
 		&.on {
-			border: 1px solid #1BAAE1;
+			border: 1px solid $hover-blue;
 		}
 
 		&:hover.off {
-			border: 1px solid #1BAAE1;
+			border: 1px solid $hover-blue;
 		}
 
 		&:hover.off .toggle-on-off-switch-inner {
@@ -202,7 +202,7 @@
 		}
 
 		&:hover.on {
-			border: 1px solid #1B3A6A;
+			border: 1px solid $manager-pref-toggler;
 		}
 
 		&:hover.on .toggle-on-off-switch-inner {
@@ -237,7 +237,7 @@
 		}
 
 		& .toggle-on-off-switch-on {
-			background-color: #1BAAE1;
+			background-color: $hover-blue;
 			border-right: 8px solid #FFF;
 			color: #FFF;
 			text-transform: uppercase;
@@ -245,8 +245,8 @@
 
 		& .toggle-on-off-switch-off, & .toggle-on-off-switch-on-pto {
 			background-color: #FFF;
-			border-left: 8px solid #1B3A6A;
-			color: #1B3A6A;
+			border-left: 8px solid $manager-pref-toggler;
+			color: $manager-pref-toggler;
 			padding-left: 2px;
 			padding-right: 2px;
 			text-transform: uppercase;

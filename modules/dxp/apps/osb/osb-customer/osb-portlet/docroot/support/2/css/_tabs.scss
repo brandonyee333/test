@@ -54,7 +54,7 @@
 
 			.lfr-search-container {
 				td {
-					border-bottom: 1px solid #BABEC1;
+					border-bottom: 1px solid $border-color;
 					padding-left: 0;
 				}
 			}
@@ -70,18 +70,18 @@
 				}
 
 				.solution-confirm-btn.btn-no {
-					border-color: #EF000B;
-					color: #EF000B;
+					border-color: $urgent;
+					color: $urgent;
 
 					&:hover {
-						background: #EF000B;
+						background: $urgent;
 						color: #FFF;
 					}
 				}
 
 				.solution-confirm-comment, .solution-issue-summary {
 					background: #FFF;
-					border: 1px solid #777;
+					border: 1px solid $medium-gray;
 					max-height: 250px;
 					overflow: auto;
 
@@ -95,7 +95,7 @@
 
 					.code {
 						background: none repeat scroll 0 0 #FFF;
-						border: 1px solid #777;
+						border: 1px solid $medium-gray;
 						font-family: monospace;
 						max-height: 180px;
 						overflow-x: auto;
@@ -103,7 +103,7 @@
 					}
 
 					.code-lines {
-						border-right: 1px solid #CCC;
+						border-right: 1px solid $border-color;
 						color: #000;
 						margin-right: 5px;
 						padding: 0 5px;
@@ -111,7 +111,7 @@
 
 					.quote {
 						background: url(@theme_image_path@/message_boards/quoteleft.png) no-repeat scroll left top white;
-						border: 1px solid #777;
+						border: 1px solid $medium-gray;
 						padding: 5px 0 0 5px;
 					}
 
@@ -134,8 +134,8 @@
 						padding-bottom: 1em;
 
 						input.style-a {
-							border-color: #1BAAE1;
-							color: #1BAAE1;
+							border-color: $hover-blue;
+							color: $hover-blue;
 
 							&:hover {
 								color: #FFF;
@@ -181,7 +181,7 @@
 				}
 
 				&.notification {
-					background-color: $blue;
+					background-color: $primary-blue;
 					border-radius: 50%;
 					border-width: 0;
 					bottom: 3px;
@@ -194,12 +194,12 @@
 				}
 
 				&.selected {
-					border-bottom: 3px solid $blue;
-					color: #383838;
+					border-bottom: 3px solid $primary-blue;
+					color: $text-color;
 				}
 
 				&.selected.highlight-red {
-					color: #F00;
+					color: $error;
 				}
 			}
 

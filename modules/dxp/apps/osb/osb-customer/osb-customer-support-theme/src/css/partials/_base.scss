@@ -30,7 +30,7 @@ body, input, legend, select, textarea {
 }
 
 a {
-	color: $blue;
+	color: $primary-blue;
 	cursor: pointer;
 	text-decoration: none;
 
@@ -94,13 +94,13 @@ input, select, textarea {
 }
 
 input[readonly="readonly"] {
-	border: 2px solid #DFDFDF;
+	border: 2px solid $border-color;
 }
 
 input[type=button]:disabled {
-	background: none repeat scroll 0 0 #EEE;
-	border: 1px solid #CCC;
-	color: #CCC;
+	background: none repeat scroll 0 0 $text-color;
+	border: 1px solid $border-color;
+	color: $border-color;
 	cursor: default;
 }
 
@@ -121,7 +121,7 @@ table {
 	width: 100%;
 
 	.inactive td {
-		background-color: #FCC;
+		background-color: $error;
 	}
 }
 
@@ -148,7 +148,7 @@ textarea {
 }
 
 .info {
-	background-color: $info-message;
+	background-color: $info;
 	color: #FFF;
 }
 
@@ -176,19 +176,19 @@ textarea {
 
 .portlet-msg-error {
 	background-color: rgba(255, 221, 221, 0.96);
-	border-color: #F00;
-	color: #D00;
+	border-color: $error;
+	color: $urgent;
 }
 
 .portlet-msg-info {
 	background-color: rgba(204, 233, 255, 0.96);
-	border-color: #89A;
+	border-color: $medium-gray;
 	display: inline-block;
 }
 
 .portlet-msg-success {
 	background-color: rgba(204, 255, 204, 0.96);
-	border-color: #8B8;
+	border-color: $minor;
 }
 
 .txt-sb, .txt-sb * {
@@ -196,11 +196,11 @@ textarea {
 }
 
 .urgent {
-	background-color: $urgent-message;
+	background-color: $urgent;
 	color: #FFF;
 }
 
 .warning {
-	background-color: $warning-message;
+	background-color: $warning;
 	color: #000;
 }

@@ -4,7 +4,7 @@
 	.aui-button-input-export:after {
 		border-left: 4px solid transparent;
 		border-right: 4px solid transparent;
-		border-top: 4px solid $blue;
+		border-top: 4px solid $primary-blue;
 		content: '';
 		display: inline-block;
 		height: 0;
@@ -51,7 +51,7 @@
 			text-decoration: none;
 
 			&:hover {
-				background-color: #00579F;
+				background-color: $primary-blue;
 				color: #FFF;
 			}
 		}
