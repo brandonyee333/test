@@ -28,8 +28,7 @@ public class JenkinsSlave {
 		_slaveName = slaveName;
 
 		_localURL = JenkinsResultsParserUtil.combine(
-			"http://", _jenkinsMaster.getName(), "/computer/", _slaveName,
-			"/");
+			"http://", _jenkinsMaster.getName(), "/computer/", _slaveName, "/");
 	}
 
 	public JenkinsMaster getJenkinsMaster() {

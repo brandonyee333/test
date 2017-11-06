@@ -138,7 +138,7 @@ public abstract class BaseBuild implements Build {
 			sb.append("/");
 		}
 
-		sb.append(getMaster());
+		sb.append(_jenkinsMaster.getName());
 		sb.append("/");
 		sb.append(getJobName());
 		sb.append("/");
@@ -275,7 +275,8 @@ public abstract class BaseBuild implements Build {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("http[s]*:\\/\\/");
-		sb.append(JenkinsResultsParserUtil.getRegexLiteral(getMaster()));
+		sb.append(
+			JenkinsResultsParserUtil.getRegexLiteral(_jenkinsMaster.getName()));
 		sb.append("[^\\/]*");
 		sb.append("[\\/]+job[\\/]+");
 
@@ -518,15 +519,19 @@ public abstract class BaseBuild implements Build {
 	}
 
 	@Override
+	public JenkinsMaster getJenkinsMaster() {
+		return _jenkinsMaster;
+	}
+
+	@Override
 	public JenkinsSlave getJenkinsSlave() {
 		if (_jenkinsSlave != null) {
 			return _jenkinsSlave;
 		}
 
 		String buildURL = getBuildURL();
-		String masterName = getMaster();
 
-		if ((buildURL == null) || (masterName == null)) {
+		if ((buildURL == null) || (_jenkinsMaster == null)) {
 			return null;
 		}
 
@@ -538,8 +543,7 @@ public abstract class BaseBuild implements Build {
 			slaveName = "master";
 		}
 
-		_jenkinsSlave = new JenkinsSlave(
-			new JenkinsMaster(masterName), slaveName);
+		_jenkinsSlave = new JenkinsSlave(_jenkinsMaster, slaveName);
 
 		return _jenkinsSlave;
 	}
@@ -551,17 +555,18 @@ public abstract class BaseBuild implements Build {
 
 	@Override
 	public String getJobURL() {
-		if ((master == null) || (jobName == null)) {
+		if ((_jenkinsMaster == null) || (jobName == null)) {
 			return null;
 		}
 
 		if (fromArchive) {
-			return "${dependencies.url}/" + archiveName + "/" + master + "/" +
-				jobName;
+			return JenkinsResultsParserUtil.combine(
+				"${dependencies.url}/", archiveName, "/",
+				_jenkinsMaster.getName(), "/", jobName);
 		}
 
 		String jobURL = JenkinsResultsParserUtil.combine(
-			"https://", master, ".liferay.com/job/", jobName);
+			"https://", _jenkinsMaster.getName(), ".liferay.com/job/", jobName);
 
 		try {
 			return JenkinsResultsParserUtil.encode(jobURL);
@@ -633,11 +638,6 @@ public abstract class BaseBuild implements Build {
 		}
 
 		return latestStartTimestamp;
-	}
-
-	@Override
-	public String getMaster() {
-		return master;
 	}
 
 	@Override
@@ -1016,7 +1016,8 @@ public abstract class BaseBuild implements Build {
 			slaveOfflineRule.getName(), " failure detected at ", getBuildURL(),
 			". ", jenkinsSlave.getName(), " will be taken offline.\n\n",
 			slaveOfflineRule.toString(), "\n\n\nOffline Slave URL: https://",
-			master, ".liferay.com/computer/", jenkinsSlave.getName(), "\n");
+			_jenkinsMaster.getName(), ".liferay.com/computer/",
+			jenkinsSlave.getName(), "\n");
 
 		System.out.println(message);
 
@@ -1811,9 +1812,10 @@ public abstract class BaseBuild implements Build {
 
 	protected JSONArray getQueueItemsJSONArray() throws IOException {
 		JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
-			"http://" + master +
-				"/queue/api/json?tree=items[actions[parameters" +
-					"[name,value]],task[name,url]]",
+			JenkinsResultsParserUtil.combine(
+				"http://", _jenkinsMaster.getName(),
+				"/queue/api/json?tree=items[actions[parameters",
+				"[name,value]],task[name,url]]"),
 			false);
 
 		return jsonObject.getJSONArray("items");
@@ -2106,7 +2108,7 @@ public abstract class BaseBuild implements Build {
 		}
 
 		setJobName(matcher.group("jobName"));
-		master = matcher.group("master");
+		setJenkinsMaster(new JenkinsMaster(matcher.group("master")));
 
 		_buildNumber = Integer.parseInt(matcher.group("buildNumber"));
 
@@ -2135,12 +2137,17 @@ public abstract class BaseBuild implements Build {
 			}
 
 			setJobName(invocationURLMatcher.group("jobName"));
-			master = invocationURLMatcher.group("master");
+			setJenkinsMaster(
+				new JenkinsMaster(invocationURLMatcher.group("master")));
 
 			loadParametersFromQueryString(invocationURL);
 
 			setStatus("starting");
 		}
+	}
+
+	protected void setJenkinsMaster(JenkinsMaster jenkinsMaster) {
+		_jenkinsMaster = jenkinsMaster;
 	}
 
 	protected void setJobName(String jobName) {
@@ -2218,7 +2225,6 @@ public abstract class BaseBuild implements Build {
 	protected List<Build> downstreamBuilds = new ArrayList<>();
 	protected boolean fromArchive;
 	protected String jobName;
-	protected String master;
 	protected List<ReinvokeRule> reinvokeRules =
 		ReinvokeRule.getReinvokeRules();
 	protected String repositoryName;
@@ -2239,6 +2245,7 @@ public abstract class BaseBuild implements Build {
 	private int _buildNumber = -1;
 	private int _consoleReadCursor;
 	private String _consoleText;
+	private JenkinsMaster _jenkinsMaster;
 	private JenkinsSlave _jenkinsSlave;
 	private Map<String, String> _parameters = new HashMap<>();
 	private final Build _parentBuild;

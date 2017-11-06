@@ -74,6 +74,8 @@ public interface Build {
 
 	public String getJDK();
 
+	public JenkinsMaster getJenkinsMaster();
+
 	public JenkinsSlave getJenkinsSlave();
 
 	public String getJobName();
@@ -87,8 +89,6 @@ public interface Build {
 	public List<Build> getJobVariantsDownstreamBuilds(List<String> jobVariants);
 
 	public Long getLatestStartTimestamp();
-
-	public String getMaster();
 
 	public String getOperatingSystem();
 
