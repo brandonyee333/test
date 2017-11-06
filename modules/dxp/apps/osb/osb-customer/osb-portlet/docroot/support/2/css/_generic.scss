@@ -80,7 +80,7 @@
 
 	.drop-down-arrow {
 		background-color: transparent;
-		border: 14px solid #D0D1D3;
+		border: 14px solid $border-color;
 		border-left: 18px dashed transparent;
 		border-right-width: 0;
 		border-top-width: 0;
@@ -110,7 +110,7 @@
 
 	.drop-down-menu {
 		background-color: #FFF;
-		border: 1px solid #D0D1D3;
+		border: 1px solid $border-color;
 		box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.25);
 		display: block;
 		list-style: none;

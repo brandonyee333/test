@@ -122,18 +122,18 @@
 		}
 
 		&.aui-form-validator-valid-container, &.field-filled {
-			color: #909295;
+			color: $medium-gray;
 
 			input, select {
-				border-color: #909295;
-				color: #909295;
+				border-color: $medium-gray;
+				color: $medium-gray;
 			}
 		}
 
 		input, select {
 			background-color: transparent;
-			border: 1px solid #474A4B;
-			color: #474A4B;
+			border: 1px solid $text-color;
+			color: $text-color;
 			display: inline-block;
 			font-size: 1.2em;
 			height: 1.5em;
