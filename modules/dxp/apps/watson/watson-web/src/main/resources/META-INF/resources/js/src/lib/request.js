@@ -76,7 +76,7 @@ export function fetchURL(requestURL, requestConfig) {
 						message
 					};
 				}
-				else if (status == 403) {
+				else if (status === 403) {
 					retVal = Promise.reject(
 						{
 							forbidden: true,
