@@ -523,14 +523,23 @@ public abstract class BaseBuild implements Build {
 			return _jenkinsSlave;
 		}
 
-		String master = getMaster();
-		String slave = getSlave();
+		String buildURL = getBuildURL();
+		String masterName = getMaster();
 
-		if ((master == null) || (slave == null)) {
+		if ((buildURL == null) || (masterName == null)) {
 			return null;
 		}
 
-		_jenkinsSlave = new JenkinsSlave(master, slave);
+		JSONObject builtOnJSONObject = getBuildJSONObject("builtOn");
+
+		String slaveName = builtOnJSONObject.optString("builtOn");
+
+		if (slaveName.equals("")) {
+			slaveName = "master";
+		}
+
+		_jenkinsSlave = new JenkinsSlave(
+			new JenkinsMaster(masterName), slaveName);
 
 		return _jenkinsSlave;
 	}
@@ -664,21 +673,6 @@ public abstract class BaseBuild implements Build {
 		}
 
 		return result;
-	}
-
-	@Override
-	public String getSlave() {
-		if ((slave == null) && (getBuildURL() != null)) {
-			JSONObject builtOnJSONObject = getBuildJSONObject("builtOn");
-
-			slave = builtOnJSONObject.optString("builtOn");
-
-			if (slave.equals("")) {
-				slave = "master";
-			}
-		}
-
-		return slave;
 	}
 
 	@Override
@@ -999,12 +993,6 @@ public abstract class BaseBuild implements Build {
 			return;
 		}
 
-		slave = getSlave();
-
-		if (slave == null) {
-			return;
-		}
-
 		JenkinsSlave jenkinsSlave = getJenkinsSlave();
 
 		if (jenkinsSlave == null) {
@@ -1026,9 +1014,9 @@ public abstract class BaseBuild implements Build {
 
 		String message = JenkinsResultsParserUtil.combine(
 			slaveOfflineRule.getName(), " failure detected at ", getBuildURL(),
-			". ", slave, " will be taken offline.\n\n",
+			". ", jenkinsSlave.getName(), " will be taken offline.\n\n",
 			slaveOfflineRule.toString(), "\n\n\nOffline Slave URL: https://",
-			master, ".liferay.com/computer/", slave, "\n");
+			master, ".liferay.com/computer/", jenkinsSlave.getName(), "\n");
 
 		System.out.println(message);
 
@@ -1091,7 +1079,6 @@ public abstract class BaseBuild implements Build {
 					}
 				}
 
-				slave = getSlave();
 				status = getStatus();
 
 				if (downstreamBuilds != null) {
@@ -2236,7 +2223,6 @@ public abstract class BaseBuild implements Build {
 		ReinvokeRule.getReinvokeRules();
 	protected String repositoryName;
 	protected String result;
-	protected String slave;
 	protected List<SlaveOfflineRule> slaveOfflineRules =
 		SlaveOfflineRule.getSlaveOfflineRules();
 	protected long statusModifiedTime;

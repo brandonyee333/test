@@ -23,12 +23,21 @@ import org.json.JSONObject;
  */
 public class JenkinsSlave {
 
-	public JenkinsSlave(String masterName, String slaveName) {
-		_masterName = masterName;
+	public JenkinsSlave(JenkinsMaster jenkinsMaster, String slaveName) {
+		_jenkinsMaster = jenkinsMaster;
 		_slaveName = slaveName;
 
 		_localURL = JenkinsResultsParserUtil.combine(
-			"http://", masterName, "/computer/", _slaveName, "/");
+			"http://", _jenkinsMaster.getMasterName(), "/computer/", _slaveName,
+			"/");
+	}
+
+	public JenkinsMaster getJenkinsMaster() {
+		return _jenkinsMaster;
+	}
+
+	public String getName() {
+		return _slaveName;
 	}
 
 	public boolean isOffline() throws IOException {
@@ -63,7 +72,8 @@ public class JenkinsSlave {
 			script = script.replace(
 				"${offline.status}", String.valueOf(offlineStatus));
 
-			JenkinsResultsParserUtil.executeJenkinsScript(_masterName, script);
+			JenkinsResultsParserUtil.executeJenkinsScript(
+				_jenkinsMaster.getMasterName(), script);
 		}
 		catch (IOException ioe) {
 			System.out.println(
@@ -73,8 +83,8 @@ public class JenkinsSlave {
 		}
 	}
 
+	private final JenkinsMaster _jenkinsMaster;
 	private final String _localURL;
-	private final String _masterName;
 	private final String _slaveName;
 
 }
