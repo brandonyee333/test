@@ -130,14 +130,14 @@
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />supportTeams_" + supportRegionId).show();
-			A.one("#<portlet:namespace />collapse_" + supportRegionId).show();
-			A.one("#<portlet:namespace />expand_" + supportRegionId).hide();
+			A.one('#<portlet:namespace />supportTeams_' + supportRegionId).show();
+			A.one('#<portlet:namespace />collapse_' + supportRegionId).show();
+			A.one('#<portlet:namespace />expand_' + supportRegionId).hide();
 		}
 		else {
-			A.one("#<portlet:namespace />supportTeams_" + supportRegionId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportRegionId).hide();
-			A.one("#<portlet:namespace />expand_" + supportRegionId).show();
+			A.one('#<portlet:namespace />supportTeams_' + supportRegionId).hide();
+			A.one('#<portlet:namespace />collapse_' + supportRegionId).hide();
+			A.one('#<portlet:namespace />expand_' + supportRegionId).show();
 		}
 	}
 </aui:script>

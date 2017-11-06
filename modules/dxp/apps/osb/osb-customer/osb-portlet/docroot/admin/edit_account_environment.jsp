@@ -304,10 +304,10 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 			var A = AUI();
 
 			if (envLFR <= 0) {
-				A.one("#<portlet:namespace />envAS").empty();
-				A.one("#<portlet:namespace />envDB").empty();
-				A.one("#<portlet:namespace />envJVM").empty();
-				A.one("#<portlet:namespace />envOS").empty();
+				A.one('#<portlet:namespace />envAS').empty();
+				A.one('#<portlet:namespace />envDB').empty();
+				A.one('#<portlet:namespace />envJVM').empty();
+				A.one('#<portlet:namespace />envOS').empty();
 
 				return;
 			}
@@ -324,10 +324,10 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 						success: function(event, id, obj) {
 							var response = this.get('responseData');
 
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envAS", response["ENV_AS#key"], response["ENV_AS"], envAS, envASName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envDB", response["ENV_DB#key"], response["ENV_DB"], envDB, envDBName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envJVM", response["ENV_JVM#key"], response["ENV_JVM"], envJVM, envJVMName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envOS", response["ENV_OS#key"], response["ENV_OS"], envOS, envOSName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envAS', response['ENV_AS#key'], response['ENV_AS'], envAS, envASName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envDB', response['ENV_DB#key'], response['ENV_DB'], envDB, envDBName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envJVM', response['ENV_JVM#key'], response['ENV_JVM'], envJVM, envJVMName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envOS', response['ENV_OS#key'], response['ENV_OS'], envOS, envOSName);
 						}
 					}
 				}

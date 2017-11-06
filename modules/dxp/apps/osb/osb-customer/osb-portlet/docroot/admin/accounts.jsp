@@ -185,14 +185,14 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />supportRegions_" + supportTeamId).show();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_supportRegions").show();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_supportRegions").hide();
+			A.one('#<portlet:namespace />supportRegions_' + supportTeamId).show();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportRegions').show();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportRegions').hide();
 		}
 		else {
-			A.one("#<portlet:namespace />supportRegions_" + supportTeamId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_supportRegions").hide();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_supportRegions").show();
+			A.one('#<portlet:namespace />supportRegions_' + supportTeamId).hide();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportRegions').hide();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportRegions').show();
 		}
 	}
 </aui:script>

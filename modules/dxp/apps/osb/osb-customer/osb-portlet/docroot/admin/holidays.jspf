@@ -136,14 +136,14 @@
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />holidayEntries_" + holidayCalendarId).show();
-			A.one("#<portlet:namespace />collapse_" + holidayCalendarId).show();
-			A.one("#<portlet:namespace />expand_" + holidayCalendarId).hide();
+			A.one('#<portlet:namespace />holidayEntries_' + holidayCalendarId).show();
+			A.one('#<portlet:namespace />collapse_' + holidayCalendarId).show();
+			A.one('#<portlet:namespace />expand_' + holidayCalendarId).hide();
 		}
 		else {
-			A.one("#<portlet:namespace />holidayEntries_" + holidayCalendarId).hide();
-			A.one("#<portlet:namespace />collapse_" + holidayCalendarId).hide();
-			A.one("#<portlet:namespace />expand_" + holidayCalendarId).show();
+			A.one('#<portlet:namespace />holidayEntries_' + holidayCalendarId).hide();
+			A.one('#<portlet:namespace />collapse_' + holidayCalendarId).hide();
+			A.one('#<portlet:namespace />expand_' + holidayCalendarId).show();
 		}
 	}
 
@@ -151,14 +151,14 @@
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />users_" + holidayCalendarId).show();
-			A.one("#<portlet:namespace />collapse_" + holidayCalendarId + "_users").show();
-			A.one("#<portlet:namespace />expand_" + holidayCalendarId + "_users").hide();
+			A.one('#<portlet:namespace />users_' + holidayCalendarId).show();
+			A.one('#<portlet:namespace />collapse_' + holidayCalendarId + '_users').show();
+			A.one('#<portlet:namespace />expand_' + holidayCalendarId + '_users').hide();
 		}
 		else {
-			A.one("#<portlet:namespace />users_" + holidayCalendarId).hide();
-			A.one("#<portlet:namespace />collapse_" + holidayCalendarId + "_users").hide();
-			A.one("#<portlet:namespace />expand_" + holidayCalendarId + "_users").show();
+			A.one('#<portlet:namespace />users_' + holidayCalendarId).hide();
+			A.one('#<portlet:namespace />collapse_' + holidayCalendarId + '_users').hide();
+			A.one('#<portlet:namespace />expand_' + holidayCalendarId + '_users').show();
 		}
 	}
 </aui:script>

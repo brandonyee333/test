@@ -689,16 +689,16 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	function <portlet:namespace />removeCorpProject() {
 		document.<portlet:namespace />fm.<portlet:namespace />corpProjectId.value = 0;
 
-		document.getElementById("<portlet:namespace />corpProjectName").innerHTML = '';
+		document.getElementById('<portlet:namespace />corpProjectName').innerHTML = '';
 	}
 
 	function <portlet:namespace />removePartnerEntry() {
 		document.<portlet:namespace />fm.<portlet:namespace />partnerEntryId.value = 0;
 
-		var nameEl = document.getElementById("<portlet:namespace />partnerEntryCode");
+		var nameEl = document.getElementById('<portlet:namespace />partnerEntryCode');
 
-		nameEl.href = "";
-		nameEl.innerHTML = "";
+		nameEl.href = '';
+		nameEl.innerHTML = '';
 
 		document.<portlet:namespace />fm.<portlet:namespace />partnerManagedSupport.value = '';
 		document.<portlet:namespace />fm.<portlet:namespace />partnerManagedSupportCheckbox.disabled = true;
@@ -725,19 +725,19 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	function <portlet:namespace />selectCorpProject(corpProjectId, corpProjectName) {
 		document.<portlet:namespace />fm.<portlet:namespace />corpProjectId.value = corpProjectId;
 
-		document.getElementById("<portlet:namespace />corpProjectName").innerHTML = corpProjectName;
+		document.getElementById('<portlet:namespace />corpProjectName').innerHTML = corpProjectName;
 	}
 
 	function <portlet:namespace />selectPartnerEntry(partnerEntryId, partnerEntryCode) {
 		document.<portlet:namespace />fm.<portlet:namespace />partnerEntryId.value = partnerEntryId;
 
-		var nameEl = document.getElementById("<portlet:namespace />partnerEntryCode");
+		var nameEl = document.getElementById('<portlet:namespace />partnerEntryCode');
 
 		if (<%= RoleLocalServiceUtil.hasUserRole(permissionChecker.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) %>) {
 			nameEl.innerHTML = "<a href='<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>&<portlet:namespace />partnerEntryId=" + partnerEntryId + "'>" + partnerEntryCode + "</a>";
 		}
 		else {
-			nameEl.innerHTML = partnerEntryCode + "&nbsp;";
+			nameEl.innerHTML = partnerEntryCode + '&nbsp;';
 		}
 
 		document.<portlet:namespace />fm.<portlet:namespace />partnerManagedSupportCheckbox.disabled = false;

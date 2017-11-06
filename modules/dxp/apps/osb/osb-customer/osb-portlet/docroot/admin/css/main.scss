@@ -41,7 +41,7 @@ $text-color: #474A4B;
 					}
 
 					&:last-child {
-						border-bottom: none;
+						border-bottom-width: 0;
 					}
 
 					.data {
@@ -98,8 +98,10 @@ $text-color: #474A4B;
 		padding-left: 25px;
 	}
 
-	.collapse .taglib-text, .expand .taglib-text {
-		text-decoration: none;
+	.collapse, .expand {
+		.taglib-text {
+			text-decoration: none;
+		}
 	}
 
 	.history {
@@ -172,31 +174,31 @@ $text-color: #474A4B;
 			display: block;
 		}
 
-		& td.manager-dashboard-col {
+		td.manager-dashboard-col {
 			background-color: #F3FBFE;
 			border: 1px solid #1BADF2;
 			padding: 0;
 
 			&.empty {
 				background-color: transparent;
-				border: none;
+				border-width: 0;
 			}
 		}
 
-		& .manager-dashboard-team {
+		.manager-dashboard-team {
 			clear: none;
 			padding: 12px 12px 24px !important;
 			width: 100%;
 
-			& * {
+			* {
 				vertical-align: middle;
 			}
 
-			& .role-icon {
+			.role-icon {
 				margin: 0 5px;
 				padding: auto 7px;
 
-				& * {
+				* {
 					border-radius: 50%;
 					color: #FFF;
 					font-size: 9px;
@@ -204,34 +206,34 @@ $text-color: #474A4B;
 					padding: 2px 4px;
 				}
 
-				& .d {
+				.d {
 					background-color: #0658BA;
 				}
 
-				& .m {
+				.m {
 					background-color: #0B447C;
 					padding: 2px 3px 2px 4px;
 				}
 
-				& .w {
+				.w {
 					background-color: #3A0092;
 					padding: 2px 3px;
 				}
 			}
 
-			& .support-worker {
+			.support-worker {
 				display: inline-block;
 				margin: 3px 0;
 				width: 240px;
 
-				& .switch {
+				.switch {
 					display: inline-block;
 					height: 18px;
 					margin: 8px 0;
 					padding: 0;
 				}
 
-				& .user-name {
+				.user-name {
 					display: inline-block;
 					font-size: 13px;
 					margin: 0;
@@ -241,7 +243,7 @@ $text-color: #474A4B;
 				}
 			}
 
-			& .team-title {
+			.team-title {
 				font-size: 14px;
 				font-weight: bold;
 			}

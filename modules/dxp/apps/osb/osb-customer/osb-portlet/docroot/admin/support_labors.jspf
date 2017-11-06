@@ -137,14 +137,14 @@
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />hours_" + supportLaborId).show();
-			A.one("#<portlet:namespace />collapse_" + supportLaborId + "_hours").show();
-			A.one("#<portlet:namespace />expand_" + supportLaborId + "_hours").hide();
+			A.one('#<portlet:namespace />hours_' + supportLaborId).show();
+			A.one('#<portlet:namespace />collapse_' + supportLaborId + '_hours').show();
+			A.one('#<portlet:namespace />expand_' + supportLaborId + '_hours').hide();
 		}
 		else {
-			A.one("#<portlet:namespace />hours_" + supportLaborId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportLaborId + "_hours").hide();
-			A.one("#<portlet:namespace />expand_" + supportLaborId + "_hours").show();
+			A.one('#<portlet:namespace />hours_' + supportLaborId).hide();
+			A.one('#<portlet:namespace />collapse_' + supportLaborId + '_hours').hide();
+			A.one('#<portlet:namespace />expand_' + supportLaborId + '_hours').show();
 		}
 	}
 
@@ -152,14 +152,14 @@
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />teams_" + supportLaborId).show();
-			A.one("#<portlet:namespace />collapse_" + supportLaborId + "_teams").show();
-			A.one("#<portlet:namespace />expand_" + supportLaborId + "_teams").hide();
+			A.one('#<portlet:namespace />teams_' + supportLaborId).show();
+			A.one('#<portlet:namespace />collapse_' + supportLaborId + '_teams').show();
+			A.one('#<portlet:namespace />expand_' + supportLaborId + '_teams').hide();
 		}
 		else {
-			A.one("#<portlet:namespace />teams_" + supportLaborId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportLaborId + "_teams").hide();
-			A.one("#<portlet:namespace />expand_" + supportLaborId + "_teams").show();
+			A.one('#<portlet:namespace />teams_' + supportLaborId).hide();
+			A.one('#<portlet:namespace />collapse_' + supportLaborId + '_teams').hide();
+			A.one('#<portlet:namespace />expand_' + supportLaborId + '_teams').show();
 		}
 	}
 </aui:script>

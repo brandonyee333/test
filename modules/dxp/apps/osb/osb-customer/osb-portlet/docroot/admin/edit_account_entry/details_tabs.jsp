@@ -754,7 +754,8 @@ for (SupportRegion supportRegion : supportRegions) {
 			}
 
 			<portlet:namespace />reveal(tab);
-		}
+		},
+		['aui-base']
 	);
 
 	<portlet:namespace />revealTab('<%= HtmlUtil.escape(detailTab) %>');

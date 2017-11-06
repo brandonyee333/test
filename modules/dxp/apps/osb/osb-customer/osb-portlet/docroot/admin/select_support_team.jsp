@@ -236,14 +236,14 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />accountEntries_" + supportTeamId).show();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_accountEntries").show();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_accountEntries").hide();
+			A.one('#<portlet:namespace />accountEntries_' + supportTeamId).show();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_accountEntries').show();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_accountEntries').hide();
 		}
 		else {
-			A.one("#<portlet:namespace />accountEntries_" + supportTeamId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_accountEntries").hide();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_accountEntries").show();
+			A.one('#<portlet:namespace />accountEntries_' + supportTeamId).hide();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_accountEntries').hide();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_accountEntries').show();
 		}
 	}
 
@@ -251,14 +251,14 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />supportRegions_" + supportTeamId).show();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_supportRegions").show();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_supportRegions").hide();
+			A.one('#<portlet:namespace />supportRegions_' + supportTeamId).show();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportRegions').show();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportRegions').hide();
 		}
 		else {
-			A.one("#<portlet:namespace />supportRegions_" + supportTeamId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_supportRegions").hide();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_supportRegions").show();
+			A.one('#<portlet:namespace />supportRegions_' + supportTeamId).hide();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportRegions').hide();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportRegions').show();
 		}
 	}
 </aui:script>
