@@ -1,9 +1,5 @@
-#toggle_id_account_entry_searchbasic,
-#toggle_id_partner_entry_searchbasic,
-#toggle_id_ticket_entry_searchbasic,
-#toggle_id_ticket_feedback_searchbasic input,
-.temp-flag {
-	@include border-radius(2px);
+#toggle_id_account_entry_searchbasic, #toggle_id_partner_entry_searchbasic, #toggle_id_ticket_entry_searchbasic, #toggle_id_ticket_feedback_searchbasic input, .temp-flag {
+	border-radius: 2px;
 }
 
 .webkit {

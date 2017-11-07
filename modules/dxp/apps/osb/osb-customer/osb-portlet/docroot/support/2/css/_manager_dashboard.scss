@@ -5,9 +5,9 @@
 		display: block;
 	}
 
-	& td.manager-dashboard-col {
-		background-color: #F3FBFE;
-		border: 1px solid #1BAAE1;
+	td.manager-dashboard-col {
+		background-color: $manager-dashboard-bg;
+		border: 1px solid $hover-blue;
 		padding: 0;
 		vertical-align: top;
 
@@ -17,57 +17,51 @@
 		}
 	}
 
-	& .manager-dashboard-team {
-		border-bottom: 1px solid #1BAAE1;
+	.manager-dashboard-team {
+		border-bottom: 1px solid $hover-blue;
 		clear: none;
 		padding: 12px 12px 24px !important;
+		vertical-align: middle;
 		width: 214px;
 
 		&.last {
 			border-bottom-width: 0;
 		}
 
-		& * {
-			vertical-align: middle;
-		}
-
-		& .role-icon {
+		.role-icon {
+			border-radius: 50%;
+			color: #FFF;
+			font-size: 9px;
+			font-weight: bold;
+			padding: 2px 4px;
 			padding: auto 7px;
 
-			& * {
-				border-radius: 50%;
-				color: #FFF;
-				font-size: 9px;
-				font-weight: bold;
-				padding: 2px 4px;
+			.developer {
+				background-color: $primary-blue;
 			}
 
-			& .d {
-				background-color: #0658BA;
-			}
-
-			& .m {
-				background-color: #0B447C;
+			.manager {
+				background-color: $manager-dashboard-manager;
 				padding: 2px 3px 2px 4px;
 			}
 
-			& .w {
-				background-color: #3A0092;
+			.watcher {
+				background-color: $manager-dashboard-watcher;
 				padding: 2px 3px;
 			}
 		}
 
-		& .switch {
+		.switch {
 			margin: 8px 0;
 			padding: 0;
 		}
 
-		& .team-title {
+		.team-title {
 			font-size: 14px;
 			font-weight: bold;
 		}
 
-		& .user-name {
+		.user-name {
 			font-size: 13px;
 			margin: 0;
 			padding: 0;

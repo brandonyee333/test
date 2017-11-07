@@ -142,9 +142,7 @@
 .user-avatar {
 	background: no-repeat center;
 	background-size: cover;
-
-	@include border-radius(50%);
-
+	border-radius: 50%;
 	display: inline-block;
 	height: 50px;
 	margin: 0 8px;

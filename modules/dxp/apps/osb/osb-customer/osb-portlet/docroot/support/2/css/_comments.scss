@@ -1,55 +1,41 @@
 .comment-body {
+	&.type-game-plan {
+		background-color: $game-plan-comment;
+	}
+
 	pre {
 		margin: 0;
 		overflow: hidden;
 		padding: 0;
 		word-wrap: break-word;
 	}
-
-	&.type-game-plan {
-		background-color: $game-plan-comment;
-	}
 }
 
 .comment-collapsed {
-	.code, .quote, .quote-content {
-		display: inline;
-	}
-
 	&.ticket-comment {
 		.comment-body {
+			color: $info;
+			display: inline;
+			font-style: italic;
 			height: 1.5em;
 			margin: 0;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			white-space: nowrap;
 			width: 100%;
-
-			* {
-				color: $info;
-				display: inline;
-				font-style: italic;
-				white-space: nowrap;
-				word-wrap: normal;
-			}
-
-			b, strong {
-				font-weight: normal;
-			}
-
-			br {
-				display: none;
-			}
+			word-wrap: normal;
 
 			&.rejected-comment-body {
 				background-color: $error;
-
-				* {
-					color: $medium-gray;
-				}
+				color: $medium-gray;
 			}
 
 			&.type-game-plan {
 				background-color: $game-plan-comment;
+			}
+
+			b, strong {
+				font-weight: normal;
 			}
 
 			.comment-body-wrapper {
@@ -103,6 +89,10 @@
 		font-size: 12px;
 	}
 
+	.code, .quote, .quote-content {
+		display: inline;
+	}
+
 	.user-name {
 		display: inline-block;
 
@@ -133,7 +123,7 @@
 
 	.code {
 		background: none repeat scroll 0 0 #FFF;
-		border: 1px solid #777;
+		border: 1px solid $medium-gray;
 		font-family: monospace;
 		max-height: 180px;
 		overflow-x: auto;
@@ -148,8 +138,8 @@
 	}
 
 	.quote {
-		background: url(@theme_image_path@/message_boards/quoteleft.png) no-repeat scroll left top white;
-		border: 1px solid #777;
+		background: url(@theme_image_path@/message_boards/quoteleft.png) no-repeat scroll left top #FFF;
+		border: 1px solid $medium-gray;
 		padding: 5px 0 0 5px;
 	}
 
@@ -279,7 +269,6 @@
 	&.preview {
 		.bb-code-icons {
 			a {
-				filter: alpha(opacity=40);
 				opacity: 0.4;
 				pointer-events: none;
 			}

@@ -96,13 +96,13 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getUserRoleSupportT
 													<td class="role-icon">
 														<c:choose>
 															<c:when test="<%= managedSupportWorker.getRole() == SupportWorkerConstants.ROLE_MANAGER %>">
-																<span class="m">M</span>
+																<span class="manager">M</span>
 															</c:when>
 															<c:when test="<%= managedSupportWorker.getRole() == SupportWorkerConstants.ROLE_WATCHER %>">
-																<span class="w">W</span>
+																<span class="watcher">W</span>
 															</c:when>
 															<c:otherwise>
-																<span class="d">D</span>
+																<span class="developer">D</span>
 															</c:otherwise>
 														</c:choose>
 													</td>
