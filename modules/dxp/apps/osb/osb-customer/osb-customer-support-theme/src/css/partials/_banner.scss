@@ -460,16 +460,16 @@
 		text-decoration: none;
 	}
 
-	ul {
-		display: inline-block;
-		vertical-align: bottom;
-	}
-
 	li:hover, li.selected {
 		a {
 			background: $hover-blue;
 			color: #FFF;
 		}
+	}
+
+	ul {
+		display: inline-block;
+		vertical-align: bottom;
 	}
 
 	.l a {

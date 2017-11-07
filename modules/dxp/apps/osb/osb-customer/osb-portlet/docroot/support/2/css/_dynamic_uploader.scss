@@ -40,20 +40,6 @@
 		margin-bottom: 0;
 
 		.toolbar {
-			.progress {
-				background: #8DB2E3;
-				display: block;
-				height: 15px;
-				width: 0;
-			}
-
-			.progress-bar {
-				background: #FFF;
-				border: 1px solid #83A8D9;
-				display: block;
-				height: 15px;
-			}
-
 			.cancel-button {
 				background-image: url(@theme_image_path@/common/delete.png);
 				display: block;
@@ -66,6 +52,20 @@
 				display: block;
 				height: 18px;
 				width: 18px;
+			}
+
+			.progress {
+				background: #8DB2E3;
+				display: block;
+				height: 15px;
+				width: 0;
+			}
+
+			.progress-bar {
+				background: #FFF;
+				border: 1px solid #83A8D9;
+				display: block;
+				height: 15px;
 			}
 
 			.resume-button {

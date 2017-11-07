@@ -40,10 +40,6 @@
 				display: none;
 			}
 
-			.comment-body-wrapper {
-				width: 1200px;
-			}
-
 			&.rejected-comment-body {
 				background-color: #FCC;
 
@@ -54,6 +50,10 @@
 
 			&.type-game-plan {
 				background-color: #FAEBC8;
+			}
+
+			.comment-body-wrapper {
+				width: 1200px;
 			}
 		}
 
@@ -123,6 +123,14 @@
 }
 
 .comment-expanded, .comment-help, .preview {
+	div.post-date {
+		display: block;
+	}
+
+	span.post-date {
+		display: none;
+	}
+
 	.code {
 		background: none repeat scroll 0 0 #FFF;
 		border: 1px solid #777;
@@ -137,14 +145,6 @@
 		color: #000;
 		margin-right: 5px;
 		padding: 0 5px;
-	}
-
-	div.post-date {
-		display: block;
-	}
-
-	span.post-date {
-		display: none;
 	}
 
 	.quote {

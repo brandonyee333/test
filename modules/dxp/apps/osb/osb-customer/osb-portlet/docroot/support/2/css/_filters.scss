@@ -1,4 +1,4 @@
-.ticket-filter, .account-filter, .partner-filter {
+.account-filter, .partner-filter, .ticket-filter {
 	background: #FFF;
 	height: 230px;
 	left: calc(2vw - -80px);
@@ -11,7 +11,7 @@
 		height: 317px;
 	}
 
-	.ticket-fade, .account-fade, .partner-fade {
+	.account-fade, .partner-fade, .ticket-fade {
 		background: linear-gradient(to bottom, white 2%, rgba(255, 255, 255, 0) 100%);
 		height: 20px;
 		left: inherit;
@@ -26,7 +26,7 @@
 	}
 }
 
-.ticket-header, .account-header, .partner-header {
+.account-header, .partner-header, .ticket-header {
 	left: calc(2vw - -80px);
 	max-height: 120px;
 	position: fixed;

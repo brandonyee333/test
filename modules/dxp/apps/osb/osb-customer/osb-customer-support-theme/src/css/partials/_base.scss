@@ -58,20 +58,31 @@ blockquote, h2, h3 {
 	margin: 0 0 0.5625em;
 }
 
+div.portlet-msg-error, div.portlet-msg-success {
+	height: 22px;
+	left: calc(25vw - -60px);
+	overflow: hidden;
+	position: fixed;
+	right: 25vw;
+	top: 55px;
+	transition: top 1s ease;
+	white-space: nowrap;
+}
+
 div.table {
 	border-collapse: collapse;
 	display: table;
 	table-layout: fixed;
 	width: 100%;
 
-	.row-url, div.row {
-		display: table-row;
-		width: 100%;
-	}
-
 	div.column {
 		display: table-cell;
 		vertical-align: middle;
+	}
+
+	div.row, .row-url {
+		display: table-row;
+		width: 100%;
 	}
 }
 
@@ -134,17 +145,6 @@ textarea {
 	.default-text {
 		font-size: 15px;
 	}
-}
-
-div.portlet-msg-error, div.portlet-msg-success {
-	height: 22px;
-	left: calc(25vw - -60px);
-	overflow: hidden;
-	position: fixed;
-	right: 25vw;
-	top: 55px;
-	transition: top 1s ease;
-	white-space: nowrap;
 }
 
 .info {
