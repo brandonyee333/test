@@ -28,7 +28,7 @@
 	function <portlet:namespace />checkFeedback() {
 		var A = AUI();
 
-		var satisfied = A.one("input[name=<portlet:namespace/>feedback]:checked").get("value");
+		var satisfied = A.one('input[name=<portlet:namespace/>feedback]:checked').get('value');
 
 		var radioButtons = document.getElementsByName('<portlet:namespace />feedback');
 
@@ -79,7 +79,7 @@
 					dataType: 'json',
 					method: 'post',
 					on: {
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							var radioButtonsDiv = document.getElementById('<portlet:namespace />radioButtons');

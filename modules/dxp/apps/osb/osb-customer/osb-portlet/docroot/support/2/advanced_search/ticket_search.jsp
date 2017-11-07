@@ -197,8 +197,8 @@ catch (Exception e) {
 		request.setAttribute("tickets.jsp-results", ticketEntries);
 		%>
 
-		<input class="aui-helper-hidden" id="<portlet:namespace />activeFilters" value="<%= HtmlUtil.escapeAttribute(searchTerms.getActiveFilters()) %>" />
-		<input class="aui-helper-hidden" id="<portlet:namespace />ticketResultsListCount" value="<%= count %>" />
+		<input class="hide" id="<portlet:namespace />activeFilters" value="<%= HtmlUtil.escapeAttribute(searchTerms.getActiveFilters()) %>" />
+		<input class="hide" id="<portlet:namespace />ticketResultsListCount" value="<%= count %>" />
 
 		<liferay-util:include page="/support/2/advanced_search/ticket_results_list.jsp" servletContext="<%= application %>">
 			<portlet:param name="advancedSearch" value="<%= Boolean.TRUE.toString() %>" />

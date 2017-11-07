@@ -107,17 +107,17 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 	function <portlet:namespace />selectSecurityPatch(securityPatchId) {
 		var A = AUI();
 
-		var downloadLink = A.one("#<portlet:namespace />downloadLink");
+		var downloadLink = A.one('#<portlet:namespace />downloadLink');
 
 		if (securityPatchId) {
 			var href = '<liferay-portlet:actionURL copyCurrentRenderParameters="<%= false %>" windowState="<%= LiferayWindowState.POP_UP.toString() %>" />' + '&<portlet:namespace />securityPatchId=' + securityPatchId;
 
-			downloadLink.set("href", href);
+			downloadLink.set('href', href);
 
 			downloadLink.show();
 		}
 		else {
-			downloadLink.set("href", "");
+			downloadLink.set('href', '');
 
 			downloadLink.hide();
 		}
@@ -129,14 +129,14 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 		function(accountEntryId) {
 			var A = AUI();
 
-			var securityPatch = A.one("#<portlet:namespace />securityPatch");
+			var securityPatch = A.one('#<portlet:namespace />securityPatch');
 
 			if (accountEntryId <= 0) {
 				securityPatch.empty();
 
 				securityPatch.setData('key', 0);
 
-				A.one("#<portlet:namespace />downloadLink").hide();
+				A.one('#<portlet:namespace />downloadLink').hide();
 
 				return;
 			}
@@ -151,7 +151,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 					dataType: 'json',
 					method: 'post',
 					on: {
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							if (securityPatch.getData('key') == response["SecurityPatches#key"]) {
@@ -164,7 +164,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 
 							selectOptions.push('<option value=""></option>');
 
-							var selectData = response["SecurityPatches"];
+							var selectData = response['SecurityPatches'];
 
 							if (selectData) {
 								for (var i = 0; i < selectData.length; i++) {
@@ -181,7 +181,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 							securityPatch.append(selectOptions);
 							securityPatch.val('');
 
-							A.one("#<portlet:namespace />downloadLink").hide();
+							A.one('#<portlet:namespace />downloadLink').hide();
 						}
 					}
 				}

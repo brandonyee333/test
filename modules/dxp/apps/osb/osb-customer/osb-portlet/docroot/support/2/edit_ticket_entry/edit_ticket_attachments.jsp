@@ -233,7 +233,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 						<button class="btn btn-default" id="<portlet:namespace />selectButton" type="button"><liferay-ui:message key="select-file" /></button>
 
-						<input class="aui-helper-hidden" id="<portlet:namespace />fileInputField" type="file" />
+						<input class="hide" id="<portlet:namespace />fileInputField" type="file" />
 					</div>
 
 					<div id="<portlet:namespace />fileInfo">
@@ -242,7 +242,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						for (int i = 1; i <= 3; i++) {
 						%>
 
-							<div class="aui-helper-hidden file-item">
+							<div class="file-item hide">
 								<input class="file" name="<portlet:namespace />file<%= i %>" type="hidden" value="" />
 
 								<div class="aui-w40 content-column">
@@ -304,10 +304,10 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 					</div>
 
-					<div class="aui-helper-hidden toolbar" id="<portlet:namespace />toolbar">
-						<a class="aui-helper-hidden fr resume-button" href="javascript:;" id="<portlet:namespace />resumeButton"></a>
+					<div class="hide toolbar" id="<portlet:namespace />toolbar">
+						<a class="fr hide resume-button" href="javascript:;" id="<portlet:namespace />resumeButton"></a>
 
-						<a class="aui-helper-hidden cancel-button fr" href="javascript:;" id="<portlet:namespace />cancelButton"></a>
+						<a class="cancel-button fr hide" href="javascript:;" id="<portlet:namespace />cancelButton"></a>
 
 						<a class="fr pause-button" href="javascript:;" id="<portlet:namespace />pauseButton"></a>
 
@@ -317,7 +317,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					</div>
 				</div>
 
-				<div class="aui-helper-hidden lfr-fallback-container" id="<portlet:namespace />fallbackContainer">
+				<div class="hide lfr-fallback-container" id="<portlet:namespace />fallbackContainer">
 					<c:choose>
 						<c:when test="<%= userVisibilities.length > 1 %>">
 							<div class="aui-helper-clearfix">
@@ -419,12 +419,12 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				</c:otherwise>
 			</c:choose>
 
-			<div class="aui-helper-hidden button-holder" id="<portlet:namespace />switchButtonHolder"></div>
+			<div class="button-holder hide" id="<portlet:namespace />switchButtonHolder"></div>
 
 			<br />
 
 			<div class="button-holder">
-				<input class="aui-button-input aui-helper-hidden" id="<portlet:namespace />saveButton" type="submit" value="<liferay-ui:message key="save" />" />
+				<input class="aui-button-input hide" id="<portlet:namespace />saveButton" type="submit" value="<liferay-ui:message key="save" />" />
 			</div>
 		</div>
 	</aui:form>
@@ -494,7 +494,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					var token = A.one("#<portlet:namespace />token");
 
 					queryParam = {
-						cmd: "upload",
+						cmd: 'upload',
 						token: token.get("value")
 					};
 
@@ -507,12 +507,12 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			}
 		);
 
-		resumableUploader.on("fileAdded", <portlet:namespace />displayProgressMessage);
-		resumableUploader.on("fileAdded", <portlet:namespace />validateFile);
-		resumableUploader.on("fileError", <portlet:namespace />handleFileError);
-		resumableUploader.on("fileProgress", <portlet:namespace />handleFileProgress);
-		resumableUploader.on("fileSuccess", <portlet:namespace />handleFileSuccess);
-		resumableUploader.on("fileValidated", <portlet:namespace />handleLargeFileValidated);
+		resumableUploader.on('fileAdded', <portlet:namespace />displayProgressMessage);
+		resumableUploader.on('fileAdded', <portlet:namespace />validateFile);
+		resumableUploader.on('fileError', <portlet:namespace />handleFileError);
+		resumableUploader.on('fileProgress', <portlet:namespace />handleFileProgress);
+		resumableUploader.on('fileSuccess', <portlet:namespace />handleFileSuccess);
+		resumableUploader.on('fileValidated', <portlet:namespace />handleLargeFileValidated);
 
 		var regularUploader = new Resumable(
 			{
@@ -525,10 +525,10 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			}
 		);
 
-		regularUploader.on("fileAdded", <portlet:namespace />displayProgressMessage);
-		regularUploader.on("fileAdded", <portlet:namespace />validateFile);
-		regularUploader.on("fileSuccess", <portlet:namespace />handleFileSuccess);
-		regularUploader.on("fileValidated", <portlet:namespace />handleFileValidated);
+		regularUploader.on('fileAdded', <portlet:namespace />displayProgressMessage);
+		regularUploader.on('fileAdded', <portlet:namespace />validateFile);
+		regularUploader.on('fileSuccess', <portlet:namespace />handleFileSuccess);
+		regularUploader.on('fileValidated', <portlet:namespace />handleFileValidated);
 
 		var dynamicUploader = new Liferay.DynamicUploader(
 			{
@@ -547,11 +547,11 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		}
 
 		function <portlet:namespace />handleFileValidated(file) {
-			var fileItem = A.one('#<portlet:namespace />fileInfo .aui-helper-hidden.file-item');
+			var fileItem = A.one('#<portlet:namespace />fileInfo .hide.file-item');
 
-			fileItem.set("id", A.Lang.String.escapeHTML(file.uniqueIdentifier));
+			fileItem.set('id', A.Lang.String.escapeHTML(file.uniqueIdentifier));
 
-			fileItem.one('.file').set("value", "");
+			fileItem.one('.file').set('value', '');
 
 			fileItem.one('.file-name').setContent(file.fileName)
 
@@ -567,24 +567,24 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 			var errorMessage = '<liferay-ui:message key="an-unexpected-error-has-occurred" />';
 
-			if (response.message == "fail") {
+			if (response.message == 'fail') {
 				if (response.exception) {
-					if (response.exception === "<%= DuplicateTicketAttachmentException.class.getName() %>") {
+					if (response.exception === '<%= DuplicateTicketAttachmentException.class.getName() %>') {
 						errorMessage = '<liferay-ui:message key="please-enter-a-unique-document-name" unicode="<%= true %>" />';
 					}
-					else if (response.exception === "<%= FileNameException.class.getName() %>") {
+					else if (response.exception === '<%= FileNameException.class.getName() %>') {
 						errorMessage = '<liferay-ui:message key="please-enter-a-file-with-a-valid-file-name" unicode="<%= true %>" />';
 					}
 				}
 			}
-			else if (response.message == "invalid-file") {
+			else if (response.message == 'invalid-file') {
 				errorMessage = '<liferay-ui:message key="please-upload-a-valid-file" unicode="<%= true %>" />';
 			}
-			else if (response.message == "invalid-session") {
+			else if (response.message == 'invalid-session') {
 				errorMessage = '<liferay-ui:message key="there-was-an-unexpected-error.-please-refresh-the-current-page" unicode="<%= true %>" />';
 			}
 
-			dynamicUploader.updateMessage(errorMessage, "error");
+			dynamicUploader.updateMessage(errorMessage, 'error');
 		}
 
 		function <portlet:namespace />handleFileProgress(file) {
@@ -598,25 +598,25 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 			var response = A.JSON.parse(message);
 
-			if (response.message == "fail") {
+			if (response.message == 'fail') {
 				<portlet:namespace />handleFileError(file, message);
 
 				return;
 			}
 
-			if ((response.message == "complete") || (response.message == "file-exists")) {
+			if ((response.message == 'complete') || (response.message == 'file-exists')) {
 				var fileItem = A.one('#' + file.uniqueIdentifier);
 
-				fileItem.one('.file').set("value", JSON.stringify(response.file));
+				fileItem.one('.file').set('value', JSON.stringify(response.file));
 
-				dynamicUploader.updateMessage("<liferay-ui:message key="file-ready-to-be-saved" unicode="<%= true %>" />", "success");
+				dynamicUploader.updateMessage('<liferay-ui:message key="file-ready-to-be-saved" unicode="<%= true %>" />', 'success');
 			}
-			else if (response.message == "success") {
+			else if (response.message == 'success') {
 				var fileItem = A.one('#' + file.uniqueIdentifier);
 
-				fileItem.one('.file').set("value", JSON.stringify(response.fileObject));
+				fileItem.one('.file').set('value', JSON.stringify(response.fileObject));
 
-				dynamicUploader.updateMessage("<liferay-ui:message key="file-ready-to-be-saved" unicode="<%= true %>" />", "success");
+				dynamicUploader.updateMessage('<liferay-ui:message key="file-ready-to-be-saved" unicode="<%= true %>" />', 'success');
 			}
 
 			A.one('#<portlet:namespace />saveButton').show();
@@ -625,11 +625,11 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		function <portlet:namespace />handleLargeFileValidated(file) {
 			<portlet:namespace />generateToken(dynamicUploader, resumableUploader, false);
 
-			var fileItem = A.one('#<portlet:namespace />fileInfo .aui-helper-hidden.file-item');
+			var fileItem = A.one('#<portlet:namespace />fileInfo .hide.file-item');
 
-			fileItem.set("id", A.Lang.String.escapeHTML(file.uniqueIdentifier));
+			fileItem.set('id', A.Lang.String.escapeHTML(file.uniqueIdentifier));
 
-			fileItem.one('.file').set("value", "");
+			fileItem.one('.file').set('value', '');
 
 			fileItem.one('.file-name').setContent(file.fileName);
 
@@ -641,7 +641,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					A.one('#<portlet:namespace />pauseButton').hide();
 					A.one('#<portlet:namespace />resumeButton').show();
 
-					dynamicUploader.updateMessage("<liferay-ui:message key="paused" unicode="<%= true %>" />...", "error");
+					dynamicUploader.updateMessage('<liferay-ui:message key="paused" unicode="<%= true %>" />...', 'error');
 
 					resumableUploader.pause();
 				}
@@ -683,7 +683,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					dataType: 'json',
 					method: 'post',
 					on: {
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							if (response.message != 'success') {
@@ -692,7 +692,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								uploader.removeFile(file);
 							}
 							else {
-								uploader.fire("fileValidated", file, event);
+								uploader.fire('fileValidated', file, event);
 							}
 						}
 					}
@@ -705,9 +705,9 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		function <portlet:namespace />generateToken(dynamicUploader, resumableUploader, overwrite) {
 			var A = AUI();
 
-			var token = A.one("#<portlet:namespace />token");
+			var token = A.one('#<portlet:namespace />token');
 
-			if (overwrite || !token.get("value")) {
+			if (overwrite || !token.get('value')) {
 				A.io.request(
 					'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="uploadToken" />',
 					{
@@ -718,16 +718,16 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						dataType: 'json',
 						method: 'post',
 						on: {
-							success: function(event, id, obj) {
+							success: function() {
 								var response = this.get('responseData');
 
 								if (response.message == 'success') {
-									token.set("value", response.token);
+									token.set('value', response.token);
 
 									resumableUploader.upload();
 								}
 								else {
-									dynamicUploader.updateMessage("<liferay-ui:message key="there-was-an-unexpected-error.-please-refresh-the-current-page" unicode="<%= true %>" />", "error");
+									dynamicUploader.updateMessage('<liferay-ui:message key="there-was-an-unexpected-error.-please-refresh-the-current-page" unicode="<%= true %>" />', 'error');
 								}
 							}
 						}

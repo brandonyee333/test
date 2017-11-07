@@ -20,7 +20,7 @@
 			var envLFR = <%= accountEnvironment.getEnvLFR() %>;
 		</c:when>
 		<c:otherwise>
-			var envLFREl = A.one("#<portlet:namespace />envLFR");
+			var envLFREl = A.one('#<portlet:namespace />envLFR');
 
 			var envLFR = envLFREl.val();
 		</c:otherwise>
@@ -80,25 +80,25 @@
 	}
 
 	function <portlet:namespace />selectPortalVersionRetainValues(envLFR) {
-		var envAS = A.one("#<portlet:namespace />envAS").val();
-		var envASText = A.one("#<portlet:namespace />envAS option:checked").html();
+		var envAS = A.one('#<portlet:namespace />envAS').val();
+		var envASText = A.one('#<portlet:namespace />envAS option:checked').html();
 
-		var envBR = A.one("#<portlet:namespace />envBrowser").val();
-		var envBRText = A.one("#<portlet:namespace />envBrowser option:checked").html();
+		var envBR = A.one('#<portlet:namespace />envBrowser').val();
+		var envBRText = A.one('#<portlet:namespace />envBrowser option:checked').html();
 
-		var envCS = A.one("#<portlet:namespace />envCS").val();
-		var envCSText = A.one("#<portlet:namespace />envCS option:checked").html();
+		var envCS = A.one('#<portlet:namespace />envCS').val();
+		var envCSText = A.one('#<portlet:namespace />envCS option:checked').html();
 
-		var envDB = A.one("#<portlet:namespace />envDB").val();
-		var envDBText = A.one("#<portlet:namespace />envDB option:checked").html();
+		var envDB = A.one('#<portlet:namespace />envDB').val();
+		var envDBText = A.one('#<portlet:namespace />envDB option:checked').html();
 
-		var envJVM = A.one("#<portlet:namespace />envJVM").val();
-		var envJVMText = A.one("#<portlet:namespace />envJVM option:checked").html();
+		var envJVM = A.one('#<portlet:namespace />envJVM').val();
+		var envJVMText = A.one('#<portlet:namespace />envJVM option:checked').html();
 
-		var envOS = A.one("#<portlet:namespace />envOS").val();
-		var envOSText = A.one("#<portlet:namespace />envOS option:checked").html();
+		var envOS = A.one('#<portlet:namespace />envOS').val();
+		var envOSText = A.one('#<portlet:namespace />envOS option:checked').html();
 
-		var envSearchText = A.one("#<portlet:namespace />envSearch option:checked").html();
+		var envSearchText = A.one('#<portlet:namespace />envSearch option:checked').html();
 
 		<portlet:namespace />selectPortalVersion(envLFR, envAS, envASText, envBR, envBRText, envCS, envCSText, envDB, envDBText, envJVM, envJVMText, envOS, envOSText, envSearchText);
 	}
@@ -177,7 +177,7 @@
 		selectOptions.push('<option value="0"></option>');
 
 		if (selectData) {
-			var previousNamePrefix = "";
+			var previousNamePrefix = '';
 
 			for (var i = 0; i < selectData.length; i++) {
 				var value = selectData[i].value;
@@ -185,7 +185,7 @@
 
 				var namePrefix = name.substring(0, 3);
 
-				if ((previousNamePrefix != "") && (previousNamePrefix != namePrefix)) {
+				if ((previousNamePrefix != '') && (previousNamePrefix != namePrefix)) {
 					selectOptions.push('<option disabled>--------</option>');
 				}
 
@@ -223,12 +223,12 @@
 		var envLFRText = A.one("#<portlet:namespace />envLFR option:checked").html();
 
 		if (digitalEnterprise) {
-			A.one("#<portlet:namespace />toEnvLFR option:checked").html(envLFRText);
+			A.one('#<portlet:namespace />toEnvLFR option:checked').html(envLFRText);
 
 			<portlet:namespace />getEarlierLFRVersions(envLFR);
 		}
 		else {
-			A.one("#<portlet:namespace />fromEnvLFR option:checked").html(envLFRText);
+			A.one('#<portlet:namespace />fromEnvLFR option:checked').html(envLFRText);
 
 			<portlet:namespace />getLaterLFRVersions(envLFR);
 		}
@@ -247,7 +247,7 @@
 					dataType: 'json',
 					method: 'post',
 					on: {
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							<portlet:namespace />updateEnvLFR(response, '#<portlet:namespace />fromEnvLFR');
@@ -273,7 +273,7 @@
 					dataType: 'json',
 					method: 'post',
 					on: {
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							<portlet:namespace />updateEnvLFR(response, '#<portlet:namespace />toEnvLFR');
@@ -293,13 +293,13 @@
 				<c:if test="<%= validateEnvironment %>">
 					<portlet:namespace />validateFiles();
 
-					<portlet:namespace />validateRequiredField(A.one("#<portlet:namespace />envLFR"));
+					<portlet:namespace />validateRequiredField(A.one('#<portlet:namespace />envLFR'));
 				</c:if>
 
-				var envTypes = ["envAS", "envBrowser", "envCS", "envDB", "envJVM", "envOS", "envSearch"];
+				var envTypes = ['envAS', 'envBrowser', 'envCS', 'envDB', 'envJVM', 'envOS', 'envSearch'];
 
 				for (var envType in envTypes) {
-					var envElement = A.one("#<portlet:namespace />" + envTypes[envType]);
+					var envElement = A.one('#<portlet:namespace />' + envTypes[envType]);
 
 					envElement.empty();
 
@@ -322,19 +322,19 @@
 					dataType: 'json',
 					method: 'post',
 					on: {
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
-							<portlet:namespace />selectCS(response["ENV_CS#key"]);
-							<portlet:namespace />selectSearch(response["ENV_Search#key"]);
+							<portlet:namespace />selectCS(response['ENV_CS#key']);
+							<portlet:namespace />selectSearch(response['ENV_Search#key']);
 
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envAS", response["ENV_AS#key"], response["ENV_AS"], envAS, envASName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envBrowser", response["ENV_Browser#key"], response["ENV_Browser"], envBrowser, envBrowserName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envCS", response["ENV_CS#key"], response["ENV_CS"], envCS, envCSName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envDB", response["ENV_DB#key"], response["ENV_DB"], envDB, envDBName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envJVM", response["ENV_JVM#key"], response["ENV_JVM"], envJVM, envJVMName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envOS", response["ENV_OS#key"], response["ENV_OS"], envOS, envOSName);
-							<portlet:namespace />updateEnvironmentField("<portlet:namespace />envSearch", response["ENV_Search#key"], response["ENV_Search"], envSearch);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envAS', response['ENV_AS#key'], response['ENV_AS'], envAS, envASName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envBrowser', response['ENV_Browser#key'], response['ENV_Browser'], envBrowser, envBrowserName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envCS', response['ENV_CS#key'], response['ENV_CS'], envCS, envCSName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envDB', response['ENV_DB#key'], response['ENV_DB'], envDB, envDBName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envJVM', response['ENV_JVM#key'], response['ENV_JVM'], envJVM, envJVMName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envOS', response['ENV_OS#key'], response['ENV_OS'], envOS, envOSName);
+							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envSearch', response['ENV_Search#key'], response['ENV_Search'], envSearch);
 
 							<c:if test="<%= validateEnvironment %>">
 								var firstNode = <portlet:namespace />validateFiles();
@@ -411,7 +411,7 @@
 						},
 						method: 'post',
 						on: {
-							complete: function(event, id, obj) {
+							complete: function() {
 								if (accountEnvironmentId <= 0) {
 									var response = A.JSON.parse(obj.responseText);
 
@@ -491,7 +491,7 @@
 						dataType: 'json',
 						method: 'post',
 						on: {
-							success: function(event, id, obj) {
+							success: function() {
 								var response = this.get('responseData');
 
 								if (response.duplicateEnvironmentName) {

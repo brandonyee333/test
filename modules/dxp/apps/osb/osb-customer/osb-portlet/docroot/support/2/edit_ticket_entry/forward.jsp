@@ -34,7 +34,7 @@ if (Validator.isNull(backURL)) {
 }
 %>
 
-<div class="<%= (SessionErrors.contains(renderRequest, TicketEntryForwardingException.class) || SessionErrors.contains(renderRequest, TicketEntryForwardingFieldException.class)) ? StringPool.BLANK : "aui-helper-hidden" %> forward-popup" id="<portlet:namespace />forwardPopup">
+<div class="<%= (SessionErrors.contains(renderRequest, TicketEntryForwardingException.class) || SessionErrors.contains(renderRequest, TicketEntryForwardingFieldException.class)) ? StringPool.BLANK : "hide" %> forward-popup" id="<portlet:namespace />forwardPopup">
 	<div class="forward-popup-wrapper" id="<portlet:namespace />forwardPopupWrapper">
 		<portlet:actionURL name="forwardTicketEntry" var="forwardTicketEntryURL">
 			<portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" />
@@ -123,14 +123,14 @@ if (Validator.isNull(backURL)) {
 </div>
 
 <aui:script>
-	var forwardPopupWrapper = document.getElementById("<portlet:namespace />forwardPopupWrapper");
+	var forwardPopupWrapper = document.getElementById('<portlet:namespace />forwardPopupWrapper');
 
-	forwardPopupWrapper.style.height = (window.innerHeight - 200) + "px";
+	forwardPopupWrapper.style.height = (window.innerHeight - 200) + 'px';
 
 	function <portlet:namespace />cancelForwardTicketEntry() {
 		var A = AUI();
 
-		var forwardingPopup = A.one("#<portlet:namespace />forwardPopup");
+		var forwardingPopup = A.one('#<portlet:namespace />forwardPopup');
 
 		forwardingPopup.hide();
 	}
@@ -138,7 +138,7 @@ if (Validator.isNull(backURL)) {
 	function <portlet:namespace />forwardTicketEntry() {
 		var A = AUI();
 
-		var forwardingPopup = A.one("#<portlet:namespace />forwardPopup");
+		var forwardingPopup = A.one('#<portlet:namespace />forwardPopup');
 
 		forwardingPopup.show();
 	}

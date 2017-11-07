@@ -41,7 +41,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 %>
 
 <c:if test="<%= hasUpdateAdvanced %>">
-	<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />clusteringDetails">
+	<div class="hide tab-content-tab" id="<portlet:namespace />clusteringDetails">
 		<div class="field-group">
 			<label id="<portlet:namespace />serverCommunicationTypeLabel"><liferay-ui:message key="server-communication-type" /></label>
 
@@ -94,7 +94,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 		</div>
 	</div>
 
-	<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />activationKeyDetails">
+	<div class="hide tab-content-tab" id="<portlet:namespace />activationKeyDetails">
 		<div class="field-group">
 			<label id="<portlet:namespace />typeLabel"><liferay-ui:message key="type-of-key" /></label>
 
@@ -181,7 +181,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 		</div>
 	</div>
 
-	<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />upgradeDetails">
+	<div class="hide tab-content-tab" id="<portlet:namespace />upgradeDetails">
 		<div class="field-group">
 			<label id="<portlet:namespace />docLibPersistenceLabel"><liferay-ui:message key="how-is-the-document-library-server-persisting-documents" /></label>
 

@@ -197,7 +197,7 @@
 
 									editor.one('.preview-content').html('');
 								},
-								success: function(event, id, obj) {
+								success: function() {
 									var response = this.get('responseData');
 
 									editor.attr('class', 'editor preview');

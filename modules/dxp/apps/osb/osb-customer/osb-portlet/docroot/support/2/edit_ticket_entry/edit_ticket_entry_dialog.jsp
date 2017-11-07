@@ -77,13 +77,13 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 					<span id="<portlet:namespace />environmentDetails" onClick="<portlet:namespace />revealDialogTab('environmentDetails');">
 						<liferay-ui:message key="environment-details" />
 					</span>
-					<span class="aui-helper-hidden component-tab" id="<portlet:namespace />clusteringDetails" onClick="<portlet:namespace />revealDialogTab('clusteringDetails');">
+					<span class="component-tab hide" id="<portlet:namespace />clusteringDetails" onClick="<portlet:namespace />revealDialogTab('clusteringDetails');">
 						<liferay-ui:message key="clustering-details" />
 					</span>
-					<span class="aui-helper-hidden component-tab" id="<portlet:namespace />activationKeyDetails" onClick="<portlet:namespace />revealDialogTab('activationKeyDetails');">
+					<span class="component-tab hide" id="<portlet:namespace />activationKeyDetails" onClick="<portlet:namespace />revealDialogTab('activationKeyDetails');">
 						<liferay-ui:message key="activation-key-details" />
 					</span>
-					<span class="aui-helper-hidden component-tab" id="<portlet:namespace />upgradeDetails" onClick="<portlet:namespace />revealDialogTab('upgradeDetails');">
+					<span class="component-tab hide" id="<portlet:namespace />upgradeDetails" onClick="<portlet:namespace />revealDialogTab('upgradeDetails');">
 						<liferay-ui:message key="upgrade-details" />
 					</span>
 				</div>
@@ -280,10 +280,10 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 				tabURL,
 				{
 					on: {
-						start: function(event, id, obj) {
+						start: function() {
 							tabContentDiv.html('<img src="<%= themeDisplay.getPathThemeImages() + "/aui/loading_indicator.gif" %>" style="display: block; margin: auto;" />');
 						},
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							tabContentDiv.html(response);

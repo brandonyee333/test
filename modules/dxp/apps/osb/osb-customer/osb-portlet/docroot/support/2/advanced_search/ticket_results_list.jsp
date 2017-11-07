@@ -116,7 +116,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 
 					<div class="<%= rowCssClass %> row-url ticket-row">
 						<c:if test="<%= supportManager %>">
-							<div class="column ticket-column select toggle-bulk-edit <%= bulkEdit ? "" : "aui-helper-hidden" %>">
+							<div class="column ticket-column select toggle-bulk-edit <%= bulkEdit ? "" : "hide" %>">
 								<input class="bulk-edit-checkbox" id="<portlet:namespace /><%= ticketEntry.getTicketEntryId() %>" onChange="<portlet:namespace />selectTicket(this);" type="checkbox" />
 							</div>
 						</c:if>

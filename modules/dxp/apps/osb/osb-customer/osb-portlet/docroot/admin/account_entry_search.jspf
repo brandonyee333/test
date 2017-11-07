@@ -635,7 +635,7 @@ Date lastEnabledDate = calendar.getTime();
 								on: {
 									itemSelect: function(event) {
 										if (event != null) {
-											document.getElementById("<portlet:namespace />code").value = '"' + event.details[1].code + '"';
+											document.getElementById('<portlet:namespace />code').value = '"' + event.details[1].code + '"';
 										}
 									}
 								},
@@ -669,7 +669,7 @@ Date lastEnabledDate = calendar.getTime();
 								on: {
 									itemSelect: function(event) {
 										if (event != null) {
-											document.getElementById("<portlet:namespace />name").value = '"' + event.details[1].name + '"';
+											document.getElementById('<portlet:namespace />name').value = '"' + event.details[1].name + '"';
 										}
 									}
 								},

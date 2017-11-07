@@ -175,7 +175,7 @@ else {
 					}
 
 					if (!validPendingType) {
-						alert("<liferay-ui:message key="please-select-a-valid-need-response-from" />");
+						alert('<liferay-ui:message key="please-select-a-valid-need-response-from" />');
 
 						return false;
 					}
@@ -187,7 +187,7 @@ else {
 
 		function <portlet:namespace />cancelComment(suffix) {
 			<portlet:namespace />clearInterval();
-			<portlet:namespace />updateMessageDisplay(suffix, "", "");
+			<portlet:namespace />updateMessageDisplay(suffix, '', '');
 
 			var A = AUI();
 
@@ -234,7 +234,7 @@ else {
 				clearInterval(intervalId.get('value'));
 			}
 
-			intervalId.set('value', "");
+			intervalId.set('value', '');
 		}
 
 		function <portlet:namespace />confirmAttachments(commentBody) {
@@ -275,10 +275,10 @@ else {
 				return;
 			}
 
-			eval("var ticketCommentId = document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentId" + suffix + ".value;");
+			eval('var ticketCommentId = document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentId' + suffix + '.value;');
 
 			document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentId.value = ticketCommentId;
-			submitForm(document.<portlet:namespace />fm2, "<portlet:actionURL name="deleteTicketComment"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>");
+			submitForm(document.<portlet:namespace />fm2, '<portlet:actionURL name="deleteTicketComment"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>');
 		}
 
 		function <portlet:namespace />deleteTicketAttachment(suffix, ticketAttachmentId, fileIndex) {
@@ -297,15 +297,15 @@ else {
 					dataType: 'json',
 					method: 'post',
 					on: {
-						success: function(event, id, obj) {
+						success: function() {
 							var draftSuffix = suffix + '_' + fileIndex;
 
 							A.one('#<portlet:namespace />file' + draftSuffix).show();
 							A.one('#<portlet:namespace />fileName' + draftSuffix).remove();
 
-							A.one('#<portlet:namespace />hotfix' + draftSuffix).val("false");
-							A.one('#<portlet:namespace />hotfix' + draftSuffix + 'Checkbox').set("checked", false);
-							A.one('#<portlet:namespace />hotfix' + draftSuffix + 'Checkbox').set("disabled", false);
+							A.one('#<portlet:namespace />hotfix' + draftSuffix).val('false');
+							A.one('#<portlet:namespace />hotfix' + draftSuffix + 'Checkbox').set('checked', false);
+							A.one('#<portlet:namespace />hotfix' + draftSuffix + 'Checkbox').set('disabled', false);
 
 							A.one('#<portlet:namespace />deleteTicketAttachment' + draftSuffix).remove();
 						}
@@ -319,7 +319,7 @@ else {
 
 			var intervalId = A.one('#<portlet:namespace />intervalId');
 
-			intervalId.set('value', "disabled");
+			intervalId.set('value', 'disabled');
 		}
 
 		function <portlet:namespace />initDraftCommentMessage(hasMaximumDraftTicketComment) {
@@ -370,12 +370,12 @@ else {
 			A.one('#<portlet:namespace />addAttachments').show();
 			A.one('#<portlet:namespace />addAttachmentsButton').hide();
 
-			A.one('#<portlet:namespace />hotfix0_1').val("false");
-			A.one('#<portlet:namespace />hotfix0_2').val("false");
-			A.one('#<portlet:namespace />hotfix0_3').val("false");
-			A.one('#<portlet:namespace />hotfix0_1Checkbox').set("checked", false);
-			A.one('#<portlet:namespace />hotfix0_2Checkbox').set("checked", false);
-			A.one('#<portlet:namespace />hotfix0_3Checkbox').set("checked", false);
+			A.one('#<portlet:namespace />hotfix0_1').val('false');
+			A.one('#<portlet:namespace />hotfix0_2').val('false');
+			A.one('#<portlet:namespace />hotfix0_3').val('false');
+			A.one('#<portlet:namespace />hotfix0_1Checkbox').set('checked', false);
+			A.one('#<portlet:namespace />hotfix0_2Checkbox').set('checked', false);
+			A.one('#<portlet:namespace />hotfix0_3Checkbox').set('checked', false);
 		}
 
 		function <portlet:namespace />showForm(suffix, isDraft, hasMaximumDraftTicketComment) {
@@ -388,12 +388,12 @@ else {
 			if (!hasMaximumDraftTicketComment || isDraft) {
 				var message = '<%= UnicodeLanguageUtil.get(request, "comment-will-be-auto-saved-as-draft-every-30-seconds,-excluding-attachments") %>';
 
-				<portlet:namespace />updateMessageDisplay(suffix, "portlet-msg-info", message);
+				<portlet:namespace />updateMessageDisplay(suffix, 'portlet-msg-info', message);
 			}
 			else {
 				var message = '<%= UnicodeLanguageUtil.get(request, "your-draft-comments-have-reached-maximum-comment-cannot-be-automatically-saved-as-draft") %>';
 
-				<portlet:namespace />updateMessageDisplay(suffix, "portlet-msg-info", message);
+				<portlet:namespace />updateMessageDisplay(suffix, 'portlet-msg-info', message);
 			}
 
 			document.<portlet:namespace />fm2.<portlet:namespace />suffix.value = suffix;
@@ -425,7 +425,7 @@ else {
 		}
 
 		function <portlet:namespace />toggleComment(event, i) {
-			var comment = document.getElementById("<portlet:namespace />commentContainer" + i);
+			var comment = document.getElementById('<portlet:namespace />commentContainer' + i);
 
 			var text = document.all ? document.selection.createRange().text : document.getSelection();
 
@@ -445,7 +445,7 @@ else {
 			var messageDisplay = A.one('#<portlet:namespace />commentMessageDisplay' + suffix);
 
 			if (className) {
-				messageDisplay.set("className", className);
+				messageDisplay.set('className', className);
 			}
 
 			messageDisplay.html(message);
@@ -457,7 +457,7 @@ else {
 			function(suffix) {
 				var form = document.<portlet:namespace />fm2;
 
-				eval("var commentBody = form.<portlet:namespace />commentBody" + suffix + ".value;");
+				eval('var commentBody = form.<portlet:namespace />commentBody' + suffix + '.value;');
 
 				var draftBody = form.<portlet:namespace />draftBody.value;
 
@@ -465,13 +465,13 @@ else {
 					return;
 				}
 
-				eval("var ticketCommentId = form.<portlet:namespace />ticketCommentId" + suffix + ".value;");
+				eval('var ticketCommentId = form.<portlet:namespace />ticketCommentId' + suffix + '.value;');
 
 				var ticketEntryId = form.<portlet:namespace />ticketEntryId.value;
 				var type = form.<portlet:namespace />type.value;
 				var visibility = form.<portlet:namespace />visibility.value;
 
-				eval("var pendingTypesObject = form.<portlet:namespace />pendingTypes" + suffix + ";");
+				eval('var pendingTypesObject = form.<portlet:namespace />pendingTypes' + suffix + ';');
 
 				var pendingTypes = new Array();
 
@@ -506,12 +506,12 @@ else {
 							failure: function() {
 								var message = '<%= UnicodeLanguageUtil.get(request, "comment-cannot-be-saved-as-draft-please-save-your-work-before-refreshing") %>';
 
-								<portlet:namespace />updateMessageDisplay(suffix, "portlet-msg-error", message);
+								<portlet:namespace />updateMessageDisplay(suffix, 'portlet-msg-error', message);
 							},
-							success: function(event, id, obj) {
+							success: function() {
 								var response = this.get('responseData');
 
-								eval("form.<portlet:namespace />ticketCommentId" + suffix + ".value = response.ticketCommentId;");
+								eval('form.<portlet:namespace />ticketCommentId' + suffix + '.value = response.ticketCommentId;');
 
 								form.<portlet:namespace />draftBody.value = commentBody;
 
@@ -557,10 +557,10 @@ else {
 					<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
 				</portlet:renderURL>
 
-				if ((discussionTab == "all-comments") || (discussionTab == 'comments') || (discussionTab == "liferay") || (discussionTab == "public") || (discussionTab == "workers")) {
+				if ((discussionTab == 'all-comments') || (discussionTab == 'comments') || (discussionTab == 'liferay') || (discussionTab == 'public') || (discussionTab == 'workers')) {
 					tabURL += '<%= tabURL %>&<portlet:namespace />mvcPath=/support/2/edit_ticket_entry/discussion_comments.jsp&<portlet:namespace />discussionTab=' + discussionTab;
 				}
-				else if ((discussionTab == "history") || (discussionTab == "solutions")) {
+				else if ((discussionTab == 'history') || (discussionTab == 'solutions')) {
 					tabURL += '<%= tabURL %>&<portlet:namespace />mvcPath=/support/2/edit_ticket_entry/discussion_' + discussionTab + '.jsp';
 				}
 				else {
@@ -576,10 +576,10 @@ else {
 							<portlet:namespace />commentBody0: '<%= HtmlUtil.escapeJS(ParamUtil.getString(request, "commentBody0")) %>'
 						},
 						on: {
-							start: function(event, id, obj) {
+							start: function() {
 								tabContentDiv.html('<img src="<%= themeDisplay.getPathThemeImages() + "/aui/loading_indicator.gif" %>" style="display: block; margin: auto;" />');
 							},
-							success: function(event, id, obj) {
+							success: function() {
 								var response = this.get('responseData');
 
 								tabContentDiv.html(response);
@@ -590,7 +590,7 @@ else {
 									eval(bbcodeEditorJavascript.innerHTML);
 								}
 
-								A.all(".discussion .tabs span").removeClass("selected");
+								A.all('.discussion .tabs span').removeClass('selected');
 
 								var tab = A.one('.discussion .tabs #<portlet:namespace />' + discussionTab);
 
@@ -600,7 +600,7 @@ else {
 
 								<c:if test="<%= Validator.isNotNull(discussionId) %>">
 									if (firstLoad) {
-										var discussionTop = document.getElementById("<portlet:namespace />scroll_<%= discussionId %>");
+										var discussionTop = document.getElementById('<portlet:namespace />scroll_<%= discussionId %>');
 
 										if (discussionTop) {
 											var discussionRect = discussionTop.getBoundingClientRect();
@@ -653,7 +653,7 @@ else {
 						dataType: 'json',
 						method: 'post',
 						on: {
-							success: function(event, id, obj) {
+							success: function() {
 								var response = this.get('responseData');
 
 								if (response.sessionValid) {
@@ -663,7 +663,7 @@ else {
 										document.getElementById('<portlet:namespace />fm2').action = actionURL.replace(/[?]p_auth=[A-Za-z0-9]+/g, '?p_auth=' + response.pAuthToken);
 									}
 
-									eval("var ticketCommentId = document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentId" + suffix + ".value;");
+									eval('var ticketCommentId = document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentId' + suffix + '.value;');
 
 									<portlet:namespace />clearInterval();
 
@@ -700,7 +700,7 @@ else {
 						dataType: 'json',
 						method: 'post',
 						on: {
-							success: function(event, id, obj) {
+							success: function() {
 								if (type == <%= TicketCommentConstants.TYPE_NORMAL %>) {
 									A.one('#<portlet:namespace />footer_' + ticketCommentId).removeClass('type-solution');
 								}

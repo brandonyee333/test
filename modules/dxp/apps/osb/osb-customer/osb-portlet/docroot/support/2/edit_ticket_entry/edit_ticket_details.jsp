@@ -114,7 +114,7 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<div class="field-group <%= productEntry.isTicketComponentRequired() ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />componentFieldGroup">
+		<div class="field-group <%= productEntry.isTicketComponentRequired() ? "" : "hide" %>" id="<portlet:namespace />componentFieldGroup">
 			<label id="<portlet:namespace />componentLabel"><liferay-ui:message key="component" /></label>
 
 			<select id="<portlet:namespace />component" name="<portlet:namespace />component" onChange="<%= renderResponse.getNamespace() %>selectComponent(this.value);">
@@ -163,7 +163,7 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced && liferayIncOrg %>">
-		<div class="field-group <%= productEntry.isTicketComponentRequired() ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />subcomponentFieldGroup">
+		<div class="field-group <%= productEntry.isTicketComponentRequired() ? "" : "hide" %>" id="<portlet:namespace />subcomponentFieldGroup">
 			<label id="<portlet:namespace />subcomponentLabel"><liferay-ui:message key="subcomponent" /></label>
 
 			<%
@@ -191,7 +191,7 @@ if (liferayIncOrg || partnerWorker) {
 
 			</select>
 
-			<input class="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "aui-helper-hidden" %>" name="<portlet:namespace />subcomponentCustom" type="text" value="<%= HtmlUtil.escapeAttribute(subcomponentCustom) %>" />
+			<input class="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "hide" %>" name="<portlet:namespace />subcomponentCustom" type="text" value="<%= HtmlUtil.escapeAttribute(subcomponentCustom) %>" />
 		</div>
 	</c:if>
 
@@ -446,7 +446,7 @@ if (liferayIncOrg || partnerWorker) {
 	function <portlet:namespace />resetSeverityDetails() {
 		document.<portlet:namespace />fm3.<portlet:namespace />severity.value = '<%= severity %>';
 
-		document.getElementById("<portlet:namespace />severityDetails").style.display = "none";
+		document.getElementById('<portlet:namespace />severityDetails').style.display = 'none';
 	}
 
 	function <portlet:namespace />selectOfferingEntry(accountEntryId, offeringEntryId, accountEntryName, supportResponseName, productEntryName) {
@@ -455,8 +455,8 @@ if (liferayIncOrg || partnerWorker) {
 		document.<portlet:namespace />fm3.<portlet:namespace />accountEntryId.value = accountEntryId;
 		document.<portlet:namespace />fm3.<portlet:namespace />offeringEntryId.value = offeringEntryId;
 
-		var productEntryNameEl = document.getElementById("<portlet:namespace />productEntryName");
-		var productLabelEl = document.getElementById("<portlet:namespace />productLabel");
+		var productEntryNameEl = document.getElementById('<portlet:namespace />productEntryName');
+		var productLabelEl = document.getElementById('<portlet:namespace />productLabel');
 
 		productEntryNameEl.innerHTML = productEntryName;
 
@@ -470,8 +470,8 @@ if (liferayIncOrg || partnerWorker) {
 
 		document.<portlet:namespace />fm3.<portlet:namespace />reportedByUserId.value = userId;
 
-		var userNameEl = document.getElementById("<portlet:namespace />reportedByUserName");
-		var reporterLabelEl = document.getElementById("<portlet:namespace />reporterLabel");
+		var userNameEl = document.getElementById('<portlet:namespace />reportedByUserName');
+		var reporterLabelEl = document.getElementById('<portlet:namespace />reporterLabel');
 
 		userNameEl.innerHTML = userName;
 
@@ -512,7 +512,7 @@ if (liferayIncOrg || partnerWorker) {
 
 		selectElement.append(selectOptions);
 
-		document.getElementById("<portlet:namespace />severityDetails").style.display = "";
+		document.getElementById('<portlet:namespace />severityDetails').style.display = '';
 	}
 
 	function <portlet:namespace />updateComponent(selectData) {

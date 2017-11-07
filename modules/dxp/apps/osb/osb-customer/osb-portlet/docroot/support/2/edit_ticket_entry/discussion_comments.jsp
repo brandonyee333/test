@@ -413,7 +413,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 									}
 									%>
 
-									<div class="comment-pending fr <%= (ticketComment.getStatus() == WorkflowConstants.STATUS_DRAFT) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />pendingTypesDisplay<%= i %>">
+									<div class="comment-pending fr <%= (ticketComment.getStatus() == WorkflowConstants.STATUS_DRAFT) ? "" : "hide" %>" id="<portlet:namespace />pendingTypesDisplay<%= i %>">
 										<liferay-ui:message key="need-response-from" />:
 
 										<c:if test='<%= discussionTab.equals("public") %>'>
@@ -472,7 +472,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 														<span id="<portlet:namespace />fileName<%= draftSuffix %>"><%= ticketAttachment.getFileName().substring(ticketAttachment.getFileName().indexOf(StringPool.DASH) + 1) %></span>
 													</c:if>
 
-													<input class="<%= (ticketAttachment != null) ? "aui-helper-hidden" : "" %>" id="<portlet:namespace /><%= "file" + draftSuffix %>" name="<portlet:namespace /><%= "file" + draftSuffix %>" type="file" />
+													<input class="<%= (ticketAttachment != null) ? "hide" : "" %>" id="<portlet:namespace /><%= "file" + draftSuffix %>" name="<portlet:namespace /><%= "file" + draftSuffix %>" type="file" />
 												</td>
 
 												<c:if test="<%= ticketWorker %>">

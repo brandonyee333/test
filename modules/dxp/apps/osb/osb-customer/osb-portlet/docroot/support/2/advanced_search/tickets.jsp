@@ -195,7 +195,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 			<span class="export-menu fr" id="<portlet:namespace />exportMenu">
 				<a class="aui-button-input-export btn disabled" id="<portlet:namespace />exportButton" type="button"><liferay-ui:message key="export" /></a>
 
-				<ul class="aui-helper-hidden drop-down-menu" id="<portlet:namespace />exportDropdown">
+				<ul class="drop-down-menu hide" id="<portlet:namespace />exportDropdown">
 					<li>
 						<a href="javascript:;" onclick="<portlet:namespace />exportTicketSearchResults('ticket-details');"><liferay-ui:message key="ticket-details" /></a>
 					</li>
@@ -830,11 +830,11 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 <div class="search-results">
 	<c:if test="<%= supportManager %>">
-		<div class="<%= bulkEdit ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />bulkEdit">
+		<div class="<%= bulkEdit ? "" : "hide" %>" id="<portlet:namespace />bulkEdit">
 			<div class="multiple-ticket-select" id="<portlet:namespace />multipleTicketSelect">
 				<div>
 					<div class="multiple-ticket-checkbox">
-						<span class="aui-helper-hidden multiple-ticket-checkmark">
+						<span class="hide multiple-ticket-checkmark">
 							<div class="checkmark-stem"></div>
 
 							<div class="checkmark-kick"></div>

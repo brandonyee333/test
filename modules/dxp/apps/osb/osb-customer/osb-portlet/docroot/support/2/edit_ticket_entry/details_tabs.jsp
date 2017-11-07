@@ -119,12 +119,12 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 		<div class="tab-content" id="<portlet:namespace />ticketTabContent">
 			<div id="<portlet:namespace />ticketTabFullContent">
 				<c:if test="<%= !screenShareMode && hasViewSupportInstructions %>">
-					<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />supportInstructions">
+					<div class="hide tab-content-tab" id="<portlet:namespace />supportInstructions">
 						<pre><%= SupportUtil.getHTML(accountEntry.getInstructions()) %></pre>
 					</div>
 				</c:if>
 
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />description">
+				<div class="hide tab-content-tab" id="<portlet:namespace />description">
 
 					<%
 					Map<Long, String> ticketInformationFieldsMap = ticketEntry.getTicketInformationFieldsMap();
@@ -159,7 +159,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 						String componentMessageLink = supportPortletPreferences.getValue("componentMessageLink_" + productEntry.getLESADisplayName() + StringPool.UNDERLINE + component, StringPool.BLANK);
 						%>
 
-						<div class="portlet-msg-info component-message <%= Validator.isNotNull(componentMessage) ? StringPool.BLANK : "aui-helper-hidden" %>" id="<portlet:namespace />componentMessageDisplay">
+						<div class="portlet-msg-info component-message <%= Validator.isNotNull(componentMessage) ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
 							<c:choose>
 								<c:when test="<%= Validator.isNotNull(componentMessageLink) %>">
 									<a href="<%= HtmlUtil.escapeAttribute(componentMessageLink) %>" target="_blank"><%= HtmlUtil.escape(componentMessage) %></a>
@@ -174,7 +174,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 					<pre><%= SupportUtil.getHTML(ticketEntry.getDescription()) %></pre>
 				</div>
 
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />component">
+				<div class="hide tab-content-tab" id="<portlet:namespace />component">
 					<div class="component-details">
 						<c:choose>
 							<c:when test="<%= component == TicketEntryConstants.COMPONENT_CLUSTERING %>">
@@ -191,7 +191,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 				</div>
 
 				<c:if test="<%= ticketWorker && !screenShareMode && Validator.isNotNull(reproductionSteps) %>">
-					<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />stepsToReproduce">
+					<div class="hide tab-content-tab" id="<portlet:namespace />stepsToReproduce">
 						<pre><%= SupportUtil.getHTML(ticketEntry.getReproductionSteps()) %></pre>
 					</div>
 				</c:if>
@@ -202,12 +202,12 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 					request.setAttribute("details_tabs.jsp-ticketSolution", ticketSolution);
 					%>
 
-					<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />solution">
+					<div class="hide tab-content-tab" id="<portlet:namespace />solution">
 						<liferay-util:include page="/support/2/edit_ticket_entry/solution_confirm.jsp" servletContext="<%= application %>" />
 					</div>
 				</c:if>
 
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />feedback">
+				<div class="hide tab-content-tab" id="<portlet:namespace />feedback">
 					<c:if test="<%= (liferayIncOrg && OSBTicketFeedbackPermission.containsSubjectLiferay(permissionChecker, ticketEntry.getTicketEntryId(), OSBActionKeys.VIEW)) || ((liferayTicketFeedback == null) && OSBTicketFeedbackPermission.containsSubjectLiferay(permissionChecker, ticketEntry.getTicketEntryId(), OSBActionKeys.UPDATE)) %>">
 						<liferay-util:include page="/support/2/liferay_ticket_feedback_summary.jsp" servletContext="<%= application %>" />
 					</c:if>
@@ -230,11 +230,11 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 					</liferay-util:include>
 				</c:if>
 
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />attachments">
+				<div class="hide tab-content-tab" id="<portlet:namespace />attachments">
 					<liferay-util:include page="/support/2/edit_ticket_entry/edit_ticket_attachments.jsp" servletContext="<%= application %>" />
 				</div>
 
-				<div class="aui-helper-hidden tab-content-tab" id="<portlet:namespace />links">
+				<div class="hide tab-content-tab" id="<portlet:namespace />links">
 					<liferay-util:include page="/support/2/edit_ticket_entry/edit_ticket_links.jsp" servletContext="<%= application %>" />
 				</div>
 			</div>
@@ -242,7 +242,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 	</div>
 </div>
 
-<div class="aui-helper-hidden show-more-button" id="<portlet:namespace />showMoreButtonContainer">
+<div class="hide show-more-button" id="<portlet:namespace />showMoreButtonContainer">
 	<input id="<portlet:namespace />showMoreButton" onclick="<portlet:namespace />updateDescription();" type="button" value="<liferay-ui:message key="show-more" />" />
 </div>
 
@@ -257,18 +257,18 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 		function(id) {
 			var A = AUI();
 
-			var tab = A.one(".details-tabs .details .tabs #<portlet:namespace />" + id);
+			var tab = A.one('.details-tabs .details .tabs #<portlet:namespace />' + id);
 
 			if (tab) {
-				A.all(".details-tabs .details .tab-content-tab").hide();
+				A.all('.details-tabs .details .tab-content-tab').hide();
 
-				var tabContent = A.one(".details-tabs .details .tab-content #<portlet:namespace />" + id);
+				var tabContent = A.one('.details-tabs .details .tab-content #<portlet:namespace />' + id);
 
 				tabContent.show();
 
-				A.all(".details-tabs .details .tabs span").removeClass("selected");
+				A.all('.details-tabs .details .tabs span').removeClass('selected');
 
-				tab.addClass("selected");
+				tab.addClass('selected');
 
 				<portlet:namespace />updateShowMoreButton();
 			}
@@ -306,7 +306,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 
 		var description = document.getElementById('<portlet:namespace />description');
 		var showMoreButton = document.getElementById('<portlet:namespace />showMoreButton');
-		var showMoreButtonContainer = A.one("#<portlet:namespace />showMoreButtonContainer");
+		var showMoreButtonContainer = A.one('#<portlet:namespace />showMoreButtonContainer');
 		var ticketTabContent = document.getElementById('<portlet:namespace />ticketTabContent');
 		var ticketTabFullContent = document.getElementById('<portlet:namespace />ticketTabFullContent');
 

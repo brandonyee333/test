@@ -224,7 +224,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 					</select>
 
-					<input class="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "aui-helper-hidden" %>" id="<portlet:namespace />ticketEntrySubcomponentCustom" name="<portlet:namespace />ticketEntrySubcomponentCustom" type="text" value="<%= HtmlUtil.escapeAttribute(subcomponentCustom) %>" />
+					<input class="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "hide" %>" id="<portlet:namespace />ticketEntrySubcomponentCustom" name="<portlet:namespace />ticketEntrySubcomponentCustom" type="text" value="<%= HtmlUtil.escapeAttribute(subcomponentCustom) %>" />
 				</div>
 
 				<div class="aui-w33 inline-block">
@@ -250,7 +250,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 					<option <%= !useCustomerSummary ? "selected" : StringPool.BLANK %> value="0"><liferay-ui:message key="customers-description-does-not-accurately-capture-the-issue" /></option>
 				</select>
 
-				<div class="<%= useCustomerSummary ? "aui-helper-hidden" : StringPool.BLANK %>" id="<portlet:namespace />issueSummaryContainer">
+				<div class="<%= useCustomerSummary ? "hide" : StringPool.BLANK %>" id="<portlet:namespace />issueSummaryContainer">
 					<span><liferay-ui:message key="please-provide-the-correct-description-of-the-issue-in-this-ticket-be-sure-to-include-any-details-that-may-be-relevant-to-the-cause-of-the-issue-as-this-information-will-be-used-for-internal-auditing-and-for-reference-by-other-engineers" /></span>
 
 					<liferay-util:include page="/support/2/bbcode_editor.jsp" servletContext="<%= application %>">

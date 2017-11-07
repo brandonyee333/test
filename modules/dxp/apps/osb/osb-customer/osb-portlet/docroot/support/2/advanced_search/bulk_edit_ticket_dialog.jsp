@@ -31,7 +31,7 @@
 			<liferay-ui:message key="you-have-selected-0-tickets-to-edit" />
 		</div>
 
-		<div class="aui-helper-hidden portlet-msg-error" id="<portlet:namespace />assigneeException">
+		<div class="hide portlet-msg-error" id="<portlet:namespace />assigneeException">
 			<liferay-ui:message key="please-select-an-assignee-or-a-support-office" />
 		</div>
 
@@ -95,7 +95,7 @@
 
 		<br />
 
-		<div class="aui-helper-hidden portlet-msg-error" id="<portlet:namespace />dueDateException">
+		<div class="hide portlet-msg-error" id="<portlet:namespace />dueDateException">
 			<liferay-ui:message key="please-select-a-valid-due-date" />
 		</div>
 
@@ -163,12 +163,12 @@
 		var assigneeException = document.getElementById('<portlet:namespace />assigneeException');
 
 		if (((assignee.value != 0) && (supportRegionId.value != 0)) || ((assignee.value == 0) && (supportRegionId.value == 0))) {
-			assigneeException.classList.remove('aui-helper-hidden');
+			assigneeException.classList.remove('hide');
 
 			return false;
 		}
-		else if (!assigneeException.classList.contains('aui-helper-hidden')) {
-			assigneeException.classList.add('aui-helper-hidden');
+		else if (!assigneeException.classList.contains('hide')) {
+			assigneeException.classList.add('hide');
 		}
 
 		return true;
@@ -193,21 +193,21 @@
 			var now = new Date();
 
 			if (dueDate <= now) {
-				dueDateException.classList.remove('aui-helper-hidden');
+				dueDateException.classList.remove('hide');
 
 				return false;
 			}
-			else if (!dueDateException.classList.contains('aui-helper-hidden')) {
-				dueDateException.classList.add('aui-helper-hidden');
+			else if (!dueDateException.classList.contains('hide')) {
+				dueDateException.classList.add('hide');
 			}
 		}
 		else if ((!dueDateMonth || (dueDateMonth == -1)) && (!dueDateDay || (dueDateDay == -1)) && (!dueDateYear || (dueDateYear == -1)) && !dueDateHour && !dueDateMinute && !dueDateAmPm) {
-			if (!dueDateException.classList.contains('aui-helper-hidden')) {
-				dueDateException.classList.add('aui-helper-hidden');
+			if (!dueDateException.classList.contains('hide')) {
+				dueDateException.classList.add('hide');
 			}
 		}
 		else {
-			dueDateException.classList.remove('aui-helper-hidden');
+			dueDateException.classList.remove('hide');
 
 			return false;
 		}

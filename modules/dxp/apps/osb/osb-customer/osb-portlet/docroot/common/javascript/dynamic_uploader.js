@@ -8,7 +8,7 @@ AUI.add(
 
 		var TPL_SWITCH_BUTTON = [
 			'<a href="javascript:;" id="{namespace}classicUploaderButton">{classicUploaderText}</a>',
-			'<a href="javascript:;" class="aui-helper-hidden" id="{namespace}regularUploaderButton">{regularUploaderText}</a>'
+			'<a href="javascript:;" class="hide" id="{namespace}regularUploaderButton">{regularUploaderText}</a>'
 		];
 
 		var DynamicUploader = function(options) {
@@ -190,7 +190,7 @@ AUI.add(
 			renderClassicUploaderUI: function() {
 				var instance = this;
 
-				instance.fallbackContainer.removeClass("aui-helper-hidden");
+				instance.fallbackContainer.removeClass("hide");
 
 				instance.uploaderType.set("value", "classicUploader");
 

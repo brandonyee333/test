@@ -58,7 +58,7 @@ String commentBody = ParamUtil.getString(request, "commentBody0");
 
 	<br />
 
-	<div class="aui-helper-hidden" id="<portlet:namespace />addAttachments">
+	<div class="hide" id="<portlet:namespace />addAttachments">
 		<table class="lfr-table">
 			<tr>
 				<th>
@@ -100,7 +100,7 @@ String commentBody = ParamUtil.getString(request, "commentBody0");
 
 	<div class="comment-buttons fr">
 		<c:if test='<%= discussionTab.equals("liferay") %>'>
-			<input class="aui-button-input aui-helper-hidden" id="<portlet:namespace />postGamePlanButton" onClick="<portlet:namespace />addComment(0);" type="button" value="<liferay-ui:message key="post-game-plan" />" />
+			<input class="aui-button-input hide" id="<portlet:namespace />postGamePlanButton" onClick="<portlet:namespace />addComment(0);" type="button" value="<liferay-ui:message key="post-game-plan" />" />
 
 			<input class="aui-button-input" id="<portlet:namespace />addGamePlanButton" onClick="var gamePlanWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/2/select_game_plan.jsp" /></portlet:renderURL>', 'game_plan', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); gamePlanWindow.focus();" type="button" value="<liferay-ui:message key="add-game-plan" />" />
 		</c:if>

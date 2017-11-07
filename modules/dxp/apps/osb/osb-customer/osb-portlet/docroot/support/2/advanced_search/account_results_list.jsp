@@ -29,8 +29,8 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 %>
 
-<input class="aui-helper-hidden" id="<portlet:namespace />activeFilters" value="<%= HtmlUtil.escapeAttribute(activeFilters) %>" />
-<input class="aui-helper-hidden" id="<portlet:namespace />accountResultsListCount" value="<%= count %>" />
+<input class="hide" id="<portlet:namespace />activeFilters" value="<%= HtmlUtil.escapeAttribute(activeFilters) %>" />
+<input class="hide" id="<portlet:namespace />accountResultsListCount" value="<%= count %>" />
 
 <c:choose>
 	<c:when test="<%= !results.isEmpty() %>">

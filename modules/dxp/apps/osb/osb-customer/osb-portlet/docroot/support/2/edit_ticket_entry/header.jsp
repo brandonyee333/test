@@ -224,7 +224,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 							<span class="txt-sb" id="<portlet:namespace />statusLabel"><%= LanguageUtil.get(request, ticketEntry.getStatusLabel()) %></span>
 
-							<span class="<%= (resolution == 0) ? "aui-helper-hidden" : "txt-sb" %>" id="<portlet:namespace />resolutionLabel">(<%= LanguageUtil.get(request, ticketEntry.getResolutionLabel()) %>)</span>
+							<span class="<%= (resolution == 0) ? "hide" : "txt-sb" %>" id="<portlet:namespace />resolutionLabel">(<%= LanguageUtil.get(request, ticketEntry.getResolutionLabel()) %>)</span>
 
 							<%
 							String statusMessage = HtmlUtil.escape(SupportUtil.getPreferenceValue(locale, "statusMessage_" + status));
@@ -322,16 +322,16 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			<portlet:namespace />toggleForm('<portlet:namespace />resolutionDropDown', '<portlet:namespace />resolutionLabel');
 		}
 
-		document.getElementById('<portlet:namespace />resolutionCancel').style.display = "none";
-		document.getElementById('<portlet:namespace />statusCancel').style.display = "none";
+		document.getElementById('<portlet:namespace />resolutionCancel').style.display = 'none';
+		document.getElementById('<portlet:namespace />statusCancel').style.display = 'none';
 
 		document.<portlet:namespace />fm1.<portlet:namespace />resolution.value = '<%= resolution %>';
 		document.<portlet:namespace />fm1.<portlet:namespace />status.value = '<%= status %>';
 	}
 
 	function <portlet:namespace />toggleForm(hideId, showId) {
-		document.getElementById(showId).style.display = "";
-		document.getElementById(hideId).style.display = "none";
+		document.getElementById(showId).style.display = '';
+		document.getElementById(hideId).style.display = 'none';
 	}
 
 	<c:if test="<%= hasUpdateAdvanced %>">
@@ -392,12 +392,12 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			}
 
 			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>') {
-				document.getElementById('<portlet:namespace />resolution').style.display = "";
+				document.getElementById('<portlet:namespace />resolution').style.display = '';
 
 				return false;
 			}
 			else {
-				document.getElementById('<portlet:namespace />resolution').style.display = "none";
+				document.getElementById('<portlet:namespace />resolution').style.display = 'none';
 			}
 
 			<c:if test="<%= liferayIncOrg && (status != TicketEntryConstants.STATUS_REPRODUCED) %>">
