@@ -49,12 +49,12 @@
 }
 
 .subscription-messages {
-	.lfr-panel, .lfr-panel-title {
-		margin: 0;
-	}
-
 	.lfr-collapsed .lfr-panel-title:after {
 		@include transform(rotate(-90deg));
+	}
+
+	.lfr-panel, .lfr-panel-title {
+		margin: 0;
 	}
 
 	.lfr-panel-content {

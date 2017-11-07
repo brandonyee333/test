@@ -1,12 +1,4 @@
 .account-environment-dialog {
-	.portlet-msg-error {
-		position: inherit;
-	}
-
-	.portlet-msg-info {
-		position: inherit;
-	}
-
 	.edit-account-environment {
 		input[type=text], select {
 			width: calc(100% - 100px);
@@ -33,6 +25,10 @@
 			font-weight: bold;
 		}
 	}
+
+	.portlet-msg-error, .portlet-msg-info {
+		position: inherit;
+	}
 }
 
 .bulk-edit-dialog {
@@ -52,31 +48,6 @@
 	.aui-dialog-iframe-bd {
 		height: 73vh;
 		max-height: 703px;
-	}
-}
-
-.edit-ticket-dialog {
-	position: fixed;
-
-	.content {
-		height: 88vh;
-		max-height: 874px;
-	}
-
-	&.visible {
-		transition: opacity 0.5s;
-	}
-}
-
-.edit-tickets-dialog {
-	position: fixed;
-
-	.content {
-		max-height: 874px;
-	}
-
-	&.visible {
-		transition: opacity 0.5s;
 	}
 }
 
@@ -126,6 +97,31 @@
 				font-weight: bold;
 			}
 		}
+	}
+}
+
+.edit-ticket-dialog {
+	position: fixed;
+
+	&.visible {
+		transition: opacity 0.5s;
+	}
+
+	.content {
+		height: 88vh;
+		max-height: 874px;
+	}
+}
+
+.edit-tickets-dialog {
+	position: fixed;
+
+	&.visible {
+		transition: opacity 0.5s;
+	}
+
+	.content {
+		max-height: 874px;
 	}
 }
 
@@ -198,6 +194,11 @@
 		padding: 0;
 		width: 50vw;
 
+		&.lesa-feedback-thank-you {
+			height: auto;
+			width: auto;
+		}
+
 		.aui-panel-hd {
 			display: none;
 		}
@@ -244,11 +245,6 @@
 				font-family: "Avenir Medium";
 				font-weight: bold;
 			}
-		}
-
-		&.lesa-feedback-thank-you {
-			height: auto;
-			width: auto;
 		}
 	}
 }
@@ -381,11 +377,6 @@
 			.solution-confirm-message {
 				margin-top: 10px;
 
-				.solution-confirm-question {
-					font-weight: bold;
-					padding-bottom: 1em;
-				}
-
 				.solution-confirm-answer {
 					padding-bottom: 1em;
 
@@ -397,6 +388,11 @@
 							color: #FFF;
 						}
 					}
+				}
+
+				.solution-confirm-question {
+					font-weight: bold;
+					padding-bottom: 1em;
 				}
 			}
 		}
@@ -414,6 +410,10 @@
 	.portlet-msg-error, .portlet-msg-success {
 		display: inherit;
 		position: inherit;
+	}
+
+	.tab-content {
+		padding-top: 15px;
 	}
 
 	.tabs {
@@ -444,9 +444,5 @@
 				}
 			}
 		}
-	}
-
-	.tab-content {
-		padding-top: 15px;
 	}
 }

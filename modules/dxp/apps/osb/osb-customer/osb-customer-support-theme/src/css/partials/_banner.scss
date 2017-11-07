@@ -383,6 +383,25 @@
 			top: -22px;
 			z-index: 14;
 
+			li {
+				color: $medium-gray;
+				font-family: "Avenir Medium";
+				font-size: 16px;
+				list-style-type: none;
+				padding: 10px;
+				white-space: nowrap;
+
+				a {
+					color: $medium-gray;
+					display: block;
+					text-decoration: none;
+
+					&.active, &:hover {
+						color: $text-color;
+					}
+				}
+			}
+
 			.arrow {
 				border-bottom: 9px solid transparent;
 				border-right: 9px solid $medium-gray;
@@ -410,25 +429,6 @@
 					top: -8px;
 					width: 0;
 					z-index: 16;
-				}
-			}
-
-			li {
-				color: $medium-gray;
-				font-family: "Avenir Medium";
-				font-size: 16px;
-				list-style-type: none;
-				padding: 10px;
-				white-space: nowrap;
-
-				a {
-					color: $medium-gray;
-					display: block;
-					text-decoration: none;
-
-					&.active, &:hover {
-						color: $text-color;
-					}
 				}
 			}
 		}
@@ -532,6 +532,21 @@
 	vertical-align: middle;
 	width: 30px;
 
+	&.attachment-link, &.comment-menu {
+		float: right;
+		font-size: 14px !important;
+		height: 21px;
+
+		.three-dot-icon {
+			height: 21px;
+
+			span {
+				border: 1px solid #383838;
+				right: 14px;
+			}
+		}
+	}
+
 	.three-dot-icon {
 		cursor: pointer;
 		display: block;
@@ -547,21 +562,6 @@
 			position: absolute;
 			right: 13px;
 			width: 0;
-		}
-	}
-
-	&.attachment-link, &.comment-menu {
-		float: right;
-		font-size: 14px !important;
-		height: 21px;
-
-		.three-dot-icon {
-			height: 21px;
-
-			span {
-				border: 1px solid #383838;
-				right: 14px;
-			}
 		}
 	}
 }

@@ -40,18 +40,18 @@
 		margin-bottom: 0;
 
 		.toolbar {
-			.progress-bar {
-				background: #FFF;
-				border: 1px solid #83A8D9;
-				display: block;
-				height: 15px;
-			}
-
 			.progress {
 				background: #8DB2E3;
 				display: block;
 				height: 15px;
 				width: 0;
+			}
+
+			.progress-bar {
+				background: #FFF;
+				border: 1px solid #83A8D9;
+				display: block;
+				height: 15px;
 			}
 
 			.cancel-button {
@@ -82,14 +82,14 @@
 			padding: 5px 0;
 			text-align: center;
 
-			.drop-file-text {
-				font-size: 17.5px;
-				font-weight: normal;
-			}
-
 			&.dragging {
 				background-color: #A7CEDF;
 				transform: scale(0.9);
+			}
+
+			.drop-file-text {
+				font-size: 17.5px;
+				font-weight: normal;
 			}
 		}
 	}

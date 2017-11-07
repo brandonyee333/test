@@ -1,6 +1,35 @@
 .account-additional-info {
 	margin: 0 2vw;
 
+	.tab-content {
+		margin-bottom: 20px;
+
+		.customer-info {
+			.customer-info-display {
+				max-width: 100%;
+			}
+
+			.customer-info-label {
+				color: $medium-gray;
+				font-size: 15px;
+			}
+		}
+
+		.tab-content-tab {
+			margin-top: 20px;
+
+			&.pinned {
+				margin-top: 142px;
+			}
+
+			.tab-section {
+				border: 1px solid #D0D1D3;
+				border-radius: 2px;
+				padding: 17px;
+			}
+		}
+	}
+
 	.tabs-details {
 		&.pinned {
 			left: calc(2vw - -80px);
@@ -16,35 +45,6 @@
 
 			.first {
 				margin: 0 5px 0 0;
-			}
-		}
-	}
-
-	.tab-content {
-		margin-bottom: 20px;
-
-		.tab-content-tab {
-			margin-top: 20px;
-
-			&.pinned {
-				margin-top: 142px;
-			}
-
-			.tab-section {
-				border: 1px solid #D0D1D3;
-				border-radius: 2px;
-				padding: 17px;
-			}
-		}
-
-		.customer-info {
-			.customer-info-display {
-				max-width: 100%;
-			}
-
-			.customer-info-label {
-				color: $medium-gray;
-				font-size: 15px;
 			}
 		}
 	}
@@ -100,16 +100,6 @@
 }
 
 .customer-info {
-	.customer-info-display {
-		border: 1px solid #777;
-		margin-bottom: 10px;
-		max-height: 300px;
-		max-width: 730px;
-		min-height: 50px;
-		overflow: auto;
-		word-wrap: break-word;
-	}
-
 	input {
 		margin-bottom: 10px;
 		width: 100%;
@@ -121,5 +111,15 @@
 		margin-top: 0;
 		width: 100%;
 		wrap: soft;
+	}
+
+	.customer-info-display {
+		border: 1px solid #777;
+		margin-bottom: 10px;
+		max-height: 300px;
+		max-width: 730px;
+		min-height: 50px;
+		overflow: auto;
+		word-wrap: break-word;
 	}
 }

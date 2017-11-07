@@ -37,16 +37,6 @@
 		padding-top: 15px;
 	}
 
-	.foot-details {
-		float: left;
-		margin: 20px 0;
-		width: 100%;
-
-		.aui-button-input {
-			text-transform: none;
-		}
-	}
-
 	.component-detail-environment {
 		padding: 10px;
 
@@ -82,6 +72,16 @@
 		cursor: pointer;
 		display: inline-block;
 		padding-top: 15px;
+	}
+
+	.foot-details {
+		float: left;
+		margin: 20px 0;
+		width: 100%;
+
+		.aui-button-input {
+			text-transform: none;
+		}
 	}
 
 	.portlet-msg-error {
