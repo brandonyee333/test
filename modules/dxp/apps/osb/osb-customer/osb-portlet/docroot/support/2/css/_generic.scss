@@ -190,11 +190,11 @@
 		}
 
 		&.on {
-			border: 1px solid #1BADF2;
+			border: 1px solid #1BAAE1;
 		}
 
 		&:hover.off {
-			border: 1px solid #1BADF2;
+			border: 1px solid #1BAAE1;
 		}
 
 		&:hover.off .toggle-on-off-switch-inner {
@@ -237,7 +237,7 @@
 		}
 
 		& .toggle-on-off-switch-on {
-			background-color: #1BADF2;
+			background-color: #1BAAE1;
 			border-right: 8px solid #FFF;
 			color: #FFF;
 			text-transform: uppercase;
