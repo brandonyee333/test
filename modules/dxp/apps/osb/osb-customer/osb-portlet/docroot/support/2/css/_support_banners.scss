@@ -14,24 +14,24 @@
 			border-top: 1px solid #565656;
 
 			.btn {
-				background-color: #A4A4A4;
+				background-color: $info-message;
 			}
 
 			.btn:hover {
-				color: #A4A4A4;
+				color: $info-message;
 			}
 		}
 
 		&.maintenance {
-			background-color: #DBA901;
+			background-color: $maintenance-message;
 			border-top: 1px solid #A08116;
 
 			.btn {
-				background-color: #DBA901;
+				background-color: $maintenance-message;
 			}
 
 			.btn:hover {
-				color: #DBA901;
+				color: $maintenance-message;
 			}
 		}
 

@@ -10,17 +10,17 @@
 
 	&.lfr-collapsible {
 		&.info {
-			background-color: #A4A4A4;
+			background-color: $info-message;
 			border-bottom: 1px solid #565656;
 		}
 
 		&.urgent {
-			background-color: #FF5454;
+			background-color: urgent-message;
 			border-bottom: 1px solid #980000;
 		}
 
 		&.warning {
-			background-color: #FFC;
+			background-color: $warning-message;
 			border-bottom: 1px solid #FC0;
 		}
 	}

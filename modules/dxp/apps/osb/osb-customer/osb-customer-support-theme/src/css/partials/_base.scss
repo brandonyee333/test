@@ -148,7 +148,7 @@ textarea {
 }
 
 .info {
-	background-color: #A4A4A4;
+	background-color: $info-message;
 	color: #FFF;
 }
 
@@ -196,11 +196,11 @@ textarea {
 }
 
 .urgent {
-	background-color: #FF5454;
+	background-color: $urgent-message;
 	color: #FFF;
 }
 
 .warning {
-	background-color: #FFC;
+	background-color: $warning-message;
 	color: #000;
 }
