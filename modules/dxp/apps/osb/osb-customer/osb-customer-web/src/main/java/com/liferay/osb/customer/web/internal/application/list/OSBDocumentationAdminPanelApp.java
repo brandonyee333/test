@@ -19,14 +19,12 @@ import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
+import com.liferay.osb.customer.web.internal.util.OSBCustomerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
-import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -53,17 +51,10 @@ public class OSBDocumentationAdminPanelApp extends BasePanelApp {
 	public boolean isShow(PermissionChecker permissionChecker, Group group)
 		throws PortalException {
 
-		if (permissionChecker.isOmniadmin()) {
-			return true;
-		}
-
 		long userId = permissionChecker.getUserId();
-		Role siteAdministratorRole = _roleLocalService.getRole(
-			permissionChecker.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
 
-		if (_userGroupRoleLocalService.hasUserGroupRole(
-				userId, group.getGroupId(),
-				siteAdministratorRole.getRoleId())) {
+		if (permissionChecker.isOmniadmin() ||
+			OSBCustomerUtil.isSiteAdmin(userId, group.getGroupId())) {
 
 			return true;
 		}
@@ -88,8 +79,5 @@ public class OSBDocumentationAdminPanelApp extends BasePanelApp {
 
 	@Reference
 	private RoleLocalService _roleLocalService;
-
-	@Reference
-	private UserGroupRoleLocalService _userGroupRoleLocalService;
 
 }

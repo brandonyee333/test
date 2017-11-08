@@ -26,9 +26,8 @@ import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
 import com.liferay.osb.customer.importer.KBArticleInfo;
 import com.liferay.osb.customer.web.internal.util.KBArticleUtil;
+import com.liferay.osb.customer.web.internal.util.OSBCustomerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -36,7 +35,6 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
-import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
@@ -242,18 +240,11 @@ public class AdminPortlet extends MVCPortlet {
 			PermissionChecker permissionChecker =
 				themeDisplay.getPermissionChecker();
 
-			if (permissionChecker.isOmniadmin()) {
-				return true;
-			}
-
 			long userId = themeDisplay.getUserId();
 
-			Role siteAdministratorRole = _roleLocalService.getRole(
-				themeDisplay.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
-
-			if (_userGroupRoleLocalService.hasUserGroupRole(
-					userId, themeDisplay.getSiteGroupId(),
-					siteAdministratorRole.getRoleId())) {
+			if (permissionChecker.isOmniadmin() ||
+				OSBCustomerUtil.isSiteAdmin(
+					userId, themeDisplay.getSiteGroupId())) {
 
 				return true;
 			}
@@ -342,8 +333,5 @@ public class AdminPortlet extends MVCPortlet {
 
 	@Reference
 	private RoleLocalService _roleLocalService;
-
-	@Reference
-	private UserGroupRoleLocalService _userGroupRoleLocalService;
 
 }
