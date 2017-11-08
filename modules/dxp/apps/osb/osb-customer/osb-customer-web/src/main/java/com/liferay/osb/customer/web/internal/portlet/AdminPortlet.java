@@ -27,6 +27,8 @@ import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
 import com.liferay.osb.customer.importer.KBArticleInfo;
 import com.liferay.osb.customer.web.internal.util.KBArticleUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -34,6 +36,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
+import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
@@ -243,9 +246,20 @@ public class AdminPortlet extends MVCPortlet {
 				return true;
 			}
 
+			long userId = themeDisplay.getUserId();
+
+			Role siteAdministratorRole = _roleLocalService.getRole(
+				themeDisplay.getCompanyId(), RoleConstants.SITE_ADMINISTRATOR);
+
+			if (_userGroupRoleLocalService.hasUserGroupRole(
+					userId, themeDisplay.getSiteGroupId(),
+					siteAdministratorRole.getRoleId())) {
+
+				return true;
+			}
+
 			if (_roleLocalService.hasUserRole(
-					themeDisplay.getUserId(),
-					OSBCustomerConstants.ROLE_DOCUMENT_LEAD)) {
+					userId, OSBCustomerConstants.ROLE_DOCUMENT_LEAD)) {
 
 				return true;
 			}
@@ -328,5 +342,8 @@ public class AdminPortlet extends MVCPortlet {
 
 	@Reference
 	private RoleLocalService _roleLocalService;
+
+	@Reference
+	private UserGroupRoleLocalService _userGroupRoleLocalService;
 
 }
