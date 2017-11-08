@@ -8,37 +8,6 @@
 	width: 100%;
 	z-index: 100;
 
-	#adminDockbar {
-		left: 300px;
-		line-height: 23px;
-		padding: 11px;
-		position: fixed;
-		top: 0;
-
-		ul {
-			margin: 0;
-			padding: 5px;
-
-			li {
-				border-width: 0;
-			}
-		}
-
-		.aui-toolbar a {
-			color: #FFF;
-		}
-
-		.toggle-controls a {
-			background: url(../images/dockbar/checked.png) no-repeat 0 50%;
-			padding-left: 20px;
-
-			.controls-hidden & {
-				background: url(../images/dockbar/unchecked.png) no-repeat 0 50%;
-				padding-left: 20px;
-			}
-		}
-	}
-
 	.doc-heading {
 		margin: 10px;
 	}
@@ -278,10 +247,6 @@
 	.user-profile {
 		border-bottom: 1px solid $border-color;
 	}
-}
-
-.doc-sub-nav .mobile-heading {
-	display: none;
 }
 
 .lesa-nav {

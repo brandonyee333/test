@@ -33,32 +33,6 @@
 }
 
 @media all and (max-width: 720px) {
-	.doc-sub-nav {
-		line-height: 3em;
-		margin: 0 auto;
-		max-width: 480px;
-
-		h1 {
-			border-bottom-width: 0;
-			display: inline;
-			padding-bottom: 9px;
-			text-align: center;
-		}
-
-		li {
-			border-bottom-width: 0;
-			border-top: 1px solid $border-color;
-		}
-
-		#osbSideNav.class-toggle-active, .children-marker, .regular-heading {
-			display: none;
-		}
-
-		.has-sub-nav .sub-nav, .mobile-heading, .side-nav-item {
-			display: block;
-		}
-	}
-
 	.responsive {
 		body, input, legend, select, textarea {
 			line-height: 1.375em;
