@@ -585,19 +585,19 @@ for (SupportRegion supportRegion : supportRegions) {
 
 						<div class="content">
 							<c:if test="<%= auditEntry.getAction() != AuditEntryConstants.ACTION_AUDIT %>">
-								<div class="aui-column aui-w20 txt-sb">
-									<div class="content-column-content left-column">
+								<div class="column txt-sb w20">
+									<div class="left-column">
 										<liferay-ui:message key="field" />
 									</div>
 								</div>
 
-								<div class="aui-column aui-w40 txt-sb">
-									<div class="content-column-content middle-column">
+								<div class="column txt-sb w40">
+									<div class="middle-column">
 										<liferay-ui:message key="original-value" />
 									</div>
 								</div>
 
-								<div class="aui-column aui-w40 txt-sb">
+								<div class="column txt-sb w40">
 									<div class="content-column-content right-column">
 										<liferay-ui:message key="new-value" />
 									</div>
@@ -655,14 +655,14 @@ for (SupportRegion supportRegion : supportRegions) {
 										</c:choose>
 									</c:when>
 									<c:otherwise>
-										<div class="aui-column aui-w20 txt-sb">
-											<div class="content-column-content left-column">
+										<div class="column txt-sb w20">
+											<div class="left-column">
 												<liferay-ui:message key="<%= curAuditEntry.getFieldLabel() %>" />
 											</div>
 										</div>
 
-										<div class="aui-column aui-w40">
-											<div class="content-column-content middle-column">
+										<div class="column w40">
+											<div class="middle-column">
 												<c:choose>
 													<c:when test="<%= Validator.isNull(oldLabel) %>">
 														<%= AuditEntryConstants.NOT_AVAILABLE %>
@@ -680,8 +680,8 @@ for (SupportRegion supportRegion : supportRegions) {
 											</div>
 										</div>
 
-										<div class="aui-column aui-w40">
-											<div class="content-column-content right-column">
+										<div class="column w40">
+											<div class="right-column">
 												<c:choose>
 													<c:when test="<%= Validator.isNull(newLabel) %>">
 														<%= AuditEntryConstants.NOT_AVAILABLE %>
