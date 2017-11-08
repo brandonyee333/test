@@ -137,7 +137,7 @@
 			background-color: transparent;
 			border: 1px solid $text-color;
 			border-radius: 3px;
-			box-sizing(content-box);
+			box-sizing: content-box;
 			color: $text-color;
 			display: inline-block;
 			font-size: 1.2em;
