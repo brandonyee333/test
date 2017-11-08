@@ -15,7 +15,7 @@
 }
 
 .dropdown ul a {
-	color: #333;
+	color: $text-color;
 	display: block;
 	font-size: 12px;
 	font-weight: 700;
@@ -151,7 +151,7 @@
 }
 
 .overlay {
-	background-color: #333;
+	background-color: $text-color;
 	display: block;
 	opacity: 0.3;
 	pointer-events: none;
@@ -186,7 +186,7 @@
 		transition: border 0.3s ease-in 0s;
 
 		&.off {
-			border: 1px solid $manager-pref-toggler;
+			border: 1px solid $pref-toggler;
 		}
 
 		&.on {
@@ -202,7 +202,7 @@
 		}
 
 		&:hover.on {
-			border: 1px solid $manager-pref-toggler;
+			border: 1px solid $pref-toggler;
 		}
 
 		&:hover.on .toggle-on-off-switch-inner {
@@ -245,8 +245,8 @@
 
 		& .toggle-on-off-switch-off, & .toggle-on-off-switch-on-pto {
 			background-color: #FFF;
-			border-left: 8px solid $manager-pref-toggler;
-			color: $manager-pref-toggler;
+			border-left: 8px solid $pref-toggler;
+			color: $pref-toggler;
 			padding-left: 2px;
 			padding-right: 2px;
 			text-transform: uppercase;

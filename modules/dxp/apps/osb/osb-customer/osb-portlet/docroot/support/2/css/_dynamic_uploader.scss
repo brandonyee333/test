@@ -12,8 +12,8 @@
 
 			&.error-message {
 				background: url(/html/themes/classic/images/messages/error.png) no-repeat 5px $error;
-				border-color: #900;
-				color: #900;
+				border-color: $urgent-border;
+				color: $urgent-border;
 			}
 
 			&.progress-message {
@@ -25,7 +25,7 @@
 			&.success-message {
 				background: url(/html/themes/classic/images/messages/success.png) no-repeat 5px $dynamic-upload-bg;
 				border-color: $text-color;
-				color: #047;
+				color: $pref-toggler;
 			}
 
 			&.warn-message {
