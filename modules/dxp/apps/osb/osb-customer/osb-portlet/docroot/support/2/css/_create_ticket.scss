@@ -24,8 +24,10 @@
 		width: 100%;
 	}
 
-	span.portlet-msg-info, span.portlet-msg-error {
-		position: inherit;
+	span {
+		&.portlet-msg-error, &.portlet-msg-info {
+			position: inherit;
+		}
 	}
 
 	.btn {

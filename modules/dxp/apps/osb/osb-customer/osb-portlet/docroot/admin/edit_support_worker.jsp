@@ -658,9 +658,9 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 	function <portlet:namespace />selectSupportTeam(supportTeamId, supportTeamName) {
 		document.<portlet:namespace />fm.<portlet:namespace />supportTeamId.value = supportTeamId;
 
-		var nameEl = document.getElementById("<portlet:namespace />supportTeamName");
+		var nameEl = document.getElementById('<portlet:namespace />supportTeamName');
 
 		nameEl.href = "<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_support_team.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>&<portlet:namespace />supportTeamId=" + supportTeamId;
-		nameEl.innerHTML = supportTeamName + "&nbsp;";
+		nameEl.innerHTML = supportTeamName + '&nbsp;';
 	}
 </aui:script>

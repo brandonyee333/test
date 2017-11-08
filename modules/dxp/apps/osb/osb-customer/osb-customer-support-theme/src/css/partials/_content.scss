@@ -40,12 +40,16 @@
 	word-wrap: break-word;
 }
 
-.aui-overlay-content.aui-tooltip-content {
-	@include box-shadow(none);
+.aui-overlay-content {
+	&.aui-tooltip-content {
+		background: #FFF;
+		border: 1px solid $border-color;
+		box-shadow: none;
+	}
 }
 
 .aui-overlay-content.aui-tooltip-content, .btn, .sign-in-button a {
-	@include border-radius(2px);
+	border-radius: 2px;
 }
 
 .aui-overlaycontextpanel-arrow-bl .aui-overlaycontextpanel-pointer .aui-overlaycontextpanel-pointer-inner {
@@ -58,11 +62,6 @@
 	border-bottom-width: 12px;
 	border-left-width: 16px;
 	right: 1px;
-}
-
-.aui-overlay-content.aui-tooltip-content {
-	background: #FFF;
-	border: 1px solid $border-color;
 }
 
 .aui-tabview-list .aui-tab {
@@ -262,11 +261,11 @@
 
 .v1 {
 	background: $minor;
-	}
+}
 
 .v2 {
 	background: $major;
-	}
+}
 
 .v3 {
 	background: $critical;

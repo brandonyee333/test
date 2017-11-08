@@ -21,11 +21,13 @@
 			}
 		}
 
-		&.aui-field-checkbox input, &.aui-field-checkbox label, &.booleancheckbox-field input, &.booleancheckbox-field label {
-			display: inline;
-			font-weight: normal;
-			pointer-events: initial;
-			width: auto;
+		&.aui-field-checkbox, &.booleancheckbox-field {
+			input, label {
+				display: inline;
+				font-weight: normal;
+				pointer-events: initial;
+				width: auto;
+			}
 		}
 
 		&.aui-field-focused, &.aui-form-validator-error-container, &.aui-form-validator-valid-container, &.field-filled, &.field-focused {
@@ -131,8 +133,11 @@
 		}
 
 		input, select {
+			appearance: none;
 			background-color: transparent;
 			border: 1px solid $text-color;
+			border-radius: 3px;
+			box-sizing(content-box);
 			color: $text-color;
 			display: inline-block;
 			font-size: 1.2em;
@@ -140,20 +145,15 @@
 			max-width: none !important;
 			outline: none;
 			padding: 5px 8px;
+			transition: all 0.25s;
 			width: 92%;
-
-			@include appearance(none);
-			@include border-radius(3px);
-			@include box-sizing(content-box);
-			@include transition(all 0.25s);
 		}
 
 		input[type='checkbox'] {
+			appearance: checkbox;
 			font-size: 10px;
 			padding: 0;
 			width: auto;
-
-			@include appearance(checkbox);
 		}
 
 		.aui-field {
@@ -173,9 +173,8 @@
 		.aui-field-label, .aui-form-validator-message {
 			font-weight: normal;
 			pointer-events: none;
+			transition: all 0.25s;
 			z-index: 1;
-
-			@include transition(all 0.25s);
 		}
 
 		.aui-form-validator-message {
@@ -189,9 +188,8 @@
 			right: 10px;
 			text-align: right;
 			top: 10px;
+			transition: top 0.5s;
 			width: auto;
-
-			@include transition(top 0.5s);
 		}
 
 		.aui-form-validator-stack-error {
@@ -215,11 +213,11 @@
 			color: #F49B45;
 			padding: 5px 15px;
 			text-transform: none;
-		}
 
-		.btn:hover {
-			border-color: #FFF;
-			color: #FFF;
+			&:hover {
+				border-color: #FFF;
+				color: #FFF;
+			}
 		}
 	}
 

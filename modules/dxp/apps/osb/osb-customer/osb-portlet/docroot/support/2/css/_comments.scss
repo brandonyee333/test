@@ -371,8 +371,10 @@
 	padding: 1px;
 	width: 99%;
 
-	.edit-icon a, .preview-icon a {
-		float: right;
+	.edit-icon, .preview-icon {
+		a {
+			float: right;
+		}
 	}
 }
 

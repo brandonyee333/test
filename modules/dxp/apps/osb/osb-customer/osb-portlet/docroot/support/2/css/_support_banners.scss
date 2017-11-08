@@ -15,10 +15,10 @@
 
 			.btn {
 				background-color: $info;
-			}
 
-			.btn:hover {
-				color: $info;
+				&:hover {
+					color: $info;
+				}
 			}
 		}
 
@@ -28,10 +28,10 @@
 
 			.btn {
 				background-color: $maintenance;
-			}
 
-			.btn:hover {
-				color: $maintenance;
+				&:hover {
+					color: $maintenance;
+				}
 			}
 		}
 
@@ -44,22 +44,22 @@
 		.btn {
 			border: 1px solid #FFF;
 			color: #FFF;
-		}
 
-		.btn:hover {
-			background-color: #FFF;
-		}
+			&:hover {
+				background-color: #FFF;
+			}
 
-		.btn.close-announcement {
-			background: url(@theme_image_path@/custom/close_icon_white.png) no-repeat center;
-			border-width: 0;
-			cursor: pointer;
-			float: right;
-			width: 20px;
-		}
+			&.close-announcement {
+				background: url(@theme_image_path@/custom/close_icon_white.png) no-repeat center;
+				border-width: 0;
+				cursor: pointer;
+				float: right;
+				width: 20px;
 
-		.btn.close-announcement:hover {
-			background-color: $medium-gray;
+				&:hover {
+					background-color: $medium-gray;
+				}
+			}
 		}
 	}
 }

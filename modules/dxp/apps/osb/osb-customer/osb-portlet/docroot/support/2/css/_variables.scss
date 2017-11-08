@@ -2,12 +2,12 @@
 
 $error: #FCC;
 $info: #A4A4A4;
-$maintenance-border: #A08116;
 $maintenance: #DBA901;
-$urgent-border: #980000;
+$maintenance-border: #A08116;
 $urgent: #FF5454;
-$warning-border: #FC0;
+$urgent-border: #980000;
 $warning: #FFC;
+$warning-border: #FC0;
 
 /* ---------- Components ---------- */
 
@@ -19,14 +19,15 @@ $pref-toggler: #1B3A6A;
 
 /* ---------- Main ---------- */
 
-$primary-blue: #005B96;
-$medium-gray: #909295;
-$border-color: #D0D1D3;
-$light-bg: #E3E4E5;
 $hover-blue: #2B8CDE;
+$light-bg: #E3E4E5;
+$medium-gray: #909295;
+$primary-blue: #005B96;
+
+$border-color: #D0D1D3;
 $text-color: #474A4B;
 
-/* ---------- Manager Dashboard ---------- */
+/* ---------- Manager dashboard ---------- */
 
 $manager-dashboard-manager: #0B447C;
 $manager-dashboard-watcher: #3A0092;

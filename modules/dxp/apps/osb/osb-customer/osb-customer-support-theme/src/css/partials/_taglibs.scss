@@ -20,7 +20,7 @@ ul.aui-tabview-list {
 				border-color: transparent;
 
 				a {
-					&:hover, &:focus {
+					&:focus, &:hover {
 						color: #FFF;
 					}
 				}
@@ -32,12 +32,14 @@ ul.aui-tabview-list {
 		}
 
 		a {
-			&.aui-tab-label, &.aui-tab-label:hover, &.aui-tab-label:selected {
-				background: none;
-				border: 1px solid $border-color;
-				color: $text-color;
-				text-decoration: none;
-				text-shadow: none;
+			&.aui-tab-label {
+				&, &:hover, &:selected {
+					background: none;
+					border: 1px solid $border-color;
+					color: $text-color;
+					text-decoration: none;
+					text-shadow: none;
+				}
 			}
 
 			strong {
@@ -51,7 +53,7 @@ ul.aui-tabview-list {
 			box-shadow: none;
 
 			a {
-				&:hover, &:focus {
+				&:focus, &:hover {
 					color: $text-color;
 				}
 			}

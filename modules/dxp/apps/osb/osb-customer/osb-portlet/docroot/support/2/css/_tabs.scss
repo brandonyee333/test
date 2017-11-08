@@ -67,15 +67,15 @@
 
 				.solution-confirm-btn {
 					font-size: 13px;
-				}
 
-				.solution-confirm-btn.btn-no {
-					border-color: $urgent;
-					color: $urgent;
+					&.btn-no {
+						border-color: $urgent;
+						color: $urgent;
 
-					&:hover {
-						background: $urgent;
-						color: #FFF;
+						&:hover {
+							background: $urgent;
+							color: #FFF;
+						}
 					}
 				}
 
@@ -196,10 +196,10 @@
 				&.selected {
 					border-bottom: 3px solid $primary-blue;
 					color: $text-color;
-				}
 
-				&.selected.highlight-red {
-					color: $error;
+					&.highlight-red {
+						color: $error;
+					}
 				}
 			}
 

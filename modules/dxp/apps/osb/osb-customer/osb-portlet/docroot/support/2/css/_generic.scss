@@ -4,6 +4,25 @@
 	margin: 0;
 	padding: 0;
 	position: relative;
+
+	ul {
+		a {
+			color: $text-color;
+			display: block;
+			font-size: 12px;
+			font-weight: 700;
+			line-height: 32px;
+			padding: 0 15px;
+			text-decoration: none;
+		}
+
+		li {
+			float: left;
+			margin: 0;
+			padding: 0;
+			position: relative;
+		}
+	}
 }
 
 .drop-down-arrow {
@@ -12,23 +31,6 @@
 
 .drop-down-menu {
 	display: none;
-}
-
-.dropdown ul a {
-	color: $text-color;
-	display: block;
-	font-size: 12px;
-	font-weight: 700;
-	line-height: 32px;
-	padding: 0 15px;
-	text-decoration: none;
-}
-
-.dropdown ul li {
-	float: left;
-	margin: 0;
-	padding: 0;
-	position: relative;
 }
 
 .fr {
@@ -171,11 +173,9 @@
 }
 
 .toggle-on-off-switch {
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-webkit-user-select: none;
 	position: relative;
 	text-align: center;
+	user-select: none;
 	width: 50px;
 
 	.toggle-on-off-switch-ctrl {
@@ -195,18 +195,18 @@
 
 		&:hover.off {
 			border: 1px solid $hover-blue;
-		}
 
-		&:hover.off .toggle-on-off-switch-inner {
-			margin-left: 0;
+			.toggle-on-off-switch-inner {
+				margin-left: 0;
+			}
 		}
 
 		&:hover.on {
 			border: 1px solid $pref-toggler;
-		}
 
-		&:hover.on .toggle-on-off-switch-inner {
-			margin-left: -100%;
+			.toggle-on-off-switch-inner {
+				margin-left: -100%;
+			}
 		}
 
 		&.on .toggle-on-off-switch-inner {
@@ -215,9 +215,6 @@
 	}
 
 	.toggle-on-off-switch-inner {
-		-moz-transition: margin 0.3s ease-in 0s;
-		-o-transition: margin 0.3s ease-in 0s;
-		-webkit-transition: margin 0.3s ease-in 0s;
 		display: block;
 		font-size: 11px;
 		line-height: 10px;
@@ -226,8 +223,6 @@
 		width: 200%;
 
 		& * {
-			-moz-box-sizing: border-box;
-			-webkit-box-sizing: border-box;
 			box-sizing: border-box;
 			display: block;
 			float: left;
