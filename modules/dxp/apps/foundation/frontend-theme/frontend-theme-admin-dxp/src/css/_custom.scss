@@ -2,6 +2,7 @@
 @import "header_toolbar";
 
 $bg-color: #FFF;
+$selector-color: #65B6F0;
 
 body {
 	background-color: $bg-color;
@@ -43,4 +44,10 @@ body {
 			margin-right: 0;
 		}
 	}
+}
+
+/* ---------- Color Scheme Selector ---------- */
+
+.color-scheme-selector.selected {
+	border: 1px $selector-color solid;
 }
