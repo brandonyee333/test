@@ -19,7 +19,6 @@ import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
-import com.liferay.osb.customer.web.internal.util.OSBCustomerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Portlet;
@@ -51,16 +50,17 @@ public class OSBDocumentationAdminPanelApp extends BasePanelApp {
 	public boolean isShow(PermissionChecker permissionChecker, Group group)
 		throws PortalException {
 
-		long userId = permissionChecker.getUserId();
+		if (permissionChecker.isOmniadmin()) {
+			return true;
+		}
 
-		if (permissionChecker.isOmniadmin() ||
-			OSBCustomerUtil.isSiteAdmin(userId, group.getGroupId())) {
-
+		if (permissionChecker.isGroupAdmin(group.getGroupId())) {
 			return true;
 		}
 
 		if (_roleLocalService.hasUserRole(
-				userId, OSBCustomerConstants.ROLE_DOCUMENT_LEAD)) {
+				permissionChecker.getUserId(),
+				OSBCustomerConstants.ROLE_DOCUMENT_LEAD)) {
 
 			return true;
 		}

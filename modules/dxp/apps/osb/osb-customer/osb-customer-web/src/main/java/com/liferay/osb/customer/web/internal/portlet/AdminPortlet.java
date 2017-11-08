@@ -26,7 +26,6 @@ import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
 import com.liferay.osb.customer.importer.KBArticleInfo;
 import com.liferay.osb.customer.web.internal.util.KBArticleUtil;
-import com.liferay.osb.customer.web.internal.util.OSBCustomerUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
@@ -240,17 +239,17 @@ public class AdminPortlet extends MVCPortlet {
 			PermissionChecker permissionChecker =
 				themeDisplay.getPermissionChecker();
 
-			long userId = themeDisplay.getUserId();
+			if (permissionChecker.isOmniadmin()) {
+				return true;
+			}
 
-			if (permissionChecker.isOmniadmin() ||
-				OSBCustomerUtil.isSiteAdmin(
-					userId, themeDisplay.getSiteGroupId())) {
-
+			if (permissionChecker.isGroupAdmin(themeDisplay.getSiteGroupId())) {
 				return true;
 			}
 
 			if (_roleLocalService.hasUserRole(
-					userId, OSBCustomerConstants.ROLE_DOCUMENT_LEAD)) {
+					themeDisplay.getUserId(),
+					OSBCustomerConstants.ROLE_DOCUMENT_LEAD)) {
 
 				return true;
 			}
