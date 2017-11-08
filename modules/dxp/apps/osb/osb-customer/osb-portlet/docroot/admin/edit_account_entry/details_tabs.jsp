@@ -750,7 +750,7 @@ for (SupportRegion supportRegion : supportRegions) {
 			}
 
 			if (!tab) {
-				tab = A.one('.details .tabs .aui-tab');
+				tab = A.one('.details .nav-tabs .tab');
 			}
 
 			<portlet:namespace />reveal(tab);

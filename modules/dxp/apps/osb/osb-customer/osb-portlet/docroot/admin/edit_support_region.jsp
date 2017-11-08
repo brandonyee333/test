@@ -188,9 +188,7 @@ if (supportRegion != null) {
 
 		var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
 
-		var rowIndex = row.parentNode.parentNode.rowIndex;
-
-		table.deleteRow(rowIndex);
+		table.removeChild(row.parentNode.parentNode);
 	}
 
 	function <portlet:namespace />selectRow(inputName, value, tableId, columnValues) {
