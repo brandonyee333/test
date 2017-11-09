@@ -787,7 +787,7 @@
 						label: '${AlloyLanguageUtil.formatUnicode("ethnicity")}',
 						listTypeValue: '${WatsonPerson.modelClassName.concat(".ethnicityRegion")}',
 						options: {
-							<c:set value="${WatsonListType.fetch(WatsonListTypeConstants.PERSON_ETHNICITY_OTHER)}" var="ethnicityWatsonListTypeDefault" />
+							<c:set value="${WatsonListType.fetch(WatsonListTypeConstants.PERSON_ETHNICITY_REGION_OTHER)}" var="ethnicityWatsonListTypeDefault" />
 
 							${ethnicityWatsonListTypeDefault.watsonListTypeId}: {
 								label: '${ethnicityWatsonListTypeDefault.getName(locale)}',
@@ -1709,7 +1709,7 @@
 						label: '${AlloyLanguageUtil.formatUnicode("ethnicity")}',
 						listTypeValue: '${WatsonPerson.modelClassName.concat(".ethnicityRegion")}',
 						options: {
-							<c:set value="${WatsonListType.fetch(WatsonListTypeConstants.PERSON_ETHNICITY_OTHER)}" var="ethnicityWatsonListTypeDefault" />
+							<c:set value="${WatsonListType.fetch(WatsonListTypeConstants.PERSON_ETHNICITY_REGION_OTHER)}" var="ethnicityWatsonListTypeDefault" />
 
 							${ethnicityWatsonListTypeDefault.watsonListTypeId}: {
 								label: '${ethnicityWatsonListTypeDefault.getName(locale)}',

@@ -94,7 +94,7 @@ public static class WatsonDataMigrationUtil {
 
 			WatsonActivity watsonActivity = WatsonActivity.create(request);
 
-			watsonActivity.setTypeWatsonListTypeId(2);
+			watsonActivity.setTypeWatsonListTypeId(WatsonListType.ACTIVITY_TYPE_INTERVIEW);
 			watsonActivity.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
 
 			StringBundler sb = new StringBundler(8);
@@ -143,9 +143,9 @@ public static class WatsonDataMigrationUtil {
 		for (CSVRecord csvRecord : csvParser) {
 			WatsonIncident watsonIncident = WatsonIncident.create(request);
 
-			watsonIncident.setSourceWatsonListTypeId(9373);
-			watsonIncident.setSubtypeWatsonListTypeId(10463);
-			watsonIncident.setTypeWatsonListTypeId(10460);
+			watsonIncident.setSourceWatsonListTypeId(WatsonListType.INCIDENT_SOURCE_ZCR_TEAM);
+			watsonIncident.setSubtypeWatsonListTypeId(WatsonListType.INCIDENT_SUBTYPE_INFORMATIONAL);
+			watsonIncident.setTypeWatsonListTypeId(WatsonListType.INCIDENT_TYPE_INVESTIGATION);
 
 			String incidentName = getIncidentNameFromString(csvRecord.get("incidentName"));
 
@@ -178,7 +178,7 @@ public static class WatsonDataMigrationUtil {
 	protected static void importWatsonResource(CSVRecord csvRecord, Locale locale, HttpServletRequest request, long watsonIncidentId) throws Exception {
 		WatsonResource watsonResource = WatsonResource.create(request);
 
-		watsonResource.setTypeWatsonListTypeId(9561);
+		watsonResource.setTypeWatsonListTypeId(WatsonListType.RESOURCE_TYPE_OTHER);
 		watsonResource.setWatsonIncidentId(watsonIncidentId);
 		watsonResource.setDescription(csvRecord.get("resource"), locale);
 		watsonResource.setName("Google Drive Folder", locale);
@@ -209,7 +209,7 @@ public static class WatsonDataMigrationUtil {
 
 				watsonPerson.setCountryWatsonListTypeId(0);
 				watsonPerson.setEthnicityWatsonListTypeId(0);
-				watsonPerson.setTypeWatsonListTypeId(9497);
+				watsonPerson.setTypeWatsonListTypeId(WatsonListType.PERSON_TYPE_SUSPECT);
 				watsonPerson.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
 
 				StringBundler sb = new StringBundler(32);
@@ -254,8 +254,8 @@ public static class WatsonDataMigrationUtil {
 				long personClassNameId = PortalUtil.getClassNameId(WatsonPerson.baseModelClass);
 				String personListTypeRelType = WatsonPerson.baseModelClass.getName() + ".nameType";
 
-				addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, true, request, personListTypeRelType, csvRecord.get("nameEnglish"), 9481);
-				addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, false, request, personListTypeRelType, csvRecord.get("nameThai"), 9481);
+				addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, true, request, personListTypeRelType, csvRecord.get("nameEnglish"), WatsonListType.PERSON_LEGAL_NAME);
+				addWatsonListTypeRel(personClassNameId, watsonPerson.getWatsonPersonId(), false, false, request, personListTypeRelType, csvRecord.get("nameThai"), WatsonListType.PERSON_LEGAL_NAME);
 
 				watsonPerson.update();
 			}
@@ -296,21 +296,21 @@ public static class WatsonDataMigrationUtil {
 
 			long ethnicityWatsonListTypeId = 0;
 
-			long countryWatsonListTypeId = 9475;
+			long countryWatsonListTypeId = WatsonListType.PERSON_ETHNICITY_COUNTRY_OTHER;
 
 			String countryName = StringUtil.toLowerCase(csvRecord.get("country"));
 
 			if (countryName.contains("laos")) {
-				countryWatsonListTypeId = 9454;
+				countryWatsonListTypeId = WatsonListType.PERSON_ETHNICITY_LAOTIAN;
 			}
 			else if (countryName.contains("myanmar")) {
-				countryWatsonListTypeId = 9435;
+				countryWatsonListTypeId = WatsonListType.PERSON_ETHNICITY_BURMESE;
 			}
 			else if (countryName.contains("thai")) {
-				countryWatsonListTypeId = 9421;
+				countryWatsonListTypeId = WatsonListType.PERSON_ETHNICITY_THAI;
 			}
 
-			if (countryWatsonListTypeId != 9475) {
+			if (countryWatsonListTypeId != WatsonListType.PERSON_ETHNICITY_COUNTRY_OTHER) {
 				String ethnicityName = StringUtil.toLowerCase(csvRecord.get("ethnicity"));
 
 				List<WatsonListType> watsonListTypes = WatsonListType.query("parentWatsonListTypeId", countryWatsonListTypeId, "type", WatsonPerson.baseModelClass.getName() + ".ethnicityRegion");
@@ -327,16 +327,16 @@ public static class WatsonDataMigrationUtil {
 			watsonPerson.setCountryWatsonListTypeId(countryWatsonListTypeId);
 			watsonPerson.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
 
-			long sexListTypeId = 9495;
+			long sexListTypeId = WatsonListType.PERSON_SEX_FEMALE;
 
 			boolean sex = GetterUtil.getBoolean(csvRecord.get("male"));
 
 			if (sex) {
-				sexListTypeId = 9494;
+				sexListTypeId = WatsonListType.PERSON_SEX_MALE;
 			}
 
 			watsonPerson.setSexWatsonListTypeId(sexListTypeId);
-			watsonPerson.setTypeWatsonListTypeId(9500);
+			watsonPerson.setTypeWatsonListTypeId(WatsonListType.PERSON_TYPE_VICTIM);
 			watsonPerson.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
 
 			StringBundler sb = new StringBundler(54);
