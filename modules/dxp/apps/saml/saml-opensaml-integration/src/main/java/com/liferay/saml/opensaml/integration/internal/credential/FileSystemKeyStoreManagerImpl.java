@@ -16,7 +16,6 @@ package com.liferay.saml.opensaml.integration.internal.credential;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.saml.runtime.configuration.SamlConfiguration;
 import com.liferay.saml.runtime.credential.KeyStoreManager;
@@ -125,17 +124,13 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 		}
 	}
 
-	protected void doLoadKeyStore() throws Exception {
-		String samlKeyStorePassword = getSamlKeyStorePassword();
+	private InputStream _getInputStream() throws Exception {
 		String samlKeyStorePath = getSamlKeyStorePath();
-
-		InputStream inputStream = null;
 
 		if (samlKeyStorePath.startsWith("classpath:")) {
 			Class<?> clazz = getClass();
 
-			inputStream = clazz.getResourceAsStream(
-				samlKeyStorePath.substring(10));
+			return clazz.getResourceAsStream(samlKeyStorePath.substring(10));
 		}
 		else {
 			File samlKeyStoreFile = new File(samlKeyStorePath);
@@ -143,8 +138,6 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 			samlKeyStoreFile = samlKeyStoreFile.getAbsoluteFile();
 
 			if (!samlKeyStoreFile.exists()) {
-				_keyStore.load(null, samlKeyStorePassword.toCharArray());
-
 				if (Validator.isNotNull(samlConfiguration.keyStorePath()) &&
 					!SamlConfiguration.KEYSTORE_PATH_DEFAULT.equals(
 						samlConfiguration.keyStorePath()) &&
@@ -153,19 +146,20 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 					_log.warn("No SAML keystore exists at " + samlKeyStoreFile);
 				}
 
-				return;
+				return null;
 			}
 
 			monitorFile(samlKeyStoreFile);
 
-			inputStream = new FileInputStream(samlKeyStoreFile);
+			return new FileInputStream(samlKeyStoreFile);
 		}
+	}
 
-		try {
+	protected void doLoadKeyStore() throws Exception {
+		String samlKeyStorePassword = getSamlKeyStorePassword();
+
+		try (InputStream inputStream = _getInputStream()) {
 			_keyStore.load(inputStream, samlKeyStorePassword.toCharArray());
-		}
-		finally {
-			StreamUtil.cleanUp(inputStream);
 		}
 	}
 
