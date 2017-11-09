@@ -77,8 +77,10 @@
 			padding: 7px 0;
 
 			input {
-				height: 14px;
+				height: 5%;
+				margin-left: -3%;
 				padding: 5px;
+				width: auto;
 
 				&, &:focus {
 					border-width: 0;

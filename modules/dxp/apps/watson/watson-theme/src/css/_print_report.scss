@@ -1,8 +1,7 @@
-.page-container.incident-report {
+.page-container.print-report {
 	display: block;
-	margin-top: 60px;
 
-	.incident-detail, .entity-detail {
+	.main-detail, .entity-detail {
 		width: 100%;
 
 		.header {
@@ -103,7 +102,7 @@
 		display: block;
 	}
 
-	.page-container.incident-report {
+	.page-container.print-report {
 		margin-top: 0;
 
 		& > div:nth-child(n + 3) {
