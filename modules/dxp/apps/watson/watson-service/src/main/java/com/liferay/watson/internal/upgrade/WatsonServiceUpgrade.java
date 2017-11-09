@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.watson.upgrade;
+package com.liferay.watson.internal.upgrade;
 
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
