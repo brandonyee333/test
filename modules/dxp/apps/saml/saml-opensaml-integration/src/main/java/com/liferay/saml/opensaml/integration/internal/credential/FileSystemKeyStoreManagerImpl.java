@@ -14,9 +14,9 @@
 
 package com.liferay.saml.opensaml.integration.internal.credential;
 
-import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.saml.runtime.configuration.SamlConfiguration;
 import com.liferay.saml.runtime.credential.KeyStoreManager;
@@ -129,43 +129,6 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 		String samlKeyStorePassword = getSamlKeyStorePassword();
 		String samlKeyStorePath = getSamlKeyStorePath();
 
-		try (InputStream inputStream =
-				_getInputStream(samlKeyStorePath, samlKeyStorePassword)) {
-
-			_keyStore.load(inputStream, samlKeyStorePassword.toCharArray());
-		}
-		catch (NoSuchFileException nsfe) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(nsfe, nsfe);
-			}
-
-			return;
-		}
-	}
-
-	protected void loadKeyStore() {
-		try {
-			doLoadKeyStore();
-		}
-		catch (Exception e) {
-			_log.error(
-				"Unable to load SAML keystore " + getSamlKeyStorePath(), e);
-		}
-	}
-
-	protected void monitorFile(File samlKeyStoreFile) throws IOException {
-		if (_samlKeyStoreFileWatcher != null) {
-			return;
-		}
-
-		_samlKeyStoreFileWatcher = new FileWatcher(
-			ev -> loadKeyStore(), samlKeyStoreFile.toPath());
-	}
-
-	private InputStream _getInputStream(
-			String samlKeyStorePath, String samlKeyStorePassword)
-		throws Exception {
-
 		InputStream inputStream = null;
 
 		if (samlKeyStorePath.startsWith("classpath:")) {
@@ -190,8 +153,7 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 					_log.warn("No SAML keystore exists at " + samlKeyStoreFile);
 				}
 
-				throw new NoSuchFileException(
-					"No SAML keystore exists at " + samlKeyStoreFile);
+				return;
 			}
 
 			monitorFile(samlKeyStoreFile);
@@ -199,7 +161,31 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 			inputStream = new FileInputStream(samlKeyStoreFile);
 		}
 
-		return inputStream;
+		try {
+			_keyStore.load(inputStream, samlKeyStorePassword.toCharArray());
+		}
+		finally {
+			StreamUtil.cleanUp(inputStream);
+		}
+	}
+
+	protected void loadKeyStore() {
+		try {
+			doLoadKeyStore();
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to load SAML keystore " + getSamlKeyStorePath(), e);
+		}
+	}
+
+	protected void monitorFile(File samlKeyStoreFile) throws IOException {
+		if (_samlKeyStoreFileWatcher != null) {
+			return;
+		}
+
+		_samlKeyStoreFileWatcher = new FileWatcher(
+			ev -> loadKeyStore(), samlKeyStoreFile.toPath());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
