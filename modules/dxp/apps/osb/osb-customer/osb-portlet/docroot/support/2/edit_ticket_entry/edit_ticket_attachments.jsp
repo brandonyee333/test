@@ -491,11 +491,11 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				maxFiles: 1,
 				method: 'octet',
 				query: function(resumableFile, resumableChunk) {
-					var token = A.one("#<portlet:namespace />token");
+					var token = A.one('#<portlet:namespace />token');
 
 					queryParam = {
 						cmd: 'upload',
-						token: token.get("value")
+						token: token.get('value')
 					};
 
 					return queryParam;
@@ -543,7 +543,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		);
 
 		function <portlet:namespace />displayProgressMessage(file) {
-			dynamicUploader.updateMessage('<liferay-ui:message key="uploading" unicode="<%= true %>" />...', "progress");
+			dynamicUploader.updateMessage('<liferay-ui:message key="uploading" unicode="<%= true %>" />...', 'progress');
 		}
 
 		function <portlet:namespace />handleFileValidated(file) {
@@ -553,7 +553,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 			fileItem.one('.file').set('value', '');
 
-			fileItem.one('.file-name').setContent(file.fileName)
+			fileItem.one('.file-name').setContent(file.fileName);
 
 			fileItem.show();
 
@@ -604,17 +604,19 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				return;
 			}
 
-			if ((response.message == 'complete') || (response.message == 'file-exists')) {
-				var fileItem = A.one('#' + file.uniqueIdentifier);
+			var fileItem = A.one('#' + file.uniqueIdentifier);
 
-				fileItem.one('.file').set('value', JSON.stringify(response.file));
+			if (fileItem) {
+				var response;
 
-				dynamicUploader.updateMessage('<liferay-ui:message key="file-ready-to-be-saved" unicode="<%= true %>" />', 'success');
-			}
-			else if (response.message == 'success') {
-				var fileItem = A.one('#' + file.uniqueIdentifier);
+				if ((response.message == 'complete') || (response.message == 'file-exists')) {
+					response = JSON.stringify(response.file);
+				}
+				else if (response.message == 'success') {
+					response = JSON.stringify(response.fileObject);
+				}
 
-				fileItem.one('.file').set('value', JSON.stringify(response.fileObject));
+				fileItem.one('.file').set('value', response);
 
 				dynamicUploader.updateMessage('<liferay-ui:message key="file-ready-to-be-saved" unicode="<%= true %>" />', 'success');
 			}

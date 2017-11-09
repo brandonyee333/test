@@ -390,7 +390,7 @@ if (productEntry != null) {
 				String updateEnvironmentOnClick = renderResponse.getNamespace() + "updateAccountEnvironment(document.getElementById('" + renderResponse.getNamespace() + "accountEnvironmentId').value, document.getElementById('" + renderResponse.getNamespace() + "name').value);";
 				%>
 
-				<aui:button cssClass="aui-button-input pull-left hide" onClick="<%= updateEnvironmentOnClick %>" value="update-environment" />
+				<aui:button cssClass="aui-button-input hide pull-left" onClick="<%= updateEnvironmentOnClick %>" value="update-environment" />
 			</div>
 		</c:if>
 	</div>

@@ -187,7 +187,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 
 	<aui:script>
 		function <portlet:namespace />resetPrimaryUserRadios() {
-			var radios = document.getElementsByName("<portlet:namespace />primaryUserId");
+			var radios = document.getElementsByName('<portlet:namespace />primaryUserId');
 
 			for (var i = 0; i < radios.length; i++) {
 				radios[i].checked = false;
@@ -199,8 +199,8 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 			'<portlet:namespace />updateTicketWorkers',
 			function(assignmentsRedirect) {
 				document.<portlet:namespace />fm.<portlet:namespace />assignmentsRedirect.value = assignmentsRedirect;
-				document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, "<portlet:namespace />allRowIds");
-				document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, "<portlet:namespace />allRowIds");
+				document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
+				document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
 				submitForm(document.<portlet:namespace />fm, "<portlet:actionURL name="updateTicketWorkers"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry/edit_ticket_workers.jsp" /><portlet:param name="tabs2" value="<%= tabs2 %>" /></portlet:actionURL>");
 			},
 			['liferay-util-list-fields']

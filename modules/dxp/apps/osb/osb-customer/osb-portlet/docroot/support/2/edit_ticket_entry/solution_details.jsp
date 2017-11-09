@@ -309,7 +309,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 		window.close();
 	</c:if>
 
-	var useCustomerSummary = A.one("#<portlet:namespace />useCustomerSummary");
+	var useCustomerSummary = A.one('#<portlet:namespace />useCustomerSummary');
 
 	<portlet:namespace />toggleIssueSummary(useCustomerSummary.val());
 

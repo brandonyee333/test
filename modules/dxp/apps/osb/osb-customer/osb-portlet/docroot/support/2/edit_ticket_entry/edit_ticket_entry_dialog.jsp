@@ -157,6 +157,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 	var onChange = function(e) {
 		var name = e.currentTarget.getAttribute('name');
+
 		var label = A.one('label#' + name + 'Label');
 
 		if (name.indexOf('dueDate') > -1) {
@@ -168,6 +169,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 		var labelAncestor = label.ancestor('.tab-content-tab');
 		var tabId = labelAncestor.getAttribute('id');
+
 		var tab = A.one('span#' + tabId);
 
 		label.addClass('field-modified');
@@ -242,7 +244,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 						firstNode = requiredField;
 					}
 				}
-			)
+			);
 
 			if (firstNode) {
 				<portlet:namespace />reveal('editTicketDetails');

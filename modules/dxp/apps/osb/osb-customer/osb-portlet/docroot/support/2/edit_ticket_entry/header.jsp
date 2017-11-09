@@ -285,7 +285,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			{
 				align: {
 					node: null,
-					points: [ 'tl', 'bl' ]
+					points: ['tl', 'bl']
 				},
 				arrow: 'tl',
 				bodyContent: '<%= UnicodeLanguageUtil.get(request, ticketEntry.getComponentLabel()) %>',
@@ -300,7 +300,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			{
 				align: {
 					node: null,
-					points: [ 'tl', 'bl' ]
+					points: ['tl', 'bl']
 				},
 				arrow: 'tl',
 				bodyContent: '<%= HtmlUtil.escape(subject) %>',
@@ -316,7 +316,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		<portlet:namespace />toggleForm('<portlet:namespace />statusDropDown', '<portlet:namespace />statusDisplay');
 
 		if (<%= resolution == 0 %>) {
-			document.getElementById('<portlet:namespace />resolutionDropDown').style.display = "none";
+			document.getElementById('<portlet:namespace />resolutionDropDown').style.display = 'none';
 		}
 		else {
 			<portlet:namespace />toggleForm('<portlet:namespace />resolutionDropDown', '<portlet:namespace />resolutionLabel');
@@ -376,19 +376,22 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		function <portlet:namespace />updateStatus(status) {
 			var A = AUI();
 
-			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(request, ticketEntry.getStatusLabel()) %>';
 			var newStatusLabel = A.one('#<portlet:namespace />status option:selected').html();
 
-			if (oldStatusLabel == newStatusLabel) {
-				return false;
-			}
+			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(request, ticketEntry.getStatusLabel()) %>';
 
-			if ((status != '<%= TicketEntryConstants.STATUS_CLOSED %>') && !confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newStatusLabel]))) {
-				<portlet:namespace />toggleForm('<portlet:namespace />statusDropDown', '<portlet:namespace />statusDisplay');
+			if (newStatusLabel) {
+				if (oldStatusLabel == newStatusLabel) {
+					return false;
+				}
 
-				A.one('#<portlet:namespace />status').set('value', '<%= ticketEntry.getStatus() %>');
+				if ((status != '<%= TicketEntryConstants.STATUS_CLOSED %>') && !confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newStatusLabel]))) {
+					<portlet:namespace />toggleForm('<portlet:namespace />statusDropDown', '<portlet:namespace />statusDisplay');
 
-				return false;
+					A.one('#<portlet:namespace />status').set('value', '<%= ticketEntry.getStatus() %>');
+
+					return false;
+				}
 			}
 
 			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>') {
