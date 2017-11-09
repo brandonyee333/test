@@ -98,8 +98,8 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 %>
 
 <div class="<%= HtmlUtil.escapeAttribute(cssClass) %>">
-	<div class="attachment-text fl">
-		<span class="fl txt-sb txt-up">
+	<div class="attachment-text pull-left">
+		<span class="pull-left txt-sb txt-up">
 			<c:if test="<%= required %>">
 				*
 			</c:if>
@@ -140,18 +140,18 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 		</ul>
 	</div>
 
-	<div class="fr">
+	<div class="pull-right">
 		<c:choose>
 			<c:when test="<%= ticketEntry == null %>">
 				<c:if test="<%= confirm %>">
-					<div class="attachment-text fl">
+					<div class="attachment-text pull-left">
 						*<liferay-ui:message arguments="<%= LanguageUtil.get(request, TicketAttachmentConstants.getTypeLabel(ticketAttachmentType)) %>" key="this-x-is-current" />
 
 						<aui:input checked="<%= confirmCheckbox %>" disabled="<%= ((accountEnvironmentAttachment == null) && (ticketAttachment == null)) %>" name='<%= fieldName + "Checkbox" %>' onclick='<%= renderResponse.getNamespace() + "validateFiles();" %>' type="checkbox" />
 					</div>
 				</c:if>
 
-				<div class="buttons fr">
+				<div class="buttons pull-right">
 
 					<%
 					String uploadFileOnChange = renderResponse.getNamespace() + "uploadUpdate('" + HtmlUtil.escapeAttribute(fieldName) + "');";

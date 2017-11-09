@@ -69,7 +69,7 @@ String name = BeanParamUtil.getString(accountProject, request, "name");
 		%>
 
 		<div class="clearfix">
-			<div class="fr">
+			<div class="pull-right">
 				<c:if test="<%= accountProject != null %>">
 					<liferay-ui:message arguments="<%= new Object[] {accountProject.getModifiedUserName(), fullDateFormatDateTime.format(accountProject.getModifiedDate())} %>" key="x-on-x" />
 				</c:if>

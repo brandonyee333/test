@@ -62,7 +62,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 		<aui:input name="satisfied" type="hidden" value="<%= TicketFeedbackConstants.SATISFIED_NOT_APPLICABLE %>" />
 
 		<div class="clearfix section">
-			<div class="fr">
+			<div class="pull-right">
 				<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
 			</div>
 		</div>
@@ -71,7 +71,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 		<liferay-ui:error exception="<%= TicketFeedbackRatingException.class %>" message="please-rate-all-the-questions" />
 
 		<div class="clearfix">
-			<div class="fl">
+			<div class="pull-left">
 				<div class="txt-b txt-up">
 					<liferay-ui:message key="partner-feedback-for-ticket" />
 				</div>

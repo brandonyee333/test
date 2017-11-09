@@ -207,7 +207,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		</div>
 
 		<div class="clearfix">
-			<div class="fr">
+			<div class="pull-right">
 				<c:if test="<%= accountCall != null %>">
 					<liferay-ui:message arguments="<%= new Object[] {accountCall.getModifiedUserName(), fullDateFormatDateTime.format(accountCall.getModifiedDate())} %>" key="x-on-x" />
 				</c:if>

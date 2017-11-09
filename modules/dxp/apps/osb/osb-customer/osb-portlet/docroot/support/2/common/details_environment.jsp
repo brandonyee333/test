@@ -68,7 +68,7 @@ if (productEntry != null) {
 	<div class="configuration">
 		<c:choose>
 			<c:when test="<%= !edit %>">
-				<div class="fl single-line">
+				<div class="pull-left single-line">
 					<div class="aui-w50 content-column">
 						<div class="content-column-content env">
 							<span class="field-label txt-b"><%= edit ? "*" : "" %><liferay-ui:message key="name" />:</span>
@@ -93,7 +93,7 @@ if (productEntry != null) {
 			</c:otherwise>
 		</c:choose>
 
-		<div class="fl single-line">
+		<div class="pull-left single-line">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content env">
 					<div>
@@ -208,7 +208,7 @@ if (productEntry != null) {
 			</div>
 		</div>
 
-		<div class="fl single-line">
+		<div class="pull-left single-line">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content env">
 					<span class="field-label txt-b" title="<liferay-ui:message key="application-server" />"><%= edit ? "*" : "" %><liferay-ui:message key="as" />:</span>
@@ -272,7 +272,7 @@ if (productEntry != null) {
 
 		<c:choose>
 			<c:when test="<%= edit %>">
-				<div class="fl single-line">
+				<div class="pull-left single-line">
 					<div class="aui-w33 content-column">
 						<div class="content-column-content env hide" id="<portlet:namespace />envCSColumn">
 							<span class="field-label txt-b" title="<liferay-ui:message key="cloud-services" />"><liferay-ui:message key="cs" />:</span>
@@ -329,7 +329,7 @@ if (productEntry != null) {
 				</div>
 			</c:when>
 			<c:otherwise>
-				<div class="fl single-line">
+				<div class="pull-left single-line">
 					<span class="field-label txt-b"><liferay-ui:message key="portal-ext" />:</span>
 
 					<span id="<portlet:namespace />portalExtFilename">
@@ -353,7 +353,7 @@ if (productEntry != null) {
 					</span>
 				</div>
 
-				<div class="fl single-line">
+				<div class="pull-left single-line">
 					<span class="field-label txt-b"><liferay-ui:message key="patch-level" />:</span>
 
 					<span id="<portlet:namespace />patchLevelFilename">
@@ -384,13 +384,13 @@ if (productEntry != null) {
 			<aui:input name="productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
 
 			<div class="create-env-button">
-				<aui:button cssClass="aui-button-input fl" onClick='<%= renderResponse.getNamespace() + "updateAccountEnvironment(0, '');" %>' value="create-environment" />
+				<aui:button cssClass="aui-button-input pull-left" onClick='<%= renderResponse.getNamespace() + "updateAccountEnvironment(0, '');" %>' value="create-environment" />
 
 				<%
 				String updateEnvironmentOnClick = renderResponse.getNamespace() + "updateAccountEnvironment(document.getElementById('" + renderResponse.getNamespace() + "accountEnvironmentId').value, document.getElementById('" + renderResponse.getNamespace() + "name').value);";
 				%>
 
-				<aui:button cssClass="aui-button-input fl hide" onClick="<%= updateEnvironmentOnClick %>" value="update-environment" />
+				<aui:button cssClass="aui-button-input pull-left hide" onClick="<%= updateEnvironmentOnClick %>" value="update-environment" />
 			</div>
 		</c:if>
 	</div>

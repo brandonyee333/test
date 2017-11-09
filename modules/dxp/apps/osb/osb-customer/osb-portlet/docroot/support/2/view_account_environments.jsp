@@ -95,7 +95,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 
 			<div class="clearfix">
 				<div class="content-column-content">
-					<div class="fl">
+					<div class="pull-left">
 						<span class="txt-b txt-up"><liferay-ui:message key="portal-ext" />:</span>
 
 						<%
@@ -186,7 +186,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 	String addEnvironmentDetailsOnClick = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "add-environment-details") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
 	%>
 
-	<aui:button cssClass="aui-button-input fr" onClick="<%= addEnvironmentDetailsOnClick %>" value="add" />
+	<aui:button cssClass="aui-button-input pull-right" onClick="<%= addEnvironmentDetailsOnClick %>" value="add" />
 </c:if>
 
 <aui:script>

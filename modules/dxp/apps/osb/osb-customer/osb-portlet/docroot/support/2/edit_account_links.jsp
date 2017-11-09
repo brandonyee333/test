@@ -45,7 +45,7 @@
 				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 				<div class="clearfix section">
-					<div class="fl">
+					<div class="pull-left">
 						Edit Links for Account: <%= HtmlUtil.escape(accountEntry.getName()) %>
 					</div>
 				</div>

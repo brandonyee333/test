@@ -44,7 +44,7 @@
 				<aui:input name="accountProjectId" type="hidden" value="<%= accountProjectId %>" />
 
 				<div class="clearfix section">
-					<div class="fl">
+					<div class="pull-left">
 						Edit Attachments for Project: <%= HtmlUtil.escape(accountEntry.getName()) %>
 					</div>
 				</div>

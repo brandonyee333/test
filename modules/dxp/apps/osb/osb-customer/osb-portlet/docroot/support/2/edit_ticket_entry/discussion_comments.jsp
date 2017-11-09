@@ -413,7 +413,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 									}
 									%>
 
-									<div class="comment-pending fr <%= (ticketComment.getStatus() == WorkflowConstants.STATUS_DRAFT) ? "" : "hide" %>" id="<portlet:namespace />pendingTypesDisplay<%= i %>">
+									<div class="comment-pending pull-right <%= (ticketComment.getStatus() == WorkflowConstants.STATUS_DRAFT) ? "" : "hide" %>" id="<portlet:namespace />pendingTypesDisplay<%= i %>">
 										<liferay-ui:message key="need-response-from" />:
 
 										<c:if test='<%= discussionTab.equals("public") %>'>
@@ -498,7 +498,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 
 								<br />
 
-								<div class="comment-buttons fr">
+								<div class="comment-buttons pull-right">
 									<input class="aui-button-input" id="<portlet:namespace />editCommentButton<%= i %>" onClick="<portlet:namespace />updateComment(<%= i %>, <%= ticketComment.getStatus() %>);" type="button" value="<liferay-ui:message key="update" />" />
 
 									<c:if test="<%= (ticketComment.getStatus() == WorkflowConstants.STATUS_DRAFT) && ((ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) || liferayIncOrg || partnerWorker) %>">

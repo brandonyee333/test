@@ -17,7 +17,7 @@
 <%@ include file="/support/2/init.jsp" %>
 
 <div class="clearfix section">
-	<div class="fr">
+	<div class="pull-right">
 		<a class="btn" href="javascript:history.go(-1);">
 			&lt; <liferay-ui:message key="back-to-previous-page" />
 		</a>

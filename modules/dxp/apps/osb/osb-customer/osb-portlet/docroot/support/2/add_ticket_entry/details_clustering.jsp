@@ -68,7 +68,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 <br />
 
 <div class="clearfix">
-	<div class="aui-w45 fl">
+	<div class="aui-w45 pull-left">
 		<div class="section-heading">
 			<liferay-ui:message key="server-communication-type" />:
 		</div>
@@ -89,7 +89,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 		</aui:select>
 	</div>
 
-	<div class="aui-w45 fr">
+	<div class="aui-w45 pull-right">
 		<div class="section-heading">
 			<liferay-ui:message key="number-of-nodes" />:
 		</div>

@@ -145,7 +145,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 					dropDownList.put("create-filter", renderResponse.getNamespace() + "updateSearchFilter(0, '');");
 					%>
 
-					<span class="fr three-dot" id="<portlet:namespace />threeDotMenu">
+					<span class="pull-right three-dot" id="<portlet:namespace />threeDotMenu">
 						<span class="three-dot-icon" id="<portlet:namespace />threeDotIcon">
 							<span style="top: 6px;"></span>
 							<span style="top: 14px;"></span>
@@ -186,13 +186,13 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 					</span>
 				</c:when>
 				<c:otherwise>
-					<input class="fr" onclick="<portlet:namespace />updateSearchFilter(0, '');" type="button" value="<liferay-ui:message key="create-filter" />" />
+					<input class="pull-right" onclick="<portlet:namespace />updateSearchFilter(0, '');" type="button" value="<liferay-ui:message key="create-filter" />" />
 				</c:otherwise>
 			</c:choose>
 		</c:if>
 
 		<c:if test="<%= liferayIncOrg %>">
-			<span class="export-menu fr" id="<portlet:namespace />exportMenu">
+			<span class="export-menu pull-right" id="<portlet:namespace />exportMenu">
 				<a class="aui-button-input-export btn disabled" id="<portlet:namespace />exportButton" type="button"><liferay-ui:message key="export" /></a>
 
 				<ul class="drop-down-menu hide" id="<portlet:namespace />exportDropdown">
@@ -214,7 +214,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 		<div class="account search-param-dropdown" id="<portlet:namespace />account">
 			<input id="<portlet:namespace />accountEntryIds" name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_IDS %>" type="hidden" value="<%= StringUtil.merge(displayTerms.getAccountEntryIds()) %>" />
 
-			<div class="aui-w50 fl">
+			<div class="aui-w50 pull-left">
 				<c:if test="<%= !singleAccount %>">
 					<div>
 						<input class="aui-button-input" onClick="window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/2/select_account_entry.jsp" /></portlet:renderURL>', 'assigned_to', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800');" type="button" value="<liferay-ui:message key="choose-project" />" />
@@ -245,7 +245,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 			</div>
 
 			<c:if test="<%= ticketWorker %>">
-				<div class="aui-w50 fr">
+				<div class="aui-w50 pull-right">
 					<h2 class="support-input-heading">
 						<liferay-ui:message key="project-tiers" />
 					</h2>

@@ -60,7 +60,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 		<div class="head">
 			<div class="header">
-				<div class="fl ticket-severity v<%= ticketEntry.getSeverity() %>"></div>
+				<div class="pull-left ticket-severity v<%= ticketEntry.getSeverity() %>"></div>
 
 				<c:if test="<%= clockedIn %>">
 					<div class="buttons">

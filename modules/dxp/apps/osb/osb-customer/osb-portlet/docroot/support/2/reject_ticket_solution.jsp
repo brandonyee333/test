@@ -104,7 +104,7 @@ TicketSolution ticketSolution = TicketSolutionLocalServiceUtil.getTicketSolution
 		<div align="right">
 			<aui:button cssClass="aui-button-input buttons" onClick='<%= renderResponse.getNamespace() + "rejectTicketSolution();" %>' value="send" />
 
-			<aui:button cssClass="aui-button-input buttons fl" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' value="cancel" />
+			<aui:button cssClass="aui-button-input buttons pull-left" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' value="cancel" />
 		</div>
 	</div>
 

@@ -33,7 +33,7 @@ String commentBody = ParamUtil.getString(request, "commentBody0");
 	</liferay-util:include>
 
 	<c:if test='<%= !discussionTab.equals("liferay") && ticketWorker && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) %>'>
-		<div class="comment-pending fr">
+		<div class="comment-pending pull-right">
 			<liferay-ui:message key="need-response-from" />:
 
 			<c:if test='<%= discussionTab.equals("public") %>'>
@@ -98,7 +98,7 @@ String commentBody = ParamUtil.getString(request, "commentBody0");
 		</table>
 	</div>
 
-	<div class="comment-buttons fr">
+	<div class="comment-buttons pull-right">
 		<c:if test='<%= discussionTab.equals("liferay") %>'>
 			<input class="aui-button-input hide" id="<portlet:namespace />postGamePlanButton" onClick="<portlet:namespace />addComment(0);" type="button" value="<liferay-ui:message key="post-game-plan" />" />
 

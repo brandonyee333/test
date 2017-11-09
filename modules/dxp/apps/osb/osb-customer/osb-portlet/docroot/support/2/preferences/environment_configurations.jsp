@@ -188,7 +188,7 @@ else {
 												String deleteAccountEnvironmentOnClick = renderResponse.getNamespace() + "deleteEnvironment('" + deleteAccountEnvironmentURL.toString() + "', '" + HtmlUtil.escapeJS(accountEnvironment.getName()) + "');";
 												%>
 
-												<aui:button cssClass="aui-button-input fl" onClick="<%= deleteAccountEnvironmentOnClick %>" value="delete" />
+												<aui:button cssClass="aui-button-input pull-left" onClick="<%= deleteAccountEnvironmentOnClick %>" value="delete" />
 											</c:if>
 
 											<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE) %>">
@@ -206,7 +206,7 @@ else {
 												String editAccountEnvironmentOnClick = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment')";
 												%>
 
-												<aui:button cssClass="aui-button-input fr" onClick="<%= editAccountEnvironmentOnClick %>" value="edit" />
+												<aui:button cssClass="aui-button-input pull-right" onClick="<%= editAccountEnvironmentOnClick %>" value="edit" />
 											</c:if>
 										</div>
 									</div>

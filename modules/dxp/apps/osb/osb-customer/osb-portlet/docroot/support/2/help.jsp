@@ -38,7 +38,7 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 			<br />
 
 			<c:if test="<%= osbAdmin %>">
-				<div class="fr">
+				<div class="pull-right">
 					<aui:button name="edit" onClick='<%= renderResponse.getNamespace() + "toggleSection();" %>' value="edit" />
 				</div>
 			</c:if>

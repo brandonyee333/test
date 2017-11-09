@@ -103,7 +103,7 @@
 
 				<div class="edit-account-environment">
 					<div class="clearfix">
-						<div class="fl single-line">
+						<div class="pull-left single-line">
 							<div class="aui-w50 content-column">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="name" />:</span>
@@ -158,7 +158,7 @@
 
 						<br />
 
-						<div class="fl single-line">
+						<div class="pull-left single-line">
 							<div class="aui-w33 content-column">
 								<div class="content-column-content">
 									<span class="txt-b" id="<portlet:namespace />portalVersion" title="<liferay-ui:message key="liferay-version" />">*<liferay-ui:message key="lr" />:</span>
@@ -227,7 +227,7 @@
 							</div>
 						</div>
 
-						<div class="fl single-line">
+						<div class="pull-left single-line">
 							<div class="aui-w33 content-column">
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="application-server" />">*<liferay-ui:message key="as" />:</span>
@@ -251,7 +251,7 @@
 
 						<br />
 
-						<div class="fl single-line">
+						<div class="pull-left single-line">
 							<div class="aui-w100 content-column">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="portal-ext" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142855" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
@@ -285,7 +285,7 @@
 							</div>
 						</div>
 
-						<div class="fl single-line">
+						<div class="pull-left single-line">
 							<div class="aui-w100 content-column">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="patch-level" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
@@ -319,10 +319,10 @@
 							</div>
 						</div>
 
-						<div class="fl foot-details single-line">
-							<aui:button cssClass="aui-button-input fl" onClick="Liferay.Util.getWindow().close();" value="cancel" />
+						<div class="pull-left foot-details single-line">
+							<aui:button cssClass="aui-button-input pull-left" onClick="Liferay.Util.getWindow().close();" value="cancel" />
 
-							<aui:button cssClass="aui-button-input fr" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value='<%= (accountEnvironmentId == 0) ? "create" : "update" %>' />
+							<aui:button cssClass="aui-button-input pull-right" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value='<%= (accountEnvironmentId == 0) ? "create" : "update" %>' />
 						</div>
 					</div>
 				</div>

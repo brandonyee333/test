@@ -80,9 +80,9 @@ String description = ParamUtil.getString(request, "description");
 			<portlet:param name="mvcPath" value="/support/2/view.jsp" />
 		</portlet:renderURL>
 
-		<aui:button cssClass="aui-button-input fl" href="<%= cancelURL.toString() %>" value="cancel" />
+		<aui:button cssClass="aui-button-input pull-left" href="<%= cancelURL.toString() %>" value="cancel" />
 
-		<aui:button cssClass="aui-button-input fr" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="create" />
+		<aui:button cssClass="aui-button-input pull-right" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="create" />
 	</div>
 </div>
 

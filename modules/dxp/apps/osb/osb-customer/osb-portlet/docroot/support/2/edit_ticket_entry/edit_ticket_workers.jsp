@@ -46,11 +46,11 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 		<input name="<portlet:namespace />ticketEntryId" type="hidden" value="<%= ticketEntryId %>" />
 
 		<div class="clearfix section">
-			<div class="fl">
+			<div class="pull-left">
 				Edit Workers for Ticket: <%= ticketEntry.getDisplayId() %>
 			</div>
 
-			<div class="fr">
+			<div class="pull-right">
 				<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
 			</div>
 		</div>
@@ -175,7 +175,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 
 					<input class="aui-button-input" onClick="<portlet:namespace />updateTicketWorkers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
 
-					<input class="aui-button-input fr" onClick="<portlet:namespace />resetPrimaryUserRadios();" type="button" value="<liferay-ui:message key="use-last-primary-assignee" />" />
+					<input class="aui-button-input pull-right" onClick="<portlet:namespace />resetPrimaryUserRadios();" type="button" value="<liferay-ui:message key="use-last-primary-assignee" />" />
 
 					<br /><br />
 

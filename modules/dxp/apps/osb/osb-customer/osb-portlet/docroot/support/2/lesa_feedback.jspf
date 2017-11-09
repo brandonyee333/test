@@ -62,8 +62,8 @@
 			</div>
 
 			<div class="clearfix">
-				<aui:button cssClass="fl" name="lesaFeedbackCancelButton" value="cancel" />
-				<aui:button cssClass="fr" name="lesaFeedbackSubmitButton" value="submit" />
+				<aui:button cssClass="pull-left" name="lesaFeedbackCancelButton" value="cancel" />
+				<aui:button cssClass="pull-right" name="lesaFeedbackSubmitButton" value="submit" />
 			</div>
 		</div>
 	</div>

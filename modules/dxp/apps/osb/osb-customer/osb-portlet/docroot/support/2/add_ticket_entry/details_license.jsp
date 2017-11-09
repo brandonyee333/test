@@ -41,7 +41,7 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 </div>
 
 <div class="clearfix">
-	<div class="aui-w45 fl">
+	<div class="aui-w45 pull-left">
 		<span class="section-heading"><liferay-ui:message key="type-of-key" />:</span>
 
 		<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "type-of-key")) %>' name="type">
@@ -62,7 +62,7 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 		</aui:select>
 	</div>
 
-	<div class="aui-w45 fr">
+	<div class="aui-w45 pull-right">
 		<div class="section-heading"><liferay-ui:message key="purpose" />:</div>
 
 		<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "purpose")) %>' name="purpose">
