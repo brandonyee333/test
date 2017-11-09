@@ -124,6 +124,33 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 		}
 	}
 
+	protected void doLoadKeyStore() throws Exception {
+		String samlKeyStorePassword = getSamlKeyStorePassword();
+
+		try (InputStream inputStream = _getInputStream()) {
+			_keyStore.load(inputStream, samlKeyStorePassword.toCharArray());
+		}
+	}
+
+	protected void loadKeyStore() {
+		try {
+			doLoadKeyStore();
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to load SAML keystore " + getSamlKeyStorePath(), e);
+		}
+	}
+
+	protected void monitorFile(File samlKeyStoreFile) throws IOException {
+		if (_samlKeyStoreFileWatcher != null) {
+			return;
+		}
+
+		_samlKeyStoreFileWatcher = new FileWatcher(
+			ev -> loadKeyStore(), samlKeyStoreFile.toPath());
+	}
+
 	private InputStream _getInputStream() throws Exception {
 		String samlKeyStorePath = getSamlKeyStorePath();
 
@@ -152,33 +179,6 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 		monitorFile(samlKeyStoreFile);
 
 		return new FileInputStream(samlKeyStoreFile);
-	}
-
-	protected void doLoadKeyStore() throws Exception {
-		String samlKeyStorePassword = getSamlKeyStorePassword();
-
-		try (InputStream inputStream = _getInputStream()) {
-			_keyStore.load(inputStream, samlKeyStorePassword.toCharArray());
-		}
-	}
-
-	protected void loadKeyStore() {
-		try {
-			doLoadKeyStore();
-		}
-		catch (Exception e) {
-			_log.error(
-				"Unable to load SAML keystore " + getSamlKeyStorePath(), e);
-		}
-	}
-
-	protected void monitorFile(File samlKeyStoreFile) throws IOException {
-		if (_samlKeyStoreFileWatcher != null) {
-			return;
-		}
-
-		_samlKeyStoreFileWatcher = new FileWatcher(
-			ev -> loadKeyStore(), samlKeyStoreFile.toPath());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
