@@ -132,27 +132,26 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 
 			return clazz.getResourceAsStream(samlKeyStorePath.substring(10));
 		}
-		else {
-			File samlKeyStoreFile = new File(samlKeyStorePath);
 
-			samlKeyStoreFile = samlKeyStoreFile.getAbsoluteFile();
+		File samlKeyStoreFile = new File(samlKeyStorePath);
 
-			if (!samlKeyStoreFile.exists()) {
-				if (Validator.isNotNull(samlConfiguration.keyStorePath()) &&
-					!SamlConfiguration.KEYSTORE_PATH_DEFAULT.equals(
-						samlConfiguration.keyStorePath()) &&
-					_log.isWarnEnabled()) {
+		samlKeyStoreFile = samlKeyStoreFile.getAbsoluteFile();
 
-					_log.warn("No SAML keystore exists at " + samlKeyStoreFile);
-				}
+		if (!samlKeyStoreFile.exists()) {
+			if (Validator.isNotNull(samlConfiguration.keyStorePath()) &&
+				!SamlConfiguration.KEYSTORE_PATH_DEFAULT.equals(
+					samlConfiguration.keyStorePath()) &&
+				_log.isWarnEnabled()) {
 
-				return null;
+				_log.warn("No SAML keystore exists at " + samlKeyStoreFile);
 			}
 
-			monitorFile(samlKeyStoreFile);
-
-			return new FileInputStream(samlKeyStoreFile);
+			return null;
 		}
+
+		monitorFile(samlKeyStoreFile);
+
+		return new FileInputStream(samlKeyStoreFile);
 	}
 
 	protected void doLoadKeyStore() throws Exception {
