@@ -49,18 +49,6 @@
 	}
 }
 
-.cleared {
-	clear: both;
-
-	&:after, &:before {
-		clear: both;
-		content: '.';
-		display: block;
-		height: 0;
-		visibility: hidden;
-	}
-}
-
 .disabled {
 	background-color: $border-color;
 }

@@ -223,7 +223,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 					</aui:fieldset>
 
 					<div>
-						<div class="cleared">
+						<div class="clearfix">
 							<liferay-ui:message key="screen-share-mode-hides-internal-information" />
 						</div>
 

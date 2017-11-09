@@ -31,7 +31,7 @@ List<FileRepository> fileRepositories = SupportUtil.getFileRepositories();
 		<liferay-ui:message key="download-details" />
 	</h1>
 
-	<div class="aui-helper-clearfix">
+	<div class="clearfix">
 		<c:if test="<%= fileRepositories.isEmpty() %>">
 			<div class="portlet-msg-info">
 				<liferay-ui:message key="file-servers-not-available-please-contact-your-support-manager" />

@@ -45,7 +45,7 @@ PartnerEntryDisplayTerms displayTerms = new PartnerEntryDisplayTerms(renderReque
 		</span>
 	</div>
 
-	<div class="aui-helper-clearfix search-param-config">
+	<div class="clearfix search-param-config">
 		<div class="first-line-support search-param-dropdown" id="<portlet:namespace />managingSupport">
 			<select id="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>">
 				<option <%= !displayTerms.hasManagingSupport() ? "selected" : StringPool.BLANK %> value=""></option>

@@ -44,7 +44,7 @@
 			<aui:form action="<%= addAccountLinkURL %>" method="post" name="fm">
 				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
-				<div class="cleared section">
+				<div class="clearfix section">
 					<div class="fl">
 						Edit Links for Account: <%= HtmlUtil.escape(accountEntry.getName()) %>
 					</div>

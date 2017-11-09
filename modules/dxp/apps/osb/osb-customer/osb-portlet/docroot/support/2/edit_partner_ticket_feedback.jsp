@@ -61,7 +61,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 		<aui:input name="ticketFeedbackId" type="hidden" value="<%= ticketFeedbackId %>" />
 		<aui:input name="satisfied" type="hidden" value="<%= TicketFeedbackConstants.SATISFIED_NOT_APPLICABLE %>" />
 
-		<div class="cleared section">
+		<div class="clearfix section">
 			<div class="fr">
 				<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
 			</div>
@@ -70,14 +70,14 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 		<liferay-ui:error exception="<%= TicketFeedbackAnswerException.class %>" message="please-answer-all-the-questions" />
 		<liferay-ui:error exception="<%= TicketFeedbackRatingException.class %>" message="please-rate-all-the-questions" />
 
-		<div class="cleared">
+		<div class="clearfix">
 			<div class="fl">
 				<div class="txt-b txt-up">
 					<liferay-ui:message key="partner-feedback-for-ticket" />
 				</div>
 			</div>
 
-			<div class="cleared txt-b txt-h1-12 txt-h1-9 txt-h2-6 txt-h3-4">
+			<div class="clearfix txt-b txt-h1-12 txt-h1-9 txt-h2-6 txt-h3-4">
 
 				<%
 				TicketEntry ticketEntry = ticketFeedback.getTicketEntry();
@@ -87,7 +87,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 			</div>
 		</div>
 
-		<div class="cleared">
+		<div class="clearfix">
 			<div class="txt-i">
 				<liferay-ui:message key="star-indicates-required-field" />
 			</div>

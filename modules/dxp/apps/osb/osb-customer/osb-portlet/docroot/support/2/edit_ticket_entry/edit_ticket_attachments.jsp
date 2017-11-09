@@ -214,7 +214,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		<input name="<portlet:namespace />ticketEntryId" type="hidden" value="<%= ticketEntry.getTicketEntryId() %>" />
 
 		<div class="attachments">
-			<div class="aui-helper-clearfix lfr-dynamic-uploader" id="<portlet:namespace />uploaderWrapper">
+			<div class="clearfix lfr-dynamic-uploader" id="<portlet:namespace />uploaderWrapper">
 				<input name="<portlet:namespace />fileRepositoryId" type="hidden" value="<%= HtmlUtil.escapeAttribute(fileRepositoryId) %>" />
 				<input id="<portlet:namespace />token" type="hidden" value="" />
 				<input id="<portlet:namespace />uploaderType" name="<portlet:namespace />uploaderType" type="hidden" />
@@ -311,7 +311,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 						<a class="fr pause-button" href="javascript:;" id="<portlet:namespace />pauseButton"></a>
 
-						<span class="cleared progress-bar" id="<portlet:namespace />progressBar">
+						<span class="clearfix progress-bar" id="<portlet:namespace />progressBar">
 							<span class="progress" id="<portlet:namespace />progress"></span>
 						</span>
 					</div>
@@ -320,7 +320,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				<div class="hide lfr-fallback-container" id="<portlet:namespace />fallbackContainer">
 					<c:choose>
 						<c:when test="<%= userVisibilities.length > 1 %>">
-							<div class="aui-helper-clearfix">
+							<div class="clearfix">
 								<div class="aui-w10 content-column">
 									<span class="txt-b">
 										<liferay-ui:message key="visibility" />:

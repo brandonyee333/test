@@ -560,7 +560,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 				<c:if test="<%= address != null %>">
 					<br />
 
-					<div class="aui-helper-clearfix">
+					<div class="clearfix">
 						<div class="content-column left-column">
 							<liferay-ui:message key="address" />:
 						</div>

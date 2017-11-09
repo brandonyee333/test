@@ -30,7 +30,7 @@ String hostNames = ParamUtil.getString(request, "hostNames", GetterUtil.getStrin
 String additionalComments = ParamUtil.getString(request, "additionalComments", GetterUtil.getString(ticketInformationFieldsMap.get(TicketInformationConstants.FIELD_ADDITIONAL_COMMENTS)));
 %>
 
-<div class="aui-helper-clearfix">
+<div class="clearfix">
 	<liferay-util:include page="/support/2/common/eosl_environment_liferay.jsp" servletContext="<%= application %>">
 		<portlet:param name="envLFR" value="<%= String.valueOf(envLFR) %>" />
 	</liferay-util:include>

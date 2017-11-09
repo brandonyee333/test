@@ -22,7 +22,7 @@ PartnerEntry partnerEntry = (PartnerEntry)request.getAttribute("edit_partner_ent
 %>
 
 <div class="partner-header">
-	<div class="back-link cleared txt-sb">
+	<div class="back-link clearfix txt-sb">
 		<a href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back" /></a>
 	</div>
 

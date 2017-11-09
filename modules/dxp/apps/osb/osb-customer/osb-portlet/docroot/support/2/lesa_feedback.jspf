@@ -61,7 +61,7 @@
 				<aui:input cssClass="textarea-comments" name="lesaFeedbackComments" type="textarea" />
 			</div>
 
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<aui:button cssClass="fl" name="lesaFeedbackCancelButton" value="cancel" />
 				<aui:button cssClass="fr" name="lesaFeedbackSubmitButton" value="submit" />
 			</div>

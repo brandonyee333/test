@@ -50,7 +50,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 	<aui:input name="reproductionSteps" type="hidden" value="" />
 
 	<div class="ticket-header" id="<portlet:namespace />ticketHeader">
-		<div class="back-link cleared txt-sb">
+		<div class="back-link clearfix txt-sb">
 			<a href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back" /></a>
 		</div>
 

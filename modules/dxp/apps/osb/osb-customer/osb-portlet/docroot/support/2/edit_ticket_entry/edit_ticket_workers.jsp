@@ -45,7 +45,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 		<input name="<portlet:namespace />assignmentsRedirect" type="hidden" value="" />
 		<input name="<portlet:namespace />ticketEntryId" type="hidden" value="<%= ticketEntryId %>" />
 
-		<div class="cleared section">
+		<div class="clearfix section">
 			<div class="fl">
 				Edit Workers for Ticket: <%= ticketEntry.getDisplayId() %>
 			</div>

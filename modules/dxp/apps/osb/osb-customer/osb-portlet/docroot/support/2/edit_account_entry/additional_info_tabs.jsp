@@ -346,7 +346,7 @@
 						for (int fieldId : AccountInformationConstants.SECTION_SALES_FIELD_IDS) {
 						%>
 
-							<div class="aui-helper-clearfix customer-info">
+							<div class="clearfix customer-info">
 								<div class="aui-w20 fl">
 									<span class="customer-info-label"><liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />:</span>
 								</div>
@@ -387,7 +387,7 @@
 							for (int fieldId : AccountInformationConstants.SECTION_SALES_FIELD_IDS) {
 							%>
 
-								<div class="aui-helper-clearfix">
+								<div class="clearfix">
 									<div class="aui-w20 customer-info-label fl">
 										<liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />
 									</div>

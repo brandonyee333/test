@@ -16,7 +16,7 @@
 
 <%@ include file="/support/2/init.jsp" %>
 
-<div class="cleared section">
+<div class="clearfix section">
 	<div class="fr">
 		<a class="btn" href="javascript:history.go(-1);">
 			&lt; <liferay-ui:message key="back-to-previous-page" />

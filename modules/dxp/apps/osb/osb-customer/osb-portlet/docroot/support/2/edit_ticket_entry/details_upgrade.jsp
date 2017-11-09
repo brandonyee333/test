@@ -25,7 +25,7 @@ int docLibPersistence = ParamUtil.getInteger(request, "docLibPersistence", Gette
 String stepsToUpgrade = ParamUtil.getString(request, "stepsToUpgrade", GetterUtil.getString(ticketInformationFieldsMap.get(TicketInformationConstants.FIELD_STEPS_TO_UPGRADE)));
 %>
 
-<div class="aui-helper-clearfix single-line">
+<div class="clearfix single-line">
 	<span class="txt-sb"><liferay-ui:message key="how-is-the-document-library-server-persisting-documents" /></span>
 
 	<%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(docLibPersistence)) %>

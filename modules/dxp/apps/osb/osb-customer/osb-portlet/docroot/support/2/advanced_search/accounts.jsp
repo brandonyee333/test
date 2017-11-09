@@ -52,7 +52,7 @@ AccountEntryDisplayTerms displayTerms = new AccountEntryDisplayTerms(renderReque
 		</span>
 	</div>
 
-	<div class="aui-helper-clearfix search-param-config">
+	<div class="clearfix search-param-config">
 		<div class="search-param-dropdown tiers" id="<portlet:namespace />tier">
 
 			<%

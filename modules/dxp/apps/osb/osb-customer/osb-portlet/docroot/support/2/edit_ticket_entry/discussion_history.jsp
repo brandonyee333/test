@@ -198,7 +198,7 @@ else {
 								}
 							%>
 
-								<div class="cleared"></div>
+								<div class="clearfix"></div>
 
 								<div class="aui-w20 content-column txt-sb">
 									<div class="content-column-content left-column">

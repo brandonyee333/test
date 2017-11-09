@@ -396,7 +396,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 		%>
 
 		<div class="date search-param-dropdown" id="<portlet:namespace />date">
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<div class="aui-w25 content-column">
 					<div class="content-column-content left-column">
 						<h2 class="support-input-heading">

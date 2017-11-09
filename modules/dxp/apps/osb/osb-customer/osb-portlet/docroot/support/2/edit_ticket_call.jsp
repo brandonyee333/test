@@ -48,7 +48,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 			<liferay-ui:message key="log-call" />
 		</h1>
 
-		<div class="cleared">
+		<div class="clearfix">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content left-column">
 					<span class="txt-b"><liferay-ui:message key="customer-name" />: </span>
@@ -86,7 +86,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 
 		<br />
 
-		<div class="cleared">
+		<div class="clearfix">
 			<div class="aui-w33 content-column">
 				<span class="txt-b"><liferay-ui:message key="call-date" />: </span>
 
@@ -154,7 +154,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 
 		<br />
 
-		<div class="cleared">
+		<div class="clearfix">
 			<div class="aui-w100 content-column">
 				<div class="content-column-content">
 					<span class="txt-b"><liferay-ui:message key="customer-confirmation" />: </span>

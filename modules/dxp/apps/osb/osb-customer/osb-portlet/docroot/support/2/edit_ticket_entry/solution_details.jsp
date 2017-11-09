@@ -123,7 +123,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 					%>
 
 						<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
-							<liferay-util:param name="cssClass" value="aui-helper-clearfix file-container" />
+							<liferay-util:param name="cssClass" value="clearfix file-container" />
 							<liferay-util:param name="fieldName" value='<%= "file" + fileIndex %>' />
 							<liferay-util:param name="label" value='<%= LanguageUtil.get(request, "file") + StringPool.SPACE + fileIndex %>' />
 							<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(fileAttachmentIds[fileIndex - 1]) %>" />

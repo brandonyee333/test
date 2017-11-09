@@ -135,7 +135,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 			}
 		%>
 
-			<div class="cleared ticket-comment <%= cssClass %>" id="<portlet:namespace />commentContainer<%= i %>">
+			<div class="clearfix ticket-comment <%= cssClass %>" id="<portlet:namespace />commentContainer<%= i %>">
 				<div class="content-column" onClick="<portlet:namespace />toggleComment(event, <%= i %>);">
 					<div>
 						<div class="user-avatar" style="background-image: url('<%= ticketEntryDiscussion.getUserPortraitURL(themeDisplay) %>&height=70&width=70')"></div>
@@ -368,7 +368,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 							}
 							%>
 
-							<div class="aui-helper-clearfix <%= cssClass %>" id="<portlet:namespace />footer_<%= ticketComment.getTicketCommentId() %>">
+							<div class="clearfix <%= cssClass %>" id="<portlet:namespace />footer_<%= ticketComment.getTicketCommentId() %>">
 								<c:choose>
 									<c:when test='<%= discussionTab.equals("public") %>'>
 										<div class="footnote solution-flag">
