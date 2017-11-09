@@ -27,3 +27,13 @@
 	font-family: 'source-sans-pro-semibold';
 	src: url(../font/source-sans-pro/source-sans-pro-semibold.otf.woff) format('woff'), url(../font/source-sans-pro/source-sans-pro-semibold.otf.woff2) format('woff2'), url(../font/source-sans-pro/source-sans-pro-semibold.ttf.woff) format('woff'), url(../font/source-sans-pro/source-sans-pro-semibold.ttf.woff2) format('woff2');
 }
+
+@font-face {
+	font-family: 'Noto Sans Japanese';
+	src: url(../font/noto-sans-japanese/notosansjp-regular.woff) format('woff'), url(../font/noto-sans-japanese/notosansjp-regular.woff2) format('woff2');
+}
+
+@font-face {
+	font-family: 'Noto Sans Japanese Bold';
+	src: url(../font/noto-sans-japanese/notosansjp-bold.woff) format('woff'), url(../font/noto-sans-japanese/notosansjp-bold.woff2) format('woff2');
+}
