@@ -17,12 +17,8 @@ package com.liferay.osb.customer.web.internal.application.list;
 import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.constants.PanelCategoryKeys;
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.constants.OSBCustomerPortletKeys;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalService;
 
 import org.osgi.service.component.annotations.Component;
@@ -44,28 +40,6 @@ public class OSBDocumentationAdminPanelApp extends BasePanelApp {
 	@Override
 	public String getPortletId() {
 		return OSBCustomerPortletKeys.ADMIN;
-	}
-
-	@Override
-	public boolean isShow(PermissionChecker permissionChecker, Group group)
-		throws PortalException {
-
-		if (permissionChecker.isOmniadmin()) {
-			return true;
-		}
-
-		if (permissionChecker.isGroupAdmin(group.getGroupId())) {
-			return true;
-		}
-
-		if (_roleLocalService.hasUserRole(
-				permissionChecker.getUserId(),
-				OSBCustomerConstants.ROLE_DOCUMENT_LEAD)) {
-
-			return true;
-		}
-
-		return false;
 	}
 
 	@Override
