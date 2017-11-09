@@ -15,6 +15,7 @@ import SelectInput from '../components/SelectInput';
 
 import {indexActivities, searchActivities} from '../actions/activities';
 import {indexAddresses, searchAddresses} from '../actions/addresses';
+import {indexChildren, searchChildren} from '../actions/children';
 import {updateDisplayBy, updateFilter, updateHideLoadingOverlay, updateLastFocus, updateLastItemsLoaded, updateSortBy} from '../actions/display';
 import {indexIncidents, searchIncidents} from '../actions/incidents';
 import {indexPeople, searchPeople} from '../actions/people';
@@ -251,15 +252,55 @@ class Index extends JSXComponent {
 		return (
 			<div class="incidents-index page-container hidden-print">
 				<div class="navigation-sidebar">
-					<NavigationHeader mainHeader={Liferay.Language.get('incidents')} />
+					{(model === 'children') &&
+						<span>
+							<NavigationHeader
+								mainHeader={Liferay.Language.get('children')}
+							/>
 
-					<LinkButton className="primary" href={`${WatsonConstants.urls.incidents}/incidents/create/`} label={Liferay.Language.get('create-incident')} />
+							<LinkButton
+								className="primary"
+								href={`${WatsonConstants.urls.baseURL}/children/create/`}
+								label={Liferay.Language.get('create-child')}
+							/>
 
-					<div class="view-by-label">
-						{Liferay.Language.get('display-by')}
-					</div>
+							<div class="view-by-label">
+								{Liferay.Language.get('display-by')}
+							</div>
 
-					<SelectInput omitBlankOption={true} onChange={this.handleUpdateViewBy} options={WatsonConstants.inputConfig.viewByOptions} value={model} />
+							<SelectInput
+								omitBlankOption={true}
+								onChange={this.handleUpdateViewBy}
+								options={WatsonConstants.inputConfig.children.viewByOptions}
+								value={model}
+							/>
+						</span>
+					}
+
+					{(model !== 'children') &&
+						<span>
+							<NavigationHeader
+								mainHeader={Liferay.Language.get('incidents')}
+							/>
+
+							<LinkButton
+								className="primary"
+								href={`${WatsonConstants.urls.baseURL}/incidents/create/`}
+								label={Liferay.Language.get('create-incident')}
+							/>
+
+							<div class="view-by-label">
+								{Liferay.Language.get('display-by')}
+							</div>
+
+							<SelectInput
+								omitBlankOption={true}
+								onChange={this.handleUpdateViewBy}
+								options={WatsonConstants.inputConfig.incidents.viewByOptions}
+								value={model}
+							/>
+						</span>
+					}
 
 					<div class="filter-header">
 						{Liferay.Language.get('filter-by')}
@@ -440,6 +481,11 @@ function mapDispatchToProps(dispatch) {
 				indexAddresses(data)
 			);
 		},
+		indexChildren: data => {
+			dispatch(
+				indexChildren(data)
+			);
+		},
 		indexIncidents: data => {
 			dispatch(
 				indexIncidents(data)
@@ -468,6 +514,11 @@ function mapDispatchToProps(dispatch) {
 		searchAddresses: data => {
 			dispatch(
 				searchAddresses(data)
+			);
+		},
+		searchChildren: data => {
+			dispatch(
+				searchChildren(data)
 			);
 		},
 		searchIncidents: data => {
@@ -544,8 +595,6 @@ function mapStateToProps(state, props) {
 	const modelData = state.getIn([model, 'data']) || new OrderedMap();
 	const modelLoading = state.getIn([model, 'loading']);
 
-	const loading = (model !== 'incidents') ? modelLoading : incidentsLoading;
-
 	const lastLoaded = state.getIn(['display', 'lastLoaded', 0]) || {};
 
 	const lastLoadedItemData = lastLoaded[model] || {};
@@ -565,7 +614,7 @@ function mapStateToProps(state, props) {
 			]
 		),
 		lastLoadedItemData,
-		loading,
+		loading: modelLoading,
 		model,
 		modelCount,
 		modelData,

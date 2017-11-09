@@ -88,7 +88,7 @@ class DynamicInputGenerator extends JSXComponent {
 					/>
 				);
 			}
-			else if ((depth === 0 && type === 'generator') || inputType === inputTypeConstants.dynamicInputGenerator) {
+			else if (inputType === inputTypeConstants.doubleDependentInput) {
 				if (primaryIndex >= 0) {
 					config.value = Object.assign(
 						config.value || {},

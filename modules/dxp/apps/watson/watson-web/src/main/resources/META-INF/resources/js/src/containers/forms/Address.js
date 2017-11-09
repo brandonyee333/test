@@ -372,7 +372,6 @@ class AddressForm extends JSXComponent {
 						submitMethod={submitMethod}
 						translateHref={translateHref}
 						updateFormData={this.handleUpdateFormData}
-						watsonIncidentId={watsonIncidentId}
 						watsonPrimaryKey={watsonAddressId}
 					/>
 				</div>

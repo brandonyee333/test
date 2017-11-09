@@ -40,7 +40,7 @@ class ViewIndex extends JSXComponent {
 	}
 
 	formatHeaderString(data) {
-		const {props: {filter, model, modelCount, modelLoading}} = this;
+		const {filter, model, modelCount, modelLoading} = this.props;
 
 		let headerStringLeft = `${Liferay.Language.get('loading')}`;
 
@@ -288,9 +288,17 @@ class ViewIndex extends JSXComponent {
 		return (
 			<div class="content-container">
 				<div class="content-header">
-					<ContentHeader headerStringLeft={headerStringLeft || this.formatHeaderString(data)} headerStringRight={Liferay.Language.get('sort-by')} />
+					<ContentHeader
+						headerStringLeft={headerStringLeft || this.formatHeaderString(data)}
+						headerStringRight={Liferay.Language.get('sort-by')}
+					/>
 
-					<SelectInput omitBlankOption={true} onChange={this.handleUpdateSortBy} options={WatsonConstants.inputConfig[model].sortByOptions} value={sortBy || 'watsonIncidentId'} />
+					<SelectInput
+						omitBlankOption={true}
+						onChange={this.handleUpdateSortBy}
+						options={WatsonConstants.inputConfig[model].sortByOptions}
+						value={sortBy || 'watsonIncidentId'}
+					/>
 				</div>
 
 				<div class="view-index-content">

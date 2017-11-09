@@ -11,10 +11,13 @@ import configureStore from './store/configure-store.js';
 import SidebarToolbar from './components/SidebarToolbar';
 
 import AdminConsole from './containers/AdminConsole';
+import CreateChild from './containers/CreateChild';
 import CreateIncident from './containers/CreateIncident';
+import ChildReport from './containers/views/ChildReport';
+import EditChild from './containers/EditChild';
 import EditIncident from './containers/EditIncident';
 import IncidentReport from './containers/views/IncidentReport';
-import ChildModelIndex from './containers/ChildModelIndex';
+import ChildModelSubIndex from './containers/ChildModelSubIndex';
 import Index from './containers/Index';
 import MetricsConsole from './containers/MetricsConsole';
 
@@ -82,6 +85,11 @@ class Watson extends JSXComponent {
 						/>
 
 						<Router
+							component={CreateChild}
+							path={`${WatsonConstants.urls.basePath}/children/create`}
+						/>
+
+						<Router
 							component={CreateIncident}
 							path={`${WatsonConstants.urls.basePath}/incidents/create/:model([a-zA-Z]+)`}
 						/>
@@ -89,6 +97,16 @@ class Watson extends JSXComponent {
 						<Router
 							component={IncidentReport}
 							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/report`}
+						/>
+
+						<Router
+							component={ChildReport}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/report`}
+						/>
+
+						<Router
+							component={EditChild}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/:action([a-zA-Z]+)`}
 						/>
 
 						<Router
@@ -112,7 +130,7 @@ class Watson extends JSXComponent {
 						/>
 
 						<Router
-							component={ChildModelIndex}
+							component={ChildModelSubIndex}
 							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/view`}
 						/>
 

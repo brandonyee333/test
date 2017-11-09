@@ -236,7 +236,7 @@ class TranslationForm extends JSXComponent {
 				let inputComponent = null;
 
 				if (!disabled) {
-					if (currentType === inputTypeConstants.input || currentType === inputTypeConstants.dependentInput) {
+					if (currentType === inputTypeConstants.input || currentType === inputTypeConstants.dependentInput || currentType === inputTypeConstants.dependentKeyedInput) {
 						inputComponent = <Input {...config} htmlType={htmlType} />;
 					}
 					else if (currentType === inputTypeConstants.textareaInput) {

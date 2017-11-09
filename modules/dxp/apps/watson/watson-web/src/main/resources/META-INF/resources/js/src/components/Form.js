@@ -135,7 +135,7 @@ class Form extends JSXComponent {
 	handleSubmit() {
 		const {props, state} = this;
 
-		const {disabled, fieldConfig, redirect, submitMethod, watsonIncidentId = 0} = props;
+		const {disabled, fieldConfig, redirect, submitMethod, watsonChildId = 0, watsonIncidentId = 0} = props;
 
 		const {formData} = state;
 
@@ -155,6 +155,9 @@ class Form extends JSXComponent {
 
 				if (watsonIncidentId > 0) {
 					postData.watsonIncidentId = watsonIncidentId;
+				}
+				if (watsonChildId > 0) {
+					postData.watsonChildId = watsonChildId;
 				}
 
 				submitMethod(postData);
@@ -224,14 +227,14 @@ class Form extends JSXComponent {
 			props: {
 				formData,
 				loading,
-				watsonIncidentId
+				watsonPrimaryKey
 			},
 			state: {
 				originalFormData
 			}
 		} = this;
 
-		if (watsonIncidentId && watsonIncidentId > 0) {
+		if (watsonPrimaryKey && watsonPrimaryKey > 0) {
 			const reset = compareObjectsData(originalFormData, formData);
 
 			if (!loading && (Object.is(formData, {}) && !deepCompareIsEqual(formData, originalFormData)) || (!loading && reset)) {
@@ -609,6 +612,21 @@ class Form extends JSXComponent {
 						);
 					}
 				}
+				else if (currentType === inputTypeConstants.doubleDependentInput) {
+					config.onChange = this.handleMultiInputChange;
+
+					const {buttonLabel} = currentInputConfig;
+
+					inputComponent = (
+						<DynamicInputGenerator
+							{...config}
+							inputConfig={currentInputConfig}
+							label={buttonLabel}
+							type="generator"
+							watsonPrimaryKey={props.watsonPrimaryKey}
+						/>
+					);
+				}
 				else if (currentType === inputTypeConstants.dynamicInputGenerator) {
 					config.onChange = this.handleMultiInputChange;
 
@@ -620,7 +638,7 @@ class Form extends JSXComponent {
 							inputConfig={currentInputConfig}
 							label={buttonLabel}
 							type="generator"
-							watsonIncidentId={props.watsonIncidentId}
+							watsonPrimaryKey={props.watsonPrimaryKey}
 						/>
 					);
 				}
@@ -665,7 +683,7 @@ class Form extends JSXComponent {
 							<FileUploader
 								{...config}
 								acceptedTypes={acceptedTypes}
-								classPK={props.watsonIncidentId}
+								classPK={props.watsonPrimaryKey}
 								enableCropperTool={enableCropperTool}
 								multiple={multiple}
 								uploaderLabel={uploaderLabel}
@@ -844,6 +862,7 @@ Form.PROPS = {
 	storeData: Config.object().value({}),
 	submitMethod: Config.func(),
 	translateHref: Config.any(),
+	watsonChildId: Config.any(),
 	watsonIncidentId: Config.any(),
 	watsonPrimaryKey: Config.any()
 };

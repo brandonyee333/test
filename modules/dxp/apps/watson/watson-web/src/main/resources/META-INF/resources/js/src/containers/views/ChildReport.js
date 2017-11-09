@@ -9,28 +9,18 @@ import Button from '../../components/Button';
 import HTMLRenderer from '../../components/HTMLRenderer';
 import GoogleMap from '../../components/GoogleMap';
 
-import {viewIncident} from '../../actions/incidents';
-import {indexActivities} from '../../actions/activities';
-import {indexAddresses} from '../../actions/addresses';
-import {indexPeople} from '../../actions/people';
-import {indexResources} from '../../actions/resources';
-import {indexVehicles} from '../../actions/vehicles';
+import {viewChild} from '../../actions/children';
 
 import {updateDOMTitle} from '../../lib/util';
 
-class IncidentReport extends JSXComponent {
+class ChildReport extends JSXComponent {
 	attached() {
 		const {props} = this;
 
-		const {watsonIncidentId} = props;
+		const {watsonChildId} = props;
 
-		if (watsonIncidentId) {
-			props.indexActivities(watsonIncidentId);
-			props.indexAddresses(watsonIncidentId);
-			props.indexPeople(watsonIncidentId);
-			props.indexResources(watsonIncidentId);
-			props.indexVehicles(watsonIncidentId);
-			props.viewIncident(watsonIncidentId);
+		if (watsonChildId) {
+			props.viewChild(watsonChildId);
 		}
 	}
 
@@ -39,8 +29,8 @@ class IncidentReport extends JSXComponent {
 			this,
 			'fetchModelData',
 			'handleBack',
-			'renderIncident',
-			'renderIncidentHeader',
+			'renderChild',
+			'renderChildHeader',
 			'renderModel'
 		);
 	}
@@ -72,13 +62,13 @@ class IncidentReport extends JSXComponent {
 	}
 
 	handleBack() {
-		const {entryId, model, watsonIncidentId} = this.props;
+		const {entryId, model, watsonChildId} = this.props;
 
 		if (model) {
-			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${entryId}/edit`);
+			Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${entryId}/edit`);
 		}
 		else {
-			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit`);
+			Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit`);
 		}
 	}
 
@@ -90,7 +80,7 @@ class IncidentReport extends JSXComponent {
 		return (
 			<div class="entity-detail">
 				{entryId &&
-					this.renderIncidentHeader()
+					this.renderChildHeader()
 				}
 
 				{this.renderEntitiesHelper(entityList, displayFields, model, entryId)}
@@ -159,14 +149,14 @@ class IncidentReport extends JSXComponent {
 		return renderedFields;
 	}
 
-	renderIncident() {
-		const {currentIncidentData} = this.props;
+	renderChild() {
+		const {currentChildData} = this.props;
 
-		const {incidentsConfig: displayFields} = this.state;
+		const {childrenConfig: displayFields} = this.state;
 
 		return (
 			<div class="main-detail">
-				{this.renderIncidentHeader()}
+				{this.renderChildHeader()}
 
 				<div class="body">
 					<div class="body-header">
@@ -174,30 +164,30 @@ class IncidentReport extends JSXComponent {
 					</div>
 
 					<div class="content">
-						{this.renderFields(currentIncidentData, displayFields, 'incidents')}
+						{this.renderFields(currentChildData, displayFields, 'children')}
 					</div>
 				</div>
 			</div>
 		);
 	}
 
-	renderIncidentHeader() {
-		const {currentIncidentData} = this.props;
+	renderChildHeader() {
+		const {currentChildData} = this.props;
 
 		return (
 			<div class="header">
 				<div class="logo" />
 
 				<div class="title">
-					{currentIncidentData.get('name') || Liferay.Language.get('loading')}
+					{currentChildData.get('name') || Liferay.Language.get('loading')}
 				</div>
 
 				<div class="parent-subtitle">
-					{currentIncidentData.get('typeLabel')}
+					{currentChildData.get('typeLabel')}
 				</div>
 
 				<div class="child-subtitle">
-					{sub(Liferay.Language.get('created-by-x-on-x'), currentIncidentData.get('reportedBy') || '', currentIncidentData.get('createDate') || '')}
+					{sub(Liferay.Language.get('created-by-x-on-x'), currentChildData.get('reportedBy') || '', currentChildData.get('createDate') || '')}
 				</div>
 			</div>
 		);
@@ -321,7 +311,7 @@ class IncidentReport extends JSXComponent {
 	}
 
 	render() {
-		const {entryId, model} = this.props;
+		const {entryId} = this.props;
 
 		return (
 			<div class="print-report page-container printable">
@@ -338,38 +328,18 @@ class IncidentReport extends JSXComponent {
 				</div>
 
 				{!entryId &&
-					this.renderIncident()
-				}
-
-				{(!entryId || model === 'addresses') &&
-					this.renderModel(entryId, 'addresses')
-				}
-
-				{(!entryId || model === 'activities') &&
-					this.renderModel(entryId, 'activities')
-				}
-
-				{(!entryId || model === 'people') &&
-					this.renderModel(entryId, 'people')
-				}
-
-				{(!entryId || model === 'resources') &&
-					this.renderModel(entryId, 'resources')
-				}
-
-				{(!entryId || model === 'vehicles') &&
-					this.renderModel(entryId, 'vehicles')
+					this.renderChild()
 				}
 			</div>
 		);
 	}
 
 	rendered(firstRender) {
-		const {currentIncidentData} = this.props;
+		const {currentChildData} = this.props;
 
-		const incidentName = currentIncidentData.get('name') || '';
+		const childName = currentChildData.get('name') || '';
 
-		updateDOMTitle(sub(Liferay.Language.get('print-x'), incidentName));
+		updateDOMTitle(sub(Liferay.Language.get('print-x'), childName));
 
 		if (firstRender) {
 			const element = document.getElementById('print-helper-message');
@@ -381,186 +351,66 @@ class IncidentReport extends JSXComponent {
 	}
 }
 
-IncidentReport.PROPS = {
-	activitiesData: Config.value(new Map()),
-	addressesData: Config.value(new Map()),
-	currentIncidentData: Config.value(new Map()),
-	incidentsData: Config.value(new Map()),
-	peopleData: Config.value(new Map()),
-	resourcesData: Config.value(new Map()),
-	vehiclesData: Config.value(new Map())
+ChildReport.PROPS = {
+	childrenData: Config.value(new Map())
 };
 
-IncidentReport.STATE = {
-	activitiesConfig: Config.array().value(
+ChildReport.STATE = {
+	childrenConfig: Config.array().value(
 		[
-			'reportDate',
-			'startDate',
+			'id',
+			'nameWatsonListTypeRels',
 			'typeWatsonListTypeId',
-			'narrative',
-			'watsonRelationships'
-		]
-	),
-	addressesConfig: Config.array().value(
-		[
-			'name',
-			'imagePayload',
-			'typeWatsonListTypeId',
-			'countryId',
-			'provinceWatsonListTypeId',
-			'districtWatsonListTypeId',
-			'subDistrictWatsonListTypeId',
-			'postalCode',
-			'latitude',
-			'longitude',
-			'street',
-			'number',
-			'building',
-			'floor',
-			'room',
-			'description',
+			'sexWatsonListTypeId',
+			'countryWatsonListTypeId',
+			'ethnicityWatsonListTypeId',
+			'birthCountryId',
+			'parentNameWatsonListTypeRels',
+			'guardianNameWatsonListTypeRels',
+			'countryIDWatsonListTypeRels',
+			'dateAccepted',
+			'dateDischarged',
+			'dischargeWatsonListTypeId',
+			'dateFollowUp',
+			'sourceWatsonListTypeId',
+			'sourceSubtypeWatsonListTypeId',
+			'source',
+			'activitiesInvolvedWatsonListTypeRels',
+			'vocationalTrainingWatsonListTypeRels',
 			'watsonRelationships'
 		]
 	),
 	elementStyle: Config.value(''),
 	entryId: Config.any(),
-	incidentsConfig: Config.array().value(
-		[
-			'incidentStatus',
-			'sourceWatsonListTypeId',
-			'subtypeWatsonListTypeId',
-			'typeWatsonListTypeId',
-			'reportDate',
-			'startDate',
-			'endDate',
-			'natureWatsonListType',
-			'description'
-		]
-	),
-	model: Config.string(),
-	peopleConfig: Config.array().value(
-		[
-			'imagePayload',
-			'typeWatsonListTypeId',
-			'accepted',
-			'dateAccepted',
-			'primaryNameString',
-			'nameWatsonListTypeRels',
-			'birthDate',
-			'startAge',
-			'endAge',
-			'sexWatsonListTypeId',
-			'height',
-			'weight',
-			'hairWatsonListTypeId',
-			'eyesWatsonListTypeId',
-			'occupation',
-			'countryWatsonListTypeId',
-			'ethnicityWatsonListTypeId',
-			'birthCountryId',
-			'citizenshipWatsonListTypeId',
-			'countryIDWatsonListTypeRels',
-			'phoneNumberWatsonListTypeRels',
-			'socialMediaAccountWatsonListTypeRels',
-			'description',
-			'watsonRelationships'
-		]
-	),
-	resourcesConfig: Config.array().value(
-		[
-			'typeWatsonListTypeId',
-			'name',
-			'imagePayload',
-			'description',
-			'watsonRelationships'
-		]
-	),
-	vehiclesConfig: Config.array().value(
-		[
-			'imagePayload',
-			'typeWatsonListTypeId',
-			'makeWatsonListTypeId',
-			'modelWatsonListTypeId',
-			'colorWatsonListTypeId',
-			'yearWatsonListTypeId',
-			'licensePlate',
-			'description',
-			'watsonRelationships'
-		]
-	)
+	model: Config.string()
 };
 
 function mapDispatchToProps(dispatch) {
 	return {
-		indexActivities: id => {
+		viewChild: id => {
 			dispatch(
-				indexActivities({id})
-			);
-		},
-		indexAddresses: id => {
-			dispatch(
-				indexAddresses({id})
-			);
-		},
-		indexPeople: id => {
-			dispatch(
-				indexPeople({id})
-			);
-		},
-		indexResources: id => {
-			dispatch(
-				indexResources({id})
-			);
-		},
-		indexVehicles: id => {
-			dispatch(
-				indexVehicles({id})
-			);
-		},
-		viewIncident: id => {
-			dispatch(
-				viewIncident(id)
+				viewChild(id)
 			);
 		}
 	};
 }
 
 function mapStateToProps(state, props) {
-	const {entryId, model, watsonIncidentId} = props.router.params;
+	const {entryId, model, watsonChildId} = props.router.params;
 
-	const activitiesData = state.getIn(['activities', 'data']) || new Map();
-	const activitiesLoading = state.getIn(['activities', 'loading']);
-	const addressesData = state.getIn(['addresses', 'data']) || new Map();
-	const addressesLoading = state.getIn(['addresses', 'loading']);
-	const incidentsData = state.getIn(['incidents', 'data']) || new Map();
-	const incidentsLoading = state.getIn(['incidents', 'loading']);
-	const peopleData = state.getIn(['people', 'data']) || new Map();
-	const peopleLoading = state.getIn(['people', 'loading']);
-	const resourcesData = state.getIn(['resources', 'data']) || new Map();
-	const resourcesLoading = state.getIn(['resources', 'loading']);
-	const vehiclesData = state.getIn(['vehicles', 'data']) || new Map();
-	const vehiclesLoading = state.getIn(['vehicles', 'loading']);
+	const childrenData = state.getIn(['children', 'data']) || new Map();
+	const childrenLoading = state.getIn(['children', 'loading']);
 
-	const currentIncidentData = incidentsData.get(watsonIncidentId) || new Map();
+	const currentChildData = childrenData.get(watsonChildId) || new Map();
 
 	return {
-		activitiesData,
-		activitiesLoading,
-		addressesData,
-		addressesLoading,
-		currentIncidentData,
+		childrenData,
+		childrenLoading,
+		currentChildData,
 		entryId,
-		incidentsData,
-		incidentsLoading,
 		model,
-		peopleData,
-		peopleLoading,
-		resourcesData,
-		resourcesLoading,
-		vehiclesData,
-		vehiclesLoading,
-		watsonIncidentId
+		watsonChildId
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(IncidentReport);
+export default connect(mapStateToProps, mapDispatchToProps)(ChildReport);

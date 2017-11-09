@@ -1,3 +1,4 @@
+import {includes} from 'lodash';
 import {OrderedMap} from 'immutable';
 import sub from 'string-sub';
 
@@ -131,6 +132,34 @@ function formatAddressRowContent(watsonAddress) {
 	}
 
 	return locationLabels;
+}
+
+function formatChildData(watsonChildren, keysToOmit, onClick, selectedIds, simple) {
+	let formattedData;
+
+	if (simple) {
+		formattedData = formatSimpleChildData(watsonChildren, keysToOmit, onClick, selectedIds);
+	}
+	else {
+		formattedData = watsonChildren.map(
+			(watsonChild, key) => {
+
+				return {
+					header: watsonChild.get('name'),
+					id: key,
+					lastEdited: watsonChild.get('modifiedDate'),
+					link: `${WatsonConstants.urls.baseURL}/children/${key}/edit/`,
+					onClick,
+					reportedBy: watsonChild.get('reportedBy'),
+					reportedDate: watsonChild.get('reportDate'),
+					rowContent: formatPersonRowContent(watsonChild),
+					subHeader: getOptionsLabelFromWatsonConstants('children', 'typeWatsonListTypeId', watsonChild.get('typeWatsonListTypeId'))
+				};
+			}
+		);
+	}
+
+	return formattedData;
 }
 
 function formatIncidentData(watsonIncidents, keysToOmit, onClick, selectedIds, simple) {
@@ -305,9 +334,9 @@ function formatResourcesData(watsonResources, watsonIncidents, keysToOmit, onCli
 function formatSimpleActivityData(watsonActivities, keysToOmit, onClick, selectedIds) {
 	const formattedData = watsonActivities.map(
 		(watsonActivity, key) => {
-			const disabled = keysToOmit.includes(key);
+			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = selectedIds.includes(key);
+			const selected = includes(selectedIds.includes, key, 0);
 
 			const watsonIncidentId = watsonActivity.get('watsonIncidentId');
 
@@ -330,9 +359,9 @@ function formatSimpleActivityData(watsonActivities, keysToOmit, onClick, selecte
 function formatSimpleAddressData(watsonAddresses, keysToOmit, onClick, selectedIds) {
 	const formattedData = watsonAddresses.map(
 		(watsonAddress, key) => {
-			const disabled = keysToOmit.includes(key);
+			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = selectedIds.includes(key);
+			const selected = includes(selectedIds.includes, key, 0);
 
 			let childRegionLabel = '';
 			let regionLabel = '';
@@ -372,12 +401,44 @@ function formatSimpleAddressData(watsonAddresses, keysToOmit, onClick, selectedI
 	return formattedData;
 }
 
+function formatSimpleChildData(watsonChildren, keysToOmit, onClick, selectedIds) {
+	const formattedData = watsonChildren.map(
+		(watsonChild, key) => {
+			const disabled = includes(keysToOmit, key, 0);
+
+			const selected = includes(selectedIds.includes, key, 0);
+
+			const unknownLabel = Liferay.Language.get('unknown');
+
+			const birthDate = sub(Liferay.Language.get('birth-date-x'), watsonChild.get('birthDate') || unknownLabel);
+			const ethnicity = sub(Liferay.Language.get('country-of-ethnicity-x'), watsonChild.get('ethnicity') || unknownLabel);
+
+			return {
+				disabled: disabled ? 'disabled' : '',
+				header: watsonChild.get('name'),
+				id: key,
+				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/children/${key}/edit/`,
+				onClick: disabled ? undefined : onClick,
+				reportedBy: watsonChild.get('reportedBy'),
+				reportedDate: watsonChild.get('createDate'),
+				selected,
+				smallIncidentName: ethnicity,
+				status: birthDate,
+				statusCssClass: 'row-small-incident-name',
+				subHeader: getOptionsLabelFromWatsonConstants('children', 'typeWatsonListTypeId', watsonChild.get('typeWatsonListTypeId'))
+			};
+		}
+	);
+
+	return formattedData;
+}
+
 function formatSimpleIncidentData(watsonIncidents, keysToOmit, onClick, selectedIds) {
 	const formattedData = watsonIncidents.map(
 		(watsonIncident, key) => {
-			const disabled = keysToOmit.includes(key);
+			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = selectedIds.includes(key);
+			const selected = includes(selectedIds.includes, key, 0);
 
 			const statusCssClass = watsonIncident.get('incidentStatusLabel');
 			let statusLabel = statusCssClass;
@@ -411,9 +472,9 @@ function formatSimpleIncidentData(watsonIncidents, keysToOmit, onClick, selected
 function formatSimplePersonData(watsonPeople, keysToOmit, onClick, selectedIds) {
 	const formattedData = watsonPeople.map(
 		(watsonPerson, key) => {
-			const disabled = keysToOmit.includes(key);
+			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = selectedIds.includes(key);
+			const selected = includes(selectedIds.includes, key, 0);
 
 			const unknownLabel = Liferay.Language.get('unknown');
 
@@ -446,9 +507,9 @@ function formatSimplePersonData(watsonPeople, keysToOmit, onClick, selectedIds) 
 function formatSimpleResourcesData(watsonResources, keysToOmit, onClick, selectedIds) {
 	const formattedData = watsonResources.map(
 		(watsonResource, key) => {
-			const disabled = keysToOmit.includes(key);
+			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = selectedIds.includes(key);
+			const selected = includes(selectedIds.includes, key, 0);
 
 			const watsonIncidentId = watsonResource.get('watsonIncidentId');
 
@@ -473,9 +534,9 @@ function formatSimpleResourcesData(watsonResources, keysToOmit, onClick, selecte
 function formatSimpleVehicleData(watsonVehicles, keysToOmit, onClick, selectedIds) {
 	const formattedData = watsonVehicles.map(
 		(watsonVehicle, key) => {
-			const disabled = keysToOmit.includes(key);
+			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = selectedIds.includes(key);
+			const selected = includes(selectedIds.includes, key, 0);
 
 			const licensePlate = sub(Liferay.Language.get('license-plate-x'), watsonVehicle.get('licensePlate') || Liferay.Language.get('unknown'));
 			const typeLabel = sub(Liferay.Language.get('type-x'), getOptionsLabelFromWatsonConstants('vehicles', 'typeWatsonListTypeId', watsonVehicle.get('typeWatsonListTypeId')));
@@ -574,6 +635,9 @@ function IndexList({data = OrderedMap(), hasMoreResults, incidentsData = Ordered
 	}
 	else if (model === 'activities') {
 		data = formatActivityData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);
+	}
+	else if (model === 'children') {
+		data = formatChildData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);
 	}
 	else if (model === 'people') {
 		data = formatPeopleData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);

@@ -20,8 +20,8 @@ class SidebarToolbar extends JSXComponent {
 				<div class="watson-sidebar-toolbar-content">
 					<a class="watson-logo-link" href={`${WatsonConstants.urls.baseURL}/${displayBy}`} />
 
-					<a href={`${WatsonConstants.urls.baseURL}/${displayBy}`} id="incidents-report" title={Liferay.Language.get('incident-report')} />
-					<a href={`${WatsonConstants.urls.baseURL}/incidents`} id="children-home" title={Liferay.Language.get('children-home')} />
+					<a href={WatsonConstants.urls.incidents} id="incidents-report" title={Liferay.Language.get('incident-report')} />
+					<a href={WatsonConstants.urls.children} id="children-home" title={Liferay.Language.get('children-home')} />
 					<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="map" title={Liferay.Language.get('heatmap')} />
 					<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="reports" title={Liferay.Language.get('reports')} />
 					<a id="language-toggle" onClick={this.languageOnClick} title={sub(Liferay.Language.get('switch-to-x'), (WatsonConstants.otherLanguageId).toUpperCase())} />

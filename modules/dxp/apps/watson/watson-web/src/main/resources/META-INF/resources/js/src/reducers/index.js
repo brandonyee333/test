@@ -2,6 +2,7 @@ import {combineReducers} from 'redux-immutable';
 
 import activities from './activities';
 import addresses from './addresses';
+import children from './children';
 import display from './display';
 import histories from './histories';
 import incidents from './incidents';
@@ -20,6 +21,7 @@ export default combineReducers(
 		activities,
 		addresses,
 		basePath,
+		children,
 		display,
 		histories,
 		incidents,
