@@ -92,8 +92,6 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			int watchingCount = TicketEntryServiceUtil.searchCount(0, null, new int[0], null, 0, 0, 0, 0, 0, 0, null, null, null, TicketEntryConstants.STATUSES_WORKER_OPEN, new int[0], new int[0], new int[0], new long[0], new long[0], new long[0], new long[0], new long[0], new int[0], new int[0], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, params, true);
 			%>
 
-			<div class="home-page-topper"></div>
-
 			<div class="fixed page-title">
 				<c:choose>
 					<c:when test="<%= liferayIncOrg %>">
@@ -191,8 +189,6 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 
 			int openTicketsCount = TicketEntryServiceUtil.searchCount(0, null, new int[0], null, 0, 0, 0, 0, 0, 0, null, null, null, TicketEntryConstants.STATUSES_OPEN, new int[0], new int[0], new int[0], new long[0], new long[0], new long[0], new long[0], new long[0], new int[0], new int[0], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, params, true);
 			%>
-
-			<div class="home-page-topper"></div>
 
 			<div class="fixed page-title">
 				<liferay-ui:message key="my-liferay-support-tickets" />

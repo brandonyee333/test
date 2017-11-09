@@ -2,23 +2,21 @@
 	<div class="banner-content">
 		<#if layout.getFriendlyURL() == "/support">
 			<#assign
-				heading = "heading_lesa.png"
-				heading_link = "/group/customer/support/-/support/ticket"
+				logo = "lesa_logo.png"
+				logo_redirect_link = "/group/customer/support/-/support/ticket"
 			/>
 		<#else>
 			<#assign
-				heading = "heading.png"
-				heading_link = "/"
+				logo = "liferay_logo.png"
+				logo_redirect_link = "/"
 			/>
 		</#if>
 
-		<a class="doc-heading" href="${heading_link}">
-			<img alt="Liferay" height="36" src="${images_folder}/custom/${heading}" />
+		<a class="logo" href="${logo_redirect_link}">
+			<img alt="Liferay" src="${images_folder}/custom/${logo}" />
 		</a>
 
 		<#if has_navigation>
-			<div class="class-toggle responsive-only" data-target-node="#navigationContainer" id="navigationToggle"></div>
-
 			<div class="responsive-content-height" id="navigationContainer">
 				<div class="class-toggle-off-click" id="mainSearch">
 					<div id="mainSearchContent">
@@ -151,12 +149,10 @@
 							</li>
 						</#if>
 
-						<li class="class-toggle language-toggle parent-item">
+						<li class="class-toggle language-toggle">
 							<a href="javascript:;">
-								<@liferay.language key="language" />
+								<@liferay.language key="language" /><span class="language-toggle-caret"></span>
 							</a>
-
-							<span class="children-marker"></span>
 
 							<@liferay.languages />
 						</li>

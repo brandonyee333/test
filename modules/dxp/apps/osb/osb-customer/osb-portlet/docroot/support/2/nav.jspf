@@ -217,7 +217,7 @@
 		<portlet:param name="mvcPath" value="/support/2/preferences.jsp" />
 	</portlet:renderURL>
 
-	<div class="bottom nav-icon" id="<portlet:namespace />settingsIcon">
+	<div class="bottom preferences-icon nav-icon" id="<portlet:namespace />settingsIcon">
 		<a href="<%= settingsURL %>">
 			<svg height="27px" viewBox="0 0 27 27" width="27px">
 				<path d="m 15.164175, 25.952209 -3.22835, 0 -0.553432, -2.213726 c -0.368954, -0.09224 -0.737908,

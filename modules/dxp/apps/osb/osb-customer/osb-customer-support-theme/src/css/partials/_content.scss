@@ -3,18 +3,9 @@
 	padding: 0;
 	width: 100%;
 
-	#leftNav {
-		background-color: $light-bg;
-		height: 100%;
-		margin: 0;
-		padding: 0;
-		position: fixed;
-		width: 60px;
-	}
-
 	#mainContent {
 		margin: 0;
-		margin-left: 60px;
+		margin-left: $lesa-nav-width;
 		padding: 0;
 	}
 }
@@ -84,33 +75,8 @@
 	color: $medium-gray;
 }
 
-.children-marker {
-	padding: 10px;
-	position: absolute;
-	right: 0;
-
-	&:before {
-		border: 4px solid transparent;
-		border-bottom-width: 0;
-		border-top-color: $medium-gray;
-		content: "";
-		display: block;
-		height: 0;
-		width: 0;
-	}
-}
-
 .class-toggle {
 	cursor: pointer;
-}
-
-.class-toggle-active.nav-item, .class-toggle-active.parent-item, .class-toggle-off-click-active.parent-item {
-	> .children-marker:before {
-		border-bottom-color: $medium-gray;
-		border-bottom-width: 4px;
-		border-top-color: transparent;
-		border-top-width: 0;
-	}
 }
 
 .class-toggle-off-click {
@@ -149,16 +115,6 @@
 
 .home-page {
 	padding-top: 20px;
-
-	.home-page-topper {
-		background: #FFF;
-		height: 197px;
-		left: 60px;
-		position: fixed;
-		top: 0;
-		width: 100%;
-		z-index: 1;
-	}
 }
 
 .home-page-banner-margin {
@@ -175,35 +131,6 @@
 
 .opens-new-window-accessible {
 	display: none;
-}
-
-.parent-item {
-	position: relative;
-}
-
-.portlet {
-	.portlet-content {
-		background-color: transparent;
-		border-bottom-radius: 2px;
-		border-color: $border-color;
-		padding: 10px 20px;
-	}
-
-	.portlet-topper {
-		background: $text-color;
-		border-color: $text-color;
-		border-top-radius: 2px;
-		padding: 12px 0;
-
-		.portlet-title {
-			padding: 0 20px;
-		}
-
-		.portlet-title-text {
-			font-size: 1.5em;
-			font-weight: normal;
-		}
-	}
 }
 
 .portlet-column-only .portlet-login {

@@ -27,17 +27,13 @@
 	<@liferay.control_menu />
 </#if>
 
-<div class="container-fluid" id="wrapper">
+<div id="wrapper">
 	<div class="content">
 		<#if display_header_footer>
 			<#include "${full_templates_path}/navigation.ftl" />
 		</#if>
 
 		<div id="contentWrapper">
-			<#if display_header_footer>
-				<div id="leftNav"></div>
-			</#if>
-
 			<section id="mainContent">
 				<#if selectable>
 					<@liferay_util["include"] page=content_include />

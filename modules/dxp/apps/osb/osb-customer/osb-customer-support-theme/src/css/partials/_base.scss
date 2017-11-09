@@ -133,14 +133,9 @@ textarea {
 	margin-top: 10px;
 }
 
-#dockbar {
-	.pin-dockbar, .user-toolbar {
-		display: none;
-	}
-}
-
 #wrapper {
 	min-width: 320px;
+	padding: 0;
 
 	.centered {
 		text-align: center;

@@ -1,29 +1,14 @@
+/* ---------- Banner ---------- */
+
 #banner {
 	background: $primary-blue;
 	border-bottom: 1px solid $border-color;
-	height: 56px;
-	left: 0;
+	height: $banner-height;
 	position: fixed;
 	top: 0;
 	width: 100%;
-	z-index: 100;
+	z-index: 2;
 
-	.doc-heading {
-		margin: 10px;
-	}
-
-	.language-toggle {
-		.selected a:hover {
-			color: $text-color;
-		}
-
-		.taglib-settings {
-			padding: 0 0 0 10px;
-		}
-	}
-}
-
-#banner, .doc-footer {
 	a {
 		color: $text-color;
 		text-decoration: none;
@@ -32,9 +17,17 @@
 			color: $primary-blue;
 		}
 	}
+
+	.logo {
+		margin: 10px;
+
+		img {
+			height: 36px;
+		}
+	}
 }
 
-#banner .doc-heading, #mainMenu, #mainNavigation, #mainSearch, #navigationContainer {
+#banner .logo, #mainMenu, #mainSearch, #navigationContainer {
 	display: inline-block;
 }
 
@@ -44,82 +37,87 @@
 	right: 0;
 	top: 0;
 
+	#mainMenu, #mainSearch, #mainSearchContent {
+		height: $banner-height;
+		width: 50px;
+	}
+
 	#mainMenu {
-		background: url(../images/custom/menu_icon.png) no-repeat center;
 		background: url(../images/custom/menu_icon.svg) no-repeat center;
 
-		.drop-down-menu {
-			left: auto;
-			max-height: 400px;
-			min-width: 120px;
-			overflow: auto;
-			overflow-x: hidden;
-			right: -1px;
+		&.class-toggle-off-click-active {
+			.drop-down-menu {
+				display: block;
+			}
 		}
 
-		.my-places ul {
+		ul {
+			list-style: none;
 			padding: 0;
 		}
 
-		.selected {
-			background: $light-bg;
-		}
-	}
-
-	#mainNavigation {
-		vertical-align: top;
-
-		nav {
-			margin: 0;
+		#userAvatar {
+			background: no-repeat center;
+			background-size: cover;
+			border-radius: 50%;
+			height: 40px;
+			margin: 8px auto;
+			width: 40px;
 		}
 
-		.child-menu {
-			min-width: 100%;
-
-			.nav-item {
+		.class-toggle-active {
+			.portlet-language {
 				display: block;
+			}
 
-				a {
-					padding: 2px 5px;
-				}
+			.language-toggle-caret:before {
+				border-bottom-color: $medium-gray;
+				border-top-width: 0;
 			}
 		}
 
-		.root-item {
-			border: 1px solid transparent;
-			border-width: 0 1px;
-			padding: 18px 0;
+		.drop-down-menu {
+			background: #FFF;
+			border: 1px solid $border-color;
+			display: none;
+			padding: 5px 10px;
+			position: absolute;
+			right: 0;
 
-			&.class-toggle-off-click-active {
-				border-color: $border-color;
+			a, .language-entry-long-text {
+				display: block;
+				padding: 3px 5px 3px 20px;
+				white-space: nowrap;
+			}
+		}
 
-				&.parent-item:after {
-					background: #FFF;
-					bottom: -5px;
-					content: "";
-					display: block;
-					height: 10px;
-					position: absolute;
-					width: 100%;
-				}
+		.language-toggle {
+			position: relative;
+		}
+
+		.language-toggle-caret {
+			padding: 10px;
+			position: absolute;
+			right: 0;
+
+			&:before {
+				border: 4px solid transparent;
+				border-top-color: $medium-gray;
+				content: "";
+				display: block;
+			}
+		}
+
+		.portlet-language {
+			display: none;
+
+			span.language-entry-long-text {
+				background-color: $light-bg;
 			}
 
-			&.parent-item {
-				&:before {
-					border: 4px solid transparent;
-					border-top-color: $medium-gray;
-					content: "";
-					display: block;
-					height: 0;
-					position: absolute;
-					right: 8px;
-					top: 47%;
-					width: 0;
-				}
-
-				a {
-					padding-right: 25px;
-				}
+			.portlet-content {
+				border-color: transparent;
+				padding: 0;
 			}
 		}
 	}
@@ -131,27 +129,18 @@
 			#mainSearchContent {
 				background-position: right bottom;
 				width: 280px;
-
-				.doc-search-input {
-					border-width: 1px;
-					color: $text-color;
-				}
-			}
-
-			.class-toggle-off-click-content {
-				padding: 11px;
 			}
 
 			.doc-search-input {
 				background-color: #FFF;
+				border: 1px solid $border-color;
+				color: $text-color;
 				cursor: text;
 			}
 		}
 
 		#mainSearchContent {
-			background: url(../images/custom/search_icons.png) no-repeat right top;
 			background: url(../images/custom/search_icons.svg) no-repeat right top;
-			cursor: pointer;
 			position: absolute;
 			right: 0;
 			transition: background-position 0.5s, width 0.5s;
@@ -166,7 +155,7 @@
 
 		.doc-search-input {
 			background-color: transparent;
-			border: 0 solid $border-color;
+			border-width: 0;
 			box-sizing: border-box;
 			color: transparent;
 			font-size: 1.3em;
@@ -177,85 +166,59 @@
 		}
 	}
 
-	#mainMenu #userAvatar {
-		background: no-repeat center;
-		background-size: cover;
-		border-radius: 50%;
-		height: 50px;
-		margin: 3px 0;
-		padding: 0;
-		width: 50px;
-	}
-
-	#mainMenu, #mainSearch, #mainSearchContent {
-		height: 56px;
-		width: 50px;
-	}
-
-	#mainMenu, #mainSearch .doc-search-input {
-		cursor: pointer;
-	}
-
-	.drop-down-menu {
-		border: 1px solid $border-color;
-		border-width: 0 1px;
-	}
-
-	#mainMenu .drop-down-menu, .language-toggle .taglib-settings, .nav-item .child-menu {
-		display: none;
-	}
-
-	#mainMenu.class-toggle-off-click-active .drop-down-menu, .class-toggle-active.language-toggle .taglib-settings, .class-toggle-off-click-active.nav-item .child-menu {
-		display: block;
-	}
-
-	.children-marker {
-		right: 0;
-		top: 0;
-	}
-
-	.drop-down-menu {
-		background: #FFF;
-		border-width: 1px;
-		display: inline-block;
-		left: -1px;
-		padding: 5px 10px;
-		position: absolute;
-		top: 56px;
-
-		&, ul {
-			list-style: none;
-			margin: 0;
-		}
-
-		a {
-			display: block;
-			padding: 3px 5px 3px 20px;
-			white-space: nowrap;
-		}
-	}
-
-	.nav-item a {
-		padding: 10px 15px;
-	}
-
 	.sign-in-button {
 		border-top: 1px solid $border-color;
 	}
+}
 
-	.user-profile {
-		border-bottom: 1px solid $border-color;
+/* ---------- Control Menu ---------- */
+
+.has-control-menu {
+	&.open {
+		.lesa-nav {
+			left: $sidenav-width;
+		}
+	}
+
+	#banner, .lesa-nav {
+		top: $has-control-menu-top-mobile;
+
+		@include sm() {
+			top: $has-control-menu-top-desktop;
+		}
+	}
+
+	.control-menu #wrapper {
+		margin-top: $has-control-menu-top-mobile + $banner-height;
+
+		@include sm() {
+			margin-top: $has-control-menu-top-desktop + $banner-height;
+		}
+	}
+
+	.lesa-nav {
+		transition: $sidenav-transition;
+	}
+
+	.lesa-announcements-dialog {
+		top: $has-control-menu-top-mobile + $banner-height + 10px;
+
+		@include sm() {
+			top: $has-control-menu-top-desktop + $banner-height + 10px;
+		}
 	}
 }
 
+/* ---------- Application nav ---------- */
+
 .lesa-nav {
+	background-color: $light-bg;
 	bottom: 0;
 	left: 0;
+	margin-top: $banner-height;
 	position: fixed;
-	text-align: center;
-	top: 60px;
-	width: 60px;
-	z-index: 12;
+	top: 0;
+	width: $lesa-nav-width;
 
 	.nav-icon {
 		cursor: pointer;
@@ -268,14 +231,15 @@
 			display: block;
 		}
 
-		&:hover svg, &.active svg, &.active.unread svg, &.clicked svg {
-			stroke: $primary-blue;
+		&:hover, &.active, &.active.unread, &.clicked {
+			svg {
+				stroke: $primary-blue;
+			}
 		}
 
 		&.bottom {
 			bottom: 0;
 			left: 16px;
-			margin: 0 0 35px;
 			position: absolute;
 
 			&.help-icon {
@@ -288,6 +252,10 @@
 
 			&.messages-icon {
 				margin: 0 0 218px;
+			}
+
+			&.preferences-icon {
+				margin: 0 0 35px;
 			}
 		}
 
@@ -334,19 +302,18 @@
 		.nav-submenu {
 			background-color: #FFF;
 			border: 1px solid $medium-gray;
+			color: $medium-gray;
 			cursor: default;
 			display: block;
 			left: 52px;
 			max-height: 80vh;
 			outline: none;
 			overflow: auto;
-			padding: 10px;
 			position: absolute;
 			top: -22px;
 			z-index: 14;
 
 			li {
-				color: $medium-gray;
 				font-family: "Avenir Medium";
 				font-size: 16px;
 				list-style-type: none;
@@ -397,6 +364,8 @@
 	}
 }
 
+/* ---------- Tab Nav ---------- */
+
 .nav-menu .nav-item {
 	display: inline-block;
 	vertical-align: top;
@@ -438,6 +407,8 @@
 		border-right-width: 1px;
 	}
 }
+
+/* ---------- Sidebar ---------- */
 
 .sidebar {
 	background-color: $light-bg;
@@ -485,6 +456,8 @@
 		}
 	}
 }
+
+/* ---------- Dropdown Nav ---------- */
 
 .three-dot {
 	display: inline-block;
