@@ -25,7 +25,6 @@ import com.liferay.saml.runtime.configuration.MetadataUtilConfiguration;
 import com.liferay.saml.util.MetadataUtil;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
@@ -131,7 +130,7 @@ public class MetadataUtilImpl implements MetadataUtil {
 	public String parseMetadataXml(InputStream inputStream, String entityId)
 		throws Exception {
 
-		try {
+		try (InputStream is = inputStream) {
 			XMLObject xmlObject = XMLObjectHelper.unmarshallFromInputStream(
 				parserPool, inputStream);
 
@@ -147,18 +146,6 @@ public class MetadataUtilImpl implements MetadataUtil {
 			XMLObjectHelper.marshallToWriter(entityDescriptor, stringWriter);
 
 			return stringWriter.toString();
-		}
-		finally {
-			if (inputStream != null) {
-				try {
-					inputStream.close();
-				}
-				catch (IOException ioe) {
-					if (_log.isWarnEnabled()) {
-						_log.warn(ioe, ioe);
-					}
-				}
-			}
 		}
 	}
 

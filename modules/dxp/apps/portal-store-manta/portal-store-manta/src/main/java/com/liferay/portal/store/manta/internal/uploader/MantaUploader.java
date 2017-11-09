@@ -106,8 +106,9 @@ public class MantaUploader {
 
 				partFiles.add(partFile);
 
-				try (OutputStream outputStream = new FileOutputStream(partFile))
-				{
+				try (OutputStream outputStream =
+						new FileOutputStream(partFile)) {
+
 					StreamUtil.transfer(
 						inputStream, outputStream, StreamUtil.BUFFER_SIZE,
 						false, partSize);
