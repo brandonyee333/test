@@ -18,6 +18,14 @@ Map baseAlloyModels = [
 		pluralClassName: "WatsonAddresses",
 		pluralInstanceName: "watsonAddresses"
 	],
+	"WatsonChild": [
+		baseClassName: "WatsonChildBaseModel",
+		fileSafeName: "child",
+		instanceName: "watsonChild",
+		langName: "child",
+		pluralClassName: "WatsonChildren",
+		pluralInstanceName: "watsonChildren"
+	],
 	"WatsonHistory": [
 		baseClassName: "WatsonHistoryBaseModel",
 		fileSafeName: "history",

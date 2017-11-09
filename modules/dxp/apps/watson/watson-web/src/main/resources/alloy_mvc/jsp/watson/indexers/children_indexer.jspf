@@ -1,0 +1,93 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonChildrenIndexer extends BaseAlloyIndexer {
+
+	public static WatsonChildrenIndexer getInstance() {
+		return _instance;
+	}
+
+	@Override
+	protected Document doGetDocument(BaseModel<?> object) throws Exception {
+		WatsonChild watsonChild = new WatsonChild((com.liferay.watson.model.WatsonChild)object);
+
+		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonChild);
+
+		document.addKeyword("birthCountryId", watsonChild.getBirthCountryId());
+		document.addKeyword("citizenshipWatsonListTypeId", watsonChild.getCitizenshipWatsonListTypeId());
+
+		WatsonListType watsonListType = WatsonListType.fetch(watsonChild.getCountryWatsonListTypeId());
+
+		if (watsonListType != null) {
+			document.addLocalizedKeyword("country", watsonListType.getNameMap());
+		}
+
+		document.addKeyword("countryWatsonListTypeId", watsonChild.getCountryWatsonListTypeId());
+		document.addDate("dateAccepted", watsonChild.getDateAccepted());
+		document.addDate("dateDischarged", watsonChild.getDateDischarged());
+
+		watsonListType = WatsonListType.fetch(watsonChild.getEthnicityWatsonListTypeId());
+
+		if (watsonListType != null) {
+			document.addLocalizedKeyword("ethnicity", watsonListType.getNameMap());
+		}
+
+		document.addKeyword("ethnicityWatsonListTypeId", watsonChild.getEthnicityWatsonListTypeId());
+		document.addDate("followUpDate", watsonChild.getDateFollowUp());
+		document.addKeyword("id", watsonChild.getPrimaryKey());
+		document.addDate("modifiedDate", watsonChild.getModifiedDate());
+		document.addKeyword("nameWatsonListTypeRelString", watsonChild.getNamesString());
+		document.addKeyword("primaryNameString", watsonChild.getPrimaryName());
+		document.addDate("reportDate", watsonChild.getCreateDate());
+		document.addKeyword("reportedBy", watsonChild.getUserName());
+
+		watsonListType = WatsonListType.fetch(watsonChild.getSexWatsonListTypeId());
+
+		if (watsonListType != null) {
+			document.addLocalizedKeyword("sex", watsonListType.getNameMap());
+		}
+
+		document.addKeyword("sexWatsonListTypeId", watsonChild.getSexWatsonListTypeId());
+		document.addKeyword("sourceWatsonListTypeId", watsonChild.getSourceWatsonListTypeId());
+		document.addKeyword("sourceSubtypeWatsonListTypeId", watsonChild.getSourceSubtypeWatsonListTypeId());
+		document.addKeyword("source", watsonChild.getSource());
+
+		watsonListType = WatsonListType.fetch(watsonChild.getTypeWatsonListTypeId());
+
+		if (watsonListType != null) {
+			document.addLocalizedKeyword("type", watsonListType.getNameMap());
+		}
+
+		document.addKeyword("status", watsonChild.getStatus());
+		document.addKeyword("typeWatsonListTypeId", watsonChild.getTypeWatsonListTypeId());
+		document.addKeyword("watsonChildId", watsonChild.getWatsonChildId());
+
+		return document;
+	}
+
+	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest, PortletResponse portletResponse) throws Exception {
+		return createSummary(document);
+	}
+
+	private WatsonChildrenIndexer() {
+		setClassName(WatsonChild.baseModelClass.getName());
+	}
+
+	private static WatsonChildrenIndexer _instance = new WatsonChildrenIndexer();
+
+}
+%>

@@ -599,6 +599,493 @@
 					}
 				}
 			},
+			children: {
+				inputs: {
+					activitiesInvolvedWatsonListTypeRels: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-activities")}',
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("activities")}',
+							options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonChild.modelClassName.concat(".activitiesInvolved"))}' var="activitiesInvolvedWatsonListTypes" />
+
+							<c:forEach items="${activitiesInvolvedWatsonListTypes}" var="activitiesInvolvedWatsonListType" varStatus="activitiesInvolvedWatsonListTypesIndex">
+								<c:set value='${activitiesInvolvedWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${activitiesInvolvedWatsonListType.watsonListTypeId}: {
+									label: '${activitiesInvolvedWatsonListType.getName(locale)}',
+									value: '${activitiesInvolvedWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'MULTI_SELECT_INPUT',
+						validations: []
+					},
+					activitiesInvolvedWatsonListTypeRelString: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("activities")}',
+						translatable: ${false},
+						type: 'INPUT'
+				},
+					birthCountryId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("country-of-birth")}',
+						options: {
+							<c:forEach items="${CountryServiceUtil.getCountries()}" var="country" varStatus="countryIndex">
+							<c:set value='${countryIndex.last ? "" : ","}' var="delimiter" />
+
+							${country.countryId}: {
+								label: '${country.getName(locale)}',
+								value: '${country.countryId}'
+							}${delimiter}
+							</c:forEach>
+						},
+						sortOptions: ${true},
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-country-where-this-person-was-born")}',
+						translatable: ${false},
+						type: 'SELECT_INPUT',
+							validations: []
+					},
+					createDate: {
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-created")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: []
+					},
+					citizenshipWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("citizenship")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".citizenship"))}' var="citizenshipWatsonListTypes" />
+
+							<c:forEach items="${citizenshipWatsonListTypes}" var="citizenshipWatsonListType" varStatus="citizenshipWatsonListTypesIndex">
+								<c:set value='${citizenshipWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${citizenshipWatsonListType.watsonListTypeId}: {
+									label: '${citizenshipWatsonListType.getName(locale)}',
+									value: '${citizenshipWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-this-persons-citizenship")}',
+						translatable: ${false},
+						type: 'SELECT_INPUT',
+						validations: []
+					},
+					countryIDWatsonListTypeRels: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-id")}',
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("government-ids")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".countryIDType"))}' var="countryIDWatsonListTypes" />
+
+							<c:forEach items="${countryIDWatsonListTypes}" var="countryIDWatsonListType" varStatus="countryIDWatsonListTypesIndex">
+								<c:set value='${countryIDWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${countryIDWatsonListType.watsonListTypeId}: {
+									label: '${countryIDWatsonListType.getName(locale)}',
+									value: '${countryIDWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-government-issued-ids-for-this-person")}',
+						translatable: ${false},
+						type: 'DOUBLE_DEPENDENT_INPUT',
+						validations: []
+					},
+					countryIDWatsonListTypeRelString: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.format("government-ids")}',
+						translatable: ${false},
+						type: 'INPUT'
+					},
+					countryWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("country-of-ethnicity")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".ethnicityCountry"))}' var="countryWatsonListTypes" />
+
+							<c:forEach items="${countryWatsonListTypes}" var="countryWatsonListType" varStatus="countryWatsonListTypesIndex">
+								<c:set value='${countryWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${countryWatsonListType.watsonListTypeId}: {
+									label: '${countryWatsonListType.getName(locale)}',
+									value: '${countryWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-country-of-ethnicity-for-this-person")}',
+						translatable: ${false},
+						type: 'SELECT_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					dateAccepted: {
+						defaultValue: new Date().toISOString().substr(0,10),
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode('date-accepted-to-zoe')}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: [
+							'date'
+						]
+					},
+					dateDischarged: {
+						controlledInputs: [
+							'dischargeWatsonListTypeId'
+						],
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode('date-discharged')}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: [
+							'date'
+						]
+					},
+					dateFollowUp: {
+						filterable: ${true},
+						htmlType: 'DATE',
+						label: '${AlloyLanguageUtil.formatUnicode("follow-up")}',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: []
+					},
+					dischargeWatsonListTypeId: {
+						dependentKey: ${true},
+						filterable: ${true},
+						inputType: 'SELECT_INPUT',
+						label: '${AlloyLanguageUtil.formatUnicode("reason-for-discharge")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonChild.modelClassName.concat(".dischargeType"))}' var="dischargeWatsonListTypes" />
+
+							<c:forEach items="${dischargeWatsonListTypes}" var="dischargeWatsonListType" varStatus="dischargeWatsonListTypesIndex">
+								<c:set value='${dischargeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${dischargeWatsonListType.watsonListTypeId}: {
+									label: '${dischargeWatsonListType.getName(locale)}',
+									value: '${dischargeWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						parentInputId: 'dateDischarged',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					ethnicityWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("ethnicity")}',
+						listTypeValue: '${WatsonPerson.modelClassName.concat(".ethnicityRegion")}',
+						options: {
+							<c:set value="${WatsonListType.fetch(WatsonListTypeConstants.PERSON_ETHNICITY_OTHER)}" var="ethnicityWatsonListTypeDefault" />
+
+							${ethnicityWatsonListTypeDefault.watsonListTypeId}: {
+								label: '${ethnicityWatsonListTypeDefault.getName(locale)}',
+								value: '${ethnicityWatsonListTypeDefault.watsonListTypeId}'
+							}
+						},
+						parentInputId: 'countryWatsonListTypeId',
+						showDefaultOptions: ${true},
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("if-the-country-of-ethnicity-is-thailand-or-burma-provide-a-more-specific-ethnicity")}',
+						translatable: ${false},
+						type: 'DEPENDENT_SELECT_INPUT',
+						validations: []
+					},
+					guardianNameWatsonListTypeRels: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-name")}',
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("guardian-names")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".nameType"))}' var="nameTypeWatsonListTypes" />
+
+							<c:forEach items="${nameTypeWatsonListTypes}" var="nameTypeWatsonListType" varStatus="nameTypeWatsonListTypesIndex">
+								<c:set value='${nameTypeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${nameTypeWatsonListType.watsonListTypeId}: {
+									label: '${nameTypeWatsonListType.getName(locale)}',
+									value: '${nameTypeWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						showToggle: true,
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'DOUBLE_DEPENDENT_INPUT',
+						validations: []
+					},
+					guardianNameWatsonListTypeRelString: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.format("guardian-names")}',
+						translatable: ${false},
+						type: 'INPUT'
+					},
+					id: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("id")}',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'INPUT_VIEW',
+						validations: []
+					},
+					modifiedDate: {
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-modified")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: []
+					},
+					nameWatsonListTypeRels: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-name")}',
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("names")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".nameType"))}' var="nameTypeWatsonListTypes" />
+
+							<c:forEach items="${nameTypeWatsonListTypes}" var="nameTypeWatsonListType" varStatus="nameTypeWatsonListTypesIndex">
+								<c:set value='${nameTypeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${nameTypeWatsonListType.watsonListTypeId}: {
+									label: '${nameTypeWatsonListType.getName(locale)}',
+									value: '${nameTypeWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						showToggle: true,
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-one-or-more-names-for-this-person")}',
+						translatable: ${false},
+						type: 'DOUBLE_DEPENDENT_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					nameWatsonListTypeRelString: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.format("names")}',
+						translatable: ${false},
+						type: 'INPUT'
+					},
+					parentNameWatsonListTypeRels: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-name")}',
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("parent-names")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".nameType"))}' var="nameTypeWatsonListTypes" />
+
+							<c:forEach items="${nameTypeWatsonListTypes}" var="nameTypeWatsonListType" varStatus="nameTypeWatsonListTypesIndex">
+								<c:set value='${nameTypeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${nameTypeWatsonListType.watsonListTypeId}: {
+									label: '${nameTypeWatsonListType.getName(locale)}',
+									value: '${nameTypeWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						showToggle: true,
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'DOUBLE_DEPENDENT_INPUT',
+						validations: []
+					},
+					parentNameWatsonListTypeRelString: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.format("parent-names")}',
+						translatable: ${false},
+						type: 'INPUT'
+					},
+					primaryNameString: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.format("primary-name")}',
+						translatable: ${false},
+						type: 'INPUT'
+					},
+					sexWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("gender")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".sex"))}' var="sexWatsonListTypes" />
+
+							<c:forEach items="${sexWatsonListTypes}" var="sexWatsonListType" varStatus="sexWatsonListTypesIndex">
+								<c:set value='${sexWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${sexWatsonListType.watsonListTypeId}: {
+									label: '${sexWatsonListType.getName(locale)}',
+									value: '${sexWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-sex-gender-of-this-person")}',
+						translatable: ${false},
+						type: 'SELECT_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					sourceWatsonListTypeId: {
+						controlledInputs: [
+							'sourceSubtypeWatsonListTypeId',
+							'source'
+						],
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("sending-source")}',
+							options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonChild.modelClassName.concat(".sourceType"))}' var="sourceSubtypesWatsonListTypes" />
+
+							<c:forEach items="${sourceSubtypesWatsonListTypes}" var="sourceSubtypesWatsonListType" varStatus="sourceSubtypesWatsonListTypesIndex">
+								<c:set value='${sourceSubtypesWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${sourceSubtypesWatsonListType.watsonListTypeId}: {
+									label: '${sourceSubtypesWatsonListType.getName(locale)}',
+									value: '${sourceSubtypesWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'SELECT_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					sourceSubtypeWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("sending-source-sub-type")}',
+						listTypeValue: '${WatsonChild.modelClassName.concat(".sourceSubtype")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonChild.modelClassName.concat(".sourceSubtype"))}' var="sourceSubtypesWatsonListTypes" />
+
+							<c:forEach items="${sourceSubtypesWatsonListTypes}" var="sourceSubtypesWatsonListType" varStatus="sourceSubtypesWatsonListTypesIndex">
+								<c:set value='${sourceSubtypesWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${sourceSubtypesWatsonListType.watsonListTypeId}: {
+									label: '${sourceSubtypesWatsonListType.getName(locale)}',
+									value: '${sourceSubtypesWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						parentInputId: 'sourceWatsonListTypeId',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'DEPENDENT_SELECT_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					source: {
+						controlledInputs: [],
+						dependentKey: '${WatsonListTypeConstants.CHILD_SOURCE_TYPE_OTHER}',
+						filterable: ${false},
+						htmlType: 'input',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode('source')}',
+						parentInputId: 'sourceTypeWatsonListTypeId',
+						translatable: ${true},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					typeWatsonListTypeId: {
+						controlledInputs: [],
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("type-of-report")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonIncident.modelClassName.concat(".type"))}' var="typeWatsonListTypes" />
+
+							<c:forEach items="${typeWatsonListTypes}" var="typeWatsonListType" varStatus="typeWatsonListTypesIndex">
+								<c:set value='${typeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${typeWatsonListType.watsonListTypeId}: {
+									label: '${typeWatsonListType.getName(locale)}',
+									value: '${typeWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'SELECT_INPUT',
+							validations: [
+							'required'
+						]
+					},
+					vocationalTrainingWatsonListTypeRels: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-vocation")}',
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("vocational-training")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonChild.modelClassName.concat(".vocationalTraining"))}' var="vocationalTrainingWatsonListTypes" />
+
+							<c:forEach items="${vocationalTrainingWatsonListTypes}" var="vocationalTrainingWatsonListType" varStatus="vocationalTrainingWatsonListTypesIndex">
+								<c:set value='${vocationalTrainingWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${vocationalTrainingWatsonListType.watsonListTypeId}: {
+									label: '${vocationalTrainingWatsonListType.getName(locale)}',
+									value: '${vocationalTrainingWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'MULTI_SELECT_INPUT',
+						validations: []
+					},
+					vocationalTrainingWatsonListTypeRelString: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("vocational-training")}',
+						translatable: ${false},
+						type: 'INPUT'
+					},
+					watsonRelationships: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
+						cssClass: 'triple-dynamic',
+						disabled: ${true},
+						fancy: ${false},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
+						tooltipLabel: '',
+						translatable: ${false},
+						tripleOnly: ${true},
+						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
+						validations: [
+							'arrayValues4'
+						]
+					}
+				},
+				relationshipObjectOptions: {},
+				pluralLabel: '${AlloyLanguageUtil.formatUnicode("children")}',
+				singularLabel: '${AlloyLanguageUtil.formatUnicode("child")}',
+				sortByDefault: 'watsonChildId',
+				sortByOptions: {
+					CREATED: {
+						label: '${AlloyLanguageUtil.formatUnicode("created")}',
+						value: 'createDate'
+					},
+					INCIDENT_ID: {
+						label: '${AlloyLanguageUtil.formatUnicode("child-id")}',
+						value: 'watsonChildId'
+					},
+					LAST_MODIFIED: {
+						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
+						value: 'modifiedDate'
+					}
+				},
+				viewByOptions: {
+					children: {
+						label: '${AlloyLanguageUtil.formatUnicode("children")}',
+						value: 'children'
+					}
+				}
+			},
 			histories: {
 				inputs: {
 					createDate: {
@@ -915,12 +1402,39 @@
 						label: '${AlloyLanguageUtil.formatUnicode("status")}',
 						value: 'incidentStatus'
 					}
+				},
+				viewByOptions: {
+					activities: {
+						label: '${AlloyLanguageUtil.formatUnicode("activities")}',
+						value: 'activities'
+					},
+					addresses: {
+						label: '${AlloyLanguageUtil.formatUnicode("addresses")}',
+						value: 'addresses'
+					},
+					incidents: {
+						label: '${AlloyLanguageUtil.formatUnicode("incidents")}',
+						value: 'incidents'
+					},
+					people: {
+						label: '${AlloyLanguageUtil.formatUnicode("people")}',
+						value: 'people'
+					},
+					resources: {
+						label: '${AlloyLanguageUtil.formatUnicode("resources")}',
+						value: 'resources'
+					},
+					vehicles: {
+						label: '${AlloyLanguageUtil.formatUnicode("vehicles")}',
+						value: 'vehicles'
+					}
 				}
 			},
 			inputTypes: {
 				dependentKeyedInput: 'DEPENDENT_KEYED_INPUT',
 				dependentInput: 'DEPENDENT_INPUT',
 				dependentSelectInput: 'DEPENDENT_SELECT_INPUT',
+				doubleDependentInput: 'DOUBLE_DEPENDENT_INPUT',
 				dynamicInputGenerator: 'DYNAMIC_INPUT_GENERATOR',
 				dynamicRelationshipInputGenerator: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
 				file: 'FILE',
@@ -1107,7 +1621,7 @@
 						},
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-government-issued-ids-for-this-person")}',
 						translatable: ${false},
-						type: 'DYNAMIC_INPUT_GENERATOR',
+						type: 'DOUBLE_DEPENDENT_INPUT',
 						validations: []
 					},
 					countryIDWatsonListTypeRelString: {
@@ -1304,7 +1818,7 @@
 						showToggle: true,
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-one-or-more-names-for-this-person")}',
 						translatable: ${false},
-						type: 'DYNAMIC_INPUT_GENERATOR',
+						type: 'DOUBLE_DEPENDENT_INPUT',
 						validations: [
 							'required'
 						]
@@ -1342,7 +1856,7 @@
 						},
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-phone-numbers-for-this-person")}',
 						translatable: ${false},
-						type: 'DYNAMIC_INPUT_GENERATOR',
+						type: 'DOUBLE_DEPENDENT_INPUT',
 						validations: []
 					},
 					phoneNumberWatsonListTypeRelString: {
@@ -1410,7 +1924,7 @@
 						},
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-social-media-account-ids-for-this-person")}',
 						translatable: ${false},
-						type: 'DYNAMIC_INPUT_GENERATOR',
+						type: 'DOUBLE_DEPENDENT_INPUT',
 						validations: []
 					},
 					socialMediaAccountWatsonListTypeRelString: {
@@ -2092,32 +2606,6 @@
 						label: '${AlloyLanguageUtil.formatUnicode("type")}',
 						value: 'typeWatsonListTypeId'
 					}
-				}
-			},
-			viewByOptions: {
-				activities: {
-					label: '${AlloyLanguageUtil.formatUnicode("activities")}',
-					value: 'activities'
-				},
-				addresses: {
-					label: '${AlloyLanguageUtil.formatUnicode("addresses")}',
-					value: 'addresses'
-				},
-				incidents: {
-					label: '${AlloyLanguageUtil.formatUnicode("incidents")}',
-					value: 'incidents'
-				},
-				people: {
-					label: '${AlloyLanguageUtil.formatUnicode("people")}',
-					value: 'people'
-				},
-				resources: {
-					label: '${AlloyLanguageUtil.formatUnicode("resources")}',
-					value: 'resources'
-				},
-				vehicles: {
-					label: '${AlloyLanguageUtil.formatUnicode("vehicles")}',
-					value: 'vehicles'
 				}
 			}
 		}

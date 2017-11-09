@@ -25,6 +25,24 @@ public static class WatsonPermission extends AlloyPermission {
 		return false;
 	}
 
+	public static boolean check(User user, WatsonChild watsonChild) throws Exception {
+		if (Validator.isNull(watsonChild)) {
+			return false;
+		}
+
+		if (WatsonPermission.check(user, RoleConstants.ADMIN)) {
+			return true;
+		}
+		else if (WatsonPermission.check(user, RoleConstants.MANAGER)) {
+			return true;
+		}
+		else if (WatsonPermission.check(user, RoleConstants.STAFF)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public static boolean check(User user, WatsonIncident watsonIncident) throws Exception {
 		if (Validator.isNull(watsonIncident)) {
 			return false;
