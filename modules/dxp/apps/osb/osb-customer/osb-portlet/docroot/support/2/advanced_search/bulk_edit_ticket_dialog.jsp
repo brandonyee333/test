@@ -134,7 +134,7 @@
 		<div align="right">
 			<input class="aui-button-input" onClick="<portlet:namespace />submit();" type="button" value="<liferay-ui:message key="save" />" />
 
-			<input class="aui-button-input fl" onClick="<portlet:namespace />closeDialog(1);" type="button" value="<liferay-ui:message key="cancel" />" />
+			<input class="aui-button-input pull-left" onClick="<portlet:namespace />closeDialog(1);" type="button" value="<liferay-ui:message key="cancel" />" />
 		</div>
 	</div>
 </aui:form>

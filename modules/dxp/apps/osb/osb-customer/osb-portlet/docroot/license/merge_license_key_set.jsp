@@ -50,8 +50,8 @@ portletURL.setParameter("licenseKeySetId", String.valueOf(licenseKeySetId));
 	<input name="<portlet:namespace />toLicenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
 	<input name="<portlet:namespace />fromLicenseKeySetId" type="hidden" value="" />
 
-	<div class="cleared section">
-		<div class="fr">
+	<div class="clearfix section">
+		<div class="pull-right">
 			<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
 		</div>
 	</div>

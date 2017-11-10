@@ -48,7 +48,7 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 
 <div class="callout-a">
 	<div class="callout-content">
-		<div class="aui-helper-clearfix">
+		<div class="clearfix">
 			<div class="unit">
 				<p>
 					<strong><%= LanguageUtil.format(request, "welcome-x", StringPool.SPACE + HtmlUtil.escape(user.getFullName())) %></strong>
@@ -64,7 +64,7 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 	</div>
 </div>
 
-<div class="callout-d cleared">
+<div class="callout-d clearfix">
 	<div class="content">
 		<div class="u-img unit">
 			<img src="<%= PortalUtil.getPathContext(request) %>/images/liferay_portal_ee.png" />

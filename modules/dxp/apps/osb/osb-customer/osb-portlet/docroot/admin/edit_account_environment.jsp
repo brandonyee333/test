@@ -151,9 +151,9 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				</tr>
 				<tr>
 					<td>
-						<span class="fl label">*<liferay-ui:message key="operating-system" />:</span>
+						<span class="label pull-left">*<liferay-ui:message key="operating-system" />:</span>
 
-						<div class="fl">
+						<div class="pull-left">
 							<select id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
 								<option value="0"></option>
 							</select>

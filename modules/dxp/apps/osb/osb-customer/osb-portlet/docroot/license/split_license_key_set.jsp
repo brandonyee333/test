@@ -42,8 +42,8 @@ String productEntryName = licenseKey.getProductEntryName();
 	<input name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= licenseKey.getOfferingEntryId() %>" />
 	<input name="<portlet:namespace />active" type="hidden" value="<%= licenseKey.getActive() %>" />
 
-	<div class="cleared section">
-		<div class="fr">
+	<div class="clearfix section">
+		<div class="pull-right">
 			<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
 		</div>
 	</div>
@@ -61,7 +61,7 @@ String productEntryName = licenseKey.getProductEntryName();
 	</div>
 
 	<div class="callout-a">
-		<div class="aui-helper-clearfix callout-content">
+		<div class="callout-content clearfix">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content left-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="owner" />:</span>
@@ -79,7 +79,7 @@ String productEntryName = licenseKey.getProductEntryName();
 			</div>
 		</div>
 
-		<div class="aui-helper-clearfix callout-content">
+		<div class="callout-content clearfix">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content left-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>

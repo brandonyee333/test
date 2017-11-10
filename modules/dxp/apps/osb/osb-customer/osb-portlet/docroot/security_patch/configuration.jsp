@@ -40,7 +40,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 	<div class="aui-w95 security-patch-configuration unit">
 		<div class="unit-content">
 			<div class="callout-a">
-				<div class="callout-content cleared">
+				<div class="callout-content clearfix">
 					<div class="aui-w20 content-column">
 						<span class="txt-b"><liferay-ui:message key="name" /></span>
 					</div>
@@ -52,7 +52,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 
 				<br />
 
-				<div class="callout-content cleared">
+				<div class="callout-content clearfix">
 					<div class="aui-w20 content-column">
 						<span class="txt-b"><liferay-ui:message key="release-notes-url" /></span>
 					</div>
@@ -64,7 +64,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 
 				<br />
 
-				<div class="callout-content cleared">
+				<div class="callout-content clearfix">
 					<div class="aui-w20 content-column">
 						<span class="txt-b"><liferay-ui:message key="file" /></span>
 					</div>
@@ -86,7 +86,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 
 				<br />
 
-				<div class="callout-content cleared">
+				<div class="callout-content clearfix">
 					<div class="aui-w20 content-column">
 						<span class="txt-b"><liferay-ui:message key="footer-text" /></span>
 					</div>
@@ -98,7 +98,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 
 				<br />
 
-				<div class="callout-content cleared">
+				<div class="callout-content clearfix">
 					<aui:button type="submit" />
 				</div>
 			</div>

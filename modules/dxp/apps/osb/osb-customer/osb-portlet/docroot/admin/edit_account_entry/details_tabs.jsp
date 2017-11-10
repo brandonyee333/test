@@ -621,7 +621,7 @@ for (SupportRegion supportRegion : supportRegions) {
 								}
 							%>
 
-								<div class="cleared"></div>
+								<div class="clearfix"></div>
 
 								<c:choose>
 									<c:when test="<%= curAuditEntry.getAction() == AuditEntryConstants.ACTION_AUDIT %>">

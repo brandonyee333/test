@@ -122,7 +122,7 @@ String textareaEventHandlers = StringUtil.trim(sb.toString());
 	<textarea id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(editorId) %>" <%= fieldRequiredSB.toString() %> name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(name) %>" <%= textareaEventHandlers %> style="<%= (height > 0) ? ("height: " + height + "px;") : "" %>" wrap="soft"><%= HtmlUtil.escape(content) %></textarea>
 
 	<c:if test="<%= showCounter %>">
-		<div class="fr">
+		<div class="pull-right">
 			<liferay-ui:message key="characters-remaining" />: <span id="<portlet:namespace />charactersRemaining_<%= HtmlUtil.escapeAttribute(editorId) %>"><%= ModelHintsConstants.TEXTAREA_MAX_LENGTH %></span>
 		</div>
 	</c:if>

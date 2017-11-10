@@ -16,7 +16,7 @@
 
 <div class="callout-a <%= cssClass %>" id="<portlet:namespace /><%= licenseKey.getOfferingEntryId() %>-<%= licenseKey.getClusterId() %>">
 	<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
-		<div class="aui-helper-clearfix callout-content">
+		<div class="callout-content clearfix">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content left-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="created-by" />:</span>
@@ -36,7 +36,7 @@
 	</c:if>
 
 	<c:if test="<%= !licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) %>">
-		<div class="aui-helper-clearfix callout-content">
+		<div class="callout-content clearfix">
 			<div class="aui-w33 content-column">
 				<div class="content-column-content left-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="owner" />:</span>
@@ -55,7 +55,7 @@
 		</div>
 	</c:if>
 
-	<div class="aui-helper-clearfix callout-content">
+	<div class="callout-content clearfix">
 		<div class="aui-w33 content-column">
 			<div class="content-column-content left-column">
 				<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>
@@ -196,7 +196,7 @@
 
 				<div class="separator"></div>
 
-				<div class="aui-helper-clearfix callout-content">
+				<div class="callout-content clearfix">
 					<div class="aui-w33 content-column">
 						<div class="content-column-content left-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="owner" />:</span>
@@ -214,7 +214,7 @@
 					</div>
 				</div>
 
-				<div class="aui-helper-clearfix callout-content">
+				<div class="callout-content clearfix">
 					<div class="aui-w33 content-column">
 						<div class="content-column-content left-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="host-name" />:</span>
@@ -302,7 +302,7 @@
 					</div>
 				</div>
 
-				<div class="callout-content cleared">
+				<div class="callout-content clearfix">
 					<portlet:resourceURL id="licenseKey" var="downloadLicenseFileURL">
 						<portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" />
 						<portlet:param name="redirect" value="<%= currentURL %>" />
@@ -353,7 +353,7 @@
 
 			<div class="separator"></div>
 
-			<div class="callout-content cleared">
+			<div class="callout-content clearfix">
 				<c:if test="<%= OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
 					<portlet:renderURL var="addLicenseKeyURL">
 						<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
@@ -373,7 +373,7 @@
 		</c:when>
 		<c:otherwise>
 			<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_LIMITED) || licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
-				<div class="aui-helper-clearfix callout-content">
+				<div class="callout-content clearfix">
 					<div class="aui-w33 content-column">
 						<div class="content-column-content left-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="host-name" />:</span>
@@ -448,7 +448,7 @@
 				</div>
 			</c:if>
 
-			<div class="callout-content cleared">
+			<div class="callout-content clearfix">
 				<br />
 
 				<div>
@@ -531,8 +531,8 @@
 					<br />
 
 					<c:if test="<%= licenseKey.canRenew() && OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
-						<div class="fr">
-							<div class="fl">
+						<div class="pull-right">
+							<div class="pull-left">
 								<liferay-ui:message key="start-date" />:
 							</div>
 

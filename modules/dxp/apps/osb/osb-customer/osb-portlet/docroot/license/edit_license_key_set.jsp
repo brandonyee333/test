@@ -83,8 +83,8 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 	<input name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
 	<input name="<portlet:namespace />clusterId" type="hidden" value="<%= clusterId %>" />
 
-	<div class="cleared section">
-		<div class="fr">
+	<div class="clearfix section">
+		<div class="pull-right">
 			<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
 		</div>
 	</div>
@@ -169,7 +169,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			<c:otherwise>
 				<div class="callout-a <%= cssClass %>" id="<portlet:namespace /><%= licenseKey.getOfferingEntryId() %>-<%= licenseKey.getClusterId() %>">
 					<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
-						<div class="aui-helper-clearfix callout-content">
+						<div class="callout-content clearfix">
 							<div class="aui-w33 content-column">
 								<div class="content-column-content left-column">
 									<span class="txt-b txt-up"><liferay-ui:message key="created-by" />:</span>
@@ -188,7 +188,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 						</div>
 					</c:if>
 
-					<div class="aui-helper-clearfix callout-content">
+					<div class="callout-content clearfix">
 						<div class="aui-w33 content-column">
 							<div class="content-column-content left-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="owner" />:</span>
@@ -206,7 +206,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 						</div>
 					</div>
 
-					<div class="aui-helper-clearfix callout-content">
+					<div class="callout-content clearfix">
 						<div class="aui-w33 content-column">
 							<div class="content-column-content left-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>
@@ -469,8 +469,8 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 							</c:if>
 
 							<c:if test="<%= licenseKey.canRenew() && OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
-								<div class="fr">
-									<div class="fl">
+								<div class="pull-right">
+									<div class="pull-left">
 										<liferay-ui:message key="start-date" />:
 									</div>
 
@@ -532,8 +532,8 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			/>
 
 			<c:if test="<%= LicenseUtil.isRenewAggregate(licenseKeySetId) && OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
-				<div class="fr">
-					<div class="fl">
+				<div class="pull-right">
+					<div class="pull-left">
 						<liferay-ui:message key="start-date" />:
 					</div>
 

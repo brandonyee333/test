@@ -114,8 +114,8 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
 	<input name="<portlet:namespace />assetReceiptLicenseId" type="hidden" value="<%= assetReceiptLicenseId %>" />
 
-	<div class="cleared section">
-		<div class="fr">
+	<div class="clearfix section">
+		<div class="pull-right">
 			<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
 		</div>
 	</div>
@@ -143,7 +143,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 
 				<div class="callout-a <%= (curLicenseKey.getLicenseKeyId() == licenseKeyId) ? "highlight-cluster" : "" %>" id="<portlet:namespace /><%= curLicenseKey.getLicenseKeyId() %>">
 					<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, curLicenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
-						<div class="aui-helper-clearfix callout-content">
+						<div class="callout-content clearfix">
 							<div class="aui-w33 content-column">
 								<div class="content-column-content left-column">
 									<span class="txt-b txt-up"><liferay-ui:message key="created-by" />:</span>
@@ -162,7 +162,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 						</div>
 					</c:if>
 
-					<div class="aui-helper-clearfix callout-content">
+					<div class="callout-content clearfix">
 						<div class="aui-w33 content-column">
 							<div class="content-column-content left-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="owner" />:</span>
@@ -180,7 +180,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 						</div>
 					</div>
 
-					<div class="aui-helper-clearfix callout-content">
+					<div class="callout-content clearfix">
 						<div class="aui-w33 content-column">
 							<div class="content-column-content left-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>
@@ -258,7 +258,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 						</c:if>
 					</div>
 
-					<div class="aui-helper-clearfix callout-content">
+					<div class="callout-content clearfix">
 						<div class="aui-w33 content-column">
 							<div class="content-column-content left-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="host-name" />:</span>
@@ -318,7 +318,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 						</div>
 					</div>
 
-					<div class="callout-content cleared">
+					<div class="callout-content clearfix">
 						<div>
 							<c:if test="<%= curLicenseKey.isActive() %>">
 								<portlet:resourceURL id="licenseKey" var="downloadLicenseFileURL">
@@ -563,7 +563,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 			</div>
 		</c:when>
 		<c:otherwise>
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<div class="aui-w50 content-column">
 					<div class="content-column-content left-column">
 						<h2 class="section-heading">
@@ -598,7 +598,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 			</h2>
 
 			<div class="callout-a">
-				<div class="aui-helper-clearfix callout-content">
+				<div class="callout-content clearfix">
 					<div class="aui-w33 content-column">
 						<div class="content-column-content left-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>

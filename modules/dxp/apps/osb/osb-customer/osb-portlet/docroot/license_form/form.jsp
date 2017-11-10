@@ -64,7 +64,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 				</span>
 				<span class="unit">
 					<span class="unit-content">
-						<liferay-ui:input-field cssClass="field-input field-input-text fl" field="emailAddress" model="<%= User.class %>" />
+						<liferay-ui:input-field cssClass="field-input field-input-text pull-left" field="emailAddress" model="<%= User.class %>" />
 					</span>
 				</span>
 			</span>

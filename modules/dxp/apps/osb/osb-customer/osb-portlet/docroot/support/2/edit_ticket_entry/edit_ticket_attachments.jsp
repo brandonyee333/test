@@ -305,11 +305,11 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					</div>
 
 					<div class="hide toolbar" id="<portlet:namespace />toolbar">
-						<a class="fr hide resume-button" href="javascript:;" id="<portlet:namespace />resumeButton"></a>
+						<a class="hide pull-right resume-button" href="javascript:;" id="<portlet:namespace />resumeButton"></a>
 
-						<a class="cancel-button fr hide" href="javascript:;" id="<portlet:namespace />cancelButton"></a>
+						<a class="cancel-button hide pull-right" href="javascript:;" id="<portlet:namespace />cancelButton"></a>
 
-						<a class="fr pause-button" href="javascript:;" id="<portlet:namespace />pauseButton"></a>
+						<a class="pause-button pull-right" href="javascript:;" id="<portlet:namespace />pauseButton"></a>
 
 						<span class="clearfix progress-bar" id="<portlet:namespace />progressBar">
 							<span class="progress" id="<portlet:namespace />progress"></span>

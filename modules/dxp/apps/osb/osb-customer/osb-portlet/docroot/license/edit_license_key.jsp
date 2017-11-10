@@ -163,8 +163,8 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 	<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 	<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
 
-	<div class="cleared section">
-		<div class="fr">
+	<div class="clearfix section">
+		<div class="pull-right">
 			<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
 		</div>
 	</div>
@@ -289,7 +289,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 				</div>
 			</div>
 
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<div class="aui-w50 content-column">
 					<div class="content-column-content left-column">
 						<h2 class="section-heading">
@@ -549,7 +549,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 				</div>
 			</div>
 
-			<div class="aui-helper-clearfix">
+			<div class="clearfix">
 				<div class="aui-w50 content-column">
 					<div class="content-column-content left-column">
 						<h2 class="section-heading">
@@ -584,7 +584,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			</h2>
 
 			<div class="callout-a">
-				<div class="aui-helper-clearfix callout-content">
+				<div class="callout-content clearfix">
 					<div class="aui-w33 content-column">
 						<div class="content-column-content left-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>

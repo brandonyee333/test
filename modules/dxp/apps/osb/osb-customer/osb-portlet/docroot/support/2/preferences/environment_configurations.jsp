@@ -117,7 +117,7 @@ else {
 							String createEnvironmentOnClick = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "create-environment-configuration") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment')";
 							%>
 
-							<aui:button cssClass="aui-button-input fr" onClick="<%= createEnvironmentOnClick %>" value="create-environment" />
+							<aui:button cssClass="aui-button-input pull-right" onClick="<%= createEnvironmentOnClick %>" value="create-environment" />
 						</div>
 					</c:if>
 

@@ -30,7 +30,7 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 </h2>
 
 <div class="unit-content">
-	<div class="callout-a callout-download cleared">
+	<div class="callout-a callout-download clearfix">
 		<div class="sub-grid">
 			<div class="u-img unit">
 				<img src="<%= PortalUtil.getPathContext(request) %>/images/security.png" />

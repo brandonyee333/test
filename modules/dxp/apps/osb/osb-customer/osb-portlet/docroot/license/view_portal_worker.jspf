@@ -29,7 +29,7 @@ searchURL.setParameter("tabs1", tabs1);
 pageContext.setAttribute("searchURL", searchURL);
 %>
 
-<div class="aui-helper-clearfix">
+<div class="clearfix">
 	<div class="aui-w33 content-column">
 		<div class="content-column-content left-column">
 			<a class="callout-a display-b paragraph">
