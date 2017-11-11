@@ -44,7 +44,7 @@
 
 <body class="${css_class}">
 
-<#if theme_settings["google-tag-manager-id"] != "">
+<#if validator.isNotNull(google_tag_manager_id)>
 	<script>
 		(function(w, d, s, l, i) {
 			w[l] = w[l] || [];
@@ -64,7 +64,7 @@
 			j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
 
 			f.parentNode.insertBefore(j, f);
-		})(window, document, 'script', 'dataLayer', getterUtil.getString(theme_settings["google-tag-manager-id"], ""));
+		})(window, document, 'script', 'dataLayer', '${google_tag_manager_id}');
 	</script>
 </#if>
 

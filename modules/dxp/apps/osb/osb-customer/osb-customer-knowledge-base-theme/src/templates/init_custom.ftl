@@ -14,7 +14,10 @@
 	<#assign css_class = stringUtil.replace(css_class, "controls-visible", "controls-hidden") />
 </#if>
 
-<#assign side_nav_visible = getterUtil.getBoolean(sessionClicks.get(request, "_2_WAR_osbknowledgebaseportlet_side_nav_toggle_value", "true"), false) />
+<#assign
+	google_tag_manager_id = getterUtil.getString(theme_settings["google-tag-manager-id"], "")
+	side_nav_visible = getterUtil.getBoolean(sessionClicks.get(request, "_2_WAR_osbknowledgebaseportlet_side_nav_toggle_value", "true"), false)
+/>
 
 <#if !side_nav_visible??>
 	<#assign css_class = css_class + " side-nav-hidden" />
