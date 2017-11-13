@@ -88,9 +88,8 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		if (!watsonChild.isValid(activitiesInvolvedWatsonListTypeRels, countryIDWatsonListTypeRels, guardianNameWatsonListTypeRels, nameWatsonListTypeRels, parentNameWatsonListTypeRels, vocationalTrainingWatsonListTypeRels, null)) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			jsonObject.put("model", WatsonChild.getAsJSONObject(watsonChild, activitiesInvolvedWatsonListTypeRels, countryIDWatsonListTypeRels, guardianNameWatsonListTypeRels, nameWatsonListTypeRels, parentNameWatsonListTypeRels, vocationalTrainingWatsonListTypeRels, null));
-
 			jsonObject.put("errors", watsonChild.getChildFormErrors());
+			jsonObject.put("model", WatsonChild.getAsJSONObject(watsonChild, activitiesInvolvedWatsonListTypeRels, countryIDWatsonListTypeRels, guardianNameWatsonListTypeRels, nameWatsonListTypeRels, parentNameWatsonListTypeRels, vocationalTrainingWatsonListTypeRels, null));
 
 			respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("child-was-not-saved"), jsonObject);
 
@@ -189,10 +188,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
+		String sort = ParamUtil.getString(request, "sortBy", null);
 		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
 		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
-
-		String sort = ParamUtil.getString(request, "sortBy", null);
 
 		List<WatsonChild> watsonChildren = WatsonChild.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
 
@@ -204,16 +202,17 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		String model = ParamUtil.getString(request, "model");
-		long watsonChildId = ParamUtil.getLong(request, "id");
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		JSONArray idJSONArray = JSONFactoryUtil.createJSONArray();
+
+		long watsonChildId = ParamUtil.getLong(request, "id");
+
+		String model = ParamUtil.getString(request, "model");
 
 		if (model.equals("activities")) {
 			idJSONArray = WatsonActivity.getIdJSONArray(watsonChildId);
 		}
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("id", watsonChildId);
 		jsonObject.put("idArray", idJSONArray);
@@ -344,9 +343,8 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		if (!watsonChild.isValid(activitiesInvolvedWatsonListTypeRels, countryIDWatsonListTypeRels, guardianNameWatsonListTypeRels, nameWatsonListTypeRels, parentNameWatsonListTypeRels, vocationalTrainingWatsonListTypeRels, watsonRelationships)) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			jsonObject.put("model", WatsonChild.getAsJSONObject(watsonChild, activitiesInvolvedWatsonListTypeRels, countryIDWatsonListTypeRels, guardianNameWatsonListTypeRels, nameWatsonListTypeRels, parentNameWatsonListTypeRels, vocationalTrainingWatsonListTypeRels, null));
-
 			jsonObject.put("errors", watsonChild.getChildFormErrors());
+			jsonObject.put("model", WatsonChild.getAsJSONObject(watsonChild, activitiesInvolvedWatsonListTypeRels, countryIDWatsonListTypeRels, guardianNameWatsonListTypeRels, nameWatsonListTypeRels, parentNameWatsonListTypeRels, vocationalTrainingWatsonListTypeRels, null));
 
 			respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("child-was-not-saved"), jsonObject);
 

@@ -99,6 +99,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		jsonObject.put("countryWatsonListTypeId", watsonChild.getCountryWatsonListTypeId());
 		jsonObject.put("dateAccepted", getFormattedDate(watsonChild.getDateAccepted(), locale));
 		jsonObject.put("dateDischarged", getFormattedDate(watsonChild.getDateDischarged(), locale));
+		jsonObject.put("dateFollowUp", getFormattedDate(watsonChild.getDateFollowUp(), locale));
 		jsonObject.put("dischargeWatsonListTypeId", watsonChild.getDischargeWatsonListTypeId());
 
 		watsonListType = WatsonListType.fetch(watsonChild.getEthnicityWatsonListTypeId());
@@ -107,7 +108,6 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			jsonObject.put("ethnicity", watsonListType.getName(locale));
 		}
 
-		jsonObject.put("dateFollowUp", getFormattedDate(watsonChild.getDateFollowUp(), locale));
 		jsonObject.put("ethnicityWatsonListTypeId", watsonChild.getEthnicityWatsonListTypeId());
 
 		if (guardianNameWatsonListTypeRels != null) {

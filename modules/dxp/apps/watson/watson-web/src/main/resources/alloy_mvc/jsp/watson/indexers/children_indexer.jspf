@@ -62,9 +62,10 @@ public static class WatsonChildrenIndexer extends BaseAlloyIndexer {
 		}
 
 		document.addKeyword("sexWatsonListTypeId", watsonChild.getSexWatsonListTypeId());
-		document.addKeyword("sourceWatsonListTypeId", watsonChild.getSourceWatsonListTypeId());
-		document.addKeyword("sourceSubtypeWatsonListTypeId", watsonChild.getSourceSubtypeWatsonListTypeId());
 		document.addKeyword("source", watsonChild.getSource());
+		document.addKeyword("sourceSubtypeWatsonListTypeId", watsonChild.getSourceSubtypeWatsonListTypeId());
+		document.addKeyword("sourceWatsonListTypeId", watsonChild.getSourceWatsonListTypeId());
+		document.addKeyword("status", watsonChild.getStatus());
 
 		watsonListType = WatsonListType.fetch(watsonChild.getTypeWatsonListTypeId());
 
@@ -72,7 +73,6 @@ public static class WatsonChildrenIndexer extends BaseAlloyIndexer {
 			document.addLocalizedKeyword("type", watsonListType.getNameMap());
 		}
 
-		document.addKeyword("status", watsonChild.getStatus());
 		document.addKeyword("typeWatsonListTypeId", watsonChild.getTypeWatsonListTypeId());
 		document.addKeyword("watsonChildId", watsonChild.getWatsonChildId());
 
