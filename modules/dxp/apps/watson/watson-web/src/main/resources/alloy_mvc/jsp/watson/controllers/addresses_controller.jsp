@@ -35,6 +35,8 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		if (!WatsonPermission.check(user, watsonAddress.getWatsonIncidentId())) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
 		}
 
 		if (!watsonAddress.isValid(null)) {
@@ -73,6 +75,8 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		if (!WatsonPermission.check(user, watsonAddress.getWatsonIncidentId())) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
 		}
 
 		watsonAddress.delete();
@@ -95,6 +99,8 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		if (!WatsonPermission.check(user, watsonAddress.getWatsonIncidentId())) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
 		}
 
 		respondWith(WatsonAddress.getAsJSONObject(watsonAddress));
@@ -343,6 +349,8 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		if (!WatsonPermission.check(user, watsonAddress.getWatsonIncidentId())) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
 		}
 
 		respondWith(WatsonAddress.getAsJSONObject(watsonAddress));

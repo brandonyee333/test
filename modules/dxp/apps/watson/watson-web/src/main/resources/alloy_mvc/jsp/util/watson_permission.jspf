@@ -36,32 +36,31 @@ public static class WatsonPermission extends AlloyPermission {
 		else if (WatsonPermission.check(user, RoleConstants.MANAGER)) {
 			return true;
 		}
-		else if (WatsonPermission.check(user, RoleConstants.STAFF)) {
-			return true;
-		}
 
 		return false;
 	}
 
 	public static boolean check(User user, WatsonIncident watsonIncident) throws Exception {
-		if (Validator.isNull(watsonIncident)) {
-			return false;
+		if (Validator.isNotNull(watsonIncident)) {
+			long watsonListTypeId = watsonIncident.getTypeWatsonListTypeId();
+
+			if (WatsonPermission.check(user, RoleConstants.ADMIN)) {
+				return true;
+			}
+			else if (WatsonPermission.check(user, RoleConstants.MANAGER)) {
+				return true;
+			}
+			else if (WatsonPermission.check(user, RoleConstants.STAFF)) {
+				if (!WatsonPermission.check(user, RoleConstants.CITIZENSHIP)) {
+					return true;
+				}
+				else if (watsonListTypeId == WatsonListType.INCIDENT_TYPE_CITIZENSHIP) {
+					return true;
+				}
+			}
 		}
 
-		long watsonListTypeId = watsonIncident.getTypeWatsonListTypeId();
-
-		if (WatsonPermission.check(user, RoleConstants.ADMIN)) {
-			return true;
-		}
-		else if (WatsonPermission.check(user, RoleConstants.MANAGER)) {
-			return true;
-		}
-		else if (WatsonPermission.check(user, RoleConstants.STAFF)) {
-			return true;
-		}
-		else {
-			return (WatsonPermission.check(user, RoleConstants.CITIZENSHIP) && (watsonListTypeId != WatsonListType.INCIDENT_TYPE_CITIZENSHIP));
-		}
+		return false;
 	}
 
 	public static boolean check(User user, String role) throws Exception {

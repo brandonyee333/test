@@ -85,6 +85,8 @@
 
 			if (!WatsonPermission.check(user, watsonIncidentId)) {
 				respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+				return;
 			}
 
 			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
