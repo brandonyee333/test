@@ -83,7 +83,7 @@
 								<c:set value='${watsonActivityTypeIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonActivityType.watsonListTypeId}: {
-									label: '${watsonActivityType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonActivityType.getName(locale))}',
 									value: '${watsonActivityType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -109,7 +109,7 @@
 									<c:set value='${watsonActivitySubtypeIndex.last ? "" : ","}' var="delimiter" />
 
 									${watsonActivitySubtype.watsonListTypeId}: {
-										label: '${watsonActivitySubtype.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(watsonActivitySubtype.getName(locale))}',
 										value: '${watsonActivitySubtype.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
@@ -147,7 +147,7 @@
 								<c:set value='${addressActivityTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${addressActivityType.watsonListTypeId}: {
-									label: '${addressActivityType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(addressActivityType.getName(locale))}',
 									value: '${addressActivityType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -164,7 +164,7 @@
 								<c:set value='${activityPersonTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${activityPersonType.watsonListTypeId}: {
-									label: '${activityPersonType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(activityPersonType.getName(locale))}',
 									value: '${activityPersonType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -181,8 +181,8 @@
 								<c:set value='${addressResourceTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${addressResourceType.watsonListTypeId}: {
-									label: '${addressResourceType.getName(locale)}',
-										value: '${addressResourceType.watsonListTypeId}'
+									label: '${AlloyLanguageUtil.formatUnicode(addressResourceType.getName(locale))}',
+									value: '${addressResourceType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
 						},
@@ -237,7 +237,7 @@
 								<c:set value='${countryIndex.last ? "" : ","}' var="delimiter" />
 
 								${country.countryId}: {
-									label: '${country.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(country.getName(locale))}',
 									value: '${country.countryId}'
 								}${delimiter}
 							</c:forEach>
@@ -383,7 +383,7 @@
 								<c:set value='${watsonProvinceAddressesIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonProvinceAddress.watsonListTypeId}: {
-									label: '${watsonProvinceAddress.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonProvinceAddress.getName(locale))}',
 									value: '${watsonProvinceAddress.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -452,7 +452,7 @@
 								<c:set value='${watsonAddressTypeIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonAddressType.watsonListTypeId}: {
-									label: '${watsonAddressType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonAddressType.getName(locale))}',
 									value: '${watsonAddressType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -522,7 +522,7 @@
 								<c:set value='${addressActivityTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${addressActivityType.watsonListTypeId}: {
-									label: '${addressActivityType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(addressActivityType.getName(locale))}',
 									value: '${addressActivityType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -539,7 +539,7 @@
 								<c:set value='${addressPersonTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${addressPersonType.watsonListTypeId}: {
-									label: '${addressPersonType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(addressPersonType.getName(locale))}',
 									value: '${addressPersonType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -556,7 +556,7 @@
 								<c:set value='${addressResourceTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${addressResourceType.watsonListTypeId}: {
-									label: '${addressResourceType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(addressResourceType.getName(locale))}',
 									value: '${addressResourceType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -573,7 +573,7 @@
 								<c:set value='${addressVehicleTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${addressVehicleType.watsonListTypeId}: {
-									label: '${addressVehicleType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(addressVehicleType.getName(locale))}',
 									value: '${addressVehicleType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -612,7 +612,7 @@
 								<c:set value='${activitiesInvolvedWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${activitiesInvolvedWatsonListType.watsonListTypeId}: {
-									label: '${activitiesInvolvedWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(activitiesInvolvedWatsonListType.getName(locale))}',
 									value: '${activitiesInvolvedWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -627,7 +627,7 @@
 						label: '${AlloyLanguageUtil.formatUnicode("activities")}',
 						translatable: ${false},
 						type: 'INPUT'
-				},
+				    },
 					birthCountryId: {
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("country-of-birth")}',
@@ -636,7 +636,7 @@
 							<c:set value='${countryIndex.last ? "" : ","}' var="delimiter" />
 
 							${country.countryId}: {
-								label: '${country.getName(locale)}',
+								label: '${AlloyLanguageUtil.formatUnicode(country.getName(locale))}',
 								value: '${country.countryId}'
 							}${delimiter}
 							</c:forEach>
@@ -665,7 +665,7 @@
 								<c:set value='${citizenshipWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${citizenshipWatsonListType.watsonListTypeId}: {
-									label: '${citizenshipWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(citizenshipWatsonListType.getName(locale))}',
 									value: '${citizenshipWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -686,7 +686,7 @@
 								<c:set value='${countryIDWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${countryIDWatsonListType.watsonListTypeId}: {
-									label: '${countryIDWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(countryIDWatsonListType.getName(locale))}',
 									value: '${countryIDWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -712,7 +712,7 @@
 								<c:set value='${countryWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${countryWatsonListType.watsonListTypeId}: {
-									label: '${countryWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(countryWatsonListType.getName(locale))}',
 									value: '${countryWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -769,7 +769,7 @@
 								<c:set value='${dischargeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${dischargeWatsonListType.watsonListTypeId}: {
-									label: '${dischargeWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(dischargeWatsonListType.getName(locale))}',
 									value: '${dischargeWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -790,7 +790,7 @@
 							<c:set value="${WatsonListType.fetch(WatsonListTypeConstants.PERSON_ETHNICITY_REGION_OTHER)}" var="ethnicityWatsonListTypeDefault" />
 
 							${ethnicityWatsonListTypeDefault.watsonListTypeId}: {
-								label: '${ethnicityWatsonListTypeDefault.getName(locale)}',
+								label: '${AlloyLanguageUtil.formatUnicode(ethnicityWatsonListTypeDefault.getName(locale))}',
 								value: '${ethnicityWatsonListTypeDefault.watsonListTypeId}'
 							}
 						},
@@ -812,7 +812,7 @@
 								<c:set value='${nameTypeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${nameTypeWatsonListType.watsonListTypeId}: {
-									label: '${nameTypeWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(nameTypeWatsonListType.getName(locale))}',
 									value: '${nameTypeWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -856,7 +856,7 @@
 								<c:set value='${nameTypeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${nameTypeWatsonListType.watsonListTypeId}: {
-									label: '${nameTypeWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(nameTypeWatsonListType.getName(locale))}',
 									value: '${nameTypeWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -886,7 +886,7 @@
 								<c:set value='${nameTypeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${nameTypeWatsonListType.watsonListTypeId}: {
-									label: '${nameTypeWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(nameTypeWatsonListType.getName(locale))}',
 									value: '${nameTypeWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -919,7 +919,7 @@
 								<c:set value='${sexWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${sexWatsonListType.watsonListTypeId}: {
-									label: '${sexWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(sexWatsonListType.getName(locale))}',
 									value: '${sexWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -945,7 +945,7 @@
 								<c:set value='${sourceSubtypesWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${sourceSubtypesWatsonListType.watsonListTypeId}: {
-									label: '${sourceSubtypesWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(sourceSubtypesWatsonListType.getName(locale))}',
 									value: '${sourceSubtypesWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -968,7 +968,7 @@
 								<c:set value='${sourceSubtypesWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${sourceSubtypesWatsonListType.watsonListTypeId}: {
-									label: '${sourceSubtypesWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(sourceSubtypesWatsonListType.getName(locale))}',
 									value: '${sourceSubtypesWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1006,7 +1006,7 @@
 								<c:set value='${typeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${typeWatsonListType.watsonListTypeId}: {
-									label: '${typeWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(typeWatsonListType.getName(locale))}',
 									value: '${typeWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1029,7 +1029,7 @@
 								<c:set value='${vocationalTrainingWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${vocationalTrainingWatsonListType.watsonListTypeId}: {
-									label: '${vocationalTrainingWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(vocationalTrainingWatsonListType.getName(locale))}',
 									value: '${vocationalTrainingWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1259,7 +1259,7 @@
 								<c:set value='${watsonIncidentNatureIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonIncidentNature.watsonListTypeId}: {
-									label: '${watsonIncidentNature.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonIncidentNature.getName(locale))}',
 									value: '${watsonIncidentNature.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1300,7 +1300,7 @@
 								<c:set value='${watsonIncidentSourceIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonIncidentSource.watsonListTypeId}: {
-									label: '${watsonIncidentSource.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonIncidentSource.getName(locale))}',
 									value: '${watsonIncidentSource.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1334,7 +1334,7 @@
 								<c:set value='${watsonIncidentTypeIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonIncidentType.watsonListTypeId}: {
-									label: '${watsonIncidentType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonIncidentType.getName(locale))}',
 									value: '${watsonIncidentType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1357,7 +1357,7 @@
 								<c:set value='${watsonIncidentSubtypeIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonIncidentSubtype.watsonListTypeId}: {
-									label: '${watsonIncidentSubtype.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonIncidentSubtype.getName(locale))}',
 									value: '${watsonIncidentSubtype.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1466,7 +1466,7 @@
 									<c:set value='${watsonIncidentNatureIndex.last ? "" : ","}' var="delimiter" />
 
 									${watsonIncidentNature.watsonListTypeId}: {
-										label: '${watsonIncidentNature.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(watsonIncidentNature.getName(locale))}',
 										value: '${watsonIncidentNature.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
@@ -1483,7 +1483,7 @@
 									<c:set value='${watsonIncidentTypeIndex.last ? "" : ","}' var="delimiter" />
 
 									${watsonIncidentType.watsonListTypeId}: {
-										label: '${watsonIncidentType.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(watsonIncidentType.getName(locale))}',
 										value: '${watsonIncidentType.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
@@ -1506,7 +1506,7 @@
 									<c:set value='${watsonIncidentSubtypeIndex.last ? "" : ","}' var="delimiter" />
 
 									${watsonIncidentSubtype.watsonListTypeId}: {
-										label: '${watsonIncidentSubtype.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(watsonIncidentSubtype.getName(locale))}',
 										value: '${watsonIncidentSubtype.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
@@ -1553,7 +1553,7 @@
 								<c:set value='${countryIndex.last ? "" : ","}' var="delimiter" />
 
 								${country.countryId}: {
-									label: '${country.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(country.getName(locale))}',
 									value: '${country.countryId}'
 								}${delimiter}
 							</c:forEach>
@@ -1593,7 +1593,7 @@
 								<c:set value='${citizenshipWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${citizenshipWatsonListType.watsonListTypeId}: {
-									label: '${citizenshipWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(citizenshipWatsonListType.getName(locale))}',
 									value: '${citizenshipWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1614,7 +1614,7 @@
 								<c:set value='${countryIDWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${countryIDWatsonListType.watsonListTypeId}: {
-									label: '${countryIDWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(countryIDWatsonListType.getName(locale))}',
 									value: '${countryIDWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1640,7 +1640,7 @@
 								<c:set value='${countryWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${countryWatsonListType.watsonListTypeId}: {
-									label: '${countryWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(countryWatsonListType.getName(locale))}',
 									value: '${countryWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1712,7 +1712,7 @@
 							<c:set value="${WatsonListType.fetch(WatsonListTypeConstants.PERSON_ETHNICITY_REGION_OTHER)}" var="ethnicityWatsonListTypeDefault" />
 
 							${ethnicityWatsonListTypeDefault.watsonListTypeId}: {
-								label: '${ethnicityWatsonListTypeDefault.getName(locale)}',
+								label: '${AlloyLanguageUtil.formatUnicode(ethnicityWatsonListTypeDefault.getName(locale))}',
 								value: '${ethnicityWatsonListTypeDefault.watsonListTypeId}'
 							}
 						},
@@ -1721,7 +1721,7 @@
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("if-the-country-of-ethnicity-is-thailand-or-burma-provide-a-more-specific-ethnicity")}',
 						translatable: ${false},
 						type: 'DEPENDENT_SELECT_INPUT',
-						validations: []
+						validations : []
 					},
 					eyesWatsonListTypeId: {
 						filterable: ${true},
@@ -1733,7 +1733,7 @@
 								<c:set value='${eyesWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${eyesWatsonListType.watsonListTypeId}: {
-									label: '${eyesWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(eyesWatsonListType.getName(locale))}',
 									value: '${eyesWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1753,7 +1753,7 @@
 								<c:set value='${hairWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${hairWatsonListType.watsonListTypeId}: {
-									label: '${hairWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(hairWatsonListType.getName(locale))}',
 									value: '${hairWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1810,7 +1810,7 @@
 								<c:set value='${nameTypeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${nameTypeWatsonListType.watsonListTypeId}: {
-									label: '${nameTypeWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(nameTypeWatsonListType.getName(locale))}',
 									value: '${nameTypeWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1849,7 +1849,7 @@
 								<c:set value='${phoneNumberWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${phoneNumberWatsonListType.watsonListTypeId}: {
-									label: '${phoneNumberWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(phoneNumberWatsonListType.getName(locale))}',
 									value: '${phoneNumberWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1894,7 +1894,7 @@
 								<c:set value='${sexWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${sexWatsonListType.watsonListTypeId}: {
-									label: '${sexWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(sexWatsonListType.getName(locale))}',
 									value: '${sexWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1917,7 +1917,7 @@
 								<c:set value='${socialMediaAccountWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${socialMediaAccountWatsonListType.watsonListTypeId}: {
-									label: '${socialMediaAccountWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(socialMediaAccountWatsonListType.getName(locale))}',
 									value: '${socialMediaAccountWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1955,7 +1955,7 @@
 								<c:set value='${typeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${typeWatsonListType.watsonListTypeId}: {
-									label: '${typeWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(typeWatsonListType.getName(locale))}',
 									value: '${typeWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -1966,7 +1966,7 @@
 								<c:set value='${involvementTypeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${involvementTypeWatsonListType.watsonListTypeId}: {
-									label: '${involvementTypeWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(involvementTypeWatsonListType.getName(locale))}',
 									value: '${involvementTypeWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2013,7 +2013,7 @@
 								<c:set value='${activityPersonTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${activityPersonType.watsonListTypeId}: {
-									label: '${activityPersonType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(activityPersonType.getName(locale))}',
 									value: '${activityPersonType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2030,7 +2030,7 @@
 								<c:set value='${addressPersonTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${addressPersonType.watsonListTypeId}: {
-									label: '${addressPersonType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(addressPersonType.getName(locale))}',
 									value: '${addressPersonType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2047,7 +2047,7 @@
 								<c:set value='${personTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${personType.watsonListTypeId}: {
-									label: '${personType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(personType.getName(locale))}',
 									value: '${personType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2064,7 +2064,7 @@
 								<c:set value='${personResourceTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${personResourceType.watsonListTypeId}: {
-									label: '${personResourceType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(personResourceType.getName(locale))}',
 									value: '${personResourceType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2081,7 +2081,7 @@
 								<c:set value='${personVehicleTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${personVehicleType.watsonListTypeId}: {
-									label: '${personVehicleType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(personVehicleType.getName(locale))}',
 									value: '${personVehicleType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2135,8 +2135,8 @@
 							<c:set value='${activityResourceTypesIndex.last ? "" : ","}' var="delimiter" />
 
 							${activityResourceType.watsonListTypeId}: {
-								label: '${activityResourceType.getName(locale)}',
-									value: '${activityResourceType.watsonListTypeId}'
+								label: '${AlloyLanguageUtil.formatUnicode(activityResourceType.getName(locale))}',
+								value: '${activityResourceType.watsonListTypeId}'
 							}${delimiter}
 							</c:forEach>
 						},
@@ -2244,7 +2244,7 @@
 								<c:set value='${typeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${typeWatsonListType.watsonListTypeId}: {
-									label: '${typeWatsonListType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(typeWatsonListType.getName(locale))}',
 									value: '${typeWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2282,7 +2282,7 @@
 									<c:set value='${activityResourceTypesIndex.last ? "" : ","}' var="delimiter" />
 
 									${activityResourceType.watsonListTypeId}: {
-										label: '${activityResourceType.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(activityResourceType.getName(locale))}',
 										value: '${activityResourceType.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
@@ -2299,7 +2299,7 @@
 									<c:set value='${addressResourceTypesIndex.last ? "" : ","}' var="delimiter" />
 
 									${addressResourceType.watsonListTypeId}: {
-										label: '${addressResourceType.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(addressResourceType.getName(locale))}',
 										value: '${addressResourceType.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
@@ -2316,7 +2316,7 @@
 									<c:set value='${resourcePersonTypesIndex.last ? "" : ","}' var="delimiter" />
 
 									${resourcePersonType.watsonListTypeId}: {
-										label: '${resourcePersonType.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(resourcePersonType.getName(locale))}',
 										value: '${resourcePersonType.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
@@ -2333,7 +2333,7 @@
 									<c:set value='${resourceVehicleTypesIndex.last ? "" : ","}' var="delimiter" />
 
 									${resourceVehicleType.watsonListTypeId}: {
-										label: '${resourceVehicleType.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(resourceVehicleType.getName(locale))}',
 										value: '${resourceVehicleType.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
@@ -2383,7 +2383,7 @@
 								<c:set value='${watsonVehicleColorsIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonVehicleColor.watsonListTypeId}: {
-									label: '${watsonVehicleColor.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonVehicleColor.getName(locale))}',
 									value: '${watsonVehicleColor.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2441,7 +2441,7 @@
 								<c:set value='${watsonVehicleMakesIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonVehicleMake.watsonListTypeId}: {
-									label: '${watsonVehicleMake.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonVehicleMake.getName(locale))}',
 									value: '${watsonVehicleMake.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2480,7 +2480,7 @@
 								<c:set value='${watsonVehicleTypesIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonVehicleType.watsonListTypeId}: {
-									label: '${watsonVehicleType.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonVehicleType.getName(locale))}',
 									value: '${watsonVehicleType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2516,7 +2516,7 @@
 								<c:set value='${watsonVehicleYearsIndex.last ? "" : ","}' var="delimiter" />
 
 								${watsonVehicleYear.watsonListTypeId}: {
-									label: '${watsonVehicleYear.getName(locale)}',
+									label: '${AlloyLanguageUtil.formatUnicode(watsonVehicleYear.getName(locale))}',
 									value: '${watsonVehicleYear.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
@@ -2540,7 +2540,7 @@
 									<c:set value='${addressVehicleTypesIndex.last ? "" : ","}' var="delimiter" />
 
 									${addressVehicleType.watsonListTypeId}: {
-										label: '${addressVehicleType.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(addressVehicleType.getName(locale))}',
 										value: '${addressVehicleType.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
@@ -2557,7 +2557,7 @@
 									<c:set value='${vehiclePersonTypesIndex.last ? "" : ","}' var="delimiter" />
 
 									${vehiclePersonType.watsonListTypeId}: {
-										label: '${vehiclePersonType.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(vehiclePersonType.getName(locale))}',
 										value: '${vehiclePersonType.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
@@ -2574,7 +2574,7 @@
 									<c:set value='${vehicleResourceTypesIndex.last ? "" : ","}' var="delimiter" />
 
 									${vehicleResourceType.watsonListTypeId}: {
-										label: '${vehicleResourceType.getName(locale)}',
+										label: '${AlloyLanguageUtil.formatUnicode(vehicleResourceType.getName(locale))}',
 										value: '${vehicleResourceType.watsonListTypeId}'
 									}${delimiter}
 								</c:forEach>
