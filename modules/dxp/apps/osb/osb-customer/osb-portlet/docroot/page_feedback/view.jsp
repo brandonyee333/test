@@ -17,10 +17,10 @@
 <%@ include file="/init.jsp" %>
 
 <div id="<portlet:namespace />radioButtons">
-	<aui:field-wrapper inlineField="true" label="was-this-helpful">
-		<aui:input autocomplete="off" inlineField="true" label="<%= FeedbackEntryConstants.getAnswerLabel(FeedbackEntryConstants.ANSWER_YES) %>" name="feedback" onclick='<%= renderResponse.getNamespace() + "checkFeedback();" %>' type="radio" value="<%= FeedbackEntryConstants.ANSWER_YES %>" />
+	<aui:field-wrapper inlineField="<%= true %>" label="was-this-helpful">
+		<aui:input autocomplete="off" inlineField="<%= true %>" label="<%= FeedbackEntryConstants.getAnswerLabel(FeedbackEntryConstants.ANSWER_YES) %>" name="feedback" onclick='<%= renderResponse.getNamespace() + "checkFeedback();" %>' type="radio" value="<%= FeedbackEntryConstants.ANSWER_YES %>" />
 
-		<aui:input autocomplete="off" inlineField="true" label="<%= FeedbackEntryConstants.getAnswerLabel(FeedbackEntryConstants.ANSWER_NO) %>" name="feedback" onclick='<%= renderResponse.getNamespace() + "checkFeedback();" %>' type="radio" value="<%= FeedbackEntryConstants.ANSWER_NO %>" />
+		<aui:input autocomplete="off" inlineField="<%= true %>" label="<%= FeedbackEntryConstants.getAnswerLabel(FeedbackEntryConstants.ANSWER_NO) %>" name="feedback" onclick='<%= renderResponse.getNamespace() + "checkFeedback();" %>' type="radio" value="<%= FeedbackEntryConstants.ANSWER_NO %>" />
 	</aui:field-wrapper>
 </div>
 

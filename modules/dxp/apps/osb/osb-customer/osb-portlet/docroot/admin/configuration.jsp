@@ -39,14 +39,14 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 	}
 </script>
 
-<liferay-portlet:renderURL portletConfiguration="true" var="portletURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+<liferay-portlet:renderURL portletConfiguration="<%= true %>" var="portletURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 	<portlet:param name="tabs1" value="<%= tabs1 %>" />
 	<portlet:param name="tabs2" value="<%= tabs2 %>" />
 	<portlet:param name="tabs3" value="<%= tabs3 %>" />
 	<portlet:param name="redirect" value="<%= redirect %>" />
 </liferay-portlet:renderURL>
 
-<liferay-portlet:actionURL portletConfiguration="true" var="configurationURL" />
+<liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationURL" />
 
 <aui:form action="<%= configurationURL %>" method="post">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
@@ -264,9 +264,9 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					</table>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" ignoreRequestValue="true" label="title" name="announcementTitle" value="<%= announcementTitle %>" />
+						<aui:input cssClass="lfr-input-text-container" ignoreRequestValue="<%= true %>" label="title" name="announcementTitle" value="<%= announcementTitle %>" />
 
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="true" label="content" name="announcementContent" type="textarea" value="<%= announcementContent %>" />
+						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="content" name="announcementContent" type="textarea" value="<%= announcementContent %>" />
 					</aui:fieldset>
 
 					<%
@@ -448,13 +448,13 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" helpMessage="component-link-help" ignoreRequestValue="true" label="component-link" name="componentLink" value="<%= componentLink %>" />
+						<aui:input cssClass="lfr-input-text-container" helpMessage="component-link-help" ignoreRequestValue="<%= true %>" label="component-link" name="componentLink" value="<%= componentLink %>" />
 
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="true" label="message" name="componentMessage" type="textarea" value="<%= componentMessage %>" />
+						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="message" name="componentMessage" type="textarea" value="<%= componentMessage %>" />
 
-						<aui:input cssClass="lfr-input-text-container" helpMessage="component-message-link-help" ignoreRequestValue="true" label="component-message-link" name="componentMessageLink" value="<%= componentMessageLink %>" />
+						<aui:input cssClass="lfr-input-text-container" helpMessage="component-message-link-help" ignoreRequestValue="<%= true %>" label="component-message-link" name="componentMessageLink" value="<%= componentMessageLink %>" />
 
-						<aui:input cssClass="show-in-ticket-view" helpMessage="show-component-message-help" ignoreRequestValue="true" label="show-in-ticket-view" name="showInTicketView" type="checkbox" value="<%= showInTicketView %>" />
+						<aui:input cssClass="show-in-ticket-view" helpMessage="show-component-message-help" ignoreRequestValue="<%= true %>" label="show-in-ticket-view" name="showInTicketView" type="checkbox" value="<%= showInTicketView %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("dxp-message") %>'>
@@ -465,9 +465,9 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" ignoreRequestValue="true" label="dxp-title" name="dxpTitle" value="<%= dxpTitle %>" />
+						<aui:input cssClass="lfr-input-text-container" ignoreRequestValue="<%= true %>" label="dxp-title" name="dxpTitle" value="<%= dxpTitle %>" />
 
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="true" label="dxp-message" name="dxpMessage" type="textarea" value="<%= dxpMessage %>" />
+						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="dxp-message" name="dxpMessage" type="textarea" value="<%= dxpMessage %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("escalation-details") %>'>
@@ -625,7 +625,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										name="action"
 									>
 										<liferay-ui:icon-menu>
-											<liferay-portlet:renderURL portletConfiguration="true" var="updateServerURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+											<liferay-portlet:renderURL portletConfiguration="<%= true %>" var="updateServerURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 												<portlet:param name="cmd" value="<%= Constants.ADD %>" />
 												<portlet:param name="tabs1" value="<%= tabs1 %>" />
 												<portlet:param name="tabs2" value="<%= tabs2 %>" />
@@ -645,7 +645,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:search-iterator paginate="<%= false %>" />
 							</liferay-ui:search-container>
 
-							<liferay-portlet:renderURL copyCurrentRenderParameters="<%= false %>" portletConfiguration="true" var="updateServerURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+							<liferay-portlet:renderURL copyCurrentRenderParameters="<%= false %>" portletConfiguration="<%= true %>" var="updateServerURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 								<portlet:param name="cmd" value="<%= Constants.ADD %>" />
 								<portlet:param name="tabs1" value="<%= tabs1 %>" />
 								<portlet:param name="tabs2" value="<%= tabs2 %>" />
@@ -698,7 +698,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" helpMessage="product-link-help" ignoreRequestValue="true" label="product-link" name="productLink" value="<%= productLink %>" />
+						<aui:input cssClass="lfr-input-text-container" helpMessage="product-link-help" ignoreRequestValue="<%= true %>" label="product-link" name="productLink" value="<%= productLink %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("status-messages") %>'>
@@ -766,7 +766,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="true" label="body" name="statusMessage" type="textarea" value="<%= statusMessage %>" />
+						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="body" name="statusMessage" type="textarea" value="<%= statusMessage %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("ticket-weight") %>'>
@@ -847,7 +847,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="true" label="body" name="tierMessage" type="textarea" value="<%= tierMessage %>" />
+						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="body" name="tierMessage" type="textarea" value="<%= tierMessage %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:otherwise>
@@ -894,7 +894,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					</table>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="true" label="body" name="commentValue" type="textarea" value="<%= commentValue %>" />
+						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="body" name="commentValue" type="textarea" value="<%= commentValue %>" />
 					</aui:fieldset>
 				</c:otherwise>
 			</c:choose>

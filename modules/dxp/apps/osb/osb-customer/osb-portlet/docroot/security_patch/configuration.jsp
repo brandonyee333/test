@@ -23,7 +23,7 @@ String releaseNotesURL = GetterUtil.getString(portletPreferences.getValue("relea
 String footerText = GetterUtil.getString(portletPreferences.getValue("footerText", null));
 %>
 
-<liferay-portlet:actionURL portletConfiguration="true" var="actionURL" />
+<liferay-portlet:actionURL portletConfiguration="<%= true %>" var="actionURL" />
 
 <aui:form action="<%= actionURL %>">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />

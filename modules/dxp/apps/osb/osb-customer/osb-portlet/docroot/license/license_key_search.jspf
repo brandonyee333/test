@@ -182,8 +182,8 @@ Date lastEnabledDate = calendar.getTime();
 
 						<select id="<portlet:namespace /><%= displayTerms.ACTIVE %>" name="<portlet:namespace /><%= displayTerms.ACTIVE %>">
 							<option></option>
-							<option <%= (displayTerms.hasActive() && displayTerms.isActive()) ? "selected" : "" %> value="1"><liferay-ui:message key="true" /></option>
-							<option <%= (displayTerms.hasActive() && !displayTerms.isActive()) ? "selected" : "" %> value="0"><liferay-ui:message key="false" /></option>
+							<option <%= (displayTerms.hasActive() && displayTerms.isActive()) ? "selected" : "" %> value="1"><liferay-ui:message key="<%= Boolean.TRUE.toString() %>" /></option>
+							<option <%= (displayTerms.hasActive() && !displayTerms.isActive()) ? "selected" : "" %> value="0"><liferay-ui:message key="<%= Boolean.FALSE.toString() %>" /></option>
 						</select>
 					</c:if>
 				</div>

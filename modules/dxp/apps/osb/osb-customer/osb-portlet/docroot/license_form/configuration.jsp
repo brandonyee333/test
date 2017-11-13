@@ -24,11 +24,11 @@ int productVersion = PrefsParamUtil.getInteger(portletPreferences, request, "pro
 %>
 
 <c:if test="<%= PortletPermissionUtil.contains(permissionChecker, plid, OSBPortletKeys.OSB_LICENSE_FORM, OSBActionKeys.CONFIGURATION) %>">
-	<liferay-portlet:renderURL portletConfiguration="true" var="portletURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+	<liferay-portlet:renderURL portletConfiguration="<%= true %>" var="portletURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="redirect" value="<%= redirect %>" />
 	</liferay-portlet:renderURL>
 
-	<liferay-portlet:actionURL portletConfiguration="true" var="configurationURL" />
+	<liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationURL" />
 
 	<aui:form action="<%= configurationURL %>">
 		<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />

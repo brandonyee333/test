@@ -67,7 +67,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 
 		<div class="clearfix">
 			<div class="aui-w33 content-column">
-				<aui:select label="call-type" name="type" showEmptyOption="true">
+				<aui:select label="call-type" name="type" showEmptyOption="<%= true %>">
 					<aui:option label="incoming" selected="<%= type == AccountCallConstants.TYPE_INCOMING %>" value="<%= AccountCallConstants.TYPE_INCOMING %>" />
 					<aui:option label="outgoing" selected="<%= type == AccountCallConstants.TYPE_OUTGOING %>" value="<%= AccountCallConstants.TYPE_OUTGOING %>" />
 					<aui:option label="standing" selected="<%= type == AccountCallConstants.TYPE_STANDING %>" value="<%= AccountCallConstants.TYPE_STANDING %>" />

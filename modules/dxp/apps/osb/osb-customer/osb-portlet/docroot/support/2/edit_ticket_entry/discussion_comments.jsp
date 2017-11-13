@@ -378,7 +378,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 
 											<liferay-ui:icon
 												image="checked"
-												label="true"
+												label="<%= true %>"
 												message="solution"
 											/>
 										</div>

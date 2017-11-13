@@ -158,7 +158,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 									<liferay-ui:message key="away-message" />:
 								</h2>
 
-								<aui:input inlineField="true" label="auto-away-message-reply-enabled" name="awayMessageEnabled" style="margin-left: 25px;" type="checkbox" value="<%= awayMessageEnabled %>" />
+								<aui:input inlineField="<%= true %>" label="auto-away-message-reply-enabled" name="awayMessageEnabled" style="margin-left: 25px;" type="checkbox" value="<%= awayMessageEnabled %>" />
 							</aui:fieldset>
 						</div>
 
@@ -219,7 +219,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 
 				<c:if test="<%= liferayIncOrg %>">
 					<aui:fieldset>
-						<aui:input helpMessage="choose-this-option-if-you-wish-to-share-your-screen-with-other-people" ignoreRequestValue="true" label="screen-share-mode" name="screenShareMode" type="checkbox" value="<%= screenShareMode %>" />
+						<aui:input helpMessage="choose-this-option-if-you-wish-to-share-your-screen-with-other-people" ignoreRequestValue="<%= true %>" label="screen-share-mode" name="screenShareMode" type="checkbox" value="<%= screenShareMode %>" />
 					</aui:fieldset>
 
 					<div>

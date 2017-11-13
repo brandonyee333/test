@@ -116,7 +116,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 <c:if test="<%= Validator.isNotNull(productLink) %>">
 	<div class="portlet-msg-info">
 		<div class="txt-b">
-			<liferay-ui:message arguments="<%= productEntryLESADisplayName %>" key="known-issues" translateArguments="true" />
+			<liferay-ui:message arguments="<%= productEntryLESADisplayName %>" key="known-issues" translateArguments="<%= true %>" />
 		</div>
 
 		<div>

@@ -36,7 +36,7 @@ portletURL.setParameter("mvcPath", "/support/2/select_ticket_canned_response.jsp
 			TicketCannedResponseDisplayTerms displayTerms = (TicketCannedResponseDisplayTerms)searchContainer.getDisplayTerms();
 			%>
 
-			<aui:select inlineField="true" label="language" name="languageId" onChange='<%= "document." + renderResponse.getNamespace() + "fm.submit();" %>'>
+			<aui:select inlineField="<%= true %>" label="language" name="languageId" onChange='<%= "document." + renderResponse.getNamespace() + "fm.submit();" %>'>
 
 				<%
 				Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
