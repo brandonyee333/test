@@ -19,6 +19,7 @@ import com.liferay.lcs.rest.client.LCSSubscriptionEntryClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
+import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,7 +39,8 @@ public class LCSSubscriptionEntryClientImpl
 	@Override
 	public LCSSubscriptionEntry fetchLCSSubscriptionEntry(String key)
 		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException {
+			   JSONWebServiceSerializeException,
+			   JSONWebServiceTransportException {
 
 		try {
 			return _jsonWebServiceClient.doGetToObject(
