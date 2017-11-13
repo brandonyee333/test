@@ -34,6 +34,7 @@ public class WatsonIncidentRelSoap implements Serializable {
 		WatsonIncidentRelSoap soapModel = new WatsonIncidentRelSoap();
 
 		soapModel.setWatsonIncidentRelId(model.getWatsonIncidentRelId());
+		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
@@ -104,6 +105,14 @@ public class WatsonIncidentRelSoap implements Serializable {
 
 	public void setWatsonIncidentRelId(long watsonIncidentRelId) {
 		_watsonIncidentRelId = watsonIncidentRelId;
+	}
+
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	public long getCompanyId() {
@@ -179,6 +188,7 @@ public class WatsonIncidentRelSoap implements Serializable {
 	}
 
 	private long _watsonIncidentRelId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

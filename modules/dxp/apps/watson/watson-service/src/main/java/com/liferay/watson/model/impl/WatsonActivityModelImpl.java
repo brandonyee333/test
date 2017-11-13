@@ -74,6 +74,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	public static final String TABLE_NAME = "WatsonActivity";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "watsonActivityId", Types.BIGINT },
+			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -91,6 +92,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonActivityId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -105,7 +107,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonActivity (watsonActivityId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,watsonIncidentId LONG,narrative STRING null,reportDate DATE null,startDate DATE null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonActivity (watsonActivityId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,watsonIncidentId LONG,narrative STRING null,reportDate DATE null,startDate DATE null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonActivity";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonActivity.watsonActivityId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonActivity.watsonActivityId ASC";
@@ -160,6 +162,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonActivityId", getWatsonActivityId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -185,6 +188,12 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 		if (watsonActivityId != null) {
 			setWatsonActivityId(watsonActivityId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -269,6 +278,16 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	@Override
 	public void setWatsonActivityId(long watsonActivityId) {
 		_watsonActivityId = watsonActivityId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	@Override
@@ -438,7 +457,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public void setNarrative(String narrative, Locale locale) {
-		setNarrative(narrative, locale, LocaleUtil.getDefault());
+		setNarrative(narrative, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -464,7 +483,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public void setNarrativeMap(Map<Locale, String> narrativeMap) {
-		setNarrativeMap(narrativeMap, LocaleUtil.getDefault());
+		setNarrativeMap(narrativeMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -548,7 +567,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			return StringPool.BLANK;
 		}
 
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
 	}
@@ -569,7 +588,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
 
@@ -599,6 +618,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		WatsonActivityImpl watsonActivityImpl = new WatsonActivityImpl();
 
 		watsonActivityImpl.setWatsonActivityId(getWatsonActivityId());
+		watsonActivityImpl.setGroupId(getGroupId());
 		watsonActivityImpl.setCompanyId(getCompanyId());
 		watsonActivityImpl.setUserId(getUserId());
 		watsonActivityImpl.setUserName(getUserName());
@@ -682,6 +702,8 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 		watsonActivityCacheModel.watsonActivityId = getWatsonActivityId();
 
+		watsonActivityCacheModel.groupId = getGroupId();
+
 		watsonActivityCacheModel.companyId = getCompanyId();
 
 		watsonActivityCacheModel.userId = getUserId();
@@ -751,10 +773,12 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{watsonActivityId=");
 		sb.append(getWatsonActivityId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", userId=");
@@ -786,7 +810,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(46);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonActivity");
@@ -795,6 +819,10 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		sb.append(
 			"<column><column-name>watsonActivityId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonActivityId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
@@ -855,6 +883,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			WatsonActivity.class
 		};
 	private long _watsonActivityId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

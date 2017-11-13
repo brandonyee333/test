@@ -374,6 +374,7 @@ public class WatsonIncidentRelPersistenceImpl extends BasePersistenceImpl<Watson
 		watsonIncidentRelImpl.setPrimaryKey(watsonIncidentRel.getPrimaryKey());
 
 		watsonIncidentRelImpl.setWatsonIncidentRelId(watsonIncidentRel.getWatsonIncidentRelId());
+		watsonIncidentRelImpl.setGroupId(watsonIncidentRel.getGroupId());
 		watsonIncidentRelImpl.setCompanyId(watsonIncidentRel.getCompanyId());
 		watsonIncidentRelImpl.setUserId(watsonIncidentRel.getUserId());
 		watsonIncidentRelImpl.setUserName(watsonIncidentRel.getUserName());

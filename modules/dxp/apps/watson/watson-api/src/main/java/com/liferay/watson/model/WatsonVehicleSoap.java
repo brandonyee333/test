@@ -34,6 +34,7 @@ public class WatsonVehicleSoap implements Serializable {
 		WatsonVehicleSoap soapModel = new WatsonVehicleSoap();
 
 		soapModel.setWatsonVehicleId(model.getWatsonVehicleId());
+		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
@@ -109,6 +110,14 @@ public class WatsonVehicleSoap implements Serializable {
 
 	public void setWatsonVehicleId(long watsonVehicleId) {
 		_watsonVehicleId = watsonVehicleId;
+	}
+
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	public long getCompanyId() {
@@ -248,6 +257,7 @@ public class WatsonVehicleSoap implements Serializable {
 	}
 
 	private long _watsonVehicleId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

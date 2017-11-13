@@ -371,6 +371,7 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 		watsonHistoryImpl.setPrimaryKey(watsonHistory.getPrimaryKey());
 
 		watsonHistoryImpl.setWatsonHistoryId(watsonHistory.getWatsonHistoryId());
+		watsonHistoryImpl.setGroupId(watsonHistory.getGroupId());
 		watsonHistoryImpl.setCompanyId(watsonHistory.getCompanyId());
 		watsonHistoryImpl.setUserId(watsonHistory.getUserId());
 		watsonHistoryImpl.setUserName(watsonHistory.getUserName());

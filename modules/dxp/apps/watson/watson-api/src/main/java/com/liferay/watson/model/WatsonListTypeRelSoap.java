@@ -34,6 +34,7 @@ public class WatsonListTypeRelSoap implements Serializable {
 		WatsonListTypeRelSoap soapModel = new WatsonListTypeRelSoap();
 
 		soapModel.setWatsonListTypeRelId(model.getWatsonListTypeRelId());
+		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
@@ -107,6 +108,14 @@ public class WatsonListTypeRelSoap implements Serializable {
 
 	public void setWatsonListTypeRelId(long watsonListTypeRelId) {
 		_watsonListTypeRelId = watsonListTypeRelId;
+	}
+
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	public long getCompanyId() {
@@ -210,6 +219,7 @@ public class WatsonListTypeRelSoap implements Serializable {
 	}
 
 	private long _watsonListTypeRelId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

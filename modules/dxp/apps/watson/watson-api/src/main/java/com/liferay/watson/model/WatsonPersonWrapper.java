@@ -59,6 +59,7 @@ public class WatsonPersonWrapper implements WatsonPerson,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonPersonId", getWatsonPersonId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -99,6 +100,12 @@ public class WatsonPersonWrapper implements WatsonPerson,
 
 		if (watsonPersonId != null) {
 			setWatsonPersonId(watsonPersonId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -495,6 +502,16 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public long getEyesWatsonListTypeId() {
 		return _watsonPerson.getEyesWatsonListTypeId();
+	}
+
+	/**
+	* Returns the group ID of this watson person.
+	*
+	* @return the group ID of this watson person
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonPerson.getGroupId();
 	}
 
 	/**
@@ -1011,6 +1028,16 @@ public class WatsonPersonWrapper implements WatsonPerson,
 	@Override
 	public void setEyesWatsonListTypeId(long eyesWatsonListTypeId) {
 		_watsonPerson.setEyesWatsonListTypeId(eyesWatsonListTypeId);
+	}
+
+	/**
+	* Sets the group ID of this watson person.
+	*
+	* @param groupId the group ID of this watson person
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonPerson.setGroupId(groupId);
 	}
 
 	/**

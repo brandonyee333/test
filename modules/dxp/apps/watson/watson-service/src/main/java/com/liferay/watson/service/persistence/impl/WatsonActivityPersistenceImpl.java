@@ -351,6 +351,7 @@ public class WatsonActivityPersistenceImpl extends BasePersistenceImpl<WatsonAct
 		watsonActivityImpl.setPrimaryKey(watsonActivity.getPrimaryKey());
 
 		watsonActivityImpl.setWatsonActivityId(watsonActivity.getWatsonActivityId());
+		watsonActivityImpl.setGroupId(watsonActivity.getGroupId());
 		watsonActivityImpl.setCompanyId(watsonActivity.getCompanyId());
 		watsonActivityImpl.setUserId(watsonActivity.getUserId());
 		watsonActivityImpl.setUserName(watsonActivity.getUserName());

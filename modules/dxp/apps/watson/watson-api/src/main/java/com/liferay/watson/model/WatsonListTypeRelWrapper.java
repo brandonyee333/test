@@ -59,6 +59,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonListTypeRelId", getWatsonListTypeRelId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -81,6 +82,12 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 
 		if (watsonListTypeRelId != null) {
 			setWatsonListTypeRelId(watsonListTypeRelId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -229,6 +236,16 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _watsonListTypeRel.getExpandoBridge();
+	}
+
+	/**
+	* Returns the group ID of this watson list type rel.
+	*
+	* @return the group ID of this watson list type rel
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonListTypeRel.getGroupId();
 	}
 
 	/**
@@ -525,6 +542,16 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonListTypeRel.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the group ID of this watson list type rel.
+	*
+	* @param groupId the group ID of this watson list type rel
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonListTypeRel.setGroupId(groupId);
 	}
 
 	/**

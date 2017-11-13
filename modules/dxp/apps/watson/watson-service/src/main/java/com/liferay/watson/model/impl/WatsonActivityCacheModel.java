@@ -66,10 +66,12 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{watsonActivityId=");
 		sb.append(watsonActivityId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -104,6 +106,7 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 		WatsonActivityImpl watsonActivityImpl = new WatsonActivityImpl();
 
 		watsonActivityImpl.setWatsonActivityId(watsonActivityId);
+		watsonActivityImpl.setGroupId(groupId);
 		watsonActivityImpl.setCompanyId(companyId);
 		watsonActivityImpl.setUserId(userId);
 
@@ -164,6 +167,8 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonActivityId = objectInput.readLong();
 
+		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -187,6 +192,8 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(watsonActivityId);
+
+		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -222,6 +229,7 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 	}
 
 	public long watsonActivityId;
+	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;

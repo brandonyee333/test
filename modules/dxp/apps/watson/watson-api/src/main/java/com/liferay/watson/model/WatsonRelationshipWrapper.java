@@ -59,6 +59,7 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonRelationshipId", getWatsonRelationshipId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -82,6 +83,12 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 
 		if (watsonRelationshipId != null) {
 			setWatsonRelationshipId(watsonRelationshipId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -246,6 +253,16 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _watsonRelationship.getExpandoBridge();
+	}
+
+	/**
+	* Returns the group ID of this watson relationship.
+	*
+	* @return the group ID of this watson relationship
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonRelationship.getGroupId();
 	}
 
 	/**
@@ -457,6 +474,16 @@ public class WatsonRelationshipWrapper implements WatsonRelationship,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonRelationship.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the group ID of this watson relationship.
+	*
+	* @param groupId the group ID of this watson relationship
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonRelationship.setGroupId(groupId);
 	}
 
 	/**

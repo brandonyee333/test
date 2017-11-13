@@ -371,6 +371,7 @@ public class WatsonListTypePersistenceImpl extends BasePersistenceImpl<WatsonLis
 		watsonListTypeImpl.setPrimaryKey(watsonListType.getPrimaryKey());
 
 		watsonListTypeImpl.setWatsonListTypeId(watsonListType.getWatsonListTypeId());
+		watsonListTypeImpl.setGroupId(watsonListType.getGroupId());
 		watsonListTypeImpl.setCompanyId(watsonListType.getCompanyId());
 		watsonListTypeImpl.setUserId(watsonListType.getUserId());
 		watsonListTypeImpl.setUserName(watsonListType.getUserName());

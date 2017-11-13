@@ -351,6 +351,7 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 		watsonResourceImpl.setPrimaryKey(watsonResource.getPrimaryKey());
 
 		watsonResourceImpl.setWatsonResourceId(watsonResource.getWatsonResourceId());
+		watsonResourceImpl.setGroupId(watsonResource.getGroupId());
 		watsonResourceImpl.setCompanyId(watsonResource.getCompanyId());
 		watsonResourceImpl.setUserId(watsonResource.getUserId());
 		watsonResourceImpl.setUserName(watsonResource.getUserName());

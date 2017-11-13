@@ -59,6 +59,7 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonIncidentId", getWatsonIncidentId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -86,6 +87,12 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 
 		if (watsonIncidentId != null) {
 			setWatsonIncidentId(watsonIncidentId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -344,6 +351,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public java.lang.String getExternalCaseId() {
 		return _watsonIncident.getExternalCaseId();
+	}
+
+	/**
+	* Returns the group ID of this watson incident.
+	*
+	* @return the group ID of this watson incident
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonIncident.getGroupId();
 	}
 
 	/**
@@ -662,6 +679,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public void setExternalCaseId(java.lang.String externalCaseId) {
 		_watsonIncident.setExternalCaseId(externalCaseId);
+	}
+
+	/**
+	* Sets the group ID of this watson incident.
+	*
+	* @param groupId the group ID of this watson incident
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonIncident.setGroupId(groupId);
 	}
 
 	/**

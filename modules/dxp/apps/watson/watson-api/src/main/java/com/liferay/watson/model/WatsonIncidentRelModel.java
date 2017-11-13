@@ -19,9 +19,9 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -43,8 +43,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface WatsonIncidentRelModel extends AuditedModel,
-	BaseModel<WatsonIncidentRel>, ShardedModel {
+public interface WatsonIncidentRelModel extends BaseModel<WatsonIncidentRel>,
+	GroupedModel, ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -78,6 +78,22 @@ public interface WatsonIncidentRelModel extends AuditedModel,
 	 * @param watsonIncidentRelId the watson incident rel ID of this watson incident rel
 	 */
 	public void setWatsonIncidentRelId(long watsonIncidentRelId);
+
+	/**
+	 * Returns the group ID of this watson incident rel.
+	 *
+	 * @return the group ID of this watson incident rel
+	 */
+	@Override
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this watson incident rel.
+	 *
+	 * @param groupId the group ID of this watson incident rel
+	 */
+	@Override
+	public void setGroupId(long groupId);
 
 	/**
 	 * Returns the company ID of this watson incident rel.

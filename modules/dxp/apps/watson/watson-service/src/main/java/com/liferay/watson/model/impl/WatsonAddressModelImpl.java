@@ -74,6 +74,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	public static final String TABLE_NAME = "WatsonAddress";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "watsonAddressId", Types.BIGINT },
+			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -105,6 +106,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonAddressId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -133,7 +135,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonAddress (watsonAddressId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,countryId LONG,districtWatsonListTypeId LONG,originalWatsonAddressId LONG,provinceWatsonListTypeId LONG,subDistrictWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,postalCode VARCHAR(75) null,region VARCHAR(75) null,street VARCHAR(75) null,number_ VARCHAR(75) null,building STRING null,floor VARCHAR(75) null,room VARCHAR(75) null,description STRING null,imagePayload TEXT null,lastSeenDate DATE null,latitude DOUBLE,longitude DOUBLE,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonAddress (watsonAddressId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,countryId LONG,districtWatsonListTypeId LONG,originalWatsonAddressId LONG,provinceWatsonListTypeId LONG,subDistrictWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,postalCode VARCHAR(75) null,region VARCHAR(75) null,street VARCHAR(75) null,number_ VARCHAR(75) null,building STRING null,floor VARCHAR(75) null,room VARCHAR(75) null,description STRING null,imagePayload TEXT null,lastSeenDate DATE null,latitude DOUBLE,longitude DOUBLE,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonAddress";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonAddress.watsonAddressId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonAddress.watsonAddressId ASC";
@@ -188,6 +190,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonAddressId", getWatsonAddressId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -228,6 +231,12 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 		if (watsonAddressId != null) {
 			setWatsonAddressId(watsonAddressId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -399,6 +408,16 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public void setWatsonAddressId(long watsonAddressId) {
 		_watsonAddressId = watsonAddressId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	@Override
@@ -608,7 +627,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	@Override
 	public void setName(String name, Locale locale) {
-		setName(name, locale, LocaleUtil.getDefault());
+		setName(name, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -633,7 +652,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	@Override
 	public void setNameMap(Map<Locale, String> nameMap) {
-		setNameMap(nameMap, LocaleUtil.getDefault());
+		setNameMap(nameMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -766,7 +785,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	@Override
 	public void setBuilding(String building, Locale locale) {
-		setBuilding(building, locale, LocaleUtil.getDefault());
+		setBuilding(building, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -791,7 +810,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	@Override
 	public void setBuildingMap(Map<Locale, String> buildingMap) {
-		setBuildingMap(buildingMap, LocaleUtil.getDefault());
+		setBuildingMap(buildingMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -896,7 +915,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	@Override
 	public void setDescription(String description, Locale locale) {
-		setDescription(description, locale, LocaleUtil.getDefault());
+		setDescription(description, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -923,7 +942,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	@Override
 	public void setDescriptionMap(Map<Locale, String> descriptionMap) {
-		setDescriptionMap(descriptionMap, LocaleUtil.getDefault());
+		setDescriptionMap(descriptionMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -1054,7 +1073,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 			return StringPool.BLANK;
 		}
 
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
 	}
@@ -1075,7 +1094,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
 
@@ -1123,6 +1142,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		WatsonAddressImpl watsonAddressImpl = new WatsonAddressImpl();
 
 		watsonAddressImpl.setWatsonAddressId(getWatsonAddressId());
+		watsonAddressImpl.setGroupId(getGroupId());
 		watsonAddressImpl.setCompanyId(getCompanyId());
 		watsonAddressImpl.setUserId(getUserId());
 		watsonAddressImpl.setUserName(getUserName());
@@ -1219,6 +1239,8 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		WatsonAddressCacheModel watsonAddressCacheModel = new WatsonAddressCacheModel();
 
 		watsonAddressCacheModel.watsonAddressId = getWatsonAddressId();
+
+		watsonAddressCacheModel.groupId = getGroupId();
 
 		watsonAddressCacheModel.companyId = getCompanyId();
 
@@ -1364,10 +1386,12 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(55);
+		StringBundler sb = new StringBundler(57);
 
 		sb.append("{watsonAddressId=");
 		sb.append(getWatsonAddressId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", userId=");
@@ -1427,7 +1451,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(85);
+		StringBundler sb = new StringBundler(88);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonAddress");
@@ -1436,6 +1460,10 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		sb.append(
 			"<column><column-name>watsonAddressId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonAddressId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
@@ -1552,6 +1580,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 			WatsonAddress.class
 		};
 	private long _watsonAddressId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

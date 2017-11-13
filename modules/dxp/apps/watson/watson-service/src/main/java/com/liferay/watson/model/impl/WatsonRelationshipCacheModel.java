@@ -66,10 +66,12 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{watsonRelationshipId=");
 		sb.append(watsonRelationshipId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -106,6 +108,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 		WatsonRelationshipImpl watsonRelationshipImpl = new WatsonRelationshipImpl();
 
 		watsonRelationshipImpl.setWatsonRelationshipId(watsonRelationshipId);
+		watsonRelationshipImpl.setGroupId(groupId);
 		watsonRelationshipImpl.setCompanyId(companyId);
 		watsonRelationshipImpl.setUserId(userId);
 
@@ -155,6 +158,8 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonRelationshipId = objectInput.readLong();
 
+		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -182,6 +187,8 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(watsonRelationshipId);
+
+		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -220,6 +227,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 	}
 
 	public long watsonRelationshipId;
+	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;

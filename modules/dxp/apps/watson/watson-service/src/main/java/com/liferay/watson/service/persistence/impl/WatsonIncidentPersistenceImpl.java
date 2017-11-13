@@ -351,6 +351,7 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 		watsonIncidentImpl.setPrimaryKey(watsonIncident.getPrimaryKey());
 
 		watsonIncidentImpl.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
+		watsonIncidentImpl.setGroupId(watsonIncident.getGroupId());
 		watsonIncidentImpl.setCompanyId(watsonIncident.getCompanyId());
 		watsonIncidentImpl.setUserId(watsonIncident.getUserId());
 		watsonIncidentImpl.setUserName(watsonIncident.getUserName());

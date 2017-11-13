@@ -68,6 +68,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 	public static final String TABLE_NAME = "WatsonHistory";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "watsonHistoryId", Types.BIGINT },
+			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -83,6 +84,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonHistoryId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -95,7 +97,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonHistory (watsonHistoryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,classNameId LONG,classPK LONG,type_ INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonHistory (watsonHistoryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,classNameId LONG,classPK LONG,type_ INTEGER,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonHistory";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonHistory.watsonHistoryId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonHistory.watsonHistoryId ASC";
@@ -150,6 +152,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonHistoryId", getWatsonHistoryId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -173,6 +176,12 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 		if (watsonHistoryId != null) {
 			setWatsonHistoryId(watsonHistoryId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -244,6 +253,16 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 	@Override
 	public void setWatsonHistoryId(long watsonHistoryId) {
 		_watsonHistoryId = watsonHistoryId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	@Override
@@ -421,6 +440,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		WatsonHistoryImpl watsonHistoryImpl = new WatsonHistoryImpl();
 
 		watsonHistoryImpl.setWatsonHistoryId(getWatsonHistoryId());
+		watsonHistoryImpl.setGroupId(getGroupId());
 		watsonHistoryImpl.setCompanyId(getCompanyId());
 		watsonHistoryImpl.setUserId(getUserId());
 		watsonHistoryImpl.setUserName(getUserName());
@@ -502,6 +522,8 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 		watsonHistoryCacheModel.watsonHistoryId = getWatsonHistoryId();
 
+		watsonHistoryCacheModel.groupId = getGroupId();
+
 		watsonHistoryCacheModel.companyId = getCompanyId();
 
 		watsonHistoryCacheModel.userId = getUserId();
@@ -547,10 +569,12 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(23);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{watsonHistoryId=");
 		sb.append(getWatsonHistoryId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", userId=");
@@ -578,7 +602,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(40);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonHistory");
@@ -587,6 +611,10 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		sb.append(
 			"<column><column-name>watsonHistoryId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonHistoryId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
@@ -639,6 +667,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			WatsonHistory.class
 		};
 	private long _watsonHistoryId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

@@ -371,6 +371,7 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 		watsonAddressImpl.setPrimaryKey(watsonAddress.getPrimaryKey());
 
 		watsonAddressImpl.setWatsonAddressId(watsonAddress.getWatsonAddressId());
+		watsonAddressImpl.setGroupId(watsonAddress.getGroupId());
 		watsonAddressImpl.setCompanyId(watsonAddress.getCompanyId());
 		watsonAddressImpl.setUserId(watsonAddress.getUserId());
 		watsonAddressImpl.setUserName(watsonAddress.getUserName());

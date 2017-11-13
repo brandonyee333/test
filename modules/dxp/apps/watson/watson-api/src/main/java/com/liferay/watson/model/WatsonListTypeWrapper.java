@@ -59,6 +59,7 @@ public class WatsonListTypeWrapper implements WatsonListType,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonListTypeId", getWatsonListTypeId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -78,6 +79,12 @@ public class WatsonListTypeWrapper implements WatsonListType,
 
 		if (watsonListTypeId != null) {
 			setWatsonListTypeId(watsonListTypeId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -179,6 +186,16 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _watsonListType.getExpandoBridge();
+	}
+
+	/**
+	* Returns the group ID of this watson list type.
+	*
+	* @return the group ID of this watson list type
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonListType.getGroupId();
 	}
 
 	/**
@@ -430,6 +447,16 @@ public class WatsonListTypeWrapper implements WatsonListType,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonListType.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the group ID of this watson list type.
+	*
+	* @param groupId the group ID of this watson list type
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonListType.setGroupId(groupId);
 	}
 
 	/**

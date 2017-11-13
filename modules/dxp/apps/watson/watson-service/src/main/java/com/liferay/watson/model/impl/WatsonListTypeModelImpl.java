@@ -74,6 +74,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 	public static final String TABLE_NAME = "WatsonListType";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "watsonListTypeId", Types.BIGINT },
+			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -88,6 +89,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonListTypeId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -99,7 +101,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonListType (watsonListTypeId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentWatsonListTypeId LONG,name STRING null,type_ VARCHAR(100) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonListType (watsonListTypeId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentWatsonListTypeId LONG,name STRING null,type_ VARCHAR(100) null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonListType";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonListType.watsonListTypeId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonListType.watsonListTypeId ASC";
@@ -154,6 +156,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonListTypeId", getWatsonListTypeId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -176,6 +179,12 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 		if (watsonListTypeId != null) {
 			setWatsonListTypeId(watsonListTypeId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -242,6 +251,16 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 	@Override
 	public void setWatsonListTypeId(long watsonListTypeId) {
 		_watsonListTypeId = watsonListTypeId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	@Override
@@ -391,7 +410,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public void setName(String name, Locale locale) {
-		setName(name, locale, LocaleUtil.getDefault());
+		setName(name, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -416,7 +435,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public void setNameMap(Map<Locale, String> nameMap) {
-		setNameMap(nameMap, LocaleUtil.getDefault());
+		setNameMap(nameMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -493,7 +512,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			return StringPool.BLANK;
 		}
 
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
 	}
@@ -514,7 +533,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
 
@@ -543,6 +562,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 		WatsonListTypeImpl watsonListTypeImpl = new WatsonListTypeImpl();
 
 		watsonListTypeImpl.setWatsonListTypeId(getWatsonListTypeId());
+		watsonListTypeImpl.setGroupId(getGroupId());
 		watsonListTypeImpl.setCompanyId(getCompanyId());
 		watsonListTypeImpl.setUserId(getUserId());
 		watsonListTypeImpl.setUserName(getUserName());
@@ -623,6 +643,8 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 		watsonListTypeCacheModel.watsonListTypeId = getWatsonListTypeId();
 
+		watsonListTypeCacheModel.groupId = getGroupId();
+
 		watsonListTypeCacheModel.companyId = getCompanyId();
 
 		watsonListTypeCacheModel.userId = getUserId();
@@ -678,10 +700,12 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("{watsonListTypeId=");
 		sb.append(getWatsonListTypeId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", userId=");
@@ -707,7 +731,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonListType");
@@ -716,6 +740,10 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 		sb.append(
 			"<column><column-name>watsonListTypeId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonListTypeId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
@@ -764,6 +792,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			WatsonListType.class
 		};
 	private long _watsonListTypeId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

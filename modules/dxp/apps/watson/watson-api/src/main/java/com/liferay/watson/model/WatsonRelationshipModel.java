@@ -19,9 +19,9 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
-import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -43,8 +43,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface WatsonRelationshipModel extends AuditedModel,
-	BaseModel<WatsonRelationship>, ShardedModel {
+public interface WatsonRelationshipModel extends BaseModel<WatsonRelationship>,
+	GroupedModel, ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -78,6 +78,22 @@ public interface WatsonRelationshipModel extends AuditedModel,
 	 * @param watsonRelationshipId the watson relationship ID of this watson relationship
 	 */
 	public void setWatsonRelationshipId(long watsonRelationshipId);
+
+	/**
+	 * Returns the group ID of this watson relationship.
+	 *
+	 * @return the group ID of this watson relationship
+	 */
+	@Override
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this watson relationship.
+	 *
+	 * @param groupId the group ID of this watson relationship
+	 */
+	@Override
+	public void setGroupId(long groupId);
 
 	/**
 	 * Returns the company ID of this watson relationship.

@@ -66,10 +66,12 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(23);
+		StringBundler sb = new StringBundler(25);
 
 		sb.append("{watsonHistoryId=");
 		sb.append(watsonHistoryId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -100,6 +102,7 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 		WatsonHistoryImpl watsonHistoryImpl = new WatsonHistoryImpl();
 
 		watsonHistoryImpl.setWatsonHistoryId(watsonHistoryId);
+		watsonHistoryImpl.setGroupId(groupId);
 		watsonHistoryImpl.setCompanyId(companyId);
 		watsonHistoryImpl.setUserId(userId);
 
@@ -139,6 +142,8 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonHistoryId = objectInput.readLong();
 
+		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -161,6 +166,8 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(watsonHistoryId);
+
+		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -188,6 +195,7 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 	}
 
 	public long watsonHistoryId;
+	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;

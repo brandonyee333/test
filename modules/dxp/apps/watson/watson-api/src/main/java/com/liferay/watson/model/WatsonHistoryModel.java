@@ -20,9 +20,9 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AttachedModel;
-import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -44,8 +44,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface WatsonHistoryModel extends AttachedModel, AuditedModel,
-	BaseModel<WatsonHistory>, ShardedModel {
+public interface WatsonHistoryModel extends AttachedModel,
+	BaseModel<WatsonHistory>, GroupedModel, ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -79,6 +79,22 @@ public interface WatsonHistoryModel extends AttachedModel, AuditedModel,
 	 * @param watsonHistoryId the watson history ID of this watson history
 	 */
 	public void setWatsonHistoryId(long watsonHistoryId);
+
+	/**
+	 * Returns the group ID of this watson history.
+	 *
+	 * @return the group ID of this watson history
+	 */
+	@Override
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this watson history.
+	 *
+	 * @param groupId the group ID of this watson history
+	 */
+	@Override
+	public void setGroupId(long groupId);
 
 	/**
 	 * Returns the company ID of this watson history.

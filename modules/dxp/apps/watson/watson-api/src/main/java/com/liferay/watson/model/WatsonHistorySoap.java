@@ -34,6 +34,7 @@ public class WatsonHistorySoap implements Serializable {
 		WatsonHistorySoap soapModel = new WatsonHistorySoap();
 
 		soapModel.setWatsonHistoryId(model.getWatsonHistoryId());
+		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
@@ -102,6 +103,14 @@ public class WatsonHistorySoap implements Serializable {
 
 	public void setWatsonHistoryId(long watsonHistoryId) {
 		_watsonHistoryId = watsonHistoryId;
+	}
+
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	public long getCompanyId() {
@@ -185,6 +194,7 @@ public class WatsonHistorySoap implements Serializable {
 	}
 
 	private long _watsonHistoryId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

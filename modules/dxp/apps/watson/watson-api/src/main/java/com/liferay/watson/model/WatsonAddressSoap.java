@@ -34,6 +34,7 @@ public class WatsonAddressSoap implements Serializable {
 		WatsonAddressSoap soapModel = new WatsonAddressSoap();
 
 		soapModel.setWatsonAddressId(model.getWatsonAddressId());
+		soapModel.setGroupId(model.getGroupId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
@@ -118,6 +119,14 @@ public class WatsonAddressSoap implements Serializable {
 
 	public void setWatsonAddressId(long watsonAddressId) {
 		_watsonAddressId = watsonAddressId;
+	}
+
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	public long getCompanyId() {
@@ -329,6 +338,7 @@ public class WatsonAddressSoap implements Serializable {
 	}
 
 	private long _watsonAddressId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

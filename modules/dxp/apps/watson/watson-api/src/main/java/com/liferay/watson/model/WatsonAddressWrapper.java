@@ -59,6 +59,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonAddressId", getWatsonAddressId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -96,6 +97,12 @@ public class WatsonAddressWrapper implements WatsonAddress,
 
 		if (watsonAddressId != null) {
 			setWatsonAddressId(watsonAddressId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -488,6 +495,16 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public java.lang.String getFloor() {
 		return _watsonAddress.getFloor();
+	}
+
+	/**
+	* Returns the group ID of this watson address.
+	*
+	* @return the group ID of this watson address
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonAddress.getGroupId();
 	}
 
 	/**
@@ -1016,6 +1033,16 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public void setFloor(java.lang.String floor) {
 		_watsonAddress.setFloor(floor);
+	}
+
+	/**
+	* Sets the group ID of this watson address.
+	*
+	* @param groupId the group ID of this watson address
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonAddress.setGroupId(groupId);
 	}
 
 	/**

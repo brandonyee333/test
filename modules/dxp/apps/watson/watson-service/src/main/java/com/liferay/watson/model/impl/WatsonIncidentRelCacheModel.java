@@ -66,10 +66,12 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("{watsonIncidentRelId=");
 		sb.append(watsonIncidentRelId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -98,6 +100,7 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 		WatsonIncidentRelImpl watsonIncidentRelImpl = new WatsonIncidentRelImpl();
 
 		watsonIncidentRelImpl.setWatsonIncidentRelId(watsonIncidentRelId);
+		watsonIncidentRelImpl.setGroupId(groupId);
 		watsonIncidentRelImpl.setCompanyId(companyId);
 		watsonIncidentRelImpl.setUserId(userId);
 
@@ -143,6 +146,8 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonIncidentRelId = objectInput.readLong();
 
+		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -162,6 +167,8 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(watsonIncidentRelId);
+
+		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -192,6 +199,7 @@ public class WatsonIncidentRelCacheModel implements CacheModel<WatsonIncidentRel
 	}
 
 	public long watsonIncidentRelId;
+	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;

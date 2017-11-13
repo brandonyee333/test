@@ -1,5 +1,6 @@
 create table WatsonActivity (
 	watsonActivityId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -16,6 +17,7 @@ create table WatsonActivity (
 
 create table WatsonAddress (
 	watsonAddressId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -44,8 +46,34 @@ create table WatsonAddress (
 	status INTEGER
 );
 
+create table WatsonChild (
+	watsonChildId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	birthCountryId LONG,
+	citizenshipWatsonListTypeId LONG,
+	countryWatsonListTypeId LONG,
+	dischargeWatsonListTypeId LONG,
+	ethnicityWatsonListTypeId LONG,
+	originalWatsonChildId LONG,
+	sexWatsonListTypeId LONG,
+	sourceSubtypeWatsonListTypeId LONG,
+	sourceWatsonListTypeId LONG,
+	typeWatsonListTypeId LONG,
+	dateAccepted DATE null,
+	dateDischarged DATE null,
+	dateFollowUp DATE null,
+	source VARCHAR(75) null,
+	status INTEGER
+);
+
 create table WatsonHistory (
 	watsonHistoryId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -60,6 +88,7 @@ create table WatsonHistory (
 
 create table WatsonIncident (
 	watsonIncidentId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -81,6 +110,7 @@ create table WatsonIncident (
 
 create table WatsonIncidentRel (
 	watsonIncidentRelId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -94,6 +124,7 @@ create table WatsonIncidentRel (
 
 create table WatsonListType (
 	watsonListTypeId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -107,6 +138,7 @@ create table WatsonListType (
 
 create table WatsonListTypeRel (
 	watsonListTypeRelId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -123,6 +155,7 @@ create table WatsonListTypeRel (
 
 create table WatsonPerson (
 	watsonPersonId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -155,6 +188,7 @@ create table WatsonPerson (
 
 create table WatsonRelationship (
 	watsonRelationshipId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -172,6 +206,7 @@ create table WatsonRelationship (
 
 create table WatsonResource (
 	watsonResourceId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -188,6 +223,7 @@ create table WatsonResource (
 
 create table WatsonVehicle (
 	watsonVehicleId LONG not null primary key,
+	groupId LONG,
 	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,

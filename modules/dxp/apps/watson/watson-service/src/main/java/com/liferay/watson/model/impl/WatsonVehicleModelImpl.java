@@ -74,6 +74,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	public static final String TABLE_NAME = "WatsonVehicle";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "watsonVehicleId", Types.BIGINT },
+			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -96,6 +97,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonVehicleId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -115,7 +117,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonVehicle (watsonVehicleId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,colorWatsonListTypeId LONG,makeWatsonListTypeId LONG,modelWatsonListTypeId LONG,originalWatsonVehicleId LONG,typeWatsonListTypeId LONG,yearWatsonListTypeId LONG,watsonIncidentId LONG,year INTEGER,description STRING null,imagePayload TEXT null,licensePlate VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonVehicle (watsonVehicleId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,colorWatsonListTypeId LONG,makeWatsonListTypeId LONG,modelWatsonListTypeId LONG,originalWatsonVehicleId LONG,typeWatsonListTypeId LONG,yearWatsonListTypeId LONG,watsonIncidentId LONG,year INTEGER,description STRING null,imagePayload TEXT null,licensePlate VARCHAR(75) null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonVehicle";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonVehicle.watsonVehicleId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonVehicle.watsonVehicleId ASC";
@@ -170,6 +172,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonVehicleId", getWatsonVehicleId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -200,6 +203,12 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 		if (watsonVehicleId != null) {
 			setWatsonVehicleId(watsonVehicleId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -316,6 +325,16 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	@Override
 	public void setWatsonVehicleId(long watsonVehicleId) {
 		_watsonVehicleId = watsonVehicleId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	@Override
@@ -535,7 +554,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public void setDescription(String description, Locale locale) {
-		setDescription(description, locale, LocaleUtil.getDefault());
+		setDescription(description, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -562,7 +581,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public void setDescriptionMap(Map<Locale, String> descriptionMap) {
-		setDescriptionMap(descriptionMap, LocaleUtil.getDefault());
+		setDescriptionMap(descriptionMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -656,7 +675,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			return StringPool.BLANK;
 		}
 
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
 	}
@@ -677,7 +696,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
 
@@ -707,6 +726,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 		WatsonVehicleImpl watsonVehicleImpl = new WatsonVehicleImpl();
 
 		watsonVehicleImpl.setWatsonVehicleId(getWatsonVehicleId());
+		watsonVehicleImpl.setGroupId(getGroupId());
 		watsonVehicleImpl.setCompanyId(getCompanyId());
 		watsonVehicleImpl.setUserId(getUserId());
 		watsonVehicleImpl.setUserName(getUserName());
@@ -795,6 +815,8 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 		watsonVehicleCacheModel.watsonVehicleId = getWatsonVehicleId();
 
+		watsonVehicleCacheModel.groupId = getGroupId();
+
 		watsonVehicleCacheModel.companyId = getCompanyId();
 
 		watsonVehicleCacheModel.userId = getUserId();
@@ -872,10 +894,12 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{watsonVehicleId=");
 		sb.append(getWatsonVehicleId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", userId=");
@@ -917,7 +941,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(58);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonVehicle");
@@ -926,6 +950,10 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 		sb.append(
 			"<column><column-name>watsonVehicleId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonVehicleId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
@@ -1006,6 +1034,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			WatsonVehicle.class
 		};
 	private long _watsonVehicleId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

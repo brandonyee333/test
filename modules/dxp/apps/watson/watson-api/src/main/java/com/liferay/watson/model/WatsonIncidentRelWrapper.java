@@ -59,6 +59,7 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonIncidentRelId", getWatsonIncidentRelId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -78,6 +79,12 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 
 		if (watsonIncidentRelId != null) {
 			setWatsonIncidentRelId(watsonIncidentRelId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -168,6 +175,16 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _watsonIncidentRel.getExpandoBridge();
+	}
+
+	/**
+	* Returns the group ID of this watson incident rel.
+	*
+	* @return the group ID of this watson incident rel
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonIncidentRel.getGroupId();
 	}
 
 	/**
@@ -339,6 +356,16 @@ public class WatsonIncidentRelWrapper implements WatsonIncidentRel,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonIncidentRel.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the group ID of this watson incident rel.
+	*
+	* @param groupId the group ID of this watson incident rel
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonIncidentRel.setGroupId(groupId);
 	}
 
 	/**

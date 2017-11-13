@@ -347,6 +347,7 @@ public class WatsonPersonPersistenceImpl extends BasePersistenceImpl<WatsonPerso
 		watsonPersonImpl.setPrimaryKey(watsonPerson.getPrimaryKey());
 
 		watsonPersonImpl.setWatsonPersonId(watsonPerson.getWatsonPersonId());
+		watsonPersonImpl.setGroupId(watsonPerson.getGroupId());
 		watsonPersonImpl.setCompanyId(watsonPerson.getCompanyId());
 		watsonPersonImpl.setUserId(watsonPerson.getUserId());
 		watsonPersonImpl.setUserName(watsonPerson.getUserName());

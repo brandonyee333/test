@@ -351,6 +351,7 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 		watsonVehicleImpl.setPrimaryKey(watsonVehicle.getPrimaryKey());
 
 		watsonVehicleImpl.setWatsonVehicleId(watsonVehicle.getWatsonVehicleId());
+		watsonVehicleImpl.setGroupId(watsonVehicle.getGroupId());
 		watsonVehicleImpl.setCompanyId(watsonVehicle.getCompanyId());
 		watsonVehicleImpl.setUserId(watsonVehicle.getUserId());
 		watsonVehicleImpl.setUserName(watsonVehicle.getUserName());

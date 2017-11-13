@@ -74,6 +74,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	public static final String TABLE_NAME = "WatsonResource";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "watsonResourceId", Types.BIGINT },
+			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -91,6 +92,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonResourceId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -105,7 +107,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonResource (watsonResourceId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonResourceId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,description STRING null,imagePayload TEXT null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonResource (watsonResourceId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonResourceId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,description STRING null,imagePayload TEXT null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonResource";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonResource.watsonResourceId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonResource.watsonResourceId ASC";
@@ -160,6 +162,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonResourceId", getWatsonResourceId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -185,6 +188,12 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 		if (watsonResourceId != null) {
 			setWatsonResourceId(watsonResourceId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -269,6 +278,16 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	@Override
 	public void setWatsonResourceId(long watsonResourceId) {
 		_watsonResourceId = watsonResourceId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	@Override
@@ -438,7 +457,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public void setName(String name, Locale locale) {
-		setName(name, locale, LocaleUtil.getDefault());
+		setName(name, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -463,7 +482,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public void setNameMap(Map<Locale, String> nameMap) {
-		setNameMap(nameMap, LocaleUtil.getDefault());
+		setNameMap(nameMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -536,7 +555,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public void setDescription(String description, Locale locale) {
-		setDescription(description, locale, LocaleUtil.getDefault());
+		setDescription(description, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -563,7 +582,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public void setDescriptionMap(Map<Locale, String> descriptionMap) {
-		setDescriptionMap(descriptionMap, LocaleUtil.getDefault());
+		setDescriptionMap(descriptionMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -653,7 +672,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			return StringPool.BLANK;
 		}
 
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
 	}
@@ -674,7 +693,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
 
@@ -713,6 +732,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		WatsonResourceImpl watsonResourceImpl = new WatsonResourceImpl();
 
 		watsonResourceImpl.setWatsonResourceId(getWatsonResourceId());
+		watsonResourceImpl.setGroupId(getGroupId());
 		watsonResourceImpl.setCompanyId(getCompanyId());
 		watsonResourceImpl.setUserId(getUserId());
 		watsonResourceImpl.setUserName(getUserName());
@@ -796,6 +816,8 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 		watsonResourceCacheModel.watsonResourceId = getWatsonResourceId();
 
+		watsonResourceCacheModel.groupId = getGroupId();
+
 		watsonResourceCacheModel.companyId = getCompanyId();
 
 		watsonResourceCacheModel.userId = getUserId();
@@ -863,10 +885,12 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{watsonResourceId=");
 		sb.append(getWatsonResourceId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", userId=");
@@ -898,7 +922,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(46);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonResource");
@@ -907,6 +931,10 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		sb.append(
 			"<column><column-name>watsonResourceId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonResourceId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
@@ -967,6 +995,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			WatsonResource.class
 		};
 	private long _watsonResourceId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

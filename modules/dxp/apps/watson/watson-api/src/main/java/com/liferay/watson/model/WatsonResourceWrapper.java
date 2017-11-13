@@ -59,6 +59,7 @@ public class WatsonResourceWrapper implements WatsonResource,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonResourceId", getWatsonResourceId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -81,6 +82,12 @@ public class WatsonResourceWrapper implements WatsonResource,
 
 		if (watsonResourceId != null) {
 			setWatsonResourceId(watsonResourceId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -278,6 +285,16 @@ public class WatsonResourceWrapper implements WatsonResource,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _watsonResource.getExpandoBridge();
+	}
+
+	/**
+	* Returns the group ID of this watson resource.
+	*
+	* @return the group ID of this watson resource
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonResource.getGroupId();
 	}
 
 	/**
@@ -613,6 +630,16 @@ public class WatsonResourceWrapper implements WatsonResource,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonResource.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the group ID of this watson resource.
+	*
+	* @param groupId the group ID of this watson resource
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonResource.setGroupId(groupId);
 	}
 
 	/**

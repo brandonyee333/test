@@ -59,6 +59,7 @@ public class WatsonActivityWrapper implements WatsonActivity,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonActivityId", getWatsonActivityId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -81,6 +82,12 @@ public class WatsonActivityWrapper implements WatsonActivity,
 
 		if (watsonActivityId != null) {
 			setWatsonActivityId(watsonActivityId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -200,6 +207,16 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _watsonActivity.getExpandoBridge();
+	}
+
+	/**
+	* Returns the group ID of this watson activity.
+	*
+	* @return the group ID of this watson activity
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonActivity.getGroupId();
 	}
 
 	/**
@@ -482,6 +499,16 @@ public class WatsonActivityWrapper implements WatsonActivity,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonActivity.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the group ID of this watson activity.
+	*
+	* @param groupId the group ID of this watson activity
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonActivity.setGroupId(groupId);
 	}
 
 	/**

@@ -74,6 +74,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	public static final String TABLE_NAME = "WatsonIncident";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "watsonIncidentId", Types.BIGINT },
+			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -96,6 +97,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonIncidentId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -115,7 +117,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonIncident (watsonIncidentId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,audienceKey VARCHAR(75) null,name VARCHAR(75) null,externalCaseId VARCHAR(75) null,description STRING null,reportDate DATE null,startDate DATE null,endDate DATE null,incidentStatus INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonIncident (watsonIncidentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,audienceKey VARCHAR(75) null,name VARCHAR(75) null,externalCaseId VARCHAR(75) null,description STRING null,reportDate DATE null,startDate DATE null,endDate DATE null,incidentStatus INTEGER,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonIncident";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonIncident.watsonIncidentId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonIncident.watsonIncidentId ASC";
@@ -170,6 +172,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonIncidentId", getWatsonIncidentId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -200,6 +203,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 		if (watsonIncidentId != null) {
 			setWatsonIncidentId(watsonIncidentId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -315,6 +324,16 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	@Override
 	public void setWatsonIncidentId(long watsonIncidentId) {
 		_watsonIncidentId = watsonIncidentId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	@Override
@@ -529,7 +548,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public void setDescription(String description, Locale locale) {
-		setDescription(description, locale, LocaleUtil.getDefault());
+		setDescription(description, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -556,7 +575,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public void setDescriptionMap(Map<Locale, String> descriptionMap) {
-		setDescriptionMap(descriptionMap, LocaleUtil.getDefault());
+		setDescriptionMap(descriptionMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -660,7 +679,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			return StringPool.BLANK;
 		}
 
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
 	}
@@ -681,7 +700,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
 
@@ -711,6 +730,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		WatsonIncidentImpl watsonIncidentImpl = new WatsonIncidentImpl();
 
 		watsonIncidentImpl.setWatsonIncidentId(getWatsonIncidentId());
+		watsonIncidentImpl.setGroupId(getGroupId());
 		watsonIncidentImpl.setCompanyId(getCompanyId());
 		watsonIncidentImpl.setUserId(getUserId());
 		watsonIncidentImpl.setUserName(getUserName());
@@ -798,6 +818,8 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		WatsonIncidentCacheModel watsonIncidentCacheModel = new WatsonIncidentCacheModel();
 
 		watsonIncidentCacheModel.watsonIncidentId = getWatsonIncidentId();
+
+		watsonIncidentCacheModel.groupId = getGroupId();
 
 		watsonIncidentCacheModel.companyId = getCompanyId();
 
@@ -903,10 +925,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{watsonIncidentId=");
 		sb.append(getWatsonIncidentId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", userId=");
@@ -948,7 +972,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(58);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonIncident");
@@ -957,6 +981,10 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		sb.append(
 			"<column><column-name>watsonIncidentId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonIncidentId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
@@ -1037,6 +1065,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			WatsonIncident.class
 		};
 	private long _watsonIncidentId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

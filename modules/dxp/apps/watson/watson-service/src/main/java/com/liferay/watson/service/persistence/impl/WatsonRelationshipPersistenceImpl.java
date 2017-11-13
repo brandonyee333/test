@@ -355,6 +355,7 @@ public class WatsonRelationshipPersistenceImpl extends BasePersistenceImpl<Watso
 		watsonRelationshipImpl.setPrimaryKey(watsonRelationship.getPrimaryKey());
 
 		watsonRelationshipImpl.setWatsonRelationshipId(watsonRelationship.getWatsonRelationshipId());
+		watsonRelationshipImpl.setGroupId(watsonRelationship.getGroupId());
 		watsonRelationshipImpl.setCompanyId(watsonRelationship.getCompanyId());
 		watsonRelationshipImpl.setUserId(watsonRelationship.getUserId());
 		watsonRelationshipImpl.setUserName(watsonRelationship.getUserName());

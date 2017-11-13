@@ -66,10 +66,12 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(59);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("{watsonPersonId=");
 		sb.append(watsonPersonId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -136,6 +138,7 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		WatsonPersonImpl watsonPersonImpl = new WatsonPersonImpl();
 
 		watsonPersonImpl.setWatsonPersonId(watsonPersonId);
+		watsonPersonImpl.setGroupId(groupId);
 		watsonPersonImpl.setCompanyId(companyId);
 		watsonPersonImpl.setUserId(userId);
 
@@ -254,6 +257,8 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonPersonId = objectInput.readLong();
 
+		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -302,6 +307,8 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(watsonPersonId);
+
+		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -398,6 +405,7 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 	}
 
 	public long watsonPersonId;
+	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;

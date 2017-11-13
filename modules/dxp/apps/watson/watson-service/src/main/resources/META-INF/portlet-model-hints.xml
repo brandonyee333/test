@@ -3,6 +3,7 @@
 <model-hints>
 	<model name="com.liferay.watson.model.WatsonActivity">
 		<field name="watsonActivityId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -20,6 +21,7 @@
 	</model>
 	<model name="com.liferay.watson.model.WatsonAddress">
 		<field name="watsonAddressId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -51,8 +53,33 @@
 		<field name="longitude" type="double" />
 		<field name="status" type="int" />
 	</model>
+	<model name="com.liferay.watson.model.WatsonChild">
+		<field name="watsonChildId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="birthCountryId" type="long" />
+		<field name="citizenshipWatsonListTypeId" type="long" />
+		<field name="countryWatsonListTypeId" type="long" />
+		<field name="dischargeWatsonListTypeId" type="long" />
+		<field name="ethnicityWatsonListTypeId" type="long" />
+		<field name="originalWatsonChildId" type="long" />
+		<field name="sexWatsonListTypeId" type="long" />
+		<field name="sourceSubtypeWatsonListTypeId" type="long" />
+		<field name="sourceWatsonListTypeId" type="long" />
+		<field name="typeWatsonListTypeId" type="long" />
+		<field name="dateAccepted" type="Date" />
+		<field name="dateDischarged" type="Date" />
+		<field name="dateFollowUp" type="Date" />
+		<field name="source" type="String" />
+		<field name="status" type="int" />
+	</model>
 	<model name="com.liferay.watson.model.WatsonHistory">
 		<field name="watsonHistoryId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -66,6 +93,7 @@
 	</model>
 	<model name="com.liferay.watson.model.WatsonIncident">
 		<field name="watsonIncidentId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -88,6 +116,7 @@
 	</model>
 	<model name="com.liferay.watson.model.WatsonIncidentRel">
 		<field name="watsonIncidentRelId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -100,6 +129,7 @@
 	</model>
 	<model name="com.liferay.watson.model.WatsonListType">
 		<field name="watsonListTypeId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -114,6 +144,7 @@
 	</model>
 	<model name="com.liferay.watson.model.WatsonListTypeRel">
 		<field name="watsonListTypeRelId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -129,6 +160,7 @@
 	</model>
 	<model name="com.liferay.watson.model.WatsonPerson">
 		<field name="watsonPersonId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -164,6 +196,7 @@
 	</model>
 	<model name="com.liferay.watson.model.WatsonRelationship">
 		<field name="watsonRelationshipId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -182,6 +215,7 @@
 	</model>
 	<model name="com.liferay.watson.model.WatsonResource">
 		<field name="watsonResourceId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -201,6 +235,7 @@
 	</model>
 	<model name="com.liferay.watson.model.WatsonVehicle">
 		<field name="watsonVehicleId" type="long" />
+		<field name="groupId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />

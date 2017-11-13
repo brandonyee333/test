@@ -66,10 +66,12 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{watsonListTypeRelId=");
 		sb.append(watsonListTypeRelId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -104,6 +106,7 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 		WatsonListTypeRelImpl watsonListTypeRelImpl = new WatsonListTypeRelImpl();
 
 		watsonListTypeRelImpl.setWatsonListTypeRelId(watsonListTypeRelId);
+		watsonListTypeRelImpl.setGroupId(groupId);
 		watsonListTypeRelImpl.setCompanyId(companyId);
 		watsonListTypeRelImpl.setUserId(userId);
 
@@ -158,6 +161,8 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonListTypeRelId = objectInput.readLong();
 
+		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -182,6 +187,8 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(watsonListTypeRelId);
+
+		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -223,6 +230,7 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 	}
 
 	public long watsonListTypeRelId;
+	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;

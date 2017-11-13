@@ -59,6 +59,7 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonVehicleId", getWatsonVehicleId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -86,6 +87,12 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 
 		if (watsonVehicleId != null) {
 			setWatsonVehicleId(watsonVehicleId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -325,6 +332,16 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _watsonVehicle.getExpandoBridge();
+	}
+
+	/**
+	* Returns the group ID of this watson vehicle.
+	*
+	* @return the group ID of this watson vehicle
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonVehicle.getGroupId();
 	}
 
 	/**
@@ -643,6 +660,16 @@ public class WatsonVehicleWrapper implements WatsonVehicle,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonVehicle.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the group ID of this watson vehicle.
+	*
+	* @param groupId the group ID of this watson vehicle
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonVehicle.setGroupId(groupId);
 	}
 
 	/**

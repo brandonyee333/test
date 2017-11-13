@@ -74,6 +74,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	public static final String TABLE_NAME = "WatsonPerson";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "watsonPersonId", Types.BIGINT },
+			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -107,6 +108,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonPersonId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -137,7 +139,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonPerson (watsonPersonId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,eyesWatsonListTypeId LONG,hairWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,description STRING null,imagePayload TEXT null,birthDate DATE null,dateAccepted DATE null,dateRescued DATE null,startAge VARCHAR(75) null,endAge VARCHAR(75) null,occupation STRING null,height VARCHAR(75) null,weight VARCHAR(75) null,accepted BOOLEAN,rescued BOOLEAN,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonPerson (watsonPersonId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,eyesWatsonListTypeId LONG,hairWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,description STRING null,imagePayload TEXT null,birthDate DATE null,dateAccepted DATE null,dateRescued DATE null,startAge VARCHAR(75) null,endAge VARCHAR(75) null,occupation STRING null,height VARCHAR(75) null,weight VARCHAR(75) null,accepted BOOLEAN,rescued BOOLEAN,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonPerson";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonPerson.watsonPersonId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonPerson.watsonPersonId ASC";
@@ -192,6 +194,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonPersonId", getWatsonPersonId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -235,6 +238,12 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 		if (watsonPersonId != null) {
 			setWatsonPersonId(watsonPersonId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -418,6 +427,16 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@Override
 	public void setWatsonPersonId(long watsonPersonId) {
 		_watsonPersonId = watsonPersonId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	@Override
@@ -657,7 +676,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public void setDescription(String description, Locale locale) {
-		setDescription(description, locale, LocaleUtil.getDefault());
+		setDescription(description, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -684,7 +703,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public void setDescriptionMap(Map<Locale, String> descriptionMap) {
-		setDescriptionMap(descriptionMap, LocaleUtil.getDefault());
+		setDescriptionMap(descriptionMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -834,7 +853,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public void setOccupation(String occupation, Locale locale) {
-		setOccupation(occupation, locale, LocaleUtil.getDefault());
+		setOccupation(occupation, locale, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -860,7 +879,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public void setOccupationMap(Map<Locale, String> occupationMap) {
-		setOccupationMap(occupationMap, LocaleUtil.getDefault());
+		setOccupationMap(occupationMap, LocaleUtil.getSiteDefault());
 	}
 
 	@Override
@@ -995,7 +1014,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			return StringPool.BLANK;
 		}
 
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
 	}
@@ -1016,7 +1035,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@SuppressWarnings("unused")
 	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
 		throws LocaleException {
-		Locale defaultLocale = LocaleUtil.getDefault();
+		Locale defaultLocale = LocaleUtil.getSiteDefault();
 
 		String modelDefaultLanguageId = getDefaultLanguageId();
 
@@ -1056,6 +1075,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		WatsonPersonImpl watsonPersonImpl = new WatsonPersonImpl();
 
 		watsonPersonImpl.setWatsonPersonId(getWatsonPersonId());
+		watsonPersonImpl.setGroupId(getGroupId());
 		watsonPersonImpl.setCompanyId(getCompanyId());
 		watsonPersonImpl.setUserId(getUserId());
 		watsonPersonImpl.setUserName(getUserName());
@@ -1154,6 +1174,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		WatsonPersonCacheModel watsonPersonCacheModel = new WatsonPersonCacheModel();
 
 		watsonPersonCacheModel.watsonPersonId = getWatsonPersonId();
+
+		watsonPersonCacheModel.groupId = getGroupId();
 
 		watsonPersonCacheModel.companyId = getCompanyId();
 
@@ -1299,10 +1321,12 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(59);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("{watsonPersonId=");
 		sb.append(getWatsonPersonId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", userId=");
@@ -1366,7 +1390,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(91);
+		StringBundler sb = new StringBundler(94);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonPerson");
@@ -1375,6 +1399,10 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		sb.append(
 			"<column><column-name>watsonPersonId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonPersonId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
@@ -1499,6 +1527,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			WatsonPerson.class
 		};
 	private long _watsonPersonId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

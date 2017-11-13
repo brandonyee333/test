@@ -66,6 +66,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 	public static final String TABLE_NAME = "WatsonRelationship";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "watsonRelationshipId", Types.BIGINT },
+			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -84,6 +85,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonRelationshipId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -99,7 +101,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonRelationship (watsonRelationshipId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description STRING null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonRelationship (watsonRelationshipId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description STRING null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonRelationship";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonRelationship.watsonRelationshipId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonRelationship.watsonRelationshipId ASC";
@@ -154,6 +156,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonRelationshipId", getWatsonRelationshipId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -180,6 +183,12 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 		if (watsonRelationshipId != null) {
 			setWatsonRelationshipId(watsonRelationshipId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -269,6 +278,16 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 	@Override
 	public void setWatsonRelationshipId(long watsonRelationshipId) {
 		_watsonRelationshipId = watsonRelationshipId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	@Override
@@ -461,6 +480,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 		WatsonRelationshipImpl watsonRelationshipImpl = new WatsonRelationshipImpl();
 
 		watsonRelationshipImpl.setWatsonRelationshipId(getWatsonRelationshipId());
+		watsonRelationshipImpl.setGroupId(getGroupId());
 		watsonRelationshipImpl.setCompanyId(getCompanyId());
 		watsonRelationshipImpl.setUserId(getUserId());
 		watsonRelationshipImpl.setUserName(getUserName());
@@ -545,6 +565,8 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 		watsonRelationshipCacheModel.watsonRelationshipId = getWatsonRelationshipId();
 
+		watsonRelationshipCacheModel.groupId = getGroupId();
+
 		watsonRelationshipCacheModel.companyId = getCompanyId();
 
 		watsonRelationshipCacheModel.userId = getUserId();
@@ -602,10 +624,12 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{watsonRelationshipId=");
 		sb.append(getWatsonRelationshipId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", userId=");
@@ -639,7 +663,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(49);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonRelationship");
@@ -648,6 +672,10 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 		sb.append(
 			"<column><column-name>watsonRelationshipId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonRelationshipId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
@@ -712,6 +740,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			WatsonRelationship.class
 		};
 	private long _watsonRelationshipId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;

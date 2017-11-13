@@ -20,9 +20,9 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.exception.LocaleException;
-import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.model.LocalizedModel;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -47,8 +47,8 @@ import java.util.Map;
  * @generated
  */
 @ProviderType
-public interface WatsonResourceModel extends AuditedModel,
-	BaseModel<WatsonResource>, LocalizedModel, ShardedModel {
+public interface WatsonResourceModel extends BaseModel<WatsonResource>,
+	GroupedModel, LocalizedModel, ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -82,6 +82,22 @@ public interface WatsonResourceModel extends AuditedModel,
 	 * @param watsonResourceId the watson resource ID of this watson resource
 	 */
 	public void setWatsonResourceId(long watsonResourceId);
+
+	/**
+	 * Returns the group ID of this watson resource.
+	 *
+	 * @return the group ID of this watson resource
+	 */
+	@Override
+	public long getGroupId();
+
+	/**
+	 * Sets the group ID of this watson resource.
+	 *
+	 * @param groupId the group ID of this watson resource
+	 */
+	@Override
+	public void setGroupId(long groupId);
 
 	/**
 	 * Returns the company ID of this watson resource.

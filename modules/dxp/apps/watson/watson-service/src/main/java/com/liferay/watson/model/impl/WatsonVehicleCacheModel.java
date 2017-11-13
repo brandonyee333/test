@@ -66,10 +66,12 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(39);
 
 		sb.append("{watsonVehicleId=");
 		sb.append(watsonVehicleId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -114,6 +116,7 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 		WatsonVehicleImpl watsonVehicleImpl = new WatsonVehicleImpl();
 
 		watsonVehicleImpl.setWatsonVehicleId(watsonVehicleId);
+		watsonVehicleImpl.setGroupId(groupId);
 		watsonVehicleImpl.setCompanyId(companyId);
 		watsonVehicleImpl.setUserId(userId);
 
@@ -179,6 +182,8 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonVehicleId = objectInput.readLong();
 
+		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -212,6 +217,8 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(watsonVehicleId);
+
+		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -268,6 +275,7 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 	}
 
 	public long watsonVehicleId;
+	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;

@@ -66,10 +66,12 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(27);
+		StringBundler sb = new StringBundler(29);
 
 		sb.append("{watsonResourceId=");
 		sb.append(watsonResourceId);
+		sb.append(", groupId=");
+		sb.append(groupId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", userId=");
@@ -104,6 +106,7 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 		WatsonResourceImpl watsonResourceImpl = new WatsonResourceImpl();
 
 		watsonResourceImpl.setWatsonResourceId(watsonResourceId);
+		watsonResourceImpl.setGroupId(groupId);
 		watsonResourceImpl.setCompanyId(companyId);
 		watsonResourceImpl.setUserId(userId);
 
@@ -164,6 +167,8 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		watsonResourceId = objectInput.readLong();
 
+		groupId = objectInput.readLong();
+
 		companyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -187,6 +192,8 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(watsonResourceId);
+
+		objectOutput.writeLong(groupId);
 
 		objectOutput.writeLong(companyId);
 
@@ -233,6 +240,7 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 	}
 
 	public long watsonResourceId;
+	public long groupId;
 	public long companyId;
 	public long userId;
 	public String userName;

@@ -59,6 +59,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonHistoryId", getWatsonHistoryId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -79,6 +80,12 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 
 		if (watsonHistoryId != null) {
 			setWatsonHistoryId(watsonHistoryId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -205,6 +212,16 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _watsonHistory.getExpandoBridge();
+	}
+
+	/**
+	* Returns the group ID of this watson history.
+	*
+	* @return the group ID of this watson history
+	*/
+	@Override
+	public long getGroupId() {
+		return _watsonHistory.getGroupId();
 	}
 
 	/**
@@ -391,6 +408,16 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_watsonHistory.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	* Sets the group ID of this watson history.
+	*
+	* @param groupId the group ID of this watson history
+	*/
+	@Override
+	public void setGroupId(long groupId) {
+		_watsonHistory.setGroupId(groupId);
 	}
 
 	/**

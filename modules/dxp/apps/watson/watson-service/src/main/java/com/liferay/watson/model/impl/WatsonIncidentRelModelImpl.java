@@ -66,6 +66,7 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 	public static final String TABLE_NAME = "WatsonIncidentRel";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "watsonIncidentRelId", Types.BIGINT },
+			{ "groupId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -80,6 +81,7 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	static {
 		TABLE_COLUMNS_MAP.put("watsonIncidentRelId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("groupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -91,7 +93,7 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonIncidentRel (watsonIncidentRelId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId1 LONG,watsonIncidentId2 LONG,type_ VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonIncidentRel (watsonIncidentRelId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId1 LONG,watsonIncidentId2 LONG,type_ VARCHAR(75) null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonIncidentRel";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonIncidentRel.watsonIncidentRelId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonIncidentRel.watsonIncidentRelId ASC";
@@ -146,6 +148,7 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("watsonIncidentRelId", getWatsonIncidentRelId());
+		attributes.put("groupId", getGroupId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -168,6 +171,12 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 		if (watsonIncidentRelId != null) {
 			setWatsonIncidentRelId(watsonIncidentRelId);
+		}
+
+		Long groupId = (Long)attributes.get("groupId");
+
+		if (groupId != null) {
+			setGroupId(groupId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -233,6 +242,16 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 	@Override
 	public void setWatsonIncidentRelId(long watsonIncidentRelId) {
 		_watsonIncidentRelId = watsonIncidentRelId;
+	}
+
+	@Override
+	public long getGroupId() {
+		return _groupId;
+	}
+
+	@Override
+	public void setGroupId(long groupId) {
+		_groupId = groupId;
 	}
 
 	@Override
@@ -385,6 +404,7 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 		WatsonIncidentRelImpl watsonIncidentRelImpl = new WatsonIncidentRelImpl();
 
 		watsonIncidentRelImpl.setWatsonIncidentRelId(getWatsonIncidentRelId());
+		watsonIncidentRelImpl.setGroupId(getGroupId());
 		watsonIncidentRelImpl.setCompanyId(getCompanyId());
 		watsonIncidentRelImpl.setUserId(getUserId());
 		watsonIncidentRelImpl.setUserName(getUserName());
@@ -465,6 +485,8 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 		watsonIncidentRelCacheModel.watsonIncidentRelId = getWatsonIncidentRelId();
 
+		watsonIncidentRelCacheModel.groupId = getGroupId();
+
 		watsonIncidentRelCacheModel.companyId = getCompanyId();
 
 		watsonIncidentRelCacheModel.userId = getUserId();
@@ -514,10 +536,12 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("{watsonIncidentRelId=");
 		sb.append(getWatsonIncidentRelId());
+		sb.append(", groupId=");
+		sb.append(getGroupId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
 		sb.append(", userId=");
@@ -543,7 +567,7 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(34);
+		StringBundler sb = new StringBundler(37);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonIncidentRel");
@@ -552,6 +576,10 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 		sb.append(
 			"<column><column-name>watsonIncidentRelId</column-name><column-value><![CDATA[");
 		sb.append(getWatsonIncidentRelId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>groupId</column-name><column-value><![CDATA[");
+		sb.append(getGroupId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>companyId</column-name><column-value><![CDATA[");
@@ -600,6 +628,7 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			WatsonIncidentRel.class
 		};
 	private long _watsonIncidentRelId;
+	private long _groupId;
 	private long _companyId;
 	private long _userId;
 	private String _userName;
