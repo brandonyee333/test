@@ -111,10 +111,11 @@ public class PostUpgradeFixOSGiCommands extends BasePostUpgradeFixOSGiCommands {
 				runSQL("drop table " + tempTableName);
 			}
 			catch (Exception e) {
-				log.error(
-					"An exception was thrown while deleting temporary table " +
-						tempTableName + " of " + getCommand(),
-					e);
+				String msg = StringBundler.concat(
+					"An exception was thrown while deleting temporary table ",
+					tempTableName, " of ", getCommand());
+
+				log.error(msg, e);
 			}
 		}
 	}
