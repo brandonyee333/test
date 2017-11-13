@@ -536,12 +536,12 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 
 									<c:choose>
 										<c:when test="<%= fileRepositoryId.equals(StringPool.BLANK) %>">
-											<aui:input inlineField="<%= true %>" inlineLabel="left" name="fileRepositoryId" type="text" />
+											<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="fileRepositoryId" type="text" />
 										</c:when>
 										<c:otherwise>
 											<aui:input name="fileRepositoryId" type="hidden" value="<%= fileRepositoryId %>" />
 
-											<aui:input disabled="<%= true %>" inlineField="<%= true %>" inlineLabel="left" name="fileRepositoryIdLabel" type="text" value="<%= fileRepositoryId %>" />
+											<aui:input disabled="<%= true %>" inlineField="<%= true %>" inlineLabel="left" label="" name="fileRepositoryIdLabel" type="text" value="<%= fileRepositoryId %>" />
 										</c:otherwise>
 									</c:choose>
 								</span>
@@ -550,21 +550,21 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										<liferay-ui:message key="server-name" />
 									</label>
 
-									<aui:input inlineField="<%= true %>" inlineLabel="left" name="name" value="<%= name %>" />
+									<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="name" value="<%= name %>" />
 								</span>
 								<span class="aui-field-row">
 									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
 										<liferay-ui:message key="host" />
 									</label>
 
-									<aui:input inlineField="<%= true %>" inlineLabel="left" name="host" value="<%= fileRepository.getHost() %>" />
+									<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="host" value="<%= fileRepository.getHost() %>" />
 								</span>
 								<span class="aui-field-row">
 									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
 										<liferay-ui:message key="status" />
 									</label>
 
-									<aui:select inlineField="<%= true %>" inlineLabel="left" name="status">
+									<aui:select inlineField="<%= true %>" inlineLabel="left" label="" name="status">
 										<aui:option label="active" selected="<%= status == WorkflowConstants.STATUS_APPROVED %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
 										<aui:option label="inactive" selected="<%= status == WorkflowConstants.STATUS_INACTIVE %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
 									</aui:select>

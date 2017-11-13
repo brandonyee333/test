@@ -72,7 +72,7 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 			<liferay-ui:message key="name" />
 		</td>
 		<td>
-			<aui:input name="name" />
+			<aui:input label="" name="name" />
 		</td>
 	</tr>
 	<tr>
@@ -80,7 +80,7 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 			<liferay-ui:message key="description" />
 		</td>
 		<td>
-			<aui:input name="description" />
+			<aui:input label="" name="description" />
 		</td>
 	</tr>
 	<tr>
@@ -88,7 +88,7 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 			<liferay-ui:message key="time-zone" />
 		</td>
 		<td>
-			<aui:select name="timeZoneId">
+			<aui:select label="" name="timeZoneId">
 				<aui:option label="" value="0" />
 
 				<%

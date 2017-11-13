@@ -115,7 +115,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 					<liferay-ui:message key="dossiera-account-key" />
 				</td>
 				<td>
-					<aui:input name="dossieraAccountKey" />
+					<aui:input label="" name="dossieraAccountKey" />
 				</td>
 			</tr>
 		</c:if>
@@ -125,7 +125,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<liferay-ui:message key="code" />
 			</td>
 			<td>
-				<aui:input name="code" />
+				<aui:input label="" name="code" />
 			</td>
 		</tr>
 
@@ -151,7 +151,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 					}
 					%>
 
-					<aui:select name="status" onChange="<%= taglibOnChange %>">
+					<aui:select label="" name="status" onChange="<%= taglibOnChange %>">
 						<aui:option label="active" selected="<%= partnerEntry.getStatus() == WorkflowConstants.STATUS_APPROVED %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
 						<aui:option label="inactive" selected="<%= partnerEntry.getStatus() == WorkflowConstants.STATUS_INACTIVE %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
 					</aui:select>
@@ -183,7 +183,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<liferay-ui:message key="additional-notes" />
 			</td>
 			<td>
-				<aui:input name="notes" />
+				<aui:input label="" name="notes" />
 			</td>
 		</tr>
 		<tr>
@@ -191,7 +191,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<liferay-ui:message key="support-region" />
 			</td>
 			<td>
-				<aui:select name="supportRegionId">
+				<aui:select label="" name="supportRegionId">
 					<aui:option value="" />
 
 					<%

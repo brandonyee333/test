@@ -141,7 +141,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<liferay-ui:message key="parent-team" />
 			</td>
 			<td>
-				<aui:select name="parentSupportTeamId">
+				<aui:select label="" name="parentSupportTeamId">
 					<aui:option value="0"></aui:option>
 
 					<%
@@ -167,7 +167,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<liferay-ui:message key="name" />
 			</td>
 			<td>
-				<aui:input name="name" />
+				<aui:input label="" name="name" />
 			</td>
 		</tr>
 		<tr>
@@ -175,7 +175,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<liferay-ui:message key="description" />
 			</td>
 			<td>
-				<aui:input name="description" />
+				<aui:input label="" name="description" />
 			</td>
 		</tr>
 		<tr>
@@ -183,7 +183,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<liferay-ui:message key="type" />
 			</td>
 			<td>
-				<aui:select name="type">
+				<aui:select label="" name="type">
 					<aui:option value="0"><liferay-ui:message key="normal" /></aui:option>
 
 					<%
@@ -203,7 +203,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<liferay-ui:message key="labor-hours" />
 			</td>
 			<td>
-				<aui:select name="supportLaborId">
+				<aui:select label="" name="supportLaborId">
 					<aui:option value="0"></aui:option>
 
 					<%
@@ -226,7 +226,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<liferay-ui:message key="physical-location-support-region" />
 			</td>
 			<td>
-				<aui:select name="locationSupportRegionId">
+				<aui:select label="" name="locationSupportRegionId">
 					<aui:option value="0"></aui:option>
 
 					<%

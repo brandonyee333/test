@@ -370,7 +370,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="type" />
 			</td>
 			<td>
-				<aui:select name="type">
+				<aui:select label="" name="type">
 
 					<%
 					for (int i = 1; i <= 4; i++) {
@@ -390,7 +390,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="industry" />
 			</td>
 			<td>
-				<aui:select name="industry">
+				<aui:select label="" name="industry">
 					<aui:option value="" />
 
 					<%
@@ -457,7 +457,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="tier" />
 			</td>
 			<td>
-				<aui:select name="tier">
+				<aui:select label="" name="tier">
 
 					<%
 					for (int curTier : AccountEntryConstants.TIERS) {
@@ -477,7 +477,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="maximum-contacts" />
 			</td>
 			<td>
-				<aui:input name="maxCustomers" />
+				<aui:input label="" name="maxCustomers" />
 			</td>
 		</tr>
 		<tr>
@@ -485,7 +485,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="special-instructions" />
 			</td>
 			<td>
-				<aui:input name="instructions" />
+				<aui:input label="" name="instructions" />
 			</td>
 		</tr>
 		<tr>
@@ -530,7 +530,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="additional-notes" />
 			</td>
 			<td>
-				<aui:input name="notes" />
+				<aui:input label="" name="notes" />
 			</td>
 		</tr>
 		<tr>
@@ -538,7 +538,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="street1" />
 			</td>
 			<td>
-				<aui:input bean="<%= address %>" field="street1" inputCssClass="lfr-input-text" model="<%= Address.class %>" name="street1" />
+				<aui:input bean="<%= address %>" field="street1" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street1" />
 			</td>
 		</tr>
 		<tr>
@@ -546,7 +546,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="street2" />
 			</td>
 			<td>
-				<aui:input bean="<%= address %>" field="street2" inputCssClass="lfr-input-text" model="<%= Address.class %>" name="street2" />
+				<aui:input bean="<%= address %>" field="street2" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street2" />
 			</td>
 		</tr>
 		<tr>
@@ -554,7 +554,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="street3" />
 			</td>
 			<td>
-				<aui:input bean="<%= address %>" field="street3" inputCssClass="lfr-input-text" model="<%= Address.class %>" name="street3" />
+				<aui:input bean="<%= address %>" field="street3" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street3" />
 			</td>
 		</tr>
 		<tr>
@@ -562,7 +562,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="country" />
 			</td>
 			<td>
-				<aui:select bean="<%= address %>" field="countryId" label="country" name="countryId" />
+				<aui:select bean="<%= address %>" field="countryId" label="" name="countryId" />
 			</td>
 		</tr>
 		<tr>
@@ -570,7 +570,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="state-province" />
 			</td>
 			<td>
-				<aui:select bean="<%= address %>" field="regionId" label="region" name="regionId" />
+				<aui:select bean="<%= address %>" field="regionId" label="" name="regionId" />
 			</td>
 		</tr>
 		<tr>
@@ -578,7 +578,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="city" />
 			</td>
 			<td>
-				<aui:input bean="<%= address %>" field="city" inputCssClass="lfr-input-text" model="<%= Address.class %>" name="city" />
+				<aui:input bean="<%= address %>" field="city" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="city" />
 			</td>
 		</tr>
 		<tr>
@@ -586,7 +586,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="postal-code" />
 			</td>
 			<td>
-				<aui:input bean="<%= address %>" field="zip" inputCssClass="lfr-input-text" model="<%= Address.class %>" name="zip" />
+				<aui:input bean="<%= address %>" field="zip" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="zip" />
 			</td>
 		</tr>
 	</table>

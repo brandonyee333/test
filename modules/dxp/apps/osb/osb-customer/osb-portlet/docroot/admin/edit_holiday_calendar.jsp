@@ -84,7 +84,7 @@ Date lastEnabledDate = calendar.getTime();
 				<liferay-ui:message key="name" />
 			</td>
 			<td>
-				<aui:input name="name" />
+				<aui:input label="" name="name" />
 			</td>
 		</tr>
 		<tr>
@@ -92,7 +92,7 @@ Date lastEnabledDate = calendar.getTime();
 				<liferay-ui:message key="description" />
 			</td>
 			<td>
-				<aui:input name="description" />
+				<aui:input label="" name="description" />
 			</td>
 		</tr>
 	</table>

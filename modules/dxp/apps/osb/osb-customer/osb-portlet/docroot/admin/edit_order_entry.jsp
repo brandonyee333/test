@@ -320,7 +320,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 						<aui:input hidden="<%= true %>" name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
 					</c:when>
 					<c:otherwise>
-						<aui:input name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
+						<aui:input label="" name="salesforceOpportunityKey" value="<%= salesforceOpportunityKey %>" />
 					</c:otherwise>
 				</c:choose>
 			</td>
