@@ -26,9 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @author Igor Beslic
  */
@@ -64,9 +61,6 @@ public class LCSSubscriptionEntryClientImpl
 
 	private static final String _URL_LCS_SUBSCRIPTION_ENTRY =
 		"/o/osb-lcs-rest/LCSSubscriptionEntry";
-
-	private static final Logger _logger = LoggerFactory.getLogger(
-		LCSSubscriptionEntryClientImpl.class);
 
 	@Reference(target = "(component.name=OSBLCSJSONWebServiceClient)")
 	private JSONWebServiceClient _jsonWebServiceClient;
