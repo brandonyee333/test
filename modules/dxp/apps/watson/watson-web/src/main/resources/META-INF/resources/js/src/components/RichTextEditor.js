@@ -31,7 +31,6 @@ class RichTextEditor extends JSXComponent {
 		return (
 			<div autoFocus={autoFocus} class="rich-editor-wrapper">
 				<MetalQuill
-					bounds={this.element}
 					className="watson-input rich-editor"
 					formats={formats}
 					modules={modules}

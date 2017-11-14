@@ -59,7 +59,7 @@ class DependentSelectInput extends JSXComponent {
 }
 
 DependentSelectInput.PROPS = {
-	defaultOptions: Config.object(),
+	defaultOptions: Config.any(),
 	inputId: Config.string(),
 	loading: Config.bool(),
 	onChange: Config.func(),

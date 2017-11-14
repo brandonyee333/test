@@ -1,8 +1,6 @@
 import {debounce, noop} from 'lodash';
 import JSXComponent from 'metal-jsx';
 import {Map} from 'immutable';
-import moment from 'moment';
-import momentThai from 'moment/locale/th.js';
 import {Provider} from 'metal-redux';
 import Router from 'metal-router';
 
@@ -66,10 +64,6 @@ class Watson extends JSXComponent {
 		}
 		else {
 			const store = configureStore(Map());
-
-			if (WatsonConstants.otherLanguageId !== 'th') {
-				moment.locale('th', momentThai);
-			}
 
 			retVal = (
 				<Provider store={store}>
