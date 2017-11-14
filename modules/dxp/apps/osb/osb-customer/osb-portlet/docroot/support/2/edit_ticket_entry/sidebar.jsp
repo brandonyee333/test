@@ -33,7 +33,7 @@ long supportRegionId = BeanParamUtil.getLong(ticketEntry, request, "supportRegio
 int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 %>
 
-<div class="sidebar">
+<aside class="ticket-sidebar">
 	<div class="section sidebar-account-detail">
 		<c:choose>
 			<c:when test="<%= ticketWorker %>">
@@ -371,7 +371,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 			</c:if>
 		</div>
 	</div>
-</div>
+</aside>
 
 <%
 String tierMessage = HtmlUtil.escapeJS(SupportUtil.getPreferenceValue(locale, "tierMessage_" + accountEntry.getTier()));
