@@ -62,7 +62,7 @@
 			</a>
 		</c:if>
 
-		<span class="nav-label"><liferay-ui:message key="tickets" /></span>
+		<span class="nav-tooltip"><liferay-ui:message key="tickets" /></span>
 
 		<c:if test="<%= !searchFilters.isEmpty() || supportPartnerWorker || !developerAccountEntryIds.isEmpty() %>">
 			<ul class="hide nav-submenu" id="<portlet:namespace />homeSubMenu">
@@ -140,7 +140,7 @@
 			</svg>
 		</a>
 
-		<span class="nav-label"><liferay-ui:message key="search" /></span>
+		<span class="nav-tooltip"><liferay-ui:message key="search" /></span>
 	</div>
 
 	<c:if test="<%= clockedIn %>">
@@ -157,7 +157,7 @@
 				</svg>
 			</a>
 
-			<span class="nav-label"><liferay-ui:message key="new-ticket" /></span>
+			<span class="nav-tooltip"><liferay-ui:message key="new-ticket" /></span>
 		</div>
 	</c:if>
 
@@ -180,7 +180,7 @@
 				</svg>
 			</a>
 
-			<span class="nav-label"><liferay-ui:message key="important-messages-regarding-your-liferay-subscriptions" /></span>
+			<span class="nav-tooltip"><liferay-ui:message key="important-messages-regarding-your-liferay-subscriptions" /></span>
 		</div> --%>
 	</c:if>
 
@@ -197,7 +197,7 @@
 			</svg>
 		</a>
 
-		<span class="nav-label"><liferay-ui:message key="help" /></span>
+		<span class="nav-tooltip"><liferay-ui:message key="help" /></span>
 	</div>
 
 	<div class="bottom lesa-feedback-icon nav-icon" id="<portlet:namespace />lesaFeedbackIcon">
@@ -208,7 +208,7 @@
 			<path d="M 3, 14.25 24, 14.25" />
 		</svg>
 
-		<span class="nav-label"><liferay-ui:message key="feedback-bugs" /></span>
+		<span class="nav-tooltip"><liferay-ui:message key="feedback-bugs" /></span>
 	</div>
 
 	<%@ include file="/support/2/lesa_feedback.jspf" %>
@@ -241,7 +241,7 @@
 			</svg>
 		</a>
 
-		<span class="nav-label"><liferay-ui:message key="preferences" /></span>
+		<span class="nav-tooltip"><liferay-ui:message key="preferences" /></span>
 	</div>
 </div>
 
