@@ -360,50 +360,6 @@
 	}
 }
 
-/* ---------- Tab Nav ---------- */
-
-.nav-menu .nav-item {
-	display: inline-block;
-	vertical-align: top;
-}
-
-.tab-nav {
-	text-align: center;
-
-	&, a {
-		border: 1px solid $border-color;
-	}
-
-	& {
-		border-width: 0 0 1px 0;
-		padding: 0;
-	}
-
-	a {
-		color: inherit;
-		display: block;
-		margin: 0 -1px -1px 0;
-		padding: 5px 10px;
-		text-decoration: none;
-	}
-
-	li:hover, li.selected {
-		a {
-			background: $hover-blue;
-			color: #FFF;
-		}
-	}
-
-	ul {
-		display: inline-block;
-		vertical-align: bottom;
-	}
-
-	.l a {
-		border-right-width: 1px;
-	}
-}
-
 /* ---------- Sidebar ---------- */
 
 .sidebar {

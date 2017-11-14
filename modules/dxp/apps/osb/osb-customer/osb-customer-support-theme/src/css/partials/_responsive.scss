@@ -51,34 +51,8 @@
 			}
 		}
 
-		.dockbar-ready.lfr-dockbar-pinned {
-			padding-top: 56px;
-		}
-
-		.portlet-dockbar, .responsive-hidden {
-			display: none !important;
-		}
-
-		.responsive-centered {
-			text-align: center !important;
-		}
-
 		.responsive-only {
 			display: block !important;
-		}
-
-		.tab-nav {
-			border-width: 0;
-
-			li {
-				margin: 0 5px;
-				width: 46%;
-			}
-
-			ul {
-				max-width: 320px;
-				width: 90%;
-			}
 		}
 
 		.unit {
