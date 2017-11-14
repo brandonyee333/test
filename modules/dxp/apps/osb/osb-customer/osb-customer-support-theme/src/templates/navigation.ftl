@@ -107,7 +107,6 @@
 														<@liferay.language key="account-home" />
 													</a>
 												</li>
-
 												<li class="$user_profile_class">
 													<#assign profile_url = account_url + '/profile' />
 
@@ -167,7 +166,6 @@
 									<@liferay.language key="register" />
 								</a>
 							</li>
-
 							<li class="sign-in-button" id="signInBtn">
 								<a href="${sign_in_url}">${sign_in_text}</a>
 							</li>
