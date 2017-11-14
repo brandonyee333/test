@@ -71,7 +71,7 @@ String languageId = LanguageUtil.getLanguageId(request);
 		<br />
 
 		<div>
-			<input onClick="location.href = '<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_ticket_canned_response.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>';" type="button" value="<liferay-ui:message key="add-canned-response" />" />
+			<a class="btn btn-default" href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_ticket_canned_response.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>"><liferay-ui:message key="add-canned-response" /></a>
 		</div>
 
 		<br />
