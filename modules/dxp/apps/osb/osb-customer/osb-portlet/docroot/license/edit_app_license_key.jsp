@@ -379,10 +379,10 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 						<portlet:param name="productId" value="<%= String.valueOf(licenseKey.getProductId()) %>" />
 					</portlet:renderURL>
 
-					<input class="aui-button-input" onClick="location.href = '<%= addLicenseKeyURL %>'" type="button" value="<liferay-ui:message key="add-new-license-key" />" />
+					<a class="btn btn-default" href="<%= addLicenseKeyURL %>"><liferay-ui:message key="add-new-license-key" /></a>
 				</c:if>
 
-				<input class="aui-button-input" onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+				<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 			</div>
 		</c:when>
 		<c:when test="<%= assetReceiptLicense == null %>">
@@ -689,7 +689,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 			<div>
 				<input class="aui-button-input" type="submit" value="<liferay-ui:message key="generate" />" />
 
-				<input class="aui-button-input" onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+				<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 			</div>
 
 			<aui:script use="liferay-auto-fields">

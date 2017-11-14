@@ -247,7 +247,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntry.getPartnerEntryId()) %>" />
 			</portlet:renderURL>
 
-			<input onClick="location.href = '<%= HtmlUtil.escape(assignWorkersURL) %>';" type="button" value="<liferay-ui:message key="assign-workers" />" />
+			<a class="btn btn-default" href="<%= HtmlUtil.escape(assignWorkersURL) %>"><liferay-ui:message key="assign-workers" /></a>
 
 			<portlet:renderURL var="addChildPartnerURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" />
@@ -255,10 +255,10 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				<portlet:param name="parentPartnerEntryId" value="<%= String.valueOf(partnerEntry.getPartnerEntryId()) %>" />
 			</portlet:renderURL>
 
-			<input onClick="location.href = '<%= HtmlUtil.escape(addChildPartnerURL) %>';" type="button" value="<liferay-ui:message key="add-child-partner" />" />
+			<a class="btn btn-default" href="<%= HtmlUtil.escape(addChildPartnerURL) %>"><liferay-ui:message key="add-child-partner" /></a>
 		</c:if>
 
-		<input onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 	</div>
 
 	<c:if test="<%= !accountEntries.isEmpty() %>">

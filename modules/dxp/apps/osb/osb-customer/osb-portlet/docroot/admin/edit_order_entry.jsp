@@ -408,7 +408,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<input onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-reset-this-order") %>')) { location.href='<%= resetOrderEntryURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="reset-renewals" />" />
 		</c:if>
 
-		<input onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 	</div>
 
 	<br />

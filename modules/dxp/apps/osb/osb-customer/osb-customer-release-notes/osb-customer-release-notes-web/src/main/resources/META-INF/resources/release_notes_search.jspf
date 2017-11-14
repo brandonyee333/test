@@ -34,7 +34,7 @@
 		<portlet:param name="redirect" value="<%= currentURL %>" />
 	</portlet:renderURL>
 
-	<input onClick="location.href = '<%= editReleaseNotesURL %>';" type="button" value="<liferay-ui:message key="add-release-notes" />" />
+	<a class="btn btn-default" href="<%= editReleaseNotesURL %>"><liferay-ui:message key="add-release-notes" /></a>
 </div>
 
 <br />

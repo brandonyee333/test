@@ -367,7 +367,7 @@
 						<portlet:param name="maxServers" value="<%= String.valueOf(licenseKey.getMaxServers()) %>" />
 					</portlet:renderURL>
 
-					<input class="aui-button-input" onClick="location.href = '<%= addLicenseKeyURL %>'" type="button" value="<liferay-ui:message key="add-new-cluster-key" />" />
+					<a class="btn btn-default" href="<%= addLicenseKeyURL %>"><liferay-ui:message key="add-new-cluster-key" /></a>
 				</c:if>
 			</div>
 		</c:when>

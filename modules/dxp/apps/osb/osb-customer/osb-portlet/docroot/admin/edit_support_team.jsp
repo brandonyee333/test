@@ -258,7 +258,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<portlet:param name="supportTeamId" value="<%= String.valueOf(supportTeam.getSupportTeamId()) %>" />
 			</portlet:renderURL>
 
-			<input onClick="location.href = '<%= HtmlUtil.escape(assignWorkersURL) %>';" type="button" value="<liferay-ui:message key="assign-workers" />" />
+			<a class="btn btn-default" href="<%= HtmlUtil.escape(assignWorkersURL) %>"><liferay-ui:message key="assign-workers" /></a>
 
 			<portlet:renderURL var="createChildTeamURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="mvcPath" value="/admin/edit_support_team.jsp" />
@@ -266,10 +266,10 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<portlet:param name="parentSupportTeamId" value="<%= String.valueOf(supportTeam.getSupportTeamId()) %>" />
 			</portlet:renderURL>
 
-			<input onClick="location.href = '<%= HtmlUtil.escape(createChildTeamURL) %>';" type="button" value="<liferay-ui:message key="create-child-team" />" />
+			<a class="btn btn-default" href="<%= HtmlUtil.escape(createChildTeamURL) %>"><liferay-ui:message key="create-child-team" /></a>
 		</c:if>
 
-		<input onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 	</div>
 
 	<c:if test="<%= supportTeam != null %>">

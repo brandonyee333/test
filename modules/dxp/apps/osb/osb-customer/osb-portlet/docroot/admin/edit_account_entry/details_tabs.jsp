@@ -237,7 +237,7 @@ for (SupportRegion supportRegion : supportRegions) {
 						</liferay-portlet:renderURL>
 
 						<div>
-							<input onClick="location.href = '<%= HtmlUtil.escape(corpProjectURL.toString()) %>';" type="button" value="<liferay-ui:message key="manage-messages" />" />
+							<a class="btn btn-default" href="<%= HtmlUtil.escape(corpProjectURL.toString()) %>"><liferay-ui:message key="manage-messages" /></a>
 						</div>
 
 						<br />

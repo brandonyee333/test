@@ -123,7 +123,7 @@
 	</liferay-ui:search-container-row>
 
 	<div>
-		<input onClick="location.href = '<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_holiday_calendar.jsp" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:renderURL>';" type="button" value="<liferay-ui:message key="add-holiday-calendar" />" />
+		<a class="btn btn-default" href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_holiday_calendar.jsp" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:renderURL>"><liferay-ui:message key="add-holiday-calendar" /></a>
 	</div>
 
 	<br />

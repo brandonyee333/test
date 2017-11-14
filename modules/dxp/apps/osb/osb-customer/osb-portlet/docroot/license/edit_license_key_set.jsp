@@ -575,7 +575,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 				<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 			</portlet:renderURL>
 
-			<input class="aui-button-input" onClick="location.href = '<%= addLicenseKeyURL %>'" type="button" value="<liferay-ui:message key="add-new-license-key" />" />
+			<a class="btn btn-default" href="<%= addLicenseKeyURL %>"><liferay-ui:message key="add-new-license-key" /></a>
 		</c:if>
 
 		<c:if test="<%= OSBLicenseKeySetPermission.contains(permissionChecker, licenseKeySetId, OSBActionKeys.UPDATE) %>">
@@ -585,10 +585,10 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 				<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 			</portlet:renderURL>
 
-			<input class="aui-button-input" onClick="location.href = '<%= mergeLicenseKeySetURL %>'" type="button" value="<liferay-ui:message key="merge-licenses" />" />
+			<a class="btn btn-default" href="<%= mergeLicenseKeySetURL %>">liferay-ui:message key="merge-licenses" /></a>
 		</c:if>
 
-		<input class="aui-button-input" onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 	</div>
 
 	<c:if test="<%= inactiveLicensesCount > 3 %>">

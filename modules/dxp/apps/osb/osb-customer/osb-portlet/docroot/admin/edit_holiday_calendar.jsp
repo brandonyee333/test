@@ -109,10 +109,10 @@ Date lastEnabledDate = calendar.getTime();
 				<portlet:param name="holidayCalendarId" value="<%= String.valueOf(holidayCalendar.getHolidayCalendarId()) %>" />
 			</portlet:renderURL>
 
-			<input onClick="location.href = '<%= HtmlUtil.escape(assignUsersURL) %>';" type="button" value="<liferay-ui:message key="assign-users" />" />
+			<a class="btn btn-default" href="<%= HtmlUtil.escape(assignUsersURL) %>"><liferay-ui:message key="assign-users" /></a>
 		</c:if>
 
-		<input onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 	</div>
 
 	<br />

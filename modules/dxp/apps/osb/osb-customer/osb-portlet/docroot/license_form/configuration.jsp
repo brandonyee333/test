@@ -70,6 +70,6 @@ int productVersion = PrefsParamUtil.getInteger(portletPreferences, request, "pro
 
 		<input type="submit" value="<liferay-ui:message key="save" />" />
 
-		<input onClick="location.href = '<%= HtmlUtil.escape(PortalUtil.escapeRedirect(redirect)) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<a class="btn btn-default" href="<%= HtmlUtil.escape(PortalUtil.escapeRedirect(redirect)) %>"><liferay-ui:message key="cancel" /></a>
 	</aui:form>
 </c:if>

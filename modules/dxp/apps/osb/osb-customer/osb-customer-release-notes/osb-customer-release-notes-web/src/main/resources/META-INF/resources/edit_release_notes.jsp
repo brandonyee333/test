@@ -81,6 +81,6 @@ if (releaseNotes != null) {
 			<portlet:param name="uuid" value="<%= releaseNotes.getUuid() %>" />
 		</portlet:resourceURL>
 
-		<input onClick="location.href = '<%= viewReleaseNotesURL %>';" type="button" value="<liferay-ui:message key="view-release-notes" />" />
+		<a class="btn btn-default" href="<%= viewReleaseNotesURL %>"><liferay-ui:message key="view-release-notes" /></a>
 	</c:if>
 </aui:form>

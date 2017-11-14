@@ -121,10 +121,10 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 				<portlet:param name="supportLaborId" value="<%= String.valueOf(supportLabor.getSupportLaborId()) %>" />
 			</portlet:renderURL>
 
-			<input onClick="location.href = '<%= HtmlUtil.escape(assignWorkersURL) %>';" type="button" value="<liferay-ui:message key="assign-workers" />" />
+			<a class="btn btn-default" href="<%= HtmlUtil.escape(assignWorkersURL) %>"><liferay-ui:message key="assign-workers" /></a>
 		</c:if>
 
-		<input onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 	</div>
 
 	<c:if test="<%= supportLabor != null %>">

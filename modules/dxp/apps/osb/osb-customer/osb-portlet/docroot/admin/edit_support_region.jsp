@@ -127,7 +127,7 @@ if (supportRegion != null) {
 	<div>
 		<input type="submit" value="<liferay-ui:message key="save" />" />
 
-		<input onClick="location.href = '<%= HtmlUtil.escape(backURL) %>';" type="button" value="<liferay-ui:message key="cancel" />" />
+		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 	</div>
 
 	<c:if test="<%= supportRegion != null %>">
