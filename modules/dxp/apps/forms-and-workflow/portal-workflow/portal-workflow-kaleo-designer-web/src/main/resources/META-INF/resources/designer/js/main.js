@@ -274,11 +274,12 @@ AUI.add(
 
 					toXML: function() {
 						var instance = this;
+						var metadata = instance.getDefinitionMetadata();
 
 						var json = instance.toJSON();
 
-						var definitionDescription = instance.get('definitionDescription');
-						var definitionName = A.Escape.html(instance.get('definitionName'));
+						var definitionDescription = metadata.definitionDescription;
+						var definitionName = metadata.definitionName;
 						var definitionVersion = instance.get('definitionVersion');
 						var xmlNamespace = instance.get('xmlNamespace');
 
