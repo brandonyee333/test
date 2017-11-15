@@ -1,0 +1,120 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.User;
+
+import java.io.IOException;
+
+/**
+ * @author Cristina González
+ */
+public class UserModelStdSerializer extends StdSerializer<User> {
+
+	public UserModelStdSerializer() {
+		this(null);
+	}
+
+	public UserModelStdSerializer(Class<User> user) {
+		super(user);
+	}
+
+	@Override
+	public void serialize(
+			User user, JsonGenerator jsonGenerator,
+			SerializerProvider serializerProvider)
+		throws IOException {
+
+		jsonGenerator.writeStartObject();
+		jsonGenerator.writeStringField("projectId", _PROJECT_ID);
+		jsonGenerator.writeNumberField("userId", user.getUserId());
+		jsonGenerator.writeStringField("emailAddress", user.getEmailAddress());
+
+		jsonGenerator.writeStringField("firstName", user.getFirstName());
+
+		jsonGenerator.writeStringField("googleUserId", user.getGoogleUserId());
+
+		jsonGenerator.writeStringField("jobTitle", user.getJobTitle());
+
+		jsonGenerator.writeStringField("languageId", user.getLanguageId());
+
+		jsonGenerator.writeStringField("lastName", user.getLastName());
+
+		jsonGenerator.writeStringField("middleName", user.getMiddleName());
+
+		jsonGenerator.writeStringField("openId", user.getOpenId());
+
+		jsonGenerator.writeNumberField("portraitId", user.getPortraitId());
+
+		jsonGenerator.writeStringField("screenName", user.getScreenName());
+
+		jsonGenerator.writeNumberField("status", user.getStatus());
+
+		jsonGenerator.writeStringField(
+			"timeZoneId", user.getTimeZone().getID());
+
+		jsonGenerator.writeObject(user.getExpandoBridge());
+
+		jsonGenerator.writeObjectField("addresses", user.getAddresses());
+
+		try {
+			jsonGenerator.writeObjectField("contact", user.getContact());
+		}
+		catch (PortalException pe) {
+			_log.error(
+				"Can't serialize contacts of user " + user.getUserId(), pe);
+		}
+
+		jsonGenerator.writeObjectField(
+			"emailAddresses", user.getEmailAddresses());
+
+		jsonGenerator.writeObjectField("groups", user.getGroups());
+
+		try {
+			jsonGenerator.writeObjectField(
+				"organizations", user.getOrganizations());
+		}
+		catch (PortalException pe) {
+			_log.error(
+				"Can't serialize organizations of user " + user.getUserId(),
+				pe);
+		}
+
+		jsonGenerator.writeObjectField("phones", user.getPhones());
+
+		jsonGenerator.writeObjectField("teams", user.getTeams());
+
+		jsonGenerator.writeObjectField("roles", user.getRoles());
+
+		jsonGenerator.writeObjectField("userGroups", user.getUserGroups());
+
+		jsonGenerator.writeObjectField("websites", user.getWebsites());
+
+		jsonGenerator.writeEndObject();
+	}
+
+	private static final String _PROJECT_ID = System.getenv("PULPO_PROJECT_ID");
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UserModelStdSerializer.class);
+
+}

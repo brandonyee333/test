@@ -1,6 +1,19 @@
 Bundle-Name: Liferay Pulpo Connector DE Contacts Test
 Bundle-SymbolicName: com.liferay.pulpo.connector.de.contacts.test
 Bundle-Version: 1.0.0
-Include-Resource: test-classes/integration
+Import-Package:\
+	!com.google.gson,\
+	!com.google.gson.internal,\
+	!com.google.gson.reflect,\
+	\
+	*
+Include-Resource:\
+	test-classes/integration,\
+	@lib/accessors-smart.jar,\
+	@lib/hamcrest-core.jar,\
+	@lib/hamcrest-library.jar,\
+	@lib/json-path-matchers.jar,\
+	@lib/json-path.jar,\
+	@lib/json-smart.jar
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Pulpo Connector DE Contacts

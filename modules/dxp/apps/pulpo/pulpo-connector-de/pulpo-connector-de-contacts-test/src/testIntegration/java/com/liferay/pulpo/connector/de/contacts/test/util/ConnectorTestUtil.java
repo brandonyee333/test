@@ -14,30 +14,23 @@
 
 package com.liferay.pulpo.connector.de.contacts.test.util;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.junit.Assert;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.function.Consumer;
 
 /**
  * @author Cristina González
  */
 public class ConnectorTestUtil {
 
-	public static AtomicBoolean registerContactMessageListener(
-		final String destinationName, String propertyName,
-		final Map<String, String> exceptedProperties) {
+	public static BlockingQueue<String> registerContactMessageListener(
+		final String destinationName, final Consumer<String> validation) {
 
-		final AtomicBoolean called = new AtomicBoolean();
+		final BlockingQueue<String> result = new ArrayBlockingQueue(1, true);
 
 		MessageBusUtil.registerMessageListener(
 			destinationName,
@@ -48,21 +41,28 @@ public class ConnectorTestUtil {
 					String payload = (String)message.getPayload();
 
 					try {
-						Map<String, String> properties =
-							_getPropertyMapFromPayload(payload, propertyName);
+						validation.accept(payload);
 
-						exceptedProperties.forEach(
-							(k, v) -> {
-								Assert.assertEquals(
-									"The contact received has " + k + " " +
-										properties.get(k) +
-											" but it should have been " + v,
-									v, properties.get(k));
-							});
-
-						called.set(true);
+						result.put("OK");
 					}
-					catch (JSONException jsone) {
+					catch (AssertionError ae) {
+						try {
+							result.put(ae.getMessage());
+						}
+						catch (InterruptedException ie) {
+							ie.printStackTrace();
+						}
+					}
+					catch (InterruptedException ie) {
+						ie.printStackTrace();
+					}
+					catch (Exception e) {
+						try {
+							result.put(e.getMessage());
+						}
+						catch (InterruptedException ie) {
+							ie.printStackTrace();
+						}
 					}
 					finally {
 						MessageBusUtil.unregisterMessageListener(
@@ -72,33 +72,7 @@ public class ConnectorTestUtil {
 
 			});
 
-		return called;
-	}
-
-	private static Map<String, String> _getPropertyMapFromPayload(
-			String payload, String propertyName)
-		throws JSONException {
-
-		Map<String, String> properties = new HashMap<>();
-
-		JSONObject payloadJSONObject = JSONFactoryUtil.createJSONObject(
-			payload);
-
-		JSONArray userPropertiesJSONArray = payloadJSONObject.getJSONArray(
-			propertyName);
-
-		if (userPropertiesJSONArray.getJSONArray(0) != null) {
-			userPropertiesJSONArray = userPropertiesJSONArray.getJSONArray(0);
-		}
-
-		for (int i = 0; i < userPropertiesJSONArray.length(); i++) {
-			JSONObject jsonObject = userPropertiesJSONArray.getJSONObject(i);
-
-			properties.put(
-				jsonObject.getString("name"), jsonObject.getString("value"));
-		}
-
-		return properties;
+		return result;
 	}
 
 }

@@ -2,6 +2,10 @@ sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
 dependencies {
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.6.3"
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-core", version: "2.6.3"
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.6.3"
+
 	provided files("../pulpo-connector-de-docker/libs/com.liferay.osb.lcs.messaging.osgi-1.0.0.jar")
 	provided group: "com.liferay", name: "com.liferay.osgi.service.tracker.collections", version: "2.0.0"
 	provided group: "com.liferay", name: "com.liferay.osgi.util", version: "3.0.0"

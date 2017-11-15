@@ -16,14 +16,22 @@ package com.liferay.pulpo.connector.de.contacts.test;
 
 import static com.liferay.pulpo.connector.de.contacts.internal.ContactsConnectorImpl.PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.core.IsEqual.equalTo;
+
+import static org.valid4j.matchers.jsonpath.JsonPathMatchers.hasJsonPath;
+
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.model.ExpandoTable;
+import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Country;
-import com.liferay.portal.kernel.model.EmailAddress;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.ListTypeConstants;
@@ -34,6 +42,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.Team;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.Website;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.service.ContactLocalServiceUtil;
@@ -47,18 +56,16 @@ import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.TeamLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.service.WebsiteLocalServiceUtil;
-import com.liferay.portal.kernel.service.persistence.EmailAddressUtil;
-import com.liferay.portal.kernel.test.rule.Sync;
-import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.OrganizationTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.test.util.UserGroupTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portlet.expando.util.test.ExpandoTestUtil;
 import com.liferay.pulpo.connector.de.contacts.constants.ContactsEntryProviderDestinationNames;
@@ -69,19 +76,15 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -89,14 +92,7 @@ import org.junit.runner.RunWith;
  * @author Eduardo Garcia
  */
 @RunWith(Arquillian.class)
-@Sync
 public class ContactsConnectorTest {
-
-	@ClassRule
-	@Rule
-	public static final SynchronousDestinationTestRule
-		synchronousDestinationTestRule =
-			SynchronousDestinationTestRule.INSTANCE;
 
 	@Before
 	public void setUp() throws Exception {
@@ -147,53 +143,95 @@ public class ContactsConnectorTest {
 		address.setClassName(Contact.class.getName());
 		address.setClassPK(_user.getContact().getPrimaryKey());
 		address.setTypeId(_getListTypeId(ListTypeConstants.CONTACT_ADDRESS));
+		address.setCompanyId(_user.getCompanyId());
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>("Address#city", address.getCity()),
-				new SimpleEntry<>(
-					"Address#countryId",
-					String.valueOf(address.getCountry().getCountryId())),
-				new SimpleEntry<>(
-					"Address#regionId",
-					String.valueOf(address.getRegion().getRegionId())),
-				new SimpleEntry<>(
-					"Address#street1", String.valueOf(address.getStreet1())),
-				new SimpleEntry<>("Address#zip", address.getZip())
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"addresses",
+					contains(hasJsonPath("city", equalTo(address.getCity())))));
+			assertThat(
+				payload,
+				hasJsonPath(
+					"addresses",
+					contains(
+						hasJsonPath(
+							"country",
+							equalTo(address.getCountry().getName())))));
+			assertThat(
+				payload,
+				hasJsonPath(
+					"addresses",
+					contains(
+						hasJsonPath(
+							"region",
+							equalTo(address.getRegion().getName())))));
+			assertThat(
+				payload,
+				hasJsonPath(
+					"addresses",
+					contains(
+						hasJsonPath(
+							"street1", equalTo(address.getStreet1())))));
+			assertThat(
+				payload,
+				hasJsonPath(
+					"addresses",
+					contains(
+						hasJsonPath(
+							"street2", equalTo(address.getStreet2())))));
+			assertThat(
+				payload,
+				hasJsonPath(
+					"addresses",
+					contains(
+						hasJsonPath(
+							"street3", equalTo(address.getStreet3())))));
+			assertThat(
+				payload,
+				hasJsonPath(
+					"addresses",
+					contains(hasJsonPath("zip", equalTo(address.getZip())))));
+		};
 
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION_PROPERTIES, "properties", exceptedProperties);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
 		AddressLocalServiceUtil.addAddress(address);
 
-		Assert.assertTrue(
-			"The " + _DESTINATION_PROPERTIES +
-				" message has not been sent to the message bus",
-			called.get());
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
+			"The " + _DESTINATION +
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
 	}
 
 	@Test
 	public void testAddEmailAddress() throws Exception {
-		EmailAddress emailAddress = EmailAddressUtil.create(
-			RandomTestUtil.nextLong());
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"emailAddresses",
+					contains(
+						hasJsonPath("address", equalTo("mail@liferay.com")))));
+		};
 
-		emailAddress.setAddress("mail@liferay.com");
-
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>(
-					"EmailAddress#address", emailAddress.getAddress())
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
-
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION_PROPERTIES, "properties", exceptedProperties);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
 		EmailAddressLocalServiceUtil.addEmailAddress(
 			_user.getPrimaryKey(), Contact.class.getName(),
@@ -201,66 +239,108 @@ public class ContactsConnectorTest {
 			_getListTypeId(ListTypeConstants.CONTACT_EMAIL_ADDRESS), false,
 			new ServiceContext());
 
-		Assert.assertTrue(
-			"The " + _DESTINATION_PROPERTIES +
-				" message has not been sent to the message bus",
-			called.get());
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
+			"The " + _DESTINATION +
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
 	}
 
 	@Test
 	public void testAddExpando() throws Exception {
-		ExpandoTable table = ExpandoTestUtil.addTable(
-			PortalUtil.getClassNameId(User.class),
-			"table" + RandomTestUtil.randomString());
+		ExpandoTable expandoTable =
+			ExpandoTableLocalServiceUtil.addDefaultTable(
+				TestPropsValues.getCompanyId(), User.class.getName());
 
-		ExpandoColumn column = ExpandoTestUtil.addColumn(
-			table, "name " + RandomTestUtil.randomString(),
+		ExpandoColumn expandoColumn = ExpandoColumnLocalServiceUtil.addColumn(
+			expandoTable.getTableId(),
+			"ExpandoAttributeName" + RandomTestUtil.randomString(),
 			ExpandoColumnConstants.STRING);
 
-		String expandoValue = "expandoExample";
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"custom#" + expandoColumn.getName(),
+					equalTo("ExpandoAttributeValue")));
+		};
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>(column.getName(), expandoValue)
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
-
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION, "userProperties", exceptedProperties);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
 		ExpandoTestUtil.addValue(
-			table, column, _user.getPrimaryKey(), expandoValue);
+			expandoTable, expandoColumn, _user.getPrimaryKey(),
+			"ExpandoAttributeValue");
 
-		Assert.assertTrue(
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
 			"The " + _DESTINATION +
-				" message has not been sent to the message bus",
-			called.get());
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
+
+		ExpandoColumnLocalServiceUtil.deleteColumn(expandoColumn.getColumnId());
+
+		ExpandoTableLocalServiceUtil.deleteExpandoTable(
+			expandoTable.getTableId());
 	}
 
 	@Test
 	public void testAddGroup() throws Exception {
 		Group group = GroupTestUtil.addGroup();
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>("Group#description", group.getDescription())
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"groups",
+					hasItem(
+						hasJsonPath(
+							"description", equalTo(group.getDescription())))));
+		};
 
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION, "userProperties", exceptedProperties);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
-		GroupLocalServiceUtil.addUserGroup(
-			_user.getUserId(), group.getGroupId());
+		GroupLocalServiceUtil.addUserGroups(
+			_user.getUserId(), Arrays.asList(group));
 
-		Assert.assertTrue(
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
 			"The " + _DESTINATION +
-				" message has not been sent to the message bus",
-			called.get());
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
 
 		GroupLocalServiceUtil.deleteGroup(group);
 	}
@@ -269,24 +349,37 @@ public class ContactsConnectorTest {
 	public void testAddOrganization() throws Exception {
 		Organization organization = OrganizationTestUtil.addOrganization(true);
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>("Organization#name", organization.getName())
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"organizations",
+					hasItem(
+						hasJsonPath("name", equalTo(organization.getName())))));
+		};
 
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION, "userProperties", exceptedProperties);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
 		OrganizationLocalServiceUtil.addUserOrganization(
 			_user.getUserId(), organization.getOrganizationId());
 
-		Assert.assertTrue(
-			"The " + _DESTINATION_PROPERTIES +
-				" message has not been sent to the message bus",
-			called.get());
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
+			"The " + _DESTINATION +
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
 
 		OrganizationLocalServiceUtil.deleteUserOrganization(
 			_user.getUserId(), organization.getOrganizationId());
@@ -300,77 +393,158 @@ public class ContactsConnectorTest {
 			RandomTestUtil.nextLong());
 
 		phone.setNumber("555-55-55-55");
-		phone.setUserId(_user.getUserId());
+		phone.setClassName(Contact.class.getName());
+		phone.setClassPK(_user.getContact().getPrimaryKey());
+		phone.setCompanyId(_user.getCompanyId());
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>("Phone#number", phone.getNumber())
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"phones",
+					hasItem(
+						hasJsonPath("number", equalTo(phone.getNumber())))));
+		};
 
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION_PROPERTIES, "properties", exceptedProperties);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
 		PhoneLocalServiceUtil.addPhone(phone);
 
-		Assert.assertTrue(
-			"The " + _DESTINATION_PROPERTIES +
-				" message has not been sent to the message bus",
-			called.get());
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
+			"The " + _DESTINATION +
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
 	}
 
 	@Test
 	public void testAddRole() throws Exception {
 		Role role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>("Role#name", role.getName())
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"roles",
+					hasItem(hasJsonPath("name", equalTo(role.getName())))));
+		};
 
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION, "userProperties", exceptedProperties);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
 		RoleLocalServiceUtil.addUserRole(_user.getUserId(), role.getRoleId());
 
-		Assert.assertTrue(
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
 			"The " + _DESTINATION +
-				" message has not been sent to the message bus",
-			called.get());
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
 
 		RoleLocalServiceUtil.deleteRole(role);
 	}
 
 	@Test
 	public void testAddTeam() throws Exception {
-		Team userTeam = TeamLocalServiceUtil.addTeam(
+		Team team = TeamLocalServiceUtil.addTeam(
 			_user.getUserId(), _group.getGroupId(),
 			RandomTestUtil.randomString(), "", new ServiceContext());
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>(
-					"Team#teamId", String.valueOf(userTeam.getTeamId()))
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"teams",
+					hasItem(hasJsonPath("name", equalTo(team.getName())))));
+		};
 
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION, "userProperties", exceptedProperties);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
-		TeamLocalServiceUtil.addUserTeam(
-			_user.getUserId(), userTeam.getTeamId());
+		TeamLocalServiceUtil.addUserTeam(_user.getUserId(), team.getTeamId());
 
-		Assert.assertTrue(
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
 			"The " + _DESTINATION +
-				" message has not been sent to the message bus",
-			called.get());
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
+	}
+
+	@Test
+	public void testAddUserGroup() throws Exception {
+		UserGroup userGroup = UserGroupTestUtil.addUserGroup();
+
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"userGroups",
+					hasItem(
+						hasJsonPath(
+							"description",
+							equalTo(userGroup.getDescription())))));
+		};
+
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
+
+		UserLocalServiceUtil.addUserGroupUser(
+			userGroup.getUserGroupId(), _user.getUserId());
+
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
+			"The " + _DESTINATION +
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
+
+		UserGroupLocalServiceUtil.deleteUserUserGroup(
+			_user.getUserId(), userGroup.getUserGroupId());
+
+		UserGroupLocalServiceUtil.deleteUserGroup(userGroup.getUserGroupId());
 	}
 
 	@Test
@@ -382,24 +556,59 @@ public class ContactsConnectorTest {
 		website.setUrl("http://liferay.com");
 		website.setClassName(Contact.class.getName());
 		website.setClassPK(_user.getContact().getPrimaryKey());
+		website.setCompanyId(_user.getCompanyId());
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>("Website#url", website.getUrl())
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"websites",
+					hasItem(hasJsonPath("url", equalTo(website.getUrl())))));
+		};
 
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION_PROPERTIES, "properties", exceptedProperties);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
 		WebsiteLocalServiceUtil.addWebsite(website);
 
-		Assert.assertTrue(
-			"The " + _DESTINATION_PROPERTIES +
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		Assert.assertEquals(
+			"The " + _DESTINATION +
 				" message has not been sent to the message bus",
-			called.get());
+			"OK", result.poll(3, TimeUnit.SECONDS));
+	}
+
+	@Test
+	public void testDeleteUser() throws Exception {
+		User user = UserTestUtil.addUser();
+
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath("emailAddress", equalTo(user.getEmailAddress())));
+		};
+
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION_DELETE, validation);
+
+		UserLocalServiceUtil.deleteUser(user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
+			"The " + _DESTINATION_DELETE +
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION_DELETE +
+				"message ",
+			"OK", message);
 	}
 
 	@Test
@@ -411,74 +620,108 @@ public class ContactsConnectorTest {
 			Date.from(
 				localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>(
-					"Contact#birthday", String.valueOf(contact.getBirthday()))
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"contact",
+					hasJsonPath(
+						"birthday",
+						equalTo(String.valueOf(contact.getBirthday())))));
 
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION_PROPERTIES, "properties", exceptedProperties);
+		};
+
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
 		ContactLocalServiceUtil.updateContact(contact);
 
-		Assert.assertTrue(
-			"The " + _DESTINATION_PROPERTIES +
-				" message has not been sent to the message bus",
-			called.get());
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
+			"The " + _DESTINATION +
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
 	}
 
 	@Test
 	public void testUpdateGroup() throws Exception {
-		Group group = _user.getGroup();
+		List<Group> groups = _user.getGroups();
+
+		Group group = groups.get(0);
 
 		group.setDescription("Another group description");
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>("Group#description", group.getDescription())
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath(
+					"groups",
+					contains(
+						hasJsonPath(
+							"description", equalTo(group.getDescription())))));
+		};
 
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION_PROPERTIES, "properties", exceptedProperties);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
 		GroupLocalServiceUtil.updateGroup(group);
 
-		Assert.assertTrue(
-			"The " + _DESTINATION_PROPERTIES +
-				" message has not been sent to the message bus",
-			called.get());
+		_user.setModifiedDate(new java.util.Date());
+
+		UserLocalServiceUtil.updateUser(_user);
+
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
+			"The " + _DESTINATION +
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
 	}
 
 	@Test
 	public void testUpdateUser() throws Exception {
-		String emailAddress = "mail@liferay.com";
+		Consumer<String> validation = payload -> {
+			assertThat(
+				payload,
+				hasJsonPath("emailAddress", equalTo("mail@liferay.com")));
+		};
 
-		Map<String, String> exceptedProperties = Collections.unmodifiableMap(
-			Stream.of(
-				new SimpleEntry<>("User#emailAddress", emailAddress)
-			).collect(
-				Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)
-			)
-		);
+		BlockingQueue<String> result =
+			ConnectorTestUtil.registerContactMessageListener(
+				_DESTINATION, validation);
 
-		AtomicBoolean called = ConnectorTestUtil.registerContactMessageListener(
-			_DESTINATION, "userProperties", exceptedProperties);
-
-		_user.setEmailAddress(emailAddress);
+		_user.setEmailAddress("mail@liferay.com");
 
 		_user = UserLocalServiceUtil.updateUser(_user);
 
-		Assert.assertTrue(
-			"The " + ContactsEntryProviderDestinationNames.UPDATE +
-				" message has not been sent to the message bus",
-			called.get());
+		String message = result.poll(3, TimeUnit.SECONDS);
+
+		Assert.assertNotNull(
+			"The " + _DESTINATION +
+				" message has not been send to the message bus",
+			message);
+
+		Assert.assertEquals(
+			"Error in the reception of the " + _DESTINATION +
+				"message ",
+			"OK", message);
 	}
 
 	private static long _getListTypeId(String type) throws Exception {
@@ -493,8 +736,8 @@ public class ContactsConnectorTest {
 		ContactsEntryProviderDestinationNames.UPDATE + "_" +
 			System.getenv(PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME);
 
-	private static final String _DESTINATION_PROPERTIES =
-		ContactsEntryProviderDestinationNames.UPDATE + "_properties_" +
+	private static final String _DESTINATION_DELETE =
+		ContactsEntryProviderDestinationNames.DELETE + "_" +
 			System.getenv(PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME);
 
 	private Group _group;

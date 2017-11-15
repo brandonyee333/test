@@ -14,16 +14,10 @@
 
 package com.liferay.pulpo.connector.de.contacts;
 
-import com.liferay.pulpo.connector.de.contacts.model.ContactsModelListener;
-
 /**
  * @author Shinn Lok
  */
 public interface ContactsConnector {
-
-	public Class<?> getModelClass(ContactsModelListener modelListener);
-
-	public ContactsModelListener getModelListener(String className);
 
 	public void sendMessage(String destinationName, String payload);
 

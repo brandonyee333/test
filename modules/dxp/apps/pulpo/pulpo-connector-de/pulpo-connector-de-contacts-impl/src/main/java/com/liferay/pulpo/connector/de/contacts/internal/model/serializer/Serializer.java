@@ -12,25 +12,15 @@
  * details.
  */
 
-package com.liferay.pulpo.connector.de.contacts.internal.model;
+package com.liferay.pulpo.connector.de.contacts.internal.model.serializer;
 
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.pulpo.connector.de.contacts.model.ContactsModelListener;
-
-import java.util.List;
-
-import org.osgi.service.component.annotations.Component;
+import com.liferay.portal.kernel.model.BaseModel;
 
 /**
- * @author Shinn Lok
+ * @author Cristina González
  */
-@Component(immediate = true, service = ContactsModelListener.class)
-public class GroupModelListener extends ContactsModelListener<Group> {
+public interface Serializer<T extends BaseModel<T>> {
 
-	@Override
-	protected List<Group> getModels(User user) {
-		return user.getGroups();
-	}
+	public String writeAsString(T model);
 
 }

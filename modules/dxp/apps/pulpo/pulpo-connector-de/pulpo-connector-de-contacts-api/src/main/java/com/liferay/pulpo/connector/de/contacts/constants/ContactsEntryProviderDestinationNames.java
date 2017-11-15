@@ -22,13 +22,7 @@ public interface ContactsEntryProviderDestinationNames {
 	public static final String DELETE =
 		"liferay_pulpo/contacts_entry_provider/delete";
 
-	public static final String DELETE_PROPERTIES =
-		"liferay_pulpo/contacts_entry_provider/delete_properties";
-
 	public static final String UPDATE =
 		"liferay_pulpo/contacts_entry_provider/update";
-
-	public static final String UPDATE_PROPERTIES =
-		"liferay_pulpo/contacts_entry_provider/update_properties";
 
 }
