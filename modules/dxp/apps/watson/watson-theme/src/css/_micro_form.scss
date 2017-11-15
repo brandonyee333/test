@@ -5,7 +5,9 @@
 	width: 475px;
 
 	.bottom-bar {
-		left: 0;
+		left: 3%;
+		width: 95%;
+		bottom: 1px;
 	}
 
 	textarea {
@@ -26,113 +28,6 @@
 
 			&:after {
 				left: 450px;
-			}
-		}
-	}
-
-	.watson-button.remove-button {
-		height: 34px;
-		left: 70%;
-		position: absolute;
-		top: 11px;
-		width: 34px;
-
-		&:after {
-			content: '\f00d';
-
-			@include fontAwesomeIcon;
-
-			font-size: 14px;
-			left: calc(50% - 5px);
-			position: absolute;
-			top: calc(50% - 10px);
-		}
-
-		&:hover:after {
-			color: $neutralDark;
-		}
-	}
-
-	.file-viewer-container {
-		.file-viewer-small-wrapper {
-			.file {
-				@include input-label;
-
-				display: inline-block;
-				margin-top: 10%;
-				max-width: 200px;
-				text-overflow: ellipsis;
-			}
-
-			.file-viewer-small {
-				background-position: center;
-				background-size: cover;
-				border: solid 3px #FFF;
-				border-radius: 50%;
-				box-shadow: $imageViewerShadow;
-				content: '';
-				cursor: pointer;
-				display: block;
-				height: 125px;
-				overflow: hidden;
-				width: 125px;
-			}
-		}
-	}
-
-	.metal-uploader-wrapper {
-		display: flex;
-		flex-direction: column;
-		max-width: 270px;
-		width: 100%;
-
-		.alert {
-			margin: 0 0 2px;
-			max-width: 480px;
-		}
-
-		.helper-message {
-			@include input-text;
-
-			font-size: 14px;
-			margin-top: 3px;
-			text-align: center;
-		}
-
-		.metal-react-container {
-			.metal-file-uploader {
-				border: 1px solid $neutralMedium;
-				border-radius: 4px;
-				cursor: pointer;
-				height: 57px;
-				max-width: 270px;
-				width: 100%;
-
-				.uploader-label {
-					color: $neutralLighter;
-					display: block;
-					font-family: $primaryFontStack;
-					font-size: 14px;
-					letter-spacing: 0.2em;
-					margin: 1.1em 0 0;
-					text-align: center;
-				}
-			}
-
-			.accept {
-				border: 2px solid $positiveMedium;
-				border-radius: 4px;
-				height: 57px;
-				max-width: 270px;
-				width: 100%;
-			}
-
-			.reject {
-				border: 2px solid $negativeMedium;
-				border-radius: 4px;
-				height: 57px;
-				max-width: 270px;
-				width: 100%;
 			}
 		}
 	}

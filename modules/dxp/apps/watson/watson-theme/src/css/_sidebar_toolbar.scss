@@ -4,35 +4,21 @@
 	height: 100%;
 	position: fixed;
 	width: $sidebarToolbarWidth;
-	z-index: 500;
+	z-index: 1002;
 
-	.watson-sidebar-toolbar-content {
+	.lower {
 		align-items: center;
 		display: flex;
 		flex-direction: column;
-		height: 100%;
+		height: 21%;
 		justify-content: space-between;
-		margin-top: 20%;
 		width: 100%;
+		bottom: 0;
+		margin-bottom: 30%;
+		position: absolute;
 
 		#admin {
 			background: url(../images/svg/settings.svg) no-repeat;
-			background-size: cover;
-			content: '';
-			height: 24px;
-			width: 24px;
-		}
-
-		#children-home {
-			background: url(../images/svg/children.svg) no-repeat;
-			background-size: cover;
-			content: '';
-			height: 24px;
-			width: 24px;
-		}
-
-		#incidents-report {
-			background: url(../images/svg/incidents-report.svg) no-repeat;
 			background-size: cover;
 			content: '';
 			height: 24px;
@@ -50,6 +36,77 @@
 
 		#logout {
 			background: url(../images/svg/logout.svg) no-repeat;
+			background-size: cover;
+			content: '';
+			height: 24px;
+			width: 24px;
+		}
+	}
+
+	.metal-dropdown-menu {
+		color: $neutralMedium;
+		font-family: $primaryFontStack;
+		font-size: 15px;
+		max-height: 55px;
+		transition: color 0.2s $transitionSoft;
+
+		.dropdown {
+			color: $neutralMedium;
+
+			.caret {
+				margin-left: 4px;
+			}
+
+			&:focus, &:hover {
+				color: $neutralDark;
+				text-decoration: none;
+			}
+
+			.dropdown-menu {
+				position: fixed;
+				min-width: 80px;
+			}
+
+			li {
+				text-align: center;
+
+				a {
+					color: $neutralMedium;
+					cursor: pointer;
+					font-size: 18px;
+   					font-weight: 400;
+
+					&:focus, &:hover {
+						color: $neutralDark;
+					}
+				}
+			}
+		}
+	}
+
+	.selected {
+		background-color: gray;
+	}
+
+	.upper {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		height: 42%;
+		justify-content: space-between;
+		margin-top: 20%;
+		width: 100%;
+
+		#children-home {
+			background: url(../images/svg/children.svg) no-repeat;
+			background-size: cover;
+			content: '';
+			height: 24px;
+			width: 24px;
+		}
+
+		#incidents-report {
+			background: url(../images/svg/incidents-report.svg) no-repeat;
 			background-size: cover;
 			content: '';
 			height: 24px;
@@ -77,6 +134,7 @@
 			background-size: cover;
 			content: '';
 			height: 21px;
+			margin-bottom: -10px;
 			width: 46px;
 		}
 	}

@@ -57,8 +57,10 @@ class FileViewer extends JSXComponent {
 	}
 
 	render() {
-		const {disabled, value: fileData} = this.props;
+		const {disabled, value: fileData, microForm} = this.props;
 		const {clickToPlay, maximized, type} = this.state;
+
+		const className = microForm ? 'micro-form' : '';
 
 		let filePreview;
 		let fullScreenView;
@@ -102,7 +104,7 @@ class FileViewer extends JSXComponent {
 					{filePreview}
 
 					{!disabled &&
-						<Button className="remove-button" onClick={this.handleRemoveImage} />
+						<Button className={`remove-button ${className}`} onClick={this.handleRemoveImage} />
 					}
 				</div>
 
@@ -135,6 +137,7 @@ class FileViewer extends JSXComponent {
 
 FileViewer.PROPS = {
 	disabled: Config.bool().value(false),
+	microForm: Config.bool().value(false),
 	tooltipLabel: Config.string().value(''),
 	value: Config.object().value({})
 };

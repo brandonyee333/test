@@ -151,7 +151,7 @@ class MicroForm extends JSXComponent {
 		}
 
 		return (
-			<div class="micro-form form-container">
+			<div class="micro-form">
 				{this.renderInputs()}
 
 				<BottomBar
@@ -243,6 +243,7 @@ class MicroForm extends JSXComponent {
 						inputComponent = (
 							<FileViewer
 								{...config}
+								microForm={true}
 							/>
 						);
 					}
