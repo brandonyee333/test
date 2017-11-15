@@ -40050,6 +40050,10 @@
 			<name locale="th">เด็กกำพร้า</name>
 		</watsonListType>
 		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10466">
+			<name locale="en_US">Tip</name>
+			<name locale="th">ปลาย</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10466">
 			<name locale="en_US">Other</name>
 			<name locale="th">อื่นๆ</name>
 		</watsonListType>
