@@ -11,12 +11,13 @@ import SidebarToolbar from './components/SidebarToolbar';
 import AdminConsole from './containers/AdminConsole';
 import CreateChild from './containers/CreateChild';
 import CreateIncident from './containers/CreateIncident';
+import ChildModelSubIndex from './containers/ChildModelSubIndex';
 import ChildReport from './containers/views/ChildReport';
 import EditChild from './containers/EditChild';
 import EditIncident from './containers/EditIncident';
 import IncidentReport from './containers/views/IncidentReport';
-import ChildModelSubIndex from './containers/ChildModelSubIndex';
 import Index from './containers/Index';
+import LandingPage from './containers/LandingPage';
 import MetricsConsole from './containers/MetricsConsole';
 
 class Watson extends JSXComponent {
@@ -33,7 +34,7 @@ class Watson extends JSXComponent {
 
 		for (const key in urls) {
 			if (urls.hasOwnProperty(key)) {
-				if (key === 'baseURL' || key === 'incidents' || key === 'basePath') {
+				if (key === 'baseURL' || key === 'basePath') {
 					continue;
 				}
 
@@ -159,7 +160,7 @@ class Watson extends JSXComponent {
 						/>
 
 						<Router
-							component={Index}
+							component={LandingPage}
 							path={this._defaultRoute}
 						/>
 					</div>

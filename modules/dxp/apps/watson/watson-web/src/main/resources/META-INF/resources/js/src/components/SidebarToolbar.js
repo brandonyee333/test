@@ -1,4 +1,4 @@
-import {connect} from 'metal-redux';
+import {bindAll} from 'lodash';
 import DropDown from 'metal-dropdown';
 import JSXComponent, {Config} from 'metal-jsx';
 
@@ -6,14 +6,29 @@ import {getURLForLanguageId} from '../lib/util';
 import LoadingIndicator from './LoadingIndicator';
 
 class SidebarToolbar extends JSXComponent {
+	created() {
+		bindAll(
+			this,
+			'handleOnClick'
+		);
+	}
+
 	formatDropDown() {
 		const formattedOptions = (
 			<ul class="items">
-				<li><a class="item" id="en_US" onclick={this.languageOnClick}>{English}</a></li>
-				<li><a class="item" id="th" onclick={this.languageOnClick}>{Thai}</a></li>
+				<li><a class="item" id="en_US" onClick={this.languageOnClick}>{"English"}</a></li>
+				<li><a class="item" id="th" onClick={this.languageOnClick}>{"Thai"}</a></li>
 			</ul>);
 
 		return formattedOptions;
+	}
+
+	handleOnClick(event) {
+		const {target} = event;
+
+		if (target) {
+			this.setState({selected: target.attributes.id.value});
+		}
 	}
 
 	languageOnClick(event) {
@@ -27,22 +42,29 @@ class SidebarToolbar extends JSXComponent {
 	}
 
 	render() {
-		const {
-			displayBy = ''
-		} = this.props;
-
-		const selected = 'selected';
-
-		const languageToggleDiv = (<button class="watson-button dropdown" data-onclick="toggle" id="language-toggle" title={Liferay.Language.get('switch-language')} />);
+		const languageToggleDiv = (<button class="watson-button dropdown" data-onClick="toggle" id="language-toggle" title={Liferay.Language.get('switch-language')} />);
 
 		return (
 			<div class="watson-sidebar-toolbar">
 				<span class="upper">
-					<a class="watson-logo-link" href={`${WatsonConstants.urls.baseURL}/${displayBy}`} />
-					<a class={selected} href={WatsonConstants.urls.incidents} id="incidents-report" title={Liferay.Language.get('incident-report')} />
-					<a class={selected} href={WatsonConstants.urls.children} id="children-home" title={Liferay.Language.get('children-home')} />
-					<a class={selected} href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="map" title={Liferay.Language.get('heatmap')} />
-					<a class={selected} href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="reports" title={Liferay.Language.get('reports')} />
+					<a href={WatsonConstants.urls.baseURL} id="watson-logo-link" onClick={this.handleOnClick} />
+
+					{WatsonConstants.currentUser.staffRole &&
+						<a href={`${WatsonConstants.urls.baseURL}/incidents`} id="incidents-report" onClick={this.handleOnClick} title={Liferay.Language.get('incident-report')} />
+					}
+
+					{WatsonConstants.currentUser.childrensHomeRole &&
+						<a href={WatsonConstants.urls.children} id="children-home" onClick={this.handleOnClick} title={Liferay.Language.get('children-home')} />
+					}
+
+					{WatsonConstants.currentUser.staffRole &&
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="map" onClick={this.handleOnClick} title={Liferay.Language.get('heatmap')} />
+					}
+
+					{WatsonConstants.currentUser.staffRole &&
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="reports" onClick={this.handleOnClick} title={Liferay.Language.get('reports')} />
+					}
+
 				</span>
 
 				<span class="lower">
@@ -51,33 +73,52 @@ class SidebarToolbar extends JSXComponent {
 							alignElementSelector="button"
 							body={this.formatDropDown()}
 							header={languageToggleDiv}
-							position="right"
+							position={1}
 						/>
 					</div>
 
 					{WatsonConstants.currentUser.portalAdminRole &&
-						<a class={selected} href={`${WatsonConstants.urls.baseURL}/incidents/admin`} id="admin" title={Liferay.Language.get('administrator-console')} />
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/admin`} id="admin" onClick={this.handleOnClick} title={Liferay.Language.get('administrator-console')} />
 					}
 
-					<a class={selected} href={`${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`} id="logout" title={Liferay.Language.get('logout')} />
+					<a href={`${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`} id="logout" title={Liferay.Language.get('logout')} />
 				</span>
 
 				<LoadingIndicator />
 			</div>
 		);
 	}
+
+	rendered() {
+		this.refreshSelected();
+	}
+
+	refreshSelected() {
+		const {lastSelected, selected} = this.state;
+
+		if (lastSelected !== selected) {
+			const lastSelectedElement = document.getElementById(lastSelected);
+
+			if (lastSelectedElement) {
+				lastSelectedElement.className = '';
+			}
+
+			const newlySelectedElement = document.getElementById(selected);
+
+			if (newlySelectedElement) {
+				newlySelectedElement.className = 'selected';
+
+				this.state.lastSelected = selected;
+			}
+		}
+	}
 }
 
-SidebarToolbar.PROPS = {
-	displayBy: Config.string().value('')
+SidebarToolbar.PROPS = {};
+
+SidebarToolbar.STATE = {
+	lastSelected: Config.string(),
+	selected: Config.string()
 };
 
-SidebarToolbar.STATE = {};
-
-function mapStateToProps(state) {
-	return {
-		displayBy: state.getIn(['display', 'displayBy'])
-	};
-}
-
-export default connect(mapStateToProps)(SidebarToolbar);
+export default SidebarToolbar;

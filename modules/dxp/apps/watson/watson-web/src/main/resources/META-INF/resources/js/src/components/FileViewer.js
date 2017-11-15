@@ -57,7 +57,7 @@ class FileViewer extends JSXComponent {
 	}
 
 	render() {
-		const {disabled, value: fileData, microForm} = this.props;
+		const {disabled, microForm, value: fileData} = this.props;
 		const {clickToPlay, maximized, type} = this.state;
 
 		const className = microForm ? 'micro-form' : '';

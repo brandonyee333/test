@@ -32,7 +32,7 @@ class AdminConsole extends JSXComponent {
 			},
 			{
 				collapsible: false,
-				href: WatsonConstants.urls.incidents,
+				href: WatsonConstants.urls.baseURL,
 				selected: false,
 				text: Liferay.Language.get('back')
 			}

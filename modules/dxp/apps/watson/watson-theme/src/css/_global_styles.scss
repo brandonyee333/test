@@ -298,6 +298,40 @@ textarea.watson-input {
 	}
 }
 
+.landing-page {
+	display: flex;
+	flex-direction: column;
+	padding-top: 80px;
+
+	.arrow-container {
+		display: flex;
+		padding-top: 5%;
+
+		.arrow {
+			background: url(../images/svg/arrow.svg) no-repeat;
+			background-size: cover;
+			content: '';
+			height: 48px;
+			margin-top: 2px;
+			width: 48px;
+		}
+
+		.bounce {
+			@include experimental(animation, bounce 2s infinite);
+		}
+
+		.landing-text {
+			@include row-header-text;
+		}
+	}
+
+	.welcome-landing-text {
+		@include row-header-text;
+
+		text-align: center;
+	}
+}
+
 @media only screen and (min-width: 1023px) {
 	.navigation-sidebar {
 		height: auto;

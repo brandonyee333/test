@@ -8,38 +8,43 @@
 
 	.lower {
 		align-items: center;
+		bottom: 0;
 		display: flex;
 		flex-direction: column;
 		height: 21%;
 		justify-content: space-between;
-		width: 100%;
-		bottom: 0;
 		margin-bottom: 30%;
 		position: absolute;
-
-		#admin {
-			background: url(../images/svg/settings.svg) no-repeat;
-			background-size: cover;
-			content: '';
-			height: 24px;
-			width: 24px;
-		}
+		width: 100%;
 
 		#language-toggle {
 			background: url(../images/svg/language-toggle.svg) no-repeat;
 			background-size: cover;
 			content: '';
 			cursor: pointer;
-			height: 24px;
-			width: 24px;
+			height: 30px;
+			width: 30px;
+		}
+
+		#admin {
+			background: url(../images/svg/settings.svg) no-repeat;
+			background-size: cover;
+			content: '';
+			height: 30px;
+			width: 30px;
+		}
+
+		#admin.selected {
+			background: url(../images/svg/settings-selected.svg) no-repeat;
+			background-size: cover;
 		}
 
 		#logout {
 			background: url(../images/svg/logout.svg) no-repeat;
 			background-size: cover;
 			content: '';
-			height: 24px;
-			width: 24px;
+			height: 30px;
+			width: 30px;
 		}
 	}
 
@@ -50,7 +55,7 @@
 		max-height: 55px;
 		transition: color 0.2s $transitionSoft;
 
-		.dropdown {
+		.dropright {
 			color: $neutralMedium;
 
 			.caret {
@@ -63,18 +68,19 @@
 			}
 
 			.dropdown-menu {
-				position: fixed;
 				min-width: 80px;
+				position: fixed;
 			}
 
 			li {
+				border: 1px solid $neutralLighter;
 				text-align: center;
 
 				a {
-					color: $neutralMedium;
+					color: $neutralDarker;
 					cursor: pointer;
 					font-size: 18px;
-   					font-weight: 400;
+					font-weight: 400;
 
 					&:focus, &:hover {
 						color: $neutralDark;
@@ -82,10 +88,6 @@
 				}
 			}
 		}
-	}
-
-	.selected {
-		background-color: gray;
 	}
 
 	.upper {
@@ -101,35 +103,55 @@
 			background: url(../images/svg/children.svg) no-repeat;
 			background-size: cover;
 			content: '';
-			height: 24px;
-			width: 24px;
+			height: 30px;
+			width: 30px;
+		}
+
+		#children-home.selected {
+			background: url(../images/svg/children-selected.svg) no-repeat;
+			background-size: cover;
 		}
 
 		#incidents-report {
 			background: url(../images/svg/incidents-report.svg) no-repeat;
 			background-size: cover;
 			content: '';
-			height: 24px;
-			width: 24px;
+			height: 30px;
+			width: 30px;
+		}
+
+		#incidents-report.selected {
+			background: url(../images/svg/incidents-report-selected.svg) no-repeat;
+			background-size: cover;
 		}
 
 		#map {
 			background: url(../images/svg/heatmap.svg) no-repeat;
 			background-size: cover;
 			content: '';
-			height: 24px;
-			width: 24px;
+			height: 30px;
+			width: 30px;
+		}
+
+		#map.selected {
+			background: url(../images/svg/heatmap-selected.svg) no-repeat;
+			background-size: cover;
 		}
 
 		#reports {
 			background: url(../images/svg/reports.svg) no-repeat;
 			background-size: cover;
 			content: '';
-			height: 24px;
-			width: 24px;
+			height: 30px;
+			width: 30px;
 		}
 
-		.watson-logo-link {
+		#reports.selected {
+			background: url(../images/svg/reports-selected.svg) no-repeat;
+			background-size: cover;
+		}
+
+		#watson-logo-link {
 			background: url(../images/zoe_logo.png) no-repeat;
 			background-size: cover;
 			content: '';
@@ -137,11 +159,6 @@
 			margin-bottom: -10px;
 			width: 46px;
 		}
-	}
-
-	svg:hover #admin:hover #children-home:hover #incidents-report:hover #language-toggle:hover #logout:hover #map:hover #reports:hover {
-		background-color: $neutralDark;
-		fill: $darkest;
 	}
 }
 
