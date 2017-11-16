@@ -339,12 +339,20 @@
 		}
 	}
 
-	.control-menu #wrapper {
+	#contentWrapper {
 		margin-top: $has-control-menu-top-mobile + $banner-height;
 
 		@include sm() {
 			margin-top: $has-control-menu-top-desktop + $banner-height;
 		}
+	}
+
+	#wrapper.wrapper {
+		margin-top: $banner-height;
+	}
+
+	.lesa-nav {
+		transition: $sidenav-transition;
 	}
 
 	.lesa-announcements-dialog {

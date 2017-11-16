@@ -27,7 +27,7 @@
 	<@liferay.control_menu />
 </#if>
 
-<div id="wrapper">
+<div class="wrapper" id="wrapper">
 	<div class="content">
 		<#if display_header_footer>
 			<#include "${full_templates_path}/navigation.ftl" />
