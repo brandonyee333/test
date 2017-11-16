@@ -41,7 +41,7 @@ class CreateIncident extends JSXComponent {
 
 		const storeData = new Map();
 
-		const cancelMethod = () => Router.router().navigate(WatsonConstants.urls.baseURL);
+		const cancelMethod = () => Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents`);
 
 		if (model === 'address') {
 			const addressButton = {

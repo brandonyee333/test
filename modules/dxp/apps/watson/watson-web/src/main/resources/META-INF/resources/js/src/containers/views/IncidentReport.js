@@ -397,6 +397,7 @@ IncidentReport.STATE = {
 			'reportDate',
 			'startDate',
 			'typeWatsonListTypeId',
+			'subtypeWatsonListTypeId',
 			'narrative',
 			'watsonRelationships'
 		]
@@ -428,8 +429,11 @@ IncidentReport.STATE = {
 		[
 			'incidentStatus',
 			'sourceWatsonListTypeId',
-			'subtypeWatsonListTypeId',
 			'typeWatsonListTypeId',
+			'subtypeWatsonListTypeId',
+			'externalCase',
+			'externalCaseId',
+			'externalCaseWatsonListTypeId',
 			'reportDate',
 			'startDate',
 			'endDate',

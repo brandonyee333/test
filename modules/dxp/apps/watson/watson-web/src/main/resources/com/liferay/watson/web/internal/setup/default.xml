@@ -40278,4 +40278,16 @@
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่น ๆ</name>
 	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.externalCaseType" watsonListTypeId="10521">
+		<name locale="en_US">Investigation</name>
+		<name locale="th">ตรวจสอบ</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.externalCaseType" watsonListTypeId="10522">
+		<name locale="en_US">Forensic</name>
+		<name locale="th">ทางกฎหมาย</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.externalCaseType" watsonListTypeId="10523">
+		<name locale="en_US">Both</name>
+		<name locale="th">ทั้งสอง</name>
+	</watsonListType>
 </table>

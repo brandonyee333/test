@@ -1200,13 +1200,51 @@
 							'date'
 						]
 					},
+					externalCase: {
+						controlledInputs: [
+							'externalCaseId',
+							'externalCaseWatsonListTypeId'
+						],
+						filterable: ${false},
+						htmlType: 'checkbox',
+						label: '${AlloyLanguageUtil.formatUnicode('ticac-involved')}',
+						translatable: ${false},
+						type: 'INPUT'
+					},
 					externalCaseId: {
+						dependentKey: ${true},
 						filterable: ${true},
 						htmlType: 'input',
+						invertHidden: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("ticac-id")}',
+						parentInputId: 'externalCase',
 						tooltipLabel: '',
 						translatable: ${false},
-						type: 'INPUT',
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: []
+					},
+					externalCaseWatsonListTypeId: {
+						dependentKey: ${true},
+						filterable: ${true},
+						inputType: 'SELECT_INPUT',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("assist-type")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonIncident.modelClassName.concat(".externalCaseType"))}' var="watsonIncidentExternalCaseTypes" />
+
+							<c:forEach items="${watsonIncidentExternalCaseTypes}" var="watsonIncidentExternalCaseType" varStatus="watsonIncidentExternalCaseTypeIndex">
+								<c:set value='${watsonIncidentExternalCaseTypeIndex.last ? "" : ","}' var="delimiter" />
+
+								${watsonIncidentExternalCaseType.watsonListTypeId}: {
+									label: '${AlloyLanguageUtil.formatUnicode(watsonIncidentExternalCaseType.getName(locale))}',
+									value: '${watsonIncidentExternalCaseType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						parentInputId: 'externalCase',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
 						validations: []
 					},
 					incidentStatus: {
