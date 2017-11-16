@@ -116,13 +116,15 @@
 		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="audienceAdultCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="audienceChildCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="externalCaseWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="sourceWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="typeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="subtypeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="audienceKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="externalCaseId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="externalCaseId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="reportDate" type="org.hibernate.type.TimestampType" />
 		<property name="startDate" type="org.hibernate.type.TimestampType" />
 		<property name="endDate" type="org.hibernate.type.TimestampType" />

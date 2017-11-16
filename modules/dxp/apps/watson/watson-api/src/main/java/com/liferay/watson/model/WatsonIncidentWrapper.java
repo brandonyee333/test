@@ -65,13 +65,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("audienceAdultCount", getAudienceAdultCount());
+		attributes.put("audienceChildCount", getAudienceChildCount());
+		attributes.put("externalCaseWatsonListTypeId",
+			getExternalCaseWatsonListTypeId());
 		attributes.put("sourceWatsonListTypeId", getSourceWatsonListTypeId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
-		attributes.put("audienceKey", getAudienceKey());
 		attributes.put("name", getName());
-		attributes.put("externalCaseId", getExternalCaseId());
 		attributes.put("description", getDescription());
+		attributes.put("externalCaseId", getExternalCaseId());
 		attributes.put("reportDate", getReportDate());
 		attributes.put("startDate", getStartDate());
 		attributes.put("endDate", getEndDate());
@@ -125,6 +128,25 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 			setModifiedDate(modifiedDate);
 		}
 
+		Long audienceAdultCount = (Long)attributes.get("audienceAdultCount");
+
+		if (audienceAdultCount != null) {
+			setAudienceAdultCount(audienceAdultCount);
+		}
+
+		Long audienceChildCount = (Long)attributes.get("audienceChildCount");
+
+		if (audienceChildCount != null) {
+			setAudienceChildCount(audienceChildCount);
+		}
+
+		Long externalCaseWatsonListTypeId = (Long)attributes.get(
+				"externalCaseWatsonListTypeId");
+
+		if (externalCaseWatsonListTypeId != null) {
+			setExternalCaseWatsonListTypeId(externalCaseWatsonListTypeId);
+		}
+
 		Long sourceWatsonListTypeId = (Long)attributes.get(
 				"sourceWatsonListTypeId");
 
@@ -145,28 +167,22 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		}
 
-		String audienceKey = (String)attributes.get("audienceKey");
-
-		if (audienceKey != null) {
-			setAudienceKey(audienceKey);
-		}
-
 		String name = (String)attributes.get("name");
 
 		if (name != null) {
 			setName(name);
 		}
 
-		String externalCaseId = (String)attributes.get("externalCaseId");
-
-		if (externalCaseId != null) {
-			setExternalCaseId(externalCaseId);
-		}
-
 		String description = (String)attributes.get("description");
 
 		if (description != null) {
 			setDescription(description);
+		}
+
+		String externalCaseId = (String)attributes.get("externalCaseId");
+
+		if (externalCaseId != null) {
+			setExternalCaseId(externalCaseId);
 		}
 
 		Date reportDate = (Date)attributes.get("reportDate");
@@ -211,13 +227,23 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	/**
-	* Returns the audience key of this watson incident.
+	* Returns the audience adult count of this watson incident.
 	*
-	* @return the audience key of this watson incident
+	* @return the audience adult count of this watson incident
 	*/
 	@Override
-	public java.lang.String getAudienceKey() {
-		return _watsonIncident.getAudienceKey();
+	public long getAudienceAdultCount() {
+		return _watsonIncident.getAudienceAdultCount();
+	}
+
+	/**
+	* Returns the audience child count of this watson incident.
+	*
+	* @return the audience child count of this watson incident
+	*/
+	@Override
+	public long getAudienceChildCount() {
+		return _watsonIncident.getAudienceChildCount();
 	}
 
 	@Override
@@ -351,6 +377,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public java.lang.String getExternalCaseId() {
 		return _watsonIncident.getExternalCaseId();
+	}
+
+	/**
+	* Returns the external case watson list type ID of this watson incident.
+	*
+	* @return the external case watson list type ID of this watson incident
+	*/
+	@Override
+	public long getExternalCaseWatsonListTypeId() {
+		return _watsonIncident.getExternalCaseWatsonListTypeId();
 	}
 
 	/**
@@ -547,13 +583,23 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	/**
-	* Sets the audience key of this watson incident.
+	* Sets the audience adult count of this watson incident.
 	*
-	* @param audienceKey the audience key of this watson incident
+	* @param audienceAdultCount the audience adult count of this watson incident
 	*/
 	@Override
-	public void setAudienceKey(java.lang.String audienceKey) {
-		_watsonIncident.setAudienceKey(audienceKey);
+	public void setAudienceAdultCount(long audienceAdultCount) {
+		_watsonIncident.setAudienceAdultCount(audienceAdultCount);
+	}
+
+	/**
+	* Sets the audience child count of this watson incident.
+	*
+	* @param audienceChildCount the audience child count of this watson incident
+	*/
+	@Override
+	public void setAudienceChildCount(long audienceChildCount) {
+		_watsonIncident.setAudienceChildCount(audienceChildCount);
 	}
 
 	@Override
@@ -679,6 +725,17 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public void setExternalCaseId(java.lang.String externalCaseId) {
 		_watsonIncident.setExternalCaseId(externalCaseId);
+	}
+
+	/**
+	* Sets the external case watson list type ID of this watson incident.
+	*
+	* @param externalCaseWatsonListTypeId the external case watson list type ID of this watson incident
+	*/
+	@Override
+	public void setExternalCaseWatsonListTypeId(
+		long externalCaseWatsonListTypeId) {
+		_watsonIncident.setExternalCaseWatsonListTypeId(externalCaseWatsonListTypeId);
 	}
 
 	/**

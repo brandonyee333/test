@@ -197,6 +197,49 @@ public interface WatsonIncidentModel extends BaseModel<WatsonIncident>,
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the audience adult count of this watson incident.
+	 *
+	 * @return the audience adult count of this watson incident
+	 */
+	public long getAudienceAdultCount();
+
+	/**
+	 * Sets the audience adult count of this watson incident.
+	 *
+	 * @param audienceAdultCount the audience adult count of this watson incident
+	 */
+	public void setAudienceAdultCount(long audienceAdultCount);
+
+	/**
+	 * Returns the audience child count of this watson incident.
+	 *
+	 * @return the audience child count of this watson incident
+	 */
+	public long getAudienceChildCount();
+
+	/**
+	 * Sets the audience child count of this watson incident.
+	 *
+	 * @param audienceChildCount the audience child count of this watson incident
+	 */
+	public void setAudienceChildCount(long audienceChildCount);
+
+	/**
+	 * Returns the external case watson list type ID of this watson incident.
+	 *
+	 * @return the external case watson list type ID of this watson incident
+	 */
+	public long getExternalCaseWatsonListTypeId();
+
+	/**
+	 * Sets the external case watson list type ID of this watson incident.
+	 *
+	 * @param externalCaseWatsonListTypeId the external case watson list type ID of this watson incident
+	 */
+	public void setExternalCaseWatsonListTypeId(
+		long externalCaseWatsonListTypeId);
+
+	/**
 	 * Returns the source watson list type ID of this watson incident.
 	 *
 	 * @return the source watson list type ID of this watson incident
@@ -239,21 +282,6 @@ public interface WatsonIncidentModel extends BaseModel<WatsonIncident>,
 	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId);
 
 	/**
-	 * Returns the audience key of this watson incident.
-	 *
-	 * @return the audience key of this watson incident
-	 */
-	@AutoEscape
-	public String getAudienceKey();
-
-	/**
-	 * Sets the audience key of this watson incident.
-	 *
-	 * @param audienceKey the audience key of this watson incident
-	 */
-	public void setAudienceKey(String audienceKey);
-
-	/**
 	 * Returns the name of this watson incident.
 	 *
 	 * @return the name of this watson incident
@@ -267,21 +295,6 @@ public interface WatsonIncidentModel extends BaseModel<WatsonIncident>,
 	 * @param name the name of this watson incident
 	 */
 	public void setName(String name);
-
-	/**
-	 * Returns the external case ID of this watson incident.
-	 *
-	 * @return the external case ID of this watson incident
-	 */
-	@AutoEscape
-	public String getExternalCaseId();
-
-	/**
-	 * Sets the external case ID of this watson incident.
-	 *
-	 * @param externalCaseId the external case ID of this watson incident
-	 */
-	public void setExternalCaseId(String externalCaseId);
 
 	/**
 	 * Returns the description of this watson incident.
@@ -383,6 +396,21 @@ public interface WatsonIncidentModel extends BaseModel<WatsonIncident>,
 	 */
 	public void setDescriptionMap(Map<Locale, String> descriptionMap,
 		Locale defaultLocale);
+
+	/**
+	 * Returns the external case ID of this watson incident.
+	 *
+	 * @return the external case ID of this watson incident
+	 */
+	@AutoEscape
+	public String getExternalCaseId();
+
+	/**
+	 * Sets the external case ID of this watson incident.
+	 *
+	 * @param externalCaseId the external case ID of this watson incident
+	 */
+	public void setExternalCaseId(String externalCaseId);
 
 	/**
 	 * Returns the report date of this watson incident.

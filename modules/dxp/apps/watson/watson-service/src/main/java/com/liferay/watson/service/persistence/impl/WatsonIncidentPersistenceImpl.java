@@ -357,13 +357,15 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 		watsonIncidentImpl.setUserName(watsonIncident.getUserName());
 		watsonIncidentImpl.setCreateDate(watsonIncident.getCreateDate());
 		watsonIncidentImpl.setModifiedDate(watsonIncident.getModifiedDate());
+		watsonIncidentImpl.setAudienceAdultCount(watsonIncident.getAudienceAdultCount());
+		watsonIncidentImpl.setAudienceChildCount(watsonIncident.getAudienceChildCount());
+		watsonIncidentImpl.setExternalCaseWatsonListTypeId(watsonIncident.getExternalCaseWatsonListTypeId());
 		watsonIncidentImpl.setSourceWatsonListTypeId(watsonIncident.getSourceWatsonListTypeId());
 		watsonIncidentImpl.setTypeWatsonListTypeId(watsonIncident.getTypeWatsonListTypeId());
 		watsonIncidentImpl.setSubtypeWatsonListTypeId(watsonIncident.getSubtypeWatsonListTypeId());
-		watsonIncidentImpl.setAudienceKey(watsonIncident.getAudienceKey());
 		watsonIncidentImpl.setName(watsonIncident.getName());
-		watsonIncidentImpl.setExternalCaseId(watsonIncident.getExternalCaseId());
 		watsonIncidentImpl.setDescription(watsonIncident.getDescription());
+		watsonIncidentImpl.setExternalCaseId(watsonIncident.getExternalCaseId());
 		watsonIncidentImpl.setReportDate(watsonIncident.getReportDate());
 		watsonIncidentImpl.setStartDate(watsonIncident.getStartDate());
 		watsonIncidentImpl.setEndDate(watsonIncident.getEndDate());

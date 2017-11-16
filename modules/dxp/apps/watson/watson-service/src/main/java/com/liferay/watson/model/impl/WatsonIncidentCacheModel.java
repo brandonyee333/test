@@ -66,7 +66,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(39);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("{watsonIncidentId=");
 		sb.append(watsonIncidentId);
@@ -82,20 +82,24 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", audienceAdultCount=");
+		sb.append(audienceAdultCount);
+		sb.append(", audienceChildCount=");
+		sb.append(audienceChildCount);
+		sb.append(", externalCaseWatsonListTypeId=");
+		sb.append(externalCaseWatsonListTypeId);
 		sb.append(", sourceWatsonListTypeId=");
 		sb.append(sourceWatsonListTypeId);
 		sb.append(", typeWatsonListTypeId=");
 		sb.append(typeWatsonListTypeId);
 		sb.append(", subtypeWatsonListTypeId=");
 		sb.append(subtypeWatsonListTypeId);
-		sb.append(", audienceKey=");
-		sb.append(audienceKey);
 		sb.append(", name=");
 		sb.append(name);
-		sb.append(", externalCaseId=");
-		sb.append(externalCaseId);
 		sb.append(", description=");
 		sb.append(description);
+		sb.append(", externalCaseId=");
+		sb.append(externalCaseId);
 		sb.append(", reportDate=");
 		sb.append(reportDate);
 		sb.append(", startDate=");
@@ -141,16 +145,12 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			watsonIncidentImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
+		watsonIncidentImpl.setAudienceAdultCount(audienceAdultCount);
+		watsonIncidentImpl.setAudienceChildCount(audienceChildCount);
+		watsonIncidentImpl.setExternalCaseWatsonListTypeId(externalCaseWatsonListTypeId);
 		watsonIncidentImpl.setSourceWatsonListTypeId(sourceWatsonListTypeId);
 		watsonIncidentImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonIncidentImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
-
-		if (audienceKey == null) {
-			watsonIncidentImpl.setAudienceKey(StringPool.BLANK);
-		}
-		else {
-			watsonIncidentImpl.setAudienceKey(audienceKey);
-		}
 
 		if (name == null) {
 			watsonIncidentImpl.setName(StringPool.BLANK);
@@ -159,18 +159,18 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			watsonIncidentImpl.setName(name);
 		}
 
-		if (externalCaseId == null) {
-			watsonIncidentImpl.setExternalCaseId(StringPool.BLANK);
-		}
-		else {
-			watsonIncidentImpl.setExternalCaseId(externalCaseId);
-		}
-
 		if (description == null) {
 			watsonIncidentImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonIncidentImpl.setDescription(description);
+		}
+
+		if (externalCaseId == null) {
+			watsonIncidentImpl.setExternalCaseId(StringPool.BLANK);
+		}
+		else {
+			watsonIncidentImpl.setExternalCaseId(externalCaseId);
 		}
 
 		if (reportDate == Long.MIN_VALUE) {
@@ -215,15 +215,20 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
+		audienceAdultCount = objectInput.readLong();
+
+		audienceChildCount = objectInput.readLong();
+
+		externalCaseWatsonListTypeId = objectInput.readLong();
+
 		sourceWatsonListTypeId = objectInput.readLong();
 
 		typeWatsonListTypeId = objectInput.readLong();
 
 		subtypeWatsonListTypeId = objectInput.readLong();
-		audienceKey = objectInput.readUTF();
 		name = objectInput.readUTF();
-		externalCaseId = objectInput.readUTF();
 		description = objectInput.readUTF();
+		externalCaseId = objectInput.readUTF();
 		reportDate = objectInput.readLong();
 		startDate = objectInput.readLong();
 		endDate = objectInput.readLong();
@@ -254,18 +259,17 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
+		objectOutput.writeLong(audienceAdultCount);
+
+		objectOutput.writeLong(audienceChildCount);
+
+		objectOutput.writeLong(externalCaseWatsonListTypeId);
+
 		objectOutput.writeLong(sourceWatsonListTypeId);
 
 		objectOutput.writeLong(typeWatsonListTypeId);
 
 		objectOutput.writeLong(subtypeWatsonListTypeId);
-
-		if (audienceKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(audienceKey);
-		}
 
 		if (name == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
@@ -274,18 +278,18 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			objectOutput.writeUTF(name);
 		}
 
-		if (externalCaseId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(externalCaseId);
-		}
-
 		if (description == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
+		}
+
+		if (externalCaseId == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(externalCaseId);
 		}
 
 		objectOutput.writeLong(reportDate);
@@ -304,13 +308,15 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
+	public long audienceAdultCount;
+	public long audienceChildCount;
+	public long externalCaseWatsonListTypeId;
 	public long sourceWatsonListTypeId;
 	public long typeWatsonListTypeId;
 	public long subtypeWatsonListTypeId;
-	public String audienceKey;
 	public String name;
-	public String externalCaseId;
 	public String description;
+	public String externalCaseId;
 	public long reportDate;
 	public long startDate;
 	public long endDate;
