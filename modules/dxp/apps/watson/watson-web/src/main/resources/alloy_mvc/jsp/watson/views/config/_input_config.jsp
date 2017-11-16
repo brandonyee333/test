@@ -1156,13 +1156,27 @@
 			},
 			incidents: {
 				inputs: {
-					audienceKey: {
+					audienceAdultCount: {
 						controlledInputs: [],
 						dependentKey: '${WatsonListTypeConstants.INCIDENT_TYPE_PREVENTION_OUTREACH}',
 						filterable: ${false},
 						htmlType: 'input',
 						invertHidden: ${true},
-						label: '${AlloyLanguageUtil.formatUnicode('audience-number')}',
+						label: '${AlloyLanguageUtil.formatUnicode('audience-adult-number')}',
+						parentInputId: 'typeWatsonListTypeId',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					audienceChildCount: {
+						controlledInputs: [],
+						dependentKey: '${WatsonListTypeConstants.INCIDENT_TYPE_PREVENTION_OUTREACH}',
+						filterable: ${false},
+						htmlType: 'input',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode('audience-child-number')}',
 						parentInputId: 'typeWatsonListTypeId',
 						translatable: ${false},
 						type: 'DEPENDENT_KEYED_INPUT',
