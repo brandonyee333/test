@@ -16,8 +16,8 @@ class SidebarToolbar extends JSXComponent {
 	formatDropDown() {
 		const formattedOptions = (
 			<ul class="items">
-				<li><a class="item" id="en_US" onClick={this.languageOnClick}>{"English"}</a></li>
-				<li><a class="item" id="th" onClick={this.languageOnClick}>{"Thai"}</a></li>
+				<li><a class="item" id="en_US" onClick={this.languageOnClick}>{'English'}</a></li>
+				<li><a class="item" id="th" onClick={this.languageOnClick}>{'Thai'}</a></li>
 			</ul>);
 
 		return formattedOptions;

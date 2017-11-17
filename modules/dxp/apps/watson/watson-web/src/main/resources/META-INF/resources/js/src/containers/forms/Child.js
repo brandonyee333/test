@@ -191,6 +191,7 @@ class ChildForm extends JSXComponent {
 			action,
 			button,
 			buttonLabel,
+			cancelMethod,
 			disabled,
 			errors,
 			formData,
@@ -198,14 +199,13 @@ class ChildForm extends JSXComponent {
 			model,
 			response,
 			storeData = props.data,
+			submitMethod = props.updateChild,
 			watsonChildId
 		} = props;
 
 		let {
-			cancelMethod,
 			headerStringLeft = Liferay.Language.get('create-child'),
-			headerStringRight,
-			submitMethod = props.updateChild
+			headerStringRight
 		} = props;
 
 		const {
