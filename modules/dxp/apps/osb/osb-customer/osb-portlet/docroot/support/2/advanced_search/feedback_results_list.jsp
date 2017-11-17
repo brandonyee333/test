@@ -125,7 +125,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 					</liferay-portlet:renderURL>
 
 					<a class="row-url search-row" draggable="false" href="<%= rowURL %>" <%= rowJS %>>
-						<div class="column ticket-feedback-column severity v<%= ticketEntry.getSeverity() %>"></div>
+						<div class="column ticket-feedback-column severity <%= ticketEntry.getSeverityLabel() %>"></div>
 
 						<div class="column ticket-feedback-column ticket-number" <%= columnJS %>>
 							<div class="search-title">

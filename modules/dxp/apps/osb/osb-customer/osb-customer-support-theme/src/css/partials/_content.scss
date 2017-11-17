@@ -47,6 +47,10 @@
 	}
 }
 
+.critical {
+	background-color: $critical;
+}
+
 .home-page {
 	padding-top: 20px;
 }
@@ -57,6 +61,14 @@
 
 .home-page-margin, .margin-container {
 	margin: 0 30px;
+}
+
+.major {
+	background-color: $major;
+}
+
+.minor {
+	background-color: $minor;
 }
 
 .portlet-column-only .portlet-login {
@@ -101,16 +113,4 @@
 .portlet-section-header {
 	color: $text-color;
 	text-decoration: none;
-}
-
-.v1 {
-	background: $minor;
-}
-
-.v2 {
-	background: $major;
-}
-
-.v3 {
-	background: $critical;
 }

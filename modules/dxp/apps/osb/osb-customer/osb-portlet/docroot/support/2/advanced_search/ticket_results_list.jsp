@@ -125,7 +125,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 							<a draggable="false" href="<%= rowURL %>" <%= rowJS %>>
 								<div class="table">
 									<div class="row">
-										<div class="column ticket-column severity v<%= ticketEntry.getSeverity() %>"></div>
+										<div class="column ticket-column severity <%= ticketEntry.getSeverityLabel() %>"></div>
 
 										<div class="column img ticket-column" <%= columnJS %>>
 											<div>
