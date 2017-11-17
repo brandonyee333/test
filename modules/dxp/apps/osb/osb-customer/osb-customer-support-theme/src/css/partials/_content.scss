@@ -19,64 +19,11 @@
 	}
 }
 
-.auto-complete-container #trigger {
-	display: none;
-}
-
-.aui-tooltip {
-	word-wrap: break-word;
-}
-
-.aui-overlay-content {
-	&.aui-tooltip-content {
-		background: #FFF;
-		border: 1px solid $border-color;
-		box-shadow: none;
-	}
-}
-
-.aui-overlay-content.aui-tooltip-content, .btn, .sign-in-button a {
-	border-radius: 2px;
-}
-
-.aui-overlaycontextpanel-arrow-bl .aui-overlaycontextpanel-pointer .aui-overlaycontextpanel-pointer-inner {
-	border-right: 16px dashed transparent;
-	border-top: 12px solid #FFF !important;
-	left: 1px;
-}
-
-.aui-overlaycontextpanel-arrow-tr .aui-overlaycontextpanel-pointer-inner {
-	border-bottom-width: 12px;
-	border-left-width: 16px;
-	right: 1px;
-}
-
-.aui-tabview-list .aui-tab {
-	background-color: #FFF;
-
-	& a, & a * {
-		color: $text-color;
-	}
-
-	&.aui-tab-active {
-		background-color: $primary-blue;
-
-		& a, & a * {
-			color: #FFF;
-		}
-	}
-}
-
-.aui-tooltip-content div {
-	color: $medium-gray;
-}
-
-.class-toggle {
+.class-toggle, .class-toggle-off-click {
 	cursor: pointer;
 }
 
 .class-toggle-off-click {
-	cursor: pointer;
 	position: relative;
 }
 
@@ -108,16 +55,8 @@
 	margin: 30px;
 }
 
-.home-page-margin {
+.home-page-margin, .margin-container {
 	margin: 0 30px;
-}
-
-.margin-container {
-	margin: 0 30px;
-}
-
-.opens-new-window-accessible {
-	display: none;
 }
 
 .portlet-column-only .portlet-login {
@@ -126,10 +65,6 @@
 		margin-top: 2px;
 		position: relative;
 	}
-}
-
-.portlet-login .navigation {
-	background: transparent;
 }
 
 .portlet-navigation .nav-menu {
@@ -166,11 +101,6 @@
 .portlet-section-header {
 	color: $text-color;
 	text-decoration: none;
-}
-
-.sub-grid {
-	clear: both;
-	margin: 0 auto;
 }
 
 .v1 {

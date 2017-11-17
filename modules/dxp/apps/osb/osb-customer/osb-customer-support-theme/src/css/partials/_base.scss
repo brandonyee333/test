@@ -52,7 +52,6 @@ a {
 
 b, strong, .txt-b {
 	font-family: "Avenir Medium";
-	font-weight: bold;
 }
 
 blockquote, h2, h3 {
@@ -190,8 +189,8 @@ textarea {
 	border-color: $minor;
 }
 
-.txt-sb, .txt-sb * {
-	font-family: "Avenir Medium";
+.txt-sb {
+	font-weight: bold;
 }
 
 .urgent {

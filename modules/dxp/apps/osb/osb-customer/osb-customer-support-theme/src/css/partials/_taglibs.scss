@@ -108,9 +108,28 @@ ul.aui-tabview-list {
 }
 
 .aui-overlay-content {
-	background: #D8D8D8 none no-repeat 0 0;
+	background: $light-bg none no-repeat 0 0;
 	border: 1px solid $medium-gray;
 	padding: 5px;
+
+	&.aui-tooltip-content {
+		background: #FFF;
+		border: 1px solid $border-color;
+		border-radius: 2px;
+		box-shadow: none;
+	}
+}
+
+.aui-overlaycontextpanel-arrow-bl .aui-overlaycontextpanel-pointer .aui-overlaycontextpanel-pointer-inner {
+	border-right: 16px dashed transparent;
+	border-top: 12px solid #FFF !important;
+	left: 1px;
+}
+
+.aui-overlaycontextpanel-arrow-tr .aui-overlaycontextpanel-pointer-inner {
+	border-bottom-width: 12px;
+	border-left-width: 16px;
+	right: 1px;
 }
 
 .aui-panel {
@@ -130,8 +149,25 @@ ul.aui-tabview-list {
 	}
 }
 
+.aui-tabview-list .aui-tab {
+	background-color: #FFF;
+
+	a {
+		color: $text-color;
+	}
+
+	&.aui-tab-active {
+		background-color: $primary-blue;
+
+		a {
+			color: #FFF;
+		}
+	}
+}
+
 .aui-toolbar {
 	list-style: none;
+	word-wrap: break-word;
 
 	li {
 		display: inline;
@@ -139,11 +175,15 @@ ul.aui-tabview-list {
 	}
 }
 
+.aui-tooltip-content div {
+	color: $medium-gray;
+}
+
 .lfr-actions {
 	&, ul {
 		background: #FFF url(../images/forms/button.png) repeat-x 0 100%;
 		border: 1px solid;
-		border-color: #DEDEDE #BFBFBF #BFBFBF #DEDEDE;
+		border-color: $light-bg #BFBFBF #BFBFBF $light-bg;
 	}
 
 	.lfr-trigger {

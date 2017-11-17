@@ -21,8 +21,6 @@
 
 		.txt-b {
 			color: $medium-gray;
-			font-family: "Avenir Medium";
-			font-weight: bold;
 		}
 	}
 
@@ -91,11 +89,6 @@
 			.margin-top-30 {
 				margin-top: 30px;
 			}
-
-			.txt-b {
-				font-family: "Avenir Medium";
-				font-weight: bold;
-			}
 		}
 	}
 }
@@ -109,18 +102,6 @@
 
 	.content {
 		height: 88vh;
-		max-height: 874px;
-	}
-}
-
-.edit-tickets-dialog {
-	position: fixed;
-
-	&.visible {
-		transition: opacity 0.5s;
-	}
-
-	.content {
 		max-height: 874px;
 	}
 }
@@ -239,11 +220,6 @@
 
 			.margin-top-30 {
 				margin-top: 30px;
-			}
-
-			.txt-b {
-				font-family: "Avenir Medium";
-				font-weight: bold;
 			}
 		}
 	}
