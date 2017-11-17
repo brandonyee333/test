@@ -31,7 +31,7 @@ Date lastEnabledDate = calendar.getTime();
 	displayTerms="<%= displayTerms %>"
 	id="toggle_id_account_entry_search"
 >
-	<table class="w100 lfr-table">
+	<table class="lfr-table w100">
 		<tr class="w100">
 			<td class="w50" valign="top">
 				<table class="lfr-table">
