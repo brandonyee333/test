@@ -61,6 +61,8 @@ public static class WatsonPermission extends AlloyPermission {
 				return true;
 			}
 		}
+
+		return false;
 	}
 
 	public static boolean check(User user, String role) throws Exception {
