@@ -45,8 +45,8 @@ if (searchTerms.hasSearchTerms()) {
 				<liferay-ui:message key="search" />
 			</h1>
 
-			<div class="search-form">
-				<aui:input cssClass="lfr-search-keywords" id="keywords" label="" name="keywords" onChange='<%= renderResponse.getNamespace() + "updateSearchResults(false, false);" %>' placeholder="search-liferays-documentation" value="<%= HtmlUtil.escapeAttribute(keywords) %>" />
+			<aui:form action="<%= portletURL.toString() %>" cssClass="search-form" onSubmit="submitForm(this); return false;">
+				<aui:input cssClass="lfr-search-keywords" id="keywords" label="" name="keywords" placeholder="search-liferays-documentation" value="<%= HtmlUtil.escapeAttribute(keywords) %>" />
 
 				<%
 				String iconCss = "toggle-off-click";
@@ -75,7 +75,7 @@ if (searchTerms.hasSearchTerms()) {
 						<%= LanguageUtil.format(request, "showing-x-x-of-x-results", new Object[] {numberFormat.format(start + 1), numberFormat.format(end), numberFormat.format(articleSearch.getTotal())}) %>
 					</div>
 				</c:if>
-			</div>
+			</aui:form>
 		</aui:col>
 	</aui:row>
 
