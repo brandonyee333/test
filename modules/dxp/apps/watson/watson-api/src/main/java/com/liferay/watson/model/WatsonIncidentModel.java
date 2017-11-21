@@ -197,34 +197,6 @@ public interface WatsonIncidentModel extends BaseModel<WatsonIncident>,
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
-	 * Returns the audience adult count of this watson incident.
-	 *
-	 * @return the audience adult count of this watson incident
-	 */
-	public long getAudienceAdultCount();
-
-	/**
-	 * Sets the audience adult count of this watson incident.
-	 *
-	 * @param audienceAdultCount the audience adult count of this watson incident
-	 */
-	public void setAudienceAdultCount(long audienceAdultCount);
-
-	/**
-	 * Returns the audience child count of this watson incident.
-	 *
-	 * @return the audience child count of this watson incident
-	 */
-	public long getAudienceChildCount();
-
-	/**
-	 * Sets the audience child count of this watson incident.
-	 *
-	 * @param audienceChildCount the audience child count of this watson incident
-	 */
-	public void setAudienceChildCount(long audienceChildCount);
-
-	/**
 	 * Returns the external case watson list type ID of this watson incident.
 	 *
 	 * @return the external case watson list type ID of this watson incident
@@ -280,6 +252,34 @@ public interface WatsonIncidentModel extends BaseModel<WatsonIncident>,
 	 * @param subtypeWatsonListTypeId the subtype watson list type ID of this watson incident
 	 */
 	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId);
+
+	/**
+	 * Returns the audience adult count of this watson incident.
+	 *
+	 * @return the audience adult count of this watson incident
+	 */
+	public long getAudienceAdultCount();
+
+	/**
+	 * Sets the audience adult count of this watson incident.
+	 *
+	 * @param audienceAdultCount the audience adult count of this watson incident
+	 */
+	public void setAudienceAdultCount(long audienceAdultCount);
+
+	/**
+	 * Returns the audience child count of this watson incident.
+	 *
+	 * @return the audience child count of this watson incident
+	 */
+	public long getAudienceChildCount();
+
+	/**
+	 * Sets the audience child count of this watson incident.
+	 *
+	 * @param audienceChildCount the audience child count of this watson incident
+	 */
+	public void setAudienceChildCount(long audienceChildCount);
 
 	/**
 	 * Returns the name of this watson incident.

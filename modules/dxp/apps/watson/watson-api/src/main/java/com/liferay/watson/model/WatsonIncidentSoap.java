@@ -40,12 +40,12 @@ public class WatsonIncidentSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setAudienceAdultCount(model.getAudienceAdultCount());
-		soapModel.setAudienceChildCount(model.getAudienceChildCount());
 		soapModel.setExternalCaseWatsonListTypeId(model.getExternalCaseWatsonListTypeId());
 		soapModel.setSourceWatsonListTypeId(model.getSourceWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
+		soapModel.setAudienceAdultCount(model.getAudienceAdultCount());
+		soapModel.setAudienceChildCount(model.getAudienceChildCount());
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setExternalCaseId(model.getExternalCaseId());
@@ -162,22 +162,6 @@ public class WatsonIncidentSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
-	public long getAudienceAdultCount() {
-		return _audienceAdultCount;
-	}
-
-	public void setAudienceAdultCount(long audienceAdultCount) {
-		_audienceAdultCount = audienceAdultCount;
-	}
-
-	public long getAudienceChildCount() {
-		return _audienceChildCount;
-	}
-
-	public void setAudienceChildCount(long audienceChildCount) {
-		_audienceChildCount = audienceChildCount;
-	}
-
 	public long getExternalCaseWatsonListTypeId() {
 		return _externalCaseWatsonListTypeId;
 	}
@@ -209,6 +193,22 @@ public class WatsonIncidentSoap implements Serializable {
 
 	public void setSubtypeWatsonListTypeId(long subtypeWatsonListTypeId) {
 		_subtypeWatsonListTypeId = subtypeWatsonListTypeId;
+	}
+
+	public long getAudienceAdultCount() {
+		return _audienceAdultCount;
+	}
+
+	public void setAudienceAdultCount(long audienceAdultCount) {
+		_audienceAdultCount = audienceAdultCount;
+	}
+
+	public long getAudienceChildCount() {
+		return _audienceChildCount;
+	}
+
+	public void setAudienceChildCount(long audienceChildCount) {
+		_audienceChildCount = audienceChildCount;
 	}
 
 	public String getName() {
@@ -282,12 +282,12 @@ public class WatsonIncidentSoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private long _audienceAdultCount;
-	private long _audienceChildCount;
 	private long _externalCaseWatsonListTypeId;
 	private long _sourceWatsonListTypeId;
 	private long _typeWatsonListTypeId;
 	private long _subtypeWatsonListTypeId;
+	private long _audienceAdultCount;
+	private long _audienceChildCount;
 	private String _name;
 	private String _description;
 	private String _externalCaseId;

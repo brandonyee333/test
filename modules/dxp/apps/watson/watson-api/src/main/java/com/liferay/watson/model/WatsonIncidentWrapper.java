@@ -65,13 +65,13 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("audienceAdultCount", getAudienceAdultCount());
-		attributes.put("audienceChildCount", getAudienceChildCount());
 		attributes.put("externalCaseWatsonListTypeId",
 			getExternalCaseWatsonListTypeId());
 		attributes.put("sourceWatsonListTypeId", getSourceWatsonListTypeId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
+		attributes.put("audienceAdultCount", getAudienceAdultCount());
+		attributes.put("audienceChildCount", getAudienceChildCount());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("externalCaseId", getExternalCaseId());
@@ -128,18 +128,6 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 			setModifiedDate(modifiedDate);
 		}
 
-		Long audienceAdultCount = (Long)attributes.get("audienceAdultCount");
-
-		if (audienceAdultCount != null) {
-			setAudienceAdultCount(audienceAdultCount);
-		}
-
-		Long audienceChildCount = (Long)attributes.get("audienceChildCount");
-
-		if (audienceChildCount != null) {
-			setAudienceChildCount(audienceChildCount);
-		}
-
 		Long externalCaseWatsonListTypeId = (Long)attributes.get(
 				"externalCaseWatsonListTypeId");
 
@@ -165,6 +153,18 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 
 		if (subtypeWatsonListTypeId != null) {
 			setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
+		}
+
+		Long audienceAdultCount = (Long)attributes.get("audienceAdultCount");
+
+		if (audienceAdultCount != null) {
+			setAudienceAdultCount(audienceAdultCount);
+		}
+
+		Long audienceChildCount = (Long)attributes.get("audienceChildCount");
+
+		if (audienceChildCount != null) {
+			setAudienceChildCount(audienceChildCount);
 		}
 
 		String name = (String)attributes.get("name");

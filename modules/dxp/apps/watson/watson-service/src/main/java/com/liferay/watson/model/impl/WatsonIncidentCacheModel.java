@@ -82,10 +82,6 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", audienceAdultCount=");
-		sb.append(audienceAdultCount);
-		sb.append(", audienceChildCount=");
-		sb.append(audienceChildCount);
 		sb.append(", externalCaseWatsonListTypeId=");
 		sb.append(externalCaseWatsonListTypeId);
 		sb.append(", sourceWatsonListTypeId=");
@@ -94,6 +90,10 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		sb.append(typeWatsonListTypeId);
 		sb.append(", subtypeWatsonListTypeId=");
 		sb.append(subtypeWatsonListTypeId);
+		sb.append(", audienceAdultCount=");
+		sb.append(audienceAdultCount);
+		sb.append(", audienceChildCount=");
+		sb.append(audienceChildCount);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", description=");
@@ -145,12 +145,12 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			watsonIncidentImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonIncidentImpl.setAudienceAdultCount(audienceAdultCount);
-		watsonIncidentImpl.setAudienceChildCount(audienceChildCount);
 		watsonIncidentImpl.setExternalCaseWatsonListTypeId(externalCaseWatsonListTypeId);
 		watsonIncidentImpl.setSourceWatsonListTypeId(sourceWatsonListTypeId);
 		watsonIncidentImpl.setTypeWatsonListTypeId(typeWatsonListTypeId);
 		watsonIncidentImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
+		watsonIncidentImpl.setAudienceAdultCount(audienceAdultCount);
+		watsonIncidentImpl.setAudienceChildCount(audienceChildCount);
 
 		if (name == null) {
 			watsonIncidentImpl.setName(StringPool.BLANK);
@@ -215,10 +215,6 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
-		audienceAdultCount = objectInput.readLong();
-
-		audienceChildCount = objectInput.readLong();
-
 		externalCaseWatsonListTypeId = objectInput.readLong();
 
 		sourceWatsonListTypeId = objectInput.readLong();
@@ -226,6 +222,10 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		typeWatsonListTypeId = objectInput.readLong();
 
 		subtypeWatsonListTypeId = objectInput.readLong();
+
+		audienceAdultCount = objectInput.readLong();
+
+		audienceChildCount = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		externalCaseId = objectInput.readUTF();
@@ -259,10 +259,6 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		objectOutput.writeLong(audienceAdultCount);
-
-		objectOutput.writeLong(audienceChildCount);
-
 		objectOutput.writeLong(externalCaseWatsonListTypeId);
 
 		objectOutput.writeLong(sourceWatsonListTypeId);
@@ -270,6 +266,10 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		objectOutput.writeLong(typeWatsonListTypeId);
 
 		objectOutput.writeLong(subtypeWatsonListTypeId);
+
+		objectOutput.writeLong(audienceAdultCount);
+
+		objectOutput.writeLong(audienceChildCount);
 
 		if (name == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
@@ -308,12 +308,12 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public long audienceAdultCount;
-	public long audienceChildCount;
 	public long externalCaseWatsonListTypeId;
 	public long sourceWatsonListTypeId;
 	public long typeWatsonListTypeId;
 	public long subtypeWatsonListTypeId;
+	public long audienceAdultCount;
+	public long audienceChildCount;
 	public String name;
 	public String description;
 	public String externalCaseId;
