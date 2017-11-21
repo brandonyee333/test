@@ -323,48 +323,6 @@
 	}
 }
 
-/* ---------- Control menu ---------- */
-
-.has-control-menu {
-	&.open {
-		.lesa-nav {
-			left: $sidenav-width;
-		}
-	}
-
-	#banner, .lesa-nav {
-		top: $has-control-menu-top-mobile;
-
-		@include sm() {
-			top: $has-control-menu-top-desktop;
-		}
-	}
-
-	#contentWrapper {
-		margin-top: $has-control-menu-top-mobile + $banner-height;
-
-		@include sm() {
-			margin-top: $has-control-menu-top-desktop + $banner-height;
-		}
-	}
-
-	#wrapper.wrapper {
-		margin-top: $banner-height;
-	}
-
-	.lesa-announcements-notification {
-		top: $has-control-menu-top-mobile + $banner-height + 15px;
-
-		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + 15px;
-		}
-	}
-
-	.lesa-nav {
-		transition: $sidenav-transition;
-	}
-}
-
 /* ---------- Dropdown nav ---------- */
 
 .three-dot {
