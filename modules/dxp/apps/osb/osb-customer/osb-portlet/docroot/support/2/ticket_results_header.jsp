@@ -20,7 +20,7 @@
 List<TicketEntry> results = (List<TicketEntry>)request.getAttribute("tickets.jsp-results");
 
 boolean advancedSearch = ParamUtil.getBoolean(request, "advancedSearch");
-boolean banner = ParamUtil.getBoolean(request, "banner");
+boolean notification = ParamUtil.getBoolean(request, "notification");
 boolean bulkEdit = ParamUtil.getBoolean(request, "bulkEdit");
 int count = ParamUtil.getInteger(request, "count");
 boolean fade = ParamUtil.getBoolean(request, "fade");
@@ -34,8 +34,8 @@ boolean supportManager = ParamUtil.getBoolean(request, "supportManager");
 
 String topCssClass = "top normal-top";
 
-if (banner) {
-	topCssClass = "top banner-top";
+if (notification) {
+	topCssClass = "top notification-top";
 }
 %>
 

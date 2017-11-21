@@ -52,19 +52,19 @@
 }
 
 .home-page {
-	padding-top: 20px;
-}
+	margin: 20px 30px 0;
 
-.home-page-banner-margin {
-	margin: 30px;
-}
-
-.home-page-margin, .margin-container {
-	margin: 0 30px;
+	&.has-notification {
+		margin-top: 60px;
+	}
 }
 
 .major {
 	background-color: $major;
+}
+
+.margin-container {
+	margin: 0 30px;
 }
 
 .minor {

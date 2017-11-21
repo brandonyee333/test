@@ -22,10 +22,10 @@ String orderByType = ParamUtil.getString(request, "orderByType");
 
 PortalPreferences preferences = PortletPreferencesFactoryUtil.getPortalPreferences(request);
 
-boolean banner = false;
+boolean notification = false;
 
 if (!SubscriptionLocalServiceUtil.isSubscribed(OSBConstants.COMPANY_ID, user.getUserId(), BlogsEntry.class.getName(), OSBConstants.GROUP_CUSTOMER_ID)) {
-	banner = true;
+	notification = true;
 }
 
 if (Validator.isNotNull(orderByCol) && Validator.isNotNull(orderByType)) {
@@ -46,8 +46,8 @@ PortletURL portletURL = renderResponse.createRenderURL();
 portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 %>
 
-<div class="home-page <%= banner ? "home-page-banner-margin" : "home-page-margin" %>">
-	<c:if test="<%= banner %>">
+<div class="home-page <%= notification ? "has-notification" : "" %>">
+	<c:if test="<%= notification %>">
 		<liferay-util:include page="/common/dialog.jsp" servletContext="<%= application %>">
 			<liferay-util:param name="border" value="<%= Boolean.FALSE.toString() %>" />
 			<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
@@ -106,7 +106,7 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			<c:if test="<%= needsResponseCount > 0 %>">
 				<div class="search-results">
 					<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-						<portlet:param name="banner" value="<%= String.valueOf(banner) %>" />
+						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="count" value="<%= String.valueOf(needsResponseCount) %>" />
 						<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="first" value="<%= Boolean.TRUE.toString() %>" />
@@ -124,7 +124,7 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 
 			<div class="search-results">
 				<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-					<portlet:param name="banner" value="<%= String.valueOf(banner) %>" />
+					<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 					<portlet:param name="count" value="<%= String.valueOf(primaryAssignmentsCount) %>" />
 					<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 					<portlet:param name="first" value="<%= (needsResponseCount <= 0) ? Boolean.TRUE.toString() : Boolean.FALSE.toString() %>" />
@@ -142,7 +142,7 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			<c:if test="<%= auxiliaryAssignmentsCount > 0 %>">
 				<div class="search-results">
 					<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-						<portlet:param name="banner" value="<%= String.valueOf(banner) %>" />
+						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="count" value="<%= String.valueOf(auxiliaryAssignmentsCount) %>" />
 						<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="id" value="auxiliaryResultsList" />
@@ -160,7 +160,7 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			<c:if test="<%= watchingCount > 0 %>">
 				<div class="search-results">
 					<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-						<portlet:param name="banner" value="<%= String.valueOf(banner) %>" />
+						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="count" value="<%= String.valueOf(watchingCount) %>" />
 						<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="id" value="watchingResultsList" />
@@ -197,7 +197,7 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			<c:if test="<%= needsResponseCount > 0 %>">
 				<div class="search-results">
 					<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-						<portlet:param name="banner" value="<%= String.valueOf(banner) %>" />
+						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="count" value="<%= String.valueOf(needsResponseCount) %>" />
 						<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="first" value="<%= Boolean.TRUE.toString() %>" />
@@ -215,7 +215,7 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 
 			<div class="search-results">
 				<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-					<portlet:param name="banner" value="<%= String.valueOf(banner) %>" />
+					<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 					<portlet:param name="count" value="<%= String.valueOf(openTicketsCount) %>" />
 					<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 					<portlet:param name="first" value="<%= (needsResponseCount <= 0) ? Boolean.TRUE.toString() : Boolean.FALSE.toString() %>" />
