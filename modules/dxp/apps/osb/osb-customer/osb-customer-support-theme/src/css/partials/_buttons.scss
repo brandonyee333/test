@@ -1,13 +1,13 @@
-a.btn, input.btn, input[type="button"].aui-button-input, input[type="button"].btn, input[type="submit"].aui-button-input, input[type="submit"].btn, .btn, .field-input-button {
-	border: 1px solid $primary-blue;
-	cursor: pointer;
+a.btn {
 	text-decoration: none;
 }
 
-.aui-button-input, .btn, .field-input-button, input[type="button"], input[type="submit"] {
+input[type="button"], input[type="submit"], .aui-button-input, .btn, .field-input-button {
 	background: #FFF;
 	border: 1px solid $primary-blue;
+	border-radius: 2px;
 	color: $primary-blue;
+	cursor: pointer;
 	display: inline-block;
 	font-weight: normal;
 	height: auto;
@@ -60,7 +60,6 @@ a.btn, input.btn, input[type="button"].aui-button-input, input[type="button"].bt
 }
 
 .btn {
-	border-radius: 2px;
 	margin: 0;
 }
 
@@ -222,10 +221,4 @@ a.btn, input.btn, input[type="button"].aui-button-input, input[type="button"].bt
 
 .icon-asset-zip {
 	background-image: url(../images/custom/icons/icon_asset_zip_23x23.png);
-}
-
-/* ---------- Extras ---------- */
-
-input[type="button"], input[type="button"].aui-button-input, input[type="submit"].btn, input[type="submit"], input[type="submit"].aui-button-input, input[type="submit"].btn, .btn, .btn-a, .btn-b, .btn-c, .btn-d, .field-input-button, .large-btn, .large-btn-a, .large-btn-b, .large-btn-c {
-	border-radius: 2px;
 }
