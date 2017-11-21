@@ -103,23 +103,30 @@
 .lesa-announcements-notification {
 	background-color: $light-bg;
 	display: none;
-	left: calc(50vw - 375px);
-	margin: 0;
+	left: 50%;
 	padding: 5px;
+	position: fixed;
 	text-align: center;
 	top: $banner-height + 15px;
+	width: 750px;
+	z-index: 2;
+
+	@include transform(translateX(-50%));
 
 	@include sm() {
 		display: block;
 	}
 
 	span {
-		display: inline-block;
-		margin: 5px 15px 0 0;
 		vertical-align: middle;
 	}
 
-	.aui-button-input {
+	.notification-btn {
 		background-color: $light-bg;
+		margin-left: 1em;
+
+		&:hover {
+			background-color: $primary-blue;
+		}
 	}
 }

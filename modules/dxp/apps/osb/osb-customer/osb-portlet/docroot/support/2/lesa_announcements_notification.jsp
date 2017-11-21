@@ -16,8 +16,10 @@
 
 <%@ include file="/support/2/init.jsp" %>
 
-<span>
-	<liferay-ui:message key="subscribe-for-updates-on-the-latest-fix-packs-security-fixes-and-product-releases" />
-</span>
+<div class="lesa-announcements-notification">
+	<span>
+		<liferay-ui:message key="subscribe-for-updates-on-the-latest-fix-packs-security-fixes-and-product-releases" />
+	</span>
 
-<aui:button cssClass="aui-button-input" href="/group/customer/support/announcements" value="announcements" />
+	<aui:button cssClass="notification-btn" href="/group/customer/support/announcements" value="announcements" />
+</div>

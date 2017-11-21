@@ -48,16 +48,7 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 
 <div class="home-page <%= notification ? "has-notification" : "" %>">
 	<c:if test="<%= notification %>">
-		<liferay-util:include page="/common/dialog.jsp" servletContext="<%= application %>">
-			<liferay-util:param name="border" value="<%= Boolean.FALSE.toString() %>" />
-			<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
-			<liferay-util:param name="cssClass" value="lesa-announcements-notification" />
-			<liferay-util:param name="draggable" value="<%= Boolean.FALSE.toString() %>" />
-			<liferay-util:param name="mvcPath" value="/support/2/lesa_announcements_notification.jsp" />
-			<liferay-util:param name="shadow" value="<%= Boolean.FALSE.toString() %>" />
-			<liferay-util:param name="width" value="750" />
-			<liferay-util:param name="visible" value="<%= Boolean.TRUE.toString() %>" />
-		</liferay-util:include>
+		<liferay-util:include page="/support/2/lesa_announcements_notification.jsp" servletContext="<%= application %>"></liferay-util:include>
 	</c:if>
 
 	<c:choose>
