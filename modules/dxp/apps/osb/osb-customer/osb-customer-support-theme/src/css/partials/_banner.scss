@@ -352,15 +352,11 @@
 		margin-top: $banner-height;
 	}
 
-	.lesa-nav {
-		transition: $sidenav-transition;
-	}
-
-	.lesa-announcements-dialog {
-		top: $has-control-menu-top-mobile + $banner-height + 10px;
+	.lesa-announcements-notification {
+		top: $has-control-menu-top-mobile + $banner-height + 15px;
 
 		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + 10px;
+			top: $has-control-menu-top-desktop + $banner-height + 15px;
 		}
 	}
 

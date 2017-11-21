@@ -53,39 +53,37 @@ if (width > 0) {
 	<div class="dialog-overlay" id="<%= renderResponse.getNamespace() + "dialogOverlay" + dialogId %>"></div>
 </c:if>
 
-<div class="dialog <%= cssClass %>" id="<%= renderResponse.getNamespace() + "dialog" + dialogId %>">
-	<div class="<%= border ? "border" : "" %> <%= shadow ? "shadow" : "" %>">
-		<c:if test="<%= close || draggable || Validator.isNotNull(title) %>">
-			<div class="titlebar" id="<%= renderResponse.getNamespace() + "titlebar" + dialogId %>">
-				<c:if test="<%= Validator.isNotNull(title) %>">
-					<div class="title" style="<%= (width > 0) ? "max-width: " + (width - 45) + "px" : "" %>"><%= HtmlUtil.escape(title) %></div>
-				</c:if>
+<div class="dialog <%= border ? "border" : "" %> <%= shadow ? "shadow" : "" %> <%= cssClass %>" id="<%= renderResponse.getNamespace() + "dialog" + dialogId %>">
+	<c:if test="<%= close || draggable || Validator.isNotNull(title) %>">
+		<div class="titlebar" id="<%= renderResponse.getNamespace() + "titlebar" + dialogId %>">
+			<c:if test="<%= Validator.isNotNull(title) %>">
+				<div class="title" style="<%= (width > 0) ? "max-width: " + (width - 45) + "px" : "" %>"><%= HtmlUtil.escape(title) %></div>
+			</c:if>
 
-				<c:if test="<%= close %>">
-					<span class="close-button" onClick="<portlet:namespace />closeDialog(<%= dialogId %>);" type="button"></span>
-				</c:if>
-			</div>
-		</c:if>
-
-		<div class="content" id="<%= renderResponse.getNamespace() + "dialogContent" + dialogId %>" style="<%= contentStyleSB.toString() %>">
-			<c:if test="<%= Validator.isNotNull(mvcPath) %>">
-				<liferay-util:include page="<%= mvcPath %>" servletContext="<%= application %>">
-					<c:if test="<%= paramNames.length == paramValues.length %>">
-
-						<%
-						for (int i = 0; i < paramNames.length; i++) {
-						%>
-
-							<liferay-util:param name="<%= paramNames[i] %>" value="<%= paramValues[i] %>" />
-
-						<%
-						}
-						%>
-
-					</c:if>
-				</liferay-util:include>
+			<c:if test="<%= close %>">
+				<span class="close-button" onClick="<portlet:namespace />closeDialog(<%= dialogId %>);" type="button"></span>
 			</c:if>
 		</div>
+	</c:if>
+
+	<div class="content" id="<%= renderResponse.getNamespace() + "dialogContent" + dialogId %>" style="<%= contentStyleSB.toString() %>">
+		<c:if test="<%= Validator.isNotNull(mvcPath) %>">
+			<liferay-util:include page="<%= mvcPath %>" servletContext="<%= application %>">
+				<c:if test="<%= paramNames.length == paramValues.length %>">
+
+					<%
+					for (int i = 0; i < paramNames.length; i++) {
+					%>
+
+						<liferay-util:param name="<%= paramNames[i] %>" value="<%= paramValues[i] %>" />
+
+					<%
+					}
+					%>
+
+				</c:if>
+			</liferay-util:include>
+		</c:if>
 	</div>
 </div>
 

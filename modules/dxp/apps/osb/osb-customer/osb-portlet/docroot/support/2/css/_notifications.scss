@@ -75,8 +75,11 @@
 	padding-bottom: 25px;
 }
 
-.away-message-end-date {
+.away-message-end-date, .away-message-start-date {
 	display: block;
+}
+
+.away-message-end-date {
 	float: right;
 }
 
@@ -85,11 +88,28 @@
 }
 
 .away-message-start-date {
-	display: block;
 	float: left;
 }
 
 .away-message-text-area {
-	padding-bottom: 25px;
-	padding-top: 25px;
+	padding: 25px 0;
+}
+
+.lesa-announcements-notification {
+	background-color: $light-bg;
+	left: calc(50vw - 375px);
+	margin: 0;
+	padding: 5px;
+	text-align: center;
+	top: $banner-height + 15px;
+
+	span {
+		display: inline-block;
+		margin: 5px 15px 0 0;
+		vertical-align: middle;
+	}
+
+	.aui-button-input {
+		background-color: $light-bg;
+	}
 }
