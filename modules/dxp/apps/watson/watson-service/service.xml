@@ -156,12 +156,12 @@
 
 		<!-- Other fields -->
 
-		<column name="audienceAdultCount" type="long" />
-		<column name="audienceChildCount" type="long" />
 		<column name="externalCaseWatsonListTypeId" type="long" />
 		<column name="sourceWatsonListTypeId" type="long" />
 		<column name="typeWatsonListTypeId" type="long" />
 		<column name="subtypeWatsonListTypeId" type="long" />
+		<column name="audienceAdultCount" type="long" />
+		<column name="audienceChildCount" type="long" />
 		<column name="name" type="String" />
 		<column localized="true" name="description" type="String" />
 		<column name="externalCaseId" type="String" />
