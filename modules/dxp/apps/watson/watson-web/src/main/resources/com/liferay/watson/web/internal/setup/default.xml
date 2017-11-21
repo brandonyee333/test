@@ -40053,240 +40053,240 @@
 			<name locale="en_US">Tip</name>
 			<name locale="th">ปลาย</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10466">
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10467">
 			<name locale="en_US">Other</name>
 			<name locale="th">อื่นๆ</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonActivity.type" watsonListTypeId="10467">
+		<watsonListType type="com.liferay.watson.model.WatsonActivity.type" watsonListTypeId="10468">
 			<name locale="en_US">Report</name>
 			<name locale="th">รายงาน</name>
 		</watsonListType>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10468">
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10469">
 		<name locale="en_US">Suspect</name>
 		<name locale="th">ผู้ต้องหา</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10469">
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10470">
 		<name locale="en_US">Witness</name>
 		<name locale="th">พยาน</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10470">
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10471">
 		<name locale="en_US">Arrestee</name>
 		<name locale="th">ประชุมการเขียนรายงานสรุป</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10471">
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10472">
 		<name locale="en_US">Victim</name>
 		<name locale="th">เหยื่อ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10472">
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10473">
 		<name locale="en_US">Reporting party</name>
 		<name locale="th">ประชุมการเขียนรายงานสรุป</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10473">
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10474">
 		<name locale="en_US">Mentioned</name>
 		<name locale="th">กล่าวถึง</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10474">
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10475">
 		<name locale="en_US">Mentioned</name>
 		<name locale="th">กล่าวถึง</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonPerson.ethnicityRegion" watsonListTypeId="10475">
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.ethnicityRegion" watsonListTypeId="10476">
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่นๆ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonActivity.type" watsonListTypeId="10476">
+	<watsonListType type="com.liferay.watson.model.WatsonActivity.type" watsonListTypeId="10477">
 		<name locale="en_US">Court Proceeding</name>
 		<name locale="th">การดำเนินการของศาล</name>
-		<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10477">
+		<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10478">
 			<name locale="en_US">Criminal</name>
 			<name locale="th">อาชญากร</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10478">
+		<watsonListType type="com.liferay.watson.model.WatsonActivity.subtype" watsonListTypeId="10479">
 			<name locale="en_US">Civil</name>
 			<name locale="th">พลเรือน</name>
 		</watsonListType>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonResource.resourceType" watsonListTypeId="10479">
+	<watsonListType type="com.liferay.watson.model.WatsonResource.resourceType" watsonListTypeId="10480">
 		<name locale="en_US">Court Document</name>
 		<name locale="th">เอกสารศาล</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonRelationship.activityResourceRelationshipTypes" watsonListTypeId="10480">
+	<watsonListType type="com.liferay.watson.model.WatsonRelationship.activityResourceRelationshipTypes" watsonListTypeId="10481">
 		<name locale="en_US">Court Document</name>
 		<name locale="th">เอกสารศาล</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="10481">
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.type" watsonListTypeId="10482">
 		<name locale="en_US">Citizenship</name>
 		<name locale="th">สัญชาติ</name>
-		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10482">
+		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10483">
 			<name locale="en_US">Citizenship Sub Type</name>
 			<name locale="th">สัญชาติ</name>
 		</watsonListType>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.dischargeType" watsonListTypeId="10483">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.dischargeType" watsonListTypeId="10484">
 		<name locale="en_US">Reunification</name>
 		<name locale="th">การชุมนุมกันใหม่</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.dischargeType" watsonListTypeId="10484">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.dischargeType" watsonListTypeId="10485">
 		<name locale="en_US">Referral</name>
 		<name locale="th">การอ้างอิง</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.dischargeType" watsonListTypeId="10485">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.dischargeType" watsonListTypeId="10486">
 		<name locale="en_US">Re-patriotism</name>
 		<name locale="th">ส่งคืน</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.sourceType" watsonListTypeId="10486">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.sourceType" watsonListTypeId="10487">
 		<name locale="en_US">Government</name>
 		<name locale="th">รัฐบาล</name>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10487">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10488">
 			<name locale="en_US">Boys Home</name>
 			<name locale="th">บ้านเด็กชาย</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10488">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10489">
 			<name locale="en_US">Police Region 5</name>
 			<name locale="th">ตำรวจภาค 5</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10489">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10490">
 			<name locale="en_US">Provincial Police</name>
 			<name locale="th">ตำรวจภูธรจังหวัด</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10490">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10491">
 			<name locale="en_US">WIANG PING Home</name>
 			<name locale="th">WIANG PING Home</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10491">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10492">
 			<name locale="en_US">Women and Children's Emergency Shelter</name>
 			<name locale="th">Women and Children's Emergency Shelter</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10492">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10493">
 			<name locale="en_US">Other</name>
 			<name locale="th">อื่น ๆ</name>
 		</watsonListType>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.sourceType" watsonListTypeId="10493">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.sourceType" watsonListTypeId="10494">
 		<name locale="en_US">NGO</name>
 		<name locale="th">องค์กรพัฒนาเอกชน</name>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10494">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10495">
 			<name locale="en_US">Act House</name>
 			<name locale="th">แอคเฮ้าส์</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10495">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10496">
 			<name locale="en_US">FOCUS</name>
 			<name locale="th">FOCUS</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10496">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10497">
 			<name locale="en_US">HUG Project</name>
 			<name locale="th">HUG Project</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10497">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10498">
 			<name locale="en_US">IJM</name>
 			<name locale="th">IJM</name>
 		</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10498">
+		<watsonListType type="com.liferay.watson.model.WatsonChild.sourceSubtype" watsonListTypeId="10499">
 			<name locale="en_US">Other</name>
 			<name locale="th">อื่น ๆ</name>
 		</watsonListType>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.sourceType" watsonListTypeId="10499">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.sourceType" watsonListTypeId="10500">
 		<name locale="en_US">Individual</name>
 		<name locale="th">รายบุคคล</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.sourceType" watsonListTypeId="10500">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.sourceType" watsonListTypeId="10501">
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่น ๆ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10501">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10502">
 		<name locale="en_US">Running</name>
 		<name locale="th">วิ่ง</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10502">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10503">
 		<name locale="en_US">Cricket</name>
 		<name locale="th">คริกเก็ต</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10502">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10504">
 		<name locale="en_US">Bocce Ball</name>
 		<name locale="th">อพี่แตง</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10503">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10505">
 		<name locale="en_US">Football</name>
 		<name locale="th">ฟุตบอล</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10504">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10506">
 		<name locale="en_US">Singing</name>
 		<name locale="th">การร้องเพลง</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10505">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10507">
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่น ๆ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10506">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10508">
 		<name locale="en_US">Agriculture</name>
 		<name locale="th">การเกษตร</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10507">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10509">
 		<name locale="en_US">Auto-mechanic</name>
 		<name locale="th">อช่างซ่อมรถยนต์</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10508">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10510">
 		<name locale="en_US">Baking</name>
 		<name locale="th">การอบ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10509">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10511">
 		<name locale="en_US">Barber/Hairdresser</name>
 		<name locale="th">อร้านตัดผม / ช่างทำผม</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10510">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10512">
 		<name locale="en_US">Coffee</name>
 		<name locale="th">กาแฟ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10511">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10513">
 		<name locale="en_US">Computer</name>
 		<name locale="th">คอมพิวเตอร์</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10512">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10514">
 		<name locale="en_US">Construction</name>
 		<name locale="th">การก่อสร้าง</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10513">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10515">
 		<name locale="en_US">Cooking</name>
 		<name locale="th">การปรุงอาหาร</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10514">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10516">
 		<name locale="en_US">Craft</name>
 		<name locale="th">งานฝีมือ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10515">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10517">
 		<name locale="en_US">Motorcycle Repair</name>
 		<name locale="th">ซ่อมรถจักรยานยนต์</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10516">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10518">
 		<name locale="en_US">Office Skills</name>
 		<name locale="th">ทักษะทางด้าน Office</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10517">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10519">
 		<name locale="en_US">Sewing</name>
 		<name locale="th">เย็บปักถักร้อย</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10518">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10520">
 		<name locale="en_US">Welding</name>
 		<name locale="th">การเชื่อมโลหะ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10519">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10521">
 		<name locale="en_US">Woodwork</name>
 		<name locale="th">เครื่องไม้</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10520">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.vocationalTraining" watsonListTypeId="10522">
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่น ๆ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonIncident.externalCaseType" watsonListTypeId="10521">
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.externalCaseType" watsonListTypeId="10523">
 		<name locale="en_US">Investigation</name>
 		<name locale="th">ตรวจสอบ</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonIncident.externalCaseType" watsonListTypeId="10522">
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.externalCaseType" watsonListTypeId="10524">
 		<name locale="en_US">Forensic</name>
 		<name locale="th">ทางกฎหมาย</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonIncident.externalCaseType" watsonListTypeId="10523">
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.externalCaseType" watsonListTypeId="10525">
 		<name locale="en_US">Both</name>
 		<name locale="th">ทั้งสอง</name>
 	</watsonListType>

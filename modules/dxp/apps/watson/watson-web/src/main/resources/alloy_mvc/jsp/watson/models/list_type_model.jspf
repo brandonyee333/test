@@ -35,7 +35,7 @@ public static class WatsonListType extends WatsonListTypeBaseModel {
 		super(watsonListType);
 	}
 
-	public static final long ACTIVITY_RESOURCE_RELATIONSHIP_TYPE = 10480;
+	public static final long ACTIVITY_RESOURCE_RELATIONSHIP_TYPE = 10481;
 
 	public static final long ACTIVITY_TYPE_COURT_PROCEEDING = 10476;
 
@@ -45,13 +45,13 @@ public static class WatsonListType extends WatsonListTypeBaseModel {
 
 	public static final long ADDRESS_TYPE_LAST_SEEN = 9367;
 
-	public static final long CHILD_SOURCE_TYPE_OTHER = 10500;
+	public static final long CHILD_SOURCE_TYPE_OTHER = 10501;
 
 	public static final long INCIDENT_SOURCE_ZCR_TEAM = 9373;
 
 	public static final long INCIDENT_SUBTYPE_INFORMATIONAL = 10463;
 
-	public static final long INCIDENT_TYPE_CITIZENSHIP = 10481;
+	public static final long INCIDENT_TYPE_CITIZENSHIP = 10482;
 
 	public static final long INCIDENT_TYPE_INVESTIGATION = 10460;
 
@@ -63,7 +63,7 @@ public static class WatsonListType extends WatsonListTypeBaseModel {
 
 	public static final long PERSON_ETHNICITY_LAOTIAN = 9454;
 
-	public static final long PERSON_ETHNICITY_REGION_OTHER = 10475;
+	public static final long PERSON_ETHNICITY_REGION_OTHER = 10476;
 
 	public static final long PERSON_ETHNICITY_THAI = 9421;
 
@@ -79,7 +79,7 @@ public static class WatsonListType extends WatsonListTypeBaseModel {
 
 	public static final long RESOURCE_TYPE_AUDIO = 9558;
 
-	public static final long RESOURCE_TYPE_COURT_DOCUMENT = 10479;
+	public static final long RESOURCE_TYPE_COURT_DOCUMENT = 10480;
 
 	public static final long RESOURCE_TYPE_EVIDENCE = 9557;
 
