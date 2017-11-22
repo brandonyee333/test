@@ -1,0 +1,107 @@
+.away-message {
+	textarea {
+		height: 250px;
+		width: 500px;
+	}
+}
+
+.away-message-checkbox {
+	padding-bottom: 25px;
+}
+
+.away-message-end-date, .away-message-start-date {
+	display: block;
+}
+
+.away-message-end-date {
+	float: right;
+}
+
+.away-message-header {
+	display: inline;
+}
+
+.away-message-start-date {
+	float: left;
+}
+
+.away-message-text-area {
+	padding: 25px 0;
+}
+
+.notification-preference {
+	margin-bottom: 10px;
+}
+
+.screen-share-mode {
+	ul {
+		display: inline-block;
+		font-size: 13px;
+		margin: 1em 1em 1em 0;
+
+		&:last-child {
+			border-left: 1px solid $border-color;
+		}
+	}
+
+	.screen-share-mode-description {
+		border: 1px solid $border-color;
+		margin: 1em;
+	}
+}
+
+.toggle-on-off-switch {
+	border-radius: 2px;
+	cursor: pointer;
+	display: inline-block;
+	overflow: hidden;
+	transition: border 0.3s ease-in 0s;
+	vertical-align: middle;
+	width: 50px;
+
+	&:hover.off, &.on {
+		border: 1px solid $hover-blue;
+
+		.toggle-on-off-switch-inner {
+			margin-left: 0;
+		}
+	}
+
+	&:hover.on, &.off {
+		border: 1px solid $pref-toggler;
+
+		.toggle-on-off-switch-inner {
+			margin-left: -100%;
+		}
+	}
+
+	.toggle-on-off-switch-inner {
+		display: block;
+		font-size: 11px;
+		line-height: 10px;
+		margin-left: -100%;
+		transition: margin 0.3s ease-in 0s;
+		width: 200%;
+
+		.toggle-on-off-switch-on, .toggle-on-off-switch-off, .toggle-on-off-switch-on-pto {
+			box-sizing: border-box;
+			float: left;
+			padding: 3px 6px;
+			text-align: center;
+			width: 50%;
+			text-transform: uppercase;
+		}
+
+		.toggle-on-off-switch-on {
+			background-color: $hover-blue;
+			border-right: 8px solid #FFF;
+			color: #FFF;
+		}
+
+		.toggle-on-off-switch-off, .toggle-on-off-switch-on-pto {
+			background-color: #FFF;
+			border-left: 8px solid $pref-toggler;
+			color: $pref-toggler;
+		}
+	}
+}

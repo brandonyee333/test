@@ -73,55 +73,46 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 			List<AccountCustomer> accountCustomers = AccountCustomerLocalServiceUtil.getUserAccountCustomers(user.getUserId(), new int[] {AccountCustomerConstants.ROLE_SALES, AccountCustomerConstants.ROLE_WATCHER});
 			%>
 
+				<h3>
+					<liferay-ui:message key="notifications" />
+
+					<liferay-ui:icon-help message="if-you-turn-your-notifications-off-you-will-still-receive-notifications-for-tickets-you-watch" />
+				</h3>
+
+
 			<c:if test="<%= !accountCustomers.isEmpty() %>">
-				<strong><liferay-ui:message key="notifications" /></strong>
+				<div class="notification-preference">
 
-				<liferay-ui:icon-help message="if-you-turn-your-notifications-off-you-will-still-receive-notifications-for-tickets-you-watch" />
+					<%
+					for (AccountCustomer accountCustomer : accountCustomers) {
+						AccountEntry accountEntry = accountCustomer.getAccountEntry();
+					%>
 
-				<br /><br />
+						<div><strong><%= HtmlUtil.escape(accountEntry.getName()) %>:</strong></div>
 
-				<%
-				for (AccountCustomer accountCustomer : accountCustomers) {
-					AccountEntry accountEntry = accountCustomer.getAccountEntry();
-				%>
+						<p>
+							<liferay-ui:message key="notify-me-when-tickets-are-updated" />
 
-					<strong><%= HtmlUtil.escape(accountEntry.getName()) %>:</strong>
+							<portlet:actionURL name="toggleNotifications" var="toggleNotificationsURL">
+								<portlet:param name="tabs1" value="<%= tabs1 %>" />
+								<portlet:param name="redirect" value="<%= currentURL %>" />
+								<portlet:param name="accountCustomerId" value="<%= StringUtil.valueOf(accountCustomer.getAccountCustomerId()) %>" />
+							</portlet:actionURL>
 
-					<br />
+							<a class="toggle-on-off-switch <%= accountCustomer.hasNotificationsOn() ? "on" : "off" %>" href="<%= toggleNotificationsURL %>">
+								<span class="toggle-on-off-switch-inner">
+									<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="on" /></span>
 
-					<div>
-						<table class="lfr-table">
-							<tr>
-								<td>
-									<liferay-ui:message key="notify-me-when-tickets-are-updated" />:
-								</td>
-								<td class="switch">
-									<portlet:actionURL name="toggleNotifications" var="toggleNotificationsURL">
-										<portlet:param name="tabs1" value="<%= tabs1 %>" />
-										<portlet:param name="redirect" value="<%= currentURL %>" />
-										<portlet:param name="accountCustomerId" value="<%= StringUtil.valueOf(accountCustomer.getAccountCustomerId()) %>" />
-									</portlet:actionURL>
+									<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="off" /></span>
+								</span>
+							</a>
+						</p>
 
-									<div class="toggle-on-off-switch">
-										<a class="toggle-on-off-switch-ctrl <%= accountCustomer.hasNotificationsOn() ? "on" : "off" %>" href="<%= toggleNotificationsURL %>">
-											<span class="toggle-on-off-switch-inner">
-												<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="on" /></span>
+					<%
+					}
+					%>
 
-												<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="off" /></span>
-											</span>
-										</a>
-									</div>
-								</td>
-							</tr>
-						</table>
-					</div>
-
-					<br />
-
-				<%
-				}
-				%>
-
+				</div>
 			</c:if>
 
 			<liferay-portlet:actionURL name="updatePreferences" var="updatePreferencesURL">
@@ -175,9 +166,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 							%>
 
 							<div class="aui-w50 away-message-start-date">
-								<div>
-									<liferay-ui:message key="start-date" />
-								</div>
+								<p><liferay-ui:message key="start-date" /></p>
 
 								<liferay-ui:input-date
 									dayParam="awayMessageStartDay"
@@ -193,9 +182,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 							</div>
 
 							<div class="aui-w50 away-message-end-date">
-								<div>
-									<liferay-ui:message key="end-date-optional" />
-								</div>
+								<p><liferay-ui:message key="end-date-optional" /></p>
 
 								<liferay-ui:input-date
 									dayParam="awayMessageEndDay"
@@ -222,61 +209,52 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 						<aui:input helpMessage="choose-this-option-if-you-wish-to-share-your-screen-with-other-people" ignoreRequestValue="<%= true %>" label="screen-share-mode" name="screenShareMode" type="checkbox" value="<%= screenShareMode %>" />
 					</aui:fieldset>
 
-					<div>
-						<div class="clearfix">
-							<liferay-ui:message key="screen-share-mode-hides-internal-information" />
+					<div class="screen-share-mode">
+						<liferay-ui:message key="screen-share-mode-hides-internal-information" />
+
+						<div class="screen-share-mode-description">
+							<ul class="w45">
+								<li>
+									<liferay-ui:message key="due-date" />
+								</li>
+								<li>
+									<liferay-ui:message key="support-instructions" />
+								</li>
+								<li>
+									<liferay-ui:message key="reproduction-steps" />
+								</li>
+								<li>
+									<liferay-ui:message key="edit-button" />
+								</li>
+								<li>
+									<liferay-ui:message key="manage-links-button" />
+								</li>
+								<li>
+									<liferay-ui:message key="escalate-button" />
+								</li>
+							</ul>
+
+							<ul class="w45">
+								<li>
+									<liferay-ui:message key="workers-tab" />
+								</li>
+								<li>
+									<liferay-ui:message key="liferay-tab" />
+								</li>
+								<li>
+									<liferay-ui:message key="all-comments-tab" />
+								</li>
+								<li>
+									<liferay-ui:message key="history-tab" />
+								</li>
+								<li>
+									<liferay-ui:message key="attachments-that-are-visible-to-workers-or-liferay" />
+								</li>
+								<li>
+									<liferay-ui:message key="links-that-are-visible-to-workers-or-liferay" />
+								</li>
+							</ul>
 						</div>
-
-						<br />
-
-						<table class="screen-share-mode-description">
-							<tr>
-								<td class="aui-w50">
-									<ul>
-										<li>
-											<liferay-ui:message key="due-date" />
-										</li>
-										<li>
-											<liferay-ui:message key="support-instructions" />
-										</li>
-										<li>
-											<liferay-ui:message key="reproduction-steps" />
-										</li>
-										<li>
-											<liferay-ui:message key="edit-button" />
-										</li>
-										<li>
-											<liferay-ui:message key="manage-links-button" />
-										</li>
-										<li>
-											<liferay-ui:message key="escalate-button" />
-										</li>
-									</ul>
-								</td>
-								<td class="aui-w50">
-									<ul>
-										<li>
-											<liferay-ui:message key="workers-tab" />
-										</li>
-										<li>
-											<liferay-ui:message key="liferay-tab" />
-										</li>
-										<li>
-											<liferay-ui:message key="all-comments-tab" />
-										</li>
-										<li>
-											<liferay-ui:message key="history-tab" />
-										</li>
-										<li>
-											<liferay-ui:message key="attachments-that-are-visible-to-workers-or-liferay" />
-										</li>
-										<li>
-											<liferay-ui:message key="links-that-are-visible-to-workers-or-liferay" />
-										</li>
-									</ul>
-								</td>
-							</tr>
-						</table>
 					</div>
 				</c:if>
 
@@ -284,7 +262,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 					<aui:input helpMessage="choose-this-option-if-you-wish-to-show-newest-comments-first" ignoreRequestValue="<%= true %>" label="reverse-comment-order" name="reverseCommentOrder" type="checkbox" value="<%= reverseCommentOrder %>" />
 				</aui:fieldset>
 
-				<aui:button cssClass="aui-button-input" type="submit" value="save" />
+				<aui:button type="submit" value="save" />
 			</aui:form>
 		</c:otherwise>
 	</c:choose>

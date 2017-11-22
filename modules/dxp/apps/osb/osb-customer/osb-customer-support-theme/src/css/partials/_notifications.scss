@@ -69,37 +69,6 @@
 	}
 }
 
-.away-message {
-	textarea {
-		height: 250px;
-		width: 500px;
-	}
-}
-
-.away-message-checkbox {
-	padding-bottom: 25px;
-}
-
-.away-message-end-date, .away-message-start-date {
-	display: block;
-}
-
-.away-message-end-date {
-	float: right;
-}
-
-.away-message-header {
-	display: inline;
-}
-
-.away-message-start-date {
-	float: left;
-}
-
-.away-message-text-area {
-	padding: 25px 0;
-}
-
 .lesa-announcements-notification {
 	background-color: $light-bg;
 	display: none;
