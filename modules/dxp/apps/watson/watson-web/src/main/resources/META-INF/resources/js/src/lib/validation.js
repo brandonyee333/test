@@ -1,4 +1,4 @@
-import {compact, flow, isArray, size, values} from 'lodash';
+import {compact, flow, isArray, isEmpty, isObject, size, values} from 'lodash';
 
 const getValueSize = flow(values, compact, size);
 
@@ -106,7 +106,7 @@ const validators = {
 	required(value) {
 		let errorMessage;
 
-		if (!value || value == '' || (isArray(value) && value.length < 1)) {
+		if (!value || value == '' || (isArray(value) && value.length < 1) || (isObject(value) && isEmpty(value))) {
 			errorMessage = Liferay.Language.get('field-is-required');
 		}
 

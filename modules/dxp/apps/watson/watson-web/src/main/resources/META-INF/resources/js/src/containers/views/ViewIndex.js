@@ -12,7 +12,9 @@ import SelectInput from '../../components/SelectInput';
 
 import {indexActivities, searchActivities} from '../../actions/activities';
 import {indexAddresses, searchAddresses} from '../../actions/addresses';
+import {indexChildren, searchChildren} from '../../actions/children';
 import {updateFilter, updateHideLoadingOverlay, updateSortBy} from '../../actions/display';
+import {indexDocuments, searchDocuments} from '../../actions/documents';
 import {indexIncidents, searchIncidents} from '../../actions/incidents';
 import {indexPeople, searchPeople} from '../../actions/people';
 import {indexResources, searchResources} from '../../actions/resources';
@@ -72,7 +74,7 @@ class ViewIndex extends JSXComponent {
 
 			postData.selectedIds = state.selectedIds;
 
-			postData.id = props.watsonIncidentId;
+			postData.id = props.watsonParentPrimaryKey;
 
 			submitMethod(postData);
 
@@ -128,7 +130,7 @@ class ViewIndex extends JSXComponent {
 	handleIndexRequest() {
 		const {props, state} = this;
 
-		const {action, disableDataFetch, model, sortBy, watsonIncidentId} = props;
+		const {action, disableDataFetch, model, sortBy, watsonParentPrimaryKey} = props;
 
 		if (!disableDataFetch) {
 			const {batchCount, itemsLoaded} = state;
@@ -140,7 +142,7 @@ class ViewIndex extends JSXComponent {
 					{
 						actionType: action,
 						end: itemsLoaded + batchCount,
-						id: watsonIncidentId,
+						id: watsonParentPrimaryKey,
 						sortBy,
 						start: itemsLoaded
 					}
@@ -175,9 +177,14 @@ class ViewIndex extends JSXComponent {
 			);
 
 			if (searchModelMethod && !isEmpty(fieldsArray) && !isEmpty(keywordsArray)) {
-				if (action !== 'import') {
+				if (action !== 'import' && props.watsonIncidentId) {
 					fieldsArray.push('watsonIncidentId');
 					keywordsArray.push(props.watsonIncidentId);
+				}
+
+				if (action !== 'import' && props.watsonChildId) {
+					fieldsArray.push('watsonChildId');
+					keywordsArray.push(props.watsonChildId);
 				}
 
 				searchModelMethod(
@@ -198,20 +205,20 @@ class ViewIndex extends JSXComponent {
 		const {
 			model,
 			updateFilter,
-			watsonIncidentId
+			watsonParentPrimaryKey
 		} = this.props;
 
-		updateFilter(filterData, watsonIncidentId, model);
+		updateFilter(filterData, watsonParentPrimaryKey, model);
 	}
 
 	handleUpdateSortBy(sortByData) {
 		const {
 			model,
 			updateSortBy,
-			watsonIncidentId
+			watsonParentPrimaryKey
 		} = this.props;
 
-		updateSortBy(sortByData, watsonIncidentId, model);
+		updateSortBy(sortByData, watsonParentPrimaryKey, model);
 	}
 
 	refreshData(forceReindex) {
@@ -270,7 +277,7 @@ class ViewIndex extends JSXComponent {
 			data = forwardedData;
 			loading = forwardedLoading;
 		}
-		else if (model !== 'incidents') {
+		else {
 			data = modelData;
 			loading = modelLoading;
 		}
@@ -349,13 +356,13 @@ class ViewIndex extends JSXComponent {
 	rendered() {
 		this.refreshData(false);
 
-		const {hideLoadingOverlay, incidentName, model, updateHideLoadingOverlay} = this.props;
+		const {hideLoadingOverlay, model, primaryName, updateHideLoadingOverlay} = this.props;
 
 		if (!hideLoadingOverlay) {
 			updateHideLoadingOverlay(true);
 		}
 
-		updateDOMTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, WatsonConstants.inputConfig[model].pluralLabel));
+		updateDOMTitle(`${primaryName} ${WatsonConstants.inputConfig[model].pluralLabel}`);
 	}
 
 	syncFilter(newState, oldState) {
@@ -410,6 +417,7 @@ class ViewIndex extends JSXComponent {
 ViewIndex.PROPS = {
 	action: Config.string().value('index'),
 	buttonData: Config.any(),
+	component: Config.any(),
 	disableDataFetch: Config.bool().value(false),
 	filter: Config.value(new Map()),
 	filterActiveCallback: Config.func().value(noop),
@@ -423,9 +431,12 @@ ViewIndex.PROPS = {
 	modelCount: Config.string().value('0'),
 	modelData: Config.value(new Map()),
 	modelLoading: Config.bool().value(false),
+	primaryName: Config.string(),
 	selectedIds: Config.array().value([]),
-	sortBy: Config.string().value('watsonIncidentId'),
-	watsonIncidentId: Config.value('')
+	sortBy: Config.string(),
+	watsonChildId: Config.value(''),
+	watsonIncidentId: Config.value(''),
+	watsonParentPrimaryKey: Config.value('')
 };
 
 ViewIndex.STATE = {
@@ -449,6 +460,16 @@ function mapDispatchToProps(dispatch) {
 		indexAddresses: data => {
 			dispatch(
 				indexAddresses(data)
+			);
+		},
+		indexChildren: data => {
+			dispatch(
+				indexChildren(data)
+			);
+		},
+		indexDocuments: data => {
+			dispatch(
+				indexDocuments(data)
 			);
 		},
 		indexIncidents: data => {
@@ -481,6 +502,16 @@ function mapDispatchToProps(dispatch) {
 				searchAddresses(data)
 			);
 		},
+		searchChildren: data => {
+			dispatch(
+				searchChildren(data)
+			);
+		},
+		searchDocuments: data => {
+			dispatch(
+				searchDocuments(data)
+			);
+		},
 		searchIncidents: data => {
 			dispatch(
 				searchIncidents(data)
@@ -501,11 +532,11 @@ function mapDispatchToProps(dispatch) {
 				searchVehicles(data)
 			);
 		},
-		updateFilter: (filterData, watsonIncidentId, model) => {
+		updateFilter: (filterData, watsonParentPrimaryKey, model) => {
 			const action = {
 				filterData,
 				model,
-				watsonIncidentId
+				watsonParentPrimaryKey
 			};
 
 			dispatch(
@@ -517,11 +548,11 @@ function mapDispatchToProps(dispatch) {
 				updateHideLoadingOverlay(data)
 			);
 		},
-		updateSortBy: (sortByData, watsonIncidentId, model) => {
+		updateSortBy: (sortByData, watsonParentPrimaryKey, model) => {
 			const action = {
 				model,
 				sortByData,
-				watsonIncidentId
+				watsonParentPrimaryKey
 			};
 
 			dispatch(
@@ -532,27 +563,22 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state, props) {
-	const {action, model = 'incidents', watsonIncidentId = 0} = props;
-	const incidentsData = state.getIn(['incidents', 'data']) || new Map();
-	const incidentsLoading = state.getIn(['incidents', 'loading']);
-	const modelLoading = state.getIn([model, 'loading']);
+	const {action, model = 'incidents', watsonChildId = 0, watsonIncidentId = 0} = props;
 
-	const loading = (model !== 'incidents') ? modelLoading : incidentsLoading;
+	const watsonParentPrimaryKey = watsonChildId ? watsonChildId : watsonIncidentId;
 
-	const sortBy = state.getIn(['display', 'sortBy', watsonIncidentId, model]) || WatsonConstants.inputConfig[model].sortByDefault;
+	const sortBy = state.getIn(['display', 'sortBy', watsonParentPrimaryKey, model]) || WatsonConstants.inputConfig[model].sortByDefault;
 
 	return {
 		action,
-		filter: state.getIn(['display', 'filter', watsonIncidentId, model]),
+		filter: state.getIn(['display', 'filter', watsonParentPrimaryKey, model]),
 		hideLoadingOverlay: state.getIn(['display', 'hideLoadingOverlay']),
-		incidentsData,
-		incidentsLoading,
-		loading,
 		model,
 		modelCount: state.getIn([model, 'count']) || '0',
 		modelData: state.getIn([model, 'data']) || new Map(),
-		modelLoading,
-		sortBy
+		modelLoading: state.getIn([model, 'loading']) || false,
+		sortBy,
+		watsonParentPrimaryKey
 	};
 }
 

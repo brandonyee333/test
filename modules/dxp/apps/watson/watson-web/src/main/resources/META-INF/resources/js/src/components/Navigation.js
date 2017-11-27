@@ -150,7 +150,7 @@ class Navigation extends JSXComponent {
 }
 
 Navigation.PROPS = {
-	navigationState: Config.object().value({}),
+	navigationState: Config.any(),
 	onChange: Config.func()
 };
 

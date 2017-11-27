@@ -5,7 +5,6 @@ import JSXComponent, {Config} from 'metal-jsx';
 import Router from 'metal-router';
 import sub from 'string-sub';
 
-import AffiliationLink from '../../components/AffiliationLink';
 import Button from '../../components/Button';
 import ContentHeader from '../../components/ContentHeader';
 import {convertMapToObject, deepCompareIsEqual, getModifiedMoment, updateDOMTitle} from '../../lib/util';
@@ -13,22 +12,21 @@ import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 
 import {
-	destroyResource,
-	editResource,
-	requestResourceTranslation,
-	updateResource,
-	updateResourcesDataManually,
-	updateResourcesFormData
-} from '../../actions/resources';
+	destroyDocument,
+	editDocument,
+	updateDocument,
+	updateDocumentsDataManually,
+	updateDocumentsFormData
+} from '../../actions/documents';
 
-class ResourceForm extends JSXComponent {
+class DocumentForm extends JSXComponent {
 	attached() {
 		const {props} = this;
 
-		const {watsonResourceId} = props;
+		const {watsonDocumentId} = props;
 
-		if (watsonResourceId) {
-			props.editResource(watsonResourceId);
+		if (watsonDocumentId) {
+			props.editDocument(watsonDocumentId);
 		}
 
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
@@ -44,7 +42,6 @@ class ResourceForm extends JSXComponent {
 			'handleCreate',
 			'handleDelete',
 			'handleLeave',
-			'handleTranslationRequest',
 			'handleUpdateFormData'
 		);
 	}
@@ -53,11 +50,11 @@ class ResourceForm extends JSXComponent {
 		const {
 			action,
 			response,
-			updateResourcesDataManually
+			updateDocumentsDataManually
 		} = this.props;
 
 		if (action !== 'create' && response && response.get('status') === 'success' && response.get('message')) {
-			updateResourcesDataManually(
+			updateDocumentsDataManually(
 				{
 					response: {
 						message: null
@@ -74,10 +71,12 @@ class ResourceForm extends JSXComponent {
 	getConfig() {
 		return [
 			'id',
-			'typeWatsonListTypeId',
-			'name',
 			'imagePayload',
-			'description',
+			'receivedDate',
+			'originalDocument',
+			'parentTypeWatsonListTypeId',
+			'typeWatsonListTypeId',
+			'subtypeWatsonListTypeId',
 			'watsonRelationships'
 		];
 	};
@@ -87,7 +86,7 @@ class ResourceForm extends JSXComponent {
 			action,
 			formData = {},
 			storeData,
-			watsonIncidentId
+			watsonChildId
 		} = this.props;
 
 		const {
@@ -95,7 +94,7 @@ class ResourceForm extends JSXComponent {
 			unlockNavigate
 		} = this.state;
 
-		if (watsonIncidentId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
+		if (watsonChildId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
 			const originalData = convertMapToObject(storeData);
 
 			if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
@@ -118,9 +117,9 @@ class ResourceForm extends JSXComponent {
 	handleCancel() {
 		this.handleClearFormData();
 
-		const {watsonIncidentId} = this.props;
+		const {watsonChildId} = this.props;
 
-		Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/index`);
+		Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/index`);
 	}
 
 	handleClearFormData() {
@@ -132,18 +131,18 @@ class ResourceForm extends JSXComponent {
 	}
 
 	handleCreate(data) {
-		this.props.updateResource(data);
+		this.props.updateDocument(data);
 
 		this.state.dataSent = true;
 	}
 
 	handleDelete() {
-		const {watsonIncidentId, watsonResourceId} = this.props;
+		const {watsonChildId, watsonDocumentId} = this.props;
 
-		if (watsonResourceId) {
-			this.props.destroyResource(watsonResourceId);
+		if (watsonDocumentId) {
+			this.props.destroyDocument(watsonDocumentId);
 
-			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/index`);
+			Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documentsindex`);
 		}
 	}
 
@@ -157,29 +156,13 @@ class ResourceForm extends JSXComponent {
 		Router.router().navigate(this.state.navigateAwayPath);
 	}
 
-	handleTranslationRequest() {
-		const {props} = this;
-
-		const {model, requestResourceTranslation, watsonIncidentId, watsonResourceId} = props;
-
-		const translationURL = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonResourceId}/translate`;
-
-		const translationRequestData = {
-			model,
-			translationURL,
-			watsonPrimaryKey: watsonResourceId
-		};
-
-		requestResourceTranslation(translationRequestData);
-	}
-
 	handleUpdateFormData(formData) {
 		const {
-			updateResourcesFormData,
-			watsonResourceId
+			updateDocumentsFormData,
+			watsonDocumentId
 		} = this.props;
 
-		updateResourcesFormData(formData, watsonResourceId);
+		updateDocumentsFormData(formData, watsonDocumentId);
 	}
 
 	render() {
@@ -196,15 +179,15 @@ class ResourceForm extends JSXComponent {
 			model,
 			response,
 			storeData = props.data,
-			watsonIncidentId
+			watsonChildId
 		} = props;
 
 		let {
 			cancelMethod,
-			headerStringLeft = Liferay.Language.get('create-resource'),
+			headerStringLeft = Liferay.Language.get('create-document'),
 			headerStringRight,
-			submitMethod = props.updateResource,
-			watsonResourceId
+			submitMethod = props.updateDocument,
+			watsonDocumentId
 		} = props;
 
 		const {
@@ -216,10 +199,10 @@ class ResourceForm extends JSXComponent {
 			if (response.get('status') === 'success') {
 				const responseData = response.get('data');
 
-				watsonResourceId = responseData.get('watsonResourceId');
+				watsonDocumentId = responseData.get('watsonDocumentId');
 
-				if (watsonResourceId) {
-					Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/${watsonResourceId}/edit`);
+				if (watsonDocumentId) {
+					Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/${watsonDocumentId}/edit`);
 				}
 			}
 			else if (errors) {
@@ -229,22 +212,16 @@ class ResourceForm extends JSXComponent {
 
 		let deleteMethod;
 		let reportHref;
-		let requestTranslationMethod;
-		let translateHref;
 
 		if (action === 'edit') {
 			deleteMethod = disabled ? undefined : this.handleDelete;
 
-			headerStringLeft = storeData.get('name') || Liferay.Language.get('edit-resource');
+			headerStringLeft = storeData.get('name') || Liferay.Language.get('edit-document');
 			headerStringRight = getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp'));
 
-			reportHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/${watsonResourceId}/report`;
-
-			requestTranslationMethod = this.handleTranslationRequest;
-
-			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/${watsonResourceId}/translate`;
+			reportHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/${watsonDocumentId}/report`;
 		}
-		else if (action === 'create' && watsonIncidentId) {
+		else if (action === 'create' && watsonChildId) {
 			cancelMethod = this.handleCancel;
 			headerStringRight = Liferay.Language.get('unsaved');
 			submitMethod = this.handleCreate;
@@ -266,13 +243,6 @@ class ResourceForm extends JSXComponent {
 				}
 
 				<div class="content">
-					<AffiliationLink
-						affiliationData={storeData.get('affiliatedIncidents')}
-						entryId={watsonResourceId}
-						model={model}
-						watsonIncidentId={watsonIncidentId}
-					/>
-
 					<Form
 						action={action}
 						button={button}
@@ -281,20 +251,18 @@ class ResourceForm extends JSXComponent {
 						deleteMethod={deleteMethod}
 						disabled={disabled}
 						errors={errors}
-						fieldConfig={WatsonConstants.inputConfig.resources.inputs}
+						fieldConfig={WatsonConstants.inputConfig.documents.inputs}
 						formConfig={this.getConfig()}
 						formData={formData}
 						loading={loading}
 						model={model}
 						reportHref={reportHref}
-						requestTranslationMethod={requestTranslationMethod}
 						response={response}
 						storeData={storeData}
 						submitMethod={submitMethod}
-						translateHref={translateHref}
 						updateFormData={this.handleUpdateFormData}
-						watsonIncidentId={watsonIncidentId}
-						watsonPrimaryKey={watsonResourceId}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={watsonDocumentId}
 					/>
 				</div>
 			</div>
@@ -302,29 +270,29 @@ class ResourceForm extends JSXComponent {
 	}
 
 	rendered() {
-		const {incidentName, storeData} = this.props;
+		const {childName, storeData} = this.props;
 
-		const resourceName = sub(Liferay.Language.get('resource-x'), storeData.get('id') || '');
+		const documentName = sub(Liferay.Language.get('document-x'), storeData.get('id') || '');
 
-		updateDOMTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, resourceName));
+		updateDOMTitle(sub(Liferay.Language.get('child-x-x'), childName, documentName));
 	}
 }
 
-ResourceForm.PROPS = {
+DocumentForm.PROPS = {
 	action: Config.string().value(''),
 	button: Config.value(null),
 	disabled: Config.bool().value(false),
 	errors: Config.value(new Map()),
 	formData: Config.object().value({}),
 	loading: Config.bool().value(false),
-	model: Config.string().value('resources'),
+	model: Config.string().value('children'),
 	response: Config.object(),
 	storeData: Config.value(null),
-	watsonIncidentId: Config.value(''),
-	watsonResourceId: Config.value('')
+	watsonChildId: Config.value(''),
+	watsonDocumentId: Config.value('')
 };
 
-ResourceForm.STATE = {
+DocumentForm.STATE = {
 	dataSent: Config.bool().value(false),
 	navigateAwayPath: Config.value(null),
 	showLeaveModal: Config.bool().value(false),
@@ -332,66 +300,61 @@ ResourceForm.STATE = {
 };
 
 function mapStateToProps(state, props) {
-	const {watsonResourceId = 0} = props;
+	const {watsonDocumentId = 0} = props;
 
-	const errors = state.getIn(['resources', 'errors']) || new Map();
+	const errors = state.getIn(['documents', 'errors']) || new Map();
 
 	return {
 		errors,
 		loading: state.getIn(
 			[
-				'resources',
+				'documents',
 				'loading'
 			]
 		),
 		response: state.getIn(
 			[
-				'resources',
+				'documents',
 				'response'
 			]
 		),
-		watsonResourceId
+		watsonDocumentId
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		destroyResource: watsonResourceId => {
+		destroyDocument: watsonDocumentId => {
 			dispatch(
-				destroyResource(watsonResourceId)
+				destroyDocument(watsonDocumentId)
 			);
 		},
-		editResource: watsonResourceId => {
+		editDocument: watsonDocumentId => {
 			dispatch(
-				editResource(watsonResourceId)
+				editDocument(watsonDocumentId)
 			);
 		},
-		requestResourceTranslation: data => {
+		updateDocument: data => {
 			dispatch(
-				requestResourceTranslation(data)
+				updateDocument(data)
 			);
 		},
-		updateResource: data => {
+		updateDocumentsDataManually: data => {
 			dispatch(
-				updateResource(data)
+				updateDocumentsDataManually(data)
 			);
 		},
-		updateResourcesDataManually: data => {
-			dispatch(
-				updateResourcesDataManually(data)
-			);
-		},
-		updateResourcesFormData: (formData, watsonResourceId = 0) => {
+		updateDocumentsFormData: (formData, watsonDocumentId = 0) => {
 			const data = {
 				formData,
-				watsonResourceId
+				watsonDocumentId
 			};
 
 			dispatch(
-				updateResourcesFormData(data)
+				updateDocumentsFormData(data)
 			);
 		}
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResourceForm);
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentForm);

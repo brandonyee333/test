@@ -74,7 +74,7 @@ class TranslateResourceForm extends JSXComponent {
 	rendered() {
 		const {incidentName, storeData} = this.props;
 
-		const resourceName = sub(Liferay.Language.get('activity-x'), storeData.get('id') || '');
+		const resourceName = sub(Liferay.Language.get('resource-x'), storeData.get('id') || '');
 
 		updateDOMTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, resourceName));
 	}

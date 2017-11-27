@@ -115,8 +115,23 @@ class Watson extends JSXComponent {
 						/>
 
 						<Router
+							component={EditChild}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-zA-Z]+)`}
+						/>
+
+						<Router
 							component={EditIncident}
 							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:action([a-zA-Z]+)`}
+						/>
+
+						<Router
+							component={EditChild}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-zA-Z]+)/:action([a-zA-Z]+)`}
+						/>
+
+						<Router
+							component={ChildReport}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/report`}
 						/>
 
 						<Router
@@ -127,6 +142,11 @@ class Watson extends JSXComponent {
 						<Router
 							component={ChildModelSubIndex}
 							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/view`}
+						/>
+
+						<Router
+							component={EditChild}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/:action([a-zA-Z]+)`}
 						/>
 
 						<Router

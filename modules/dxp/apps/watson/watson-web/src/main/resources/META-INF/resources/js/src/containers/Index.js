@@ -17,6 +17,7 @@ import {indexActivities, searchActivities} from '../actions/activities';
 import {indexAddresses, searchAddresses} from '../actions/addresses';
 import {indexChildren, searchChildren} from '../actions/children';
 import {updateDisplayBy, updateFilter, updateHideLoadingOverlay, updateLastFocus, updateLastItemsLoaded, updateSortBy} from '../actions/display';
+import {indexDocuments, searchDocuments} from '../actions/documents';
 import {indexIncidents, searchIncidents} from '../actions/incidents';
 import {indexPeople, searchPeople} from '../actions/people';
 import {indexResources, searchResources} from '../actions/resources';
@@ -186,7 +187,7 @@ class Index extends JSXComponent {
 			lastClicked,
 			lastLoaded: itemsLoaded,
 			model,
-			watsonIncidentId: 0
+			watsonParentPrimaryKey: 0
 		};
 
 		if (updateLastItemsLoaded) {
@@ -249,58 +250,66 @@ class Index extends JSXComponent {
 			loading = modelLoading;
 		}
 
+		let retVal = {};
+
+		if (WatsonConstants.inputConfig.children.viewByOptions[model]) {
+			retVal = (
+				<span>
+					<NavigationHeader
+						mainHeader={Liferay.Language.get('children')}
+					/>
+
+					<LinkButton
+						className="primary"
+						href={`${WatsonConstants.urls.baseURL}/children/create/`}
+						label={Liferay.Language.get('create-child')}
+					/>
+
+					<div class="view-by-label">
+						{Liferay.Language.get('display-by')}
+					</div>
+
+					<SelectInput
+						omitBlankOption={true}
+						onChange={this.handleUpdateViewBy}
+						options={WatsonConstants.inputConfig.children.viewByOptions}
+						value={model}
+					/>
+				</span>
+			);
+		}
+		else {
+			retVal = (
+				<span>
+					<NavigationHeader
+						mainHeader={Liferay.Language.get('incidents')}
+					/>
+
+					<LinkButton
+						className="primary"
+						href={`${WatsonConstants.urls.baseURL}/incidents/create/`}
+						label={Liferay.Language.get('create-incident')}
+					/>
+
+					<div class="view-by-label">
+						{Liferay.Language.get('display-by')}
+					</div>
+
+					<SelectInput
+						omitBlankOption={true}
+						onChange={this.handleUpdateViewBy}
+						options={WatsonConstants.inputConfig.incidents.viewByOptions}
+						value={model}
+					/>
+				</span>
+			);
+		}
+
 		return (
 			<div class="incidents-index page-container hidden-print">
 				<div class="navigation-sidebar">
-					{(model === 'children') &&
-						<span>
-							<NavigationHeader
-								mainHeader={Liferay.Language.get('children')}
-							/>
 
-							<LinkButton
-								className="primary"
-								href={`${WatsonConstants.urls.baseURL}/children/create/`}
-								label={Liferay.Language.get('create-child')}
-							/>
-
-							<div class="view-by-label">
-								{Liferay.Language.get('display-by')}
-							</div>
-
-							<SelectInput
-								omitBlankOption={true}
-								onChange={this.handleUpdateViewBy}
-								options={WatsonConstants.inputConfig.children.viewByOptions}
-								value={model}
-							/>
-						</span>
-					}
-
-					{(model !== 'children') &&
-						<span>
-							<NavigationHeader
-								mainHeader={Liferay.Language.get('incidents')}
-							/>
-
-							<LinkButton
-								className="primary"
-								href={`${WatsonConstants.urls.baseURL}/incidents/create/`}
-								label={Liferay.Language.get('create-incident')}
-							/>
-
-							<div class="view-by-label">
-								{Liferay.Language.get('display-by')}
-							</div>
-
-							<SelectInput
-								omitBlankOption={true}
-								onChange={this.handleUpdateViewBy}
-								options={WatsonConstants.inputConfig.incidents.viewByOptions}
-								value={model}
-							/>
-						</span>
-					}
+					{retVal}
 
 					<div class="filter-header">
 						{Liferay.Language.get('filter-by')}
@@ -357,7 +366,7 @@ class Index extends JSXComponent {
 
 		const {hideLoadingOverlay, lastFocus, lastLoadedItemData, loading, model, updateHideLoadingOverlay, updateLastFocus} = this.props;
 
-		updateDOMTitle(`${Liferay.Language.get('incident-report')} ${WatsonConstants.inputConfig[model].pluralLabel}`);
+		updateDOMTitle(WatsonConstants.inputConfig[model].pluralLabel);
 
 		const autoScrolling = this.scrollToPosition(firstRender, lastLoadedItemData, loading);
 
@@ -486,6 +495,11 @@ function mapDispatchToProps(dispatch) {
 				indexChildren(data)
 			);
 		},
+		indexDocuments: data => {
+			dispatch(
+				indexDocuments(data)
+			);
+		},
 		indexIncidents: data => {
 			dispatch(
 				indexIncidents(data)
@@ -521,6 +535,11 @@ function mapDispatchToProps(dispatch) {
 				searchChildren(data)
 			);
 		},
+		searchDocuments: data => {
+			dispatch(
+				searchDocuments(data)
+			);
+		},
 		searchIncidents: data => {
 			dispatch(
 				searchIncidents(data)
@@ -546,11 +565,11 @@ function mapDispatchToProps(dispatch) {
 				updateDisplayBy(displayBy)
 			);
 		},
-		updateFilter: (filterData, watsonIncidentId, model) => {
+		updateFilter: (filterData, watsonParentPrimaryKey, model) => {
 			const action = {
 				filterData,
 				model,
-				watsonIncidentId
+				watsonParentPrimaryKey
 			};
 
 			dispatch(
@@ -572,11 +591,11 @@ function mapDispatchToProps(dispatch) {
 				updateLastItemsLoaded(data)
 			);
 		},
-		updateSortBy: (sortByData, watsonIncidentId, model) => {
+		updateSortBy: (sortByData, watsonParentPrimaryKey, model) => {
 			const action = {
 				model,
 				sortByData,
-				watsonIncidentId
+				watsonParentPrimaryKey
 			};
 
 			dispatch(

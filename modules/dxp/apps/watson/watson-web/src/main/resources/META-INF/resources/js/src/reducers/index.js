@@ -4,6 +4,7 @@ import activities from './activities';
 import addresses from './addresses';
 import children from './children';
 import display from './display';
+import documents from './documents';
 import histories from './histories';
 import incidents from './incidents';
 import list_types from './list-types';
@@ -23,6 +24,7 @@ export default combineReducers(
 		basePath,
 		children,
 		display,
+		documents,
 		histories,
 		incidents,
 		list_types,

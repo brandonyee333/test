@@ -13,6 +13,11 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 			(a, b) => (b.get('watsonIncidentId') - (a.get('watsonIncidentId')))
 		);
 	}
+	else if (sortBy === 'watsonChildId') {
+		sorted = data.sort(
+			(a, b) => (b.get('watsonChildId') - (a.get('watsonChildId')))
+		);
+	}
 	else if (sortBy === 'modifiedDate') {
 		sorted = data.sort(
 			(a, b) => new Date(b.get('modifiedDate')) - new Date((a.get('modifiedDate')))

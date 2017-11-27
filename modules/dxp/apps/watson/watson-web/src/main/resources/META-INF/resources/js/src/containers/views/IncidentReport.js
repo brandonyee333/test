@@ -16,7 +16,7 @@ import {indexPeople} from '../../actions/people';
 import {indexResources} from '../../actions/resources';
 import {indexVehicles} from '../../actions/vehicles';
 
-import {updateDOMTitle} from '../../lib/util';
+import {getMimeType, updateDOMTitle} from '../../lib/util';
 
 class IncidentReport extends JSXComponent {
 	attached() {
@@ -46,9 +46,11 @@ class IncidentReport extends JSXComponent {
 	}
 
 	disposed() {
-		const element = document.getElementById('print-helper-message');
+		if (this.state.elementStyle) {
+			const element = document.getElementById('print-helper-message');
 
-		element.style = this.state.elementStyle;
+			element.style = this.state.elementStyle;
+		}
 	}
 
 	fetchModelData(classPK, model) {
@@ -240,7 +242,7 @@ class IncidentReport extends JSXComponent {
 					}
 				}
 			}
-			else if (type === inputTypes.dynamicInputGenerator) {
+			else if (type === inputTypes.dynamicInputGenerator || type === inputTypes.doubleDependentInput) {
 				retVal = [];
 
 				value.forEach(
@@ -280,7 +282,12 @@ class IncidentReport extends JSXComponent {
 			}
 			else if (type === inputTypes.file) {
 				if (value.get('previewURL')) {
-					retVal = (<div class="image" style={`background-image: url(${value.get('previewURL')});`} />);
+					if (getMimeType(value.get('mimeType')) !== 'FILE') {
+						retVal = (<div class="image" style={`background-image: url(${value.get('previewURL')});`} />);
+					}
+					else {
+						retVal = value.get('name');
+					}
 				}
 			}
 			else if (type === inputTypes.googleMap) {
@@ -300,7 +307,7 @@ class IncidentReport extends JSXComponent {
 					}
 				);
 			}
-			else if (type == inputTypes.richTextEditor || type === inputTypes.textareaInput) {
+			else if (type === inputTypes.richTextEditor || type === inputTypes.textareaInput) {
 				if (type === inputTypes.textareaInput) {
 					value = value.replace(/(?:\r\n|\r|\n)/g, '<br />');
 				}
@@ -374,9 +381,11 @@ class IncidentReport extends JSXComponent {
 		if (firstRender) {
 			const element = document.getElementById('print-helper-message');
 
-			this.setState({elementStyle: element.style});
+			if (element) {
+				this.setState({elementStyle: element.style});
 
-			element.style = 'display: none';
+				element.style = 'display: none';
+			}
 		}
 	}
 }

@@ -56,7 +56,9 @@ class Modal extends JSXComponent {
 	hide() {
 		this.props.close();
 
-		this.element.style.display = '';
+		if (this.element.style) {
+			this.element.style.display = '';
+		}
 	}
 
 	restrictFocus_() {

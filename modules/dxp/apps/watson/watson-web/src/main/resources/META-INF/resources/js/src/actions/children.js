@@ -1,4 +1,5 @@
 import {CALL_API} from '../middleware/api';
+import {createActionTypes} from '../lib/util';
 import createBaseActions from './crud';
 import createSupplementalActions from './supplemental';
 
@@ -22,7 +23,8 @@ const supplemental = createSupplementalActions(
 
 const actionTypes = {
 	...base.actionTypes,
-	...supplemental.actionTypes
+	...supplemental.actionTypes,
+	...createActionTypes('REFRESH_SUB_MODEL', controller, true)
 };
 
 const {

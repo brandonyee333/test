@@ -1184,10 +1184,16 @@
 						label: '${AlloyLanguageUtil.formatUnicode("type")}',
 						listTypeValue: '${WatsonDocument.modelClassName.concat(".type")}',
 						options: {
-							${0}: {
-								label: '${AlloyLanguageUtil.formatUnicode("not-available")}',
-								value: ${0}
-							}
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonDocument.modelClassName.concat(".type"))}' var="typeWatsonListTypes" />
+
+							<c:forEach items="${typeWatsonListTypes}" var="typeWatsonListType" varStatus="typeWatsonListTypesIndex">
+								<c:set value='${typeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${typeWatsonListType.watsonListTypeId}: {
+									label: '${AlloyLanguageUtil.formatUnicode(typeWatsonListType.getName(locale))}',
+									value: '${typeWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
 						},
 						parentInputId: 'parentTypeWatsonListTypeId',
 						translatable: ${false},
@@ -2158,17 +2164,6 @@
 								${typeWatsonListType.watsonListTypeId}: {
 									label: '${AlloyLanguageUtil.formatUnicode(typeWatsonListType.getName(locale))}',
 									value: '${typeWatsonListType.watsonListTypeId}'
-								}${delimiter}
-							</c:forEach>
-
-							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".involvement"))}' var="involvementTypeWatsonListTypes" />
-
-							<c:forEach items="${involvementTypeWatsonListTypes}" var="involvementTypeWatsonListType" varStatus="involvementTypeWatsonListTypesIndex">
-								<c:set value='${involvementTypeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
-
-								${involvementTypeWatsonListType.watsonListTypeId}: {
-									label: '${AlloyLanguageUtil.formatUnicode(involvementTypeWatsonListType.getName(locale))}',
-									value: '${involvementTypeWatsonListType.watsonListTypeId}'
 								}${delimiter}
 							</c:forEach>
 						},

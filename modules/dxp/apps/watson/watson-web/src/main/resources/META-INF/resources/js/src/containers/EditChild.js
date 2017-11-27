@@ -6,8 +6,10 @@ import sub from 'string-sub';
 
 import Button from '../components/Button';
 import ChildForm from './forms/Child';
+import DocumentForm from './forms/Document';
 import Navigation from '../components/Navigation';
 import NavigationHeader from '../components/NavigationHeader';
+import Sort from '../components/Sort';
 import TranslateChildForm from './forms/TranslateChild';
 import ViewIndex from './views/ViewIndex';
 
@@ -48,17 +50,43 @@ class EditChild extends JSXComponent {
 
 		const modelCreateMethod = () => Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/create`);
 
-		if (action === 'index') {
-			const buttonData = [
-				{
-					label: Liferay.Language.get('create-child'),
-					method: modelCreateMethod
-				}
-			];
+		if (model === 'documents') {
+			if (action === 'index') {
+				const buttonData = [
+					{
+						label: Liferay.Language.get('create-document'),
+						method: modelCreateMethod
+					}
+				];
+				view = (
+					<ViewIndex
+						action={action}
+						buttonData={buttonData}
+						disabled={childDisabled}
+						model={model}
+						primaryName={childName}
+						watsonChildId={watsonChildId}
+					/>
+				);
+			}
+			else {
+				view = (
+					<DocumentForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						formData={props.modelFormData}
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonDocumentId={entryId}
+					/>
+				);
+			}
+		}
+		else if (action === 'index') {
 			view = (
 				<ViewIndex
 					action={action}
-					buttonData={buttonData}
 					childName={childName}
 					disabled={childDisabled}
 					model={model}
@@ -120,6 +148,33 @@ class EditChild extends JSXComponent {
 
 		const childTypeLabel = getOptionsLabelFromWatsonConstants('children', 'typeWatsonListTypeId', childrenStoreData.get('typeWatsonListTypeId'));
 
+		const documentsNav = [];
+
+		if (childrenStoreData.get('documents')) {
+			const childDocuments = Sort(childrenStoreData.get('documents'), null, 'name');
+
+			const documentList = [];
+
+			childDocuments.forEach(
+				childDocument => {
+					const documentId = childDocument.get('id');
+
+					documentList.push(documentId);
+
+					const documentName = childDocument.get('name') || documentId;
+
+					documentsNav.push(
+						{
+							href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/${documentId}/edit`,
+							name: `documents_${documentId}`,
+							selected: (entryId === documentId && model === 'documents'),
+							text: documentName
+						}
+					);
+				}
+			);
+		}
+
 		const nav = [
 			{
 				collapsible: false,
@@ -127,6 +182,13 @@ class EditChild extends JSXComponent {
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit`,
 				selected: !model,
 				text: Liferay.Language.get('details')
+			},
+			{
+				collapsible: true,
+				entries: documentsNav,
+				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/index`,
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'documents'),
+				text: Liferay.Language.get('documents')
 			}
 		];
 
@@ -187,6 +249,7 @@ class EditChild extends JSXComponent {
 EditChild.PROPS = {
 	action: Config.string().value(''),
 	childFormData: Config.object().value({}),
+	childName: Config.string(),
 	children: Config.value(new Map()),
 	childrenStoreData: Config.value(new Map()),
 	collapsedEntries: Config.value(''),

@@ -9,9 +9,10 @@ import Button from '../../components/Button';
 import HTMLRenderer from '../../components/HTMLRenderer';
 import GoogleMap from '../../components/GoogleMap';
 
+import {indexDocuments} from '../../actions/documents';
 import {viewChild} from '../../actions/children';
 
-import {updateDOMTitle} from '../../lib/util';
+import {getMimeType, updateDOMTitle} from '../../lib/util';
 
 class ChildReport extends JSXComponent {
 	attached() {
@@ -20,6 +21,7 @@ class ChildReport extends JSXComponent {
 		const {watsonChildId} = props;
 
 		if (watsonChildId) {
+			props.indexDocuments(watsonChildId);
 			props.viewChild(watsonChildId);
 		}
 	}
@@ -36,9 +38,11 @@ class ChildReport extends JSXComponent {
 	}
 
 	disposed() {
-		const element = document.getElementById('print-helper-message');
+		if (this.state.elementStyle) {
+			const element = document.getElementById('print-helper-message');
 
-		element.style = this.state.elementStyle;
+			element.style = this.state.elementStyle;
+		}
 	}
 
 	fetchModelData(classPK, model) {
@@ -230,7 +234,7 @@ class ChildReport extends JSXComponent {
 					}
 				}
 			}
-			else if (type === inputTypes.dynamicInputGenerator) {
+			else if (type === inputTypes.dynamicInputGenerator || type === inputTypes.doubleDependentInput) {
 				retVal = [];
 
 				value.forEach(
@@ -270,7 +274,12 @@ class ChildReport extends JSXComponent {
 			}
 			else if (type === inputTypes.file) {
 				if (value.get('previewURL')) {
-					retVal = (<div class="image" style={`background-image: url(${value.get('previewURL')});`} />);
+					if (getMimeType(value.get('mimeType')) !== 'FILE') {
+						retVal = (<div class="image" style={`background-image: url(${value.get('previewURL')});`} />);
+					}
+					else {
+						retVal = value.get('name');
+					}
 				}
 			}
 			else if (type === inputTypes.googleMap) {
@@ -311,7 +320,7 @@ class ChildReport extends JSXComponent {
 	}
 
 	render() {
-		const {entryId} = this.props;
+		const {entryId, model} = this.props;
 
 		return (
 			<div class="print-report page-container printable">
@@ -330,6 +339,10 @@ class ChildReport extends JSXComponent {
 				{!entryId &&
 					this.renderChild()
 				}
+
+				{(!entryId || model === 'documents') &&
+					this.renderModel(entryId, 'documents')
+				}
 			</div>
 		);
 	}
@@ -344,9 +357,11 @@ class ChildReport extends JSXComponent {
 		if (firstRender) {
 			const element = document.getElementById('print-helper-message');
 
-			this.setState({elementStyle: element.style});
+			if (element) {
+				this.setState({elementStyle: element.style});
 
-			element.style = 'display: none';
+				element.style = 'display: none';
+			}
 		}
 	}
 }
@@ -358,7 +373,6 @@ ChildReport.PROPS = {
 ChildReport.STATE = {
 	childrenConfig: Config.array().value(
 		[
-			'id',
 			'nameWatsonListTypeRels',
 			'typeWatsonListTypeId',
 			'sexWatsonListTypeId',
@@ -380,6 +394,17 @@ ChildReport.STATE = {
 			'watsonRelationships'
 		]
 	),
+	documentsConfig: Config.array().value(
+		[
+			'imagePayload',
+			'receivedDate',
+			'originalDocument',
+			'parentTypeWatsonListTypeId',
+			'typeWatsonListTypeId',
+			'subtypeWatsonListTypeId',
+			'watsonRelationships'
+		]
+	),
 	elementStyle: Config.value(''),
 	entryId: Config.any(),
 	model: Config.string()
@@ -387,6 +412,11 @@ ChildReport.STATE = {
 
 function mapDispatchToProps(dispatch) {
 	return {
+		indexDocuments: id => {
+			dispatch(
+				indexDocuments({id})
+			);
+		},
 		viewChild: id => {
 			dispatch(
 				viewChild(id)
@@ -400,6 +430,8 @@ function mapStateToProps(state, props) {
 
 	const childrenData = state.getIn(['children', 'data']) || new Map();
 	const childrenLoading = state.getIn(['children', 'loading']);
+	const documentsData = state.getIn(['documents', 'data']) || new Map();
+	const documentsLoading = state.getIn(['documents', 'loading']);
 
 	const currentChildData = childrenData.get(watsonChildId) || new Map();
 
@@ -407,6 +439,8 @@ function mapStateToProps(state, props) {
 		childrenData,
 		childrenLoading,
 		currentChildData,
+		documentsData,
+		documentsLoading,
 		entryId,
 		model,
 		watsonChildId

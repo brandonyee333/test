@@ -8,6 +8,10 @@ import Sort from './Sort';
 
 import {convertHtmlToText, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
+function fetchChildData(children, watsonChildId) {
+	return children.get(watsonChildId);
+}
+
 function fetchIncidentData(incidents, watsonIncidentId) {
 	return incidents.get(watsonIncidentId);
 }
@@ -154,6 +158,44 @@ function formatChildData(watsonChildren, keysToOmit, onClick, selectedIds, simpl
 					reportedDate: watsonChild.get('reportDate'),
 					rowContent: formatPersonRowContent(watsonChild),
 					subHeader: getOptionsLabelFromWatsonConstants('children', 'typeWatsonListTypeId', watsonChild.get('typeWatsonListTypeId'))
+				};
+			}
+		);
+	}
+
+	return formattedData;
+}
+
+function formatDocumentsData(watsonDocuments, watsonChildren, keysToOmit, onClick, selectedIds, simple) {
+	let formattedData;
+
+	if (simple) {
+		formattedData = formatSimpleDocumentsData(watsonDocuments, keysToOmit, onClick, selectedIds);
+	}
+	else {
+		formattedData = watsonDocuments.map(
+			(watsonDocument, key) => {
+				const watsonChildId = watsonDocument.get('watsonChildId');
+
+				const watsonChild = fetchChildData(watsonChildren, watsonChildId);
+
+				let watsonChildName = '';
+
+				if (watsonChild) {
+					watsonChildName = watsonChild.get('name');
+				}
+
+				return {
+					header: watsonDocument.get('name'),
+					id: key,
+					lastEdited: watsonDocument.get('modifiedDate'),
+					link: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/${key}/edit`,
+					onClick,
+					reportedBy: watsonDocument.get('reportedBy'),
+					reportedDate: watsonDocument.get('createDate'),
+					smallIncidentName: watsonChildName || watsonDocument.get('childName'),
+					subHeader: getOptionsLabelFromWatsonConstants('documents', 'typeWatsonListTypeId', watsonDocument.get('typeWatsonListTypeId'))
+
 				};
 			}
 		);
@@ -336,7 +378,7 @@ function formatSimpleActivityData(watsonActivities, keysToOmit, onClick, selecte
 		(watsonActivity, key) => {
 			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = includes(selectedIds.includes, key, 0);
+			const selected = includes(selectedIds, key, 0);
 
 			const watsonIncidentId = watsonActivity.get('watsonIncidentId');
 
@@ -361,7 +403,7 @@ function formatSimpleAddressData(watsonAddresses, keysToOmit, onClick, selectedI
 		(watsonAddress, key) => {
 			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = includes(selectedIds.includes, key, 0);
+			const selected = includes(selectedIds, key, 0);
 
 			let childRegionLabel = '';
 			let regionLabel = '';
@@ -406,7 +448,7 @@ function formatSimpleChildData(watsonChildren, keysToOmit, onClick, selectedIds)
 		(watsonChild, key) => {
 			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = includes(selectedIds.includes, key, 0);
+			const selected = includes(selectedIds, key, 0);
 
 			const unknownLabel = Liferay.Language.get('unknown');
 
@@ -433,12 +475,39 @@ function formatSimpleChildData(watsonChildren, keysToOmit, onClick, selectedIds)
 	return formattedData;
 }
 
+function formatSimpleDocumentsData(watsonDocuments, keysToOmit, onClick, selectedIds) {
+	const formattedData = watsonDocuments.map(
+		(watsonDocument, key) => {
+			const disabled = includes(keysToOmit, key, 0);
+
+			const selected = includes(selectedIds, key, 0);
+
+			const watsonChildId = watsonDocument.get('watsonChildId');
+
+			return {
+				disabled: disabled ? 'disabled' : '',
+				header: watsonDocument.get('name'),
+				id: key,
+				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/${key}/edit`,
+				onClick: disabled ? undefined : onClick,
+				reportedBy: watsonDocument.get('reportedBy'),
+				reportedDate: watsonDocument.get('createDate'),
+				rowContent: watsonDocument.get('description'),
+				selected,
+				subHeader: getOptionsLabelFromWatsonConstants('documents', 'parentTypeWatsonListTypeId', watsonDocument.get('parentTypeWatsonListTypeId'))
+			};
+		}
+	);
+
+	return formattedData;
+}
+
 function formatSimpleIncidentData(watsonIncidents, keysToOmit, onClick, selectedIds) {
 	const formattedData = watsonIncidents.map(
 		(watsonIncident, key) => {
 			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = includes(selectedIds.includes, key, 0);
+			const selected = includes(selectedIds, key, 0);
 
 			const statusCssClass = watsonIncident.get('incidentStatusLabel');
 			let statusLabel = statusCssClass;
@@ -474,7 +543,7 @@ function formatSimplePersonData(watsonPeople, keysToOmit, onClick, selectedIds) 
 		(watsonPerson, key) => {
 			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = includes(selectedIds.includes, key, 0);
+			const selected = includes(selectedIds, key, 0);
 
 			const unknownLabel = Liferay.Language.get('unknown');
 
@@ -509,7 +578,7 @@ function formatSimpleResourcesData(watsonResources, keysToOmit, onClick, selecte
 		(watsonResource, key) => {
 			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = includes(selectedIds.includes, key, 0);
+			const selected = includes(selectedIds, key, 0);
 
 			const watsonIncidentId = watsonResource.get('watsonIncidentId');
 
@@ -536,7 +605,7 @@ function formatSimpleVehicleData(watsonVehicles, keysToOmit, onClick, selectedId
 		(watsonVehicle, key) => {
 			const disabled = includes(keysToOmit, key, 0);
 
-			const selected = includes(selectedIds.includes, key, 0);
+			const selected = includes(selectedIds, key, 0);
 
 			const licensePlate = sub(Liferay.Language.get('license-plate-x'), watsonVehicle.get('licensePlate') || Liferay.Language.get('unknown'));
 			const typeLabel = sub(Liferay.Language.get('type-x'), getOptionsLabelFromWatsonConstants('vehicles', 'typeWatsonListTypeId', watsonVehicle.get('typeWatsonListTypeId')));
@@ -638,6 +707,9 @@ function IndexList({data = OrderedMap(), hasMoreResults, incidentsData = Ordered
 	}
 	else if (model === 'children') {
 		data = formatChildData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);
+	}
+	else if (model === 'documents') {
+		data = formatDocumentsData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);
 	}
 	else if (model === 'people') {
 		data = formatPeopleData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);

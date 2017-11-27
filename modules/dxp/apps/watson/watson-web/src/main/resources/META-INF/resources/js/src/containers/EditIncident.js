@@ -84,8 +84,8 @@ class EditIncident extends JSXComponent {
 						action={action}
 						buttonData={buttonData}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						watsonIncidentId={watsonIncidentId}
 					/>
 				);
@@ -143,8 +143,8 @@ class EditIncident extends JSXComponent {
 						action={action}
 						buttonData={buttonData}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						redirect={modelIndexRedirect}
 						submitMethod={props.importAddress}
 						watsonIncidentId={watsonIncidentId}
@@ -168,8 +168,8 @@ class EditIncident extends JSXComponent {
 						action={action}
 						buttonData={buttonData}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						watsonIncidentId={watsonIncidentId}
 					/>
 				);
@@ -215,8 +215,8 @@ class EditIncident extends JSXComponent {
 						action={action}
 						buttonData={buttonData}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						redirect={modelIndexRedirect}
 						submitMethod={props.importPeople}
 						watsonIncidentId={watsonIncidentId}
@@ -239,8 +239,8 @@ class EditIncident extends JSXComponent {
 						action={action}
 						buttonData={buttonData}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						watsonIncidentId={watsonIncidentId}
 					/>
 				);
@@ -296,8 +296,8 @@ class EditIncident extends JSXComponent {
 						action={action}
 						buttonData={buttonData}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						redirect={modelIndexRedirect}
 						submitMethod={props.importResources}
 						watsonIncidentId={watsonIncidentId}
@@ -321,8 +321,8 @@ class EditIncident extends JSXComponent {
 						action={action}
 						buttonData={buttonData}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						watsonIncidentId={watsonIncidentId}
 					/>
 				);
@@ -369,8 +369,8 @@ class EditIncident extends JSXComponent {
 						action={action}
 						buttonData={buttonData}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						redirect={modelIndexRedirect}
 						submitMethod={props.importVehicles}
 						watsonIncidentId={watsonIncidentId}
@@ -394,8 +394,8 @@ class EditIncident extends JSXComponent {
 						action={action}
 						buttonData={buttonData}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						watsonIncidentId={watsonIncidentId}
 					/>
 				);
@@ -460,9 +460,9 @@ class EditIncident extends JSXComponent {
 					action={action}
 					buttonData={buttonData}
 					disabled={incidentDisabled}
-					incidentName={incidentName}
 					keysToOmit={[watsonIncidentId]}
 					model={model}
+					primaryName={incidentName}
 					redirect={incidentRelateRedirect}
 					selectedIds={selectedIds}
 					submitMethod={this.handleUpdateIncidentRelationshipsFormData}
