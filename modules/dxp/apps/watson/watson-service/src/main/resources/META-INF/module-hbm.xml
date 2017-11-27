@@ -107,7 +107,7 @@
 		<property name="watsonChildId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="originalDocument" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="receivedDate" type="org.hibernate.type.TimestampType" />
-		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.watson.model.impl.WatsonHistoryImpl" table="WatsonHistory">

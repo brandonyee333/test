@@ -85,7 +85,7 @@ create table WatsonDocument (
 	watsonChildId LONG,
 	originalDocument BOOLEAN,
 	receivedDate DATE null,
-	imagePayload VARCHAR(75) null,
+	imagePayload TEXT null,
 	status INTEGER
 );
 

@@ -78,7 +78,7 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			{ "watsonChildId", Types.BIGINT },
 			{ "originalDocument", Types.BOOLEAN },
 			{ "receivedDate", Types.TIMESTAMP },
-			{ "imagePayload", Types.VARCHAR },
+			{ "imagePayload", Types.CLOB },
 			{ "status", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
@@ -97,11 +97,11 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 		TABLE_COLUMNS_MAP.put("watsonChildId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("originalDocument", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("receivedDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("imagePayload", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonDocument (watsonDocumentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentTypeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,originalDocument BOOLEAN,receivedDate DATE null,imagePayload VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonDocument (watsonDocumentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentTypeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,originalDocument BOOLEAN,receivedDate DATE null,imagePayload TEXT null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonDocument";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonDocument.watsonDocumentId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonDocument.watsonDocumentId ASC";
