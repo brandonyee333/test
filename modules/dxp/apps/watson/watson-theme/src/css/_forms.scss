@@ -184,8 +184,9 @@
 				color: $negativeMedium;
 			}
 
-			input, select, textarea, .Select-control, .watson-button, .watson-input {
+			input, select, textarea, .Select-control, .watson-button, .metal-file-uploader, .helper-message, .watson-input {
 				border-color: $negativeMedium;
+				color: $negativeMedium;
 			}
 
 			.validation-message {
@@ -282,7 +283,7 @@
 
 				.watson-button.remove-button {
 					height: 34px;
-					left: 49%;
+					left: 61%;
 					position: absolute;
 					top: 11px;
 					width: 34px;
@@ -494,6 +495,10 @@
 						margin: 1.1em 0 0;
 						text-align: center;
 					}
+				}
+
+				&.error, &.changed.error {
+					border-color: $negativeMedium;
 				}
 
 				.accept {

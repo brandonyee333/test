@@ -19,8 +19,6 @@
 <#assign
 	css_class = css_class + " data-senna data-senna-surface"
 
-	the_title = languageUtil.get(locale, "incident-report")
-
 	company_name = languageUtil.get(locale, "watson")
 
 	sign_in_text = languageUtil.get(locale, "please-sign-in-to-access-this-application")
