@@ -3,8 +3,8 @@
 #
 
 app.artifacts-1.0.0=\
-	com.liferay.document.library.google.docs-2.0.20.jar
+	com.liferay.document.library.google.docs-2.0.21.jar
 
-app.change.log-1.0.0=LPS-74849 LPS-75140
+app.change.log-1.0.0=LPS-75324
 
-app.git.id-1.0.0=49a45728fdbbeeab93f9843e294780a28af2074d
+app.git.id-1.0.0=cd29a791aeab7f68c154375dab328cecc9c7bf6b
