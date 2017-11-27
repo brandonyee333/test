@@ -46,6 +46,7 @@ import com.liferay.watson.service.WatsonAddressLocalService;
 import com.liferay.watson.service.persistence.WatsonActivityPersistence;
 import com.liferay.watson.service.persistence.WatsonAddressPersistence;
 import com.liferay.watson.service.persistence.WatsonChildPersistence;
+import com.liferay.watson.service.persistence.WatsonDocumentPersistence;
 import com.liferay.watson.service.persistence.WatsonHistoryPersistence;
 import com.liferay.watson.service.persistence.WatsonIncidentPersistence;
 import com.liferay.watson.service.persistence.WatsonIncidentRelPersistence;
@@ -437,6 +438,44 @@ public abstract class WatsonAddressLocalServiceBaseImpl
 	public void setWatsonChildPersistence(
 		WatsonChildPersistence watsonChildPersistence) {
 		this.watsonChildPersistence = watsonChildPersistence;
+	}
+
+	/**
+	 * Returns the watson document local service.
+	 *
+	 * @return the watson document local service
+	 */
+	public com.liferay.watson.service.WatsonDocumentLocalService getWatsonDocumentLocalService() {
+		return watsonDocumentLocalService;
+	}
+
+	/**
+	 * Sets the watson document local service.
+	 *
+	 * @param watsonDocumentLocalService the watson document local service
+	 */
+	public void setWatsonDocumentLocalService(
+		com.liferay.watson.service.WatsonDocumentLocalService watsonDocumentLocalService) {
+		this.watsonDocumentLocalService = watsonDocumentLocalService;
+	}
+
+	/**
+	 * Returns the watson document persistence.
+	 *
+	 * @return the watson document persistence
+	 */
+	public WatsonDocumentPersistence getWatsonDocumentPersistence() {
+		return watsonDocumentPersistence;
+	}
+
+	/**
+	 * Sets the watson document persistence.
+	 *
+	 * @param watsonDocumentPersistence the watson document persistence
+	 */
+	public void setWatsonDocumentPersistence(
+		WatsonDocumentPersistence watsonDocumentPersistence) {
+		this.watsonDocumentPersistence = watsonDocumentPersistence;
 	}
 
 	/**
@@ -958,6 +997,10 @@ public abstract class WatsonAddressLocalServiceBaseImpl
 	protected com.liferay.watson.service.WatsonChildLocalService watsonChildLocalService;
 	@BeanReference(type = WatsonChildPersistence.class)
 	protected WatsonChildPersistence watsonChildPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonDocumentLocalService.class)
+	protected com.liferay.watson.service.WatsonDocumentLocalService watsonDocumentLocalService;
+	@BeanReference(type = WatsonDocumentPersistence.class)
+	protected WatsonDocumentPersistence watsonDocumentPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonHistoryLocalService.class)
 	protected com.liferay.watson.service.WatsonHistoryLocalService watsonHistoryLocalService;
 	@BeanReference(type = WatsonHistoryPersistence.class)

@@ -7,6 +7,8 @@
 	<bean class="com.liferay.watson.service.persistence.impl.WatsonAddressPersistenceImpl" id="com.liferay.watson.service.persistence.WatsonAddressPersistence" parent="basePersistence" />
 	<bean class="com.liferay.watson.service.impl.WatsonChildLocalServiceImpl" id="com.liferay.watson.service.WatsonChildLocalService" />
 	<bean class="com.liferay.watson.service.persistence.impl.WatsonChildPersistenceImpl" id="com.liferay.watson.service.persistence.WatsonChildPersistence" parent="basePersistence" />
+	<bean class="com.liferay.watson.service.impl.WatsonDocumentLocalServiceImpl" id="com.liferay.watson.service.WatsonDocumentLocalService" />
+	<bean class="com.liferay.watson.service.persistence.impl.WatsonDocumentPersistenceImpl" id="com.liferay.watson.service.persistence.WatsonDocumentPersistence" parent="basePersistence" />
 	<bean class="com.liferay.watson.service.impl.WatsonHistoryLocalServiceImpl" id="com.liferay.watson.service.WatsonHistoryLocalService" />
 	<bean class="com.liferay.watson.service.persistence.impl.WatsonHistoryPersistenceImpl" id="com.liferay.watson.service.persistence.WatsonHistoryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.watson.service.impl.WatsonIncidentLocalServiceImpl" id="com.liferay.watson.service.WatsonIncidentLocalService" />

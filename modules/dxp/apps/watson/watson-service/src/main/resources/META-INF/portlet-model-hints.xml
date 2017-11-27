@@ -77,6 +77,23 @@
 		<field name="source" type="String" />
 		<field name="status" type="int" />
 	</model>
+	<model name="com.liferay.watson.model.WatsonDocument">
+		<field name="watsonDocumentId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="parentTypeWatsonListTypeId" type="long" />
+		<field name="subtypeWatsonListTypeId" type="long" />
+		<field name="typeWatsonListTypeId" type="long" />
+		<field name="watsonChildId" type="long" />
+		<field name="originalDocument" type="boolean" />
+		<field name="receivedDate" type="Date" />
+		<field name="imagePayload" type="String" />
+		<field name="status" type="int" />
+	</model>
 	<model name="com.liferay.watson.model.WatsonHistory">
 		<field name="watsonHistoryId" type="long" />
 		<field name="groupId" type="long" />

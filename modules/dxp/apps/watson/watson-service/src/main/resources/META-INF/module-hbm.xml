@@ -5,6 +5,7 @@
 	<import class="com.liferay.watson.model.WatsonActivity" />
 	<import class="com.liferay.watson.model.WatsonAddress" />
 	<import class="com.liferay.watson.model.WatsonChild" />
+	<import class="com.liferay.watson.model.WatsonDocument" />
 	<import class="com.liferay.watson.model.WatsonHistory" />
 	<import class="com.liferay.watson.model.WatsonIncident" />
 	<import class="com.liferay.watson.model.WatsonIncidentRel" />
@@ -88,6 +89,25 @@
 		<property name="dateDischarged" type="org.hibernate.type.TimestampType" />
 		<property name="dateFollowUp" type="org.hibernate.type.TimestampType" />
 		<property name="source" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.liferay.watson.model.impl.WatsonDocumentImpl" table="WatsonDocument">
+		<id name="watsonDocumentId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="parentTypeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="subtypeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="typeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="watsonChildId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="originalDocument" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="receivedDate" type="org.hibernate.type.TimestampType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.watson.model.impl.WatsonHistoryImpl" table="WatsonHistory">

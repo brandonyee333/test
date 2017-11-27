@@ -71,6 +71,24 @@ create table WatsonChild (
 	status INTEGER
 );
 
+create table WatsonDocument (
+	watsonDocumentId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	parentTypeWatsonListTypeId LONG,
+	subtypeWatsonListTypeId LONG,
+	typeWatsonListTypeId LONG,
+	watsonChildId LONG,
+	originalDocument BOOLEAN,
+	receivedDate DATE null,
+	imagePayload VARCHAR(75) null,
+	status INTEGER
+);
+
 create table WatsonHistory (
 	watsonHistoryId LONG not null primary key,
 	groupId LONG,
