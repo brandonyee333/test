@@ -389,9 +389,9 @@ public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 	}
 
 	protected static Object[] getPropertiesFromJSONObject(JSONObject jsonObject) throws Exception {
-		Iterator<?> keys = jsonObject.keys();
-
 		List<Object> properties = new ArrayList<>();
+
+		Iterator<?> keys = jsonObject.keys();
 
 		while (keys.hasNext()) {
 			String key = GetterUtil.getString(keys.next());

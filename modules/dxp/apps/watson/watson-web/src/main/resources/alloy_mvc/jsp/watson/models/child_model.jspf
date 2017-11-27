@@ -101,6 +101,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		jsonObject.put("dateDischarged", getFormattedDate(watsonChild.getDateDischarged(), locale));
 		jsonObject.put("dateFollowUp", getFormattedDate(watsonChild.getDateFollowUp(), locale));
 		jsonObject.put("dischargeWatsonListTypeId", watsonChild.getDischargeWatsonListTypeId());
+		jsonObject.put("documents", WatsonDocument.getIdJSONArray(watsonChild.getWatsonChildId()));
 
 		watsonListType = WatsonListType.fetch(watsonChild.getEthnicityWatsonListTypeId());
 
@@ -222,6 +223,33 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 
 		return jsonArray;
+	}
+
+	public static List<WatsonDocument> getWatsonDocuments(long watsonChildId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+		List<WatsonDocument> returnWatsonDocuments = null;
+
+		if (watsonChildId > 0) {
+			if (includeInactive) {
+				returnWatsonDocuments = WatsonDocument.queryAll("watsonChildId", watsonChildId);
+			}
+			else {
+				returnWatsonDocuments = WatsonDocument.queryRange(sort, start, end, "watsonChildId", watsonChildId);
+			}
+		}
+		else {
+			returnWatsonDocuments = WatsonDocument.get(start, end);
+		}
+
+		return WatsonDocument.filterDocuments(returnWatsonDocuments, user);
+	}
+
+	public static long getWatsonDocumentsCount(long watsonChildId) throws Exception {
+		if (watsonChildId > 0) {
+			return WatsonDocument.count("watsonChildId", watsonChildId, "status", WorkflowConstants.STATUS_APPROVED);
+		}
+		else {
+			return WatsonDocument.count("status", WorkflowConstants.STATUS_APPROVED);
+		}
 	}
 
 	public static KeyValuePair validateWatsonChildActivitiesInvolved(List<WatsonListTypeRel> activitiesInvolved) throws Exception {
@@ -443,6 +471,16 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 
 		return jsonObject;
+	}
+
+	public static String getChildName(long watsonChildId) throws Exception {
+		if (watsonChildId > 0) {
+			WatsonChild watsonChild = WatsonChild.fetch(watsonChildId);
+
+			return watsonChild.getPrimaryName();
+		}
+
+		return StringPool.BLANK;
 	}
 
 	public String getPrimaryName() throws Exception {

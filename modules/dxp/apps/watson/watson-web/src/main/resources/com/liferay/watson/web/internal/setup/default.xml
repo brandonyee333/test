@@ -40290,4 +40290,144 @@
 		<name locale="en_US">Both</name>
 		<name locale="th">ทั้งสอง</name>
 	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonDocument.parentType" watsonListTypeId="10526">
+		<name locale="en_US">General</name>
+		<name locale="th">ทั่วไป</name>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10527">
+			<name locale="en_US">Birth Certificate</name>
+			<name locale="th">สูติบัตร</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10528">
+			<name locale="en_US">Identification</name>
+			<name locale="th">บัตรประจำตัว</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10529">
+			<name locale="en_US">House Registration </name>
+			<name locale="th">ทั้งสอง</name>
+			<watsonListType type="com.liferay.watson.model.WatsonDocument.subtype" watsonListTypeId="10530">
+				<name locale="en_US">Reg. #13</name>
+				<name locale="th">การลงทะเบียน # 13</name>
+			</watsonListType>
+			<watsonListType type="com.liferay.watson.model.WatsonDocument.subtype" watsonListTypeId="10531">
+				<name locale="en_US">Reg. #14</name>
+				<name locale="th">การลงทะเบียน # 14</name>
+			</watsonListType>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10532">
+			<name locale="en_US">Vaccination Record</name>
+			<name locale="th">บันทึกการฉีดวัคซีน</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10533">
+			<name locale="en_US">Medical Card</name>
+			<name locale="th">บัตรแพทย์</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10534">
+			<name locale="en_US">Referral Letter</name>
+			<name locale="th">จดหมายอ้างอิง</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10535">
+			<name locale="en_US">Other</name>
+			<name locale="th">อื่น ๆ</name>
+		</watsonListType>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonDocument.parentType" watsonListTypeId="10536">
+		<name locale="en_US">Relative(s)/Guardian(s)</name>
+		<name locale="th">ญาติ / ผู้ปกครอง</name>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10537">
+			<name locale="en_US">Father</name>
+			<name locale="th">พ่อ</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10538">
+			<name locale="en_US">Mother</name>
+			<name locale="th">แม่</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10539">
+			<name locale="en_US">Grandfather</name>
+			<name locale="th">พ่อของบิดา</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10540">
+			<name locale="en_US">Grandfather</name>
+			<name locale="th">พ่อของแม่</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10541">
+			<name locale="en_US">Grandmother</name>
+			<name locale="th">แม่ของพ่อ</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10542">
+			<name locale="en_US">Grandmother</name>
+			<name locale="th">แม่ของแม่</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10543">
+			<name locale="en_US">Other</name>
+			<name locale="th">อื่น ๆ</name>
+			<watsonListType type="com.liferay.watson.model.WatsonDocument.subtype" watsonListTypeId="10544">
+				<name locale="en_US">House Registration</name>
+				<name locale="th">ลงทะเบียนบ้าน</name>
+			</watsonListType>
+			<watsonListType type="com.liferay.watson.model.WatsonDocument.subtype" watsonListTypeId="10545">
+				<name locale="en_US">Identification</name>
+				<name locale="th">บัตรประจำตัว</name>
+			</watsonListType>
+			<watsonListType type="com.liferay.watson.model.WatsonDocument.subtype" watsonListTypeId="10546">
+				<name locale="en_US">Other</name>
+				<name locale="th">อื่น ๆ</name>
+			</watsonListType>
+		</watsonListType>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonDocument.parentType" watsonListTypeId="10547">
+		<name locale="en_US">Education</name>
+		<name locale="th">การศึกษา</name>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10548">
+			<name locale="en_US">Transcript</name>
+			<name locale="th">สำเนา</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10549">
+			<name locale="en_US">Grade Reports</name>
+			<name locale="th">ทั้งสอง</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10550">
+			<name locale="en_US">Recognition Awards</name>
+			<name locale="th">รางวัลการรับรู้</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10551">
+			<name locale="en_US">Student Verification Letter</name>
+			<name locale="th">จดหมายยืนยันของนักเรียน</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10552">
+			<name locale="en_US">Complete Student Record</name>
+			<name locale="th">บันทึกประวัติของนักเรียน</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10553">
+			<name locale="en_US">School Referral Letter</name>
+			<name locale="th">จดหมายแนะนำโรงเรียน</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10554">
+			<name locale="en_US">Other</name>
+			<name locale="th">อื่น ๆ</name>
+		</watsonListType>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonDocument.parentType" watsonListTypeId="10555">
+		<name locale="en_US">ZOE Forms</name>
+		<name locale="th">ฟอร์ม ZOE</name>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10556">
+			<name locale="en_US">Child’s Health History</name>
+			<name locale="th">ประวัติสุขภาพของเด็ก</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10557">
+			<name locale="en_US">Child Intake Form</name>
+			<name locale="th">แบบฟอร์มการรับเด็ก</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10558">
+			<name locale="en_US">Custody Consent Form</name>
+			<name locale="th">ฟอร์มความยินยอม</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10559">
+			<name locale="en_US">Referral Letter</name>
+			<name locale="th">จดหมายอ้างอิง</name>
+		</watsonListType>
+		<watsonListType type="com.liferay.watson.model.WatsonDocument.type" watsonListTypeId="10560">
+			<name locale="en_US">Other</name>
+			<name locale="th">อื่น ๆ</name>
+		</watsonListType>
+	</watsonListType>
 </table>

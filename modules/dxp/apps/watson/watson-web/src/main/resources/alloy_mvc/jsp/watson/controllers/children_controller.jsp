@@ -216,8 +216,8 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		String model = ParamUtil.getString(request, "model");
 
-		if (model.equals("activities")) {
-			idJSONArray = WatsonActivity.getIdJSONArray(watsonChildId);
+		if (model.equals("documents")) {
+			idJSONArray = WatsonDocument.getIdJSONArray(watsonChildId);
 		}
 
 		jsonObject.put("id", watsonChildId);

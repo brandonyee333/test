@@ -36,6 +36,9 @@ public static class WatsonPermission extends AlloyPermission {
 		else if (WatsonPermission.check(user, RoleConstants.MANAGER)) {
 			return true;
 		}
+		else if (WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME)) {
+			return true;
+		}
 
 		return false;
 	}

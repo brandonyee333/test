@@ -1083,6 +1083,155 @@
 					children: {
 						label: '${AlloyLanguageUtil.formatUnicode("children")}',
 						value: 'children'
+					},
+					documents: {
+						label: '${AlloyLanguageUtil.formatUnicode("documents")}',
+						value: 'documents'
+					}
+				}
+			},
+			documents: {
+				inputs: {
+					createDate: {
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-created")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: []
+					},
+					id: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("id")}',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'INPUT_VIEW',
+						validations: []
+					},
+					imagePayload: {
+						acceptedTypes: '.doc, .docx, .gif, .jpg, .odb, .odf, .odg, .odp, .ods, .odt, .pdf, .png, .ppt, .pptx, .rtf, .tar, .tiff, .tgz, .txt, .xls, .xlsx, .zip',
+						enableCropperTool: ${true},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("related-file")}',
+						multiple: ${false},
+						parentInputId: 'typeWatsonListTypeId',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("click-add-resource-or-drag-an-image-file-onto-it-to-upload-a-picture-of-this-resource")}',
+						translatable: ${false},
+						type: 'FILE',
+						uploaderLabel: '${AlloyLanguageUtil.formatUnicode("add-file")}',
+						validations: [
+							'required'
+						]
+					},
+					originalDocument: {
+						filterable: ${false},
+						htmlType: 'checkbox',
+						label: '${AlloyLanguageUtil.formatUnicode('original-document')}',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode('this-checkbox-should-be-checked-if-this-is-an-original')}',
+						translatable: ${false},
+						type: 'INPUT'
+					},
+					parentTypeWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("parent-type")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonDocument.modelClassName.concat(".parentType"))}' var="parentTypeWatsonListTypes" />
+
+							<c:forEach items="${parentTypeWatsonListTypes}" var="parentTypeWatsonListType" varStatus="parentTypeWatsonListTypesIndex">
+								<c:set value='${parentTypeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${parentTypeWatsonListType.watsonListTypeId}: {
+									label: '${AlloyLanguageUtil.formatUnicode(parentTypeWatsonListType.getName(locale))}',
+									value: '${parentTypeWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-type-of-this-document")}',
+						translatable: ${false},
+						type: 'SELECT_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					receivedDate: {
+						defaultValue: new Date().toISOString().substr(0,10),
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-received")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: [
+							'required'
+						]
+					},
+					subtypeWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("subtype")}',
+						listTypeValue: '${WatsonDocument.modelClassName.concat(".subtype")}',
+						options: {
+							${0}: {
+								label: '${AlloyLanguageUtil.formatUnicode("not-available")}',
+								value: ${0}
+							}
+						},
+						parentInputId: 'typeWatsonListTypeId',
+						translatable: ${false},
+						type: 'DEPENDENT_SELECT_INPUT',
+						validations: []
+					},
+					typeWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("type")}',
+						listTypeValue: '${WatsonDocument.modelClassName.concat(".type")}',
+						options: {
+							${0}: {
+								label: '${AlloyLanguageUtil.formatUnicode("not-available")}',
+								value: ${0}
+							}
+						},
+						parentInputId: 'parentTypeWatsonListTypeId',
+						translatable: ${false},
+						type: 'DEPENDENT_SELECT_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					watsonRelationships: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
+						cssClass: 'triple-dynamic',
+						disabled: ${true},
+						fancy: ${false},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("relate-this-document-to-this-child")}',
+						translatable: ${false},
+						tripleOnly: ${true},
+						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
+						validations: [
+							'arrayValues4'
+						]
+					}
+				},
+				relationshipObjectOptions: {},
+				pluralLabel: '${AlloyLanguageUtil.formatUnicode("documents")}',
+				singularLabel: '${AlloyLanguageUtil.formatUnicode("document")}',
+				sortByDefault: 'watsonChildId',
+				sortByOptions: {
+					CREATED: {
+						label: '${AlloyLanguageUtil.formatUnicode("created")}',
+						value: 'createDate'
+					},
+					INCIDENT_ID: {
+						label: '${AlloyLanguageUtil.formatUnicode("child-id")}',
+						value: 'watsonChildId'
+					},
+					LAST_MODIFIED: {
+						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
+						value: 'modifiedDate'
+					},
+					TYPE: {
+						label: '${AlloyLanguageUtil.formatUnicode("type")}',
+						value: 'parentTypeWatsonListTypeId'
 					}
 				}
 			},

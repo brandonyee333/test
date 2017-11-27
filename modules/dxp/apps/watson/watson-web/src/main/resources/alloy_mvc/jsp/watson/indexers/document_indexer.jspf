@@ -1,0 +1,58 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonDocumentIndexer extends BaseAlloyIndexer {
+
+	public static WatsonDocumentIndexer getInstance() {
+		return _instance;
+	}
+
+	@Override
+	protected Document doGetDocument(BaseModel<?> object) throws Exception {
+		WatsonDocument watsonDocument = new WatsonDocument((com.liferay.watson.model.WatsonDocument)object);
+
+		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonDocument);
+
+		document.addKeyword("id", watsonDocument.getWatsonDocumentId());
+		document.addDate("modifiedDate", watsonDocument.getModifiedDate());
+		document.addKeyword("name", watsonDocument.getName(LocaleUtil.getMostRelevantLocale()));
+		document.addKeyword("originalDocument", watsonDocument.getOriginalDocument());
+		document.addDate("receivedDate", watsonDocument.getReceivedDate());
+		document.addDate("reportDate", watsonDocument.getCreateDate());
+		document.addKeyword("reportedBy", watsonDocument.getUserName());
+		document.addKeyword("status", watsonDocument.getStatus());
+		document.addKeyword("parentTypeWatsonListTypeId", watsonDocument.getParentTypeWatsonListTypeId());
+		document.addKeyword("subtypeWatsonListTypeId", watsonDocument.getSubtypeWatsonListTypeId());
+		document.addKeyword("typeWatsonListTypeId", watsonDocument.getTypeWatsonListTypeId());
+		document.addKeyword("watsonChildId", watsonDocument.getWatsonChildId());
+		document.addKeyword("watsonDocumentId", watsonDocument.getWatsonDocumentId());
+
+		return document;
+	}
+
+	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest, PortletResponse portletResponse) throws Exception {
+		return createSummary(document);
+	}
+
+	private WatsonDocumentIndexer() {
+		setClassName(WatsonDocument.baseModelClass.getName());
+	}
+
+	private static WatsonDocumentIndexer _instance = new WatsonDocumentIndexer();
+
+}
+%>

@@ -72,6 +72,7 @@ public class AlloyLanguageUtil extends LanguageUtil {
 <c:set value="<%= new WatsonActivity() %>" var="WatsonActivity" />
 <c:set value="<%= new WatsonAddress() %>" var="WatsonAddress" />
 <c:set value="<%= new WatsonChild() %>" var="WatsonChild" />
+<c:set value="<%= new WatsonDocument() %>" var="WatsonDocument" />
 <c:set value="<%= new WatsonIncident() %>" var="WatsonIncident" />
 <c:set value="<%= new WatsonListType() %>" var="WatsonListType" />
 <c:set value="<%= new WatsonListTypeRel() %>" var="WatsonListTypeRel" />
@@ -165,6 +166,7 @@ expiredSessionPortletURL.setWindowState(WindowState.MAXIMIZED);
 			basePath: basePath,
 			baseURL: baseURL,
 			children: '<portlet:renderURL><portlet:param name="controller" value="children" /><portlet:param name="action" value="index" /></portlet:renderURL>',
+			documents: '<portlet:renderURL><portlet:param name="controller" value="documents" /><portlet:param name="action" value="index" /></portlet:renderURL>',
 			histories: '<portlet:renderURL><portlet:param name="controller" value="histories" /><portlet:param name="action" value="index" /></portlet:renderURL>',
 			incidents: '<portlet:renderURL><portlet:param name="controller" value="incidents" /><portlet:param name="action" value="index" /></portlet:renderURL>',
 			list_types: '<portlet:renderURL><portlet:param name="controller" value="list_type" /><portlet:param name="action" value="index" /></portlet:renderURL>',
