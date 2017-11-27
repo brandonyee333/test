@@ -347,16 +347,16 @@
 		}
 	}
 
-	.lesa-nav {
-		transition: $sidenav-transition;
-	}
-
 	.lesa-announcements-dialog {
 		top: $has-control-menu-top-mobile + $banner-height + 10px;
 
 		@include sm() {
 			top: $has-control-menu-top-desktop + $banner-height + 10px;
 		}
+	}
+
+	.lesa-nav {
+		transition: $sidenav-transition;
 	}
 }
 

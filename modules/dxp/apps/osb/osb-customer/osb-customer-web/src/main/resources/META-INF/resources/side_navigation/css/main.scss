@@ -21,14 +21,14 @@
 			font: 1.2em 'fontawesome-alloy';
 
 			&:before {
-				content: '\f0da';
+				content: "\f0da";
 			}
 
 			&.expanded {
 				float: right;
 
 				&:before {
-					content: '\f0d9';
+					content: "\f0d9";
 				}
 			}
 		}
@@ -43,7 +43,7 @@
 			.tree-node-content {
 				&.tree-node-leaf {
 					&:before {
-						content: '\25AA';
+						content: "\25AA";
 					}
 				}
 			}

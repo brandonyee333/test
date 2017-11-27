@@ -110,7 +110,7 @@
 							position: relative;
 
 							&:after {
-								content: 'x';
+								content: "x";
 								line-height: 12px;
 								margin-top: -6px;
 								position: absolute;
@@ -122,7 +122,7 @@
 								cursor: default;
 
 								&:after {
-									content: '';
+									content: "";
 								}
 							}
 						}
