@@ -82,15 +82,13 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getUserRoleSupportT
 																<portlet:param name="supportWorkerId" value="<%= StringUtil.valueOf(managedSupportWorker.getSupportWorkerId()) %>" />
 															</portlet:actionURL>
 
-															<div class="toggle-on-off-switch">
-																<a class="toggle-on-off-switch-ctrl <%= managedSupportWorker.isClockedIn() ? "on" : "off" %>" href="<%= clockInOutURL %>">
-																	<span class="toggle-on-off-switch-inner">
-																		<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="in" /></span>
+															<a class="toggle-on-off-switch <%= managedSupportWorker.isClockedIn() ? "on" : "off" %>" href="<%= clockInOutURL %>">
+																<span class="toggle-on-off-switch-inner">
+																	<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="in" /></span>
 
-																		<span class="toggle-on-off-switch-on-pto txt-b"><liferay-ui:message key="on-pto" /></span>
-																	</span>
-																</a>
-															</div>
+																	<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="on-pto" /></span>
+																</span>
+															</a>
 														</c:if>
 													</td>
 													<td class="role-icon">

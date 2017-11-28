@@ -83,7 +83,7 @@
 		transition: margin 0.3s ease-in 0s;
 		width: 200%;
 
-		.toggle-on-off-switch-on, .toggle-on-off-switch-off, .toggle-on-off-switch-on-pto {
+		.toggle-on-off-switch-on, .toggle-on-off-switch-off {
 			box-sizing: border-box;
 			float: left;
 			padding: 3px 6px;
@@ -98,7 +98,7 @@
 			color: #FFF;
 		}
 
-		.toggle-on-off-switch-off, .toggle-on-off-switch-on-pto {
+		.toggle-on-off-switch-off {
 			background-color: #FFF;
 			border-left: 8px solid $pref-toggler;
 			color: $pref-toggler;
