@@ -17,24 +17,8 @@ package com.liferay.watson.service.impl;
 import com.liferay.watson.service.base.WatsonDocumentLocalServiceBaseImpl;
 
 /**
- * The implementation of the watson document local service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.liferay.watson.service.WatsonDocumentLocalService} interface.
- *
- * <p>
- * This is a local service. Methods of this service will not have security checks based on the propagated JAAS credentials because this service can only be accessed from within the same VM.
- * </p>
- *
  * @author Steven Smith
- * @see WatsonDocumentLocalServiceBaseImpl
- * @see com.liferay.watson.service.WatsonDocumentLocalServiceUtil
  */
 public class WatsonDocumentLocalServiceImpl
 	extends WatsonDocumentLocalServiceBaseImpl {
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use {@link com.liferay.watson.service.WatsonDocumentLocalServiceUtil} to access the watson document local service.
-	 */
 }

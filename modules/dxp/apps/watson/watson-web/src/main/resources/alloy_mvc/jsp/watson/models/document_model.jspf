@@ -52,13 +52,14 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 	public static JSONObject getAsJSONDataArray(List<WatsonDocument> watsonDocuments, long count) throws Exception {
 		JSONObject returnJSONObject = JSONFactoryUtil.createJSONObject();
 
+		returnJSONObject.put("count", count);
+
 		JSONArray watsonDocumentsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		for (WatsonDocument watsonDocument : watsonDocuments) {
 			watsonDocumentsJSONArray.put(getAsJSONObject(watsonDocument));
 		}
 
-		returnJSONObject.put("count", count);
 		returnJSONObject.put("items", watsonDocumentsJSONArray);
 
 		return returnJSONObject;
@@ -88,6 +89,7 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 
 		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonDocument));
 		jsonObject.put("name", watsonDocument.getName(locale));
 		jsonObject.put("originalDocument", String.valueOf(watsonDocument.getOriginalDocument()));
@@ -98,6 +100,7 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 		jsonObject.put("subtypeWatsonListTypeId", watsonDocument.getSubtypeWatsonListTypeId());
 		jsonObject.put("typeWatsonListTypeId", watsonDocument.getTypeWatsonListTypeId());
 		jsonObject.put("watsonChildId", watsonDocument.getWatsonChildId());
+		jsonObject.put("watsonDocumentId", watsonDocument.getWatsonDocumentId());
 
 		if (Validator.isNotNull(watsonRelationships)) {
 			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonDocument.getWatsonDocumentId(), watsonRelationships));
@@ -106,8 +109,6 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonDocument));
 		}
 
-		jsonObject.put("watsonDocumentId", watsonDocument.getWatsonDocumentId());
-
 		return jsonObject;
 	}
 
@@ -115,17 +116,16 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 		if (date != null) {
 			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	public static JSONArray getIdJSONArray(long watsonChildId) throws Exception {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		List<WatsonDocument> watsonDocuments = query("watsonChildId", watsonChildId);
-
 		Locale locale = LocaleUtil.getMostRelevantLocale();
+
+		List<WatsonDocument> watsonDocuments = query("watsonChildId", watsonChildId);
 
 		for (WatsonDocument watsonDocument : watsonDocuments) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
@@ -262,9 +262,9 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 	public boolean isValid(List<WatsonRelationship> watsonRelationships) throws Exception {
 		pushError(validateWatsonDocumentChild(getWatsonChildId()));
 		pushError(validateWatsonDocumentFile(getImagePayload()));
+		pushError(validateWatsonDocumentParentType(getParentTypeWatsonListTypeId()));
 		pushError(validateWatsonDocumentReceivedDate(getReceivedDate()));
 		pushError(validateWatsonDocumentRelationships(watsonRelationships));
-		pushError(validateWatsonDocumentParentType(getParentTypeWatsonListTypeId()));
 		pushError(validateWatsonDocumentSubtype(getSubtypeWatsonListTypeId()));
 		pushError(validateWatsonDocumentType(getTypeWatsonListTypeId()));
 
