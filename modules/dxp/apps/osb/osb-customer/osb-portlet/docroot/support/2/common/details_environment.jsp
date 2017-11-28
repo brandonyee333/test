@@ -69,7 +69,7 @@ if (productEntry != null) {
 		<c:choose>
 			<c:when test="<%= !edit %>">
 				<div class="pull-left single-line">
-					<div class="aui-w50 content-column">
+					<div class="content-column w50">
 						<div class="content-column-content env">
 							<span class="field-label txt-b"><%= edit ? "*" : "" %><liferay-ui:message key="name" />:</span>
 
@@ -77,7 +77,7 @@ if (productEntry != null) {
 						</div>
 					</div>
 
-					<div class="aui-w50 content-column">
+					<div class="content-column w50">
 						<div class="content-column-content env">
 							<span class="field-label txt-b"><%= edit ? "*" : "" %><liferay-ui:message key="product" />:</span>
 
@@ -94,7 +94,7 @@ if (productEntry != null) {
 		</c:choose>
 
 		<div class="pull-left single-line">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content env">
 					<div>
 						<c:choose>
@@ -173,7 +173,7 @@ if (productEntry != null) {
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content env">
 					<span class="field-label txt-b" title="<liferay-ui:message key="operating-system" />"><%= edit ? "*" : "" %><liferay-ui:message key="os" />:</span>
 
@@ -192,7 +192,7 @@ if (productEntry != null) {
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content env">
 					<span class="field-label txt-b" title="<liferay-ui:message key="java-virtual-machine" />"><%= edit ? "*" : "" %><liferay-ui:message key="jvm" />:</span>
 
@@ -209,7 +209,7 @@ if (productEntry != null) {
 		</div>
 
 		<div class="pull-left single-line">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content env">
 					<span class="field-label txt-b" title="<liferay-ui:message key="application-server" />"><%= edit ? "*" : "" %><liferay-ui:message key="as" />:</span>
 					<c:choose>
@@ -223,7 +223,7 @@ if (productEntry != null) {
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content env">
 					<span class="field-label txt-b" title="<liferay-ui:message key="database" />"><%= edit ? "*" : "" %><liferay-ui:message key="db" />:</span>
 
@@ -239,7 +239,7 @@ if (productEntry != null) {
 			</div>
 
 			<c:if test="<%= edit %>">
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content env">
 						<span class="field-label txt-b" title="<liferay-ui:message key="browser" />"><liferay-ui:message key="br" />:</span>
 
@@ -273,7 +273,7 @@ if (productEntry != null) {
 		<c:choose>
 			<c:when test="<%= edit %>">
 				<div class="pull-left single-line">
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content env hide" id="<portlet:namespace />envCSColumn">
 							<span class="field-label txt-b" title="<liferay-ui:message key="cloud-services" />"><liferay-ui:message key="cs" />:</span>
 
@@ -281,7 +281,7 @@ if (productEntry != null) {
 						</div>
 					</div>
 
-					<div class="aui-w66 content-column">
+					<div class="content-column w66">
 						<div class="content-column-content env hide" id="<portlet:namespace />envSearchColumn">
 							<span class="field-label txt-b" title="<liferay-ui:message key="search" />">
 								<liferay-ui:message key="sh" />:

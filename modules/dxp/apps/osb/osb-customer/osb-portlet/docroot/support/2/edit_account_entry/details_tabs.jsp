@@ -493,7 +493,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 				%>
 
 				<div class="clearfix">
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content left-column">
 							<liferay-ui:message key="advocacy-specialists" />:
 
@@ -501,7 +501,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 						</div>
 					</div>
 
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content middle-column">
 							<liferay-ui:message key="sales-reps" />:
 
@@ -509,7 +509,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 						</div>
 					</div>
 
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content right-column">
 							<liferay-ui:message key="managed-services" />:
 
@@ -521,7 +521,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 				<br />
 
 				<div class="clearfix">
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content left-column">
 							<liferay-ui:message key="industry" />:
 
@@ -529,7 +529,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 						</div>
 					</div>
 
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content middle-column">
 							<liferay-ui:message key="partner" />:
 

@@ -33,7 +33,7 @@ else {
 }
 %>
 
-<div class="aui-w100 history">
+<div class="history w100">
 
 	<%
 	if (OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.UPDATE_ADMIN)) {
@@ -115,7 +115,7 @@ else {
 			<div class="content">
 				<c:choose>
 					<c:when test="<%= (auditEntry.getFieldClassNameId() == PortalUtil.getClassNameId(TicketCall.class)) || (auditEntry.getFieldClassNameId() == PortalUtil.getClassNameId(TicketComment.class)) %>">
-						<div class="aui-w100 comment-collapsed content-column ticket-comment" id="<portlet:namespace />commentContainer<%= auditEntry.getAuditEntryId() %>">
+						<div class="comment-collapsed content-column ticket-comment w100" id="<portlet:namespace />commentContainer<%= auditEntry.getAuditEntryId() %>">
 							<div class="comment">
 								<div class="comment-body <%= (auditEntry.getAction() == AuditEntryConstants.ACTION_SOLUTION_REJECTED) ? "rejected-comment-body" : "" %>">
 
@@ -163,19 +163,19 @@ else {
 					</c:when>
 					<c:otherwise>
 						<div>
-							<div class="aui-w20 content-column txt-sb">
+							<div class="content-column txt-sb w20">
 								<div class="content-column-content left-column">
 									<liferay-ui:message key="field" />
 								</div>
 							</div>
 
-							<div class="aui-w40 content-column txt-sb">
+							<div class="content-column txt-sb w40">
 								<div class="content-column-content middle-column">
 									<liferay-ui:message key="original-value" />
 								</div>
 							</div>
 
-							<div class="aui-w40 content-column txt-sb">
+							<div class="content-column txt-sb w40">
 								<div class="content-column-content right-column">
 									<liferay-ui:message key="new-value" />
 								</div>
@@ -200,13 +200,13 @@ else {
 
 								<div class="clearfix"></div>
 
-								<div class="aui-w20 content-column txt-sb">
+								<div class="w20 content-column txt-sb w20">
 									<div class="content-column-content left-column">
 										<liferay-ui:message key="<%= curAuditEntry.getFieldLabel() %>" />
 									</div>
 								</div>
 
-								<div class="aui-w40 content-column">
+								<div class="w40 content-column w40">
 									<div class="content-column-content middle-column">
 										<c:choose>
 											<c:when test="<%= Validator.isNull(oldLabel) %>">
@@ -237,7 +237,7 @@ else {
 									</div>
 								</div>
 
-								<div class="aui-w40 content-column">
+								<div class="w40 content-column w40">
 									<div class="content-column-content right-column">
 										<c:choose>
 											<c:when test="<%= Validator.isNull(newLabel) %>">

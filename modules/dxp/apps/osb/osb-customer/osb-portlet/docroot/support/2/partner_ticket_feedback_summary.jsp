@@ -43,7 +43,7 @@ if (ticketEntry != null) {
 		</c:when>
 		<c:otherwise>
 			<div class="clearfix">
-				<div class="aui-w50 content-column">
+				<div class="content-column w50">
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="reproducible" />:
@@ -54,7 +54,7 @@ if (ticketEntry != null) {
 					</div>
 				</div>
 
-				<div class="aui-w50 content-column">
+				<div class="content-column w50">
 					<div class="content-column-content right-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="timely-escalated" />:
@@ -67,7 +67,7 @@ if (ticketEntry != null) {
 			</div>
 
 			<div class="clearfix">
-				<div class="aui-w50 content-column">
+				<div class="content-column w50">
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="escalated-properly" />:
@@ -87,7 +87,7 @@ if (ticketEntry != null) {
 					</div>
 				</div>
 
-				<div class="aui-w50 content-column">
+				<div class="content-column w50">
 					<div class="content-column-content right-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="technical-knowledge" />:

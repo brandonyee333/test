@@ -111,11 +111,11 @@ TicketFeedbackDisplayTerms displayTerms = new TicketFeedbackDisplayTerms(renderR
 				<liferay-ui:message key="created-between" />
 			</h2>
 
-			<div class="aui-w100">
+			<div class="w100">
 				<liferay-ui:message key="begin-date" />
 
 				<liferay-ui:input-date
-					cssClass="aui-w100"
+					cssClass="w100"
 					dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
 					dayValue="<%= displayTerms.getCreateDateGTDay() %>"
 					firstEnabledDate="<%= firstEnabledDate %>"
@@ -128,11 +128,11 @@ TicketFeedbackDisplayTerms displayTerms = new TicketFeedbackDisplayTerms(renderR
 				/>
 			</div>
 
-			<div class="aui-w100">
+			<div class="w100">
 				<liferay-ui:message key="end-date" />
 
 				<liferay-ui:input-date
-					cssClass="aui-w100"
+					cssClass="w100"
 					dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
 					dayValue="<%= displayTerms.getCreateDateLTDay() %>"
 					firstEnabledDate="<%= firstEnabledDate %>"

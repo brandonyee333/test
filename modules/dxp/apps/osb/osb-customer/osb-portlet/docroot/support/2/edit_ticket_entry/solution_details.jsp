@@ -84,7 +84,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 	<liferay-ui:error exception="<%= TicketSolutionBodyException.class %>" message="please-enter-a-valid-issue-solution" />
 	<liferay-ui:error exception="<%= TicketSolutionSummaryException.class %>" message="please-enter-a-valid-issue-summary" />
 
-	<div class="aui-w100 solution-details unit">
+	<div class="solution-details unit w100">
 		<h1>
 			<liferay-ui:message key="solution-proposed-details" />
 		</h1>
@@ -191,7 +191,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 			<br /><br />
 
 			<div>
-				<div class="aui-w33 inline-block">
+				<div class="inline-block w33">
 
 					<%
 					int[] subcomponents = TicketEntryConstants.getSubcomponents(component);
@@ -227,7 +227,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 					<input class="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "hide" %>" id="<portlet:namespace />ticketEntrySubcomponentCustom" name="<portlet:namespace />ticketEntrySubcomponentCustom" type="text" value="<%= HtmlUtil.escapeAttribute(subcomponentCustom) %>" />
 				</div>
 
-				<div class="aui-w33 inline-block">
+				<div class="inline-block w33">
 					<span class="txt-b"><liferay-ui:message key="issue-type" />:</span>
 
 					<select name="<portlet:namespace />issueType">

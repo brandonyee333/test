@@ -35,7 +35,7 @@ String additionalComments = ParamUtil.getString(request, "additionalComments", G
 		<portlet:param name="envLFR" value="<%= String.valueOf(envLFR) %>" />
 	</liferay-util:include>
 
-	<div class="aui-w33 content-column">
+	<div class="content-column w33">
 		<div class="content-column-content left-column">
 			<span class="txt-sb">
 				<liferay-ui:message key="type-of-key" />:
@@ -45,7 +45,7 @@ String additionalComments = ParamUtil.getString(request, "additionalComments", G
 		</div>
 	</div>
 
-	<div class="aui-w33 content-column">
+	<div class="content-column w33">
 		<div class="content-column-content left-column">
 			<span class="txt-sb">
 				<liferay-ui:message key="purpose" />:

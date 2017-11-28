@@ -43,7 +43,7 @@ List<FileRepository> fileRepositories = SupportUtil.getFileRepositories();
 			boolean available = availableFileRepositoryIds.contains(fileRepository.getFileRepositoryId());
 		%>
 
-			<div class="attachment-download-server aui-w20">
+			<div class="attachment-download-server w20">
 				<div>
 					<%= HtmlUtil.escape(fileRepository.getFileRepositoryId()) %>
 				</div>

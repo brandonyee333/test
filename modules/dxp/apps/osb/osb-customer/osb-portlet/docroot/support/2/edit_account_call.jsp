@@ -66,7 +66,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		<liferay-ui:error exception="<%= AccountCallTypeException.class %>" message="please-choose-a-valid-type" />
 
 		<div class="clearfix">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<aui:select label="call-type" name="type" showEmptyOption="<%= true %>">
 					<aui:option label="incoming" selected="<%= type == AccountCallConstants.TYPE_INCOMING %>" value="<%= AccountCallConstants.TYPE_INCOMING %>" />
 					<aui:option label="outgoing" selected="<%= type == AccountCallConstants.TYPE_OUTGOING %>" value="<%= AccountCallConstants.TYPE_OUTGOING %>" />
@@ -74,7 +74,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 				</aui:select>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<strong><liferay-ui:message key="call-date" /></strong>
 
 				<%
@@ -109,7 +109,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 				</liferay-util:include>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content right-column">
 					<span class="txt-b"><liferay-ui:message key="call-length" /></span>
 
@@ -167,41 +167,41 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		</div>
 
 		<div class="clearfix">
-			<div class="aui-w15 content-column customer-info-label">
+			<div class="content-column customer-info-label w15">
 				<liferay-ui:message key="summary" />
 			</div>
 
-			<div class="aui-w85 content-column customer-info">
+			<div class="content-column customer-info w85">
 				<aui:input bean="<%= accountCall %>" field="summary" model="<%= AccountCall.class %>" name="summary" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
 			</div>
 		</div>
 
 		<div class="clearfix">
-			<div class="aui-w15 content-column customer-info-label">
+			<div class="content-column customer-info w15-label">
 				<liferay-ui:message key="clients-present" />
 			</div>
 
-			<div class="aui-w85 content-column customer-info">
+			<div class="content-column customer-info w85">
 				<aui:input bean="<%= accountCall %>" field="clientsPresent" model="<%= AccountCall.class %>" name="clientsPresent" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
 			</div>
 		</div>
 
 		<div class="clearfix">
-			<div class="aui-w15 content-column customer-info-label">
+			<div class="content-column customer-info w15-label">
 				<liferay-ui:message key="notes" />
 			</div>
 
-			<div class="aui-w85 content-column customer-info">
+			<div class="content-column customer-info w85">
 				<aui:input bean="<%= accountCall %>" field="notes" model="<%= AccountCall.class %>" name="notes" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
 			</div>
 		</div>
 
 		<div class="clearfix">
-			<div class="aui-w15 content-column customer-info-label">
+			<div class="content-column customer-info-label w15">
 				<liferay-ui:message key="action-items" />
 			</div>
 
-			<div class="aui-w85 content-column customer-info">
+			<div class="content-column customer-info w85">
 				<aui:input bean="<%= accountCall %>" field="actionItems" model="<%= AccountCall.class %>" name="actionItems" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
 			</div>
 		</div>

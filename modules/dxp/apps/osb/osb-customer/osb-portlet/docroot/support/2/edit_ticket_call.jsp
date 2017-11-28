@@ -43,13 +43,13 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 	<liferay-ui:error exception="<%= TicketCallLengthException.class %>" message="please-enter-a-valid-call-length" />
 	<liferay-ui:error exception="<%= TicketCallTypeException.class %>" message="please-choose-a-valid-type" />
 
-	<div class="aui-w95 unit">
+	<div class="unit w95">
 		<h1 class="section-heading">
 			<liferay-ui:message key="log-call" />
 		</h1>
 
 		<div class="clearfix">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<span class="txt-b"><liferay-ui:message key="customer-name" />: </span>
 
@@ -59,7 +59,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content right-column">
 					<span class="txt-b"><liferay-ui:message key="contact-info" />: </span>
 
@@ -69,7 +69,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content">
 					<span class="txt-b"><liferay-ui:message key="call-type" />: </span>
 
@@ -87,7 +87,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		<br />
 
 		<div class="clearfix">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<span class="txt-b"><liferay-ui:message key="call-date" />: </span>
 
 				<br />
@@ -95,7 +95,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 				<liferay-ui:input-field defaultValue="<%= calendar %>" field="callDate" model="<%= TicketCall.class %>" />
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content right-column">
 					<span class="txt-b"><liferay-ui:message key="call-length" />: </span>
 
@@ -155,7 +155,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		<br />
 
 		<div class="clearfix">
-			<div class="aui-w100 content-column">
+			<div class="content-column w100">
 				<div class="content-column-content">
 					<span class="txt-b"><liferay-ui:message key="customer-confirmation" />: </span>
 
@@ -165,7 +165,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 				<br />
 			</div>
 
-			<div class="aui-w100 content-column">
+			<div class="content-column w100">
 				<div class="content-column-content">
 					<span class="txt-b"><liferay-ui:message key="internal-instructions" />: </span>
 

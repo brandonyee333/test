@@ -56,7 +56,7 @@ if (ticketEntry != null) {
 
 						<c:if test="<%= curTicketFeedback.getSatisfied() != TicketFeedbackConstants.SATISFIED_NOT_APPLICABLE %>">
 							<div class="clearfix">
-								<div class="aui-w100 content-column">
+								<div class="content-column w100">
 									<div class="content-column-content">
 										<span class="display-name txt-b">
 											<c:if test="<%= ticketFeedbackUser != null %>">
@@ -77,7 +77,7 @@ if (ticketEntry != null) {
 							</div>
 
 							<div class="clearfix">
-								<div class="aui-w50 content-column">
+								<div class="content-column w50">
 									<div class="content-column-content left-column">
 										<span class="indent txt-b">
 											<liferay-ui:message key="are-you-satisfied-with-the-service-provided-by-the-support-engineers-on-this-ticket" />
@@ -120,7 +120,7 @@ if (ticketEntry != null) {
 
 					<c:if test="<%= (ticketFeedback != null) && (ticketFeedback.getSatisfied() == TicketFeedbackConstants.SATISFIED_NOT_APPLICABLE) %>">
 						<div class="clearfix">
-							<div class="aui-w100 content-column">
+							<div class="content-column w100">
 								<div class="content-column-content">
 									<span class="txt-b txt-up">
 										<liferay-ui:message key="average-rating" />:
@@ -133,7 +133,7 @@ if (ticketEntry != null) {
 						</div>
 
 						<div class="clearfix">
-							<div class="aui-w50 content-column">
+							<div class="content-column w50">
 								<div class="content-column-content left-column">
 									<span class="txt-b txt-up">
 										<liferay-ui:message key="final-resolution" />:
@@ -153,7 +153,7 @@ if (ticketEntry != null) {
 								</div>
 							</div>
 
-							<div class="aui-w50 content-column">
+							<div class="content-column w50">
 								<div class="content-column-content right-column">
 									<span class="txt-b txt-up">
 										<liferay-ui:message key="technical-knowledge" />:

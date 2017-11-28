@@ -214,7 +214,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 		<div class="account search-param-dropdown" id="<portlet:namespace />account">
 			<input id="<portlet:namespace />accountEntryIds" name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_IDS %>" type="hidden" value="<%= StringUtil.merge(displayTerms.getAccountEntryIds()) %>" />
 
-			<div class="aui-w50 pull-left">
+			<div class="pull-left w50">
 				<c:if test="<%= !singleAccount %>">
 					<div>
 						<input class="aui-button-input" onClick="window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/2/select_account_entry.jsp" /></portlet:renderURL>', 'assigned_to', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800');" type="button" value="<liferay-ui:message key="choose-project" />" />
@@ -245,7 +245,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 			</div>
 
 			<c:if test="<%= ticketWorker %>">
-				<div class="aui-w50 pull-right">
+				<div class="pull-right w50">
 					<h2 class="support-input-heading">
 						<liferay-ui:message key="project-tiers" />
 					</h2>
@@ -397,17 +397,17 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 
 		<div class="date search-param-dropdown" id="<portlet:namespace />date">
 			<div class="clearfix">
-				<div class="aui-w25 content-column">
+				<div class="content-column w25">
 					<div class="content-column-content left-column">
 						<h2 class="support-input-heading">
 							<liferay-ui:message key="created-between" />
 						</h2>
 
-						<div class="aui-w100">
+						<div class="w100">
 							<liferay-ui:message key="begin-date" />
 
 							<liferay-ui:input-date
-								cssClass="aui-w100"
+								cssClass="w100"
 								dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
 								dayValue="<%= displayTerms.getCreateDateGTDay() %>"
 								firstEnabledDate="<%= firstEnabledDate %>"
@@ -420,11 +420,11 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 							/>
 						</div>
 
-						<div class="aui-w100">
+						<div class="w100">
 							<liferay-ui:message key="end-date" />
 
 							<liferay-ui:input-date
-								cssClass="aui-w100"
+								cssClass="w100"
 								dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
 								dayValue="<%= displayTerms.getCreateDateLTDay() %>"
 								firstEnabledDate="<%= firstEnabledDate %>"
@@ -439,17 +439,17 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 					</div>
 				</div>
 
-				<div class="aui-w25 content-column">
+				<div class="content-column w25">
 					<div class="content-column-content left-column">
 						<h2 class="support-input-heading">
 							<liferay-ui:message key="closed-between" />
 						</h2>
 
-						<div class="aui-w100">
+						<div class="w100">
 							<liferay-ui:message key="begin-date" />
 
 							<liferay-ui:input-date
-								cssClass="aui-w100"
+								cssClass="w100"
 								dayParam="<%= displayTerms.CLOSED_DATE_GT_DAY %>"
 								dayValue="<%= displayTerms.getClosedDateGTDay() %>"
 								firstEnabledDate="<%= firstEnabledDate %>"
@@ -462,11 +462,11 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 							/>
 						</div>
 
-						<div class="aui-w100">
+						<div class="w100">
 							<liferay-ui:message key="end-date" />
 
 							<liferay-ui:input-date
-								cssClass="aui-w100"
+								cssClass="w100"
 								dayParam="<%= displayTerms.CLOSED_DATE_LT_DAY %>"
 								dayValue="<%= displayTerms.getClosedDateLTDay() %>"
 								firstEnabledDate="<%= firstEnabledDate %>"
@@ -482,17 +482,17 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 				</div>
 
 				<c:if test="<%= !screenShareMode && ticketWorker %>">
-					<div class="aui-w25 content-column">
+					<div class="w25 content-column">
 						<div class="content-column-content left-column">
 							<h2 class="support-input-heading">
 								<liferay-ui:message key="due-between" />
 							</h2>
 
-							<div class="aui-w100">
+							<div class="w100">
 								<liferay-ui:message key="begin-date" />
 
 								<liferay-ui:input-date
-									cssClass="aui-w100"
+									cssClass="w100"
 									dayParam="<%= displayTerms.DUE_DATE_GT_DAY %>"
 									dayValue="<%= displayTerms.getDueDateGTDay() %>"
 									firstEnabledDate="<%= firstEnabledDate %>"
@@ -505,11 +505,11 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 								/>
 							</div>
 
-							<div class="aui-w100">
+							<div class="w100">
 								<liferay-ui:message key="end-date" />
 
 								<liferay-ui:input-date
-									cssClass="aui-w100"
+									cssClass="w100"
 									dayParam="<%= displayTerms.DUE_DATE_LT_DAY %>"
 									dayValue="<%= displayTerms.getDueDateLTDay() %>"
 									firstEnabledDate="<%= firstEnabledDate %>"
@@ -524,13 +524,13 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 						</div>
 					</div>
 
-					<div class="aui-w25 content-column">
+					<div class="content-column w25">
 						<div class="content-column-content left-column">
 							<h2 class="support-input-heading">
 								<liferay-ui:message key="satisfied-due-date" />
 							</h2>
 
-							<div class="aui-w100 radio">
+							<div class="radio w100">
 								<label class="<%= ((displayTerms.getSatisfiedDueDate() != null) && displayTerms.isSatisfiedDueDate()) ? "active" : "" %>">
 									<input <%= ((displayTerms.getSatisfiedDueDate() != null) && displayTerms.isSatisfiedDueDate()) ? "checked" : "" %> id="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" name="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" onchange="<portlet:namespace />toggleCheckbox(this);" type="radio" value="yes" />
 

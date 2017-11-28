@@ -21,7 +21,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getUserRoleSupportT
 %>
 
 <c:if test="<%= !supportTeams.isEmpty() %>">
-	<div class="aui-w100 clearfix manager-dashboard">
+	<div class="clearfix manager-dashboard w100">
 		<table class="lfr-table">
 			<tr>
 
@@ -37,7 +37,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getUserRoleSupportT
 				for (int i = 0; i < 3; i++) {
 				%>
 
-					<td class="aui-w33 manager-dashboard-col <%= (teamIterator == supportTeams.size()) ? "empty" : "" %>">
+					<td class="<%= (teamIterator == supportTeams.size()) ? "empty" : "" %> manager-dashboard-col w33">
 
 						<%
 						if (teamIterator < supportTeams.size()) {
@@ -51,7 +51,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getUserRoleSupportT
 								}
 						%>
 
-								<div class="aui-w100 content-column content-column-content left-column manager-dashboard-team <%= cssClass %>">
+								<div class="content-column content-column-content left-column manager-dashboard-team w100 <%= cssClass %>">
 									<div class="team-title">
 										<%= HtmlUtil.escape(supportTeam.getName()) %>
 									</div>

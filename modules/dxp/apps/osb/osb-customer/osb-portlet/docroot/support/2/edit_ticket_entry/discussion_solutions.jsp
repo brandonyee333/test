@@ -48,7 +48,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 	%>
 
 		<div class="ticket-comment <%= cssClass %>" id="<portlet:namespace />commentContainer<%= j %>">
-			<div class="aui-w10 content-column">
+			<div class="content-column w10">
 				<div class="content-column-content left-column" onClick="<portlet:namespace />toggleComment(event, <%= j %>);">
 
 					<%
@@ -61,7 +61,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 				</div>
 			</div>
 
-			<div class="aui-w90 content-column">
+			<div class="content-column w90">
 				<div class="user-name">
 					<span onClick="<portlet:namespace />toggleComment(event, <%= j %>);">
 						<%= HtmlUtil.escape(solutionUser.getFullName()) %>
@@ -182,7 +182,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 
 		<c:if test="<%= Validator.isNotNull(ticketSolution.getStatusMessage()) %>">
 			<div class="ticket-comment <%= cssClass %>" id="<portlet:namespace />commentContainer<%= j + 1 %>">
-				<div class="aui-w10 content-column">
+				<div class="content-column w10">
 					<div class="content-column-content left-column" onClick="<portlet:namespace />toggleComment(event, <%= j + 1 %>);">
 
 						<%
@@ -195,7 +195,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 					</div>
 				</div>
 
-				<div class="aui-w90 content-column">
+				<div class="content-column w90">
 					<div class="user-name">
 						<span onClick="<portlet:namespace />toggleComment(event, <%= j + 1 %>);">
 							<%= HtmlUtil.escape(statusByUser.getFullName()) %>

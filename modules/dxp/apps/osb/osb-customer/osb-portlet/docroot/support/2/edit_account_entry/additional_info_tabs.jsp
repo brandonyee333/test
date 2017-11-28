@@ -110,19 +110,19 @@
 											<td colspan="3">
 												<div class="clearfix tab-section">
 													<div class="clearfix customer-info">
-														<div class="aui-w33 pull-left">
+														<div class="pull-left w33">
 															<span class="customer-info-label"><liferay-ui:message key="call-type" /></span>:
 
 															<span class="txt-sb"><%= accountCall.getTypeLabel() %></span>
 														</div>
 
-														<div class="aui-w33 pull-left">
+														<div class="pull-left w33">
 															<span class="customer-info-label"><liferay-ui:message key="call-date" /></span>:
 
 															<span class="txt-sb"><%= accountCallFormat.format(accountCall.getCallDate()) %></span>
 														</div>
 
-														<div class="aui-w33 pull-left">
+														<div class="pull-left w33">
 															<span class="customer-info-label"><liferay-ui:message key="call-length" /></span>:
 
 															<span class="txt-sb"><%= accountCall.getCallLengthLabel() %></span>
@@ -132,11 +132,11 @@
 													<br />
 
 													<div class="clearfix customer-info">
-														<div class="aui-w15 pull-left">
+														<div class="pull-left w15">
 															<span class="customer-info-label"><liferay-ui:message key="summary" />:</span>
 														</div>
 
-														<div class="aui-w85 pull-right">
+														<div class="pull-right w85">
 															<div class="customer-info-display">
 																<pre><%= HtmlUtil.escape(accountCall.getSummary()) %></pre>
 															</div>
@@ -144,11 +144,11 @@
 													</div>
 
 													<div class="clearfix customer-info">
-														<div class="aui-w15 pull-left">
+														<div class="pull-left w15">
 															<span class="customer-info-label"><liferay-ui:message key="clients-present" />:</span>
 														</div>
 
-														<div class="aui-w85 pull-right">
+														<div class="pull-right w85">
 															<div class="customer-info-display">
 																<pre><%= HtmlUtil.escape(accountCall.getClientsPresent()) %></pre>
 															</div>
@@ -156,11 +156,11 @@
 													</div>
 
 													<div class="clearfix customer-info">
-														<div class="aui-w15 pull-left">
+														<div class="pull-left w15">
 															<span class="customer-info-label"><liferay-ui:message key="notes" />:</span>
 														</div>
 
-														<div class="aui-w85 pull-right">
+														<div class="pull-right w85">
 															<div class="customer-info-display">
 																<pre><%= HtmlUtil.escape(accountCall.getNotes()) %></pre>
 															</div>
@@ -168,11 +168,11 @@
 													</div>
 
 													<div class="clearfix customer-info">
-														<div class="aui-w15 pull-left">
+														<div class="pull-left w15">
 															<span class="customer-info-label"><liferay-ui:message key="action-items" />:</span>
 														</div>
 
-														<div class="aui-w85 pull-right">
+														<div class="pull-right w85">
 															<div class="customer-info-display">
 																<pre><%= HtmlUtil.escape(accountCall.getActionItems()) %></pre>
 															</div>
@@ -259,11 +259,11 @@
 						%>
 
 							<div class="clearfix customer-info">
-								<div class="aui-w20 customer-info-label pull-left">
+								<div class="customer-info-label pull-left w20">
 									<span class="customer-info-label"><liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />:</span>
 								</div>
 
-								<div class="aui-w80 pull-left">
+								<div class="pull-left w80">
 									<div class="customer-info-display">
 										<pre><%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %></pre>
 									</div>
@@ -300,11 +300,11 @@
 							%>
 
 								<div class="clearfix">
-									<div class="aui-w20 customer-info-label pull-left">
+									<div class="customer-info-label pull-left w20">
 										<liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />
 									</div>
 
-									<div class="aui-w80 customer-info pull-left">
+									<div class="customer-info pull-left w80">
 										<aui:input maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %>" type="textarea" />
 									</div>
 								</div>
@@ -347,11 +347,11 @@
 						%>
 
 							<div class="clearfix customer-info">
-								<div class="aui-w20 pull-left">
+								<div class="pull-left w20">
 									<span class="customer-info-label"><liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />:</span>
 								</div>
 
-								<div class="aui-w80 pull-left">
+								<div class="pull-left w80">
 									<div class="customer-info-display">
 										<pre><%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %></pre>
 									</div>
@@ -388,11 +388,11 @@
 							%>
 
 								<div class="clearfix">
-									<div class="aui-w20 customer-info-label pull-left">
+									<div class="customer-info-label pull-left w20">
 										<liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />
 									</div>
 
-									<div class="aui-w80 customer-info pull-left">
+									<div class="customer-info pull-left w80">
 										<aui:input maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= HtmlUtil.escape(accountInformationDisplay.getData(fieldId)) %>" type="textarea" />
 									</div>
 								</div>

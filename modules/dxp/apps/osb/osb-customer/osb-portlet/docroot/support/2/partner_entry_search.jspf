@@ -25,7 +25,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 		id="toggle_id_partner_entry_search"
 	>
 		<div class="clearfix partner-entry-row">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<h2 class="support-assignment support-input-heading">
 						<liferay-ui:message key="code" />
@@ -35,7 +35,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column content-column-content">
 					<h2 class="support-assignment support-input-heading">
 						<liferay-ui:message key="first-line-support" />
@@ -49,7 +49,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content right-column">
 					<h2 class="support-assignment support-input-heading">
 						<liferay-ui:message key="has-child-partner-entries" />
@@ -65,7 +65,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 		</div>
 
 		<div class="clearfix partner-entry-row">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<h2 class="support-assignment support-input-heading">
 						<liferay-ui:message key="support-region" />
@@ -89,7 +89,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 			</div>
 
 			<c:if test='<%= mvcPath.equals("/support/2/view.jsp") %>'>
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column content-column-content">
 						<h2 class="support-assignment support-input-heading">
 							<liferay-ui:message key="status" />

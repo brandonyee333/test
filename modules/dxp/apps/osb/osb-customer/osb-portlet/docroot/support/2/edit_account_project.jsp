@@ -41,11 +41,11 @@ String name = BeanParamUtil.getString(accountProject, request, "name");
 		<liferay-ui:error exception="<%= AccountProjectNameException.class %>" message="please-select-a-valid-project-name" />
 
 		<div class="clearfix">
-			<div class="aui-w20 content-column customer-info-label">
+			<div class="content-column customer-info-label w20">
 				<liferay-ui:message key="project-name" />
 			</div>
 
-			<div class="aui-w80 content-column customer-info">
+			<div class="content-column customer-info w80">
 				<aui:input name="name" type="text" value="<%= name %>" />
 			</div>
 		</div>
@@ -55,11 +55,11 @@ String name = BeanParamUtil.getString(accountProject, request, "name");
 		%>
 
 			<div class="clearfix">
-				<div class="aui-w20 content-column customer-info-label">
+				<div class="content-column customer-info-label w20">
 					<liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />
 				</div>
 
-				<div class="aui-w80 content-column customer-info">
+				<div class="content-column customer-info w80">
 					<aui:input label='<%= (accountProject != null) ? accountProject.getData(fieldId) : "" %>' maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
 				</div>
 			</div>

@@ -245,14 +245,14 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 							<div class="file-item hide">
 								<input class="file" name="<portlet:namespace />file<%= i %>" type="hidden" value="" />
 
-								<div class="aui-w40 content-column">
+								<div class="content-column w40">
 									<span class="txt-b">
 										<liferay-ui:message key="file" />:
 									</span>
 									<span class="file-name"></span>
 								</div>
 
-								<div class="aui-w30 content-column hotfix-display">
+								<div class="content-column hotfix-display w30">
 									<c:choose>
 										<c:when test="<%= ticketWorker %>">
 											<span class="txt-b">
@@ -270,7 +270,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 									</c:choose>
 								</div>
 
-								<div class="aui-w30 content-column">
+								<div class="content-column w30">
 									<c:choose>
 										<c:when test="<%= userVisibilities.length > 1 %>">
 											<span class="txt-b">
@@ -321,13 +321,13 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					<c:choose>
 						<c:when test="<%= userVisibilities.length > 1 %>">
 							<div class="clearfix">
-								<div class="aui-w10 content-column">
+								<div class="content-column w10">
 									<span class="txt-b">
 										<liferay-ui:message key="visibility" />:
 									</span>
 								</div>
 
-								<div class="aui-w90 content-column">
+								<div class="content-column w90">
 									<select name="<portlet:namespace />visibility">
 
 										<%

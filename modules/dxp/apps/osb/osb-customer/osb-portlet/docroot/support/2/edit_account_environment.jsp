@@ -104,7 +104,7 @@
 				<div class="edit-account-environment">
 					<div class="clearfix">
 						<div class="pull-left single-line">
-							<div class="aui-w50 content-column">
+							<div class="content-column w50">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="name" />:</span>
 
@@ -112,7 +112,7 @@
 								</div>
 							</div>
 
-							<div class="aui-w50 content-column">
+							<div class="content-column w50">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="product" />:</span>
 
@@ -159,7 +159,7 @@
 						<br />
 
 						<div class="pull-left single-line">
-							<div class="aui-w33 content-column">
+							<div class="content-column w33">
 								<div class="content-column-content">
 									<span class="txt-b" id="<portlet:namespace />portalVersion" title="<liferay-ui:message key="liferay-version" />">*<liferay-ui:message key="lr" />:</span>
 
@@ -204,7 +204,7 @@
 								</div>
 							</div>
 
-							<div class="aui-w33 content-column">
+							<div class="content-column w33">
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="operating-system" />">*<liferay-ui:message key="os" />:</span>
 
@@ -216,7 +216,7 @@
 								</div>
 							</div>
 
-							<div class="aui-w33 content-column">
+							<div class="content-column w33">
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="java-virtual-machine" />">*<liferay-ui:message key="jvm" />:</span>
 
@@ -228,7 +228,7 @@
 						</div>
 
 						<div class="pull-left single-line">
-							<div class="aui-w33 content-column">
+							<div class="content-column w33">
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="application-server" />">*<liferay-ui:message key="as" />:</span>
 
@@ -238,7 +238,7 @@
 								</div>
 							</div>
 
-							<div class="aui-w33 content-column">
+							<div class="content-column w33">
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="database" />">*<liferay-ui:message key="db" />:</span>
 
@@ -252,7 +252,7 @@
 						<br />
 
 						<div class="pull-left single-line">
-							<div class="aui-w100 content-column">
+							<div class="content-column w100">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="portal-ext" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142855" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
 
@@ -286,7 +286,7 @@
 						</div>
 
 						<div class="pull-left single-line">
-							<div class="aui-w100 content-column">
+							<div class="content-column w100">
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="patch-level" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
 

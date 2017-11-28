@@ -27,7 +27,7 @@ String serverConfigurations = ParamUtil.getString(request, "serverConfigurations
 %>
 
 <div>
-	<div class="aui-w50 content-column">
+	<div class="content-column w50">
 		<div class="content-column-content">
 			<span class="txt-sb"><liferay-ui:message key="server-communication-type" />:</span>
 
@@ -35,7 +35,7 @@ String serverConfigurations = ParamUtil.getString(request, "serverConfigurations
 		</div>
 	</div>
 
-	<div class="aui-w50 content-column">
+	<div class="content-column w50">
 		<div class="content-column-content">
 			<span class="txt-sb"><liferay-ui:message key="number-of-nodes" />:</span>
 

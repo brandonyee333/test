@@ -49,7 +49,7 @@ else {
 	<aui:input name="accountEnvironmentId" type="hidden" value="" />
 	<aui:input name="tabs1" type="hidden" value="<%= tabs1 %>" />
 
-	<div class="aui-w50 environment-configurations">
+	<div class="environment-configurations w50">
 		<h2 class="project-heading">
 			<liferay-ui:message key="project" />:
 		</h2>

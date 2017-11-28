@@ -85,7 +85,7 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 				<div class="callout-content clearfix">
 					<br />
 
-					<div class="aui-w30 content-column">
+					<div class="content-column w30">
 						<div>
 							<liferay-ui:message key="customer-user-guide" />:
 						</div>
@@ -95,7 +95,7 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 						</div>
 					</div>
 
-					<div class="aui-w30 content-column">
+					<div class="content-column w30">
 						<div>
 							<liferay-ui:message key="partner-user-guide" />:
 						</div>
@@ -105,7 +105,7 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 						</div>
 					</div>
 
-					<div class="aui-w30 content-column">
+					<div class="content-column w30">
 						<div>
 							<liferay-ui:message key="liferay-user-guide" />:
 						</div>
@@ -115,7 +115,7 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 						</div>
 					</div>
 
-					<div class="aui-w10 content-column">
+					<div class="content-column w10">
 						<aui:button name="save" type="submit" value="save" />
 
 						<aui:button name="cancel" onClick='<%= renderResponse.getNamespace() + "toggleSection();" %>' value="cancel" />

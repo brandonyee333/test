@@ -37,7 +37,7 @@ if (offeringEntryId > 0) {
 }
 %>
 
-<div class="aui-w50 create-ticket" id="<portlet:namespace />createTicket">
+<div class="create-ticket w50" id="<portlet:namespace />createTicket">
 	<liferay-ui:error exception="<%= MaximumTicketEntryException.class %>" message="the-number-of-support-tickets-has-exceeded-the-maximum-number-of-allowed-support-tickets" />
 	<liferay-ui:error exception="<%= NoSuchOfferingEntryException.class %>" message="please-select-a-valid-support" />
 	<liferay-ui:error exception="<%= OfferingEntrySupportExpiredException.class %>" message="you-cannot-create-a-ticket-because-the-selected-support-has-expired" />

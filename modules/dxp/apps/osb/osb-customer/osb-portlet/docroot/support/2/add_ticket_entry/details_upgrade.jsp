@@ -107,7 +107,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 	}
 	%>
 
-	<div class="aui-w45 pull-left">
+	<div class="pull-left w45">
 		<div class="section-heading">
 			<liferay-ui:message key="from-liferay-version" />:
 
@@ -152,7 +152,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 		</c:choose>
 	</div>
 
-	<div class="aui-w45 pull-right">
+	<div class="pull-right w45">
 		<div class="section-heading">
 			<liferay-ui:message key="to-liferay-version" />:
 

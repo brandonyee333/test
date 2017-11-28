@@ -153,7 +153,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 							</aui:fieldset>
 						</div>
 
-						<div class="aui-w75 clearfix">
+						<div class="clearfix w75">
 
 							<%
 							Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
@@ -165,7 +165,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 							Date lastEnabledDate = calendar.getTime();
 							%>
 
-							<div class="aui-w50 away-message-start-date">
+							<div class="away-message-start-date w50">
 								<p><liferay-ui:message key="start-date" /></p>
 
 								<liferay-ui:input-date
@@ -181,7 +181,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 								/>
 							</div>
 
-							<div class="aui-w50 away-message-end-date">
+							<div class="away-message-end-date w50">
 								<p><liferay-ui:message key="end-date-optional" /></p>
 
 								<liferay-ui:input-date
