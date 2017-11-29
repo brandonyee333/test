@@ -43,9 +43,13 @@
 	</#if>
 </head>
 
-<body class="${css_class}">
+<body class="${css_class}" id="body">
 
 <#if validator.isNotNull(google_tag_manager_id)>
+	<noscript>
+		<iframe height="0" src="//www.googletagmanager.com/ns.html?id=$google_tag_manager_id" style="display:none;visibility:hidden" width="0"></iframe>
+	</noscript>
+
 	<script>
 		(function(w, d, s, l, i) {
 			w[l] = w[l] || [];
@@ -69,134 +73,136 @@
 	</script>
 </#if>
 
-<a class="hide-accessible" href="#main-content" id="skip-to-content"><@liferay.language key="skip-to-content" /></a>
+<div id="body-default">
+	<a class="hide-accessible" href="#main-content" id="skip-to-content"><@liferay.language key="skip-to-content" /></a>
 
-<@liferay_util["include"] page=body_top_include />
+	<@liferay_util["include"] page=body_top_include />
 
-<#if can_view_control_panel>
-	<@liferay.control_menu />
-</#if>
-
-<div class="container-fluid" id="wrapper">
-	<header class="banner" id="banner" role="banner">
-		<div class="banner-content">
-			<#if getterUtil.getBoolean(theme_settings["custom-site-nav-logo"]) && (theme_settings["custom-site-url"] != "")>
-				<div class="${logo_css_class} custom-site-nav">
-					<a class="home" href='${theme_settings["liferay-home-url"]}'>
-						<#include "${full_templates_path}/svg.ftl" />
-					</a>
-
-					<#if theme_settings["custom-site-lang-key"] != "">
-						<a class="custom-site-url" href='${theme_settings["custom-site-url"]}'>
-							<svg class="nav-separator" preserveAspectRatio="none" viewBox="0 0 2 4">
-								<path class="nav-arrow" d="M0 0 L2 2 L0 4" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
-							</svg>
-
-							<span class="custom-site-text">
-								<@liferay.language key=theme_settings["custom-site-lang-key"] />
-							</span>
-						</a>
-					</#if>
-				</div>
-			<#else>
-				<a class="${logo_css_class}" href='${theme_settings["liferay-home-url"]}'>
-					<img alt="Liferay" src="${images_folder}/custom/heading.png" />
-				</a>
-			</#if>
-
-			<#if has_navigation>
-				<#include "${full_templates_path}/navigation.ftl" />
-			</#if>
-		</div>
-	</header>
-
-	<#if selectable>
-		<@liferay_util["include"] page=content_include />
-	<#else>
-		${portletDisplay.recycle()}
-
-		${portletDisplay.setTitle(the_title)}
-
-		<@liferay_theme["wrap-portlet"] page="portlet.ftl">
-			<@liferay_util["include"] page=content_include />
-		</@>
+	<#if can_view_control_panel>
+		<@liferay.control_menu />
 	</#if>
 
-	<footer class="col-md-12 footer">
-		<div class="col-md-12 social-nav">
-			<ul class="nav-menu">
-				<li class="nav-item parent-item root-item">
-					<a href="http://www.facebook.com/pages/Liferay/45119213107" target="_blank">
-						<span class="facebook social-img"></span>
+	<div class="container-fluid" id="wrapper">
+		<header class="banner" id="banner" role="banner">
+			<div class="banner-content">
+				<#if getterUtil.getBoolean(theme_settings["custom-site-nav-logo"]) && (theme_settings["custom-site-url"] != "")>
+					<div class="${logo_css_class} custom-site-nav">
+						<a class="home" href='${theme_settings["liferay-home-url"]}'>
+							<#include "${full_templates_path}/svg.ftl" />
+						</a>
 
-						<span class="responsive-hidden"><@liferay.language key="facebook" /></span>
+						<#if theme_settings["custom-site-lang-key"] != "">
+							<a class="custom-site-url" href='${theme_settings["custom-site-url"]}'>
+								<svg class="nav-separator" preserveAspectRatio="none" viewBox="0 0 2 4">
+									<path class="nav-arrow" d="M0 0 L2 2 L0 4" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+								</svg>
+
+								<span class="custom-site-text">
+									<@liferay.language key=theme_settings["custom-site-lang-key"] />
+								</span>
+							</a>
+						</#if>
+					</div>
+				<#else>
+					<a class="${logo_css_class}" href='${theme_settings["liferay-home-url"]}'>
+						<img alt="Liferay" src="${images_folder}/custom/heading.png" />
 					</a>
-				</li>
-				<li class="nav-item parent-item root-item">
-					<a href="http://www.linkedin.com/company/83609?trk=NUS_CMPY_TWIT" target="_blank">
-						<span class="linkedin social-img"></span>
+				</#if>
 
-						<span class="responsive-hidden">LinkedIn</span>
-					</a>
-				</li>
-				<li class="nav-item parent-item root-item">
-					<a href="http://www.twitter.com/liferay" target="_blank">
-						<span class="social-img twitter"></span>
+				<#if has_navigation>
+					<#include "${full_templates_path}/navigation.ftl" />
+				</#if>
+			</div>
+		</header>
 
-						<span class="responsive-hidden"><@liferay.language key="twitter" /></span>
-					</a>
-				</li>
-			</ul>
-		</div>
+		<#if selectable>
+			<@liferay_util["include"] page=content_include />
+		<#else>
+			${portletDisplay.recycle()}
 
-		<div class="responsive-only">
-			<nav class="${nav_css_class} col-md-12 footer-navigation">
-				<@print_navigation layout_friendly_url=mobile_footer_nav_friendly_url />
-			</nav>
-		</div>
+			${portletDisplay.setTitle(the_title)}
 
-		<div class="responsive-hidden">
-			<nav class="${nav_css_class} col-md-12 footer-navigation">
-				<@print_navigation layout_friendly_url=footer_nav_friendly_url />
-			</nav>
-		</div>
+			<@liferay_theme["wrap-portlet"] page="portlet.ftl">
+				<@liferay_util["include"] page=content_include />
+			</@>
+		</#if>
 
-		<div class="responsive-hidden">
-			<nav class="${nav_css_class} social-media-panel">
-				<div class="facebook-buttons">
-					<script type="text/javascript">
-						(function(script, id) {
-							function fbLazyLoad() {
-								var firstScript = document.getElementsByTagName(script)[0];
-								var newScript = document.createElement(script);
+		<footer class="col-md-12 footer">
+			<div class="col-md-12 social-nav">
+				<ul class="nav-menu">
+					<li class="nav-item parent-item root-item">
+						<a href="http://www.facebook.com/pages/Liferay/45119213107" target="_blank">
+							<span class="facebook social-img"></span>
 
-								if (!document.getElementById(id)) {
-									newScript.id = id;
+							<span class="responsive-hidden"><@liferay.language key="facebook" /></span>
+						</a>
+					</li>
+					<li class="nav-item parent-item root-item">
+						<a href="http://www.linkedin.com/company/83609?trk=NUS_CMPY_TWIT" target="_blank">
+							<span class="linkedin social-img"></span>
 
-									newScript.src = '//connect.facebook.net/en_US/all.js#xfbml=1';
+							<span class="responsive-hidden">LinkedIn</span>
+						</a>
+					</li>
+					<li class="nav-item parent-item root-item">
+						<a href="http://www.twitter.com/liferay" target="_blank">
+							<span class="social-img twitter"></span>
 
-									firstScript.parentNode.insertBefore(newScript, firstScript);
+							<span class="responsive-hidden"><@liferay.language key="twitter" /></span>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="responsive-only">
+				<nav class="${nav_css_class} col-md-12 footer-navigation">
+					<@print_navigation layout_friendly_url=mobile_footer_nav_friendly_url />
+				</nav>
+			</div>
+
+			<div class="responsive-hidden">
+				<nav class="${nav_css_class} col-md-12 footer-navigation">
+					<@print_navigation layout_friendly_url=footer_nav_friendly_url />
+				</nav>
+			</div>
+
+			<div class="responsive-hidden">
+				<nav class="${nav_css_class} social-media-panel">
+					<div class="facebook-buttons">
+						<script type="text/javascript">
+							(function(script, id) {
+								function fbLazyLoad() {
+									var firstScript = document.getElementsByTagName(script)[0];
+									var newScript = document.createElement(script);
+
+									if (!document.getElementById(id)) {
+										newScript.id = id;
+
+										newScript.src = '//connect.facebook.net/en_US/all.js#xfbml=1';
+
+										firstScript.parentNode.insertBefore(newScript, firstScript);
+									}
 								}
-							}
 
-							AUI.Env.add(window, 'load', fbLazyLoad, false);
-						}('script', 'facebook-jssdk'));
-					</script>
+								AUI.Env.add(window, 'load', fbLazyLoad, false);
+							}('script', 'facebook-jssdk'));
+						</script>
 
-					<div class="fb-like" data-action="like" data-href="https://www.facebook.com/liferay" data-layout="button_count" data-show-faces="true"></div>
-				</div>
-			</nav>
-		</div>
+						<div class="fb-like" data-action="like" data-href="https://www.facebook.com/liferay" data-layout="button_count" data-show-faces="true"></div>
+					</div>
+				</nav>
+			</div>
 
-		<div class="col-md-12 copyright">
-			&copy; ${the_year} Liferay Inc. All Rights Reserved
-		</div>
-	</footer>
+			<div class="col-md-12 copyright">
+				&copy; ${the_year} Liferay Inc. All Rights Reserved
+			</div>
+		</footer>
+	</div>
+
+	<@liferay_util["include"] page=body_bottom_include />
+
+	<@liferay_util["include"] page=bottom_include />
 </div>
-
-<@liferay_util["include"] page=body_bottom_include />
-
-<@liferay_util["include"] page=bottom_include />
 
 </body>
 
