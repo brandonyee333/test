@@ -1,151 +1,176 @@
 /* ---------- Application nav ---------- */
 
 .lesa-nav {
-	background-color: $light-bg;
-	bottom: 0;
-	left: 0;
-	margin-top: $banner-height;
-	position: fixed;
-	top: 0;
-	width: $lesa-nav-width;
+	display: none;
 
-	.nav-icon {
-		cursor: pointer;
-		height: 27px;
-		margin: 30px auto;
-		position: relative;
-		width: 27px;
+	@include sm() {
+		background-color: $light-bg;
+		bottom: 0;
+		display: block;
+		left: 0;
+		margin-top: $banner-height;
+		position: fixed;
+		top: 0;
+		width: $lesa-nav-width;
 
-		&:hover:not(.clicked) .nav-tooltip {
-			display: block;
-		}
+		.nav-icon {
+			cursor: pointer;
+			margin: 30px auto;
+			position: relative;
+			width: 27px;
 
-		&:hover, &.active, &.active.unread, &.clicked {
+			&:hover:not(.clicked) .nav-tooltip {
+				display: block;
+			}
+
+			&:hover, &.active, &.active.unread, &.clicked {
+				svg {
+					stroke: $primary-blue;
+				}
+			}
+
+			&.bottom {
+				bottom: 0;
+				left: 16px;
+				position: absolute;
+
+				&.help-icon {
+					margin: 0 0 155px;
+				}
+
+				&.lesa-feedback-icon {
+					margin: 0 0 92px;
+				}
+
+				&.messages-icon {
+					margin: 0 0 218px;
+				}
+
+				&.preferences-icon {
+					margin: 0 0 35px;
+				}
+			}
+
+			&.unread svg {
+				stroke: $error;
+			}
+
 			svg {
-				stroke: $primary-blue;
-			}
-		}
-
-		&.bottom {
-			bottom: 0;
-			left: 16px;
-			position: absolute;
-
-			&.help-icon {
-				margin: 0 0 155px;
+				fill: none;
+				stroke: $medium-gray;
+				stroke-width: 1.5;
 			}
 
-			&.lesa-feedback-icon {
-				margin: 0 0 92px;
-			}
+			.nav-submenu {
+				background-color: #FFF;
+				border: 1px solid $medium-gray;
+				color: $medium-gray;
+				cursor: default;
+				display: block;
+				left: 52px;
+				max-height: 80vh;
+				outline: none;
+				overflow: auto;
+				position: absolute;
+				top: -22px;
+				z-index: 2;
 
-			&.messages-icon {
-				margin: 0 0 218px;
-			}
+				li {
+					font-family: "Avenir Medium";
+					font-size: 16px;
+					list-style-type: none;
+					padding: 10px;
+					white-space: nowrap;
 
-			&.preferences-icon {
-				margin: 0 0 35px;
-			}
-		}
+					a {
+						color: $medium-gray;
+						display: block;
+						text-decoration: none;
 
-		&.unread svg {
-			stroke: $error;
-		}
+						&.active, &:hover {
+							color: $text-color;
+						}
+					}
+				}
 
-		svg {
-			fill: none;
-			stroke: $medium-gray;
-			stroke-width: 1.5;
-		}
+				.arrow {
+					border-bottom: 9px solid transparent;
+					border-right: 9px solid $medium-gray;
+					border-top: 9px solid transparent;
+					content: "";
+					height: 0;
+					left: -9px;
+					margin: 0;
+					padding: 0;
+					position: absolute;
+					top: 12px;
+					width: 0;
+					z-index: 15;
 
-		.nav-submenu {
-			background-color: #FFF;
-			border: 1px solid $medium-gray;
-			color: $medium-gray;
-			cursor: default;
-			display: block;
-			left: 52px;
-			max-height: 80vh;
-			outline: none;
-			overflow: auto;
-			position: absolute;
-			top: -22px;
-			z-index: 2;
-
-			li {
-				font-family: "Avenir Medium";
-				font-size: 16px;
-				list-style-type: none;
-				padding: 10px;
-				white-space: nowrap;
-
-				a {
-					color: $medium-gray;
-					display: block;
-					text-decoration: none;
-
-					&.active, &:hover {
-						color: $text-color;
+					&:before {
+						border-bottom: 8px solid transparent;
+						border-right: 8px solid #FFF;
+						border-top: 8px solid transparent;
+						content: "";
+						height: 0;
+						left: 1px;
+						margin: 0;
+						padding: 0;
+						position: absolute;
+						top: -8px;
+						width: 0;
+						z-index: 16;
 					}
 				}
 			}
 
-			.arrow {
-				border-bottom: 9px solid transparent;
-				border-right: 9px solid $medium-gray;
-				border-top: 9px solid transparent;
-				content: "";
-				height: 0;
-				left: -9px;
-				margin: 0;
-				padding: 0;
+			.nav-tooltip {
+				background-color: rgba(0, 0, 0, 0.8);
+				border-radius: 3px;
+				color: #FFF;
+				display: none;
+				font-size: 16px;
+				left: 140%;
+				padding: 3px;
 				position: absolute;
-				top: 12px;
-				width: 0;
-				z-index: 15;
+				top: 0;
+				white-space: nowrap;
+				z-index: 10000;
 
 				&:before {
-					border-bottom: 8px solid transparent;
-					border-right: 8px solid #FFF;
-					border-top: 8px solid transparent;
+					border-bottom: 3px solid transparent;
+					border-right: 4px solid rgba(0, 0, 0, 0.8);
+					border-top: 3px solid transparent;
 					content: "";
-					height: 0;
-					left: 1px;
+					left: -4px;
 					margin: 0;
 					padding: 0;
 					position: absolute;
-					top: -8px;
-					width: 0;
-					z-index: 16;
+					top: 40%;
 				}
 			}
 		}
+	}
+}
 
-		.nav-tooltip {
-			background-color: rgba(0, 0, 0, 0.8);
-			border-radius: 3px;
-			color: #FFF;
-			display: none;
-			font-size: 16px;
-			left: 140%;
-			padding: 3px;
-			position: absolute;
-			top: 0;
-			white-space: nowrap;
-			z-index: 10000;
+/* ---------- Application mobile nav ---------- */
 
-			&:before {
-				border-bottom: 3px solid transparent;
-				border-right: 4px solid rgba(0, 0, 0, 0.8);
-				border-top: 3px solid transparent;
-				content: "";
-				left: -4px;
-				margin: 0;
-				padding: 0;
-				position: absolute;
-				top: 40%;
-			}
-		}
+.lesa-mobile-nav {
+	background-color: $light-bg;
+	display: block;
+	height: $lesa-mobile-nav-height;
+	left: 0;
+	position: fixed;
+	top: $banner-height;
+	width: 100%;
+
+	li {
+		list-style: none;
+		padding: 1em;
+	}
+
+	@include sm() {
+		display: none;
 	}
 }
 

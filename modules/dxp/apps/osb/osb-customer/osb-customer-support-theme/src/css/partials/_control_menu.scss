@@ -1,6 +1,6 @@
 .has-control-menu {
 	&.open {
-		.lesa-nav {
+		.lesa-nav, .lesa-mobile-nav {
 			left: $sidenav-width;
 		}
 	}
@@ -14,7 +14,7 @@
 	}
 
 	#contentWrapper {
-		margin-top: $has-control-menu-top-mobile + $banner-height;
+		margin-top: $has-control-menu-top-mobile + $banner-height + $lesa-mobile-nav-height;
 
 		@include sm() {
 			margin-top: $has-control-menu-top-desktop + $banner-height;
@@ -33,7 +33,11 @@
 		}
 	}
 
-	.lesa-nav {
+	.lesa-nav, .lesa-mobile-nav {
 		transition: $sidenav-transition;
+	}
+
+	.lesa-mobile-nav {
+		top: $has-control-menu-top-mobile + $banner-height;
 	}
 }

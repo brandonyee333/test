@@ -66,5 +66,7 @@ if (liferayIncOrg) {
 
 	<%@ include file="/support/2/nav.jspf" %>
 
+	<%@ include file="/support/2/nav_mobile.jspf" %>
+
 	<%@ include file="/support/2/banner.jspf" %>
 </c:if>

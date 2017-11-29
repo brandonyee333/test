@@ -1,9 +1,10 @@
 #contentWrapper {
-	padding-left: $lesa-nav-width;
+	margin-top: $banner-height + $lesa-mobile-nav-height;
 	width: 100%;
 
 	@include sm() {
 		margin-top: $banner-height;
+		padding-left: $lesa-nav-width;
 	}
 }
 
