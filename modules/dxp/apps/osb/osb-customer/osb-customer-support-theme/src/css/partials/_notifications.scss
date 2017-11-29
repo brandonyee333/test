@@ -108,10 +108,11 @@
 	position: fixed;
 	text-align: center;
 	top: $banner-height + 15px;
-	width: 750px;
-	z-index: 2;
 
 	@include transform(translateX(-50%));
+
+	width: 750px;
+	z-index: 2;
 
 	@include sm() {
 		display: block;

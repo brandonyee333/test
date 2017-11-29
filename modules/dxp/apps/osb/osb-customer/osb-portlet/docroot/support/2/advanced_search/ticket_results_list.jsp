@@ -116,7 +116,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 
 					<div class="<%= rowCssClass %> row-url ticket-row">
 						<c:if test="<%= supportManager %>">
-							<div class="column ticket-column select toggle-bulk-edit <%= bulkEdit ? "" : "hide" %>">
+							<div class="column select ticket-column toggle-bulk-edit <%= bulkEdit ? "" : "hide" %>">
 								<input class="bulk-edit-checkbox" id="<portlet:namespace /><%= ticketEntry.getTicketEntryId() %>" onChange="<portlet:namespace />selectTicket(this);" type="checkbox" />
 							</div>
 						</c:if>
@@ -125,7 +125,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 							<a draggable="false" href="<%= rowURL %>" <%= rowJS %>>
 								<div class="table">
 									<div class="row">
-										<div class="column ticket-column severity <%= ticketEntry.getSeverityLabel() %>"></div>
+										<div class="column severity ticket-column <%= ticketEntry.getSeverityLabel() %>"></div>
 
 										<div class="column img ticket-column" <%= columnJS %>>
 											<div>
@@ -135,7 +135,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 											</div>
 										</div>
 
-										<div class="column ticket-column number toggle-bulk <%= bulkEdit ? "bulk-edit" : "" %>" <%= columnJS %>>
+										<div class="column number ticket-column toggle-bulk <%= bulkEdit ? "bulk-edit" : "" %>" <%= columnJS %>>
 											<div class="search-title">
 												<span title="<%= ticketEntry.getDisplayId() %>">
 													<%= ticketEntry.getDisplayId() %>
@@ -151,7 +151,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 											</div>
 										</div>
 
-										<div class="column ticket-column assignee toggle-bulk <%= bulkEdit ? "bulk-edit" : "" %>" <%= columnJS %>>
+										<div class="assignee column ticket-column toggle-bulk <%= bulkEdit ? "bulk-edit" : "" %>" <%= columnJS %>>
 											<div class="ticket-assignee-wrapper">
 												<c:if test="<%= ticketWorkerUser != null %>">
 													<div class="assignee user-avatar" style="background-image: url('<%= ticketWorkerUser.getPortraitURL(themeDisplay) %>&height=40&width=40')"></div>

@@ -88,10 +88,10 @@ if (width > 0) {
 </div>
 
 <aui:script>
-	var dialogX = 0;
-	var dialogY = 0
 	var cursorX = 0;
 	var cursorY = 0;
+	var dialogX = 0;
+	var dialogY = 0;
 	var selected = null;
 
 	<c:if test="<%= centered %>">
