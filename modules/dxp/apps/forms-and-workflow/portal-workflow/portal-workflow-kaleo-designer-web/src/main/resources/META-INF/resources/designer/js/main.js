@@ -274,13 +274,27 @@ AUI.add(
 
 					toXML: function() {
 						var instance = this;
+
 						var metadata = instance.getDefinitionMetadata();
 
-						var json = instance.toJSON();
-
 						var definitionDescription = metadata.definitionDescription;
+
+						if (!definitionDescription) {
+							definitionDescription = instance.get('definitionDescription');
+						}
+
 						var definitionName = metadata.definitionName;
-						var definitionVersion = instance.get('definitionVersion');
+
+						if (!definitionName) {
+							definitionName = A.Escape.html(instance.get('definitionName'));
+						}
+
+						var definitionVersion = metadata.definitionVersion;
+
+						if (!definitionVersion) {
+							definitionVersion = instance.get('definitionVersion');
+						}
+
 						var xmlNamespace = instance.get('xmlNamespace');
 
 						var buffer = [];
@@ -294,6 +308,8 @@ AUI.add(
 							XMLUtil.create('description', definitionDescription),
 							XMLUtil.create('version', definitionVersion)
 						);
+
+						var json = instance.toJSON();
 
 						json.nodes.forEach(
 							function(item, index, collection) {
