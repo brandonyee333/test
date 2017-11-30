@@ -18,16 +18,17 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Ticket;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.service.TicketLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.BaseFilter;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Objects;
-
-import javax.portlet.WindowState;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -54,22 +55,20 @@ public class WatsonFilter extends BaseFilter {
 	public boolean isFilterEnabled(
 		HttpServletRequest request, HttpServletResponse response) {
 
-		String currentURL = (String)request.getAttribute("CURRENT_URL");
+		String currentURL = (String)request.getAttribute(WebKeys.CURRENT_URL);
 
 		if (currentURL.startsWith("/c") || currentURL.startsWith("/o")) {
 			return false;
 		}
 
 		String ppid = request.getParameter("p_p_id");
+		String state = request.getParameter("p_p_state");
 
-		if (Objects.equals(ppid, PortletKeys.FAST_LOGIN) ||
-			Objects.equals(ppid, PortletKeys.LOGIN)) {
+		if ((Objects.equals(ppid, PortletKeys.FAST_LOGIN) ||
+			 Objects.equals(ppid, PortletKeys.LOGIN)) &&
+			Objects.equals(state, LiferayWindowState.MAXIMIZED.toString())) {
 
-			String state = request.getParameter("p_p_state");
-
-			if (Objects.equals(state, WindowState.MAXIMIZED.toString())) {
-				return false;
-			}
+			return false;
 		}
 
 		return true;
@@ -106,7 +105,10 @@ public class WatsonFilter extends BaseFilter {
 				}
 			}
 
-			response.sendRedirect("/c/portal/login");
+			String currentURL = _portal.getCurrentURL(request);
+
+			response.sendRedirect(
+				_http.addParameter("/c/portal/login", "redirect", currentURL));
 
 			return;
 		}
@@ -127,6 +129,9 @@ public class WatsonFilter extends BaseFilter {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(WatsonFilter.class);
+
+	@Reference
+	private Http _http;
 
 	@Reference
 	private Portal _portal;
