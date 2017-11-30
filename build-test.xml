@@ -2445,8 +2445,10 @@ tell application "Safari" to quit
 	</macrodef>
 
 	<macrodef name="print-gc-logs">
+		<attribute name="jboss.gc.log" />
 		<attribute name="tomcat.gc.log" />
 		<attribute name="tsant.gc.log" />
+		<attribute name="wildfly.gc.log" />
 		<sequential>
 			<if>
 				<available file="/tmp/ant-gc.log" />
@@ -2461,6 +2463,22 @@ ${ant-gc-log}
 				</then>
 				<else>
 					<echo>Unable to read /tmp/ant-gc.log</echo>
+				</else>
+			</if>
+
+			<if if:true="@{jboss.gc.log}">
+				<available file="/tmp/jboss-gc.log" />
+				<then>
+					<loadfile property="jboss-gc-log" srcFile="/tmp/jboss-gc.log" />
+
+					<echo>
+JBoss GC log:
+
+${jboss-gc-log}
+					</echo>
+				</then>
+				<else>
+					<echo>Unable to read /tmp/jboss-gc.log</echo>
 				</else>
 			</if>
 
@@ -2492,6 +2510,22 @@ ${tomcat-gc-log}
 				</then>
 				<else>
 					<echo>Unable to read /tmp/tsant-gc.log</echo>
+				</else>
+			</if>
+
+			<if if:true="@{wildfly.gc.log}">
+				<available file="/tmp/wildfly-gc.log" />
+				<then>
+					<loadfile property="wildfly-gc-log" srcFile="/tmp/wildfly-gc.log" />
+
+					<echo>
+WildFly GC log:
+
+${wildfly-gc-log}
+					</echo>
+				</then>
+				<else>
+					<echo>Unable to read /tmp/wildfly-gc.log</echo>
 				</else>
 			</if>
 		</sequential>

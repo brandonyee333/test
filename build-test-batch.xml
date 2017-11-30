@@ -506,8 +506,10 @@ app.server.type=@{app.server.type}]]></echo>
 	</macrodef>
 
 	<macrodef name="run-batch-test">
+		<attribute default="false" name="jboss.gc.log" />
 		<attribute default="false" name="tomcat.gc.log" />
 		<attribute default="false" name="tsant.gc.log" />
+		<attribute default="false" name="wildfly.gc.log" />
 		<element name="test-action" />
 		<element name="test-set-up" optional="true" />
 		<element name="test-tear-down" optional="true" />
@@ -534,8 +536,10 @@ app.server.type=@{app.server.type}]]></echo>
 					<test-tear-down />
 
 					<print-gc-logs
+						jboss.gc.log="@{jboss.gc.log}"
 						tomcat.gc.log="@{tomcat.gc.log}"
 						tsant.gc.log="@{tsant.gc.log}"
+						wildfly.gc.log="@{wildfly.gc.log}"
 					/>
 				</finally>
 			</trycatch>
@@ -685,6 +689,7 @@ app.server.type=@{app.server.type}]]></echo>
 		<attribute default="${app.server.@{app.server.type}.version}" name="app.server.version" />
 		<attribute name="database.type" />
 		<attribute default="${database.@{database.type}.version}" name="database.version" />
+		<attribute default="true" name="jboss.gc.log" />
 		<attribute default="true" name="setup.proxy" />
 		<attribute default="true" name="setup.testable.jboss" />
 		<attribute default="true" name="setup.testable.tomcat" />
@@ -704,6 +709,7 @@ app.server.type=@{app.server.type}]]></echo>
 		<attribute default="" name="test.sql.zip.url" />
 		<attribute default="false" name="tomcat.gc.log" />
 		<attribute default="false" name="tsant.gc.log" />
+		<attribute default="true" name="wildfly.gc.log" />
 
 		<sequential>
 			<var name="app.server.type" value="@{app.server.type}" />
@@ -719,7 +725,7 @@ app.server.type=@{app.server.type}]]></echo>
 				</else>
 			</if>
 
-			<run-batch-test tomcat.gc.log="@{tomcat.gc.log}" tsant.gc.log="@{tsant.gc.log}">
+			<run-batch-test jboss.gc.log="@{jboss.gc.log}" tomcat.gc.log="@{tomcat.gc.log}" tsant.gc.log="@{tsant.gc.log}" wildfly.gc.log="@{wildfly.gc.log}">
 				<test-action>
 					<database-test-run-test database.type="@{database.type}" database.version="@{database.version}">
 						<test-action>
