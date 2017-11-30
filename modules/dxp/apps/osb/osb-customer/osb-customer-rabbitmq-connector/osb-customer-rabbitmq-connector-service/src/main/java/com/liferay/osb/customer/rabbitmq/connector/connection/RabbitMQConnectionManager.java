@@ -95,6 +95,14 @@ public class RabbitMQConnectionManager {
 		}
 	}
 
+	public boolean isConnected() {
+		if (_connection == null) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public void reconnect() {
 		disconnect();
 

@@ -15,10 +15,13 @@
 package com.liferay.osb.customer.rabbitmq.connector.web.portlet;
 
 import com.liferay.osb.customer.rabbitmq.connector.connection.RabbitMQConnectionManager;
+import com.liferay.osb.customer.rabbitmq.connector.consumer.RabbitMQConsumer;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
 import com.liferay.osb.customer.rabbitmq.connector.web.internal.constants.RabbitMQPortletKeys;
 import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.cluster.ClusterRequest;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
@@ -31,6 +34,9 @@ import javax.portlet.Portlet;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Amos Fong
@@ -103,6 +109,16 @@ public class RabbitMQPortlet extends MVCPortlet {
 		ClusterExecutorUtil.execute(clusterRequest);
 	}
 
+	@Override
+	public void destroy() {
+		super.destroy();
+
+		RabbitMQConnectionManager connectionManager =
+			RabbitMQConnectionManager.getInstance();
+
+		connectionManager.disconnect();
+	}
+
 	public void restart(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -115,12 +131,49 @@ public class RabbitMQPortlet extends MVCPortlet {
 		_consumerManagerLocalService.resetChannels();
 	}
 
+	@Reference(
+		cardinality = ReferenceCardinality.MULTIPLE,
+		policy = ReferencePolicy.DYNAMIC,
+		policyOption = ReferencePolicyOption.GREEDY,
+		unbind = "removeRabbitMQConsumer"
+	)
+	protected void addRabbitMQConsumer(RabbitMQConsumer rabbitMQConsumer)
+		throws Exception {
+
+		RabbitMQConnectionManager connectionManager =
+			RabbitMQConnectionManager.getInstance();
+
+		if (!connectionManager.isConnected()) {
+			connectionManager.connect();
+		}
+
+		try {
+			_consumerManagerLocalService.resetChannels();
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+		}
+
+		_consumerManagerLocalService.registerConsumer(
+			rabbitMQConsumer.getQueue(), 1, rabbitMQConsumer);
+	}
+
+	protected void removeRabbitMQConsumer(RabbitMQConsumer rabbitMQConsumer)
+		throws Exception {
+
+		_consumerManagerLocalService.unregisterConsumer(
+			rabbitMQConsumer.getQueue());
+	}
+
 	@Reference(unbind = "-")
 	protected void setConsumerManagerLocalService(
 		ConsumerManagerLocalService consumerManagerLocalService) {
 
 		_consumerManagerLocalService = consumerManagerLocalService;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		RabbitMQPortlet.class);
 
 	private final MethodKey _activateConsumerMethodKey = new MethodKey(
 		ConsumerManagerLocalService.class, "activateConsumer", String.class);

@@ -30,6 +30,8 @@ public interface RabbitMQConsumer {
 	public static final int[] RESPONSES =
 		{RESPONSE_ACK, RESPONSE_REJECT, RESPONSE_REPUBLISH};
 
+	public String getQueue();
+
 	public int parse(
 		String routingKey, String message, Map<String, Object> properties);
 
