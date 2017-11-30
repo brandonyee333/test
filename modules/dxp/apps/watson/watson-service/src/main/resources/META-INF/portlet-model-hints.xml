@@ -246,9 +246,15 @@
 		<field name="typeWatsonListTypeId" type="long" />
 		<field name="watsonChildId" type="long" />
 		<field localized="true" name="name" type="String" />
-		<field localized="true" name="description" type="String" />
-		<field localized="true" name="fullReport" type="String" />
-		<field name="imagePayload" type="String" />
+		<field localized="true" name="description" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field localized="true" name="fullReport" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="imagePayload" type="String">
+			<hint-collection name="CLOB" />
+		</field>
 		<field name="timeSpent" type="String" />
 		<field name="reportedUser" type="String" />
 		<field name="reportDate" type="Date" />
