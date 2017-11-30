@@ -90,6 +90,14 @@ Map baseAlloyModels = [
 		pluralClassName: "WatsonRelationships",
 		pluralInstanceName: "watsonRelationships"
 	],
+	"WatsonReport": [
+		baseClassName: "WatsonReportBaseModel",
+		fileSafeName: "report",
+		instanceName: "watsonReport",
+		langName: "report",
+		pluralClassName: "WatsonReports",
+		pluralInstanceName: "watsonReports"
+	],
 	"WatsonResource": [
 		baseClassName: "WatsonResourceBaseModel",
 		fileSafeName: "resource",
