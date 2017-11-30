@@ -23,6 +23,8 @@
 	<bean class="com.liferay.watson.service.persistence.impl.WatsonPersonPersistenceImpl" id="com.liferay.watson.service.persistence.WatsonPersonPersistence" parent="basePersistence" />
 	<bean class="com.liferay.watson.service.impl.WatsonRelationshipLocalServiceImpl" id="com.liferay.watson.service.WatsonRelationshipLocalService" />
 	<bean class="com.liferay.watson.service.persistence.impl.WatsonRelationshipPersistenceImpl" id="com.liferay.watson.service.persistence.WatsonRelationshipPersistence" parent="basePersistence" />
+	<bean class="com.liferay.watson.service.impl.WatsonReportLocalServiceImpl" id="com.liferay.watson.service.WatsonReportLocalService" />
+	<bean class="com.liferay.watson.service.persistence.impl.WatsonReportPersistenceImpl" id="com.liferay.watson.service.persistence.WatsonReportPersistence" parent="basePersistence" />
 	<bean class="com.liferay.watson.service.impl.WatsonResourceLocalServiceImpl" id="com.liferay.watson.service.WatsonResourceLocalService" />
 	<bean class="com.liferay.watson.service.persistence.impl.WatsonResourcePersistenceImpl" id="com.liferay.watson.service.persistence.WatsonResourcePersistence" parent="basePersistence" />
 	<bean class="com.liferay.watson.service.impl.WatsonVehicleLocalServiceImpl" id="com.liferay.watson.service.WatsonVehicleLocalService" />

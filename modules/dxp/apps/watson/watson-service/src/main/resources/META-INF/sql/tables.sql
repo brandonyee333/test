@@ -224,6 +224,28 @@ create table WatsonRelationship (
 	status INTEGER
 );
 
+create table WatsonReport (
+	watsonReportId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	originalWatsonReportId LONG,
+	typeWatsonListTypeId LONG,
+	watsonChildId LONG,
+	name STRING null,
+	description STRING null,
+	fullReport STRING null,
+	imagePayload VARCHAR(75) null,
+	timeSpent VARCHAR(75) null,
+	reportedUser VARCHAR(75) null,
+	reportDate DATE null,
+	key_ INTEGER,
+	status INTEGER
+);
+
 create table WatsonResource (
 	watsonResourceId LONG not null primary key,
 	groupId LONG,

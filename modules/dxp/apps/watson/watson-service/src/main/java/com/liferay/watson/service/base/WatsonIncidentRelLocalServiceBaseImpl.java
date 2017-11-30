@@ -54,6 +54,7 @@ import com.liferay.watson.service.persistence.WatsonListTypePersistence;
 import com.liferay.watson.service.persistence.WatsonListTypeRelPersistence;
 import com.liferay.watson.service.persistence.WatsonPersonPersistence;
 import com.liferay.watson.service.persistence.WatsonRelationshipPersistence;
+import com.liferay.watson.service.persistence.WatsonReportPersistence;
 import com.liferay.watson.service.persistence.WatsonResourcePersistence;
 import com.liferay.watson.service.persistence.WatsonVehiclePersistence;
 
@@ -748,6 +749,44 @@ public abstract class WatsonIncidentRelLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the watson report local service.
+	 *
+	 * @return the watson report local service
+	 */
+	public com.liferay.watson.service.WatsonReportLocalService getWatsonReportLocalService() {
+		return watsonReportLocalService;
+	}
+
+	/**
+	 * Sets the watson report local service.
+	 *
+	 * @param watsonReportLocalService the watson report local service
+	 */
+	public void setWatsonReportLocalService(
+		com.liferay.watson.service.WatsonReportLocalService watsonReportLocalService) {
+		this.watsonReportLocalService = watsonReportLocalService;
+	}
+
+	/**
+	 * Returns the watson report persistence.
+	 *
+	 * @return the watson report persistence
+	 */
+	public WatsonReportPersistence getWatsonReportPersistence() {
+		return watsonReportPersistence;
+	}
+
+	/**
+	 * Sets the watson report persistence.
+	 *
+	 * @param watsonReportPersistence the watson report persistence
+	 */
+	public void setWatsonReportPersistence(
+		WatsonReportPersistence watsonReportPersistence) {
+		this.watsonReportPersistence = watsonReportPersistence;
+	}
+
+	/**
 	 * Returns the watson resource local service.
 	 *
 	 * @return the watson resource local service
@@ -1032,6 +1071,10 @@ public abstract class WatsonIncidentRelLocalServiceBaseImpl
 	protected com.liferay.watson.service.WatsonRelationshipLocalService watsonRelationshipLocalService;
 	@BeanReference(type = WatsonRelationshipPersistence.class)
 	protected WatsonRelationshipPersistence watsonRelationshipPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonReportLocalService.class)
+	protected com.liferay.watson.service.WatsonReportLocalService watsonReportLocalService;
+	@BeanReference(type = WatsonReportPersistence.class)
+	protected WatsonReportPersistence watsonReportPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonResourceLocalService.class)
 	protected com.liferay.watson.service.WatsonResourceLocalService watsonResourceLocalService;
 	@BeanReference(type = WatsonResourcePersistence.class)
