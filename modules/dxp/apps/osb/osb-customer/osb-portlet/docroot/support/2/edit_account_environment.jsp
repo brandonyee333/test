@@ -108,7 +108,7 @@
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="name" />:</span>
 
-									<aui:input maxLength='<%= ModelHintsUtil.getMaxLength(AccountEnvironment.class.getName(), "name") %>' name="name" type="text" value='<%= (accountEnvironment != null) ? accountEnvironment.getName() : "" %>' />
+									<aui:input label="" maxLength='<%= ModelHintsUtil.getMaxLength(AccountEnvironment.class.getName(), "name") %>' name="name" type="text" value='<%= (accountEnvironment != null) ? accountEnvironment.getName() : "" %>' />
 								</div>
 							</div>
 
@@ -116,7 +116,7 @@
 								<div class="content-column-content">
 									<span class="txt-b">*<liferay-ui:message key="product" />:</span>
 
-									<aui:select name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectProductEntry(this.value);" %>'>
+									<aui:select label="" name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectProductEntry(this.value);" %>'>
 										<aui:option label="select" value="0" />
 
 										<%
@@ -167,7 +167,7 @@
 									String envLFROnChange = renderResponse.getNamespace() + "selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, ''); " + renderResponse.getNamespace() + "updateSupportMessage(this.value);";
 									%>
 
-									<aui:select name="envLFR" onChange="<%= envLFROnChange.toString() %>">
+									<aui:select label="" name="envLFR" onChange="<%= envLFROnChange.toString() %>">
 										<c:if test="<%= productEntry != null %>">
 											<aui:option label="select" value="0" />
 
@@ -208,11 +208,11 @@
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="operating-system" />">*<liferay-ui:message key="os" />:</span>
 
-									<aui:select name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>'>
+									<aui:select label="" name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>'>
 										<aui:option value="0" />
 									</aui:select>
 
-									<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="envOSCustom %>" />
+									<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="envOSCustom %>" />
 								</div>
 							</div>
 
@@ -220,7 +220,7 @@
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="java-virtual-machine" />">*<liferay-ui:message key="jvm" />:</span>
 
-									<aui:select name="envJVM">
+									<aui:select label="" name="envJVM">
 										<aui:option value="0" />
 									</aui:select>
 								</div>
@@ -232,7 +232,7 @@
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="application-server" />">*<liferay-ui:message key="as" />:</span>
 
-									<aui:select name="envAS">
+									<aui:select label="" name="envAS">
 										<aui:option value="0" />
 									</aui:select>
 								</div>
@@ -242,7 +242,7 @@
 								<div class="content-column-content">
 									<span class="txt-b" title="<liferay-ui:message key="database" />">*<liferay-ui:message key="db" />:</span>
 
-									<aui:select name="envDB">
+									<aui:select label="" name="envDB">
 										<aui:option value="0" />
 									</aui:select>
 								</div>
@@ -254,7 +254,7 @@
 						<div class="pull-left single-line">
 							<div class="content-column w100">
 								<div class="content-column-content">
-									<span class="txt-b">*<liferay-ui:message key="portal-ext" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142855" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
+									<span class="txt-b">*<liferay-ui:message key="portal-ext" /> <a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142855" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
 
 									<span id="<portlet:namespace />portalExtFilename">
 
@@ -280,7 +280,7 @@
 										</c:if>
 									</span>
 
-									<aui:input name="portalExt" type="file" value="upload" />
+									<aui:input label="" name="portalExt" type="file" value="upload" />
 								</div>
 							</div>
 						</div>
@@ -288,7 +288,7 @@
 						<div class="pull-left single-line">
 							<div class="content-column w100">
 								<div class="content-column-content">
-									<span class="txt-b">*<liferay-ui:message key="patch-level" /><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
+									<span class="txt-b">*<liferay-ui:message key="patch-level" /> <a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
 
 									<span id="<portlet:namespace />patchLevelFilename">
 
@@ -314,7 +314,7 @@
 										</c:if>
 									</span>
 
-									<aui:input name="patchLevel" type="file" value="upload" />
+									<aui:input label="" name="patchLevel" type="file" value="upload" />
 								</div>
 							</div>
 						</div>
