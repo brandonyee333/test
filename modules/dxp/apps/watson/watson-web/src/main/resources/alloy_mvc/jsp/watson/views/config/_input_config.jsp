@@ -732,6 +732,7 @@
 						translatable: ${false},
 						type: 'INPUT',
 						validations: [
+							'required',
 							'date'
 						]
 					},
@@ -750,7 +751,7 @@
 					},
 					dateFollowUp: {
 						filterable: ${true},
-						htmlType: 'DATE',
+						htmlType: 'date',
 						label: '${AlloyLanguageUtil.formatUnicode("follow-up")}',
 						tooltipLabel: '',
 						translatable: ${false},
@@ -1209,7 +1210,6 @@
 						fancy: ${false},
 						filterable: ${false},
 						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
-						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("relate-this-document-to-this-child")}',
 						translatable: ${false},
 						tripleOnly: ${true},
 						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',

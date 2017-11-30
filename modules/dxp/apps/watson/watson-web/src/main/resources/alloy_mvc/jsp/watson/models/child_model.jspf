@@ -304,8 +304,8 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonChildDates(Date dateAccepted, Date dateDischarged) {
-		if (!Validator.isNull(dateAccepted) && !Validator.isNull(dateDischarged)) {
+	public static KeyValuePair validateWatsonChildDates(Date dateAccepted, Date dateDischarged, Date dateFollowUp, long watsonListTypeId) throws Exception{
+		if (dateAccepted != null && dateDischarged != null) {
 			long dischargeDateLong = GetterUtil.getLong(dateDischarged);
 
 			if ((dischargeDateLong > 0) && (GetterUtil.getLong(dateAccepted) > dischargeDateLong)) {
@@ -313,11 +313,29 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			}
 		}
 
+		if (dateFollowUp != null) {
+			if (dateFollowUp.before(new Date(0))) {
+				return new KeyValuePair("dateFollowUp", "the-follow-up-date-is-too-long-ago");
+			}
+		}
+
+		if (dateDischarged != null) {
+			if (dateDischarged.after(new Date())) {
+				return new KeyValuePair("dateDischarged", "the-discharge-date-cannot-be-in-the-future");
+			}
+
+			if (dateDischarged.before(new Date(0))) {
+				return new KeyValuePair("dateDischarged", "the-discharge-date-is-too-long-ago");
+			}
+
+			return validateWatsonChildDischargeType(watsonListTypeId);
+		}
+
 		return null;
 	}
 
 	public static KeyValuePair validateWatsonChildDischargeType(long watsonListTypeId) throws Exception {
-		if ((watsonListTypeId != 0) && (WatsonListType.fetch(watsonListTypeId) == null)) {
+		if ((watsonListTypeId == 0) || (WatsonListType.fetch(watsonListTypeId) == null)) {
 			return new KeyValuePair("dischargeWatsonListTypeId", "the-discharge-type-is-invalid");
 		}
 
@@ -507,8 +525,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		pushError(validateWatsonChildBirthCountry(getBirthCountryId()));
 		pushError(validateWatsonChildCountry(getCountryWatsonListTypeId()));
 		pushError(validateWatsonChildCountryIDs(countryIDWatsonListTypeRels));
-		pushError(validateWatsonChildDates(getDateAccepted(), getDateDischarged()));
-		pushError(validateWatsonChildDischargeType(getDischargeWatsonListTypeId()));
+		pushError(validateWatsonChildDates(getDateAccepted(), getDateDischarged(), getDateFollowUp(), getDischargeWatsonListTypeId()));
 		pushError(validateWatsonChildEthnicity(getEthnicityWatsonListTypeId()));
 		pushError(validateWatsonChildGuardians(guardianNameWatsonListTypeRels));
 		pushError(validateWatsonChildNames(nameWatsonListTypeRels));
