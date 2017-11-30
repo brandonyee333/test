@@ -238,7 +238,7 @@ create table WatsonReport (
 	name STRING null,
 	description STRING null,
 	fullReport STRING null,
-	imagePayload VARCHAR(75) null,
+	imagePayload TEXT null,
 	timeSpent VARCHAR(75) null,
 	reportedUser VARCHAR(75) null,
 	reportDate DATE null,

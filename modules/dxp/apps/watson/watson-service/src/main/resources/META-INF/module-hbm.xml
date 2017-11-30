@@ -269,7 +269,7 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="fullReport" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="timeSpent" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="reportedUser" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="reportDate" type="org.hibernate.type.TimestampType" />
