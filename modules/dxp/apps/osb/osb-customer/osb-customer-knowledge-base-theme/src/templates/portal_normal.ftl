@@ -47,7 +47,7 @@
 
 <#if validator.isNotNull(google_tag_manager_id)>
 	<noscript>
-		<iframe height="0" src="//www.googletagmanager.com/ns.html?id=$google_tag_manager_id" style="display:none;visibility:hidden" width="0"></iframe>
+		<iframe height="0" src="//www.googletagmanager.com/ns.html?id=$google_tag_manager_id" style="display: none; visibility: hidden;" width="0"></iframe>
 	</noscript>
 
 	<script>
