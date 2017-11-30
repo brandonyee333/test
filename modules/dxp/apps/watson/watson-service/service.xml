@@ -351,6 +351,39 @@
 		<column name="description" type="String" />
 		<column name="status" type="int" />
 	</entity>
+	<entity local-service="true" name="WatsonReport" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="watsonReportId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="originalWatsonReportId" type="long" />
+		<column name="typeWatsonListTypeId" type="long" />
+		<column name="watsonChildId" type="long" />
+		<column localized="true" name="name" type="String" />
+		<column localized="true" name="description" type="String" />
+		<column localized="true" name="fullReport" type="String" />
+		<column name="imagePayload" type="String" />
+		<column name="timeSpent" type="String" />
+		<column name="reportedUser" type="String" />
+		<column name="reportDate" type="Date" />
+		<column name="key" type="int" />
+		<column name="status" type="int" />
+	</entity>
 	<entity local-service="true" name="WatsonResource" remote-service="false">
 
 		<!-- PK fields -->
