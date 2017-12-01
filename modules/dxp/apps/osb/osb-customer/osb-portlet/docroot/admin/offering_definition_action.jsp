@@ -32,7 +32,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 	</portlet:renderURL>
 
 	<liferay-ui:icon
-		image="edit"
+		message="edit"
 		url="<%= editURL %>"
 	/>
 

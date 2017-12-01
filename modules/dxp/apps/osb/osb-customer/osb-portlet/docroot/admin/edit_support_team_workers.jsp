@@ -341,7 +341,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 						</portlet:renderURL>
 
 						<liferay-ui:icon
-							image="edit"
+							message="edit"
 							url="<%= editURL %>"
 						/>
 					</liferay-ui:icon-menu>

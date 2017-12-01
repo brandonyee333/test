@@ -106,7 +106,7 @@ portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 							<portlet:param name="userId" value="<%= String.valueOf(curUser.getUserId()) %>" />
 						</portlet:renderURL>
 
-						<liferay-ui:icon image="edit" url="<%= editURL %>" />
+						<liferay-ui:icon message="edit" url="<%= editURL %>" />
 					</liferay-ui:icon-menu>
 				</liferay-ui:search-container-column-text>
 			</c:if>

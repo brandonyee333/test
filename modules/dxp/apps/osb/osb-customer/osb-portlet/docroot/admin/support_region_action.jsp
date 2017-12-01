@@ -29,7 +29,7 @@ SupportRegion supportRegion = (SupportRegion)row.getObject();
 		<portlet:param name="supportRegionId" value="<%= String.valueOf(supportRegion.getSupportRegionId()) %>" />
 	</portlet:renderURL>
 
-	<liferay-ui:icon image="edit" url="<%= editURL %>" />
+	<liferay-ui:icon message="edit" url="<%= editURL %>" />
 
 	<portlet:actionURL name="deleteSupportRegion" var="deleteURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="tabs1" value="support" />

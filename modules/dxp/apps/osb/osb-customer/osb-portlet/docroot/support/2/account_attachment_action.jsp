@@ -42,7 +42,7 @@ AccountAttachment accountAttachment = (AccountAttachment)row.getObject();
 	%>
 
 	<liferay-ui:icon
-		image="download"
+		message="download"
 		label="<%= true %>"
 		url="<%= accountAttachmentURL.toString() %>"
 	/>
@@ -54,7 +54,7 @@ AccountAttachment accountAttachment = (AccountAttachment)row.getObject();
 		%>
 
 		<liferay-ui:icon
-			image="preview"
+			message="preview"
 			label="<%= true %>"
 			target="_blank"
 			url="<%= accountAttachmentURL.toString() %>"

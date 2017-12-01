@@ -34,7 +34,7 @@ String redirect = ParamUtil.getString(request, "redirect", portletURL.toString()
 	</portlet:renderURL>
 
 	<liferay-ui:icon
-		image="edit"
+		message="edit"
 		url="<%= editURL %>"
 	/>
 

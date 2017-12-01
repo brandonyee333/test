@@ -32,7 +32,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 	</portlet:renderURL>
 
 	<liferay-ui:icon
-		image="edit"
+		message="edit"
 		url="<%= editURL %>"
 	/>
 
@@ -43,7 +43,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 	</portlet:renderURL>
 
 	<liferay-ui:icon
-		image="assign"
 		message="assign-workers"
 		url="<%= assignWorkersURL %>"
 	/>
@@ -55,7 +54,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 	</portlet:renderURL>
 
 	<liferay-ui:icon
-		image="assign"
 		message="add-child-partner"
 		url="<%= addChildPartnerURL %>"
 	/>

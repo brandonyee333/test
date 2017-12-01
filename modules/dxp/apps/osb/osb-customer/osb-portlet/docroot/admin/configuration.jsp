@@ -635,7 +635,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 											</liferay-portlet:renderURL>
 
 											<liferay-ui:icon
-												image="edit"
+												message="edit"
 												url="<%= updateServerURL %>"
 											/>
 										</liferay-ui:icon-menu>

@@ -158,7 +158,7 @@ portletURL.setParameter("supportLaborId", String.valueOf(supportLaborId));
 							<portlet:param name="supportWorkerId" value="<%= String.valueOf(supportWorker.getSupportWorkerId()) %>" />
 						</portlet:renderURL>
 
-						<liferay-ui:icon image="edit" url="<%= editURL %>" />
+						<liferay-ui:icon message="edit" url="<%= editURL %>" />
 					</liferay-ui:icon-menu>
 				</liferay-ui:search-container-column-text>
 			</c:if>
