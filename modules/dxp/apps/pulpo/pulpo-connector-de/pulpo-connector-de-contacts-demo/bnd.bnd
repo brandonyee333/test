@@ -1,0 +1,11 @@
+Bundle-Name: Liferay Pulpo Connector DE Contacts Demo
+Bundle-SymbolicName: com.liferay.pulpo.connector.de.contacts.demo
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.pulpo.connector.de.contacts.demo.service
+Web-ContextPath: /pulpo-connector-de-contacts-demo
+-includeresource:\
+	@lib/automaton.jar,\
+	@lib/commons-lang3.jar,\
+	@lib/generex.jar,\
+	@lib/javafaker.jar,\
+	@lib/snakeyaml.jar

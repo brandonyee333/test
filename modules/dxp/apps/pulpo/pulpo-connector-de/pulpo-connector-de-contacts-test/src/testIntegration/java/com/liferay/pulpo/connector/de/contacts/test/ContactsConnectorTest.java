@@ -23,12 +23,19 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 import static org.valid4j.matchers.jsonpath.JsonPathMatchers.hasJsonPath;
 
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
+import com.liferay.portal.kernel.image.ImageBag;
+import com.liferay.portal.kernel.image.ImageToolUtil;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Country;
@@ -66,17 +73,29 @@ import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserGroupTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portlet.expando.util.test.ExpandoTestUtil;
-import com.liferay.pulpo.connector.de.contacts.constants.ContactsEntryProviderDestinationNames;
+import com.liferay.pulpo.connector.de.contacts.constants.IndividualChunksDestinationNames;
 import com.liferay.pulpo.connector.de.contacts.test.util.ConnectorTestUtil;
 
+import java.awt.image.RenderedImage;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+
+import java.net.URL;
+
 import java.sql.Date;
+
+import java.text.DateFormat;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -620,6 +639,8 @@ public class ContactsConnectorTest {
 			Date.from(
 				localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
+		DateFormat dateInstance = ISO8601DateFormat.getDateInstance();
+
 		Consumer<String> validation = payload -> {
 			assertThat(
 				payload,
@@ -627,7 +648,7 @@ public class ContactsConnectorTest {
 					"contact",
 					hasJsonPath(
 						"birthday",
-						equalTo(String.valueOf(contact.getBirthday())))));
+						equalTo(dateInstance.format(contact.getBirthday())))));
 
 		};
 
@@ -696,7 +717,7 @@ public class ContactsConnectorTest {
 	}
 
 	@Test
-	public void testUpdateUser() throws Exception {
+	public void testUpdateUserEmailAddress() throws Exception {
 		Consumer<String> validation = payload -> {
 			assertThat(
 				payload,
@@ -724,6 +745,75 @@ public class ContactsConnectorTest {
 			"OK", message);
 	}
 
+	@Test
+	public void testUpdateUserPortrait() throws Exception {
+		URL url = new URL(
+			"https://randomuser.me/api?seed=pulpo-contacts-connector");
+
+		try (InputStream inputStream = url.openStream()) {
+			JSONObject rootJSONObject = JSONFactoryUtil.createJSONObject(
+				StringUtil.read(inputStream));
+
+			JSONArray resultsJSONArray = rootJSONObject.getJSONArray("results");
+
+			JSONObject contactJSONObject = resultsJSONArray.getJSONObject(0);
+
+			JSONObject picture = contactJSONObject.getJSONObject("picture");
+
+			String profilePictureURL = picture.getString("large");
+
+			final byte[] bytes = _recoverImageFromUrl(profilePictureURL);
+
+			Consumer<String> validation = payload -> {
+				try {
+					ImageBag imageBag = ImageToolUtil.read(bytes);
+
+					RenderedImage renderedImage = imageBag.getRenderedImage();
+
+					renderedImage = ImageToolUtil.scale(
+						renderedImage, 128, 128);
+
+					byte[] bytesAfterScale = ImageToolUtil.getBytes(
+						renderedImage, imageBag.getType());
+
+					final String stringBytesAfterScale =
+						Base64.getEncoder().encodeToString(bytesAfterScale);
+
+					assertThat(
+						payload,
+						hasJsonPath(
+							"portrait", equalTo(stringBytesAfterScale)));
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			};
+
+			BlockingQueue<String> result =
+				ConnectorTestUtil.registerContactMessageListener(
+					_DESTINATION, validation);
+
+			PortalUtil.updateImageId(
+				_user, true, bytes, "portraitId", bytes.length, 128, 128);
+
+			_user.setModifiedDate(new java.util.Date());
+
+			_user = UserLocalServiceUtil.updateUser(_user);
+
+			String message = result.poll(3, TimeUnit.SECONDS);
+
+			Assert.assertNotNull(
+				"The " + _DESTINATION +
+					" message has not been send to the message bus",
+				message);
+
+			Assert.assertEquals(
+				"Error in the reception of the " + _DESTINATION +
+					"message ",
+				"OK", message);
+		}
+	}
+
 	private static long _getListTypeId(String type) throws Exception {
 		List<ListType> listTypes = ListTypeServiceUtil.getListTypes(type);
 
@@ -732,12 +822,29 @@ public class ContactsConnectorTest {
 		return listType.getListTypeId();
 	}
 
+	private byte[] _recoverImageFromUrl(String urlText) throws Exception {
+		URL url = new URL(urlText);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+		try (InputStream inputStream = url.openStream()) {
+			int n = 0;
+
+			byte[] buffer = new byte[ 1024 ];
+
+			while (-1 != (n = inputStream.read(buffer))) {
+				output.write(buffer, 0, n);
+			}
+		}
+
+		return output.toByteArray();
+	}
+
 	private static final String _DESTINATION =
-		ContactsEntryProviderDestinationNames.UPDATE + "_" +
+		IndividualChunksDestinationNames.ADD + "_" +
 			System.getenv(PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME);
 
 	private static final String _DESTINATION_DELETE =
-		ContactsEntryProviderDestinationNames.DELETE + "_" +
+		IndividualChunksDestinationNames.DELETE + "_" +
 			System.getenv(PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME);
 
 	private Group _group;

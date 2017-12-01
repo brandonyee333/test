@@ -21,7 +21,9 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Image;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ImageServiceUtil;
 
 import java.io.IOException;
 
@@ -63,7 +65,20 @@ public class UserModelStdSerializer extends StdSerializer<User> {
 
 		jsonGenerator.writeStringField("openId", user.getOpenId());
 
-		jsonGenerator.writeNumberField("portraitId", user.getPortraitId());
+		try {
+			if (user.getPortraitId() > 0) {
+				Image image = ImageServiceUtil.getImage(user.getPortraitId());
+
+				if ((image != null) && (image.getTextObj() != null)) {
+					jsonGenerator.writeBinaryField(
+						"portrait", image.getTextObj());
+				}
+			}
+		}
+		catch (PortalException pe) {
+			_log.error(
+				"Can't serialize portrait of user " + user.getUserId(), pe);
+		}
 
 		jsonGenerator.writeStringField("screenName", user.getScreenName());
 
@@ -80,8 +95,10 @@ public class UserModelStdSerializer extends StdSerializer<User> {
 			jsonGenerator.writeObjectField("contact", user.getContact());
 		}
 		catch (PortalException pe) {
-			_log.error(
-				"Can't serialize contacts of user " + user.getUserId(), pe);
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Can't serialize contacts of user " + user.getUserId(), pe);
+			}
 		}
 
 		jsonGenerator.writeObjectField(

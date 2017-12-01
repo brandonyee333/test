@@ -15,6 +15,7 @@ dependencies {
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.util.java", version: "2.0.0"
 	testIntegrationCompile project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-contacts-api")
+	testIntegrationCompile project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-contacts-demo")
 	testIntegrationCompile project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-contacts-impl")
 
 	testIntegrationRuntime group: "com.liferay.portal", name: "com.liferay.portal.test", version: "2.0.0"

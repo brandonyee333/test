@@ -72,6 +72,7 @@ RUN rm -f $LIFERAY_HOME/deploy/*.* \
 COPY init.sh /
 COPY deploy/*.?ar $LIFERAY_HOME/osgi/modules/
 COPY libs/*.?ar $LIFERAY_HOME/osgi/modules/
+COPY log4j/*.xml $LIFERAY_HOME/osgi/log4j/
 COPY jolokia/jolokia-agent.properties /jolokia/
 COPY jolokia/lib/jolokia-agent.jar /jolokia/jolokia-agent.jar
 COPY supervisord-tomcat.conf /etc/supervisor/conf.d/supervisord-tomcat.conf

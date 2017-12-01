@@ -17,10 +17,13 @@ package com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 
 import com.liferay.portal.kernel.model.Contact;
 
 import java.io.IOException;
+
+import java.text.DateFormat;
 
 /**
  * @author Cristina González
@@ -45,8 +48,14 @@ public class ContactModelStdSerializer extends StdSerializer<Contact> {
 			jsonGenerator.writeStartObject();
 
 			jsonGenerator.writeNumberField("contactId", contact.getContactId());
-			jsonGenerator.writeStringField(
-				"birthday", contact.getBirthday().toString());
+
+			if (contact.getBirthday() != null) {
+				DateFormat dateFormat = ISO8601DateFormat.getDateInstance();
+
+				jsonGenerator.writeStringField(
+					"birthday", dateFormat.format(contact.getBirthday()));
+			}
+
 			jsonGenerator.writeStringField(
 				"employeeNumber", contact.getEmployeeNumber());
 			jsonGenerator.writeStringField(

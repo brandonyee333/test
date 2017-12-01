@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -11,18 +12,13 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+--%>
 
-package com.liferay.pulpo.connector.de.contacts.constants;
+<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-/**
- * @author Shinn Lok
- */
-public interface ContactsEntryProviderDestinationNames {
+<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 
-	public static final String DELETE =
-		"liferay_pulpo/contacts_entry_provider/delete";
+<liferay-theme:defineObjects />
 
-	public static final String UPDATE =
-		"liferay_pulpo/contacts_entry_provider/update";
-
-}
+<%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>

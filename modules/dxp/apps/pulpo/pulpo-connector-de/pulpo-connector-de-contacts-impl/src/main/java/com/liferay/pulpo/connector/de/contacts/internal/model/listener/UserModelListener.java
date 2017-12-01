@@ -18,7 +18,7 @@ import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.pulpo.connector.de.contacts.ContactsConnector;
-import com.liferay.pulpo.connector.de.contacts.constants.ContactsEntryProviderDestinationNames;
+import com.liferay.pulpo.connector.de.contacts.constants.IndividualChunksDestinationNames;
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.Serializer;
 import com.liferay.pulpo.connector.de.contacts.model.ContactsModelListener;
 
@@ -41,7 +41,7 @@ public class UserModelListener extends ContactsModelListener<User> {
 		String payload = _serializer.writeAsString(user);
 
 		_contactsConnector.sendMessage(
-			ContactsEntryProviderDestinationNames.DELETE, payload);
+			IndividualChunksDestinationNames.DELETE, payload);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class UserModelListener extends ContactsModelListener<User> {
 		String payload = _serializer.writeAsString(user);
 
 		_contactsConnector.sendMessage(
-			ContactsEntryProviderDestinationNames.UPDATE, payload);
+			IndividualChunksDestinationNames.ADD, payload);
 	}
 
 	@Reference
