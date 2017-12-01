@@ -10,7 +10,7 @@ import HTMLRenderer from '../../components/HTMLRenderer';
 import GoogleMap from '../../components/GoogleMap';
 
 import {indexDocuments} from '../../actions/documents';
-import {viewChild} from '../../actions/children';
+import {viewChildren} from '../../actions/children';
 
 import {getMimeType, updateDOMTitle} from '../../lib/util';
 
@@ -22,7 +22,7 @@ class ChildReport extends JSXComponent {
 
 		if (watsonChildId) {
 			props.indexDocuments(watsonChildId);
-			props.viewChild(watsonChildId);
+			props.viewChildren(watsonChildId);
 		}
 	}
 
@@ -417,9 +417,9 @@ function mapDispatchToProps(dispatch) {
 				indexDocuments({id})
 			);
 		},
-		viewChild: id => {
+		viewChildren: id => {
 			dispatch(
-				viewChild(id)
+				viewChildren(id)
 			);
 		}
 	};

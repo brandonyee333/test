@@ -13,7 +13,7 @@ import Sort from '../components/Sort';
 import TranslateChildForm from './forms/TranslateChild';
 import ViewIndex from './views/ViewIndex';
 
-import {editChild, refreshSubModel, updateChildrenDataManually, updateChildrenFormData} from '../actions/children';
+import {editChildren, refreshSubModel, updateChildrenDataManually, updateChildrenFormData} from '../actions/children';
 import {updateCollapsedEntries, updateCollapsedEntry} from '../actions/display';
 
 import {getOptionsLabelFromWatsonConstants} from '../lib/util';
@@ -25,7 +25,7 @@ class EditChild extends JSXComponent {
 		const {childrenStoreData} = props;
 
 		if (childrenStoreData.size < 1) {
-			props.editChild(props.router.params.watsonChildId);
+			props.editChildren(props.router.params.watsonChildId);
 		}
 	}
 
@@ -266,9 +266,9 @@ EditChild.SYNC_UPDATES = true;
 
 function mapDispatchToProps(dispatch) {
 	return {
-		editChild: data => {
+		editChildren: data => {
 			dispatch(
-				editChild(data)
+				editChildren(data)
 			);
 		},
 		refreshSubModel: data => {

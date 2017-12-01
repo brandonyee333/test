@@ -13,28 +13,28 @@ import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 
 import {
-	destroyPerson,
-	editPerson,
-	requestPersonTranslation,
+	destroyPeople,
+	editPeople,
+	requestPeopleTranslation,
+	updatePeople,
 	updatePeopleDataManually,
-	updatePeopleFormData,
-	updatePerson
+	updatePeopleFormData
 } from '../../actions/people';
 
 import {
-	destroyResource,
-	editResource,
-	requestResourceTranslation,
-	updateResource,
+	destroyResources,
+	editResources,
+	requestResourcesTranslation,
+	updateResources,
 	updateResourcesDataManually,
 	updateResourcesFormData
 } from '../../actions/resources';
 
 import {
-	destroyVehicle,
-	editVehicle,
-	requestVehicleTranslation,
-	updateVehicle,
+	destroyVehicles,
+	editVehicles,
+	requestVehiclesTranslation,
+	updateVehicles,
 	updateVehiclesDataManually,
 	updateVehiclesFormData
 } from '../../actions/vehicles';
@@ -72,6 +72,7 @@ class GenericIncidentForm extends JSXComponent {
 	detached() {
 		const {
 			action,
+			model,
 			response
 		} = this.props;
 
@@ -189,7 +190,9 @@ class GenericIncidentForm extends JSXComponent {
 	handleTranslationRequest() {
 		const {props} = this;
 
-		const {model, requestResourceTranslation, watsonIncidentId, watsonPrimaryKey} = props;
+		const {model, watsonIncidentId, watsonPrimaryKey} = props;
+
+		const requestModelTranslationMethod = props[`request${capitalize(model)}Translation`];
 
 		const translationURL = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonPrimaryKey}/translate`;
 
@@ -199,7 +202,7 @@ class GenericIncidentForm extends JSXComponent {
 			watsonPrimaryKey
 		};
 
-		requestResourceTranslation(translationRequestData);
+		requestModelTranslationMethod(translationRequestData);
 	}
 
 	handleUpdateFormData(formData) {
@@ -252,7 +255,7 @@ class GenericIncidentForm extends JSXComponent {
 				watsonPrimaryKey = responseData.get('id');
 
 				if (watsonPrimaryKey) {
-					Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/${watsonPrimaryKey}/edit`);
+					Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonPrimaryKey}/edit`);
 				}
 			}
 			else if (errors) {
@@ -392,49 +395,54 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		destroyPerson: watsonPersonId => {
+		destroyPeople: watsonPersonId => {
 			dispatch(
-				destroyPerson(watsonPersonId)
+				destroyPeople(watsonPersonId)
 			);
 		},
-		destroyResource: watsonPrimaryKey => {
+		destroyResources: watsonResourceId => {
 			dispatch(
-				destroyResource(watsonPrimaryKey)
+				destroyResources(watsonResourceId)
 			);
 		},
-		destroyVehicle: watsonVehicleId => {
+		destroyVehicles: watsonVehicleId => {
 			dispatch(
-				destroyVehicle(watsonVehicleId)
+				destroyVehicles(watsonVehicleId)
 			);
 		},
-		editPerson: watsonPersonId => {
+		editPeople: watsonPersonId => {
 			dispatch(
-				editPerson(watsonPersonId)
+				editPeople(watsonPersonId)
 			);
 		},
-		editResource: watsonPrimaryKey => {
+		editResources: watsonResourceId => {
 			dispatch(
-				editResource(watsonPrimaryKey)
+				editResources(watsonResourceId)
 			);
 		},
-		editVehicle: watsonVehicleId => {
+		editVehicles: watsonVehicleId => {
 			dispatch(
-				editVehicle(watsonVehicleId)
+				editVehicles(watsonVehicleId)
 			);
 		},
-		requestPersonTranslation: data => {
+		requestPeopleTranslation: data => {
 			dispatch(
-				requestPersonTranslation(data)
+				requestPeopleTranslation(data)
 			);
 		},
-		requestResourceTranslation: data => {
+		requestResourcesTranslation: data => {
 			dispatch(
-				requestResourceTranslation(data)
+				requestResourcesTranslation(data)
 			);
 		},
-		requestVehicleTranslation: data => {
+		requestVehiclesTranslation: data => {
 			dispatch(
-				requestVehicleTranslation(data)
+				requestVehiclesTranslation(data)
+			);
+		},
+		updatePeople: data => {
+			dispatch(
+				updatePeople(data)
 			);
 		},
 		updatePeopleDataManually: data => {
@@ -452,14 +460,9 @@ function mapDispatchToProps(dispatch) {
 				updatePeopleFormData(data)
 			);
 		},
-		updatePerson: data => {
+		updateResources: data => {
 			dispatch(
-				updatePerson(data)
-			);
-		},
-		updateResource: data => {
-			dispatch(
-				updateResource(data)
+				updateResources(data)
 			);
 		},
 		updateResourcesDataManually: data => {
@@ -467,19 +470,19 @@ function mapDispatchToProps(dispatch) {
 				updateResourcesDataManually(data)
 			);
 		},
-		updateResourcesFormData: (formData, watsonPrimaryKey = 0) => {
+		updateResourcesFormData: (formData, watsonResourceId = 0) => {
 			const data = {
 				formData,
-				watsonPrimaryKey
+				watsonResourceId
 			};
 
 			dispatch(
 				updateResourcesFormData(data)
 			);
 		},
-		updateVehicle: data => {
+		updateVehicles: data => {
 			dispatch(
-				updateVehicle(data)
+				updateVehicles(data)
 			);
 		},
 		updateVehiclesDataManually: data => {

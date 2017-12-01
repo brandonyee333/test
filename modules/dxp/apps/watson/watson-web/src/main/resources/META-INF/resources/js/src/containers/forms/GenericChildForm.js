@@ -12,17 +12,17 @@ import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 
 import {
-	destroyReport,
-	editReport,
-	updateReport,
+	destroyReports,
+	editReports,
+	updateReports,
 	updateReportsDataManually,
 	updateReportsFormData
 } from '../../actions/reports';
 
 import {
-	destroyDocument,
-	editDocument,
-	updateDocument,
+	destroyDocuments,
+	editDocuments,
+	updateDocuments,
 	updateDocumentsDataManually,
 	updateDocumentsFormData
 } from '../../actions/documents';
@@ -364,29 +364,29 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		destroyDocument: watsonPrimaryKey => {
+		destroyDocuments: watsonPrimaryKey => {
 			dispatch(
-				destroyDocument(watsonPrimaryKey)
+				destroyDocuments(watsonPrimaryKey)
 			);
 		},
-		destroyReport: watsonPrimaryKey => {
+		destroyReports: watsonPrimaryKey => {
 			dispatch(
-				destroyReport(watsonPrimaryKey)
+				destroyReports(watsonPrimaryKey)
 			);
 		},
-		editDocument: watsonPrimaryKey => {
+		editDocuments: watsonPrimaryKey => {
 			dispatch(
-				editDocument(watsonPrimaryKey)
+				editDocuments(watsonPrimaryKey)
 			);
 		},
-		editReport: watsonPrimaryKey => {
+		editReports: watsonPrimaryKey => {
 			dispatch(
-				editReport(watsonPrimaryKey)
+				editReports(watsonPrimaryKey)
 			);
 		},
-		updateDocument: data => {
+		updateDocuments: data => {
 			dispatch(
-				updateDocument(data)
+				updateDocuments(data)
 			);
 		},
 		updateDocumentsDataManually: data => {
@@ -404,9 +404,9 @@ function mapDispatchToProps(dispatch) {
 				updateDocumentsFormData(data)
 			);
 		},
-		updateReport: data => {
+		updateReports: data => {
 			dispatch(
-				updateReport(data)
+				updateReports(data)
 			);
 		},
 		updateReportsDataManually: data => {

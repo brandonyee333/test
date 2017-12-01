@@ -46,18 +46,18 @@ const {
 
 export {
 	actionTypes,
-	add as addVehicle,
-	create as createVehicle,
-	destroy as destroyVehicle,
-	edit as editVehicle,
+	add as addVehicles,
+	create as createVehicles,
+	destroy as destroyVehicles,
+	edit as editVehicles,
 	fetchMetrics as fetchVehicleMetrics,
-	fetchTranslation as fetchVehicleTranslation,
+	fetchTranslation as fetchVehiclesTranslation,
 	importModel as importVehicles,
 	index as indexVehicles,
-	requestTranslation as requestVehicleTranslation,
+	requestTranslation as requestVehiclesTranslation,
 	search as searchVehicles,
-	update as updateVehicle,
+	update as updateVehicles,
 	updateDataManually as updateVehiclesDataManually,
 	updateFormData as updateVehiclesFormData,
-	view as viewVehicle
+	view as viewVehicles
 };

@@ -60,19 +60,19 @@ function refreshSubModel(data) {
 
 export {
 	actionTypes,
-	add as addChild,
-	create as createChild,
-	destroy as destroyChild,
-	edit as editChild,
+	add as addChildren,
+	create as createChildren,
+	destroy as destroyChildren,
+	edit as editChildren,
 	fetchMetrics as fetchChildMetrics,
-	fetchTranslation as fetchChildTranslation,
+	fetchTranslation as fetchChildrenTranslation,
 	importModel as importChildren,
 	index as indexChildren,
 	refreshSubModel,
-	requestTranslation as requestChildTranslation,
+	requestTranslation as requestChildrenTranslation,
 	search as searchChildren,
-	update as updateChild,
+	update as updateChildren,
 	updateDataManually as updateChildrenDataManually,
 	updateFormData as updateChildrenFormData,
-	view as viewChild
+	view as viewChildren
 };

@@ -7,7 +7,7 @@ import sub from 'string-sub';
 import ContentHeader from '../../components/ContentHeader';
 import TranslationForm from '../../components/TranslationForm';
 
-import {fetchResourceTranslation, updateResource, viewResource} from '../../actions/resources';
+import {fetchResourcesTranslation, updateResources, viewResources} from '../../actions/resources';
 import {updateDOMTitle} from '../../lib/util';
 
 class TranslateResourceForm extends JSXComponent {
@@ -18,7 +18,7 @@ class TranslateResourceForm extends JSXComponent {
 
 		if (watsonResourceId) {
 			props.fetchTranslation(watsonResourceId);
-			props.viewResource(watsonResourceId);
+			props.viewResources(watsonResourceId);
 		}
 	}
 
@@ -122,17 +122,17 @@ function mapDispatchToProps(dispatch) {
 			};
 
 			dispatch(
-				fetchResourceTranslation(data)
+				fetchResourcesTranslation(data)
 			);
 		},
 		translateResource: data => {
 			dispatch(
-				updateResource(data, 'updateTranslation.json')
+				updateResources(data, 'updateTranslation.json')
 			);
 		},
-		viewResource: watsonResourceId => {
+		viewResources: watsonResourceId => {
 			dispatch(
-				viewResource(watsonResourceId)
+				viewResources(watsonResourceId)
 			);
 		}
 	};

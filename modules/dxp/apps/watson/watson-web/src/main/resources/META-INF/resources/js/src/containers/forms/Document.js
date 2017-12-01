@@ -12,9 +12,9 @@ import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 
 import {
-	destroyDocument,
-	editDocument,
-	updateDocument,
+	destroyDocuments,
+	editDocuments,
+	updateDocuments,
 	updateDocumentsDataManually,
 	updateDocumentsFormData
 } from '../../actions/documents';
@@ -26,7 +26,7 @@ class DocumentForm extends JSXComponent {
 		const {watsonDocumentId} = props;
 
 		if (watsonDocumentId) {
-			props.editDocument(watsonDocumentId);
+			props.editDocuments(watsonDocumentId);
 		}
 
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
@@ -131,7 +131,7 @@ class DocumentForm extends JSXComponent {
 	}
 
 	handleCreate(data) {
-		this.props.updateDocument(data);
+		this.props.updateDocuments(data);
 
 		this.state.dataSent = true;
 	}
@@ -140,7 +140,7 @@ class DocumentForm extends JSXComponent {
 		const {watsonChildId, watsonDocumentId} = this.props;
 
 		if (watsonDocumentId) {
-			this.props.destroyDocument(watsonDocumentId);
+			this.props.destroyDocuments(watsonDocumentId);
 
 			Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documentsindex`);
 		}
@@ -186,7 +186,7 @@ class DocumentForm extends JSXComponent {
 			cancelMethod,
 			headerStringLeft = Liferay.Language.get('create-document'),
 			headerStringRight,
-			submitMethod = props.updateDocument,
+			submitMethod = props.updateDocuments,
 			watsonDocumentId
 		} = props;
 
@@ -324,19 +324,19 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		destroyDocument: watsonDocumentId => {
+		destroyDocuments: watsonDocumentId => {
 			dispatch(
-				destroyDocument(watsonDocumentId)
+				destroyDocuments(watsonDocumentId)
 			);
 		},
-		editDocument: watsonDocumentId => {
+		editDocuments: watsonDocumentId => {
 			dispatch(
-				editDocument(watsonDocumentId)
+				editDocuments(watsonDocumentId)
 			);
 		},
-		updateDocument: data => {
+		updateDocuments: data => {
 			dispatch(
-				updateDocument(data)
+				updateDocuments(data)
 			);
 		},
 		updateDocumentsDataManually: data => {

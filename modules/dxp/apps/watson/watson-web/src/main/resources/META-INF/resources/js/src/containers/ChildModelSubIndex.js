@@ -6,11 +6,11 @@ import sub from 'string-sub';
 import NavigationHeader from '../components/NavigationHeader';
 import ViewIndex from './views/ViewIndex';
 
-import {editAddress} from '../actions/addresses';
+import {editAddresses} from '../actions/addresses';
 import {fetchIncidentAffiliations} from '../actions/incidents';
-import {editPerson} from '../actions/people';
-import {editResource} from '../actions/resources';
-import {editVehicle} from '../actions/vehicles';
+import {editPeople} from '../actions/people';
+import {editResources} from '../actions/resources';
+import {editVehicles} from '../actions/vehicles';
 
 import {getOptionsLabelFromWatsonConstants, getPluralMessage} from '../lib/util';
 
@@ -127,24 +127,24 @@ ChildModelSubIndex.PROPS = {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		editAddress: watsonAddressId => {
+		editAddresses: watsonAddressesId => {
 			dispatch(
-				editAddress(watsonAddressId)
+				editAddresses(watsonAddressesId)
 			);
 		},
-		editPerson: watsonPersonId => {
+		editPeople: watsonPeopleId => {
 			dispatch(
-				editPerson(watsonPersonId)
+				editPeople(watsonPeopleId)
 			);
 		},
-		editResource: watsonResourceId => {
+		editResources: watsonResourcesId => {
 			dispatch(
-				editResource(watsonResourceId)
+				editResources(watsonResourcesId)
 			);
 		},
-		editVehicle: watsonVehicleId => {
+		editVehicles: watsonVehiclesId => {
 			dispatch(
-				editVehicle(watsonVehicleId)
+				editVehicles(watsonVehiclesId)
 			);
 		},
 		fetchIncidentAffiliations: data => {

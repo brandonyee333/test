@@ -46,18 +46,18 @@ const {
 
 export {
 	actionTypes,
-	add as addResource,
-	create as createResource,
-	destroy as destroyResource,
-	edit as editResource,
+	add as addResources,
+	create as createResources,
+	destroy as destroyResources,
+	edit as editResources,
 	fetchMetrics as fetchResourceMetrics,
-	fetchTranslation as fetchResourceTranslation,
+	fetchTranslation as fetchResourcesTranslation,
 	importModel as importResources,
 	index as indexResources,
-	requestTranslation as requestResourceTranslation,
+	requestTranslation as requestResourcesTranslation,
 	search as searchResources,
-	update as updateResource,
+	update as updateResources,
 	updateDataManually as updateResourcesDataManually,
 	updateFormData as updateResourcesFormData,
-	view as viewResource
+	view as viewResources
 };

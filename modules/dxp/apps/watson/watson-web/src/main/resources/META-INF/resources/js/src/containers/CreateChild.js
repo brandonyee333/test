@@ -8,7 +8,7 @@ import ChildForm from './forms/Child';
 import Modal from '../components/Modal';
 import Navigation from '../components/Navigation';
 
-import {addChild, updateChildrenFormData} from '../actions/children';
+import {addChildren, updateChildrenFormData} from '../actions/children';
 
 import {updateDOMTitle} from '../lib/util';
 
@@ -204,9 +204,9 @@ CreateChild.SYNC_UPDATES = true;
 
 function mapDispatchToProps(dispatch) {
 	return {
-		addChild: data => {
+		addChildren: data => {
 			dispatch(
-				addChild(data)
+				addChildren(data)
 			);
 		},
 		updateChildrenFormData: data => {

@@ -9,7 +9,7 @@ import Button from '../../components/Button';
 import HTMLRenderer from '../../components/HTMLRenderer';
 import GoogleMap from '../../components/GoogleMap';
 
-import {viewIncident} from '../../actions/incidents';
+import {viewIncidents} from '../../actions/incidents';
 import {indexActivities} from '../../actions/activities';
 import {indexAddresses} from '../../actions/addresses';
 import {indexPeople} from '../../actions/people';
@@ -30,7 +30,7 @@ class IncidentReport extends JSXComponent {
 			props.indexPeople(watsonIncidentId);
 			props.indexResources(watsonIncidentId);
 			props.indexVehicles(watsonIncidentId);
-			props.viewIncident(watsonIncidentId);
+			props.viewIncidents(watsonIncidentId);
 		}
 	}
 
@@ -531,9 +531,9 @@ function mapDispatchToProps(dispatch) {
 				indexVehicles({id})
 			);
 		},
-		viewIncident: id => {
+		viewIncidents: id => {
 			dispatch(
-				viewIncident(id)
+				viewIncidents(id)
 			);
 		}
 	};

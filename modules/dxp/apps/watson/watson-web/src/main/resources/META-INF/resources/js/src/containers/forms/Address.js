@@ -15,11 +15,11 @@ import MicroForm from '../../components/MicroForm';
 import Modal from '../../components/Modal';
 
 import {
-	destroyAddress,
-	editAddress,
-	requestAddressTranslation,
-	sendAddressCoordinates,
-	updateAddress,
+	destroyAddresses,
+	editAddresses,
+	requestAddressesTranslation,
+	sendAddressesCoordinates,
+	updateAddresses,
 	updateAddressesDataManually,
 	updateAddressesFormData
 } from '../../actions/addresses';
@@ -33,7 +33,7 @@ class AddressForm extends JSXComponent {
 		const {watsonAddressId} = props;
 
 		if (watsonAddressId) {
-			props.editAddress(watsonAddressId);
+			props.editAddresses(watsonAddressId);
 		}
 
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
@@ -157,7 +157,7 @@ class AddressForm extends JSXComponent {
 	}
 
 	handleCreate(data) {
-		this.props.updateAddress(data);
+		this.props.updateAddresses(data);
 
 		this.state.dataSent = true;
 	}
@@ -166,7 +166,7 @@ class AddressForm extends JSXComponent {
 		const {watsonAddressId, watsonIncidentId} = this.props;
 
 		if (watsonAddressId) {
-			this.props.destroyAddress(watsonAddressId);
+			this.props.destroyAddresses(watsonAddressId);
 
 			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/addresses/index`);
 		}
@@ -187,7 +187,7 @@ class AddressForm extends JSXComponent {
 	}
 
 	handleMicroFormSubmit(data) {
-		this.props.sendAddressCoordinates(data);
+		this.props.sendAddressesCoordinates(data);
 
 		this.handleMicroFormClose();
 	}
@@ -195,7 +195,7 @@ class AddressForm extends JSXComponent {
 	handleTranslationRequest() {
 		const {props} = this;
 
-		const {model, requestAddressTranslation, watsonAddressId, watsonIncidentId} = props;
+		const {model, requestAddressesTranslation, watsonAddressId, watsonIncidentId} = props;
 
 		const translationURL = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonAddressId}/translate`;
 
@@ -205,7 +205,7 @@ class AddressForm extends JSXComponent {
 			watsonPrimaryKey: watsonAddressId
 		};
 
-		requestAddressTranslation(translationRequestData);
+		requestAddressesTranslation(translationRequestData);
 	}
 
 	handleUpdateFormData(formData) {
@@ -456,29 +456,29 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		destroyAddress: watsonAddressId => {
+		destroyAddresses: watsonAddressesId => {
 			dispatch(
-				destroyAddress(watsonAddressId)
+				destroyAddresses(watsonAddressesId)
 			);
 		},
-		editAddress: watsonAddressId => {
+		editAddresses: watsonAddressesId => {
 			dispatch(
-				editAddress(watsonAddressId)
+				editAddresses(watsonAddressesId)
 			);
 		},
-		requestAddressTranslation: data => {
+		requestAddressesTranslation: data => {
 			dispatch(
-				requestAddressTranslation(data)
+				requestAddressesTranslation(data)
 			);
 		},
-		sendAddressCoordinates: data => {
+		sendAddressesCoordinates: data => {
 			dispatch(
-				sendAddressCoordinates(data)
+				sendAddressesCoordinates(data)
 			);
 		},
-		updateAddress: data => {
+		updateAddresses: data => {
 			dispatch(
-				updateAddress(data)
+				updateAddresses(data)
 			);
 		},
 		updateAddressesDataManually: data => {

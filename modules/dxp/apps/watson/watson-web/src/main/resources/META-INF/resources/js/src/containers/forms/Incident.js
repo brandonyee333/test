@@ -13,8 +13,8 @@ import Modal from '../../components/Modal';
 
 import {
 	indexIncidents,
-	requestIncidentTranslation,
-	updateIncident,
+	requestIncidentsTranslation,
+	updateIncidents,
 	updateIncidentsDataManually,
 	updateIncidentsFormData
 } from '../../actions/incidents';
@@ -131,13 +131,13 @@ class IncidentForm extends JSXComponent {
 	}
 
 	handleSubmit(formData) {
-		this.props.updateIncident(formData);
+		this.props.updateIncidents(formData);
 	}
 
 	handleTranslationRequest() {
 		const {props} = this;
 
-		const {model, requestIncidentTranslation, watsonIncidentId} = props;
+		const {model, requestIncidentsTranslation, watsonIncidentId} = props;
 
 		const translationURL = `${WatsonConstants.urls.baseURL}/${model}/${watsonIncidentId}/translate`;
 
@@ -147,7 +147,7 @@ class IncidentForm extends JSXComponent {
 			watsonPrimaryKey: watsonIncidentId
 		};
 
-		requestIncidentTranslation(translationRequestData);
+		requestIncidentsTranslation(translationRequestData);
 	}
 
 	handleUpdateFormData(formData) {
@@ -316,14 +316,14 @@ function mapDispatchToProps(dispatch) {
 				indexIncidents(data)
 			);
 		},
-		requestIncidentTranslation: data => {
+		requestIncidentsTranslation: data => {
 			dispatch(
-				requestIncidentTranslation(data)
+				requestIncidentsTranslation(data)
 			);
 		},
-		updateIncident: data => {
+		updateIncidents: data => {
 			dispatch(
-				updateIncident(data)
+				updateIncidents(data)
 			);
 		},
 		updateIncidentsDataManually: data => {

@@ -60,19 +60,19 @@ function fetchDraft(data) {
 
 export {
 	actionTypes,
-	add as addActivity,
-	create as createActivity,
-	destroy as destroyActivity,
-	edit as editActivity,
-	fetchDraft as fetchActivityDraft,
+	add as addActivities,
+	create as createActivities,
+	destroy as destroyActivities,
+	edit as editActivities,
+	fetchDraft as fetchActivitiesDraft,
 	fetchMetrics as fetchActivityMetrics,
-	fetchTranslation as fetchActivityTranslation,
+	fetchTranslation as fetchActivitiesTranslation,
 	importModel as importActivities,
 	index as indexActivities,
-	requestTranslation as requestActivityTranslation,
+	requestTranslation as requestActivitiesTranslation,
 	search as searchActivities,
-	update as updateActivity,
+	update as updateActivities,
 	updateDataManually as updateActivitiesDataManually,
 	updateFormData as updateActivitiesFormData,
-	view as viewActivity
+	view as viewActivities
 };

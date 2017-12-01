@@ -12,10 +12,10 @@ import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 
 import {
-	destroyChild,
-	editChild,
-	requestChildTranslation,
-	updateChild,
+	destroyChildren,
+	editChildren,
+	requestChildrenTranslation,
+	updateChildren,
 	updateChildrenDataManually,
 	updateChildrenFormData
 } from '../../actions/children';
@@ -27,7 +27,7 @@ class ChildForm extends JSXComponent {
 		const {watsonChildId} = props;
 
 		if (watsonChildId) {
-			props.editChild(watsonChildId);
+			props.editChildren(watsonChildId);
 		}
 
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
@@ -143,7 +143,7 @@ class ChildForm extends JSXComponent {
 		const {watsonChildId} = this.props;
 
 		if (watsonChildId) {
-			this.props.destroyChild(watsonChildId);
+			this.props.destroyChildren(watsonChildId);
 
 			Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/index`);
 		}
@@ -162,7 +162,7 @@ class ChildForm extends JSXComponent {
 	handleTranslationRequest() {
 		const {props} = this;
 
-		const {model, requestChildTranslation, watsonChildId} = props;
+		const {model, requestChildrenTranslation, watsonChildId} = props;
 
 		const translationURL = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/translate`;
 
@@ -172,7 +172,7 @@ class ChildForm extends JSXComponent {
 			watsonPrimaryKey: watsonChildId
 		};
 
-		requestChildTranslation(translationRequestData);
+		requestChildrenTranslation(translationRequestData);
 	}
 
 	handleUpdateFormData(formData) {
@@ -199,7 +199,7 @@ class ChildForm extends JSXComponent {
 			model,
 			response,
 			storeData = props.data,
-			submitMethod = props.updateChild,
+			submitMethod = props.updateChildren,
 			watsonChildId
 		} = props;
 
@@ -323,24 +323,24 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		destroyChild: watsonChildId => {
+		destroyChildren: watsonChildId => {
 			dispatch(
-				destroyChild(watsonChildId)
+				destroyChildren(watsonChildId)
 			);
 		},
-		editChild: watsonChildId => {
+		editChildren: watsonChildId => {
 			dispatch(
-				editChild(watsonChildId)
+				editChildren(watsonChildId)
 			);
 		},
-		requestChildTranslation: data => {
+		requestChildrenTranslation: data => {
 			dispatch(
-				requestChildTranslation(data)
+				requestChildrenTranslation(data)
 			);
 		},
-		updateChild: data => {
+		updateChildren: data => {
 			dispatch(
-				updateChild(data)
+				updateChildren(data)
 			);
 		},
 		updateChildrenDataManually: data => {

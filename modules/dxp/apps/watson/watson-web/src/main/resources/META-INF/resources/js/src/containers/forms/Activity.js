@@ -13,13 +13,13 @@ import Modal from '../../components/Modal';
 import sendRequest from '../../lib/request';
 
 import {
-	destroyActivity,
-	editActivity,
-	fetchActivityDraft,
-	requestActivityTranslation,
+	destroyActivities,
+	editActivities,
+	fetchActivitiesDraft,
+	requestActivitiesTranslation,
+	updateActivities,
 	updateActivitiesDataManually,
-	updateActivitiesFormData,
-	updateActivity
+	updateActivitiesFormData
 } from '../../actions/activities';
 
 class ActivityForm extends JSXComponent {
@@ -33,10 +33,10 @@ class ActivityForm extends JSXComponent {
 		} = props;
 
 		if (watsonActivityId) {
-			props.editActivity(watsonActivityId);
+			props.editActivities(watsonActivityId);
 		}
 		else if (action === 'create' && watsonIncidentId) {
-			props.fetchActivityDraft(watsonIncidentId);
+			props.fetchActivitiesDraft(watsonIncidentId);
 		}
 
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
@@ -247,16 +247,16 @@ class ActivityForm extends JSXComponent {
 	}
 
 	handleCreate(data) {
-		this.props.updateActivity(data);
+		this.props.updateActivities(data);
 
 		this.state.dataSent = true;
 	}
 
 	handleDelete() {
-		const {watsonActivityId, watsonIncidentId} = this.props;
+		const {destroyActivities, watsonActivityId, watsonIncidentId} = this.props;
 
 		if (watsonActivityId) {
-			this.props.destroyActivity(watsonActivityId);
+			destroyActivities(watsonActivityId);
 
 			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/index`);
 		}
@@ -275,7 +275,7 @@ class ActivityForm extends JSXComponent {
 	handleTranslationRequest() {
 		const {props} = this;
 
-		const {model, requestActivityTranslation, watsonActivityId, watsonIncidentId} = props;
+		const {model, requestActivitiesTranslation, watsonActivityId, watsonIncidentId} = props;
 
 		const translationURL = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonActivityId}/translate`;
 
@@ -285,11 +285,11 @@ class ActivityForm extends JSXComponent {
 			watsonPrimaryKey: watsonActivityId
 		};
 
-		requestActivityTranslation(translationRequestData);
+		requestActivitiesTranslation(translationRequestData);
 	}
 
 	handleUpdate(data) {
-		this.props.updateActivity(data);
+		this.props.updateActivities(data);
 
 		this.state.autoCreated = false;
 	}
@@ -488,29 +488,34 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		autoCreateActivity: data => {
+		autoCreateActivities: data => {
 			dispatch(
-				updateActivity(data, 'autoCreate.json')
+				updateActivities(data, 'autoCreate.json')
 			);
 		},
-		destroyActivity: watsonActivityId => {
+		destroyActivities: watsonActivityId => {
 			dispatch(
-				destroyActivity(watsonActivityId)
+				destroyActivities(watsonActivityId)
 			);
 		},
-		editActivity: watsonActivityId => {
+		editActivities: watsonActivityId => {
 			dispatch(
-				editActivity(watsonActivityId)
+				editActivities(watsonActivityId)
 			);
 		},
-		fetchActivityDraft: watsonIncidentId => {
+		fetchActivitiesDraft: watsonIncidentId => {
 			dispatch(
-				fetchActivityDraft({watsonIncidentId})
+				fetchActivitiesDraft({watsonIncidentId})
 			);
 		},
-		requestActivityTranslation: data => {
+		requestActivitiesTranslation: data => {
 			dispatch(
-				requestActivityTranslation(data)
+				requestActivitiesTranslation(data)
+			);
+		},
+		updateActivities: data => {
+			dispatch(
+				updateActivities(data)
 			);
 		},
 		updateActivitiesDataManually: data => {
@@ -526,11 +531,6 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				updateActivitiesFormData(data)
-			);
-		},
-		updateActivity: data => {
-			dispatch(
-				updateActivity(data)
 			);
 		}
 	};

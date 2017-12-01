@@ -38,12 +38,12 @@ const {updateDataManually} = supplemental.actions;
 
 export {
 	actionTypes,
-	add as addHistory,
-	create as createHistory,
-	destroy as destroyHistory,
-	edit as editHistory,
+	add as addHistories,
+	create as createHistories,
+	destroy as destroyHistories,
+	edit as editHistories,
 	index as indexHistories,
 	updateDataManually as updateHistoriesDataManually,
-	update as updateHistory,
-	view as viewHistory
+	update as updateHistories,
+	view as viewHistories
 };

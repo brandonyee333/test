@@ -60,19 +60,19 @@ function sendCoordinates(data) {
 
 export {
 	actionTypes,
-	add as addAddress,
-	create as createAddress,
-	destroy as destroyAddress,
-	edit as editAddress,
+	add as addAddresses,
+	create as createAddresses,
+	destroy as destroyAddresses,
+	edit as editAddresses,
 	fetchMetrics as fetchAddressMetrics,
-	fetchTranslation as fetchAddressTranslation,
+	fetchTranslation as fetchAddressesTranslation,
 	importModel as importAddresses,
 	index as indexAddresses,
-	requestTranslation as requestAddressTranslation,
+	requestTranslation as requestAddressesTranslation,
 	search as searchAddresses,
-	sendCoordinates as sendAddressCoordinates,
-	update as updateAddress,
+	sendCoordinates as sendAddressesCoordinates,
+	update as updateAddresses,
 	updateDataManually as updateAddressesDataManually,
 	updateFormData as updateAddressesFormData,
-	view as viewAddress
+	view as viewAddresses
 };

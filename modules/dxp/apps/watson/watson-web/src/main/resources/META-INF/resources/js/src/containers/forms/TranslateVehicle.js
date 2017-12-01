@@ -7,7 +7,7 @@ import sub from 'string-sub';
 import ContentHeader from '../../components/ContentHeader';
 import TranslationForm from '../../components/TranslationForm';
 
-import {fetchVehicleTranslation, updateVehicle, viewVehicle} from '../../actions/vehicles';
+import {fetchVehiclesTranslation, updateVehicles, viewVehicles} from '../../actions/vehicles';
 import {updateDOMTitle} from '../../lib/util';
 
 class TranslateVehicleForm extends JSXComponent {
@@ -18,7 +18,7 @@ class TranslateVehicleForm extends JSXComponent {
 
 		if (watsonVehicleId) {
 			props.fetchTranslation(watsonVehicleId);
-			props.viewVehicle(watsonVehicleId);
+			props.viewVehicles(watsonVehicleId);
 		}
 	}
 
@@ -121,17 +121,17 @@ function mapDispatchToProps(dispatch) {
 			};
 
 			dispatch(
-				fetchVehicleTranslation(data)
+				fetchVehiclesTranslation(data)
 			);
 		},
 		translateVehicle: data => {
 			dispatch(
-				updateVehicle(data, 'updateTranslation.json')
+				updateVehicles(data, 'updateTranslation.json')
 			);
 		},
-		viewVehicle: watsonVehicleId => {
+		viewVehicles: watsonVehicleId => {
 			dispatch(
-				viewVehicle(watsonVehicleId)
+				viewVehicles(watsonVehicleId)
 			);
 		}
 	};

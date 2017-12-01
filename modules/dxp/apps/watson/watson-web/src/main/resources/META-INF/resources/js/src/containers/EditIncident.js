@@ -26,7 +26,7 @@ import {updateActivitiesDataManually} from '../actions/activities';
 import {importAddresses, updateAddressesDataManually, updateAddressesFormData} from '../actions/addresses';
 import {updateCollapsedEntries, updateCollapsedEntry} from '../actions/display';
 import {updateHistoriesDataManually} from '../actions/histories';
-import {editIncident, indexIncidents, refreshSubModel, updateIncidentsDataManually, updateIncidentsFormData} from '../actions/incidents';
+import {editIncidents, indexIncidents, refreshSubModel, updateIncidentsDataManually, updateIncidentsFormData} from '../actions/incidents';
 import {importPeople, updatePeopleDataManually} from '../actions/people';
 import {updateRelationshipsDataManually} from '../actions/relationships';
 import {importResources, updateResourcesDataManually} from '../actions/resources';
@@ -41,7 +41,7 @@ class EditIncident extends JSXComponent {
 		const {incidentStoreData} = props;
 
 		if (incidentStoreData.size < 1) {
-			props.editIncident(props.router.params.watsonIncidentId);
+			props.editIncidents(props.router.params.watsonIncidentId);
 		}
 	}
 
@@ -840,9 +840,9 @@ EditIncident.SYNC_UPDATES = true;
 
 function mapDispatchToProps(dispatch) {
 	return {
-		editIncident: data => {
+		editIncidents: data => {
 			dispatch(
-				editIncident(data)
+				editIncidents(data)
 			);
 		},
 		importAddress: data => {

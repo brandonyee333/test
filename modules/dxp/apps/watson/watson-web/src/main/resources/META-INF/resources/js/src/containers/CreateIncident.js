@@ -9,7 +9,7 @@ import IncidentForm from './forms/Incident';
 import Modal from '../components/Modal';
 import Navigation from '../components/Navigation';
 
-import {addIncident, updateIncidentAddressFormData, updateIncidentsFormData} from '../actions/incidents';
+import {addIncidents, updateIncidentAddressFormData, updateIncidentsFormData} from '../actions/incidents';
 
 import {updateDOMTitle} from '../lib/util';
 
@@ -251,9 +251,9 @@ CreateIncident.SYNC_UPDATES = true;
 
 function mapDispatchToProps(dispatch) {
 	return {
-		addIncident: data => {
+		addIncidents: data => {
 			dispatch(
-				addIncident(data)
+				addIncidents(data)
 			);
 		},
 		updateIncidentAddressFormData: data => {

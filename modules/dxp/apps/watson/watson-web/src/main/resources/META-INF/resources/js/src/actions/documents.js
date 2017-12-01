@@ -46,18 +46,18 @@ const {
 
 export {
 	actionTypes,
-	add as addDocument,
-	create as createDocument,
-	destroy as destroyDocument,
-	edit as editDocument,
+	add as addDocuments,
+	create as createDocuments,
+	destroy as destroyDocuments,
+	edit as editDocuments,
 	fetchMetrics as fetchDocumentMetrics,
-	fetchTranslation as fetchDocumentTranslation,
+	fetchTranslation as fetchDocumentsTranslation,
 	importModel as importDocuments,
 	index as indexDocuments,
-	requestTranslation as requestDocumentTranslation,
+	requestTranslation as requestDocumentsTranslation,
 	search as searchDocuments,
-	update as updateDocument,
+	update as updateDocuments,
 	updateDataManually as updateDocumentsDataManually,
 	updateFormData as updateDocumentsFormData,
-	view as viewDocument
+	view as viewDocuments
 };

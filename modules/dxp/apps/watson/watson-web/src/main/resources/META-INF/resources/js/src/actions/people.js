@@ -46,18 +46,18 @@ const {
 
 export {
 	actionTypes,
-	add as addPerson,
-	create as createPerson,
-	destroy as destroyPerson,
-	edit as editPerson,
+	add as addPeople,
+	create as createPeople,
+	destroy as destroyPeople,
+	edit as editPeople,
 	fetchMetrics as fetchPersonMetrics,
-	fetchTranslation as fetchPersonTranslation,
+	fetchTranslation as fetchPeopleTranslation,
 	importModel as importPeople,
 	index as indexPeople,
-	requestTranslation as requestPersonTranslation,
+	requestTranslation as requestPeopleTranslation,
 	search as searchPeople,
-	update as updatePerson,
+	update as updatePeople,
 	updateDataManually as updatePeopleDataManually,
 	updateFormData as updatePeopleFormData,
-	view as viewPerson
+	view as viewPeople
 };

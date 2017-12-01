@@ -41,9 +41,9 @@ const {
 
 export {
 	actionTypes,
-	add as addRelationship,
-	create as createRelationship,
-	destroy as destroyRelationship,
+	add as addRelationships,
+	create as createRelationships,
+	destroy as destroyRelationships,
 	edit as editRelationships,
 	index as indexRelationships,
 	update as updateRelationships,

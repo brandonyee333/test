@@ -7,7 +7,7 @@ import sub from 'string-sub';
 import ContentHeader from '../../components/ContentHeader';
 import TranslationForm from '../../components/TranslationForm';
 
-import {fetchIncidentTranslation, updateIncident} from '../../actions/incidents';
+import {fetchIncidentsTranslation, updateIncidents} from '../../actions/incidents';
 import {updateDOMTitle} from '../../lib/util';
 
 class TranslateIncidentForm extends JSXComponent {
@@ -109,12 +109,12 @@ function mapDispatchToProps(dispatch) {
 			};
 
 			dispatch(
-				fetchIncidentTranslation(data)
+				fetchIncidentsTranslation(data)
 			);
 		},
 		translateIncident: data => {
 			dispatch(
-				updateIncident(data, 'updateTranslation.json')
+				updateIncidents(data, 'updateTranslation.json')
 			);
 		}
 	};

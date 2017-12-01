@@ -7,7 +7,7 @@ import sub from 'string-sub';
 import ContentHeader from '../../components/ContentHeader';
 import TranslationForm from '../../components/TranslationForm';
 
-import {fetchChildTranslation, updateChild, viewChild} from '../../actions/children';
+import {fetchChildrenTranslation, updateChildren, viewChildren} from '../../actions/children';
 import {updateDOMTitle} from '../../lib/util';
 
 class TranslateChildForm extends JSXComponent {
@@ -18,7 +18,7 @@ class TranslateChildForm extends JSXComponent {
 
 		if (watsonChildId) {
 			props.fetchTranslation(watsonChildId);
-			props.viewChild(watsonChildId);
+			props.viewChildren(watsonChildId);
 		}
 	}
 
@@ -120,17 +120,17 @@ function mapDispatchToProps(dispatch) {
 			};
 
 			dispatch(
-				fetchChildTranslation(data)
+				fetchChildrenTranslation(data)
 			);
 		},
 		translateChild: data => {
 			dispatch(
-				updateChild(data, 'updateTranslation.json')
+				updateChildren(data, 'updateTranslation.json')
 			);
 		},
-		viewChild: watsonChildId => {
+		viewChildren: watsonChildId => {
 			dispatch(
-				viewChild(watsonChildId)
+				viewChildren(watsonChildId)
 			);
 		}
 	};

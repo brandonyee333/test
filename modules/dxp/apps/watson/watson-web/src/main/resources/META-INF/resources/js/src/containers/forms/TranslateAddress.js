@@ -7,7 +7,7 @@ import sub from 'string-sub';
 import ContentHeader from '../../components/ContentHeader';
 import TranslationForm from '../../components/TranslationForm';
 
-import {fetchAddressTranslation, updateAddress, viewAddress} from '../../actions/addresses';
+import {fetchAddressesTranslation, updateAddresses, viewAddresses} from '../../actions/addresses';
 import {updateDOMTitle} from '../../lib/util';
 
 class TranslateAddressForm extends JSXComponent {
@@ -18,7 +18,7 @@ class TranslateAddressForm extends JSXComponent {
 
 		if (watsonAddressId) {
 			props.fetchTranslation(watsonAddressId);
-			props.viewAddress(watsonAddressId);
+			props.viewAddresses(watsonAddressId);
 		}
 	}
 
@@ -124,17 +124,17 @@ function mapDispatchToProps(dispatch) {
 			};
 
 			dispatch(
-				fetchAddressTranslation(data)
+				fetchAddressesTranslation(data)
 			);
 		},
 		translateAddress: data => {
 			dispatch(
-				updateAddress(data, 'updateTranslation.json')
+				updateAddresses(data, 'updateTranslation.json')
 			);
 		},
-		viewAddress: watsonAddressId => {
+		viewAddresses: watsonAddressId => {
 			dispatch(
-				viewAddress(watsonAddressId)
+				viewAddresses(watsonAddressId)
 			);
 		}
 	};

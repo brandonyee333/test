@@ -8,7 +8,7 @@ import sub from 'string-sub';
 import ContentHeader from '../../components/ContentHeader';
 import TranslationForm from '../../components/TranslationForm';
 
-import {fetchActivityTranslation, updateActivity, viewActivity} from '../../actions/activities';
+import {fetchActivitiesTranslation, updateActivities, viewActivities} from '../../actions/activities';
 import sendRequest from '../../lib/request';
 import {getModifiedMoment, updateDOMTitle} from '../../lib/util';
 
@@ -20,7 +20,7 @@ class TranslateActivityForm extends JSXComponent {
 
 		if (watsonActivityId) {
 			props.fetchTranslation(watsonActivityId);
-			props.viewActivity(watsonActivityId);
+			props.viewActivities(watsonActivityId);
 		}
 	}
 
@@ -183,17 +183,17 @@ function mapDispatchToProps(dispatch) {
 			};
 
 			dispatch(
-				fetchActivityTranslation(data)
+				fetchActivitiesTranslation(data)
 			);
 		},
 		translateActivity: data => {
 			dispatch(
-				updateActivity(data, 'updateTranslation.json')
+				updateActivities(data, 'updateTranslation.json')
 			);
 		},
-		viewActivity: watsonActivityId => {
+		viewActivities: watsonActivityId => {
 			dispatch(
-				viewActivity(watsonActivityId)
+				viewActivities(watsonActivityId)
 			);
 		}
 	};

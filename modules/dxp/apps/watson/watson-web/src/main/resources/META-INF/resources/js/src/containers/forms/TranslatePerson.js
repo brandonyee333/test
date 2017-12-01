@@ -7,7 +7,7 @@ import sub from 'string-sub';
 import ContentHeader from '../../components/ContentHeader';
 import TranslationForm from '../../components/TranslationForm';
 
-import {fetchPersonTranslation, updatePerson, viewPerson} from '../../actions/people';
+import {fetchPeopleTranslation, updatePeople, viewPeople} from '../../actions/people';
 import {updateDOMTitle} from '../../lib/util';
 
 class TranslatePersonForm extends JSXComponent {
@@ -18,7 +18,7 @@ class TranslatePersonForm extends JSXComponent {
 
 		if (watsonPersonId) {
 			props.fetchTranslation(watsonPersonId);
-			props.viewPerson(watsonPersonId);
+			props.viewPeople(watsonPersonId);
 		}
 	}
 
@@ -122,17 +122,17 @@ function mapDispatchToProps(dispatch) {
 			};
 
 			dispatch(
-				fetchPersonTranslation(data)
+				fetchPeopleTranslation(data)
 			);
 		},
 		translatePerson: data => {
 			dispatch(
-				updatePerson(data, 'updateTranslation.json')
+				updatePeople(data, 'updateTranslation.json')
 			);
 		},
-		viewPerson: watsonPersonId => {
+		viewPeople: watsonPersonId => {
 			dispatch(
-				viewPerson(watsonPersonId)
+				viewPeople(watsonPersonId)
 			);
 		}
 	};

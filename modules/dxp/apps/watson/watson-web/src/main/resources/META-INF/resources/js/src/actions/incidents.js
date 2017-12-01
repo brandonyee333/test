@@ -80,20 +80,20 @@ function updateIncidentAddressFormData(data) {
 
 export {
 	actionTypes,
-	add as addIncident,
-	create as createIncident,
-	destroy as destroyIncident,
-	edit as editIncident,
+	add as addIncidents,
+	create as createIncidents,
+	destroy as destroyIncidents,
+	edit as editIncidents,
 	fetchAffiliations as fetchIncidentAffiliations,
 	fetchMetrics as fetchIncidentMetrics,
-	fetchTranslation as fetchIncidentTranslation,
+	fetchTranslation as fetchIncidentsTranslation,
 	index as indexIncidents,
 	refreshSubModel,
-	requestTranslation as requestIncidentTranslation,
+	requestTranslation as requestIncidentsTranslation,
 	search as searchIncidents,
-	update as updateIncident,
+	update as updateIncidents,
 	updateDataManually as updateIncidentsDataManually,
 	updateFormData as updateIncidentsFormData,
 	updateIncidentAddressFormData,
-	view as viewIncident
+	view as viewIncidents
 };
