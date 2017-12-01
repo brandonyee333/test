@@ -6,11 +6,11 @@ import sub from 'string-sub';
 
 import Button from '../components/Button';
 import ChildForm from './forms/Child';
-import DocumentForm from './forms/Document';
+import GenericChildForm from './forms/GenericChildForm';
+import GenericTranslationForm from './forms/GenericTranslationForm';
 import Navigation from '../components/Navigation';
 import NavigationHeader from '../components/NavigationHeader';
 import Sort from '../components/Sort';
-import TranslateChildForm from './forms/TranslateChild';
 import ViewIndex from './views/ViewIndex';
 
 import {editChildren, refreshSubModel, updateChildrenDataManually, updateChildrenFormData} from '../actions/children';
@@ -73,14 +73,26 @@ class EditChild extends JSXComponent {
 			}
 			else {
 				view = (
-					<DocumentForm
+					<GenericChildForm
 						action={action}
 						childName={childName}
 						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.documents.inputs}
+						formConfig={[
+							'id',
+							'imagePayload',
+							'receivedDate',
+							'originalDocument',
+							'parentTypeWatsonListTypeId',
+							'typeWatsonListTypeId',
+							'subtypeWatsonListTypeId',
+							'watsonRelationships'
+						]}
 						formData={props.modelFormData}
+						model={model}
 						storeData={props.modelStoreData}
 						watsonChildId={watsonChildId}
-						watsonDocumentId={entryId}
+						watsonPrimaryKey={entryId}
 					/>
 				);
 			}
@@ -161,12 +173,19 @@ class EditChild extends JSXComponent {
 		}
 		else if (action === 'translate') {
 			view = (
-				<TranslateChildForm
+				<GenericTranslationForm
 					action={action}
 					childName={childName}
 					disabled={childDisabled}
+					fieldConfig={WatsonConstants.inputConfig.children.inputs}
+					formConfig={[
+						'source'
+					]}
+					model={model}
+					parentModel="children"
 					storeData={props.childrenStoreData}
 					watsonChildId={watsonChildId}
+					watsonPrimaryKey={watsonChildId}
 				/>
 			);
 		}
@@ -271,7 +290,7 @@ class EditChild extends JSXComponent {
 				collapsible: false,
 				entries: null,
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit`,
-				selected: !model,
+				selected: ((action === 'edit' || action === 'relate' || action === 'translate') && model === 'children'),
 				text: Liferay.Language.get('details')
 			},
 			{
@@ -429,7 +448,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state, props) {
-	const {action = 'edit', entryId = 0, model, watsonChildId} = props.router.params;
+	const {action = 'edit', entryId = 0, model = 'children', watsonChildId} = props.router.params;
 
 	const childFormData = state.getIn(['children', 'formData', watsonChildId]) || {};
 	const childrenStoreData = state.getIn(['children', 'data', watsonChildId]) || new Map();

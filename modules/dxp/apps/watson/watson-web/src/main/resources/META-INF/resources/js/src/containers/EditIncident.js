@@ -8,18 +8,13 @@ import Button from '../components/Button';
 import ActivityForm from './forms/Activity';
 import AddressForm from './forms/Address';
 import GenericIncidentForm from './forms/GenericIncidentForm';
+import GenericTranslateForm from './forms/GenericTranslationForm';
 import HistoryView from './views/History';
 import IncidentForm from './forms/Incident';
 import Navigation from '../components/Navigation';
 import NavigationHeader from '../components/NavigationHeader';
 import RelationshipsView from './views/Relationships';
 import Sort from '../components/Sort';
-import TranslateActivityForm from './forms/TranslateActivity';
-import TranslateAddressForm from './forms/TranslateAddress';
-import TranslateIncidentForm from './forms/TranslateIncident';
-import TranslatePersonForm from './forms/TranslatePerson';
-import TranslateResourceForm from './forms/TranslateResource';
-import TranslateVehicleForm from './forms/TranslateVehicle';
 import ViewIndex from './views/ViewIndex';
 
 import {updateActivitiesDataManually} from '../actions/activities';
@@ -90,12 +85,19 @@ class EditIncident extends JSXComponent {
 			}
 			else if (action === 'translate') {
 				view = (
-					<TranslateActivityForm
+					<GenericTranslateForm
 						action={action}
+						autoSaveEnabled={true}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
-						watsonActivityId={entryId}
+						fieldConfig={WatsonConstants.inputConfig.activities.inputs}
+						formConfig={[
+							'narrative'
+						]}
+						model={model}
+						parentModel="incidents"
+						primaryName={incidentName}
 						watsonIncidentId={watsonIncidentId}
+						watsonPrimaryKey={entryId}
 					/>
 				);
 			}
@@ -116,12 +118,21 @@ class EditIncident extends JSXComponent {
 		else if (model === 'addresses') {
 			if (action === 'translate') {
 				view = (
-					<TranslateAddressForm
+					<GenericTranslateForm
 						action={action}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
-						watsonAddressId={entryId}
+						fieldConfig={WatsonConstants.inputConfig.addresses.inputs}
+						formConfig={[
+							'name',
+							'street',
+							'building',
+							'description'
+						]}
+						model={model}
+						parentModel="incidents"
+						primaryName={incidentName}
 						watsonIncidentId={watsonIncidentId}
+						watsonPrimaryKey={entryId}
 					/>
 				);
 			}
@@ -245,12 +256,19 @@ class EditIncident extends JSXComponent {
 			}
 			else if (action === 'translate') {
 				view = (
-					<TranslatePersonForm
+					<GenericTranslateForm
 						action={action}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
+						fieldConfig={WatsonConstants.inputConfig.people.inputs}
+						formConfig={[
+							'occupation',
+							'description'
+						]}
+						model={model}
+						parentModel="incidents"
+						primaryName={incidentName}
 						watsonIncidentId={watsonIncidentId}
-						watsonPersonId={entryId}
+						watsonPrimaryKey={entryId}
 					/>
 				);
 			}
@@ -289,8 +307,8 @@ class EditIncident extends JSXComponent {
 							'watsonRelationships'
 						]}
 						formData={props.modelFormData}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						storeData={props.modelStoreData}
 						watsonIncidentId={watsonIncidentId}
 						watsonPrimaryKey={entryId}
@@ -357,12 +375,19 @@ class EditIncident extends JSXComponent {
 			}
 			else if (action === 'translate') {
 				view = (
-					<TranslateResourceForm
+					<GenericTranslateForm
 						action={action}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
+						fieldConfig={WatsonConstants.inputConfig.resources.inputs}
+						formConfig={[
+							'name',
+							'description'
+						]}
+						model={model}
+						parentModel="incidents"
+						primaryName={incidentName}
 						watsonIncidentId={watsonIncidentId}
-						watsonResourceId={entryId}
+						watsonPrimaryKey={entryId}
 					/>
 				);
 			}
@@ -381,8 +406,8 @@ class EditIncident extends JSXComponent {
 							'watsonRelationships'
 						]}
 						formData={props.modelFormData}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						storeData={props.modelStoreData}
 						watsonIncidentId={watsonIncidentId}
 						watsonPrimaryKey={entryId}
@@ -440,12 +465,18 @@ class EditIncident extends JSXComponent {
 			}
 			else if (action === 'translate') {
 				view = (
-					<TranslateVehicleForm
+					<GenericTranslateForm
 						action={action}
 						disabled={incidentDisabled}
-						incidentName={incidentName}
+						fieldConfig={WatsonConstants.inputConfig.vehicles.inputs}
+						formConfig={[
+							'description'
+						]}
+						model={model}
+						parentModel="incidents"
+						primaryName={incidentName}
 						watsonIncidentId={watsonIncidentId}
-						watsonVehicleId={entryId}
+						watsonPrimaryKey={entryId}
 					/>
 				);
 			}
@@ -468,8 +499,8 @@ class EditIncident extends JSXComponent {
 							'watsonRelationships'
 						]}
 						formData={props.modelFormData}
-						incidentName={incidentName}
 						model={model}
+						primaryName={incidentName}
 						storeData={props.modelStoreData}
 						watsonIncidentId={watsonIncidentId}
 						watsonPrimaryKey={entryId}
@@ -479,12 +510,19 @@ class EditIncident extends JSXComponent {
 		}
 		else if (action === 'translate') {
 			view = (
-				<TranslateIncidentForm
+				<GenericTranslateForm
 					action={action}
 					disabled={incidentDisabled}
-					incidentName={incidentName}
+					fieldConfig={WatsonConstants.inputConfig.incidents.inputs}
+					formConfig={[
+						'description'
+					]}
+					model={model}
+					parentModel="incidents"
+					primaryName={incidentName}
 					storeData={props.incidentStoreData}
 					watsonIncidentId={watsonIncidentId}
+					watsonPrimaryKey={watsonIncidentId}
 				/>
 			);
 		}
@@ -713,7 +751,7 @@ class EditIncident extends JSXComponent {
 				collapsible: false,
 				entries: null,
 				href: `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit`,
-				selected: !model,
+				selected: ((action === 'edit' || action === 'relate' || action === 'translate') && model === 'incidents'),
 				text: Liferay.Language.get('details')
 			},
 			{
@@ -810,7 +848,7 @@ class EditIncident extends JSXComponent {
 			}
 		}
 
-		if (model) {
+		if (model && model !== 'incidents') {
 			const collapsedEntryHash = `${WatsonConstants.inputConfig[model].pluralLabel}_${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/index`;
 
 			if (entryId && (!lastAutoOpenedEntry || lastAutoOpenedEntry !== collapsedEntryHash)) {
@@ -956,7 +994,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state, props) {
-	const {action = 'edit', entryId = 0, model, watsonIncidentId} = props.router.params;
+	const {action = 'edit', entryId = 0, model = 'incidents', watsonIncidentId} = props.router.params;
 
 	const incidentFormData = state.getIn(['incidents', 'formData', watsonIncidentId]) || {};
 	const incidentStoreData = state.getIn(['incidents', 'data', watsonIncidentId]) || new Map();

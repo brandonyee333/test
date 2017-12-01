@@ -70,7 +70,7 @@ class TranslationForm extends JSXComponent {
 	handleSubmit() {
 		const {props, state} = this;
 
-		const {fieldConfig, id, submitMethod} = props;
+		const {fieldConfig, id, redirect, submitMethod} = props;
 
 		let {formData} = state;
 
@@ -89,6 +89,10 @@ class TranslationForm extends JSXComponent {
 			submitMethod(formData);
 
 			this.setState({changedFields: [], dataSent: true, submitted: true});
+
+			if (redirect) {
+				redirect();
+			}
 		}
 	}
 
@@ -172,21 +176,6 @@ class TranslationForm extends JSXComponent {
 				/>
 			</div>
 		);
-	}
-
-	rendered() {
-		const {loading, redirect, response} = this.props;
-
-		const {dataSent} = this.state;
-
-		if (!loading && dataSent && redirect) {
-			if (response && (response.get('status') === 'success')) {
-				redirect();
-			}
-			else {
-				this.state.dataSent = false;
-			}
-		}
 	}
 
 	renderInputs() {

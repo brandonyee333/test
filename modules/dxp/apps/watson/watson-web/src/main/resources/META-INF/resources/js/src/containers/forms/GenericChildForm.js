@@ -33,7 +33,7 @@ class GenericChildForm extends JSXComponent {
 
 		const {model, watsonPrimaryKey} = props;
 
-		if (watsonPrimaryKey) {
+		if (model && watsonPrimaryKey) {
 			const editModelMethod = props[`edit${capitalize(model)}`];
 
 			editModelMethod(watsonPrimaryKey);
@@ -367,9 +367,9 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		destroyDocuments: watsonPrimaryKey => {
+		destroyDocuments: watsonDocumentId => {
 			dispatch(
-				destroyDocuments(watsonPrimaryKey)
+				destroyDocuments(watsonDocumentId)
 			);
 		},
 		destroyLegals: watsonReportId => {
@@ -377,9 +377,9 @@ function mapDispatchToProps(dispatch) {
 				destroyLegals(watsonReportId)
 			);
 		},
-		editDocuments: watsonPrimaryKey => {
+		editDocuments: watsonDocumentId => {
 			dispatch(
-				editDocuments(watsonPrimaryKey)
+				editDocuments(watsonDocumentId)
 			);
 		},
 		editLegals: watsonReportId => {
@@ -397,10 +397,10 @@ function mapDispatchToProps(dispatch) {
 				updateDocumentsDataManually(data)
 			);
 		},
-		updateDocumentsFormData: (formData, watsonPrimaryKey = 0) => {
+		updateDocumentsFormData: (formData, watsonDocumentId = 0) => {
 			const data = {
 				formData,
-				watsonPrimaryKey
+				watsonDocumentId
 			};
 
 			dispatch(
@@ -420,7 +420,7 @@ function mapDispatchToProps(dispatch) {
 		updateLegalsFormData: (formData, watsonReportId = 0) => {
 			const data = {
 				formData,
-				watsonPrimaryKey
+				watsonReportId
 			};
 
 			dispatch(

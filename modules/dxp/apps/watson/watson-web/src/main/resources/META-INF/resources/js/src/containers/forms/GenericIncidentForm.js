@@ -93,17 +93,6 @@ class GenericIncidentForm extends JSXComponent {
 		this.handleClearFormData();
 	}
 
-	getConfig() {
-		return [
-			'id',
-			'typeWatsonListTypeId',
-			'name',
-			'imagePayload',
-			'description',
-			'watsonRelationships'
-		];
-	};
-
 	handleBeforeLeave(data) {
 		const {
 			action,
