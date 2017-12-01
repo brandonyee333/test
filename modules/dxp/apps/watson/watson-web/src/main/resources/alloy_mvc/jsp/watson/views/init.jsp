@@ -65,6 +65,7 @@ public class AlloyLanguageUtil extends LanguageUtil {
 <c:set value="<%= ConstantsBeanFactoryUtil.getConstantsBean(WatsonHistory.class) %>" var="WatsonHistoryConstants" />
 <c:set value="<%= ConstantsBeanFactoryUtil.getConstantsBean(WatsonIncident.class) %>" var="WatsonIncidentConstants" />
 <c:set value="<%= ConstantsBeanFactoryUtil.getConstantsBean(WatsonListType.class) %>" var="WatsonListTypeConstants" />
+<c:set value="<%= ConstantsBeanFactoryUtil.getConstantsBean(WatsonReport.class) %>" var="WatsonReportConstants" />
 
 <c:set value="<%= new ClassNameLocalServiceUtil() %>" var="ClassNameLocalService" />
 <c:set value="<%= new CountryServiceUtil() %>" var="CountryServiceUtil" />

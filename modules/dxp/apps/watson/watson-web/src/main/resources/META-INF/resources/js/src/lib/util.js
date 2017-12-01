@@ -122,10 +122,18 @@ export function getOptionsLabelFromWatsonConstants(model, key, watsonListTypeId)
 	let listTypeLabel = '';
 
 	if (model && key && watsonListTypeId !== undefined) {
-		const watsonListType = WatsonConstants.inputConfig[model].inputs[key].options[watsonListTypeId];
+		const modelConfig = WatsonConstants.inputConfig[model];
 
-		if (watsonListType) {
-			listTypeLabel = watsonListType.label;
+		if (modelConfig) {
+			const inputConfig = modelConfig.inputs[key];
+
+			if (inputConfig) {
+				const watsonListType = inputConfig.options[watsonListTypeId];
+
+				if (watsonListType) {
+					listTypeLabel = watsonListType.label;
+				}
+			}
 		}
 	}
 

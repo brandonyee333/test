@@ -119,6 +119,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 
 		jsonObject.put("id", watsonChild.getPrimaryKey());
+		jsonObject.put("legals", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_LEGAL_STATUS, watsonChild.getWatsonChildId()));
 
 		Date modifiedDate = watsonChild.getModifiedDate();
 
@@ -243,12 +244,39 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		return WatsonDocument.filterDocuments(returnWatsonDocuments, user);
 	}
 
+	public static List<WatsonReport> getWatsonReports(long watsonChildId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+		List<WatsonReport> returnWatsonReports = null;
+
+		if (watsonChildId > 0) {
+			if (includeInactive) {
+				returnWatsonReports = WatsonReport.queryAll("watsonChildId", watsonChildId);
+			}
+			else {
+				returnWatsonReports = WatsonReport.queryRange(sort, start, end, "watsonChildId", watsonChildId);
+			}
+		}
+		else {
+			returnWatsonReports = WatsonReport.get(start, end);
+		}
+
+		return WatsonReport.filterReports(returnWatsonReports, user);
+	}
+
 	public static long getWatsonDocumentsCount(long watsonChildId) throws Exception {
 		if (watsonChildId > 0) {
 			return WatsonDocument.count("watsonChildId", watsonChildId, "status", WorkflowConstants.STATUS_APPROVED);
 		}
 		else {
 			return WatsonDocument.count("status", WorkflowConstants.STATUS_APPROVED);
+		}
+	}
+
+	public static long getWatsonReportsCount(long watsonChildId) throws Exception {
+		if (watsonChildId > 0) {
+			return WatsonReport.count("watsonChildId", watsonChildId, "status", WorkflowConstants.STATUS_APPROVED);
+		}
+		else {
+			return WatsonReport.count("status", WorkflowConstants.STATUS_APPROVED);
 		}
 	}
 
@@ -305,7 +333,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonChildDates(Date dateAccepted, Date dateDischarged, Date dateFollowUp, long watsonListTypeId) throws Exception{
-		if (dateAccepted != null && dateDischarged != null) {
+		if ((dateAccepted != null) && (dateDischarged != null)) {
 			long dischargeDateLong = GetterUtil.getLong(dateDischarged);
 
 			if ((dischargeDateLong > 0) && (GetterUtil.getLong(dateAccepted) > dischargeDateLong)) {

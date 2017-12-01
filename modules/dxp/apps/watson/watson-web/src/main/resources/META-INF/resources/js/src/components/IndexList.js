@@ -242,6 +242,43 @@ function formatIncidentData(watsonIncidents, keysToOmit, onClick, selectedIds, s
 	return formattedData;
 }
 
+function formatLegalsData(watsonLegals, watsonChildren, keysToOmit, onClick, selectedIds, simple) {
+	let formattedData;
+
+	if (simple) {
+		formattedData = formatSimpleLegalsData(watsonLegals, keysToOmit, onClick, selectedIds);
+	}
+	else {
+		formattedData = watsonLegals.map(
+			(watsonLegal, key) => {
+				const watsonChildId = watsonLegal.get('watsonChildId');
+
+				const watsonChild = fetchChildData(watsonChildren, watsonChildId);
+
+				let watsonChildName = '';
+
+				if (watsonChild) {
+					watsonChildName = watsonChild.get('name');
+				}
+
+				return {
+					header: watsonLegal.get('name'),
+					id: key,
+					lastEdited: watsonLegal.get('modifiedDate'),
+					link: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/legals/${key}/edit`,
+					onClick,
+					reportedBy: watsonLegal.get('reportedBy'),
+					reportedDate: watsonLegal.get('createDate'),
+					smallIncidentName: watsonChildName || watsonLegal.get('childName')
+
+				};
+			}
+		);
+	}
+
+	return formattedData;
+}
+
 function formatIncidentRowContent(watsonIncident) {
 	const natures = watsonIncident.get('natureWatsonListType');
 
@@ -538,6 +575,32 @@ function formatSimpleIncidentData(watsonIncidents, keysToOmit, onClick, selected
 	return formattedData;
 }
 
+function formatSimpleLegalsData(watsonLegals, keysToOmit, onClick, selectedIds) {
+	const formattedData = watsonLegals.map(
+		(watsonLegal, key) => {
+			const disabled = includes(keysToOmit, key, 0);
+
+			const selected = includes(selectedIds, key, 0);
+
+			const watsonChildId = watsonLegal.get('watsonChildId');
+
+			return {
+				disabled: disabled ? 'disabled' : '',
+				header: watsonLegal.get('name'),
+				id: key,
+				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/legals/${key}/edit`,
+				onClick: disabled ? undefined : onClick,
+				reportedBy: watsonLegal.get('reportedBy'),
+				reportedDate: watsonLegal.get('createDate'),
+				rowContent: watsonLegal.get('description'),
+				selected
+			};
+		}
+	);
+
+	return formattedData;
+}
+
 function formatSimplePersonData(watsonPeople, keysToOmit, onClick, selectedIds) {
 	const formattedData = watsonPeople.map(
 		(watsonPerson, key) => {
@@ -710,6 +773,9 @@ function IndexList({data = OrderedMap(), hasMoreResults, incidentsData = Ordered
 	}
 	else if (model === 'documents') {
 		data = formatDocumentsData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);
+	}
+	else if (model === 'legals') {
+		data = formatLegalsData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);
 	}
 	else if (model === 'people') {
 		data = formatPeopleData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);

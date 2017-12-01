@@ -1,4 +1,4 @@
-import {actionTypes} from '../actions/reports';
+import {actionTypes} from '../actions/legals';
 import {composeReducers} from '../lib/util';
 import createBaseReducer from './crud';
 import createSupplementalReducer from './supplemental';

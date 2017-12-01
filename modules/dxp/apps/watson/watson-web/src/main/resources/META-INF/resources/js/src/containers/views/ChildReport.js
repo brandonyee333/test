@@ -10,6 +10,7 @@ import HTMLRenderer from '../../components/HTMLRenderer';
 import GoogleMap from '../../components/GoogleMap';
 
 import {indexDocuments} from '../../actions/documents';
+import {indexLegals} from '../../actions/legals';
 import {viewChildren} from '../../actions/children';
 
 import {getMimeType, updateDOMTitle} from '../../lib/util';
@@ -21,6 +22,7 @@ class ChildReport extends JSXComponent {
 		const {watsonChildId} = props;
 
 		if (watsonChildId) {
+			props.indexLegals(watsonChildId);
 			props.indexDocuments(watsonChildId);
 			props.viewChildren(watsonChildId);
 		}
@@ -95,18 +97,20 @@ class ChildReport extends JSXComponent {
 	renderEntitiesHelper(entityList, displayFields, model, entryId) {
 		const renderElement = [];
 
-		entityList.forEach(
-			(entity, key) => {
-				if (entryId) {
-					if (key === entryId) {
+		if (!isEmpty(entityList)) {
+			entityList.forEach(
+				(entity, key) => {
+					if (entryId) {
+						if (key === entryId) {
+							renderElement.push(this.renderEntity(entity, displayFields, model));
+						}
+					}
+					else {
 						renderElement.push(this.renderEntity(entity, displayFields, model));
 					}
 				}
-				else {
-					renderElement.push(this.renderEntity(entity, displayFields, model));
-				}
-			}
-		);
+			);
+		}
 
 		return renderElement;
 	}
@@ -343,6 +347,10 @@ class ChildReport extends JSXComponent {
 				{(!entryId || model === 'documents') &&
 					this.renderModel(entryId, 'documents')
 				}
+
+				{(!entryId || model === 'legals') &&
+				this.renderModel(entryId, 'legals')
+				}
 			</div>
 		);
 	}
@@ -407,6 +415,15 @@ ChildReport.STATE = {
 	),
 	elementStyle: Config.value(''),
 	entryId: Config.any(),
+	legalsConfig: Config.array().value(
+		[
+			'reportDate',
+			'timeSpent',
+			'reportedUser',
+			'description',
+			'watsonRelationships'
+		]
+	),
 	model: Config.string()
 };
 
@@ -415,6 +432,11 @@ function mapDispatchToProps(dispatch) {
 		indexDocuments: id => {
 			dispatch(
 				indexDocuments({id})
+			);
+		},
+		indexLegals: id => {
+			dispatch(
+				indexLegals({id})
 			);
 		},
 		viewChildren: id => {

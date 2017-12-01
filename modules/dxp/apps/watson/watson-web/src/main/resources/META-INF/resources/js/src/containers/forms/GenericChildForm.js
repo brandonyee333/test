@@ -12,20 +12,20 @@ import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 
 import {
-	destroyReports,
-	editReports,
-	updateReports,
-	updateReportsDataManually,
-	updateReportsFormData
-} from '../../actions/reports';
-
-import {
 	destroyDocuments,
 	editDocuments,
 	updateDocuments,
 	updateDocumentsDataManually,
 	updateDocumentsFormData
 } from '../../actions/documents';
+
+import {
+	destroyLegals,
+	editLegals,
+	updateLegals,
+	updateLegalsDataManually,
+	updateLegalsFormData
+} from '../../actions/legals';
 
 class GenericChildForm extends JSXComponent {
 	attached() {
@@ -206,6 +206,7 @@ class GenericChildForm extends JSXComponent {
 			formData,
 			loading,
 			model,
+			modelKey,
 			modelLabel,
 			response,
 			storeData = props.data,
@@ -254,7 +255,7 @@ class GenericChildForm extends JSXComponent {
 			reportHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/report`;
 			requestTranslationMethod = this.handleTranslationRequest;
 
-			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/translate`;
+			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/translate`;
 		}
 		else if (action === 'create' && watsonChildId) {
 			cancelMethod = this.handleCancel;
@@ -292,6 +293,7 @@ class GenericChildForm extends JSXComponent {
 						formData={formData}
 						loading={loading}
 						model={model}
+						modelKey={modelKey}
 						reportHref={reportHref}
 						requestTranslationMethod={requestTranslationMethod}
 						response={response}
@@ -324,6 +326,7 @@ GenericChildForm.PROPS = {
 	formData: Config.object().value({}),
 	loading: Config.bool().value(false),
 	model: Config.string(),
+	modelKey: Config.any(),
 	modelLabel: Config.string(),
 	response: Config.object(),
 	storeData: Config.value(null),
@@ -369,9 +372,9 @@ function mapDispatchToProps(dispatch) {
 				destroyDocuments(watsonPrimaryKey)
 			);
 		},
-		destroyReports: watsonPrimaryKey => {
+		destroyLegals: watsonReportId => {
 			dispatch(
-				destroyReports(watsonPrimaryKey)
+				destroyLegals(watsonReportId)
 			);
 		},
 		editDocuments: watsonPrimaryKey => {
@@ -379,9 +382,9 @@ function mapDispatchToProps(dispatch) {
 				editDocuments(watsonPrimaryKey)
 			);
 		},
-		editReports: watsonPrimaryKey => {
+		editLegals: watsonReportId => {
 			dispatch(
-				editReports(watsonPrimaryKey)
+				editLegals(watsonReportId)
 			);
 		},
 		updateDocuments: data => {
@@ -404,24 +407,24 @@ function mapDispatchToProps(dispatch) {
 				updateDocumentsFormData(data)
 			);
 		},
-		updateReports: data => {
+		updateLegals: data => {
 			dispatch(
-				updateReports(data)
+				updateLegals(data)
 			);
 		},
-		updateReportsDataManually: data => {
+		updateLegalsDataManually: data => {
 			dispatch(
-				updateReportsDataManually(data)
+				updateLegalsDataManually(data)
 			);
 		},
-		updateReportsFormData: (formData, watsonPrimaryKey = 0) => {
+		updateLegalsFormData: (formData, watsonReportId = 0) => {
 			const data = {
 				formData,
 				watsonPrimaryKey
 			};
 
 			dispatch(
-				updateReportsFormData(data)
+				updateLegalsFormData(data)
 			);
 		}
 	};

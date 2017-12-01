@@ -46,18 +46,18 @@ const {
 
 export {
 	actionTypes,
-	add as addReports,
-	create as createReports,
-	destroy as destroyReports,
-	edit as editReports,
+	add as addLegals,
+	create as createLegals,
+	destroy as destroyLegals,
+	edit as editLegals,
 	fetchMetrics as fetchReportMetrics,
-	fetchTranslation as fetchReportsTranslation,
-	importModel as importReports,
-	index as indexReports,
-	requestTranslation as requestReportsTranslation,
-	search as searchReports,
-	update as updateReports,
-	updateDataManually as updateReportsDataManually,
-	updateFormData as updateReportsFormData,
-	view as viewReports
+	fetchTranslation as fetchLegalsTranslation,
+	importModel as importLegals,
+	index as indexLegals,
+	requestTranslation as requestLegalsTranslation,
+	search as searchLegals,
+	update as updateLegals,
+	updateDataManually as updateLegalsDataManually,
+	updateFormData as updateLegalsFormData,
+	view as viewLegals
 };

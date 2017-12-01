@@ -167,12 +167,6 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 		return jsonObject;
 	}
 
-	public WatsonHistory updateTranslations(HttpServletRequest request, Locale locale) throws Exception {
-		BaseAlloyControllerImpl.setLocalizedProperties(this, request, locale);
-
-		return update(this);
-	}
-
 	public boolean isValid() throws Exception {
 		pushError(validateWatsonHistoryIncident(getWatsonIncidentId()));
 		pushError(validateWatsonHistoryType(getType()));

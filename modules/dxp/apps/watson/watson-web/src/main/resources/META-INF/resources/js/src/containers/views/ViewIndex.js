@@ -16,6 +16,7 @@ import {indexChildren, searchChildren} from '../../actions/children';
 import {updateFilter, updateHideLoadingOverlay, updateSortBy} from '../../actions/display';
 import {indexDocuments, searchDocuments} from '../../actions/documents';
 import {indexIncidents, searchIncidents} from '../../actions/incidents';
+import {indexLegals, searchLegals} from '../../actions/legals';
 import {indexPeople, searchPeople} from '../../actions/people';
 import {indexResources, searchResources} from '../../actions/resources';
 import {indexVehicles, searchVehicles} from '../../actions/vehicles';
@@ -477,6 +478,11 @@ function mapDispatchToProps(dispatch) {
 				indexIncidents(data)
 			);
 		},
+		indexLegals: data => {
+			dispatch(
+				indexLegals(data)
+			);
+		},
 		indexPeople: data => {
 			dispatch(
 				indexPeople(data)
@@ -515,6 +521,11 @@ function mapDispatchToProps(dispatch) {
 		searchIncidents: data => {
 			dispatch(
 				searchIncidents(data)
+			);
+		},
+		searchLegals: data => {
+			dispatch(
+				searchLegals(data)
 			);
 		},
 		searchPeople: data => {
@@ -567,7 +578,9 @@ function mapStateToProps(state, props) {
 
 	const watsonParentPrimaryKey = watsonChildId ? watsonChildId : watsonIncidentId;
 
-	const sortBy = state.getIn(['display', 'sortBy', watsonParentPrimaryKey, model]) || WatsonConstants.inputConfig[model].sortByDefault;
+	const modelConfig = WatsonConstants.inputConfig[model];
+
+	const sortBy = state.getIn(['display', 'sortBy', watsonParentPrimaryKey, model]) || (modelConfig ? modelConfig.sortByDefault : '');
 
 	return {
 		action,

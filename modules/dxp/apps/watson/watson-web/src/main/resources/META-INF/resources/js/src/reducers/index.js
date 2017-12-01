@@ -10,7 +10,7 @@ import incidents from './incidents';
 import list_types from './list-types';
 import people from './people';
 import relationships from './relationships';
-import reports from './reports';
+import legals from './legals';
 import resources from './resources';
 import vehicles from './vehicles';
 
@@ -28,10 +28,10 @@ export default combineReducers(
 		documents,
 		histories,
 		incidents,
+		legals,
 		list_types,
 		people,
 		relationships,
-		reports,
 		resources,
 		vehicles
 	}

@@ -50,6 +50,9 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 			else if (classNameString.contains("Relationship")) {
 				controllerName = "relationships";
 			}
+			else if (classNameString.contains("Report")) {
+				controllerName = "reports";
+			}
 			else if (classNameString.contains("Resource")) {
 				controllerName = "resources";
 			}
@@ -92,6 +95,9 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 			}
 			else if (controllerName.contains("relationships")) {
 				properName = "relationship";
+			}
+			else if (controllerName.contains("reports")) {
+				properName = "report";
 			}
 			else if (controllerName.contains("resources")) {
 				properName = "resource";

@@ -135,7 +135,7 @@ class Form extends JSXComponent {
 	handleSubmit() {
 		const {props, state} = this;
 
-		const {disabled, fieldConfig, redirect, submitMethod, watsonChildId = 0, watsonIncidentId = 0} = props;
+		const {disabled, fieldConfig, modelKey, redirect, submitMethod, watsonChildId = 0, watsonIncidentId = 0} = props;
 
 		const {formData} = state;
 
@@ -158,6 +158,9 @@ class Form extends JSXComponent {
 				}
 				if (watsonChildId > 0) {
 					postData.watsonChildId = watsonChildId;
+				}
+				if (modelKey) {
+					postData.key = modelKey;
 				}
 
 				submitMethod(postData);
@@ -855,6 +858,7 @@ Form.PROPS = {
 	loading: Config.bool(),
 	message: Config.string().value(''),
 	model: Config.string(),
+	modelKey: Config.any(),
 	redirect: Config.func(),
 	reportHref: Config.any(),
 	requestTranslationMethod: Config.func(),

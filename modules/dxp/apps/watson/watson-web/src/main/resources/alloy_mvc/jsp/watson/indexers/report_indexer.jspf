@@ -1,0 +1,60 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonReportIndexer extends BaseAlloyIndexer {
+
+	public static WatsonReportIndexer getInstance() {
+		return _instance;
+	}
+
+	@Override
+	protected Document doGetDocument(BaseModel<?> object) throws Exception {
+		WatsonReport watsonReport = new WatsonReport((com.liferay.watson.model.WatsonReport)object);
+
+		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonReport);
+
+		document.addDate("createDate", watsonReport.getCreateDate());
+		document.addLocalizedText("description", watsonReport.getDescriptionMap());
+		document.addLocalizedText("fullReport", watsonReport.getFullReportMap());
+		document.addKeyword("id", watsonReport.getPrimaryKey());
+		document.addKeyword("key", watsonReport.getKey());
+		document.addDate("modifiedDate", watsonReport.getModifiedDate());
+		document.addLocalizedKeyword("name", watsonReport.getNameMap());
+		document.addDate("reportDate", watsonReport.getReportDate());
+		document.addKeyword("reportedBy", watsonReport.getUserName());
+		document.addKeyword("reportedUser", watsonReport.getReportedUser());
+		document.addKeyword("status", watsonReport.getStatus());
+		document.addKeyword("timeSpent", watsonReport.getTimeSpent());
+		document.addKeyword("typeWatsonListTypeId", watsonReport.getTypeWatsonListTypeId());
+		document.addKeyword("watsonChildId", watsonReport.getWatsonChildId());
+		document.addKeyword("watsonReportId", watsonReport.getWatsonReportId());
+
+		return document;
+	}
+
+	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest, PortletResponse portletResponse) throws Exception {
+		return createSummary(document);
+	}
+
+	private WatsonReportIndexer() {
+		setClassName(WatsonReport.baseModelClass.getName());
+	}
+
+	private static WatsonReportIndexer _instance = new WatsonReportIndexer();
+
+}
+%>

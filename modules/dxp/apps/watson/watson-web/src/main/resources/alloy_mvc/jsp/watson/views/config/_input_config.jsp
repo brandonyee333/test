@@ -1654,6 +1654,115 @@
 				selectInput: 'SELECT_INPUT',
 				textareaInput: 'TEXT_AREA_INPUT'
 			},
+			legals: {
+				inputs: {
+					createDate: {
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-created")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: []
+					},
+					description: {
+						cssClass: 'textarea',
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("description")}',
+						tooltipLabel: '',
+						translatable: ${true},
+						type: 'TEXT_AREA_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					id: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("id")}',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'INPUT_VIEW',
+						validations: []
+					},
+					name: {
+						disabled: ${false},
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("summary")}',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-a-summary-for-this-resource")}',
+						translatable: ${true},
+						type: 'INPUT',
+						validations: [
+							'required'
+						]
+					},
+					reportDate: {
+						controlledInputs: [],
+						defaultValue: new Date().toISOString().substr(0,10),
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-reported")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: [
+							'date',
+							'required'
+						]
+					},
+					reportedUser: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("performed-by")}',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("name-of-the-person-who-performed-this-activity")}',
+						translatable: ${true},
+						type: 'INPUT',
+						validations: [
+							'required'
+						]
+					},
+					timeSpent: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("time-spent")}',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("please-list-time-spent-in-hours-and-minutes")}',
+						translatable: ${true},
+						type: 'INPUT',
+						validations: [
+							'required'
+						]
+					},
+					watsonRelationships: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
+						cssClass: 'triple-dynamic',
+						disabled: ${true},
+						fancy: ${false},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("relate-this-resource-on-this-incident")}',
+						translatable: ${false},
+						tripleOnly: ${true},
+						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
+						validations: [
+							'arrayValues4'
+						]
+					}
+				},
+				key: '${WatsonReportConstants.REPORT_TYPE_LEGAL_STATUS}',
+				relationshipObjectOptions: {},
+				pluralLabel: '${AlloyLanguageUtil.formatUnicode("legal-reports")}',
+				singularLabel: '${AlloyLanguageUtil.formatUnicode("legal-report")}',
+				sortByDefault: 'watsonChildId',
+				sortByOptions: {
+					CREATED: {
+						label: '${AlloyLanguageUtil.formatUnicode("created")}',
+						value: 'createDate'
+					},
+					INCIDENT_ID: {
+						label: '${AlloyLanguageUtil.formatUnicode("child-id")}',
+						value: 'watsonChildId'
+					},
+					LAST_MODIFIED: {
+						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
+						value: 'modifiedDate'
+					}
+				}
+			},
 			metrics: {
 				heatmaps: {
 					inputs: {

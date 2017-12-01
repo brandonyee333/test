@@ -15,6 +15,8 @@ import ViewIndex from './views/ViewIndex';
 
 import {editChildren, refreshSubModel, updateChildrenDataManually, updateChildrenFormData} from '../actions/children';
 import {updateCollapsedEntries, updateCollapsedEntry} from '../actions/display';
+import {updateDocumentsDataManually} from '../actions/documents';
+import {updateLegalsDataManually} from '../actions/legals';
 
 import {getOptionsLabelFromWatsonConstants} from '../lib/util';
 
@@ -43,7 +45,7 @@ class EditChild extends JSXComponent {
 		props.updateChildrenFormData({formData: {}, watsonChildId: 0});
 	}
 
-	getCurrentView(action, entryId, childDisabled, childName, model, watsonChildId) {
+	getCurrentView(action, childDisabled, childName, entryId, model, watsonChildId) {
 		const {props} = this;
 
 		let view;
@@ -79,6 +81,69 @@ class EditChild extends JSXComponent {
 						storeData={props.modelStoreData}
 						watsonChildId={watsonChildId}
 						watsonDocumentId={entryId}
+					/>
+				);
+			}
+		}
+		else if (model === 'legals') {
+			if (action === 'index') {
+				const buttonData = [
+					{
+						label: Liferay.Language.get('create-legal-report'),
+						method: modelCreateMethod
+					}
+				];
+				view = (
+					<ViewIndex
+						action={action}
+						buttonData={buttonData}
+						disabled={childDisabled}
+						model={model}
+						primaryName={childName}
+						watsonChildId={watsonChildId}
+					/>
+				);
+			}
+			else if (action === 'translate') {
+				view = (
+					<GenericTranslationForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.legals.inputs}
+						formConfig={[
+							'reportedUser',
+							'description'
+						]}
+						model={model}
+						parentModel="children"
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+			else {
+				view = (
+					<GenericChildForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.legals.inputs}
+						formConfig={[
+							'id',
+							'reportDate',
+							'timeSpent',
+							'reportedUser',
+							'description',
+							'watsonRelationships'
+						]}
+						formData={props.modelFormData}
+						model={model}
+						modelKey={WatsonConstants.inputConfig.legals.key}
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
 					/>
 				);
 			}
@@ -142,13 +207,14 @@ class EditChild extends JSXComponent {
 			watsonChildId
 		} = this.props;
 
-		const childDisabled = childrenStoreData.get('disabled');
+		const childDisabled = false;
 		const childMetaHeader = `${sub(Liferay.Language.get('created-by-x-on-x'), childrenStoreData.get('reportedBy') || '', childrenStoreData.get('createDate') || '')}`;
 		const childName = childrenStoreData.get('name') || Liferay.Language.get('loading');
 
 		const childTypeLabel = getOptionsLabelFromWatsonConstants('children', 'typeWatsonListTypeId', childrenStoreData.get('typeWatsonListTypeId'));
 
 		const documentsNav = [];
+		const legalsNav = [];
 
 		if (childrenStoreData.get('documents')) {
 			const childDocuments = Sort(childrenStoreData.get('documents'), null, 'name');
@@ -175,6 +241,31 @@ class EditChild extends JSXComponent {
 			);
 		}
 
+		if (childrenStoreData.get('legals')) {
+			const childLegals = Sort(childrenStoreData.get('legals'), null, 'name');
+
+			const legalList = [];
+
+			childLegals.forEach(
+				childLegal => {
+					const legalId = childLegal.get('id');
+
+					legalList.push(legalId);
+
+					const legalName = childLegal.get('name') || legalId;
+
+					legalsNav.push(
+						{
+							href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/legals/${legalId}/edit`,
+							name: `legals_${legalId}`,
+							selected: (entryId === legalId && model === 'legals'),
+							text: legalName
+						}
+					);
+				}
+			);
+		}
+
 		const nav = [
 			{
 				collapsible: false,
@@ -189,6 +280,13 @@ class EditChild extends JSXComponent {
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/index`,
 				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'documents'),
 				text: Liferay.Language.get('documents')
+			},
+			{
+				collapsible: true,
+				entries: legalsNav,
+				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/legals/index`,
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'legals'),
+				text: Liferay.Language.get('legal-reports')
 			}
 		];
 
@@ -202,7 +300,7 @@ class EditChild extends JSXComponent {
 					<Button label={Liferay.Language.get('print-report')} onClick={this.handlePrintReport} />
 				</div>
 
-				{this.getCurrentView(action, entryId, childDisabled, childName, model, watsonChildId)}
+				{this.getCurrentView(action, childDisabled, childName, entryId, model, watsonChildId)}
 			</div>
 		);
 	}
@@ -235,12 +333,16 @@ class EditChild extends JSXComponent {
 			}
 		}
 
-		if (model) {
-			const collapsedEntryHash = `${WatsonConstants.inputConfig[model].pluralLabel}_${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/index`;
+		if (model && model !== 'children') {
+			const modelConfig = WatsonConstants.inputConfig[model];
 
-			if (entryId && (!lastAutoOpenedEntry || lastAutoOpenedEntry !== collapsedEntryHash)) {
+			if (modelConfig) {
+				const collapsedEntryHash = `${modelConfig.pluralLabel}_${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/index`;
 
-				updateCollapsedEntry(watsonChildId, collapsedEntryHash, false, true);
+				if (entryId && (!lastAutoOpenedEntry || lastAutoOpenedEntry !== collapsedEntryHash)) {
+
+					updateCollapsedEntry(watsonChildId, collapsedEntryHash, false, true);
+				}
 			}
 		}
 	}
@@ -311,6 +413,16 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				updateCollapsedEntry(data)
+			);
+		},
+		updateDocumentsDataManually: data => {
+			dispatch(
+				updateDocumentsDataManually(data)
+			);
+		},
+		updateLegalsDataManually: data => {
+			dispatch(
+				updateLegalsDataManually(data)
 			);
 		}
 	};
