@@ -7,12 +7,11 @@ import sub from 'string-sub';
 import Button from '../components/Button';
 import ActivityForm from './forms/Activity';
 import AddressForm from './forms/Address';
+import GenericIncidentForm from './forms/GenericIncidentForm';
 import HistoryView from './views/History';
 import IncidentForm from './forms/Incident';
 import Navigation from '../components/Navigation';
 import NavigationHeader from '../components/NavigationHeader';
-import PersonForm from './forms/Person';
-import ResourceForm from './forms/Resource';
 import RelationshipsView from './views/Relationships';
 import Sort from '../components/Sort';
 import TranslateActivityForm from './forms/TranslateActivity';
@@ -21,7 +20,6 @@ import TranslateIncidentForm from './forms/TranslateIncident';
 import TranslatePersonForm from './forms/TranslatePerson';
 import TranslateResourceForm from './forms/TranslateResource';
 import TranslateVehicleForm from './forms/TranslateVehicle';
-import VehicleForm from './forms/Vehicle';
 import ViewIndex from './views/ViewIndex';
 
 import {updateActivitiesDataManually} from '../actions/activities';
@@ -258,14 +256,44 @@ class EditIncident extends JSXComponent {
 			}
 			else {
 				view = (
-					<PersonForm
+					<GenericIncidentForm
 						action={action}
 						disabled={incidentDisabled}
+						fieldConfig={WatsonConstants.inputConfig.people.inputs}
+						formConfig={[
+							'id',
+							'imagePayload',
+							'typeWatsonListTypeId',
+							'rescued',
+							'dateRescued',
+							'accepted',
+							'dateAccepted',
+							'nameWatsonListTypeRels',
+							'birthDate',
+							'startAge',
+							'endAge',
+							'sexWatsonListTypeId',
+							'height',
+							'weight',
+							'hairWatsonListTypeId',
+							'eyesWatsonListTypeId',
+							'occupation',
+							'countryWatsonListTypeId',
+							'ethnicityWatsonListTypeId',
+							'birthCountryId',
+							'citizenshipWatsonListTypeId',
+							'countryIDWatsonListTypeRels',
+							'phoneNumberWatsonListTypeRels',
+							'socialMediaAccountWatsonListTypeRels',
+							'description',
+							'watsonRelationships'
+						]}
 						formData={props.modelFormData}
 						incidentName={incidentName}
+						model={model}
 						storeData={props.modelStoreData}
 						watsonIncidentId={watsonIncidentId}
-						watsonPersonId={entryId}
+						watsonPrimaryKey={entryId}
 					/>
 				);
 			}
@@ -340,14 +368,24 @@ class EditIncident extends JSXComponent {
 			}
 			else {
 				view = (
-					<ResourceForm
+					<GenericIncidentForm
 						action={action}
 						disabled={incidentDisabled}
+						fieldConfig={WatsonConstants.inputConfig.resources.inputs}
+						formConfig={[
+							'id',
+							'typeWatsonListTypeId',
+							'name',
+							'imagePayload',
+							'description',
+							'watsonRelationships'
+						]}
 						formData={props.modelFormData}
 						incidentName={incidentName}
+						model={model}
 						storeData={props.modelStoreData}
 						watsonIncidentId={watsonIncidentId}
-						watsonResourceId={entryId}
+						watsonPrimaryKey={entryId}
 					/>
 				);
 			}
@@ -413,14 +451,28 @@ class EditIncident extends JSXComponent {
 			}
 			else {
 				view = (
-					<VehicleForm
+					<GenericIncidentForm
 						action={action}
 						disabled={incidentDisabled}
+						fieldConfig={WatsonConstants.inputConfig.vehicles.inputs}
+						formConfig={[
+							'id',
+							'imagePayload',
+							'typeWatsonListTypeId',
+							'makeWatsonListTypeId',
+							'modelWatsonListTypeId',
+							'colorWatsonListTypeId',
+							'yearWatsonListTypeId',
+							'licensePlate',
+							'description',
+							'watsonRelationships'
+						]}
 						formData={props.modelFormData}
 						incidentName={incidentName}
+						model={model}
 						storeData={props.modelStoreData}
 						watsonIncidentId={watsonIncidentId}
-						watsonVehicleId={entryId}
+						watsonPrimaryKey={entryId}
 					/>
 				);
 			}

@@ -1,4 +1,4 @@
-import {bindAll, isEmpty} from 'lodash';
+import {bindAll, capitalize, isEmpty} from 'lodash';
 import {connect} from 'metal-redux';
 import {Map} from 'immutable';
 import JSXComponent, {Config} from 'metal-jsx';
@@ -13,6 +13,24 @@ import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 
 import {
+	destroyPerson,
+	editPerson,
+	requestPersonTranslation,
+	updatePeopleDataManually,
+	updatePeopleFormData,
+	updatePerson
+} from '../../actions/people';
+
+import {
+	destroyResource,
+	editResource,
+	requestResourceTranslation,
+	updateResource,
+	updateResourcesDataManually,
+	updateResourcesFormData
+} from '../../actions/resources';
+
+import {
 	destroyVehicle,
 	editVehicle,
 	requestVehicleTranslation,
@@ -21,14 +39,16 @@ import {
 	updateVehiclesFormData
 } from '../../actions/vehicles';
 
-class VehicleForm extends JSXComponent {
+class GenericIncidentForm extends JSXComponent {
 	attached() {
 		const {props} = this;
 
-		const {watsonVehicleId} = props;
+		const {model, watsonPrimaryKey} = props;
 
-		if (watsonVehicleId) {
-			props.editVehicle(watsonVehicleId);
+		if (model && watsonPrimaryKey) {
+			const editModelMethod = props[`edit${capitalize(model)}`];
+
+			editModelMethod(watsonPrimaryKey);
 		}
 
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
@@ -52,12 +72,13 @@ class VehicleForm extends JSXComponent {
 	detached() {
 		const {
 			action,
-			response,
-			updateVehiclesDataManually
+			response
 		} = this.props;
 
 		if (action !== 'create' && response && response.get('status') === 'success' && response.get('message')) {
-			updateVehiclesDataManually(
+			const updateModelDataManuallyMethod = this.props[`update${capitalize(model)}DataManually`];
+
+			updateModelDataManuallyMethod(
 				{
 					response: {
 						message: null
@@ -67,18 +88,16 @@ class VehicleForm extends JSXComponent {
 		}
 
 		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+
+		this.handleClearFormData();
 	}
 
 	getConfig() {
 		return [
 			'id',
-			'imagePayload',
 			'typeWatsonListTypeId',
-			'makeWatsonListTypeId',
-			'modelWatsonListTypeId',
-			'colorWatsonListTypeId',
-			'yearWatsonListTypeId',
-			'licensePlate',
+			'name',
+			'imagePayload',
 			'description',
 			'watsonRelationships'
 		];
@@ -120,9 +139,9 @@ class VehicleForm extends JSXComponent {
 	handleCancel() {
 		this.handleClearFormData();
 
-		const {watsonIncidentId} = this.props;
+		const {model, watsonIncidentId} = this.props;
 
-		Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/vehicles/index`);
+		Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/index`);
 	}
 
 	handleClearFormData() {
@@ -134,18 +153,26 @@ class VehicleForm extends JSXComponent {
 	}
 
 	handleCreate(data) {
-		this.props.updateVehicle(data);
+		const {props} = this;
+
+		const updateModelMethod = props[`update${capitalize(props.model)}`];
+
+		updateModelMethod(data);
 
 		this.state.dataSent = true;
 	}
 
 	handleDelete() {
-		const {watsonIncidentId, watsonVehicleId} = this.props;
+		const {props} = this;
 
-		if (watsonVehicleId) {
-			this.props.destroyVehicle(watsonVehicleId);
+		const {model, watsonIncidentId, watsonPrimaryKey} = props;
 
-			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/vehicles/index`);
+		if (watsonPrimaryKey) {
+			const destroyModelMethod = props[`destroy${capitalize(model)}`];
+
+			destroyModelMethod(watsonPrimaryKey);
+
+			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/index`);
 		}
 	}
 
@@ -162,26 +189,27 @@ class VehicleForm extends JSXComponent {
 	handleTranslationRequest() {
 		const {props} = this;
 
-		const {model, requestVehicleTranslation, watsonIncidentId, watsonVehicleId} = props;
+		const {model, requestResourceTranslation, watsonIncidentId, watsonPrimaryKey} = props;
 
-		const translationURL = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/vehicles/${watsonVehicleId}/translate`;
+		const translationURL = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonPrimaryKey}/translate`;
 
 		const translationRequestData = {
 			model,
 			translationURL,
-			watsonPrimaryKey: watsonVehicleId
+			watsonPrimaryKey
 		};
 
-		requestVehicleTranslation(translationRequestData);
+		requestResourceTranslation(translationRequestData);
 	}
 
 	handleUpdateFormData(formData) {
-		const {
-			updateVehiclesFormData,
-			watsonVehicleId
-		} = this.props;
+		const {props} = this;
 
-		updateVehiclesFormData(formData, watsonVehicleId);
+		const {model, watsonPrimaryKey} = props;
+
+		const updateModelFormData = props[`update${capitalize(model)}FormData`];
+
+		updateModelFormData(formData, watsonPrimaryKey);
 	}
 
 	render() {
@@ -193,9 +221,12 @@ class VehicleForm extends JSXComponent {
 			buttonLabel,
 			disabled,
 			errors,
+			fieldConfig,
+			formConfig,
 			formData,
 			loading,
 			model,
+			modelLabel,
 			response,
 			storeData = props.data,
 			watsonIncidentId
@@ -203,10 +234,10 @@ class VehicleForm extends JSXComponent {
 
 		let {
 			cancelMethod,
-			headerStringLeft = Liferay.Language.get('create-vehicle'),
+			headerStringLeft,
 			headerStringRight,
-			submitMethod = props.updateVehicle,
-			watsonVehicleId
+			submitMethod = props[`update${capitalize(model)}`],
+			watsonPrimaryKey
 		} = props;
 
 		const {
@@ -218,10 +249,10 @@ class VehicleForm extends JSXComponent {
 			if (response.get('status') === 'success') {
 				const responseData = response.get('data');
 
-				watsonVehicleId = responseData.get('watsonVehicleId');
+				watsonPrimaryKey = responseData.get('id');
 
-				if (watsonVehicleId) {
-					Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/vehicles/${watsonVehicleId}/edit`);
+				if (watsonPrimaryKey) {
+					Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/${watsonPrimaryKey}/edit`);
 				}
 			}
 			else if (errors) {
@@ -236,18 +267,19 @@ class VehicleForm extends JSXComponent {
 
 		if (action === 'edit') {
 			deleteMethod = disabled ? undefined : this.handleDelete;
-			headerStringLeft = storeData.get('name') || Liferay.Language.get('edit-vehicle');
 
+			headerStringLeft = storeData.get('name') || sub(Liferay.Language.get('edit-x'), modelLabel);
 			headerStringRight = getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp'));
 
-			reportHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/vehicles/${watsonVehicleId}/report`;
+			reportHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonPrimaryKey}/report`;
 
 			requestTranslationMethod = this.handleTranslationRequest;
 
-			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/vehicles/${watsonVehicleId}/translate`;
+			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonPrimaryKey}/translate`;
 		}
 		else if (action === 'create' && watsonIncidentId) {
 			cancelMethod = this.handleCancel;
+			headerStringLeft = sub(Liferay.Language.get('create-x'), modelLabel);
 			headerStringRight = Liferay.Language.get('unsaved');
 			submitMethod = this.handleCreate;
 		}
@@ -270,7 +302,7 @@ class VehicleForm extends JSXComponent {
 				<div class="content">
 					<AffiliationLink
 						affiliationData={storeData.get('affiliatedIncidents')}
-						entryId={watsonVehicleId}
+						entryId={watsonPrimaryKey}
 						model={model}
 						watsonIncidentId={watsonIncidentId}
 					/>
@@ -283,8 +315,8 @@ class VehicleForm extends JSXComponent {
 						deleteMethod={deleteMethod}
 						disabled={disabled}
 						errors={errors}
-						fieldConfig={WatsonConstants.inputConfig.vehicles.inputs}
-						formConfig={this.getConfig()}
+						fieldConfig={fieldConfig}
+						formConfig={formConfig}
 						formData={formData}
 						loading={loading}
 						model={model}
@@ -296,7 +328,7 @@ class VehicleForm extends JSXComponent {
 						translateHref={translateHref}
 						updateFormData={this.handleUpdateFormData}
 						watsonIncidentId={watsonIncidentId}
-						watsonPrimaryKey={watsonVehicleId}
+						watsonPrimaryKey={watsonPrimaryKey}
 					/>
 				</div>
 			</div>
@@ -304,29 +336,30 @@ class VehicleForm extends JSXComponent {
 	}
 
 	rendered() {
-		const {incidentName, storeData} = this.props;
+		const {incidentName, modelLabel, storeData} = this.props;
 
-		const vehicleName = sub(Liferay.Language.get('vehicle-x'), storeData.get('id') || '');
+		const modelName = sub(Liferay.Language.get('x-x'), modelLabel, storeData.get('id') || '');
 
-		updateDOMTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, vehicleName));
+		updateDOMTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, modelName));
 	}
 }
 
-VehicleForm.PROPS = {
+GenericIncidentForm.PROPS = {
 	action: Config.string().value(''),
 	button: Config.value(null),
 	disabled: Config.bool().value(false),
 	errors: Config.value(new Map()),
 	formData: Config.object().value({}),
 	loading: Config.bool().value(false),
-	model: Config.string().value('vehicles'),
+	model: Config.string(),
+	modelLabel: Config.string(),
 	response: Config.object(),
 	storeData: Config.value(null),
 	watsonIncidentId: Config.value(''),
-	watsonVehicleId: Config.value('')
+	watsonPrimaryKey: Config.value('')
 };
 
-VehicleForm.STATE = {
+GenericIncidentForm.STATE = {
 	dataSent: Config.bool().value(false),
 	navigateAwayPath: Config.value(null),
 	showLeaveModal: Config.bool().value(false),
@@ -334,33 +367,54 @@ VehicleForm.STATE = {
 };
 
 function mapStateToProps(state, props) {
-	const {watsonVehicleId = 0} = props;
+	const {model, watsonPrimaryKey = 0} = props;
 
-	const errors = state.getIn(['vehicles', 'errors']) || new Map();
+	const errors = state.getIn([model, 'errors']) || new Map();
 
 	return {
 		errors,
 		loading: state.getIn(
 			[
-				'vehicles',
+				model,
 				'loading'
 			]
 		),
+		modelLabel: !model ? '' : WatsonConstants.inputConfig[model].singularLabel,
 		response: state.getIn(
 			[
-				'vehicles',
+				model,
 				'response'
 			]
 		),
-		watsonVehicleId
+		watsonPrimaryKey
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
+		destroyPerson: watsonPersonId => {
+			dispatch(
+				destroyPerson(watsonPersonId)
+			);
+		},
+		destroyResource: watsonPrimaryKey => {
+			dispatch(
+				destroyResource(watsonPrimaryKey)
+			);
+		},
 		destroyVehicle: watsonVehicleId => {
 			dispatch(
 				destroyVehicle(watsonVehicleId)
+			);
+		},
+		editPerson: watsonPersonId => {
+			dispatch(
+				editPerson(watsonPersonId)
+			);
+		},
+		editResource: watsonPrimaryKey => {
+			dispatch(
+				editResource(watsonPrimaryKey)
 			);
 		},
 		editVehicle: watsonVehicleId => {
@@ -368,9 +422,59 @@ function mapDispatchToProps(dispatch) {
 				editVehicle(watsonVehicleId)
 			);
 		},
+		requestPersonTranslation: data => {
+			dispatch(
+				requestPersonTranslation(data)
+			);
+		},
+		requestResourceTranslation: data => {
+			dispatch(
+				requestResourceTranslation(data)
+			);
+		},
 		requestVehicleTranslation: data => {
 			dispatch(
 				requestVehicleTranslation(data)
+			);
+		},
+		updatePeopleDataManually: data => {
+			dispatch(
+				updatePeopleDataManually(data)
+			);
+		},
+		updatePeopleFormData: (formData, watsonPersonId = 0) => {
+			const data = {
+				formData,
+				watsonPersonId
+			};
+
+			dispatch(
+				updatePeopleFormData(data)
+			);
+		},
+		updatePerson: data => {
+			dispatch(
+				updatePerson(data)
+			);
+		},
+		updateResource: data => {
+			dispatch(
+				updateResource(data)
+			);
+		},
+		updateResourcesDataManually: data => {
+			dispatch(
+				updateResourcesDataManually(data)
+			);
+		},
+		updateResourcesFormData: (formData, watsonPrimaryKey = 0) => {
+			const data = {
+				formData,
+				watsonPrimaryKey
+			};
+
+			dispatch(
+				updateResourcesFormData(data)
 			);
 		},
 		updateVehicle: data => {
@@ -396,4 +500,4 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(VehicleForm);
+export default connect(mapStateToProps, mapDispatchToProps)(GenericIncidentForm);

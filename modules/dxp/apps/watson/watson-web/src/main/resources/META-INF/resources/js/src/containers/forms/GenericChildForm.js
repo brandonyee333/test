@@ -1,11 +1,10 @@
-import {bindAll, isEmpty} from 'lodash';
+import {bindAll, capitalize, isEmpty} from 'lodash';
 import {connect} from 'metal-redux';
-import JSXComponent, {Config} from 'metal-jsx';
 import {Map} from 'immutable';
+import JSXComponent, {Config} from 'metal-jsx';
 import Router from 'metal-router';
 import sub from 'string-sub';
 
-import AffiliationLink from '../../components/AffiliationLink';
 import Button from '../../components/Button';
 import ContentHeader from '../../components/ContentHeader';
 import {convertMapToObject, deepCompareIsEqual, getModifiedMoment, updateDOMTitle} from '../../lib/util';
@@ -13,27 +12,34 @@ import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 
 import {
-	destroyPerson,
-	editPerson,
-	requestPersonTranslation,
-	updatePeopleDataManually,
-	updatePeopleFormData,
-	updatePerson
-} from '../../actions/people';
+	destroyReport,
+	editReport,
+	updateReport,
+	updateReportsDataManually,
+	updateReportsFormData
+} from '../../actions/reports';
 
-class PersonForm extends JSXComponent {
+import {
+	destroyDocument,
+	editDocument,
+	updateDocument,
+	updateDocumentsDataManually,
+	updateDocumentsFormData
+} from '../../actions/documents';
+
+class GenericChildForm extends JSXComponent {
 	attached() {
 		const {props} = this;
 
-		const {watsonPersonId} = props;
+		const {model, watsonPrimaryKey} = props;
 
-		if (watsonPersonId) {
-			props.editPerson(watsonPersonId);
+		if (watsonPrimaryKey) {
+			const editModelMethod = props[`edit${capitalize(model)}`];
+
+			editModelMethod(watsonPrimaryKey);
 		}
 
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
-
-		this.handleClearFormData();
 	}
 
 	created() {
@@ -54,12 +60,14 @@ class PersonForm extends JSXComponent {
 	detached() {
 		const {
 			action,
-			response,
-			updatePeopleDataManually
+			model,
+			response
 		} = this.props;
 
 		if (action !== 'create' && response && response.get('status') === 'success' && response.get('message')) {
-			updatePeopleDataManually(
+			const updateModelDataManuallyMethod = this.props[`update${capitalize(model)}DataManually`];
+
+			updateModelDataManuallyMethod(
 				{
 					response: {
 						message: null
@@ -69,45 +77,16 @@ class PersonForm extends JSXComponent {
 		}
 
 		Router.router().off('beforeNavigate', this.handleBeforeLeave);
-	}
 
-	getConfig() {
-		return [
-			'id',
-			'imagePayload',
-			'typeWatsonListTypeId',
-			'rescued',
-			'dateRescued',
-			'accepted',
-			'dateAccepted',
-			'nameWatsonListTypeRels',
-			'birthDate',
-			'startAge',
-			'endAge',
-			'sexWatsonListTypeId',
-			'height',
-			'weight',
-			'hairWatsonListTypeId',
-			'eyesWatsonListTypeId',
-			'occupation',
-			'countryWatsonListTypeId',
-			'ethnicityWatsonListTypeId',
-			'birthCountryId',
-			'citizenshipWatsonListTypeId',
-			'countryIDWatsonListTypeRels',
-			'phoneNumberWatsonListTypeRels',
-			'socialMediaAccountWatsonListTypeRels',
-			'description',
-			'watsonRelationships'
-		];
-	};
+		this.handleClearFormData();
+	}
 
 	handleBeforeLeave(data) {
 		const {
 			action,
 			formData = {},
 			storeData,
-			watsonIncidentId
+			watsonChildId
 		} = this.props;
 
 		const {
@@ -115,7 +94,7 @@ class PersonForm extends JSXComponent {
 			unlockNavigate
 		} = this.state;
 
-		if (watsonIncidentId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
+		if (watsonChildId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
 			const originalData = convertMapToObject(storeData);
 
 			if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
@@ -138,9 +117,9 @@ class PersonForm extends JSXComponent {
 	handleCancel() {
 		this.handleClearFormData();
 
-		const {watsonIncidentId} = this.props;
+		const {model, watsonChildId} = this.props;
 
-		Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/people/index`);
+		Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/index`);
 	}
 
 	handleClearFormData() {
@@ -152,18 +131,26 @@ class PersonForm extends JSXComponent {
 	}
 
 	handleCreate(data) {
-		this.props.updatePerson(data);
+		const {props} = this;
+
+		const updateModelMethod = props[`update${capitalize(props.model)}`];
+
+		updateModelMethod(data);
 
 		this.state.dataSent = true;
 	}
 
 	handleDelete() {
-		const {watsonIncidentId, watsonPersonId} = this.props;
+		const {props} = this;
 
-		if (watsonPersonId) {
-			this.props.destroyPerson(watsonPersonId);
+		const {model, watsonChildId, watsonPrimaryKey} = props;
 
-			Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/people/index`);
+		if (watsonPrimaryKey) {
+			const destroyModelMethod = props[`destroy${capitalize(model)}`];
+
+			destroyModelMethod(watsonPrimaryKey);
+
+			Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/index`);
 		}
 	}
 
@@ -180,26 +167,29 @@ class PersonForm extends JSXComponent {
 	handleTranslationRequest() {
 		const {props} = this;
 
-		const {model, requestPersonTranslation, watsonIncidentId, watsonPersonId} = props;
+		const {model, watsonChildId, watsonPrimaryKey} = props;
 
-		const translationURL = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonPersonId}/translate`;
+		const requestModelTranslationMethod = props[`request${capitalize(model)}Translation`];
+
+		const translationURL = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/translate`;
 
 		const translationRequestData = {
 			model,
 			translationURL,
-			watsonPrimaryKey: watsonPersonId
+			watsonPrimaryKey
 		};
 
-		requestPersonTranslation(translationRequestData);
+		requestModelTranslationMethod(translationRequestData);
 	}
 
 	handleUpdateFormData(formData) {
-		const {
-			updatePeopleFormData,
-			watsonPersonId
-		} = this.props;
+		const {props} = this;
 
-		updatePeopleFormData(formData, watsonPersonId);
+		const {model, watsonPrimaryKey} = props;
+
+		const updateModelFormData = props[`update${capitalize(model)}FormData`];
+
+		updateModelFormData(formData, watsonPrimaryKey);
 	}
 
 	render() {
@@ -211,20 +201,23 @@ class PersonForm extends JSXComponent {
 			buttonLabel,
 			disabled,
 			errors,
+			fieldConfig,
+			formConfig,
 			formData,
 			loading,
 			model,
+			modelLabel,
 			response,
 			storeData = props.data,
-			watsonIncidentId
+			watsonChildId
 		} = props;
 
 		let {
 			cancelMethod,
-			headerStringLeft = Liferay.Language.get('create-person'),
+			headerStringLeft,
 			headerStringRight,
-			submitMethod = props.updatePerson,
-			watsonPersonId
+			submitMethod = props[`update${capitalize(model)}`],
+			watsonPrimaryKey
 		} = props;
 
 		const {
@@ -236,10 +229,10 @@ class PersonForm extends JSXComponent {
 			if (response.get('status') === 'success') {
 				const responseData = response.get('data');
 
-				watsonPersonId = responseData.get('watsonPersonId');
+				watsonPrimaryKey = responseData.get('id');
 
-				if (watsonPersonId) {
-					Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/people/${watsonPersonId}/edit`);
+				if (watsonPrimaryKey) {
+					Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/edit`);
 				}
 			}
 			else if (errors) {
@@ -255,17 +248,17 @@ class PersonForm extends JSXComponent {
 		if (action === 'edit') {
 			deleteMethod = disabled ? undefined : this.handleDelete;
 
-			headerStringLeft = storeData.get('name') || Liferay.Language.get('edit-person');
+			headerStringLeft = storeData.get('name') || sub(Liferay.Language.get('edit-x'), modelLabel);
 			headerStringRight = getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp'));
 
-			reportHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/people/${watsonPersonId}/report`;
-
+			reportHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/report`;
 			requestTranslationMethod = this.handleTranslationRequest;
 
-			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/people/${watsonPersonId}/translate`;
+			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/translate`;
 		}
-		else if (action === 'create' && watsonIncidentId) {
+		else if (action === 'create' && watsonChildId) {
 			cancelMethod = this.handleCancel;
+			headerStringLeft = sub(Liferay.Language.get('create-x'), modelLabel);
 			headerStringRight = Liferay.Language.get('unsaved');
 			submitMethod = this.handleCreate;
 		}
@@ -286,13 +279,6 @@ class PersonForm extends JSXComponent {
 				}
 
 				<div class="content">
-					<AffiliationLink
-						affiliationData={storeData.get('affiliatedIncidents')}
-						entryId={watsonPersonId}
-						model={model}
-						watsonIncidentId={watsonIncidentId}
-					/>
-
 					<Form
 						action={action}
 						button={button}
@@ -301,8 +287,8 @@ class PersonForm extends JSXComponent {
 						deleteMethod={deleteMethod}
 						disabled={disabled}
 						errors={errors}
-						fieldConfig={WatsonConstants.inputConfig.people.inputs}
-						formConfig={this.getConfig()}
+						fieldConfig={fieldConfig}
+						formConfig={formConfig}
 						formData={formData}
 						loading={loading}
 						model={model}
@@ -313,8 +299,8 @@ class PersonForm extends JSXComponent {
 						submitMethod={submitMethod}
 						translateHref={translateHref}
 						updateFormData={this.handleUpdateFormData}
-						watsonIncidentId={watsonIncidentId}
-						watsonPrimaryKey={watsonPersonId}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={watsonPrimaryKey}
 					/>
 				</div>
 			</div>
@@ -322,29 +308,30 @@ class PersonForm extends JSXComponent {
 	}
 
 	rendered() {
-		const {incidentName, storeData} = this.props;
+		const {childName, modelLabel, storeData} = this.props;
 
-		const personName = sub(Liferay.Language.get('person-x'), storeData.get('id') || '');
+		const modelName = sub(Liferay.Language.get('x-x'), modelLabel, storeData.get('id') || '');
 
-		updateDOMTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, personName));
+		updateDOMTitle(sub(Liferay.Language.get('child-x-x'), childName, modelName));
 	}
 }
 
-PersonForm.PROPS = {
+GenericChildForm.PROPS = {
 	action: Config.string().value(''),
 	button: Config.value(null),
 	disabled: Config.bool().value(false),
 	errors: Config.value(new Map()),
 	formData: Config.object().value({}),
 	loading: Config.bool().value(false),
-	model: Config.string().value('people'),
+	model: Config.string(),
+	modelLabel: Config.string(),
 	response: Config.object(),
 	storeData: Config.value(null),
-	watsonIncidentId: Config.value(''),
-	watsonPersonId: Config.value('')
+	watsonChildId: Config.value(''),
+	watsonPrimaryKey: Config.value('')
 };
 
-PersonForm.STATE = {
+GenericChildForm.STATE = {
 	dataSent: Config.bool().value(false),
 	navigateAwayPath: Config.value(null),
 	showLeaveModal: Config.bool().value(false),
@@ -352,66 +339,92 @@ PersonForm.STATE = {
 };
 
 function mapStateToProps(state, props) {
-	const {watsonPersonId = 0} = props;
+	const {model, watsonPrimaryKey = 0} = props;
 
-	const errors = state.getIn(['people', 'errors']) || new Map();
+	const errors = state.getIn([model, 'errors']) || new Map();
 
 	return {
 		errors,
 		loading: state.getIn(
 			[
-				'people',
+				model,
 				'loading'
 			]
 		),
+		modelLabel: !model ? '' : WatsonConstants.inputConfig[model].singularLabel,
 		response: state.getIn(
 			[
-				'people',
+				model,
 				'response'
 			]
 		),
-		watsonPersonId
+		watsonPrimaryKey
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		destroyPerson: watsonPersonId => {
+		destroyDocument: watsonPrimaryKey => {
 			dispatch(
-				destroyPerson(watsonPersonId)
+				destroyDocument(watsonPrimaryKey)
 			);
 		},
-		editPerson: watsonPersonId => {
+		destroyReport: watsonPrimaryKey => {
 			dispatch(
-				editPerson(watsonPersonId)
+				destroyReport(watsonPrimaryKey)
 			);
 		},
-		requestPersonTranslation: data => {
+		editDocument: watsonPrimaryKey => {
 			dispatch(
-				requestPersonTranslation(data)
+				editDocument(watsonPrimaryKey)
 			);
 		},
-		updatePeopleDataManually: data => {
+		editReport: watsonPrimaryKey => {
 			dispatch(
-				updatePeopleDataManually(data)
+				editReport(watsonPrimaryKey)
 			);
 		},
-		updatePeopleFormData: (formData, watsonPersonId = 0) => {
+		updateDocument: data => {
+			dispatch(
+				updateDocument(data)
+			);
+		},
+		updateDocumentsDataManually: data => {
+			dispatch(
+				updateDocumentsDataManually(data)
+			);
+		},
+		updateDocumentsFormData: (formData, watsonPrimaryKey = 0) => {
 			const data = {
 				formData,
-				watsonPersonId
+				watsonPrimaryKey
 			};
 
 			dispatch(
-				updatePeopleFormData(data)
+				updateDocumentsFormData(data)
 			);
 		},
-		updatePerson: data => {
+		updateReport: data => {
 			dispatch(
-				updatePerson(data)
+				updateReport(data)
+			);
+		},
+		updateReportsDataManually: data => {
+			dispatch(
+				updateReportsDataManually(data)
+			);
+		},
+		updateReportsFormData: (formData, watsonPrimaryKey = 0) => {
+			const data = {
+				formData,
+				watsonPrimaryKey
+			};
+
+			dispatch(
+				updateReportsFormData(data)
 			);
 		}
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PersonForm);
+export default connect(mapStateToProps, mapDispatchToProps)(GenericChildForm);
