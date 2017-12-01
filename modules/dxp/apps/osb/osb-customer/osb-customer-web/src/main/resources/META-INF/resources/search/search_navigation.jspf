@@ -198,19 +198,19 @@ for (AssetVocabulary assetVocabulary : assetVocabularies) {
 </div>
 
 <%
-AssetVocabulary articleTypeVocabulary = AssetVocabularyLocalServiceUtil.getGroupVocabulary(OSBCustomerConstants.GROUP_KNOWLEDGE_ID, "Article Type");
+AssetVocabulary firstVocabulary = assetVocabularies.get(0);
 
-List<AssetCategory> articleTypeCategories = AssetCategoryLocalServiceUtil.getVocabularyCategories(0, articleTypeVocabulary.getVocabularyId(), 0, 1, null);
+List<AssetCategory> categories = AssetCategoryLocalServiceUtil.getVocabularyCategories(0, firstVocabulary.getVocabularyId(), 0, 1, null);
 
-AssetCategory knowledgeBaseCategory = articleTypeCategories.get(0);
+AssetCategory firstCategory = categories.get(0);
 %>
 
 <aui:script>
 	function <portlet:namespace />openFilters() {
 		var filters = document.querySelectorAll('input[type="checkbox"]:checked');
 
-		<portlet:namespace />toggleFilter(<%= articleTypeVocabulary.getVocabularyId() %>);
-		<portlet:namespace />toggleFilter(<%= knowledgeBaseCategory.getCategoryId() %>);
+		<portlet:namespace />toggleFilter(<%= firstVocabulary.getVocabularyId() %>);
+		<portlet:namespace />toggleFilter(<%= firstCategory.getCategoryId() %>);
 
 		for (var i = 0; i < filters.length; i++) {
 			var element = filters[i];
