@@ -13,6 +13,7 @@
 	<meta content="${open_graph_title}" property="og:title" />
 	<meta content="website" property="og:type" />
 	<meta content="${open_graph_url}" property="og:url" />
+
 	<title>${the_title} | "<@liferay.language key="liferay" /></title>
 
 	<@liferay_util["include"] page=top_head_include />
