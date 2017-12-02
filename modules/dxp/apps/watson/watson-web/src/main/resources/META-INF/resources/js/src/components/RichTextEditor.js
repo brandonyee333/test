@@ -24,7 +24,7 @@ class RichTextEditor extends JSXComponent {
 	}
 
 	render() {
-		const {autoFocus = false, disabled, value} = this.props;
+		const {autoFocus = false, disabled, value = ''} = this.props;
 
 		const {formats, modules} = this.state;
 
@@ -48,7 +48,7 @@ class RichTextEditor extends JSXComponent {
 RichTextEditor.PROPS = {
 	disabled: Config.bool().value(false),
 	loading: Config.bool().value(false),
-	value: Config.string().value('')
+	value: Config.any().value('')
 };
 
 RichTextEditor.STATE = {
