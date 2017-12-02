@@ -1,6 +1,6 @@
 .has-control-menu {
 	&.open {
-		.lesa-nav, .lesa-mobile-nav {
+		.lesa-nav, .lesa-mobile-nav-wrapper {
 			left: $sidenav-width;
 		}
 	}
@@ -33,11 +33,11 @@
 		}
 	}
 
-	.lesa-nav, .lesa-mobile-nav {
+	.lesa-nav, .lesa-mobile-nav-wrapper {
 		transition: $sidenav-transition;
 	}
 
-	.lesa-mobile-nav {
+	.lesa-mobile-nav-wrapper {
 		top: $has-control-menu-top-mobile + $banner-height;
 	}
 }

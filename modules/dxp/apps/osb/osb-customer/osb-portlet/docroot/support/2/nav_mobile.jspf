@@ -14,60 +14,64 @@
  */
 --%>
 
-<nav class="lesa-mobile-nav" role="navigation">
-	<ul role="menubar">
-		<li class="pull-left" role="menuitem">
-			<portlet:renderURL var="myOpenTicketsURL">
-				<portlet:param name="mvcPath" value="/support/2/view.jsp" />
-			</portlet:renderURL>
+<div class="lesa-mobile-nav-wrapper">
+	<div class="lesa-mobile-nav">
+		<nav role="navigation">
+			<ul role="menubar">
+				<li role="menuitem">
+					<portlet:renderURL var="myOpenTicketsURL">
+						<portlet:param name="mvcPath" value="/support/2/view.jsp" />
+					</portlet:renderURL>
 
-			<liferay-ui:message key="tickets" />
-		</li>
+					<liferay-ui:message key="tickets" />
+				</li>
 
-		<li class="pull-left" role="menuitem">
-			<portlet:renderURL var="advancedSearchURL">
-				<portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" />
-			</portlet:renderURL>
+				<li role="menuitem">
+					<portlet:renderURL var="advancedSearchURL">
+						<portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" />
+					</portlet:renderURL>
 
-			<a href="<%= advancedSearchURL %>">
-				<liferay-ui:message key="search" />
-			</a>
-		</li>
+					<a href="<%= advancedSearchURL %>">
+						<liferay-ui:message key="search" />
+					</a>
+				</li>
 
-		<c:if test="<%= clockedIn %>">
-			<li class="pull-left" role="menuitem">
-				<portlet:renderURL var="newTicketURL">
-					<portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" />
-				</portlet:renderURL>
+				<c:if test="<%= clockedIn %>">
+					<li role="menuitem">
+						<portlet:renderURL var="newTicketURL">
+							<portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" />
+						</portlet:renderURL>
 
-				<a href="<%= newTicketURL %>">
-					<liferay-ui:message key="new-ticket" />
-				</a>
-			</li>
-		</c:if>
+						<a href="<%= newTicketURL %>">
+							<liferay-ui:message key="new-ticket" />
+						</a>
+					</li>
+				</c:if>
 
-		<li class="pull-left" role="menuitem">
-			<portlet:renderURL var="helpURL">
-				<portlet:param name="mvcPath" value="/support/2/help.jsp" />
-			</portlet:renderURL>
+				<li role="menuitem">
+					<portlet:renderURL var="helpURL">
+						<portlet:param name="mvcPath" value="/support/2/help.jsp" />
+					</portlet:renderURL>
 
-			<a href="<%= helpURL %>">
-				<liferay-ui:message key="help" />
-			</a>
-		</li>
+					<a href="<%= helpURL %>">
+						<liferay-ui:message key="help" />
+					</a>
+				</li>
 
-		<li class="pull-left" role="menuitem">
-			<liferay-ui:message key="feedback" />
-		</li>
+				<li role="menuitem">
+					<liferay-ui:message key="feedback" />
+				</li>
 
-		<li class="pull-left" role="menuitem">
-			<portlet:renderURL var="preferencesURL">
-				<portlet:param name="mvcPath" value="/support/2/preferences.jsp" />
-			</portlet:renderURL>
+				<li role="menuitem">
+					<portlet:renderURL var="preferencesURL">
+						<portlet:param name="mvcPath" value="/support/2/preferences.jsp" />
+					</portlet:renderURL>
 
-			<a href="<%= preferencesURL %>">
-				<liferay-ui:message key="preferences" />
-			</a>
-		</li>
-	</ul>
-</nav>
+					<a href="<%= preferencesURL %>">
+						<liferay-ui:message key="preferences" />
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>

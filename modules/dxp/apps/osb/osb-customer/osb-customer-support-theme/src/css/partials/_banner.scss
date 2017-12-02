@@ -155,18 +155,36 @@
 
 /* ---------- Application mobile nav ---------- */
 
-.lesa-mobile-nav {
-	background-color: $light-bg;
-	display: block;
+.lesa-mobile-nav-wrapper {
 	height: $lesa-mobile-nav-height;
 	left: 0;
 	position: fixed;
 	top: $banner-height;
+	user-select: none;
 	width: 100%;
 
-	li {
-		list-style: none;
-		padding: 1em;
+	.lesa-mobile-nav {
+		height: 100%;
+		overflow: hidden;
+		position: relative;
+	}
+
+	nav {
+		background-color: $light-bg;
+		margin-bottom: -1em;
+		overflow-x: scroll;
+		overflow-y: hidden;
+
+		ul {
+			display: inline-block;
+			white-space: nowrap;
+		}
+
+		li {
+			display: inline-block;
+			list-style: none;
+			padding: 1em;
+		}
 	}
 
 	@include sm() {
