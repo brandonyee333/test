@@ -318,7 +318,7 @@
 
 		warnings.each(
 			function() {
-				var img = this.one('img')
+				var img = this.one('img');
 
 				new A.Tooltip(
 					{
