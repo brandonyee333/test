@@ -8,7 +8,15 @@ class Toggle extends JSXComponent {
 			'onChange'
 		);
 
-		this.setState({checked: this.props.checked});
+		let checkedValue = false;
+
+		const {checked} = this.props;
+
+		if ((checked === 'true' && checked !== 'false') || checked === true) {
+			checkedValue = true;
+		}
+
+		this.setState({checked: checkedValue});
 	}
 
 	render() {
@@ -51,13 +59,20 @@ class Toggle extends JSXComponent {
 
 	syncChecked(newState) {
 		if (newState !== undefined) {
-			this.setState({checked: newState});
+
+			let checkedValue = false;
+
+			if ((newState === 'true' && newState !== 'false') || newState === true) {
+				checkedValue = true;
+			}
+
+			this.setState({checked: checkedValue});
 		}
 	}
 }
 
 Toggle.PROPS = {
-	checked: Config.bool().value(false)
+	checked: Config.any().value(false)
 };
 
 Toggle.STATE = {

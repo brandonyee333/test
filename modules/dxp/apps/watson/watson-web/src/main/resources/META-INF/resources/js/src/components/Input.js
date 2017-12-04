@@ -49,7 +49,7 @@ class Input extends JSXComponent {
 			retVal = (
 				<Toggle
 					autoFocus={autoFocus}
-					checked={!!value}
+					checked={value}
 					cssClass="watson-input"
 					disabled={disabled}
 					label={[Liferay.Language.get('no'), Liferay.Language.get('yes')]}
