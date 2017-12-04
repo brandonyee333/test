@@ -2418,7 +2418,6 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		 */
-
 		if (accountEntryPersistence.countByU_T(
 				userId, AccountEntryConstants.TYPE_TRIAL) > 0) {
 
