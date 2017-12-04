@@ -82,7 +82,7 @@
 
 						<a href="<%= rowURL %>"><%= HtmlUtil.escape(supportTeam.getName()) %></a>
 
-						<%= ((i + 1) < supportTeams.size()) ? "<br />" : StringPool.BLANK %>
+						<%= ((i + 1) < supportTeams.size()) ? "<br />" : "" %>
 
 					<%
 					}

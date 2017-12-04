@@ -127,7 +127,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<liferay-ui:search-container-column-text
 				name="notifications"
 			>
-				<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> id="<portlet:namespace />notifications_<%= curUser.getUserId() %>" name="<portlet:namespace />notifications_<%= curUser.getUserId() %>">
+				<select <%= curUser.isActive() ? "" : "disabled" %> id="<portlet:namespace />notifications_<%= curUser.getUserId() %>" name="<portlet:namespace />notifications_<%= curUser.getUserId() %>">
 
 					<%
 					for (int i = 1; i <= 2; i++) {
@@ -145,7 +145,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>" onChange="<portlet:namespace />setNotifications('<%= curUser.getUserId() %>', this.value);">
+				<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>" onChange="<portlet:namespace />setNotifications('<%= curUser.getUserId() %>', this.value);">
 					<option></option>
 
 					<%
@@ -164,7 +164,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<liferay-ui:search-container-column-text
 				name="user-status"
 			>
-				<%= RoleLocalServiceUtil.hasUserRole(curUser.getUserId(), OSBConstants.ROLE_VERIFIED_USER_ID) ? StringPool.BLANK : LanguageUtil.get(request, "unverified") %>
+				<%= RoleLocalServiceUtil.hasUserRole(curUser.getUserId(), OSBConstants.ROLE_VERIFIED_USER_ID) ? "" : LanguageUtil.get(request, "unverified") %>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

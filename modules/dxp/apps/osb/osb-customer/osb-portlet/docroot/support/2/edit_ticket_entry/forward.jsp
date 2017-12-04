@@ -34,7 +34,7 @@ if (Validator.isNull(backURL)) {
 }
 %>
 
-<div class="<%= (SessionErrors.contains(renderRequest, TicketEntryForwardingException.class) || SessionErrors.contains(renderRequest, TicketEntryForwardingFieldException.class)) ? StringPool.BLANK : "hide" %> forward-popup" id="<portlet:namespace />forwardPopup">
+<div class="<%= (SessionErrors.contains(renderRequest, TicketEntryForwardingException.class) || SessionErrors.contains(renderRequest, TicketEntryForwardingFieldException.class)) ? "" : "hide" %> forward-popup" id="<portlet:namespace />forwardPopup">
 	<div class="forward-popup-wrapper" id="<portlet:namespace />forwardPopupWrapper">
 		<portlet:actionURL name="forwardTicketEntry" var="forwardTicketEntryURL">
 			<portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" />
@@ -61,9 +61,9 @@ if (Validator.isNull(backURL)) {
 				<liferay-ui:message key="is-production-still-down-impacted" />*
 			</h2>
 
-			<liferay-ui:message key="yes" /> <input name="<portlet:namespace />impacted" <%= impacted ? "checked" : StringPool.BLANK %> type="radio" value="1" />
+			<liferay-ui:message key="yes" /> <input name="<portlet:namespace />impacted" <%= impacted ? "checked" : "" %> type="radio" value="1" />
 
-			<liferay-ui:message key="no" /> <input name="<portlet:namespace />impacted" <%= impacted ? StringPool.BLANK : "checked" %> type="radio" value="0" />
+			<liferay-ui:message key="no" /> <input name="<portlet:namespace />impacted" <%= impacted ? "" : "checked" %> type="radio" value="0" />
 
 			<br /><br />
 

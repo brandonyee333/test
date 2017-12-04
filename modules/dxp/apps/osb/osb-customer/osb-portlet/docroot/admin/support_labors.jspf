@@ -73,7 +73,7 @@
 
 					<liferay-ui:message key="<%= OSBDateUtil.DAY_NAMES[i - 1] %>" /> <%= supportLabor.formatDayHours(locale, i) %>
 
-					<%= (i < 7) ? "<br />" : StringPool.BLANK %>
+					<%= (i < 7) ? "<br />" : "" %>
 
 				<%
 				}
@@ -107,7 +107,7 @@
 
 						<%= supportTeam.getName() %>
 
-						<%= (i < (supportTeams.size() - 1)) ? "<br />" : StringPool.BLANK %>
+						<%= (i < (supportTeams.size() - 1)) ? "<br />" : "" %>
 
 					<%
 					}

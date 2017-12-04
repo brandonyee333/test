@@ -150,25 +150,25 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 							<c:if test="<%= liferayIncOrg || partnerWorker %>">
 								<div>
 									<div>
-										<input <%= ticketSolution.isReviewForKB() ? "checked" : StringPool.BLANK %> disabled="disabled" type="checkbox" />
+										<input <%= ticketSolution.isReviewForKB() ? "checked" : "" %> disabled="disabled" type="checkbox" />
 
 										<liferay-ui:message key="this-issue-should-be-reviewed-and-considered-to-be-added-as-an-article-in-the-knowledge-base" />
 									</div>
 
 									<div>
-										<input <%= ticketSolution.isCustomerSpecific() ? "checked" : StringPool.BLANK %> disabled="disabled" type="checkbox" />
+										<input <%= ticketSolution.isCustomerSpecific() ? "checked" : "" %> disabled="disabled" type="checkbox" />
 
 										<liferay-ui:message key="this-issue-only-applies-to-this-customer" />
 									</div>
 
 									<div>
-										<input <%= ticketSolution.isVersionSpecific() ? "checked" : StringPool.BLANK %> disabled="disabled" type="checkbox" />
+										<input <%= ticketSolution.isVersionSpecific() ? "checked" : "" %> disabled="disabled" type="checkbox" />
 
 										<liferay-ui:message key="this-issue-only-applies-to-this-version-of-liferay" />
 									</div>
 
 									<div>
-										<input <%= ticketSolution.isEnvironmentSpecific() ? "checked" : StringPool.BLANK %> disabled="disabled" type="checkbox" />
+										<input <%= ticketSolution.isEnvironmentSpecific() ? "checked" : "" %> disabled="disabled" type="checkbox" />
 
 										<liferay-ui:message key="this-issue-only-applies-to-this-environment" />
 									</div>

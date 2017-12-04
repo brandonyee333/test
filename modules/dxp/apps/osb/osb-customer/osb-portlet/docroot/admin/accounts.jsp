@@ -147,7 +147,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 
 							<a href="<%= rowURL %>"><%= HtmlUtil.escape(supportRegion.getName()) %></a>
 
-							<%= ((i + 1) < supportRegions.size()) ? "<br />" : StringPool.BLANK %>
+							<%= ((i + 1) < supportRegions.size()) ? "<br />" : "" %>
 
 						<%
 						}

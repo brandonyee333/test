@@ -168,7 +168,7 @@ if (hasUpdateBasic && (((status == TicketEntryConstants.STATUS_CLOSED) && (!acco
 %>
 
 <c:if test="<%= Validator.isNotNull(label) %>">
-	<input class="aui-button-input" <%= Validator.isNotNull(onClick) ? "onClick=\"" + onClick + "\"" : StringPool.BLANK %> type="button" value="<liferay-ui:message key="<%= label %>" />" />
+	<input class="aui-button-input" <%= Validator.isNotNull(onClick) ? "onClick=\"" + onClick + "\"" : "" %> type="button" value="<liferay-ui:message key="<%= label %>" />" />
 </c:if>
 
 <%

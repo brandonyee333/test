@@ -54,7 +54,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 						for (int curServerCommunicationType : TicketEntryConstants.CLUSTER_SERVER_COMMUNICATION_TYPES) {
 						%>
 
-							<option <%= (serverCommunicationType == curServerCommunicationType) ? "selected" : StringPool.BLANK %> value="<%= curServerCommunicationType %>"><liferay-ui:message key="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" /></option>
+							<option <%= (serverCommunicationType == curServerCommunicationType) ? "selected" : "" %> value="<%= curServerCommunicationType %>"><liferay-ui:message key="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" /></option>
 
 						<%
 						}
@@ -70,14 +70,14 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 
 			<select id="<portlet:namespace />numberOfNodes" name="<portlet:namespace />numberOfNodes">
 				<option value="0"></option>
-				<option <%= (numberOfNodes == 1) ? "selected" : StringPool.BLANK %> value="1">1</option>
-				<option <%= (numberOfNodes == 2) ? "selected" : StringPool.BLANK %> value="2">2</option>
-				<option <%= (numberOfNodes == 3) ? "selected" : StringPool.BLANK %> value="3">3</option>
-				<option <%= (numberOfNodes == 4) ? "selected" : StringPool.BLANK %> value="4">4</option>
-				<option <%= (numberOfNodes == 5) ? "selected" : StringPool.BLANK %> value="5">5</option>
-				<option <%= (numberOfNodes == 6) ? "selected" : StringPool.BLANK %> value="6">6</option>
-				<option <%= (numberOfNodes == 7) ? "selected" : StringPool.BLANK %> value="7">7</option>
-				<option <%= (numberOfNodes >= 8) ? "selected" : StringPool.BLANK %> value="8">8+</option>
+				<option <%= (numberOfNodes == 1) ? "selected" : "" %> value="1">1</option>
+				<option <%= (numberOfNodes == 2) ? "selected" : "" %> value="2">2</option>
+				<option <%= (numberOfNodes == 3) ? "selected" : "" %> value="3">3</option>
+				<option <%= (numberOfNodes == 4) ? "selected" : "" %> value="4">4</option>
+				<option <%= (numberOfNodes == 5) ? "selected" : "" %> value="5">5</option>
+				<option <%= (numberOfNodes == 6) ? "selected" : "" %> value="6">6</option>
+				<option <%= (numberOfNodes == 7) ? "selected" : "" %> value="7">7</option>
+				<option <%= (numberOfNodes >= 8) ? "selected" : "" %> value="8">8+</option>
 			</select>
 		</div>
 
@@ -193,7 +193,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 					for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
 					%>
 
-						<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : StringPool.BLANK %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
+						<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : "" %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
 
 					<%
 					}

@@ -165,7 +165,7 @@ if (liferayIncOrg) {
 
 											<a href="<%= rowHREF %>"><%= HtmlUtil.escape(accountEntry.getName()) %></a>
 
-											<%= ((i + 1) < accountEntries.size()) ? "<br />" : StringPool.BLANK %>
+											<%= ((i + 1) < accountEntries.size()) ? "<br />" : "" %>
 
 										<%
 										}

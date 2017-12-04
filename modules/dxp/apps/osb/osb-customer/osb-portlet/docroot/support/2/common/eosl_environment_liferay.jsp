@@ -23,7 +23,7 @@ String idPrefix = ParamUtil.getString(request, "idPrefix", "supportMessageDispla
 idPrefix = renderResponse.getNamespace() + HtmlUtil.escapeAttribute(idPrefix);
 %>
 
-<div class="portlet-msg-info <%= ProductEntryConstants.isPortalVersion5_2(envLFR) ? StringPool.BLANK : "hide" %>" id="<%= idPrefix + "_5_2" %>">
+<div class="portlet-msg-info <%= ProductEntryConstants.isPortalVersion5_2(envLFR) ? "" : "hide" %>" id="<%= idPrefix + "_5_2" %>">
 	<span class="txt-b"><liferay-ui:message key="important" /></span>
 
 	<br />
@@ -35,7 +35,7 @@ idPrefix = renderResponse.getNamespace() + HtmlUtil.escapeAttribute(idPrefix);
 	<span><liferay-ui:message arguments="<%= arguments %>" key="the-end-of-service-life-for-liferay-portal-5.2-ee-was-on-may-31-2017" /></span>
 </div>
 
-<div class="portlet-msg-info <%= ProductEntryConstants.isPortalVersion6_0(envLFR) ? StringPool.BLANK : "hide" %>" id="<%= idPrefix + "_6_0" %>">
+<div class="portlet-msg-info <%= ProductEntryConstants.isPortalVersion6_0(envLFR) ? "" : "hide" %>" id="<%= idPrefix + "_6_0" %>">
 	<span class="txt-b"><liferay-ui:message key="important" /></span>
 
 	<br />
@@ -47,7 +47,7 @@ idPrefix = renderResponse.getNamespace() + HtmlUtil.escapeAttribute(idPrefix);
 	<span><liferay-ui:message arguments="<%= arguments %>" key="the-end-of-service-life-for-liferay-portal-6.0-ee-will-be-on-september-10-2017" /></span>
 </div>
 
-<div class="portlet-msg-info <%= ProductEntryConstants.isPortalVersion6_1(envLFR) ? StringPool.BLANK : "hide" %>" id="<%= idPrefix + "_6_1" %>">
+<div class="portlet-msg-info <%= ProductEntryConstants.isPortalVersion6_1(envLFR) ? "" : "hide" %>" id="<%= idPrefix + "_6_1" %>">
 	<span class="txt-b"><liferay-ui:message key="important" /></span>
 
 	<br />

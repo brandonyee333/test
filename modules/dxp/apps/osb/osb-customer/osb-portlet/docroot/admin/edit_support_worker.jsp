@@ -433,7 +433,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 
 					<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(curSeverity)) %>
 
-					<%= ((i + 1) < curSeverities.size()) ? "<br />" : StringPool.BLANK %>
+					<%= ((i + 1) < curSeverities.size()) ? "<br />" : "" %>
 
 				<%
 				}
@@ -455,7 +455,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 
 					<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>
 
-					<%= ((i + 1) < curComponents.size()) ? "<br />" : StringPool.BLANK %>
+					<%= ((i + 1) < curComponents.size()) ? "<br />" : "" %>
 
 				<%
 				}
@@ -477,7 +477,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 
 					<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(curAccountTier)) %>
 
-					<%= ((i + 1) < curAccountTiers.size()) ? "<br />" : StringPool.BLANK %>
+					<%= ((i + 1) < curAccountTiers.size()) ? "<br />" : "" %>
 
 				<%
 				}

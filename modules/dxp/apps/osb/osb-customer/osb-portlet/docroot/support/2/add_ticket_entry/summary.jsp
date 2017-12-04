@@ -117,7 +117,7 @@ if (accountEntry != null) {
 			String componentMessageLink = supportPortletPreferences.getValue("componentMessageLink_" + productEntry.getLESADisplayName() + StringPool.UNDERLINE + component, StringPool.BLANK);
 			%>
 
-			<div class="component-message portlet-msg-info <%= Validator.isNotNull(componentMessage) ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
+			<div class="component-message portlet-msg-info <%= Validator.isNotNull(componentMessage) ? "" : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
 				<c:choose>
 					<c:when test="<%= Validator.isNotNull(componentMessageLink) %>">
 						<a href="<%= HtmlUtil.escapeAttribute(componentMessageLink) %>" target="_blank"><%= HtmlUtil.escape(componentMessage) %></a>
@@ -258,7 +258,7 @@ if (accountEntry != null) {
 
 				</aui:select>
 
-				<div class="<%= (accountEnvironmentId == 0) ? "hide" : StringPool.BLANK %> component-detail-environment" id="<portlet:namespace />componentDetailEnvironment">
+				<div class="<%= (accountEnvironmentId == 0) ? "hide" : "" %> component-detail-environment" id="<portlet:namespace />componentDetailEnvironment">
 					<div class="environment-detail" id="<portlet:namespace />environmentDetail">
 						<liferay-util:include page="/support/2/common/details_environment.jsp" servletContext="<%= application %>">
 							<portlet:param name="edit" value="<%= Boolean.TRUE.toString() %>" />

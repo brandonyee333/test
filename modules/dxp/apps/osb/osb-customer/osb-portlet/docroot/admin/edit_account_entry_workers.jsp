@@ -125,7 +125,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<liferay-ui:search-container-column-text
 				name="notifications"
 			>
-				<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />notifications_<%= curUser.getUserId() %>">
+				<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />notifications_<%= curUser.getUserId() %>">
 
 					<%
 					for (int i = 1; i <= 4; i++) {
@@ -143,7 +143,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
+				<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
 					<option></option>
 
 					<%

@@ -74,7 +74,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 					<span class="first" id="<portlet:namespace />supportInstructions" onClick="<portlet:namespace />reveal('supportInstructions');"><liferay-ui:message key="support-instructions" /></span>
 				</c:if>
 
-				<span class="<%= !hasViewSupportInstructions ? "first" : StringPool.BLANK %>" id="<portlet:namespace />description" onClick="<portlet:namespace />reveal('description');"><liferay-ui:message key="description" /></span>
+				<span class="<%= !hasViewSupportInstructions ? "first" : "" %>" id="<portlet:namespace />description" onClick="<portlet:namespace />reveal('description');"><liferay-ui:message key="description" /></span>
 
 				<c:if test="<%= (component == TicketEntryConstants.COMPONENT_CLUSTERING) || (component == TicketEntryConstants.COMPONENT_LICENSE) || (component == TicketEntryConstants.COMPONENT_UPGRADE) %>">
 					<span id="<portlet:namespace />component" onClick="<portlet:namespace />reveal('component');"><liferay-ui:message key="<%= TicketEntryConstants.getComponentLabel(component) %>" /> <liferay-ui:message key="details" /></span>
@@ -159,7 +159,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 						String componentMessageLink = supportPortletPreferences.getValue("componentMessageLink_" + productEntry.getLESADisplayName() + StringPool.UNDERLINE + component, StringPool.BLANK);
 						%>
 
-						<div class="portlet-msg-info component-message <%= Validator.isNotNull(componentMessage) ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
+						<div class="portlet-msg-info component-message <%= Validator.isNotNull(componentMessage) ? "" : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
 							<c:choose>
 								<c:when test="<%= Validator.isNotNull(componentMessageLink) %>">
 									<a href="<%= HtmlUtil.escapeAttribute(componentMessageLink) %>" target="_blank"><%= HtmlUtil.escape(componentMessage) %></a>

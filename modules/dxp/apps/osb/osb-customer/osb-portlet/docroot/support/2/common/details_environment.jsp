@@ -156,7 +156,7 @@ if (productEntry != null) {
 											<aui:option disabled="<%= true %>" label="--------" />
 										</c:if>
 
-										<aui:option label='<%= envLFRType.getName() + (limited ? "(limited)" : StringPool.BLANK) %>' selected="<%= envLFRType.getListTypeId() == envLFR %>" value="<%= envLFRType.getListTypeId() %>" />
+										<aui:option label='<%= envLFRType.getName() + (limited ? "(limited)" : "") %>' selected="<%= envLFRType.getListTypeId() == envLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 
 									<%
 										previousNamePrefix = namePrefix;

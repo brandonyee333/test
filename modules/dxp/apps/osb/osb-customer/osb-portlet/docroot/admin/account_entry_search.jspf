@@ -311,7 +311,7 @@ Date lastEnabledDate = calendar.getTime();
 						<td colspan="2">
 							<select id="<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>" name="<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>">
 								<option value=""></option>
-								<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+								<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
 
 								<c:if test="<%= (displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId()) %>">
 									<option selected value="<%= displayTerms.getCreateUserId() %>"><%= HtmlUtil.escape(displayTerms.getCreateUserName()) %></option>
@@ -325,7 +325,7 @@ Date lastEnabledDate = calendar.getTime();
 						<td colspan="2">
 							<select id="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>" name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>">
 								<option value=""></option>
-								<option <%= (user.getUserId() == displayTerms.getModifiedUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+								<option <%= (user.getUserId() == displayTerms.getModifiedUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
 
 								<c:if test="<%= (displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId()) %>">
 									<option selected value="<%= displayTerms.getModifiedUserId() %>"><%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %></option>

@@ -210,7 +210,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 							Integer severity = severities.get(i);
 						%>
 
-							<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(severity)) %><%= ((i + 1) < severities.size()) ? "<br />" : StringPool.BLANK %>
+							<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(severity)) %><%= ((i + 1) < severities.size()) ? "<br />" : "" %>
 
 						<%
 						}
@@ -229,7 +229,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 							Integer component = components.get(i);
 						%>
 
-							<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(component)) %><%= ((i + 1) < components.size()) ? "<br />" : StringPool.BLANK %>
+							<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(component)) %><%= ((i + 1) < components.size()) ? "<br />" : "" %>
 
 						<%
 						}
@@ -248,7 +248,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 							Integer accountTier = accountTiers.get(i);
 						%>
 
-							<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountTier)) %><%= ((i + 1) < accountTiers.size()) ? "<br />" : StringPool.BLANK %>
+							<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountTier)) %><%= ((i + 1) < accountTiers.size()) ? "<br />" : "" %>
 
 						<%
 						}
@@ -315,7 +315,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
+				<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
 					<option></option>
 
 					<%

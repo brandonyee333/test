@@ -115,7 +115,7 @@ Date lastEnabledDate = calendar.getTime();
 			<td>
 				<select name="<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>">
 					<option value=""></option>
-					<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : StringPool.BLANK %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+					<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
 
 					<c:if test="<%= ((displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId())) %>">
 						<option selected value="<%= displayTerms.getCreateUserId() %>"><%= HtmlUtil.escape(displayTerms.getCreateUserName()) %></option>
@@ -220,7 +220,7 @@ Date lastEnabledDate = calendar.getTime();
 		</tr>
 		<tr>
 			<td colspan="4">
-				<liferay-ui:message key="prorated" /> <input <%= displayTerms.isProrated() ? "checked" : StringPool.BLANK %> name="<portlet:namespace /><%= displayTerms.PRORATED %>" onClick="<portlet:namespace />toggleProrated(this)" type="checkbox" />
+				<liferay-ui:message key="prorated" /> <input <%= displayTerms.isProrated() ? "checked" : "" %> name="<portlet:namespace /><%= displayTerms.PRORATED %>" onClick="<portlet:namespace />toggleProrated(this)" type="checkbox" />
 			</td>
 		</tr>
 		<tr>
@@ -259,7 +259,7 @@ Date lastEnabledDate = calendar.getTime();
 				/>
 			</td>
 		</tr>
-		<tr id="<portlet:namespace />actualStartDateLabel" style="<%= displayTerms.isProrated() ? StringPool.BLANK : "display: none;" %>">
+		<tr id="<portlet:namespace />actualStartDateLabel" style="<%= displayTerms.isProrated() ? "" : "display: none;" %>">
 			<td>
 				<liferay-ui:message key="actual-started-after" />
 			</td>
@@ -267,7 +267,7 @@ Date lastEnabledDate = calendar.getTime();
 				<liferay-ui:message key="actual-started-before" />
 			</td>
 		</tr>
-		<tr id="<portlet:namespace />actualStartDate" style="<%= displayTerms.isProrated() ? StringPool.BLANK : "display: none;" %>">
+		<tr id="<portlet:namespace />actualStartDate" style="<%= displayTerms.isProrated() ? "" : "display: none;" %>">
 			<td>
 				<liferay-ui:input-date
 					dayParam="<%= displayTerms.ACTUAL_START_DATE_GT_DAY %>"

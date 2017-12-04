@@ -148,7 +148,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 							}
 							%>
 
-							<select <%= curUser.isActive() ? StringPool.BLANK : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
+							<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
 								<option></option>
 
 								<%
@@ -167,7 +167,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 						<liferay-ui:search-container-column-text
 							name="primary"
 						>
-							<input <%= ((ticketWorker != null) && ticketWorker.isPrimary()) ? "checked" : StringPool.BLANK %> name="<portlet:namespace />primaryUserId" type="radio" value="<%= curUser.getUserId() %>" />
+							<input <%= ((ticketWorker != null) && ticketWorker.isPrimary()) ? "checked" : "" %> name="<portlet:namespace />primaryUserId" type="radio" value="<%= curUser.getUserId() %>" />
 						</liferay-ui:search-container-column-text>
 					</liferay-ui:search-container-row>
 

@@ -26,7 +26,7 @@ String resize = ParamUtil.getString(request, "resize", "both");
 %>
 
 <div class="edit editor" id="<%= HtmlUtil.escape(editorId) %>">
-	<aui:input cssClass="body" label="<%= content %>" maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name="<%= name %>" onFocus="<%= onFocus %>" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder="<%= Validator.isNotNull(placeholder) ? placeholder : StringPool.BLANK %>" style='<%= "resize:" + resize %>' type="textarea" wrap="soft" />
+	<aui:input cssClass="body" label="<%= content %>" maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name="<%= name %>" onFocus="<%= onFocus %>" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder='<%= Validator.isNotNull(placeholder) ? placeholder : "" %>' style='<%= "resize:" + resize %>' type="textarea" wrap="soft" />
 
 	<div class="preview-container">
 		<div class="preview-content"></div>

@@ -531,20 +531,20 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 							</h2>
 
 							<div class="aui-w100 radio">
-								<label class="<%= ((displayTerms.getSatisfiedDueDate() != null) && displayTerms.isSatisfiedDueDate()) ? "active" : StringPool.BLANK %>">
-									<input <%= ((displayTerms.getSatisfiedDueDate() != null) && displayTerms.isSatisfiedDueDate()) ? "checked" : StringPool.BLANK %> id="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" name="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" onchange="<portlet:namespace />toggleCheckbox(this);" type="radio" value="yes" />
+								<label class="<%= ((displayTerms.getSatisfiedDueDate() != null) && displayTerms.isSatisfiedDueDate()) ? "active" : "" %>">
+									<input <%= ((displayTerms.getSatisfiedDueDate() != null) && displayTerms.isSatisfiedDueDate()) ? "checked" : "" %> id="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" name="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" onchange="<portlet:namespace />toggleCheckbox(this);" type="radio" value="yes" />
 
 									<liferay-ui:message key="yes" />
 								</label>
 
-								<label class="<%= ((displayTerms.getSatisfiedDueDate() != null) && !displayTerms.isSatisfiedDueDate()) ? "active" : StringPool.BLANK %>">
-									<input <%= ((displayTerms.getSatisfiedDueDate() != null) && !displayTerms.isSatisfiedDueDate()) ? "checked" : StringPool.BLANK %> id="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" name="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" onchange="<portlet:namespace />toggleCheckbox(this);" type="radio" value="no" />
+								<label class="<%= ((displayTerms.getSatisfiedDueDate() != null) && !displayTerms.isSatisfiedDueDate()) ? "active" : "" %>">
+									<input <%= ((displayTerms.getSatisfiedDueDate() != null) && !displayTerms.isSatisfiedDueDate()) ? "checked" : "" %> id="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" name="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" onchange="<portlet:namespace />toggleCheckbox(this);" type="radio" value="no" />
 
 									<liferay-ui:message key="no" />
 								</label>
 
-								<label class="<%= (displayTerms.getSatisfiedDueDate() == null) ? "active" : StringPool.BLANK %>">
-									<input <%= (displayTerms.getSatisfiedDueDate() == null) ? "checked" : StringPool.BLANK %> id="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" name="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" onchange="<portlet:namespace />toggleCheckbox(this);" type="radio" value="" />
+								<label class="<%= (displayTerms.getSatisfiedDueDate() == null) ? "active" : "" %>">
+									<input <%= (displayTerms.getSatisfiedDueDate() == null) ? "checked" : "" %> id="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" name="<portlet:namespace /><%= displayTerms.SATISFIED_DUE_DATE %>" onchange="<portlet:namespace />toggleCheckbox(this);" type="radio" value="" />
 
 									<liferay-ui:message key="n-a" />
 								</label>

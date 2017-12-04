@@ -216,7 +216,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 												int[] userVisibilities = VisibilityConstants.getUserVisibilities(user.getUserId(), ticketEntry.getTicketEntryId());
 												%>
 
-												<span title="<%= (ticketAttachment != null) ? HtmlUtil.escapeAttribute(ticketAttachment.getFileName()) : StringPool.BLANK %>">
+												<span title="<%= (ticketAttachment != null) ? HtmlUtil.escapeAttribute(ticketAttachment.getFileName()) : "" %>">
 													<c:choose>
 														<c:when test="<%= ticketAttachment != null %>">
 															<img class="ticket-img" src="<%= PortalUtil.getPathContext(request) %>/images/svg/hotfix.svg" />

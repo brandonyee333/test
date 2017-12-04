@@ -48,9 +48,9 @@ PartnerEntryDisplayTerms displayTerms = new PartnerEntryDisplayTerms(renderReque
 	<div class="clearfix search-param-config">
 		<div class="first-line-support search-param-dropdown" id="<portlet:namespace />managingSupport">
 			<select id="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>">
-				<option <%= !displayTerms.hasManagingSupport() ? "selected" : StringPool.BLANK %> value=""></option>
-				<option <%= (displayTerms.hasManagingSupport() && displayTerms.isManagingSupport()) ? "selected" : StringPool.BLANK %> value="1"><liferay-ui:message key="yes" /></option>
-				<option <%= (displayTerms.hasManagingSupport() && !displayTerms.isManagingSupport()) ? "selected" : StringPool.BLANK %> value="0"><liferay-ui:message key="no" /></option>
+				<option <%= !displayTerms.hasManagingSupport() ? "selected" : "" %> value=""></option>
+				<option <%= (displayTerms.hasManagingSupport() && displayTerms.isManagingSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
+				<option <%= (displayTerms.hasManagingSupport() && !displayTerms.isManagingSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
 			</select>
 		</div>
 

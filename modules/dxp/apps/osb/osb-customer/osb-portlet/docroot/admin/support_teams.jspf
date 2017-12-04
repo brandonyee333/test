@@ -87,7 +87,7 @@
 
 							<liferay-ui:message key="<%= OSBDateUtil.DAY_NAMES[i - 1] %>" /> <%= supportLabor.formatDayHours(locale, i) %>
 
-							<%= (i < 7) ? "<br />" : StringPool.BLANK %>
+							<%= (i < 7) ? "<br />" : "" %>
 
 						<%
 						}
@@ -127,7 +127,7 @@
 
 							<a href="<%= rowURL %>"><%= HtmlUtil.escape(supportRegion.getName()) %></a>
 
-							<%= ((i + 1) < supportRegions.size()) ? "<br />" : StringPool.BLANK %>
+							<%= ((i + 1) < supportRegions.size()) ? "<br />" : "" %>
 
 						<%
 						}
@@ -185,7 +185,7 @@
 
 						<a href="<%= rowURL %>"><%= HtmlUtil.escape(accountEntry.getName()) %></a>
 
-						<%= ((i + 1) < accountEntries.size()) ? "<br />" : StringPool.BLANK %>
+						<%= ((i + 1) < accountEntries.size()) ? "<br />" : "" %>
 
 					<%
 					}
@@ -266,7 +266,7 @@
 
 							<a href="<%= rowURL %>"><%= HtmlUtil.escape(curUser.getFullName()) %></a>
 
-							<%= ((i + 1) < supportWorkers.size()) ? "<br />" : StringPool.BLANK %>
+							<%= ((i + 1) < supportWorkers.size()) ? "<br />" : "" %>
 
 						<%
 						}

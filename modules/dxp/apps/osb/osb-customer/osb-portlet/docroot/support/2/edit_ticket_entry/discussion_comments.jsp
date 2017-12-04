@@ -209,7 +209,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 										%>
 
 											<li>
-												<a href="<%= url %>" <%= url.startsWith("javascript") ? StringPool.BLANK : "target=\"_blank\"" %>><liferay-ui:message key="<%= label %>" /></a>
+												<a href="<%= url %>" <%= url.startsWith("javascript") ? "" : "target=\"_blank\"" %>><liferay-ui:message key="<%= label %>" /></a>
 											</li>
 
 										<%

@@ -41,7 +41,7 @@ String serverConfigurations = ParamUtil.getString(request, "serverConfigurations
 
 			<c:choose>
 				<c:when test="<%= numberOfNodes < 8 %>">
-					<%= (numberOfNodes > 1) ? numberOfNodes : StringPool.BLANK %>
+					<%= (numberOfNodes > 1) ? numberOfNodes : "" %>
 				</c:when>
 				<c:otherwise>
 					<%= numberOfNodes %>+

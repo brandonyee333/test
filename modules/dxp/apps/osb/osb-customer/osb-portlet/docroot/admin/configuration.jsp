@@ -138,7 +138,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (SupportRegion supportRegion : supportRegions) {
 									%>
 
-										<option <%= (supportRegionId == supportRegion.getSupportRegionId()) ? "selected" : StringPool.BLANK %> value="<%= supportRegion.getSupportRegionId() %>"><%= supportRegion.getName() %></option>
+										<option <%= (supportRegionId == supportRegion.getSupportRegionId()) ? "selected" : "" %> value="<%= supportRegion.getSupportRegionId() %>"><%= supportRegion.getName() %></option>
 
 									<%
 									}
@@ -682,7 +682,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (String curProductEntryDisplayName : ProductEntryConstants.DISPLAY_NAMES_DXP) {
 									%>
 
-										<option <%= productEntryDisplayName.equals(curProductEntryDisplayName) ? "selected" : StringPool.BLANK %> value="<%= curProductEntryDisplayName %>"><%= LanguageUtil.get(request, curProductEntryDisplayName) %></option>
+										<option <%= productEntryDisplayName.equals(curProductEntryDisplayName) ? "selected" : "" %> value="<%= curProductEntryDisplayName %>"><%= LanguageUtil.get(request, curProductEntryDisplayName) %></option>
 
 									<%
 									}

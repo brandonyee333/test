@@ -209,14 +209,14 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 						</c:if>
 
 						<c:if test="<%= !ArrayUtil.contains(subcomponents, TicketEntryConstants.SUBCOMPONENT_OTHER) %>">
-							<option <%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "selected" : StringPool.BLANK %> value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>"><liferay-ui:message key="other" /></option>
+							<option <%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "selected" : "" %> value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>"><liferay-ui:message key="other" /></option>
 						</c:if>
 
 						<%
 						for (int curSubcomponent : subcomponents) {
 						%>
 
-							<option <%= (curSubcomponent == subcomponent) ? "selected" : StringPool.BLANK %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
+							<option <%= (curSubcomponent == subcomponent) ? "selected" : "" %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
 
 						<%
 						}
@@ -232,8 +232,8 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 					<select name="<portlet:namespace />issueType">
 						<option value="0"></option>
-						<option <%= (issueType == TicketSolutionConstants.ISSUE_TYPE_BUG) ? "selected" : StringPool.BLANK %> value="<%= TicketSolutionConstants.ISSUE_TYPE_BUG %>"><liferay-ui:message key="bug" /></option>
-						<option <%= (issueType == TicketSolutionConstants.ISSUE_TYPE_CONFIGURATION) ? "selected" : StringPool.BLANK %> value="<%= TicketSolutionConstants.ISSUE_TYPE_CONFIGURATION %>"><liferay-ui:message key="configuration" /></option>
+						<option <%= (issueType == TicketSolutionConstants.ISSUE_TYPE_BUG) ? "selected" : "" %> value="<%= TicketSolutionConstants.ISSUE_TYPE_BUG %>"><liferay-ui:message key="bug" /></option>
+						<option <%= (issueType == TicketSolutionConstants.ISSUE_TYPE_CONFIGURATION) ? "selected" : "" %> value="<%= TicketSolutionConstants.ISSUE_TYPE_CONFIGURATION %>"><liferay-ui:message key="configuration" /></option>
 					</select>
 				</div>
 			</div>
@@ -246,11 +246,11 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 				<span class="txt-b"><liferay-ui:message key="issue-summary" />:</span>
 
 				<select id="<portlet:namespace />useCustomerSummary" name="<portlet:namespace />useCustomerSummary" onchange="<portlet:namespace />toggleIssueSummary(this.value);">
-					<option <%= useCustomerSummary ? "selected" : StringPool.BLANK %> value="1"><liferay-ui:message key="customers-description-accurately-captures-the-issue" /></option>
-					<option <%= !useCustomerSummary ? "selected" : StringPool.BLANK %> value="0"><liferay-ui:message key="customers-description-does-not-accurately-capture-the-issue" /></option>
+					<option <%= useCustomerSummary ? "selected" : "" %> value="1"><liferay-ui:message key="customers-description-accurately-captures-the-issue" /></option>
+					<option <%= !useCustomerSummary ? "selected" : "" %> value="0"><liferay-ui:message key="customers-description-does-not-accurately-capture-the-issue" /></option>
 				</select>
 
-				<div class="<%= useCustomerSummary ? "hide" : StringPool.BLANK %>" id="<portlet:namespace />issueSummaryContainer">
+				<div class="<%= useCustomerSummary ? "hide" : "" %>" id="<portlet:namespace />issueSummaryContainer">
 					<span><liferay-ui:message key="please-provide-the-correct-description-of-the-issue-in-this-ticket-be-sure-to-include-any-details-that-may-be-relevant-to-the-cause-of-the-issue-as-this-information-will-be-used-for-internal-auditing-and-for-reference-by-other-engineers" /></span>
 
 					<liferay-util:include page="/support/2/bbcode_editor.jsp" servletContext="<%= application %>">
@@ -264,32 +264,32 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 			<br />
 
 			<div>
-				<input <%= reviewForKB ? "checked" : StringPool.BLANK %> name="<portlet:namespace />reviewForKB" type="checkbox" />
+				<input <%= reviewForKB ? "checked" : "" %> name="<portlet:namespace />reviewForKB" type="checkbox" />
 
 				<liferay-ui:message key="this-issue-should-be-reviewed-and-considered-to-be-added-as-an-article-in-the-knowledge-base" />
 			</div>
 
 			<div>
-				<input <%= customerSpecific ? "checked" : StringPool.BLANK %> name="<portlet:namespace />customerSpecific" type="checkbox" />
+				<input <%= customerSpecific ? "checked" : "" %> name="<portlet:namespace />customerSpecific" type="checkbox" />
 
 				<liferay-ui:message key="this-issue-only-applies-to-this-customer" />
 			</div>
 
 			<div>
-				<input <%= versionSpecific ? "checked" : StringPool.BLANK %> name="<portlet:namespace />versionSpecific" type="checkbox" />
+				<input <%= versionSpecific ? "checked" : "" %> name="<portlet:namespace />versionSpecific" type="checkbox" />
 
 				<liferay-ui:message key="this-issue-only-applies-to-this-version-of-liferay" />
 			</div>
 
 			<div>
-				<input <%= environmentSpecific ? "checked" : StringPool.BLANK %> name="<portlet:namespace />environmentSpecific" type="checkbox" />
+				<input <%= environmentSpecific ? "checked" : "" %> name="<portlet:namespace />environmentSpecific" type="checkbox" />
 
 				<liferay-ui:message key="this-issue-only-applies-to-this-environment" />
 			</div>
 
 			<c:if test="<%= ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION %>">
 				<div>
-					<input <%= skipTesting ? "checked" : StringPool.BLANK %> name="<portlet:namespace />skipTesting" onChange="<portlet:namespace />updateSkipTesting(this.checked);" type="checkbox" />
+					<input <%= skipTesting ? "checked" : "" %> name="<portlet:namespace />skipTesting" onChange="<portlet:namespace />updateSkipTesting(this.checked);" type="checkbox" />
 
 					<liferay-ui:message key="this-solution-does-not-require-customer-testing" />
 				</div>

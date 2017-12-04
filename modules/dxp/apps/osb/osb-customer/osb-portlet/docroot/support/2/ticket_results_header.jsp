@@ -39,7 +39,7 @@ if (notification) {
 }
 %>
 
-<div class="section-title <%= first ? "pinned " + topCssClass : "other unpinned" %>" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(id) %><%= first ? "PinnedHeader" : StringPool.BLANK %>">
+<div class="section-title <%= first ? "pinned " + topCssClass : "other unpinned" %>" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(id) %><%= first ? "PinnedHeader" : "" %>">
 	<c:if test="<%= Validator.isNotNull(label) %>">
 		<liferay-ui:message key="<%= HtmlUtil.escape(label) %>" /> (<%= (count > 0) ? count : StringPool.DASH %>)
 	</c:if>

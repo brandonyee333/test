@@ -176,14 +176,14 @@ if (liferayIncOrg || partnerWorker) {
 				</c:if>
 
 				<c:if test="<%= !ArrayUtil.contains(subcomponents, TicketEntryConstants.SUBCOMPONENT_OTHER) %>">
-					<option <%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "selected" : StringPool.BLANK %> value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>"><liferay-ui:message key="other" /></option>
+					<option <%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "selected" : "" %> value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>"><liferay-ui:message key="other" /></option>
 				</c:if>
 
 				<%
 				for (int curSubcomponent : subcomponents) {
 				%>
 
-					<option <%= (curSubcomponent == subcomponent) ? "selected" : StringPool.BLANK %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
+					<option <%= (curSubcomponent == subcomponent) ? "selected" : "" %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
 
 				<%
 				}
@@ -328,7 +328,7 @@ if (liferayIncOrg || partnerWorker) {
 				for (int pendingType : TicketFlagConstants.TYPES_PENDING) {
 				%>
 
-					<input <%= ArrayUtil.contains(pendingTypes, pendingType) ? "checked=\"checked\"" : StringPool.BLANK %> name="<portlet:namespace />pendingTypes" type="checkbox" value="<%= pendingType %>" />
+					<input <%= ArrayUtil.contains(pendingTypes, pendingType) ? "checked=\"checked\"" : "" %> name="<portlet:namespace />pendingTypes" type="checkbox" value="<%= pendingType %>" />
 
 					<liferay-ui:message key="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" />
 
@@ -353,7 +353,7 @@ if (liferayIncOrg || partnerWorker) {
 					for (SupportRegion supportRegion : supportRegions) {
 					%>
 
-						<option <%= (supportRegion.getSupportRegionId() == supportRegionId) ? "selected" : StringPool.BLANK %> value="<%= supportRegion.getSupportRegionId() %>"><%= HtmlUtil.escape(supportRegion.getName()) %></option>
+						<option <%= (supportRegion.getSupportRegionId() == supportRegionId) ? "selected" : "" %> value="<%= supportRegion.getSupportRegionId() %>"><%= HtmlUtil.escape(supportRegion.getName()) %></option>
 
 					<%
 					}
@@ -378,7 +378,7 @@ if (liferayIncOrg || partnerWorker) {
 					for (String curLanguageId : AccountEntryConstants.LANGUAGES) {
 					%>
 
-						<option <%= languageId.equals(curLanguageId) ? "selected" : StringPool.BLANK %> value="<%= curLanguageId %>"><%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(curLanguageId)) %></option>
+						<option <%= languageId.equals(curLanguageId) ? "selected" : "" %> value="<%= curLanguageId %>"><%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(curLanguageId)) %></option>
 
 					<%
 					}
@@ -413,7 +413,7 @@ if (liferayIncOrg || partnerWorker) {
 			<label id="<portlet:namespace />ignoreDueDateLabel"><liferay-ui:message key="ignore-due-date" /></label>
 
 			<span class="field-input-align inline">
-				<input <%= ticketEntry.getIgnoreDueDate() ? "checked" : StringPool.BLANK %> name="<portlet:namespace />ignoreDueDate" type="checkbox" />
+				<input <%= ticketEntry.getIgnoreDueDate() ? "checked" : "" %> name="<portlet:namespace />ignoreDueDate" type="checkbox" />
 			</span>
 		</div>
 	</c:if>

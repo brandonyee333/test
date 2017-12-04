@@ -69,7 +69,7 @@
 
 						<a href="<%= rowURL %>"><%= HtmlUtil.escape(holidayEntry.getName()) %> (<%= shortDateFormatDate.format(holidayEntry.getStartDate()) %> - <%= shortDateFormatDate.format(holidayEntry.getEndDate()) %>)</a>
 
-						<%= ((i + 1) < holidayEntries.size()) ? "<br />" : StringPool.BLANK %>
+						<%= ((i + 1) < holidayEntries.size()) ? "<br />" : "" %>
 
 					<%
 					}
@@ -106,7 +106,7 @@
 
 						<a href="<%= rowURL %>"><%= HtmlUtil.escape(curUser.getFullName()) %></a>
 
-						<%= ((i + 1) < holidayCalendarRels.size()) ? "<br />" : StringPool.BLANK %>
+						<%= ((i + 1) < holidayCalendarRels.size()) ? "<br />" : "" %>
 
 					<%
 					}

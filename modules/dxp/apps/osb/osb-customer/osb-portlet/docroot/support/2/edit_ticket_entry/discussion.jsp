@@ -92,7 +92,7 @@ else {
 							String discussionTabValue = discussionTabValues[i];
 						%>
 
-							<span class="<%= (i == 0) ? "first" : StringPool.BLANK %>" id="<portlet:namespace /><%= discussionTabValue %>" onClick="<portlet:namespace />loadTab('<%= discussionTabValue %>', false);">
+							<span class="<%= (i == 0) ? "first" : "" %>" id="<portlet:namespace /><%= discussionTabValue %>" onClick="<portlet:namespace />loadTab('<%= discussionTabValue %>', false);">
 
 								<%
 								boolean showLiferayCommentFlag = false;

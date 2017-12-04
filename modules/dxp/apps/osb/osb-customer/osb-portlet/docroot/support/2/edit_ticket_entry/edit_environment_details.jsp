@@ -123,7 +123,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 								<option disabled>--------</option>
 							</c:if>
 
-							<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %><%= limited ? " (" + LanguageUtil.get(request, "limited") + ")" : StringPool.BLANK %></option>
+							<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %><%= limited ? " (" + LanguageUtil.get(request, "limited") + ")" : "" %></option>
 
 						<%
 							previousNamePrefix = namePrefix;
@@ -173,7 +173,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 										<option disabled>--------</option>
 									</c:if>
 
-									<option <%= (envLFRType.getListTypeId() == toEnvLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(request, "limited") + ")" : StringPool.BLANK %></option>
+									<option <%= (envLFRType.getListTypeId() == toEnvLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(request, "limited") + ")" : "" %></option>
 								</c:if>
 
 							<%

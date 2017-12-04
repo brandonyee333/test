@@ -79,7 +79,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 					for (int curSupportLevel : SupportResponseConstants.SUPPORT_LEVELS) {
 					%>
 
-						<option <%= (curSupportLevel == supportLevel) ? "selected" : StringPool.BLANK %> value="<%= curSupportLevel %>"><liferay-ui:message key="<%= SupportResponseConstants.getSupportLevelLabel(curSupportLevel) %>" /></option>
+						<option <%= (curSupportLevel == supportLevel) ? "selected" : "" %> value="<%= curSupportLevel %>"><liferay-ui:message key="<%= SupportResponseConstants.getSupportLevelLabel(curSupportLevel) %>" /></option>
 
 					<%
 					}

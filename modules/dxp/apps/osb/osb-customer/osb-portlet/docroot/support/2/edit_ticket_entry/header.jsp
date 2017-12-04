@@ -153,7 +153,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 												int pendingType = pendingTypes[i];
 											%>
 
-												<liferay-ui:message key="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" /><%= ((i + 1) < pendingTypes.length) ? StringPool.COMMA : StringPool.BLANK %>
+												<liferay-ui:message key="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" /><%= ((i + 1) < pendingTypes.length) ? StringPool.COMMA : "" %>
 
 											<%
 											}
@@ -186,7 +186,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 									for (int pendingType : TicketFlagConstants.TYPES_PENDING) {
 									%>
 
-										<input <%= ArrayUtil.contains(pendingTypes, pendingType) ? "checked=\"checked\"" : StringPool.BLANK %> name="<portlet:namespace />pendingTypes" type="checkbox" value="<%= pendingType %>" />
+										<input <%= ArrayUtil.contains(pendingTypes, pendingType) ? "checked=\"checked\"" : "" %> name="<portlet:namespace />pendingTypes" type="checkbox" value="<%= pendingType %>" />
 
 										<liferay-ui:message key="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" />
 
