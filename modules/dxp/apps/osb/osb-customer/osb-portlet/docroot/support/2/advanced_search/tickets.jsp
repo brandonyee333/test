@@ -482,7 +482,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 				</div>
 
 				<c:if test="<%= !screenShareMode && ticketWorker %>">
-					<div class="w25 content-column">
+					<div class="content-column w25">
 						<div class="content-column-content left-column">
 							<h2 class="support-input-heading">
 								<liferay-ui:message key="due-between" />

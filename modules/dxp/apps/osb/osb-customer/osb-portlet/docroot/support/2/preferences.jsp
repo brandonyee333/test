@@ -79,7 +79,6 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 					<liferay-ui:icon-help message="if-you-turn-your-notifications-off-you-will-still-receive-notifications-for-tickets-you-watch" />
 				</h3>
 
-
 			<c:if test="<%= !accountCustomers.isEmpty() %>">
 				<div class="notification-preference">
 
@@ -90,7 +89,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 
 						<div><strong><%= HtmlUtil.escape(accountEntry.getName()) %>:</strong></div>
 
-						<p>
+						<div>
 							<liferay-ui:message key="notify-me-when-tickets-are-updated" />
 
 							<portlet:actionURL name="toggleNotifications" var="toggleNotificationsURL">
@@ -106,7 +105,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 									<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="off" /></span>
 								</span>
 							</a>
-						</p>
+						</div>
 
 					<%
 					}

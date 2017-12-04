@@ -200,13 +200,13 @@ else {
 
 								<div class="clearfix"></div>
 
-								<div class="w20 content-column txt-sb w20">
+								<div class="content-column txt-sb w20">
 									<div class="content-column-content left-column">
 										<liferay-ui:message key="<%= curAuditEntry.getFieldLabel() %>" />
 									</div>
 								</div>
 
-								<div class="w40 content-column w40">
+								<div class="content-column w40">
 									<div class="content-column-content middle-column">
 										<c:choose>
 											<c:when test="<%= Validator.isNull(oldLabel) %>">
@@ -237,7 +237,7 @@ else {
 									</div>
 								</div>
 
-								<div class="w40 content-column w40">
+								<div class="content-column w40">
 									<div class="content-column-content right-column">
 										<c:choose>
 											<c:when test="<%= Validator.isNull(newLabel) %>">

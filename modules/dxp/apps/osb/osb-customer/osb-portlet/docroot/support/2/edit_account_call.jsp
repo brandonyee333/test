@@ -177,7 +177,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		</div>
 
 		<div class="clearfix">
-			<div class="content-column customer-info w15-label">
+			<div class="content-column customer-info-label w15">
 				<liferay-ui:message key="clients-present" />
 			</div>
 
