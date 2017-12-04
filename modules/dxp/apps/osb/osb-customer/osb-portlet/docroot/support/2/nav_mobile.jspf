@@ -74,4 +74,8 @@
 			</ul>
 		</nav>
 	</div>
+
+	<a class="mobile-nav-scroll-arrow" href="javascript:;" onclick="AUI().one('.lesa-mobile-nav nav')._node.scrollLeft += 100">
+		<span class="icon-long-arrow-right"></span>
+	</a>
 </div>

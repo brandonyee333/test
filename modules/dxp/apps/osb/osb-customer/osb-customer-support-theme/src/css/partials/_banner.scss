@@ -163,10 +163,15 @@
 	user-select: none;
 	width: 100%;
 
-	.lesa-mobile-nav {
-		height: 100%;
-		overflow: hidden;
-		position: relative;
+	&.overflow {
+		.mobile-nav-scroll-arrow {
+			display: block;
+		}
+	}
+
+	a {
+		color: $text-color;
+		text-decoration: none;
 	}
 
 	nav {
@@ -175,16 +180,39 @@
 		overflow-x: scroll;
 		overflow-y: hidden;
 
-		ul {
+
+		li, ul {
 			display: inline-block;
-			white-space: nowrap;
 		}
 
 		li {
-			display: inline-block;
 			list-style: none;
 			padding: 1em;
 		}
+
+		ul {
+			margin: 0;
+			padding: 0;
+			white-space: nowrap;
+		}
+	}
+
+	.lesa-mobile-nav {
+		height: 100%;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.mobile-nav-scroll-arrow {
+		background: linear-gradient(to right, rgba(227,228,229, 0.5) 0%, rgba(227,228,229, 0.75) 25%, rgba(227,228,229, 1) 100%);
+		display: none;
+		height: $lesa-mobile-nav-height;
+		padding: 1.125em 0.5em;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 2em;
+		z-index: 2;
 	}
 
 	@include sm() {

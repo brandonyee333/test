@@ -393,6 +393,27 @@ AUI().use(
 			A.on('load', setResponsiveContentHeight);
 			A.on('resize', setResponsiveContentHeight);
 		}
+
+		function displayScrollArrow() {
+			var mobileNav = A.one('.lesa-mobile-nav ul');
+			var mobileNavWrapper = A.one('.lesa-mobile-nav-wrapper');
+
+			if (mobileNav && mobileNavWrapper) {
+				if (mobileNav.outerWidth() > WIN.get('winWidth')) {
+					mobileNavWrapper.addClass('overflow');
+				}
+				else {
+					mobileNavWrapper.removeClass('overflow');
+				}
+			}
+		}
+
+		A.on(
+			['load', 'resize'],
+			function(event) {
+				A.throttle(displayScrollArrow(), 250);
+			}
+		);
 	}
 );
 
