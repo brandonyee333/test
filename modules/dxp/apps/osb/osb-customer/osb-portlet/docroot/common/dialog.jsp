@@ -53,7 +53,7 @@ if (width > 0) {
 	<div class="dialog-overlay" id="<%= renderResponse.getNamespace() + "dialogOverlay" + dialogId %>"></div>
 </c:if>
 
-<div class="dialog <%= border ? "border" : "" %> <%= shadow ? "shadow" : "" %> <%= cssClass %>" id="<%= renderResponse.getNamespace() + "dialog" + dialogId %>">
+<div class="dialog <%= cssClass %> <%= border ? "border" : "" %> <%= shadow ? "shadow" : "" %>" id="<%= renderResponse.getNamespace() + "dialog" + dialogId %>">
 	<c:if test="<%= close || draggable || Validator.isNotNull(title) %>">
 		<div class="titlebar" id="<%= renderResponse.getNamespace() + "titlebar" + dialogId %>">
 			<c:if test="<%= Validator.isNotNull(title) %>">
