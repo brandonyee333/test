@@ -380,7 +380,13 @@ public class VerifyPermission extends VerifyProcess {
 			runSQL(
 				StringBundler.concat(
 					"create table ", userPagePermissionsConflictsTableName,
-					" (primKey VARCHAR(255) not null primary key)"));
+					" (primKey VARCHAR(255) not null)"));
+
+			runSQL(
+				StringBundler.concat(
+					"create index IX_VERIFY_3 on ",
+					userPagePermissionsConflictsTableName,
+					" (primKey[$COLUMN_LENGTH:255$])"));
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Populating temporary table of portlet permissions");
