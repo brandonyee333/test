@@ -196,7 +196,7 @@ Date lastEnabledDate = calendar.getTime();
 							<tr>
 								<td>
 									<liferay-ui:input-date
-										cssClass="aui-w100"
+										cssClass="w100"
 										dayParam='<%= "holidayEntryStartDay" + holidayEntriesIndex %>'
 										dayValue="<%= holidayEntryStartDay %>"
 										firstEnabledDate="<%= ((holidayEntryStartDate != null) && holidayEntryStartDate.after(firstEnabledDate)) ? holidayEntryStartDate : firstEnabledDate %>"
@@ -210,7 +210,7 @@ Date lastEnabledDate = calendar.getTime();
 								</td>
 								<td>
 									<liferay-ui:input-date
-										cssClass="aui-w100"
+										cssClass="w100"
 										dayParam='<%= "holidayEntryEndDay" + holidayEntriesIndex %>'
 										dayValue="<%= holidayEntryEndDay %>"
 										firstEnabledDate="<%= ((holidayEntryEndDate != null) && holidayEntryEndDate.after(firstEnabledDate)) ? holidayEntryEndDate : firstEnabledDate %>"

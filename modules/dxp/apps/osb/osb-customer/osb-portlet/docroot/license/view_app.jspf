@@ -15,7 +15,7 @@
 --%>
 
 <div class="clearfix">
-	<div class="aui-w33 content-column">
+	<div class="content-column w33">
 		<div class="content-column-content left-column">
 			<a class="callout-a display-b paragraph">
 				<div class="callout-content ha-c">
@@ -33,7 +33,7 @@
 		</div>
 	</div>
 
-	<div class="aui-w33 content-column">
+	<div class="content-column w33">
 		<div class="content-column-content middle-column">
 			<a class="callout-a display-b paragraph">
 				<div class="callout-content ha-c">
@@ -56,7 +56,7 @@
 		<portlet:param name="redirect" value="<%= currentURL %>" />
 	</portlet:renderURL>
 
-	<div class="aui-w33 content-column">
+	<div class="content-column w33">
 		<div class="content-column-content right-column">
 			<a class="callout-a display-b paragraph" href="<%= addLicenseKeyURL %>">
 				<div class="callout-content ha-c">

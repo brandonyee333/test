@@ -62,7 +62,7 @@ String productEntryName = licenseKey.getProductEntryName();
 
 	<div class="callout-a">
 		<div class="callout-content clearfix">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="owner" />:</span>
 
@@ -70,7 +70,7 @@ String productEntryName = licenseKey.getProductEntryName();
 				</div>
 			</div>
 
-			<div class="aui-w66 content-column">
+			<div class="content-column w66">
 				<div class="content-column-content right-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="description" />:</span>
 
@@ -80,7 +80,7 @@ String productEntryName = licenseKey.getProductEntryName();
 		</div>
 
 		<div class="callout-content clearfix">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>
 
@@ -101,7 +101,7 @@ String productEntryName = licenseKey.getProductEntryName();
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content middle-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
 
@@ -129,7 +129,7 @@ String productEntryName = licenseKey.getProductEntryName();
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content right-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="version" />:</span>
 

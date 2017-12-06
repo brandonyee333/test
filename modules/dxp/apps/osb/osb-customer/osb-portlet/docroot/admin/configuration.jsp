@@ -530,7 +530,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								%>
 
 								<span class="aui-field-row">
-									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
+									<label class="aui-field-inline aui-field-label-inline-label w15">
 										<liferay-ui:message key="file-repository-id" />
 									</label>
 
@@ -546,21 +546,21 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									</c:choose>
 								</span>
 								<span class="aui-field-row">
-									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
+									<label class="aui-field-inline aui-field-label-inline-label w15">
 										<liferay-ui:message key="server-name" />
 									</label>
 
 									<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="name" value="<%= name %>" />
 								</span>
 								<span class="aui-field-row">
-									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
+									<label class="aui-field-inline aui-field-label-inline-label w15">
 										<liferay-ui:message key="host" />
 									</label>
 
 									<aui:input inlineField="<%= true %>" inlineLabel="left" label="" name="host" value="<%= fileRepository.getHost() %>" />
 								</span>
 								<span class="aui-field-row">
-									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
+									<label class="aui-field-inline aui-field-label-inline-label w15">
 										<liferay-ui:message key="status" />
 									</label>
 
@@ -570,7 +570,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									</aui:select>
 								</span>
 								<span class="aui-field-row">
-									<label class="aui-field-inline aui-field-label-inline-label aui-w15">
+									<label class="aui-field-inline aui-field-label-inline-label w15">
 										<liferay-ui:message key="support-regions" />
 									</label>
 

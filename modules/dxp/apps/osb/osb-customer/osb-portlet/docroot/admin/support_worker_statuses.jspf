@@ -21,7 +21,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getSupportTeams(Que
 <liferay-ui:error exception="<%= PrincipalException.class %>" message="you-do-not-have-the-required-permissions" />
 
 <c:if test="<%= !supportTeams.isEmpty() %>">
-	<div class="aui-w100 clearfix manager-dashboard">
+	<div class="clearfix manager-dashboard w100">
 		<table class="lfr-table">
 
 			<%
@@ -31,7 +31,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getSupportTeams(Que
 
 				<tr>
 					<td class="manager-dashboard-col">
-						<div class="aui-w100 content-column content-column-content left-column manager-dashboard-team">
+						<div class="content-column content-column-content left-column manager-dashboard-team w100">
 							<div class="team-title">
 								<%= HtmlUtil.escape(supportTeam.getName()) %>
 							</div>

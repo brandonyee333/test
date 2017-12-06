@@ -290,7 +290,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			</div>
 
 			<div class="clearfix">
-				<div class="aui-w50 content-column">
+				<div class="content-column w50">
 					<div class="content-column-content left-column">
 						<h2 class="section-heading">
 							<liferay-ui:message key="choose-liferay-version" />
@@ -340,7 +340,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					</div>
 				</div>
 
-				<div class="aui-w50 content-column">
+				<div class="content-column w50">
 					<div class="content-column-content right-column">
 						<h2 class="section-heading">
 							<liferay-ui:message key="type" />
@@ -550,7 +550,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			</div>
 
 			<div class="clearfix">
-				<div class="aui-w50 content-column">
+				<div class="content-column w50">
 					<div class="content-column-content left-column">
 						<h2 class="section-heading">
 							<liferay-ui:message key="owner" />
@@ -564,7 +564,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					</div>
 				</div>
 
-				<div class="aui-w50 content-column">
+				<div class="content-column w50">
 					<div class="content-column-content right-column">
 						<h2 class="section-heading">
 							<liferay-ui:message key="description" />
@@ -585,7 +585,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 			<div class="callout-a">
 				<div class="callout-content clearfix">
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content left-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>
 
@@ -605,7 +605,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 						</div>
 					</div>
 
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content middle-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
 
@@ -621,7 +621,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 						</div>
 					</div>
 
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content right-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="version" />:</span>
 
@@ -638,7 +638,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					</div>
 
 					<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) %>">
-						<div class="aui-w33 content-column">
+						<div class="content-column w33">
 							<div class="content-column-content left-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="maximum-concurrent-users" />:</span>
 
@@ -646,7 +646,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							</div>
 						</div>
 
-						<div class="aui-w33 content-column">
+						<div class="content-column w33">
 							<div class="content-column-content right-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="maximum-users" />:</span>
 

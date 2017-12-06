@@ -34,8 +34,8 @@ Date lastEnabledDate = calendar.getTime();
 		displayTerms="<%= displayTerms %>"
 		id="toggle_id_license_key_search"
 	>
-		<div class="aui-w100 clearfix">
-			<div class="aui-w33 content-column">
+		<div class="clearfix w100">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<h2>
 						<liferay-ui:message key="project" />
@@ -45,7 +45,7 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content middle-column">
 					<h2>
 						<liferay-ui:message key="name" />
@@ -55,7 +55,7 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content right-column">
 					<h2>
 						<liferay-ui:message key="owner" />
@@ -66,8 +66,8 @@ Date lastEnabledDate = calendar.getTime();
 			</div>
 		</div>
 
-		<div class="aui-w100 clearfix">
-			<div class="aui-w33 content-column">
+		<div class="clearfix w100">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<h2>
 						<liferay-ui:message key="description" />
@@ -77,7 +77,7 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content middle-column">
 					<h2>
 						<liferay-ui:message key="host-name" />
@@ -87,7 +87,7 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content right-column">
 					<h2>
 						<liferay-ui:message key="ip-address" />
@@ -98,8 +98,8 @@ Date lastEnabledDate = calendar.getTime();
 			</div>
 		</div>
 
-		<div class="aui-w100 clearfix">
-			<div class="aui-w33 content-column">
+		<div class="clearfix w100">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<h2>
 						<liferay-ui:message key="mac-address" />
@@ -109,7 +109,7 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content middle-column">
 					<h2>
 						<liferay-ui:message key="server-id" />
@@ -119,7 +119,7 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content right-column">
 					<h2>
 						<liferay-ui:message key="key" />
@@ -130,8 +130,8 @@ Date lastEnabledDate = calendar.getTime();
 			</div>
 		</div>
 
-		<div class="aui-w100 clearfix">
-			<div class="aui-w33 content-column">
+		<div class="clearfix w100">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<h2>
 						<liferay-ui:message key="created-by" />
@@ -152,7 +152,7 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content middle-column">
 					<h2>
 						<liferay-ui:message key="last-edited-by" />
@@ -173,7 +173,7 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content right-column">
 					<c:if test="<%= licenseAdmin %>">
 						<h2>
@@ -190,8 +190,8 @@ Date lastEnabledDate = calendar.getTime();
 			</div>
 		</div>
 
-		<div class="aui-w100 clearfix">
-			<div class="aui-w100 content-column">
+		<div class="clearfix w100">
+			<div class="content-column w100">
 				<div class="content-column-content">
 					<h2 class="license-input-heading">
 						<liferay-ui:message key="license-type" />
@@ -211,7 +211,7 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w100 content-column">
+			<div class="content-column w100">
 				<div class="content-column-content">
 					<h2 class="license-input-heading">
 						<liferay-ui:message key="product" />
@@ -231,7 +231,7 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w100 content-column">
+			<div class="content-column w100">
 				<div class="content-column-content">
 					<h2 class="license-input-heading">
 						<liferay-ui:message key="product-version" />
@@ -254,18 +254,18 @@ Date lastEnabledDate = calendar.getTime();
 			</div>
 		</div>
 
-		<div class="aui-w100 clearfix">
-			<div class="aui-w50 content-column">
+		<div class="clearfix w100">
+			<div class="content-column w50">
 				<div class="content-column-content left-column">
 					<h2 class="license-input-heading">
 						<liferay-ui:message key="created-between" />
 					</h2>
 
-					<div class="aui-w100">
+					<div class="w100">
 						<liferay-ui:message key="begin-date" />
 
 						<liferay-ui:input-date
-							cssClass="aui-w100"
+							cssClass="w100"
 							dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
 							dayValue="<%= displayTerms.getCreateDateGTDay() %>"
 							firstEnabledDate="<%= firstEnabledDate %>"
@@ -278,11 +278,11 @@ Date lastEnabledDate = calendar.getTime();
 						/>
 					</div>
 
-					<div class="aui-w100">
+					<div class="w100">
 						<liferay-ui:message key="end-date" />
 
 						<liferay-ui:input-date
-							cssClass="aui-w100"
+							cssClass="w100"
 							dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
 							dayValue="<%= displayTerms.getCreateDateLTDay() %>"
 							firstEnabledDate="<%= firstEnabledDate %>"
@@ -297,17 +297,17 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w50 content-column">
+			<div class="content-column w50">
 				<div class="content-column-content right-column">
 					<h2 class="license-input-heading">
 						<liferay-ui:message key="modified-between" />
 					</h2>
 
-					<div class="aui-w100">
+					<div class="w100">
 						<liferay-ui:message key="begin-date" />
 
 						<liferay-ui:input-date
-							cssClass="aui-w100"
+							cssClass="w100"
 							dayParam="<%= displayTerms.MODIFIED_DATE_GT_DAY %>"
 							dayValue="<%= displayTerms.getModifiedDateGTDay() %>"
 							firstEnabledDate="<%= firstEnabledDate %>"
@@ -320,11 +320,11 @@ Date lastEnabledDate = calendar.getTime();
 						/>
 					</div>
 
-					<div class="aui-w100">
+					<div class="w100">
 						<liferay-ui:message key="end-date" />
 
 						<liferay-ui:input-date
-							cssClass="aui-w100"
+							cssClass="w100"
 							dayParam="<%= displayTerms.MODIFIED_DATE_LT_DAY %>"
 							dayValue="<%= displayTerms.getModifiedDateLTDay() %>"
 							firstEnabledDate="<%= firstEnabledDate %>"
@@ -340,18 +340,18 @@ Date lastEnabledDate = calendar.getTime();
 			</div>
 		</div>
 
-		<div class="aui-w100 clearfix">
-			<div class="aui-w50 content-column">
+		<div class="clearfix w100">
+			<div class="content-column w50">
 				<div class="content-column-content left-column">
 					<h2 class="license-input-heading">
 						<liferay-ui:message key="started-between" />
 					</h2>
 
-					<div class="aui-w100">
+					<div class="w100">
 						<liferay-ui:message key="begin-date" />
 
 						<liferay-ui:input-date
-							cssClass="aui-w100"
+							cssClass="w100"
 							dayParam="<%= displayTerms.START_DATE_GT_DAY %>"
 							dayValue="<%= displayTerms.getStartDateGTDay() %>"
 							firstEnabledDate="<%= firstEnabledDate %>"
@@ -364,11 +364,11 @@ Date lastEnabledDate = calendar.getTime();
 						/>
 					</div>
 
-					<div class="aui-w100">
+					<div class="w100">
 						<liferay-ui:message key="end-date" />
 
 						<liferay-ui:input-date
-							cssClass="aui-w100"
+							cssClass="w100"
 							dayParam="<%= displayTerms.START_DATE_LT_DAY %>"
 							dayValue="<%= displayTerms.getStartDateLTDay() %>"
 							firstEnabledDate="<%= firstEnabledDate %>"
@@ -383,17 +383,17 @@ Date lastEnabledDate = calendar.getTime();
 				</div>
 			</div>
 
-			<div class="aui-w50 content-column">
+			<div class="content-column w50">
 				<div class="content-column-content right-column">
 					<h2 class="license-input-heading">
 						<liferay-ui:message key="expires-between" />
 					</h2>
 
-					<div class="aui-w100">
+					<div class="w100">
 						<liferay-ui:message key="begin-date" />
 
 						<liferay-ui:input-date
-							cssClass="aui-w100"
+							cssClass="w100"
 							dayParam="<%= displayTerms.EXPIRATION_DATE_GT_DAY %>"
 							dayValue="<%= displayTerms.getExpirationDateGTDay() %>"
 							firstEnabledDate="<%= firstEnabledDate %>"
@@ -406,11 +406,11 @@ Date lastEnabledDate = calendar.getTime();
 						/>
 					</div>
 
-					<div class="aui-w100">
+					<div class="w100">
 						<liferay-ui:message key="end-date" />
 
 						<liferay-ui:input-date
-							cssClass="aui-w100"
+							cssClass="w100"
 							dayParam="<%= displayTerms.EXPIRATION_DATE_LT_DAY %>"
 							dayValue="<%= displayTerms.getExpirationDateLTDay() %>"
 							firstEnabledDate="<%= firstEnabledDate %>"

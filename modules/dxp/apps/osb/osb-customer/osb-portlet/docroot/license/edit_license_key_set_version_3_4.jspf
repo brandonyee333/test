@@ -17,7 +17,7 @@
 <div class="callout-a <%= cssClass %>" id="<portlet:namespace /><%= licenseKey.getOfferingEntryId() %>-<%= licenseKey.getClusterId() %>">
 	<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
 		<div class="callout-content clearfix">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="created-by" />:</span>
 
@@ -25,7 +25,7 @@
 				</div>
 			</div>
 
-			<div class="aui-w66 content-column">
+			<div class="content-column w66">
 				<div class="content-column-content right-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="last-modified" />:</span>
 
@@ -37,7 +37,7 @@
 
 	<c:if test="<%= !licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) %>">
 		<div class="callout-content clearfix">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="owner" />:</span>
 
@@ -45,7 +45,7 @@
 				</div>
 			</div>
 
-			<div class="aui-w66 content-column">
+			<div class="content-column w66">
 				<div class="content-column-content right-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="description" />:</span>
 
@@ -56,7 +56,7 @@
 	</c:if>
 
 	<div class="callout-content clearfix">
-		<div class="aui-w33 content-column">
+		<div class="content-column w33">
 			<div class="content-column-content left-column">
 				<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>
 
@@ -77,7 +77,7 @@
 			</div>
 		</div>
 
-		<div class="aui-w33 content-column">
+		<div class="content-column w33">
 			<div class="content-column-content middle-column">
 				<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
 
@@ -105,7 +105,7 @@
 			</div>
 		</div>
 
-		<div class="aui-w33 content-column">
+		<div class="content-column w33">
 			<div class="content-column-content right-column">
 				<span class="txt-b txt-up"><liferay-ui:message key="version" />:</span>
 
@@ -144,7 +144,7 @@
 		</div>
 
 		<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
-			<div class="aui-w100 content-column">
+			<div class="content-column w100">
 				<div class="content-column-content">
 					<span class="txt-b txt-up"><liferay-ui:message key="maximum-connections" />:</span>
 
@@ -154,7 +154,7 @@
 		</c:if>
 
 		<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) %>">
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content left-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="maximum-concurrent-users" />:</span>
 
@@ -162,7 +162,7 @@
 				</div>
 			</div>
 
-			<div class="aui-w33 content-column">
+			<div class="content-column w33">
 				<div class="content-column-content right-column">
 					<span class="txt-b txt-up"><liferay-ui:message key="maximum-users" />:</span>
 
@@ -172,7 +172,7 @@
 		</c:if>
 
 		<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) %>">
-			<div class="aui-w100 content-column">
+			<div class="content-column w100">
 				<div class="content-column-content">
 					<span class="txt-b txt-up"><liferay-ui:message key="maximum-servers" />:</span>
 
@@ -197,7 +197,7 @@
 				<div class="separator"></div>
 
 				<div class="callout-content clearfix">
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content left-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="owner" />:</span>
 
@@ -205,7 +205,7 @@
 						</div>
 					</div>
 
-					<div class="aui-w66 content-column">
+					<div class="content-column w66">
 						<div class="content-column-content right-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="description" />:</span>
 
@@ -215,7 +215,7 @@
 				</div>
 
 				<div class="callout-content clearfix">
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content left-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="host-name" />:</span>
 
@@ -251,7 +251,7 @@
 						</div>
 					</div>
 
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content middle-column">
 							<table class="lfr-table">
 								<tr>
@@ -276,7 +276,7 @@
 						</div>
 					</div>
 
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content right-column">
 							<table class="lfr-table">
 								<tr>
@@ -374,7 +374,7 @@
 		<c:otherwise>
 			<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_LIMITED) || licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
 				<div class="callout-content clearfix">
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content left-column">
 							<span class="txt-b txt-up"><liferay-ui:message key="host-name" />:</span>
 
@@ -382,7 +382,7 @@
 						</div>
 					</div>
 
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content middle-column">
 							<table class="lfr-table">
 								<tr>
@@ -407,7 +407,7 @@
 						</div>
 					</div>
 
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content right-column">
 							<table class="lfr-table">
 								<tr>
@@ -437,7 +437,7 @@
 					%>
 
 					<c:if test="<%= Validator.isNotNull(serverId) %>">
-						<div class="aui-w100 content-column">
+						<div class="content-column w100">
 							<div class="content-column-content">
 								<span class="txt-b txt-up"><liferay-ui:message key="server-id" />:</span>
 

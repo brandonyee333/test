@@ -170,7 +170,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 				<div class="callout-a <%= cssClass %>" id="<portlet:namespace /><%= licenseKey.getOfferingEntryId() %>-<%= licenseKey.getClusterId() %>">
 					<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
 						<div class="callout-content clearfix">
-							<div class="aui-w33 content-column">
+							<div class="content-column w33">
 								<div class="content-column-content left-column">
 									<span class="txt-b txt-up"><liferay-ui:message key="created-by" />:</span>
 
@@ -178,7 +178,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 								</div>
 							</div>
 
-							<div class="aui-w66 content-column">
+							<div class="content-column w66">
 								<div class="content-column-content right-column">
 									<span class="txt-b txt-up"><liferay-ui:message key="last-modified" />:</span>
 
@@ -189,7 +189,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					</c:if>
 
 					<div class="callout-content clearfix">
-						<div class="aui-w33 content-column">
+						<div class="content-column w33">
 							<div class="content-column-content left-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="owner" />:</span>
 
@@ -197,7 +197,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 							</div>
 						</div>
 
-						<div class="aui-w66 content-column">
+						<div class="content-column w66">
 							<div class="content-column-content right-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="description" />:</span>
 
@@ -207,7 +207,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 					</div>
 
 					<div class="callout-content clearfix">
-						<div class="aui-w33 content-column">
+						<div class="content-column w33">
 							<div class="content-column-content left-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>
 
@@ -228,7 +228,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 							</div>
 						</div>
 
-						<div class="aui-w33 content-column">
+						<div class="content-column w33">
 							<div class="content-column-content middle-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
 
@@ -256,7 +256,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 							</div>
 						</div>
 
-						<div class="aui-w33 content-column">
+						<div class="content-column w33">
 							<div class="content-column-content right-column">
 								<span class="txt-b txt-up"><liferay-ui:message key="version" />:</span>
 
