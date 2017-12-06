@@ -183,8 +183,8 @@ public class ProxyServer
 				ServerServiceDefinition.builder(_proxyServer._name);
 
 			for (Class<?> clazz : _proxyServer._classes) {
-				for (Method method : ReflectionUtil.getInterfaceMethods(
-						clazz)) {
+				for (Method method :
+						ReflectionUtil.getInterfaceMethods(clazz)) {
 
 					String methodName =
 						_proxyServer._name + "/" + method.getName();
