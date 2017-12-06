@@ -37,7 +37,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getUserRoleSupportT
 				for (int i = 0; i < 3; i++) {
 				%>
 
-					<td class="manager-dashboard-col w33 <%= (teamIterator == supportTeams.size()) ? "empty" : "" %> ">
+					<td class="manager-dashboard-col w33 <%= (teamIterator == supportTeams.size()) ? "empty" : "" %>">
 
 						<%
 						if (teamIterator < supportTeams.size()) {

@@ -73,13 +73,13 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 			List<AccountCustomer> accountCustomers = AccountCustomerLocalServiceUtil.getUserAccountCustomers(user.getUserId(), new int[] {AccountCustomerConstants.ROLE_SALES, AccountCustomerConstants.ROLE_WATCHER});
 			%>
 
+			<c:if test="<%= !accountCustomers.isEmpty() %>">
 				<h3>
 					<liferay-ui:message key="notifications" />
 
 					<liferay-ui:icon-help message="if-you-turn-your-notifications-off-you-will-still-receive-notifications-for-tickets-you-watch" />
 				</h3>
 
-			<c:if test="<%= !accountCustomers.isEmpty() %>">
 				<div class="notification-preference">
 
 					<%
