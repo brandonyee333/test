@@ -46,7 +46,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					</portlet:actionURL>
 
 					<liferay-ui:icon
-						label="<%= true %>"
 						message="extend-delete-date"
 						url="<%= extendDeleteDateURL.toString() %>"
 					/>
@@ -67,7 +66,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					<c:choose>
 						<c:when test="<%= fileRepository == null %>">
 							<liferay-ui:icon
-								label="<%= true %>"
 								message="delete"
 								onClick="<%= taglibOnClick %>"
 								url="javascript:;"
@@ -84,7 +82,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						<c:choose>
 							<c:when test="<%= fileRepository == null %>">
 								<liferay-ui:icon
-									label="<%= true %>"
 									message="download"
 									onClick="<%= taglibOnClick %>"
 									url="javascript:;"
@@ -92,7 +89,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 							</c:when>
 							<c:otherwise>
 								<liferay-ui:icon
-									label="<%= true %>"
 									message="download"
 									url="<%= ticketAttachmentURL.toString() %>"
 								/>
@@ -116,7 +112,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						%>
 
 						<liferay-ui:icon
-							label="<%= true %>"
 							message="download"
 							url="<%= sb.toString() %>"
 						/>
@@ -132,7 +127,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					<c:choose>
 						<c:when test="<%= fileRepository == null %>">
 							<liferay-ui:icon
-								label="<%= true %>"
 								message="copy"
 								onClick="<%= taglibOnClick %>"
 								url="javascript:;"
@@ -140,7 +134,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						</c:when>
 						<c:otherwise>
 							<liferay-ui:icon
-								label="<%= true %>"
 								message="copy"
 								message="replicate"
 								url="<%= replicateTicketAttachmentURL.toString() %>"
@@ -160,7 +153,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				</c:if>
 
 				<liferay-ui:icon
-					label="<%= true %>"
 					message="download"
 					url="<%= ticketAttachmentURL.toString() %>"
 				/>
@@ -172,7 +164,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					%>
 
 					<liferay-ui:icon
-						label="<%= true %>"
 						message="preview"
 						target="_blank"
 						url="<%= ticketAttachmentURL.toString() %>"
