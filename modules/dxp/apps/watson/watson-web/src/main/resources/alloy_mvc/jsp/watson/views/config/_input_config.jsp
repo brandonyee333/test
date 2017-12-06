@@ -627,7 +627,7 @@
 						label: '${AlloyLanguageUtil.formatUnicode("activities")}',
 						translatable: ${false},
 						type: 'INPUT'
-				    },
+					},
 					birthCountryId: {
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("country-of-birth")}',
