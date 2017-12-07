@@ -48,7 +48,7 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 
 <div class="home-page <%= notification ? "has-notification" : "" %>">
 	<c:if test="<%= notification %>">
-		<liferay-util:include page="/support/2/lesa_announcements_notification.jsp" servletContext="<%= application %>"></liferay-util:include>
+		<liferay-util:include page="/support/2/lesa_announcements_notification.jsp" servletContext="<%= application %>" />
 	</c:if>
 
 	<c:choose>
