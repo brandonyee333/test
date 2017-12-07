@@ -87,7 +87,9 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 						AccountEntry accountEntry = accountCustomer.getAccountEntry();
 					%>
 
-						<div><strong><%= HtmlUtil.escape(accountEntry.getName()) %>:</strong></div>
+						<div>
+							<strong><%= HtmlUtil.escape(accountEntry.getName()) %>:</strong>
+						</div>
 
 						<div>
 							<liferay-ui:message key="notify-me-when-tickets-are-updated" />
