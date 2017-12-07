@@ -217,13 +217,13 @@
 		}
 
 		.class-toggle-active {
-			.portlet-language {
-				display: block;
-			}
-
 			.language-toggle-caret:before {
 				border-bottom-color: $medium-gray;
 				border-top-width: 0;
+			}
+
+			.portlet-language {
+				display: block;
 			}
 		}
 
