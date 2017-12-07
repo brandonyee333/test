@@ -18,15 +18,17 @@
 	<div class="lesa-mobile-nav">
 		<nav role="navigation">
 			<ul role="menubar">
-				<li role="menuitem">
+				<li data-page-id="homePage" role="menuitem">
 					<portlet:renderURL var="myOpenTicketsURL">
 						<portlet:param name="mvcPath" value="/support/2/view.jsp" />
 					</portlet:renderURL>
 
-					<liferay-ui:message key="tickets" />
+					<a href="<%= searchFilters.isEmpty() && !supportPartnerWorker && developerAccountEntryIds.isEmpty() ? myOpenTicketsURL : "javascript:;" %>">
+						<liferay-ui:message key="tickets" />
+					</a>
 				</li>
 
-				<li role="menuitem">
+				<li data-page-id="advSearchPage" role="menuitem">
 					<portlet:renderURL var="advancedSearchURL">
 						<portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" />
 					</portlet:renderURL>
@@ -37,7 +39,7 @@
 				</li>
 
 				<c:if test="<%= clockedIn %>">
-					<li role="menuitem">
+					<li data-page-id="newTicketPage" role="menuitem">
 						<portlet:renderURL var="newTicketURL">
 							<portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" />
 						</portlet:renderURL>
@@ -48,7 +50,7 @@
 					</li>
 				</c:if>
 
-				<li role="menuitem">
+				<li data-page-id="helpPage" role="menuitem">
 					<portlet:renderURL var="helpURL">
 						<portlet:param name="mvcPath" value="/support/2/help.jsp" />
 					</portlet:renderURL>
@@ -58,11 +60,11 @@
 					</a>
 				</li>
 
-				<li role="menuitem">
+				<li data-page-id="lesaFeedbackPage" role="menuitem">
 					<liferay-ui:message key="feedback" />
 				</li>
 
-				<li role="menuitem">
+				<li data-page-id="settingsPage" role="menuitem">
 					<portlet:renderURL var="preferencesURL">
 						<portlet:param name="mvcPath" value="/support/2/preferences.jsp" />
 					</portlet:renderURL>
@@ -78,4 +80,63 @@
 	<a class="mobile-nav-scroll-arrow" href="javascript:;" onclick="AUI().one('.lesa-mobile-nav nav')._node.scrollLeft += 100">
 		<span class="icon-long-arrow-right"></span>
 	</a>
+
+	<c:if test="<%= !searchFilters.isEmpty() || supportPartnerWorker || !developerAccountEntryIds.isEmpty() %>">
+		<ul class="nav-submenu" role="menubar">
+			<li role="menuitem">
+				<a href="<%= myOpenTicketsURL %>"><liferay-ui:message key="my-open-tickets" /></a>
+			</li>
+
+			<c:if test="<%= !developerAccountEntryIds.isEmpty() %>">
+				<portlet:renderURL var="ticketFeedbackAvailableURL">
+					<portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" />
+					<portlet:param name="accountEntryIds" value="<%= StringUtil.merge(ArrayUtil.toLongArray(developerAccountEntryIds)) %>" />
+					<portlet:param name="feedbackAvailable" value="<%= Boolean.TRUE.toString() %>" />
+				</portlet:renderURL>
+
+				<li role="menuitem">
+					<a href="<%= ticketFeedbackAvailableURL %>"><liferay-ui:message key="ticket-feedback" /></a>
+				</li>
+			</c:if>
+
+			<c:if test="<%= partnerManager %>">
+				<portlet:renderURL var="allOpenTicketsURL">
+					<portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" />
+					<portlet:param name="statuses" value="<%= String.valueOf(TicketEntryConstants.STATUS_OPEN) %>" />
+				</portlet:renderURL>
+
+				<li role="menuitem">
+					<a href="<%= allOpenTicketsURL %>"><liferay-ui:message key="all-open-tickets" /></a>
+				</li>
+			</c:if>
+
+			<c:if test="<%= supportPartnerWorker %>">
+				<portlet:renderURL var="partnerManagedProjectsURL">
+					<portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" />
+					<portlet:param name="searchTab" value="accounts" />
+				</portlet:renderURL>
+
+				<li role="menuitem">
+					<a href="<%= partnerManagedProjectsURL %>"><liferay-ui:message key="partner-first-line-support-projects" /></a>
+				</li>
+			</c:if>
+
+			<%
+			for (SearchFilter searchFilter : searchFilters) {
+				PortletURL searchFilterURL = renderResponse.createRenderURL();
+
+				searchFilterURL.setParameter("mvcPath", "/support/2/advanced_search.jsp");
+				searchFilterURL.setParameter("searchFilterId", String.valueOf(searchFilter.getSearchFilterId()));
+			%>
+
+				<li role="menuitem">
+					<a href="<%= searchFilterURL %>"><%= HtmlUtil.escape(searchFilter.getName()) %></a>
+				</li>
+
+			<%
+			}
+			%>
+
+		</ul>
+	</c:if>
 </div>

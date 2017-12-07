@@ -23,7 +23,7 @@
 				display: block;
 			}
 
-			&:hover, &.active, &.active.unread, &.clicked {
+			&:hover, &.active, &.active.unread {
 				svg {
 					stroke: $primary-blue;
 				}
@@ -61,69 +61,6 @@
 				stroke-width: 1.5;
 			}
 
-			.nav-submenu {
-				background-color: #FFF;
-				border: 1px solid $medium-gray;
-				color: $medium-gray;
-				cursor: default;
-				display: block;
-				left: 52px;
-				max-height: 80vh;
-				outline: none;
-				overflow: auto;
-				position: absolute;
-				top: -22px;
-				z-index: 2;
-
-				li {
-					font-family: "Avenir Medium";
-					font-size: 16px;
-					list-style-type: none;
-					padding: 10px;
-					white-space: nowrap;
-
-					a {
-						color: $medium-gray;
-						display: block;
-						text-decoration: none;
-
-						&.active, &:hover {
-							color: $text-color;
-						}
-					}
-				}
-
-				.arrow {
-					border-bottom: 9px solid transparent;
-					border-right: 9px solid $medium-gray;
-					border-top: 9px solid transparent;
-					content: "";
-					height: 0;
-					left: -9px;
-					margin: 0;
-					padding: 0;
-					position: absolute;
-					top: 12px;
-					width: 0;
-					z-index: 15;
-
-					&:before {
-						border-bottom: 8px solid transparent;
-						border-right: 8px solid #FFF;
-						border-top: 8px solid transparent;
-						content: "";
-						height: 0;
-						left: 1px;
-						margin: 0;
-						padding: 0;
-						position: absolute;
-						top: -8px;
-						width: 0;
-						z-index: 16;
-					}
-				}
-			}
-
 			.nav-tooltip {
 				background-color: rgba(0, 0, 0, 0.8);
 				border-radius: 3px;
@@ -150,6 +87,48 @@
 				}
 			}
 		}
+
+		.nav-submenu {
+			color: $medium-gray;
+			cursor: default;
+			left: 52px;
+			max-height: 80vh;
+			overflow: auto;
+			padding: 1em;
+			top: -22px;
+			z-index: 2;
+
+			li {
+				font-family: "Avenir Medium";
+				font-size: 16px;
+				padding: 10px;
+			}
+		}
+	}
+}
+
+.nav-submenu {
+	background-color: #FFF;
+	border: 1px solid $medium-gray;
+	display: none;
+	position: absolute;
+
+	&.show {
+		display: block;
+	}
+
+	a {
+		color: $medium-gray;
+		text-decoration: none;
+
+		&.active, &:hover {
+			color: $text-color;
+		}
+	}
+
+	li {
+		display: block;
+		white-space: nowrap;
 	}
 }
 
@@ -169,17 +148,16 @@
 		}
 	}
 
-	a {
-		color: $text-color;
-		text-decoration: none;
-	}
-
 	nav {
 		background-color: $light-bg;
 		margin-bottom: -1em;
 		overflow-x: scroll;
 		overflow-y: hidden;
 
+		a {
+			color: $text-color;
+			text-decoration: none;
+		}
 
 		li, ul {
 			display: inline-block;
@@ -194,6 +172,10 @@
 			margin: 0;
 			padding: 0;
 			white-space: nowrap;
+		}
+
+		.active a {
+			color: $primary-blue;
 		}
 	}
 
@@ -213,6 +195,15 @@
 		top: 0;
 		width: 2em;
 		z-index: 2;
+	}
+
+	.nav-submenu {
+		margin-left: 0.25em;
+		padding: 0;
+
+		li {
+			padding: 1em;
+		}
 	}
 
 	@include sm() {

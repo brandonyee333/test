@@ -15,7 +15,7 @@
 --%>
 
 <div class="lesa-nav">
-	<div class="nav-icon" id="<portlet:namespace />homeIcon">
+	<div class="nav-icon" data-page-id="homePage">
 
 		<%
 		List<SearchFilter> searchFilters = SearchFilterLocalServiceUtil.getSearchFilters(user.getUserId(), PortalUtil.getClassNameId(TicketEntry.class.getName()));
@@ -65,9 +65,7 @@
 		<span class="nav-tooltip"><liferay-ui:message key="tickets" /></span>
 
 		<c:if test="<%= !searchFilters.isEmpty() || supportPartnerWorker || !developerAccountEntryIds.isEmpty() %>">
-			<ul class="hide nav-submenu" id="<portlet:namespace />homeSubMenu">
-				<li class="arrow"></li>
-
+			<ul class="nav-submenu">
 				<li>
 					<a href="<%= myOpenTicketsURL %>"><liferay-ui:message key="my-open-tickets" /></a>
 				</li>
@@ -130,7 +128,7 @@
 		<portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" />
 	</portlet:renderURL>
 
-	<div class="nav-icon" id="<portlet:namespace />advSearchIcon">
+	<div class="nav-icon" data-page-id="advSearchPage">
 		<a href="<%= advancedSearchURL %>">
 			<svg height="27px" viewBox="0 0 27 27" width="27px">
 				<path d="M23.2, 20.9V6.8l-6-6h-15v25.5h19.1" />
@@ -148,7 +146,7 @@
 			<portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" />
 		</portlet:renderURL>
 
-		<div class="nav-icon" id="<portlet:namespace />newTicketIcon">
+		<div class="nav-icon" data-page-id="newTicketPage">
 			<a href="<%= newTicketURL %>">
 				<svg height="27px" viewBox="0 0 27 27" width="27px">
 					<circle cx="13.5" cy="13.5" r="12.5" />
@@ -173,7 +171,7 @@
 			<portlet:param name="mvcPath" value="/support/2/subscription_messages.jsp" />
 		</portlet:renderURL>
 
-		<%-- <div class="bottom messages-icon nav-icon <%= !corpProjectMessagesMap.isEmpty() ? "unread" : "" %>" id="<portlet:namespace />messagesIcon">
+		<%-- <div class="bottom messages-icon nav-icon <%= !corpProjectMessagesMap.isEmpty() ? "unread" : "" %>" data-page-id="messagesPage">
 			<a href="<%= subscriptionMessagesURL %>">
 				<svg height="27px" viewBox="0 0 27 27" width="27px">
 					<path d="M13.5.8c7 0 12.8 5.7 12.8 12.8s-5.7 12.8-12.8 12.8S.8 20.5.8 13.5 6.5.8 13.5.8M13.5 6v12M13.5 19.5V21" />
@@ -188,7 +186,7 @@
 		<portlet:param name="mvcPath" value="/support/2/help.jsp" />
 	</portlet:renderURL>
 
-	<div class="bottom help-icon nav-icon" id="<portlet:namespace />helpIcon">
+	<div class="bottom help-icon nav-icon" data-page-id="helpPage">
 		<a href="<%= helpURL %>">
 			<svg height="27px" viewBox="0 0 27 27" width="27px">
 				<circle cx="13.5" cy="13.5" r="12.75" />
@@ -200,7 +198,7 @@
 		<span class="nav-tooltip"><liferay-ui:message key="help" /></span>
 	</div>
 
-	<div class="bottom lesa-feedback-icon nav-icon" id="<portlet:namespace />lesaFeedbackIcon">
+	<div class="bottom lesa-feedback-icon nav-icon" data-page-id="lesaFeedbackPage">
 		<svg height="27px" viewBox="0 0 27 27" width="27px">
 			<path d="m 26.387266, 18.421265 -20.0942753, 0 -5.58771302, 5.587713 0, -23.3179561 25.78944432, 0 0,17.7302431 z" />
 			<path d="M 3, 5.25 24, 5.25" />
@@ -217,7 +215,7 @@
 		<portlet:param name="mvcPath" value="/support/2/preferences.jsp" />
 	</portlet:renderURL>
 
-	<div class="bottom nav-icon preferences-icon" id="<portlet:namespace />settingsIcon">
+	<div class="bottom nav-icon preferences-icon" data-page-id="settingsPage">
 		<a href="<%= settingsURL %>">
 			<svg height="27px" viewBox="0 0 27 27" width="27px">
 				<path d="m 15.164175, 25.952209 -3.22835, 0 -0.553432, -2.213726 c -0.368954, -0.09224 -0.737908,
@@ -247,28 +245,15 @@
 
 <c:if test="<%= !searchFilters.isEmpty() || supportPartnerWorker || !developerAccountEntryIds.isEmpty() %>">
 	<aui:script use="aui-base">
-		var homeIcon = A.one('#<portlet:namespace />homeIcon');
-		var homeSubMenu = A.one('#<portlet:namespace />homeSubMenu');
+		var homePage = A.all('[data-page-id="homePage"]');
+		var navSubmenu = A.all('.nav-submenu');
 
-		if (homeIcon && homeSubMenu) {
-			homeIcon.on(
-				'click',
-				function() {
-					homeIcon.addClass('clicked');
-
-					homeSubMenu.show();
-				}
-			);
-
-			homeIcon.on(
-				'clickoutside',
-				function() {
-					homeIcon.removeClass('clicked');
-
-					homeSubMenu.hide();
-				}
-			);
-		}
+		homePage.on(
+			'click',
+			function() {
+				navSubmenu.toggleClass('show');
+			}
+		);
 	</aui:script>
 </c:if>
 
@@ -276,16 +261,12 @@
 	Liferay.provide(
 		window,
 		'<portlet:namespace />navSelect',
-		function(iconName) {
+		function(pageId) {
 			var A = AUI();
 
-			A.all('.nav-icon').removeClass('active');
+			var activePage = A.all('[data-page-id=' + pageId + 'Page]');
 
-			var icon = A.one('#<portlet:namespace />' + iconName + 'Icon');
-
-			if (icon) {
-				icon.addClass('active');
-			}
+			activePage.addClass('active');
 		},
 		['aui-node']
 	);
