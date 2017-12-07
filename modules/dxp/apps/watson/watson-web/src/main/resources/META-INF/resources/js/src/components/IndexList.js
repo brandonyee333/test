@@ -8,10 +8,6 @@ import Sort from './Sort';
 
 import {convertHtmlToText, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
-function fetchChildData(children, watsonChildId) {
-	return children.get(watsonChildId);
-}
-
 function fetchIncidentData(incidents, watsonIncidentId) {
 	return incidents.get(watsonIncidentId);
 }
@@ -166,7 +162,7 @@ function formatChildData(watsonChildren, keysToOmit, onClick, selectedIds, simpl
 	return formattedData;
 }
 
-function formatDocumentsData(watsonDocuments, watsonChildren, keysToOmit, onClick, selectedIds, simple) {
+function formatDocumentsData(watsonDocuments, keysToOmit, onClick, selectedIds, simple) {
 	let formattedData;
 
 	if (simple) {
@@ -177,14 +173,6 @@ function formatDocumentsData(watsonDocuments, watsonChildren, keysToOmit, onClic
 			(watsonDocument, key) => {
 				const watsonChildId = watsonDocument.get('watsonChildId');
 
-				const watsonChild = fetchChildData(watsonChildren, watsonChildId);
-
-				let watsonChildName = '';
-
-				if (watsonChild) {
-					watsonChildName = watsonChild.get('name');
-				}
-
 				return {
 					header: watsonDocument.get('name'),
 					id: key,
@@ -193,7 +181,7 @@ function formatDocumentsData(watsonDocuments, watsonChildren, keysToOmit, onClic
 					onClick,
 					reportedBy: watsonDocument.get('reportedBy'),
 					reportedDate: watsonDocument.get('createDate'),
-					smallIncidentName: watsonChildName || watsonDocument.get('childName'),
+					smallIncidentName: watsonDocument.get('childName'),
 					subHeader: getOptionsLabelFromWatsonConstants('documents', 'typeWatsonListTypeId', watsonDocument.get('typeWatsonListTypeId'))
 
 				};
@@ -242,34 +230,26 @@ function formatIncidentData(watsonIncidents, keysToOmit, onClick, selectedIds, s
 	return formattedData;
 }
 
-function formatLegalsData(watsonLegals, watsonChildren, keysToOmit, onClick, selectedIds, simple) {
+function formatReportsData(watsonReports, model, keysToOmit, onClick, selectedIds, simple) {
 	let formattedData;
 
 	if (simple) {
-		formattedData = formatSimpleLegalsData(watsonLegals, keysToOmit, onClick, selectedIds);
+		formattedData = formatSimpleReportsData(watsonReports, model, keysToOmit, onClick, selectedIds);
 	}
 	else {
-		formattedData = watsonLegals.map(
-			(watsonLegal, key) => {
-				const watsonChildId = watsonLegal.get('watsonChildId');
-
-				const watsonChild = fetchChildData(watsonChildren, watsonChildId);
-
-				let watsonChildName = '';
-
-				if (watsonChild) {
-					watsonChildName = watsonChild.get('name');
-				}
+		formattedData = watsonReports.map(
+			(watsonReport, key) => {
+				const watsonChildId = watsonReport.get('watsonChildId');
 
 				return {
-					header: watsonLegal.get('name'),
+					header: watsonReport.get('name'),
 					id: key,
-					lastEdited: watsonLegal.get('modifiedDate'),
-					link: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/legals/${key}/edit`,
+					lastEdited: watsonReport.get('modifiedDate'),
+					link: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${key}/edit`,
 					onClick,
-					reportedBy: watsonLegal.get('reportedBy'),
-					reportedDate: watsonLegal.get('createDate'),
-					smallIncidentName: watsonChildName || watsonLegal.get('childName')
+					reportedBy: watsonReport.get('reportedBy'),
+					reportedDate: watsonReport.get('createDate'),
+					smallIncidentName: watsonReport.get('childName')
 
 				};
 			}
@@ -575,24 +555,24 @@ function formatSimpleIncidentData(watsonIncidents, keysToOmit, onClick, selected
 	return formattedData;
 }
 
-function formatSimpleLegalsData(watsonLegals, keysToOmit, onClick, selectedIds) {
-	const formattedData = watsonLegals.map(
-		(watsonLegal, key) => {
+function formatSimpleReportsData(watsonReports, model, keysToOmit, onClick, selectedIds) {
+	const formattedData = watsonReports.map(
+		(watsonReport, key) => {
 			const disabled = includes(keysToOmit, key, 0);
 
 			const selected = includes(selectedIds, key, 0);
 
-			const watsonChildId = watsonLegal.get('watsonChildId');
+			const watsonChildId = watsonReport.get('watsonChildId');
 
 			return {
 				disabled: disabled ? 'disabled' : '',
-				header: watsonLegal.get('name'),
+				header: watsonReport.get('name'),
 				id: key,
-				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/legals/${key}/edit`,
+				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${key}/edit`,
 				onClick: disabled ? undefined : onClick,
-				reportedBy: watsonLegal.get('reportedBy'),
-				reportedDate: watsonLegal.get('createDate'),
-				rowContent: watsonLegal.get('description'),
+				reportedBy: watsonReport.get('reportedBy'),
+				reportedDate: watsonReport.get('createDate'),
+				rowContent: watsonReport.get('description'),
 				selected
 			};
 		}
@@ -769,13 +749,13 @@ function IndexList({data = OrderedMap(), hasMoreResults, incidentsData = Ordered
 		data = formatActivityData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);
 	}
 	else if (model === 'children') {
-		data = formatChildData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);
+		data = formatChildData(data, keysToOmit, onClick, selectedIds, simple);
 	}
 	else if (model === 'documents') {
-		data = formatDocumentsData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);
+		data = formatDocumentsData(data, keysToOmit, onClick, selectedIds, simple);
 	}
-	else if (model === 'legals') {
-		data = formatLegalsData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);
+	else if (model === 'legals' || model === 'illnesses') {
+		data = formatReportsData(data, model, keysToOmit, onClick, selectedIds, simple);
 	}
 	else if (model === 'people') {
 		data = formatPeopleData(data, incidentsData, keysToOmit, onClick, selectedIds, simple);

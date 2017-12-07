@@ -86,7 +86,7 @@ class Watson extends JSXComponent {
 
 						<Router
 							component={CreateIncident}
-							path={`${WatsonConstants.urls.basePath}/incidents/create/:model([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/incidents/create/:model([a-z-A-Z]+)`}
 						/>
 
 						<Router
@@ -101,57 +101,57 @@ class Watson extends JSXComponent {
 
 						<Router
 							component={EditChild}
-							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/:action([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/:action([a-z-A-Z]+)`}
 						/>
 
 						<Router
 							component={EditIncident}
-							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/:action([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/:action([a-z-A-Z]+)`}
 						/>
 
 						<Router
 							component={EditIncident}
-							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-z-A-Z]+)`}
 						/>
 
 						<Router
 							component={EditChild}
-							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-z-A-Z]+)`}
 						/>
 
 						<Router
 							component={EditIncident}
-							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:action([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-z-A-Z]+)/:action([a-z-A-Z]+)`}
 						/>
 
 						<Router
 							component={EditChild}
-							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-zA-Z]+)/:action([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-z-A-Z]+)/:action([a-z-A-Z]+)`}
 						/>
 
 						<Router
 							component={ChildReport}
-							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/report`}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-z-A-Z]+)/:entryId(\\d+)/report`}
 						/>
 
 						<Router
 							component={IncidentReport}
-							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/report`}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-z-A-Z]+)/:entryId(\\d+)/report`}
 						/>
 
 						<Router
 							component={ChildModelSubIndex}
-							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/view`}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-z-A-Z]+)/:entryId(\\d+)/view`}
 						/>
 
 						<Router
 							component={EditChild}
-							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/:action([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/children/:watsonChildId(\\d+)/edit/:model([a-z-A-Z]+)/:entryId(\\d+)/:action([a-z-A-Z]+)`}
 						/>
 
 						<Router
 							component={EditIncident}
-							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-zA-Z]+)/:entryId(\\d+)/:action([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-z-A-Z]+)/:entryId(\\d+)/:action([a-z-A-Z]+)`}
 						/>
 
 						<Router
@@ -161,7 +161,7 @@ class Watson extends JSXComponent {
 
 						<Router
 							component={AdminConsole}
-							path={`${WatsonConstants.urls.basePath}/incidents/admin/:action([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/incidents/admin/:action([a-z-A-Z]+)`}
 						/>
 
 						<Router
@@ -171,12 +171,12 @@ class Watson extends JSXComponent {
 
 						<Router
 							component={MetricsConsole}
-							path={`${WatsonConstants.urls.basePath}/incidents/metrics/:action([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/incidents/metrics/:action([a-z-A-Z]+)`}
 						/>
 
 						<Router
 							component={Index}
-							path={`${WatsonConstants.urls.basePath}/:model([a-zA-Z]+)`}
+							path={`${WatsonConstants.urls.basePath}/:model([a-z-A-Z]+)`}
 						/>
 
 						<Router

@@ -9,7 +9,9 @@ class AdminConsole extends JSXComponent {
 	getCurrentView(action) {
 		let currentView = (
 			<div class="content-container">
-				<span class="text">{Liferay.Language.get('please-select-a-method-on-the-left')}</span>
+				<div class="content-header">
+					<span class="text">{Liferay.Language.get('please-select-a-method-on-the-left')}</span>
+				</div>
 			</div>
 		);
 

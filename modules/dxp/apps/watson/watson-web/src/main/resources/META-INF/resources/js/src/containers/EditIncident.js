@@ -928,22 +928,22 @@ function mapDispatchToProps(dispatch) {
 				updateAddressesFormData(data)
 			);
 		},
-		updateCollapsedEntries: (collapsedEntries, watsonIncidentId) => {
+		updateCollapsedEntries: (collapsedEntries, watsonParentPrimaryKey) => {
 			const data = {
 				collapsedEntries,
-				watsonIncidentId
+				watsonParentPrimaryKey
 			};
 
 			dispatch(
 				updateCollapsedEntries(data)
 			);
 		},
-		updateCollapsedEntry: (watsonIncidentId, collapsedEntryHash, value, auto = false) => {
+		updateCollapsedEntry: (watsonParentPrimaryKey, collapsedEntryHash, value, auto = false) => {
 			const data = {
 				auto,
 				collapsedEntryHash,
 				value,
-				watsonIncidentId
+				watsonParentPrimaryKey
 			};
 
 			dispatch(

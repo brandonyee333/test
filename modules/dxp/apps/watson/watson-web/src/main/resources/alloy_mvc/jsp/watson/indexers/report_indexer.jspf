@@ -33,7 +33,7 @@ public static class WatsonReportIndexer extends BaseAlloyIndexer {
 		document.addKeyword("id", watsonReport.getPrimaryKey());
 		document.addKeyword("key", watsonReport.getKey());
 		document.addDate("modifiedDate", watsonReport.getModifiedDate());
-		document.addLocalizedKeyword("name", watsonReport.getNameMap());
+		document.addKeyword("name", watsonReport.getReportName(LocaleUtil.getMostRelevantLocale()));
 		document.addDate("reportDate", watsonReport.getReportDate());
 		document.addKeyword("reportedBy", watsonReport.getUserName());
 		document.addKeyword("reportedUser", watsonReport.getReportedUser());

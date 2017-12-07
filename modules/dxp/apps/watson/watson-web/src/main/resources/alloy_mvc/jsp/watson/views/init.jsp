@@ -173,6 +173,7 @@ expiredSessionPortletURL.setWindowState(WindowState.MAXIMIZED);
 			list_types: '<portlet:renderURL><portlet:param name="controller" value="list_type" /><portlet:param name="action" value="index" /></portlet:renderURL>',
 			people: '<portlet:renderURL><portlet:param name="controller" value="people" /><portlet:param name="action" value="index" /></portlet:renderURL>',
 			relationships: '<portlet:renderURL><portlet:param name="controller" value="relationships" /><portlet:param name="action" value="index" /></portlet:renderURL>',
+			reports: '<portlet:renderURL><portlet:param name="controller" value="reports" /><portlet:param name="action" value="index" /></portlet:renderURL>',
 			resources: '<portlet:renderURL><portlet:param name="controller" value="resources" /><portlet:param name="action" value="index" /></portlet:renderURL>',
 			sessionExpired: '<%= expiredSessionPortletURL.toString() %>',
 			vehicles: '<portlet:renderURL><portlet:param name="controller" value="vehicles" /><portlet:param name="action" value="index" /></portlet:renderURL>'

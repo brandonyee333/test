@@ -20,6 +20,14 @@ import {
 } from '../../actions/documents';
 
 import {
+	destroyIllnesses,
+	editIllnesses,
+	updateIllnesses,
+	updateIllnessesDataManually,
+	updateIllnessesFormData
+} from '../../actions/illnesses';
+
+import {
 	destroyLegals,
 	editLegals,
 	updateLegals,
@@ -372,6 +380,11 @@ function mapDispatchToProps(dispatch) {
 				destroyDocuments(watsonDocumentId)
 			);
 		},
+		destroyIllnesses: watsonReportId => {
+			dispatch(
+				destroyIllnesses(watsonReportId)
+			);
+		},
 		destroyLegals: watsonReportId => {
 			dispatch(
 				destroyLegals(watsonReportId)
@@ -380,6 +393,11 @@ function mapDispatchToProps(dispatch) {
 		editDocuments: watsonDocumentId => {
 			dispatch(
 				editDocuments(watsonDocumentId)
+			);
+		},
+		editIllnesses: watsonDocumentId => {
+			dispatch(
+				editIllnesses(watsonDocumentId)
 			);
 		},
 		editLegals: watsonReportId => {
@@ -405,6 +423,26 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				updateDocumentsFormData(data)
+			);
+		},
+		updateIllnesses: data => {
+			dispatch(
+				updateIllnesses(data)
+			);
+		},
+		updateIllnessesDataManually: data => {
+			dispatch(
+				updateIllnessesDataManually(data)
+			);
+		},
+		updateIllnessesFormData: (formData, watsonReportId = 0) => {
+			const data = {
+				formData,
+				watsonReportId
+			};
+
+			dispatch(
+				updateIllnessesFormData(data)
 			);
 		},
 		updateLegals: data => {

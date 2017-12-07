@@ -10,6 +10,7 @@ import HTMLRenderer from '../../components/HTMLRenderer';
 import GoogleMap from '../../components/GoogleMap';
 
 import {indexDocuments} from '../../actions/documents';
+import {indexIllnesses} from '../../actions/illnesses';
 import {indexLegals} from '../../actions/legals';
 import {viewChildren} from '../../actions/children';
 
@@ -22,8 +23,9 @@ class ChildReport extends JSXComponent {
 		const {watsonChildId} = props;
 
 		if (watsonChildId) {
-			props.indexLegals(watsonChildId);
 			props.indexDocuments(watsonChildId);
+			props.indexIllnesses(watsonChildId);
+			props.indexLegals(watsonChildId);
 			props.viewChildren(watsonChildId);
 		}
 	}
@@ -116,10 +118,17 @@ class ChildReport extends JSXComponent {
 	}
 
 	renderEntity(data, displayFields, model) {
+		let headerName = '';
+
+		const entityName = data.get('name') || data.get('id') || '';
+		const entitySingularLabel = WatsonConstants.inputConfig[model].singularLabel;
+
+		headerName = entityName.includes(entitySingularLabel) ? entityName : `${WatsonConstants.inputConfig[model].singularLabel} - ${entityName}`;
+
 		return (
 			<div class="body">
 				<div class="body-header">
-					{`${WatsonConstants.inputConfig[model].singularLabel} - ${data.get('name')}`}
+					{headerName}
 				</div>
 
 				<div class="content">
@@ -348,8 +357,12 @@ class ChildReport extends JSXComponent {
 					this.renderModel(entryId, 'documents')
 				}
 
+				{(!entryId || model === 'illnesses') &&
+					this.renderModel(entryId, 'illnesses')
+				}
+
 				{(!entryId || model === 'legals') &&
-				this.renderModel(entryId, 'legals')
+					this.renderModel(entryId, 'legals')
 				}
 			</div>
 		);
@@ -375,7 +388,13 @@ class ChildReport extends JSXComponent {
 }
 
 ChildReport.PROPS = {
-	childrenData: Config.value(new Map())
+	childrenData: Config.value(new Map()),
+	documentsData: Config.value(new Map()),
+	entryId: Config.any(),
+	illnessesData: Config.value(new Map()),
+	legalsData: Config.value(new Map()),
+	model: Config.string(),
+	watsonChildId: Config.any()
 };
 
 ChildReport.STATE = {
@@ -415,6 +434,15 @@ ChildReport.STATE = {
 	),
 	elementStyle: Config.value(''),
 	entryId: Config.any(),
+	illnessesConfig: Config.array().value(
+		[
+			'reportDate',
+			'description',
+			'fullReport',
+			'watsonRelationships'
+
+		]
+	),
 	legalsConfig: Config.array().value(
 		[
 			'reportDate',
@@ -434,9 +462,24 @@ function mapDispatchToProps(dispatch) {
 				indexDocuments({id})
 			);
 		},
-		indexLegals: id => {
+		indexIllnesses: id => {
+			const data = {
+				id,
+				key: WatsonConstants.inputConfig.illnesses.key
+			};
+
 			dispatch(
-				indexLegals({id})
+				indexIllnesses(data)
+			);
+		},
+		indexLegals: id => {
+			const data = {
+				id,
+				key: WatsonConstants.inputConfig.legals.key
+			};
+
+			dispatch(
+				indexLegals(data)
 			);
 		},
 		viewChildren: id => {
@@ -454,6 +497,10 @@ function mapStateToProps(state, props) {
 	const childrenLoading = state.getIn(['children', 'loading']);
 	const documentsData = state.getIn(['documents', 'data']) || new Map();
 	const documentsLoading = state.getIn(['documents', 'loading']);
+	const illnessesData = state.getIn(['illnesses', 'data']) || new Map();
+	const illnessesLoading = state.getIn(['illnesses', 'loading']);
+	const legalsData = state.getIn(['legals', 'data']) || new Map();
+	const legalsLoading = state.getIn(['legals', 'loading']);
 
 	const currentChildData = childrenData.get(watsonChildId) || new Map();
 
@@ -464,6 +511,10 @@ function mapStateToProps(state, props) {
 		documentsData,
 		documentsLoading,
 		entryId,
+		illnessesData,
+		illnessesLoading,
+		legalsData,
+		legalsLoading,
 		model,
 		watsonChildId
 	};

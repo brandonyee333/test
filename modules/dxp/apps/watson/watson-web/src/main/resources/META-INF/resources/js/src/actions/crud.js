@@ -65,11 +65,12 @@ export default ({controller, name}) => {
 		},
 
 		index: (data = {}) => {
-			const {end, id, start} = data;
+			const {end, id, key, start} = data;
 
 			return {
 				end,
 				id,
+				key,
 				[CALL_API]: {
 					controller,
 					controllerMethod: 'index.json',
@@ -81,10 +82,11 @@ export default ({controller, name}) => {
 		},
 
 		search: data => {
-			const {end, keywords, start} = data;
+			const {end, key, keywords, start} = data;
 
 			return {
 				end,
+				key,
 				keywords,
 				[CALL_API]: {
 					controller,

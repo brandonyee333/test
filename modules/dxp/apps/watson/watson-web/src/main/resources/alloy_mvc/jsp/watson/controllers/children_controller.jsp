@@ -209,18 +209,19 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 		JSONArray idJSONArray = JSONFactoryUtil.createJSONArray();
 
-		long watsonChildId = ParamUtil.getLong(request, "id");
-
 		String model = ParamUtil.getString(request, "model");
+		long watsonChildId = ParamUtil.getLong(request, "id");
 
 		if (model.equals("documents")) {
 			idJSONArray = WatsonDocument.getIdJSONArray(watsonChildId);
 		}
 		else if (model.equals("legals")) {
 			idJSONArray = WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_LEGAL_STATUS, watsonChildId);
+		}
+		else if (model.equals("illnesses")) {
+			idJSONArray = WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_ILLNESS, watsonChildId);
 		}
 
 		jsonObject.put("id", watsonChildId);

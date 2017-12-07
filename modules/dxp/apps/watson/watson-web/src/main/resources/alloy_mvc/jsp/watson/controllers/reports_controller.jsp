@@ -136,18 +136,16 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		List<WatsonReport> watsonReports = null;
 		long watsonReportsCount = 0;
 
-		long watsonChildId = ParamUtil.getLong(request, "id", 0);
+		int key = ParamUtil.getInteger(request, "key");
+		long watsonChildId = ParamUtil.getLong(request, "id");
+		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
+		String sort = ParamUtil.getString(request, "sortBy", null);
 		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
 		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
 
-		String actionType = ParamUtil.getString(request, "actionType");
+		watsonReports = WatsonChild.getWatsonReports(key, watsonChildId, includeInactive, sort, start, end, user);
 
-		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
-		String sort = ParamUtil.getString(request, "sortBy", null);
-
-		watsonReports = WatsonChild.getWatsonReports(watsonChildId, includeInactive, sort, start, end, user);
-
-		watsonReportsCount = WatsonChild.getWatsonReportsCount(watsonChildId);
+		watsonReportsCount = WatsonChild.getWatsonReportsCount(key, watsonChildId);
 
 		respondWith(WatsonReport.getAsJSONDataArray(watsonReports, watsonReportsCount));
 	}

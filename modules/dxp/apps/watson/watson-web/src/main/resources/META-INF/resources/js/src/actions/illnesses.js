@@ -1,7 +1,7 @@
 import createBaseActions from './crud';
 import createSupplementalActions from './supplemental';
 
-export const NAME = 'LEGALS';
+export const NAME = 'ILLNESSES';
 
 const controller = 'reports';
 
@@ -46,18 +46,18 @@ const {
 
 export {
 	actionTypes,
-	add as addLegals,
-	create as createLegals,
-	destroy as destroyLegals,
-	edit as editLegals,
+	add as addIllnesses,
+	create as createIllnesses,
+	destroy as destroyIllnesses,
+	edit as editIllnesses,
 	fetchMetrics as fetchReportMetrics,
-	fetchTranslation as fetchLegalsTranslation,
-	importModel as importLegals,
-	index as indexLegals,
-	requestTranslation as requestLegalsTranslation,
-	search as searchLegals,
-	update as updateLegals,
-	updateDataManually as updateLegalsDataManually,
-	updateFormData as updateLegalsFormData,
-	view as viewLegals
+	fetchTranslation as fetchIllnessesTranslation,
+	importModel as importIllnesses,
+	index as indexIllnesses,
+	requestTranslation as requestIllnessesTranslation,
+	search as searchIllnesses,
+	update as updateIllnesses,
+	updateDataManually as updateIllnessesDataManually,
+	updateFormData as updateIllnessesFormData,
+	view as viewIllnesses
 };

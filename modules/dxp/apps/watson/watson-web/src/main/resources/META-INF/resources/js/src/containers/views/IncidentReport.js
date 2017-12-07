@@ -120,10 +120,17 @@ class IncidentReport extends JSXComponent {
 	}
 
 	renderEntity(data, displayFields, model) {
+		let headerName = '';
+
+		const entityName = data.get('name') || data.get('id') || '';
+		const entitySingularLabel = WatsonConstants.inputConfig[model].singularLabel;
+
+		headerName = entityName.includes(entitySingularLabel) ? entityName : `${WatsonConstants.inputConfig[model].singularLabel} - ${entityName}`;
+
 		return (
 			<div class="body">
 				<div class="body-header">
-					{`${WatsonConstants.inputConfig[model].singularLabel} - ${data.get('name')}`}
+					{headerName}
 				</div>
 
 				<div class="content">
@@ -394,10 +401,13 @@ IncidentReport.PROPS = {
 	activitiesData: Config.value(new Map()),
 	addressesData: Config.value(new Map()),
 	currentIncidentData: Config.value(new Map()),
+	entryId: Config.any(),
 	incidentsData: Config.value(new Map()),
+	model: Config.string(),
 	peopleData: Config.value(new Map()),
 	resourcesData: Config.value(new Map()),
-	vehiclesData: Config.value(new Map())
+	vehiclesData: Config.value(new Map()),
+	watsonIncidentId: Config.string()
 };
 
 IncidentReport.STATE = {

@@ -119,6 +119,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 
 		jsonObject.put("id", watsonChild.getPrimaryKey());
+		jsonObject.put("illnesses", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_ILLNESS, watsonChild.getWatsonChildId()));
 		jsonObject.put("legals", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_LEGAL_STATUS, watsonChild.getWatsonChildId()));
 
 		Date modifiedDate = watsonChild.getModifiedDate();
@@ -244,15 +245,15 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		return WatsonDocument.filterDocuments(returnWatsonDocuments, user);
 	}
 
-	public static List<WatsonReport> getWatsonReports(long watsonChildId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+	public static List<WatsonReport> getWatsonReports(int key, long watsonChildId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
 		List<WatsonReport> returnWatsonReports = null;
 
 		if (watsonChildId > 0) {
 			if (includeInactive) {
-				returnWatsonReports = WatsonReport.queryAll("watsonChildId", watsonChildId);
+				returnWatsonReports = WatsonReport.queryAll("key", key, "watsonChildId", watsonChildId);
 			}
 			else {
-				returnWatsonReports = WatsonReport.queryRange(sort, start, end, "watsonChildId", watsonChildId);
+				returnWatsonReports = WatsonReport.queryRange(sort, start, end, "key", key, "watsonChildId", watsonChildId);
 			}
 		}
 		else {
@@ -271,12 +272,12 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 	}
 
-	public static long getWatsonReportsCount(long watsonChildId) throws Exception {
+	public static long getWatsonReportsCount(int key, long watsonChildId) throws Exception {
 		if (watsonChildId > 0) {
-			return WatsonReport.count("watsonChildId", watsonChildId, "status", WorkflowConstants.STATUS_APPROVED);
+			return WatsonReport.count("key", key, "watsonChildId", watsonChildId, "status", WorkflowConstants.STATUS_APPROVED);
 		}
 		else {
-			return WatsonReport.count("status", WorkflowConstants.STATUS_APPROVED);
+			return WatsonReport.count("key", key, "status", WorkflowConstants.STATUS_APPROVED);
 		}
 	}
 

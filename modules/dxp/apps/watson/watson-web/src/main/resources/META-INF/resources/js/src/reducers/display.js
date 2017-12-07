@@ -5,21 +5,21 @@ import {createReducer} from '../lib/util';
 
 const actionHandlers = {
 	[actionTypes.UPDATE_COLLAPSED_ENTRIES]: (state, action) => {
-		const {collapsedEntries, watsonIncidentId} = action.data;
+		const {collapsedEntries, watsonParentPrimaryKey} = action.data;
 
-		return state.setIn(['collapsedEntries', watsonIncidentId], collapsedEntries);
+		return state.setIn(['collapsedEntries', watsonParentPrimaryKey], collapsedEntries);
 	},
 	[actionTypes.UPDATE_COLLAPSED_ENTRY]: (state, action) => {
-		const {auto = false, collapsedEntryHash, value, watsonIncidentId} = action.data;
+		const {auto = false, collapsedEntryHash, value, watsonParentPrimaryKey} = action.data;
 
 		if (auto) {
 			state = state.set('lastAutoOpenedEntry', collapsedEntryHash);
 		}
 
-		const collapsedEntries = state.getIn(['collapsedEntries', watsonIncidentId]);
+		const collapsedEntries = state.getIn(['collapsedEntries', watsonParentPrimaryKey]);
 
 		return state.setIn(
-			['collapsedEntries', watsonIncidentId],
+			['collapsedEntries', watsonParentPrimaryKey],
 			Object.assign(
 				{},
 				collapsedEntries,
@@ -35,10 +35,10 @@ const actionHandlers = {
 		return state.set('displayBy', displayBy);
 	},
 	[actionTypes.UPDATE_FILTER]: (state, action) => {
-		const {filterData = action.data, model = 'incidents', watsonIncidentId = 0} = action.data;
+		const {filterData = action.data, model = 'incidents', watsonParentPrimaryKey = 0} = action.data;
 
 		return state.mergeIn(
-			['filter', watsonIncidentId],
+			['filter', watsonParentPrimaryKey],
 			{
 				[model]: filterData
 			}
@@ -55,10 +55,10 @@ const actionHandlers = {
 		return state.set('lastFocus', lastFocusSelector);
 	},
 	[actionTypes.UPDATE_LAST_ITEMS_LOADED]: (state, action) => {
-		const {lastClicked, lastLoaded, model = 'incidents', watsonIncidentId = 0} = action.data;
+		const {lastClicked, lastLoaded, model = 'incidents', watsonParentPrimaryKey = 0} = action.data;
 
 		return state.setIn(
-			['lastLoaded', watsonIncidentId],
+			['lastLoaded', watsonParentPrimaryKey],
 			{
 				[model]: {
 					lastClicked,
@@ -73,10 +73,10 @@ const actionHandlers = {
 		return state.set('pageTitle', pageTitle);
 	},
 	[actionTypes.UPDATE_SORT_BY]: (state, action) => {
-		const {model = 'incidents', sortByData = action.data, watsonIncidentId = 0} = action.data;
+		const {model = 'incidents', sortByData = action.data, watsonParentPrimaryKey = 0} = action.data;
 
 		return state.mergeIn(
-			['sortBy', watsonIncidentId],
+			['sortBy', watsonParentPrimaryKey],
 			{
 				[model]: sortByData
 			}

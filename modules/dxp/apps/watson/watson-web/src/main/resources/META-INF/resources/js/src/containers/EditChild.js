@@ -16,6 +16,7 @@ import ViewIndex from './views/ViewIndex';
 import {editChildren, refreshSubModel, updateChildrenDataManually, updateChildrenFormData} from '../actions/children';
 import {updateCollapsedEntries, updateCollapsedEntry} from '../actions/display';
 import {updateDocumentsDataManually} from '../actions/documents';
+import {updateIllnessesDataManually} from '../actions/illnesses';
 import {updateLegalsDataManually} from '../actions/legals';
 
 import {getOptionsLabelFromWatsonConstants} from '../lib/util';
@@ -90,6 +91,68 @@ class EditChild extends JSXComponent {
 						]}
 						formData={props.modelFormData}
 						model={model}
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+		}
+		else if (model === 'illnesses') {
+			if (action === 'index') {
+				const buttonData = [
+					{
+						label: Liferay.Language.get('create-illness-report'),
+						method: modelCreateMethod
+					}
+				];
+				view = (
+					<ViewIndex
+						action={action}
+						buttonData={buttonData}
+						disabled={childDisabled}
+						model={model}
+						primaryName={childName}
+						watsonChildId={watsonChildId}
+					/>
+				);
+			}
+			else if (action === 'translate') {
+				view = (
+					<GenericTranslationForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.illnesses.inputs}
+						formConfig={[
+							'description',
+							'fullReport'
+						]}
+						model={model}
+						parentModel="children"
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+			else {
+				view = (
+					<GenericChildForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.illnesses.inputs}
+						formConfig={[
+							'id',
+							'reportDate',
+							'description',
+							'fullReport',
+							'watsonRelationships'
+						]}
+						formData={props.modelFormData}
+						model={model}
+						modelKey={WatsonConstants.inputConfig.illnesses.key}
 						storeData={props.modelStoreData}
 						watsonChildId={watsonChildId}
 						watsonPrimaryKey={entryId}
@@ -233,6 +296,7 @@ class EditChild extends JSXComponent {
 		const childTypeLabel = getOptionsLabelFromWatsonConstants('children', 'typeWatsonListTypeId', childrenStoreData.get('typeWatsonListTypeId'));
 
 		const documentsNav = [];
+		const illnessesNav = [];
 		const legalsNav = [];
 
 		if (childrenStoreData.get('documents')) {
@@ -254,6 +318,31 @@ class EditChild extends JSXComponent {
 							name: `documents_${documentId}`,
 							selected: (entryId === documentId && model === 'documents'),
 							text: documentName
+						}
+					);
+				}
+			);
+		}
+
+		if (childrenStoreData.get('illnesses')) {
+			const childIllnesses = Sort(childrenStoreData.get('illnesses'), null, 'name');
+
+			const illnessList = [];
+
+			childIllnesses.forEach(
+				childIllness => {
+					const illnessId = childIllness.get('id');
+
+					illnessList.push(illnessId);
+
+					const illnessName = childIllness.get('name') || illnessId;
+
+					illnessesNav.push(
+						{
+							href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/illnesses/${illnessId}/edit`,
+							name: `illnesses${illnessId}`,
+							selected: (entryId === illnessId && model === 'illnesses'),
+							text: illnessName
 						}
 					);
 				}
@@ -297,14 +386,21 @@ class EditChild extends JSXComponent {
 				collapsible: true,
 				entries: documentsNav,
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/index`,
-				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'documents'),
+				selected: ((action === 'create' || action === 'index' || action === 'import' || action === 'translate') && model === 'documents'),
 				text: Liferay.Language.get('documents')
+			},
+			{
+				collapsible: true,
+				entries: illnessesNav,
+				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/illnesses/index`,
+				selected: ((action === 'create' || action === 'index' || action === 'import' || action === 'translate') && model === 'illnesses'),
+				text: Liferay.Language.get('illness-reports')
 			},
 			{
 				collapsible: true,
 				entries: legalsNav,
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/legals/index`,
-				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'legals'),
+				selected: ((action === 'create' || action === 'index' || action === 'import' || action === 'translate') && model === 'legals'),
 				text: Liferay.Language.get('legal-reports')
 			}
 		];
@@ -412,22 +508,22 @@ function mapDispatchToProps(dispatch) {
 				updateChildrenFormData(data)
 			);
 		},
-		updateCollapsedEntries: (collapsedEntries, watsonChildId) => {
+		updateCollapsedEntries: (collapsedEntries, watsonParentPrimaryKey) => {
 			const data = {
 				collapsedEntries,
-				watsonChildId
+				watsonParentPrimaryKey
 			};
 
 			dispatch(
 				updateCollapsedEntries(data)
 			);
 		},
-		updateCollapsedEntry: (watsonChildId, collapsedEntryHash, value, auto = false) => {
+		updateCollapsedEntry: (watsonParentPrimaryKey, collapsedEntryHash, value, auto = false) => {
 			const data = {
 				auto,
 				collapsedEntryHash,
 				value,
-				watsonChildId
+				watsonParentPrimaryKey
 			};
 
 			dispatch(
@@ -437,6 +533,11 @@ function mapDispatchToProps(dispatch) {
 		updateDocumentsDataManually: data => {
 			dispatch(
 				updateDocumentsDataManually(data)
+			);
+		},
+		updateIllnessesDataManually: data => {
+			dispatch(
+				updateIllnessesDataManually(data)
 			);
 		},
 		updateLegalsDataManually: data => {

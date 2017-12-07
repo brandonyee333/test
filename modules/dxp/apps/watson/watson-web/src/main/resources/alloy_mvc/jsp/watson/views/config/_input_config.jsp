@@ -1309,6 +1309,94 @@
 					}
 				}
 			},
+			illnesses: {
+				inputs: {
+					createDate: {
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-created")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: []
+					},
+					description: {
+						cssClass: 'textarea',
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("description-of-illness")}',
+						tooltipLabel: '',
+						translatable: ${true},
+						type: 'TEXT_AREA_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					fullReport: {
+						cssClass: 'textarea',
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("treatment-plan")}',
+						tooltipLabel: '',
+						translatable: ${true},
+						type: 'TEXT_AREA_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					id: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("id")}',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'INPUT_VIEW',
+						validations: []
+					},
+					reportDate: {
+						controlledInputs: [],
+						defaultValue: new Date().toISOString().substr(0,10),
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-reported")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: [
+							'date',
+							'required'
+						]
+					},
+					watsonRelationships: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
+						cssClass: 'triple-dynamic',
+						disabled: ${true},
+						fancy: ${false},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
+						translatable: ${false},
+						tripleOnly: ${true},
+						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
+						validations: [
+							'arrayValues4'
+						]
+					}
+				},
+				key: '${WatsonReportConstants.REPORT_TYPE_ILLNESS}',
+				relationshipObjectOptions: {},
+				pluralLabel: '${AlloyLanguageUtil.formatUnicode("illness-reports")}',
+				singularLabel: '${AlloyLanguageUtil.formatUnicode("illness-report")}',
+				sortByDefault: 'watsonChildId',
+				sortByOptions: {
+					CREATED: {
+						label: '${AlloyLanguageUtil.formatUnicode("created")}',
+						value: 'createDate'
+					},
+					INCIDENT_ID: {
+						label: '${AlloyLanguageUtil.formatUnicode("child-id")}',
+						value: 'watsonChildId'
+					},
+					LAST_MODIFIED: {
+						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
+						value: 'modifiedDate'
+					}
+				}
+			},
 			incidents: {
 				inputs: {
 					audienceAdultCount: {

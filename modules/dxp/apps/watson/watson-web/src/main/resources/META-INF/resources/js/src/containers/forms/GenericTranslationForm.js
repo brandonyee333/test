@@ -12,6 +12,7 @@ import {fetchActivitiesTranslation, updateActivities, viewActivities} from '../.
 import {fetchAddressesTranslation, updateAddresses, viewAddresses} from '../../actions/addresses';
 import {fetchChildrenTranslation, updateChildren, viewChildren} from '../../actions/children';
 import {fetchLegalsTranslation, updateLegals, viewLegals} from '../../actions/legals';
+import {fetchIllnessesTranslation, updateIllnesses, viewIllnesses} from '../../actions/illnesses';
 import {fetchIncidentsTranslation, updateIncidents, viewIncidents} from '../../actions/incidents';
 import {fetchPeopleTranslation, updatePeople, viewPeople} from '../../actions/people';
 import {fetchResourcesTranslation, updateResources, viewResources} from '../../actions/resources';
@@ -253,6 +254,16 @@ function mapDispatchToProps(dispatch) {
 				fetchChildrenTranslation(data)
 			);
 		},
+		fetchIllnessesTranslation: watsonReportId => {
+			const data = {
+				id: watsonReportId,
+				translatingTo: WatsonConstants.otherLanguageId
+			};
+
+			dispatch(
+				fetchIllnessesTranslation(data)
+			);
+		},
 		fetchIncidentsTranslation: watsonIncidentId => {
 			const data = {
 				id: watsonIncidentId,
@@ -318,6 +329,11 @@ function mapDispatchToProps(dispatch) {
 				updateChildren(data, 'updateTranslation.json')
 			);
 		},
+		translateIllnesses: data => {
+			dispatch(
+				updateIllnesses(data, 'updateTranslation.json')
+			);
+		},
 		translateIncidents: data => {
 			dispatch(
 				updateIncidents(data, 'updateTranslation.json')
@@ -356,6 +372,11 @@ function mapDispatchToProps(dispatch) {
 		viewChildren: watsonChildId => {
 			dispatch(
 				viewChildren(watsonChildId)
+			);
+		},
+		viewIllnesses: watsonReportId => {
+			dispatch(
+				viewIllnesses(watsonReportId)
 			);
 		},
 		viewIncidents: watsonIncidentId => {

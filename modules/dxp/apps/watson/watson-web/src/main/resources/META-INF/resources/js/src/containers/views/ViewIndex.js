@@ -15,6 +15,7 @@ import {indexAddresses, searchAddresses} from '../../actions/addresses';
 import {indexChildren, searchChildren} from '../../actions/children';
 import {updateFilter, updateHideLoadingOverlay, updateSortBy} from '../../actions/display';
 import {indexDocuments, searchDocuments} from '../../actions/documents';
+import {indexIllnesses, searchIllnesses} from '../../actions/illnesses';
 import {indexIncidents, searchIncidents} from '../../actions/incidents';
 import {indexLegals, searchLegals} from '../../actions/legals';
 import {indexPeople, searchPeople} from '../../actions/people';
@@ -47,8 +48,14 @@ class ViewIndex extends JSXComponent {
 
 		let headerStringLeft = `${Liferay.Language.get('loading')}`;
 
-		if (data.size || !modelLoading) {
-			const modelLabel = getPluralMessage(WatsonConstants.inputConfig[model].singularLabel, WatsonConstants.inputConfig[model].pluralLabel, modelCount);
+		if ((data.size || !modelLoading) && model) {
+			const modelConfig = WatsonConstants.inputConfig[model];
+
+			let modelLabel = '';
+
+			if (modelConfig) {
+				modelLabel = getPluralMessage(modelConfig.singularLabel, modelConfig.pluralLabel, modelCount);
+			}
 
 			if (filter && filter.size > 0) {
 				headerStringLeft = sub(Liferay.Language.get('x-loaded-of-x-matched-x'), data.size, modelCount, modelLabel);
@@ -209,7 +216,7 @@ class ViewIndex extends JSXComponent {
 			watsonParentPrimaryKey
 		} = this.props;
 
-		updateFilter(filterData, watsonParentPrimaryKey, model);
+		updateFilter(filterData, model, watsonParentPrimaryKey);
 	}
 
 	handleUpdateSortBy(sortByData) {
@@ -219,7 +226,7 @@ class ViewIndex extends JSXComponent {
 			watsonParentPrimaryKey
 		} = this.props;
 
-		updateSortBy(sortByData, watsonParentPrimaryKey, model);
+		updateSortBy(sortByData, model, watsonParentPrimaryKey);
 	}
 
 	refreshData(forceReindex) {
@@ -473,12 +480,21 @@ function mapDispatchToProps(dispatch) {
 				indexDocuments(data)
 			);
 		},
+		indexIllnesses: data => {
+			data.key = WatsonConstants.inputConfig.illnesses.key;
+
+			dispatch(
+				indexIllnesses(data)
+			);
+		},
 		indexIncidents: data => {
 			dispatch(
 				indexIncidents(data)
 			);
 		},
 		indexLegals: data => {
+			data.key = WatsonConstants.inputConfig.legals.key;
+
 			dispatch(
 				indexLegals(data)
 			);
@@ -518,12 +534,21 @@ function mapDispatchToProps(dispatch) {
 				searchDocuments(data)
 			);
 		},
+		searchIllnesses: data => {
+			data.key = WatsonConstants.inputConfig.illnesses.key;
+
+			dispatch(
+				searchIllnesses(data)
+			);
+		},
 		searchIncidents: data => {
 			dispatch(
 				searchIncidents(data)
 			);
 		},
 		searchLegals: data => {
+			data.key = WatsonConstants.inputConfig.legals.key;
+
 			dispatch(
 				searchLegals(data)
 			);
@@ -543,7 +568,7 @@ function mapDispatchToProps(dispatch) {
 				searchVehicles(data)
 			);
 		},
-		updateFilter: (filterData, watsonParentPrimaryKey, model) => {
+		updateFilter: (filterData, model, watsonParentPrimaryKey) => {
 			const action = {
 				filterData,
 				model,
@@ -559,7 +584,7 @@ function mapDispatchToProps(dispatch) {
 				updateHideLoadingOverlay(data)
 			);
 		},
-		updateSortBy: (sortByData, watsonParentPrimaryKey, model) => {
+		updateSortBy: (sortByData, model, watsonParentPrimaryKey) => {
 			const action = {
 				model,
 				sortByData,

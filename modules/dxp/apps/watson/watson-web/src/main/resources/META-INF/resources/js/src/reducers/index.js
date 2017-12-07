@@ -6,6 +6,7 @@ import children from './children';
 import display from './display';
 import documents from './documents';
 import histories from './histories';
+import illnesses from './illnesses';
 import incidents from './incidents';
 import list_types from './list-types';
 import people from './people';
@@ -27,6 +28,7 @@ export default combineReducers(
 		display,
 		documents,
 		histories,
+		illnesses,
 		incidents,
 		legals,
 		list_types,
