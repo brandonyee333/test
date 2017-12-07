@@ -97,12 +97,12 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			<c:if test="<%= needsResponseCount > 0 %>">
 				<div class="search-results">
 					<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="count" value="<%= String.valueOf(needsResponseCount) %>" />
 						<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="first" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="id" value="needsResponseResultsList" />
 						<portlet:param name="label" value="needs-response" />
+						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="orderableColumns" value="<%= orderableColumns %>" />
 						<portlet:param name="orderByCol" value="<%= orderByCol %>" />
 						<portlet:param name="orderByType" value="<%= orderByType %>" />
@@ -115,12 +115,12 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 
 			<div class="search-results">
 				<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-					<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 					<portlet:param name="count" value="<%= String.valueOf(primaryAssignmentsCount) %>" />
 					<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 					<portlet:param name="first" value="<%= (needsResponseCount <= 0) ? Boolean.TRUE.toString() : Boolean.FALSE.toString() %>" />
 					<portlet:param name="id" value="primaryResultsList" />
 					<portlet:param name="label" value="primary-assignments" />
+					<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 					<portlet:param name="orderableColumns" value="<%= orderableColumns %>" />
 					<portlet:param name="orderByCol" value="<%= orderByCol %>" />
 					<portlet:param name="orderByType" value="<%= orderByType %>" />
@@ -133,11 +133,11 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			<c:if test="<%= auxiliaryAssignmentsCount > 0 %>">
 				<div class="search-results">
 					<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="count" value="<%= String.valueOf(auxiliaryAssignmentsCount) %>" />
 						<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="id" value="auxiliaryResultsList" />
 						<portlet:param name="label" value="auxiliary-assignments" />
+						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="orderableColumns" value="<%= orderableColumns %>" />
 						<portlet:param name="orderByCol" value="<%= orderByCol %>" />
 						<portlet:param name="orderByType" value="<%= orderByType %>" />
@@ -151,11 +151,11 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			<c:if test="<%= watchingCount > 0 %>">
 				<div class="search-results">
 					<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="count" value="<%= String.valueOf(watchingCount) %>" />
 						<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="id" value="watchingResultsList" />
 						<portlet:param name="label" value="watching" />
+						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="orderableColumns" value="<%= orderableColumns %>" />
 						<portlet:param name="orderByCol" value="<%= orderByCol %>" />
 						<portlet:param name="orderByType" value="<%= orderByType %>" />
@@ -188,12 +188,12 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 			<c:if test="<%= needsResponseCount > 0 %>">
 				<div class="search-results">
 					<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="count" value="<%= String.valueOf(needsResponseCount) %>" />
 						<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="first" value="<%= Boolean.TRUE.toString() %>" />
 						<portlet:param name="id" value="needsResponseResultsList" />
 						<portlet:param name="label" value="needs-response" />
+						<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 						<portlet:param name="orderableColumns" value="<%= orderableColumns %>" />
 						<portlet:param name="orderByCol" value="<%= orderByCol %>" />
 						<portlet:param name="orderByType" value="<%= orderByType %>" />
@@ -206,12 +206,12 @@ portletURL.setParameter("mvcPath", "/support/2/view.jsp");
 
 			<div class="search-results">
 				<liferay-util:include page="/support/2/ticket_results_header.jsp" servletContext="<%= application %>">
-					<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 					<portlet:param name="count" value="<%= String.valueOf(openTicketsCount) %>" />
 					<portlet:param name="fade" value="<%= Boolean.TRUE.toString() %>" />
 					<portlet:param name="first" value="<%= (needsResponseCount <= 0) ? Boolean.TRUE.toString() : Boolean.FALSE.toString() %>" />
 					<portlet:param name="id" value="openTicketsResultsList" />
 					<portlet:param name="label" value="all-open-tickets" />
+					<portlet:param name="notification" value="<%= String.valueOf(notification) %>" />
 					<portlet:param name="orderableColumns" value="<%= orderableColumns %>" />
 					<portlet:param name="orderByCol" value="<%= orderByCol %>" />
 					<portlet:param name="orderByType" value="<%= orderByType %>" />

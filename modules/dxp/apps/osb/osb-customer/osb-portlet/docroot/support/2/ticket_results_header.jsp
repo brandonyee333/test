@@ -20,13 +20,13 @@
 List<TicketEntry> results = (List<TicketEntry>)request.getAttribute("tickets.jsp-results");
 
 boolean advancedSearch = ParamUtil.getBoolean(request, "advancedSearch");
-boolean notification = ParamUtil.getBoolean(request, "notification");
 boolean bulkEdit = ParamUtil.getBoolean(request, "bulkEdit");
 int count = ParamUtil.getInteger(request, "count");
 boolean fade = ParamUtil.getBoolean(request, "fade");
 boolean first = ParamUtil.getBoolean(request, "first");
 String id = ParamUtil.getString(request, "id");
 String label = ParamUtil.getString(request, "label");
+boolean notification = ParamUtil.getBoolean(request, "notification");
 String[] orderableColumns = StringUtil.split(ParamUtil.getString(request, "orderableColumns"));
 String orderByCol = ParamUtil.getString(request, "orderByCol");
 String orderByType = ParamUtil.getString(request, "orderByType");
