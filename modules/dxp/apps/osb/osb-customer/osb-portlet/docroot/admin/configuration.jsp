@@ -113,7 +113,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 		</c:when>
 		<c:when test='<%= tabs1.equals("support") %>'>
 			<liferay-ui:tabs
-				names="automatic-comments,ticket-weight,product-messages,component-messages,dxp-message,escalation-details,attachment-keywords,status-messages,tier-messages,assignment-ratio,file-repositories,banner,indexing"
+				names="automatic-comments,ticket-weight,product-messages,component-messages,dxp-message,escalation-details,attachment-keywords,status-messages,tier-messages,assignment-ratio,file-repositories,banner"
 				param="tabs2"
 				url="<%= portletURL %>"
 			/>
@@ -656,13 +656,6 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 							<aui:button href="<%= updateServerURL %>" value="add-file-repository" />
 						</c:otherwise>
 					</c:choose>
-				</c:when>
-				<c:when test='<%= tabs2.equals("indexing") %>'>
-					<liferay-ui:message key="indexer-engine" />
-
-					<aui:input checked='<%= PrefsParamUtil.getBoolean(portletPreferences, request, "elasticsearchEnabled", false) %>' label="elasticsearch" name="elasticsearchEnabled" type="radio" value="true" />
-
-					<aui:input checked='<%= !PrefsParamUtil.getBoolean(portletPreferences, request, "elasticsearchEnabled", false) %>' label="lucene" name="elasticsearchEnabled" type="radio" value="false" />
 				</c:when>
 				<c:when test='<%= tabs2.equals("product-messages") %>'>
 

@@ -444,19 +444,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		preferences.store();
 	}
 
-	protected void updateIndexing(
-			ActionRequest actionRequest, PortletPreferences preferences)
-		throws Exception {
-
-		boolean elasticsearchEnabled = ParamUtil.getBoolean(
-			actionRequest, "elasticsearchEnabled");
-
-		preferences.setValue(
-			"elasticsearchEnabled", String.valueOf(elasticsearchEnabled));
-
-		preferences.store();
-	}
-
 	protected void updateProductLink(
 			ActionRequest actionRequest, PortletPreferences preferences)
 		throws Exception {
@@ -569,9 +556,6 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		}
 		else if (tabs2.equals("file-repositories")) {
 			updateFileRepositories(actionRequest, preferences);
-		}
-		else if (tabs2.equals("indexing")) {
-			updateIndexing(actionRequest, preferences);
 		}
 		else if (tabs2.equals("product-messages")) {
 			updateProductLink(actionRequest, preferences);
