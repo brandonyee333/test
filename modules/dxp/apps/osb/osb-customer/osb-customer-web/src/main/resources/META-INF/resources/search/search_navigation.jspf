@@ -198,19 +198,19 @@ for (AssetVocabulary assetVocabulary : assetVocabularies) {
 </div>
 
 <%
-AssetVocabulary firstVocabulary = assetVocabularies.get(0);
+AssetVocabulary assetVocabulary = assetVocabularies.get(0);
 
-List<AssetCategory> categories = AssetCategoryLocalServiceUtil.getVocabularyCategories(0, firstVocabulary.getVocabularyId(), 0, 1, null);
+List<AssetCategory> assetCategories = AssetCategoryLocalServiceUtil.getVocabularyCategories(0, assetVocabulary.getVocabularyId(), 0, 1, null);
 
-AssetCategory firstCategory = categories.get(0);
+AssetCategory assetCategory = assetCategories.get(0);
 %>
 
 <aui:script>
 	function <portlet:namespace />openFilters() {
 		var filters = document.querySelectorAll('input[type="checkbox"]:checked');
 
-		<portlet:namespace />toggleFilter(<%= firstVocabulary.getVocabularyId() %>);
-		<portlet:namespace />toggleFilter(<%= firstCategory.getCategoryId() %>);
+		<portlet:namespace />toggleFilter(<%= assetVocabulary.getVocabularyId() %>);
+		<portlet:namespace />toggleFilter(<%= assetCategory.getCategoryId() %>);
 
 		for (var i = 0; i < filters.length; i++) {
 			var element = filters[i];
