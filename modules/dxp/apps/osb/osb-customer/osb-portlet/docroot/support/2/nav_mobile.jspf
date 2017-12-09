@@ -62,6 +62,8 @@
 
 				<li data-page-id="lesaFeedbackPage" role="menuitem">
 					<liferay-ui:message key="feedback" />
+
+					<%@ include file="/support/2/lesa_feedback.jspf" %>
 				</li>
 
 				<li data-page-id="settingsPage" role="menuitem">
