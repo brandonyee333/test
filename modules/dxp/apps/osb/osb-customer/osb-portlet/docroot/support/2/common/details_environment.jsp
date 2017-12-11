@@ -114,13 +114,10 @@ if (productEntry != null) {
 
 								String previousNamePrefix = StringPool.BLANK;
 
-								String envLFRName = "";
+								String envLFRName = "envLFR";
 
 								if (productEntry.isDigitalEnterprise() && (component == TicketEntryConstants.COMPONENT_UPGRADE)) {
 									envLFRName = "toEnvLFR";
-								}
-								else {
-									envLFRName = "envLFR";
 								}
 
 								String envLFROnChange = renderResponse.getNamespace() + "selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, '', 0, '', 0, '', ''); " + renderResponse.getNamespace() + "updateSupportMessage(this.value, '');";
@@ -264,7 +261,7 @@ if (productEntry != null) {
 
 						<br />
 
-						<aui:input cssClass='<%= (envBrowser == TicketEntryConstants.ENV_BROWSER_OTHER) ? "" : "hide" %>' maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_BROWSER_CUSTOM) %>" label="" name="envBrowserCustom" type="text" value="<%= envBrowserCustom %>" />
+						<aui:input cssClass='<%= (envBrowser == TicketEntryConstants.ENV_BROWSER_OTHER) ? "" : "hide" %>' label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_BROWSER_CUSTOM) %>" name="envBrowserCustom" type="text" value="<%= envBrowserCustom %>" />
 					</div>
 				</div>
 			</c:if>
