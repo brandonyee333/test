@@ -21,6 +21,7 @@ import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeDDMTemplates;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeResourceAction;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeSubscription;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_1.UpgradeJournalArticle;
+import com.liferay.osb.customer.web.internal.upgrade.v1_1_0.UpgradeJournalArticles;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.service.persistence.ResourceActionPersistence;
 import com.liferay.portal.kernel.service.persistence.ResourcePermissionPersistence;
@@ -51,6 +52,10 @@ public class OSBCustomerWebUpgrade implements UpgradeStepRegistrator {
 		registry.register(
 			"com.liferay.osb.customer.web", "1.0.0", "1.0.1",
 			new UpgradeJournalArticle(_journalArticlePersistence));
+
+		registry.register(
+			"com.liferay.osb.customer.web", "1.0.0", "1.1.0",
+			new UpgradeJournalArticles(_journalArticlePersistence));
 	}
 
 	@Reference
