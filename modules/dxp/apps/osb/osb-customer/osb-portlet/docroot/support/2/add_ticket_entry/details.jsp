@@ -33,7 +33,7 @@ String description = ParamUtil.getString(request, "description");
 		</h2>
 
 		<div>
-			<aui:input data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(request, "please-enter-a-summary-of-the-issue")) %>' maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' name="subject" type="text" value="<%= subject %>" />
+			<aui:input data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(request, "please-enter-a-summary-of-the-issue")) %>' label="" maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' name="subject" type="text" value="<%= subject %>" />
 		</div>
 	</div>
 

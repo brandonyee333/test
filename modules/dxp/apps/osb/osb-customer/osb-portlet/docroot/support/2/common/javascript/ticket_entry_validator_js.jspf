@@ -16,42 +16,42 @@
 
 <aui:script>
 	function <portlet:namespace />validateRequiredField(node) {
-		var returnVal = true;
+		var returnVal = false;
 
 		if (node) {
-			if ((node.get('name') == '<portlet:namespace />resolution') || (node.get('name') == '<portlet:namespace />status')) {
+			var requiredStatusNode = node;
+
+			var nodeName = node.get('name');
+			var nodeValue = node.get('value');
+			var testSelect = node.test('select');
+
+			if ((nodeName == '<portlet:namespace />resolution') || (nodeName == '<portlet:namespace />status')) {
 				var resolution = document.getElementById('<portlet:namespace />resolution');
 				var status = document.getElementById('<portlet:namespace />status');
 
+				requiredStatusNode = resolution;
+
+				var statusClosed = <%= TicketEntryConstants.STATUS_CLOSED %>;
 				var ticketStatus;
 
 				if (status) {
 					ticketStatus = status.value;
 				}
 
-				var requiredStatus = 'false';
-
-				if ((ticketStatus != <%= TicketEntryConstants.STATUS_CLOSED %>) || ((ticketStatus == <%= TicketEntryConstants.STATUS_CLOSED %>) && (resolution && (resolution.value != 0)))) {
-					requiredStatus = 'true';
-
-					returnVal = false;
+				if (ticketStatus != statusClosed || (ticketStatus == statusClosed && resolution && resolution.value != 0)) {
+					returnVal = true;
 				}
-
-				resolution.setAttribute('data-field-required-status', requiredStatus);
 			}
-			else if (node.get('value').trim() && !node.test('select') || (node.test('select') && (node.get('value') != 0) && (node.get('value') != ''))) {
-				node.setAttribute('data-field-required-status', 'true');
-
-				returnVal = false;
-			}
-			else {
-				node.setAttribute('data-field-required-status', 'false');
+			else if ((!testSelect && nodeValue.trim()) || (testSelect && nodeValue != 0 && nodeValue != '')) {
+				returnVal = true;
 			}
 
-			<portlet:namespace />displayValidation(node, returnVal);
+			requiredStatusNode.setAttribute('data-field-required-status', returnVal);
+
+			<portlet:namespace />displayValidation(node, !returnVal);
 		}
 
-		return !returnVal;
+		return returnVal;
 	}
 
 	Liferay.provide(

@@ -135,7 +135,7 @@ if (accountEntry != null) {
 			</h2>
 
 			<div>
-				<aui:select id="component" name="component" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
+				<aui:select label="" name="component" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
 					<aui:option selected="<%= component == 0 %>" value="0" />
 
 					<c:choose>
@@ -206,7 +206,7 @@ if (accountEntry != null) {
 								<liferay-ui:message key="subcomponent" />:
 							</h2>
 
-							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-subcomponent") %>' name="subcomponent" onChange='<%= renderResponse.getNamespace() + "validateSubcomponent();" %>'>
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-subcomponent") %>' label="" name="subcomponent" onChange='<%= renderResponse.getNamespace() + "validateSubcomponent();" %>'>
 								<aui:option value="" />
 
 								<%
@@ -240,7 +240,7 @@ if (accountEntry != null) {
 			</c:if>
 
 			<div>
-				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-environment-configuration") %>' name="accountEnvironmentId" onChange='<%= renderResponse.getNamespace() + "selectAccountEnvironment(this);" %>'>
+				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-environment-configuration") %>' label="" name="accountEnvironmentId" onChange='<%= renderResponse.getNamespace() + "selectAccountEnvironment(this);" %>'>
 					<aui:option value="0" />
 					<aui:option label="select-new-configuration" selected="<%= accountEnvironmentId == -1 %>" value="-1" />
 
@@ -273,7 +273,7 @@ if (accountEntry != null) {
 				</h2>
 
 				<div>
-					<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-system-status") %>' name="systemStatus">
+					<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-system-status") %>' label="" name="systemStatus">
 						<aui:option value="" />
 
 						<%

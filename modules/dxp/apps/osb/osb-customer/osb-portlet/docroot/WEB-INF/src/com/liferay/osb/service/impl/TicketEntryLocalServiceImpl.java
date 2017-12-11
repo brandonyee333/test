@@ -3938,22 +3938,6 @@ public class TicketEntryLocalServiceImpl
 				"please-provide-the-steps-used-to-perform-the-upgrade");
 		}
 
-		if (validateType.equals("add") &&
-			!ArrayUtil.contains(
-				TicketEntryConstants.UPLOAD_METHODS, databaseUploadMethod)) {
-
-			throw new TicketInformationException(
-				"invalid-database-upload-method");
-		}
-
-		if (validateType.equals("add") &&
-			!ArrayUtil.contains(
-				TicketEntryConstants.UPLOAD_METHODS, dataFolderUploadMethod)) {
-
-			throw new TicketInformationException(
-				"invalid-data-folder-upload-method");
-		}
-
 		if (validateType.startsWith("add") &&
 			!ticketAttachmentTypes.contains(
 				TicketAttachmentConstants.TYPE_PATCH_LEVEL)) {

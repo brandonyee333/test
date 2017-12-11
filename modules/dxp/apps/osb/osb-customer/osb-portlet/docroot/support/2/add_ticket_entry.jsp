@@ -232,11 +232,15 @@ if (offeringEntryId > 0) {
 		}
 	);
 
+	function <portlet:namespace />createTicketChangeHandler(event) {
+		<portlet:namespace />validateRequiredField(event.currentTarget);
+	}
+
 	var createTicket = A.one('#<portlet:namespace />createTicket');
 
 	if (createTicket) {
-		createTicket.delegate('change', <portlet:namespace />validateRequiredField(this), 'select[data-field-required-status]');
+		createTicket.delegate('change', <portlet:namespace />createTicketChangeHandler, 'select[data-field-required-status]');
 
-		createTicket.delegate('keyup', <portlet:namespace />validateRequiredField(this), 'input[data-field-required-status], textarea[data-field-required-status]');
+		createTicket.delegate('keyup', <portlet:namespace />createTicketChangeHandler, 'input[data-field-required-status], textarea[data-field-required-status]');
 	}
 </aui:script>

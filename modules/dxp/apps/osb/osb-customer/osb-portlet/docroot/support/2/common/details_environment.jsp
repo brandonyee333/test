@@ -114,13 +114,13 @@ if (productEntry != null) {
 
 								String previousNamePrefix = StringPool.BLANK;
 
-								String envLFRName = renderResponse.getNamespace();
+								String envLFRName = "";
 
 								if (productEntry.isDigitalEnterprise() && (component == TicketEntryConstants.COMPONENT_UPGRADE)) {
-									envLFRName += "toEnvLFR";
+									envLFRName = "toEnvLFR";
 								}
 								else {
-									envLFRName += "envLFR";
+									envLFRName = "envLFR";
 								}
 
 								String envLFROnChange = renderResponse.getNamespace() + "selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, '', 0, '', 0, '', ''); " + renderResponse.getNamespace() + "updateSupportMessage(this.value, '');";
@@ -130,7 +130,7 @@ if (productEntry != null) {
 								}
 								%>
 
-								<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "liferay-version") %>' name="<%= envLFRName %>" onChange="<%= envLFROnChange %>">
+								<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "liferay-version") %>' id="envLFR" label="" name="<%= envLFRName %>" onChange="<%= envLFROnChange %>">
 									<aui:option value="0" />
 
 									<%
@@ -179,11 +179,11 @@ if (productEntry != null) {
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "operating-system") %>' name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>' />
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "operating-system") %>' label="" name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>' />
 
 							<br />
 
-							<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= envOSCustom %>" />
+							<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= envOSCustom %>" />
 						</c:when>
 						<c:otherwise>
 							<%= LanguageUtil.get(request, accountEnvironment.getEnvOSLabel()) %>
@@ -198,7 +198,7 @@ if (productEntry != null) {
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "jvm") %>' name="envJVM" />
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "jvm") %>' label="" name="envJVM" />
 						</c:when>
 						<c:otherwise>
 							<%= LanguageUtil.get(request, accountEnvironment.getEnvJVMLabel()) %>
@@ -214,7 +214,7 @@ if (productEntry != null) {
 					<span class="field-label txt-b" title="<liferay-ui:message key="application-server" />"><%= edit ? "*" : "" %><liferay-ui:message key="as" />:</span>
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "application-server") %>' name="envAS" />
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "application-server") %>' label="" name="envAS" />
 						</c:when>
 						<c:otherwise>
 							<%= LanguageUtil.get(request, accountEnvironment.getEnvASLabel()) %>
@@ -229,7 +229,7 @@ if (productEntry != null) {
 
 					<c:choose>
 						<c:when test="<%= edit %>">
-							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "database") %>' name="envDB" />
+							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.format(request, "invalid-value-provided-for-x", "database") %>' label="" name="envDB" />
 						</c:when>
 						<c:otherwise>
 							<%= LanguageUtil.get(request, accountEnvironment.getEnvDBLabel()) %>
@@ -243,7 +243,7 @@ if (productEntry != null) {
 					<div class="content-column-content env">
 						<span class="field-label txt-b" title="<liferay-ui:message key="browser" />"><liferay-ui:message key="br" />:</span>
 
-						<aui:select name="envBrowser" onChange='<%= renderResponse.getNamespace() + "selectBrowser(this.value);" %>'>
+						<aui:select label="" name="envBrowser" onChange='<%= renderResponse.getNamespace() + "selectBrowser(this.value);" %>'>
 							<c:if test="<%= accountEnvironment != null %>">
 								<aui:option value="0" />
 
@@ -264,7 +264,7 @@ if (productEntry != null) {
 
 						<br />
 
-						<aui:input cssClass='<%= (envBrowser == TicketEntryConstants.ENV_BROWSER_OTHER) ? "" : "hide" %>' maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_BROWSER_CUSTOM) %>" name="envBrowserCustom" type="text" value="<%= envBrowserCustom %>" />
+						<aui:input cssClass='<%= (envBrowser == TicketEntryConstants.ENV_BROWSER_OTHER) ? "" : "hide" %>' maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_BROWSER_CUSTOM) %>" label="" name="envBrowserCustom" type="text" value="<%= envBrowserCustom %>" />
 					</div>
 				</div>
 			</c:if>
@@ -277,7 +277,7 @@ if (productEntry != null) {
 						<div class="content-column-content env hide" id="<portlet:namespace />envCSColumn">
 							<span class="field-label txt-b" title="<liferay-ui:message key="cloud-services" />"><liferay-ui:message key="cs" />:</span>
 
-							<aui:select name="envCS" />
+							<aui:select label="" name="envCS" />
 						</div>
 					</div>
 
@@ -289,7 +289,7 @@ if (productEntry != null) {
 								<liferay-ui:icon-help message="you-may-select-multiple-options" />
 							</span>
 
-							<aui:select multiple="<%= true %>" name="envSearch" />
+							<aui:select label="" multiple="<%= true %>" name="envSearch" />
 						</div>
 					</div>
 				</div>
@@ -384,13 +384,13 @@ if (productEntry != null) {
 			<aui:input name="productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
 
 			<div class="create-env-button">
-				<aui:button cssClass="aui-button-input pull-left" onClick='<%= renderResponse.getNamespace() + "updateAccountEnvironment(0, '');" %>' value="create-environment" />
+				<aui:button cssClass="aui-button-input pull-left" id="createEnvironment" onClick='<%= renderResponse.getNamespace() + "updateAccountEnvironment(0, '');" %>' value="create-environment" />
 
 				<%
 				String updateEnvironmentOnClick = renderResponse.getNamespace() + "updateAccountEnvironment(document.getElementById('" + renderResponse.getNamespace() + "accountEnvironmentId').value, document.getElementById('" + renderResponse.getNamespace() + "name').value);";
 				%>
 
-				<aui:button cssClass="aui-button-input hide pull-left" onClick="<%= updateEnvironmentOnClick %>" value="update-environment" />
+				<aui:button cssClass="aui-button-input hide pull-left" id="updateEnvironment" onClick="<%= updateEnvironmentOnClick %>" value="update-environment" />
 			</div>
 		</c:if>
 	</div>

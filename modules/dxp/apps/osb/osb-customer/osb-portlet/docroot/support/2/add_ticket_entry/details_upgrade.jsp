@@ -118,7 +118,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-				<aui:select id="fromEnvLFR" name="envLFR" onChange='<%= renderResponse.getNamespace() + "updateSupportMessage(this.value, 'Upgrade');" %>'>
+				<aui:select id="fromEnvLFR" label="" name="envLFR" onChange='<%= renderResponse.getNamespace() + "updateSupportMessage(this.value, 'Upgrade');" %>'>
 					<aui:option value="0" />
 
 					<%
@@ -136,7 +136,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				</aui:select>
 			</c:when>
 			<c:otherwise>
-				<aui:select disabled="<%= true %>" name="fromEnvLFR">
+				<aui:select disabled="<%= true %>" label="" name="fromEnvLFR">
 
 					<%
 					String optionLabel = LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envLFR));
@@ -163,7 +163,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		<c:choose>
 			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-				<aui:select disabled="<%= true %>" name="toEnvLFR">
+				<aui:select disabled="<%= true %>" label="" name="toEnvLFR">
 
 					<%
 					String optionLabel = LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envLFR));
@@ -177,7 +177,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				</aui:select>
 			</c:when>
 			<c:otherwise>
-				<aui:select name="toEnvLFR" onChange='<%= renderResponse.getNamespace() + "updateSupportMessage(this.value, 'Upgrade');" %>'>
+				<aui:select label="" name="toEnvLFR" onChange='<%= renderResponse.getNamespace() + "updateSupportMessage(this.value, 'Upgrade');" %>'>
 					<aui:option value="0" />
 
 					<c:if test="<%= TicketEntryConstants.getEnvLabel(envLFR) != TicketEntryConstants.NOT_AVAILABLE %>">
@@ -241,7 +241,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 	</h2>
 
 	<div>
-		<aui:select name="docLibPersistence">
+		<aui:select label="" name="docLibPersistence">
 			<aui:option value="0" />
 
 			<%

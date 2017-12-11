@@ -73,7 +73,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 			<liferay-ui:message key="server-communication-type" />:
 		</div>
 
-		<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "server-communication-type")) %>' name="serverCommunicationType">
+		<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "server-communication-type")) %>' label="" name="serverCommunicationType">
 			<aui:option value="" />
 
 			<%
@@ -94,7 +94,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 			<liferay-ui:message key="number-of-nodes" />:
 		</div>
 
-		<aui:select name="numberOfNodes">
+		<aui:select label="" name="numberOfNodes">
 			<aui:option value="0" />
 			<aui:option label="1" selected="<%= numberOfNodes == 1 %>" value="1" />
 			<aui:option label="2" selected="<%= numberOfNodes == 2 %>" value="2" />

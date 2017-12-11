@@ -411,9 +411,9 @@
 						},
 						method: 'post',
 						on: {
-							complete: function() {
-								if (accountEnvironmentId <= 0) {
-									var response = A.JSON.parse(obj.responseText);
+							complete: function(event, index, responseData) {
+								if (accountEnvironmentId <= 0 && responseData) {
+									var response = A.JSON.parse(responseData.responseText);
 
 									var option = document.createElement('option');
 

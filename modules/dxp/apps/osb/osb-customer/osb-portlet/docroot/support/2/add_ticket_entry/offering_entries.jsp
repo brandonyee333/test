@@ -57,7 +57,7 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 
 		<span><%= LanguageUtil.get(request, productEntryLESADisplayName) %></span>
 
-		<aui:input name="productEntryLESADisplayName" type="hidden" value="<%= productEntryLESADisplayName %>" />
+		<aui:input label="" name="productEntryLESADisplayName" type="hidden" value="<%= productEntryLESADisplayName %>" />
 	</c:when>
 	<c:when test="<%= productEntryLESADisplayNames.size() > 1 %>">
 		<c:if test="<%= productEntryLESADisplayNames.contains(ProductEntryConstants.DISPLAY_NAME_DIGITAL_ENTERPRISE) %>">
@@ -66,7 +66,7 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 			</div>
 		</c:if>
 
-		<aui:select name="productEntryLESADisplayName" onChange='<%= renderResponse.getNamespace() + "selectProductEntry();" %>'>
+		<aui:select label="" name="productEntryLESADisplayName" onChange='<%= renderResponse.getNamespace() + "selectProductEntry();" %>'>
 			<aui:option value="" />
 
 			<%
@@ -172,11 +172,11 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 
 					<liferay-ui:message key="<%= entry.getKey() %>" />
 
-					<aui:input name="offeringEntryId" type="hidden" value="<%= entry.getValue() %>" />
+					<aui:input label="" name="offeringEntryId" type="hidden" value="<%= entry.getValue() %>" />
 				</c:when>
 				<c:when test="<%= productEntryEnvironments.size() > 1 %>">
 					<div>
-						<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-server") %>' name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
+						<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-server") %>' label="" name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
 							<aui:option value="0" />
 
 							<%
