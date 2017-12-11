@@ -1,0 +1,120 @@
+###set ($portletBeanLocator = $portal.getClass().forName('com.liferay.portal.kernel.bean.PortletBeanLocatorUtil'))
+###set ($hsContactLocalService = $portletBeanLocator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSContactLocalService.velocity"))
+
+###set ($hsutk = "$request.attributes.OSB_HUBSPOT_UTK")
+
+###set ($hsContact = $hsContactLocalService.fetchHSContactByUserToken($hsutk))
+
+###if ($hsContact)
+##	#set ($hsContactCountry = $hsContact.getCountry())
+###else
+##	#set ($hsContactCountry = "")
+###end
+
+#set ($hsContactCountry = "")
+
+#if (!$displayLocales || ($displayLocales.getData() == "") || $displayLocales.getData().contains($locale.toString()) || (($hsContactCountry != "") && $hsDisplayCountries.getData().contains($hsContactCountry)))
+	<style>
+		@media all and (max-width: 480px) {
+			.legacy #carousel menu {
+				display: none;
+			}
+		}
+
+		#main-content {
+			padding-top: 4px;
+		}
+
+		.aui-carousel-item {
+			background-position: center;
+			background-size: cover;
+			width: 100%;
+		}
+
+		.loading {
+			text-align: center;
+		}
+
+		#set ($count = 1)
+
+		#foreach ($each-image in $image.siblings)
+			.vp720 .aui-carousel-item-$count {
+				background-image: url($each-image.image-720.data);
+			}
+
+			.vp960 .aui-carousel-item-$count {
+				background-image: url($each-image.data);
+			}
+
+			#set ($count = $count + 1)
+		#end
+
+		#if ($count == 2)
+			.carousel menu {
+				display: none;
+			}
+		#end
+
+		#if ($customCss.data != "")
+			$customCss.data
+		#end
+	</style>
+
+	<script>
+		AUI().ready(
+			'aui-carousel',
+			function(A) {
+				var loading = A.one('.loading');
+				var win = A.one("window");
+
+				var setCarouselHeight = function(node) {
+					var imageheight = node.getComputedStyle('height');
+
+					if (imageheight == '0px') {
+						imageheight = '180px';
+					}
+
+					A.one('.aui-carousel').setStyle('height', imageheight);
+				}
+
+				// init
+
+				var component = new A.Carousel(
+					{
+						activeIndex: 0,
+						after: {
+							render: function() {
+								A.one('.aui-carousel-item-1').setStyle('opacity' , 1);
+							}
+						},
+						contentBox: '#carousel',
+						intervalTime: 4
+					}
+				).render();
+			}
+		);
+	</script>
+
+	<div class="article">
+		<div class="carousel" id="carousel">
+			#set ($count = 1)
+			#set ($activeClass = '')
+
+			#foreach ($each-image in $image.siblings)
+				#if ($count == 1)
+					#set ($activeClass = 'aui-carousel-item-active')
+				#end
+
+				<div class="aui-carousel-item aui-carousel-item-$count $activeClass" style="background-image:url($each-image.data)">
+					<div class="carousel-item-content $each-image.carouselCustomClass.data">
+						$each-image.content.data
+					</div>
+				</div>
+
+				#set ($activeClass = '')
+
+				#set ($count = $count + 1)
+			#end
+		</div>
+	</div>
+#end

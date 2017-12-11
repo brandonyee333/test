@@ -1,0 +1,49 @@
+<style>
+	#CPHomeNav {
+		margin: 0 auto;
+		max-width: 960px;
+		text-align: center;
+	}
+
+	#CPHomeNav ul {
+		list-style: none;
+		padding: 0;
+	}
+
+	.cp-columns a {
+	    display: block;
+	    padding-bottom: 5px;
+	}
+</style>
+
+<div class="responsive-centered" id="CPHomeNav">
+	#foreach ($section_heading in $section_heading.siblings)
+		<div class="content-column aui-w33 cp-columns" style="width: 100%;">
+			#set ($cssClass = "")
+			
+			#if ($velocityCount == "1") 
+				#set ($cssClass = "left-column")
+			#elseif ($velocityCount == "2")
+				#set ($cssClass = "middle-column")
+			#elseif ($velocityCount == "3")
+				#set ($cssClass = "right-column")
+			#end
+
+			<div class="content-column-content $cssClass">
+				<h2 class="heading redesign">
+					$section_heading.data
+				</h2>
+
+				<ul>
+					#foreach ($link_text in $section_heading.link_text.siblings)
+						<li class="link-size">
+							<a href="$link_text.get("url").getData()">
+								$link_text.data
+							</a>
+						</li>
+					#end
+				</ul>
+			</div>
+		</div>
+	#end
+</div>

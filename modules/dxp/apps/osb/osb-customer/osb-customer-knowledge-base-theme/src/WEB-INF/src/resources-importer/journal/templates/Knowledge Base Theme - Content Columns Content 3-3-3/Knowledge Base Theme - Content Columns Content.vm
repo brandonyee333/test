@@ -1,0 +1,51 @@
+<style>
+	.legacy .legacy-aui-w29 {
+		width:29%;
+	}
+</style>
+
+<article>
+	<div class="sub-grid">
+		<div class="unit legacy-aui-w29 u-3-12 u-2-9 u-6-6 u-4-4 responsive720-w100">
+			<div class="unit-content">
+				#if ($heading1.data != "")
+					<h1 class="section-heading">
+						$heading1.data
+					</h1>
+				#end
+
+				#if ($content1.data != "")
+					$content1.data
+				#end
+			</div>
+		</div>
+
+		<div class="unit legacy-aui-w29 u-3-12 u-2-9 u-6-6 u-4-4 responsive720-w100">
+			<div class="unit-content">
+				#if ($heading2.data != "")
+					<h1 class="section-heading">
+						$heading2.data
+					</h1>
+				#end
+
+				#if ($content2.data != "")
+					$content2.data
+				#end
+			</div>
+		</div>
+
+		<div class="unit legacy-aui-w29 u-3-12 u-2-9 u-6-6 u-4-4 responsive720-w100">
+			<div class="unit-content">
+				#if ($heading3.data != "")
+					<h1 class="section-heading">
+						$heading3.data
+					</h1>
+				#end
+
+				#if ($content3.data != "")
+					$content3.data
+				#end
+			</div>
+		</div>
+	</div>
+</article>
