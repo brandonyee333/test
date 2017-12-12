@@ -1,6 +1,18 @@
 import org.apache.commons.io.FileUtils
 import org.apache.tools.ant.taskdefs.condition.Os
 
+buildscript {
+	dependencies {
+		classpath group: 'commons-io', name: 'commons-io', version: '2.4'
+	}
+
+	repositories {
+		maven {
+			url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+		}
+	}
+}
+
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
@@ -63,16 +75,4 @@ startTestableTomcat {
 
 stopTestableTomcat {
 	enabled = false
-}
-
-buildscript {
-	dependencies {
-		classpath group: 'commons-io', name: 'commons-io', version: '2.4'
-	}
-
-	repositories {
-		maven {
-			url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
-		}
-	}
 }

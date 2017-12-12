@@ -1,17 +1,16 @@
-import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
+import com.bmuschko.gradle.docker.tasks.container.*
+import com.bmuschko.gradle.docker.tasks.image.*
 
 import com.liferay.gradle.plugins.app.docker.AppDockerPlugin
 import com.liferay.gradle.util.FileUtil
 import com.liferay.gradle.util.GradleUtil
 import com.liferay.gradle.util.OSDetector
 
-import com.bmuschko.gradle.docker.tasks.container.*
-import com.bmuschko.gradle.docker.tasks.image.*
-
 import javax.management.remote.JMXConnectorFactory as JmxFactory
 import javax.management.remote.JMXServiceURL as JmxUrl
 
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
+
 import org.kt3k.gradle.plugin.CoverallsPlugin
 
 buildscript {
@@ -216,23 +215,24 @@ task createDockerContainer(type: DockerCreateContainer) {
 	targetImageId { getImageNameWithUserAndVersion() }
 	portBindings =['8099:8099', '5005:5005', '8778:8778', '11311:11311', '8080:8080']
 	extraHosts = ["lcs-portal-pulpo:$osbLcsPortletIp", "lcs-gateway-pulpo:$osbLcsGatewayWebIp"]
-	env = ["JACOCO_DIR=${rootDir}/build/jacoco",
-	       "JAVA_OPTS=$javaOpts",
-	       "OSB_LCS_GATEWAY_WEB_HOST_NAME=$osbLcsGatewayHostName",
-	       "OSB_LCS_GATEWAY_WEB_HOST_PORT=$osbLcsGatewayHostPort",
-	       "OSB_LCS_GATEWAY_WEB_PROTOCOL=$osbLcsGatewayWebProtocol",
-	       "OSB_LCS_PORTLET_EMAIL=$osbLcsPortletEmail",
-	       "OSB_LCS_PORTLET_HOST_NAME=$osbLcsPortletHostName",
-	       "OSB_LCS_PORTLET_HOST_PORT=$osbLcsPortletHostPort",
-	       "OSB_LCS_PORTLET_OAUTH_CONSUMER_KEY=$osbLcsPortletOauthConsumerKey",
-	       "OSB_LCS_PORTLET_OAUTH_CONSUMER_SECRET=$osbLcsPortletOauthConsumerSecret",
-	       "OSB_LCS_PORTLET_PROTOCOL=$osbLcsPortletProcotol",
-	       "OSB_LCS_PORTLET_PWD=$osbLcsPortletPwd",
-	       "PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoAssetConnectorEnvironmentUniquename}",
-	       "PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoContactConnectorEnvironmentUniquename}",
-	       "PULPO_CONTACTS_PROVIDER_ID=${pulpoContactsProviderId}",
-	       "PULPO_PROJECT_ID=${pulpoProjectId}",
-	       "ROOT_DIR=${rootDir}",
+	env = [
+		"JACOCO_DIR=${rootDir}/build/jacoco",
+		"JAVA_OPTS=$javaOpts",
+		"OSB_LCS_GATEWAY_WEB_HOST_NAME=$osbLcsGatewayHostName",
+		"OSB_LCS_GATEWAY_WEB_HOST_PORT=$osbLcsGatewayHostPort",
+		"OSB_LCS_GATEWAY_WEB_PROTOCOL=$osbLcsGatewayWebProtocol",
+		"OSB_LCS_PORTLET_EMAIL=$osbLcsPortletEmail",
+		"OSB_LCS_PORTLET_HOST_NAME=$osbLcsPortletHostName",
+		"OSB_LCS_PORTLET_HOST_PORT=$osbLcsPortletHostPort",
+		"OSB_LCS_PORTLET_OAUTH_CONSUMER_KEY=$osbLcsPortletOauthConsumerKey",
+		"OSB_LCS_PORTLET_OAUTH_CONSUMER_SECRET=$osbLcsPortletOauthConsumerSecret",
+		"OSB_LCS_PORTLET_PROTOCOL=$osbLcsPortletProcotol",
+		"OSB_LCS_PORTLET_PWD=$osbLcsPortletPwd",
+		"PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoAssetConnectorEnvironmentUniquename}",
+		"PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoContactConnectorEnvironmentUniquename}",
+		"PULPO_CONTACTS_PROVIDER_ID=${pulpoContactsProviderId}",
+		"PULPO_PROJECT_ID=${pulpoProjectId}",
+		"ROOT_DIR=${rootDir}",
 	]
 	containerName = "com-liferay-pulpo-connector-de-private"
 
@@ -293,8 +293,10 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 	onlyIf = { true }
 
 	afterEvaluate {
-		classDirectories = files(classDirectories.files.collect {
-			fileTree(dir: it,
+		classDirectories = files(
+			classDirectories.files.collect {
+				fileTree(
+					dir: it,
 					exclude: [
 						'**/assets/*',
 						'**/constants/*',
@@ -314,8 +316,10 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 						'**/service/persistence/impl/*FinderBaseImpl*',
 						'**/service/util/*',
 						'**/test/util/*'
-					])
-		})
+					]
+				)
+			}
+		)
 	}
 
 	reports {
