@@ -134,7 +134,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						</c:when>
 						<c:otherwise>
 							<liferay-ui:icon
-								message="copy"
 								message="replicate"
 								url="<%= replicateTicketAttachmentURL.toString() %>"
 							/>
