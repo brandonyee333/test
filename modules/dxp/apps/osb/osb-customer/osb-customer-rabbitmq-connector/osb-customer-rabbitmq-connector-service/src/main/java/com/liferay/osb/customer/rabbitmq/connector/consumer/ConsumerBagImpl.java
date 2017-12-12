@@ -69,7 +69,7 @@ public class ConsumerBagImpl implements ConsumerBag {
 	}
 
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(11);
 		Class<?> rabbitMQClass = _rabbitMQConsumer.getClass();
 
 		sb.append("{active=");

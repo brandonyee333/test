@@ -86,8 +86,8 @@ public class OSBCustomerKnowledgeBaseImporterMessageListener
 
 				String output = StringUtil.read(inputStream);
 
-				for (String line : StringUtil.split(
-						output, CharPool.NEW_LINE)) {
+				for (String line :
+						StringUtil.split(output, CharPool.NEW_LINE)) {
 
 					_log.info(line);
 				}
