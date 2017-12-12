@@ -98,52 +98,6 @@
 				"en_US": ""
 			},
 			"type": "textarea"
-		},
-		{
-			"dataType": "string",
-			"indexType": "",
-			"label": {
-				"en_US": "display_locales"
-			},
-			"localizable": true,
-			"name": "displayLocales",
-			"predefinedValue": {
-				"en_US": ""
-			},
-			"readOnly": false,
-			"repeatable": false,
-			"required": false,
-			"showLabel": true,
-			"style": {
-				"en_US": ""
-			},
-			"tip": {
-				"en_US": ""
-			},
-			"type": "text"
-		},
-		{
-			"dataType": "string",
-			"indexType": "",
-			"label": {
-				"en_US": "hs_display_countries"
-			},
-			"localizable": true,
-			"name": "hsDisplayCountries",
-			"predefinedValue": {
-				"en_US": ""
-			},
-			"readOnly": false,
-			"repeatable": false,
-			"required": false,
-			"showLabel": true,
-			"style": {
-				"en_US": ""
-			},
-			"tip": {
-				"en_US": ""
-			},
-			"type": "text"
 		}
 	]
 }
