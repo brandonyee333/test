@@ -40430,4 +40430,44 @@
 			<name locale="th">อื่น ๆ</name>
 		</watsonListType>
 	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.counselingType" watsonListTypeId="10561">
+		<name locale="en_US">Gathering</name>
+		<name locale="th">การชุมนุม</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.counselingType" watsonListTypeId="10562">
+		<name locale="en_US">Learning</name>
+		<name locale="th">การเรียนรู้</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.counselingType" watsonListTypeId="10563">
+		<name locale="en_US">Helping</name>
+		<name locale="th">การช่วยเหลือ</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.counselingType" watsonListTypeId="10564">
+		<name locale="en_US">Relaxing</name>
+		<name locale="th">ผ่อนคลาย</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.counselingType" watsonListTypeId="10565">
+		<name locale="en_US">Feeling</name>
+		<name locale="th">ความรู้สึก</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.counselingType" watsonListTypeId="10566">
+		<name locale="en_US">Thinking</name>
+		<name locale="th">คิด</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.counselingType" watsonListTypeId="10567">
+		<name locale="en_US">Trauma Story</name>
+		<name locale="th">เรื่องราวการบาดเจ็บ</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.counselingType" watsonListTypeId="10568">
+		<name locale="en_US">Evaluating</name>
+		<name locale="th">การประเมิน</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.counselingType" watsonListTypeId="10569">
+		<name locale="en_US">Sharing Trauma Story</name>
+		<name locale="th">เรื่องราวการบาดเจ็บที่แบ่งปัน</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.counselingType" watsonListTypeId="10570">
+		<name locale="en_US">Living</name>
+		<name locale="th">การดำรงชีวิต</name>
+	</watsonListType>
 </table>
