@@ -97,6 +97,13 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 		jsonObject.put("receivedDate", getFormattedDate(watsonDocument.getReceivedDate(), locale));
 		jsonObject.put("reportDate", getFormattedDate(watsonDocument.getCreateDate(), locale));
 		jsonObject.put("reportedBy", watsonDocument.getUserName());
+
+		WatsonListType watsonListType = WatsonListType.fetch(watsonDocument.getSubtypeWatsonListTypeId());
+
+		if (watsonListType != null) {
+			jsonObject.put("subtypeLabel", watsonListType.getName(locale));
+		}
+
 		jsonObject.put("subtypeWatsonListTypeId", watsonDocument.getSubtypeWatsonListTypeId());
 		jsonObject.put("typeWatsonListTypeId", watsonDocument.getTypeWatsonListTypeId());
 		jsonObject.put("watsonChildId", watsonDocument.getWatsonChildId());
