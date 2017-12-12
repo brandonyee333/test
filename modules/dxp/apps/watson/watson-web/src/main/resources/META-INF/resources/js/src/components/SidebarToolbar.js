@@ -50,15 +50,15 @@ class SidebarToolbar extends JSXComponent {
 					<a href={WatsonConstants.urls.baseURL} id="watson-logo-link" onClick={this.handleOnClick} />
 
 					{WatsonConstants.currentUser.staffRole &&
-						<a href={`${WatsonConstants.urls.baseURL}/incidents`} id="incidents-report" onClick={this.handleOnClick} title={Liferay.Language.get('incident-report')} />
+						<a href={`${WatsonConstants.urls.baseURL}/incidents`} id="incidents" onClick={this.handleOnClick} title={Liferay.Language.get('incident-report')} />
 					}
 
 					{WatsonConstants.currentUser.childrensHomeRole &&
-						<a href={WatsonConstants.urls.children} id="children-home" onClick={this.handleOnClick} title={Liferay.Language.get('children-home')} />
+						<a href={WatsonConstants.urls.children} id="children" onClick={this.handleOnClick} title={Liferay.Language.get('children-home')} />
 					}
 
 					{WatsonConstants.currentUser.staffRole &&
-						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="map" onClick={this.handleOnClick} title={Liferay.Language.get('heatmap')} />
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="heatmap" onClick={this.handleOnClick} title={Liferay.Language.get('heatmap')} />
 					}
 
 					{WatsonConstants.currentUser.staffRole &&
@@ -111,6 +111,35 @@ class SidebarToolbar extends JSXComponent {
 				this.state.lastSelected = selected;
 			}
 		}
+
+		const route = window.location.href;
+
+		if ((selected === undefined) && (route !== WatsonConstants.urls.baseURL)) {
+			const {sidebarURLs = {}} = this.state;
+
+			for (const key in sidebarURLs) {
+				if (sidebarURLs.hasOwnProperty(key)) {
+					const formattedURL = `${WatsonConstants.urls.baseURL}${sidebarURLs[key]}`;
+
+					if (route === formattedURL) {
+						this.state.selected = key;
+					}
+				}
+			}
+
+			if (!this.state.selected) {
+				const {urls = {}} = WatsonConstants;
+
+				for (const key in urls) {
+					if (urls.hasOwnProperty(key)) {
+
+						if (route === urls[key]) {
+							this.state.selected = 'incidents';
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -118,7 +147,16 @@ SidebarToolbar.PROPS = {};
 
 SidebarToolbar.STATE = {
 	lastSelected: Config.string(),
-	selected: Config.string()
+	selected: Config.string(),
+	sidebarURLs: Config.object().value(
+		{
+			admin: '/incidents/admin',
+			children: '/children',
+			heatmap: '/incidents/metrics/heatmap',
+			incidents: '/incidents',
+			report: '/incidents/metrics/report'
+		}
+	)
 };
 
 export default SidebarToolbar;
