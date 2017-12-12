@@ -38,11 +38,11 @@
 					ticketStatus = status.value;
 				}
 
-				if (ticketStatus != statusClosed || (ticketStatus == statusClosed && resolution && resolution.value != 0)) {
+				if ((ticketStatus != statusClosed) || ((ticketStatus == statusClosed) && resolution && (resolution.value != 0))) {
 					returnVal = true;
 				}
 			}
-			else if ((!testSelect && nodeValue.trim()) || (testSelect && nodeValue != 0 && nodeValue != '')) {
+			else if ((!testSelect && nodeValue.trim()) || (testSelect && (nodeValue != 0) && (nodeValue != ''))) {
 				returnVal = true;
 			}
 
