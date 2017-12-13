@@ -321,15 +321,15 @@ AUI().use(
 		}
 
 		function displayScrollArrow() {
-			var mobileNav = A.one('.lesa-mobile-nav ul');
 			var mobileNavWrapper = A.one('.lesa-mobile-nav-wrapper');
 
-			if (mobileNav && mobileNavWrapper) {
-				if (mobileNav.outerWidth() > WIN.get('winWidth')) {
-					mobileNavWrapper.addClass('overflow');
-				}
-				else {
-					mobileNavWrapper.removeClass('overflow');
+			if (mobileNavWrapper) {
+				var mobileNav = mobileNavWrapper.one('.lesa-mobile-nav ul');
+
+				if (mobileNav) {
+					var mobileWidth = mobileNav.outerWidth() > WIN.get('winWidth');
+
+					mobileNavWrapper.toggleClass('overflow', mobileWidth);
 				}
 			}
 		}
