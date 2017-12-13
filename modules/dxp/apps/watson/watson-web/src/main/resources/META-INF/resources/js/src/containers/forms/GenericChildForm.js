@@ -263,7 +263,9 @@ class GenericChildForm extends JSXComponent {
 			reportHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/report`;
 			requestTranslationMethod = this.handleTranslationRequest;
 
-			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/translate`;
+			if (!disabled && WatsonConstants.currentUser.translatorRole) {
+				translateHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/translate`;
+			}
 		}
 		else if (action === 'create' && watsonChildId) {
 			cancelMethod = this.handleCancel;
