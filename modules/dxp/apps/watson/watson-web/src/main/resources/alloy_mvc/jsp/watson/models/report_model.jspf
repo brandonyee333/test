@@ -95,6 +95,7 @@ public static class WatsonReport extends WatsonReportBaseModel {
 
 		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonReport));
 		jsonObject.put("name", watsonReport.getReportName(locale));
 		jsonObject.put("originalWatsonReportId", watsonReport.getOriginalWatsonReportId());
@@ -146,9 +147,9 @@ public static class WatsonReport extends WatsonReportBaseModel {
 	public static JSONArray getIdJSONArray(int key, long watsonChildId) throws Exception {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		List<WatsonReport> watsonReports = query("key", key, "watsonChildId", watsonChildId);
-
 		Locale locale = LocaleUtil.getMostRelevantLocale();
+
+		List<WatsonReport> watsonReports = query("key", key, "watsonChildId", watsonChildId);
 
 		for (WatsonReport watsonReport : watsonReports) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
@@ -239,7 +240,6 @@ public static class WatsonReport extends WatsonReportBaseModel {
 			StringBundler reportName = new StringBundler(5);
 
 			reportName.append(LanguageUtil.format(locale, "illness-report", new Object[0]));
-
 			reportName.append(StringPool.SPACE);
 			reportName.append(StringPool.DASH);
 			reportName.append(StringPool.SPACE);
@@ -259,7 +259,6 @@ public static class WatsonReport extends WatsonReportBaseModel {
 			StringBundler reportName = new StringBundler(5);
 
 			reportName.append(LanguageUtil.format(locale, "legal-report", new Object[0]));
-
 			reportName.append(StringPool.SPACE);
 			reportName.append(StringPool.DASH);
 			reportName.append(StringPool.SPACE);

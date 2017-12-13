@@ -138,7 +138,6 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		long watsonChildId = ParamUtil.getLong(request, "id", 0);
 		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
-
 		String sort = ParamUtil.getString(request, "sortBy", null);
 		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
 		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
