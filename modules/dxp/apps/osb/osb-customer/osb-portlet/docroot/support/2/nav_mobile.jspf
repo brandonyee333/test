@@ -23,9 +23,7 @@
 						<portlet:param name="mvcPath" value="/support/2/view.jsp" />
 					</portlet:renderURL>
 
-					<a href="<%= searchFilters.isEmpty() && !supportPartnerWorker && developerAccountEntryIds.isEmpty() ? myOpenTicketsURL : "javascript:;" %>">
-						<liferay-ui:message key="tickets" />
-					</a>
+					<aui:a href='<%= searchFilters.isEmpty() && !supportPartnerWorker && developerAccountEntryIds.isEmpty() ? myOpenTicketsURL : "javascript:;" %>' label="tickets" />
 				</li>
 
 				<li data-page-id="advSearchPage" role="menuitem">
@@ -33,9 +31,7 @@
 						<portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" />
 					</portlet:renderURL>
 
-					<a href="<%= advancedSearchURL %>">
-						<liferay-ui:message key="search" />
-					</a>
+					<aui:a href="<%= advancedSearchURL %>" label="search" />
 				</li>
 
 				<c:if test="<%= clockedIn %>">
@@ -44,9 +40,7 @@
 							<portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" />
 						</portlet:renderURL>
 
-						<a href="<%= newTicketURL %>">
-							<liferay-ui:message key="new-ticket" />
-						</a>
+						<aui:a href="<%= newTicketURL %>" label="new-ticket" />
 					</li>
 				</c:if>
 
@@ -55,9 +49,7 @@
 						<portlet:param name="mvcPath" value="/support/2/help.jsp" />
 					</portlet:renderURL>
 
-					<a href="<%= helpURL %>">
-						<liferay-ui:message key="help" />
-					</a>
+					<aui:a href="<%= helpURL %>" label="help" />
 				</li>
 
 				<li data-page-id="lesaFeedbackPage" role="menuitem">
@@ -71,9 +63,7 @@
 						<portlet:param name="mvcPath" value="/support/2/preferences.jsp" />
 					</portlet:renderURL>
 
-					<a href="<%= preferencesURL %>">
-						<liferay-ui:message key="preferences" />
-					</a>
+					<aui:a href="<%= preferencesURL %>" label="preferences" />
 				</li>
 			</ul>
 		</nav>
@@ -86,7 +76,7 @@
 	<c:if test="<%= !searchFilters.isEmpty() || supportPartnerWorker || !developerAccountEntryIds.isEmpty() %>">
 		<ul class="nav-submenu" role="menubar">
 			<li role="menuitem">
-				<a href="<%= myOpenTicketsURL %>"><liferay-ui:message key="my-open-tickets" /></a>
+				<aui:a href="<%= myOpenTicketsURL %>" label="my-open-tickets" />
 			</li>
 
 			<c:if test="<%= !developerAccountEntryIds.isEmpty() %>">
@@ -97,7 +87,7 @@
 				</portlet:renderURL>
 
 				<li role="menuitem">
-					<a href="<%= ticketFeedbackAvailableURL %>"><liferay-ui:message key="ticket-feedback" /></a>
+					<aui:a href="<%= ticketFeedbackAvailableURL %>" label="ticket-feedback" />
 				</li>
 			</c:if>
 
@@ -108,7 +98,7 @@
 				</portlet:renderURL>
 
 				<li role="menuitem">
-					<a href="<%= allOpenTicketsURL %>"><liferay-ui:message key="all-open-tickets" /></a>
+					<aui:a href="<%= allOpenTicketsURL %>" label="all-open-tickets" />
 				</li>
 			</c:if>
 
@@ -119,7 +109,7 @@
 				</portlet:renderURL>
 
 				<li role="menuitem">
-					<a href="<%= partnerManagedProjectsURL %>"><liferay-ui:message key="partner-first-line-support-projects" /></a>
+					<aui:a href="<%= partnerManagedProjectsURL %>" label="partner-first-line-support-projects" />
 				</li>
 			</c:if>
 
