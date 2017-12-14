@@ -81,6 +81,12 @@ if (offeringEntryId > 0) {
 	</aui:form>
 </div>
 
+<div class="create-ticket-mobile w100">
+	<h2><liferay-ui:message key="create-a-ticket" /></h2>
+
+	<div><liferay-ui:message key="only-available-on-desktop-version" /></div>
+</div>
+
 <%@ include file="/support/2/common/javascript/ticket_entry_validator_js.jspf" %>
 
 <aui:script>
