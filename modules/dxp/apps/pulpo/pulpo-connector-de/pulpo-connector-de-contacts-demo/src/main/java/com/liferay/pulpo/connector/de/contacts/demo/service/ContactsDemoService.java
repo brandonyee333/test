@@ -209,6 +209,7 @@ public class ContactsDemoService {
 		for (Region region : regions) {
 			if (state.equals(StringUtil.toLowerCase(region.getName()))) {
 				address.setRegionId(region.getRegionId());
+
 				break;
 			}
 		}
