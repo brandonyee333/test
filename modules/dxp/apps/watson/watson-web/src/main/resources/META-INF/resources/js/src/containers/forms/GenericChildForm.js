@@ -1,4 +1,4 @@
-import {bindAll, capitalize, isEmpty} from 'lodash';
+import {bindAll, isEmpty} from 'lodash';
 import {connect} from 'metal-redux';
 import {Map} from 'immutable';
 import JSXComponent, {Config} from 'metal-jsx';
@@ -7,9 +7,25 @@ import sub from 'string-sub';
 
 import Button from '../../components/Button';
 import ContentHeader from '../../components/ContentHeader';
-import {convertMapToObject, deepCompareIsEqual, getModifiedMoment, updateDOMTitle} from '../../lib/util';
+import {convertMapToObject, deepCompareIsEqual, formatModelName, getModifiedMoment, updateDOMTitle} from '../../lib/util';
 import Form from '../../components/Form';
 import Modal from '../../components/Modal';
+
+import {
+	destroyCaseworkActivities,
+	editCaseworkActivities,
+	updateCaseworkActivities,
+	updateCaseworkActivitiesDataManually,
+	updateCaseworkActivitiesFormData
+} from '../../actions/casework-activities';
+
+import {
+	destroyCounselingReports,
+	editCounselingReports,
+	updateCounselingReports,
+	updateCounselingReportsDataManually,
+	updateCounselingReportsFormData
+} from '../../actions/counseling-reports';
 
 import {
 	destroyDocuments,
@@ -42,7 +58,7 @@ class GenericChildForm extends JSXComponent {
 		const {model, watsonPrimaryKey} = props;
 
 		if (model && watsonPrimaryKey) {
-			const editModelMethod = props[`edit${capitalize(model)}`];
+			const editModelMethod = props[`edit${formatModelName(model)}`];
 
 			editModelMethod(watsonPrimaryKey);
 		}
@@ -73,7 +89,7 @@ class GenericChildForm extends JSXComponent {
 		} = this.props;
 
 		if (action !== 'create' && response && response.get('status') === 'success' && response.get('message')) {
-			const updateModelDataManuallyMethod = this.props[`update${capitalize(model)}DataManually`];
+			const updateModelDataManuallyMethod = this.props[`update${formatModelName(model)}DataManually`];
 
 			updateModelDataManuallyMethod(
 				{
@@ -141,7 +157,7 @@ class GenericChildForm extends JSXComponent {
 	handleCreate(data) {
 		const {props} = this;
 
-		const updateModelMethod = props[`update${capitalize(props.model)}`];
+		const updateModelMethod = props[`update${formatModelName(props.model, true)}`];
 
 		updateModelMethod(data);
 
@@ -154,7 +170,7 @@ class GenericChildForm extends JSXComponent {
 		const {model, watsonChildId, watsonPrimaryKey} = props;
 
 		if (watsonPrimaryKey) {
-			const destroyModelMethod = props[`destroy${capitalize(model)}`];
+			const destroyModelMethod = props[`destroy${formatModelName(model)}`];
 
 			destroyModelMethod(watsonPrimaryKey);
 
@@ -177,7 +193,7 @@ class GenericChildForm extends JSXComponent {
 
 		const {model, watsonChildId, watsonPrimaryKey} = props;
 
-		const requestModelTranslationMethod = props[`request${capitalize(model)}Translation`];
+		const requestModelTranslationMethod = props[`request${formatModelName(model)}Translation`];
 
 		const translationURL = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/translate`;
 
@@ -195,7 +211,7 @@ class GenericChildForm extends JSXComponent {
 
 		const {model, watsonPrimaryKey} = props;
 
-		const updateModelFormData = props[`update${capitalize(model)}FormData`];
+		const updateModelFormData = props[`update${formatModelName(model)}FormData`];
 
 		updateModelFormData(formData, watsonPrimaryKey);
 	}
@@ -225,7 +241,7 @@ class GenericChildForm extends JSXComponent {
 			cancelMethod,
 			headerStringLeft,
 			headerStringRight,
-			submitMethod = props[`update${capitalize(model)}`],
+			submitMethod = props[`update${formatModelName(model)}`],
 			watsonPrimaryKey
 		} = props;
 
@@ -351,32 +367,18 @@ GenericChildForm.STATE = {
 	unlockNavigate: Config.bool().value(false)
 };
 
-function mapStateToProps(state, props) {
-	const {model, watsonPrimaryKey = 0} = props;
-
-	const errors = state.getIn([model, 'errors']) || new Map();
-
-	return {
-		errors,
-		loading: state.getIn(
-			[
-				model,
-				'loading'
-			]
-		),
-		modelLabel: !model ? '' : WatsonConstants.inputConfig[model].singularLabel,
-		response: state.getIn(
-			[
-				model,
-				'response'
-			]
-		),
-		watsonPrimaryKey
-	};
-}
-
 function mapDispatchToProps(dispatch) {
 	return {
+		destroyCaseworkActivities: watsonReportId => {
+			dispatch(
+				destroyCaseworkActivities(watsonReportId)
+			);
+		},
+		destroyCounselingReports: watsonReportId => {
+			dispatch(
+				destroyCounselingReports(watsonReportId)
+			);
+		},
 		destroyDocuments: watsonDocumentId => {
 			dispatch(
 				destroyDocuments(watsonDocumentId)
@@ -392,6 +394,16 @@ function mapDispatchToProps(dispatch) {
 				destroyLegals(watsonReportId)
 			);
 		},
+		editCaseworkActivities: watsonReportId => {
+			dispatch(
+				editCaseworkActivities(watsonReportId)
+			);
+		},
+		editCounselingReports: watsonReportId => {
+			dispatch(
+				editCounselingReports(watsonReportId)
+			);
+		},
 		editDocuments: watsonDocumentId => {
 			dispatch(
 				editDocuments(watsonDocumentId)
@@ -405,6 +417,46 @@ function mapDispatchToProps(dispatch) {
 		editLegals: watsonReportId => {
 			dispatch(
 				editLegals(watsonReportId)
+			);
+		},
+		updateCaseworkActivities: data => {
+			dispatch(
+				updateCaseworkActivities(data)
+			);
+		},
+		updateCaseworkActivitiesDataManually: data => {
+			dispatch(
+				updateCaseworkActivitiesDataManually(data)
+			);
+		},
+		updateCaseworkActivitiesFormData: (formData, watsonReportId = 0) => {
+			const data = {
+				formData,
+				watsonReportId
+			};
+
+			dispatch(
+				updateCaseworkActivitiesFormData(data)
+			);
+		},
+		updateCounselingReports: data => {
+			dispatch(
+				updateCounselingReports(data)
+			);
+		},
+		updateCounselingReportsDataManually: data => {
+			dispatch(
+				updateCounselingReportsDataManually(data)
+			);
+		},
+		updateCounselingReportsFormData: (formData, watsonReportId = 0) => {
+			const data = {
+				formData,
+				watsonReportId
+			};
+
+			dispatch(
+				updateCounselingReportsFormData(data)
 			);
 		},
 		updateDocuments: data => {
@@ -467,6 +519,30 @@ function mapDispatchToProps(dispatch) {
 				updateLegalsFormData(data)
 			);
 		}
+	};
+}
+
+function mapStateToProps(state, props) {
+	const {model, watsonPrimaryKey = 0} = props;
+
+	const errors = state.getIn([model, 'errors']) || new Map();
+
+	return {
+		errors,
+		loading: state.getIn(
+			[
+				model,
+				'loading'
+			]
+		),
+		modelLabel: !model ? '' : WatsonConstants.inputConfig[model].singularLabel,
+		response: state.getIn(
+			[
+				model,
+				'response'
+			]
+		),
+		watsonPrimaryKey
 	};
 }
 

@@ -249,8 +249,8 @@ function formatReportsData(watsonReports, model, keysToOmit, onClick, selectedId
 					onClick,
 					reportedBy: watsonReport.get('reportedBy'),
 					reportedDate: watsonReport.get('createDate'),
-					smallIncidentName: watsonReport.get('childName')
-
+					smallIncidentName: watsonReport.get('childName'),
+					subHeader: getOptionsLabelFromWatsonConstants(model, 'typeWatsonListTypeId', watsonReports.get('typeWatsonListTypeId'))
 				};
 			}
 		);
@@ -573,7 +573,8 @@ function formatSimpleReportsData(watsonReports, model, keysToOmit, onClick, sele
 				reportedBy: watsonReport.get('reportedBy'),
 				reportedDate: watsonReport.get('createDate'),
 				rowContent: watsonReport.get('description'),
-				selected
+				selected,
+				subHeader: getOptionsLabelFromWatsonConstants(model, 'typeWatsonListTypeId', watsonReports.get('typeWatsonListTypeId'))
 			};
 		}
 	);
@@ -754,7 +755,7 @@ function IndexList({data = OrderedMap(), hasMoreResults, incidentsData = Ordered
 	else if (model === 'documents') {
 		data = formatDocumentsData(data, keysToOmit, onClick, selectedIds, simple);
 	}
-	else if (model === 'legals' || model === 'illnesses') {
+	else if (model === 'casework_activities' || model === 'counseling_reports' || model === 'legals' || model === 'illnesses') {
 		data = formatReportsData(data, model, keysToOmit, onClick, selectedIds, simple);
 	}
 	else if (model === 'people') {

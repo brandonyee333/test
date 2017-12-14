@@ -1,4 +1,4 @@
-import {bindAll, capitalize} from 'lodash';
+import {bindAll} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import {Map} from 'immutable';
@@ -10,6 +10,8 @@ import TranslationForm from '../../components/TranslationForm';
 
 import {fetchActivitiesTranslation, updateActivities, viewActivities} from '../../actions/activities';
 import {fetchAddressesTranslation, updateAddresses, viewAddresses} from '../../actions/addresses';
+import {fetchCaseworkActivitiesTranslation, updateCaseworkActivities, viewCaseworkActivities} from '../../actions/casework-activities';
+import {fetchCounselingReportsTranslation, updateCounselingReports, viewCounselingReports} from '../../actions/counseling-reports';
 import {fetchChildrenTranslation, updateChildren, viewChildren} from '../../actions/children';
 import {fetchLegalsTranslation, updateLegals, viewLegals} from '../../actions/legals';
 import {fetchIllnessesTranslation, updateIllnesses, viewIllnesses} from '../../actions/illnesses';
@@ -19,7 +21,7 @@ import {fetchResourcesTranslation, updateResources, viewResources} from '../../a
 import {fetchVehiclesTranslation, updateVehicles, viewVehicles} from '../../actions/vehicles';
 
 import sendRequest from '../../lib/request';
-import {getModifiedMoment, updateDOMTitle} from '../../lib/util';
+import {formatModelName, getModifiedMoment, updateDOMTitle} from '../../lib/util';
 
 class GenericTranslationForm extends JSXComponent {
 	attached() {
@@ -28,8 +30,8 @@ class GenericTranslationForm extends JSXComponent {
 		const {model, watsonPrimaryKey} = props;
 
 		if (model && watsonPrimaryKey) {
-			const fetchTranslationMethod = props[`fetch${capitalize(model)}Translation`];
-			const viewModelMethod = props[`view${capitalize(model)}`];
+			const fetchTranslationMethod = props[`fetch${formatModelName(model)}Translation`];
+			const viewModelMethod = props[`view${formatModelName(model)}`];
 
 			if (viewModelMethod) {
 				viewModelMethod(watsonPrimaryKey);
@@ -104,7 +106,7 @@ class GenericTranslationForm extends JSXComponent {
 	handleSubmit(data) {
 		const {props} = this;
 
-		const submitMethod = props[`translate${capitalize(props.model)}`];
+		const submitMethod = props[`translate${formatModelName(props.model)}`];
 
 		if (submitMethod) {
 			submitMethod(data);
@@ -244,6 +246,16 @@ function mapDispatchToProps(dispatch) {
 				fetchAddressesTranslation(data)
 			);
 		},
+		fetchCaseworkActivitiesTranslation: watsonReportId => {
+			const data = {
+				id: watsonReportId,
+				translatingTo: WatsonConstants.otherLanguageId
+			};
+
+			dispatch(
+				fetchCaseworkActivitiesTranslation(data)
+			);
+		},
 		fetchChildrenTranslation: watsonChildId => {
 			const data = {
 				id: watsonChildId,
@@ -252,6 +264,16 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				fetchChildrenTranslation(data)
+			);
+		},
+		fetchCounselingReportsTranslation: watsonReportId => {
+			const data = {
+				id: watsonReportId,
+				translatingTo: WatsonConstants.otherLanguageId
+			};
+
+			dispatch(
+				fetchCounselingReportsTranslation(data)
 			);
 		},
 		fetchIllnessesTranslation: watsonReportId => {
@@ -324,9 +346,19 @@ function mapDispatchToProps(dispatch) {
 				updateAddresses(data, 'updateTranslation.json')
 			);
 		},
+		translateCaseworkActivities: data => {
+			dispatch(
+				updateCaseworkActivities(data, 'updateTranslation.json')
+			);
+		},
 		translateChildren: data => {
 			dispatch(
 				updateChildren(data, 'updateTranslation.json')
+			);
+		},
+		translateCounselingReports: data => {
+			dispatch(
+				updateCounselingReports(data, 'updateTranslation.json')
 			);
 		},
 		translateIllnesses: data => {
@@ -369,9 +401,19 @@ function mapDispatchToProps(dispatch) {
 				viewAddresses(watsonAddressId)
 			);
 		},
+		viewCaseworkActivities: watsonReportId => {
+			dispatch(
+				viewCaseworkActivities(watsonReportId)
+			);
+		},
 		viewChildren: watsonChildId => {
 			dispatch(
 				viewChildren(watsonChildId)
+			);
+		},
+		viewCounselingReports: watsonReportId => {
+			dispatch(
+				viewCounselingReports(watsonReportId)
 			);
 		},
 		viewIllnesses: watsonReportId => {

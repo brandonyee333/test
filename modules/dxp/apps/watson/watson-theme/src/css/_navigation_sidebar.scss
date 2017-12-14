@@ -55,6 +55,10 @@
 		font-family: $primaryFontStack;
 		font-size: 15px;
 
+		.watson-button {
+			min-height: 30px;
+		}
+
 		ul > ul > li.watson-nav-entry {
 			&:hover .watson-nav-link:before {
 				border-top-color: $neutralDarker;

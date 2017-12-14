@@ -79,6 +79,7 @@ public class AlloyLanguageUtil extends LanguageUtil {
 <c:set value="<%= new WatsonListTypeRel() %>" var="WatsonListTypeRel" />
 <c:set value="<%= new WatsonPerson() %>" var="WatsonPerson" />
 <c:set value="<%= new WatsonRelationship() %>" var="WatsonRelationship" />
+<c:set value="<%= new WatsonReport() %>" var="WatsonReport" />
 <c:set value="<%= new WatsonResource() %>" var="WatsonResource" />
 <c:set value="<%= new WatsonVehicle() %>" var="WatsonVehicle" />
 

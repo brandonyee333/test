@@ -105,7 +105,7 @@ class ActivityForm extends JSXComponent {
 
 	handleAutoCreate() {
 		const {
-			autoCreateActivity,
+			autoCreateActivities,
 			formData = {},
 			watsonActivityId = 0,
 			watsonIncidentId
@@ -126,7 +126,7 @@ class ActivityForm extends JSXComponent {
 				formData.id = watsonActivityId;
 				formData.watsonIncidentId = watsonIncidentId;
 
-				autoCreateActivity(formData);
+				autoCreateActivities(formData);
 
 				this.setState(
 					{

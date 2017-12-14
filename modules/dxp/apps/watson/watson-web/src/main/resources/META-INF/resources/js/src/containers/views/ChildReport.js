@@ -9,6 +9,8 @@ import Button from '../../components/Button';
 import HTMLRenderer from '../../components/HTMLRenderer';
 import GoogleMap from '../../components/GoogleMap';
 
+import {indexCaseworkActivities} from '../../actions/casework-activities';
+import {indexCounselingReports} from '../../actions/counseling-reports';
 import {indexDocuments} from '../../actions/documents';
 import {indexIllnesses} from '../../actions/illnesses';
 import {indexLegals} from '../../actions/legals';
@@ -23,6 +25,8 @@ class ChildReport extends JSXComponent {
 		const {watsonChildId} = props;
 
 		if (watsonChildId) {
+			props.indexCaseworkActivities(watsonChildId);
+			props.indexCounselingReports(watsonChildId);
 			props.indexDocuments(watsonChildId);
 			props.indexIllnesses(watsonChildId);
 			props.indexLegals(watsonChildId);
@@ -99,20 +103,18 @@ class ChildReport extends JSXComponent {
 	renderEntitiesHelper(entityList, displayFields, model, entryId) {
 		const renderElement = [];
 
-		if (!isEmpty(entityList)) {
-			entityList.forEach(
-				(entity, key) => {
-					if (entryId) {
-						if (key === entryId) {
-							renderElement.push(this.renderEntity(entity, displayFields, model));
-						}
-					}
-					else {
+		entityList.forEach(
+			(entity, key) => {
+				if (entryId) {
+					if (key === entryId) {
 						renderElement.push(this.renderEntity(entity, displayFields, model));
 					}
 				}
-			);
-		}
+				else {
+					renderElement.push(this.renderEntity(entity, displayFields, model));
+				}
+			}
+		);
 
 		return renderElement;
 	}
@@ -229,7 +231,7 @@ class ChildReport extends JSXComponent {
 
 		let retVal = '';
 
-		if (value) {
+		if (!isEmpty(value)) {
 			if (type === inputTypes.dependentSelectInput || type === inputTypes.selectInput) {
 				if (inputConfig && inputConfig.options && inputConfig.options[value]) {
 					retVal = inputConfig.options[value].label;
@@ -364,6 +366,14 @@ class ChildReport extends JSXComponent {
 				{(!entryId || model === 'legals') &&
 					this.renderModel(entryId, 'legals')
 				}
+
+				{(!entryId || model === 'casework_activities') &&
+					this.renderModel(entryId, 'casework_activities')
+				}
+
+				{(!entryId || model === 'counseling_reports') &&
+					this.renderModel(entryId, 'counseling_reports')
+				}
 			</div>
 		);
 	}
@@ -388,7 +398,9 @@ class ChildReport extends JSXComponent {
 }
 
 ChildReport.PROPS = {
+	casework_activitiesData: Config.value(new Map()),
 	childrenData: Config.value(new Map()),
+	counseling_reportsData: Config.value(new Map()),
 	documentsData: Config.value(new Map()),
 	entryId: Config.any(),
 	illnessesData: Config.value(new Map()),
@@ -398,6 +410,15 @@ ChildReport.PROPS = {
 };
 
 ChildReport.STATE = {
+	casework_activitiesConfig: Config.array().value(
+		[
+			'typeWatsonListTypeId',
+			'reportDate',
+			'description',
+			'imagePayload',
+			'watsonRelationships'
+		]
+	),
 	childrenConfig: Config.array().value(
 		[
 			'nameWatsonListTypeRels',
@@ -418,6 +439,16 @@ ChildReport.STATE = {
 			'source',
 			'activitiesInvolvedWatsonListTypeRels',
 			'vocationalTrainingWatsonListTypeRels',
+			'watsonRelationships'
+		]
+	),
+	counseling_reportsConfig: Config.array().value(
+		[
+			'reportDate',
+			'typeWatsonListTypeId',
+			'timeSpent',
+			'reportedUser',
+			'description',
 			'watsonRelationships'
 		]
 	),
@@ -457,6 +488,26 @@ ChildReport.STATE = {
 
 function mapDispatchToProps(dispatch) {
 	return {
+		indexCaseworkActivities: id => {
+			const data = {
+				id,
+				key: WatsonConstants.inputConfig.casework_activities.key
+			};
+
+			dispatch(
+				indexCaseworkActivities(data)
+			);
+		},
+		indexCounselingReports: id => {
+			const data = {
+				id,
+				key: WatsonConstants.inputConfig.counseling_reports.key
+			};
+
+			dispatch(
+				indexCounselingReports(data)
+			);
+		},
 		indexDocuments: id => {
 			dispatch(
 				indexDocuments({id})
@@ -493,8 +544,12 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state, props) {
 	const {entryId, model, watsonChildId} = props.router.params;
 
+	const casework_activitiesData = state.getIn(['casework_activities', 'data']) || new Map();
+	const casework_activitiesLoading = state.getIn(['casework_activities', 'loading']);
 	const childrenData = state.getIn(['children', 'data']) || new Map();
 	const childrenLoading = state.getIn(['children', 'loading']);
+	const counseling_reportsData = state.getIn(['counseling_reports', 'data']) || new Map();
+	const counseling_reportsLoading = state.getIn(['counseling_reports', 'loading']);
 	const documentsData = state.getIn(['documents', 'data']) || new Map();
 	const documentsLoading = state.getIn(['documents', 'loading']);
 	const illnessesData = state.getIn(['illnesses', 'data']) || new Map();
@@ -505,8 +560,12 @@ function mapStateToProps(state, props) {
 	const currentChildData = childrenData.get(watsonChildId) || new Map();
 
 	return {
+		casework_activitiesData,
+		casework_activitiesLoading,
 		childrenData,
 		childrenLoading,
+		counseling_reportsData,
+		counseling_reportsLoading,
 		currentChildData,
 		documentsData,
 		documentsLoading,

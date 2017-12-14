@@ -1,4 +1,4 @@
-import {bindAll, capitalize} from 'lodash';
+import {bindAll} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import Router from 'metal-router';
@@ -27,7 +27,7 @@ import {updateRelationshipsDataManually} from '../actions/relationships';
 import {importResources, updateResourcesDataManually} from '../actions/resources';
 import {importVehicles, updateVehiclesDataManually} from '../actions/vehicles';
 
-import {getOptionsLabelFromWatsonConstants} from '../lib/util';
+import {formatModelName, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
 class EditIncident extends JSXComponent {
 	attached() {
@@ -839,7 +839,7 @@ class EditIncident extends JSXComponent {
 				}
 			);
 
-			const updateDataManuallyMethodName = `update${capitalize(model)}DataManually`;
+			const updateDataManuallyMethodName = `update${formatModelName(model)}DataManually`;
 
 			const updateManuallyMethod = this.props[updateDataManuallyMethodName];
 

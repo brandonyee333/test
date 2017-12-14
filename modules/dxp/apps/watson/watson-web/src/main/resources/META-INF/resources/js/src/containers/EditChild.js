@@ -1,4 +1,4 @@
-import {bindAll, capitalize} from 'lodash';
+import {bindAll} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import Router from 'metal-router';
@@ -13,13 +13,15 @@ import NavigationHeader from '../components/NavigationHeader';
 import Sort from '../components/Sort';
 import ViewIndex from './views/ViewIndex';
 
+import {updateCaseworkActivitiesDataManually} from '../actions/casework-activities';
+import {updateCounselingReportsDataManually} from '../actions/counseling-reports';
 import {editChildren, refreshSubModel, updateChildrenDataManually, updateChildrenFormData} from '../actions/children';
 import {updateCollapsedEntries, updateCollapsedEntry} from '../actions/display';
 import {updateDocumentsDataManually} from '../actions/documents';
 import {updateIllnessesDataManually} from '../actions/illnesses';
 import {updateLegalsDataManually} from '../actions/legals';
 
-import {getOptionsLabelFromWatsonConstants} from '../lib/util';
+import {formatModelName, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
 class EditChild extends JSXComponent {
 	attached() {
@@ -53,7 +55,133 @@ class EditChild extends JSXComponent {
 
 		const modelCreateMethod = () => Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/create`);
 
-		if (model === 'documents') {
+		if (model === 'casework_activities') {
+			if (action === 'index') {
+				const buttonData = [
+					{
+						label: Liferay.Language.get('create-casework-activity'),
+						method: modelCreateMethod
+					}
+				];
+				view = (
+					<ViewIndex
+						action={action}
+						buttonData={buttonData}
+						disabled={childDisabled}
+						model={model}
+						primaryName={childName}
+						watsonChildId={watsonChildId}
+					/>
+				);
+			}
+			else if (action === 'translate') {
+				view = (
+					<GenericTranslationForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.casework_activities.inputs}
+						formConfig={[
+							'description'
+						]}
+						model={model}
+						parentModel="children"
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+			else {
+				view = (
+					<GenericChildForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.casework_activities.inputs}
+						formConfig={[
+							'id',
+							'typeWatsonListTypeId',
+							'reportDate',
+							'description',
+							'imagePayload',
+							'watsonRelationships'
+						]}
+						formData={props.modelFormData}
+						model={model}
+						modelKey={WatsonConstants.inputConfig.casework_activities.key}
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+		}
+		else if (model === 'counseling_reports') {
+			if (action === 'index') {
+				const buttonData = [
+					{
+						label: Liferay.Language.get('create-counseling-report'),
+						method: modelCreateMethod
+					}
+				];
+				view = (
+					<ViewIndex
+						action={action}
+						buttonData={buttonData}
+						disabled={childDisabled}
+						model={model}
+						primaryName={childName}
+						watsonChildId={watsonChildId}
+					/>
+				);
+			}
+			else if (action === 'translate') {
+				view = (
+					<GenericTranslationForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.counseling_reports.inputs}
+						formConfig={[
+							'reportedUser',
+							'description'
+						]}
+						model={model}
+						parentModel="children"
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+			else {
+				view = (
+					<GenericChildForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.counseling_reports.inputs}
+						formConfig={[
+							'id',
+							'reportDate',
+							'typeWatsonListTypeId',
+							'timeSpent',
+							'reportedUser',
+							'description',
+							'watsonRelationships'
+						]}
+						formData={props.modelFormData}
+						model={model}
+						modelKey={WatsonConstants.inputConfig.counseling_reports.key}
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+		}
+		else if (model === 'documents') {
 			if (action === 'index') {
 				const buttonData = [
 					{
@@ -295,9 +423,61 @@ class EditChild extends JSXComponent {
 
 		const childTypeLabel = getOptionsLabelFromWatsonConstants('children', 'typeWatsonListTypeId', childrenStoreData.get('typeWatsonListTypeId'));
 
+		const caseworkActivitiesNav = [];
+		const counselingReportsNav = [];
 		const documentsNav = [];
 		const illnessesNav = [];
 		const legalsNav = [];
+
+		if (childrenStoreData.get('caseworkActivities')) {
+			const caseworkActivities = Sort(childrenStoreData.get('caseworkActivities'), null, 'name');
+
+			const caseworkActivitiesList = [];
+
+			caseworkActivities.forEach(
+				caseworkActivity => {
+					const caseworkActivityId = caseworkActivity.get('id');
+
+					caseworkActivitiesList.push(caseworkActivityId);
+
+					const caseworkActivityName = caseworkActivity.get('name') || caseworkActivityId;
+
+					caseworkActivitiesNav.push(
+						{
+							href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/casework_activities/${caseworkActivityId}/edit`,
+							name: `caseworkActivities_${caseworkActivityId}`,
+							selected: (entryId === caseworkActivityId && model === 'casework_activities'),
+							text: caseworkActivityName
+						}
+					);
+				}
+			);
+		}
+
+		if (childrenStoreData.get('counselingReports')) {
+			const counselingReports = Sort(childrenStoreData.get('counselingReports'), null, 'name');
+
+			const counselingReportsList = [];
+
+			counselingReports.forEach(
+				counselingReport => {
+					const counselingReportId = counselingReport.get('id');
+
+					counselingReportsList.push(counselingReportId);
+
+					const counselingReportName = counselingReport.get('name') || counselingReportId;
+
+					counselingReportsNav.push(
+						{
+							href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/counseling_reports/${counselingReportId}/edit`,
+							name: `counselingReports_${counselingReportId}`,
+							selected: (entryId === counselingReportId && model === 'counseling_reports'),
+							text: counselingReportName
+						}
+					);
+				}
+			);
+		}
 
 		if (childrenStoreData.get('documents')) {
 			const childDocuments = Sort(childrenStoreData.get('documents'), null, 'name');
@@ -386,22 +566,36 @@ class EditChild extends JSXComponent {
 				collapsible: true,
 				entries: documentsNav,
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/index`,
-				selected: ((action === 'create' || action === 'index' || action === 'import' || action === 'translate') && model === 'documents'),
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'documents'),
 				text: Liferay.Language.get('documents')
 			},
 			{
 				collapsible: true,
 				entries: illnessesNav,
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/illnesses/index`,
-				selected: ((action === 'create' || action === 'index' || action === 'import' || action === 'translate') && model === 'illnesses'),
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'illnesses'),
 				text: Liferay.Language.get('illness-reports')
 			},
 			{
 				collapsible: true,
 				entries: legalsNav,
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/legals/index`,
-				selected: ((action === 'create' || action === 'index' || action === 'import' || action === 'translate') && model === 'legals'),
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'legals'),
 				text: Liferay.Language.get('legal-reports')
+			},
+			{
+				collapsible: true,
+				entries: caseworkActivitiesNav,
+				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/casework_activities/index`,
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'casework_activities'),
+				text: Liferay.Language.get('casework-activities')
+			},
+			{
+				collapsible: true,
+				entries: counselingReportsNav,
+				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/counseling_reports/index`,
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'counseling_reports'),
+				text: Liferay.Language.get('counseling-reports')
 			}
 		];
 
@@ -439,7 +633,7 @@ class EditChild extends JSXComponent {
 				}
 			);
 
-			const updateDataManuallyMethodName = `update${capitalize(model)}DataManually`;
+			const updateDataManuallyMethodName = `update${formatModelName(model)}DataManually`;
 
 			const updateManuallyMethod = this.props[updateDataManuallyMethodName];
 
@@ -493,6 +687,11 @@ function mapDispatchToProps(dispatch) {
 				refreshSubModel(data)
 			);
 		},
+		updateCaseworkActivitiesDataManually: data => {
+			dispatch(
+				updateCaseworkActivitiesDataManually(data)
+			);
+		},
 		updateChildrenDataManually: data => {
 			dispatch(
 				updateChildrenDataManually(data)
@@ -528,6 +727,11 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				updateCollapsedEntry(data)
+			);
+		},
+		updateCounselingReportsDataManually: data => {
+			dispatch(
+				updateCounselingReportsDataManually(data)
 			);
 		},
 		updateDocumentsDataManually: data => {

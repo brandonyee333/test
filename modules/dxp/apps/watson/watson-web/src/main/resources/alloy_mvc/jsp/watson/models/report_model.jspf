@@ -37,21 +37,21 @@ public static class WatsonReport extends WatsonReportBaseModel {
 
 	public static final int MAX_FIELD_LENGTH_TEXTAREA = 4000;
 
-	public static final String REPORT_TYPE_LABEL_ILLNESS = "illness";
+	public static final String REPORT_TYPE_LABEL_CASEWORK = "casework";
+
+	public static final String REPORT_TYPE_LABEL_COUNSELING = "counseling";
+
+	public static final String REPORT_TYPE_LABEL_ILLNESS = "illness-report";
 
 	public static final String REPORT_TYPE_LABEL_LEGAL_STATUS = "legal-status";
 
-	public static final String REPORT_TYPE_LABEL_MENTAL_HEALTH = "mental-health";
+	public static final int REPORT_TYPE_CASEWORK = 0;
 
-	public static final String REPORT_TYPE_LABEL_SOCIAL_WORK = "social-work";
+	public static final int REPORT_TYPE_COUNSELING = 1;
 
-	public static final int REPORT_TYPE_ILLNESS = 0;
+	public static final int REPORT_TYPE_ILLNESS = 2;
 
-	public static final int REPORT_TYPE_LEGAL_STATUS = 1;
-
-	public static final int REPORT_TYPE_MENTAL_HEALTH = 2;
-
-	public static final int REPORT_TYPE_SOCIAL_WORK = 3;
+	public static final int REPORT_TYPE_LEGAL_STATUS = 3;
 
 	public static JSONObject getAsJSONDataArray(List<WatsonReport> watsonReports, long count) throws Exception {
 		JSONObject returnJSONObject = JSONFactoryUtil.createJSONObject();
@@ -128,17 +128,17 @@ public static class WatsonReport extends WatsonReportBaseModel {
 	}
 
 	public static String getReportTypeLabel(int reportType) {
-		if (reportType == REPORT_TYPE_ILLNESS) {
+		if (reportType == REPORT_TYPE_CASEWORK) {
+			return REPORT_TYPE_LABEL_CASEWORK;
+		}
+		else if (reportType == REPORT_TYPE_COUNSELING) {
+			return REPORT_TYPE_LABEL_COUNSELING;
+		}
+		else if (reportType == REPORT_TYPE_ILLNESS) {
 			return REPORT_TYPE_LABEL_ILLNESS;
 		}
 		else if (reportType == REPORT_TYPE_LEGAL_STATUS) {
 			return REPORT_TYPE_LABEL_LEGAL_STATUS;
-		}
-		else if (reportType == REPORT_TYPE_MENTAL_HEALTH) {
-			return REPORT_TYPE_LABEL_MENTAL_HEALTH;
-		}
-		else if (reportType == REPORT_TYPE_SOCIAL_WORK) {
-			return REPORT_TYPE_LABEL_SOCIAL_WORK;
 		}
 
 		return StringPool.BLANK;
@@ -233,13 +233,13 @@ public static class WatsonReport extends WatsonReportBaseModel {
 		return jsonObject;
 	}
 
-	public String getReportName(Locale locale) {
+	public String getReportName(Locale locale) throws Exception {
 		int reportType = this.getKey();
 
 		if (reportType == REPORT_TYPE_ILLNESS) {
 			StringBundler reportName = new StringBundler(5);
 
-			reportName.append(LanguageUtil.format(locale, "illness-report", new Object[0]));
+			reportName.append(LanguageUtil.format(locale, REPORT_TYPE_LABEL_ILLNESS, new Object[0]));
 			reportName.append(StringPool.SPACE);
 			reportName.append(StringPool.DASH);
 			reportName.append(StringPool.SPACE);
@@ -258,7 +258,7 @@ public static class WatsonReport extends WatsonReportBaseModel {
 		else if (reportType == REPORT_TYPE_LEGAL_STATUS) {
 			StringBundler reportName = new StringBundler(5);
 
-			reportName.append(LanguageUtil.format(locale, "legal-report", new Object[0]));
+			reportName.append(LanguageUtil.format(locale, REPORT_TYPE_LABEL_LEGAL_STATUS, new Object[0]));
 			reportName.append(StringPool.SPACE);
 			reportName.append(StringPool.DASH);
 			reportName.append(StringPool.SPACE);
@@ -274,11 +274,59 @@ public static class WatsonReport extends WatsonReportBaseModel {
 
 			return reportName.toString();
 		}
-		else if (reportType == REPORT_TYPE_MENTAL_HEALTH) {
-			return this.getName(locale);
+		else if (reportType == REPORT_TYPE_COUNSELING) {
+			StringBundler reportName = new StringBundler(5);
+
+			WatsonListType watsonListType = WatsonListType.fetch(getTypeWatsonListTypeId());
+
+			if (watsonListType != null) {
+				reportName.append(watsonListType.getName(locale));
+			}
+			else {
+				reportName.append(LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), REPORT_TYPE_LABEL_COUNSELING, new Object[0]));
+			}
+
+			reportName.append(StringPool.SPACE);
+			reportName.append(StringPool.DASH);
+			reportName.append(StringPool.SPACE);
+
+			Date reportDate = getReportDate();
+
+			if (reportDate != null) {
+				reportName.append(getFormattedDate(reportDate, locale));
+			}
+			else {
+				reportName.append(getFormattedDate(getCreateDate(), locale));
+			}
+
+			return reportName.toString();
 		}
-		else if (reportType == REPORT_TYPE_SOCIAL_WORK) {
-			return this.getName(locale);
+		else if (reportType == REPORT_TYPE_CASEWORK) {
+			StringBundler reportName = new StringBundler(5);
+
+			WatsonListType watsonListType = WatsonListType.fetch(getTypeWatsonListTypeId());
+
+			if (watsonListType != null) {
+				reportName.append(watsonListType.getName(locale));
+			}
+			else {
+				reportName.append(LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), REPORT_TYPE_LABEL_CASEWORK, new Object[0]));
+			}
+
+			reportName.append(StringPool.SPACE);
+			reportName.append(StringPool.DASH);
+			reportName.append(StringPool.SPACE);
+
+			Date reportDate = getReportDate();
+
+			if (reportDate != null) {
+				reportName.append(getFormattedDate(reportDate, locale));
+			}
+			else {
+				reportName.append(getFormattedDate(getCreateDate(), locale));
+			}
+
+			return reportName.toString();
 		}
 
 		return StringPool.BLANK;

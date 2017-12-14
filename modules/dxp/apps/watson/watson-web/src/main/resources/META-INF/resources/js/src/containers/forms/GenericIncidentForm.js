@@ -1,4 +1,4 @@
-import {bindAll, capitalize, isEmpty} from 'lodash';
+import {bindAll, isEmpty} from 'lodash';
 import {connect} from 'metal-redux';
 import {Map} from 'immutable';
 import JSXComponent, {Config} from 'metal-jsx';
@@ -8,7 +8,7 @@ import sub from 'string-sub';
 import AffiliationLink from '../../components/AffiliationLink';
 import Button from '../../components/Button';
 import ContentHeader from '../../components/ContentHeader';
-import {convertMapToObject, deepCompareIsEqual, getModifiedMoment, updateDOMTitle} from '../../lib/util';
+import {convertMapToObject, deepCompareIsEqual, formatModelName, getModifiedMoment, updateDOMTitle} from '../../lib/util';
 import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 
@@ -46,7 +46,7 @@ class GenericIncidentForm extends JSXComponent {
 		const {model, watsonPrimaryKey} = props;
 
 		if (model && watsonPrimaryKey) {
-			const editModelMethod = props[`edit${capitalize(model)}`];
+			const editModelMethod = props[`edit${formatModelName(model)}`];
 
 			editModelMethod(watsonPrimaryKey);
 		}
@@ -77,7 +77,7 @@ class GenericIncidentForm extends JSXComponent {
 		} = this.props;
 
 		if (action !== 'create' && response && response.get('status') === 'success' && response.get('message')) {
-			const updateModelDataManuallyMethod = this.props[`update${capitalize(model)}DataManually`];
+			const updateModelDataManuallyMethod = this.props[`update${formatModelName(model)}DataManually`];
 
 			updateModelDataManuallyMethod(
 				{
@@ -145,7 +145,7 @@ class GenericIncidentForm extends JSXComponent {
 	handleCreate(data) {
 		const {props} = this;
 
-		const updateModelMethod = props[`update${capitalize(props.model)}`];
+		const updateModelMethod = props[`update${formatModelName(props.model)}`];
 
 		updateModelMethod(data);
 
@@ -158,7 +158,7 @@ class GenericIncidentForm extends JSXComponent {
 		const {model, watsonIncidentId, watsonPrimaryKey} = props;
 
 		if (watsonPrimaryKey) {
-			const destroyModelMethod = props[`destroy${capitalize(model)}`];
+			const destroyModelMethod = props[`destroy${formatModelName(model)}`];
 
 			destroyModelMethod(watsonPrimaryKey);
 
@@ -181,7 +181,7 @@ class GenericIncidentForm extends JSXComponent {
 
 		const {model, watsonIncidentId, watsonPrimaryKey} = props;
 
-		const requestModelTranslationMethod = props[`request${capitalize(model)}Translation`];
+		const requestModelTranslationMethod = props[`request${formatModelName(model)}Translation`];
 
 		const translationURL = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonPrimaryKey}/translate`;
 
@@ -199,7 +199,7 @@ class GenericIncidentForm extends JSXComponent {
 
 		const {model, watsonPrimaryKey} = props;
 
-		const updateModelFormData = props[`update${capitalize(model)}FormData`];
+		const updateModelFormData = props[`update${formatModelName(model)}FormData`];
 
 		updateModelFormData(formData, watsonPrimaryKey);
 	}
@@ -228,7 +228,7 @@ class GenericIncidentForm extends JSXComponent {
 			cancelMethod,
 			headerStringLeft,
 			headerStringRight,
-			submitMethod = props[`update${capitalize(model)}`],
+			submitMethod = props[`update${formatModelName(model)}`],
 			watsonPrimaryKey
 		} = props;
 

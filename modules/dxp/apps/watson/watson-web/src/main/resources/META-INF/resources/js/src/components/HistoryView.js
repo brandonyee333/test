@@ -1,11 +1,11 @@
-import {bindAll, capitalize} from 'lodash';
+import {bindAll} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import {Map} from 'immutable';
 import moment from 'moment';
 import sub from 'string-sub';
 
-import {getOptionsLabelFromWatsonConstants} from '../lib/util';
+import {formatModelName, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
 import {indexActivities} from '../actions/activities';
 import {indexAddresses} from '../actions/addresses';
@@ -38,7 +38,7 @@ class HistoryView extends JSXComponent {
 					watsonModelObject = modelData.get(classPK);
 
 					if (!watsonModelObject && !classPKArray.includes(classPK)) {
-						const modelName = `index${capitalize(model)}`;
+						const modelName = `index${formatModelName(model)}`;
 
 						const indexModel = props[modelName];
 

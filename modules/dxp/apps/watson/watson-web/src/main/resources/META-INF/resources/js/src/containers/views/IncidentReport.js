@@ -231,7 +231,7 @@ class IncidentReport extends JSXComponent {
 
 		let retVal = '';
 
-		if (value) {
+		if (!isEmpty(value)) {
 			if (type === inputTypes.dependentSelectInput || type === inputTypes.selectInput) {
 				if (inputConfig && inputConfig.options && inputConfig.options[value]) {
 					retVal = inputConfig.options[value].label;

@@ -1,4 +1,4 @@
-import {bindAll, capitalize, isEmpty} from 'lodash';
+import {bindAll, isEmpty} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import sub from 'string-sub';
@@ -12,7 +12,7 @@ import {editPeople} from '../actions/people';
 import {editResources} from '../actions/resources';
 import {editVehicles} from '../actions/vehicles';
 
-import {getOptionsLabelFromWatsonConstants, getPluralMessage} from '../lib/util';
+import {formatModelName, getOptionsLabelFromWatsonConstants, getPluralMessage} from '../lib/util';
 
 class ChildModelSubIndex extends JSXComponent {
 	attached() {
@@ -34,7 +34,7 @@ class ChildModelSubIndex extends JSXComponent {
 
 		const singularLabel = WatsonConstants.inputConfig[model].singularLabel;
 
-		const editModelMethod = props[`edit${capitalize(singularLabel)}`];
+		const editModelMethod = props[`edit${formatModelName(singularLabel)}`];
 
 		if (entryId) {
 			editModelMethod(entryId);

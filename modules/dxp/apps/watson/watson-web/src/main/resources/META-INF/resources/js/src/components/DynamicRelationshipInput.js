@@ -1,4 +1,4 @@
-import {bindAll, capitalize, isEmpty, noop} from 'lodash';
+import {bindAll, isEmpty, noop} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import Router from 'metal-router';
@@ -11,6 +11,8 @@ import {indexAddresses} from '../actions/addresses';
 import {indexPeople} from '../actions/people';
 import {indexResources} from '../actions/resources';
 import {indexVehicles} from '../actions/vehicles';
+
+import {formatModelName} from '../lib/util';
 
 class DynamicRelationshipInput extends JSXComponent {
 	created() {
@@ -85,7 +87,7 @@ class DynamicRelationshipInput extends JSXComponent {
 		const {selectedModel1: oldSelectedModel} = this.state;
 
 		if (selectedModel1 !== oldSelectedModel || forceRefresh) {
-			const modelName = `index${capitalize(selectedModel1)}`;
+			const modelName = `index${formatModelName(selectedModel1)}`;
 
 			const indexModel = props[modelName];
 

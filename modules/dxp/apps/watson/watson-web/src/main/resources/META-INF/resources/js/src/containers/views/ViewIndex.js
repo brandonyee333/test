@@ -1,4 +1,4 @@
-import {bindAll, capitalize, isEmpty, noop} from 'lodash';
+import {bindAll, isEmpty, noop} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import {Map} from 'immutable';
@@ -12,6 +12,8 @@ import SelectInput from '../../components/SelectInput';
 
 import {indexActivities, searchActivities} from '../../actions/activities';
 import {indexAddresses, searchAddresses} from '../../actions/addresses';
+import {indexCaseworkActivities, searchCaseworkActivities} from '../../actions/casework-activities';
+import {indexCounselingReports, searchCounselingReports} from '../../actions/counseling-reports';
 import {indexChildren, searchChildren} from '../../actions/children';
 import {updateFilter, updateHideLoadingOverlay, updateSortBy} from '../../actions/display';
 import {indexDocuments, searchDocuments} from '../../actions/documents';
@@ -22,7 +24,7 @@ import {indexPeople, searchPeople} from '../../actions/people';
 import {indexResources, searchResources} from '../../actions/resources';
 import {indexVehicles, searchVehicles} from '../../actions/vehicles';
 
-import {getPluralMessage, updateDOMTitle} from '../../lib/util';
+import {formatModelName, getPluralMessage, updateDOMTitle} from '../../lib/util';
 
 class ViewIndex extends JSXComponent {
 	created() {
@@ -143,7 +145,7 @@ class ViewIndex extends JSXComponent {
 		if (!disableDataFetch) {
 			const {batchCount, itemsLoaded} = state;
 
-			const indexModelMethod = props[`index${capitalize(model)}`];
+			const indexModelMethod = props[`index${formatModelName(model)}`];
 
 			if (indexModelMethod) {
 				indexModelMethod(
@@ -167,7 +169,7 @@ class ViewIndex extends JSXComponent {
 		if (!disableDataFetch) {
 			const {batchCount, itemsLoaded} = state;
 
-			const searchModelMethod = props[`search${capitalize(model)}`];
+			const searchModelMethod = props[`search${formatModelName(model)}`];
 
 			const fieldsArray = [];
 			const keywordsArray = [];
@@ -470,9 +472,23 @@ function mapDispatchToProps(dispatch) {
 				indexAddresses(data)
 			);
 		},
+		indexCaseworkActivities: data => {
+			data.key = WatsonConstants.inputConfig.casework_activities.key;
+
+			dispatch(
+				indexCaseworkActivities(data)
+			);
+		},
 		indexChildren: data => {
 			dispatch(
 				indexChildren(data)
+			);
+		},
+		indexCounselingReports: data => {
+			data.key = WatsonConstants.inputConfig.counseling_reports.key;
+
+			dispatch(
+				indexCounselingReports(data)
 			);
 		},
 		indexDocuments: data => {
@@ -524,9 +540,23 @@ function mapDispatchToProps(dispatch) {
 				searchAddresses(data)
 			);
 		},
+		searchCaseworkActivities: data => {
+			data.key = WatsonConstants.inputConfig.casework_activities.key;
+
+			dispatch(
+				searchCaseworkActivities(data)
+			);
+		},
 		searchChildren: data => {
 			dispatch(
 				searchChildren(data)
+			);
+		},
+		searchCounselingReports: data => {
+			data.key = WatsonConstants.inputConfig.counseling_reports.key;
+
+			dispatch(
+				searchCounselingReports(data)
 			);
 		},
 		searchDocuments: data => {

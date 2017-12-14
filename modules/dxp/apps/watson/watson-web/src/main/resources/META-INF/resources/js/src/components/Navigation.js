@@ -96,7 +96,7 @@ class Navigation extends JSXComponent {
 
 							let collapsed = false;
 
-							if (storeCollapsed || (storeCollapsed == undefined && (entry.collapsed || entry.entries.length > 2))) {
+							if (storeCollapsed || (storeCollapsed === undefined && (entry.collapsed || entry.entries.length > 2))) {
 								collapsed = true;
 							}
 
@@ -150,6 +150,7 @@ class Navigation extends JSXComponent {
 }
 
 Navigation.PROPS = {
+	entries: Config.array(),
 	navigationState: Config.any(),
 	onChange: Config.func()
 };

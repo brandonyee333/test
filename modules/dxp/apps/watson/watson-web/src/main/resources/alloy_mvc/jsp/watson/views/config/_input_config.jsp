@@ -599,6 +599,116 @@
 					}
 				}
 			},
+			casework_activities: {
+				inputs: {
+					createDate: {
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-created")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: []
+					},
+					description: {
+						filterable: ${true},
+						cssClass: 'textarea',
+						label: '${AlloyLanguageUtil.formatUnicode("description")}',
+						translatable: ${true},
+						type: 'TEXT_AREA_INPUT',
+						validations: []
+
+					},
+					id: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("id")}',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'INPUT_VIEW',
+						validations: []
+					},
+					imagePayload: {
+						acceptedTypes: '.doc, .docx, .gif, .jpg, .odb, .odf, .odg, .odp, .ods, .odt, .pdf, .png, .ppt, .pptx, .rtf, .tar, .tiff, .tgz, .txt, .xls, .xlsx, .zip',
+						enableCropperTool: ${true},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("related-file")}',
+						multiple: ${false},
+						parentInputId: 'typeWatsonListTypeId',
+						translatable: ${false},
+						type: 'FILE',
+						uploaderLabel: '${AlloyLanguageUtil.formatUnicode("add-file")}',
+						validations: []
+					},
+					reportDate: {
+						defaultValue: new Date().toISOString().substr(0,10),
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-performed")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: [
+							'required'
+						]
+					},
+					typeWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("type")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonReport.modelClassName.concat(".caseworkType"))}' var="typeWatsonListTypes" />
+
+							<c:forEach items="${typeWatsonListTypes}" var="typeWatsonListType" varStatus="typeWatsonListTypesIndex">
+								<c:set value='${typeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${typeWatsonListType.watsonListTypeId}: {
+									label: '${AlloyLanguageUtil.formatUnicode(typeWatsonListType.getName(locale))}',
+									value: '${typeWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						translatable: ${false},
+						type: 'SELECT_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					watsonRelationships: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
+						cssClass: 'triple-dynamic',
+						disabled: ${true},
+						fancy: ${false},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
+						translatable: ${false},
+						tripleOnly: ${true},
+						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
+						validations: [
+							'arrayValues4'
+						]
+					}
+				},
+				key: '${WatsonReportConstants.REPORT_TYPE_CASEWORK}',
+				relationshipObjectOptions: {},
+				pluralLabel: '${AlloyLanguageUtil.formatUnicode("casework-activities")}',
+				singularLabel: '${AlloyLanguageUtil.formatUnicode("casework-activity")}',
+				sortByDefault: 'watsonChildId',
+				sortByOptions: {
+					CREATED: {
+						label: '${AlloyLanguageUtil.formatUnicode("created")}',
+						value: 'createDate'
+					},
+					INCIDENT_ID: {
+						label: '${AlloyLanguageUtil.formatUnicode("child-id")}',
+						value: 'watsonChildId'
+					},
+					LAST_MODIFIED: {
+						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
+						value: 'modifiedDate'
+					},
+					TYPE: {
+						label: '${AlloyLanguageUtil.formatUnicode("type")}',
+						value: 'typeWatsonListTypeId'
+					}
+				}
+			},
 			children: {
 				inputs: {
 					activitiesInvolvedWatsonListTypeRels: {
@@ -1091,6 +1201,125 @@
 					}
 				}
 			},
+			counseling_reports: {
+				inputs: {
+					createDate: {
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-created")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: []
+					},
+					description: {
+						cssClass: 'textarea',
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("description")}',
+						tooltipLabel: '',
+						translatable: ${true},
+						type: 'TEXT_AREA_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					id: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("id")}',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'INPUT_VIEW',
+						validations: []
+					},
+					reportDate: {
+						controlledInputs: [],
+						defaultValue: new Date().toISOString().substr(0,10),
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-performed")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: [
+							'date',
+							'required'
+						]
+					},
+					reportedUser: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("counselor")}',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("name-of-the-counselor")}',
+						translatable: ${true},
+						type: 'INPUT',
+						validations: [
+							'required'
+						]
+					},
+					timeSpent: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("time-spent")}',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("please-list-time-spent-in-hours-and-minutes")}',
+						translatable: ${true},
+						type: 'INPUT',
+						validations: [
+							'required'
+						]
+					},
+					typeWatsonListTypeId: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("step")}',
+						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonReport.modelClassName.concat(".counselingType"))}' var="typeWatsonListTypes" />
+
+							<c:forEach items="${typeWatsonListTypes}" var="typeWatsonListType" varStatus="typeWatsonListTypesIndex">
+								<c:set value='${typeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${typeWatsonListType.watsonListTypeId}: {
+									label: '${AlloyLanguageUtil.formatUnicode(typeWatsonListType.getName(locale))}',
+									value: '${typeWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+						},
+						parentInputId: 'parentTypeWatsonListTypeId',
+						translatable: ${false},
+						type: 'SELECT_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					watsonRelationships: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
+						cssClass: 'triple-dynamic',
+						disabled: ${true},
+						fancy: ${false},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
+						translatable: ${false},
+						tripleOnly: ${true},
+						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
+						validations: [
+							'arrayValues4'
+						]
+					}
+				},
+				key: '${WatsonReportConstants.REPORT_TYPE_COUNSELING}',
+				relationshipObjectOptions: {},
+				pluralLabel: '${AlloyLanguageUtil.formatUnicode("counseling-reports")}',
+				singularLabel: '${AlloyLanguageUtil.formatUnicode("counseling-report")}',
+				sortByDefault: 'watsonChildId',
+				sortByOptions: {
+					CREATED: {
+						label: '${AlloyLanguageUtil.formatUnicode("created")}',
+						value: 'createDate'
+					},
+					INCIDENT_ID: {
+						label: '${AlloyLanguageUtil.formatUnicode("child-id")}',
+						value: 'watsonChildId'
+					},
+					LAST_MODIFIED: {
+						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
+						value: 'modifiedDate'
+					}
+				}
+			},
 			documents: {
 				inputs: {
 					createDate: {
@@ -1116,7 +1345,6 @@
 						label: '${AlloyLanguageUtil.formatUnicode("related-file")}',
 						multiple: ${false},
 						parentInputId: 'typeWatsonListTypeId',
-						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("click-add-resource-or-drag-an-image-file-onto-it-to-upload-a-picture-of-this-resource")}',
 						translatable: ${false},
 						type: 'FILE',
 						uploaderLabel: '${AlloyLanguageUtil.formatUnicode("add-file")}',
@@ -1775,7 +2003,6 @@
 						disabled: ${false},
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("summary")}',
-						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-a-summary-for-this-resource")}',
 						translatable: ${true},
 						type: 'INPUT',
 						validations: [

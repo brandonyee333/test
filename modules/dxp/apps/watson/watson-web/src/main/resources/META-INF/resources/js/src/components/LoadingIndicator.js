@@ -72,30 +72,47 @@ LoadingIndicator.PROPS = {
 function mapStateToProps(state) {
 	const activitiesLoading = state.getIn(['activities', 'loading']);
 	const addressesLoading = state.getIn(['addresses', 'loading']);
+	const caseworkActivitiesLoading = state.getIn(['casework_activities', 'loading']);
+	const childrenLoading = state.getIn(['children', 'loading']);
+	const counselingReportsLoading = state.getIn(['counseling_reports', 'loading']);
+	const documentsLoading = state.getIn(['documents', 'loading']);
 	const historiesLoading = state.getIn(['histories', 'loading']);
+	const illnessesLoading = state.getIn(['illnesses', 'loading']);
 	const incidentsLoading = state.getIn(['incidents', 'loading']);
+	const legalsLoading = state.getIn(['legals', 'loading']);
 	const peopleLoading = state.getIn(['people', 'loading']);
 	const relationshipsLoading = state.getIn(['relationships', 'loading']);
 	const resourcesLoading = state.getIn(['resources', 'loading']);
 	const vehiclesLoading = state.getIn(['vehicles', 'loading']);
 
-	const loading = activitiesLoading || addressesLoading || historiesLoading || incidentsLoading || peopleLoading || relationshipsLoading || resourcesLoading || vehiclesLoading;
+	const loading = activitiesLoading || addressesLoading || caseworkActivitiesLoading || childrenLoading || counselingReportsLoading || documentsLoading || historiesLoading || illnessesLoading || incidentsLoading || legalsLoading || peopleLoading || relationshipsLoading || resourcesLoading || vehiclesLoading;
 
 	const activitiesRequestFailure = state.getIn(['activities', 'response', 'failure']);
 	const addressesRequestFailure = state.getIn(['addresses', 'response', 'failure']);
+	const caseworkActivitiesFailure = state.getIn(['casework_activities', 'response', 'failure']);
+	const childrenRequestFailure = state.getIn(['children', 'response', 'failure']);
+	const counselingReportsFailure = state.getIn(['counseling_reports', 'response', 'failure']);
+	const documentsRequestFailure = state.getIn(['documents', 'response', 'failure']);
 	const historiesRequestFailure = state.getIn(['histories', 'response', 'failure']);
+	const illnessesRequestFailure = state.getIn(['illnesses', 'response', 'failure']);
 	const incidentsRequestFailure = state.getIn(['incidents', 'response', 'failure']);
+	const legalsRequestFailure = state.getIn(['legals', 'response', 'failure']);
 	const listTypesRequestFailure = state.getIn(['list_types', 'response', 'failure']);
 	const peopleRequestFailure = state.getIn(['people', 'response', 'failure']);
 	const relationshipsRequestFailure = state.getIn(['relationships', 'response', 'failure']);
 	const resourcesRequestFailure = state.getIn(['resources', 'response', 'failure']);
 	const vehiclesRequestFailure = state.getIn(['vehicles', 'response', 'failure']);
 
-	const requestFailure = activitiesRequestFailure || addressesRequestFailure || historiesRequestFailure || incidentsRequestFailure || listTypesRequestFailure || peopleRequestFailure || relationshipsRequestFailure || resourcesRequestFailure || vehiclesRequestFailure;
+	const requestFailure = activitiesRequestFailure || addressesRequestFailure || caseworkActivitiesFailure || childrenRequestFailure || counselingReportsFailure || documentsRequestFailure || historiesRequestFailure || illnessesRequestFailure || incidentsRequestFailure || legalsRequestFailure || listTypesRequestFailure || peopleRequestFailure || relationshipsRequestFailure || resourcesRequestFailure || vehiclesRequestFailure;
 
 	const activitiesRequestForbidden = state.getIn(['activities', 'response', 'forbidden']);
 	const addressesRequestForbidden = state.getIn(['addresses', 'response', 'forbidden']);
+	const caseworkActivitiesRequestForbidden = state.getIn(['casework_activities', 'response', 'forbidden']);
+	const childrenRequestForbidden = state.getIn(['children', 'response', 'forbidden']);
+	const counselingReportsRequestForbidden = state.getIn(['counseling_reports', 'response', 'forbidden']);
+	const documentsRequestForbidden = state.getIn(['documents', 'response', 'forbidden']);
 	const historiesRequestForbidden = state.getIn(['histories', 'response', 'forbidden']);
+	const illnessesRequestForbidden = state.getIn(['illnesses', 'response', 'forbidden']);
 	const incidentsRequestForbidden = state.getIn(['incidents', 'response', 'forbidden']);
 	const listTypesRequestForbidden = state.getIn(['list_types', 'response', 'forbidden']);
 	const peopleRequestForbidden = state.getIn(['people', 'response', 'forbidden']);
@@ -103,7 +120,7 @@ function mapStateToProps(state) {
 	const resourcesRequestForbidden = state.getIn(['resources', 'response', 'forbidden']);
 	const vehiclesRequestForbidden = state.getIn(['vehicles', 'response', 'forbidden']);
 
-	const requestForbidden = activitiesRequestForbidden || addressesRequestForbidden || historiesRequestForbidden || incidentsRequestForbidden || listTypesRequestForbidden || peopleRequestForbidden || relationshipsRequestForbidden || resourcesRequestForbidden || vehiclesRequestForbidden;
+	const requestForbidden = activitiesRequestForbidden || addressesRequestForbidden || caseworkActivitiesRequestForbidden || childrenRequestForbidden || counselingReportsRequestForbidden || documentsRequestForbidden || historiesRequestForbidden || illnessesRequestForbidden || incidentsRequestForbidden || listTypesRequestForbidden || peopleRequestForbidden || relationshipsRequestForbidden || resourcesRequestForbidden || vehiclesRequestForbidden;
 
 	const hideLoadingOverlay = state.getIn(['display', 'hideLoadingOverlay']);
 

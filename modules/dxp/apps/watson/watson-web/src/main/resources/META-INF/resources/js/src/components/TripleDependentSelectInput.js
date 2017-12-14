@@ -1,4 +1,4 @@
-import {bindAll, capitalize, noop} from 'lodash';
+import {bindAll, noop} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import Router from 'metal-router';
@@ -10,6 +10,8 @@ import {indexAddresses} from '../actions/addresses';
 import {indexPeople} from '../actions/people';
 import {indexResources} from '../actions/resources';
 import {indexVehicles} from '../actions/vehicles';
+
+import {formatModelName} from '../lib/util';
 
 class TripleDependentSelectInput extends JSXComponent {
 	created() {
@@ -82,7 +84,7 @@ class TripleDependentSelectInput extends JSXComponent {
 		const {selectedModel2: oldSelectedModel2} = this.state;
 
 		if (selectedModel2 !== oldSelectedModel2 || forceRefresh) {
-			const modelName = `index${capitalize(selectedModel2)}`;
+			const modelName = `index${formatModelName(selectedModel2)}`;
 
 			const indexModel = props[modelName];
 

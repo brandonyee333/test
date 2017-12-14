@@ -2,6 +2,8 @@ import {combineReducers} from 'redux-immutable';
 
 import activities from './activities';
 import addresses from './addresses';
+import casework_activities from './casework-activities';
+import counseling_reports from './counseling-reports';
 import children from './children';
 import display from './display';
 import documents from './documents';
@@ -24,7 +26,9 @@ export default combineReducers(
 		activities,
 		addresses,
 		basePath,
+		casework_activities,
 		children,
+		counseling_reports,
 		display,
 		documents,
 		histories,

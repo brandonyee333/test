@@ -40470,4 +40470,20 @@
 		<name locale="en_US">Living</name>
 		<name locale="th">การดำรงชีวิต</name>
 	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.caseworkType" watsonListTypeId="10571">
+		<name locale="en_US">Family Visitation</name>
+		<name locale="th">การเยี่ยมครอบครัว</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.caseworkType" watsonListTypeId="10572">
+		<name locale="en_US">Locating Family</name>
+		<name locale="th">ค้นหาครอบครัว</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.caseworkType" watsonListTypeId="10573">
+		<name locale="en_US">MDT Meeting</name>
+		<name locale="th">การประชุม MDT</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonReport.caseworkType" watsonListTypeId="10574">
+		<name locale="en_US">Child Visitation with Family</name>
+		<name locale="th">การเยี่ยมเด็กกับครอบครัว</name>
+	</watsonListType>
 </table>

@@ -1,4 +1,4 @@
-import {isEqual} from 'lodash';
+import {capitalize, isEqual} from 'lodash';
 import {List, Map} from 'immutable';
 import moment from 'moment';
 import sub from 'string-sub';
@@ -89,6 +89,18 @@ export function formatBytesToString(bytes) {
 	return `${bytes.toFixed(1)} ${BYTE_UNITS[i]}`;
 }
 
+export function formatModelName(modelName = '') {
+	let name = capitalize(modelName);
+
+	if (modelName && modelName.includes('_')) {
+		const tempName = modelName.split('_');
+
+		name = `${(capitalize(tempName[0]))}${capitalize(tempName[1])}`;
+	}
+
+	return name;
+}
+
 export function getMimeType(mimeType = '') {
 	let type = '';
 
@@ -110,7 +122,7 @@ export function getMimeType(mimeType = '') {
 	return type;
 }
 
-export function getModifiedMoment(userName = '', timestamp = 0) {
+export function getModifiedMoment(userName = '', timestamp = Date.now()) {
 	let modifiedTimeMoment = moment(parseInt(timestamp, 10));
 
 	modifiedTimeMoment = modifiedTimeMoment.locale(WatsonConstants.currentLanguageId);

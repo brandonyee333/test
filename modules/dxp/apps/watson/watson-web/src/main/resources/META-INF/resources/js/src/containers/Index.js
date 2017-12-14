@@ -1,4 +1,4 @@
-import {bindAll, capitalize, isEmpty} from 'lodash';
+import {bindAll, isEmpty} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import {Map, OrderedMap} from 'immutable';
@@ -24,7 +24,7 @@ import {indexPeople, searchPeople} from '../actions/people';
 import {indexResources, searchResources} from '../actions/resources';
 import {indexVehicles, searchVehicles} from '../actions/vehicles';
 
-import {getPluralMessage, updateDOMTitle} from '../lib/util';
+import {formatModelName, getPluralMessage, updateDOMTitle} from '../lib/util';
 
 class Index extends JSXComponent {
 	created() {
@@ -78,9 +78,7 @@ class Index extends JSXComponent {
 
 		const {batchCount, itemsLoaded} = state;
 
-		const properModelName = capitalize(model);
-
-		const indexModelMethod = props[`index${properModelName}`];
+		const indexModelMethod = props[`index${formatModelName(model)}`];
 
 		end = (end < 1) ? itemsLoaded + batchCount : end;
 
@@ -125,9 +123,7 @@ class Index extends JSXComponent {
 
 		const {batchCount, itemsLoaded} = state;
 
-		const properModelName = capitalize(model);
-
-		const searchModelMethod = props[`search${properModelName}`];
+		const searchModelMethod = props[`search${formatModelName(model)}`];
 
 		const fieldsArray = [];
 		const keywordsArray = [];
