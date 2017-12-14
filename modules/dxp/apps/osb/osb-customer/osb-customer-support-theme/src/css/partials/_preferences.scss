@@ -102,13 +102,11 @@
 	li {
 		display: none;
 
-		&:first-child {
+		@include sm() {
 			display: block;
 		}
-	}
 
-	@include sm() {
-		li {
+		&:first-child {
 			display: block;
 		}
 	}
@@ -123,19 +121,17 @@
 		vertical-align: top;
 		width: 100%;
 
-		&:last-child {
-			border-top: 1px solid $border-color;
-		}
-	}
-
-	@include xs() {
-		ul {
+		@include xs() {
 			display: inline-block;
 			width: 45%;
+		}
 
-			&:last-child {
+		&:last-child {
+			border-top: 1px solid $border-color;
+
+			@include xs() {
 				border-left: 1px solid $border-color;
-				border-top: 0;
+				border-top-width: 0;
 			}
 		}
 	}
