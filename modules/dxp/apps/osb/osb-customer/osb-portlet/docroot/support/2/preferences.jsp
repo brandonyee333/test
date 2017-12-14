@@ -48,6 +48,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 	</div>
 
 	<liferay-ui:tabs
+		cssClass="preference-tabs"
 		names="<%= StringUtil.merge(tabsNamesList) %>"
 		param="tabs1"
 		url="<%= portletURL.toString() %>"
@@ -214,7 +215,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 						<liferay-ui:message key="screen-share-mode-hides-internal-information" />
 
 						<div class="screen-share-mode-description">
-							<ul class="w45">
+							<ul>
 								<li>
 									<liferay-ui:message key="due-date" />
 								</li>
@@ -235,7 +236,7 @@ portletURL.setParameter("mvcPath", "/support/2/preferences.jsp");
 								</li>
 							</ul>
 
-							<ul class="w45">
+							<ul>
 								<li>
 									<liferay-ui:message key="workers-tab" />
 								</li>
