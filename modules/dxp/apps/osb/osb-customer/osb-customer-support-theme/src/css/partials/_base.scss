@@ -89,7 +89,7 @@ div {
 	}
 }
 
-input, select, textarea {
+input.form-control, select.form-control, textarea {
 	background-color: #FFF;
 	border: 1px solid $text-color;
 	border-radius: 3px;
@@ -145,6 +145,11 @@ textarea {
 	}
 }
 
+.common-textarea textarea {
+	resize: vertical;
+	width: 100%;
+}
+
 .info {
 	background-color: $info;
 	color: #FFF;
@@ -174,7 +179,7 @@ textarea {
 
 .portlet-msg-error {
 	background-color: rgba(255, 221, 221, 0.96);
-	border-color: $error;
+	border-color: $urgent;
 	color: $urgent;
 }
 

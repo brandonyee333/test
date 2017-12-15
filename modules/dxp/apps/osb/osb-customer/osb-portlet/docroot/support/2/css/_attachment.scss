@@ -14,7 +14,8 @@
 .attachment-text {
 	margin: 5px 0;
 
-	input[type='checkbox'] {
+	.input-checkbox-wrapper {
+		display: inline;
 		margin: 2px 10px 2px 2px;
 	}
 }

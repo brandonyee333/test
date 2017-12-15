@@ -14,19 +14,8 @@
 	display: none;
 
 	@include sm() {
-		color: $medium-gray;
 		display: block;
 		margin: 0 auto;
-
-		input[type=text], textarea {
-			color: $text-color;
-			width: calc(100% - 12px);
-		}
-
-		select {
-			color: $text-color;
-			width: 100%;
-		}
 
 		span {
 			&.portlet-msg-error, &.portlet-msg-info {
@@ -34,13 +23,12 @@
 			}
 		}
 
-		.btn {
-			display: block;
-			margin: 0 auto;
-		}
-
 		.create-env-button {
 			padding-top: 15px;
+		}
+
+		.component-description {
+			margin-bottom: 1em;
 		}
 
 		.component-detail-environment {
@@ -66,7 +54,6 @@
 					.field-label {
 						max-width: 80px;
 						position: absolute;
-						top: calc(50% - 0.75em);
 						width: 45px;
 					}
 				}
@@ -77,7 +64,7 @@
 			color: $primary-blue;
 			cursor: pointer;
 			display: inline-block;
-			padding-top: 15px;
+			padding-top: 1em;
 		}
 
 		.foot-details {
@@ -91,9 +78,9 @@
 		}
 
 		.portlet-msg-error {
+			display: block;
 			height: auto;
 			position: inherit;
-			white-space: normal;
 		}
 
 		.portlet-msg-info {
@@ -101,11 +88,8 @@
 		}
 
 		.section-heading {
-			color: $text-color;
-			font-size: 1em;
 			font-weight: bold;
-			line-height: 1em;
-			padding-top: 15px;
+			padding: 0;
 
 			&.create-ticket-title {
 				font-size: 2em;
@@ -116,13 +100,6 @@
 		.ticket-detail {
 			.attachment-text .txt-sb {
 				color: $medium-gray;
-			}
-
-			.common-textarea {
-				textarea {
-					margin-bottom: 0;
-					margin-top: 0;
-				}
 			}
 
 			.component-details {

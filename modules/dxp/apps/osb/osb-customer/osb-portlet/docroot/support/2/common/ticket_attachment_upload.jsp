@@ -132,7 +132,7 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 							<span class="title"><a href="<%= attachmentResourceURL.toString() %>" target="_blank"><%= HtmlUtil.escape(attachmentFileName) %></a> (<%= TextFormatter.formatStorageSize((double)attachmentFileSize, locale) %>k)</span>
 						</c:when>
 						<c:otherwise>
-							<span class="portlet-msg-error" style="display: inline;"><liferay-ui:message arguments="<%= HtmlUtil.escape(attachmentFileName) %>" key='<%= ((accountEnvironmentAttachment != null) && (ticketEntry == null)) ? "file-x-is-missing-and-will-not-be-added-to-the-ticket-please-replace-this-file" : "file-x-is-missing-please-replace-it" %>' /></span>
+							<span class="portlet-msg-error"><liferay-ui:message arguments="<%= HtmlUtil.escape(attachmentFileName) %>" key='<%= ((accountEnvironmentAttachment != null) && (ticketEntry == null)) ? "file-x-is-missing-and-will-not-be-added-to-the-ticket-please-replace-this-file" : "file-x-is-missing-please-replace-it" %>' /></span>
 						</c:otherwise>
 					</c:choose>
 				</c:if>
@@ -147,7 +147,7 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 					<div class="attachment-text pull-left">
 						*<liferay-ui:message arguments="<%= LanguageUtil.get(request, TicketAttachmentConstants.getTypeLabel(ticketAttachmentType)) %>" key="this-x-is-current" />
 
-						<aui:input checked="<%= confirmCheckbox %>" disabled="<%= ((accountEnvironmentAttachment == null) && (ticketAttachment == null)) %>" name='<%= fieldName + "Checkbox" %>' onclick='<%= renderResponse.getNamespace() + "validateFiles();" %>' type="checkbox" />
+						<aui:input checked="<%= confirmCheckbox %>" disabled="<%= ((accountEnvironmentAttachment == null) && (ticketAttachment == null)) %>" label="" name='<%= fieldName + "Checkbox" %>' onclick='<%= renderResponse.getNamespace() + "validateFiles();" %>' type="checkbox" />
 					</div>
 				</c:if>
 

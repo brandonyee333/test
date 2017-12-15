@@ -191,15 +191,6 @@
 	}
 }
 
-.common-textarea {
-	overflow: hidden;
-
-	textarea {
-		margin-bottom: 15px;
-		width: calc(100% - 12px);
-	}
-}
-
 .comment-scroll {
 	background-color: $light-bg;
 }

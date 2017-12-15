@@ -78,7 +78,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 		<liferay-ui:message key="upgrade-details" />
 	</h2>
 
-	<div>
+	<div class="component-description">
 		<liferay-ui:message key="please-provide-accurate-upgrade-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution" />
 	</div>
 
