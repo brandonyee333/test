@@ -215,6 +215,41 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 	if (window.parent.document.getElementById('<portlet:namespace />loginDialog')) {
 		window.parent.<portlet:namespace />openDialog(3);
 	}
+
+	<c:if test="<%= clockedIn %>">
+		Liferay.provide(
+			window,
+			'<portlet:namespace />setUpThreeDotMenus',
+			function() {
+				var A = AUI();
+
+				A.all('.three-dot-icon').each(
+					function(icon) {
+						var event = A.Event.getListeners(icon, 'click');
+
+						var parent = icon.get('parentNode');
+
+						if (!event) {
+							icon.on(
+								'click',
+								function() {
+									parent.toggleClass('open-drop-down');
+								}
+							);
+
+							icon.on(
+								'clickoutside',
+								function() {
+									parent.removeClass('open-drop-down');
+								}
+							);
+						}
+					}
+				);
+			},
+			['aui-base']
+		);
+	</c:if>
 </aui:script>
 
 <aui:script use="aui-base">
@@ -243,33 +278,5 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 		false
 	);
 
-	<c:if test="<%= clockedIn %>">
-		function <portlet:namespace />setUpThreeDotMenus() {
-			A.all('.three-dot-icon').each(
-				function(icon) {
-					var event = A.Event.getListeners(icon, 'click');
-
-					var parent = icon.get('parentNode');
-
-					if (!event) {
-						icon.on(
-							'click',
-							function() {
-								parent.toggleClass('open-drop-down');
-							}
-						);
-
-						icon.on(
-							'clickoutside',
-							function() {
-								parent.removeClass('open-drop-down');
-							}
-						);
-					}
-				}
-			);
-		}
-
-		<portlet:namespace />setUpThreeDotMenus();
-	</c:if>
+	<portlet:namespace />setUpThreeDotMenus();
 </aui:script>

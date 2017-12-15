@@ -121,75 +121,90 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 <%@ include file="/support/2/common/javascript/ticket_entry_validator_js.jspf" %>
 
-<aui:script use="node">
-	var A = AUI();
-
+<aui:script use="aui-base">
 	A.all('.component-tab').hide();
 
-	var serverTypeNode = A.one('#<portlet:namespace />serverCommunicationType');
+	var requiredStatus = 'true';
 
 	<c:choose>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_CLUSTERING %>">
 			var clusteringDetails = A.one('.component-tab#<portlet:namespace />clusteringDetails');
 
-			clusteringDetails.show();
+			if (clusteringDetails) {
+				clusteringDetails.show();
+			}
 
-			serverTypeNode.setAttribute('data-field-required-status', 'false');
+			requiredStatus = 'false';
 		</c:when>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_LICENSE %>">
 			var activationKeyDetails = A.one('.component-tab#<portlet:namespace />activationKeyDetails');
 
-			activationKeyDetails.show();
-
-			serverTypeNode.setAttribute('data-field-required-status', 'true');
+			if (activationKeyDetails) {
+				activationKeyDetails.show();
+			}
 		</c:when>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_UPGRADE %>">
 			var upgradeDetails = A.one('.component-tab#<portlet:namespace />upgradeDetails');
 
-			upgradeDetails.show();
-
-			serverTypeNode.setAttribute('data-field-required-status', 'true');
+			if (upgradeDetails) {
+				upgradeDetails.show();
+			}
 		</c:when>
-		<c:otherwise>
-			serverTypeNode.setAttribute('data-field-required-status', 'true');
-		</c:otherwise>
 	</c:choose>
 
-	var onChange = function(e) {
-		var name = e.currentTarget.getAttribute('name');
+	var serverTypeNode = A.one('#<portlet:namespace />serverCommunicationType');
 
-		var label = A.one('label#' + name + 'Label');
+	if (serverTypeNode) {
+		serverTypeNode.setAttribute('data-field-required-status', requiredStatus);
+	}
+
+	var onChange = function(event) {
+		var name = event.currentTarget.getAttribute('name');
+
+		var label = 'label#' + name + 'Label';
 
 		if (name.indexOf('dueDate') > -1) {
-			label = A.one('label#<portlet:namespace />dueDateLabel');
+			label = 'label#<portlet:namespace />dueDateLabel';
 		}
 		else if (name.indexOf('toEnvLFR') > -1) {
-			label = A.one('#<portlet:namespace />envLFRLabel');
+			label = '#<portlet:namespace />envLFRLabel';
 		}
 
-		var labelAncestor = label.ancestor('.tab-content-tab');
-		var tabId = labelAncestor.getAttribute('id');
+		label = A.one(label);
 
-		var tab = A.one('span#' + tabId);
+		if (label) {
+			var labelAncestor = label.ancestor('.tab-content-tab');
 
-		label.addClass('field-modified');
+			if (labelAncestor) {
+				var tabId = labelAncestor.getAttribute('id');
 
-		var modified = '(Modified)'.bold();
+				var tab = A.one('span#' + tabId);
 
-		if (tab.html().indexOf('Modified') == -1) {
-			tab.append(modified);
-			tab.addClass('field-modified');
-		}
+				label.addClass('field-modified');
 
-		document.getElementById('<portlet:namespace />modified').value = 'true';
+				var modified = '(Modified)'.bold();
 
-		if (this.hasAttribute('data-field-required-status')) {
-			<portlet:namespace />validateRequiredField(this);
+				if (tab && (tab.html().indexOf('Modified') == -1)) {
+					tab.append(modified);
+
+					tab.addClass('field-modified');
+				}
+
+				document.getElementById('<portlet:namespace />modified').value = 'true';
+
+				if (this.hasAttribute('data-field-required-status')) {
+					<portlet:namespace />validateRequiredField(this);
+				}
+			}
 		}
 	};
 
-	A.one('#<portlet:namespace />editTicketTabContent').delegate('change', onChange, 'input[type=checkbox], select');
-	A.one('#<portlet:namespace />editTicketTabContent').delegate('keyup', onChange, 'input[type=text], textarea');
+	var editTicketTabContent = A.one('#<portlet:namespace />editTicketTabContent');
+
+	if (editTicketTabContent) {
+		editTicketTabContent.delegate('change', onChange, 'input[type=checkbox], select');
+		editTicketTabContent.delegate('keyup', onChange, 'input[type=text], textarea');
+	}
 </aui:script>
 
 <aui:script>

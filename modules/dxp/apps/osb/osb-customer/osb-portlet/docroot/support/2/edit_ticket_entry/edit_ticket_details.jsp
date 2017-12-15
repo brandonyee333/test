@@ -109,7 +109,12 @@ if (liferayIncOrg || partnerWorker) {
 				<%= HtmlUtil.escape(productEntry.getName()) %>
 			</span>
 
-			<input class="aui-button-input" onClick="var offeringEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/support/2/select_offering_entry.jsp" /><portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" /></portlet:renderURL>', 'offering_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=900'); void(''); offeringEntryWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+			<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>" var="chooseProductURL">
+				<portlet:param name="mvcPath" value="/support/2/select_offering_entry.jsp" />
+				<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
+			</portlet:renderURL>
+
+			<input class="aui-button-input" onClick="var offeringEntryWindow = window.open('<%= chooseProductURL %>', 'offering_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=900'); void(''); offeringEntryWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
 		</div>
 	</c:if>
 

@@ -306,7 +306,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 
 		var other = (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>');
 
-		envOsCustom.toggle(other);
+		envOSCustom.toggle(other);
 
 		if (!other) {
 			envOSCustom.val('');
