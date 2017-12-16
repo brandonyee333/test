@@ -73,7 +73,7 @@
 		<span class="icon-long-arrow-right"></span>
 	</a>
 
-	<c:if test="<%= !searchFilters.isEmpty() || supportPartnerWorker || !developerAccountEntryIds.isEmpty() %>">
+	<c:if test="<%= !developerAccountEntryIds.isEmpty() || !searchFilters.isEmpty() || supportPartnerWorker %>">
 		<ul class="nav-submenu" role="menubar">
 			<li role="menuitem">
 				<aui:a href="<%= myOpenTicketsURL %>" label="my-open-tickets" />
