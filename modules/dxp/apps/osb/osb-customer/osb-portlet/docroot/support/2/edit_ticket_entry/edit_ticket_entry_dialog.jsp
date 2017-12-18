@@ -155,7 +155,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 	var serverTypeNode = A.one('#<portlet:namespace />serverCommunicationType');
 
 	if (serverTypeNode) {
-		serverTypeNode.setAttribute('data-field-required-status', requiredStatus);
+		serverTypeNode.attr('data-field-required-status', requiredStatus);
 	}
 
 	var onChange = function(event) {
@@ -338,6 +338,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 			}
 
 			window.scroll(0, 0);
-		}
+		},
+		['aui-base']
 	);
 </aui:script>

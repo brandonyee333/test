@@ -109,7 +109,7 @@ if (liferayIncOrg || partnerWorker) {
 				<%= HtmlUtil.escape(productEntry.getName()) %>
 			</span>
 
-			<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>" var="chooseProductURL">
+			<portlet:renderURL var="chooseProductURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 				<portlet:param name="mvcPath" value="/support/2/select_offering_entry.jsp" />
 				<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
 			</portlet:renderURL>
@@ -455,8 +455,6 @@ if (liferayIncOrg || partnerWorker) {
 	}
 
 	function <portlet:namespace />selectOfferingEntry(accountEntryId, offeringEntryId, accountEntryName, supportResponseName, productEntryName) {
-		var A = AUI();
-
 		document.<portlet:namespace />fm3.<portlet:namespace />accountEntryId.value = accountEntryId;
 		document.<portlet:namespace />fm3.<portlet:namespace />offeringEntryId.value = offeringEntryId;
 
@@ -471,12 +469,10 @@ if (liferayIncOrg || partnerWorker) {
 	}
 
 	function <portlet:namespace />selectReportedBy(userId, userName) {
-		var A = AUI();
-
 		document.<portlet:namespace />fm3.<portlet:namespace />reportedByUserId.value = userId;
 
-		var userNameEl = document.getElementById('<portlet:namespace />reportedByUserName');
 		var reporterLabelEl = document.getElementById('<portlet:namespace />reporterLabel');
+		var userNameEl = document.getElementById('<portlet:namespace />reportedByUserName');
 
 		userNameEl.innerHTML = userName;
 
