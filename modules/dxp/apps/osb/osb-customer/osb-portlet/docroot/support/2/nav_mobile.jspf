@@ -25,7 +25,6 @@
 
 					<aui:a href='<%= searchFilters.isEmpty() && !supportPartnerWorker && developerAccountEntryIds.isEmpty() ? myOpenTicketsURL : "javascript:;" %>' label="tickets" />
 				</li>
-
 				<li data-page-id="advSearchPage" role="menuitem">
 					<portlet:renderURL var="advancedSearchURL">
 						<portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" />
@@ -51,13 +50,11 @@
 
 					<aui:a href="<%= helpURL %>" label="help" />
 				</li>
-
 				<li data-page-id="lesaFeedbackPage" role="menuitem">
 					<liferay-ui:message key="feedback" />
 
 					<%@ include file="/support/2/lesa_feedback.jspf" %>
 				</li>
-
 				<li data-page-id="settingsPage" role="menuitem">
 					<portlet:renderURL var="preferencesURL">
 						<portlet:param name="mvcPath" value="/support/2/preferences.jsp" />
