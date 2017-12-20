@@ -431,18 +431,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 </c:if>
 
 <aui:script use="aui-base">
-	for (var i = 1; i < 4; i++) {
-		var fileField = A.one('#<portlet:namespace />file' + i);
-
-		if (fileField) {
-			fileField.on('change', <portlet:namespace />onFileChange);
-
-			<portlet:namespace />validateFile(fileField);
-		}
-	}
-</aui:script>
-
-<aui:script>
 	function <portlet:namespace />onFileChange(event) {
 		<portlet:namespace />validateFile(event.currentTarget);
 	}
@@ -461,6 +449,16 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 				fileField.val('');
 			}
+		}
+	}
+
+	for (var i = 1; i < 4; i++) {
+		var fileField = A.one('#<portlet:namespace />file' + i);
+
+		if (fileField) {
+			fileField.on('change', <portlet:namespace />onFileChange);
+
+			<portlet:namespace />validateFile(fileField);
 		}
 	}
 </aui:script>
@@ -544,6 +542,41 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 		function <portlet:namespace />displayProgressMessage(file) {
 			dynamicUploader.updateMessage('<liferay-ui:message key="uploading" unicode="<%= true %>" />...', 'progress');
+		}
+
+		function <portlet:namespace />generateToken(dynamicUploader, resumableUploader, overwrite) {
+			var token = A.one('#<portlet:namespace />token');
+
+			if (overwrite || !token.get('value')) {
+				A.io.request(
+					'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="uploadToken" />',
+					{
+						data: {
+							<portlet:namespace />fileRepositoryId: '<%= HtmlUtil.escape(fileRepositoryId) %>',
+							<portlet:namespace />ticketEntryId: <%= ticketEntry.getTicketEntryId() %>
+						},
+						dataType: 'json',
+						method: 'post',
+						on: {
+							success: function() {
+								var response = this.get('responseData');
+
+								if (response.message == 'success') {
+									token.set('value', response.token);
+
+									resumableUploader.upload();
+								}
+								else {
+									dynamicUploader.updateMessage('<liferay-ui:message key="there-was-an-unexpected-error.-please-refresh-the-current-page" unicode="<%= true %>" />', 'error');
+								}
+							}
+						}
+					}
+				);
+			}
+			else {
+				resumableUploader.upload();
+			}
 		}
 
 		function <portlet:namespace />handleFileValidated(file) {
@@ -700,45 +733,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					}
 				}
 			);
-		}
-	</aui:script>
-
-	<aui:script>
-		function <portlet:namespace />generateToken(dynamicUploader, resumableUploader, overwrite) {
-			var A = AUI();
-
-			var token = A.one('#<portlet:namespace />token');
-
-			if (overwrite || !token.get('value')) {
-				A.io.request(
-					'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="uploadToken" />',
-					{
-						data: {
-							<portlet:namespace />fileRepositoryId: '<%= HtmlUtil.escape(fileRepositoryId) %>',
-							<portlet:namespace />ticketEntryId: <%= ticketEntry.getTicketEntryId() %>
-						},
-						dataType: 'json',
-						method: 'post',
-						on: {
-							success: function() {
-								var response = this.get('responseData');
-
-								if (response.message == 'success') {
-									token.set('value', response.token);
-
-									resumableUploader.upload();
-								}
-								else {
-									dynamicUploader.updateMessage('<liferay-ui:message key="there-was-an-unexpected-error.-please-refresh-the-current-page" unicode="<%= true %>" />', 'error');
-								}
-							}
-						}
-					}
-				);
-			}
-			else {
-				resumableUploader.upload();
-			}
 		}
 	</aui:script>
 </c:if>

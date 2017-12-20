@@ -165,13 +165,11 @@
 				</div>
 			</aui:form>
 
-			<aui:script>
+			<aui:script use="aui-base">
 				function <portlet:namespace />onFileChange(event) {
 					<portlet:namespace />validateFile(event.currentTarget);
 				}
-			</aui:script>
 
-			<aui:script use="aui-base">
 				function <portlet:namespace />validateFile(fileField) {
 					var value = fileField.val();
 
