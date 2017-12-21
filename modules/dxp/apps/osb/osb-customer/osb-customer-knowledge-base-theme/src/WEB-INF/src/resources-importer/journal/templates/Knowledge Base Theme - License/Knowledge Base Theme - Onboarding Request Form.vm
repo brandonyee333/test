@@ -187,13 +187,13 @@
 						<option selected disabled hidden value='' />
 
 						#foreach ($selectOption in $selectOptions)
-							#set ($select_child_options = $selectOption.child.siblings)
+							#set ($selectChildOptions = $selectOption.child.siblings)
 
-							#if ($select_child_options.size() > 1)
+							#if ($selectChildOptions.size() > 1)
 								<optgroup label="$selectOption.data">
 
-								#foreach ($select_child_option in $select_child_options)
-									<option value="$select_child_option.data">$select_child_option.data</option>
+								#foreach ($selectChildOption in $selectChildOptions)
+									<option value="$selectChildOption.data">$selectChildOption.data</option>
 								#end
 
 								</optgroup>

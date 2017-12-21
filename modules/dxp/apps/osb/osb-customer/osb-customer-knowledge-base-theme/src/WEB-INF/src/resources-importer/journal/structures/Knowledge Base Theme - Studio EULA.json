@@ -11,7 +11,7 @@
 				"en_US": "accepted-eula-page"
 			},
 			"localizable": true,
-			"name": "TextBox820o",
+			"name": "acceptedEulaPage",
 			"predefinedValue": {
 				"en_US": ""
 			},

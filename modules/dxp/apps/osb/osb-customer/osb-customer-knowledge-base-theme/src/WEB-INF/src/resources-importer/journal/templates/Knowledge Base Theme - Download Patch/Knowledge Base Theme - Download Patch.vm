@@ -1,29 +1,29 @@
 #if ($patchType.getData() == "Tool")
-	#set ($icon_url = "/image/image_gallery?uuid=29de8312-e4f7-4cf6-b635-75a20e3b2fdc&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=29de8312-e4f7-4cf6-b635-75a20e3b2fdc&groupId=$groupId")
 #elseif ($patchType.getData() == "Security")
-	#set ($icon_url = "/image/image_gallery?uuid=936d9ff7-b77f-4085-be33-916b592ac0bb&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=936d9ff7-b77f-4085-be33-916b592ac0bb&groupId=$groupId")
 #elseif ($patchType.getData() == "Update")
-	#set ($icon_url = "/image/image_gallery?uuid=0589e374-02be-4163-9fd2-954742b70021&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=0589e374-02be-4163-9fd2-954742b70021&groupId=$groupId")
 #elseif ($patchType.getData() == "Bundle")
-	#set ($icon_url = "/image/image_gallery?uuid=7434cffc-53b2-4139-bbfa-b276bc274c72&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=7434cffc-53b2-4139-bbfa-b276bc274c72&groupId=$groupId")
 #elseif ($patchType.getData() == "For Developers")
-	#set ($icon_url = "/image/image_gallery?uuid=f98a22dd-c337-4230-8d05-83d074f2c857&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=f98a22dd-c337-4230-8d05-83d074f2c857&groupId=$groupId")
 #elseif ($patchType.getData() == "WAR")
-	#set ($icon_url = "/documents/3133562/14203318/Portal-WAR/4b88c8dd-7abb-4d47-8ccf-60c0ddb7da39?t=1359583560000")
+	#set ($iconUrl = "/documents/3133562/14203318/Portal-WAR/4b88c8dd-7abb-4d47-8ccf-60c0ddb7da39?t=1359583560000")
 #elseif ($patchType.getData() == "Database")
-	#set ($icon_url = "/image/image_gallery?uuid=7cedcc11-36c4-4581-b5af-e106d97d347c&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=7cedcc11-36c4-4581-b5af-e106d97d347c&groupId=$groupId")
 #elseif ($patchType.getData() == "Hook")
-	#set ($icon_url = "/image/image_gallery?uuid=7ff92890-2873-4e5d-9464-8489764245da&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=7ff92890-2873-4e5d-9464-8489764245da&groupId=$groupId")
 #elseif ($patchType.getData() == "Portlet")
-	#set ($icon_url = "/image/image_gallery?uuid=e7090c64-c2e6-409f-b10a-9caecea1c863&groupId=$groupId")
-#elseif ($patchType.getData() == "Templateset
-	#")($icon_url = "/image/image_gallery?uuid=90199274-681b-4852-99fd-5ada40239354&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=e7090c64-c2e6-409f-b10a-9caecea1c863&groupId=$groupId")
+#elseif ($patchType.getData() == "Templateset")
+	#set ($iconUrl = "/image/image_gallery?uuid=90199274-681b-4852-99fd-5ada40239354&groupId=$groupId")
 #elseif ($patchType.getData() == "Web")
-	#set ($icon_url = "/image/image_gallery?uuid=cdcf7958-dfd2-4cb6-af26-435847d95eb3&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=cdcf7958-dfd2-4cb6-af26-435847d95eb3&groupId=$groupId")
 #elseif ($patchType.getData() == "Document")
-	#set ($icon_url = "/image/image_gallery?uuid=8f8a6ce1-1925-40fd-a7a8-9d827424d879&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=8f8a6ce1-1925-40fd-a7a8-9d827424d879&groupId=$groupId")
 #else
-	#set ($icon_url = "/image/image_gallery?uuid=7cedcc11-36c4-4581-b5af-e106d97d347c&groupId=$groupId")
+	#set ($iconUrl = "/image/image_gallery?uuid=7cedcc11-36c4-4581-b5af-e106d97d347c&groupId=$groupId")
 #end
 
 #set ($linkToArticle = "/group/customer/downloads/-/asset_publisher/YtYHVPRKNO6z/content/$reserved-article-url-title.data")
@@ -85,7 +85,7 @@
 <div class="customer-downloads-template">
 	<p>
 		<a href="$linkToArticle">
-			<img src="$icon_url" style="margin-left: 9px; margin-right: 9px; margin-top: 5px; margin-bottom: 5px; float: left; width: 64px; height: 64px;" />
+			<img src="$iconUrl" style="margin-left: 9px; margin-right: 9px; margin-top: 5px; margin-bottom: 5px; float: left; width: 64px; height: 64px;" />
 		</a>
 
 		<a href="$linkToArticle">

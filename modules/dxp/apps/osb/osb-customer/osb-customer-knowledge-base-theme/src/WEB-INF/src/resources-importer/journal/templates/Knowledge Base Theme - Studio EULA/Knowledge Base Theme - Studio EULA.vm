@@ -69,7 +69,7 @@
 #end
 
 #if ($requiresEULA == "false")
-	$accepted-eula-page.getData()
+	$acceptedEulaPage.getData()
 #else
 	#set ($languageIds = ["en_US"])
 

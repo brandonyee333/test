@@ -1,15 +1,15 @@
-#foreach ($each-article in $heading.siblings)
+#foreach ($eachArticle in $heading.siblings)
 	<article>
 		<div class="unit">
 			<div class="unit-content">
-				#if ($each-article.data != "")
+				#if ($eachArticle.data != "")
 					<h1 class="section-heading">
-						$each-article.data
+						$eachArticle.data
 					</h1>
 				#end
 
-				#if ($each-article.content.data != "")
-					$each-article.content.data
+				#if ($eachArticle.content.data != "")
+					$eachArticle.content.data
 				#end
 			</div>
 		</div>

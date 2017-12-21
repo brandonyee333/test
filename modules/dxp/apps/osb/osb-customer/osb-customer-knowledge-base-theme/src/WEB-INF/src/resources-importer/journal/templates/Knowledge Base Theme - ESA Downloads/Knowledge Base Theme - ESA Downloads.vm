@@ -85,10 +85,10 @@
 			#end
 
 			<div class="download">
-				#set ($more_than_one_download = (($downloadGroups.siblings.size() > 1) || ($downloadGroups.downloads.siblings.size() > 1)))
+				#set ($moreThanOneDownload = (($downloadGroups.siblings.size() > 1) || ($downloadGroups.downloads.siblings.size() > 1)))
 
 				#if ($downloadGroups.downloads.data != "")
-					#if ($more_than_one_download)
+					#if ($moreThanOneDownload)
 						<select id="downloadSelect${articleId}" onChange="updateDownloadDetails${articleId}(this.selectedIndex);">
 
 						#set ($selectCssClass = "float-right")
@@ -98,13 +98,13 @@
 					#set ($downloadDetails = {})
 					#set ($releaseNotes = "")
 
-					#foreach ($download_group in $downloadGroups.siblings)
-						#if ($more_than_one_download)
-							<optgroup label="$download_group.data">
+					#foreach ($downloadGroup in $downloadGroups.siblings)
+						#if ($moreThanOneDownload)
+							<optgroup label="$downloadGroup.data">
 						#end
 
-						#foreach ($download in $download_group.downloads.siblings)
-							#if ($more_than_one_download)
+						#foreach ($download in $downloadGroup.downloads.siblings)
+							#if ($moreThanOneDownload)
 								<option value="$download.link.data">$download.data</option>
 							#end
 
@@ -131,12 +131,12 @@
 							#set ($counter = $counter + 1)
 						#end
 
-						#if ($more_than_one_download)
+						#if ($moreThanOneDownload)
 							</optgroup>
 						#end
 					#end
 
-					#if ($more_than_one_download)
+					#if ($moreThanOneDownload)
 						</select>
 					#end
 				#end
@@ -168,7 +168,7 @@
 					<a class="class-toggle ${hide}" data-target-node="#detailsSection${articleId}" href="javascript:;" id="detailsToggler${articleId}">#language("details")</a>
 
 					<div class="details toggle-content">
-						#foreach ($detail_set in $downloadDetails)
+						#foreach ($detailSet in $downloadDetails)
 							#set ($hide = "aui-helper-hidden")
 							#set ($index = $velocityCount - 1)
 
@@ -176,9 +176,9 @@
 								#set ($hide = "")
 							#end
 
-							#if ($detail_set != "")
+							#if ($detailSet != "")
 								<div class="details download-info ${hide}" id="downloadDetail${articleId}_${index}">
-									#foreach($detail in $detail_set)
+									#foreach($detail in $detailSet)
 										<dl>
 											<dt title="${detail.key}">
 												${detail.key}:

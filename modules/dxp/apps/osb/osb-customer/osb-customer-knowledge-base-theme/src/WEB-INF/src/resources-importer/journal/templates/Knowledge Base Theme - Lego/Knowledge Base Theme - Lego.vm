@@ -16,35 +16,35 @@
 	$legoCss.data
 
 	#foreach ($mediaQuery in $legoMediaQuery.siblings)
-		#set ($mediaQuery_text = "@media all")
+		#set ($mediaQueryText = "@media all")
 
 		#if ($mediaQuery.mediaQueryMax.data != "")
-			#set ($mediaQuery_text = $mediaQuery_text + " and (max-width: $mediaQuery.mediaQueryMax.data)")
+			#set ($mediaQueryText = $mediaQueryText + " and (max-width: $mediaQuery.mediaQueryMax.data)")
 		#end
 
 		#if ($mediaQuery.mediaQueryMin.data != "")
-			#set ($mediaQuery_text = $mediaQuery_text + " and (min-width: $mediaQuery.mediaQueryMin.data)")
+			#set ($mediaQueryText = $mediaQueryText + " and (min-width: $mediaQuery.mediaQueryMin.data)")
 		#end
 
 		#if ($mediaQuery.data != "")
-			$mediaQuery_text {
+			$mediaQueryText {
 				$mediaQuery.data
 			}
 		#end
 	#end
 </style>
 
-#set ($article_css_class = "lego-article")
+#set ($articleCssClass = "lego-article")
 
 #if ($legoCssClass.data != "")
-	#set ($article_css_class = $article_css_class + " $legoCssClass.data")
+	#set ($articleCssClass = $articleCssClass + " $legoCssClass.data")
 #end
 
-<div class="$article_css_class" id="article-${reserved-article-id.data}">
+<div class="$articleCssClass" id="article-${reserved-article-id.data}">
 	<div class="lego-article-content max-960">
 		#foreach ($section in $legoSectionAttr.siblings)
-			#set ($section_count = $velocityCount)
-			#set ($sectionCssClass = "aui-helper-clearfix lego-section section-${section_count}")
+			#set ($sectionCount = $velocityCount)
+			#set ($sectionCssClass = "aui-helper-clearfix lego-section section-${sectionCount}")
 
 			#if ($section.sectionCssClass.data != "")
 				#set ($sectionCssClass = $sectionCssClass + " $section.sectionCssClass.data" )
@@ -52,8 +52,8 @@
 
 			<div class="$sectionCssClass" $section.data>
 				#foreach ($block in $section.legoBlockAttr.siblings)
-					#set ($block_count = $velocityCount)
-					#set ($blockCssClass = "aui-w${block.width.data} block-${block_count} content-column lego-block")
+					#set ($blockCount = $velocityCount)
+					#set ($blockCssClass = "aui-w${block.width.data} block-${blockCount} content-column lego-block")
 
 					#if ($block.blockCssClass.data != "")
 						#set ($blockCssClass = $blockCssClass + " $block.blockCssClass.data" )
@@ -69,7 +69,7 @@
 								#end
 
 								#if ($element.elementType.data == "button")
-									<a class="btn $elementCssClass" id="button-${reserved-article-id.data}${section_count}${block_count}$velocityCount" $element.data>$element.elementContent.data</a>
+									<a class="btn $elementCssClass" id="button-${reserved-article-id.data}${sectionCount}${blockCount}$velocityCount" $element.data>$element.elementContent.data</a>
 								#elseif ($element.elementType.data == "heading")
 									<h2 class="redesign heading $elementCssClass" $element.data>
 										$element.elementContent.data

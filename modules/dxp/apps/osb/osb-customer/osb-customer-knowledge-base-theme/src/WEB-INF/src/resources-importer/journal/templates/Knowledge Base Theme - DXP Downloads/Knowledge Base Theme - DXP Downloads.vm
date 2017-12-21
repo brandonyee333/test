@@ -61,9 +61,9 @@
 			#set ($releaseNotes = [])
 
 			<select id="downloadSelect${articleId}" onchange="AUI().one('#download${articleId}').attr('href', this.value); updateDownloadDetails${articleId}(this.selectedIndex);">
-				#foreach ($download_group in $downloadGroups.siblings)
-					<optgroup label="$download_group.data">
-						#foreach ($download in $download_group.downloads.siblings)
+				#foreach ($downloadGroup in $downloadGroups.siblings)
+					<optgroup label="$downloadGroup.data">
+						#foreach ($download in $downloadGroup.downloads.siblings)
 							<option value="$download.link.data">$download.data</option>
 
 							#set ($currentDownloadDetails = {})
@@ -80,7 +80,7 @@
 								#set ($void = $downloadDetails.put($counter, $currentDownloadDetails))
 							#end
 
-							#set ($void = $releaseNotes.add($download.release_notes.data))
+							#set ($void = $releaseNotes.add($download.releaseNotes.data))
 							#set ($counter = $counter + 1)
 						#end
 					</optgroup>
