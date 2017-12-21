@@ -198,7 +198,7 @@
 		<span class="nav-tooltip"><liferay-ui:message key="help" /></span>
 	</div>
 
-	<div class="bottom lesa-feedback-icon nav-icon" data-page-id="lesaFeedbackPage">
+	<div class="bottom lesa-feedback-icon nav-icon" data-page-id="lesaFeedbackPage" id="<portlet:namespace />lesaFeedbackIcon">
 		<svg height="27px" viewBox="0 0 27 27" width="27px">
 			<path d="m 26.387266, 18.421265 -20.0942753, 0 -5.58771302, 5.587713 0, -23.3179561 25.78944432, 0 0,17.7302431 z" />
 			<path d="M 3, 5.25 24, 5.25" />
@@ -243,7 +243,7 @@
 	</div>
 </div>
 
-<c:if test="<%= !searchFilters.isEmpty() || supportPartnerWorker || !developerAccountEntryIds.isEmpty() %>">
+<c:if test="<%= !developerAccountEntryIds.isEmpty() || !searchFilters.isEmpty() || supportPartnerWorker %>">
 	<aui:script use="aui-base">
 		var homePage = A.all('[data-page-id="homePage"]');
 		var navSubmenu = A.all('.nav-submenu');

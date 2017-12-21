@@ -1,0 +1,36 @@
+.lesa-feedback-modal {
+	.lesa-feedback-container {
+		margin: 20px;
+
+		textarea {
+			padding: 0;
+			resize: none;
+			width: 100%;
+
+			&.comments {
+				height: 100px;
+			}
+		}
+
+		.center {
+			text-align: center;
+		}
+
+		.feedback-msg-error {
+			color: $urgent;
+			visibility: hidden;
+
+			&.visible {
+				visibility: visible;
+			}
+		}
+
+		.margin-top-30 {
+			margin-top: 30px;
+		}
+
+		.radio-button {
+			margin-left: 20px;
+		}
+	}
+}

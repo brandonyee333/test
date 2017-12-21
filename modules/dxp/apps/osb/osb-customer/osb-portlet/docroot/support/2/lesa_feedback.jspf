@@ -25,19 +25,19 @@
 				<liferay-ui:message key="please-select-one-of-the-following" />
 			</div>
 
-			<div>
-				<aui:input checked="<%= true %>" name="lesaFeedbackRadioButton" type="radio" value="0" />
+			<div class="radio-button">
+				<aui:input checked="<%= true %>" label="" name="lesaFeedbackRadioButton" type="radio" value="0" />
 
 				<liferay-ui:message key="i-would-like-to-give-feedback-about-lesa" />
 			</div>
 
-			<div>
-				<aui:input name="lesaFeedbackRadioButton" type="radio" value="1" />
+			<div class="radio-button">
+				<aui:input label="" name="lesaFeedbackRadioButton" type="radio" value="1" />
 
 				<liferay-ui:message key="i-would-like-to-report-a-bug-in-lesa" />
 			</div>
 
-			<div class="margin-top-10">
+			<div>
 				<div class="feedback-msg-error" id="<portlet:namespace />lesaFeedbackSummaryMessage">
 					<liferay-ui:message key="please-provide-a-summary" />
 				</div>
@@ -46,10 +46,10 @@
 					<liferay-ui:message key="summary" />:
 				</div>
 
-				<aui:input cssClass="textarea-summary" name="lesaFeedbackSummary" type="textarea" />
+				<aui:input cssClass="textarea-summary" label="" name="lesaFeedbackSummary" type="textarea" />
 			</div>
 
-			<div class="margin-top-10">
+			<div>
 				<div class="feedback-msg-error" id="<portlet:namespace />lesaFeedbackCommentsMessage">
 					<liferay-ui:message key="please-provide-a-description" />
 				</div>
@@ -58,10 +58,10 @@
 					<liferay-ui:message key="comments" />:
 				</div>
 
-				<aui:input cssClass="textarea-comments" name="lesaFeedbackComments" type="textarea" />
+				<aui:input cssClass="comments" label="" name="lesaFeedbackComments" type="textarea" />
 			</div>
 
-			<div class="clearfix">
+			<div class="clearfix margin-top-30">
 				<aui:button cssClass="pull-left" name="lesaFeedbackCancelButton" value="cancel" />
 				<aui:button cssClass="pull-right" name="lesaFeedbackSubmitButton" value="submit" />
 			</div>
@@ -80,13 +80,13 @@
 				<liferay-ui:message key="your-feedback-has-been-submitted" />
 			</div>
 
-			<aui:button name="lesaFeedbackCloseButton" value="close" />
+			<aui:button cssClass="margin-top-30" name="lesaFeedbackCloseButton" value="close" />
 		</div>
 	</div>
 </div>
 
 <aui:script>
-	function <portlet:namespace />closePopup(dialog) {
+	function <portlet:namespace />closePopup(modal) {
 		var commentsNode = document.getElementById('<portlet:namespace />lesaFeedbackComments');
 		var summaryNode = document.getElementById('<portlet:namespace />lesaFeedbackSummary');
 
@@ -102,7 +102,7 @@
 		}
 
 		if (cancelEdit || !hasCommentsSummary) {
-			dialog.hide();
+			modal.hide();
 
 			<portlet:namespace />resetFeedback();
 		}
@@ -117,19 +117,20 @@
 </aui:script>
 
 <aui:script use="aui-base,aui-io,aui-modal">
-	var lesaFeedbackDialog = A.one('#<portlet:namespace />lesaFeedbackContainer');
+	var lesaFeedbackModal = A.one('#<portlet:namespace />lesaFeedbackContainer');
 
-	if (lesaFeedbackDialog) {
-		var dialog = new A.Modal(
+	if (lesaFeedbackModal) {
+		var modal = new A.Modal(
 			{
-				bodyContent: lesaFeedbackDialog,
+				bodyContent: lesaFeedbackModal,
 				centered: true,
 				constrain: true,
-				cssClass: 'lesa-feedback-dialog',
+				cssClass: 'lesa-feedback-modal',
 				draggable: false,
 				modal: true,
 				resizable: false,
-				visible: false
+				visible: false,
+				zIndex: 1001
 			}
 		).render();
 	}
@@ -140,7 +141,18 @@
 		lesaFeedbackIcon.on(
 			'click',
 			function() {
-				dialog.show();
+				modal.show();
+			}
+		);
+	}
+
+	var lesaFeedbackIconMobile = A.one('#<portlet:namespace />lesaFeedbackIconMobile');
+
+	if (lesaFeedbackIconMobile) {
+		lesaFeedbackIconMobile.on(
+			'click',
+			function() {
+				modal.show();
 			}
 		);
 	}
@@ -151,7 +163,7 @@
 		lesaFeedbackCancelButton.on(
 			'click',
 			function() {
-				<portlet:namespace />closePopup(dialog);
+				<portlet:namespace />closePopup(modal);
 			}
 		);
 	}
@@ -214,33 +226,33 @@
 					}
 				);
 
-				var lesaFeedbackDialogContent = A.one('.lesa-feedback-dialog-content');
+				var lesaFeedbackModalContent = A.one('.lesa-feedback-modal-content');
 
-				if (lesaFeedbackDialogContent) {
-					lesaFeedbackDialogContent.addClass('lesa-feedback-thank-you');
+				if (lesaFeedbackModalContent) {
+					lesaFeedbackModalContent.addClass('lesa-feedback-thank-you');
 				}
 
-				var lesaFeedbackThankYouDialog = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
+				var lesaFeedbackThankYouModal = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
 
-				if (lesaFeedbackThankYouDialog) {
-					dialog.set('bodyContent', lesaFeedbackThankYouDialog);
+				if (lesaFeedbackThankYouModal) {
+					modal.set('bodyContent', lesaFeedbackThankYouModal);
 				}
 
-				dialog.syncUI();
+				modal.syncUI();
 
 				var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
 
-				if (lesaFeedbackCloseButton && lesaFeedbackDialogContent) {
+				if (lesaFeedbackCloseButton && lesaFeedbackModalContent) {
 					lesaFeedbackCloseButton.on(
 						'click',
 						function() {
-							dialog.hide();
+							modal.hide();
 
-							lesaFeedbackDialogContent.removeClass('lesa-feedback-thank-you');
+							lesaFeedbackModalContent.removeClass('lesa-feedback-thank-you');
 
-							dialog.set('bodyContent', lesaFeedbackDialog);
+							modal.set('bodyContent', lesaFeedbackModal);
 
-							dialog.syncUI();
+							modal.syncUI();
 
 							<portlet:namespace />resetFeedback();
 						}
@@ -254,7 +266,7 @@
 		'keydown',
 		function(event) {
 			if (A.keyCode === 27) {
-				<portlet:namespace />closePopup(dialog);
+				<portlet:namespace />closePopup(modal);
 			}
 		}
 	);
