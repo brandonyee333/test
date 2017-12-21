@@ -137,7 +137,7 @@ if (offeringBundle != null) {
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator paginate="<%= false %>" />
+		<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
 	</liferay-ui:search-container>
 
 	<br />

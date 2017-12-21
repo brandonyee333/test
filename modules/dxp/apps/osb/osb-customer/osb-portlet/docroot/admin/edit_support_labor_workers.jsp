@@ -170,7 +170,7 @@ portletURL.setParameter("supportLaborId", String.valueOf(supportLaborId));
 
 		<br /><br />
 
-		<liferay-ui:search-iterator />
+		<liferay-ui:search-iterator markupView="lexicon" />
 	</liferay-ui:search-container>
 </aui:form>
 

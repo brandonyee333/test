@@ -87,6 +87,6 @@ String selectAll = "javascript:";
 
 		<br /><br />
 
-		<liferay-ui:search-iterator paginate="<%= false %>" />
+		<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
 	</liferay-ui:search-container>
 </aui:form>

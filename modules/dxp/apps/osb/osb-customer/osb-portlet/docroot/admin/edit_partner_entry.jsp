@@ -298,7 +298,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				/>
 			</liferay-ui:search-container-row>
 
-			<liferay-ui:search-iterator paginate="<%= false %>" />
+			<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
 		</liferay-ui:search-container>
 	</c:if>
 
@@ -364,7 +364,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 							/>
 						</liferay-ui:search-container-row>
 
-						<liferay-ui:search-iterator paginate="<%= false %>" />
+						<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
 					</liferay-ui:search-container>
 				</div>
 

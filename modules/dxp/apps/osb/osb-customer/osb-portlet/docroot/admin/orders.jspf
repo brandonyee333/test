@@ -101,6 +101,6 @@ String redirect = ParamUtil.getString(request, "redirect", searchURL.toString())
 
 		<br />
 
-		<liferay-ui:search-iterator />
+		<liferay-ui:search-iterator markupView="lexicon" />
 	</liferay-ui:search-container>
 </aui:form>

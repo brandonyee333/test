@@ -25,7 +25,7 @@ portletURL.setParameter("mvcPath", "/admin/select_corp_project.jsp");
 portletURL.setParameter("callback", callback);
 %>
 
-<aui:form method="post">
+<aui:form action="<%= portletURL.toString() %>" method="post">
 	<liferay-ui:tabs names="projects" />
 
 	<%-- <liferay-ui:search-container
@@ -78,6 +78,6 @@ portletURL.setParameter("callback", callback);
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator />
+		<liferay-ui:search-iterator markupView="lexicon" />
 	</liferay-ui:search-container> --%>
 </aui:form>

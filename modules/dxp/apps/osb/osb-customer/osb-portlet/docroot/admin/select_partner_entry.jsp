@@ -22,7 +22,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 portletURL.setParameter("mvcPath", "/admin/select_partner_entry.jsp");
 %>
 
-<aui:form method="post">
+<aui:form action="<%= portletURL.toString() %>" method="post">
 	<liferay-ui:tabs names="partners" />
 
 	<liferay-ui:search-container
@@ -67,6 +67,6 @@ portletURL.setParameter("mvcPath", "/admin/select_partner_entry.jsp");
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator />
+		<liferay-ui:search-iterator markupView="lexicon" />
 	</liferay-ui:search-container>
 </aui:form>

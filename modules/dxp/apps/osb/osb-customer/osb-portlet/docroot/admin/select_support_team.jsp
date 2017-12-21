@@ -27,7 +27,7 @@ portletURL.setParameter("callback", callback);
 portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 %>
 
-<aui:form method="post">
+<aui:form action="<%= portletURL.toString() %>" method="post">
 	<liferay-ui:tabs
 		names="support-teams"
 	/>
@@ -227,7 +227,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator />
+		<liferay-ui:search-iterator markupView="lexicon" />
 	</liferay-ui:search-container>
 </aui:form>
 

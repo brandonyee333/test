@@ -25,7 +25,7 @@ portletURL.setParameter("mvcPath", "/admin/select_account_entry.jsp");
 portletURL.setParameter("callback", callback);
 %>
 
-<aui:form method="post" name="fm">
+<aui:form action="<%= portletURL.toString() %>" method="post" name="fm">
 	<liferay-ui:tabs
 		names="projects"
 	/>
@@ -82,6 +82,6 @@ portletURL.setParameter("callback", callback);
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator />
+		<liferay-ui:search-iterator markupView="lexicon" />
 	</liferay-ui:search-container>
 </aui:form>

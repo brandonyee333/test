@@ -221,7 +221,7 @@ for (SupportRegion supportRegion : supportRegions) {
 					</liferay-ui:search-container-row>
 
 					<div class="table-report">
-						<liferay-ui:search-iterator />
+						<liferay-ui:search-iterator markupView="lexicon" />
 					</div>
 				</liferay-ui:search-container>
 			</div>
@@ -307,7 +307,7 @@ for (SupportRegion supportRegion : supportRegions) {
 								</liferay-ui:search-container-column-text>
 							</liferay-ui:search-container-row>
 
-							<liferay-ui:search-iterator paginate="<%= false %>" />
+							<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
 						</liferay-ui:search-container>
 					</c:when>
 					<c:otherwise>
@@ -494,7 +494,7 @@ for (SupportRegion supportRegion : supportRegions) {
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
-				<liferay-ui:search-iterator paginate="<%= false %>" />
+				<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
 			</liferay-ui:search-container>
 		</div>
 
@@ -526,7 +526,7 @@ for (SupportRegion supportRegion : supportRegions) {
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
-				<liferay-ui:search-iterator paginate="<%= false %>" />
+				<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
 			</liferay-ui:search-container>
 		</div>
 
