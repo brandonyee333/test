@@ -210,14 +210,14 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 	</portlet:actionURL>
 
 	<aui:form action="<%= addTicketAttachmentURL %>" class="uni-form" enctype="multipart/form-data" method="post" name="fm5">
-		<input name="<portlet:namespace />redirect" type="hidden" value="<%= portletURL.toString() %>" />
-		<input name="<portlet:namespace />ticketEntryId" type="hidden" value="<%= ticketEntry.getTicketEntryId() %>" />
+		<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
+		<aui:input name="ticketEntryId" type="hidden" value="<%= ticketEntry.getTicketEntryId() %>" />
 
 		<div class="attachments">
 			<div class="clearfix lfr-dynamic-uploader" id="<portlet:namespace />uploaderWrapper">
-				<input name="<portlet:namespace />fileRepositoryId" type="hidden" value="<%= HtmlUtil.escapeAttribute(fileRepositoryId) %>" />
-				<input id="<portlet:namespace />token" type="hidden" value="" />
-				<input id="<portlet:namespace />uploaderType" name="<portlet:namespace />uploaderType" type="hidden" />
+				<aui:input name="fileRepositoryId" type="hidden" value="<%= HtmlUtil.escapeAttribute(fileRepositoryId) %>" />
+				<aui:input name="token" type="hidden" value="" />
+				<aui:input name="uploaderType" type="hidden" />
 
 				<div class="lfr-message-container" id="<portlet:namespace />messageContainer"></div>
 
@@ -231,9 +231,9 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 							<liferay-ui:message key="or" />
 						</h4>
 
-						<button class="btn btn-default" id="<portlet:namespace />selectButton" type="button"><liferay-ui:message key="select-file" /></button>
+						<aui:button name="selectButton" value="select-file" />
 
-						<input class="hide" id="<portlet:namespace />fileInputField" type="file" />
+						<aui:input cssClass="hide" label="" name="fileInputField" type="file" />
 					</div>
 
 					<div id="<portlet:namespace />fileInfo">
@@ -243,7 +243,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						%>
 
 							<div class="file-item hide">
-								<input class="file" name="<portlet:namespace />file<%= i %>" type="hidden" value="" />
+								<aui:input cssClass="file" name='<%= "file" + i %>' type="hidden" value="" />
 
 								<div class="content-column w40">
 									<span class="txt-b">
@@ -259,13 +259,13 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 												<liferay-ui:message key="hotfix" />:
 											</span>
 
-											<select name="<portlet:namespace />type<%= i %>">
-												<option value="<%= TicketAttachmentConstants.TYPE_NONE %>"><liferay-ui:message key="no" /></option>
-												<option value="<%= TicketAttachmentConstants.TYPE_HOTFIX %>"><liferay-ui:message key="yes" /></option>
-											</select>
+											<aui:select name='<%= "type" + i %>'>
+												<aui:option label="no" value="<%= TicketAttachmentConstants.TYPE_NONE %>" />
+												<aui:option label="yes" value="<%= TicketAttachmentConstants.TYPE_HOTFIX %>" />
+											</aui:select>
 										</c:when>
 										<c:otherwise>
-											<input name="<portlet:namespace />type<%= i %>" type="hidden" value="<%= TicketAttachmentConstants.TYPE_NONE %>" />
+											<aui:input name='<%= "type" + i %>' type="hidden" value="<%= TicketAttachmentConstants.TYPE_NONE %>" />
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -277,22 +277,21 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 												<liferay-ui:message key="visibility" />:
 											</span>
 
-											<select name="<portlet:namespace />visibility<%= i %>">
+											<aui:select name='<%= "visibility" + i %>'>
 
 												<%
 												for (int userVisibility : userVisibilities) {
 												%>
 
-													<option value="<%= userVisibility %>"><%= LanguageUtil.get(request, VisibilityConstants.toLabel(userVisibility)) %></option>
-
+													<aui:option label="<%= LanguageUtil.get(request, VisibilityConstants.toLabel(userVisibility)) %>" value="<%= userVisibility %>" />
 												<%
 												}
 												%>
 
-											</select>
+											</aui:select>
 										</c:when>
 										<c:otherwise>
-											<input name="<portlet:namespace />visibility<%= i %>" type="hidden" value="<%= VisibilityConstants.PUBLIC %>" />
+											<aui:input name='<%= "visibility" + i %>' type="hidden" value="<%= VisibilityConstants.PUBLIC %>" />
 										</c:otherwise>
 									</c:choose>
 								</div>
@@ -328,24 +327,24 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								</div>
 
 								<div class="content-column w90">
-									<select name="<portlet:namespace />visibility">
+									<aui:select name="visibility">
 
 										<%
 										for (int userVisibility : userVisibilities) {
 										%>
 
-											<option value="<%= userVisibility %>"><%= LanguageUtil.get(request, VisibilityConstants.toLabel(userVisibility)) %></option>
+											<aui:option label="<%= LanguageUtil.get(request, VisibilityConstants.toLabel(userVisibility)) %>" value="<%= userVisibility %>" />
 
 										<%
 										}
 										%>
 
-									</select>
+									</aui:select>
 								</div>
 							</div>
 						</c:when>
 						<c:otherwise>
-							<input name="<portlet:namespace />visibility" type="hidden" value="<%= VisibilityConstants.PUBLIC %>" />
+							<aui:input name="visibility" type="hidden" value="<%= VisibilityConstants.PUBLIC %>" />
 						</c:otherwise>
 					</c:choose>
 
@@ -370,7 +369,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								<td>
 									<label for="<portlet:namespace />file<%= i %>"><liferay-ui:message key="file" /> <%= i %></label>
 
-									<input id="<portlet:namespace />file<%= i %>" name="<portlet:namespace />file<%= i %>" onChange="AUI().one('#<portlet:namespace />saveButton').show();" type="file" />
+									<aui:input label='<%= "file" + i %>' name='<%= "file" + i %>' onChange="AUI().one('#<portlet:namespace />saveButton').show();" type="file" />
 								</td>
 
 								<c:if test="<%= ticketWorker %>">
@@ -396,26 +395,26 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						</span>
 
 						<c:if test="<%= ArrayUtil.contains(userVisibilities, VisibilityConstants.PUBLIC) %>">
-							<input name="<portlet:namespace />pendingTypes" type="checkbox" value="<%= TicketFlagConstants.TYPE_PENDING_CUSTOMER %>" />
+							<aui:input label="" name="pendingTypes" type="checkbox" value="<%= TicketFlagConstants.TYPE_PENDING_CUSTOMER %>" />
 
 							<liferay-ui:message key="customer" />
 						</c:if>
 
 						<c:if test="<%= ArrayUtil.contains(userVisibilities, VisibilityConstants.WORKERS) %>">
-							<input name="<portlet:namespace />pendingTypes" type="checkbox" value="<%= TicketFlagConstants.TYPE_PENDING_PARTNER %>" />
+							<aui:input label="" name="pendingTypes" type="checkbox" value="<%= TicketFlagConstants.TYPE_PENDING_PARTNER %>" />
 
 							<liferay-ui:message key="partner" />
 						</c:if>
 
 						<c:if test="<%= (ticketEntry.getEscalationLevel() != TicketEntryConstants.ESCALATION_LEVEL_P1) && ArrayUtil.contains(userVisibilities, VisibilityConstants.LIFERAY_INC) %>">
-							<input name="<portlet:namespace />pendingTypes" type="checkbox" value="<%= TicketFlagConstants.TYPE_PENDING_LIFERAY %>" />
+							<aui:input label="" name="pendingTypes" type="checkbox" value="<%= TicketFlagConstants.TYPE_PENDING_LIFERAY %>" />
 
 							<liferay-ui:message key="liferay" />
 						</c:if>
 					</div>
 				</c:when>
 				<c:otherwise>
-					<input name="<portlet:namespace />pendingTypes" type="hidden" value="<%= (ticketEntry.getEscalationLevel() == TicketEntryConstants.ESCALATION_LEVEL_P1) ? TicketFlagConstants.TYPE_PENDING_PARTNER : TicketFlagConstants.TYPE_PENDING_LIFERAY %>" />
+					<aui:input label="" name="pendingTypes" type="hidden" value="<%= (ticketEntry.getEscalationLevel() == TicketEntryConstants.ESCALATION_LEVEL_P1) ? TicketFlagConstants.TYPE_PENDING_PARTNER : TicketFlagConstants.TYPE_PENDING_LIFERAY %>" />
 				</c:otherwise>
 			</c:choose>
 
@@ -424,7 +423,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			<br />
 
 			<div class="button-holder">
-				<input class="aui-button-input hide" id="<portlet:namespace />saveButton" type="submit" value="<liferay-ui:message key="save" />" />
+				<aui:button cssClass="aui-button-input hide" name="saveButton" type="submit" value="save" />
 			</div>
 		</div>
 	</aui:form>
