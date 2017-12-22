@@ -8,20 +8,42 @@
 			"dataType": "string",
 			"indexType": "",
 			"label": {
-				"en_US": "Section Header"
+				"en_US": "header-item-label"
 			},
 			"localizable": true,
-			"name": "section_header",
+			"name": "headerItemLabel",
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "text"
+		},
+		{
+			"dataType": "string",
+			"indexType": "",
+			"label": {
+				"en_US": "body-item-label"
+			},
+			"localizable": true,
+			"name": "bodyItemLabel",
 			"nestedFields": [
 				{
-					"dataType": "html",
-					"fieldNamespace": "ddm",
+					"dataType": "string",
 					"indexType": "",
 					"label": {
-						"en_US": "Section Content"
+						"en_US": "body-item-link"
 					},
 					"localizable": true,
-					"name": "section_content",
+					"name": "bodyItemLink",
 					"predefinedValue": {
 						"en_US": ""
 					},
@@ -33,9 +55,9 @@
 						"en_US": ""
 					},
 					"tip": {
-						"en_US": "The content for this section."
+						"en_US": ""
 					},
-					"type": "ddm-text-html"
+					"type": "text"
 				}
 			],
 			"predefinedValue": {
@@ -49,7 +71,7 @@
 				"en_US": ""
 			},
 			"tip": {
-				"en_US": "The header for this section."
+				"en_US": ""
 			},
 			"type": "text"
 		}

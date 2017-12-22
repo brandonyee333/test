@@ -1,0 +1,5 @@
+<div class="$calloutStyle.data">
+	<div class="callout-content">
+		$content.data
+	</div>
+</div>

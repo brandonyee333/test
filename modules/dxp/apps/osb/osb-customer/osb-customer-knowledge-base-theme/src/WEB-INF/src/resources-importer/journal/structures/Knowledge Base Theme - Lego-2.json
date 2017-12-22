@@ -43,6 +43,30 @@
 									"options": [
 										{
 											"label": {
+												"en_US": "h1"
+											},
+											"value": "h1"
+										},
+										{
+											"label": {
+												"en_US": "h2"
+											},
+											"value": "h2"
+										},
+										{
+											"label": {
+												"en_US": "h3"
+											},
+											"value": "h3"
+										},
+										{
+											"label": {
+												"en_US": "span"
+											},
+											"value": "span"
+										},
+										{
+											"label": {
 												"en_US": " div"
 											},
 											"value": " div"
@@ -244,9 +268,21 @@
 							"options": [
 								{
 									"label": {
-										"en_US": "10"
+										"en_US": "55"
 									},
-									"value": "10"
+									"value": "55"
+								},
+								{
+									"label": {
+										"en_US": "5"
+									},
+									"value": "5"
+								},
+								{
+									"label": {
+										"en_US": "15"
+									},
+									"value": "15"
 								},
 								{
 									"label": {
@@ -274,9 +310,21 @@
 								},
 								{
 									"label": {
+										"en_US": "35"
+									},
+									"value": "35"
+								},
+								{
+									"label": {
 										"en_US": "40"
 									},
 									"value": "40"
+								},
+								{
+									"label": {
+										"en_US": "45"
+									},
+									"value": "45"
 								},
 								{
 									"label": {
@@ -286,9 +334,21 @@
 								},
 								{
 									"label": {
+										"en_US": "10"
+									},
+									"value": "10"
+								},
+								{
+									"label": {
 										"en_US": "60"
 									},
 									"value": "60"
+								},
+								{
+									"label": {
+										"en_US": "65"
+									},
+									"value": "65"
 								},
 								{
 									"label": {
@@ -316,9 +376,21 @@
 								},
 								{
 									"label": {
+										"en_US": "85"
+									},
+									"value": "85"
+								},
+								{
+									"label": {
 										"en_US": "90"
 									},
 									"value": "90"
+								},
+								{
+									"label": {
+										"en_US": "95"
+									},
+									"value": "95"
 								},
 								{
 									"label": {

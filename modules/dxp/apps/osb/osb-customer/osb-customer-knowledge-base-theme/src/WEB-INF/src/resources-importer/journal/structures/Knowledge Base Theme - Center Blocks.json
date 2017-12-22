@@ -6,7 +6,7 @@
 	"fields": [
 		{
 			"dataType": "string",
-			"indexType": "text",
+			"indexType": "",
 			"label": {
 				"en_US": "Section Header"
 			},
@@ -16,7 +16,7 @@
 				{
 					"dataType": "link-to-page",
 					"fieldNamespace": "ddm",
-					"indexType": "keyword",
+					"indexType": "",
 					"label": {
 						"en_US": "Section Page Link"
 					},
@@ -40,7 +40,7 @@
 				{
 					"dataType": "document-library",
 					"fieldNamespace": "ddm",
-					"indexType": "keyword",
+					"indexType": "",
 					"label": {
 						"en_US": "Section Image"
 					},
@@ -64,7 +64,7 @@
 				{
 					"dataType": "html",
 					"fieldNamespace": "ddm",
-					"indexType": "text",
+					"indexType": "",
 					"label": {
 						"en_US": "Section Content"
 					},

@@ -1,38 +1,40 @@
-<style>
-	.lego-image {
-		max-height: 100%;
-		max-width: 100%;
-	}
+#if (($legoCss.data != "") || ($legoMediaQuery.data != ""))
+	<style type="text/css">
+		.lego-image {
+			max-height: 100%;
+			max-width: 100%;
+		}
 
-	.max-960 {
-		margin: 0 auto;
-		max-width: 960px;
-	}
+		.max-960 {
+			margin: 0 auto;
+			max-width: 960px;
+		}
 
-	.no-max .max-960 {
-		max-width: none;
-	}
+		.no-max .max-960 {
+			max-width: none;
+		}
 
-	$legoCss.data
+		$legoCss.data
 
-	#foreach ($mediaQuery in $legoMediaQuery.siblings)
-		#set ($mediaQuery_text = "@media all")
+		#foreach ($media_query in $legoMediaQuery.siblings)
+			#set ($media_query_text = "@media all")
 
-		#if ($mediaQuery.mediaQueryMax.data != "")
-			#set ($mediaQuery_text = $mediaQuery_text + " and (max-width: $mediaQuery.mediaQueryMax.data)")
+			#if ($media_query.mediaQueryMax.data != "")
+				#set ($media_query_text = $media_query_text + " and (max-width: $media_query.mediaQueryMax.data)")
+			#end
+
+			#if ($media_query.mediaQueryMin.data != "")
+				#set ($media_query_text = $media_query_text + " and (min-width: $media_query.mediaQueryMin.data)")
+			#end
+
+			#if ($media_query.data != "")
+				$media_query_text {
+					$media_query.data
+				}
+			#end
 		#end
-
-		#if ($mediaQuery.mediaQueryMin.data != "")
-			#set ($mediaQuery_text = $mediaQuery_text + " and (min-width: $mediaQuery.mediaQueryMin.data)")
-		#end
-
-		#if ($mediaQuery.data != "")
-			$mediaQuery_text {
-				$mediaQuery.data
-			}
-		#end
-	#end
-</style>
+	</style>
+#end
 
 #set ($article_css_class = "lego-article")
 
@@ -47,7 +49,7 @@
 			#set ($sectionCssClass = "aui-helper-clearfix lego-section section-${section_count}")
 
 			#if ($section.sectionCssClass.data != "")
-				#set ($sectionCssClass = $sectionCssClass + " $section.sectionCssClass.data" )
+				#set ($sectionCssClass = $sectionCssClass + " $section.sectionCssClass.data")
 			#end
 
 			<div class="$sectionCssClass" $section.data>
@@ -56,7 +58,7 @@
 					#set ($blockCssClass = "aui-w${block.width.data} block-${block_count} content-column lego-block")
 
 					#if ($block.blockCssClass.data != "")
-						#set ($blockCssClass = $blockCssClass + " $block.blockCssClass.data" )
+						#set ($blockCssClass = $blockCssClass + " $block.blockCssClass.data")
 					#end
 
 					<div class="$blockCssClass" $block.data>
@@ -65,7 +67,7 @@
 								#set ($elementCssClass = "lego-element")
 
 								#if ($element.elementCssClass.data != "")
-									#set ($elementCssClass = $elementCssClass + " $element.elementCssClass.data" )
+									#set ($elementCssClass = $elementCssClass + " $element.elementCssClass.data")
 								#end
 
 								#if ($element.elementType.data == "button")

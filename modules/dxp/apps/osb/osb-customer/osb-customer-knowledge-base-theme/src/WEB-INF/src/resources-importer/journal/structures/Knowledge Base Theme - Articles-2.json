@@ -8,20 +8,19 @@
 			"dataType": "string",
 			"indexType": "",
 			"label": {
-				"en_US": "Section Header"
+				"en_US": "heading"
 			},
 			"localizable": true,
-			"name": "section_header",
+			"name": "heading",
 			"nestedFields": [
 				{
-					"dataType": "html",
-					"fieldNamespace": "ddm",
+					"dataType": "string",
 					"indexType": "",
 					"label": {
-						"en_US": "Section Content"
+						"en_US": "content"
 					},
 					"localizable": true,
-					"name": "section_content",
+					"name": "content",
 					"predefinedValue": {
 						"en_US": ""
 					},
@@ -33,9 +32,9 @@
 						"en_US": ""
 					},
 					"tip": {
-						"en_US": "The content for this section."
+						"en_US": ""
 					},
-					"type": "ddm-text-html"
+					"type": "textarea"
 				}
 			],
 			"predefinedValue": {
@@ -49,7 +48,7 @@
 				"en_US": ""
 			},
 			"tip": {
-				"en_US": "The header for this section."
+				"en_US": ""
 			},
 			"type": "text"
 		}

@@ -8,60 +8,10 @@
 			"dataType": "string",
 			"indexType": "",
 			"label": {
-				"en_US": "Banner Header"
+				"en_US": "container_class"
 			},
 			"localizable": true,
-			"name": "banner_header",
-			"nestedFields": [
-				{
-					"dataType": "document-library",
-					"fieldNamespace": "ddm",
-					"indexType": "",
-					"label": {
-						"en_US": "Banner Image"
-					},
-					"localizable": true,
-					"name": "banner_image",
-					"predefinedValue": {
-						"en_US": ""
-					},
-					"readOnly": false,
-					"repeatable": false,
-					"required": false,
-					"showLabel": true,
-					"style": {
-						"en_US": ""
-					},
-					"tip": {
-						"en_US": "The image for the banner."
-					},
-					"type": "ddm-documentlibrary"
-				},
-				{
-					"dataType": "html",
-					"fieldNamespace": "ddm",
-					"indexType": "",
-					"label": {
-						"en_US": "Banner Content"
-					},
-					"localizable": true,
-					"name": "banner_content",
-					"predefinedValue": {
-						"en_US": ""
-					},
-					"readOnly": false,
-					"repeatable": false,
-					"required": false,
-					"showLabel": true,
-					"style": {
-						"en_US": ""
-					},
-					"tip": {
-						"en_US": "The content for the banner."
-					},
-					"type": "ddm-text-html"
-				}
-			],
+			"name": "containerClass",
 			"predefinedValue": {
 				"en_US": ""
 			},
@@ -73,7 +23,79 @@
 				"en_US": ""
 			},
 			"tip": {
-				"en_US": "The header for the banner."
+				"en_US": ""
+			},
+			"type": "text"
+		},
+		{
+			"dataType": "string",
+			"indexType": "",
+			"label": {
+				"en_US": "links"
+			},
+			"localizable": true,
+			"name": "links",
+			"nestedFields": [
+				{
+					"dataType": "string",
+					"indexType": "",
+					"label": {
+						"en_US": "label"
+					},
+					"localizable": true,
+					"name": "label",
+					"predefinedValue": {
+						"en_US": ""
+					},
+					"readOnly": false,
+					"repeatable": false,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": ""
+					},
+					"type": "text"
+				},
+				{
+					"dataType": "document-library",
+					"fieldNamespace": "ddm",
+					"indexType": "",
+					"label": {
+						"en_US": "image"
+					},
+					"localizable": true,
+					"name": "image",
+					"predefinedValue": {
+						"en_US": ""
+					},
+					"readOnly": false,
+					"repeatable": false,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": ""
+					},
+					"type": "ddm-documentlibrary"
+				}
+			],
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": true,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
 			},
 			"type": "text"
 		}

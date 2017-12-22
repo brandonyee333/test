@@ -6,7 +6,7 @@
 
 <article>
 	<div class="sub-grid">
-		<div class="unit legacy-aui-w29 u-3-12 u-2-9 u-6-6 u-4-4 responsive720-w100">
+		<div class="legacy-aui-w29 responsive720-w100 u-2-9 u-3-12 u-4-4 u-6-6 unit">
 			<div class="unit-content">
 				#if ($heading1.data != "")
 					<h1 class="section-heading">
@@ -20,7 +20,7 @@
 			</div>
 		</div>
 
-		<div class="unit legacy-aui-w29 u-3-12 u-2-9 u-6-6 u-4-4 responsive720-w100">
+		<div class="legacy-aui-w29 responsive720-w100 u-2-9 u-3-12 u-4-4 u-6-6 unit">
 			<div class="unit-content">
 				#if ($heading2.data != "")
 					<h1 class="section-heading">
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 
-		<div class="unit legacy-aui-w29 u-3-12 u-2-9 u-6-6 u-4-4 responsive720-w100">
+		<div class="legacy-aui-w29 responsive720-w100 u-2-9 u-3-12 u-4-4 u-6-6 unit">
 			<div class="unit-content">
 				#if ($heading3.data != "")
 					<h1 class="section-heading">

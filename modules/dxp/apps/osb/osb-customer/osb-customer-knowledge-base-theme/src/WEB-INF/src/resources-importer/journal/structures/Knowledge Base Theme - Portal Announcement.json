@@ -8,20 +8,42 @@
 			"dataType": "string",
 			"indexType": "",
 			"label": {
-				"en_US": "Section Header"
+				"en_US": "title"
 			},
 			"localizable": true,
-			"name": "section_header",
+			"name": "title",
+			"predefinedValue": {
+				"en_US": ""
+			},
+			"readOnly": false,
+			"repeatable": false,
+			"required": false,
+			"showLabel": true,
+			"style": {
+				"en_US": ""
+			},
+			"tip": {
+				"en_US": ""
+			},
+			"type": "text"
+		},
+		{
+			"dataType": "string",
+			"indexType": "",
+			"label": {
+				"en_US": "link_display"
+			},
+			"localizable": true,
+			"name": "linkDisplay",
 			"nestedFields": [
 				{
-					"dataType": "html",
-					"fieldNamespace": "ddm",
+					"dataType": "string",
 					"indexType": "",
 					"label": {
-						"en_US": "Section Content"
+						"en_US": "link_url"
 					},
 					"localizable": true,
-					"name": "section_content",
+					"name": "linkUrl",
 					"predefinedValue": {
 						"en_US": ""
 					},
@@ -33,23 +55,23 @@
 						"en_US": ""
 					},
 					"tip": {
-						"en_US": "The content for this section."
+						"en_US": ""
 					},
-					"type": "ddm-text-html"
+					"type": "text"
 				}
 			],
 			"predefinedValue": {
 				"en_US": ""
 			},
 			"readOnly": false,
-			"repeatable": true,
+			"repeatable": false,
 			"required": false,
 			"showLabel": true,
 			"style": {
 				"en_US": ""
 			},
 			"tip": {
-				"en_US": "The header for this section."
+				"en_US": ""
 			},
 			"type": "text"
 		}

@@ -1,0 +1,17 @@
+#foreach ($each-article in $heading.siblings)
+	<article>
+		<div class="unit">
+			<div class="unit-content">
+				#if ($each-article.data != "")
+					<h1 class="section-heading">
+						$each-article.data
+					</h1>
+				#end
+
+				#if ($each-article.content.data != "")
+					$each-article.content.data
+				#end
+			</div>
+		</div>
+	</article>
+#end

@@ -1,0 +1,59 @@
+<style>
+	.legacy .callout-a .unit-content {
+		padding-right: 20px;
+	}
+
+	.legacy .legacy-aui-w45 {
+		width:45%;
+	}
+
+	.legacy .unit-table {
+		display: inline-table;
+		margin: 0 10px;
+		min-height: 9px;
+	}
+</style>
+
+<article class="article-wrapper">
+	#if ($heading.data != "")
+		<h1 class="section-heading">
+			$heading.data
+		</h1>
+	#end
+
+	<div class="callout-a">
+		<div class="aui-helper-clearfix sub-grid">
+			<div class="legacy-aui-w45 u-3-6 u-3-9 u-4-4 u-4h-12 u-f-12 u-f-6 u-f-9 u-o-4 unit">
+				<div class="unit-content">
+					#foreach ($each-column1Heading in $column1Heading.siblings)
+						#if ($each-column1Heading.data)
+							<h3 class="section-heading">
+								$each-column1Heading.data
+							</h3>
+						#end
+
+						#if ($each-column1Heading.column1Content.data != "")
+							$each-column1Heading.column1Content.data
+						#end
+					#end
+				</div>
+			</div>
+
+			<div class="legacy-aui-w45 u-3-6 u-3-9 u-4-4 u-4h-12 u-l-12 u-l-6 u-l-9 u-o-4 unit">
+				<div class="unit-content">
+					#foreach ($each-column2Heading in $column2Heading.siblings)
+						#if ($each-column2Heading.data)
+							<h3 class="section-heading">
+								$each-column2Heading.data
+							</h3>
+						#end
+
+						#if ($each-column2Heading.column2Content.data != "")
+							$each-column2Heading.column2Content.data
+						#end
+					#end
+				</div>
+			</div>
+		</div>
+	</div>
+</article>

@@ -8,20 +8,20 @@
 			"dataType": "string",
 			"indexType": "",
 			"label": {
-				"en_US": "Banner Header"
+				"en_US": "heading"
 			},
 			"localizable": true,
-			"name": "banner_header",
+			"name": "heading",
 			"nestedFields": [
 				{
 					"dataType": "document-library",
 					"fieldNamespace": "ddm",
 					"indexType": "",
 					"label": {
-						"en_US": "Banner Image"
+						"en_US": "image"
 					},
 					"localizable": true,
-					"name": "banner_image",
+					"name": "image",
 					"predefinedValue": {
 						"en_US": ""
 					},
@@ -33,19 +33,41 @@
 						"en_US": ""
 					},
 					"tip": {
-						"en_US": "The image for the banner."
+						"en_US": ""
 					},
 					"type": "ddm-documentlibrary"
 				},
 				{
-					"dataType": "html",
-					"fieldNamespace": "ddm",
+					"dataType": "boolean",
 					"indexType": "",
 					"label": {
-						"en_US": "Banner Content"
+						"en_US": "image-callout"
 					},
 					"localizable": true,
-					"name": "banner_content",
+					"name": "imageCallout",
+					"predefinedValue": {
+						"en_US": false
+					},
+					"readOnly": false,
+					"repeatable": false,
+					"required": false,
+					"showLabel": true,
+					"style": {
+						"en_US": ""
+					},
+					"tip": {
+						"en_US": ""
+					},
+					"type": "checkbox"
+				},
+				{
+					"dataType": "string",
+					"indexType": "",
+					"label": {
+						"en_US": "content"
+					},
+					"localizable": true,
+					"name": "content",
 					"predefinedValue": {
 						"en_US": ""
 					},
@@ -57,23 +79,23 @@
 						"en_US": ""
 					},
 					"tip": {
-						"en_US": "The content for the banner."
+						"en_US": ""
 					},
-					"type": "ddm-text-html"
+					"type": "textarea"
 				}
 			],
 			"predefinedValue": {
 				"en_US": ""
 			},
 			"readOnly": false,
-			"repeatable": false,
+			"repeatable": true,
 			"required": false,
 			"showLabel": true,
 			"style": {
 				"en_US": ""
 			},
 			"tip": {
-				"en_US": "The header for the banner."
+				"en_US": ""
 			},
 			"type": "text"
 		}

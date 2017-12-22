@@ -5,14 +5,13 @@
 	"defaultLanguageId": "en_US",
 	"fields": [
 		{
-			"dataType": "",
-			"fieldNamespace": "ddm",
+			"dataType": "string",
 			"indexType": "",
 			"label": {
-				"en_US": "Notice: Make sure to choose the Home Page Search Bar template because all the style code is in there."
+				"en_US": "heading"
 			},
-			"localizable": false,
-			"name": "noticeInformation",
+			"localizable": true,
+			"name": "heading",
 			"predefinedValue": {
 				"en_US": ""
 			},
@@ -26,7 +25,7 @@
 			"tip": {
 				"en_US": ""
 			},
-			"type": "ddm-separator"
+			"type": "text"
 		}
 	]
 }
