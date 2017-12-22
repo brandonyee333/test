@@ -345,6 +345,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-base', 'aui-io', 'aui-template', 'collection', 'liferay-portlet-base']
+		requires: ['aui-base', 'aui-io', 'aui-template-deprecated', 'collection', 'liferay-portlet-base']
 	}
 );
