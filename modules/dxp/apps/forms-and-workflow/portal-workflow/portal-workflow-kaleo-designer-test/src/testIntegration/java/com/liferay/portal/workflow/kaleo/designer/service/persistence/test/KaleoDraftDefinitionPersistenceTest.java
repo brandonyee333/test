@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PersistenceTestRule;
@@ -187,20 +186,20 @@ public class KaleoDraftDefinitionPersistenceTest {
 
 	@Test
 	public void testCountByC_N_V() throws Exception {
-		_persistence.countByC_N_V(RandomTestUtil.nextLong(), StringPool.BLANK,
+		_persistence.countByC_N_V(RandomTestUtil.nextLong(), "",
 			RandomTestUtil.nextInt());
 
-		_persistence.countByC_N_V(0L, StringPool.NULL, 0);
+		_persistence.countByC_N_V(0L, "null", 0);
 
 		_persistence.countByC_N_V(0L, (String)null, 0);
 	}
 
 	@Test
 	public void testCountByC_N_V_D() throws Exception {
-		_persistence.countByC_N_V_D(RandomTestUtil.nextLong(),
-			StringPool.BLANK, RandomTestUtil.nextInt(), RandomTestUtil.nextInt());
+		_persistence.countByC_N_V_D(RandomTestUtil.nextLong(), "",
+			RandomTestUtil.nextInt(), RandomTestUtil.nextInt());
 
-		_persistence.countByC_N_V_D(0L, StringPool.NULL, 0, 0);
+		_persistence.countByC_N_V_D(0L, "null", 0, 0);
 
 		_persistence.countByC_N_V_D(0L, (String)null, 0, 0);
 	}

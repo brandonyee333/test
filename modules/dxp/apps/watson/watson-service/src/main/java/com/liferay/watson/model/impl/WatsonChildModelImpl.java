@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonChild;
 import com.liferay.watson.model.WatsonChildModel;
@@ -392,7 +391,7 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -403,7 +402,7 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -575,7 +574,7 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 	@Override
 	public String getSource() {
 		if (_source == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _source;

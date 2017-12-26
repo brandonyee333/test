@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.liferay.watson.model.WatsonActivity;
@@ -318,7 +317,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -329,7 +328,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -400,7 +399,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 	@Override
 	public String getNarrative() {
 		if (_narrative == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _narrative;
@@ -564,7 +563,7 @@ public class WatsonActivityModelImpl extends BaseModelImpl<WatsonActivity>
 		String xml = getNarrative();
 
 		if (xml == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();

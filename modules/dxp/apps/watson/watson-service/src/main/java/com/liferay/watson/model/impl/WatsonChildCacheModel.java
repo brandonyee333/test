@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonChild;
 
@@ -127,7 +126,7 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 		watsonChildImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonChildImpl.setUserName(StringPool.BLANK);
+			watsonChildImpl.setUserName("");
 		}
 		else {
 			watsonChildImpl.setUserName(userName);
@@ -180,7 +179,7 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 		}
 
 		if (source == null) {
-			watsonChildImpl.setSource(StringPool.BLANK);
+			watsonChildImpl.setSource("");
 		}
 		else {
 			watsonChildImpl.setSource(source);
@@ -245,7 +244,7 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -278,7 +277,7 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 		objectOutput.writeLong(dateFollowUp);
 
 		if (source == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(source);

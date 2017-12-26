@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.liferay.watson.model.WatsonVehicle;
@@ -365,7 +364,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -376,7 +375,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -497,7 +496,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _description;
@@ -599,7 +598,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	@Override
 	public String getImagePayload() {
 		if (_imagePayload == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _imagePayload;
@@ -614,7 +613,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 	@Override
 	public String getLicensePlate() {
 		if (_licensePlate == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _licensePlate;
@@ -672,7 +671,7 @@ public class WatsonVehicleModelImpl extends BaseModelImpl<WatsonVehicle>
 		String xml = getDescription();
 
 		if (xml == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();

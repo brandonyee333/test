@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonListTypeRel;
 
@@ -111,7 +110,7 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 		watsonListTypeRelImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonListTypeRelImpl.setUserName(StringPool.BLANK);
+			watsonListTypeRelImpl.setUserName("");
 		}
 		else {
 			watsonListTypeRelImpl.setUserName(userName);
@@ -137,14 +136,14 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 		watsonListTypeRelImpl.setPrimary(primary);
 
 		if (value == null) {
-			watsonListTypeRelImpl.setValue(StringPool.BLANK);
+			watsonListTypeRelImpl.setValue("");
 		}
 		else {
 			watsonListTypeRelImpl.setValue(value);
 		}
 
 		if (type == null) {
-			watsonListTypeRelImpl.setType(StringPool.BLANK);
+			watsonListTypeRelImpl.setType("");
 		}
 		else {
 			watsonListTypeRelImpl.setType(type);
@@ -195,7 +194,7 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -213,14 +212,14 @@ public class WatsonListTypeRelCacheModel implements CacheModel<WatsonListTypeRel
 		objectOutput.writeBoolean(primary);
 
 		if (value == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(value);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(type);

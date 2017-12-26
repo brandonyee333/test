@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonRelationship;
 import com.liferay.watson.model.WatsonRelationshipModel;
@@ -318,7 +317,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -329,7 +328,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -430,7 +429,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _description;

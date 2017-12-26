@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonHistory;
 
@@ -107,7 +106,7 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 		watsonHistoryImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonHistoryImpl.setUserName(StringPool.BLANK);
+			watsonHistoryImpl.setUserName("");
 		}
 		else {
 			watsonHistoryImpl.setUserName(userName);
@@ -174,7 +173,7 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);

@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonDocument;
 
@@ -113,7 +112,7 @@ public class WatsonDocumentCacheModel implements CacheModel<WatsonDocument>,
 		watsonDocumentImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonDocumentImpl.setUserName(StringPool.BLANK);
+			watsonDocumentImpl.setUserName("");
 		}
 		else {
 			watsonDocumentImpl.setUserName(userName);
@@ -147,7 +146,7 @@ public class WatsonDocumentCacheModel implements CacheModel<WatsonDocument>,
 		}
 
 		if (imagePayload == null) {
-			watsonDocumentImpl.setImagePayload(StringPool.BLANK);
+			watsonDocumentImpl.setImagePayload("");
 		}
 		else {
 			watsonDocumentImpl.setImagePayload(imagePayload);
@@ -200,7 +199,7 @@ public class WatsonDocumentCacheModel implements CacheModel<WatsonDocument>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -221,7 +220,7 @@ public class WatsonDocumentCacheModel implements CacheModel<WatsonDocument>,
 		objectOutput.writeLong(receivedDate);
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(imagePayload);

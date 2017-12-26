@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonDocument;
 import com.liferay.watson.model.WatsonDocumentModel;
@@ -321,7 +320,7 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -332,7 +331,7 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -438,7 +437,7 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 	@Override
 	public String getImagePayload() {
 		if (_imagePayload == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _imagePayload;

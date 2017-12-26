@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.liferay.watson.model.WatsonReport;
@@ -363,7 +362,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -374,7 +373,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -445,7 +444,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _name;
@@ -543,7 +542,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _description;
@@ -645,7 +644,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getFullReport() {
 		if (_fullReport == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _fullReport;
@@ -746,7 +745,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getImagePayload() {
 		if (_imagePayload == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _imagePayload;
@@ -761,7 +760,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getTimeSpent() {
 		if (_timeSpent == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _timeSpent;
@@ -776,7 +775,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getReportedUser() {
 		if (_reportedUser == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _reportedUser;
@@ -876,7 +875,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 		String xml = getName();
 
 		if (xml == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();

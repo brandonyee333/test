@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.liferay.watson.model.WatsonPerson;
@@ -467,7 +466,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -478,7 +477,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -619,7 +618,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _description;
@@ -721,7 +720,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@Override
 	public String getImagePayload() {
 		if (_imagePayload == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _imagePayload;
@@ -766,7 +765,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@Override
 	public String getStartAge() {
 		if (_startAge == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _startAge;
@@ -781,7 +780,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@Override
 	public String getEndAge() {
 		if (_endAge == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _endAge;
@@ -796,7 +795,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@Override
 	public String getOccupation() {
 		if (_occupation == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _occupation;
@@ -897,7 +896,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@Override
 	public String getHeight() {
 		if (_height == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _height;
@@ -912,7 +911,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 	@Override
 	public String getWeight() {
 		if (_weight == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _weight;
@@ -1011,7 +1010,7 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		String xml = getDescription();
 
 		if (xml == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();

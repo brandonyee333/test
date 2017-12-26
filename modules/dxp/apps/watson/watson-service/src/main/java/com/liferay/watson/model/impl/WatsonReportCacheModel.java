@@ -19,7 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonReport;
 
@@ -121,7 +120,7 @@ public class WatsonReportCacheModel implements CacheModel<WatsonReport>,
 		watsonReportImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonReportImpl.setUserName(StringPool.BLANK);
+			watsonReportImpl.setUserName("");
 		}
 		else {
 			watsonReportImpl.setUserName(userName);
@@ -146,42 +145,42 @@ public class WatsonReportCacheModel implements CacheModel<WatsonReport>,
 		watsonReportImpl.setWatsonChildId(watsonChildId);
 
 		if (name == null) {
-			watsonReportImpl.setName(StringPool.BLANK);
+			watsonReportImpl.setName("");
 		}
 		else {
 			watsonReportImpl.setName(name);
 		}
 
 		if (description == null) {
-			watsonReportImpl.setDescription(StringPool.BLANK);
+			watsonReportImpl.setDescription("");
 		}
 		else {
 			watsonReportImpl.setDescription(description);
 		}
 
 		if (fullReport == null) {
-			watsonReportImpl.setFullReport(StringPool.BLANK);
+			watsonReportImpl.setFullReport("");
 		}
 		else {
 			watsonReportImpl.setFullReport(fullReport);
 		}
 
 		if (imagePayload == null) {
-			watsonReportImpl.setImagePayload(StringPool.BLANK);
+			watsonReportImpl.setImagePayload("");
 		}
 		else {
 			watsonReportImpl.setImagePayload(imagePayload);
 		}
 
 		if (timeSpent == null) {
-			watsonReportImpl.setTimeSpent(StringPool.BLANK);
+			watsonReportImpl.setTimeSpent("");
 		}
 		else {
 			watsonReportImpl.setTimeSpent(timeSpent);
 		}
 
 		if (reportedUser == null) {
-			watsonReportImpl.setReportedUser(StringPool.BLANK);
+			watsonReportImpl.setReportedUser("");
 		}
 		else {
 			watsonReportImpl.setReportedUser(reportedUser);
@@ -245,7 +244,7 @@ public class WatsonReportCacheModel implements CacheModel<WatsonReport>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -261,42 +260,42 @@ public class WatsonReportCacheModel implements CacheModel<WatsonReport>,
 		objectOutput.writeLong(watsonChildId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (fullReport == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(fullReport);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(imagePayload);
 		}
 
 		if (timeSpent == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(timeSpent);
 		}
 
 		if (reportedUser == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(reportedUser);

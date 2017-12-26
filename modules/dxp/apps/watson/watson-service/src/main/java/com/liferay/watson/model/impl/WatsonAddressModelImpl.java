@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.liferay.watson.model.WatsonAddress;
@@ -448,7 +447,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -459,7 +458,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -570,7 +569,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _name;
@@ -668,7 +667,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getPostalCode() {
 		if (_postalCode == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _postalCode;
@@ -683,7 +682,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getRegion() {
 		if (_region == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _region;
@@ -698,7 +697,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getStreet() {
 		if (_street == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _street;
@@ -713,7 +712,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getNumber() {
 		if (_number == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _number;
@@ -728,7 +727,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getBuilding() {
 		if (_building == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _building;
@@ -828,7 +827,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getFloor() {
 		if (_floor == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _floor;
@@ -843,7 +842,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getRoom() {
 		if (_room == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _room;
@@ -858,7 +857,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _description;
@@ -960,7 +959,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getImagePayload() {
 		if (_imagePayload == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _imagePayload;
@@ -1070,7 +1069,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		String xml = getName();
 
 		if (xml == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
