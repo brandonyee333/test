@@ -3,17 +3,11 @@
 		margin: 20px;
 
 		textarea {
-			padding: 0;
 			resize: none;
-			width: 100%;
 
 			&.comments {
 				height: 100px;
 			}
-		}
-
-		.center {
-			text-align: center;
 		}
 
 		.feedback-msg-error {
@@ -32,5 +26,14 @@
 		.radio-button {
 			margin-left: 20px;
 		}
+	}
+
+	.modal-body {
+		bottom: auto;
+		overflow: initial;
+	}
+
+	.modal-header {
+		border-width: 0;
 	}
 }

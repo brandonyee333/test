@@ -17,7 +17,7 @@
 <div class="hide">
 	<div class="lesa-feedback-container" id="<portlet:namespace />lesaFeedbackContainer">
 		<div>
-			<h2 class="center txt-b">
+			<h2 class="text-center txt-b">
 				<liferay-ui:message key="submit-feedback" />
 			</h2>
 
@@ -67,11 +67,9 @@
 			</div>
 		</div>
 	</div>
-</div>
 
-<div class="hide">
 	<div class="lesa-feedback-container" id="<portlet:namespace />lesaFeedbackThankYouContainer">
-		<div class="center">
+		<div class="text-center">
 			<h2 class="txt-b">
 				<liferay-ui:message key="thank-you" />
 			</h2>
@@ -112,50 +110,44 @@
 		document.getElementById('<portlet:namespace />lesaFeedbackComments').value = '';
 		document.getElementById('<portlet:namespace />lesaFeedbackSummary').value = '';
 
-		document.getElementById('<portlet:namespace />lesaFeedbackRadioButton').checked = true;
+		var lesaFeedbackModal = document.getElementById('<portlet:namespace />lesaFeedbackContainer');
+
+		lesaFeedbackModal.querySelectorAll('.radio-button input').item(0).checked = true;
 	}
 </aui:script>
 
 <aui:script use="aui-base,aui-io,aui-modal">
-	var lesaFeedbackModal = A.one('#<portlet:namespace />lesaFeedbackContainer');
+	var modal;
 
-	if (lesaFeedbackModal) {
-		var modal = new A.Modal(
-			{
-				bodyContent: lesaFeedbackModal,
-				centered: true,
-				constrain: true,
-				cssClass: 'lesa-feedback-modal',
-				draggable: false,
-				modal: true,
-				resizable: false,
-				visible: false,
-				zIndex: 1001
-			}
-		).render();
+	function <portlet:namespace />generateModal(node) {
+		var lesaFeedbackModal = A.one('#<portlet:namespace />lesaFeedbackContainer');
+
+		if (lesaFeedbackModal && node) {
+			node.on(
+				'click',
+				function() {
+					modal = new A.Modal(
+						{
+							bodyContent: lesaFeedbackModal,
+							centered: true,
+							cssClass: 'lesa-feedback-modal',
+							destroyOnHide: true,
+							draggable: false,
+							modal: true,
+							resizable: false,
+							zIndex: 1035
+						}
+					).render();
+				}
+			);
+		}
 	}
 
 	var lesaFeedbackIcon = A.one('#<portlet:namespace />lesaFeedbackIcon');
-
-	if (lesaFeedbackIcon) {
-		lesaFeedbackIcon.on(
-			'click',
-			function() {
-				modal.show();
-			}
-		);
-	}
-
 	var lesaFeedbackIconMobile = A.one('#<portlet:namespace />lesaFeedbackIconMobile');
 
-	if (lesaFeedbackIconMobile) {
-		lesaFeedbackIconMobile.on(
-			'click',
-			function() {
-				modal.show();
-			}
-		);
-	}
+	<portlet:namespace />generateModal(lesaFeedbackIcon);
+	<portlet:namespace />generateModal(lesaFeedbackIconMobile);
 
 	var lesaFeedbackCancelButton = A.one('#<portlet:namespace />lesaFeedbackCancelButton');
 
@@ -228,13 +220,11 @@
 
 				var lesaFeedbackModalContent = A.one('.lesa-feedback-modal-content');
 
-				if (lesaFeedbackModalContent) {
-					lesaFeedbackModalContent.addClass('lesa-feedback-thank-you');
-				}
-
 				var lesaFeedbackThankYouModal = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
 
 				if (lesaFeedbackThankYouModal) {
+					<portlet:namespace />resetFeedback();
+
 					modal.set('bodyContent', lesaFeedbackThankYouModal);
 				}
 
@@ -243,20 +233,7 @@
 				var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
 
 				if (lesaFeedbackCloseButton && lesaFeedbackModalContent) {
-					lesaFeedbackCloseButton.on(
-						'click',
-						function() {
-							modal.hide();
-
-							lesaFeedbackModalContent.removeClass('lesa-feedback-thank-you');
-
-							modal.set('bodyContent', lesaFeedbackModal);
-
-							modal.syncUI();
-
-							<portlet:namespace />resetFeedback();
-						}
-					);
+					lesaFeedbackCloseButton.on('click', modal.hide, modal);
 				}
 			}
 		);
