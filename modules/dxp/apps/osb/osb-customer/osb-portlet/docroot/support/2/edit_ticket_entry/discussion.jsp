@@ -725,7 +725,9 @@ else {
 			'keydown',
 			function(A) {
 				if (A.keyCode === 27) {
-					Liferay.Util.getWindow().close();
+					if (Liferay.Util.getWindow()) {
+						Liferay.Util.getWindow().close();
+					}
 				}
 			}
 		);

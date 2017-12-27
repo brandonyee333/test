@@ -212,8 +212,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		'keydown',
 		function(A) {
 			if (A.keyCode === 27) {
-				Liferay.Util.getWindow().show();
-
 				<portlet:namespace />closeEditTicketDialog();
 			}
 		}

@@ -249,6 +249,8 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 			},
 			['aui-base']
 		);
+
+		<portlet:namespace />setUpThreeDotMenus();
 	</c:if>
 </aui:script>
 
@@ -277,6 +279,4 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 		},
 		false
 	);
-
-	<portlet:namespace />setUpThreeDotMenus();
 </aui:script>
