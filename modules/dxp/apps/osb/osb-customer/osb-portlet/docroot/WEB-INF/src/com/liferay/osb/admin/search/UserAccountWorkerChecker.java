@@ -67,6 +67,11 @@ public class UserAccountWorkerChecker extends RowChecker {
 		}
 	}
 
+	@Override
+	public boolean isRememberCheckBoxState() {
+		return false;
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(
 		UserAccountWorkerChecker.class);
 
