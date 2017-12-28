@@ -119,6 +119,46 @@
 <aui:script use="aui-base,aui-io,aui-modal">
 	var modal;
 
+	function <portlet:namespace />attachListeners() {
+		var lesaFeedbackCancelButton = A.one('#<portlet:namespace />lesaFeedbackCancelButton');
+
+		if (lesaFeedbackCancelButton) {
+			lesaFeedbackCancelButton.on(
+				'click',
+				function() {
+					<portlet:namespace />closePopup(modal);
+				}
+			);
+		}
+
+		var lesaFeedbackSubmitButton = A.one('#<portlet:namespace />lesaFeedbackSubmitButton');
+
+		if (lesaFeedbackSubmitButton) {
+			lesaFeedbackSubmitButton.on(
+				'click',
+				function() {
+					<portlet:namespace />sendLesaFeedbackEmail();
+				}
+			);
+		}
+	}
+
+	function <portlet:namespace />displayThankYouMessage() {
+		var lesaFeedbackThankYouModal = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
+
+		if (lesaFeedbackThankYouModal) {
+			<portlet:namespace />resetFeedback();
+
+			modal.set('bodyContent', lesaFeedbackThankYouModal);
+		}
+
+		var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
+
+		if (lesaFeedbackCloseButton) {
+			lesaFeedbackCloseButton.on('click', modal.hide, modal);
+		}
+	}
+
 	function <portlet:namespace />generateModal(node) {
 		var lesaFeedbackModal = A.one('#<portlet:namespace />lesaFeedbackContainer');
 
@@ -140,7 +180,74 @@
 					).render();
 				}
 			);
+
+			<portlet:namespace />attachListeners();
 		}
+	}
+
+	function <portlet:namespace />sendLesaFeedbackEmail() {
+		var lesaFeedbackType = '';
+
+		var lesaFeedbackBugRadioButton = A.one('#<portlet:namespace />lesaFeedbackBugRadioButton');
+		var lesaFeedbackRadioButton = A.one('#<portlet:namespace />lesaFeedbackRadioButton');
+
+		if (lesaFeedbackBugRadioButton && lesaFeedbackRadioButton) {
+			lesaFeedbackType = lesaFeedbackBugRadioButton.val();
+
+			if (lesaFeedbackRadioButton.get('checked')) {
+				lesaFeedbackType = lesaFeedbackRadioButton.val();
+			}
+		}
+
+		var lesaFeedbackComments = A.one('#<portlet:namespace />lesaFeedbackComments');
+		var lesaFeedbackSummary = A.one('#<portlet:namespace />lesaFeedbackSummary');
+
+		var inputFields = [
+			{
+				inputNode: lesaFeedbackComments,
+				messageNode: A.one('#<portlet:namespace />lesaFeedbackCommentsMessage')
+			},
+			{
+				inputNode: lesaFeedbackSummary,
+				messageNode: A.one('#<portlet:namespace />lesaFeedbackSummaryMessage')
+			}
+		];
+
+		var valid = <portlet:namespace />validateFeedbackFormField(inputFields);
+
+		if (valid) {
+			A.io.request(
+				'<liferay-portlet:actionURL name="sendLesaFeedbackEmail" />',
+				{
+					data: {
+						<portlet:namespace />lesaFeedbackComments: lesaFeedbackComments,
+						<portlet:namespace />lesaFeedbackSummary: lesaFeedbackSummary,
+						<portlet:namespace />lesaFeedbackType: lesaFeedbackType
+					},
+					dataType: 'json',
+					method: 'post',
+					on: {
+						success: function() {
+							<portlet:namespace />displayThankYouMessage();
+						}
+					}
+				}
+			);
+		}
+	}
+
+	function <portlet:namespace />validateFeedbackFormField(inputFields) {
+		var valid = true;
+
+		for (field of inputFields) {
+			if (field.inputNode.val().length === 0) {
+				valid = false;
+
+				field.messageNode.toggleClass('visible', !valid);
+			}
+		}
+
+		return valid;
 	}
 
 	var lesaFeedbackIcon = A.one('#<portlet:namespace />lesaFeedbackIcon');
@@ -148,96 +255,6 @@
 
 	<portlet:namespace />generateModal(lesaFeedbackIcon);
 	<portlet:namespace />generateModal(lesaFeedbackIconMobile);
-
-	var lesaFeedbackCancelButton = A.one('#<portlet:namespace />lesaFeedbackCancelButton');
-
-	if (lesaFeedbackCancelButton) {
-		lesaFeedbackCancelButton.on(
-			'click',
-			function() {
-				<portlet:namespace />closePopup(modal);
-			}
-		);
-	}
-
-	var lesaFeedbackSubmitButton = A.one('#<portlet:namespace />lesaFeedbackSubmitButton');
-
-	if (lesaFeedbackSubmitButton) {
-		lesaFeedbackSubmitButton.on(
-			'click',
-			function() {
-				var lesaFeedbackComments = A.one('#<portlet:namespace />lesaFeedbackComments').val();
-				var lesaFeedbackCommentsMessage = A.one('#<portlet:namespace />lesaFeedbackCommentsMessage');
-				var lesaFeedbackSummary = A.one('#<portlet:namespace />lesaFeedbackSummary').val();
-				var lesaFeedbackSummaryMessage = A.one('#<portlet:namespace />lesaFeedbackSummaryMessage');
-
-				var error = false;
-
-				lesaFeedbackCommentsMessage.toggleClass('visible', error);
-				lesaFeedbackSummaryMessage.toggleClass('visible', error);
-
-				if (lesaFeedbackSummary.length == 0) {
-					error = true;
-
-					lesaFeedbackSummaryMessage.toggleClass('visible', error);
-				}
-
-				if (lesaFeedbackComments.length == 0) {
-					error = true;
-
-					lesaFeedbackCommentsMessage.toggleClass('visible', error);
-				}
-
-				if (error) {
-					return;
-				}
-
-				var lesaFeedbackType = '';
-
-				var lesaFeedbackBugRadioButton = A.one('#<portlet:namespace />lesaFeedbackBugRadioButton');
-				var lesaFeedbackRadioButton = A.one('#<portlet:namespace />lesaFeedbackRadioButton');
-
-				if (lesaFeedbackBugRadioButton && lesaFeedbackRadioButton) {
-					lesaFeedbackType = lesaFeedbackBugRadioButton.val();
-
-					if (lesaFeedbackRadioButton.get('checked')) {
-						lesaFeedbackType = lesaFeedbackRadioButton.val();
-					}
-				}
-
-				A.io.request(
-					'<liferay-portlet:actionURL name="sendLesaFeedbackEmail" />',
-					{
-						data: {
-							<portlet:namespace />lesaFeedbackComments: lesaFeedbackComments,
-							<portlet:namespace />lesaFeedbackSummary: lesaFeedbackSummary,
-							<portlet:namespace />lesaFeedbackType: lesaFeedbackType
-						},
-						dataType: 'json',
-						method: 'post'
-					}
-				);
-
-				var lesaFeedbackModalContent = A.one('.lesa-feedback-modal-content');
-
-				var lesaFeedbackThankYouModal = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
-
-				if (lesaFeedbackThankYouModal) {
-					<portlet:namespace />resetFeedback();
-
-					modal.set('bodyContent', lesaFeedbackThankYouModal);
-				}
-
-				modal.syncUI();
-
-				var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
-
-				if (lesaFeedbackCloseButton && lesaFeedbackModalContent) {
-					lesaFeedbackCloseButton.on('click', modal.hide, modal);
-				}
-			}
-		);
-	}
 
 	window.addEventListener(
 		'keydown',
