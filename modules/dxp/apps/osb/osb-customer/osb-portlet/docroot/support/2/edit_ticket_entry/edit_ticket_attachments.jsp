@@ -284,6 +284,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 												%>
 
 													<aui:option label="<%= LanguageUtil.get(request, VisibilityConstants.toLabel(userVisibility)) %>" value="<%= userVisibility %>" />
+
 												<%
 												}
 												%>
