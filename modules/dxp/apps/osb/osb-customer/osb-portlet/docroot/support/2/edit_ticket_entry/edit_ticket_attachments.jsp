@@ -477,7 +477,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 	}
 	%>
 
-	<aui:script use="aui-io,aui-template,liferay-dynamic-uploader">
+	<aui:script use="aui-io,aui-template-deprecated,liferay-dynamic-uploader">
 		var resumableUploader = new Resumable(
 			{
 				chunkRetryInterval: 1000,
@@ -546,7 +546,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		function <portlet:namespace />generateToken(dynamicUploader, resumableUploader, overwrite) {
 			var token = A.one('#<portlet:namespace />token');
 
-			if (overwrite || !token.get('value')) {
+			if (token && (overwrite || !token.get('value'))) {
 				A.io.request(
 					'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="uploadToken" />',
 					{
