@@ -42,11 +42,11 @@ public class OSBConstants {
 
 	public static final long EXPANDO_OSB_COUNTRY_COLUMN_ID = 29224278;
 
-	public static long GROUP_CUSTOMER_ID = 3133562;
+	public static long GROUP_CUSTOMER_ID = 100876506;
 
-	public static long GROUP_GLOBAL_ID = 8431626;
+	public static long GROUP_GLOBAL_ID = 10197;
 
-	public static long GROUP_GUEST_ID = 14;
+	public static long GROUP_GUEST_ID = 10184;
 
 	public static long OFFERING_DEFINITION_TRIAL_ID = 5638713;
 
@@ -66,7 +66,7 @@ public class OSBConstants {
 
 	public static long ORGANIZATION_TRIAL_ID = 76993481;
 
-	public static long ROLE_LIFERAY_EMPLOYEE_ID = 38751983;
+	public static long ROLE_LIFERAY_EMPLOYEE_ID = 10946;
 
 	public static long ROLE_OSB_ACCOUNT_ADMIN_ID = 1546563;
 
@@ -88,12 +88,12 @@ public class OSBConstants {
 
 	public static long TEXTAREA_MAX_LENGTH = 12000;
 
-	public static long USER_AMOS_FONG_USER_ID = 1395288;
+	public static long USER_AMOS_FONG_USER_ID = 23463;
 
-	public static long USER_DEFAULT_USER_ID = 5;
+	public static long USER_DEFAULT_USER_ID = 10161;
 
-	public static long USER_JSON_USER_ID = 10141;
+	public static long USER_JSON_USER_ID = 154734;
 
-	public static long USER_SUPPORT_PM_USER_ID = 6600736;
+	public static long USER_SUPPORT_PM_USER_ID = 100627579;
 
 }

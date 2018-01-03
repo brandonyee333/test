@@ -111,7 +111,7 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 
 	public SupportLabor getSupportLabor() throws PortalException {
 		SupportLabor supportLabor =
-			SupportLaborLocalServiceUtil.getSupportLabor(getSupportLaborId());
+			SupportLaborLocalServiceUtil.fetchSupportLabor(getSupportLaborId());
 
 		if (supportLabor == null) {
 			SupportTeam supportTeam = getSupportTeam();
