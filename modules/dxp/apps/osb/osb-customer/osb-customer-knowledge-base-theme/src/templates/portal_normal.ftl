@@ -56,7 +56,6 @@
 				a.onload=c;
 				m.parentNode.insertBefore(a,m)
 			})('https://s3-eu-west-1.amazonaws.com/com-liferay-analytics/analytics-all-min.js', function() {
-
 				Analytics.create({ analyticsKey: 'customer.liferay.com' });
 				Analytics.setIdentity({ email: '${user_email_address}' });
 				Analytics.send('view', 'Layout');
