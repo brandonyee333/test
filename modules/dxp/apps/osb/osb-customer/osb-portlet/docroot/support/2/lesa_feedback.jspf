@@ -16,7 +16,7 @@
 
 <div class="hide">
 	<div class="lesa-feedback-container" id="<portlet:namespace />lesaFeedbackContainer">
-		<div>
+		<aui:form action="" method="post" name="lesaFeedbackFm">
 			<h2 class="text-center txt-b">
 				<liferay-ui:message key="submit-feedback" />
 			</h2>
@@ -25,17 +25,9 @@
 				<liferay-ui:message key="please-select-one-of-the-following" />
 			</div>
 
-			<div class="radio-button">
-				<aui:input checked="<%= true %>" label="" name="lesaFeedbackRadioButton" type="radio" value="0" />
+			<aui:input checked="<%= true %>" label="i-would-like-to-give-feedback-about-lesa" name="lesaFeedbackRadioButton" type="radio" value="0" />
 
-				<liferay-ui:message key="i-would-like-to-give-feedback-about-lesa" />
-			</div>
-
-			<div class="radio-button">
-				<aui:input label="" name="lesaFeedbackRadioButton" type="radio" value="1" />
-
-				<liferay-ui:message key="i-would-like-to-report-a-bug-in-lesa" />
-			</div>
+			<aui:input label="i-would-like-to-report-a-bug-in-lesa" name="lesaFeedbackRadioButton" type="radio" value="1" />
 
 			<div>
 				<div class="feedback-msg-error" id="<portlet:namespace />lesaFeedbackSummaryMessage">
@@ -63,9 +55,9 @@
 
 			<div class="clearfix margin-top-30">
 				<aui:button cssClass="pull-left" name="lesaFeedbackCancelButton" value="cancel" />
-				<aui:button cssClass="pull-right" name="lesaFeedbackSubmitButton" value="submit" />
+				<aui:button cssClass="pull-right" name="lesaFeedbackSubmitButton" type="submit" value="submit" />
 			</div>
-		</div>
+		</aui:form>
 	</div>
 
 	<div class="lesa-feedback-container" id="<portlet:namespace />lesaFeedbackThankYouContainer">
@@ -107,12 +99,11 @@
 	}
 
 	function <portlet:namespace />resetFeedback() {
-		document.getElementById('<portlet:namespace />lesaFeedbackComments').value = '';
-		document.getElementById('<portlet:namespace />lesaFeedbackSummary').value = '';
+		var lesaFeedbackForm = document.getElementById('<portlet:namespace />lesaFeedbackFm');
 
-		var lesaFeedbackModal = document.getElementById('<portlet:namespace />lesaFeedbackContainer');
-
-		lesaFeedbackModal.querySelectorAll('.radio-button input').item(0).checked = true;
+		if (lesaFeedbackForm) {
+			lesaFeedbackForm.reset();
+		}
 	}
 </aui:script>
 
@@ -131,16 +122,27 @@
 			);
 		}
 
-		var lesaFeedbackSubmitButton = A.one('#<portlet:namespace />lesaFeedbackSubmitButton');
+		var lesaFeedbackForm = A.one('#<portlet:namespace />lesaFeedbackFm');
 
-		if (lesaFeedbackSubmitButton) {
-			lesaFeedbackSubmitButton.on(
-				'click',
-				function() {
+		if (lesaFeedbackForm) {
+			lesaFeedbackForm.on(
+				'submit',
+				function(event) {
+					event.preventDefault();
+
 					<portlet:namespace />sendLesaFeedbackEmail();
 				}
 			);
 		}
+
+		window.addEventListener(
+			'keydown',
+			function(event) {
+				if (event.keyCode === 27) {
+					<portlet:namespace />closePopup(modal);
+				}
+			}
+		);
 	}
 
 	function <portlet:namespace />displayThankYouMessage() {
@@ -150,12 +152,17 @@
 			<portlet:namespace />resetFeedback();
 
 			modal.set('bodyContent', lesaFeedbackThankYouModal);
-		}
 
-		var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
+			var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
 
-		if (lesaFeedbackCloseButton) {
-			lesaFeedbackCloseButton.on('click', modal.hide, modal);
+			if (lesaFeedbackCloseButton) {
+				lesaFeedbackCloseButton.on(
+					'click',
+					function() {
+						modal.hide();
+					}
+				);
+			}
 		}
 	}
 
@@ -178,10 +185,10 @@
 							zIndex: 1035
 						}
 					).render();
+
+					<portlet:namespace />attachListeners();
 				}
 			);
-
-			<portlet:namespace />attachListeners();
 		}
 	}
 
@@ -225,14 +232,11 @@
 						<portlet:namespace />lesaFeedbackType: lesaFeedbackType
 					},
 					dataType: 'json',
-					method: 'post',
-					on: {
-						success: function() {
-							<portlet:namespace />displayThankYouMessage();
-						}
-					}
+					method: 'post'
 				}
 			);
+
+			<portlet:namespace />displayThankYouMessage();
 		}
 	}
 
@@ -255,13 +259,4 @@
 
 	<portlet:namespace />generateModal(lesaFeedbackIcon);
 	<portlet:namespace />generateModal(lesaFeedbackIconMobile);
-
-	window.addEventListener(
-		'keydown',
-		function(event) {
-			if (A.keyCode === 27) {
-				<portlet:namespace />closePopup(modal);
-			}
-		}
-	);
 </aui:script>
