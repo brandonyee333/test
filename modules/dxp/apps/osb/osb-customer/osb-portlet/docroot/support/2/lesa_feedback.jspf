@@ -29,29 +29,9 @@
 
 			<aui:input label="i-would-like-to-report-a-bug-in-lesa" name="lesaFeedbackRadioButton" type="radio" value="1" />
 
-			<div>
-				<div class="feedback-msg-error" id="<portlet:namespace />lesaFeedbackSummaryMessage">
-					<liferay-ui:message key="please-provide-a-summary" />
-				</div>
+			<aui:input label="summary" name="lesaFeedbackSummary" type="textarea" />
 
-				<div class="txt-b">
-					<liferay-ui:message key="summary" />:
-				</div>
-
-				<aui:input cssClass="textarea-summary" label="" name="lesaFeedbackSummary" type="textarea" />
-			</div>
-
-			<div>
-				<div class="feedback-msg-error" id="<portlet:namespace />lesaFeedbackCommentsMessage">
-					<liferay-ui:message key="please-provide-a-description" />
-				</div>
-
-				<div class="txt-b">
-					<liferay-ui:message key="comments" />:
-				</div>
-
-				<aui:input cssClass="comments" label="" name="lesaFeedbackComments" type="textarea" />
-			</div>
+			<aui:input cssClass="comments" label="comments" name="lesaFeedbackComments" type="textarea" />
 
 			<div class="clearfix margin-top-30">
 				<aui:button cssClass="pull-left" name="lesaFeedbackCancelButton" value="cancel" />
@@ -107,8 +87,32 @@
 	}
 </aui:script>
 
-<aui:script use="aui-base,aui-io,aui-modal">
+<aui:script use="aui-base,aui-form-validator,aui-io,aui-modal">
 	var modal;
+
+	function <portlet:namespace />applyFormValidation() {
+		new A.FormValidator(
+			{
+				boundingBox: '#<portlet:namespace />lesaFeedbackFm',
+				fieldStrings: {
+					<portlet:namespace />lesaFeedbackComments: {
+						required: '<%= LanguageUtil.get(request, "please-provide-a-description") %>'
+					},
+					<portlet:namespace />lesaFeedbackSummary: {
+						required: '<%= LanguageUtil.get(request, "please-provide-a-summary") %>'
+					}
+				},
+				rules: {
+					<portlet:namespace />lesaFeedbackComments: {
+						required: true
+					},
+					<portlet:namespace />lesaFeedbackSummary: {
+						required: true
+					}
+				}
+			}
+		);
+	}
 
 	function <portlet:namespace />attachListeners() {
 		var lesaFeedbackCancelButton = A.one('#<portlet:namespace />lesaFeedbackCancelButton');
@@ -166,7 +170,7 @@
 		}
 	}
 
-	function <portlet:namespace />generateModal(node) {
+	function <portlet:namespace />createModal(node) {
 		var lesaFeedbackModal = A.one('#<portlet:namespace />lesaFeedbackContainer');
 
 		if (lesaFeedbackModal && node) {
@@ -186,6 +190,7 @@
 						}
 					).render();
 
+					<portlet:namespace />applyFormValidation();
 					<portlet:namespace />attachListeners();
 				}
 			);
@@ -193,10 +198,12 @@
 	}
 
 	function <portlet:namespace />sendLesaFeedbackEmail() {
-		var lesaFeedbackType = '';
-
 		var lesaFeedbackBugRadioButton = A.one('#<portlet:namespace />lesaFeedbackBugRadioButton');
+		var lesaFeedbackComments = A.one('#<portlet:namespace />lesaFeedbackComments');
 		var lesaFeedbackRadioButton = A.one('#<portlet:namespace />lesaFeedbackRadioButton');
+		var lesaFeedbackSummary = A.one('#<portlet:namespace />lesaFeedbackSummary');
+
+		var lesaFeedbackType = '';
 
 		if (lesaFeedbackBugRadioButton && lesaFeedbackRadioButton) {
 			lesaFeedbackType = lesaFeedbackBugRadioButton.val();
@@ -206,57 +213,33 @@
 			}
 		}
 
-		var lesaFeedbackComments = A.one('#<portlet:namespace />lesaFeedbackComments');
-		var lesaFeedbackSummary = A.one('#<portlet:namespace />lesaFeedbackSummary');
-
-		var inputFields = [
-			{
-				inputNode: lesaFeedbackComments,
-				messageNode: A.one('#<portlet:namespace />lesaFeedbackCommentsMessage')
-			},
-			{
-				inputNode: lesaFeedbackSummary,
-				messageNode: A.one('#<portlet:namespace />lesaFeedbackSummaryMessage')
-			}
-		];
-
-		var valid = <portlet:namespace />validateFeedbackFormField(inputFields);
-
-		if (valid) {
+		if (lesaFeedbackComments && lesaFeedbackSummary) {
 			A.io.request(
 				'<liferay-portlet:actionURL name="sendLesaFeedbackEmail" />',
 				{
 					data: {
-						<portlet:namespace />lesaFeedbackComments: lesaFeedbackComments,
-						<portlet:namespace />lesaFeedbackSummary: lesaFeedbackSummary,
+						<portlet:namespace />lesaFeedbackComments: lesaFeedbackComments.val(),
+						<portlet:namespace />lesaFeedbackSummary: lesaFeedbackSummary.val(),
 						<portlet:namespace />lesaFeedbackType: lesaFeedbackType
 					},
-					dataType: 'json',
-					method: 'post'
+					dataType: 'JSON',
+					method: 'POST',
+					on: {
+						success: <portlet:namespace />displayThankYouMessage
+					}
 				}
 			);
-
-			<portlet:namespace />displayThankYouMessage();
 		}
-	}
-
-	function <portlet:namespace />validateFeedbackFormField(inputFields) {
-		var valid = true;
-
-		for (field of inputFields) {
-			if (field.inputNode.val().length === 0) {
-				valid = false;
-
-				field.messageNode.toggleClass('visible', !valid);
-			}
-		}
-
-		return valid;
 	}
 
 	var lesaFeedbackIcon = A.one('#<portlet:namespace />lesaFeedbackIcon');
 	var lesaFeedbackIconMobile = A.one('#<portlet:namespace />lesaFeedbackIconMobile');
 
-	<portlet:namespace />generateModal(lesaFeedbackIcon);
-	<portlet:namespace />generateModal(lesaFeedbackIconMobile);
+	if (lesaFeedbackIcon) {
+		<portlet:namespace />createModal(lesaFeedbackIcon);
+	}
+
+	if (lesaFeedbackIconMobile) {
+		<portlet:namespace />createModal(lesaFeedbackIconMobile);
+	}
 </aui:script>

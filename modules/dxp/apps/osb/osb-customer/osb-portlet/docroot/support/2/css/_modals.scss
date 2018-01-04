@@ -10,12 +10,13 @@
 			}
 		}
 
-		.feedback-msg-error {
-			color: $urgent;
-			visibility: hidden;
+		.has-error {
+			.control-label, .help-block {
+				color: $urgent;
+			}
 
-			&.visible {
-				visibility: visible;
+			.form-control {
+				border-color: $urgent;
 			}
 		}
 
