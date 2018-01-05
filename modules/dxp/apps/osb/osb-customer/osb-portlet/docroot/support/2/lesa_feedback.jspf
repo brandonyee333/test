@@ -55,38 +55,6 @@
 	</div>
 </div>
 
-<aui:script>
-	function <portlet:namespace />closePopup(modal) {
-		var commentsNode = document.getElementById('<portlet:namespace />lesaFeedbackComments');
-		var summaryNode = document.getElementById('<portlet:namespace />lesaFeedbackSummary');
-
-		var comments = commentsNode && commentsNode.value;
-		var summary = summaryNode && summaryNode.value;
-
-		var hasCommentsSummary = (comments || summary);
-
-		var cancelEdit = false;
-
-		if (hasCommentsSummary) {
-			cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-cancel-submitting-feedback") %>');
-		}
-
-		if (cancelEdit || !hasCommentsSummary) {
-			modal.hide();
-
-			<portlet:namespace />resetFeedback();
-		}
-	}
-
-	function <portlet:namespace />resetFeedback() {
-		var lesaFeedbackForm = document.getElementById('<portlet:namespace />lesaFeedbackFm');
-
-		if (lesaFeedbackForm) {
-			lesaFeedbackForm.reset();
-		}
-	}
-</aui:script>
-
 <aui:script use="aui-base,aui-form-validator,aui-io,aui-modal">
 	var modal;
 
@@ -121,7 +89,7 @@
 			lesaFeedbackCancelButton.on(
 				'click',
 				function() {
-					<portlet:namespace />closePopup(modal);
+					<portlet:namespace />confirmModalClose();
 				}
 			);
 		}
@@ -143,10 +111,32 @@
 			'keydown',
 			function(event) {
 				if (event.keyCode === 27) {
-					<portlet:namespace />closePopup(modal);
+					<portlet:namespace />confirmModalClose();
 				}
 			}
 		);
+	}
+
+	function <portlet:namespace />confirmModalClose() {
+		var commentsNode = A.one('#<portlet:namespace />lesaFeedbackComments');
+		var summaryNode = A.one('#<portlet:namespace />lesaFeedbackSummary');
+
+		var comments = commentsNode && commentsNode.val();
+		var summary = summaryNode && summaryNode.val();
+
+		var hasCommentsSummary = (comments || summary);
+
+		var cancelEdit = false;
+
+		if (hasCommentsSummary) {
+			cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-cancel-submitting-feedback") %>');
+		}
+
+		if (cancelEdit || !hasCommentsSummary) {
+			modal.hide();
+
+			<portlet:namespace />resetFeedback();
+		}
 	}
 
 	function <portlet:namespace />displayThankYouMessage() {
@@ -194,6 +184,14 @@
 					<portlet:namespace />attachListeners();
 				}
 			);
+		}
+	}
+
+	function <portlet:namespace />resetFeedback() {
+		var lesaFeedbackForm = A.one('#<portlet:namespace />lesaFeedbackFm');
+
+		if (lesaFeedbackForm) {
+			lesaFeedbackForm.reset();
 		}
 	}
 
