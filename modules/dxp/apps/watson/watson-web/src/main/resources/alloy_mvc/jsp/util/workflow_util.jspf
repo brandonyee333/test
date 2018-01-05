@@ -102,15 +102,13 @@ public static class WatsonWorkflowUtil {
 
 		mailMessage.setBody(email.toString());
 
-		InternetAddress from = new InternetAddress(
-			fromUser.getEmailAddress(), fromUser.getFullName());
+		InternetAddress from = new InternetAddress(fromUser.getEmailAddress(), fromUser.getFullName());
 
 		mailMessage.setFrom(from);
 		mailMessage.setHTMLFormat(true);
 		mailMessage.setSubject(subject);
 
-		InternetAddress to = new InternetAddress(
-			toEmailAddress, StringPool.BLANK);
+		InternetAddress to = new InternetAddress(toEmailAddress, StringPool.BLANK);
 
 		mailMessage.setTo(to);
 
@@ -143,16 +141,13 @@ public static class WatsonWorkflowUtil {
 
 			mailMessage.setBody(sb.toString());
 
-			InternetAddress from = new InternetAddress(
-				fromUser.getEmailAddress(), fromUser.getFullName());
+			InternetAddress from = new InternetAddress(fromUser.getEmailAddress(), fromUser.getFullName());
 
 			mailMessage.setFrom(from);
 			mailMessage.setHTMLFormat(true);
 			mailMessage.setSubject(subject);
 
-			InternetAddress to = new InternetAddress(
-				translationUser.getEmailAddress(),
-				translationUser.getFullName());
+			InternetAddress to = new InternetAddress(translationUser.getEmailAddress(), translationUser.getFullName());
 
 			mailMessage.setTo(to);
 

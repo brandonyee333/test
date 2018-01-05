@@ -76,7 +76,7 @@ public static class WatsonDataMigrationUtil {
 		incidentName = incidentName.replaceAll("\\D+", "");
 
 		if (incidentName.length() > 4) {
-			incidentName = incidentName.substring(0, 4) + StringPool.DASH + incidentName.substring(4, incidentName.length());
+			incidentName = incidentName.substring(0, 4) + StringPool.DASH + incidentName.substring(4);
 		}
 
 		return incidentName;
@@ -192,7 +192,7 @@ public static class WatsonDataMigrationUtil {
 
 			String year = fullIncidentNames.substring(0, 4);
 
-			String incidentsWithoutYear = fullIncidentNames.substring(4, fullIncidentNames.length());
+			String incidentsWithoutYear = fullIncidentNames.substring(4);
 
 			String[] multipleIncidentNameParts = incidentsWithoutYear.split(StringPool.COMMA_AND_SPACE);
 

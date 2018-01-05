@@ -91,8 +91,7 @@ public static class WatsonFileUploaderUtil {
 		return fileEntry;
 	}
 
-	protected static File cropImage(
-			JSONObject cropRegionJSONObject, File imageFile)
+	protected static File cropImage(JSONObject cropRegionJSONObject, File imageFile)
 		throws Exception {
 
 		if (cropRegionJSONObject == null) {
@@ -183,8 +182,7 @@ public static class WatsonFileUploaderUtil {
 			reverseDimensions = true;
 		}
 		else if (orientation == _ORIENTATION_ROTATE_180) {
-			affineTransform.translate(
-				renderedImage.getWidth(), renderedImage.getHeight());
+			affineTransform.translate(renderedImage.getWidth(), renderedImage.getHeight());
 
 			affineTransform.rotate(Math.toRadians(180));
 		}
@@ -199,11 +197,9 @@ public static class WatsonFileUploaderUtil {
 			return;
 		}
 
-		AffineTransformOp affineTransformOp = new AffineTransformOp(
-			affineTransform, AffineTransformOp.TYPE_BILINEAR);
+		AffineTransformOp affineTransformOp = new AffineTransformOp(affineTransform, AffineTransformOp.TYPE_BILINEAR);
 
-		BufferedImage oldBufferedImage = ImageToolUtil.getBufferedImage(
-			renderedImage);
+		BufferedImage oldBufferedImage = ImageToolUtil.getBufferedImage(renderedImage);
 
 		int height = oldBufferedImage.getHeight();
 		int width = oldBufferedImage.getWidth();
@@ -213,9 +209,7 @@ public static class WatsonFileUploaderUtil {
 			width = oldBufferedImage.getHeight();
 		}
 
-		BufferedImage newBufferedImage = affineTransformOp.filter(
-			oldBufferedImage,
-			new BufferedImage(width, height, oldBufferedImage.getType()));
+		BufferedImage newBufferedImage = affineTransformOp.filter(oldBufferedImage, new BufferedImage(width, height, oldBufferedImage.getType()));
 
 		ImageIO.write(newBufferedImage, imageBag.getType(), file);
 	}
@@ -224,9 +218,7 @@ public static class WatsonFileUploaderUtil {
 		Map<String, DDMFormValues> ddmFormValuesMap = null;
 
 		try {
-			ddmFormValuesMap = RawMetadataProcessorUtil.getRawMetadataMap(
-				FileUtil.getExtension(file.getName()),
-				MimeTypesUtil.getContentType(file), file);
+			ddmFormValuesMap = RawMetadataProcessorUtil.getRawMetadataMap(FileUtil.getExtension(file.getName()), MimeTypesUtil.getContentType(file), file);
 		}
 		catch (Exception e) {
 			return _ORIENTATION_NORMAL;
