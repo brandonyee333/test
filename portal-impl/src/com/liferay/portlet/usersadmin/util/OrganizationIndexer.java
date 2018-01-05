@@ -217,7 +217,8 @@ public class OrganizationIndexer extends BaseIndexer<Organization> {
 		document.addKeyword(Field.TYPE, organization.getType());
 		document.addKeyword(
 			"parentOrganizationId", organization.getParentOrganizationId());
-		document.addText("nameTreePath", buildNameTreePath(organization));
+		document.addTextSortable(
+			"nameTreePath", buildNameTreePath(organization));
 
 		populateAddresses(
 			document, organization.getAddresses(), organization.getRegionId(),
