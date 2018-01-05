@@ -94,16 +94,12 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 			<table class="lfr-table">
 				<tr>
 					<td colspan="3">
-						<span class="label">*<liferay-ui:message key="name" />:</span>
-
-						<aui:input inlineField="<%= true %>" label="" name="name" />
+						<aui:input inlineField="<%= true %>" name="name" />
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<span class="label">*<liferay-ui:message key='<%= productEntry.isSocialOffice() ? "social-office-version" : "liferay-version" %>' />:</span>
-
-						<select name="<portlet:namespace />envLFR" onChange="<portlet:namespace />selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, '');">
+						<aui:select label='<%= productEntry.isSocialOffice() ? "social-office-version" : "liferay-version" %>' name="envLFR" onChange="<portlet:namespace />selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, '');">
 							<option value="0"></option>
 
 							<%
@@ -132,31 +128,25 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 							}
 							%>
 
-						</select>
+						</aui:select>
 					</td>
 					<td>
-						<span class="label">*<liferay-ui:message key="application-server" />:</span>
-
-						<select id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
+						<aui:select label="application-server" name="envAS">
 							<option value="0"></option>
-						</select>
+						</aui:select>
 					</td>
 					<td>
-						<span class="label">*<liferay-ui:message key="database" />:</span>
-
-						<select id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
+						<aui:select label="database" name="envDB">
 							<option value="0"></option>
-						</select>
+						</aui:select>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<span class="label pull-left">*<liferay-ui:message key="operating-system" />:</span>
-
 						<div class="pull-left">
-							<select id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
+							<aui:select label="operating-system" name="envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
 								<option value="0"></option>
-							</select>
+							</aui:select>
 
 							<br />
 
@@ -164,17 +154,15 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 						</div>
 					</td>
 					<td>
-						<span class="label"><liferay-ui:message key="java-virtual-machine" />:</span>
-
-						<select id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
+						<aui:select label="java-virtual-machine" name="envJVM">
 							<option value="0"></option>
-						</select>
+						</aui:select>
 					</td>
 					<td />
 				</tr>
 				<tr>
 					<td colspan="3">
-						<span class="label"><label for="<portlet:namespace />portal-ext"><liferay-ui:message key="portal-ext" /></label><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142855" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
+						<span><label for="<portlet:namespace />portal-ext"><liferay-ui:message key="portal-ext" /></label>:</span>
 
 						<%
 						AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = null;
@@ -197,12 +185,12 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 							<a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %></a>
 						</c:if>
 
-						<input id="<portlet:namespace />portal-ext" name="<portlet:namespace />portal-ext" type="file" />
+						<aui:input label="" name="portal-ext" type="file" />
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<span class="label"><label for="<portlet:namespace />patch-level"><liferay-ui:message key="patch-level" /></label><a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
+						<span><label for="<portlet:namespace />patch-level"><liferay-ui:message key="patch-level" /></label>:</span>
 
 						<%
 						AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment = null;
@@ -225,10 +213,12 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 							<a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %></a>
 						</c:if>
 
-						<input id="<portlet:namespace />patch-level" name="<portlet:namespace />patch-level" type="file" />
+						<aui:input label="" name="patch-level" type="file" />
 					</td>
-					<td align="right">
-						<input type="submit" value="<liferay-ui:message key="save" />" />
+				</tr>
+				<tr>
+					<td>
+						<aui:button type="submit" value="save" />
 					</td>
 				</tr>
 			</table>
