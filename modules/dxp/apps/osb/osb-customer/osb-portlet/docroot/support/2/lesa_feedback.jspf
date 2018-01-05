@@ -21,7 +21,7 @@
 				<liferay-ui:message key="submit-feedback" />
 			</h2>
 
-			<div class="margin-top-30 txt-b">
+			<div class="margin-top txt-b">
 				<liferay-ui:message key="please-select-one-of-the-following" />
 			</div>
 
@@ -33,7 +33,7 @@
 
 			<aui:input cssClass="comments" label="comments" name="lesaFeedbackComments" type="textarea" />
 
-			<div class="clearfix margin-top-30">
+			<div class="clearfix margin-top">
 				<aui:button cssClass="pull-left" name="lesaFeedbackCancelButton" value="cancel" />
 				<aui:button cssClass="pull-right" name="lesaFeedbackSubmitButton" type="submit" value="submit" />
 			</div>
@@ -46,11 +46,11 @@
 				<liferay-ui:message key="thank-you" />
 			</h2>
 
-			<div class="margin-top-30">
+			<div class="margin-top">
 				<liferay-ui:message key="your-feedback-has-been-submitted" />
 			</div>
 
-			<aui:button cssClass="margin-top-30" name="lesaFeedbackCloseButton" value="close" />
+			<aui:button cssClass="margin-top" name="lesaFeedbackCloseButton" value="close" />
 		</div>
 	</div>
 </div>
