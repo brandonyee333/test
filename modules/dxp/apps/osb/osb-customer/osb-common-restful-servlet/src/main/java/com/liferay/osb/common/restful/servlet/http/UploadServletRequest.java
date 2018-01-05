@@ -109,9 +109,7 @@ public class UploadServletRequest extends HttpServletRequestWrapper {
 
 		List<File> files = new ArrayList<>(fileItems.size());
 
-		for (int i = 0; i < fileItems.size(); i++) {
-			FileItem fileItem = fileItems.get(i);
-
+		for (FileItem fileItem : fileItems) {
 			String fileName = FilenameUtils.getName(fileItem.getName());
 
 			File file = new File(_tempFolder, fileName);
