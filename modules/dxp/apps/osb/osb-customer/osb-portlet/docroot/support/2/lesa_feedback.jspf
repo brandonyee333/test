@@ -55,7 +55,7 @@
 	</div>
 </div>
 
-<aui:script use="aui-base,aui-form-validator,aui-io,aui-modal">
+<aui:script use="aui-base,aui-form-validator,aui-io,aui-modal,event-key">
 	var modal;
 
 	function <portlet:namespace />applyFormValidation() {
@@ -86,12 +86,7 @@
 		var lesaFeedbackCancelButton = A.one('#<portlet:namespace />lesaFeedbackCancelButton');
 
 		if (lesaFeedbackCancelButton) {
-			lesaFeedbackCancelButton.on(
-				'click',
-				function() {
-					<portlet:namespace />confirmModalClose();
-				}
-			);
+			lesaFeedbackCancelButton.on('click', <portlet:namespace />confirmModalClose);
 		}
 
 		var lesaFeedbackForm = A.one('#<portlet:namespace />lesaFeedbackFm');
@@ -107,14 +102,7 @@
 			);
 		}
 
-		window.addEventListener(
-			'keydown',
-			function(event) {
-				if (event.keyCode === 27) {
-					<portlet:namespace />confirmModalClose();
-				}
-			}
-		);
+		A.getDoc().on('key', <portlet:namespace />confirmModalClose, 'esc');
 	}
 
 	function <portlet:namespace />confirmModalClose() {
@@ -136,27 +124,6 @@
 			modal.hide();
 
 			<portlet:namespace />resetFeedback();
-		}
-	}
-
-	function <portlet:namespace />displayThankYouMessage() {
-		var lesaFeedbackThankYouModal = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
-
-		if (lesaFeedbackThankYouModal) {
-			<portlet:namespace />resetFeedback();
-
-			modal.set('bodyContent', lesaFeedbackThankYouModal);
-
-			var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
-
-			if (lesaFeedbackCloseButton) {
-				lesaFeedbackCloseButton.on(
-					'click',
-					function() {
-						modal.hide();
-					}
-				);
-			}
 		}
 	}
 
@@ -184,6 +151,27 @@
 					<portlet:namespace />attachListeners();
 				}
 			);
+		}
+	}
+
+	function <portlet:namespace />displayThankYouMessage() {
+		var lesaFeedbackThankYouModal = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
+
+		if (lesaFeedbackThankYouModal) {
+			<portlet:namespace />resetFeedback();
+
+			modal.set('bodyContent', lesaFeedbackThankYouModal);
+
+			var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
+
+			if (lesaFeedbackCloseButton) {
+				lesaFeedbackCloseButton.on(
+					'click',
+					function() {
+						modal.hide();
+					}
+				);
+			}
 		}
 	}
 
