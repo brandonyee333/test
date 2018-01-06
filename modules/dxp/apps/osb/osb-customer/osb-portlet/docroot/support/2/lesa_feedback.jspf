@@ -57,32 +57,37 @@
 
 <aui:script use="aui-base,aui-form-validator,aui-io,aui-modal,event-key">
 	var modal;
+	var validator;
 
 	function <portlet:namespace />applyFormValidation() {
-		new A.FormValidator(
-			{
-				boundingBox: '#<portlet:namespace />lesaFeedbackFm',
-				fieldStrings: {
-					<portlet:namespace />lesaFeedbackComments: {
-						required: '<%= LanguageUtil.get(request, "please-provide-a-description") %>'
+		if (!validator) {
+			validator = new A.FormValidator(
+				{
+					boundingBox: '#<portlet:namespace />lesaFeedbackFm',
+					fieldStrings: {
+						<portlet:namespace />lesaFeedbackComments: {
+							required: '<%= LanguageUtil.get(request, "please-provide-a-description") %>'
+						},
+						<portlet:namespace />lesaFeedbackSummary: {
+							required: '<%= LanguageUtil.get(request, "please-provide-a-summary") %>'
+						}
 					},
-					<portlet:namespace />lesaFeedbackSummary: {
-						required: '<%= LanguageUtil.get(request, "please-provide-a-summary") %>'
-					}
-				},
-				rules: {
-					<portlet:namespace />lesaFeedbackComments: {
-						required: true
-					},
-					<portlet:namespace />lesaFeedbackSummary: {
-						required: true
+					rules: {
+						<portlet:namespace />lesaFeedbackComments: {
+							required: true
+						},
+						<portlet:namespace />lesaFeedbackSummary: {
+							required: true
+						}
 					}
 				}
-			}
-		);
+			);
+		}
 	}
 
 	function <portlet:namespace />attachListeners() {
+		A.getDoc().on('key', <portlet:namespace />confirmModalClose, 'esc');
+
 		var lesaFeedbackCancelButton = A.one('#<portlet:namespace />lesaFeedbackCancelButton');
 
 		if (lesaFeedbackCancelButton) {
@@ -97,12 +102,12 @@
 				function(event) {
 					event.preventDefault();
 
-					<portlet:namespace />sendLesaFeedbackEmail();
+					if (!validator.hasErrors()) {
+						<portlet:namespace />sendLesaFeedbackEmail();
+					}
 				}
 			);
 		}
-
-		A.getDoc().on('key', <portlet:namespace />confirmModalClose, 'esc');
 	}
 
 	function <portlet:namespace />confirmModalClose() {
@@ -122,6 +127,8 @@
 
 		if (cancelEdit || !hasCommentsSummary) {
 			modal.hide();
+
+			<portlet:namespace />detachListeners();
 
 			<portlet:namespace />resetFeedback();
 		}
@@ -148,9 +155,26 @@
 					).render();
 
 					<portlet:namespace />applyFormValidation();
+
 					<portlet:namespace />attachListeners();
 				}
 			);
+		}
+	}
+
+	function <portlet:namespace />detachListeners() {
+		A.getDoc().detach('key');
+
+		var lesaFeedbackCancelButton = A.one('#<portlet:namespace />lesaFeedbackCancelButton');
+
+		if (lesaFeedbackCancelButton) {
+			lesaFeedbackCancelButton.detach('click');
+		}
+
+		var lesaFeedbackForm = A.one('#<portlet:namespace />lesaFeedbackFm');
+
+		if (lesaFeedbackForm) {
+			lesaFeedbackForm.detach('submit');
 		}
 	}
 
@@ -158,6 +182,8 @@
 		var lesaFeedbackThankYouModal = A.one('#<portlet:namespace />lesaFeedbackThankYouContainer');
 
 		if (lesaFeedbackThankYouModal) {
+			<portlet:namespace />detachListeners();
+
 			<portlet:namespace />resetFeedback();
 
 			modal.set('bodyContent', lesaFeedbackThankYouModal);
@@ -168,6 +194,8 @@
 				lesaFeedbackCloseButton.on(
 					'click',
 					function() {
+						modal.reset('bodyContent');
+
 						modal.hide();
 					}
 				);
@@ -181,6 +209,8 @@
 		if (lesaFeedbackForm) {
 			lesaFeedbackForm.reset();
 		}
+
+		validator.resetAllFields();
 	}
 
 	function <portlet:namespace />sendLesaFeedbackEmail() {
