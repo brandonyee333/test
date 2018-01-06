@@ -16,9 +16,9 @@
 	}
 </style>
 
-<div class="responsive-centered" id="CPHomeNav">
+<div class="clearfix responsive-centered" id="CPHomeNav">
 	#foreach ($sectionHeading in $sectionHeading.siblings)
-		<div class="aui-w33 content-column cp-columns" style="width: 100%;">
+		<div class="col-md-4 content-column cp-columns" style="width: 100%;">
 			#set ($cssClass = "")
 
 			#if ($velocityCount == "1")

@@ -1,11 +1,11 @@
 #set ($themeUserId = $getterUtil.getLong($request.get("theme-display").get("real-user-id")))
 
-#set ($subscriptionLocalService = $serviceLocator.findService("com.liferay.portal.service.SubscriptionLocalService"))
+#set ($subscriptionLocalService = $serviceLocator.findService("com.liferay.portal.kernel.service.SubscriptionLocalService"))
 
 #set ($subscribed = $subscriptionLocalService.isSubscribed($company.getCompanyId(), $themeUserId, "com.liferay.portlet.blogs.model.BlogsEntry", $groupId))
 
 <style>
-	.cp-subscribe-container .aui-w75 .right-column {
+	.cp-subscribe-container .w75 .right-column {
 		padding: 10px 0 10px 10px;
 	}
 
@@ -18,7 +18,7 @@
 			padding: 0 10px;
 		}
 
-		.cp-subscribe-container .cp-subscribe-content .aui-w75 .right-column {
+		.cp-subscribe-container .cp-subscribe-content .w75 .right-column {
 			padding: 0 !important;
 		}
 	}
@@ -53,7 +53,7 @@
 </script>
 
 <div class="cp-subscribe-container" id="$reserved-article-id.data">
-	<div class="aui-w75 content-column">
+	<div class="content-column w75">
 		<div class="content-column-content right-column" id="subscribe-container">
 			#if ($subscribed)
 				#set ($subscribeLink = $languageUtil.format($locale, "unsubscribe"))

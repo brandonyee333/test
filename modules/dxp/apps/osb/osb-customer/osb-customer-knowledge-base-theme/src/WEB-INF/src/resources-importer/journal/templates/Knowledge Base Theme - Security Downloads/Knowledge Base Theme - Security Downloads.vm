@@ -2,7 +2,7 @@
 	$title.data
 </h2>
 
-<div class="callout-a callout-download cleared">
+<div class="callout-a callout-download clearfix">
 	<div class="sub-grid">
 		<div class="u-img unit">
 			<img src="$image.data" style="width: 200px; height: 139px;" />

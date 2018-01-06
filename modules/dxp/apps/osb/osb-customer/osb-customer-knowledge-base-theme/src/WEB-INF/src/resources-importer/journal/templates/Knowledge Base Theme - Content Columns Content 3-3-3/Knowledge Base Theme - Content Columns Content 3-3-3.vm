@@ -1,12 +1,12 @@
 <style>
-	.legacy .legacy-aui-w29 {
-		width:29%;
+	.content-columns .unit-content {
+		text-align: center;
 	}
 </style>
 
 <article>
-	<div class="sub-grid">
-		<div class="legacy-aui-w29 responsive720-w100 u-2-9 u-3-12 u-4-4 u-6-6 unit">
+	<div class="clearfix content-columns sub-grid">
+		<div class="col-md-4">
 			<div class="unit-content">
 				#if ($heading1.data != "")
 					<h1 class="section-heading">
@@ -20,7 +20,7 @@
 			</div>
 		</div>
 
-		<div class="legacy-aui-w29 responsive720-w100 u-2-9 u-3-12 u-4-4 u-6-6 unit">
+		<div class="col-md-4">
 			<div class="unit-content">
 				#if ($heading2.data != "")
 					<h1 class="section-heading">
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 
-		<div class="legacy-aui-w29 responsive720-w100 u-2-9 u-3-12 u-4-4 u-6-6 unit">
+		<div class="col-md-4">
 			<div class="unit-content">
 				#if ($heading3.data != "")
 					<h1 class="section-heading">

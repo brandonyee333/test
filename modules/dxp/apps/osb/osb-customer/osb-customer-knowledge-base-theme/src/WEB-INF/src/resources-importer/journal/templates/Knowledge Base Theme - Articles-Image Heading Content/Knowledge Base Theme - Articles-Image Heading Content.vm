@@ -10,8 +10,8 @@
 
 <article class="column-content mobile-top">
 	#foreach ($each-heading in $heading.siblings)
-		<div class="article cleared">
-			<div class="aui-w20 fl left-column">
+		<div class="article clearfix">
+			<div class="fl left-column w20">
 				#if ($each-heading.imageCallout.data == true)
 					<img class="callout-image" src="$each-heading.image.data" width="100%" />
 				#else
@@ -19,7 +19,7 @@
 				#end
 			</div>
 
-			<div class="aui-w80 right-column">
+			<div class="right-column w80">
 				<h1 class="section-heading">
 					$each-heading.data
 				</h1>

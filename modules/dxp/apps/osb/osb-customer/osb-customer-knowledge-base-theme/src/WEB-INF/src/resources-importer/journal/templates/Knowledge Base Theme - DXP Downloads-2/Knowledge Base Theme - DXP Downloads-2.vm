@@ -60,7 +60,7 @@
 		</h5>
 	#end
 
-	<div class="aui-helper-clearfix download">
+	<div class="clearfix download">
 		#if (!$downloadGroups.siblings.isEmpty())
 			#set ($counter = 0)
 			#set ($downloadDetails = {})

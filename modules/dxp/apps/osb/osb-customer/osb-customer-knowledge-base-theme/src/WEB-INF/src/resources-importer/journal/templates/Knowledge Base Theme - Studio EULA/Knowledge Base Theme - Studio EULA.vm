@@ -1,4 +1,4 @@
-#set ($fileEntryLocalService = $serviceLocator.findService("com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService"))
+#set ($fileEntryLocalService = $serviceLocator.findService("com.liferay.document.library.kernel.service.DLFileEntryLocalService"))
 #set ($portletPreferencesLocalService = $serviceLocator.findService("com.liferay.portal.kernel.service.PortletPreferencesLocalService"))
 #set ($userLocalService = $serviceLocator.findService("com.liferay.portal.kernel.service.UserLocalService"))
 #set ($accountCustomerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.AccountCustomerLocalService"))

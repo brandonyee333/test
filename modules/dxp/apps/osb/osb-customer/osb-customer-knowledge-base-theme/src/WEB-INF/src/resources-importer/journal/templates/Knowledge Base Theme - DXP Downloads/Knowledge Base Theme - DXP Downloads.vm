@@ -54,7 +54,7 @@
 		</h5>
 	#end
 
-	<div class="aui-helper-clearfix download">
+	<div class="clearfix download">
 		#if (!$downloadGroups.siblings.isEmpty())
 			#set ($counter = 0)
 			#set ($downloadDetails = {})
@@ -133,7 +133,7 @@
 		</div>
 	#end
 
-	#if (($additionalNotes.data != "") (&& $additionalNotesLabel.data != ""))
+	#if (($additionalNotes.data != "") && ($additionalNotesLabel.data != ""))
 		<div class="additional-notes">
 			<div class="additional-notes-header">
 				<img class="additional-notes-img" src="https://web.liferay.com/osb-community-theme/images/messages/info.png" />

@@ -10,7 +10,7 @@
 
 		<div class="class-toggle-off-click-content">
 			<table>
-				<tr>
+				<tr class="row">
 					<th>
 						Title
 					</th>
@@ -20,7 +20,7 @@
 				</tr>
 
 				#foreach ($vulnerability in $portalVersion.vulnerabilityTitle.siblings)
-					<tr>
+					<tr class="row">
 						<td>
 							<a href="//$vulnerability.linkUrl.data" target="_blank">LSV-$vulnerability.lsvNumber.data $vulnerability.data</a>
 						</td>

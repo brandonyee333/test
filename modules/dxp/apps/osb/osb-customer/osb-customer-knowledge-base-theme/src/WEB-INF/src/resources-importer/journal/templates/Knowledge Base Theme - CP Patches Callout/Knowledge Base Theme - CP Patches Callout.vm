@@ -112,7 +112,7 @@
 	}
 
 	@media (max-width: 720px) {
-		.cp-callout-border-box .cp-callout-header .aui-w75 .right-column {
+		.cp-callout-border-box .cp-callout-header .w75 .right-column {
 			padding: 0 !important;
 		}
 
@@ -122,15 +122,15 @@
 	}
 </style>
 
-<div class="aui-helper-clearfix cp-callout-border-box cp-callout-box" id="callout-$reserved-article-id.data">
-	<div class="aui-helper-clearfix cp-callout-header">
-		<div class="aui-w25 centered content-column icon-wrapper">
+<div class="clearfix cp-callout-border-box cp-callout-box" id="callout-$reserved-article-id.data">
+	<div class="clearfix cp-callout-header">
+		<div class="centered content-column icon-wrapper w25">
 			<div class="content-column-content left-column">
 				<img src="$icon.data" />
 			</div>
 		</div>
 
-		<div class="aui-w75 content-column">
+		<div class="content-column w75">
 			<div class="content-column-content right-column">
 				<h3 class="cp-callout-heading">
 					$title.data

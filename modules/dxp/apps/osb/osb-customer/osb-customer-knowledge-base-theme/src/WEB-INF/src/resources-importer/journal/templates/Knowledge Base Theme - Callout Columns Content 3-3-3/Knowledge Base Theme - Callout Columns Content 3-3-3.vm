@@ -1,13 +1,9 @@
 <style>
-	.legacy .callout-a .unit-content {
+	.callout-a .unit-content {
 		padding-right: 20px;
 	}
 
-	.legacy .legacy-aui-w30 {
-		width:29%;
-	}
-
-	.legacy .unit-table {
+	.unit-table {
 		display: inline-table;
 		margin: 0 10px;
 		min-height: 9px;
@@ -22,8 +18,8 @@
 	#end
 
 	<div class="callout-a">
-		<div class="aui-helper-clearfix sub-grid">
-			<div class="legacy-aui-w30 u-2-6 u-2-9 u-3-12 u-4-4 u-f-12 u-f-6 u-f-9 u-o-4 unit">
+		<div class="clearfix sub-grid">
+			<div class="col-md-4">
 				<div class="unit-content">
 					#foreach ($eachColumn1Heading in $column1Heading.siblings)
 						#if ($eachColumn1Heading.data)
@@ -39,7 +35,7 @@
 				</div>
 			</div>
 
-			<div class="legacy-aui-w30 u-2-6 u-2-9 u-3-12 u-4-4 u-o-4 unit">
+			<div class="col-md-4">
 				<div class="unit-content">
 					#foreach ($eachColumn2Heading in $column2Heading.siblings)
 						#if ($eachColumn2Heading.data)
@@ -55,7 +51,7 @@
 				</div>
 			</div>
 
-			<div class="legacy-aui-w30 u-2-6 u-2-9 u-3-12 u-4-4 u-l-12 u-l-6 u-l-9 u-o-4 unit">
+			<div class="col-md-4">
 				<div class="unit-content">
 					#foreach ($eachColumn3Heading in $column3Heading.siblings)
 						#if ($eachColumn3Heading.data)

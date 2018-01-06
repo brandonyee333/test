@@ -44,7 +44,7 @@
 	<div class="lego-article-content max-960">
 		#foreach ($section in $legoSectionAttr.siblings)
 			#set ($sectionCount = $velocityCount)
-			#set ($sectionCssClass = "aui-helper-clearfix lego-section section-${sectionCount}")
+			#set ($sectionCssClass = "clearfix lego-section section-${sectionCount}")
 
 			#if ($section.sectionCssClass.data != "")
 				#set ($sectionCssClass = $sectionCssClass + " $section.sectionCssClass.data" )
@@ -53,10 +53,17 @@
 			<div class="$sectionCssClass" $section.data>
 				#foreach ($block in $section.legoBlockAttr.siblings)
 					#set ($blockCount = $velocityCount)
-					#set ($blockCssClass = "aui-w${block.width.data} block-${blockCount} content-column lego-block")
+
+					#set ($blockCssClass = "block-${blockCount} content-column lego-block")
+
+					#if ($block.width.data == "33")
+						#set ($blockCssClass = $blockCssClass + " col-md-4")
+					#else
+						#set ($blockCssClass = $blockCssClass + " w${block.width.data}")
+					#end
 
 					#if ($block.blockCssClass.data != "")
-						#set ($blockCssClass = $blockCssClass + " $block.blockCssClass.data" )
+						#set ($blockCssClass = $blockCssClass + " $block.blockCssClass.data")
 					#end
 
 					<div class="$blockCssClass" $block.data>
