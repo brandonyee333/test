@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonAddress;
 
@@ -138,7 +139,7 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		watsonAddressImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonAddressImpl.setUserName("");
+			watsonAddressImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setUserName(userName);
@@ -167,70 +168,70 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		watsonAddressImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (name == null) {
-			watsonAddressImpl.setName("");
+			watsonAddressImpl.setName(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setName(name);
 		}
 
 		if (postalCode == null) {
-			watsonAddressImpl.setPostalCode("");
+			watsonAddressImpl.setPostalCode(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setPostalCode(postalCode);
 		}
 
 		if (region == null) {
-			watsonAddressImpl.setRegion("");
+			watsonAddressImpl.setRegion(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setRegion(region);
 		}
 
 		if (street == null) {
-			watsonAddressImpl.setStreet("");
+			watsonAddressImpl.setStreet(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setStreet(street);
 		}
 
 		if (number == null) {
-			watsonAddressImpl.setNumber("");
+			watsonAddressImpl.setNumber(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setNumber(number);
 		}
 
 		if (building == null) {
-			watsonAddressImpl.setBuilding("");
+			watsonAddressImpl.setBuilding(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setBuilding(building);
 		}
 
 		if (floor == null) {
-			watsonAddressImpl.setFloor("");
+			watsonAddressImpl.setFloor(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setFloor(floor);
 		}
 
 		if (room == null) {
-			watsonAddressImpl.setRoom("");
+			watsonAddressImpl.setRoom(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setRoom(room);
 		}
 
 		if (description == null) {
-			watsonAddressImpl.setDescription("");
+			watsonAddressImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonAddressImpl.setImagePayload("");
+			watsonAddressImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonAddressImpl.setImagePayload(imagePayload);
@@ -309,7 +310,7 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -333,70 +334,70 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (postalCode == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(postalCode);
 		}
 
 		if (region == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(region);
 		}
 
 		if (street == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(street);
 		}
 
 		if (number == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(number);
 		}
 
 		if (building == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(building);
 		}
 
 		if (floor == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(floor);
 		}
 
 		if (room == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(room);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(imagePayload);

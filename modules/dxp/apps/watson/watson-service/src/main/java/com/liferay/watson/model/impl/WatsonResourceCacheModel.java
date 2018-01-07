@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonResource;
 
@@ -110,7 +111,7 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 		watsonResourceImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonResourceImpl.setUserName("");
+			watsonResourceImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonResourceImpl.setUserName(userName);
@@ -135,21 +136,21 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 		watsonResourceImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (name == null) {
-			watsonResourceImpl.setName("");
+			watsonResourceImpl.setName(StringPool.BLANK);
 		}
 		else {
 			watsonResourceImpl.setName(name);
 		}
 
 		if (description == null) {
-			watsonResourceImpl.setDescription("");
+			watsonResourceImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonResourceImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonResourceImpl.setImagePayload("");
+			watsonResourceImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonResourceImpl.setImagePayload(imagePayload);
@@ -199,7 +200,7 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -215,21 +216,21 @@ public class WatsonResourceCacheModel implements CacheModel<WatsonResource>,
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(imagePayload);

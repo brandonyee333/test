@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonIncidentRel;
 import com.liferay.watson.model.WatsonIncidentRelModel;
@@ -281,7 +282,7 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -292,7 +293,7 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -353,7 +354,7 @@ public class WatsonIncidentRelModelImpl extends BaseModelImpl<WatsonIncidentRel>
 	@Override
 	public String getType() {
 		if (_type == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _type;

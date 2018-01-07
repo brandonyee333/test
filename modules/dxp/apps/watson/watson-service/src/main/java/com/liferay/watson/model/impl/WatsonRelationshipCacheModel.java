@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonRelationship;
 
@@ -112,7 +113,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 		watsonRelationshipImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonRelationshipImpl.setUserName("");
+			watsonRelationshipImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonRelationshipImpl.setUserName(userName);
@@ -140,7 +141,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 		watsonRelationshipImpl.setClassPK2(classPK2);
 
 		if (description == null) {
-			watsonRelationshipImpl.setDescription("");
+			watsonRelationshipImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonRelationshipImpl.setDescription(description);
@@ -194,7 +195,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -216,7 +217,7 @@ public class WatsonRelationshipCacheModel implements CacheModel<WatsonRelationsh
 		objectOutput.writeLong(classPK2);
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);

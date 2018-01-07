@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonActivity;
 
@@ -110,7 +111,7 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 		watsonActivityImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonActivityImpl.setUserName("");
+			watsonActivityImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonActivityImpl.setUserName(userName);
@@ -135,7 +136,7 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 		watsonActivityImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (narrative == null) {
-			watsonActivityImpl.setNarrative("");
+			watsonActivityImpl.setNarrative(StringPool.BLANK);
 		}
 		else {
 			watsonActivityImpl.setNarrative(narrative);
@@ -199,7 +200,7 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -215,7 +216,7 @@ public class WatsonActivityCacheModel implements CacheModel<WatsonActivity>,
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (narrative == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(narrative);

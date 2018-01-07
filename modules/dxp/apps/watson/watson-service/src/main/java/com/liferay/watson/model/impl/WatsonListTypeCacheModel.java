@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonListType;
 
@@ -104,7 +105,7 @@ public class WatsonListTypeCacheModel implements CacheModel<WatsonListType>,
 		watsonListTypeImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonListTypeImpl.setUserName("");
+			watsonListTypeImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonListTypeImpl.setUserName(userName);
@@ -127,14 +128,14 @@ public class WatsonListTypeCacheModel implements CacheModel<WatsonListType>,
 		watsonListTypeImpl.setParentWatsonListTypeId(parentWatsonListTypeId);
 
 		if (name == null) {
-			watsonListTypeImpl.setName("");
+			watsonListTypeImpl.setName(StringPool.BLANK);
 		}
 		else {
 			watsonListTypeImpl.setName(name);
 		}
 
 		if (type == null) {
-			watsonListTypeImpl.setType("");
+			watsonListTypeImpl.setType(StringPool.BLANK);
 		}
 		else {
 			watsonListTypeImpl.setType(type);
@@ -179,7 +180,7 @@ public class WatsonListTypeCacheModel implements CacheModel<WatsonListType>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -191,14 +192,14 @@ public class WatsonListTypeCacheModel implements CacheModel<WatsonListType>,
 		objectOutput.writeLong(parentWatsonListTypeId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);

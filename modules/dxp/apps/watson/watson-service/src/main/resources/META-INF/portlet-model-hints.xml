@@ -12,9 +12,7 @@
 		<field name="typeWatsonListTypeId" type="long" />
 		<field name="subtypeWatsonListTypeId" type="long" />
 		<field name="watsonIncidentId" type="long" />
-		<field localized="true" name="narrative" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
+		<field localized="true" name="narrative" type="String" />
 		<field name="reportDate" type="Date" />
 		<field name="startDate" type="Date" />
 		<field name="status" type="int" />
@@ -42,12 +40,8 @@
 		<field localized="true" name="building" type="String" />
 		<field name="floor" type="String" />
 		<field name="room" type="String" />
-		<field localized="true" name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="imagePayload" type="String">
-			<hint-collection name="CLOB" />
-		</field>
+		<field localized="true" name="description" type="String" />
+		<field name="imagePayload" type="String" />
 		<field name="lastSeenDate" type="Date" />
 		<field name="latitude" type="double" />
 		<field name="longitude" type="double" />
@@ -91,9 +85,7 @@
 		<field name="watsonChildId" type="long" />
 		<field name="originalDocument" type="boolean" />
 		<field name="receivedDate" type="Date" />
-		<field name="imagePayload" type="String">
-			<hint-collection name="CLOB" />
-		</field>
+		<field name="imagePayload" type="String" />
 		<field name="status" type="int" />
 	</model>
 	<model name="com.liferay.watson.model.WatsonHistory">
@@ -125,9 +117,7 @@
 		<field name="audienceAdultCount" type="long" />
 		<field name="audienceChildCount" type="long" />
 		<field name="name" type="String" />
-		<field localized="true" name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
+		<field localized="true" name="description" type="String" />
 		<field name="externalCaseId" type="String" />
 		<field name="reportDate" type="Date" />
 		<field name="startDate" type="Date" />
@@ -158,9 +148,7 @@
 		<field name="modifiedDate" type="Date" />
 		<field name="parentWatsonListTypeId" type="long" />
 		<field localized="true" name="name" type="String" />
-		<field name="type" type="String">
-			<hint name="max-length">100</hint>
-		</field>
+		<field name="type" type="String" />
 		<field name="status" type="int" />
 	</model>
 	<model name="com.liferay.watson.model.WatsonListTypeRel">
@@ -197,12 +185,8 @@
 		<field name="sexWatsonListTypeId" type="long" />
 		<field name="typeWatsonListTypeId" type="long" />
 		<field name="watsonIncidentId" type="long" />
-		<field localized="true" name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="imagePayload" type="String">
-			<hint-collection name="CLOB" />
-		</field>
+		<field localized="true" name="description" type="String" />
+		<field name="imagePayload" type="String" />
 		<field name="birthDate" type="Date" />
 		<field name="dateAccepted" type="Date" />
 		<field name="dateRescued" type="Date" />
@@ -229,9 +213,7 @@
 		<field name="classPK1" type="long" />
 		<field name="classNameId2" type="long" />
 		<field name="classPK2" type="long" />
-		<field name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
+		<field name="description" type="String" />
 		<field name="status" type="int" />
 	</model>
 	<model name="com.liferay.watson.model.WatsonReport">
@@ -246,15 +228,9 @@
 		<field name="typeWatsonListTypeId" type="long" />
 		<field name="watsonChildId" type="long" />
 		<field localized="true" name="name" type="String" />
-		<field localized="true" name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field localized="true" name="fullReport" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="imagePayload" type="String">
-			<hint-collection name="CLOB" />
-		</field>
+		<field localized="true" name="description" type="String" />
+		<field localized="true" name="fullReport" type="String" />
+		<field name="imagePayload" type="String" />
 		<field name="timeSpent" type="String" />
 		<field name="reportedUser" type="String" />
 		<field name="reportDate" type="Date" />
@@ -273,12 +249,8 @@
 		<field name="typeWatsonListTypeId" type="long" />
 		<field name="watsonIncidentId" type="long" />
 		<field localized="true" name="name" type="String" />
-		<field localized="true" name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="imagePayload" type="String">
-			<hint-collection name="CLOB" />
-		</field>
+		<field localized="true" name="description" type="String" />
+		<field name="imagePayload" type="String" />
 		<field name="status" type="int" />
 	</model>
 	<model name="com.liferay.watson.model.WatsonVehicle">
@@ -297,12 +269,8 @@
 		<field name="yearWatsonListTypeId" type="long" />
 		<field name="watsonIncidentId" type="long" />
 		<field name="year" type="int" />
-		<field localized="true" name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="imagePayload" type="String">
-			<hint-collection name="CLOB" />
-		</field>
+		<field localized="true" name="description" type="String" />
+		<field name="imagePayload" type="String" />
 		<field name="licensePlate" type="String" />
 		<field name="status" type="int" />
 	</model>

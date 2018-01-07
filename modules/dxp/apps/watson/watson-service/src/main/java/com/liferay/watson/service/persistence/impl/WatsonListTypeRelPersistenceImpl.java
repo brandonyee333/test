@@ -30,8 +30,10 @@ import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import com.liferay.watson.exception.NoSuchListTypeRelException;
@@ -94,10 +96,8 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 		setModelClass(WatsonListTypeRel.class);
 
 		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
+			Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class,
 					"_dbColumnNames");
-
-			field.setAccessible(true);
 
 			Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -543,12 +543,12 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(",");
+			query.append(StringPool.COMMA);
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
 		String sql = query.toString();
 

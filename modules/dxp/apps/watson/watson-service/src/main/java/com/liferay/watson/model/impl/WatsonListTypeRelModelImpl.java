@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.liferay.watson.model.WatsonListTypeRel;
@@ -317,7 +318,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -328,7 +329,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -379,7 +380,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 	@Override
 	public String getClassName() {
 		if (getClassNameId() <= 0) {
-			return "";
+			return StringPool.BLANK;
 		}
 
 		return PortalUtil.getClassName(getClassNameId());
@@ -434,7 +435,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 	@Override
 	public String getValue() {
 		if (_value == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _value;
@@ -532,7 +533,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 	@Override
 	public String getType() {
 		if (_type == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _type;
@@ -590,7 +591,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 		String xml = getValue();
 
 		if (xml == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();

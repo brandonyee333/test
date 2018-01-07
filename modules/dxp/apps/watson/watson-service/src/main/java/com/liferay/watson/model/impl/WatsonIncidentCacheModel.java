@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonIncident;
 
@@ -124,7 +125,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		watsonIncidentImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonIncidentImpl.setUserName("");
+			watsonIncidentImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonIncidentImpl.setUserName(userName);
@@ -152,21 +153,21 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		watsonIncidentImpl.setAudienceChildCount(audienceChildCount);
 
 		if (name == null) {
-			watsonIncidentImpl.setName("");
+			watsonIncidentImpl.setName(StringPool.BLANK);
 		}
 		else {
 			watsonIncidentImpl.setName(name);
 		}
 
 		if (description == null) {
-			watsonIncidentImpl.setDescription("");
+			watsonIncidentImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonIncidentImpl.setDescription(description);
 		}
 
 		if (externalCaseId == null) {
-			watsonIncidentImpl.setExternalCaseId("");
+			watsonIncidentImpl.setExternalCaseId(StringPool.BLANK);
 		}
 		else {
 			watsonIncidentImpl.setExternalCaseId(externalCaseId);
@@ -249,7 +250,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -271,21 +272,21 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		objectOutput.writeLong(audienceChildCount);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (externalCaseId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(externalCaseId);

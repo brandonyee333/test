@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonPerson;
 
@@ -142,7 +143,7 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		watsonPersonImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonPersonImpl.setUserName("");
+			watsonPersonImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setUserName(userName);
@@ -174,14 +175,14 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		watsonPersonImpl.setWatsonIncidentId(watsonIncidentId);
 
 		if (description == null) {
-			watsonPersonImpl.setDescription("");
+			watsonPersonImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonPersonImpl.setImagePayload("");
+			watsonPersonImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setImagePayload(imagePayload);
@@ -209,35 +210,35 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		}
 
 		if (startAge == null) {
-			watsonPersonImpl.setStartAge("");
+			watsonPersonImpl.setStartAge(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setStartAge(startAge);
 		}
 
 		if (endAge == null) {
-			watsonPersonImpl.setEndAge("");
+			watsonPersonImpl.setEndAge(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setEndAge(endAge);
 		}
 
 		if (occupation == null) {
-			watsonPersonImpl.setOccupation("");
+			watsonPersonImpl.setOccupation(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setOccupation(occupation);
 		}
 
 		if (height == null) {
-			watsonPersonImpl.setHeight("");
+			watsonPersonImpl.setHeight(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setHeight(height);
 		}
 
 		if (weight == null) {
-			watsonPersonImpl.setWeight("");
+			watsonPersonImpl.setWeight(StringPool.BLANK);
 		}
 		else {
 			watsonPersonImpl.setWeight(weight);
@@ -314,7 +315,7 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -344,14 +345,14 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		objectOutput.writeLong(watsonIncidentId);
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(imagePayload);
@@ -362,35 +363,35 @@ public class WatsonPersonCacheModel implements CacheModel<WatsonPerson>,
 		objectOutput.writeLong(dateRescued);
 
 		if (startAge == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(startAge);
 		}
 
 		if (endAge == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(endAge);
 		}
 
 		if (occupation == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(occupation);
 		}
 
 		if (height == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(height);
 		}
 
 		if (weight == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(weight);

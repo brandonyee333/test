@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonVehicle;
 
@@ -120,7 +121,7 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 		watsonVehicleImpl.setUserId(userId);
 
 		if (userName == null) {
-			watsonVehicleImpl.setUserName("");
+			watsonVehicleImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			watsonVehicleImpl.setUserName(userName);
@@ -150,21 +151,21 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 		watsonVehicleImpl.setYear(year);
 
 		if (description == null) {
-			watsonVehicleImpl.setDescription("");
+			watsonVehicleImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			watsonVehicleImpl.setDescription(description);
 		}
 
 		if (imagePayload == null) {
-			watsonVehicleImpl.setImagePayload("");
+			watsonVehicleImpl.setImagePayload(StringPool.BLANK);
 		}
 		else {
 			watsonVehicleImpl.setImagePayload(imagePayload);
 		}
 
 		if (licensePlate == null) {
-			watsonVehicleImpl.setLicensePlate("");
+			watsonVehicleImpl.setLicensePlate(StringPool.BLANK);
 		}
 		else {
 			watsonVehicleImpl.setLicensePlate(licensePlate);
@@ -224,7 +225,7 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -250,21 +251,21 @@ public class WatsonVehicleCacheModel implements CacheModel<WatsonVehicle>,
 		objectOutput.writeInt(year);
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(imagePayload);
 		}
 
 		if (licensePlate == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(licensePlate);

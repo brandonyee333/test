@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.liferay.watson.model.WatsonAddress;
@@ -95,7 +96,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 			{ "floor", Types.VARCHAR },
 			{ "room", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
-			{ "imagePayload", Types.CLOB },
+			{ "imagePayload", Types.VARCHAR },
 			{ "lastSeenDate", Types.TIMESTAMP },
 			{ "latitude", Types.DOUBLE },
 			{ "longitude", Types.DOUBLE },
@@ -127,14 +128,14 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		TABLE_COLUMNS_MAP.put("floor", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("room", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
+		TABLE_COLUMNS_MAP.put("imagePayload", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("lastSeenDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("latitude", Types.DOUBLE);
 		TABLE_COLUMNS_MAP.put("longitude", Types.DOUBLE);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonAddress (watsonAddressId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,countryId LONG,districtWatsonListTypeId LONG,originalWatsonAddressId LONG,provinceWatsonListTypeId LONG,subDistrictWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,postalCode VARCHAR(75) null,region VARCHAR(75) null,street VARCHAR(75) null,number_ VARCHAR(75) null,building STRING null,floor VARCHAR(75) null,room VARCHAR(75) null,description STRING null,imagePayload TEXT null,lastSeenDate DATE null,latitude DOUBLE,longitude DOUBLE,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonAddress (watsonAddressId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,countryId LONG,districtWatsonListTypeId LONG,originalWatsonAddressId LONG,provinceWatsonListTypeId LONG,subDistrictWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,postalCode VARCHAR(75) null,region VARCHAR(75) null,street VARCHAR(75) null,number_ VARCHAR(75) null,building STRING null,floor VARCHAR(75) null,room VARCHAR(75) null,description STRING null,imagePayload VARCHAR(75) null,lastSeenDate DATE null,latitude DOUBLE,longitude DOUBLE,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonAddress";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonAddress.watsonAddressId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonAddress.watsonAddressId ASC";
@@ -447,7 +448,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -458,7 +459,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -569,7 +570,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _name;
@@ -667,7 +668,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getPostalCode() {
 		if (_postalCode == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _postalCode;
@@ -682,7 +683,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getRegion() {
 		if (_region == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _region;
@@ -697,7 +698,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getStreet() {
 		if (_street == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _street;
@@ -712,7 +713,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getNumber() {
 		if (_number == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _number;
@@ -727,7 +728,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getBuilding() {
 		if (_building == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _building;
@@ -827,7 +828,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getFloor() {
 		if (_floor == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _floor;
@@ -842,7 +843,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getRoom() {
 		if (_room == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _room;
@@ -857,7 +858,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _description;
@@ -959,7 +960,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	@Override
 	public String getImagePayload() {
 		if (_imagePayload == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _imagePayload;
@@ -1069,7 +1070,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		String xml = getName();
 
 		if (xml == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();

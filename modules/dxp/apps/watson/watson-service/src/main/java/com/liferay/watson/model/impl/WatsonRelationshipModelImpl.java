@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import com.liferay.watson.model.WatsonRelationship;
 import com.liferay.watson.model.WatsonRelationshipModel;
@@ -100,7 +101,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonRelationship (watsonRelationshipId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description STRING null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonRelationship (watsonRelationshipId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description VARCHAR(75) null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonRelationship";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonRelationship.watsonRelationshipId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonRelationship.watsonRelationshipId ASC";
@@ -317,7 +318,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -328,7 +329,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -429,7 +430,7 @@ public class WatsonRelationshipModelImpl extends BaseModelImpl<WatsonRelationshi
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _description;
