@@ -189,7 +189,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
 			String sort = ParamUtil.getString(request, "sortBy", null);
 
-			watsonVehicles = WatsonIncident.getWatsonVehicles(watsonIncidentId, includeInactive, sort, start, end, user);
+			watsonVehicles = WatsonIncident.getWatsonVehicles(watsonIncidentId, includeInactive, sort, start, end);
 
 			watsonVehiclesCount = WatsonIncident.getWatsonVehiclesCount(watsonIncidentId);
 		}

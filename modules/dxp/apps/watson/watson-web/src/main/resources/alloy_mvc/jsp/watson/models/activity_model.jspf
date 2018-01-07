@@ -309,26 +309,6 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 		return update(this);
 	}
 
-	public static List<WatsonActivity> getWatsonActivitiesByWatsonIncidentIds(List<Long> watsonIncidentIds, int start, int end) throws Exception {
-		DynamicQuery watsonActivityDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery();
-
-		Property watsonIncidentIdsProperty = PropertyFactoryUtil.forName("watsonIncidentId");
-
-		watsonActivityDynamicQuery.add(watsonIncidentIdsProperty.in(watsonIncidentIds));
-
-		return getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(watsonActivityDynamicQuery, start, end));
-	}
-
-	public static Long getWatsonActivitiesCountByWatsonIncidentIds(List<Long> watsonIncidentIds) throws Exception {
-		DynamicQuery watsonActivityDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery();
-
-		Property watsonIncidentIdsProperty = PropertyFactoryUtil.forName("watsonIncidentId");
-
-		watsonActivityDynamicQuery.add(watsonIncidentIdsProperty.in(watsonIncidentIds));
-
-		return baseModelAlloyServiceInvoker.executeDynamicQueryCount(watsonActivityDynamicQuery);
-	}
-
 	public static List<WatsonActivity> filterActivities(List<WatsonActivity> watsonActivities, User user) throws Exception {
 		List<WatsonActivity> returnWatsonActivities = ListUtil.copy(watsonActivities);
 

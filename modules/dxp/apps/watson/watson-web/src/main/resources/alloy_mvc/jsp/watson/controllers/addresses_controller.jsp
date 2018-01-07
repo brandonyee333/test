@@ -179,7 +179,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		String actionType = ParamUtil.getString(request, "actionType");
 
 		if (actionType.equals("import")) {
-			watsonAddresses = WatsonAddress.filterAddresses(WatsonAddress.getUnrelatedWatsonAddresses(watsonIncidentId, start, end), user);
+			watsonAddresses = WatsonAddress.getUnrelatedWatsonAddresses(watsonIncidentId, start, end);
 
 			List<WatsonAddress> tempWatsonAddresses = WatsonAddress.getUnrelatedWatsonAddresses(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
@@ -189,7 +189,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
 			String sort = ParamUtil.getString(request, "sortBy", null);
 
-			watsonAddresses = watsonAddresses = WatsonIncident.getWatsonAddresses(watsonIncidentId, includeInactive, sort, start, end, user);
+			watsonAddresses = watsonAddresses = WatsonIncident.getWatsonAddresses(watsonIncidentId, includeInactive, sort, start, end);
 
 			watsonAddressCount = WatsonIncident.getWatsonAddressesCount(watsonIncidentId);
 		}
@@ -236,7 +236,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			}
 		}
 
-		respondWith(WatsonAddress.getAsJSONDataArray(WatsonAddress.filterAddresses(searchResultWatsonAddresses, user), getTotalHits(searchContext)));
+		respondWith(WatsonAddress.getAsJSONDataArray(searchResultWatsonAddresses, getTotalHits(searchContext)));
 	}
 
 	public void sendCoordinates() throws Exception {

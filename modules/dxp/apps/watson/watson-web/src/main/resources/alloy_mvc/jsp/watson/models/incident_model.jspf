@@ -243,7 +243,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		return INCIDENT_STATUS_LABEL_OPEN;
 	}
 
-	public static List<WatsonActivity> getWatsonActivities(long watsonIncidentId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+	public static List<WatsonActivity> getWatsonActivities(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
 		List<WatsonActivity> returnWatsonActivities = null;
 
 		if (watsonIncidentId > 0) {
@@ -258,10 +258,10 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			returnWatsonActivities = WatsonActivity.get(start, end);
 		}
 
-		return WatsonActivity.filterActivities(returnWatsonActivities, user);
+		return returnWatsonActivities;
 	}
 
-	public static List<WatsonAddress> getWatsonAddresses(long watsonIncidentId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+	public static List<WatsonAddress> getWatsonAddresses(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
 		List<WatsonAddress> returnWatsonAddresses = null;
 
 		if (watsonIncidentId > 0) {
@@ -276,7 +276,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			returnWatsonAddresses = WatsonAddress.get(start, end);
 		}
 
-		return WatsonAddress.filterAddresses(returnWatsonAddresses, user);
+		return returnWatsonAddresses;
 	}
 
 	public static List<WatsonHistory> getWatsonHistories(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
@@ -293,7 +293,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		}
 	}
 
-	public static List<WatsonPerson> getWatsonPeople(long watsonIncidentId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+	public static List<WatsonPerson> getWatsonPeople(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
 		List<WatsonPerson> returnWatsonPeople = null;
 
 		if (watsonIncidentId > 0) {
@@ -308,7 +308,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			returnWatsonPeople = WatsonPerson.get(start, end);
 		}
 
-		return WatsonPerson.filterPeople(returnWatsonPeople, user);
+		return returnWatsonPeople;
 	}
 
 	public static List<WatsonRelationship> getWatsonRelationships(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
@@ -325,7 +325,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		}
 	}
 
-	public static List<WatsonResource> getWatsonResources(long watsonIncidentId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+	public static List<WatsonResource> getWatsonResources(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
 		List<WatsonResource> returnWatsonResources = null;
 
 		if (watsonIncidentId > 0) {
@@ -340,10 +340,10 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			returnWatsonResources = WatsonResource.get(start, end);
 		}
 
-		return WatsonResource.filterResources(returnWatsonResources, user);
+		return returnWatsonResources;
 	}
 
-	public static List<WatsonVehicle> getWatsonVehicles(long watsonIncidentId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+	public static List<WatsonVehicle> getWatsonVehicles(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
 		List<WatsonVehicle> returnWatsonVehicles = null;
 
 		if (watsonIncidentId > 0) {
@@ -358,7 +358,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			returnWatsonVehicles = WatsonVehicle.get(start, end);
 		}
 
-		return WatsonVehicle.filterVehicles(returnWatsonVehicles, user);
+		return returnWatsonVehicles;
 	}
 
 	public static long getWatsonActivitiesCount(long watsonIncidentId) throws Exception {

@@ -64,22 +64,6 @@
 		</default-action-keys>
 	</role>
 	<role>
-		<name>Watson Citizenship</name>
-		<role-type>regular</role-type>
-		<reset-permissions>false</reset-permissions>
-		<default-action-keys resourceName="com_liferay_watson_portlet_WatsonPortlet">
-			<action-key>ADD</action-key>
-			<action-key>CREATE</action-key>
-			<action-key>CONFIGURATION</action-key>
-			<action-key>DELETE</action-key>
-			<action-key>EDIT</action-key>
-			<action-key>INDEX</action-key>
-			<action-key>PERMISSIONS</action-key>
-			<action-key>UPDATE</action-key>
-			<action-key>VIEW</action-key>
-		</default-action-keys>
-	</role>
-	<role>
 		<name>Watson Manager</name>
 		<role-type>regular</role-type>
 		<reset-permissions>false</reset-permissions>

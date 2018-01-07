@@ -460,16 +460,6 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		}
 	}
 
-	public static List<WatsonAddress> getWatsonAddressesByWatsonIncidentIds(List<Long> watsonIncidentIds, int start, int end) throws Exception {
-		DynamicQuery watsonAddressDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery();
-
-		Property watsonIncidentIdsProperty = PropertyFactoryUtil.forName("watsonIncidentId");
-
-		watsonAddressDynamicQuery.add(watsonIncidentIdsProperty.in(watsonIncidentIds));
-
-		return getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(watsonAddressDynamicQuery, start, end));
-	}
-
 	public static List<WatsonAddress> filterAddresses(List<WatsonAddress> watsonAddresses, User user) throws Exception {
 		List<WatsonAddress> returnWatsonAddresses = ListUtil.copy(watsonAddresses);
 

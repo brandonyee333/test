@@ -55,14 +55,7 @@ public static class WatsonPermission extends AlloyPermission {
 			return true;
 		}
 		else if (WatsonPermission.check(user, RoleConstants.STAFF)) {
-			long watsonListTypeId = watsonIncident.getTypeWatsonListTypeId();
-
-			if (!WatsonPermission.check(user, RoleConstants.CITIZENSHIP)) {
-				return true;
-			}
-			else if (watsonListTypeId == WatsonListType.INCIDENT_TYPE_CITIZENSHIP) {
-				return true;
-			}
+			return true;
 		}
 
 		return false;

@@ -180,7 +180,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		String actionType = ParamUtil.getString(request, "actionType");
 
 		if (actionType.equals("import")) {
-			watsonResources = WatsonResource.filterResources(WatsonResource.getUnrelatedWatsonResources(watsonIncidentId, start, end), user);
+			watsonResources = WatsonResource.getUnrelatedWatsonResources(watsonIncidentId, start, end);
 
 			List<WatsonResource> tempWatsonResources = WatsonResource.getUnrelatedWatsonResources(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
@@ -190,7 +190,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
 			String sort = ParamUtil.getString(request, "sortBy", null);
 
-			watsonResources = WatsonIncident.getWatsonResources(watsonIncidentId, includeInactive, sort, start, end, user);
+			watsonResources = WatsonIncident.getWatsonResources(watsonIncidentId, includeInactive, sort, start, end);
 
 			watsonResourcesCount = WatsonIncident.getWatsonResourcesCount(watsonIncidentId);
 		}
@@ -237,7 +237,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			}
 		}
 
-		respondWith(WatsonResource.getAsJSONDataArray(WatsonResource.filterResources(searchResultWatsonResources, user), getTotalHits(searchContext)));
+		respondWith(WatsonResource.getAsJSONDataArray(searchResultWatsonResources, getTotalHits(searchContext)));
 	}
 
 	public void update() throws Exception {

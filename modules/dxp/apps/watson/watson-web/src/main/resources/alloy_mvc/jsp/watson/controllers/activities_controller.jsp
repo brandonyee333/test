@@ -236,18 +236,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		List<WatsonActivity> watsonActivities = null;
 		long watsonActivityCount = 0;
 
-		if (WatsonPermission.check(user, RoleConstants.CITIZENSHIP)) {
-			List<Long> watsonIncidentIds = WatsonIncident.getWatsonIncidentIdsByType(WatsonListType.INCIDENT_TYPE_CITIZENSHIP);
+		watsonActivities = WatsonIncident.getWatsonActivities(watsonIncidentId, includeInactive, sort, start, end);
 
-			watsonActivities = WatsonActivity.getWatsonActivitiesByWatsonIncidentIds(watsonIncidentIds, start, end);
-
-			watsonActivityCount = WatsonActivity.getWatsonActivitiesCountByWatsonIncidentIds(watsonIncidentIds);
-		}
-		else {
-			watsonActivities = WatsonIncident.getWatsonActivities(watsonIncidentId, includeInactive, sort, start, end, user);
-
-			watsonActivityCount = WatsonIncident.getWatsonActivitiesCount(watsonIncidentId);
-		}
+		watsonActivityCount = WatsonIncident.getWatsonActivitiesCount(watsonIncidentId);
 
 		respondWith(WatsonActivity.getAsJSONDataArray(watsonActivities, watsonActivityCount));
 	}

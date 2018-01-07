@@ -310,24 +310,17 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		List<WatsonIncident> watsonIncidents = null;
 
-		if (WatsonPermission.check(user, RoleConstants.CITIZENSHIP)) {
-			watsonIncidents = WatsonIncident.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_CITIZENSHIP);
+		watsonIncidents = WatsonIncident.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
 
-			respondWith(WatsonIncident.getAsJSONDataArray(watsonIncidents, WatsonIncident.count("status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_CITIZENSHIP)));
+		String actionType = ParamUtil.getString(request, "actionType");
+
+		if ((start == 0) && actionType.equals("relate")) {
+			long watsonIncidentId = ParamUtil.getLong(request, "id", 0);
+
+			watsonIncidents.add(WatsonIncident.fetch(watsonIncidentId));
 		}
-		else {
-			watsonIncidents = WatsonIncident.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
 
-			String actionType = ParamUtil.getString(request, "actionType");
-
-			if ((start == 0) && actionType.equals("relate")) {
-				long watsonIncidentId = ParamUtil.getLong(request, "id", 0);
-
-				watsonIncidents.add(WatsonIncident.fetch(watsonIncidentId));
-			}
-
-			respondWith(WatsonIncident.getAsJSONDataArray(watsonIncidents, WatsonIncident.count("status", WorkflowConstants.STATUS_APPROVED)));
-		}
+		respondWith(WatsonIncident.getAsJSONDataArray(watsonIncidents, WatsonIncident.count("status", WorkflowConstants.STATUS_APPROVED)));
 	}
 
 	public void refreshSubModel() throws Exception {
