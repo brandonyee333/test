@@ -3,11 +3,14 @@ $control-menu-height: 49px;
 $management-bar-height: 49px;
 
 .contextual-sidebar {
+	display: block !important;
 	height: calc(100vh - #{$management-bar-height});
 	pointer-events: none;
 	position: fixed;
 	right: 0;
 	top: $management-bar-height;
+	transform: translateX(100%);
+	transition: transform ease 0.5s;
 	width: $contextual-sidebar-width;
 
 	&.contextual-sidebar-visible {
