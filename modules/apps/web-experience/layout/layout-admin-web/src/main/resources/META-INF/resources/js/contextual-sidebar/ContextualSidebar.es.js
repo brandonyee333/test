@@ -32,6 +32,13 @@ class ContextualSidebar extends Component {
 	}
 
 	/**
+	 * Disallow setting element display to none
+	 * @inheritDoc
+	 */
+	syncVisible() {
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	rendered() {

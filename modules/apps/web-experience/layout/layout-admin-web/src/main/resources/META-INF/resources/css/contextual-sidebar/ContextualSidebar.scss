@@ -3,7 +3,6 @@ $control-menu-height: 49px;
 $management-bar-height: 49px;
 
 .contextual-sidebar {
-	display: block !important;
 	height: calc(100vh - #{$management-bar-height});
 	pointer-events: none;
 	position: fixed;
