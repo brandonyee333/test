@@ -13,6 +13,7 @@
 	{@param? _handleFragmentCollectionEntryClick: any}
 	{@param? _handleFragmentRemoveButtonClick: any}
 	{@param? _handleHideContextualSidebar: any}
+	{@param? _handleToggleContextualSidebarButtonClick: any}
 	{@param? _lastSaveDate: string}
 	{@param? fragments: list<?>}
 	{@param? id: string}
@@ -33,7 +34,7 @@
 				</ul>
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<button class="btn btn-secondary nav-btn" data-content="body" data-open-class="open-admin-panel" data-target="#fooSliderId" data-title="Fragments" data-toggle="sidenav" data-type="fixed-push" data-type-mobile="fixed" id="fooToggleId">
+						<button class="btn btn-secondary nav-btn" data-onclick="{$_handleToggleContextualSidebarButtonClick}">
 							<svg class="lexicon-icon icon-monospaced">
 								<use xlink:href="{$spritemap}#cards"></use>
 							</svg>
@@ -76,8 +77,6 @@
 							{/call}
 						{/foreach}
 					{/param}
-
-					{param id: 'fooSliderId' /}
 
 					{param events: [
 						'hide': $_handleHideContextualSidebar

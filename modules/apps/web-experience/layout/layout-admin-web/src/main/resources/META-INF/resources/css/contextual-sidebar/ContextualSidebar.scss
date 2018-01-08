@@ -8,12 +8,11 @@ $management-bar-height: 49px;
 	position: fixed;
 	right: 0;
 	top: $management-bar-height;
-	visibility: hidden;
-	width: 0;
+	width: $contextual-sidebar-width;
 
-	&.open-admin-panel {
-		visibility: visible;
-		width: 320px;
+	&.contextual-sidebar-visible {
+		pointer-events: auto;
+		transform: translateX(0);
 	}
 
 	body.has-control-menu & {
