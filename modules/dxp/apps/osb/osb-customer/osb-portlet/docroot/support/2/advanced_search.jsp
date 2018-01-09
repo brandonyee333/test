@@ -85,7 +85,7 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 		<liferay-ui:message key="search" />
 	</div>
 
-	<aui:input cssClass="advanced-search keywords" label="" name="keywords" onchange='<%= renderResponse.getNamespace() + "updateSearchResults();" %>' placeholder="search-lesa" value="keywords" />
+	<aui:input cssClass="advanced-search keywords" label="" name="keywords" onchange='<%= renderResponse.getNamespace() + "updateSearchResults();" %>' placeholder="search-lesa" value="<%= keywords %>" />
 	<aui:input name="cur" type="hidden" value="<%= cur %>" />
 	<aui:input name="orderByCol" type="hidden" value="<%= orderByCol %>" />
 	<aui:input name="orderByType" type="hidden" value="<%= orderByType %>" />
