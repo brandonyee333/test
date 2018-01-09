@@ -64,21 +64,21 @@
 					</th>
 					<td class="col-2">
 						#if ($eachRowHeading.column1IsChecked.data == true)
-							<img alt="Yes" height="27" src="/image/image_gallery?uuid=d1053865-b217-46f4-87c0-1f085db439ba&groupId=14&t=1304188046726" width="25" />
+							<img alt="Yes" height="27" src="https://web.liferay.com/image/image_gallery?uuid=d1053865-b217-46f4-87c0-1f085db439ba&groupId=14&t=1304188046726" width="25" />
 						#else
 							$eachRowHeading.column1Content.data
 						#end
 					</td>
 					<td class="col-3">
 						#if ($eachRowHeading.column2IsChecked.data == true)
-							<img alt="Yes" height="27" src="/image/image_gallery?uuid=d1053865-b217-46f4-87c0-1f085db439ba&groupId=14&t=1304188046726" width="25" />
+							<img alt="Yes" height="27" src="https://web.liferay.com/image/image_gallery?uuid=d1053865-b217-46f4-87c0-1f085db439ba&groupId=14&t=1304188046726" width="25" />
 						#else
 							$eachRowHeading.column2Content.data
 						#end
 					</td>
 					<td class="col-4 last">
 						#if ($eachRowHeading.column3IsChecked.data == true)
-							<img alt="Yes" height="27" src="/image/image_gallery?uuid=d1053865-b217-46f4-87c0-1f085db439ba&groupId=14&t=1304188046726" width="25" />
+							<img alt="Yes" height="27" src="https://web.liferay.com/image/image_gallery?uuid=d1053865-b217-46f4-87c0-1f085db439ba&groupId=14&t=1304188046726" width="25" />
 						#else
 							$eachRowHeading.column3Content.data
 						#end

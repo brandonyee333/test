@@ -9,7 +9,7 @@
 #elseif ($patchType.getData() == "For Developers")
 	#set ($iconUrl = "/image/image_gallery?uuid=f98a22dd-c337-4230-8d05-83d074f2c857&groupId=$groupId")
 #elseif ($patchType.getData() == "WAR")
-	#set ($iconUrl = "/documents/3133562/14203318/Portal-WAR/4b88c8dd-7abb-4d47-8ccf-60c0ddb7da39?t=1359583560000")
+	#set ($iconUrl = "/documents/$groupId/4b88c8dd-7abb-4d47-8ccf-60c0ddb7da39")
 #elseif ($patchType.getData() == "Database")
 	#set ($iconUrl = "/image/image_gallery?uuid=7cedcc11-36c4-4581-b5af-e106d97d347c&groupId=$groupId")
 #elseif ($patchType.getData() == "Hook")
