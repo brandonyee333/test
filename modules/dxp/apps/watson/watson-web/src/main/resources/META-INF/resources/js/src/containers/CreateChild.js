@@ -86,7 +86,7 @@ class CreateChild extends JSXComponent {
 		const {childFormData} = props;
 
 		if (childFormData) {
-			props.addChild(childFormData);
+			props.addChildren(childFormData);
 
 			this.state.dataSent = true;
 		}

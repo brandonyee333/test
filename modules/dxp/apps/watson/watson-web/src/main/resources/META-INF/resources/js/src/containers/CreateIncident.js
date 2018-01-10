@@ -146,7 +146,7 @@ class CreateIncident extends JSXComponent {
 		if (incidentFormData) {
 			incidentFormData.address = props.addressFormData;
 
-			props.addIncident(incidentFormData);
+			props.addIncidents(incidentFormData);
 
 			this.state.dataSent = true;
 		}
