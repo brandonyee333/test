@@ -248,14 +248,10 @@
 		}
 	}
 
-	var lesaFeedbackIcon = A.one('#<portlet:namespace />lesaFeedbackIcon');
-	var lesaFeedbackIconMobile = A.one('#<portlet:namespace />lesaFeedbackIconMobile');
+	var lesaFeedbackIcon = A.one('[data-page-id=lesaFeedbackPage]');
 
 	if (lesaFeedbackIcon) {
 		<portlet:namespace />createModal(lesaFeedbackIcon);
 	}
 
-	if (lesaFeedbackIconMobile) {
-		<portlet:namespace />createModal(lesaFeedbackIconMobile);
-	}
 </aui:script>

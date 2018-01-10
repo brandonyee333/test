@@ -17,32 +17,6 @@
 <div class="lesa-nav">
 	<div class="nav-icon" data-page-id="homePage">
 
-		<%
-		List<SearchFilter> searchFilters = SearchFilterLocalServiceUtil.getSearchFilters(user.getUserId(), PortalUtil.getClassNameId(TicketEntry.class.getName()));
-
-		boolean lesaAccountCustomer = false;
-
-		List<Long> developerAccountEntryIds = new ArrayList<Long>();
-
-		List<AccountCustomer> accountCustomers = AccountCustomerLocalServiceUtil.getUserAccountCustomers(user.getUserId());
-
-		for (AccountCustomer accountCustomer : accountCustomers) {
-			if (!lesaAccountCustomer) {
-				AccountEntry accountEntry = accountCustomer.getAccountEntry();
-
-				if (accountEntry.getType() != AccountEntryConstants.TYPE_TRIAL) {
-					lesaAccountCustomer = true;
-				}
-			}
-
-			if (accountCustomer.getRole() == AccountCustomerConstants.ROLE_DEVELOPER) {
-				developerAccountEntryIds.add(accountCustomer.getAccountEntryId());
-			}
-		}
-
-		boolean partnerManager = PartnerWorkerLocalServiceUtil.hasPartnerWorkerRole(user.getUserId(), PartnerWorkerConstants.ROLE_MANAGER);
-		%>
-
 		<portlet:renderURL var="myOpenTicketsURL">
 			<portlet:param name="mvcPath" value="/support/2/view.jsp" />
 		</portlet:renderURL>
@@ -198,7 +172,7 @@
 		<span class="nav-tooltip"><liferay-ui:message key="help" /></span>
 	</div>
 
-	<div class="bottom lesa-feedback-icon nav-icon" data-page-id="lesaFeedbackPage" id="<portlet:namespace />lesaFeedbackIcon">
+	<div class="bottom lesa-feedback-icon nav-icon" data-page-id="lesaFeedbackPage">
 		<svg height="27px" viewBox="0 0 27 27" width="27px">
 			<path d="m 26.387266, 18.421265 -20.0942753, 0 -5.58771302, 5.587713 0, -23.3179561 25.78944432, 0 0,17.7302431 z" />
 			<path d="M 3, 5.25 24, 5.25" />
@@ -242,32 +216,3 @@
 		<span class="nav-tooltip"><liferay-ui:message key="preferences" /></span>
 	</div>
 </div>
-
-<c:if test="<%= !developerAccountEntryIds.isEmpty() || !searchFilters.isEmpty() || supportPartnerWorker %>">
-	<aui:script use="aui-base">
-		var homePage = A.all('[data-page-id="homePage"]');
-		var navSubmenu = A.all('.nav-submenu');
-
-		homePage.on(
-			'click',
-			function() {
-				navSubmenu.toggleClass('show');
-			}
-		);
-	</aui:script>
-</c:if>
-
-<aui:script>
-	Liferay.provide(
-		window,
-		'<portlet:namespace />navSelect',
-		function(pageId) {
-			var A = AUI();
-
-			var activePage = A.all('[data-page-id=' + pageId + 'Page]');
-
-			activePage.addClass('active');
-		},
-		['aui-node']
-	);
-</aui:script>

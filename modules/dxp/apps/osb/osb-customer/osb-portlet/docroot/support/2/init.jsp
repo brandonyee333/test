@@ -62,11 +62,69 @@ if (liferayIncOrg) {
 
 	<%
 	request.setAttribute("init.jsp-navIncluded", Boolean.TRUE.toString());
+
+	List<SearchFilter> searchFilters = SearchFilterLocalServiceUtil.getSearchFilters(user.getUserId(), PortalUtil.getClassNameId(TicketEntry.class.getName()));
+
+	boolean lesaAccountCustomer = false;
+
+	List<Long> developerAccountEntryIds = new ArrayList<Long>();
+
+	List<AccountCustomer> accountCustomers = AccountCustomerLocalServiceUtil.getUserAccountCustomers(user.getUserId());
+
+	for (AccountCustomer accountCustomer : accountCustomers) {
+		if (!lesaAccountCustomer) {
+			AccountEntry accountEntry = accountCustomer.getAccountEntry();
+
+			if (accountEntry.getType() != AccountEntryConstants.TYPE_TRIAL) {
+				lesaAccountCustomer = true;
+			}
+		}
+
+		if (accountCustomer.getRole() == AccountCustomerConstants.ROLE_DEVELOPER) {
+			developerAccountEntryIds.add(accountCustomer.getAccountEntryId());
+		}
+	}
+
+	boolean partnerManager = PartnerWorkerLocalServiceUtil.hasPartnerWorkerRole(user.getUserId(), PartnerWorkerConstants.ROLE_MANAGER);
 	%>
 
-	<%@ include file="/support/2/nav.jspf" %>
+	<c:choose>
+		<c:when test='<%= BrowserSnifferUtil.isMobile(request) %>'>
+			<%@ include file="/support/2/nav_mobile.jspf" %>
+		</c:when>
+		<c:otherwise>
+			<%@ include file="/support/2/nav.jspf" %>
+		</c:otherwise>
+	</c:choose>
 
-	<%@ include file="/support/2/nav_mobile.jspf" %>
+	<c:if test="<%= !developerAccountEntryIds.isEmpty() || !searchFilters.isEmpty() || supportPartnerWorker %>">
+		<aui:script use="aui-base">
+			var homePage = A.all('[data-page-id="homePage"]');
+			var navSubmenu = A.all('.nav-submenu');
+
+			homePage.on(
+				'click',
+				function() {
+					navSubmenu.toggleClass('show');
+				}
+			);
+		</aui:script>
+	</c:if>
+
+	<aui:script>
+		Liferay.provide(
+			window,
+			'<portlet:namespace />navSelect',
+			function(pageId) {
+				var A = AUI();
+
+				var activePage = A.one('[data-page-id=' + pageId + 'Page]');
+
+				activePage.addClass('active');
+			},
+			['aui-node']
+		);
+	</aui:script>
 
 	<%@ include file="/support/2/banner.jspf" %>
 </c:if>
