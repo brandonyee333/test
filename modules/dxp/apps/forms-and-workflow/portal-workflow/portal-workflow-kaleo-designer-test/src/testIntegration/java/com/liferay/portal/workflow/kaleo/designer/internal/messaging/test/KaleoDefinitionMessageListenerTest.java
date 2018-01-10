@@ -151,13 +151,12 @@ public class KaleoDefinitionMessageListenerTest {
 		String defaultLanguageId = LocaleUtil.toLanguageId(
 			LocaleUtil.getDefault());
 
-		for (Locale locale : map.keySet()) {
-			String languageId = LocaleUtil.toLanguageId(locale);
-
-			String localizedTitle = map.get(locale);
+		for (Map.Entry<Locale, String> entry : map.entrySet()) {
+			String languageId = LocaleUtil.toLanguageId(entry.getKey());
 
 			title = LocalizationUtil.updateLocalization(
-				title, "Title", localizedTitle, languageId, defaultLanguageId);
+				title, "Title", entry.getValue(), languageId,
+				defaultLanguageId);
 		}
 
 		return title;
