@@ -22,18 +22,22 @@ String screenName = ParamUtil.getString(request, "screenName");
 String emailAddress = ParamUtil.getString(request, "emailAddress");
 %>
 
-<aui:fieldset>
-	<aui:input inlineField="<%= true %>" label="first-name" name="firstName" size="20" type="text" />
+<liferay-ui:search-toggle
+	buttonLabel="search"
+	displayTerms="<%= new UserDisplayTerms(renderRequest) %>"
+	id="toggle_id_user_search"
+>
+	<aui:fieldset>
+		<aui:input inlineField="<%= true %>" label="first-name" name="firstName" size="20" type="text" />
 
-	<aui:input inlineField="<%= true %>" label="middle-name" name="middleName" size="20" type="text" />
+		<aui:input inlineField="<%= true %>" label="middle-name" name="middleName" size="20" type="text" />
 
-	<aui:input inlineField="<%= true %>" label="last-name" name="lastName" size="20" type="text" />
-</aui:fieldset>
+		<aui:input inlineField="<%= true %>" label="last-name" name="lastName" size="20" type="text" />
+	</aui:fieldset>
 
-<aui:fieldset>
-	<aui:input inlineField="<%= true %>" label="screen-name" name="screenName" size="20" type="text" />
+	<aui:fieldset>
+		<aui:input inlineField="<%= true %>" label="screen-name" name="screenName" size="20" type="text" />
 
-	<aui:input inlineField="<%= true %>" label="email-address" name="emailAddress" size="20" type="text" />
-</aui:fieldset>
-
-<aui:button type="submit" value="search" />
+		<aui:input inlineField="<%= true %>" label="email-address" name="emailAddress" size="20" type="text" />
+	</aui:fieldset>
+</liferay-ui:search-toggle>

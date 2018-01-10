@@ -68,11 +68,21 @@ portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 		id="usersSearchContainer"
 		iteratorURL="<%= portletURL %>"
 		rowChecker="<%= new UserHolidayCalendarChecker(renderResponse, holidayCalendar) %>"
-		total="<%= UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true) %>"
+		searchContainer="<%= new UserSearch(renderRequest, portletURL) %>"
 	>
-		<liferay-ui:search-container-results
-			results="<%= UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)) %>"
-		/>
+
+		<%
+		UserDisplayTerms searchTerms = (UserDisplayTerms)searchContainer.getSearchTerms();
+
+		if (!searchTerms.isAdvancedSearch()) {
+			searchContainer.setTotal(UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), searchTerms.getKeywords(), WorkflowConstants.STATUS_ANY, userParams));
+			searchContainer.setResults(UserLocalServiceUtil.search(themeDisplay.getCompanyId(), searchTerms.getKeywords(), WorkflowConstants.STATUS_ANY, userParams, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)));
+		}
+		else {
+			searchContainer.setTotal(UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true));
+			searchContainer.setResults(UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)));
+		}
+		%>
 
 		<liferay-ui:search-container-row
 			className="com.liferay.portal.kernel.model.User"
