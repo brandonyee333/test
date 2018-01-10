@@ -40486,4 +40486,8 @@
 		<name locale="en_US">Child Visitation with Family</name>
 		<name locale="th">การเยี่ยมเด็กกับครอบครัว</name>
 	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.nature" watsonListTypeId="10575">
+		<name locale="en_US">Child Pornography</name>
+		<name locale="th">ภาพอนาจารของเด็ก</name>
+	</watsonListType>
 </table>
