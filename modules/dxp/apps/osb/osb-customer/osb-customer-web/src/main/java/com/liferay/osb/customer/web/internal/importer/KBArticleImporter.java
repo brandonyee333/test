@@ -216,13 +216,14 @@ public class KBArticleImporter {
 
 				long[] assetCategoryIds = new long[0];
 
-				for (int index : assetVocabularyIndexMap.keySet()) {
+				for (Map.Entry<Integer, String> entry :
+						assetVocabularyIndexMap.entrySet()) {
+
 					String assetCategoryNames = GetterUtil.getString(
-						values[index]);
+						values[entry.getKey()]);
 
 					assetCategoryIds = filterAssetCategoryIds(
-						assetCategoryIds, assetVocabularyIndexMap.get(index),
-						assetCategoryNames);
+						assetCategoryIds, entry.getValue(), assetCategoryNames);
 				}
 
 				if (assetCategoryIds.length == 0) {
