@@ -1,0 +1,17 @@
+.osb-portal-side-navigation-portlet {
+	.regular-heading {
+		border-bottom: 1px solid #CACED2;
+		font-size: 1.3em;
+		margin: 0;
+		padding: 0 15px;
+		text-transform: uppercase;
+	}
+
+	.side-nav-tree {
+		margin: 0;
+
+		.selected {
+			color: #4C4C4E;
+		}
+	}
+}
