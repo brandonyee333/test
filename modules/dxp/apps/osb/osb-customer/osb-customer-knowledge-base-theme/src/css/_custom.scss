@@ -25,7 +25,7 @@ $has-control-menu-top-mobile: 48px;
 
 	body, input, legend, select, textarea {
 		color: $font-color;
-		font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
+		font: 16px/1.5 'source-sans-pro-light', Arial, Helvetica, sans-serif;
 	}
 
 	a {
@@ -666,7 +666,7 @@ $has-control-menu-top-mobile: 48px;
 				line-height: 20px;
 
 				span {
-					font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
+					font-family: 'source-sans-pro-light', Arial, Helvetica, sans-serif;
 					font-size: 0.65em;
 					vertical-align: middle;
 				}
@@ -736,6 +736,7 @@ $has-control-menu-top-mobile: 48px;
 	}
 
 	.article-wrapper {
+		font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Noto Sans Japanese", "ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
 		font-size: 16px;
 		line-height: 1.7;
 		margin: 5px 0 5px 30px;
