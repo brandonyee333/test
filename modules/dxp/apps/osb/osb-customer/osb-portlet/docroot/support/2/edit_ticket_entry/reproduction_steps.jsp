@@ -29,13 +29,12 @@ TicketEntry ticketEntry = TicketEntryServiceUtil.getTicketEntry(ticketEntryId);
 		</h1>
 
 		<div>
-			<textarea id="<portlet:namespace />reproductionSteps" style="height: 250px; width: 750px;" wrap="soft"><%= HtmlUtil.escape(ticketEntry.getReproductionSteps()) %></textarea>
+			<aui:input label="" name="reproductionSteps" style="height: 250px; width: 750px;" type="textarea" value="<%= HtmlUtil.escape(ticketEntry.getReproductionSteps()) %>" wrap="soft" />
 		</div>
-
 		<div>
-			<input class="aui-button-input" onClick="<portlet:namespace />updateReproductionSteps();" type="button" value="<liferay-ui:message key="save" />" />
+			<aui:button onClick='<%= renderResponse.getNamespace() + "updateReproductionSteps();" %>' value="save" />
 
-			<input class="aui-button-input" onClick="window.close();" type="button" value="<liferay-ui:message key="cancel" />" />
+			<aui:button onClick="window.close();" value="cancel" />
 		</div>
 	</div>
 
