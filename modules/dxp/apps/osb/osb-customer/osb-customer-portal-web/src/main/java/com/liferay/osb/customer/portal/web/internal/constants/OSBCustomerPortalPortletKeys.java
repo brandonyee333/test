@@ -21,4 +21,6 @@ public class OSBCustomerPortalPortletKeys {
 
 	public static final String SIDE_NAVIGATION = "2_WAR_osbuiportlet";
 
+	public static final String TAB_NAVIGATION = "3_WAR_osbuiportlet";
+
 }
