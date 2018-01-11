@@ -37,149 +37,129 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 	<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntryId) %>" />
 </portlet:actionURL>
 
-<aui:form action="<%= addTicketCallURL %>" method="post" name="fm">
+<aui:form action="<%= addTicketCallURL %>" cssClass="log-call-form" method="post" name="fm">
 	<liferay-ui:error exception="<%= TicketCallCustomerNameException.class %>" message="please-enter-a-valid-customer-name" />
 	<liferay-ui:error exception="<%= TicketCallDateException.class %>" message="please-enter-a-valid-call-date" />
 	<liferay-ui:error exception="<%= TicketCallLengthException.class %>" message="please-enter-a-valid-call-length" />
 	<liferay-ui:error exception="<%= TicketCallTypeException.class %>" message="please-choose-a-valid-type" />
 
-	<div class="unit w95">
-		<h1 class="section-heading">
-			<liferay-ui:message key="log-call" />
-		</h1>
+	<h2>
+		<liferay-ui:message key="log-call" />
+	</h2>
 
-		<div class="clearfix">
-			<div class="content-column w33">
-				<div class="content-column-content left-column">
-					<span class="txt-b"><liferay-ui:message key="customer-name" />: </span>
+	<div class="call-info clearfix">
+		<div class="content-column w33">
+			<div class="content-column-content left-column">
+				<span class="txt-b"><liferay-ui:message key="customer-name" />: </span>
 
-					<br />
-
-					<aui:input name="customerName" type="text" value="<%= customerName %>" />
-				</div>
+				<aui:input label="" name="customerName" type="text" value="<%= customerName %>" />
 			</div>
+		</div>
 
-			<div class="content-column w33">
-				<div class="content-column-content right-column">
-					<span class="txt-b"><liferay-ui:message key="contact-info" />: </span>
+		<div class="content-column w33">
+			<div class="content-column-content right-column">
+				<span class="txt-b"><liferay-ui:message key="contact-info" />: </span>
 
-					<br />
-
-					<aui:input name="customerContact" type="text" value="<%= customerContact %>" />
-				</div>
+				<aui:input label="" name="customerContact" type="text" value="<%= customerContact %>" />
 			</div>
+		</div>
 
-			<div class="content-column w33">
-				<div class="content-column-content">
-					<span class="txt-b"><liferay-ui:message key="call-type" />: </span>
+		<div class="content-column w33">
+			<div class="content-column-content">
+				<span class="txt-b"><liferay-ui:message key="call-type" />: </span>
 
-					<br />
+				<aui:select label="" name="type">
+					<aui:option value="0" />
+					<aui:option label="incoming" selected="<%= type == TicketCallConstants.TYPE_INCOMING %>" value="<%= TicketCallConstants.TYPE_INCOMING %>" />
+					<aui:option label="outgoing" selected="<%= type == TicketCallConstants.TYPE_OUTGOING %>" value="<%= TicketCallConstants.TYPE_OUTGOING %>" />
+				</aui:select>
+			</div>
+		</div>
+	</div>
 
-					<aui:select name="type">
-						<aui:option value="0" />
-						<aui:option label="incoming" selected="<%= type == TicketCallConstants.TYPE_INCOMING %>" value="<%= TicketCallConstants.TYPE_INCOMING %>" />
-						<aui:option label="outgoing" selected="<%= type == TicketCallConstants.TYPE_OUTGOING %>" value="<%= TicketCallConstants.TYPE_OUTGOING %>" />
+	<div class="call-times clearfix">
+		<div class="content-column w33">
+			<span class="txt-b"><liferay-ui:message key="call-date" />: </span>
+
+			<liferay-ui:input-field defaultValue="<%= calendar %>" field="callDate" model="<%= TicketCall.class %>" />
+		</div>
+
+		<div class="content-column w33">
+			<div class="content-column-content right-column">
+				<span class="txt-b"><liferay-ui:message key="call-length" />: </span>
+
+				<div class="lfr-input-time">
+					<aui:select label="" name="callLengthHours">
+
+						<%
+						for (int i = 0; i < 24; i++) {
+						%>
+
+							<aui:option label="<%= i %>" selected="<%= callLengthHours == i %>" value="<%= i %>" />
+
+						<%
+						}
+						%>
+
+					</aui:select>
+
+					<%= StringPool.COLON %>
+
+					<aui:select label="" name="callLengthMinutes">
+
+						<%
+						for (int i = 0; i < 60; i++) {
+						%>
+
+							<aui:option label="<%= i %>" selected="<%= callLengthMinutes == i %>" value="<%= i %>" />
+
+						<%
+						}
+						%>
+
+					</aui:select>
+
+					<%= StringPool.COLON %>
+
+					<aui:select label="" name="callLengthSeconds">
+
+						<%
+						for (int i = 0; i < 60; i++) {
+						%>
+
+							<aui:option label="<%= i %>" selected="<%= callLengthSeconds == i %>" value="<%= i %>" />
+
+						<%
+						}
+						%>
+
 					</aui:select>
 				</div>
 			</div>
 		</div>
+	</div>
 
-		<br />
+	<div class="call-comments clearfix">
+		<div class="content-column w100">
+			<div class="content-column-content">
+				<span class="txt-b"><liferay-ui:message key="customer-confirmation" />: </span>
 
-		<div class="clearfix">
-			<div class="content-column w33">
-				<span class="txt-b"><liferay-ui:message key="call-date" />: </span>
-
-				<br />
-
-				<liferay-ui:input-field defaultValue="<%= calendar %>" field="callDate" model="<%= TicketCall.class %>" />
-			</div>
-
-			<div class="content-column w33">
-				<div class="content-column-content right-column">
-					<span class="txt-b"><liferay-ui:message key="call-length" />: </span>
-
-					<br />
-
-					<div class="lfr-input-time">
-						<aui:select name="callLengthHours">
-
-							<%
-							for (int i = 0; i < 24; i++) {
-							%>
-
-								<aui:option label="<%= i %>" selected="<%= callLengthHours == i %>" value="<%= i %>" />
-
-							<%
-							}
-							%>
-
-						</aui:select>
-
-						<%= StringPool.COLON %>
-
-						<aui:select name="callLengthMinutes">
-
-							<%
-							for (int i = 0; i < 60; i++) {
-							%>
-
-								<aui:option label="<%= i %>" selected="<%= callLengthMinutes == i %>" value="<%= i %>" />
-
-							<%
-							}
-							%>
-
-						</aui:select>
-
-						<%= StringPool.COLON %>
-
-						<aui:select name="callLengthSeconds">
-
-							<%
-							for (int i = 0; i < 60; i++) {
-							%>
-
-								<aui:option label="<%= i %>" selected="<%= callLengthSeconds == i %>" value="<%= i %>" />
-
-							<%
-							}
-							%>
-
-						</aui:select>
-					</div>
-				</div>
+				<aui:input label="<%= confirmation %>" name="confirmation" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 100px;" type="textarea" wrap="soft" />
 			</div>
 		</div>
 
-		<br />
+		<div class="content-column w100">
+			<div class="content-column-content">
+				<span class="txt-b"><liferay-ui:message key="internal-instructions" />: </span>
 
-		<div class="clearfix">
-			<div class="content-column w100">
-				<div class="content-column-content">
-					<span class="txt-b"><liferay-ui:message key="customer-confirmation" />: </span>
-
-					<aui:input label="<%= confirmation %>" name="confirmation" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 100px; width: 100%;" type="textarea" wrap="soft" />
-				</div>
-
-				<br />
+				<aui:input label="<%= instructions %>" name="instructions" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 100px;" type="textarea" wrap="soft" />
 			</div>
-
-			<div class="content-column w100">
-				<div class="content-column-content">
-					<span class="txt-b"><liferay-ui:message key="internal-instructions" />: </span>
-
-					<aui:input label="<%= instructions %>" name="instructions" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 100px; width: 100%;" type="textarea" wrap="soft" />
-				</div>
-			</div>
-		</div>
-
-		<div>
-			<aui:button cssClass="aui-button-input" type="submit" value="log-call" />
-
-			<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
 		</div>
 	</div>
+
+	<aui:button cssClass="aui-button-input" type="submit" value="log-call" />
+
+	<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
 </aui:form>
 
 <c:if test="<%= ticketCallId > 0 %>">

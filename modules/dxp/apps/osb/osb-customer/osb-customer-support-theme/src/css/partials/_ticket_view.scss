@@ -1,5 +1,31 @@
+/* ---------- Dropdown menu ---------- */
+
 .jira-issue-modal {
 	.btn {
 		margin: 1em auto;
+	}
+}
+
+.log-call-form {
+	.call-comments {
+		textarea {
+			border: 1px solid $text-color;
+		}
+	}
+
+	.call-times {
+		.input-select-wrapper {
+			display: inline-block;
+		}
+
+		.lfr-input-date, .lfr-input-time {
+			margin-bottom: 0.5em;
+		}
+	}
+
+	.call-info {
+		.form-control {
+			width: 80%;
+		}
 	}
 }
