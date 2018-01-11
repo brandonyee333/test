@@ -362,7 +362,7 @@ class DynamicInputGenerator extends JSXComponent {
 	}
 
 	syncValue(newState) {
-		if (newState) {
+		if (newState && newState.forEach) {
 			let {addedInputs, primaryIndex} = this.state;
 
 			newState.forEach(

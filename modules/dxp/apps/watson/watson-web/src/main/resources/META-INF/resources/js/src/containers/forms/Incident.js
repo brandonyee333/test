@@ -91,7 +91,7 @@ class IncidentForm extends JSXComponent {
 
 			const pathChanged = !pathMatches || pathMatches[1] != watsonIncidentId;
 
-			if (pathChanged && !isEmpty(formData) && (!isEmpty(storeData))) {
+			if (pathChanged && !isEmpty(formData) && !isEmpty(storeData)) {
 				const originalData = convertMapToObject(storeData);
 
 				if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {

@@ -104,8 +104,14 @@ class ChildForm extends JSXComponent {
 		const {unlockNavigate} = this.state;
 
 		if (watsonChildId > 0) {
-			if (!isEmpty(formData) && (!isEmpty(storeData))) {
+			if (!isEmpty(formData) && !isEmpty(storeData)) {
 				const originalData = convertMapToObject(storeData);
+
+				const {nameWatsonListTypeRels: formDataNameWatsonListTypeRels} = formData;
+				const {nameWatsonListTypeRels: originalDataNameWatsonListTypeRels} = originalData;
+
+				formData.nameWatsonListTypeRels = formDataNameWatsonListTypeRels.length;
+				originalData.nameWatsonListTypeRels = originalDataNameWatsonListTypeRels.length;
 
 				if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
 					this.setState(
