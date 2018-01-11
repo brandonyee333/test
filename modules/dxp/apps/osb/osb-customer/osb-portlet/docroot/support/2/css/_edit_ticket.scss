@@ -74,7 +74,7 @@
 	}
 
 	.portlet-msg-error {
-		margin: 0 0 5px 0;
+		margin: 0 0 5px;
 	}
 }
 
@@ -143,9 +143,7 @@
 }
 
 .results-row a {
-	&, & * {
-		color: $text-color;
-	}
+	color: $text-color;
 }
 
 .ticket-exceptions {
@@ -158,8 +156,4 @@
 .user-display {
 	display: inline-block;
 	vertical-align: top;
-
-	* {
-		vertical-align: top;
-	}
 }
