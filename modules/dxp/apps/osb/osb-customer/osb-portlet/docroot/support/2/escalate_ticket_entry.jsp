@@ -47,7 +47,7 @@
 				</h1>
 
 				<div>
-					<aui:input label="<%= SupportUtil.getEscalationDetails() %>" name="body" style="height: 250px; width: 750px;" type="textarea" wrap="soft" />
+					<aui:input label="" name="body" style="height: 250px; width: 750px;" type="textarea" value="<%= SupportUtil.getEscalationDetails() %>" wrap="soft" />
 				</div>
 
 				<div>
