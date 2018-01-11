@@ -23,16 +23,6 @@ TicketEntry ticketEntry = TicketEntryServiceUtil.getTicketEntry(ticketEntryId);
 %>
 
 <c:if test="<%= liferayIncOrg %>">
-	<script type="text/javascript">
-		function <portlet:namespace />updateReproductionSteps() {
-			var reproductionSteps = document.getElementById("<portlet:namespace />reproductionSteps");
-
-			opener.<portlet:namespace />updateReproductionSteps(reproductionSteps.value);
-
-			window.close();
-		}
-	</script>
-
 	<div class="unit">
 		<h1 class="section-heading">
 			<liferay-ui:message key="reproduction-steps" />
@@ -48,4 +38,14 @@ TicketEntry ticketEntry = TicketEntryServiceUtil.getTicketEntry(ticketEntryId);
 			<input class="aui-button-input" onClick="window.close();" type="button" value="<liferay-ui:message key="cancel" />" />
 		</div>
 	</div>
+
+	<aui:script>
+		function <portlet:namespace />updateReproductionSteps() {
+			var reproductionSteps = document.getElementById("<portlet:namespace />reproductionSteps");
+
+			opener.<portlet:namespace />updateReproductionSteps(reproductionSteps.value);
+
+			window.close();
+		}
+	</aui:script>
 </c:if>
