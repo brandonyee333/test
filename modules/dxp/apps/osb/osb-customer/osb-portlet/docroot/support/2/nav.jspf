@@ -16,7 +16,6 @@
 
 <div class="lesa-nav">
 	<div class="nav-icon" data-page-id="homePage">
-
 		<portlet:renderURL var="myOpenTicketsURL">
 			<portlet:param name="mvcPath" value="/support/2/view.jsp" />
 		</portlet:renderURL>

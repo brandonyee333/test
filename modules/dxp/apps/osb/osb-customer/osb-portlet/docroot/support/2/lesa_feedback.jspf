@@ -56,12 +56,12 @@
 </div>
 
 <aui:script use="aui-base,aui-form-validator,aui-io,aui-modal,event-key">
-	var modal;
-	var validator;
+	var <portlet:namespace />modal;
+	var <portlet:namespace />validator;
 
 	function <portlet:namespace />applyFormValidation() {
-		if (!validator) {
-			validator = new A.FormValidator(
+		if (!<portlet:namespace />validator) {
+			<portlet:namespace />validator = new A.FormValidator(
 				{
 					boundingBox: '#<portlet:namespace />lesaFeedbackFm',
 					fieldStrings: {
@@ -102,7 +102,7 @@
 				function(event) {
 					event.preventDefault();
 
-					if (!validator.hasErrors()) {
+					if (!<portlet:namespace />validator.hasErrors()) {
 						<portlet:namespace />sendLesaFeedbackEmail();
 					}
 				}
@@ -126,7 +126,7 @@
 		}
 
 		if (cancelEdit || !hasCommentsSummary) {
-			modal.hide();
+			<portlet:namespace />modal.hide();
 
 			<portlet:namespace />detachListeners();
 
@@ -141,7 +141,7 @@
 			node.on(
 				'click',
 				function() {
-					modal = new A.Modal(
+					<portlet:namespace />modal = new A.Modal(
 						{
 							bodyContent: lesaFeedbackModal,
 							centered: true,
@@ -186,7 +186,7 @@
 
 			<portlet:namespace />resetFeedback();
 
-			modal.set('bodyContent', lesaFeedbackThankYouModal);
+			<portlet:namespace />modal.set('bodyContent', lesaFeedbackThankYouModal);
 
 			var lesaFeedbackCloseButton = A.one('#<portlet:namespace />lesaFeedbackCloseButton');
 
@@ -194,9 +194,9 @@
 				lesaFeedbackCloseButton.on(
 					'click',
 					function() {
-						modal.reset('bodyContent');
+						<portlet:namespace />modal.reset('bodyContent');
 
-						modal.hide();
+						<portlet:namespace />modal.hide();
 					}
 				);
 			}
@@ -210,7 +210,7 @@
 			lesaFeedbackForm.reset();
 		}
 
-		validator.resetAllFields();
+		<portlet:namespace />validator.resetAllFields();
 	}
 
 	function <portlet:namespace />sendLesaFeedbackEmail() {
@@ -253,5 +253,4 @@
 	if (lesaFeedbackIcon) {
 		<portlet:namespace />createModal(lesaFeedbackIcon);
 	}
-
 </aui:script>
