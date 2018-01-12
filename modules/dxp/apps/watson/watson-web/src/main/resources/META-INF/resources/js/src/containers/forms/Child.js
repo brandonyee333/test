@@ -230,7 +230,9 @@ class ChildForm extends JSXComponent {
 
 			requestTranslationMethod = this.handleTranslationRequest;
 
-			translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/translate`;
+			if (!disabled && WatsonConstants.currentUser.translatorRole) {
+				translateHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/translate`;
+			}
 		}
 
 		const modalFooter = [

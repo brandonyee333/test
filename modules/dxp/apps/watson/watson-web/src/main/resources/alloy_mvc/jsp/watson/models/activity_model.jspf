@@ -127,7 +127,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 		User user = UserLocalServiceUtil.fetchUser(currentUserId);
 
 		if (Validator.isNotNull(user)) {
-			boolean hasAdminRole = RoleLocalServiceUtil.hasUserRole(user.getUserId(), user.getCompanyId(), RoleConstants.ADMIN, true);
+			boolean hasAdminRole = WatsonPermission.check(user, RoleConstants.ADMINISTRATOR);
 
 			if (hasAdminRole) {
 				return true;

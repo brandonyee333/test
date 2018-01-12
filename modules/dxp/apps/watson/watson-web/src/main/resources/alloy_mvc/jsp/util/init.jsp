@@ -183,8 +183,7 @@ page import="java.util.Set" %>
 
 <%@ page import="javax.portlet.PortletRequest" %><%@
 page import="javax.portlet.PortletResponse" %><%@
-page import="javax.portlet.PortletURL" %><%@
-page import="javax.portlet.WindowState" %>
+page import="javax.portlet.PortletURL" %>
 
 <%@ page import="org.apache.commons.csv.CSVFormat" %><%@
 page import="org.apache.commons.csv.CSVParser" %><%@

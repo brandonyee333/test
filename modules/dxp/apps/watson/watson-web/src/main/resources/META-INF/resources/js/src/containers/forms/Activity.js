@@ -359,7 +359,9 @@ class ActivityForm extends JSXComponent {
 			if (storeData) {
 				reportHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${watsonActivityId}/report`;
 
-				translateHref = (disabled || !WatsonConstants.currentUser.translatorRole) ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${watsonActivityId}/translate`;
+				if (!disabled && WatsonConstants.currentUser.translatorRole) {
+					translateHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${watsonActivityId}/translate`;
+				}
 
 				disabled = disabled || !storeData.get('editable');
 			}

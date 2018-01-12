@@ -116,7 +116,7 @@ public static class WatsonWorkflowUtil {
 	}
 
 	public static void sendTranslationEmail(User fromUser, String model, String name, String url) throws Exception {
-		Role role = RoleLocalServiceUtil.getRole(fromUser.getCompanyId(), RoleConstants.TRANSLATOR);
+		Role role = RoleLocalServiceUtil.getRole(fromUser.getCompanyId(), RoleConstants.WATSON_TRANSLATOR);
 
 		List<User> translationUsers = UserLocalServiceUtil.getRoleUsers(role.getRoleId());
 

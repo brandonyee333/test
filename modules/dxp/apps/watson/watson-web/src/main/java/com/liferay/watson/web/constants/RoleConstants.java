@@ -20,14 +20,18 @@ package com.liferay.watson.web.constants;
 public class RoleConstants
 	extends com.liferay.portal.kernel.model.RoleConstants {
 
-	public static final String ADMIN = "Watson Admin";
+	public static final String CHILDRENS_HOME_MANAGER =
+		"Watson Children's Home Manager";
 
-	public static final String CHILDRENS_HOME = "Watson Children's Home";
+	public static final String CHILDRENS_HOME_STAFF =
+		"Watson Children's Home Staff";
 
-	public static final String MANAGER = "Watson Manager";
+	public static final String INCIDENT_MANAGER = "Watson Incident Manager";
 
-	public static final String STAFF = "Watson Staff";
+	public static final String INCIDENT_STAFF = "Watson Incident Staff";
 
-	public static final String TRANSLATOR = "Watson Translator";
+	public static final String WATSON_ADMINISTRATOR = "Watson Administrator";
+
+	public static final String WATSON_TRANSLATOR = "Watson Translator";
 
 }

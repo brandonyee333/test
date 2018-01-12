@@ -206,7 +206,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (!WatsonPermission.check(user, RoleConstants.STAFF)) {
+		if (!WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 		}
 
@@ -256,7 +256,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonPermission.check(user, RoleConstants.TRANSLATOR)) {
+		if (WatsonPermission.check(user, RoleConstants.WATSON_TRANSLATOR) || WatsonPermission.check(user, RoleConstants.WATSON_ADMINISTRATOR)) {
 			long watsonIncidentId = ParamUtil.getLong(request, "id");
 
 			WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
@@ -455,7 +455,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonPermission.check(user, RoleConstants.TRANSLATOR)) {
+		if (WatsonPermission.check(user, RoleConstants.WATSON_TRANSLATOR)) {
 			long watsonIncidentId = ParamUtil.getLong(request, "id");
 
 			WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);

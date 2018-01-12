@@ -428,7 +428,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		User user = UserLocalServiceUtil.fetchUser(currentUserId);
 
 		if (Validator.isNotNull(user)) {
-			boolean hasAdminRole = WatsonPermission.check(user, RoleConstants.ADMIN);
+			boolean hasAdminRole = WatsonPermission.check(user, RoleConstants.ADMINISTRATOR);
 
 			if (hasAdminRole) {
 				return false;

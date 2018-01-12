@@ -103,7 +103,7 @@ PortletURL expiredSessionPortletURL = PortletURLFactoryUtil.create(request, "com
 expiredSessionPortletURL.setParameter("mvcRenderCommandName", "/login/login");
 expiredSessionPortletURL.setParameter("saveLastPath", Boolean.FALSE.toString());
 expiredSessionPortletURL.setParameter("sessionExpired", Boolean.TRUE.toString());
-expiredSessionPortletURL.setWindowState(WindowState.MAXIMIZED);
+expiredSessionPortletURL.setWindowState(LiferayWindowState.MAXIMIZED);
 %>
 
 <script>

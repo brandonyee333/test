@@ -49,19 +49,19 @@ class SidebarToolbar extends JSXComponent {
 				<span class="upper">
 					<a href={WatsonConstants.urls.baseURL} id="watson-logo-link" onClick={this.handleOnClick} />
 
-					{WatsonConstants.currentUser.staffRole &&
+					{WatsonConstants.currentUser.incidentStaffRole &&
 						<a href={`${WatsonConstants.urls.baseURL}/incidents`} id="incidents" onClick={this.handleOnClick} title={Liferay.Language.get('incident-report')} />
 					}
 
-					{WatsonConstants.currentUser.childrensHomeRole &&
+					{WatsonConstants.currentUser.childrensHomeStaffRole &&
 						<a href={WatsonConstants.urls.children} id="children" onClick={this.handleOnClick} title={Liferay.Language.get('children-home')} />
 					}
 
-					{WatsonConstants.currentUser.staffRole &&
+					{WatsonConstants.currentUser.incidentStaffRole &&
 						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="heatmap" onClick={this.handleOnClick} title={Liferay.Language.get('heatmap')} />
 					}
 
-					{WatsonConstants.currentUser.staffRole &&
+					{WatsonConstants.currentUser.incidentStaffRole &&
 						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="reports" onClick={this.handleOnClick} title={Liferay.Language.get('reports')} />
 					}
 
@@ -77,7 +77,7 @@ class SidebarToolbar extends JSXComponent {
 						/>
 					</div>
 
-					{WatsonConstants.currentUser.portalAdminRole &&
+					{WatsonConstants.currentUser.portalAdministratorRole &&
 						<a href={`${WatsonConstants.urls.baseURL}/incidents/admin`} id="admin" onClick={this.handleOnClick} title={Liferay.Language.get('administrator-console')} />
 					}
 

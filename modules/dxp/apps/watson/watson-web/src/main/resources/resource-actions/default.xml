@@ -98,6 +98,72 @@
 		</permissions>
 	</model-resource>
 	<model-resource>
+		<model-name>com.liferay.watson.model.WatsonChild</model-name>
+		<portlet-ref>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
+		</portlet-ref>
+		<permissions>
+			<supports>
+				<action-key>ADD</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>CREATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>EDIT</action-key>
+				<action-key>INDEX</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults />
+			<guest-defaults />
+			<guest-unsupported>
+				<action-key>ADD</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>CREATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>EDIT</action-key>
+				<action-key>INDEX</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>VIEW</action-key>
+			</guest-unsupported>
+			<owner-defaults />
+		</permissions>
+	</model-resource>
+	<model-resource>
+		<model-name>com.liferay.watson.model.WatsonDocument</model-name>
+		<portlet-ref>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
+		</portlet-ref>
+		<permissions>
+			<supports>
+				<action-key>ADD</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>CREATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>EDIT</action-key>
+				<action-key>INDEX</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults />
+			<guest-defaults />
+			<guest-unsupported>
+				<action-key>ADD</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>CREATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>EDIT</action-key>
+				<action-key>INDEX</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>VIEW</action-key>
+			</guest-unsupported>
+			<owner-defaults />
+		</permissions>
+	</model-resource>
+	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonHistory</model-name>
 		<portlet-ref>
 			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
@@ -231,6 +297,39 @@
 	</model-resource>
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonRelationship</model-name>
+		<portlet-ref>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
+		</portlet-ref>
+		<permissions>
+			<supports>
+				<action-key>ADD</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>CREATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>EDIT</action-key>
+				<action-key>INDEX</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults />
+			<guest-defaults />
+			<guest-unsupported>
+				<action-key>ADD</action-key>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>CREATE</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>EDIT</action-key>
+				<action-key>INDEX</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>VIEW</action-key>
+			</guest-unsupported>
+			<owner-defaults />
+		</permissions>
+	</model-resource>
+	<model-resource>
+		<model-name>com.liferay.watson.model.WatsonReport</model-name>
 		<portlet-ref>
 			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		</portlet-ref>
