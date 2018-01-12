@@ -43,7 +43,7 @@ TicketEntry ticketEntry = TicketEntryServiceUtil.getTicketEntry(ticketEntryId);
 		function <portlet:namespace />updateReproductionSteps() {
 			var reproductionSteps = document.getElementById('<portlet:namespace />reproductionSteps');
 
-			opener.<portlet:namespace />updateReproductionSteps(reproductionSteps.value);
+			opener.<portlet:namespace />updateReproductionStepValues(reproductionSteps.value);
 
 			window.close();
 		}

@@ -343,7 +343,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			submitForm(document.<portlet:namespace />fm1, updatePendingURL);
 		}
 
-		function <portlet:namespace />updateReproductionSteps(reproductionSteps) {
+		function <portlet:namespace />updateReproductionStepValues(reproductionSteps) {
 			document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.REPRODUCE %>';
 			document.<portlet:namespace />fm1.<portlet:namespace />reproductionSteps.value = reproductionSteps;
 

@@ -354,7 +354,7 @@ if (!screenShareMode) {
 	</aui:script>
 
 	<aui:script>
-		function <portlet:namespace />updateReproductionSteps(reproductionSteps) {
+		function <portlet:namespace />updateReproductionStepValues(reproductionSteps) {
 			document.<portlet:namespace />fm1.<portlet:namespace />reproductionSteps.value = reproductionSteps;
 
 			document.<portlet:namespace />fm1.<portlet:namespace />status.value = <%= TicketEntryConstants.STATUS_REPRODUCED %>;
