@@ -5,7 +5,6 @@
 @import "variables";
 
 .osb-portlet-support {
-	@import "accounts";
 	@import "attachment";
 	@import "comments";
 	@import "dialogs";
@@ -22,5 +21,4 @@
 	@import "search";
 	@import "solutions";
 	@import "subscription_messages";
-	@import "tabs";
 }

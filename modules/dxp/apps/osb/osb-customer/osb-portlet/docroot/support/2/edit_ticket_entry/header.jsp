@@ -50,7 +50,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 	<aui:input name="reproductionSteps" type="hidden" value="" />
 
 	<div class="ticket-header" id="<portlet:namespace />ticketHeader">
-		<div class="back-link clearfix txt-sb">
+		<div class="back-link txt-sb">
 			<a href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back" /></a>
 		</div>
 
@@ -60,7 +60,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 		<div class="head">
 			<div class="header">
-				<div class="pull-left ticket-severity <%= ticketEntry.getSeverityLabel() %>"></div>
+				<span class="pull-left ticket-severity <%= ticketEntry.getSeverityLabel() %>"></span>
 
 				<c:if test="<%= clockedIn %>">
 					<div class="buttons">

@@ -123,3 +123,13 @@
 		word-wrap: break-word;
 	}
 }
+
+.customer-info-label {
+	font-size: 18px;
+}
+
+.support-phase-label {
+	color: $urgent;
+	font-weight: bold;
+	text-transform: uppercase;
+}
