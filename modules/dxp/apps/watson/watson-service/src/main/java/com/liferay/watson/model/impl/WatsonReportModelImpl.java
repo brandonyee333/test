@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.liferay.watson.model.WatsonReport;
@@ -86,7 +85,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
 			{ "fullReport", Types.VARCHAR },
-			{ "imagePayload", Types.VARCHAR },
+			{ "imagePayload", Types.CLOB },
 			{ "timeSpent", Types.VARCHAR },
 			{ "reportedUser", Types.VARCHAR },
 			{ "reportDate", Types.TIMESTAMP },
@@ -109,7 +108,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("fullReport", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("imagePayload", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("timeSpent", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("reportedUser", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("reportDate", Types.TIMESTAMP);
@@ -117,7 +116,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonReport (watsonReportId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonReportId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,name STRING null,description STRING null,fullReport STRING null,imagePayload VARCHAR(75) null,timeSpent VARCHAR(75) null,reportedUser VARCHAR(75) null,reportDate DATE null,key_ INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonReport (watsonReportId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonReportId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,name STRING null,description STRING null,fullReport STRING null,imagePayload TEXT null,timeSpent VARCHAR(75) null,reportedUser VARCHAR(75) null,reportDate DATE null,key_ INTEGER,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonReport";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonReport.watsonReportId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonReport.watsonReportId ASC";
@@ -363,7 +362,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -374,7 +373,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -445,7 +444,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _name;
@@ -543,7 +542,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _description;
@@ -645,7 +644,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getFullReport() {
 		if (_fullReport == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _fullReport;
@@ -746,7 +745,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getImagePayload() {
 		if (_imagePayload == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _imagePayload;
@@ -761,7 +760,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getTimeSpent() {
 		if (_timeSpent == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _timeSpent;
@@ -776,7 +775,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	@Override
 	public String getReportedUser() {
 		if (_reportedUser == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _reportedUser;
@@ -876,7 +875,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 		String xml = getName();
 
 		if (xml == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();

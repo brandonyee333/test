@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.liferay.watson.model.WatsonListType;
@@ -101,7 +100,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonListType (watsonListTypeId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentWatsonListTypeId LONG,name STRING null,type_ VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonListType (watsonListTypeId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentWatsonListTypeId LONG,name STRING null,type_ VARCHAR(100) null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonListType";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonListType.watsonListTypeId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonListType.watsonListTypeId ASC";
@@ -291,7 +290,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -302,7 +301,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -353,7 +352,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _name;
@@ -451,7 +450,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 	@Override
 	public String getType() {
 		if (_type == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _type;
@@ -509,7 +508,7 @@ public class WatsonListTypeModelImpl extends BaseModelImpl<WatsonListType>
 		String xml = getName();
 
 		if (xml == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();

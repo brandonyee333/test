@@ -60,7 +60,7 @@
 		<property name="floor" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="room" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="lastSeenDate" type="org.hibernate.type.TimestampType" />
 		<property name="latitude" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="longitude" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
@@ -108,7 +108,7 @@
 		<property name="watsonChildId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="originalDocument" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="receivedDate" type="org.hibernate.type.TimestampType" />
-		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.watson.model.impl.WatsonHistoryImpl" table="WatsonHistory">
@@ -221,7 +221,7 @@
 		<property name="typeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="watsonIncidentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="birthDate" type="org.hibernate.type.TimestampType" />
 		<property name="dateAccepted" type="org.hibernate.type.TimestampType" />
 		<property name="dateRescued" type="org.hibernate.type.TimestampType" />
@@ -269,7 +269,7 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="fullReport" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="timeSpent" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="reportedUser" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="reportDate" type="org.hibernate.type.TimestampType" />
@@ -291,7 +291,7 @@
 		<property name="watsonIncidentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.watson.model.impl.WatsonVehicleImpl" table="WatsonVehicle">
@@ -313,7 +313,7 @@
 		<property name="watsonIncidentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="year" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="licensePlate" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>

@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.liferay.watson.model.WatsonResource;
@@ -85,7 +84,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			{ "watsonIncidentId", Types.BIGINT },
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
-			{ "imagePayload", Types.VARCHAR },
+			{ "imagePayload", Types.CLOB },
 			{ "status", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
@@ -103,11 +102,11 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		TABLE_COLUMNS_MAP.put("watsonIncidentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("imagePayload", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonResource (watsonResourceId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonResourceId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,description STRING null,imagePayload VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonResource (watsonResourceId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonResourceId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,description STRING null,imagePayload TEXT null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonResource";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonResource.watsonResourceId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonResource.watsonResourceId ASC";
@@ -318,7 +317,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -329,7 +328,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -400,7 +399,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _name;
@@ -498,7 +497,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _description;
@@ -600,7 +599,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 	@Override
 	public String getImagePayload() {
 		if (_imagePayload == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _imagePayload;
@@ -669,7 +668,7 @@ public class WatsonResourceModelImpl extends BaseModelImpl<WatsonResource>
 		String xml = getName();
 
 		if (xml == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 
 		Locale defaultLocale = LocaleUtil.getSiteDefault();
