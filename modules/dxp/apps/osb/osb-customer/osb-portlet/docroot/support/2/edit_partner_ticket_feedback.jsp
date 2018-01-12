@@ -179,7 +179,7 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 			<div>
 				<c:choose>
 					<c:when test="<%= hasUpdate %>">
-						<aui:input label="<%= comments %>" name="comments" style="height: 250px; width: 90%;" type="textarea" wrap="soft" />
+						<aui:input label="" name="comments" style="height: 250px; width: 90%;" type="textarea" value="<%= comments %>" wrap="soft" />
 					</c:when>
 					<c:otherwise>
 						<%= HtmlUtil.escape(ticketFeedback.getComments()) %>

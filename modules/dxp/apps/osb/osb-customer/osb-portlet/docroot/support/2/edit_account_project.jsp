@@ -60,7 +60,7 @@ String name = BeanParamUtil.getString(accountProject, request, "name");
 				</div>
 
 				<div class="content-column customer-info w80">
-					<aui:input label='<%= (accountProject != null) ? accountProject.getData(fieldId) : "" %>' maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" />
+					<aui:input label="" maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name='<%= "field--" + fieldId %>' onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" type="textarea" value='<%= (accountProject != null) ? accountProject.getData(fieldId) : "" %>' />
 				</div>
 			</div>
 
