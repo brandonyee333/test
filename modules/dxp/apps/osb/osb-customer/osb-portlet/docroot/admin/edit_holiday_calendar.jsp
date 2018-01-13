@@ -100,7 +100,7 @@ Date lastEnabledDate = calendar.getTime();
 	<br />
 
 	<div>
-		<input type="submit" value="<liferay-ui:message key="save" />" />
+		<aui:button type="submit" value="save" />
 
 		<c:if test="<%= holidayCalendar != null %>">
 			<portlet:renderURL var="assignUsersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">

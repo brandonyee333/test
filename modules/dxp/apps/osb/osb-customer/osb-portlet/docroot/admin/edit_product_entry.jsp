@@ -67,7 +67,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 				<liferay-ui:message key="type" />
 			</td>
 			<td>
-				<select name="<portlet:namespace />type">
+				<aui:select label="" name="type">
 					<option value=""></option>
 
 					<%
@@ -80,7 +80,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</td>
 		</tr>
 		<tr>
@@ -88,7 +88,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 				<liferay-ui:message key="environment" />
 			</td>
 			<td>
-				<select name="<portlet:namespace />environment">
+				<aui:select label="" name="environment">
 					<option value=""></option>
 
 					<%
@@ -101,7 +101,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</td>
 		</tr>
 		<tr>
@@ -109,7 +109,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 				<liferay-ui:message key="version-list-type" />
 			</td>
 			<td>
-				<input name="<portlet:namespace />versionsListType" type="text" value="<%= HtmlUtil.escapeAttribute(versionsListType) %>" />
+				<aui:input name="versionsListType" type="text" value="<%= HtmlUtil.escapeAttribute(versionsListType) %>" />
 			</td>
 		</tr>
 
@@ -138,7 +138,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 
 	<br />
 
-	<input type="submit" value="<liferay-ui:message key="save" />" />
+	<aui:input type="submit" value="save" />
 
 	<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 </aui:form>

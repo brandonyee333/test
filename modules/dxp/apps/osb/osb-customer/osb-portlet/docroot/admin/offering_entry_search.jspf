@@ -53,6 +53,6 @@
 			</tr>
 		</table>
 
-		<input onClick="<portlet:namespace/>searchOfferingEntry();" type="button" value="<liferay-ui:message key="search" />" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "searchOfferingEntry();" %>' value="search" />
 	</div>
 </div>

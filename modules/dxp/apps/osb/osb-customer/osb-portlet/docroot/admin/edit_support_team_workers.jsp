@@ -279,7 +279,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					<liferay-ui:search-container-column-text
 						name="max-work"
 					>
-						<input name="<portlet:namespace />maxWork_<%= curUser.getUserId() %>" size="5" type="text" value="<%= maxWork %>" <%= (supportWorker != null) ? "disabled" : "" %> />
+						<aui:input disabled="<%= supportWorker != null %>" name="maxWork_<%= curUser.getUserId() %>" size="5" type="text" value="<%= maxWork %>" />
 					</liferay-ui:search-container-column-text>
 				</c:otherwise>
 			</c:choose>
@@ -287,7 +287,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			<liferay-ui:search-container-column-text
 				name="notifications"
 			>
-				<select name="<portlet:namespace />notifications_<%= curUser.getUserId() %>">
+				<aui:select label="" name='<%= "notifications_" + curUser.getUserId() %>'>
 
 					<%
 					for (int i = 1; i <= 3; i++) {
@@ -299,13 +299,13 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="escalation-level"
 			>
-				<select name="<portlet:namespace />escalationLevel_<%= curUser.getUserId() %>">
+				<aui:select label="" name="<%= 'escalationLevel_" + curUser.getUserId() %>'>
 
 					<%
 					List<ListType> escalationLevelTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL);
@@ -319,13 +319,13 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
+				<aui:select label="" disabled="<%= !curUser.isActive() %>" name='<%= "role_" + curUser.getUserId() %>'>
 					<option></option>
 
 					<%
@@ -338,7 +338,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<c:if test='<%= tabs3.equals("current") && (supportWorker != null) %>'>
@@ -361,7 +361,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 
 		<div class="separator"><!-- --></div>
 
-		<input onClick="<portlet:namespace />updateSupportWorkers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "updateSupportWorkers('" + portletURL.toString() + "&" + renderResponse.getNamespace() + "cur=" + cur + "');" %>' value="update-associations" />
 
 		<br /><br />
 

@@ -51,7 +51,7 @@ portletURL.setParameter("callback", callback);
 				</tr>
 				<tr>
 					<td>
-						<select name="<portlet:namespace /><%= displayTerms.PRODUCT_ENTRY_IDS %>">
+						<aui:select label="" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>">
 							<option value=""></option>
 
 							<%
@@ -66,10 +66,10 @@ portletURL.setParameter("callback", callback);
 							}
 							%>
 
-						</select>
+						</aui:select>
 					</td>
 					<td>
-						<select name="<portlet:namespace /><%= displayTerms.SUPPORT_RESPONSE_IDS %>">
+						<aui:select label="" name="<%= displayTerms.SUPPORT_RESPONSE_IDS %>">
 							<option value=""></option>
 
 							<%
@@ -84,7 +84,7 @@ portletURL.setParameter("callback", callback);
 							}
 							%>
 
-						</select>
+						</aui:select>
 					</td>
 				</tr>
 			</table>

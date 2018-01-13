@@ -83,7 +83,7 @@ if (ticketCannedResponse != null) {
 			<liferay-ui:message key='<%= (ticketCannedResponse != null) ? "language" : "default-language" %>' />
 		</td>
 		<td>
-			<select name="<portlet:namespace />languageId" onChange="<%= (ticketCannedResponse != null) ? (renderResponse.getNamespace() + "updateLanguage(this.value);") : "" %>">
+			<aui:select label="" name="languageId" onChange='<%= (ticketCannedResponse != null) ? (renderResponse.getNamespace() + "updateLanguage(this.value);") : "" %>'>
 
 				<%
 				Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
@@ -99,14 +99,14 @@ if (ticketCannedResponse != null) {
 				}
 				%>
 
-			</select>
+			</aui:select>
 
 			<c:if test="<%= ticketCannedResponse != null %>">
 				<c:choose>
 					<c:when test="<%= !languageId.equals(defaultLanguageId) && ArrayUtil.contains(ticketCannedResponse.getAvailableLocales(), languageId) %>">
-						<input onClick="<portlet:namespace />setDefaultLocale('<%= languageId %>');" type="button" value="<liferay-ui:message key="set-default" />" />
+						<aui:button onClick='<%= renderResponse.getNamespace() + "setDefaultLocale('" + languageId + "');" %>' value="set-default" />
 
-						<input onClick="<portlet:namespace />removeCannedResponseLocale();" type="button" value="<liferay-ui:message key="remove" />" />
+						<aui:button onClick='<%= renderResponse.getNamespace() + "removeCannedResponseLocale();" %>' value="remove" />
 					</c:when>
 					<c:when test="<%= !ArrayUtil.contains(ticketCannedResponse.getAvailableLocales(), languageId) %>">
 						(<liferay-ui:message key="new" />)
@@ -125,7 +125,7 @@ if (ticketCannedResponse != null) {
 			<liferay-ui:message key="name" />
 		</td>
 		<td>
-			<input class="lfr-input-text" name="<portlet:namespace />name" onChange="<portlet:namespace />contentChanged();" type="text" value="<%= HtmlUtil.escape(name) %>">
+			<aui:input cssClass="lfr-input-text" label="" name="name" onChange='<%= renderResponse.getNamespace() + "contentChanged();" %>' type="text" value="<%= name %>" />
 		</td>
 	</tr>
 	<tr>
@@ -133,7 +133,7 @@ if (ticketCannedResponse != null) {
 			<liferay-ui:message key="content" /> <liferay-ui:icon-help message="canned-response-content-help" />
 		</td>
 		<td>
-			<textarea class="lfr-textarea" name="<portlet:namespace />content" onChange="<portlet:namespace />contentChanged();"><%= HtmlUtil.escape(content) %></textarea>
+			<aui:input cssClass="lfr-textarea" label="" name="content" onChange='<%= renderResponse.getNamespace() + "contentChanged();" %>' type="textarea" value="<%= content %>" />
 		</td>
 	</tr>
 	</table>
@@ -141,7 +141,7 @@ if (ticketCannedResponse != null) {
 	<br />
 
 	<div>
-		<input type="submit" value="<liferay-ui:message key="save" />" />
+		<aui:button type="submit" value="save" />
 
 		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 	</div>

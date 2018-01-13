@@ -71,7 +71,7 @@ String selectAll = "javascript:";
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
-		<input onClick="<%= selectAll %> window.close();" type="button" value="<liferay-ui:message key="select-all" />" />
+		<aui:button onClick='<%= selectAll + "window.close();" %>' value="select-all" />
 
 		<br /><br />
 

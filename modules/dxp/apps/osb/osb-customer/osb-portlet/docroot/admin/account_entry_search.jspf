@@ -52,19 +52,19 @@ Date lastEnabledDate = calendar.getTime();
 					<tr>
 						<td>
 							<div id="<portlet:namespace />nameContainer">
-								<input id="<portlet:namespace /><%= displayTerms.NAME %>" name="<portlet:namespace /><%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
+								<aui:input id="<%= displayTerms.NAME %>" label="" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
 							</div>
 						</td>
 						<td>
 							<div id="<portlet:namespace />codeContainer">
-								<input id="<portlet:namespace /><%= displayTerms.CODE %>" name="<portlet:namespace /><%= displayTerms.CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCode()) %>" />
+								<aui:input id="<%= displayTerms.CODE %>" label="" name="<%= displayTerms.CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCode()) %>" />
 							</div>
 						</td>
 						<td>
-							<input id="<portlet:namespace /><%= displayTerms.INSTRUCTIONS %>" name="<portlet:namespace /><%= displayTerms.INSTRUCTIONS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getInstructions()) %>" />
+							<aui:input id="<%= displayTerms.INSTRUCTIONS %>" label="" name="<%= displayTerms.INSTRUCTIONS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getInstructions()) %>" />
 						</td>
 						<td>
-							<input id="<portlet:namespace /><%= displayTerms.NOTES %>" name="<portlet:namespace /><%= displayTerms.NOTES %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getNotes()) %>" />
+							<aui:input id="<%= displayTerms.NOTES %>" label="" name="<%= displayTerms.NOTES %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getNotes()) %>" />
 						</td>
 					</tr>
 					<tr>
@@ -77,23 +77,31 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td colspan="2">
-							<input id="<portlet:namespace /><%= displayTerms.PARTNER_ENTRY_CODE %>" name="<portlet:namespace /><%= displayTerms.PARTNER_ENTRY_CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getPartnerEntryCode()) %>" />
+							<aui:input id="<%= displayTerms.PARTNER_ENTRY_CODE %>" label="" name="<%= displayTerms.PARTNER_ENTRY_CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getPartnerEntryCode()) %>" />
 
-							<input class="aui-button-input" onClick="var partnerEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_partner_entry.jsp" /></portlet:renderURL>', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+							<portlet:renderURL var="partnerURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+								<portlet:param name="mvcPath" value="/admin/select_partner_entry.jsp" />
+							</portlet:renderURL>
+
+							<aui:button cssClass="aui-button-input" onClick="var partnerEntryWindow = window.open('<%= partnerURL %>', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" value="choose" />
 						</td>
 						<td colspan="2">
 							<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLE %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLE %>" type="hidden" value="<%= displayTerms.getAccountWorkerRole() %>" />
 							<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_NAME %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getAccountWorkerName()) %>" />
 
-							<select id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_USER_ID %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_USER_ID %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_WORKER_USER_ID %>" label="" name="<%= displayTerms.ACCOUNT_WORKER_USER_ID %>">
 								<option value=""></option>
 
 								<c:if test="<%= Validator.isNotNull(displayTerms.getAccountWorkerUserId()) %>">
 									<option selected value="<%= displayTerms.getAccountWorkerUserId() %>"><%= HtmlUtil.escape(displayTerms.getAccountWorkerName()) %></option>
 								</c:if>
-							</select>
+							</aui:select>
 
-							<input class="aui-button-input" onClick="var accountWorkerWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_account_worker.jsp" /></portlet:renderURL>', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+							<portlet:renderURL var="workerURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+								<portlet:param name="mvcPath" value="/admin/select_account_worker.jsp" />
+							</portlet:renderURL>
+
+							<aui:button cssClass="aui-button-input" onClick="var accountWorkerWindow = window.open('<%= workerURL %>', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();" value="choose" />
 						</td>
 					</tr>
 					<tr>
@@ -112,33 +120,33 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td>
-							<select id="<portlet:namespace /><%= displayTerms.SUPPORT %>" name="<portlet:namespace /><%= displayTerms.SUPPORT %>" onchange="<portlet:namespace />updateSupport();">
+							<aui:select id="<%= displayTerms.SUPPORT %>" label="" name="<%= displayTerms.SUPPORT %>" onchange='<%= renderResponse.getNamespace() + "updateSupport();" %>'>
 								<option value=""></option>
 								<option <%= (displayTerms.getSupport() == 1) ? "selected" : "" %> value="1"><liferay-ui:message key="active" /></option>
 								<option <%= (displayTerms.getSupport() == 2) ? "selected" : "" %> value="2"><liferay-ui:message key="inactive" /></option>
 								<option <%= (displayTerms.getSupport() == 3) ? "selected" : "" %> value="3"><liferay-ui:message key="none" /></option>
-							</select>
+							</aui:select>
 						</td>
 						<td>
-							<select <%= (displayTerms.getSupport() == 3) ? "disabled" : "" %> id="<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>">
+							<aui:select disabled="<%= displayTerms.getSupport() == 3 %>" id="<%= displayTerms.EXPIRED_SUPPORT %>" label="" name="<%= displayTerms.EXPIRED_SUPPORT %>">
 								<option <%= !displayTerms.hasExpiredSupport() ? "selected" : "" %> value=""></option>
 								<option <%= (displayTerms.hasExpiredSupport() && displayTerms.isExpiredSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
 								<option <%= (displayTerms.hasExpiredSupport() && !displayTerms.isExpiredSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
-							</select>
+							</aui:select>
 						</td>
 						<td>
-							<select <%= (displayTerms.getSupport() == 3) ? "disabled" : "" %> id="<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>">
+							<aui:select disabled="<%= displayTerms.getSupport() == 3 %>" id="<%= displayTerms.TICKET_SUPPORT %>" label="" name="<%= displayTerms.TICKET_SUPPORT %>">
 								<option <%= !displayTerms.hasTicketSupport() ? "selected" : "" %> value=""></option>
 								<option <%= (displayTerms.hasTicketSupport() && displayTerms.isTicketSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
 								<option <%= (displayTerms.hasTicketSupport() && !displayTerms.isTicketSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
-							</select>
+							</aui:select>
 						</td>
 						<td>
-							<select id="<portlet:namespace /><%= displayTerms.PARTNER_MANAGED_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.PARTNER_MANAGED_SUPPORT %>">
+							<aui:select id="<%= displayTerms.PARTNER_MANAGED_SUPPORT %>" label="" name="<%= displayTerms.PARTNER_MANAGED_SUPPORT %>">
 								<option <%= !displayTerms.hasPartnerManagedSupport() ? "selected" : "" %> value=""></option>
 								<option <%= (displayTerms.hasPartnerManagedSupport() && displayTerms.isPartnerManagedSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
 								<option <%= (displayTerms.hasPartnerManagedSupport() && !displayTerms.isPartnerManagedSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 					<tr>
@@ -154,7 +162,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td>
-							<select id="<portlet:namespace /><%= displayTerms.SUPPORT_REGION_IDS %>" name="<portlet:namespace /><%= displayTerms.SUPPORT_REGION_IDS %>">
+							<aui:select id="<%= displayTerms.SUPPORT_REGION_IDS %>" label="" name="<%= displayTerms.SUPPORT_REGION_IDS %>">
 								<option value=""></option>
 
 								<%
@@ -167,13 +175,13 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 						<td colspan="2">
-							<select id="<portlet:namespace /><%= displayTerms.COUNTRY_ID %>" name="<portlet:namespace /><%= displayTerms.COUNTRY_ID %>"></select>
+							<aui:select id="<%= displayTerms.COUNTRY_ID %>" label="" name="<%= displayTerms.COUNTRY_ID %>"></aui:select>
 						</td>
 						<td>
-							<select id="<portlet:namespace /><%= displayTerms.REGION_ID %>" name="<portlet:namespace /><%= displayTerms.REGION_ID %>"></select>
+							<aui:select id="<%= displayTerms.REGION_ID %>" label="" name="<%= displayTerms.REGION_ID %>"></aui:select>
 						</td>
 					</tr>
 					<tr>
@@ -190,13 +198,13 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td>
-							<input id="<portlet:namespace /><%= displayTerms.CITY %>" name="<portlet:namespace /><%= displayTerms.CITY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCity()) %>" />
+							<aui:input id="<%= displayTerms.CITY %>" label="" name="<%= displayTerms.CITY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCity()) %>" />
 						</td>
 						<td>
-							<input id="<portlet:namespace /><%= displayTerms.STREET %>" name="<portlet:namespace /><%= displayTerms.STREET %>" size="30" type="text" value="<%= HtmlUtil.escape(displayTerms.getStreet()) %>" />
+							<aui:input id="<%= displayTerms.STREET %>" label="" name="<%= displayTerms.STREET %>" size="30" type="text" value="<%= HtmlUtil.escape(displayTerms.getStreet()) %>" />
 						</td>
 						<td>
-							<input id="<portlet:namespace /><%= displayTerms.ZIP %>" name="<portlet:namespace /><%= displayTerms.ZIP %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getZip()) %>" />
+							<aui:input id="<%= displayTerms.ZIP %>" label="" name="<%= displayTerms.ZIP %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getZip()) %>" />
 						</td>
 						<td></td>
 					</tr>
@@ -218,7 +226,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td colspan="2">
-							<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.INDUSTRIES %>" multiple name="<portlet:namespace /><%= displayTerms.INDUSTRIES %>">
+							<aui:select id="<%= displayTerms.INDUSTRIES %>" label="" multiple="true" name="<%= displayTerms.INDUSTRIES %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -234,10 +242,10 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 						<td>
-							<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.SUPPORT_RESPONSE_IDS %>" multiple name="<portlet:namespace /><%= displayTerms.SUPPORT_RESPONSE_IDS %>">
+							<aui:select id="<%= displayTerms.SUPPORT_RESPONSE_IDS %>" label="" multiple="true" name="<%= displayTerms.SUPPORT_RESPONSE_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -252,10 +260,10 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 						<td>
-							<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.TIERS %>" multiple name="<portlet:namespace /><%= displayTerms.TIERS %>">
+							<aui:select id="<%= displayTerms.TIERS %>" label="" multiple="true" name="<%= displayTerms.TIERS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -268,7 +276,7 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 					<tr>
@@ -278,7 +286,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td colspan="4">
-							<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.STATUSES %>" multiple name="<portlet:namespace /><%= displayTerms.STATUSES %>">
+							<aui:select id="<%= displayTerms.STATUSES %>" label="" multiple="true" name="<%= displayTerms.STATUSES %>">
 								<option value="-1"><liferay-ui:message key="any" /></option>
 
 								<%
@@ -291,7 +299,7 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 					<tr>
@@ -309,32 +317,44 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td colspan="2">
-							<select id="<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>" name="<portlet:namespace /><%= displayTerms.CREATE_USER_ID %>">
+							<aui:select id="<%= displayTerms.CREATE_USER_ID %>" label="" name="<%= displayTerms.CREATE_USER_ID %>">
 								<option value=""></option>
 								<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
 
 								<c:if test="<%= (displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId()) %>">
 									<option selected value="<%= displayTerms.getCreateUserId() %>"><%= HtmlUtil.escape(displayTerms.getCreateUserName()) %></option>
 								</c:if>
-							</select>
+							</aui:select>
 
 							<input id="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" name="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
 
-							<input class="aui-button-input" onClick="var createUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_user.jsp" /><portlet:param name="userParam" value="accountEntryCreateUsers" /><portlet:param name="callback" value="selectCreateUser" /></portlet:renderURL>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+							<portlet:renderURL var="createdUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+								<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
+								<portlet:param name="userParam" value="accountEntryCreateUsers" />
+								<portlet:param name="callback" value="selectCreateUser" />
+							</portlet:renderURL>
+
+							<aui:button cssClass="aui-button-input" onClick="var modifiedUserWindow = window.open('<%= createdUserURL %>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" value="choose" />
 						</td>
 						<td colspan="2">
-							<select id="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>" name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>">
+							<aui:select id="<%= displayTerms.MODIFIED_USER_ID %>" label="" name="<%= displayTerms.MODIFIED_USER_ID %>">
 								<option value=""></option>
 								<option <%= (user.getUserId() == displayTerms.getModifiedUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
 
 								<c:if test="<%= (displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId()) %>">
 									<option selected value="<%= displayTerms.getModifiedUserId() %>"><%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %></option>
 								</c:if>
-							</select>
+							</aui:select>
 
 							<input id="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
 
-							<input class="aui-button-input" onClick="var modifiedUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_user.jsp" /><portlet:param name="userParam" value="accountEntryModifiedUsers" /><portlet:param name="callback" value="selectModifiedUser" /></portlet:renderURL>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+							<portlet:renderURL var="modifiedUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+								<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
+								<portlet:param name="userParam" value="accountEntryModifiedUsers" />
+								<portlet:param name="callback" value="selectModifiedUser" />
+							</portlet:renderURL>
+
+							<aui:button cssClass="aui-button-input" onClick="var modifiedUserWindow = window.open('<%= modifiedUserURL %>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" value="choose" />
 						</td>
 					</tr>
 					<tr>
@@ -425,7 +445,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td colspan="2">
-							<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.PRODUCT_ENTRY_IDS %>" multiple name="<portlet:namespace /><%= displayTerms.PRODUCT_ENTRY_IDS %>">
+							<aui:select id="<%= displayTerms.PRODUCT_ENTRY_IDS %>" label="" multiple="true" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -440,7 +460,7 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 					<tr>
@@ -453,7 +473,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td>
-							<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_LFR_IDS %>" multiple name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_LFR_IDS %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_LFR_IDS %>" label="" multiple="true" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_LFR_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -470,10 +490,10 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 						<td>
-							<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_OS_IDS %>" multiple name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_OS_IDS %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_OS_IDS %>" label="" multiple="true" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_OS_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -488,7 +508,7 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 					<tr>
@@ -501,7 +521,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td>
-							<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_JVM_IDS %>" multiple name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_JVM_IDS %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_JVM_IDS %>" label="" multiple="true" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_JVM_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -516,10 +536,10 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 						<td>
-							<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_DB_IDS %>" multiple name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_DB_IDS %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_DB_IDS %>" label="" multiple="true" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_DB_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -534,7 +554,7 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 					<tr>
@@ -544,7 +564,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td colspan="2">
-							<select class="multiple-select" id="<portlet:namespace /><%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_AS_IDS %>" multiple name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_AS_IDS %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_AS_IDS %>" label="" multiple="true" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_AS_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -559,7 +579,7 @@ Date lastEnabledDate = calendar.getTime();
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 				</table>

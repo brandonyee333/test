@@ -446,7 +446,7 @@ for (SupportRegion supportRegion : supportRegions) {
 														editAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
 														%>
 
-														<input onClick="<portlet:namespace />openDialog('<liferay-ui:message key="edit-environment-details" />', '<%= editAccountEnvironmentURL.toString() %>', '<portlet:namespace />updateAccountEnvironment')" type="button" value="<liferay-ui:message key="edit" />" />
+														<aui:button onClick='<%= renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-environment-details") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment')" %>' value="edit" />
 													</td>
 												</tr>
 											</table>
@@ -466,7 +466,12 @@ for (SupportRegion supportRegion : supportRegions) {
 
 		<div class="hide tab-content-tab" id="<portlet:namespace />supportRegionsContent">
 			<div>
-				<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_support_region.jsp" /><portlet:param name="callback" value="selectSupportRegion" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-support-region" />" />
+				<portlet:renderURL var="addSupportRegionURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+					<portlet:param name="mvcPath" value="/admin/select_support_region.jsp" />
+					<portlet:param name="callback" value="selectSupportRegion" />
+				</portlet:renderURL>
+
+				<aui:button onClick="var categoryWindow = window.open('<%= addSupportRegionURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-support-region" />
 			</div>
 
 			<br />
@@ -490,7 +495,7 @@ for (SupportRegion supportRegion : supportRegions) {
 					/>
 
 					<liferay-ui:search-container-column-text>
-						<input onClick="<portlet:namespace />removeRow('supportRegionIds', '<%= supportRegion.getSupportRegionId() %>', '<portlet:namespace />supportRegionSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+						<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('supportRegionIds', '" + supportRegion.getSupportRegionId() + "'," + renderResponse.getNamespace() + "supportRegionSearchContainer', this);" %>' value="remove" />
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
@@ -499,7 +504,11 @@ for (SupportRegion supportRegion : supportRegions) {
 		</div>
 
 		<div class="hide tab-content-tab" id="<portlet:namespace />supportLanguagesContent">
-			<input onClick="var supportLanguageWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_language.jsp" /></portlet:renderURL>', 'support-language', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); supportLanguageWindow.focus();" type="button" value="<liferay-ui:message key="add-support-language" />" />
+			<portlet:renderURL var="addSupportLanguageURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="mvcPath" value="/admin/select_language.jsp" />
+			</portlet:renderURL>
+
+			<aui:button onClick="var supportLanguageWindow = window.open('<%= addSupportLanguageURL %>', 'support-language', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); supportLanguageWindow.focus();" value="add-support-language" />
 
 			<br />
 
@@ -522,7 +531,7 @@ for (SupportRegion supportRegion : supportRegions) {
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text>
-						<input onClick="<portlet:namespace />removeRow('languageIds', '<%= languageId %>', '<portlet:namespace />languageSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+						<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('languageIds', '" + languageId + "', '" + renderResponse.getNamespace() + "languageSearchContainer', this);" %>' value="remove" />
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 

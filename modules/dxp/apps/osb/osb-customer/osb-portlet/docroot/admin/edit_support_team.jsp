@@ -249,7 +249,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 	<br />
 
 	<div>
-		<input type="submit" value="<liferay-ui:message key="save" />" />
+		<aui:button type="submit" value="save" />
 
 		<c:if test="<%= supportTeam != null %>">
 			<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
@@ -279,8 +279,14 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			names="child-teams"
 		/>
 
+		<portlet:renderURL var="addChildTeamURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/select_support_team.jsp" />
+			<portlet:param name="callback" value="selectChildSupportTeam" />
+			<portlet:param name="supportTeamId" value="<%= String.valueOf(supportTeamId) %>" />
+		</portlet:renderURL>
+
 		<div>
-			<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_support_team.jsp" /><portlet:param name="callback" value="selectChildSupportTeam" /><portlet:param name="supportTeamId" value="<%= String.valueOf(supportTeamId) %>" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-child-team" />" />
+			<aui:button onClick="var categoryWindow = window.open('<%= addChildTeamURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-child-team" />
 		</div>
 
 		<br />
@@ -320,7 +326,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text>
-					<input onClick="<portlet:namespace />removeRow('childSupportTeamIds', '<%= curSupportTeam.getSupportTeamId() %>', '<portlet:namespace />childSupportTeamSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+					<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('childSupportTeamIds', '" + curSupportTeam.getSupportTeamId() + "', '" + renderResponse.getNamespace()  + "childSupportTeamSearchContainer', this);" %>' value="remove" />
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
@@ -333,8 +339,13 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			names="projects"
 		/>
 
+		<portlet:renderURL var="addProjectURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/select_account_entry.jsp" />
+			<portlet:param name="callback" value="selectAccountEntry" />
+		</portlet:renderURL>
+
 		<div>
-			<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_account_entry.jsp" /><portlet:param name="callback" value="selectAccountEntry" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-project" />" />
+			<aui:button onClick="var categoryWindow = window.open('<%= addProjectURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-project" />
 		</div>
 
 		<br />
@@ -362,7 +373,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				/>
 
 				<liferay-ui:search-container-column-text>
-					<input onClick="<portlet:namespace />removeRow('accountEntryIds', '<%= accountEntry.getAccountEntryId() %>', '<portlet:namespace />accountEntrySearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+					<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('accountEntryIds', '" + accountEntry.getAccountEntryId() + "', '" + renderResponse.getNamespace() + "accountEntrySearchContainer', this);" %>' value="remove" />
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
@@ -375,8 +386,12 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			names="languages"
 		/>
 
+		<portlet:renderURL var="addLanguageURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/select_language.jsp" />
+		</portlet:renderURL>
+
 		<div>
-			<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_language.jsp" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-language" />" />
+			<aui:button onClick="var categoryWindow = window.open('<%= addLanguageURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-language" />
 		</div>
 
 		<br />
@@ -400,7 +415,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text>
-					<input onClick="<portlet:namespace />removeRow('languageIds', '<%= languageId %>', '<portlet:namespace />languageSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+					<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('languageIds', '" + languageId + "', '" + renderResponse.getNamespace() + "languageSearchContainer', this);" %>' value="remove" />
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
@@ -413,8 +428,13 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			names="assigned-support-regions"
 		/>
 
+		<portlet:renderURL var="addSupportRegionURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/select_support_region.jsp" />
+			<portlet:param name="callback" value="selectSupportRegion" />
+		</portlet:renderURL>
+
 		<div>
-			<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_support_region.jsp" /><portlet:param name="callback" value="selectSupportRegion" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-support-region" />" />
+			<aui:button onClick="var categoryWindow = window.open('<%= addSupportRegionURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-support-region" />
 		</div>
 
 		<br />
@@ -438,7 +458,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				/>
 
 				<liferay-ui:search-container-column-text>
-					<input onClick="<portlet:namespace />removeRow('supportRegionIds', '<%= supportRegion.getSupportRegionId() %>', '<portlet:namespace />supportRegionSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+					<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('supportRegionIds', '" + supportRegion.getSupportRegionId() + "', '" + renderResponse.getNamespace() + "supportRegionSearchContainer', this);" %>' value="remove" />
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
@@ -500,7 +520,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<portlet:namespace />addColumn(row, columnValues[i]);
 			}
 
-			<portlet:namespace />addColumn(row, '<input type="button" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" value="<liferay-ui:message key="remove" />" />');
+			<portlet:namespace />addColumn(row, '<input class="btn btn-default" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" type="button" value="<liferay-ui:message key="remove" />" />');
 		}
 	}
 </aui:script>

@@ -238,7 +238,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 	<br />
 
 	<div>
-		<input type="submit" value="<liferay-ui:message key="save" />" />
+		<aui:button type="submit" value="save" />
 
 		<c:if test="<%= partnerEntry != null %>">
 			<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">

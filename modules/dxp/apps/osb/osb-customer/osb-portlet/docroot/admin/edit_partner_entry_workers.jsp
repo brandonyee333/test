@@ -133,7 +133,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 			<liferay-ui:search-container-column-text
 				name="notifications"
 			>
-				<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />notifications_<%= curUser.getUserId() %>">
+				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "notifications_" + curUser.getUserId() %>'>
 
 					<%
 					for (int i = 1; i <= 2; i++) {
@@ -145,13 +145,13 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
+				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "role_" + curUser.getUserId() %>'>
 					<option></option>
 
 					<%
@@ -164,7 +164,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
@@ -176,7 +176,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 
 		<div class="separator"><!-- --></div>
 
-		<input onClick="<portlet:namespace />updatePartnerWorkers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "updatePartnerWorkers('" + portletURL.toString() + "&" + renderResponse.getNamespace() + "cur=" + cur + "');" %>' value="update-associations" />
 
 		<br /><br />
 

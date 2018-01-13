@@ -351,10 +351,14 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						</a>
 					</c:if>
 				</span> --%>
+				<portlet:renderURL var="corpProjectURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+					<portlet:param name="mvcPath" value="/admin/select_corp_project.jsp" />
+					<portlet:param name="callback" value="selectCorpProject" />
+				</portlet:renderURL>
 
-				<input onClick="var corpProjectWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_corp_project.jsp" /><portlet:param name="callback" value="selectCorpProject" /></portlet:renderURL>', 'corp-project', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); corpProjectWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
+				<aui:button onClick="var corpProjectWindow = window.open('<%= corpProjectURL %>', 'corp-project', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); corpProjectWindow.focus();" value="select" />
 
-				<input onClick="<portlet:namespace />removeCorpProject();" type="button" value="<liferay-ui:message key="remove" />" />
+				<aui:button onClick='<%= renderResponse.getNamespace() + "removeCorpProject();" %>' value="remove" />
 			</td>
 		</tr>
 		<tr>
@@ -362,7 +366,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="ewsa-dossiera-project-key" />
 			</td>
 			<td>
-				<input name="ewsaDossieraProjectKey" type="text" value="<%= HtmlUtil.escapeAttribute(ewsaDossieraProjectKey) %>" />
+				<aui:input label="" name="ewsaDossieraProjectKey" type="text" value="<%= ewsaDossieraProjectKey %>" />
 			</td>
 		</tr>
 		<tr>
@@ -439,9 +443,13 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					</c:choose>
 				</span>
 
-				<input onClick="var partnerEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_partner_entry.jsp" /></portlet:renderURL>', 'partner', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
+				<portlet:renderURL var="partnerURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+					<portlet:param name="mvcPath" value="/admin/select_partner_entry.jsp" />
+				</portlet:renderURL>
 
-				<input id="<portlet:namespace />removePartnerEntryButton" onClick="<portlet:namespace />removePartnerEntry();" type="button" value="<liferay-ui:message key="remove" />" />
+				<aui:button onClick="var partnerEntryWindow = window.open('<%= partnerURL %>', 'partner', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" value="select" />
+
+				<aui:button id="removePartnerEntryButton" onClick='<%= renderResponse.getNamespace() + "removePartnerEntry();" %>' value="remove" />
 			</td>
 		</tr>
 		<tr>
@@ -515,7 +523,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 						<a href="<%= accountAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(accountAttachment.getFileName()) %></a>
 
-						<input onClick="<portlet:namespace />removeAccountAttachment();" type="button" value="<liferay-ui:message key="remove" />" />
+						<aui:button onClick='<%= renderResponse.getNamespace() + "removeAccountAttachment();" %>' value="remove" />
 					</div>
 
 				<%
@@ -594,7 +602,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<br />
 
 	<div>
-		<input onClick="submitForm(document.<portlet:namespace />fm);" type="button" value="<liferay-ui:message key="save" />" />
+		<aui:button onClick='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>' value="save" />
 
 		<c:if test="<%= accountEntry != null %>">
 			<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
@@ -763,7 +771,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<portlet:namespace />addColumn(row, columnValues[i]);
 			}
 
-			<portlet:namespace />addColumn(row, '<input type="button" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" value="<liferay-ui:message key="remove" />" />');
+			<portlet:namespace />addColumn(row, '<input class="btn btn-default" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" type="button" value="<liferay-ui:message key="remove" />');
 		}
 	}
 

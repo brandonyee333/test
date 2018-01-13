@@ -26,7 +26,7 @@
 		</tr>
 		<tr>
 			<td>
-				<select class="multiple-select" multiple name="<portlet:namespace /><%= displayTerms.PRODUCT_ENTRY_IDS %>">
+				<aui:select label="" multiple="true" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>">
 					<option value=""><liferay-ui:message key="any" /></option>
 
 					<%
@@ -41,10 +41,10 @@
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</td>
 			<td>
-				<select class="multiple-select" multiple name="<portlet:namespace /><%= displayTerms.SUPPORT_RESPONSE_IDS %>">
+				<aui:select label="" multiple="true" name="<%= displayTerms.SUPPORT_RESPONSE_IDS %>">
 					<option value=""><liferay-ui:message key="any" /></option>
 
 					<%
@@ -59,7 +59,7 @@
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</td>
 		</tr>
 	</table>

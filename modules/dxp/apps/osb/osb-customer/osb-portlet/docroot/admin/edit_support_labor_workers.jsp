@@ -166,7 +166,7 @@ portletURL.setParameter("supportLaborId", String.valueOf(supportLaborId));
 
 		<div class="separator"><!-- --></div>
 
-		<input onClick="<portlet:namespace />updateSupportLaborWorkers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "updateSupportLaborWorkers('" + portletURL.toString() + "&" + renderResonse.getNamespace() + "cur=" + cur + "');" %>' value="update-associations" />
 
 		<br /><br />
 

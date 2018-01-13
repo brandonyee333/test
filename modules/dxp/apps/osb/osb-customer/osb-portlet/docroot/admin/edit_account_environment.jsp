@@ -99,7 +99,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				</tr>
 				<tr>
 					<td>
-						<aui:select label='<%= productEntry.isSocialOffice() ? "social-office-version" : "liferay-version" %>' name="envLFR" onChange="<portlet:namespace />selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, '');">
+						<aui:select label='<%= productEntry.isSocialOffice() ? "social-office-version" : "liferay-version" %>' name="envLFR" onChange='<%= renderResponse.getNamespace() + "selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, '');" %>'>
 							<option value="0"></option>
 
 							<%
@@ -144,13 +144,13 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				<tr>
 					<td>
 						<div class="pull-left">
-							<aui:select label="operating-system" name="envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
+							<aui:select label="operating-system" name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>'>
 								<option value="0"></option>
 							</aui:select>
 
 							<br />
 
-							<input class="<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>" id="<portlet:namespace />envOSCustom" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="<portlet:namespace />envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" />
+							<aui:input cssClass="<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>" id="envOSCustom" label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" />
 						</div>
 					</td>
 					<td>

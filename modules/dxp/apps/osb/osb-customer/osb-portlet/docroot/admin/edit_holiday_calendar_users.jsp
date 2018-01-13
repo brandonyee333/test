@@ -124,7 +124,7 @@ portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 
 		<div class="separator"><!-- --></div>
 
-		<input onClick="<portlet:namespace />updateHolidayCalendarUsers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "updateHolidayCalendarUsers('" + portletURL.toString() + "&" + renderResponse.getNamespace() + "cur=" + cur + "');" %>' value="update-associations" />
 
 		<br /><br />
 

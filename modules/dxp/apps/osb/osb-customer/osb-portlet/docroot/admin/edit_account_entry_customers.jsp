@@ -137,7 +137,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<liferay-ui:search-container-column-text
 				name="notifications"
 			>
-				<select <%= curUser.isActive() ? "" : "disabled" %> id="<portlet:namespace />notifications_<%= curUser.getUserId() %>" name="<portlet:namespace />notifications_<%= curUser.getUserId() %>">
+				<aui:select disabled="<%= !curUser.isActive() %>" id='<%= "notifications_" + curUser.getUserId() %>' name='<%= "notifications_" + curUser.getUserId() %>'>
 
 					<%
 					for (int i = 1; i <= 2; i++) {
@@ -149,13 +149,13 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>" onChange="<portlet:namespace />setNotifications('<%= curUser.getUserId() %>', this.value);">
+				<aui:select disabled="<%= !curUser.isActive() %>" name='<%= "role_" + curUser.getUserId() %>' onChange='<%= renderResponse.getNamespace() + "setNotifications('" + curUser.getUserId() + "', this.value)" %>'>
 					<option></option>
 
 					<%
@@ -168,7 +168,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
@@ -180,7 +180,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 		<div class="separator"><!-- --></div>
 
-		<input onClick="<portlet:namespace />updateAccountCustomers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "updateAccountCustomers('" + portletURL.toString() + "&" + renderResponse.getNamespace() + "cur=" + cur + "');" %>' value="update-associations" />
 
 		<br /><br />
 

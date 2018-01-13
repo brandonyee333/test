@@ -30,6 +30,12 @@ String currentLanguageId = LanguageUtil.getLanguageId(request);
 Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
 
 Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
+
+List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+SupportRegion firstSupportRegion = supportRegions.get(0);
+
+long supportRegionId = PrefsParamUtil.getLong(portletPreferences, request, "supportRegionId", firstSupportRegion.getSupportRegionId());
 %>
 
 <script type="text/javascript">
@@ -126,15 +132,9 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="support-region" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />supportRegionId" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="supportRegionId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
-									List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-									SupportRegion firstSupportRegion = supportRegions.get(0);
-
-									long supportRegionId = PrefsParamUtil.getLong(portletPreferences, request, "supportRegionId", firstSupportRegion.getSupportRegionId());
-
 									for (SupportRegion supportRegion : supportRegions) {
 									%>
 
@@ -144,7 +144,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 						<tr>
@@ -152,7 +152,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="ticket-logic-assignment-ratio" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />ratio">
+								<aui:select label="" name="ratio">
 
 									<%
 									double ratio = GetterUtil.getDouble(portletPreferences.getValue(supportRegionId + "_assignmentRatio", "0.75"));
@@ -166,7 +166,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -241,7 +241,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="language" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int i = 0; i < locales.length; i++) {
@@ -258,7 +258,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -353,7 +353,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="language" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int i = 0; i < locales.length; i++) {
@@ -365,7 +365,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 						<tr>
@@ -373,7 +373,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="product" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />productDisplayName" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="productDisplayName" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (String curProductDisplayName : ProductEntryConstants.DISPLAY_NAMES) {
@@ -385,7 +385,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 						<tr>
@@ -393,7 +393,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="component" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />component" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="component" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									int[] components = TicketEntryConstants.getProductDisplayNameComponents(productDisplayName);
@@ -424,7 +424,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -482,7 +482,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="language" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int i = 0; i < locales.length; i++) {
@@ -499,7 +499,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -575,8 +575,6 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									</label>
 
 									<%
-									List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
 									for (SupportRegion supportRegion : supportRegions) {
 									%>
 
@@ -669,7 +667,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="product" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />productEntryDisplayName" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="productEntryDisplayName" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (String curProductEntryDisplayName : ProductEntryConstants.DISPLAY_NAMES_DXP) {
@@ -681,7 +679,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -706,7 +704,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="language" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int i = 0; i < locales.length; i++) {
@@ -718,7 +716,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 						<tr>
@@ -726,7 +724,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="status" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />status" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="status" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int curStatus : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
@@ -747,7 +745,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -787,7 +785,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="language" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int i = 0; i < locales.length; i++) {
@@ -799,7 +797,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 						<tr>
@@ -807,7 +805,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="tier" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />tier" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="tier" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int curTier : AccountEntryConstants.TIERS) {
@@ -828,7 +826,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -862,7 +860,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="language" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int i = 0; i < locales.length; i++) {
@@ -881,7 +879,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -1003,7 +1001,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="language" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int i = 0; i < locales.length; i++) {
@@ -1020,7 +1018,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -1071,7 +1069,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="language" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int i = 0; i < locales.length; i++) {
@@ -1088,7 +1086,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -1121,7 +1119,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 								<liferay-ui:message key="language" />
 							</td>
 							<td>
-								<select name="<portlet:namespace />languageId" onChange="<portlet:namespace />updateForm();">
+								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
 									for (int i = 0; i < locales.length; i++) {
@@ -1138,7 +1136,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									}
 									%>
 
-								</select>
+								</aui:select>
 							</td>
 						</tr>
 					</table>
@@ -1398,6 +1396,6 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 	</c:choose>
 
 	<c:if test='<%= !tabs2.equals("file-repositories") || cmd.equals(Constants.ADD) %>'>
-		<input type="submit" value="<liferay-ui:message key="save" />" />
+		<aui:button type="submit" value="save" />
 	</c:if>
 </aui:form>

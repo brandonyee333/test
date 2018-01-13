@@ -76,7 +76,12 @@ if (offeringBundle != null) {
 	/>
 
 	<div>
-		<input onClick="var offeringWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_offering_definition.jsp" /><portlet:param name="callback" value="selectOfferingDefinition" /></portlet:renderURL>', 'offering', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); offeringWindow.focus();" type="button" value="<liferay-ui:message key="add-offering" />" />
+		<portlet:renderURL var="selectOfferingURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/select_offering_definition.jsp" />
+			<portlet:param name="callback" value="selectOfferingDefinition" />
+		</portlet:renderURL>
+
+		<aui:button onClick="var offeringWindow = window.open('<%= selectOfferingURL %>', 'offering', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); offeringWindow.focus();" value="add-offering" />
 	</div>
 
 	<br />
@@ -133,7 +138,7 @@ if (offeringBundle != null) {
 			/>
 
 			<liferay-ui:search-container-column-text>
-				<input onClick="<portlet:namespace />removeRow('offeringDefinitionIds', '<%= offeringDefinition.getOfferingDefinitionId() %>', '<portlet:namespace />offeringSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+				<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('offeringDefinitionIds', '" + offeringDefinition.getOfferingDefinitionId() +"', '" + renderResponse.getNamespace() + "offeringSearchContainer', this);" %>' value="remove" />
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
@@ -142,7 +147,7 @@ if (offeringBundle != null) {
 
 	<br />
 
-	<input type="submit" value="<liferay-ui:message key="save" />" />
+	<aui:button type="submit" value="save" />
 
 	<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 </aui:form>
@@ -192,7 +197,7 @@ if (offeringBundle != null) {
 				<portlet:namespace />addColumn(row, columnValues[i]);
 			}
 
-			<portlet:namespace />addColumn(row, '<input type="button" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" value="<liferay-ui:message key="remove" />" />');
+			<portlet:namespace />addColumn(row, '<input class="btn btn-default" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" type="button" value="<liferay-ui:message key="remove" />" />');
 		}
 	}
 </aui:script>

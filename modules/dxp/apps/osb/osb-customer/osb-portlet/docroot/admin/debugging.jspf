@@ -40,7 +40,7 @@ String tabs3 = ParamUtil.getString(request, "tabs3", "license");
 						<liferay-ui:message key="routing-key" />
 					</td>
 					<td>
-						<input name="<portlet:namespace />routingKey" type="text" />
+						<aui:input label="" name="routingKey" type="text" />
 					</td>
 				</tr>
 				<tr>
@@ -48,7 +48,7 @@ String tabs3 = ParamUtil.getString(request, "tabs3", "license");
 						<liferay-ui:message key="message" />
 					</td>
 					<td>
-						<textarea class="lfr-textarea" name="<portlet:namespace />message"></textarea>
+						<aui:input label="" name="message" type="textarea" />
 					</td>
 				</tr>
 				<tr>
@@ -56,12 +56,12 @@ String tabs3 = ParamUtil.getString(request, "tabs3", "license");
 						<liferay-ui:message key="properties" />
 					</td>
 					<td>
-						<textarea class="lfr-textarea" name="<portlet:namespace />properties"></textarea>
+						<aui:input label="" name="properties" type="textarea" />
 					</td>
 				</tr>
 			</table>
 
-			<input class="aui-button-input" type="submit" value="<liferay-ui:message key="submit" />" />
+			<aui:button cssClass="aui-button-input" type="submit" value="submit" />
 		</aui:form>
 	</c:when>
 	<c:otherwise>
@@ -149,7 +149,7 @@ String tabs3 = ParamUtil.getString(request, "tabs3", "license");
 				<input id="<portlet:namespace />serverId" name="<portlet:namespace />serverId" type="file" />
 			</div>
 
-			<input class="aui-button-input" type="submit" value="<liferay-ui:message key="submit" />" />
+			<aui:button cssClass="aui-button-input" type="submit" value="submit" />
 		</aui:form>
 	</c:otherwise>
 </c:choose>

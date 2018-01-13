@@ -279,7 +279,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<td>
 				<c:choose>
 					<c:when test="<%= orderEntry == null %>">
-						<select name="<portlet:namespace />accountEntryId">
+						<aui:select label="" name="accountEntryId">
 							<option></option>
 
 							<%
@@ -294,7 +294,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 							}
 							%>
 
-						</select>
+						</aui:select>
 					</c:when>
 					<c:otherwise>
 						<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
@@ -387,7 +387,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 	<br />
 
 	<div>
-		<input type="submit" value="<liferay-ui:message key="save" />" />
+		<aui:button type="submit" value="save" />
 
 		<c:if test="<%= orderEntry != null %>">
 			<portlet:actionURL name="renewOrderEntry" var="renewOrderEntryURL">
@@ -397,15 +397,15 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 				<portlet:param name="renewCount" value="<%= String.valueOf(orderEntry.getRenewCount() + 1) %>" />
 			</portlet:actionURL>
 
-			<input onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-renew-this-order") %>')) { location.href='<%= renewOrderEntryURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="renew-support" />" />
+			<aui:button onClick='<%= "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-renew-this-order") + "')) { location.href='" + renewOrderEntryURL + "'; } else { self.focus(); }" %>' value="renew-support" />
 
-			<portlet:actionURL name="renewOrderEntry" var="resetOrderEntryURL">
+			<portlet:actionURL name="resetOrderEntry" var="resetOrderEntryURL">
 				<portlet:param name="mvcPath" value="/admin/edit_order_entry.jsp" />
 				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 				<portlet:param name="orderEntryId" value="<%= String.valueOf(orderEntry.getOrderEntryId()) %>" />
 			</portlet:actionURL>
 
-			<input onClick="javascript:if (confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-reset-this-order") %>')) { location.href='<%= resetOrderEntryURL %>'; } else { self.focus(); }" type="button" value="<liferay-ui:message key="reset-renewals" />" />
+			<aui:button onClick='<%= "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-reset-this-order") + "')) { location.href='" + resetOrderEntryURL + "'; } else { self.focus(); }" %>' value="reset-renewals" />
 		</c:if>
 
 		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
@@ -418,11 +418,21 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 	/>
 
 	<div>
-		<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_offering_definition.jsp" /><portlet:param name="callback" value="selectOfferingDefinitionId" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-offering" />" />
+		<portlet:renderURL var="addOfferingURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/select_offering_definition.jsp" />
+			<portlet:param name="callback" value="selectOfferingDefinitionId" />
+		</portlet:renderURL>
 
-		<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_offering_bundle.jsp" /><portlet:param name="callback" value="selectOfferingBundle" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-offering-bundle" />" />
+		<aui:button onClick="var categoryWindow = window.open('<%= addOfferingURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-offering" />
 
-		<input onClick="<portlet:namespace />updateOrderEntry();" type="button" value="<liferay-ui:message key="refresh" />" />
+		<portlet:renderURL var="addOfferingBundleURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/select_offering_bundle.jsp" />
+			<portlet:param name="callback" value="selectOfferingBundle" />
+		</portlet:renderURL>
+
+		<aui:button onClick="var categoryWindow = window.open('<%= addOfferingBundleURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-offering-bundle" />
+
+		<aui:button onClick='<%= renderResponse.getNamespace() + "updateOrderEntry();" %>' value="refresh" />
 	</div>
 
 	<br />
@@ -474,7 +484,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="license-lifetime"
 			>
-				<select name="<portlet:namespace />licenseLifetime_<%= index %>">
+				<aui:select label="" name='<%= "licenseLifetime_" + index %>'>
 
 					<%
 					long licenseLifetime = 36500 * 1440 * Time.MINUTE;
@@ -494,7 +504,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
@@ -514,7 +524,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="support-lifetime"
 			>
-				<select name="<portlet:namespace />supportLifetime_<%= index %>">
+				<aui:select label="" name='<%= "supportLifetime_" + index %>'>
 
 					<%
 					boolean customLifetime = true;
@@ -537,7 +547,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 					<c:if test="<%= (supportLifetime > 0) && customLifetime %>">
 						<option selected value="<%= supportLifetime %>"><%= OfferingDefinitionConstants.getCustomLifetimeLabel(supportLifetime) %></option>
 					</c:if>
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
@@ -548,7 +558,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="version"
 			>
-				<select id="<portlet:namespace />version_<%= index %>" name="<portlet:namespace />version_<%= index %>">
+				<aui:select id='<%= "version_" + index %>' label="" name='<%= "version_" + index %>'>
 
 					<%
 					List<ListType> productEntryVersionsTypes = productEntry.getVersionsListTypes();
@@ -563,13 +573,13 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="sizing"
 			>
-				<select name="<portlet:namespace />sizing_<%= index %>">
+				<aui:select label=""  name='<%= "sizing_" + index %>'>
 
 					<%
 					for (int i = 1; i <= 4; i++) {
@@ -581,13 +591,13 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="quantity"
 			>
-				<input id="<portlet:namespace />quantity_<%= index %>" name="<portlet:namespace />quantity_<%= index %>" size="2" type="text" value="<%= offeringEntry.getQuantity() %>" />
+				<aui:input id='<%= "quantity_" + index %>' label="" name='<%= "quantity_" + index %>' size="2" type="text" value="<%= offeringEntry.getQuantity() %>" />
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

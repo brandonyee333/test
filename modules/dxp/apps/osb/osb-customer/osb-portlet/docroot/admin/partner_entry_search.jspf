@@ -46,24 +46,24 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 		</tr>
 		<tr>
 			<td>
-				<input id="<portlet:namespace /><%= displayTerms.CODE %>" name="<portlet:namespace /><%= displayTerms.CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCode()) %>" />
+				<aui:input id="<%= displayTerms.CODE %>" label="" name="<%= displayTerms.CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCode()) %>" />
 			</td>
 			<td>
-				<select id="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>" name="<portlet:namespace /><%= displayTerms.MANAGING_SUPPORT %>">
+				<aui:select id="<%= displayTerms.MANAGING_SUPPORT %>" label="" name="<%= displayTerms.MANAGING_SUPPORT %>">
 					<option <%= !displayTerms.hasManagingSupport() ? "selected" : "" %> value=""></option>
 					<option <%= (displayTerms.hasManagingSupport() && displayTerms.isManagingSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
 					<option <%= (displayTerms.hasManagingSupport() && !displayTerms.isManagingSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
-				</select>
+				</aui:select>
 			</td>
 			<td>
-				<select id="<portlet:namespace /><%= displayTerms.CHILD_PARTNER_ENTRIES %>" name="<portlet:namespace /><%= displayTerms.CHILD_PARTNER_ENTRIES %>">
+				<aui:select id="<%= displayTerms.CHILD_PARTNER_ENTRIES %>" label="" name="<%= displayTerms.CHILD_PARTNER_ENTRIES %>">
 					<option <%= !displayTerms.hasChildPartnerEntries() ? "selected" : "" %> value=""></option>
 					<option <%= (displayTerms.hasChildPartnerEntries() && displayTerms.isChildPartnerEntries()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
 					<option <%= (displayTerms.hasChildPartnerEntries() && !displayTerms.isChildPartnerEntries()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
-				</select>
+				</aui:select>
 			</td>
 			<td>
-				<select id="<portlet:namespace /><%= displayTerms.SUPPORT_REGION_IDS %>" name="<portlet:namespace /><%= displayTerms.SUPPORT_REGION_IDS %>">
+				<aui:select id="<%= displayTerms.SUPPORT_REGION_IDS %>" label="" name="<%= displayTerms.SUPPORT_REGION_IDS %>">
 					<option value=""></option>
 
 					<%
@@ -76,16 +76,16 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</td>
 
 			<c:if test='<%= mvcPath.equals("/admin/view.jsp") %>'>
 				<td>
-					<select id="<portlet:namespace /><%= displayTerms.STATUSES %>" name="<portlet:namespace /><%= displayTerms.STATUSES %>">
+					<aui:select id="<%= displayTerms.STATUSES %>" label="" name="<%= displayTerms.STATUSES %>">
 						<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_ANY) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_ANY %>"><liferay-ui:message key="any-status" /></option>
 						<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_APPROVED) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_APPROVED %>"><liferay-ui:message key="active" /></option>
 						<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_INACTIVE) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_INACTIVE %>"><liferay-ui:message key="inactive" /></option>
-					</select>
+					</aui:select>
 				</td>
 			</c:if>
 		</tr>

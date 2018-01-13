@@ -81,7 +81,7 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 				<liferay-ui:message key="product" />
 			</td>
 			<td>
-				<select name="<portlet:namespace />productEntryId">
+				<aui:select label="" name="productEntryId">
 
 					<%
 					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -95,7 +95,7 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</td>
 		</tr>
 		<tr>
@@ -137,7 +137,7 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 				<liferay-ui:message key="sla" />
 			</td>
 			<td>
-				<select name="<portlet:namespace />supportResponseId">
+				<aui:select label="" name="supportResponseId">
 
 					<%
 					List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -151,7 +151,7 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</td>
 		</tr>
 		<tr>
@@ -166,7 +166,7 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 
 	<br />
 
-	<input type="submit" value="<liferay-ui:message key="save" />" />
+	<aui:button type="submit" value="save" />
 
 	<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 </aui:form>

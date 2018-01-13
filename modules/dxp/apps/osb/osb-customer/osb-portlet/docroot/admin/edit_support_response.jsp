@@ -73,7 +73,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 				<liferay-ui:message key="service-level-agreement" />
 			</td>
 			<td>
-				<select name="<portlet:namespace />supportLevel">
+				<aui:select label="" name="supportLevel">
 
 					<%
 					for (int curSupportLevel : SupportResponseConstants.SUPPORT_LEVELS) {
@@ -85,7 +85,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</td>
 		</tr>
 		<tr>
@@ -104,7 +104,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 							<liferay-ui:message key="response" />
 						</td>
 						<td>
-							<select name="<portlet:namespace />severity1Response">
+							<aui:select label="" name="severity1Response">
 								<option></option>
 
 								<%
@@ -117,13 +117,13 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 						<td>
 							<liferay-ui:message key="resolution" />
 						</td>
 						<td>
-							<select name="<portlet:namespace />severity1Resolution">
+							<aui:select label="" name="severity1Resolution">
 								<option></option>
 
 								<%
@@ -136,7 +136,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 				</table>
@@ -153,7 +153,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 							<liferay-ui:message key="response" />
 						</td>
 						<td>
-							<select name="<portlet:namespace />severity2Response">
+							<aui:select label="" name="severity2Response">
 								<option></option>
 
 								<%
@@ -166,13 +166,13 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 						<td>
 							<liferay-ui:message key="resolution" />
 						</td>
 						<td>
-							<select name="<portlet:namespace />severity2Resolution">
+							<aui:select label="" name="severity2Resolution">
 								<option></option>
 
 								<%
@@ -185,7 +185,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 				</table>
@@ -202,7 +202,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 							<liferay-ui:message key="response" />
 						</td>
 						<td>
-							<select name="<portlet:namespace />severity3Response">
+							<aui:select label="" name="severity3Response">
 								<option></option>
 
 								<%
@@ -215,13 +215,13 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 						<td>
 							<liferay-ui:message key="resolution" />
 						</td>
 						<td>
-							<select name="<portlet:namespace />severity3Resolution">
+							<aui:select label="" name="severity3Resolution">
 								<option></option>
 
 								<%
@@ -234,7 +234,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 								}
 								%>
 
-							</select>
+							</aui:select>
 						</td>
 					</tr>
 				</table>
@@ -244,7 +244,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 
 	<br />
 
-	<input type="submit" value="<liferay-ui:message key="save" />" />
+	<aui:button type="submit" value="save" />
 
 	<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 </aui:form>

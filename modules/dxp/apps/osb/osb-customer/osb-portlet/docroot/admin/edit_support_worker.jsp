@@ -102,7 +102,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					<%= HtmlUtil.escape(supportTeam.getName()) %>
 				</a>
 
-				<input onClick="var supportTeamWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_support_team.jsp" /><portlet:param name="callback" value="selectSupportTeam" /></portlet:renderURL>', 'supportTeam', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); supportTeamWindow.focus();" type="button" value="<liferay-ui:message key="change" />" />
+				<portlet:renderURL var="changeURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+					<portlet:param name="mvcPath" value="/admin/select_support_team.jsp" />
+					<portlet:param name="callback" value="selectSupportTeam" />
+				</portlet:renderURL>
+
+				<aui:button onClick="var supportTeamWindow = window.open('<%= changeURL %>', 'supportTeam', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); supportTeamWindow.focus();" value="change" />
 
 				<input name="<portlet:namespace />supportTeamId" type="hidden" value="<%= supportTeam.getSupportTeamId() %>" />
 			</td>
@@ -166,7 +171,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 				<liferay-ui:message key="max-work" />
 			</td>
 			<td>
-				<input name="<portlet:namespace />maxWork" size="5" type="text" value="<%= numberFormat.format(supportWorker.getMaxWork()) %>" />
+				<aui:input label="" name="maxWork" size="5" type="text" value="<%= numberFormat.format(supportWorker.getMaxWork()) %>" />
 			</td>
 		</tr>
 		<tr>
@@ -174,7 +179,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 				<liferay-ui:message key="escalation-level" />
 			</td>
 			<td>
-				<select name="<portlet:namespace />escalationLevel">
+				<aui:select label="" name="escalationLevel">
 
 					<%
 					List<ListType> escalationLevelTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL);
@@ -188,7 +193,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</td>
 		</tr>
 		<tr>
@@ -196,10 +201,10 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 				<liferay-ui:message key="default-escalation-level-2-assignment" />
 			</td>
 			<td>
-				<select name="<portlet:namespace />escalationLevel2Role">
+				<aui:select label="" name="escalationLevel2Role">
 					<option <%= (supportWorker.getEscalationLevel2Role() == SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER) ? "selected" : "" %> value="<%= SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER %>"><liferay-ui:message key="other" /></option>
 					<option <%= (supportWorker.getEscalationLevel2Role() != SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER) ? "selected" : "" %> value="<%= SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_PRIMARY %>"><liferay-ui:message key="primary" /></option>
-				</select>
+				</aui:select>
 			</td>
 		</tr>
 		<tr>
@@ -207,7 +212,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 				<liferay-ui:message key="notifications" />
 			</td>
 			<td>
-				<select name="<portlet:namespace />notifications">
+				<aui:select label="" name="notifications">
 
 					<%
 					for (int i = 1; i <= 3; i++) {
@@ -219,7 +224,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					}
 					%>
 
-				</select>
+				</aui:select>
 			</td>
 		</tr>
 
@@ -339,7 +344,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 	<br />
 
 	<div>
-		<input type="submit" value="<liferay-ui:message key="save" />" />
+		<aui:button type="submit" value="save" />
 
 		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 	</div>
@@ -501,8 +506,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 		names="severities"
 	/>
 
+	<portlet:renderURL var="addSeverityURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:param name="mvcPath" value="/admin/select_severity.jsp" />
+	</portlet:renderURL>
+
 	<div>
-		<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_severity.jsp" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-severity" />" />
+		<aui:button onClick="var categoryWindow = window.open('<%= addSeverityURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-severity" />
 	</div>
 
 	<br />
@@ -526,7 +535,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text>
-				<input onClick="<portlet:namespace />removeRow('severities', '<%= severity %>', '<portlet:namespace />severitySearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+				<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('severities', '" + severity + "', '" + renderResponse.getNamespace() + "severitySearchContainer', this);" %>' value="remove" />
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
@@ -539,8 +548,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 		names="components"
 	/>
 
+	<portlet:renderURL var="addComponentURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:param name="mvcPath" value="/admin/select_component.jsp" />
+	</portlet:renderURL>
+
 	<div>
-		<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_component.jsp" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-component" />" />
+		<aui:button onClick="var categoryWindow = window.open('<%= addComponentURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-component" />
 	</div>
 
 	<br />
@@ -564,7 +577,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text>
-				<input onClick="<portlet:namespace />removeRow('components', '<%= component %>', '<portlet:namespace />componentSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+				<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('components', '" + component + "', '" + renderResponse.getNamespace() + "componentSearchContainer', this);" %>' value="remove" />
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
@@ -577,8 +590,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 		names="project-tiers"
 	/>
 
+	<portlet:renderURL var="addProjectTierURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:param name="mvcPath" value="/admin/select_account_tier.jsp" />
+	</portlet:renderURL>
+
 	<div>
-		<input onClick="var categoryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/admin/select_account_tier.jsp" /></portlet:renderURL>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" type="button" value="<liferay-ui:message key="add-project-tier" />" />
+		<aui:button onClick="var categoryWindow = window.open('<%= addProjectTierURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-project-tier" />
 	</div>
 
 	<br />
@@ -602,7 +619,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text>
-				<input onClick="<portlet:namespace />removeRow('accountTiers', '<%= accountTier %>', '<portlet:namespace />accountTierSearchContainer', this);" type="button" value="<liferay-ui:message key="remove" />" />
+				<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('accountTiers', '" + accountTier + "', '" + renderResponse.getNamespace() + "accountTierSearchContainer', this);" %>' value="remove" />
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
@@ -651,7 +668,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 				<portlet:namespace />addColumn(row, columnValues[i]);
 			}
 
-			<portlet:namespace />addColumn(row, '<input type="button" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" value="<liferay-ui:message key="remove" />" />');
+			<portlet:namespace />addColumn(row, '<input class="btn btn-default" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" type="button" value="<liferay-ui:message key="remove" />" />');
 		}
 	}
 
