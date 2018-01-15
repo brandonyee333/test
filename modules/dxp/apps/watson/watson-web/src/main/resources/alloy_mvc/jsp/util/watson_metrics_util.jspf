@@ -1,0 +1,258 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonMetricsUtil {
+	public static JSONArray getAddressMetricsArray(List<WatsonAddress> watsonAddresses) throws Exception {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (WatsonAddress watsonAddress : watsonAddresses) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("lat", watsonAddress.getLatitude());
+			jsonObject.put("lng", watsonAddress.getLongitude());
+			jsonObject.put("name", watsonAddress.getName(LocaleUtil.getMostRelevantLocale()));
+			jsonObject.put("watsonAddressId", watsonAddress.getWatsonAddressId());
+			jsonObject.put("watsonIncidentId", watsonAddress.getWatsonIncidentId());
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
+	}
+
+	public static JSONObject getMetrics(String dateRangeString) throws Exception {
+		JSONObject returnJSONObject = JSONFactoryUtil.createJSONObject();
+
+		if (Validator.isNotNull(dateRangeString)) {
+			String[] dateRangeParts = dateRangeString.split(StringPool.DASH);
+
+			Date startDate = new Date(Long.valueOf(dateRangeParts[0]));
+
+			Date endDate = new Date(Long.valueOf(dateRangeParts[1]));
+
+			returnJSONObject.put("yourResults", getMetricsByDate(startDate, endDate));
+		}
+
+		Calendar endCalendar = Calendar.getInstance();
+		Calendar startCalendar = Calendar.getInstance();
+
+		startCalendar.setTime(new Date());
+		startCalendar.set(Calendar.DAY_OF_YEAR, 1);
+		startCalendar.add(Calendar.YEAR, -10);
+
+		endCalendar.setTime(new Date());
+		endCalendar.set(Calendar.DAY_OF_YEAR, 1);
+
+		while (startCalendar.getTimeInMillis() < endCalendar.getTimeInMillis()) {
+			Date startDate = startCalendar.getTime();
+
+			Calendar calendar = Calendar.getInstance();
+
+			calendar.set(Calendar.MONTH, 11);
+			calendar.set(Calendar.DAY_OF_MONTH, 31);
+
+			Date endDate = calendar.getTime();
+
+			returnJSONObject.put(String.valueOf(startCalendar.get(Calendar.YEAR)), getMetricsByDate(startDate, endDate));
+
+			startCalendar.add(Calendar.YEAR, 1);
+		}
+
+		return returnJSONObject;
+	}
+
+	private static JSONObject getMetricsByDate(Date startDate, Date endDate) throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("childrenAcceptedCount", getChildrenAcceptedCount(startDate, endDate));
+		jsonObject.put("childrenRescuedCount", getChildrenRescuedCount(startDate, endDate));
+		jsonObject.put("incidentTipCount", getIncidentTipCount(startDate, endDate));
+		jsonObject.put("investigationCount", getInvestigationCount(startDate, endDate));
+		jsonObject.put("outreachAdultCount", getOutreachAdultCount(startDate, endDate));
+		jsonObject.put("outreachChildCount", getOutreachChildrenCount(startDate, endDate));
+		jsonObject.put("outreachCount", getOutreachCount(startDate, endDate));
+		jsonObject.put("ticacAssistCount", getTICACAssistCount(startDate, endDate));
+		jsonObject.put("ticacBothAssistCount", getTICACBothAssistCount(startDate, endDate));
+		jsonObject.put("ticacForensicAssistCount", getTICACForensicAssistCount(startDate, endDate));
+		jsonObject.put("ticacInvestigationAssistCount", getTICACInvestigationAssistCount(startDate, endDate));
+		jsonObject.put("victimCount", getVictimCount(startDate, endDate));
+
+		return jsonObject;
+	}
+
+	private static long getChildrenAcceptedCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery personDynamicQuery = WatsonPerson.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.PERSON_TYPE_VICTIM, "accepted", true});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("dateAccepted", startDate, endDate);
+
+		personDynamicQuery.add(dateCriterion);
+
+		return WatsonPerson.baseModelAlloyServiceInvoker.executeDynamicQueryCount(personDynamicQuery);
+	}
+
+	private static long getChildrenRescuedCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery personDynamicQuery = WatsonPerson.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.PERSON_TYPE_VICTIM, "rescued", true});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("dateRescued", startDate, endDate);
+
+		personDynamicQuery.add(dateCriterion);
+
+		return WatsonPerson.baseModelAlloyServiceInvoker.executeDynamicQueryCount(personDynamicQuery);
+	}
+
+	private static long getIncidentTipCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = WatsonIncident.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_INVESTIGATION, "subtypeWatsonListTypeId", WatsonListType.INCIDENT_REPORT_TYPE_TIP});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		return WatsonIncident.baseModelAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+	}
+
+	private static long getInvestigationCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = WatsonIncident.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_INVESTIGATION});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		return WatsonIncident.baseModelAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+	}
+
+	private static long getOutreachAdultCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = WatsonIncident.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_PREVENTION_OUTREACH});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		Projection audienceAdultCountProjection = ProjectionFactoryUtil.property("audienceAdultCount");
+
+		incidentDynamicQuery.setProjection(ProjectionFactoryUtil.distinct(audienceAdultCountProjection));
+
+		List<Long> audienceAdultCountLongs = WatsonIncident.baseModelAlloyServiceInvoker.executeDynamicQuery(incidentDynamicQuery);
+
+		long audienceAdultCount = 0;
+
+		for (long audienceAdultCountLong : audienceAdultCountLongs) {
+			audienceAdultCount += audienceAdultCountLong;
+		}
+
+		return audienceAdultCount;
+	}
+
+	private static long getOutreachChildrenCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = WatsonIncident.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_PREVENTION_OUTREACH});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		Projection audienceChildCountProjection = ProjectionFactoryUtil.property("audienceChildCount");
+
+		incidentDynamicQuery.setProjection(ProjectionFactoryUtil.distinct(audienceChildCountProjection));
+
+		List<Long> audienceChildCountLongs = WatsonIncident.baseModelAlloyServiceInvoker.executeDynamicQuery(incidentDynamicQuery);
+
+		long audienceChildCount = 0;
+
+		for (long audienceChildCountLong : audienceChildCountLongs) {
+			audienceChildCount += audienceChildCountLong;
+		}
+
+		return audienceChildCount;
+	}
+
+	private static long getOutreachCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = WatsonIncident.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_PREVENTION_OUTREACH});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		return WatsonIncident.baseModelAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+	}
+
+	private static long getTICACAssistCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = WatsonIncident.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		Criterion criterion = RestrictionsFactoryUtil.isNotNull("externalCaseId");
+
+		incidentDynamicQuery.add(criterion);
+
+		return WatsonIncident.baseModelAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+	}
+
+	private static long getTICACBothAssistCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = WatsonIncident.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "externalCaseWatsonListTypeId", WatsonListType.INCIDENT_ASSIST_TYPE_BOTH});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		Criterion criterion = RestrictionsFactoryUtil.isNotNull("externalCaseId");
+
+		incidentDynamicQuery.add(criterion);
+
+		return WatsonIncident.baseModelAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+	}
+
+	private static long getTICACForensicAssistCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = WatsonIncident.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "externalCaseWatsonListTypeId", WatsonListType.INCIDENT_ASSIST_TYPE_FORENSIC});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		Criterion criterion = RestrictionsFactoryUtil.isNotNull("externalCaseId");
+
+		incidentDynamicQuery.add(criterion);
+
+		return WatsonIncident.baseModelAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+	}
+
+	private static long getTICACInvestigationAssistCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = WatsonIncident.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "externalCaseWatsonListTypeId", WatsonListType.INCIDENT_ASSIST_TYPE_INVESTIGATION});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		Criterion criterion = RestrictionsFactoryUtil.isNotNull("externalCaseId");
+
+		incidentDynamicQuery.add(criterion);
+
+		return WatsonIncident.baseModelAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+	}
+
+	private static long getVictimCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery personDynamicQuery = WatsonPerson.baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.PERSON_TYPE_VICTIM});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("createDate", startDate, endDate);
+
+		personDynamicQuery.add(dateCriterion);
+
+		return WatsonPerson.baseModelAlloyServiceInvoker.executeDynamicQueryCount(personDynamicQuery);
+	}
+
+}
+%>

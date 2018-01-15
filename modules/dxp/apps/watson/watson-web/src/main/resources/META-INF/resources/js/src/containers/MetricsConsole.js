@@ -3,6 +3,7 @@ import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import {Map} from 'immutable';
 
+import DateRangeInput from '../components/DateRangeInput';
 import DynamicSelectInput from '../components/DynamicInputGenerator';
 import HeatMap from '../components/HeatMap';
 import MetricsReport from '../components/MetricsReport';
@@ -64,12 +65,11 @@ class MetricsConsole extends JSXComponent {
 		return currentView;
 	}
 
-	handleOnChange(reportsKey, modelKey) {
-		if (this.state.reportsKey !== reportsKey) {
+	handleOnChange(dateRangeString) {
+		if (this.state.dateRangeString !== dateRangeString) {
 			this.setState(
 				{
-					modelKey,
-					reportsKey,
+					dateRangeString,
 					resendRequest: true
 				}
 			);
@@ -138,6 +138,17 @@ class MetricsConsole extends JSXComponent {
 						/>
 					}
 
+					{(action && action === 'report') &&
+						<div class="filter-header">
+							{Liferay.Language.get('filter-by')}
+						</div> &&
+
+						<DateRangeInput
+							disabled={false}
+							onChange={this.handleOnChange}
+						/>
+					}
+
 					{!action &&
 						<Navigation entries={consoleNav} />
 					}
@@ -174,10 +185,9 @@ class MetricsConsole extends JSXComponent {
 			props.fetchIncidentMetrics(
 				{
 					actionType: action,
+					dateRangeString: state.dateRangeString,
 					fields: fieldsArray,
 					keywords: keywordsArray,
-					modelKey: state.modelKey,
-					reportsKey: state.reportsKey,
 					type: state.viewBy
 				}
 			);
@@ -204,8 +214,7 @@ MetricsConsole.PROPS = {
 
 MetricsConsole.STATE = {
 	actionDisplayed: Config.string().value(''),
-	modelKey: Config.string(),
-	reportsKey: Config.string().value('rescued'),
+	dateRangeString: Config.string().value(''),
 	resendRequest: Config.bool().value(true),
 	viewBy: Config.string().value('9361')
 };

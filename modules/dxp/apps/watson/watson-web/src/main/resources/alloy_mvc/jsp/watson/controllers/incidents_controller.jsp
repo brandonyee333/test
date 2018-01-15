@@ -208,16 +208,16 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		if (!WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
 		}
 
 		String actionType = ParamUtil.getString(request, "actionType");
 
 		if (actionType.equals("report")) {
-			String field = ParamUtil.getString(request, "reportsKey");
+			String dateRangeString = ParamUtil.getString(request, "dateRangeString");
 
-			String dateField = "date" + TextFormatter.formatName(field);
-
-			respondWith(WatsonPerson.getMetricsArray(field, dateField));
+			respondWith(WatsonMetricsUtil.getMetrics(dateRangeString));
 
 			return;
 		}
@@ -247,7 +247,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 				watsonAddresses = WatsonAddress.query("typeWatsonListTypeId", typeWatsonListTypeId);
 			}
 
-			respondWith(WatsonAddress.getAsMetricsArray(watsonAddresses));
+			respondWith(WatsonMetricsUtil.getAddressMetricsArray(watsonAddresses));
 		}
 	}
 

@@ -245,7 +245,7 @@ class AddressForm extends JSXComponent {
 			cancelMethod,
 			headerStringLeft = Liferay.Language.get('create-address'),
 			headerStringRight,
-			submitMethod = props.updateAddress,
+			submitMethod = props.updateAddresses,
 			watsonAddressId
 		} = props;
 

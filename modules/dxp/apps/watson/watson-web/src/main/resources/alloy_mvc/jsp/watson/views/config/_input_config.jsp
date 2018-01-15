@@ -2147,16 +2147,58 @@
 					}
 				},
 				reports: {
-					types: [
+					columns: [
 						{
-							key: 'rescued',
-							label: '${AlloyLanguageUtil.formatUnicode('rescued')}',
-							modelKey: 'person'
+							key: 'id',
+							label: '${AlloyLanguageUtil.formatUnicode("id")}'
 						},
 						{
-							key: 'accepted',
-							label: '${AlloyLanguageUtil.formatUnicode('accepted-to-zoe')}',
-							modelKey: 'person'
+							key: 'victimCount',
+							label: '${AlloyLanguageUtil.formatUnicode("victim-count")}'
+						},
+						{
+							key: 'investigationCount',
+							label: '${AlloyLanguageUtil.formatUnicode("investigation-count")}'
+						},
+						{
+							key: 'outreachCount',
+							label: '${AlloyLanguageUtil.formatUnicode("outreach-count")}'
+						},
+						{
+							key: 'outreachAdultCount',
+							label: '${AlloyLanguageUtil.formatUnicode("outreach-adult-count")}'
+						},
+						{
+							key: 'outreachChildCount',
+							label: '${AlloyLanguageUtil.formatUnicode("outreach-child-count")}'
+						},
+						{
+							key: 'childrenRescuedCount',
+							label: '${AlloyLanguageUtil.formatUnicode("children-rescued-count")}'
+						},
+						{
+							key: 'childrenAcceptedCount',
+							label: '${AlloyLanguageUtil.formatUnicode("children-accepted-count")}'
+						},
+						{
+							key: 'ticacAssistCount',
+							label: '${AlloyLanguageUtil.formatUnicode("ticac-assist-count")}'
+						},
+						{
+							key: 'ticacInvestigationAssistCount',
+							label: '${AlloyLanguageUtil.formatUnicode("ticac-investigation-count")}'
+						},
+						{
+							key: 'ticacForensicAssistCount',
+							label: '${AlloyLanguageUtil.formatUnicode("ticac-forensic-count")}'
+						},
+						{
+							key: 'ticacBothAssistCount',
+							label: '${AlloyLanguageUtil.formatUnicode("ticac-both-count")}'
+						},
+						{
+							key: 'incidentTipCount',
+							label: '${AlloyLanguageUtil.formatUnicode("incident-tip-count")}'
 						}
 					]
 				}

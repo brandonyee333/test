@@ -190,41 +190,6 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return jsonObject;
 	}
 
-	public static JSONObject getMetricsArray(String field, String dateField) throws Exception {
-		JSONObject formattedJSONObject = JSONFactoryUtil.createJSONObject();
-
-		long[] yearsArray = {};
-		long[] dataArray = {};
-
-		for (int year = 2010; year <= 2018; year++) {
-			DynamicQuery personDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, field, true});
-
-			Calendar calendar = Calendar.getInstance();
-
-			calendar.set(Calendar.YEAR, year);
-			calendar.set(Calendar.DAY_OF_YEAR, 1);
-
-			Date startDate = calendar.getTime();
-
-			calendar.set(Calendar.MONTH, 11);
-			calendar.set(Calendar.DAY_OF_MONTH, 31);
-
-			Date endDate = calendar.getTime();
-
-			personDynamicQuery.add(RestrictionsFactoryUtil.between(dateField, startDate, endDate));
-
-			dataArray = ArrayUtil.append(dataArray, baseModelAlloyServiceInvoker.executeDynamicQueryCount(personDynamicQuery));
-			yearsArray = ArrayUtil.append(yearsArray, year);
-		}
-
-		formattedJSONObject.put(field, LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), field, new String[0]));
-		formattedJSONObject.put("key", field);
-		formattedJSONObject.put("values", dataArray);
-		formattedJSONObject.put("year", yearsArray);
-
-		return formattedJSONObject;
-	}
-
 	public static String getFormattedDate(Date date, Locale locale) {
 		if (date != null) {
 			return DateUtil.getDate(date, "yyyy-MM-dd", locale);

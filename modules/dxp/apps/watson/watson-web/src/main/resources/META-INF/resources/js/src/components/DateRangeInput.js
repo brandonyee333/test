@@ -48,13 +48,13 @@ class DateRangeInput extends JSXComponent {
 					endDate={endDate}
 					endDatePlaceholderText={Liferay.Language.get('end-date')}
 					focusedInput={focusedInput}
+					hideKeyboardShortcutsPanel={true}
 					isOutsideRange={outsideRangeBypass}
 					numberOfMonths={1}
 					onDatesChange={this.onDatesChange}
 					onFocusChange={this.onFocusChange}
 					orientation="vertical"
 					reopenPickerOnClearDates={true}
-					showKeyboardShortcuts={false}
 					startDate={startDate}
 					startDatePlaceholderText={Liferay.Language.get('start-date')}
 				/>

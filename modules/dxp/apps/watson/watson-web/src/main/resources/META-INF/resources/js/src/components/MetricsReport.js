@@ -1,36 +1,47 @@
-import {bindAll} from 'lodash';
-import Charts from 'metal-charts';
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import bridge from 'metal-react';
+import {isEmpty} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
-import Tabs from 'metal-tabs';
 
 import ContentHeader from './ContentHeader';
 
+const Datatable = bridge(BootstrapTable);
+
 class MetricsReport extends JSXComponent {
-	created() {
-		bindAll(
-			this,
-			'handleUpdateView'
-		);
-	}
-
-	handleUpdateView({target}) {
-		const tabClicked = target.getAttribute('ref').toString();
-
-		const tabIndex = tabClicked[tabClicked.length - 1];
-
-		const tabs = WatsonConstants.inputConfig.metrics.reports.types;
-
-		const {key, modelKey} = tabs[tabIndex];
-
-		this.props.onChange(key, modelKey);
-	}
-
 	render() {
 		const {data = {}, loading} = this.props;
 
-		const onClickEvent = {
-			click: this.handleUpdateView
-		};
+		const columns = WatsonConstants.inputConfig.metrics.reports.columns;
+
+		const tableHeaderColumns = [];
+
+		if (!loading && !isEmpty(columns)) {
+			columns.forEach(
+				(item, index) => {
+					if (item) {
+						const {key, label} = item;
+
+						tableHeaderColumns.push(
+							<TableHeaderColumn dataField={key} isKey={index === 0}>{label}</TableHeaderColumn>
+						);
+					}
+				}
+			);
+		}
+
+		const formattedData = [];
+
+		if (!loading && !isEmpty(data)) {
+			for (const key in data) {
+				if (data.hasOwnProperty(key)) {
+					const formattedObject = Object.assign({}, data[key]);
+
+					formattedObject.id = key;
+
+					formattedData.push(formattedObject);
+				}
+			}
+		}
 
 		return (
 			<div class="content-container">
@@ -39,30 +50,13 @@ class MetricsReport extends JSXComponent {
 				</div>
 
 				<div class="content" id="table">
-					<div class="tabs-wrapper">
-						<Tabs
-							events={onClickEvent}
-							tabs={WatsonConstants.inputConfig.metrics.reports.types}
-							types="pills"
-						/>
-					</div>
 
-					{(!loading && data.key) &&
-						<Charts
-							columns={[
-								{
-									data: data.values,
-									id: data[data.key],
-									name: data[data.key],
-									type: 'line'
-								}
-							]}
-							elementClasses="table-wrapper"
-						/>
-					}
+					<Datatable data={formattedData.reverse()}>
+						{tableHeaderColumns}
+					</Datatable>
 
 					{loading &&
-						<span>{Liferay.Language.get('loading')}</span>
+						<span class="input-text">{Liferay.Language.get('loading')}</span>
 					}
 				</div>
 			</div>
@@ -71,22 +65,10 @@ class MetricsReport extends JSXComponent {
 }
 
 MetricsReport.PROPS = {
-	data: Config.array(),
-	loading: Config.bool().value(true),
-	onChange: Config.func()
+	data: Config.array().value([]),
+	loading: Config.bool().value(true)
 };
 
-MetricsReport.STATE = {
-	axis: Config.object().value(
-		{
-			x: {
-				tick: {
-					format: '%Y'
-				},
-				type: 'timeseries'
-			}
-		}
-	)
-};
+MetricsReport.STATE = {};
 
 export default MetricsReport;

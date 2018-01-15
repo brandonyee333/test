@@ -10,10 +10,6 @@
 			display: block;
 			margin-top: 15px;
 
-			.datatable-type {
-				display: none;
-			}
-
 			.map-wrapper {
 				float: right;
 				height: 600px;
@@ -41,34 +37,14 @@
 					}
 				}
 			}
-
-			.tabs-wrapper {
-				margin-bottom: 3%;
-
-				.nav-tabs {
-					border-bottom-width: 0;
-					margin-bottom: 0;
-
-					li {
-						margin-right: 10px;
-
-						button {
-							@include default-button;
-
-							height: 57px;
-							justify-content: center;
-							max-width: 270px;
-							width: 100%;
-						}
-					}
-				}
-			}
 		}
 
 		.text {
 			@include input-text;
 
-			margin: 60px 0 0 300px;
+			float: right;
+			margin-right: 40%;
+			margin-top: 5%;
 		}
 	}
 
