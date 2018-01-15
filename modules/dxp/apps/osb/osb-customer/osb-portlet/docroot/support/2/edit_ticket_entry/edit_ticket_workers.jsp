@@ -65,13 +65,12 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 				url="<%= portletURL.toString() %>"
 			/>
 
-			<%
-			UserTicketWorkerChecker rowChecker = new UserTicketWorkerChecker(renderResponse, ticketEntry);
+			<%@ include file="/common/user_search_inputs.jspf" %>
 
+			<%
 			LinkedHashMap userParams = new LinkedHashMap();
 
 			if (tabs2.equals("current")) {
-				userParams.put("status", WorkflowConstants.STATUS_ANY);
 				userParams.put("usersTicketWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByTicketWorkerEntries"), Long.valueOf(ticketEntry.getTicketEntryId())));
 			}
 			else if (liferayIncOrg) {
@@ -86,102 +85,102 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 			}
 			%>
 
-			<liferay-ui:user-search
-				portletURL="<%= portletURL %>"
-				rowChecker="<%= rowChecker %>"
-				userParams="<%= userParams %>"
+			<liferay-ui:search-container
+				emptyResultsMessage="no-users-were-found"
+				id="usersSearchContainer"
+				iteratorURL="<%= portletURL %>"
+				rowChecker="<%= new UserTicketWorkerChecker(renderResponse, ticketEntry) %>"
+				searchContainer="<%= new UserSearch(renderRequest, portletURL) %>"
 			>
 
 				<%
-				SearchContainer userSearchContainer = (SearchContainer)request.getAttribute(WebKeys.SEARCH_CONTAINER);
+				UserDisplayTerms searchTerms = (UserDisplayTerms)searchContainer.getSearchTerms();
+
+				if (!searchTerms.isAdvancedSearch()) {
+					searchContainer.setTotal(UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), searchTerms.getKeywords(), WorkflowConstants.STATUS_ANY, userParams));
+					searchContainer.setResults(UserLocalServiceUtil.search(themeDisplay.getCompanyId(), searchTerms.getKeywords(), WorkflowConstants.STATUS_ANY, userParams, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)));
+				}
+				else {
+					searchContainer.setTotal(UserLocalServiceUtil.searchCount(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true));
+					searchContainer.setResults(UserLocalServiceUtil.search(themeDisplay.getCompanyId(), firstName, middleName, lastName, screenName, emailAddress, WorkflowConstants.STATUS_ANY, userParams, true, searchContainer.getStart(), searchContainer.getEnd(), new UserFirstNameComparator(true)));
+				}
 				%>
 
-				<liferay-ui:search-container
-					headerNames="name,screen-name,email-address,role"
-					rowChecker="<%= rowChecker %>"
-					searchContainer="<%= userSearchContainer %>"
-					total="<%= userSearchContainer.getTotal() %>"
+				<liferay-ui:search-container-row
+					className="com.liferay.portal.kernel.model.User"
+					escapedModel="<%= true %>"
+					keyProperty="userId"
+					modelVar="curUser"
 				>
-					<liferay-ui:search-container-results
-						results="<%= userSearchContainer.getResults() %>"
+
+					<%
+					TicketWorker ticketWorker = TicketWorkerLocalServiceUtil.fetchTicketWorker(curUser.getUserId(), ticketEntryId);
+
+					if (!curUser.isActive()) {
+						row.setClassName("inactive");
+					}
+					%>
+
+					<liferay-ui:search-container-column-text
+						name="name"
+						property="fullName"
 					/>
 
-					<liferay-ui:search-container-row
-						className="com.liferay.portal.kernel.model.User"
-						escapedModel="<%= true %>"
-						keyProperty="userId"
-						modelVar="curUser"
+					<liferay-ui:search-container-column-text
+						name="screen-name"
+						property="screenName"
+					/>
+
+					<liferay-ui:search-container-column-text
+						name="email-address"
+						property="emailAddress"
+					/>
+
+					<liferay-ui:search-container-column-text
+						name="role"
 					>
 
 						<%
-						TicketWorker ticketWorker = TicketWorkerLocalServiceUtil.fetchTicketWorker(curUser.getUserId(), ticketEntryId);
+						int role = 0;
 
-						if (!curUser.isActive()) {
-							row.setClassName("inactive");
+						if (ticketWorker != null) {
+							role = ticketWorker.getRole();
 						}
 						%>
 
-						<liferay-ui:search-container-column-text
-							name="name"
-							property="fullName"
-						/>
-
-						<liferay-ui:search-container-column-text
-							name="screen-name"
-							property="screenName"
-						/>
-
-						<liferay-ui:search-container-column-text
-							name="email-address"
-							property="emailAddress"
-						/>
-
-						<liferay-ui:search-container-column-text
-							name="role"
-						>
+						<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
+							<option></option>
 
 							<%
-							int role = 0;
+							for (int i = 1; i <= 3; i++) {
+							%>
 
-							if (ticketWorker != null) {
-								role = ticketWorker.getRole();
+								<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, TicketWorkerConstants.getRoleLabel(i)) %></option>
+
+							<%
 							}
 							%>
 
-							<select <%= curUser.isActive() ? "" : "disabled" %> name="<portlet:namespace />role_<%= curUser.getUserId() %>">
-								<option></option>
+						</select>
+					</liferay-ui:search-container-column-text>
 
-								<%
-								for (int i = 1; i <= 3; i++) {
-								%>
+					<liferay-ui:search-container-column-text
+						name="primary"
+					>
+						<input <%= ((ticketWorker != null) && ticketWorker.isPrimary()) ? "checked" : "" %> name="<portlet:namespace />primaryUserId" type="radio" value="<%= curUser.getUserId() %>" />
+					</liferay-ui:search-container-column-text>
+				</liferay-ui:search-container-row>
 
-									<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, TicketWorkerConstants.getRoleLabel(i)) %></option>
+				<div class="separator"><!-- --></div>
 
-								<%
-								}
-								%>
+				<input class="aui-button-input" onClick="<portlet:namespace />updateTicketWorkers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
 
-							</select>
-						</liferay-ui:search-container-column-text>
+				<input class="aui-button-input pull-right" onClick="<portlet:namespace />resetPrimaryUserRadios();" type="button" value="<liferay-ui:message key="use-last-primary-assignee" />" />
 
-						<liferay-ui:search-container-column-text
-							name="primary"
-						>
-							<input <%= ((ticketWorker != null) && ticketWorker.isPrimary()) ? "checked" : "" %> name="<portlet:namespace />primaryUserId" type="radio" value="<%= curUser.getUserId() %>" />
-						</liferay-ui:search-container-column-text>
-					</liferay-ui:search-container-row>
+				<br /><br />
 
-					<div class="separator"><!-- --></div>
-
-					<input class="aui-button-input" onClick="<portlet:namespace />updateTicketWorkers('<%= portletURL.toString() %>&<portlet:namespace />cur=<%= cur %>');" type="button" value="<liferay-ui:message key="update-associations" />" />
-
-					<input class="aui-button-input pull-right" onClick="<portlet:namespace />resetPrimaryUserRadios();" type="button" value="<liferay-ui:message key="use-last-primary-assignee" />" />
-
-					<br /><br />
-
-					<liferay-ui:search-iterator />
-				</liferay-ui:search-container>
-			</liferay-ui:user-search>
+				<liferay-ui:search-iterator />
+			</liferay-ui:search-container>
 		</div>
 	</aui:form>
 
