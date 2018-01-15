@@ -98,10 +98,6 @@
 .edit-ticket-dialog {
 	position: fixed;
 
-	&.visible {
-		transition: opacity 0.5s;
-	}
-
 	.content {
 		height: 88vh;
 		max-height: 874px;
