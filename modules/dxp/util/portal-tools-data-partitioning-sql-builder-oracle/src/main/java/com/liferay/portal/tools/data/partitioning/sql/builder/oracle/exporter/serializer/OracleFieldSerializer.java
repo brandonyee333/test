@@ -32,6 +32,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import oracle.sql.TIMESTAMP;
+
 /**
  * @author Manuel de la Peña
  */
@@ -71,8 +73,8 @@ public class OracleFieldSerializer implements FieldSerializer {
 
 			sb.append("')");
 		}
-		else if ((object instanceof Date) || (object instanceof Timestamp) ||
-				 (object instanceof oracle.sql.TIMESTAMP)) {
+		else if (object instanceof Date || object instanceof Timestamp ||
+				 object instanceof TIMESTAMP) {
 
 			sb.append("to_timestamp('");
 			sb.append(_formatDateTime(object));
@@ -102,10 +104,9 @@ public class OracleFieldSerializer implements FieldSerializer {
 	}
 
 	private String _formatDateTime(Object date) {
-		if (date instanceof oracle.sql.TIMESTAMP) {
+		if (date instanceof TIMESTAMP) {
 			try {
-				oracle.sql.TIMESTAMP oracleTimestamp =
-					(oracle.sql.TIMESTAMP)date;
+				TIMESTAMP oracleTimestamp = (TIMESTAMP)date;
 
 				Timestamp timestamp = oracleTimestamp.timestampValue();
 
