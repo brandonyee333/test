@@ -351,9 +351,7 @@ if (!screenShareMode) {
 			},
 			['aui-base', 'aui-modal']
 		);
-	</aui:script>
 
-	<aui:script>
 		function <portlet:namespace />updateReproductionStepValues(reproductionSteps) {
 			document.<portlet:namespace />fm1.<portlet:namespace />reproductionSteps.value = reproductionSteps;
 
