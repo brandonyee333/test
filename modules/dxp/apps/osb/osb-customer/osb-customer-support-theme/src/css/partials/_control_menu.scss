@@ -25,6 +25,22 @@
 		margin-top: $banner-height;
 	}
 
+	.details.tab-view .tabs {
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + 15px;
+
+		@include sm() {
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + 15px;
+		}
+	}
+
+	.discussion .tabs.pinned {
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + 15px;
+
+		@include sm() {
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + 15px;
+		}
+	}
+
 	.lesa-announcements-notification {
 		top: $has-control-menu-top-mobile + $banner-height + 15px;
 
