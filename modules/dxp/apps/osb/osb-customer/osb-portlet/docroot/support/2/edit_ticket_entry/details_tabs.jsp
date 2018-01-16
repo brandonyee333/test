@@ -243,12 +243,8 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 </div>
 
 <div class="hide show-more-button" id="<portlet:namespace />showMoreButtonContainer">
-	<input id="<portlet:namespace />showMoreButton" onclick="<portlet:namespace />updateDescription();" type="button" value="<liferay-ui:message key="show-more" />" />
+	<aui:button id="showMoreButton" onClick='<%= renderResponse.getNamespace() + "updateDescription();" %>' value="show-more" />
 </div>
-
-<aui:script use="aui-base">
-	<portlet:namespace />reveal('<%= HtmlUtil.escape(generalTab) %>');
-</aui:script>
 
 <aui:script>
 	Liferay.provide(
@@ -320,4 +316,8 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 			ticketTabContent.classList.remove('truncated');
 		}
 	}
+</aui:script>
+
+<aui:script use="aui-base">
+	<portlet:namespace />reveal('<%= HtmlUtil.escape(generalTab) %>');
 </aui:script>
