@@ -26,32 +26,30 @@ PartnerEntry partnerEntry = (PartnerEntry)request.getAttribute("edit_partner_ent
 		<a href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back" /></a>
 	</div>
 
-	<div class="head">
-		<div class="header">
-			<div class="buttons">
-				<liferay-util:include page="/support/2/edit_partner_entry/buttons.jsp" servletContext="<%= application %>" />
-			</div>
+	<div class="header">
+		<div class="buttons">
+			<liferay-util:include page="/support/2/edit_partner_entry/buttons.jsp" servletContext="<%= application %>" />
+		</div>
 
-			<div class="page-heading" id="<portlet:namespace/>pageHeading">
-				<span class="partner-code"><%= partnerEntry.getCode() %></span>
+		<div class="page-heading" id="<portlet:namespace/>pageHeading">
+			<span class="partner-code"><%= partnerEntry.getCode() %></span>
 
-				<span>(<%= LanguageUtil.get(request, partnerEntry.getStatusLabel()) %>)</span>
-			</div>
+			<span>(<%= LanguageUtil.get(request, partnerEntry.getStatusLabel()) %>)</span>
+		</div>
 
-			<div class="sub-header">
+		<div class="sub-header">
 
-				<%
-				SupportRegion supportRegion = partnerEntry.getSupportRegion();
-				%>
+			<%
+			SupportRegion supportRegion = partnerEntry.getSupportRegion();
+			%>
 
-				<c:if test="<%= supportRegion != null %>">
-					<span class="first segment">
-						<liferay-ui:message key="support-region" />:
+			<c:if test="<%= supportRegion != null %>">
+				<span class="first segment">
+					<liferay-ui:message key="support-region" />:
 
-						<span class="txt-sb"><%= HtmlUtil.escape(supportRegion.getName()) %></span>
-					</span>
-				</c:if>
-			</div>
+					<span class="txt-sb"><%= HtmlUtil.escape(supportRegion.getName()) %></span>
+				</span>
+			</c:if>
 		</div>
 	</div>
 </div>

@@ -58,222 +58,220 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		String ticketEntryURL = SupportUtil.getFriendlyTicketEntryURL(request, ticketEntry.getTicketEntryId());
 		%>
 
-		<div class="head">
-			<div class="header">
-				<span class="pull-left ticket-severity <%= ticketEntry.getSeverityLabel() %>"></span>
+		<div class="header">
+			<span class="pull-left ticket-severity <%= ticketEntry.getSeverityLabel() %>"></span>
 
-				<c:if test="<%= clockedIn %>">
-					<div class="buttons">
-						<liferay-util:include page="/support/2/edit_ticket_entry/buttons.jsp" servletContext="<%= application %>" />
-					</div>
-				</c:if>
-
-				<div class="page-heading" id="<portlet:namespace/>pageHeading">
-					<span class="display-id" id="<portlet:namespace />ticketDisplayId"><a href="<%= ticketEntryURL %>"><%= ticketEntry.getDisplayId() %></a></span>
-
-					<span id="<portlet:namespace />subject"><%= HtmlUtil.escape(subject) %></span>
+			<c:if test="<%= clockedIn %>">
+				<div class="buttons">
+					<liferay-util:include page="/support/2/edit_ticket_entry/buttons.jsp" servletContext="<%= application %>" />
 				</div>
+			</c:if>
 
-				<div class="sub-header">
-					<span class="first segment">
-						<img class="ticket-img" id="<portlet:namespace />componentDisplay" src="<%= PortalUtil.getPathContext(request) %>/images/<%= ticketEntry.getComponentIcon() %>" />
+			<div class="page-heading" id="<portlet:namespace/>pageHeading">
+				<span class="display-id" id="<portlet:namespace />ticketDisplayId"><a href="<%= ticketEntryURL %>"><%= ticketEntry.getDisplayId() %></a></span>
 
-						<c:if test="<%= liferayIncOrg %>">
-							<c:if test="<%= subcomponent > 0 %>">
-								(<%= LanguageUtil.get(request, ticketEntry.getSubcomponentLabel()) %>)
-							</c:if>
+				<span id="<portlet:namespace />subject"><%= HtmlUtil.escape(subject) %></span>
+			</div>
 
-							<c:if test="<%= Validator.isNotNull(subcomponentCustom) %>">
-								- <%= HtmlUtil.escape(subcomponentCustom) %>
-							</c:if>
+			<div class="sub-header">
+				<span class="first segment">
+					<img class="ticket-img" id="<portlet:namespace />componentDisplay" src="<%= PortalUtil.getPathContext(request) %>/images/<%= ticketEntry.getComponentIcon() %>" />
+
+					<c:if test="<%= liferayIncOrg %>">
+						<c:if test="<%= subcomponent > 0 %>">
+							(<%= LanguageUtil.get(request, ticketEntry.getSubcomponentLabel()) %>)
 						</c:if>
-					</span>
-					<span class="spacer"></span>
 
-					<span class="segment">
+						<c:if test="<%= Validator.isNotNull(subcomponentCustom) %>">
+							- <%= HtmlUtil.escape(subcomponentCustom) %>
+						</c:if>
+					</c:if>
+				</span>
+				<span class="spacer"></span>
 
-						<%
-						String severityOnClick = StringPool.BLANK;
+				<span class="segment">
 
-						if ((ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && hasUpdateAdvanced) {
-							severityOnClick = renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "severityDisplay', '" + renderResponse.getNamespace() + "severityDropDown');";
-						}
-						%>
+					<%
+					String severityOnClick = StringPool.BLANK;
 
-						<div id="<portlet:namespace />severityDisplay" onClick="<%= severityOnClick %>">
-							<liferay-ui:message key="severity" />:
+					if ((ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && hasUpdateAdvanced) {
+						severityOnClick = renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "severityDisplay', '" + renderResponse.getNamespace() + "severityDropDown');";
+					}
+					%>
 
-							<span class="txt-sb"><%= LanguageUtil.get(request, ticketEntry.getSeverityLabel()) %></span>
-						</div>
+					<div id="<portlet:namespace />severityDisplay" onClick="<%= severityOnClick %>">
+						<liferay-ui:message key="severity" />:
 
-						<div id="<portlet:namespace />severityDropDown" style="display: none;">
-							<select autocomplete="off" id="<portlet:namespace />severity" name="<portlet:namespace />severity" onChange="<portlet:namespace />updateSeverity();">
+						<span class="txt-sb"><%= LanguageUtil.get(request, ticketEntry.getSeverityLabel()) %></span>
+					</div>
 
-								<%
-								for (int i = 1; i <= 3; i++) {
-								%>
-
-									<option <%= (i == severity) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(i)) %></option>
-
-								<%
-								}
-								%>
-
-							</select>
-
-							<input class="aui-button-input" id="<portlet:namespace />severityCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>severityDropDown', '<portlet:namespace />severityDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
-						</div>
-					</span>
-					<span class="spacer"></span>
-
-					<c:if test="<%= !screenShareMode && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) %>">
-						<span class="segment">
+					<div id="<portlet:namespace />severityDropDown" style="display: none;">
+						<select autocomplete="off" id="<portlet:namespace />severity" name="<portlet:namespace />severity" onChange="<portlet:namespace />updateSeverity();">
 
 							<%
-							String pendingOnClick = StringPool.BLANK;
+							for (int i = 1; i <= 3; i++) {
+							%>
 
-							if ((ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && hasUpdateAdvanced) {
-								pendingOnClick = renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "pendingDisplay', '" + renderResponse.getNamespace() + "pendingCheckboxes');";
+								<option <%= (i == severity) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(i)) %></option>
+
+							<%
 							}
 							%>
 
-							<div id="<portlet:namespace />pendingDisplay" onClick="<%= pendingOnClick %>">
-								<liferay-ui:message key="pending" />:
+						</select>
 
-								<%
-								int[] pendingTypes = TicketFlagLocalServiceUtil.getTicketFlagTypes(ticketEntry.getTicketEntryId(), TicketFlagConstants.TYPES_PENDING, TicketFlagConstants.FLAG_TRUE);
-								%>
+						<input class="aui-button-input" id="<portlet:namespace />severityCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>severityDropDown', '<portlet:namespace />severityDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
+					</div>
+				</span>
+				<span class="spacer"></span>
 
-								<span class="txt-sb">
-									<c:choose>
-										<c:when test="<%= ticketWorker %>">
-
-											<%
-											for (int i = 0; i < pendingTypes.length; i++) {
-												int pendingType = pendingTypes[i];
-											%>
-
-												<liferay-ui:message key="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" /><%= ((i + 1) < pendingTypes.length) ? StringPool.COMMA : "" %>
-
-											<%
-											}
-											%>
-
-										</c:when>
-										<c:otherwise>
-
-											<%
-											String pendingTypeLabel = StringPool.BLANK;
-
-											if (ArrayUtil.contains(pendingTypes, TicketFlagConstants.TYPE_PENDING_CUSTOMER)) {
-												pendingTypeLabel = TicketFlagConstants.getTypeLabel(TicketFlagConstants.TYPE_PENDING_CUSTOMER);
-											}
-											else if (pendingTypes.length > 0) {
-												pendingTypeLabel = "support";
-											}
-											%>
-
-											<liferay-ui:message key="<%= pendingTypeLabel %>" />
-										</c:otherwise>
-									</c:choose>
-								</span>
-							</div>
-
-							<c:if test="<%= hasUpdateAdvanced %>">
-								<div id="<portlet:namespace/>pendingCheckboxes" style="display: none;">
-
-									<%
-									for (int pendingType : TicketFlagConstants.TYPES_PENDING) {
-									%>
-
-										<input <%= ArrayUtil.contains(pendingTypes, pendingType) ? "checked=\"checked\"" : "" %> name="<portlet:namespace />pendingTypes" type="checkbox" value="<%= pendingType %>" />
-
-										<liferay-ui:message key="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" />
-
-									<%
-									}
-									%>
-
-									<input class="aui-button-input" id="<portlet:namespace />pendingSubmit" onclick="<portlet:namespace />updatePendingTypes();" type="button" value="<liferay-ui:message key="save" />" />
-									<input class="aui-button-input" id="<portlet:namespace />pendingCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>pendingCheckboxes', '<portlet:namespace />pendingDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
-								</div>
-							</c:if>
-						</span>
-						<span class="spacer"></span>
-					</c:if>
-
-					<span class="segment">
-						<liferay-ui:message key="escalation" />:
-
-						<span class="txt-sb"><%= ticketEntry.getEscalationLevelLabel() %></span>
-					</span>
-					<span class="spacer"></span>
-
+				<c:if test="<%= !screenShareMode && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) %>">
 					<span class="segment">
 
 						<%
-						String statusOnClick = StringPool.BLANK;
+						String pendingOnClick = StringPool.BLANK;
 
 						if ((ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && hasUpdateAdvanced) {
-							statusOnClick = renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "statusDisplay', '" + renderResponse.getNamespace() + "statusDropDown');";
+							pendingOnClick = renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "pendingDisplay', '" + renderResponse.getNamespace() + "pendingCheckboxes');";
 						}
 						%>
 
-						<div id="<portlet:namespace />statusDisplay" onClick="<%= statusOnClick %>">
-							<liferay-ui:message key="status" />:
-
-							<span class="txt-sb" id="<portlet:namespace />statusLabel"><%= LanguageUtil.get(request, ticketEntry.getStatusLabel()) %></span>
-
-							<span class="<%= (resolution == 0) ? "hide" : "txt-sb" %>" id="<portlet:namespace />resolutionLabel">(<%= LanguageUtil.get(request, ticketEntry.getResolutionLabel()) %>)</span>
+						<div id="<portlet:namespace />pendingDisplay" onClick="<%= pendingOnClick %>">
+							<liferay-ui:message key="pending" />:
 
 							<%
-							String statusMessage = HtmlUtil.escape(SupportUtil.getPreferenceValue(locale, "statusMessage_" + status));
+							int[] pendingTypes = TicketFlagLocalServiceUtil.getTicketFlagTypes(ticketEntry.getTicketEntryId(), TicketFlagConstants.TYPES_PENDING, TicketFlagConstants.FLAG_TRUE);
 							%>
 
-							<c:if test="<%= Validator.isNotNull(statusMessage) %>">
-								<liferay-ui:icon-help message="<%= statusMessage %>" />
-							</c:if>
-						</div>
+							<span class="txt-sb">
+								<c:choose>
+									<c:when test="<%= ticketWorker %>">
 
-						<div id="<portlet:namespace/>statusDropDown" style="display: none;">
-							<select autocomplete="off" id="<portlet:namespace />status" name="<portlet:namespace />status" onChange="<portlet:namespace />updateStatus(this.value);">
+										<%
+										for (int i = 0; i < pendingTypes.length; i++) {
+											int pendingType = pendingTypes[i];
+										%>
 
-								<%
-								for (int statusId : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
-									if ((statusId == TicketEntryConstants.STATUS_INACTIVE) || (statusId == TicketEntryConstants.STATUS_PENDING_WORKER)|| (statusId == TicketEntryConstants.STATUS_REOPENED) || ((statusId == TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) && !OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.UPDATE_SOLUTION)) || ((statusId == TicketEntryConstants.STATUS_SOLUTION_DELIVERED) && (status != TicketEntryConstants.STATUS_SOLUTION_PROPOSED)) || (statusId == TicketEntryConstants.STATUS_SOLUTION_PROPOSED)) {
-										if (statusId != status) {
-											continue;
+											<liferay-ui:message key="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" /><%= ((i + 1) < pendingTypes.length) ? StringPool.COMMA : "" %>
+
+										<%
 										}
-									}
-								%>
+										%>
 
-									<option <%= (ticketEntry.getStatus() == statusId) ? "selected" : "" %> value="<%= statusId %>"><%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(statusId)) %></option>
+									</c:when>
+									<c:otherwise>
 
-								<%
-								}
-								%>
+										<%
+										String pendingTypeLabel = StringPool.BLANK;
 
-							</select>
+										if (ArrayUtil.contains(pendingTypes, TicketFlagConstants.TYPE_PENDING_CUSTOMER)) {
+											pendingTypeLabel = TicketFlagConstants.getTypeLabel(TicketFlagConstants.TYPE_PENDING_CUSTOMER);
+										}
+										else if (pendingTypes.length > 0) {
+											pendingTypeLabel = "support";
+										}
+										%>
 
-							<select id="<portlet:namespace />resolution" name="<portlet:namespace />resolution" onChange="<portlet:namespace />updateResolution(this.value);" style="display: none;">
-								<option value=""></option>
-
-								<%
-								for (ListType resolutionType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
-								%>
-
-									<option <%= (resolutionType.getListTypeId() == resolution) ? "selected" : "" %> value="<%= resolutionType.getListTypeId() %>"><%= LanguageUtil.get(request, resolutionType.getName()) %></option>
-
-								<%
-								}
-								%>
-
-							</select>
-
-							<input class="aui-button-input" id="<portlet:namespace />statusCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>statusDropDown', '<portlet:namespace />statusDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
+										<liferay-ui:message key="<%= pendingTypeLabel %>" />
+									</c:otherwise>
+								</c:choose>
+							</span>
 						</div>
+
+						<c:if test="<%= hasUpdateAdvanced %>">
+							<div id="<portlet:namespace/>pendingCheckboxes" style="display: none;">
+
+								<%
+								for (int pendingType : TicketFlagConstants.TYPES_PENDING) {
+								%>
+
+									<input <%= ArrayUtil.contains(pendingTypes, pendingType) ? "checked=\"checked\"" : "" %> name="<portlet:namespace />pendingTypes" type="checkbox" value="<%= pendingType %>" />
+
+									<liferay-ui:message key="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" />
+
+								<%
+								}
+								%>
+
+								<input class="aui-button-input" id="<portlet:namespace />pendingSubmit" onclick="<portlet:namespace />updatePendingTypes();" type="button" value="<liferay-ui:message key="save" />" />
+								<input class="aui-button-input" id="<portlet:namespace />pendingCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>pendingCheckboxes', '<portlet:namespace />pendingDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
+							</div>
+						</c:if>
 					</span>
-				</div>
+					<span class="spacer"></span>
+				</c:if>
+
+				<span class="segment">
+					<liferay-ui:message key="escalation" />:
+
+					<span class="txt-sb"><%= ticketEntry.getEscalationLevelLabel() %></span>
+				</span>
+				<span class="spacer"></span>
+
+				<span class="segment">
+
+					<%
+					String statusOnClick = StringPool.BLANK;
+
+					if ((ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && hasUpdateAdvanced) {
+						statusOnClick = renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "statusDisplay', '" + renderResponse.getNamespace() + "statusDropDown');";
+					}
+					%>
+
+					<div id="<portlet:namespace />statusDisplay" onClick="<%= statusOnClick %>">
+						<liferay-ui:message key="status" />:
+
+						<span class="txt-sb" id="<portlet:namespace />statusLabel"><%= LanguageUtil.get(request, ticketEntry.getStatusLabel()) %></span>
+
+						<span class="<%= (resolution == 0) ? "hide" : "txt-sb" %>" id="<portlet:namespace />resolutionLabel">(<%= LanguageUtil.get(request, ticketEntry.getResolutionLabel()) %>)</span>
+
+						<%
+						String statusMessage = HtmlUtil.escape(SupportUtil.getPreferenceValue(locale, "statusMessage_" + status));
+						%>
+
+						<c:if test="<%= Validator.isNotNull(statusMessage) %>">
+							<liferay-ui:icon-help message="<%= statusMessage %>" />
+						</c:if>
+					</div>
+
+					<div id="<portlet:namespace/>statusDropDown" style="display: none;">
+						<select autocomplete="off" id="<portlet:namespace />status" name="<portlet:namespace />status" onChange="<portlet:namespace />updateStatus(this.value);">
+
+							<%
+							for (int statusId : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
+								if ((statusId == TicketEntryConstants.STATUS_INACTIVE) || (statusId == TicketEntryConstants.STATUS_PENDING_WORKER)|| (statusId == TicketEntryConstants.STATUS_REOPENED) || ((statusId == TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) && !OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.UPDATE_SOLUTION)) || ((statusId == TicketEntryConstants.STATUS_SOLUTION_DELIVERED) && (status != TicketEntryConstants.STATUS_SOLUTION_PROPOSED)) || (statusId == TicketEntryConstants.STATUS_SOLUTION_PROPOSED)) {
+									if (statusId != status) {
+										continue;
+									}
+								}
+							%>
+
+								<option <%= (ticketEntry.getStatus() == statusId) ? "selected" : "" %> value="<%= statusId %>"><%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(statusId)) %></option>
+
+							<%
+							}
+							%>
+
+						</select>
+
+						<select id="<portlet:namespace />resolution" name="<portlet:namespace />resolution" onChange="<portlet:namespace />updateResolution(this.value);" style="display: none;">
+							<option value=""></option>
+
+							<%
+							for (ListType resolutionType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
+							%>
+
+								<option <%= (resolutionType.getListTypeId() == resolution) ? "selected" : "" %> value="<%= resolutionType.getListTypeId() %>"><%= LanguageUtil.get(request, resolutionType.getName()) %></option>
+
+							<%
+							}
+							%>
+
+						</select>
+
+						<input class="aui-button-input" id="<portlet:namespace />statusCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>statusDropDown', '<portlet:namespace />statusDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
+					</div>
+				</span>
 			</div>
 		</div>
 	</div>
