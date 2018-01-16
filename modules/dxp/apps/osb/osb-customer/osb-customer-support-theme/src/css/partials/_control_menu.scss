@@ -26,26 +26,58 @@
 	}
 
 	.details.tab-view .tabs {
-		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + 15px;
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $standard-spacing;
 
 		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + 15px;
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $standard-spacing;
+		}
+	}
+
+	.account-fade, .partner-fade, .ticket-fade  {
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+
+		@include sm() {
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+		}
+
+		&.pinned {
+			top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + 2 * $ticket-view-tab-height + $standard-spacing;
+
+			@include sm() {
+				top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + 2 * $ticket-view-tab-height + $standard-spacing;
+			}
+		}
+	}
+
+	.account-filter, .partner-filter, .ticket-filter {
+		height: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+
+		@include sm() {
+			height: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+		}
+
+		&.pinned {
+			height: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + 2 * $ticket-view-tab-height + $standard-spacing;
+
+			@include sm() {
+				height: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + 2 * $ticket-view-tab-height + $standard-spacing;
+			}
 		}
 	}
 
 	.discussion .tabs.pinned {
-		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + 15px;
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
 
 		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + 15px;
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
 		}
 	}
 
 	.lesa-announcements-notification {
-		top: $has-control-menu-top-mobile + $banner-height + 15px;
+		top: $has-control-menu-top-mobile + $banner-height + $standard-spacing;
 
 		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + 15px;
+			top: $has-control-menu-top-desktop + $banner-height + $standard-spacing;
 		}
 	}
 
