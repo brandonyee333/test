@@ -31,6 +31,7 @@ TicketEntry ticketEntry = TicketEntryServiceUtil.getTicketEntry(ticketEntryId);
 		<div>
 			<aui:input label="" name="reproductionSteps" style="height: 250px; width: 750px;" type="textarea" value="<%= HtmlUtil.escape(ticketEntry.getReproductionSteps()) %>" wrap="soft" />
 		</div>
+
 		<div>
 			<aui:button onClick='<%= renderResponse.getNamespace() + "updateReproductionSteps();" %>' value="save" />
 
