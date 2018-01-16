@@ -28,16 +28,16 @@ import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportWorker;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
-import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
+import com.liferay.osb.service.AccountCustomerLocalService;
+import com.liferay.osb.service.AccountEntryLocalService;
+import com.liferay.osb.service.AccountEnvironmentLocalService;
+import com.liferay.osb.service.AccountWorkerLocalService;
+import com.liferay.osb.service.OfferingEntryLocalService;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.service.SupportRegionLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
+import com.liferay.osb.service.PartnerEntryLocalService;
+import com.liferay.osb.service.PartnerWorkerLocalService;
+import com.liferay.osb.service.SupportRegionLocalService;
+import com.liferay.osb.service.SupportWorkerLocalService;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.SimpleAction;
@@ -103,13 +103,12 @@ public class StartupAction extends SimpleAction {
 			companyId, emailAddress);
 
 		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntryByCode(
-				accountEntryCode);
+			_accountEntryLocalService.getAccountEntryByCode(accountEntryCode);
 
-		if (!AccountCustomerLocalServiceUtil.hasAccountCustomer(
+		if (!_accountCustomerLocalService.hasAccountCustomer(
 				userId, accountEntry.getAccountEntryId())) {
 
-			AccountCustomerLocalServiceUtil.addAccountCustomers(
+			_accountCustomerLocalService.addAccountCustomers(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, new long[] {userId},
 				accountEntry.getAccountEntryId(), new int[] {role},
 				new int[] {notifications});
@@ -170,7 +169,7 @@ public class StartupAction extends SimpleAction {
 			boolean partnerManagedSupport)
 		throws Exception {
 
-		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(
+		List<AccountEntry> accountEntries = _accountEntryLocalService.search(
 			name, code);
 
 		if (accountEntries.isEmpty()) {
@@ -178,7 +177,7 @@ public class StartupAction extends SimpleAction {
 
 			if (Validator.isNotNull(partnerEntryCode)) {
 				PartnerEntry partnerEntry =
-					PartnerEntryLocalServiceUtil.getPartnerEntryByCode(
+					_partnerEntryLocalService.getPartnerEntryByCode(
 						partnerEntryCode);
 
 				partnerEntryId = partnerEntry.getPartnerEntryId();
@@ -188,7 +187,7 @@ public class StartupAction extends SimpleAction {
 				OSBCustomerQAConfigurationKeys.OSB_QA_SUPPORT_REGIONS,
 				new Filter(code, "support-region-ids"));
 
-			AccountEntryLocalServiceUtil.addAccountEntry(
+			_accountEntryLocalService.addAccountEntry(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, 0, StringPool.BLANK,
 				name, code, AccountEntryConstants.TYPE_INDIVIDUAL,
 				AccountEntryConstants.INDUSTRY_OTHER, partnerEntryId,
@@ -211,7 +210,7 @@ public class StartupAction extends SimpleAction {
 		throws Exception {
 
 		AccountEnvironment accountEnvironment =
-			AccountEnvironmentLocalServiceUtil.fetchAccountEnvironment(
+			_accountEnvironmentLocalService.fetchAccountEnvironment(
 				accountEntryId, productEntryId, name);
 
 		if (accountEnvironment == null) {
@@ -240,7 +239,7 @@ public class StartupAction extends SimpleAction {
 			types.add(AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
 			types.add(AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
 
-			AccountEnvironmentLocalServiceUtil.addAccountEnvironment(
+			_accountEnvironmentLocalService.addAccountEnvironment(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, accountEntryId,
 				productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
 				envLFR, files, types);
@@ -285,7 +284,7 @@ public class StartupAction extends SimpleAction {
 				new Filter(accountEnvironmentNameFilter, "productEntryId"));
 
 			AccountEntry accountEntry =
-				AccountEntryLocalServiceUtil.getAccountEntryByCode(
+				_accountEntryLocalService.getAccountEntryByCode(
 					accountEntryCode);
 
 			checkAccountEnvironment(
@@ -306,13 +305,12 @@ public class StartupAction extends SimpleAction {
 			companyId, emailAddress);
 
 		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntryByCode(
-				accountEntryCode);
+			_accountEntryLocalService.getAccountEntryByCode(accountEntryCode);
 
-		if (!AccountWorkerLocalServiceUtil.hasAccountWorker(
+		if (!_accountWorkerLocalService.hasAccountWorker(
 				userId, accountEntry.getAccountEntryId())) {
 
-			AccountWorkerLocalServiceUtil.addAccountWorkers(
+			_accountWorkerLocalService.addAccountWorkers(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, new long[] {userId},
 				accountEntry.getAccountEntryId(), new int[] {role},
 				new int[] {notifications});
@@ -384,11 +382,10 @@ public class StartupAction extends SimpleAction {
 		throws Exception {
 
 		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntryByCode(
-				accountEntryCode);
+			_accountEntryLocalService.getAccountEntryByCode(accountEntryCode);
 
 		List<OfferingEntry> accountOfferingEntries =
-			OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
+			_offeringEntryLocalService.getAccountEntryOfferingEntries(
 				accountEntry.getAccountEntryId());
 
 		OfferingEntry offeringEntry = null;
@@ -410,8 +407,7 @@ public class StartupAction extends SimpleAction {
 		if (offeringEntry == null) {
 			List<OfferingEntry> offeringEntries = new ArrayList<>();
 
-			offeringEntry = OfferingEntryLocalServiceUtil.createOfferingEntry(
-				0);
+			offeringEntry = _offeringEntryLocalService.createOfferingEntry(0);
 
 			offeringEntry.setLicenseLifetime(
 				OfferingDefinitionConstants.LIFETIME_INDEFINITE_VALUE);
@@ -467,10 +463,10 @@ public class StartupAction extends SimpleAction {
 		throws Exception {
 
 		try {
-			PartnerEntryLocalServiceUtil.getPartnerEntryByCode(code);
+			_partnerEntryLocalService.getPartnerEntryByCode(code);
 		}
 		catch (Exception e) {
-			PartnerEntryLocalServiceUtil.addPartnerEntry(
+			_partnerEntryLocalService.addPartnerEntry(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, 0, StringPool.BLANK,
 				code, StringPool.BLANK, supportRegionIds);
 		}
@@ -489,13 +485,12 @@ public class StartupAction extends SimpleAction {
 			companyId, emailAddress);
 
 		PartnerEntry partnerEntry =
-			PartnerEntryLocalServiceUtil.getPartnerEntryByCode(
-				partnerEntryCode);
+			_partnerEntryLocalService.getPartnerEntryByCode(partnerEntryCode);
 
-		if (!PartnerWorkerLocalServiceUtil.hasPartnerWorker(
+		if (!_partnerWorkerLocalService.hasPartnerWorker(
 				userId, partnerEntry.getPartnerEntryId())) {
 
-			PartnerWorkerLocalServiceUtil.addPartnerWorkers(
+			_partnerWorkerLocalService.addPartnerWorkers(
 				new long[] {userId}, partnerEntry.getPartnerEntryId(),
 				new int[] {role}, new int[] {notifications});
 		}
@@ -532,8 +527,7 @@ public class StartupAction extends SimpleAction {
 		throws Exception {
 
 		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntryByCode(
-				accountEntryCode);
+			_accountEntryLocalService.getAccountEntryByCode(accountEntryCode);
 
 		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
 
@@ -546,7 +540,7 @@ public class StartupAction extends SimpleAction {
 		}
 
 		if (!hasSupportRegion) {
-			SupportRegionLocalServiceUtil.addAccountEntrySupportRegions(
+			_supportRegionLocalService.addAccountEntrySupportRegions(
 				accountEntry.getAccountEntryId(), new long[] {supportRegionId});
 		}
 
@@ -579,19 +573,19 @@ public class StartupAction extends SimpleAction {
 		long userId = _userLocalService.getUserIdByEmailAddress(
 			companyId, emailAddress);
 
-		if (!SupportWorkerLocalServiceUtil.hasSupportWorker(
+		if (!_supportWorkerLocalService.hasSupportWorker(
 				userId, supportTeamId)) {
 
-			SupportWorkerLocalServiceUtil.addSupportWorkers(
+			_supportWorkerLocalService.addSupportWorkers(
 				new long[] {userId}, supportTeamId, maxWork, escalationLevels,
 				roles, notifications);
 
 			SupportWorker supportWorker =
-				SupportWorkerLocalServiceUtil.getSupportWorker(
+				_supportWorkerLocalService.getSupportWorker(
 					userId, supportTeamId);
 
 			if (!supportWorker.isClockedIn()) {
-				SupportWorkerLocalServiceUtil.clockInOut(
+				_supportWorkerLocalService.clockInOut(
 					supportWorker.getSupportWorkerId());
 			}
 		}
@@ -800,7 +794,35 @@ public class StartupAction extends SimpleAction {
 
 	private static final Log _log = LogFactoryUtil.getLog(StartupAction.class);
 
+	@Reference
+	private AccountCustomerLocalService _accountCustomerLocalService;
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
+	private AccountEnvironmentLocalService _accountEnvironmentLocalService;
+
+	@Reference
+	private AccountWorkerLocalService _accountWorkerLocalService;
+
+	@Reference
+	private OfferingEntryLocalService _offeringEntryLocalService;
+
+	@Reference
+	private PartnerEntryLocalService _partnerEntryLocalService;
+
+	@Reference
+	private PartnerWorkerLocalService _partnerWorkerLocalService;
+
 	private RoleLocalService _roleLocalService;
+
+	@Reference
+	private SupportRegionLocalService _supportRegionLocalService;
+
+	@Reference
+	private SupportWorkerLocalService _supportWorkerLocalService;
+
 	private UserGroupRoleLocalService _userGroupRoleLocalService;
 	private UserLocalService _userLocalService;
 
