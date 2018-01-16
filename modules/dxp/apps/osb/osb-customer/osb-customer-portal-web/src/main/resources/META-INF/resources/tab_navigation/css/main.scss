@@ -1,5 +1,5 @@
 .osb-portal-tab-navigation-portlet {
-	.tab-nav {
+	nav.tab-nav {
 		margin-bottom: 18px;
 		text-align: center;
 
@@ -20,22 +20,23 @@
 			text-decoration: none;
 		}
 
-		li {
-			float: left;
-		}
-
-		li:hover, li.selected {
-			a {
-				background: #EEE;
-				color: #F49B45;
-			}
-		}
-
 		ul {
 			display: inline-block;
 			margin-bottom: 0;
 			padding-left: 0;
 			vertical-align: bottom;
+
+			li {
+				float: left;
+				list-style: none;
+			}
+
+			li:hover, li.selected {
+				a {
+					background: #EEE;
+					color: #F49B45;
+				}
+			}
 		}
 	}
 }

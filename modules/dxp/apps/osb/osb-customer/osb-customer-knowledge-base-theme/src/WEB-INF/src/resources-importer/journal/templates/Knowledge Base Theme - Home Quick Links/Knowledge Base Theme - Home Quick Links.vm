@@ -6,8 +6,11 @@
 	}
 
 	#CPHomeNav ul {
-		list-style: none;
 		padding: 0;
+	}
+
+	#CPHomeNav ul li {
+		list-style: none;
 	}
 
 	.cp-columns a {
@@ -16,7 +19,7 @@
 	}
 </style>
 
-<div class="clearfix responsive-centered" id="CPHomeNav">
+<div class="clearfix" id="CPHomeNav">
 	#foreach ($sectionHeading in $sectionHeading.siblings)
 		<div class="col-md-4 content-column cp-columns" style="width: 100%;">
 			#set ($cssClass = "")

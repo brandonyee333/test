@@ -1,12 +1,23 @@
+#set ($layout_service = $serviceLocator.findService("com.liferay.portal.kernel.service.LayoutLocalService"))
+
+#set ($plid = $getterUtil.getLong($request.get("theme-display").get("plid")))
+
+#set ($layout = $layout_service.getLayout($plid))
+
+#set ($parent_id = $getterUtil.getLong($layout.getParentPlid()))
+
+#set ($parent_layout = $layout_service.getLayout($parent_id))
+
+#set ($page_title = $parent_layout.getTitle($locale))
+
+#if ($page_title == "")
+	#set ($page_title = $parent_layout.getName($locale))
+#end
+
 <style>
 	.cp-navigation {
 		float: right;
 		margin: 3px 0;
-	}
-
-	.cp-navigation .nav-item {
-		float: left;
-		list-style: none;
 	}
 
 	.cp-navigation .nav-item a {
@@ -29,19 +40,12 @@
 	.cp-navigation-wrapper .nav-item.parent-item {
 		font-size: 1.5em;
 	}
+
+	ul.cp-navigation li.nav-item {
+		float: left;
+		list-style: none;
+	}
 </style>
-
-#set ($layout_id = $request.get("theme-display").get("plid"))
-#set ($layout_service = $serviceLocator.findService("com.liferay.portal.kernel.service.LayoutLocalService"))
-#set ($layout = $layout_service.getLayout($getterUtil.getLong($layout_id)))
-#set ($parent_id = $getterUtil.getLong($layout.getParentPlid()))
-#set ($parent_layout = $layout_service.getLayout($parent_id))
-
-#set ($page_title = $parent_layout.getTitle($locale))
-
-#if ($page_title == "")
-	#set ($page_title = $parent_layout.getName($locale))
-#end
 
 <div class="cp-navigation-wrapper">
 	<span class="nav-item parent-item"><a href="/group/customer$parent_layout.getFriendlyURL()">$page_title</a></span>
@@ -56,7 +60,7 @@
 
 			#set ($child_layout_css_class = "nav-item")
 
-			#if ($child_layout.getPlid() == $layout_id)
+			#if ($child_layout.getPlid() == $plid)
 				#set ($child_layout_css_class = "$child_layout_css_class selected")
 			#end
 

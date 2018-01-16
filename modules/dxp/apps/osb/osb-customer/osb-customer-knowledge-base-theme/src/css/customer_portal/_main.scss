@@ -1,8 +1,10 @@
+#wrapper .centered {
+	text-align: center;
+}
+
 .aui {
-	article, .lego-article, .security-vulnerabilities {
-		ul li {
-			list-style: initial;
-		}
+	.sub-grid ul li {
+		list-style: initial;
 	}
 
 	.section-heading {
@@ -33,6 +35,11 @@
 			border: none;
 		}
 	}
+}
+
+.full-screen, .full-screen-layout {
+	margin: 0;
+	max-width: none !important;
 }
 
 .left-column {

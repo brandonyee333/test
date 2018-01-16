@@ -28,17 +28,6 @@
 		text-align: center;
 	}
 
-	@media (max-width: 720px) {
-		.responsive .logo-block-wrapper .content-column {
-			display: inline-block !important;
-			width: 24% !important;
-		}
-
-		.responsive .logo-block-wrapper .content-column .content-column-content {
-			padding: 0 !important;
-		}
-	}
-
 	.portal-box-wrapper {
 		padding: 35px 0 35px;
 	}
@@ -85,22 +74,6 @@
 
 	.portal-box-wrapper .content-column .left-column, .portlet-column .portal-box-wrapper .left-column, .portal-box-wrapper .content-column .middle-column, .portlet-column .portal-box-wrapper .middle-column, .portal-box-wrapper .content-column .right-column, .portlet-column .portal-box-wrapper .right-column {
 		padding: 0;
-	}
-
-	@media (max-width: 970px) {
-		.portal-box-wrapper .content-column-content {
-			min-height: 195px;
-		}
-	}
-
-	@media (max-width: 720px) {
-		.portal-box-wrapper .content-column {
-			border: 1px solid #CCC;
-			font-size: 1.4em;
-			margin-top: 15px;
-			text-align: center;
-			width: 24.8%;
-		}
 	}
 
 	$customCss.data

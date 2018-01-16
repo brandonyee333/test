@@ -54,28 +54,10 @@
 		padding-bottom: 20px;
 	}
 
-	@media (max-width: 400px) {
-		.title-container a.btn {
-			display: block;
-			margin: 15px auto 0;
-		}
-	}
-
-	@media (max-width: 720px) {
-		.title-container {
-			text-align: center;
-		}
-
-		.title-container .logo-image {
-			float: none;
-			margin-right: 0;
-		}
-	}
-
 	$cssField.data
 </style>
 
-<div id="titleSection">
+<div class="clearfix" id="titleSection">
 	<div class="title-container">
 		<div class="logo-image">
 			<img src="$logo.data" />
