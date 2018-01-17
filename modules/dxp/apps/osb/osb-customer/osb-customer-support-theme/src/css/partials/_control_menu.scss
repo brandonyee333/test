@@ -1,5 +1,13 @@
 .has-control-menu {
 	&.open {
+		.account-filter, .account-header, .discussion .tabs.pinned, .partner-filter, .partner-header, .tab-view.details .tabs, .ticket-filter, .ticket-header {
+			left: $sidenav-width + $lesa-nav-width + $standard-spacing;
+		}
+
+		.discussion {
+			margin-left: 0;
+		}
+
 		.lesa-nav, .lesa-mobile-nav-wrapper {
 			left: $sidenav-width;
 		}
@@ -23,14 +31,6 @@
 
 	#wrapper.wrapper {
 		margin-top: $banner-height;
-	}
-
-	.details.tab-view .tabs {
-		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $standard-spacing;
-
-		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $standard-spacing;
-		}
 	}
 
 	.account-fade, .partner-fade, .ticket-fade  {
@@ -65,7 +65,15 @@
 		}
 	}
 
-	.discussion .tabs.pinned {
+	.details.tab-view .tabs {
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $standard-spacing;
+
+		@include sm() {
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $standard-spacing;
+		}
+	}
+
+	.discussion .tabs.pinned, .ticket-sidebar {
 		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
 
 		@include sm() {
@@ -85,7 +93,7 @@
 		top: $has-control-menu-top-mobile + $banner-height;
 	}
 
-	.lesa-nav, .lesa-mobile-nav-wrapper {
+	.account-filter, .account-header, .lesa-nav, .lesa-mobile-nav-wrapper, .partner-filter, .partner-header, .tab-view.details .tabs, .ticket-filter, .ticket-header {
 		transition: $sidenav-transition;
 	}
 }

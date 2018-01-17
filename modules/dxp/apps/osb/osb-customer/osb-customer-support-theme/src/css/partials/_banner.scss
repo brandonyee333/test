@@ -438,7 +438,7 @@
 	padding: 20px;
 	position: fixed;
 	right: 3%;
-	top: 230px;
+	top: $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
 	width: 15%;
 	z-index: 2;
 

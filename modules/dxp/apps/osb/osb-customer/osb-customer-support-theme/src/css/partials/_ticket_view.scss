@@ -169,7 +169,7 @@
 			margin: 0;
 			position: fixed;
 			right: calc(23vw - -20px);
-			top: $banner-height + $ticket-view-header-height + $standard-spacing;
+			top: $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
 			z-index: 2;
 		}
 
