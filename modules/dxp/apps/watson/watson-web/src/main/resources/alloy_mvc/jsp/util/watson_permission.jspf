@@ -17,15 +17,15 @@
 <%!
 public static class WatsonPermission extends AlloyPermission {
 
-	public static boolean check(User user, long watsonIncidentId) throws Exception {
+	public static boolean check(User user, long watsonIncidentId, String actionId) throws Exception {
 		if (Validator.isNotNull(watsonIncidentId)) {
-			return check(user, WatsonIncident.fetch(watsonIncidentId));
+			return check(user, WatsonIncident.fetch(watsonIncidentId), actionId);
 		}
 
 		return false;
 	}
 
-	public static boolean check(User user, WatsonChild watsonChild) throws Exception {
+	public static boolean check(User user, WatsonChild watsonChild, String actionId) throws Exception {
 		if (Validator.isNull(watsonChild)) {
 			return false;
 		}
@@ -37,13 +37,17 @@ public static class WatsonPermission extends AlloyPermission {
 			return true;
 		}
 		else if (WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_STAFF)) {
+			if (!actionId.equals(Constants.VIEW)) {
+				return false;
+			}
+
 			return true;
 		}
 
 		return false;
 	}
 
-	public static boolean check(User user, WatsonIncident watsonIncident) throws Exception {
+	public static boolean check(User user, WatsonIncident watsonIncident, String actionId) throws Exception {
 		if (Validator.isNull(watsonIncident)) {
 			return false;
 		}
@@ -55,6 +59,10 @@ public static class WatsonPermission extends AlloyPermission {
 			return true;
 		}
 		else if (WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
+			if (!actionId.equals(Constants.VIEW)) {
+				return false;
+			}
+
 			return true;
 		}
 

@@ -6,31 +6,113 @@
 		<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
+				<action-key>ADD#ACTIVITIES</action-key>
+				<action-key>ADD#ADDRESSES</action-key>
+				<action-key>ADD#CHILDREN</action-key>
+				<action-key>ADD#DOCUMENTS</action-key>
+				<action-key>ADD#INCIDENTS</action-key>
+				<action-key>ADD#PEOPLE</action-key>
+				<action-key>ADD#RELATIONSHIPS</action-key>
+				<action-key>ADD#REPORTS</action-key>
+				<action-key>ADD#RESOURCES</action-key>
+				<action-key>ADD#VEHICLES</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
-				<action-key>DELETE</action-key>
-				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
+				<action-key>DELETE#ACTIVITIES</action-key>
+				<action-key>DELETE#ADDRESSES</action-key>
+				<action-key>DELETE#CHILDREN</action-key>
+				<action-key>DELETE#DOCUMENTS</action-key>
+				<action-key>DELETE#INCIDENTS</action-key>
+				<action-key>DELETE#PEOPLE</action-key>
+				<action-key>DELETE#RELATIONSHIPS</action-key>
+				<action-key>DELETE#REPORTS</action-key>
+				<action-key>DELETE#RESOURCES</action-key>
+				<action-key>DELETE#VEHICLES</action-key>
+				<action-key>INDEX#ACTIVITIES</action-key>
+				<action-key>INDEX#ADDRESSES</action-key>
+				<action-key>INDEX#CHILDREN</action-key>
+				<action-key>INDEX#DOCUMENTS</action-key>
+				<action-key>INDEX#HISTORIES</action-key>
+				<action-key>INDEX#INCIDENTS</action-key>
+				<action-key>INDEX#LIST_TYPES</action-key>
+				<action-key>INDEX#PEOPLE</action-key>
+				<action-key>INDEX#RELATIONSHIPS</action-key>
+				<action-key>INDEX#REPORTS</action-key>
+				<action-key>INDEX#RESOURCES</action-key>
+				<action-key>INDEX#VEHICLES</action-key>
+				<action-key>MANAGE#CONTROL_PANEL</action-key>
 				<action-key>PERMISSIONS</action-key>
-				<action-key>UPDATE</action-key>
+				<action-key>REFRESH_SUB_MODEL#CHILDREN</action-key>
+				<action-key>REFRESH_SUB_MODEL#INCIDENTS</action-key>
+				<action-key>UPLOAD#RESOURCES</action-key>
 				<action-key>VIEW</action-key>
 			</supports>
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
+				<action-key>ADD#ACTIVITIES</action-key>
+				<action-key>ADD#ADDRESSES</action-key>
+				<action-key>ADD#CHILDREN</action-key>
+				<action-key>ADD#DOCUMENTS</action-key>
+				<action-key>ADD#INCIDENTS</action-key>
+				<action-key>ADD#PEOPLE</action-key>
+				<action-key>ADD#RELATIONSHIPS</action-key>
+				<action-key>ADD#REPORTS</action-key>
+				<action-key>ADD#RESOURCES</action-key>
+				<action-key>ADD#VEHICLES</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
+				<action-key>DELETE#ACTIVITIES</action-key>
+				<action-key>DELETE#ADDRESSES</action-key>
+				<action-key>DELETE#CHILDREN</action-key>
+				<action-key>DELETE#DOCUMENTS</action-key>
+				<action-key>DELETE#INCIDENTS</action-key>
+				<action-key>DELETE#PEOPLE</action-key>
+				<action-key>DELETE#RELATIONSHIPS</action-key>
+				<action-key>DELETE#REPORTS</action-key>
+				<action-key>DELETE#RESOURCES</action-key>
+				<action-key>DELETE#VEHICLES</action-key>
+				<action-key>INDEX#ACTIVITIES</action-key>
+				<action-key>INDEX#ADDRESSES</action-key>
+				<action-key>INDEX#CHILDREN</action-key>
+				<action-key>INDEX#DOCUMENTS</action-key>
+				<action-key>INDEX#HISTORIES</action-key>
+				<action-key>INDEX#INCIDENTS</action-key>
+				<action-key>INDEX#LIST_TYPES</action-key>
+				<action-key>INDEX#PEOPLE</action-key>
+				<action-key>INDEX#RELATIONSHIPS</action-key>
+				<action-key>INDEX#REPORTS</action-key>
+				<action-key>INDEX#RESOURCES</action-key>
+				<action-key>INDEX#VEHICLES</action-key>
+				<action-key>MANAGE#CONTROL_PANEL</action-key>
+				<action-key>PERMISSIONS</action-key>
+			</guest-unsupported>
+		</permissions>
+	</portlet-resource>
+	<model-resource>
+		<model-name>com.liferay.portal.kernel.model.User</model-name>
+		<portlet-ref>
+			<portlet-name>com_liferay_watson_portlet_WatsonPortlet</portlet-name>
+		</portlet-ref>
+		<permissions>
+			<supports>
+				<action-key>EDIT</action-key>
+			</supports>
+			<site-member-defaults />
+			<guest-defaults />
+			<guest-unsupported>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
+				<action-key>IMPERSONATE</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
 			</guest-unsupported>
+			<owner-defaults>
+				<action-key>EDIT</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>VIEW</action-key>
+			</owner-defaults>
 		</permissions>
-	</portlet-resource>
+	</model-resource>
 	<model-resource>
 		<model-name>com.liferay.watson.model.WatsonActivity</model-name>
 		<portlet-ref>
@@ -38,12 +120,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -51,15 +130,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>
@@ -71,12 +146,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -84,15 +156,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>
@@ -104,12 +172,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -117,15 +182,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>
@@ -137,12 +198,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -150,15 +208,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>
@@ -170,12 +224,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -183,15 +234,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>
@@ -203,12 +250,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -216,12 +260,9 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -236,12 +277,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -249,15 +287,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>
@@ -269,12 +303,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -282,15 +313,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>
@@ -302,12 +329,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -315,15 +339,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>
@@ -335,12 +355,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -348,15 +365,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>
@@ -368,12 +381,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -381,15 +391,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>
@@ -401,12 +407,9 @@
 		</portlet-ref>
 		<permissions>
 			<supports>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
 				<action-key>VIEW</action-key>
@@ -414,15 +417,11 @@
 			<site-member-defaults />
 			<guest-defaults />
 			<guest-unsupported>
-				<action-key>ADD</action-key>
 				<action-key>CONFIGURATION</action-key>
-				<action-key>CREATE</action-key>
 				<action-key>DELETE</action-key>
 				<action-key>EDIT</action-key>
-				<action-key>INDEX</action-key>
 				<action-key>PERMISSIONS</action-key>
 				<action-key>UPDATE</action-key>
-				<action-key>VIEW</action-key>
 			</guest-unsupported>
 			<owner-defaults />
 		</permissions>

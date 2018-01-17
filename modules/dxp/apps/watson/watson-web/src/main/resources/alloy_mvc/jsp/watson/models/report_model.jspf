@@ -353,18 +353,6 @@ public static class WatsonReport extends WatsonReportBaseModel {
 		}
 	}
 
-	public static List<WatsonReport> filterReports(List<WatsonReport> watsonReports, User user) throws Exception {
-		List<WatsonReport> returnWatsonReports = ListUtil.copy(watsonReports);
-
-		for (WatsonReport watsonReport : watsonReports) {
-			if (!WatsonPermission.check(user, WatsonChild.fetch(watsonReport.getWatsonChildId()))) {
-				returnWatsonReports.remove(watsonReport);
-			}
-		}
-
-		return returnWatsonReports;
-	}
-
 	protected HashMap<String, String> errors = new HashMap<>();
 
 }

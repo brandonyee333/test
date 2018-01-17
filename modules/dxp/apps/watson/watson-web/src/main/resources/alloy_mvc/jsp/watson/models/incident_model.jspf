@@ -428,7 +428,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		User user = UserLocalServiceUtil.fetchUser(currentUserId);
 
 		if (Validator.isNotNull(user)) {
-			boolean hasAdminRole = WatsonPermission.check(user, RoleConstants.ADMINISTRATOR);
+			boolean hasAdminRole = WatsonPermission.check(user, RoleConstants.WATSON_ADMINISTRATOR);
 
 			if (hasAdminRole) {
 				return false;
@@ -648,18 +648,6 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		watsonIncidentIdsDynamicQuery.setProjection(ProjectionFactoryUtil.distinct(watsonIncidentIdProjection));
 
 		return baseModelAlloyServiceInvoker.executeDynamicQuery(watsonIncidentIdsDynamicQuery);
-	}
-
-	public static List<WatsonIncident> filterIncidents(List<WatsonIncident> watsonIncidents, User user) throws Exception {
-		List<WatsonIncident> returnWatsonIncidents = ListUtil.copy(watsonIncidents);
-
-		for (WatsonIncident watsonIncident : watsonIncidents) {
-			if (!WatsonPermission.check(user, watsonIncident)) {
-				returnWatsonIncidents.remove(watsonIncident);
-			}
-		}
-
-		return returnWatsonIncidents;
 	}
 
 	protected HashMap<String, String> errors = new HashMap<>();

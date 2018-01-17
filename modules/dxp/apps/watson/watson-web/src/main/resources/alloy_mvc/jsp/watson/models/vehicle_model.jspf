@@ -400,18 +400,6 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 		return getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(watsonVehiclesDynamicQuery, start, end));
 	}
 
-	public static List<WatsonVehicle> filterVehicles(List<WatsonVehicle> watsonVehicles, User user) throws Exception {
-		List<WatsonVehicle> returnWatsonVehicles = ListUtil.copy(watsonVehicles);
-
-		for (WatsonVehicle watsonVehicle : watsonVehicles) {
-			if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId())) {
-				returnWatsonVehicles.remove(watsonVehicle);
-			}
-		}
-
-		return returnWatsonVehicles;
-	}
-
 	protected HashMap<String, String> errors = new HashMap<>();
 }
 %>

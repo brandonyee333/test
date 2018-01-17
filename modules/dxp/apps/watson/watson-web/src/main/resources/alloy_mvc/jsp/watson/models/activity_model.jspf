@@ -127,7 +127,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 		User user = UserLocalServiceUtil.fetchUser(currentUserId);
 
 		if (Validator.isNotNull(user)) {
-			boolean hasAdminRole = WatsonPermission.check(user, RoleConstants.ADMINISTRATOR);
+			boolean hasAdminRole = WatsonPermission.check(user, RoleConstants.WATSON_ADMINISTRATOR);
 
 			if (hasAdminRole) {
 				return true;
@@ -307,18 +307,6 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 		BaseAlloyControllerImpl.setLocalizedProperties(this, request, locale);
 
 		return update(this);
-	}
-
-	public static List<WatsonActivity> filterActivities(List<WatsonActivity> watsonActivities, User user) throws Exception {
-		List<WatsonActivity> returnWatsonActivities = ListUtil.copy(watsonActivities);
-
-		for (WatsonActivity watsonActivity : watsonActivities) {
-			if (!WatsonPermission.check(user, watsonActivity.getWatsonIncidentId())) {
-				returnWatsonActivities.remove(watsonActivity);
-			}
-		}
-
-		return returnWatsonActivities;
 	}
 
 	protected HashMap<String, String> errors = new HashMap<>();

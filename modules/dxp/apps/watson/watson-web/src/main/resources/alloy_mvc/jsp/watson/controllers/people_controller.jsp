@@ -23,7 +23,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 	public AlloyControllerImpl() throws Exception {
 		setAlloyServiceInvokerClass(WatsonPerson.getBaseModelClass());
-		setPermissioned(true);
+		setPermissioned(false);
 	}
 
 	public void add() throws Exception {
@@ -33,7 +33,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonPerson watsonPerson = WatsonPerson.create(request);
 
-		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId())) {
+		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId(), Constants.ADD)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -105,7 +105,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
 
-		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId())) {
+		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId(), Constants.DELETE)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -131,7 +131,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
 
-		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId())) {
+		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId(), Constants.VIEW)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -205,6 +205,12 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
+		if (!WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
+		}
+
 		List<WatsonPerson> watsonPeople = null;
 		long watsonPeopleCount = 0;
 
@@ -254,6 +260,12 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
+		if (!WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
+		}
+
 		SearchContext searchContext = getPopulatedSearchContext(WatsonPerson.baseModelClass);
 
 		List<WatsonPerson> searchResultWatsonPeople = _doSearch(searchContext);
@@ -290,7 +302,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
 
-		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId()) || WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonPerson.getWatsonIncidentId()))) {
+		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId(), Constants.UPDATE) || WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonPerson.getWatsonIncidentId()))) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), WatsonPerson.getAsJSONObject(watsonPerson));
 
 			return;
@@ -412,7 +424,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonPerson watsonPerson = WatsonPerson.fetch(watsonPersonId);
 
-		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId())) {
+		if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId(), Constants.VIEW)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;

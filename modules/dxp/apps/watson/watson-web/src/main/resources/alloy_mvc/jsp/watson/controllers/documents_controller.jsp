@@ -23,7 +23,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 	public AlloyControllerImpl() throws Exception {
 		setAlloyServiceInvokerClass(WatsonDocument.getBaseModelClass());
-		setPermissioned(true);
+		setPermissioned(false);
 	}
 
 	public void add() throws Exception {
@@ -33,7 +33,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonDocument watsonDocument = WatsonDocument.create(request);
 
-		if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()))) {
+		if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()), Constants.ADD)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -73,7 +73,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonDocument watsonDocument = WatsonDocument.fetch(watsonDocumentId);
 
-		if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()))) {
+		if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()), Constants.DELETE)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -97,7 +97,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonDocument watsonDocument = WatsonDocument.fetch(watsonDocumentId);
 
-		if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()))) {
+		if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()), Constants.VIEW)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -133,6 +133,12 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
+		if (!WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_STAFF)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
+		}
+
 		List<WatsonDocument> watsonDocuments = null;
 		long watsonDocumentsCount = 0;
 
@@ -142,7 +148,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
 		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
 
-		watsonDocuments = WatsonChild.getWatsonDocuments(watsonChildId, includeInactive, sort, start, end, user);
+		watsonDocuments = WatsonChild.getWatsonDocuments(watsonChildId, includeInactive, sort, start, end);
 
 		watsonDocumentsCount = WatsonChild.getWatsonDocumentsCount(watsonChildId);
 
@@ -170,13 +176,17 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
+		if (!WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_STAFF)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
+		}
+
 		SearchContext searchContext = getPopulatedSearchContext(WatsonDocument.baseModelClass);
 
 		List<WatsonDocument> searchResultWatsonDocuments = _doSearch(searchContext);
 
-		String actionType = ParamUtil.getString(request, "actionType");
-
-		respondWith(WatsonDocument.getAsJSONDataArray(WatsonDocument.filterDocuments(searchResultWatsonDocuments, user), getTotalHits(searchContext)));
+		respondWith(WatsonDocument.getAsJSONDataArray(searchResultWatsonDocuments, getTotalHits(searchContext)));
 	}
 
 	public void update() throws Exception {
@@ -194,7 +204,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonDocument watsonDocument = WatsonDocument.fetch(watsonDocumentId);
 
-		if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()))) {
+		if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()), Constants.UPDATE)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), WatsonDocument.getAsJSONObject(watsonDocument));
 
 			return;
@@ -268,7 +278,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonDocument watsonDocument = WatsonDocument.fetch(watsonDocumentId);
 
-		if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()))) {
+		if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()), Constants.VIEW)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 		}
 

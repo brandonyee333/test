@@ -229,7 +229,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		return jsonArray;
 	}
 
-	public static List<WatsonDocument> getWatsonDocuments(long watsonChildId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+	public static List<WatsonDocument> getWatsonDocuments(long watsonChildId, boolean includeInactive, String sort, int start, int end) throws Exception {
 		List<WatsonDocument> returnWatsonDocuments = null;
 
 		if (watsonChildId > 0) {
@@ -244,10 +244,10 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			returnWatsonDocuments = WatsonDocument.get(start, end);
 		}
 
-		return WatsonDocument.filterDocuments(returnWatsonDocuments, user);
+		return returnWatsonDocuments;
 	}
 
-	public static List<WatsonReport> getWatsonReports(int key, long watsonChildId, boolean includeInactive, String sort, int start, int end, User user) throws Exception {
+	public static List<WatsonReport> getWatsonReports(int key, long watsonChildId, boolean includeInactive, String sort, int start, int end) throws Exception {
 		List<WatsonReport> returnWatsonReports = null;
 
 		if (watsonChildId > 0) {
@@ -262,7 +262,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			returnWatsonReports = WatsonReport.get(start, end);
 		}
 
-		return WatsonReport.filterReports(returnWatsonReports, user);
+		return returnWatsonReports;
 	}
 
 	public static long getWatsonDocumentsCount(long watsonChildId) throws Exception {
@@ -601,11 +601,8 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			}
 
 			listTypeRelJSONObject.put("primary", watsonListTypeRel.getPrimary());
-
 			listTypeRelJSONObject.put("value", watsonListTypeRel.getValue(locale));
-
 			listTypeRelJSONObject.put("watsonListTypeId", watsonListTypeRel.getWatsonListTypeId());
-
 			listTypeRelJSONObject.put("watsonListTypeRelId", watsonListTypeRel.getWatsonListTypeRelId());
 
 			jsonArray.put(listTypeRelJSONObject);

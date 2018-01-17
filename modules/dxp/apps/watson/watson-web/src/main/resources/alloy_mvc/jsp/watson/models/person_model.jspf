@@ -580,18 +580,6 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(watsonPeopleDynamicQuery, start, end));
 	}
 
-	public static List<WatsonPerson> filterPeople(List<WatsonPerson> watsonPeople, User user) throws Exception {
-		List<WatsonPerson> returnWatsonPeople = ListUtil.copy(watsonPeople);
-
-		for (WatsonPerson watsonPerson : watsonPeople) {
-			if (!WatsonPermission.check(user, watsonPerson.getWatsonIncidentId())) {
-				returnWatsonPeople.remove(watsonPerson);
-			}
-		}
-
-		return returnWatsonPeople;
-	}
-
 	protected HashMap<String, String> errors = new HashMap<>();
 
 }

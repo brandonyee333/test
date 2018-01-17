@@ -23,7 +23,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 	public AlloyControllerImpl() throws Exception {
 		setAlloyServiceInvokerClass(WatsonVehicle.getBaseModelClass());
-		setPermissioned(true);
+		setPermissioned(false);
 	}
 
 	public void add() throws Exception {
@@ -33,7 +33,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonVehicle watsonVehicle = WatsonVehicle.create(request);
 
-		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId())) {
+		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId(), Constants.ADD)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -73,7 +73,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonVehicle watsonVehicle = WatsonVehicle.fetch(watsonVehicleId);
 
-		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId())) {
+		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId(), Constants.DELETE)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -97,7 +97,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonVehicle watsonVehicle = WatsonVehicle.fetch(watsonVehicleId);
 
-		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId())) {
+		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId(), Constants.VIEW)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -169,6 +169,12 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
+		if (!WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
+		}
+
 		List<WatsonVehicle> watsonVehicles = null;
 		long watsonVehiclesCount = 0;
 
@@ -218,6 +224,12 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
+		if (!WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
+		}
+
 		SearchContext searchContext = getPopulatedSearchContext(WatsonVehicle.baseModelClass);
 
 		List<WatsonVehicle> searchResultWatsonVehicles = _doSearch(searchContext);
@@ -254,7 +266,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonVehicle watsonVehicle = WatsonVehicle.fetch(watsonVehicleId);
 
-		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId()) || WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonVehicle.getWatsonIncidentId()))) {
+		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId(), Constants.UPDATE) || WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonVehicle.getWatsonIncidentId()))) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), WatsonVehicle.getAsJSONObject(watsonVehicle));
 
 			return;
@@ -326,7 +338,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonVehicle watsonVehicle = WatsonVehicle.fetch(watsonVehicleId);
 
-		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId())) {
+		if (!WatsonPermission.check(user, watsonVehicle.getWatsonIncidentId(), Constants.VIEW)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, translate("you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;

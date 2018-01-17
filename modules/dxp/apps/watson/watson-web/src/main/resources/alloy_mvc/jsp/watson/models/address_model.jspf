@@ -460,18 +460,6 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		}
 	}
 
-	public static List<WatsonAddress> filterAddresses(List<WatsonAddress> watsonAddresses, User user) throws Exception {
-		List<WatsonAddress> returnWatsonAddresses = ListUtil.copy(watsonAddresses);
-
-		for (WatsonAddress watsonAddress : watsonAddresses) {
-			if (!WatsonPermission.check(user, watsonAddress.getWatsonIncidentId())) {
-				returnWatsonAddresses.remove(watsonAddress);
-			}
-		}
-
-		return returnWatsonAddresses;
-	}
-
 	protected HashMap<String, String> errors = new HashMap<>();
 
 }

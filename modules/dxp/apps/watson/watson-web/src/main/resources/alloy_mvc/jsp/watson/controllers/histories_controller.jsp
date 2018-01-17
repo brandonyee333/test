@@ -23,7 +23,7 @@
 
 		public AlloyControllerImpl() throws Exception {
 			setAlloyServiceInvokerClass(WatsonHistory.getBaseModelClass());
-			setPermissioned(true);
+			setPermissioned(false);
 		}
 
 		public void add() throws Exception {
@@ -83,7 +83,7 @@
 
 			long watsonIncidentId = ParamUtil.getLong(request, "id");
 
-			if (!WatsonPermission.check(user, watsonIncidentId)) {
+			if (!WatsonPermission.check(user, watsonIncidentId, Constants.VIEW)) {
 				respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 				return;

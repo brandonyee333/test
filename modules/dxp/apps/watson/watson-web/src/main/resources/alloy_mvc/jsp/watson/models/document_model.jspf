@@ -278,18 +278,6 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 		return errors.isEmpty();
 	}
 
-	public static List<WatsonDocument> filterDocuments(List<WatsonDocument> watsonDocuments, User user) throws Exception {
-		List<WatsonDocument> returnWatsonDocuments = ListUtil.copy(watsonDocuments);
-
-		for (WatsonDocument watsonDocument : watsonDocuments) {
-			if (!WatsonPermission.check(user, WatsonChild.fetch(watsonDocument.getWatsonChildId()))) {
-				returnWatsonDocuments.remove(watsonDocument);
-			}
-		}
-
-		return returnWatsonDocuments;
-	}
-
 	public void pushError(KeyValuePair keyValuePair) {
 		if (keyValuePair != null) {
 			errors.put(keyValuePair.getKey(), keyValuePair.getValue());

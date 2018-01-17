@@ -23,7 +23,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 	public AlloyControllerImpl() throws Exception {
 		setAlloyServiceInvokerClass(WatsonRelationship.getBaseModelClass());
-		setPermissioned(true);
+		setPermissioned(false);
 	}
 
 	public void add() throws Exception {
@@ -65,7 +65,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		long watsonIncidentId = ParamUtil.getLong(request, "id");
 
-		if (!WatsonPermission.check(user, watsonIncidentId)) {
+		if (!WatsonPermission.check(user, watsonIncidentId, Constants.VIEW)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -90,7 +90,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		long watsonIncidentId = ParamUtil.getLong(request, "watsonIncidentId");
 
-		if (!WatsonPermission.check(user, watsonIncidentId)) {
+		if (!WatsonPermission.check(user, watsonIncidentId, Constants.VIEW)) {
 			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 
 			return;
@@ -112,7 +112,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		long watsonIncidentId = ParamUtil.getLong(request, "watsonIncidentId");
 
-		if (!WatsonPermission.check(user, watsonIncidentId) || WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonIncidentId))) {
+		if (!WatsonPermission.check(user, watsonIncidentId, Constants.UPDATE) || WatsonIncident.hasDisabled(user.getUserId(), WatsonIncident.getIncidentStatus(watsonIncidentId))) {
 			this.edit();
 
 			return;
