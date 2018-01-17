@@ -87,8 +87,8 @@ String gamePlan = GetterUtil.get(gamePlanMap.get(locale), gamePlanMap.get(Locale
 					data: {
 						<portlet:namespace />languageId: languageId
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');

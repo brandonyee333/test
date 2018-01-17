@@ -76,8 +76,8 @@
 					data: {
 						<portlet:namespace />satisfied: satisfied
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');

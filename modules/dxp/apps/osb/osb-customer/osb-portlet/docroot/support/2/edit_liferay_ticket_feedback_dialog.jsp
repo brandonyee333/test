@@ -96,8 +96,8 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 						<portlet:namespace />satisfied: satisfied,
 						<portlet:namespace />ticketEntryId: <%= ticketEntry.getTicketEntryId() %>
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');

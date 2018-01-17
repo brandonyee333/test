@@ -294,8 +294,8 @@ else {
 					data: {
 						<portlet:namespace />ticketAttachmentId: ticketAttachmentId
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var draftSuffix = suffix + '_' + fileIndex;
@@ -500,8 +500,8 @@ else {
 							<portlet:namespace />type: type,
 							<portlet:namespace />visibility: visibility
 						},
-						dataType: 'json',
-						method: 'post',
+						dataType: 'JSON',
+						method: 'POST',
 						on: {
 							failure: function() {
 								var message = '<%= UnicodeLanguageUtil.get(request, "comment-cannot-be-saved-as-draft-please-save-your-work-before-refreshing") %>';
@@ -650,8 +650,8 @@ else {
 				A.io.request(
 					validateURL,
 					{
-						dataType: 'json',
-						method: 'post',
+						dataType: 'JSON',
+						method: 'POST',
 						on: {
 							success: function() {
 								var response = this.get('responseData');
@@ -697,8 +697,8 @@ else {
 							<portlet:namespace />ticketCommentId: ticketCommentId,
 							<portlet:namespace />type: type
 						},
-						dataType: 'json',
-						method: 'post',
+						dataType: 'JSON',
+						method: 'POST',
 						on: {
 							success: function() {
 								if (type == <%= TicketCommentConstants.TYPE_NORMAL %>) {

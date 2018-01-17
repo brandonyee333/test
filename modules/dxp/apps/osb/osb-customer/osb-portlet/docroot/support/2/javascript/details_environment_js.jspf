@@ -244,8 +244,8 @@
 					data: {
 						<portlet:namespace />envLFR: envLFR
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');
@@ -270,8 +270,8 @@
 						<portlet:namespace />envLFR: envLFR,
 						<portlet:namespace />offeringEntryId: '<%= (offeringEntry != null) ? offeringEntry.getOfferingEntryId() : 0 %>'
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');
@@ -319,8 +319,8 @@
 					data: {
 						<portlet:namespace />envLFR: envLFR
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');
@@ -404,12 +404,12 @@
 							<portlet:namespace />portalExt: portalExt,
 							<portlet:namespace />productEntryId: productEntryId
 						},
-						dataType: 'json',
+						dataType: 'JSON',
 						form: {
 							id: A.one('#<portlet:namespace />fm'),
 							upload: true
 						},
-						method: 'post',
+						method: 'POST',
 						on: {
 							complete: function(event, index, responseData) {
 								if (accountEnvironmentId <= 0 && responseData) {
@@ -488,8 +488,8 @@
 							<portlet:namespace />name: name,
 							<portlet:namespace />productEntryId: productEntryId
 						},
-						dataType: 'json',
-						method: 'post',
+						dataType: 'JSON',
+						method: 'POST',
 						on: {
 							success: function() {
 								var response = this.get('responseData');

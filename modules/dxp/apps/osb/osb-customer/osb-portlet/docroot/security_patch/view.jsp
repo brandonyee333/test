@@ -148,8 +148,8 @@ String footerText = GetterUtil.getString(portletPreferences.getValue("footerText
 						<portlet:namespace />accountEntryId: accountEntryId,
 						<portlet:namespace />portletId: '<%= portletId %>'
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');

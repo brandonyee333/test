@@ -84,8 +84,8 @@ List<FileRepository> fileRepositories = SupportUtil.getFileRepositories();
 							<portlet:namespace />fileRepositoryId: fileRepositoryId,
 							<portlet:namespace />ticketAttachmentId: ticketAttachmentId
 						},
-						dataType: 'json',
-						method: 'post',
+						dataType: 'JSON',
+						method: 'POST',
 						on: {
 							success: function() {
 								var response = this.get('responseData');

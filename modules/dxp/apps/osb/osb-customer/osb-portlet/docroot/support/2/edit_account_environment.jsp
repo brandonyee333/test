@@ -403,8 +403,8 @@
 								data: {
 									<portlet:namespace />envLFR: envLFR
 								},
-								dataType: 'json',
-								method: 'post',
+								dataType: 'JSON',
+								method: 'POST',
 								on: {
 									success: function() {
 										var response = this.get('responseData');
@@ -445,8 +445,8 @@
 								data: {
 									<portlet:namespace />offeringEntryId: offeringEntryId
 								},
-								dataType: 'json',
-								method: 'post',
+								dataType: 'JSON',
+								method: 'POST',
 								on: {
 									success: function() {
 										var response = this.get('responseData');
@@ -535,8 +535,8 @@
 									<portlet:namespace />name: name.val().trim(),
 									<portlet:namespace />offeringEntryId: offering.val()
 								},
-								dataType: 'json',
-								method: 'post',
+								dataType: 'JSON',
+								method: 'POST',
 								on: {
 									success: function() {
 										var response = this.get('responseData');

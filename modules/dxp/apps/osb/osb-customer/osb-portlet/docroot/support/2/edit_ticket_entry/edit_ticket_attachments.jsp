@@ -555,8 +555,8 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 							<portlet:namespace />fileRepositoryId: '<%= HtmlUtil.escape(fileRepositoryId) %>',
 							<portlet:namespace />ticketEntryId: <%= ticketEntry.getTicketEntryId() %>
 						},
-						dataType: 'json',
-						method: 'post',
+						dataType: 'JSON',
+						method: 'POST',
 						on: {
 							success: function() {
 								var response = this.get('responseData');
@@ -715,8 +715,8 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						<portlet:namespace />ticketEntryId: <%= ticketEntry.getTicketEntryId() %>,
 						<portlet:namespace />validateDuplicate: <%= ticketWorker ? String.valueOf(Boolean.FALSE) : String.valueOf(Boolean.TRUE) %>
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');

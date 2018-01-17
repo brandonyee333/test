@@ -634,8 +634,8 @@ if (liferayIncOrg || partnerWorker) {
 					data: {
 						<portlet:namespace />component: component
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function(event, id, obj) {
 							var response = this.get('responseData');
@@ -661,8 +661,8 @@ if (liferayIncOrg || partnerWorker) {
 					data: {
 						<portlet:namespace />productEntryName: productEntryName
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function(event, id, obj) {
 							var response = this.get('responseData');

@@ -887,8 +887,8 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 							<portlet:namespace />searchFilterId: searchFilterId,
 							<portlet:namespace />searchFilterName: searchFilterName
 						},
-						dataType: 'json',
-						method: 'post',
+						dataType: 'JSON',
+						method: 'POST',
 						on: {
 							success: function() {
 								var response = this.get('responseData');

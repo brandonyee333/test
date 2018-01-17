@@ -308,8 +308,8 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 					data: {
 						<portlet:namespace />envLFR: envLFR
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');

@@ -189,8 +189,8 @@
 							data: {
 								<portlet:namespace />text: text
 							},
-							dataType: 'json',
-							method: 'post',
+							dataType: 'JSON',
+							method: 'POST',
 							on: {
 								start: function() {
 									editor.attr('class', 'editor loading preview');

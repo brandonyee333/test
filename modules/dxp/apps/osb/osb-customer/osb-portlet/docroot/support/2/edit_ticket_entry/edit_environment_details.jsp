@@ -511,8 +511,8 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 					data: {
 						<portlet:namespace />envLFR: envLFR
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');
@@ -539,8 +539,8 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 						<portlet:namespace />envLFR: envLFR,
 						<portlet:namespace />offeringEntryId: offeringEntryId
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');
@@ -580,8 +580,8 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 					data: {
 						<portlet:namespace />envLFR: envLFR
 					},
-					dataType: 'json',
-					method: 'post',
+					dataType: 'JSON',
+					method: 'POST',
 					on: {
 						success: function() {
 							var response = this.get('responseData');
