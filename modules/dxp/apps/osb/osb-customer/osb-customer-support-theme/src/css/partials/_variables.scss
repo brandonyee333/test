@@ -31,8 +31,10 @@ $lesa-nav-width: 60px;
 
 $standard-spacing: 15px;
 
-$ticket-view-header-height: 120px;
+$ticket-view-heading-height: 120px;
 $ticket-view-tab-height: 35px;
+
+$ticket-view-header-height: $ticket-view-heading-height + $ticket-view-tab-height + $standard-spacing;
 
 /* ---------- Preferences ---------- */
 

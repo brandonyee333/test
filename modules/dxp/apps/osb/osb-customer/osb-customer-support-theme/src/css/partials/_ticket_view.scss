@@ -81,17 +81,17 @@
 	left: inherit;
 	position: inherit;
 	right: inherit;
-	top: $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+	top: $banner-height + $ticket-view-header-height;
 
 	&.pinned {
 		height: 10px;
-		top: $banner-height + $ticket-view-header-height + 2 * $ticket-view-tab-height + $standard-spacing;
+		top: $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
 	}
 }
 
 .account-filter, .partner-filter, .ticket-filter {
 	background: #FFF;
-	height: $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+	height: $banner-height + $ticket-view-header-height;
 	left: calc(2vw - -80px);
 	position: fixed;
 	right: 0;
@@ -99,7 +99,7 @@
 	z-index: 1;
 
 	&.pinned {
-		height: $banner-height + $ticket-view-header-height + 2 * $ticket-view-tab-height + $standard-spacing;
+		height: $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
 	}
 }
 
@@ -112,7 +112,7 @@
 			margin: 0;
 			position: fixed;
 			right: calc(23vw - -20px);
-			top: $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+			top: $banner-height + $ticket-view-header-height;
 			z-index: 2;
 		}
 
@@ -169,7 +169,7 @@
 			margin: 0;
 			position: fixed;
 			right: calc(23vw - -20px);
-			top: $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+			top: $banner-height + $ticket-view-header-height;
 			z-index: 2;
 		}
 

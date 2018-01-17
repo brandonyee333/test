@@ -34,50 +34,50 @@
 	}
 
 	.account-fade, .partner-fade, .ticket-fade  {
-		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height;
 
 		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height;
 		}
 
 		&.pinned {
-			top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + 2 * $ticket-view-tab-height + $standard-spacing;
+			top: $has-control-menu-top-mobile + $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
 
 			@include sm() {
-				top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + 2 * $ticket-view-tab-height + $standard-spacing;
+				top: $has-control-menu-top-desktop + $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
 			}
 		}
 	}
 
 	.account-filter, .partner-filter, .ticket-filter {
-		height: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+		height: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height;
 
 		@include sm() {
-			height: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+			height: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height;
 		}
 
 		&.pinned {
-			height: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + 2 * $ticket-view-tab-height + $standard-spacing;
+			height: $has-control-menu-top-mobile + $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
 
 			@include sm() {
-				height: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + 2 * $ticket-view-tab-height + $standard-spacing;
+				height: $has-control-menu-top-desktop + $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
 			}
 		}
 	}
 
 	.details.tab-view .tabs {
-		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $standard-spacing;
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-heading-height + $standard-spacing;
 
 		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $standard-spacing;
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-heading-height + $standard-spacing;
 		}
 	}
 
 	.discussion .tabs.pinned, .ticket-sidebar {
-		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height;
 
 		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height + $ticket-view-tab-height + $standard-spacing;
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height;
 		}
 	}
 
