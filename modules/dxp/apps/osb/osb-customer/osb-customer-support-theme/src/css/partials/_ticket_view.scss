@@ -13,6 +13,12 @@
 		}
 	}
 
+	.call-info {
+		.form-control {
+			width: 80%;
+		}
+	}
+
 	.call-times {
 		.input-select-wrapper {
 			display: inline-block;
@@ -20,12 +26,6 @@
 
 		.lfr-input-date, .lfr-input-time {
 			margin-bottom: 0.5em;
-		}
-	}
-
-	.call-info {
-		.form-control {
-			width: 80%;
 		}
 	}
 }
