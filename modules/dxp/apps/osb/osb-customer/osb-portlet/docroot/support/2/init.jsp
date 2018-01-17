@@ -89,7 +89,7 @@ if (liferayIncOrg) {
 	%>
 
 	<c:choose>
-		<c:when test='<%= BrowserSnifferUtil.isMobile(request) %>'>
+		<c:when test="<%= BrowserSnifferUtil.isMobile(request) %>">
 			<%@ include file="/support/2/nav_mobile.jspf" %>
 		</c:when>
 		<c:otherwise>

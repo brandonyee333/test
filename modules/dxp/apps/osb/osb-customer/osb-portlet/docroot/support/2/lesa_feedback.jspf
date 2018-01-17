@@ -114,8 +114,8 @@
 		var commentsNode = A.one('#<portlet:namespace />lesaFeedbackComments');
 		var summaryNode = A.one('#<portlet:namespace />lesaFeedbackSummary');
 
-		var comments = commentsNode && commentsNode.val();
-		var summary = summaryNode && summaryNode.val();
+		var comments = (commentsNode && commentsNode.val());
+		var summary = (summaryNode && summaryNode.val());
 
 		var hasCommentsSummary = (comments || summary);
 
@@ -214,12 +214,10 @@
 	}
 
 	function <portlet:namespace />sendLesaFeedbackEmail() {
-		var lesaFeedbackBugRadioButton = A.one('#<portlet:namespace />lesaFeedbackBugRadioButton');
-		var lesaFeedbackComments = A.one('#<portlet:namespace />lesaFeedbackComments');
-		var lesaFeedbackRadioButton = A.one('#<portlet:namespace />lesaFeedbackRadioButton');
-		var lesaFeedbackSummary = A.one('#<portlet:namespace />lesaFeedbackSummary');
-
 		var lesaFeedbackType = '';
+
+		var lesaFeedbackBugRadioButton = A.one('#<portlet:namespace />lesaFeedbackBugRadioButton');
+		var lesaFeedbackRadioButton = A.one('#<portlet:namespace />lesaFeedbackRadioButton');
 
 		if (lesaFeedbackBugRadioButton && lesaFeedbackRadioButton) {
 			lesaFeedbackType = lesaFeedbackBugRadioButton.val();
@@ -228,6 +226,9 @@
 				lesaFeedbackType = lesaFeedbackRadioButton.val();
 			}
 		}
+
+		var lesaFeedbackComments = A.one('#<portlet:namespace />lesaFeedbackComments');
+		var lesaFeedbackSummary = A.one('#<portlet:namespace />lesaFeedbackSummary');
 
 		if (lesaFeedbackComments && lesaFeedbackSummary) {
 			A.io.request(
