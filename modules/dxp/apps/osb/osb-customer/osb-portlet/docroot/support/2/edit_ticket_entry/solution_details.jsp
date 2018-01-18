@@ -58,7 +58,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 	<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntryId) %>" />
 </portlet:actionURL>
 
-<aui:form action="<%= addTicketSolutionURL %>" class="uni-form" enctype="multipart/form-data" method="post" name="fm">
+<aui:form action="<%= addTicketSolutionURL %>" enctype="multipart/form-data" method="post" name="solutionDetailsFm">
 	<liferay-ui:error exception="<%= DuplicateTicketAttachmentException.class %>" message="please-enter-a-unique-document-name" />
 	<liferay-ui:error exception="<%= FileNameException.class %>" message="please-enter-a-file-with-a-valid-file-name" />
 
@@ -84,24 +84,21 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 	<liferay-ui:error exception="<%= TicketSolutionBodyException.class %>" message="please-enter-a-valid-issue-solution" />
 	<liferay-ui:error exception="<%= TicketSolutionSummaryException.class %>" message="please-enter-a-valid-issue-summary" />
 
-	<div class="solution-details unit w100">
-		<h1>
+	<div class="solution-details">
+		<h2>
 			<liferay-ui:message key="solution-proposed-details" />
-		</h1>
+		</h2>
 
 		<div>
 			<span class="txt-b txt-up"><liferay-ui:message key="public" /></span>
 
 			<span class="txt-b">(<liferay-ui:message key="will-be-displayed-to-the-customer" />)</span>
 
-			<br /><br />
-
 			<div class="solution-details-comments-container" id="<portlet:namespace />commentsContainer">
-				<span class="highlighted-flag">*</span>
-
-				<span class="txt-b"><liferay-ui:message key="solution" /></span>
-
-				<br />
+				<div class="txt-b">
+					<span class="highlighted-flag">*</span>
+					<liferay-ui:message key="solution" />
+				</div>
 
 				<span><liferay-ui:message key="please-describe-how-to-resolve-the-issue-as-specifically-and-concisely-as-possible" /></span>
 
@@ -111,8 +108,6 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 					<liferay-util:param name="name" value="solution" />
 				</liferay-util:include>
 			</div>
-
-			<br />
 
 			<liferay-ui:panel collapsible="<%= true %>" extended="<%= true %>" id="attachmentsAndLinksPanel" persistState="<%= true %>" title="attachments-links">
 				<div id="<portlet:namespace />addAttachments">
@@ -142,16 +137,10 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 				</div>
 
-				<br />
-
 				<div>
-					<span class="txt-b"><liferay-ui:message key="references" /></span>
-
-					<br />
+					<div class="txt-b"><liferay-ui:message key="references" /></div>
 
 					<liferay-ui:message key="please-include-any-links-to-related-articles-or-content-that-could-provide-further-context-for-the-solution" />
-
-					<br />
 
 					<%
 					for (int urlIndex = 1; urlIndex <= 3; urlIndex++) {
@@ -160,18 +149,22 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 						<div class="link-container">
 							<liferay-ui:message key="url" />:
 
-							<input class="lfr-input-text" name="<portlet:namespace />ticketLinkURL<%= urlIndex %>" style="width: 350px;" type="text" value="<%= HtmlUtil.escape(ticketLinkURLs[urlIndex - 1]) %>" />
+							<aui:input label="" name='<%= "ticketLinkURL" + urlIndex %>' style="width: 350px;" type="text" value="<%= HtmlUtil.escape(ticketLinkURLs[urlIndex - 1]) %>" />
 
 							<c:if test="<%= liferayIncOrg %>">
 								<liferay-ui:message key="type" />:
 
-								<select name="<portlet:namespace />ticketLinkType<%= urlIndex %>">
-									<option value=""></option>
-									<option <%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_COMMUNITY_RESOURCE) ? "selected" : "" %> value="<%= TicketLinkConstants.TYPE_COMMUNITY_RESOURCE %>"><liferay-ui:message key="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_COMMUNITY_RESOURCE) %>" /></option>
-									<option <%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE) ? "selected" : "" %> value="<%= TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE %>"><liferay-ui:message key="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE) %>" /></option>
-									<option <%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION) ? "selected" : "" %> value="<%= TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION %>"><liferay-ui:message key="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION) %>" /></option>
-									<option <%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_OTHER) ? "selected" : "" %> value="<%= TicketLinkConstants.TYPE_OTHER %>"><liferay-ui:message key="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_OTHER) %>" /></option>
-								</select>
+								<aui:select label="" name='<%= "ticketLinkType" + urlIndex %>'>
+									<aui:option value=""></aui:option>
+
+									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_COMMUNITY_RESOURCE) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_COMMUNITY_RESOURCE) %>" value="<%= TicketLinkConstants.TYPE_COMMUNITY_RESOURCE %>" />
+
+									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE) %>" value="<%= TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE %>" />
+
+									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION) %>" value="<%= TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION %>" />
+
+									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_OTHER) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_OTHER) %>" value="<%= TicketLinkConstants.TYPE_OTHER %>" />
+								</aui:select>
 							</c:if>
 						</div>
 
@@ -182,13 +175,9 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 				</div>
 			</liferay-ui:panel>
 
-			<br />
-
 			<span class="txt-b txt-up"><liferay-ui:message key="internal-only" /></span>
 
 			<span class="txt-b">(<liferay-ui:message key="will-not-be-displayed-to-the-customer" />)</span>
-
-			<br /><br />
 
 			<div>
 				<div class="inline-block w33">
@@ -203,52 +192,53 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 					<span class="txt-b"><liferay-ui:message key="subcomponent" />:</span>
 
-					<select name="<portlet:namespace />ticketEntrySubcomponent" onChange="<portlet:namespace />selectTicketEntrySubcomponent(this.value);">
+					<aui:select label="" name="ticketEntrySubcomponent" onChange='<%= renderResponse.getNamespace() + "selectTicketEntrySubcomponent(this.value);" %>'>
 						<c:if test="<%= ticketEntry.getSubcomponent() <= 0 %>">
-							<option value="0"><liferay-ui:message key="none" /></option>
+							<aui:option label="" value="0" />
 						</c:if>
 
 						<c:if test="<%= !ArrayUtil.contains(subcomponents, TicketEntryConstants.SUBCOMPONENT_OTHER) %>">
-							<option <%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "selected" : "" %> value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>"><liferay-ui:message key="other" /></option>
+							<aui:option label="other" selected="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) %>" value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>" />
 						</c:if>
 
 						<%
 						for (int curSubcomponent : subcomponents) {
 						%>
 
-							<option <%= (curSubcomponent == subcomponent) ? "selected" : "" %> value="<%= curSubcomponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %></option>
+							<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
 
 						<%
 						}
 						%>
 
-					</select>
+					</aui:select>
 
-					<input class="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "hide" %>" id="<portlet:namespace />ticketEntrySubcomponentCustom" name="<portlet:namespace />ticketEntrySubcomponentCustom" type="text" value="<%= HtmlUtil.escapeAttribute(subcomponentCustom) %>" />
+					<aui:input cssClass="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "hide" %>" label="" name="ticketEntrySubcomponentCustom" type="text" value="<%= HtmlUtil.escapeAttribute(subcomponentCustom) %>" />
 				</div>
 
 				<div class="inline-block w33">
 					<span class="txt-b"><liferay-ui:message key="issue-type" />:</span>
 
-					<select name="<portlet:namespace />issueType">
-						<option value="0"></option>
-						<option <%= (issueType == TicketSolutionConstants.ISSUE_TYPE_BUG) ? "selected" : "" %> value="<%= TicketSolutionConstants.ISSUE_TYPE_BUG %>"><liferay-ui:message key="bug" /></option>
-						<option <%= (issueType == TicketSolutionConstants.ISSUE_TYPE_CONFIGURATION) ? "selected" : "" %> value="<%= TicketSolutionConstants.ISSUE_TYPE_CONFIGURATION %>"><liferay-ui:message key="configuration" /></option>
-					</select>
+					<aui:select label="" name="issueType">
+						<aui:option value="0" />
+
+						<aui:option label="bug" selected="<%= issueType == TicketSolutionConstants.ISSUE_TYPE_BUG %>" value="<%= TicketSolutionConstants.ISSUE_TYPE_BUG %>" />
+
+						<aui:option label="configuration" selected="<%= issueType == TicketSolutionConstants.ISSUE_TYPE_CONFIGURATION %>" value="<%= TicketSolutionConstants.ISSUE_TYPE_CONFIGURATION %>" />
+					</aui:select>
 				</div>
 			</div>
-
-			<br />
 
 			<div>
 				<span class="highlighted-flag">*</span>
 
 				<span class="txt-b"><liferay-ui:message key="issue-summary" />:</span>
 
-				<select id="<portlet:namespace />useCustomerSummary" name="<portlet:namespace />useCustomerSummary" onchange="<portlet:namespace />toggleIssueSummary(this.value);">
-					<option <%= useCustomerSummary ? "selected" : "" %> value="1"><liferay-ui:message key="customers-description-accurately-captures-the-issue" /></option>
-					<option <%= !useCustomerSummary ? "selected" : "" %> value="0"><liferay-ui:message key="customers-description-does-not-accurately-capture-the-issue" /></option>
-				</select>
+				<aui:select label="" name="useCustomerSummary" onChange='<%= renderResponse.getNamespace() + "toggleIssueSummary(this.value);" %>'>
+					<aui:option label="customers-description-accurately-captures-the-issue" selected="<%= useCustomerSummary %>" value="1" />
+
+					<aui:option label="customers-description-does-not-accurately-capture-the-issue" selected="<%= !useCustomerSummary %>" value="0" />
+				</aui:select>
 
 				<div class="<%= useCustomerSummary ? "hide" : "" %>" id="<portlet:namespace />issueSummaryContainer">
 					<span><liferay-ui:message key="please-provide-the-correct-description-of-the-issue-in-this-ticket-be-sure-to-include-any-details-that-may-be-relevant-to-the-cause-of-the-issue-as-this-information-will-be-used-for-internal-auditing-and-for-reference-by-other-engineers" /></span>
@@ -261,100 +251,91 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 				</div>
 			</div>
 
-			<br />
-
 			<div>
-				<input <%= reviewForKB ? "checked" : "" %> name="<portlet:namespace />reviewForKB" type="checkbox" />
+				<aui:input label="this-issue-should-be-reviewed-and-considered-to-be-added-as-an-article-in-the-knowledge-base" checked="<%= reviewForKB %>" name="reviewForKB" type="checkbox" />
 
-				<liferay-ui:message key="this-issue-should-be-reviewed-and-considered-to-be-added-as-an-article-in-the-knowledge-base" />
-			</div>
+				<aui:input label="this-issue-only-applies-to-this-customer" checked="<%= customerSpecific %>" name="customerSpecific" type="checkbox" />
 
-			<div>
-				<input <%= customerSpecific ? "checked" : "" %> name="<portlet:namespace />customerSpecific" type="checkbox" />
+				<aui:input label="this-issue-only-applies-to-this-version-of-liferay" hecked="<%= versionSpecific %>" name="versionSpecific" type="checkbox" />
 
-				<liferay-ui:message key="this-issue-only-applies-to-this-customer" />
-			</div>
-
-			<div>
-				<input <%= versionSpecific ? "checked" : "" %> name="<portlet:namespace />versionSpecific" type="checkbox" />
-
-				<liferay-ui:message key="this-issue-only-applies-to-this-version-of-liferay" />
-			</div>
-
-			<div>
-				<input <%= environmentSpecific ? "checked" : "" %> name="<portlet:namespace />environmentSpecific" type="checkbox" />
-
-				<liferay-ui:message key="this-issue-only-applies-to-this-environment" />
-			</div>
-
-			<c:if test="<%= ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION %>">
-				<div>
-					<input <%= skipTesting ? "checked" : "" %> name="<portlet:namespace />skipTesting" onChange="<portlet:namespace />updateSkipTesting(this.checked);" type="checkbox" />
-
-					<liferay-ui:message key="this-solution-does-not-require-customer-testing" />
+				<aui:input label="this-issue-only-applies-to-this-environment" checked="<%= environmentSpecific %>" name="environmentSpecific" type="checkbox" />
 				</div>
-			</c:if>
+
+				<c:if test="<%= ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION %>">
+					<aui:input label="this-solution-does-not-require-customer-testing" checked="<%= skipTesting %>" name="skipTesting" onChange='<%= renderResponse.getNamespace() + "updateSkipTesting(this.checked);" %>' type="checkbox" />
+				</c:if>
+			</div>
 		</div>
 
-		<div>
-			<input class="aui-button-input" type="submit" value="<liferay-ui:message key="send" />" />
+		<aui:button type="submit" value="send" />
 
-			<input class="aui-button-input" onClick="window.close();" type="button" value="<liferay-ui:message key="cancel" />" />
-		</div>
+		<aui:button onClick="window.close();" type="button" value="cancel" />
 	</div>
 </aui:form>
 
 <aui:script>
+	Liferay.provide(
+		window,
+		'<portlet:namespace />selectTicketEntrySubcomponent',
+		function(subcomponent) {
+			var A = AUI();
+
+			var subcomponentCustom = A.one('#<portlet:namespace />ticketEntrySubcomponentCustom');
+
+			if (subcomponentCustom) {
+				var isSubcomponent = subcomponent == '<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>';
+
+				subcomponentCustom.toggle(isSubcomponent);
+
+				if (!isSubcomponent) {
+					subcomponentCustom.val('');
+				}
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />toggleIssueSummary',
+		function(useCustomerSummary) {
+			var A = AUI();
+
+			var issueSummaryContainer = A.one('#<portlet:namespace />issueSummaryContainer');
+
+			if (issueSummaryContainer) {
+				issueSummaryContainer.toggle(useCustomerSummary == 0);
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateSkipTesting',
+		function(skipTesting) {
+			var A = AUI();
+
+			var hotfixCheckboxes = A.all('.hotfix');
+
+			hotfixCheckboxes.each(
+				function(item) {
+					item.toggle(!skipTesting);
+				}
+			);
+		},
+		['aui-base']
+	);
+</aui:script>
+
+<aui:script use="aui-base">
 	<c:if test="<%= (ticketEntry != null) && (ticketEntry.getStatus() == TicketEntryConstants.STATUS_SOLUTION_PROPOSED) %>">
 		window.close();
 	</c:if>
 
 	var useCustomerSummary = A.one('#<portlet:namespace />useCustomerSummary');
 
-	<portlet:namespace />toggleIssueSummary(useCustomerSummary.val());
-
-	function <portlet:namespace />selectTicketEntrySubcomponent(subcomponent) {
-		var A = AUI();
-
-		var subcomponentCustom = A.one('#<portlet:namespace />ticketEntrySubcomponentCustom');
-
-		if (subcomponent == '<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>') {
-			subcomponentCustom.show();
-		}
-		else {
-			subcomponentCustom.hide();
-
-			subcomponentCustom.val('');
-		}
-	}
-
-	function <portlet:namespace />toggleIssueSummary(useCustomerSummary) {
-		var A = AUI();
-
-		var issueSummaryContainer = A.one('#<portlet:namespace />issueSummaryContainer');
-
-		if (useCustomerSummary == 0) {
-			issueSummaryContainer.show();
-		}
-		else {
-			issueSummaryContainer.hide();
-		}
-	}
-
-	function <portlet:namespace />updateSkipTesting(skipTesting) {
-		var A = AUI();
-
-		var hotfixCheckboxes = A.all('.hotfix');
-
-		hotfixCheckboxes.each(
-			function(item, index, collection) {
-				if (skipTesting) {
-					item.hide();
-				}
-				else {
-					item.show();
-				}
-			}
-		);
+	if (useCustomerSummary) {
+		<portlet:namespace />toggleIssueSummary(useCustomerSummary.val());
 	}
 </aui:script>
