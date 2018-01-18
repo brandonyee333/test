@@ -80,7 +80,7 @@
 <div class="customer-downloads-template">
 	<p>
 		<a href="$linkToArticle">
-			<img src="$iconUrl" style="margin-left: 9px; margin-right: 9px; margin-top: 5px; margin-bottom: 5px; float: left; width: 64px; height: 64px;" />
+			<img src="$iconUrl" style="float: left; height: 64px; margin: 5px 9px; width: 64px;" />
 		</a>
 
 		<a href="$linkToArticle">
@@ -130,7 +130,7 @@
 						$readMoreContent.getData()
 					</p>
 
-					#if ($displayFixpackLink.getData() == "true")
+					#if (($displayFixpackLink.getData() == "true") || ($displayPatchLink.getData() == "true"))
 						<p>
 							For installation instructions, please refer to the following Knowledge Base article:
 						</p>
@@ -138,18 +138,6 @@
 						<div>
 							<p>
 								<a href="https://www.liferay.com/group/customer/knowledge/kb/-/knowledge_base/article/14991389">Applying Fix Packs to the Liferay Portal</a>
-							</p>
-						</div>
-					#end
-
-					#if ($displayPatchLink.getData() == "true")
-						<p>
-							For installation instructions, please refer to the following Knowledge Base article:
-						</p>
-
-						<div>
-							<p>
-								<a href="https://www.liferay.com/group/customer/knowledge/kb/-/knowledge_base/article/14991389</a>
 							</p>
 						</div>
 					#end
@@ -168,7 +156,7 @@
 				$readMoreContent.getData()
 			</p>
 
-			#if ($displayFixpackLink.getData() == "true")
+			#if (($displayFixpackLink.getData() == "true") || ($displayPatchLink.getData() == "true"))
 				<p>
 					For installation instructions, please refer to the following Knowledge Base article:
 				</p>
@@ -176,18 +164,6 @@
 				<div>
 					<p>
 						<a href="https://www.liferay.com/group/customer/knowledge/kb/-/knowledge_base/article/14991389">Applying Fix Packs to the Liferay Portal</a>
-					</p>
-				</div>
-			#end
-
-			#if ($displayPatchLink.getData() == "true")
-				<p>
-					For installation instructions, please refer to the following Knowledge Base article:
-				</p>
-
-				<div>
-					<p>
-						<a href="https://www.liferay.com/group/customer/knowledge/kb/-/knowledge_base/article/14991389">Applying Patches to the Liferay Portal</a>
 					</p>
 				</div>
 			#end
