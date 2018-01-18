@@ -281,7 +281,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 	);
 
 	function <portlet:namespace />updateDescription() {
-		var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />tabContent', '<portlet:namespace />ticketFade', '<portlet:namespace />ticketFilter'];
+		var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />tabContent', '<portlet:namespace />detailViewFade', '<portlet:namespace />detailViewFilter'];
 		var offsetElementIds = ['<portlet:namespace />showMoreButtonContainer', '<portlet:namespace />ticketTabContent'];
 
 		var showMoreButton = document.getElementById('<portlet:namespace />showMoreButton');

@@ -122,8 +122,8 @@ request.setAttribute("edit_ticket_entry.jsp-supportResponse", supportResponse);
 request.setAttribute("edit_ticket_entry.jsp-ticketWorker", ticketWorker);
 %>
 
-<div class="ticket-filter" id="<portlet:namespace />ticketFilter">
-	<div class="ticket-fade" id="<portlet:namespace />ticketFade"></div>
+<div class="detail-view-filter" id="<portlet:namespace />detailViewFilter">
+	<div class="detail-view-fade" id="<portlet:namespace />detailViewFade"></div>
 </div>
 
 <liferay-util:include page="/support/2/edit_ticket_entry/exceptions.jsp" servletContext="<%= application %>" />
@@ -269,7 +269,7 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 		false
 	);
 
-	var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />ticketFade', '<portlet:namespace />ticketFilter'];
+	var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />detailViewFade', '<portlet:namespace />detailViewFilter'];
 	var offsetElementIds = ['<portlet:namespace />showMoreButtonContainer', '<portlet:namespace />ticketTabContent'];
 
 	window.addEventListener(

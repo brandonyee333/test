@@ -22,7 +22,7 @@ String backURL = (String)request.getAttribute("edit_account_entry.jsp-backURL");
 PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp-portletURL");
 %>
 
-<div class="account-header">
+<div class="detail-view-header">
 	<div class="back-link clearfix txt-sb">
 		<a href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back" /></a>
 	</div>

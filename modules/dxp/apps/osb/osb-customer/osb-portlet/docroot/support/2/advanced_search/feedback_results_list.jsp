@@ -75,7 +75,7 @@ boolean paginate = ParamUtil.getBoolean(request, "paginate");
 				</div>
 			</div>
 
-			<div class="ticket-feedback-fade"></div>
+			<div class="detail-view-fade"></div>
 		</div>
 
 		<div class="results-table <%= HtmlUtil.escapeAttribute(id) %>">

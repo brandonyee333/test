@@ -66,8 +66,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	request.setAttribute("edit_account_entry.jsp-ticketWorker", ticketWorker);
 	%>
 
-	<div class="account-filter" id="<portlet:namespace />accountFilter">
-		<div class="account-fade" id="<portlet:namespace />accountFade"></div>
+	<div class="detail-view-filter" id="<portlet:namespace />detailViewFilter">
+		<div class="detail-view-fade" id="<portlet:namespace />detailViewFade"></div>
 	</div>
 
 	<liferay-util:include page="/support/2/edit_account_entry/header.jsp" servletContext="<%= application %>" />

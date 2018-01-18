@@ -236,6 +236,13 @@
 		padding-top: 15px;
 	}
 
+	.detail-view-fade {
+		background: linear-gradient(to bottom, white 2%, rgba(255, 255, 255, 0) 100%);
+		height: 20px;
+		position: absolute;
+		width: 100%;
+	}
+
 	.partner-column {
 		&.first-line-support {
 			width: 30%;
@@ -369,13 +376,6 @@
 		&.subject {
 			width: 25.5%;
 		}
-	}
-
-	.ticket-fade {
-		background: linear-gradient(to bottom, white 2%, rgba(255, 255, 255, 0) 100%);
-		height: 20px;
-		position: absolute;
-		width: 100%;
 	}
 
 	.ticket-feedback-column {

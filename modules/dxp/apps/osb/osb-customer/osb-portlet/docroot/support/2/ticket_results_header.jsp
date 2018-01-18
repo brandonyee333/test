@@ -149,7 +149,7 @@ if (notification) {
 	</c:if>
 
 	<c:if test="<%= fade %>">
-		<div class="ticket-fade"></div>
+		<div class="detail-view-fade"></div>
 	</c:if>
 </div>
 
@@ -258,7 +258,7 @@ if (notification) {
 		</c:if>
 
 		<c:if test="<%= fade %>">
-			<div class="ticket-fade"></div>
+			<div class="detail-view-fade"></div>
 		</c:if>
 	</div>
 </c:if>

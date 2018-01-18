@@ -36,8 +36,8 @@ request.setAttribute("edit_partner_entry.jsp-partnerEntry", partnerEntry);
 request.setAttribute("edit_partner_entry.jsp-portletURL", portletURL);
 %>
 
-<div class="partner-filter" id="<portlet:namespace />partnerFilter">
-	<div class="partner-fade" id="<portlet:namespace />partnerFade"></div>
+<div class="detail-view-filter" id="<portlet:namespace />detailViewFilter">
+	<div class="detail-view-fade" id="<portlet:namespace />detailViewFade"></div>
 </div>
 
 <liferay-util:include page="/support/2/edit_partner_entry/header.jsp" servletContext="<%= application %>" />

@@ -63,7 +63,7 @@ boolean ticketWorker = liferayIncOrg || supportPartnerWorker;
 				</div>
 			</div>
 
-			<div class="account-fade"></div>
+			<div class="detail-view-fade"></div>
 		</div>
 
 		<div class="results-table <%= HtmlUtil.escapeAttribute(id) %>">

@@ -21,7 +21,7 @@ String backURL = (String)request.getAttribute("edit_partner_entry.jsp-backURL");
 PartnerEntry partnerEntry = (PartnerEntry)request.getAttribute("edit_partner_entry.jsp-partnerEntry");
 %>
 
-<div class="partner-header">
+<div class="detail-view-header">
 	<div class="back-link clearfix txt-sb">
 		<a href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back" /></a>
 	</div>

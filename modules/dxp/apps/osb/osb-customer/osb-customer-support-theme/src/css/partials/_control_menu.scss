@@ -1,6 +1,6 @@
 .has-control-menu {
 	&.open {
-		.account-filter, .account-header, .discussion .tabs.pinned, .partner-filter, .partner-header, .tab-view.details .tabs, .ticket-filter, .ticket-header {
+		.detail-view-filter, .detail-view-header, .discussion .tabs.pinned, .tab-view.details .tabs {
 			left: $sidenav-width + $lesa-nav-width + $standard-spacing;
 		}
 
@@ -33,23 +33,31 @@
 		margin-top: $banner-height;
 	}
 
-	.account-fade, .partner-fade, .ticket-fade  {
+	.details.tab-view .tabs {
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-heading-height + $standard-spacing;
+
+		@include sm() {
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-heading-height + $standard-spacing;
+		}
+	}
+
+	.detail-view-fade, .discussion .tabs.pinned, .ticket-sidebar {
 		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height;
 
 		@include sm() {
 			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height;
 		}
+	}
 
-		&.pinned {
-			top: $has-control-menu-top-mobile + $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
+	.detail-view-fade.pinned {
+		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
 
-			@include sm() {
-				top: $has-control-menu-top-desktop + $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
-			}
+		@include sm() {
+			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
 		}
 	}
 
-	.account-filter, .partner-filter, .ticket-filter {
+	.detail-view-filter {
 		height: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height;
 
 		@include sm() {
@@ -65,20 +73,12 @@
 		}
 	}
 
-	.details.tab-view .tabs {
-		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-heading-height + $standard-spacing;
-
-		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-heading-height + $standard-spacing;
-		}
+	.detail-view-filter, .detail-view-header, .lesa-nav, .lesa-mobile-nav-wrapper, .tab-view.details .tabs {
+		transition: $sidenav-transition;
 	}
 
-	.discussion .tabs.pinned, .ticket-sidebar {
-		top: $has-control-menu-top-mobile + $banner-height + $ticket-view-header-height;
-
-		@include sm() {
-			top: $has-control-menu-top-desktop + $banner-height + $ticket-view-header-height;
-		}
+	.discussion .tabs.pinned {
+		transition: left 0.5s ease;
 	}
 
 	.lesa-announcements-notification {
@@ -91,9 +91,5 @@
 
 	.lesa-mobile-nav-wrapper {
 		top: $has-control-menu-top-mobile + $banner-height;
-	}
-
-	.account-filter, .account-header, .lesa-nav, .lesa-mobile-nav-wrapper, .partner-filter, .partner-header, .tab-view.details .tabs, .ticket-filter, .ticket-header {
-		transition: $sidenav-transition;
 	}
 }

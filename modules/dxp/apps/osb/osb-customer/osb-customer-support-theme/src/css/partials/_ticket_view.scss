@@ -32,7 +32,7 @@
 
 /* ---------- Heading ---------- */
 
-.account-header, .partner-header, .ticket-header {
+.detail-view-header {
 	left: calc(2vw - -80px);
 	max-height: 120px;
 	position: fixed;
@@ -75,7 +75,7 @@
 
 /* ---------- Tab navigation ---------- */
 
-.account-fade, .partner-fade, .ticket-fade {
+.detail-view-fade {
 	background: linear-gradient(to bottom, white 2%, rgba(255, 255, 255, 0) 100%);
 	height: 20px;
 	left: inherit;
@@ -89,7 +89,7 @@
 	}
 }
 
-.account-filter, .partner-filter, .ticket-filter {
+.detail-view-filter {
 	background: #FFF;
 	height: $banner-height + $ticket-view-header-height;
 	left: calc(2vw - -80px);
