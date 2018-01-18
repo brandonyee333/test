@@ -63,15 +63,19 @@ AUI().use(
 				winHeight = document.documentElement.clientHeight;
 			}
 
-			var bannerHeight = A.one('#banner').get('clientHeight');
+			var banner = A.one('#banner');
 
-			if (bannerHeight) {
-				winHeight -= bannerHeight;
+			if (banner) {
+				var bannerHeight = banner.get('clientHeight');
+
+				if (bannerHeight) {
+					winHeight -= bannerHeight;
+				}
+
+				winHeight -= 75;
+
+				responsiveContentHeightNodes.setStyle('max-height', winHeight);
 			}
-
-			winHeight -= 75;
-
-			responsiveContentHeightNodes.setStyle('max-height', winHeight);
 		};
 
 		if (!responsiveContentHeightNodes.isEmpty()) {
