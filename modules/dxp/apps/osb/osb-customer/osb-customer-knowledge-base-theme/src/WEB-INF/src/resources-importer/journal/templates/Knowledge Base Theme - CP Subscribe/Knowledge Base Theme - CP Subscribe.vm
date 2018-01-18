@@ -12,16 +12,6 @@
 	.cp-subscribe-container .content-column .content-column-content .cp-subscribe .btn .icon {
 		display: none;
 	}
-
-	@media (max-width: 720px) {
-		.cp-subscribe-container .cp-subscribe-content {
-			padding: 0 10px;
-		}
-
-		.cp-subscribe-container .cp-subscribe-content .w75 .right-column {
-			padding: 0 !important;
-		}
-	}
 </style>
 
 <script type="text/javascript">
@@ -44,9 +34,9 @@
 				subscribeBtn.parentNode.replaceChild(subscribe, subscribeBtn);
 			}
 			else {
-				var subscribeContainer = document.getElementById('subscribe-container');
+				var subscribeContainer = A.one('#subscribe-container');
 
-				subscribeContainer.classList.add('aui-helper-hidden');
+				subscribeContainer.hide();
 			}
 		}
 	);

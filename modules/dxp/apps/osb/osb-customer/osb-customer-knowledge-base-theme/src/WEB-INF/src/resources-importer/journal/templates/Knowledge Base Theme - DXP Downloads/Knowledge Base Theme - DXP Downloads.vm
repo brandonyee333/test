@@ -93,7 +93,7 @@
 				#set ($hide = "")
 
 				#if ($downloadGroups.downloads.releaseNotesLink.data == "")
-					#set ($hide = "aui-helper-hidden")
+					#set ($hide = "hide")
 				#end
 
 				<a class="btn $hide release-notes" href="$downloadGroups.downloads.releaseNotesLink.data">Release Notes</a>
@@ -109,7 +109,7 @@
 
 			<div class="details toggle-content">
 				#foreach ($detailSet in $downloadDetails)
-					#set ($hide = "aui-helper-hidden")
+					#set ($hide = "hide")
 					#set ($index = $velocityCount - 1)
 
 					#if ($velocityCount == 1)

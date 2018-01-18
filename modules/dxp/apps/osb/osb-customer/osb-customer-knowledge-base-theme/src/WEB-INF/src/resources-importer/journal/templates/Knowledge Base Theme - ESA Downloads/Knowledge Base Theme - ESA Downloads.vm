@@ -146,7 +146,7 @@
 						#set ($hide = "")
 
 						#if ($downloadGroups.downloads.releaseNotesLink.data == "")
-							#set ($hide = "aui-helper-hidden")
+							#set ($hide = "hide")
 						#end
 
 						<a class="btn $buttonStyle $hide release-notes" href="$downloadGroups.downloads.releaseNotesLink.data" id="releaseNotes${articleId}">Release Notes</a>
@@ -162,14 +162,14 @@
 
 				<div class="details-section" id="detailsSection${articleId}">
 					#if ($firstDetailSet.isEmpty())
-						#set ($hide = "aui-helper-hidden")
+						#set ($hide = "hide")
 					#end
 
 					<a class="class-toggle ${hide}" data-target-node="#detailsSection${articleId}" href="javascript:;" id="detailsToggler${articleId}">#language("details")</a>
 
 					<div class="details toggle-content">
 						#foreach ($detailSet in $downloadDetails)
-							#set ($hide = "aui-helper-hidden")
+							#set ($hide = "hide")
 							#set ($index = $velocityCount - 1)
 
 							#if ($velocityCount == 1)
