@@ -124,7 +124,7 @@ class MetricsConsole extends JSXComponent {
 				<div class="navigation-sidebar">
 					<NavigationHeader mainHeader={Liferay.Language.get('watson-metrics')} />
 
-					{(action && action === 'heatmap') &&
+					{action === 'heatmap' &&
 						<div class="filter-header">
 							{Liferay.Language.get('filter-by')}
 						</div> &&
@@ -138,7 +138,7 @@ class MetricsConsole extends JSXComponent {
 						/>
 					}
 
-					{(action && action === 'report') &&
+					{action === 'report' &&
 						<div class="filter-header">
 							{Liferay.Language.get('filter-by')}
 						</div> &&
