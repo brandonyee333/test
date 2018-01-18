@@ -39,73 +39,73 @@
 			"options": [
 				{
 					"label": {
-						"en_US": " Patch: Security "
+						"en_US": "Patch: Security"
 					},
 					"value": "Security"
 				},
 				{
 					"label": {
-						"en_US": " Patch: Tool "
+						"en_US": "Patch: Tool"
 					},
 					"value": "Tool"
 				},
 				{
 					"label": {
-						"en_US": " Patch: Update "
+						"en_US": "Patch: Update"
 					},
 					"value": "Update"
 				},
 				{
 					"label": {
-						"en_US": " Portal: Bundle "
+						"en_US": "Portal: Bundle"
 					},
 					"value": "Bundle"
 				},
 				{
 					"label": {
-						"en_US": " Portal: For Developers "
+						"en_US": "Portal: For Developers"
 					},
 					"value": "For Developers"
 				},
 				{
 					"label": {
-						"en_US": " Portal: WAR "
+						"en_US": "Portal: WAR"
 					},
 					"value": "WAR"
 				},
 				{
 					"label": {
-						"en_US": " Portal: Database "
+						"en_US": "Portal: Database"
 					},
 					"value": "Database"
 				},
 				{
 					"label": {
-						"en_US": " Plugin: Hook "
+						"en_US": "Plugin: Hook"
 					},
 					"value": "Hook"
 				},
 				{
 					"label": {
-						"en_US": " Plugin: Portlet "
+						"en_US": "Plugin: Portlet"
 					},
 					"value": "Portlet"
 				},
 				{
 					"label": {
-						"en_US": " Plugin: Template "
+						"en_US": "Plugin: Template"
 					},
 					"value": "Template"
 				},
 				{
 					"label": {
-						"en_US": " Plugin: Web "
+						"en_US": "Plugin: Web"
 					},
 					"value": "Web"
 				},
 				{
 					"label": {
-						"en_US": " Documentation: Document "
+						"en_US": "Documentation: Document"
 					},
 					"value": "Document"
 				}
@@ -157,158 +157,158 @@
 				"en_US": "affected_versions"
 			},
 			"localizable": true,
-			"multiple": false,
+			"multiple": true,
 			"name": "affectedVersions",
 			"options": [
 				{
 					"label": {
-						"en_US": " All Versions "
+						"en_US": "All Versions"
 					},
 					"value": "All Versions"
 				},
 				{
 					"label": {
-						"en_US": " 5.1 EE Versions "
+						"en_US": "5.1 EE Versions"
 					},
 					"value": "5.1 EE Versions"
 				},
 				{
 					"label": {
-						"en_US": " 5.2 EE Versions "
+						"en_US": "5.2 EE Versions"
 					},
 					"value": "5.2 EE Versions"
 				},
 				{
 					"label": {
-						"en_US": " 6.0 EE Versions "
+						"en_US": "6.0 EE Versions"
 					},
-					"value": " 6.0 EE Versions "
+					"value": "6.0 EE Versions"
 				},
 				{
 					"label": {
-						"en_US": " 6.1 EE Versions "
+						"en_US": "6.1 EE Versions"
 					},
-					"value": " 6.1 EE Versions "
+					"value": "6.1 EE Versions"
 				},
 				{
 					"label": {
-						"en_US": " 6.2 EE Versions"
+						"en_US": "6.2 EE Versions"
 					},
-					"value": " 6.2 EE Versions"
+					"value": "6.2 EE Versions"
 				},
 				{
 					"label": {
-						"en_US": " 5.1.3 "
+						"en_US": "5.1.3"
 					},
-					"value": " 5.1.3 "
+					"value": "5.1.3"
 				},
 				{
 					"label": {
-						"en_US": " 5.1.4 "
+						"en_US": "5.1.4"
 					},
-					"value": " 5.1.4 "
+					"value": "5.1.4"
 				},
 				{
 					"label": {
-						"en_US": " 5.1.5 "
+						"en_US": "5.1.5"
 					},
-					"value": " 5.1.5 "
+					"value": "5.1.5"
 				},
 				{
 					"label": {
-						"en_US": " 5.1.6 "
+						"en_US": "5.1.6"
 					},
-					"value": " 5.1.6 "
+					"value": "5.1.6"
 				},
 				{
 					"label": {
-						"en_US": " 5.1.8 "
+						"en_US": "5.1.8"
 					},
-					"value": " 5.1.8 "
+					"value": "5.1.8"
 				},
 				{
 					"label": {
-						"en_US": " 5.1.7 "
+						"en_US": "5.1.7"
 					},
-					"value": " 5.1.7 "
+					"value": "5.1.7"
 				},
 				{
 					"label": {
-						"en_US": " 5.2.4 "
+						"en_US": "5.2.4"
 					},
-					"value": " 5.2.4 "
+					"value": "5.2.4"
 				},
 				{
 					"label": {
-						"en_US": " 5.2.5 "
+						"en_US": "5.2.5"
 					},
-					"value": " 5.2.5 "
+					"value": "5.2.5"
 				},
 				{
 					"label": {
-						"en_US": " 5.2.6 "
+						"en_US": "5.2.6"
 					},
-					"value": " 5.2.6 "
+					"value": "5.2.6"
 				},
 				{
 					"label": {
-						"en_US": " 5.2.7 "
+						"en_US": "5.2.7"
 					},
-					"value": " 5.2.7 "
+					"value": "5.2.7"
 				},
 				{
 					"label": {
-						"en_US": " 5.2.8 "
+						"en_US": "5.2.8"
 					},
-					"value": " 5.2.8 "
+					"value": "5.2.8"
 				},
 				{
 					"label": {
-						"en_US": " 5.2.9 "
+						"en_US": "5.2.9"
 					},
-					"value": " 5.2.9 "
+					"value": "5.2.9"
 				},
 				{
 					"label": {
-						"en_US": " 6.0.10 "
+						"en_US": "6.0.10"
 					},
-					"value": " 6.0.10 "
+					"value": "6.0.10"
 				},
 				{
 					"label": {
-						"en_US": " 6.0.11 "
+						"en_US": "6.0.11"
 					},
-					"value": " 6.0.11 "
+					"value": "6.0.11"
 				},
 				{
 					"label": {
-						"en_US": " 6.0.12 "
+						"en_US": "6.0.12"
 					},
-					"value": " 6.0.12 "
+					"value": "6.0.12"
 				},
 				{
 					"label": {
-						"en_US": " 6.1.10 "
+						"en_US": "6.1.10"
 					},
-					"value": " 6.1.10 "
+					"value": "6.1.10"
 				},
 				{
 					"label": {
-						"en_US": " 6.1.20 "
+						"en_US": "6.1.20"
 					},
-					"value": " 6.1.20 "
+					"value": "6.1.20"
 				},
 				{
 					"label": {
-						"en_US": " 6.1.30 "
+						"en_US": "6.1.30"
 					},
-					"value": " 6.1.30 "
+					"value": "6.1.30"
 				},
 				{
 					"label": {
-						"en_US": " 6.2 EE"
+						"en_US": "6.2 EE"
 					},
-					"value": " 6.2 EE"
+					"value": "6.2 EE"
 				}
 			],
 			"predefinedValue": {

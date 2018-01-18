@@ -28,15 +28,10 @@
 
 #set ($linkToArticle = "/group/customer/downloads/-/asset_publisher/YtYHVPRKNO6z/content/$reserved-article-url-title.data")
 
-#set ($test = $request.get("attributes").get("CURRENT_URL"))
+#set ($currentUrl = $request.get("attributes").get("CURRENT_URL"))
 
 <style>
-	.portlet-asset-publisher .asset-actions {
-		margin-top: 25px;
-	}
-
-	sub-grid .asset-content {
-		border-bottom: 1px solid #CCC;
+	.sub-grid .asset-content {
 		padding-bottom: 17px;
 	}
 
@@ -103,16 +98,15 @@
 
 			#foreach ($version in $affectedVersions.options)
 				#if ($velocityCount != 1)
-					-->,&nbsp;
+					,&nbsp;
 				#end
 
-				$version<!--
+				$version
 			#end
-			-->
 		</div>
 
 		<div>
-			<strong>Filesize:</strong> $fileSize.getData()
+			<strong>File Size:</strong> $fileSize.getData()
 		</div>
 
 		<div>
@@ -126,10 +120,10 @@
 		#end
 	</div>
 
-	#if ($test != $linkToArticle)
+	#if ($currentUrl != $linkToArticle)
 		#if ($readMoreContent.getData() != "")
 			<div class="read-more-wrapper">
-				<div class="full-body-$reserved-article-id.data aui-helper-hidden">
+				<div class="full-body-$reserved-article-id.data hide">
 					<!-- $linkToArticle -->
 
 					<p>
