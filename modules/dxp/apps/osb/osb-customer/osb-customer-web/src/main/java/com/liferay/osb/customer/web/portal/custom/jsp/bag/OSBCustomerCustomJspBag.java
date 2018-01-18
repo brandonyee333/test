@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.web.portal.custom.jsp.bag;
 
 import com.liferay.portal.custom.jsp.bag.BaseCustomJspBag;
+import com.liferay.portal.deploy.hot.CustomJspBag;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -28,5 +29,6 @@ import org.osgi.service.component.annotations.Component;
 		"context.name=OSB Customer Custom JSP Bag", "service.ranking:Integer=2"
 	}
 )
-public class OSBCustomerCustomJspBag extends BaseCustomJspBag {
+public class OSBCustomerCustomJspBag
+	extends BaseCustomJspBag implements CustomJspBag {
 }
