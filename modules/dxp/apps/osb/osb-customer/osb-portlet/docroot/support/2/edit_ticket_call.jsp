@@ -37,7 +37,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 	<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntryId) %>" />
 </portlet:actionURL>
 
-<aui:form action="<%= addTicketCallURL %>" cssClass="log-call-form" method="post" name="fm">
+<aui:form action="<%= addTicketCallURL %>" cssClass="log-call-form" method="post" name="addTicketCallFm">
 	<liferay-ui:error exception="<%= TicketCallCustomerNameException.class %>" message="please-enter-a-valid-customer-name" />
 	<liferay-ui:error exception="<%= TicketCallDateException.class %>" message="please-enter-a-valid-call-date" />
 	<liferay-ui:error exception="<%= TicketCallLengthException.class %>" message="please-enter-a-valid-call-length" />
@@ -139,7 +139,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		</div>
 	</div>
 
-	<div class="call-comments clearfix">
+	<div class="clearfix">
 		<div class="content-column w100">
 			<div class="content-column-content">
 				<span class="txt-b"><liferay-ui:message key="customer-confirmation" />: </span>

@@ -16,44 +16,38 @@
 
 <%@ include file="/support/2/init.jsp" %>
 
-<aui:form name="fm">
+<aui:form name="selectResolutionFm">
 	<div class="unit">
-		<h2 class="section-heading">
+		<h2>
 			<liferay-ui:message key="resolution" />
 		</h2>
 
-		<div>
-			<aui:select name="resolution">
-				<aui:option value="" />
+		<aui:select label="" name="resolution">
+			<aui:option value="" />
 
-				<%
-				List<ListType> resolutionTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION);
+			<%
+			List<ListType> resolutionTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION);
 
-				for (ListType resolutionType : resolutionTypes) {
-				%>
+			for (ListType resolutionType : resolutionTypes) {
+			%>
 
-					<aui:option label="<%= resolutionType.getName() %>" value="<%= resolutionType.getListTypeId() %>" />
+				<aui:option label="<%= resolutionType.getName() %>" value="<%= resolutionType.getListTypeId() %>" />
 
-				<%
-				}
-				%>
+			<%
+			}
+			%>
 
-			</aui:select>
-		</div>
+		</aui:select>
 
-		<h2 class="section-heading">
+		<h2>
 			<liferay-ui:message key="comment" />
 		</h2>
 
-		<div>
-			<aui:input name="addCommentBody" style="height: 250px; width: 700px;" type="textarea" wrap="soft" />
-		</div>
+		<aui:input label="" name="addCommentBody" style="height: 250px; width: 700px;" type="textarea" wrap="soft" />
 
-		<div>
-			<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "closeTicket();" %>' value="close-ticket" />
+		<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "closeTicket();" %>' value="close-ticket" />
 
-			<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
-		</div>
+		<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
 	</div>
 </aui:form>
 

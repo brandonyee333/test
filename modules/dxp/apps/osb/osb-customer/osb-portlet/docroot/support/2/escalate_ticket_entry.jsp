@@ -40,22 +40,16 @@
 			<portlet:param name="visibility" value="<%= String.valueOf(visibility) %>" />
 		</portlet:actionURL>
 
-		<aui:form action="<%= escalateTicketEntryURL %>" method="post" name="fm6">
-			<div class="unit">
-				<h1 class="section-heading">
-					<liferay-ui:message key="escalation-details" />
-				</h1>
+		<aui:form action="<%= escalateTicketEntryURL %>" method="post" name="escalateTicketFm">
+			<h2>
+				<liferay-ui:message key="escalation-details" />
+			</h2>
 
-				<div>
-					<aui:input label="" name="body" style="height: 250px; width: 750px;" type="textarea" value="<%= SupportUtil.getEscalationDetails() %>" wrap="soft" />
-				</div>
+			<aui:input label="" name="body" style="height: 250px; width: 750px;" type="textarea" value="<%= SupportUtil.getEscalationDetails() %>" wrap="soft" />
 
-				<div>
-					<aui:button cssClass="aui-button-input" type="submit" value="escalate" />
+			<aui:button cssClass="aui-button-input" type="submit" value="escalate" />
 
-					<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
-				</div>
-			</div>
+			<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
 		</aui:form>
 	</c:otherwise>
 </c:choose>
