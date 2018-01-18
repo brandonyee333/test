@@ -17,6 +17,7 @@
 <liferay-ui:search-container
 	headerNames="name,type,product"
 	iteratorURL="<%= portletURL %>"
+	total="<%= LicenseEntryLocalServiceUtil.getLicenseEntriesCount() %>"
 >
 	<liferay-ui:search-container-results
 		results="<%= LicenseEntryLocalServiceUtil.getLicenseEntries(searchContainer.getStart(), searchContainer.getEnd()) %>"
