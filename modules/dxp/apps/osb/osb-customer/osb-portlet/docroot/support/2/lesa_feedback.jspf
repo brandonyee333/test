@@ -79,7 +79,8 @@
 						<portlet:namespace />lesaFeedbackSummary: {
 							required: true
 						}
-					}
+					},
+					validateOnInput: true
 				}
 			);
 		}
