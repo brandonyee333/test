@@ -1,6 +1,6 @@
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import bridge from 'metal-react';
-import {isEmpty} from 'lodash';
+import {forEach} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
 
 import ContentHeader from './ContentHeader';
@@ -15,7 +15,7 @@ class MetricsReport extends JSXComponent {
 
 		const tableHeaderColumns = [];
 
-		if (!loading && !isEmpty(columns)) {
+		if (!loading) {
 			columns.forEach(
 				(item, index) => {
 					if (item) {
@@ -31,16 +31,17 @@ class MetricsReport extends JSXComponent {
 
 		const formattedData = [];
 
-		if (!loading && !isEmpty(data)) {
-			for (const key in data) {
-				if (data.hasOwnProperty(key)) {
-					const formattedObject = Object.assign({}, data[key]);
+		if (!loading) {
+			forEach(
+				data,
+				(item, index) => {
+					const formattedObject = Object.assign({}, item);
 
-					formattedObject.id = key;
+					formattedObject.id = index;
 
 					formattedData.push(formattedObject);
 				}
-			}
+			);
 		}
 
 		return (
