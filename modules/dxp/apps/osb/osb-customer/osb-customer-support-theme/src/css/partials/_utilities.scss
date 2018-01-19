@@ -23,10 +23,6 @@
 	margin: 10px 0;
 }
 
-.block {
-	display: block;
-}
-
 .circle-image {
 	background-position: center;
 	background-repeat: no-repeat;
@@ -79,14 +75,6 @@
 	padding-left: 25px;
 }
 
-.inline {
-	display: inline;
-}
-
-.inline-block {
-	display: inline-block;
-}
-
 .highlight-red {
 	color: #F00;
 	font-weight: bold;
@@ -96,10 +84,6 @@
 	color: #F00;
 	position: relative;
 	top: 4px;
-}
-
-.margin-top {
-	margin-top: 2em;
 }
 
 .pending {
@@ -160,4 +144,29 @@
 
 .visibility-workers {
 	background-color: $error;
+}
+
+/* ---------- Display ---------- */
+
+.block {
+	display: block;
+}
+
+.inline {
+	display: inline;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+/* ---------- Spacing ---------- */
+
+.margin-top {
+	margin-top: 2em;
+}
+
+.section-vertical-spacing {
+	padding-bottom: $standard-spacing;
+	padding-top: $standard-spacing;
 }

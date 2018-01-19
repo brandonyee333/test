@@ -94,7 +94,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 			<span class="txt-b">(<liferay-ui:message key="will-be-displayed-to-the-customer" />)</span>
 
-			<div class="solution-details-comments-container" id="<portlet:namespace />commentsContainer">
+			<div class="section-vertical-spacing solution-details-comments-container" id="<portlet:namespace />commentsContainer">
 				<div class="txt-b">
 					<span class="highlighted-flag">*</span>
 					<liferay-ui:message key="solution" />
@@ -175,9 +175,10 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 				</div>
 			</liferay-ui:panel>
 
-			<span class="txt-b txt-up"><liferay-ui:message key="internal-only" /></span>
-
-			<span class="txt-b">(<liferay-ui:message key="will-not-be-displayed-to-the-customer" />)</span>
+			<div class="section-vertical-spacing txt-b">
+				<span class="txt-up"><liferay-ui:message key="internal-only" /></span>
+				<span class="txt-b">(<liferay-ui:message key="will-not-be-displayed-to-the-customer" />)</span>
+			</div>
 
 			<div>
 				<div class="inline-block w33">
@@ -240,7 +241,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 					<aui:option label="customers-description-does-not-accurately-capture-the-issue" selected="<%= !useCustomerSummary %>" value="0" />
 				</aui:select>
 
-				<div class="<%= useCustomerSummary ? "hide" : "" %>" id="<portlet:namespace />issueSummaryContainer">
+				<div class="<%= useCustomerSummary ? "hide section-vertical-spacing" : "section-vertical-spacing" %>" id="<portlet:namespace />issueSummaryContainer">
 					<span><liferay-ui:message key="please-provide-the-correct-description-of-the-issue-in-this-ticket-be-sure-to-include-any-details-that-may-be-relevant-to-the-cause-of-the-issue-as-this-information-will-be-used-for-internal-auditing-and-for-reference-by-other-engineers" /></span>
 
 					<liferay-util:include page="/support/2/bbcode_editor.jsp" servletContext="<%= application %>">
