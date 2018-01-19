@@ -66,76 +66,75 @@ if (ticketCannedResponse != null) {
 	<liferay-ui:error exception="<%= TicketCannedResponseNameException.class %>" message="please-enter-a-valid-name" />
 
 	<table class="lfr-table">
+		<c:if test="<%= ticketCannedResponse != null %>">
+			<tr>
+				<td>
+					<liferay-ui:message key="default-language" />
+				</td>
+				<td>
+					<%= LocaleUtil.fromLanguageId(defaultLanguageId).getDisplayName(locale) %>
+				</td>
+			</tr>
+		</c:if>
 
-	<c:if test="<%= ticketCannedResponse != null %>">
 		<tr>
 			<td>
-				<liferay-ui:message key="default-language" />
+				<liferay-ui:message key='<%= (ticketCannedResponse != null) ? "language" : "default-language" %>' />
 			</td>
 			<td>
-				<%= LocaleUtil.fromLanguageId(defaultLanguageId).getDisplayName(locale) %>
+				<aui:select label="" name="languageId" onChange='<%= (ticketCannedResponse != null) ? (renderResponse.getNamespace() + "updateLanguage(this.value);") : "" %>'>
+
+					<%
+					Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
+
+					Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
+
+					for (int i = 0; i < locales.length; i++) {
+					%>
+
+						<option <%= languageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+
+					<%
+					}
+					%>
+
+				</aui:select>
+
+				<c:if test="<%= ticketCannedResponse != null %>">
+					<c:choose>
+						<c:when test="<%= !languageId.equals(defaultLanguageId) && ArrayUtil.contains(ticketCannedResponse.getAvailableLocales(), languageId) %>">
+							<aui:button onClick='<%= renderResponse.getNamespace() + "setDefaultLocale('" + languageId + "');" %>' value="set-default" />
+
+							<aui:button onClick='<%= renderResponse.getNamespace() + "removeCannedResponseLocale();" %>' value="remove" />
+						</c:when>
+						<c:when test="<%= !ArrayUtil.contains(ticketCannedResponse.getAvailableLocales(), languageId) %>">
+							(<liferay-ui:message key="new" />)
+						</c:when>
+					</c:choose>
+				</c:if>
 			</td>
 		</tr>
-	</c:if>
-
-	<tr>
-		<td>
-			<liferay-ui:message key='<%= (ticketCannedResponse != null) ? "language" : "default-language" %>' />
-		</td>
-		<td>
-			<aui:select label="" name="languageId" onChange='<%= (ticketCannedResponse != null) ? (renderResponse.getNamespace() + "updateLanguage(this.value);") : "" %>'>
-
-				<%
-				Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
-
-				Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
-
-				for (int i = 0; i < locales.length; i++) {
-				%>
-
-					<option <%= languageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
-
-				<%
-				}
-				%>
-
-			</aui:select>
-
-			<c:if test="<%= ticketCannedResponse != null %>">
-				<c:choose>
-					<c:when test="<%= !languageId.equals(defaultLanguageId) && ArrayUtil.contains(ticketCannedResponse.getAvailableLocales(), languageId) %>">
-						<aui:button onClick='<%= renderResponse.getNamespace() + "setDefaultLocale('" + languageId + "');" %>' value="set-default" />
-
-						<aui:button onClick='<%= renderResponse.getNamespace() + "removeCannedResponseLocale();" %>' value="remove" />
-					</c:when>
-					<c:when test="<%= !ArrayUtil.contains(ticketCannedResponse.getAvailableLocales(), languageId) %>">
-						(<liferay-ui:message key="new" />)
-					</c:when>
-				</c:choose>
-			</c:if>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<br />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="name" />
-		</td>
-		<td>
-			<aui:input cssClass="lfr-input-text" label="" name="name" onChange='<%= renderResponse.getNamespace() + "contentChanged();" %>' type="text" value="<%= name %>" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="content" /> <liferay-ui:icon-help message="canned-response-content-help" />
-		</td>
-		<td>
-			<aui:input cssClass="lfr-textarea" label="" name="content" onChange='<%= renderResponse.getNamespace() + "contentChanged();" %>' type="textarea" value="<%= content %>" />
-		</td>
-	</tr>
+		<tr>
+			<td colspan="2">
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="name" />
+			</td>
+			<td>
+				<aui:input cssClass="lfr-input-text" label="" name="name" onChange='<%= renderResponse.getNamespace() + "contentChanged();" %>' type="text" value="<%= name %>" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="content" /> <liferay-ui:icon-help message="canned-response-content-help" />
+			</td>
+			<td>
+				<aui:input cssClass="lfr-textarea" label="" name="content" onChange='<%= renderResponse.getNamespace() + "contentChanged();" %>' type="textarea" value="<%= content %>" />
+			</td>
+		</tr>
 	</table>
 
 	<br />

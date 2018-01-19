@@ -351,12 +351,12 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						</a>
 					</c:if>
 				</span> --%>
-				<portlet:renderURL var="corpProjectURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:renderURL var="selectCorpProjectURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_corp_project.jsp" />
 					<portlet:param name="callback" value="selectCorpProject" />
 				</portlet:renderURL>
 
-				<aui:button onClick="var corpProjectWindow = window.open('<%= corpProjectURL %>', 'corp-project', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); corpProjectWindow.focus();" value="select" />
+				<aui:button onClick="var corpProjectWindow = window.open('<%= selectCorpProjectURL %>', 'corp-project', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); corpProjectWindow.focus();" value="select" />
 
 				<aui:button onClick='<%= renderResponse.getNamespace() + "removeCorpProject();" %>' value="remove" />
 			</td>
@@ -443,11 +443,11 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					</c:choose>
 				</span>
 
-				<portlet:renderURL var="partnerURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:renderURL var="selectPartnerEntryURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_partner_entry.jsp" />
 				</portlet:renderURL>
 
-				<aui:button onClick="var partnerEntryWindow = window.open('<%= partnerURL %>', 'partner', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" value="select" />
+				<aui:button onClick="var partnerEntryWindow = window.open('<%= selectPartnerEntryURL %>', 'partner', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" value="select" />
 
 				<aui:button id="removePartnerEntryButton" onClick='<%= renderResponse.getNamespace() + "removePartnerEntry();" %>' value="remove" />
 			</td>
@@ -771,7 +771,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<portlet:namespace />addColumn(row, columnValues[i]);
 			}
 
-			<portlet:namespace />addColumn(row, '<input class="btn btn-default" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" type="button" value="<liferay-ui:message key="remove" />');
+			<portlet:namespace />addColumn(row, '<input class="btn btn-default" onClick="<portlet:namespace />removeRow(\'' + inputName + '\', \'' + value + '\', \'' + tableId + '\', this);" type="button" value="<liferay-ui:message key="remove" />" />');
 		}
 	}
 

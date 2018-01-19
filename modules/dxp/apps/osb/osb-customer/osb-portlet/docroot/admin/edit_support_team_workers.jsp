@@ -325,7 +325,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<aui:select label="" disabled="<%= !curUser.isActive() %>" name='<%= "role_" + curUser.getUserId() %>'>
+				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "role_" + curUser.getUserId() %>'>
 					<option></option>
 
 					<%

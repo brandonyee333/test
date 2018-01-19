@@ -155,7 +155,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<liferay-ui:search-container-column-text
 				name="role"
 			>
-				<aui:select disabled="<%= !curUser.isActive() %>" name='<%= "role_" + curUser.getUserId() %>' onChange='<%= renderResponse.getNamespace() + "setNotifications('" + curUser.getUserId() + "', this.value)" %>'>
+				<aui:select disabled="<%= !curUser.isActive() %>" name='<%= "role_" + curUser.getUserId() %>' onChange='<%= renderResponse.getNamespace() + "setNotifications('" + curUser.getUserId() + "', this.value);" %>'>
 					<option></option>
 
 					<%

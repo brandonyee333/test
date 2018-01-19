@@ -137,13 +137,13 @@ if (supportRegion != null) {
 			names="teams"
 		/>
 
-		<portlet:renderURL var="addTeamURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:renderURL var="selectSupportTeamURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 			<portlet:param name="mvcPath" value="/admin/select_support_team.jsp" />
 			<portlet:param name="callback" value="selectSupportTeam" />
 		</portlet:renderURL>
 
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= addTeamURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-team" />
+			<aui:button onClick="var categoryWindow = window.open('<%= selectSupportTeamURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-team" />
 		</div>
 
 		<br />

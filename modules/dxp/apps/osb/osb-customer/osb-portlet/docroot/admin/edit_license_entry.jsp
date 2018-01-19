@@ -35,8 +35,6 @@ long productEntryId = BeanParamUtil.getLong(licenseEntry, request, "productEntry
 String type = BeanParamUtil.getString(licenseEntry, request, "type");
 int portalVersionMin = BeanParamUtil.getInteger(licenseEntry, request, "portalVersionMin");
 int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVersionMax");
-
-List<ListType> portalVersionTypes = ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS);
 %>
 
 <portlet:actionURL name="updateLicenseEntry" var="updateLicenseEntryURL">
@@ -113,6 +111,11 @@ List<ListType> portalVersionTypes = ListTypeServiceUtil.getListTypes(ProductEntr
 				<liferay-ui:message key="portal-version-range-minimum" />
 			</td>
 			<td>
+
+				<%
+				List<ListType> portalVersionTypes = ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS);
+				%>
+
 				<aui:select label="" name="portalVersionMin">
 
 					<%

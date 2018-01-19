@@ -58,12 +58,12 @@ Date lastEnabledDate = calendar.getTime();
 
 				<input name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getAccountEntryName()) %>" />
 
-				<portlet:renderURL var="accountEntryURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:renderURL var="selectAccountEntryURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_account_entry.jsp" />
 					<portlet:param name="callback" value="selectAccountEntry" />
 				</portlet:renderURL>
 
-				<aui:button cssClass="aui-button-input" onClick="var accountEntryWindow = window.open('<%= accountEntryURL %>', 'account_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=700'); void(''); accountEntryWindow.focus();" value="choose" />
+				<aui:button cssClass="aui-button-input" onClick="var accountEntryWindow = window.open('<%= selectAccountEntryURL %>', 'account_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=700'); void(''); accountEntryWindow.focus();" value="choose" />
 			</td>
 			<td>
 				<aui:select label="" name="<%= displayTerms.PRODUCT_ENTRY_ID %>">
@@ -129,13 +129,13 @@ Date lastEnabledDate = calendar.getTime();
 
 				<input name="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
 
-				<portlet:renderURL var="createUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:renderURL var="selectCreateUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
 					<portlet:param name="userParam" value="orderEntryCreateUsers" />
 					<portlet:param name="callback" value="selectCreateUser" />
 				</portlet:renderURL>
 
-				<aui:button cssClass="aui-button-input" onClick="var createUserWindow = window.open('<%= createUserURL %>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" value="choose" />
+				<aui:button cssClass="aui-button-input" onClick="var createUserWindow = window.open('<%= selectCreateUserURL %>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" value="choose" />
 			</td>
 			<td colspan="3">
 				<aui:select label="" name="<%= displayTerms.MODIFIED_USER_ID %>">
@@ -149,13 +149,13 @@ Date lastEnabledDate = calendar.getTime();
 
 				<input name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
 
-				<portlet:renderURL var="modifiedUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:renderURL var="selectModifiedUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
 					<portlet:param name="userParam" value="orderEntryModifiedUsers" />
 					<portlet:param name="callback" value="selectModifiedUser" />
 				</portlet:renderURL>
 
-				<aui:button cssClass="aui-button-input" onClick="var modifiedUserWindow = window.open('<%= modifiedUserURL %>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" value="choose" />
+				<aui:button cssClass="aui-button-input" onClick="var modifiedUserWindow = window.open('<%= selectModifiedUserURL %>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" value="choose" />
 			</td>
 		</tr>
 		<tr>

@@ -134,16 +134,16 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 			names="teams"
 		/>
 
-		<portlet:renderURL var="addTeamURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:renderURL var="selectSupportTeamURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 			<portlet:param name="mvcPath" value="/admin/select_support_team.jsp" />
 			<portlet:param name="callback" value="selectSupportTeam" />
 		</portlet:renderURL>
 
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= addTeamURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-team" />
+			<aui:button onClick="var categoryWindow = window.open('<%= selectSupportTeamURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-team" />
 		</div>
 
-			<br />
+		<br />
 
 		<liferay-ui:search-container
 			headerNames="name"
@@ -171,7 +171,7 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 				/>
 
 				<liferay-ui:search-container-column-text>
-					<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('supportTeamIds', '" + curSupportTeam.getSupportTeamId() + "', '" + renderResponse.getNamespace() + "supportTeamSearchContainer', this)" %>' value="remove" />
+					<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('supportTeamIds', '" + curSupportTeam.getSupportTeamId() + "', '" + renderResponse.getNamespace() + "supportTeamSearchContainer', this);" %>' value="remove" />
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 

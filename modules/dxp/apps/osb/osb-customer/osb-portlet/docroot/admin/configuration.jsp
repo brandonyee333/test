@@ -30,12 +30,6 @@ String currentLanguageId = LanguageUtil.getLanguageId(request);
 Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
 
 Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
-
-List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-SupportRegion firstSupportRegion = supportRegions.get(0);
-
-long supportRegionId = PrefsParamUtil.getLong(portletPreferences, request, "supportRegionId", firstSupportRegion.getSupportRegionId());
 %>
 
 <script type="text/javascript">
@@ -132,6 +126,15 @@ long supportRegionId = PrefsParamUtil.getLong(portletPreferences, request, "supp
 								<liferay-ui:message key="support-region" />
 							</td>
 							<td>
+
+								<%
+								List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+								SupportRegion firstSupportRegion = supportRegions.get(0);
+
+								long supportRegionId = PrefsParamUtil.getLong(portletPreferences, request, "supportRegionId", firstSupportRegion.getSupportRegionId());
+								%>
+
 								<aui:select label="" name="supportRegionId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
 
 									<%
@@ -575,6 +578,8 @@ long supportRegionId = PrefsParamUtil.getLong(portletPreferences, request, "supp
 									</label>
 
 									<%
+									List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
 									for (SupportRegion supportRegion : supportRegions) {
 									%>
 

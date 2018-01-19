@@ -279,14 +279,14 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			names="child-teams"
 		/>
 
-		<portlet:renderURL var="addChildTeamURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:renderURL var="selectChildSupportTeamURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 			<portlet:param name="mvcPath" value="/admin/select_support_team.jsp" />
 			<portlet:param name="callback" value="selectChildSupportTeam" />
 			<portlet:param name="supportTeamId" value="<%= String.valueOf(supportTeamId) %>" />
 		</portlet:renderURL>
 
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= addChildTeamURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-child-team" />
+			<aui:button onClick="var categoryWindow = window.open('<%= selectChildSupportTeamURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-child-team" />
 		</div>
 
 		<br />
@@ -326,7 +326,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text>
-					<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('childSupportTeamIds', '" + curSupportTeam.getSupportTeamId() + "', '" + renderResponse.getNamespace()  + "childSupportTeamSearchContainer', this);" %>' value="remove" />
+					<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('childSupportTeamIds', '" + curSupportTeam.getSupportTeamId() + "', '" + renderResponse.getNamespace() + "childSupportTeamSearchContainer', this);" %>' value="remove" />
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
@@ -339,13 +339,13 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			names="projects"
 		/>
 
-		<portlet:renderURL var="addProjectURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:renderURL var="selectAccountEntryURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 			<portlet:param name="mvcPath" value="/admin/select_account_entry.jsp" />
 			<portlet:param name="callback" value="selectAccountEntry" />
 		</portlet:renderURL>
 
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= addProjectURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-project" />
+			<aui:button onClick="var categoryWindow = window.open('<%= selectAccountEntryURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-project" />
 		</div>
 
 		<br />
@@ -386,12 +386,12 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			names="languages"
 		/>
 
-		<portlet:renderURL var="addLanguageURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:renderURL var="selectLanguageURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 			<portlet:param name="mvcPath" value="/admin/select_language.jsp" />
 		</portlet:renderURL>
 
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= addLanguageURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-language" />
+			<aui:button onClick="var categoryWindow = window.open('<%= selectLanguageURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-language" />
 		</div>
 
 		<br />
@@ -428,13 +428,13 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			names="assigned-support-regions"
 		/>
 
-		<portlet:renderURL var="addSupportRegionURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+		<portlet:renderURL var="selectSupportRegionURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 			<portlet:param name="mvcPath" value="/admin/select_support_region.jsp" />
 			<portlet:param name="callback" value="selectSupportRegion" />
 		</portlet:renderURL>
 
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= addSupportRegionURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-support-region" />
+			<aui:button onClick="var categoryWindow = window.open('<%= selectSupportRegionURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-support-region" />
 		</div>
 
 		<br />

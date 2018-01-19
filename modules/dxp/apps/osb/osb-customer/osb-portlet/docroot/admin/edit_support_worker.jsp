@@ -102,12 +102,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					<%= HtmlUtil.escape(supportTeam.getName()) %>
 				</a>
 
-				<portlet:renderURL var="changeURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:renderURL var="selectSupportTeamURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_support_team.jsp" />
 					<portlet:param name="callback" value="selectSupportTeam" />
 				</portlet:renderURL>
 
-				<aui:button onClick="var supportTeamWindow = window.open('<%= changeURL %>', 'supportTeam', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); supportTeamWindow.focus();" value="change" />
+				<aui:button onClick="var supportTeamWindow = window.open('<%= selectSupportTeamURL %>', 'supportTeam', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); supportTeamWindow.focus();" value="change" />
 
 				<input name="<portlet:namespace />supportTeamId" type="hidden" value="<%= supportTeam.getSupportTeamId() %>" />
 			</td>
@@ -506,12 +506,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 		names="severities"
 	/>
 
-	<portlet:renderURL var="addSeverityURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+	<portlet:renderURL var="selectSeverityURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 		<portlet:param name="mvcPath" value="/admin/select_severity.jsp" />
 	</portlet:renderURL>
 
 	<div>
-		<aui:button onClick="var categoryWindow = window.open('<%= addSeverityURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-severity" />
+		<aui:button onClick="var categoryWindow = window.open('<%= selectSeverityURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-severity" />
 	</div>
 
 	<br />
@@ -548,12 +548,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 		names="components"
 	/>
 
-	<portlet:renderURL var="addComponentURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+	<portlet:renderURL var="selectComponentURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 		<portlet:param name="mvcPath" value="/admin/select_component.jsp" />
 	</portlet:renderURL>
 
 	<div>
-		<aui:button onClick="var categoryWindow = window.open('<%= addComponentURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-component" />
+		<aui:button onClick="var categoryWindow = window.open('<%= selectComponentURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-component" />
 	</div>
 
 	<br />
@@ -590,12 +590,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 		names="project-tiers"
 	/>
 
-	<portlet:renderURL var="addProjectTierURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+	<portlet:renderURL var="selectAccountTierURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 		<portlet:param name="mvcPath" value="/admin/select_account_tier.jsp" />
 	</portlet:renderURL>
 
 	<div>
-		<aui:button onClick="var categoryWindow = window.open('<%= addProjectTierURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-project-tier" />
+		<aui:button onClick="var categoryWindow = window.open('<%= selectAccountTierURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-project-tier" />
 	</div>
 
 	<br />
