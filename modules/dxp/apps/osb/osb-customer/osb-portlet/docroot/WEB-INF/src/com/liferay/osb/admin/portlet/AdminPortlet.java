@@ -870,8 +870,8 @@ public class AdminPortlet extends MVCPortlet {
 		String name = ParamUtil.getString(actionRequest, "name");
 		String description = ParamUtil.getString(actionRequest, "description");
 
-		int[] holidayEntriesIndexes = StringUtil.split(
-			ParamUtil.getString(actionRequest, "holidayEntriesIndexes"), 0);
+		int[] holidayEntriesIndexes = ParamUtil.getIntegerValues(
+			actionRequest, "holidayEntriesIndexes");
 
 		List<HolidayEntry> holidayEntries = new ArrayList<>();
 

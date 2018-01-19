@@ -33,31 +33,17 @@ catch (NoSuchHolidayCalendarException nshce) {
 
 List<HolidayEntry> holidayEntries = new ArrayList<HolidayEntry>();
 
-int[] holidayEntriesIndexes = new int[0];
-
 if (holidayCalendarId > 0) {
 	holidayEntries = HolidayEntryLocalServiceUtil.getHolidayEntries(holidayCalendarId);
-
-	holidayEntriesIndexes = new int[holidayEntries.size()];
-
-	for (int i = 0; i < holidayEntries.size(); i++) {
-		holidayEntriesIndexes[i] = i;
-	}
 }
 
-if (holidayEntries.isEmpty()) {
-	holidayEntries.add(new HolidayEntryImpl());
+int holidayEntriesIndexCount = holidayEntries.size();
 
-	holidayEntriesIndexes = new int[] {0};
+if (holidayEntriesIndexCount == 0) {
+	holidayEntriesIndexCount = 1;
 }
 
-Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
-
-Date firstEnabledDate = calendar.getTime();
-
-calendar.add(Calendar.YEAR, 15);
-
-Date lastEnabledDate = calendar.getTime();
+String[] holidayEntriesIndexes = new String[holidayEntriesIndexCount];
 %>
 
 <portlet:actionURL name="updateHolidayCalendar" var="updateHolidayCalendarURL">
@@ -129,101 +115,18 @@ Date lastEnabledDate = calendar.getTime();
 		<aui:fieldset>
 
 			<%
-			for (int i = 0; i < holidayEntriesIndexes.length; i++) {
-				int holidayEntriesIndex = holidayEntriesIndexes[i];
+			for (int i = 0; i < holidayEntriesIndexCount; i++) {
+				String index = String.valueOf(i);
 
-				HolidayEntry holidayEntry = holidayEntries.get(i);
-
-				int holidayEntryStartMonth = 0;
-				int holidayEntryStartDay = 0;
-				int holidayEntryStartYear = 0;
-
-				Date holidayEntryStartDate = null;
-				Date holidayEntryEndDate = null;
-
-				if (holidayEntry.getStartDate() != null) {
-					Calendar holidayEntryStartCal = Calendar.getInstance();
-
-					holidayEntryStartCal.setTime(holidayEntry.getStartDate());
-
-					holidayEntryStartDate = holidayEntryStartCal.getTime();
-
-					holidayEntryStartMonth = holidayEntryStartCal.get(Calendar.MONTH);
-					holidayEntryStartDay = holidayEntryStartCal.get(Calendar.DATE);
-					holidayEntryStartYear = holidayEntryStartCal.get(Calendar.YEAR);
-				}
-
-				int holidayEntryEndMonth = 0;
-				int holidayEntryEndDay = 0;
-				int holidayEntryEndYear = 0;
-
-				if (holidayEntry.getEndDate() != null) {
-					Calendar holidayEntryEndCal = Calendar.getInstance();
-
-					holidayEntryEndCal.setTime(holidayEntry.getEndDate());
-
-					holidayEntryEndDate = holidayEntryEndCal.getTime();
-
-					holidayEntryEndMonth = holidayEntryEndCal.get(Calendar.MONTH);
-					holidayEntryEndDay = holidayEntryEndCal.get(Calendar.DATE);
-					holidayEntryEndYear = holidayEntryEndCal.get(Calendar.YEAR);
-				}
+				holidayEntriesIndexes[i] = index;
 			%>
-
-				<aui:model-context bean="<%= holidayEntry %>" model="<%= HolidayEntry.class %>" />
 
 				<div class="lfr-form-row lfr-form-row-inline">
 					<div class="row-fields">
-						<aui:input name='<%= "holidayEntryId" + holidayEntriesIndex %>' type="hidden" value="<%= holidayEntry.getHolidayEntryId() %>" />
-
-						<aui:input fieldParam='<%= "holidayEntryName" + holidayEntriesIndex %>' id='<%= "holidayEntryName" + holidayEntriesIndex %>' name="name" />
-
-						<aui:input fieldParam='<%= "holidayEntryDescription" + holidayEntriesIndex %>' id='<%= "holidayEntryDescription" + holidayEntriesIndex %>' name="description" />
-
-						<aui:input label="repeat-yearly" name='<%= "holidayEntryRepeatYearly" + holidayEntriesIndex %>' type="checkbox" value="<%= holidayEntry.getRepeatYearly() %>" />
-
-						<br />
-
-						<table class="lfr-table">
-							<tr>
-								<td>
-									<strong><liferay-ui:message key="start-date" /></strong>
-								</td>
-								<td>
-									<strong><liferay-ui:message key="end-date" /></strong>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<liferay-ui:input-date
-										cssClass="w100"
-										dayParam='<%= "holidayEntryStartDay" + holidayEntriesIndex %>'
-										dayValue="<%= holidayEntryStartDay %>"
-										firstEnabledDate="<%= ((holidayEntryStartDate != null) && holidayEntryStartDate.after(firstEnabledDate)) ? holidayEntryStartDate : firstEnabledDate %>"
-										lastEnabledDate="<%= ((holidayEntryStartDate != null) && holidayEntryStartDate.after(lastEnabledDate)) ? holidayEntryStartDate : lastEnabledDate %>"
-										monthParam='<%= "holidayEntryStartMonth" + holidayEntriesIndex %>'
-										monthValue="<%= holidayEntryStartMonth %>"
-										nullable="<%= false %>"
-										yearParam='<%= "holidayEntryStartYear" + holidayEntriesIndex %>'
-										yearValue="<%= holidayEntryStartYear %>"
-									/>
-								</td>
-								<td>
-									<liferay-ui:input-date
-										cssClass="w100"
-										dayParam='<%= "holidayEntryEndDay" + holidayEntriesIndex %>'
-										dayValue="<%= holidayEntryEndDay %>"
-										firstEnabledDate="<%= ((holidayEntryEndDate != null) && holidayEntryEndDate.after(firstEnabledDate)) ? holidayEntryEndDate : firstEnabledDate %>"
-										lastEnabledDate="<%= ((holidayEntryEndDate != null) && holidayEntryEndDate.after(lastEnabledDate)) ? holidayEntryEndDate : lastEnabledDate %>"
-										monthParam='<%= "holidayEntryEndMonth" + holidayEntriesIndex %>'
-										monthValue="<%= holidayEntryEndMonth %>"
-										nullable="<%= false %>"
-										yearParam='<%= "holidayEntryEndYear" + holidayEntriesIndex %>'
-										yearValue="<%= holidayEntryEndYear %>"
-									/>
-								</td>
-							</tr>
-						</table>
+						<liferay-util:include page="/admin/holiday_entry.jsp" servletContext="<%= application %>">
+							<liferay-util:param name="holidayCalendarId" value="<%= String.valueOf(holidayCalendarId) %>" />
+							<liferay-util:param name="index" value="<%= index %>" />
+						</liferay-util:include>
 					</div>
 				</div>
 
@@ -231,16 +134,20 @@ Date lastEnabledDate = calendar.getTime();
 			}
 			%>
 
-			<aui:input name="holidayEntriesIndexes" type="hidden" value="<%= StringUtil.merge(holidayEntriesIndexes) %>" />
 		</aui:fieldset>
 	</div>
+
+	<aui:input name="holidayEntriesIndexes" type="hidden" value="<%= StringUtil.merge(holidayEntriesIndexes) %>" />
 </aui:form>
 
 <aui:script use="liferay-auto-fields">
 	new Liferay.AutoFields(
 		{
 			contentBox: '#<portlet:namespace />holidayEntries > fieldset',
-			fieldIndexes: '<portlet:namespace />holidayEntriesIndexes'
+			fieldIndexes: '<portlet:namespace />holidayEntriesIndexes',
+			namespace: '<portlet:namespace />',
+			url: '<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_ADMIN %>" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>"><liferay-portlet:param name="mvcPath" value="/admin/holiday_entry.jsp" /></liferay-portlet:renderURL>',
+			urlNamespace: '<%= "_" + OSBPortletKeys.OSB_ADMIN + "_" %>'
 		}
 	).render();
 </aui:script>
