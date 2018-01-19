@@ -354,13 +354,11 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(request, ticketEntry.getStatusLabel()) %>';
 			var newLabel = A.one('#<portlet:namespace />status option:selected').html() + ' - ' + A.one('#<portlet:namespace />resolution option:selected').html();
 
-			if (!confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newLabel]))) {
-				return false;
+			if (confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newLabel]))) {
+				document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
+
+				submitForm(document.<portlet:namespace />fm1);
 			}
-
-			document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
-
-			submitForm(document.<portlet:namespace />fm1);
 		}
 
 		function <portlet:namespace />updateSeverity() {
@@ -392,13 +390,19 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				}
 			}
 
-			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>') {
-				document.getElementById('<portlet:namespace />resolution').style.display = '';
+			var resolutionDisplay = 'none';
+			var returnVal = '';
 
-				return false;
+			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>') {
+				resolutionDisplay = '';
+
+				returnVal = false;
 			}
-			else {
-				document.getElementById('<portlet:namespace />resolution').style.display = 'none';
+
+			document.getElementById('<portlet:namespace />resolution').style.display = resolutionDisplay;
+
+			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>' && !returnVal) {
+				return returnVal;
 			}
 
 			<c:if test="<%= liferayIncOrg && (status != TicketEntryConstants.STATUS_REPRODUCED) %>">

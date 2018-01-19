@@ -159,7 +159,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 						String componentMessageLink = supportPortletPreferences.getValue("componentMessageLink_" + productEntry.getLESADisplayName() + StringPool.UNDERLINE + component, StringPool.BLANK);
 						%>
 
-						<div class="portlet-msg-info component-message <%= Validator.isNotNull(componentMessage) ? "" : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
+						<div class="component-message portlet-msg-info <%= Validator.isNotNull(componentMessage) ? "" : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
 							<c:choose>
 								<c:when test="<%= Validator.isNotNull(componentMessageLink) %>">
 									<a href="<%= HtmlUtil.escapeAttribute(componentMessageLink) %>" target="_blank"><%= HtmlUtil.escape(componentMessage) %></a>
@@ -273,7 +273,8 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 			}
 
 			window.scroll(0, 0);
-		}
+		},
+		['aui-base']
 	);
 
 	function <portlet:namespace />updateDescription() {

@@ -201,14 +201,14 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 	function <portlet:namespace />pinElements(pinElementIds, offsetElementIds, pinOffset) {
 		var totalPinOffset = pinOffset;
 
-		for (var index = 0; index < offsetElementIds.length; index++) {
-			var offsetElement = document.getElementById(offsetElementIds[index]);
+		for (var i = 0; i < offsetElementIds.length; i++) {
+			var offsetElement = document.getElementById(offsetElementIds[i]);
 
 			totalPinOffset += offsetElement.offsetHeight;
 		}
 
-		for (var index = 0; index < pinElementIds.length; index++) {
-			<portlet:namespace />pinElement(pinElementIds[index], totalPinOffset);
+		for (var j = 0; j < pinElementIds.length; j++) {
+			<portlet:namespace />pinElement(pinElementIds[j], totalPinOffset);
 		}
 	}
 
