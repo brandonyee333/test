@@ -156,13 +156,9 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 								<aui:select label="" name='<%= "ticketLinkType" + urlIndex %>'>
 									<aui:option value=""></aui:option>
-
 									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_COMMUNITY_RESOURCE) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_COMMUNITY_RESOURCE) %>" value="<%= TicketLinkConstants.TYPE_COMMUNITY_RESOURCE %>" />
-
 									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE) %>" value="<%= TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE %>" />
-
 									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION) %>" value="<%= TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION %>" />
-
 									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_OTHER) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_OTHER) %>" value="<%= TicketLinkConstants.TYPE_OTHER %>" />
 								</aui:select>
 							</c:if>
@@ -222,9 +218,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 					<aui:select label="" name="issueType">
 						<aui:option value="0" />
-
 						<aui:option label="bug" selected="<%= issueType == TicketSolutionConstants.ISSUE_TYPE_BUG %>" value="<%= TicketSolutionConstants.ISSUE_TYPE_BUG %>" />
-
 						<aui:option label="configuration" selected="<%= issueType == TicketSolutionConstants.ISSUE_TYPE_CONFIGURATION %>" value="<%= TicketSolutionConstants.ISSUE_TYPE_CONFIGURATION %>" />
 					</aui:select>
 				</div>
@@ -237,11 +231,10 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 				<aui:select label="" name="useCustomerSummary" onChange='<%= renderResponse.getNamespace() + "toggleIssueSummary(this.value);" %>'>
 					<aui:option label="customers-description-accurately-captures-the-issue" selected="<%= useCustomerSummary %>" value="1" />
-
 					<aui:option label="customers-description-does-not-accurately-capture-the-issue" selected="<%= !useCustomerSummary %>" value="0" />
 				</aui:select>
 
-				<div class="<%= useCustomerSummary ? "hide section-vertical-spacing" : "section-vertical-spacing" %>" id="<portlet:namespace />issueSummaryContainer">
+				<div class="section-vertical-spacing <%= useCustomerSummary ? "hide" : "" %>" id="<portlet:namespace />issueSummaryContainer">
 					<span><liferay-ui:message key="please-provide-the-correct-description-of-the-issue-in-this-ticket-be-sure-to-include-any-details-that-may-be-relevant-to-the-cause-of-the-issue-as-this-information-will-be-used-for-internal-auditing-and-for-reference-by-other-engineers" /></span>
 
 					<liferay-util:include page="/support/2/bbcode_editor.jsp" servletContext="<%= application %>">
@@ -253,17 +246,16 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 			</div>
 
 			<div>
-				<aui:input label="this-issue-should-be-reviewed-and-considered-to-be-added-as-an-article-in-the-knowledge-base" checked="<%= reviewForKB %>" name="reviewForKB" type="checkbox" />
+				<aui:input checked="<%= reviewForKB %>" label="this-issue-should-be-reviewed-and-considered-to-be-added-as-an-article-in-the-knowledge-base" name="reviewForKB" type="checkbox" />
 
-				<aui:input label="this-issue-only-applies-to-this-customer" checked="<%= customerSpecific %>" name="customerSpecific" type="checkbox" />
+				<aui:input checked="<%= customerSpecific %>" label="this-issue-only-applies-to-this-customer" name="customerSpecific" type="checkbox" />
 
-				<aui:input label="this-issue-only-applies-to-this-version-of-liferay" hecked="<%= versionSpecific %>" name="versionSpecific" type="checkbox" />
+				<aui:input checked="<%= versionSpecific %>" label="this-issue-only-applies-to-this-version-of-liferay" name="versionSpecific" type="checkbox" />
 
-				<aui:input label="this-issue-only-applies-to-this-environment" checked="<%= environmentSpecific %>" name="environmentSpecific" type="checkbox" />
-				</div>
+				<aui:input checked="<%= environmentSpecific %>" label="this-issue-only-applies-to-this-environment" name="environmentSpecific" type="checkbox" />
 
 				<c:if test="<%= ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION %>">
-					<aui:input label="this-solution-does-not-require-customer-testing" checked="<%= skipTesting %>" name="skipTesting" onChange='<%= renderResponse.getNamespace() + "updateSkipTesting(this.checked);" %>' type="checkbox" />
+					<aui:input checked="<%= skipTesting %>" label="this-solution-does-not-require-customer-testing" name="skipTesting" onChange='<%= renderResponse.getNamespace() + "updateSkipTesting(this.checked);" %>' type="checkbox" />
 				</c:if>
 			</div>
 		</div>
