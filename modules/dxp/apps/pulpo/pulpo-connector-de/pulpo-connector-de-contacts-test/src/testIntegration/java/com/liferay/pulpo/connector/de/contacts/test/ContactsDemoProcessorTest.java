@@ -86,23 +86,23 @@ public class ContactsDemoProcessorTest {
 			assertThat(payload, hasJsonPath("firstName", notNullValue()));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
 		contactsDemoProcessor.createUsers(1, TestPropsValues.getCompanyId());
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result.getMessage());
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
 	}
 
 	private static final String _DESTINATION =

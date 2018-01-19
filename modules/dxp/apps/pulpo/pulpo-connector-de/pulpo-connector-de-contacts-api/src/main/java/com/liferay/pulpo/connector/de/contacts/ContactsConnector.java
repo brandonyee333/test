@@ -14,11 +14,31 @@
 
 package com.liferay.pulpo.connector.de.contacts;
 
+import java.util.Map;
+
 /**
- * @author Shinn Lok
+ * Models a Contacts Connector.
+ *
+ * @author Eduardo Garcia
  */
 public interface ContactsConnector {
 
+	/**
+	 * Sends a payload to the given destination.
+	 *
+	 * @param destinationName - destination name
+	 * @param payload - payload
+	 */
 	public void sendMessage(String destinationName, String payload);
+
+	/**
+	 * Sends a payload and metadata to the given destination.
+	 *
+	 * @param destinationName - destination name
+	 * @param payload - payload
+	 * @param metadata - metadata
+	 */
+	public void sendMessage(
+		String destinationName, String payload, Map<String, String> metadata);
 
 }

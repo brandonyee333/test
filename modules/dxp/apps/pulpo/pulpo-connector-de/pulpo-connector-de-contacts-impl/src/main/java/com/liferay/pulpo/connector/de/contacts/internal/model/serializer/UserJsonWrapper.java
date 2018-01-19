@@ -14,13 +14,29 @@
 
 package com.liferay.pulpo.connector.de.contacts.internal.model.serializer;
 
-import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.User;
+
+import java.util.List;
 
 /**
  * @author Cristina González
  */
-public interface Serializer<T extends BaseModel<T>> {
+public class UserJsonWrapper {
 
-	public String writeAsString(T model);
+	public UserJsonWrapper(User user, List<Object> fields) {
+		_user = user;
+		_customFields = fields;
+	}
+
+	public List<Object> getCustomFields() {
+		return _customFields;
+	}
+
+	public User getUser() {
+		return _user;
+	}
+
+	private final List<Object> _customFields;
+	private final User _user;
 
 }

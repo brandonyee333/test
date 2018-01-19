@@ -49,9 +49,24 @@ public class ContactsConnectorImpl implements ContactsConnector {
 
 	@Override
 	public void sendMessage(String destinationName, String payload) {
+		sendMessage(destinationName, payload, null);
+	}
+
+	@Override
+	public void sendMessage(
+		String destinationName, String payload, Map<String, String> metadata) {
+
 		MessageBusMessage message = new MessageBusMessage();
 
 		message.setPayload(payload);
+
+		if (metadata != null) {
+			Map<String, Object> values = new HashMap<>();
+
+			values.putAll(metadata);
+
+			message.setValues(values);
+		}
 
 		destinationName += "_" + _getEnvironmentUniqueName();
 

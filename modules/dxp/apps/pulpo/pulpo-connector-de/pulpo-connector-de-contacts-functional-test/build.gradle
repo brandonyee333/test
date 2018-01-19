@@ -3,7 +3,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 buildscript {
 	dependencies {
-		classpath group: 'commons-io', name: 'commons-io', version: '2.4'
+		classpath group: "commons-io", name: "commons-io", version: "2.4"
 	}
 
 	repositories {

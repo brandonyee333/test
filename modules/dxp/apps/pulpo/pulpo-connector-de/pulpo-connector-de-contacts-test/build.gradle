@@ -6,17 +6,31 @@ copyLibs {
 }
 
 dependencies {
-	provided group: "org.valid4j", name: "json-path-matchers", version: "1.1"
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.6.3"
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-core", version: "2.6.3"
+	compileInclude group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.6.3"
 
+	provided group: "com.liferay", name: "com.liferay.osgi.service.tracker.collections", version: "2.0.0"
+	provided group: "com.liferay", name: "com.liferay.osgi.util", version: "3.0.0"
+	provided group: "com.liferay", name: "com.liferay.portal.configuration.metatype", version: "2.0.0"
+	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
+	provided group: "org.osgi", name: "org.osgi.core", version: "5.0.0"
+	provided group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.3.0"
+	provided group: "org.valid4j", name: "json-path-matchers", version: "1.1"
+	provided project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-api")
+	provided project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-contacts-api")
+	provided project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-contacts-demo")
+	provided project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-contacts-impl")
+
+	testIntegrationCompile group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.6.3"
+	testIntegrationCompile group: "com.fasterxml.jackson.core", name: "jackson-core", version: "2.6.3"
+	testIntegrationCompile group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.6.3"
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.7"
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.registry.api", version: "1.0.0"
 	testIntegrationCompile group: "com.liferay.arquillian", name: "com.liferay.arquillian.docker.extension", version: "0.0.1-20170727.082539-1"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "2.0.0"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.util.java", version: "2.0.0"
-	testIntegrationCompile project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-contacts-api")
-	testIntegrationCompile project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-contacts-demo")
-	testIntegrationCompile project(":private:apps:pulpo:pulpo-connector-de:pulpo-connector-de-contacts-impl")
 
 	testIntegrationRuntime group: "com.liferay.portal", name: "com.liferay.portal.test", version: "2.0.0"
 	testIntegrationRuntime group: "com.liferay.portal", name: "com.liferay.portal.test.integration", version: "2.0.0"

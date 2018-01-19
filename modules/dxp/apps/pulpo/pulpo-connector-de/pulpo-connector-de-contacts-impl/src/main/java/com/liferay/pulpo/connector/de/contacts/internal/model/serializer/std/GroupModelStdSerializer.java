@@ -31,7 +31,7 @@ public class GroupModelStdSerializer extends StdSerializer<Group> {
 		this(null);
 	}
 
-	public GroupModelStdSerializer(Class <Group> group) {
+	public GroupModelStdSerializer(Class<Group> group) {
 		super(group);
 	}
 

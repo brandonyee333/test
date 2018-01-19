@@ -1,5 +1,8 @@
 Bundle-Name: Liferay Pulpo Connector DE Contacts Implementation
 Bundle-SymbolicName: com.liferay.pulpo.connector.de.contacts.impl
 Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.pulpo.connector.de.contacts.impl.messaging,\
+	com.liferay.pulpo.connector.de.contacts.impl.model
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Pulpo Connector Contacts

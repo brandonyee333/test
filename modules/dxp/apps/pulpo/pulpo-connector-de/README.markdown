@@ -1,7 +1,7 @@
 # Liferay Pulpo Connector DE
 
-[![Build Status](https://travis-ci.com/liferay/com-liferay-pulpo-connector-de-private.svg?token=mHyfMk6tfD1qBSuqnvbh&branch=master)](https://travis-ci.com/liferay/com-liferay-pulpo-connector-de-private)
-[![Coverage Status](https://coveralls.io/repos/github/liferay/com-liferay-pulpo-connector-de-private/badge.svg?branch=7.0.x-private&t=eGW1nM)](https://coveralls.io/github/liferay/com-liferay-pulpo-connector-de-private?branch=7.0.x-private)
+[![Build Status](https://travis-ci.com/liferay/com-liferay-pulpo-connector-de-private.svg?token=rqMWkYkzo1yzpF6KM3tr&branch=7.0.x-private)](https://travis-ci.com/liferay/com-liferay-pulpo-connector-de-private)
+[![Coverage Status](https://coveralls.io/repos/github/liferay/com-liferay-pulpo-connector-de-private/badge.svg?branch=7.0.x-private&t=JDTW2S)](https://coveralls.io/github/liferay/com-liferay-pulpo-connector-de-private?branch=7.0.x-private)
 
 This project creates a connector for Liferay DE that will aggregate and
 send data to LCS that will then be consumed by the Pulpo Engines (see

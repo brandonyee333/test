@@ -4,6 +4,7 @@ Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.pulpo.connector.de.contacts,\
 	com.liferay.pulpo.connector.de.contacts.constants,\
-	com.liferay.pulpo.connector.de.contacts.model
+	com.liferay.pulpo.connector.de.contacts.model,\
+	com.liferay.pulpo.connector.de.contacts.model.serializer
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title: Pulpo Connector Contacts

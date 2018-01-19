@@ -46,7 +46,6 @@ public class UserModelStdSerializer extends StdSerializer<User> {
 			SerializerProvider serializerProvider)
 		throws IOException {
 
-		jsonGenerator.writeStartObject();
 		jsonGenerator.writeStringField("projectId", _PROJECT_ID);
 		jsonGenerator.writeNumberField("userId", user.getUserId());
 		jsonGenerator.writeStringField("emailAddress", user.getEmailAddress());
@@ -125,8 +124,6 @@ public class UserModelStdSerializer extends StdSerializer<User> {
 		jsonGenerator.writeObjectField("userGroups", user.getUserGroups());
 
 		jsonGenerator.writeObjectField("websites", user.getWebsites());
-
-		jsonGenerator.writeEndObject();
 	}
 
 	private static final String _PROJECT_ID = System.getenv("PULPO_PROJECT_ID");

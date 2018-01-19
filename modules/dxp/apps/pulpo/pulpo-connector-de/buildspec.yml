@@ -13,6 +13,8 @@ phases:
       - $CODEBUILD_SRC_DIR/gradlew -Pcom.liferay.pulpo.connector.de.docker.apply.plugin=false testIntegration --stacktrace
       - cd $CODEBUILD_SRC_DIR/pulpo-connector-de-contacts-functional-test
       - $CODEBUILD_SRC_DIR/gradlew -Pcom.liferay.pulpo.connector.de.docker.apply.plugin=false testIntegration --stacktrace
+      - cd $CODEBUILD_SRC_DIR/pulpo-connector-de-test
+      - $CODEBUILD_SRC_DIR/gradlew -Pcom.liferay.pulpo.connector.de.docker.apply.plugin=false testIntegration --stacktrace
   post_build:
     commands:
       - echo post_build phase started on `date`

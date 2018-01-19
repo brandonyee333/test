@@ -1,0 +1,11 @@
+Bundle-Name: Liferay Pulpo Connector DE API
+Bundle-SymbolicName: com.liferay.pulpo.connector.de.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.pulpo.connector.de.constants,\
+	com.liferay.pulpo.connector.de.exception,\
+	com.liferay.pulpo.connector.de.model,\
+	com.liferay.pulpo.connector.de.service,\
+	com.liferay.pulpo.connector.de.service.persistence
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Pulpo Connector

@@ -19,11 +19,18 @@ import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.BaseModelListener;
 
 /**
+ * Models a Contacts Model Listener
+ *
  * @author Shinn Lok
  */
 public abstract class ContactsModelListener<T extends BaseModel<T>>
 	extends BaseModelListener<T> {
 
+	/**
+	 * Sends a model to the connector
+	 *
+	 * @param model - model to be send
+	 */
 	public abstract void sendModel(T model) throws ModelListenerException;
 
 }

@@ -15,9 +15,9 @@ import org.kt3k.gradle.plugin.CoverallsPlugin
 
 buildscript {
 	dependencies {
+		classpath group: "com.bmuschko", name: "gradle-docker-plugin", version: "3.2.0"
 		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.app.docker", version: "1.0.3"
 		classpath group: "org.kt3k.gradle.plugin", name: "coveralls-gradle-plugin", version: "2.6.3"
-		classpath group: "com.bmuschko", name: "gradle-docker-plugin", version: "3.2.0"
 	}
 
 	repositories {
@@ -38,7 +38,7 @@ allprojects {
 	}
 
 	dependencies {
-		jolokiaAgent group: 'org.jolokia', name: 'jolokia-jvm', version: '1.3.7', classifier: 'agent'
+		jolokiaAgent group: "org.jolokia", name: "jolokia-jvm", version: "1.3.7", classifier: "agent"
 	}
 
 	jacoco {

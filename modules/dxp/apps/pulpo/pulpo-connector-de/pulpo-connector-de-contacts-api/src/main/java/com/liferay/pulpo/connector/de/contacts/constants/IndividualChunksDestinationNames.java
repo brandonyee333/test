@@ -15,12 +15,20 @@
 package com.liferay.pulpo.connector.de.contacts.constants;
 
 /**
+ * Individual Chunks Destination Names.
+ *
  * @author Shinn Lok
  */
 public interface IndividualChunksDestinationNames {
 
 	public static final String ADD = "liferay_pulpo/individual_chunk_add";
 
+	public static final String ADD_RETURN =
+		"liferay_pulpo/individual_chunk_add_return";
+
 	public static final String DELETE = "liferay_pulpo/individual_chunk_delete";
+
+	public static final String DELETE_RETURN =
+		"liferay_pulpo/individual_chunk_delete_return";
 
 }

@@ -77,8 +77,15 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.service.test.ServiceTestUtil;
 import com.liferay.portlet.expando.util.test.ExpandoTestUtil;
+import com.liferay.pulpo.connector.de.constants.ConnectorTransactionOperation;
 import com.liferay.pulpo.connector.de.contacts.constants.IndividualChunksDestinationNames;
+import com.liferay.pulpo.connector.de.contacts.model.serializer.CustomFieldSerializer;
+import com.liferay.pulpo.connector.de.contacts.test.custom.field.CustomFieldExampleSerializer;
+import com.liferay.pulpo.connector.de.contacts.test.custom.field.CustomFieldExampleService;
+import com.liferay.pulpo.connector.de.contacts.test.custom.field.model.CustomFieldExample;
 import com.liferay.pulpo.connector.de.contacts.test.util.ConnectorTestUtil;
+import com.liferay.pulpo.connector.de.model.ConnectorTransaction;
+import com.liferay.pulpo.connector.de.service.ConnectorTransactionLocalServiceUtil;
 
 import java.awt.image.RenderedImage;
 
@@ -94,6 +101,7 @@ import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -106,6 +114,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Eduardo Garcia
@@ -214,7 +228,7 @@ public class ContactsConnectorTest {
 					contains(hasJsonPath("zip", equalTo(address.getZip())))));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -224,17 +238,109 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
+	}
+
+	@Test
+	public void testAddCustomField() throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(ContactsConnectorTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		List<ServiceReference> serviceReferences = new ArrayList<>();
+
+		try {
+			ServiceRegistration<CustomFieldExampleService>
+				customFieldExampleServiceRegistration =
+					(ServiceRegistration<CustomFieldExampleService>)
+						bundleContext.registerService(
+							CustomFieldExampleService.class.getCanonicalName(),
+							new CustomFieldExampleService(), null);
+
+			serviceReferences.add(
+				customFieldExampleServiceRegistration.getReference());
+
+			CustomFieldExampleService customFieldExampleService =
+				bundleContext.getService(
+					customFieldExampleServiceRegistration.getReference());
+
+			CustomFieldExampleSerializer customFieldExampleSerializer =
+				new CustomFieldExampleSerializer();
+
+			customFieldExampleSerializer.setCustomFieldExampleService(
+				customFieldExampleService);
+
+			ServiceRegistration<CustomFieldSerializer>
+				customFieldSerializerServiceRegistration =
+					bundleContext.registerService(
+						CustomFieldSerializer.class,
+						customFieldExampleSerializer, null);
+
+			serviceReferences.add(
+				customFieldSerializerServiceRegistration.getReference());
+
+			String value = RandomTestUtil.randomString();
+
+			Consumer<String> validation = payload -> {
+				assertThat(
+					payload,
+					hasJsonPath(
+						"customField", hasJsonPath("field", equalTo(value))));
+			};
+
+			BlockingQueue<ConnectorTestUtil.Result> resultQueue =
+				ConnectorTestUtil.registerContactMessageListener(
+					_DESTINATION, validation);
+
+			CustomFieldExample customFieldExample = new CustomFieldExample();
+
+			customFieldExample.setUserId(_user.getUserId());
+			customFieldExample.setValue(value);
+
+			customFieldExampleService.addCustomFieldExample(customFieldExample);
+
+			_user.setModifiedDate(new java.util.Date());
+
+			UserLocalServiceUtil.updateUser(_user);
+
+			ConnectorTestUtil.Result result = resultQueue.poll(
+				3, TimeUnit.SECONDS);
+
+			Assert.assertNotNull(
+				"The " + _DESTINATION +
+					" message has not been send to the message bus",
+				result);
+
+			Assert.assertEquals(
+				"Error in the reception of the " + _DESTINATION +
+					"message ",
+				"OK", result.getMessage());
+
+			Assert.assertTrue(
+				"The registered transaction is not valid",
+				_validateTransaction(
+					_user, result.getConnectorTransactionId(),
+					ConnectorTransactionOperation.ADD));
+		}
+		finally {
+			serviceReferences.forEach(bundleContext::ungetService);
+		}
 	}
 
 	@Test
@@ -248,7 +354,7 @@ public class ContactsConnectorTest {
 						hasJsonPath("address", equalTo("mail@liferay.com")))));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -262,17 +368,23 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 	}
 
 	@Test
@@ -294,7 +406,7 @@ public class ContactsConnectorTest {
 					equalTo("ExpandoAttributeValue")));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -306,17 +418,23 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 
 		ExpandoColumnLocalServiceUtil.deleteColumn(expandoColumn.getColumnId());
 
@@ -338,7 +456,7 @@ public class ContactsConnectorTest {
 							"description", equalTo(group.getDescription())))));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -349,17 +467,23 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 
 		GroupLocalServiceUtil.deleteGroup(group);
 	}
@@ -377,7 +501,7 @@ public class ContactsConnectorTest {
 						hasJsonPath("name", equalTo(organization.getName())))));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -388,17 +512,23 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 
 		OrganizationLocalServiceUtil.deleteUserOrganization(
 			_user.getUserId(), organization.getOrganizationId());
@@ -425,7 +555,7 @@ public class ContactsConnectorTest {
 						hasJsonPath("number", equalTo(phone.getNumber())))));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -435,17 +565,23 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 	}
 
 	@Test
@@ -460,7 +596,7 @@ public class ContactsConnectorTest {
 					hasItem(hasJsonPath("name", equalTo(role.getName())))));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -470,17 +606,23 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 
 		RoleLocalServiceUtil.deleteRole(role);
 	}
@@ -499,7 +641,7 @@ public class ContactsConnectorTest {
 					hasItem(hasJsonPath("name", equalTo(team.getName())))));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -509,17 +651,23 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 	}
 
 	@Test
@@ -537,7 +685,7 @@ public class ContactsConnectorTest {
 							equalTo(userGroup.getDescription())))));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -548,17 +696,23 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 
 		UserGroupLocalServiceUtil.deleteUserUserGroup(
 			_user.getUserId(), userGroup.getUserGroupId());
@@ -585,7 +739,7 @@ public class ContactsConnectorTest {
 					hasItem(hasJsonPath("url", equalTo(website.getUrl())))));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -595,10 +749,18 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
+
 		Assert.assertEquals(
 			"The " + _DESTINATION +
 				" message has not been sent to the message bus",
-			"OK", result.poll(3, TimeUnit.SECONDS));
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 	}
 
 	@Test
@@ -611,23 +773,29 @@ public class ContactsConnectorTest {
 				hasJsonPath("emailAddress", equalTo(user.getEmailAddress())));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION_DELETE, validation);
 
 		UserLocalServiceUtil.deleteUser(user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION_DELETE +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION_DELETE +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.DELETE));
 	}
 
 	@Test
@@ -652,7 +820,7 @@ public class ContactsConnectorTest {
 
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -662,17 +830,23 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 	}
 
 	@Test
@@ -693,7 +867,7 @@ public class ContactsConnectorTest {
 							"description", equalTo(group.getDescription())))));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -703,17 +877,23 @@ public class ContactsConnectorTest {
 
 		UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 	}
 
 	@Test
@@ -724,7 +904,7 @@ public class ContactsConnectorTest {
 				hasJsonPath("emailAddress", equalTo("mail@liferay.com")));
 		};
 
-		BlockingQueue<String> result =
+		BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 			ConnectorTestUtil.registerContactMessageListener(
 				_DESTINATION, validation);
 
@@ -732,17 +912,23 @@ public class ContactsConnectorTest {
 
 		_user = UserLocalServiceUtil.updateUser(_user);
 
-		String message = result.poll(3, TimeUnit.SECONDS);
+		ConnectorTestUtil.Result result = resultQueue.poll(3, TimeUnit.SECONDS);
 
 		Assert.assertNotNull(
 			"The " + _DESTINATION +
 				" message has not been send to the message bus",
-			message);
+			result);
 
 		Assert.assertEquals(
 			"Error in the reception of the " + _DESTINATION +
 				"message ",
-			"OK", message);
+			"OK", result.getMessage());
+
+		Assert.assertTrue(
+			"The registered transaction is not valid",
+			_validateTransaction(
+				_user, result.getConnectorTransactionId(),
+				ConnectorTransactionOperation.ADD));
 	}
 
 	@Test
@@ -789,7 +975,7 @@ public class ContactsConnectorTest {
 				}
 			};
 
-			BlockingQueue<String> result =
+			BlockingQueue<ConnectorTestUtil.Result> resultQueue =
 				ConnectorTestUtil.registerContactMessageListener(
 					_DESTINATION, validation);
 
@@ -800,17 +986,24 @@ public class ContactsConnectorTest {
 
 			_user = UserLocalServiceUtil.updateUser(_user);
 
-			String message = result.poll(3, TimeUnit.SECONDS);
+			ConnectorTestUtil.Result result = resultQueue.poll(
+				3, TimeUnit.SECONDS);
 
 			Assert.assertNotNull(
 				"The " + _DESTINATION +
 					" message has not been send to the message bus",
-				message);
+				result);
 
 			Assert.assertEquals(
 				"Error in the reception of the " + _DESTINATION +
 					"message ",
-				"OK", message);
+				"OK", result.getMessage());
+
+			Assert.assertTrue(
+				"The registered transaction is not valid",
+				_validateTransaction(
+					_user, result.getConnectorTransactionId(),
+					ConnectorTransactionOperation.ADD));
 		}
 	}
 
@@ -837,6 +1030,34 @@ public class ContactsConnectorTest {
 		}
 
 		return output.toByteArray();
+	}
+
+	private boolean _validateTransaction(
+		User user, long connectorTransactionId, String operation) {
+
+		ConnectorTransaction connectorTransaction =
+			ConnectorTransactionLocalServiceUtil.fetchConnectorTransaction(
+				connectorTransactionId);
+
+		if (connectorTransaction == null) {
+			return false;
+		}
+
+		if (!user.getModelClassName().equals(
+				connectorTransaction.getClassName())) {
+
+			return false;
+		}
+
+		if (user.getUserId() != connectorTransaction.getClassPK()) {
+			return false;
+		}
+
+		if (!operation.equals(connectorTransaction.getOperation())) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private static final String _DESTINATION =

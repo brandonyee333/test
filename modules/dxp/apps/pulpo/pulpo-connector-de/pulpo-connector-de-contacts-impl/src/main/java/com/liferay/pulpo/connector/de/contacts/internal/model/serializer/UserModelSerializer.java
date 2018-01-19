@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.model.Website;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.AddressModelStdSerializer;
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.ContactModelStdSerializer;
+import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.CustomFieldStdSerializer;
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.EmailAddressModelStdSerializer;
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.ExpandoBridgeStdSerializer;
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.GroupModelStdSerializer;
@@ -41,8 +42,15 @@ import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.Pho
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.RoleModelStdSerializer;
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.TeamModelStdSerializer;
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.UserGroupModelStdSerializer;
+import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.UserJsonWrapperStdSerializer;
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.UserModelStdSerializer;
 import com.liferay.pulpo.connector.de.contacts.internal.model.serializer.std.WebsiteModelStdSerializer;
+import com.liferay.pulpo.connector.de.contacts.model.serializer.CustomFieldSerializer;
+import com.liferay.pulpo.connector.de.contacts.model.serializer.Serializer;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -51,6 +59,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Cristina González
  */
 @Component(
+	immediate = true,
 	property = {"className=com.liferay.portal.kernel.model.User"},
 	service = Serializer.class
 )
@@ -58,10 +67,38 @@ public class UserModelSerializer implements Serializer<User> {
 
 	@Override
 	public String writeAsString(User user) {
+		try {
+			return _getObjectMapper().writeValueAsString(
+				new UserJsonWrapper(user, _getCustomFields(user)));
+		}
+		catch (JsonProcessingException jpe) {
+			throw new RuntimeException(jpe);
+		}
+	}
+
+	private List<Object> _getCustomFields(User user) {
+		List<CustomFieldSerializer> customFieldSerializers =
+			_customFieldSerializerRegistry.getCustomFieldSerializers();
+
+		Stream<CustomFieldSerializer> customFieldSerializerStream =
+			customFieldSerializers.stream();
+
+		return customFieldSerializerStream.filter(
+			entry -> entry.getCustomField(user) != null
+		).map(
+			entry -> entry.getCustomField(user)
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	private ObjectMapper _getObjectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 
 		SimpleModule module = new SimpleModule();
 
+		module.addSerializer(
+			UserJsonWrapper.class, new UserJsonWrapperStdSerializer());
 		module.addSerializer(User.class, new UserModelStdSerializer());
 		module.addSerializer(Address.class, new AddressModelStdSerializer());
 		module.addSerializer(Contact.class, new ContactModelStdSerializer());
@@ -80,15 +117,24 @@ public class UserModelSerializer implements Serializer<User> {
 		module.addSerializer(
 			ExpandoBridge.class, new ExpandoBridgeStdSerializer());
 
+		List<CustomFieldSerializer> customFieldSerializers =
+			_customFieldSerializerRegistry.getCustomFieldSerializers();
+
+		for (CustomFieldSerializer customFieldSerializer :
+				customFieldSerializers) {
+
+			module.addSerializer(
+				customFieldSerializer.getCustomFieldClass(),
+				new CustomFieldStdSerializer<>(customFieldSerializer));
+		}
+
 		mapper.registerModule(module);
 
-		try {
-			return mapper.writeValueAsString(user);
-		}
-		catch (JsonProcessingException jpe) {
-			throw new RuntimeException(jpe);
-		}
+		return mapper;
 	}
+
+	@Reference
+	private CustomFieldSerializerRegistry _customFieldSerializerRegistry;
 
 	@Reference
 	private UserLocalService _userLocalService;
