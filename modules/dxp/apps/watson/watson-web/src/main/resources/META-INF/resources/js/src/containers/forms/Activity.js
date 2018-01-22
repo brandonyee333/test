@@ -329,10 +329,11 @@ class ActivityForm extends JSXComponent {
 		} = props;
 
 		const {
-			autoSaved,
 			dataSent,
 			showLeaveModal
 		} = this.state;
+
+		let {autoSaved = 0} = this.state;
 
 		if (dataSent && !loading && response && action === 'create') {
 			if (response.get('status') === 'success') {
@@ -356,25 +357,37 @@ class ActivityForm extends JSXComponent {
 		let translateHref;
 
 		if (action === 'edit') {
-			if (storeData) {
-				reportHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${watsonActivityId}/report`;
-
-				if (!disabled && WatsonConstants.currentUser.translatorRole) {
-					translateHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${watsonActivityId}/translate`;
-				}
-
-				disabled = disabled || !storeData.get('editable');
-			}
-
 			deleteMethod = disabled ? undefined : this.handleDelete;
 
-			requestTranslationMethod = this.handleTranslationRequest;
+			disabled = disabled || !storeData.get('editable');
 
 			headerStringLeft = storeData.get('name') || Liferay.Language.get('edit-activity');
 
 			headerStringRight = !autoSaved ? getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp')) : getModifiedMoment(storeData.get('modifiedUserName'), autoSaved);
 
+			if (storeData.get('createDate')) {
+				const createDateTimeStamp = storeData.get('createDate');
+
+				const lessThanOneMinuteAgo = createDateTimeStamp => {
+					const oneMinuteAgo = Date.now() - 60000;
+
+					return createDateTimeStamp >= oneMinuteAgo;
+				};
+
+				if (lessThanOneMinuteAgo) {
+					autoSaved = createDateTimeStamp;
+				}
+			}
+
 			message = autoSaved ? Liferay.Language.get('activity-automatically-saved') : '';
+
+			reportHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${watsonActivityId}/report`;
+
+			requestTranslationMethod = this.handleTranslationRequest;
+
+			if (!disabled && WatsonConstants.currentUser.translatorRole) {
+				translateHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${watsonActivityId}/translate`;
+			}
 		}
 		else if (action === 'create' && watsonIncidentId) {
 			cancelMethod = this.handleCancel;
