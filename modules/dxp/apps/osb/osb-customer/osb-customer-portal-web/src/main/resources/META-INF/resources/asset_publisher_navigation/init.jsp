@@ -1,3 +1,4 @@
+<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -11,19 +12,10 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+--%>
 
-package com.liferay.osb.customer.portal.web.internal.constants;
+<%@ include file="/init.jsp" %>
 
-/**
- * @author Amos Fong
- */
-public class OSBCustomerPortalPortletKeys {
-
-	public static final String ASSET_PUBLISHER_NAVIGATION =
-		"1_WAR_osbuiportlet";
-
-	public static final String SIDE_NAVIGATION = "2_WAR_osbuiportlet";
-
-	public static final String TAB_NAVIGATION = "3_WAR_osbuiportlet";
-
-}
+<%
+String[] vocabularyNames = StringUtil.split(portletPreferences.getValue("vocabularyNames", null));
+%>
