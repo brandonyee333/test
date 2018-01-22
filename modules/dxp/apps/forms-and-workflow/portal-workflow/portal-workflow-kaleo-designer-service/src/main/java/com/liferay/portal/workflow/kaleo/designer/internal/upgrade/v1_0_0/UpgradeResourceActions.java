@@ -40,7 +40,7 @@ public class UpgradeResourceActions extends UpgradeProcess {
 			"/META-INF/resource-actions/default.xml");
 
 		List<String> modelNames = _resourceActions.getPortletModelResources(
-			_kaleoDesignerPortketKey);
+			_KALEO_DESIGNER_PORTLET_KEY);
 
 		for (String modelName : modelNames) {
 			List<String> modelActions =
@@ -51,7 +51,7 @@ public class UpgradeResourceActions extends UpgradeProcess {
 		}
 	}
 
-	private static final String _kaleoDesignerPortketKey =
+	private static final String _KALEO_DESIGNER_PORTLET_KEY =
 		"com_liferay_portal_workflow_kaleo_designer_web_portlet_" +
 			"KaleoDesignerPortlet";
 
