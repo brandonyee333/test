@@ -151,15 +151,6 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		super.executeResource(method);
 
 		clazz = tempClass;
-
-		if (lifecycle.equals(PortletRequest.ACTION_PHASE) && !viewPath.equals(VIEW_PATH_ERROR)) {
-			String redirect = ParamUtil.getString(request, "redirect");
-
-			redirectTo(redirect);
-		}
-		else if (lifecycle.equals(PortletRequest.RENDER_PHASE)) {
-			renderRequest.setAttribute("controller", controllerPath);
-		}
 	}
 
 	protected Document[] getDocuments(SearchContext searchContext) throws Exception {
