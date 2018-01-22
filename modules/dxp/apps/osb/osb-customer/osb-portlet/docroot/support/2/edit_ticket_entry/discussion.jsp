@@ -185,34 +185,6 @@ else {
 			<portlet:namespace />updateComment(0, status);
 		}
 
-		function <portlet:namespace />cancelComment(suffix) {
-			<portlet:namespace />clearInterval();
-			<portlet:namespace />updateMessageDisplay(suffix, '', '');
-
-			var A = AUI();
-
-			var commentForm = A.one('#<portlet:namespace />commentForm' + suffix);
-
-			commentForm.setStyle('display', 'none');
-
-			if (suffix != 0) {
-				return;
-			}
-
-			var form = A.one(document.<portlet:namespace />fm2);
-
-			form.reset();
-
-			<c:if test='<%= discussionTab.equals("liferay") %>'>
-				A.one('#<portlet:namespace />addCommentButton0').show();
-				A.one('#<portlet:namespace />addGamePlanButton').show();
-				A.one('#<portlet:namespace />postGamePlanButton').hide();
-			</c:if>
-
-			A.one('#<portlet:namespace />addAttachments').hide();
-			A.one('#<portlet:namespace />addAttachmentsButton').show();
-		}
-
 		function <portlet:namespace />checkAttachment(element) {
 			var files = element.files;
 
@@ -225,51 +197,6 @@ else {
 			}
 		}
 
-		function <portlet:namespace />clearInterval() {
-			var A = AUI();
-
-			var intervalId = A.one('#<portlet:namespace />intervalId');
-
-			if (intervalId.get('value')) {
-				clearInterval(intervalId.get('value'));
-			}
-
-			intervalId.set('value', '');
-		}
-
-		function <portlet:namespace />confirmAttachments(commentBody) {
-			var A = AUI();
-
-			for (var i = 1; i < 4; i++) {
-				if (A.one('#<portlet:namespace />file0_' + i).val()) {
-					return true;
-				}
-			}
-
-			commentBody = commentBody.toLowerCase();
-
-			var attachmentKeywords = ['<%= StringUtil.merge(SupportUtil.getAttachmentKeywords(), "', '") %>'];
-
-			for (var i = 0; i < attachmentKeywords.length; i++) {
-				var attachmentKeyword = attachmentKeywords[i].toLowerCase();
-
-				if (commentBody.indexOf(attachmentKeyword) != -1) {
-					var confirmationMsg = '<%= UnicodeLanguageUtil.get(request, "no-attachments-confirmation") %>';
-
-					confirmationMsg = A.Lang.sub(confirmationMsg, [attachmentKeyword]);
-
-					if (confirm(confirmationMsg)) {
-						return true;
-					}
-					else {
-						return false;
-					}
-				}
-			}
-
-			return true;
-		}
-
 		function <portlet:namespace />deleteComment(suffix) {
 			if (!confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") %>')) {
 				return;
@@ -279,47 +206,6 @@ else {
 
 			document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentId.value = ticketCommentId;
 			submitForm(document.<portlet:namespace />fm2, '<portlet:actionURL name="deleteTicketComment"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>');
-		}
-
-		function <portlet:namespace />deleteTicketAttachment(suffix, ticketAttachmentId, fileIndex) {
-			var A = AUI();
-
-			if (!confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") %>')) {
-				return;
-			}
-
-			A.io.request(
-				'<liferay-portlet:actionURL name="deleteTicketAttachment" />',
-				{
-					data: {
-						<portlet:namespace />ticketAttachmentId: ticketAttachmentId
-					},
-					dataType: 'JSON',
-					method: 'POST',
-					on: {
-						success: function() {
-							var draftSuffix = suffix + '_' + fileIndex;
-
-							A.one('#<portlet:namespace />file' + draftSuffix).show();
-							A.one('#<portlet:namespace />fileName' + draftSuffix).remove();
-
-							A.one('#<portlet:namespace />hotfix' + draftSuffix).val('false');
-							A.one('#<portlet:namespace />hotfix' + draftSuffix + 'Checkbox').set('checked', false);
-							A.one('#<portlet:namespace />hotfix' + draftSuffix + 'Checkbox').set('disabled', false);
-
-							A.one('#<portlet:namespace />deleteTicketAttachment' + draftSuffix).remove();
-						}
-					}
-				}
-			);
-		}
-
-		function <portlet:namespace />disableAutoUpdateComment() {
-			var A = AUI();
-
-			var intervalId = A.one('#<portlet:namespace />intervalId');
-
-			intervalId.set('value', 'disabled');
 		}
 
 		function <portlet:namespace />initDraftCommentMessage(hasMaximumDraftTicketComment) {
@@ -340,42 +226,6 @@ else {
 			}
 
 			commentBody.value += ticketCannedResponseContent;
-		}
-
-		function <portlet:namespace />selectGamePlan(gamePlan) {
-			var A = AUI();
-
-			var commentBody = A.one('#<portlet:namespace />commentBody0');
-
-			var commentBodyValue = commentBody.get('value');
-
-			if ((commentBodyValue != '') && (commentBodyValue.substr(-1) != '\n')) {
-				commentBodyValue += '\n';
-			}
-
-			commentBodyValue += gamePlan;
-
-			commentBody.set('value', commentBodyValue);
-
-			A.one('#<portlet:namespace />type').set('value', '<%= TicketCommentConstants.TYPE_GAME_PLAN %>');
-
-			A.one('#<portlet:namespace />addCommentButton0').hide();
-			A.one('#<portlet:namespace />addGamePlanButton').hide();
-			A.one('#<portlet:namespace />postGamePlanButton').show();
-		}
-
-		function <portlet:namespace />showAddAttachments() {
-			var A = AUI();
-
-			A.one('#<portlet:namespace />addAttachments').show();
-			A.one('#<portlet:namespace />addAttachmentsButton').hide();
-
-			A.one('#<portlet:namespace />hotfix0_1').val('false');
-			A.one('#<portlet:namespace />hotfix0_2').val('false');
-			A.one('#<portlet:namespace />hotfix0_3').val('false');
-			A.one('#<portlet:namespace />hotfix0_1Checkbox').set('checked', false);
-			A.one('#<portlet:namespace />hotfix0_2Checkbox').set('checked', false);
-			A.one('#<portlet:namespace />hotfix0_3Checkbox').set('checked', false);
 		}
 
 		function <portlet:namespace />showForm(suffix, isDraft, hasMaximumDraftTicketComment) {
@@ -407,23 +257,6 @@ else {
 			);
 		}
 
-		function <portlet:namespace />toggleAll(collapse) {
-			var A = AUI();
-
-			var commentsContainer = A.one('#<portlet:namespace />commentsContainer');
-
-			commentsContainer.all('.ticket-comment').each(
-				function(item, index, collection) {
-					if (collapse) {
-						item.set('className', item.get('className').replace('comment-expanded', 'comment-collapsed'));
-					}
-					else {
-						item.set('className', item.get('className').replace('comment-collapsed', 'comment-expanded'));
-					}
-				}
-			);
-		}
-
 		function <portlet:namespace />toggleComment(event, i) {
 			var comment = document.getElementById('<portlet:namespace />commentContainer' + i);
 
@@ -437,18 +270,6 @@ else {
 					comment.className = comment.className.replace('comment-collapsed', 'comment-expanded');
 				}
 			}
-		}
-
-		function <portlet:namespace />updateMessageDisplay(suffix, className, message) {
-			var A = AUI();
-
-			var messageDisplay = A.one('#<portlet:namespace />commentMessageDisplay' + suffix);
-
-			if (className) {
-				messageDisplay.set('className', className);
-			}
-
-			messageDisplay.html(message);
 		}
 
 		Liferay.provide(
@@ -541,7 +362,148 @@ else {
 					}
 				);
 			},
-			['aui-io', 'datatype-date']
+			['aui-base', 'aui-io', 'datatype-date']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />cancelComment',
+			function(suffix) {
+				var A = AUI();
+
+				<portlet:namespace />clearInterval();
+				<portlet:namespace />updateMessageDisplay(suffix, '', '');
+
+				var commentForm = A.one('#<portlet:namespace />commentForm' + suffix);
+
+				commentForm.setStyle('display', 'none');
+
+				if (suffix != 0) {
+					return;
+				}
+
+				var form = A.one(document.<portlet:namespace />fm2);
+
+				form.reset();
+
+				<c:if test='<%= discussionTab.equals("liferay") %>'>
+					A.one('#<portlet:namespace />addCommentButton0').show();
+					A.one('#<portlet:namespace />addGamePlanButton').show();
+					A.one('#<portlet:namespace />postGamePlanButton').hide();
+				</c:if>
+
+				A.one('#<portlet:namespace />addAttachments').hide();
+				A.one('#<portlet:namespace />addAttachmentsButton').show();
+			},
+			['aui-base']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />clearInterval',
+			function() {
+				var A = AUI();
+
+				var intervalId = A.one('#<portlet:namespace />intervalId');
+
+				if (intervalId.get('value')) {
+					clearInterval(intervalId.get('value'));
+				}
+
+				intervalId.set('value', '');
+			},
+			['aui-base']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />confirmAttachments',
+			function(commentBody) {
+				var A = AUI();
+
+				for (var i = 1; i < 4; i++) {
+					if (A.one('#<portlet:namespace />file0_' + i).val()) {
+						return true;
+					}
+				}
+
+				commentBody = commentBody.toLowerCase();
+
+				var attachmentKeywords = ['<%= StringUtil.merge(SupportUtil.getAttachmentKeywords(), "', '") %>'];
+
+				for (var i = 0; i < attachmentKeywords.length; i++) {
+					var attachmentKeyword = attachmentKeywords[i].toLowerCase();
+
+					if (commentBody.indexOf(attachmentKeyword) != -1) {
+						var confirmationMsg = '<%= UnicodeLanguageUtil.get(request, "no-attachments-confirmation") %>';
+
+						confirmationMsg = A.Lang.sub(confirmationMsg, [attachmentKeyword]);
+
+						if (confirm(confirmationMsg)) {
+							return true;
+						}
+						else {
+							return false;
+						}
+					}
+				}
+
+				return true;
+			},
+			['aui-base']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />deleteTicketAttachment',
+			function(suffix, ticketAttachmentId, fileIndex) {
+				var A = AUI();
+
+				if (!confirm('<%= UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") %>')) {
+					return;
+				}
+
+				A.io.request(
+					'<liferay-portlet:actionURL name="deleteTicketAttachment" />',
+					{
+						data: {
+							<portlet:namespace />ticketAttachmentId: ticketAttachmentId
+						},
+						dataType: 'JSON',
+						method: 'POST',
+						on: {
+							success: function() {
+								var draftSuffix = suffix + '_' + fileIndex;
+
+								A.one('#<portlet:namespace />file' + draftSuffix).show();
+								A.one('#<portlet:namespace />fileName' + draftSuffix).remove();
+
+								A.one('#<portlet:namespace />hotfix' + draftSuffix).val('false');
+								A.one('#<portlet:namespace />hotfix' + draftSuffix + 'Checkbox').set('checked', false);
+								A.one('#<portlet:namespace />hotfix' + draftSuffix + 'Checkbox').set('disabled', false);
+
+								A.one('#<portlet:namespace />deleteTicketAttachment' + draftSuffix).remove();
+							}
+						}
+					}
+				);
+			},
+			['aui-base', 'aui-io']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />disableAutoUpdateComment',
+			function() {
+				var A = AUI();
+
+				var intervalId = A.one('#<portlet:namespace />intervalId');
+
+				if (intervalId) {
+					intervalId.set('value', 'disabled');
+				}
+			},
+			['aui-base']
 		);
 
 		Liferay.provide(
@@ -614,7 +576,7 @@ else {
 					}
 				);
 			},
-			['aui-io']
+			['aui-base', 'aui-io']
 		);
 
 		Liferay.provide(
@@ -636,7 +598,49 @@ else {
 					}
 				);
 			},
-			['aui-dialog', 'aui-overlay-manager', 'liferay-util-window']
+			['aui-base', 'aui-dialog', 'aui-overlay-manager', 'liferay-util-window']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />showAddAttachments',
+			function() {
+				var A = AUI();
+
+				A.one('#<portlet:namespace />addAttachments').show();
+				A.one('#<portlet:namespace />addAttachmentsButton').hide();
+
+				A.one('#<portlet:namespace />hotfix0_1').val('false');
+				A.one('#<portlet:namespace />hotfix0_2').val('false');
+				A.one('#<portlet:namespace />hotfix0_3').val('false');
+
+				A.one('#<portlet:namespace />hotfix0_1Checkbox').set('checked', false);
+				A.one('#<portlet:namespace />hotfix0_2Checkbox').set('checked', false);
+				A.one('#<portlet:namespace />hotfix0_3Checkbox').set('checked', false);
+			},
+			['aui-base']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />toggleAll',
+			function(collapse) {
+				var A = AUI();
+
+				var commentsContainer = A.one('#<portlet:namespace />commentsContainer');
+
+				commentsContainer.all('.ticket-comment').each(
+					function(item) {
+						if (collapse) {
+							item.set('className', item.get('className').replace('comment-expanded', 'comment-collapsed'));
+						}
+						else {
+							item.set('className', item.get('className').replace('comment-collapsed', 'comment-expanded'));
+						}
+					}
+				);
+			},
+			['aui-base']
 		);
 
 		Liferay.provide(
@@ -681,7 +685,7 @@ else {
 					}
 				);
 			},
-			['aui-io']
+			['aui-base', 'aui-io']
 		);
 
 		Liferay.provide(
@@ -714,11 +718,21 @@ else {
 					}
 				);
 			},
-			['aui-io']
+			['aui-base', 'aui-io']
 		);
 	</aui:script>
 
-	<aui:script>
+	<aui:script use="aui-base">
+		function <portlet:namespace />updateMessageDisplay(suffix, className, message) {
+			var messageDisplay = A.one('#<portlet:namespace />commentMessageDisplay' + suffix);
+
+			if (className) {
+				messageDisplay.set('className', className);
+			}
+
+			messageDisplay.html(message);
+		}
+
 		<portlet:namespace />loadTab('<%= HtmlUtil.escape(discussionTab) %>', true);
 
 		window.addEventListener(

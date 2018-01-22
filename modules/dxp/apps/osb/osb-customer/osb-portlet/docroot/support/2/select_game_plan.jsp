@@ -77,6 +77,33 @@ String gamePlan = GetterUtil.get(gamePlanMap.get(locale), gamePlanMap.get(Locale
 
 	Liferay.provide(
 		window,
+		'<portlet:namespace />selectGamePlan',
+		function(gamePlan) {
+			var A = AUI();
+
+			var commentBody = A.one('#<portlet:namespace />commentBody0');
+
+			var commentBodyValue = commentBody.get('value');
+
+			if ((commentBodyValue != '') && (commentBodyValue.substr(-1) != '\n')) {
+				commentBodyValue += '\n';
+			}
+
+			commentBodyValue += gamePlan;
+
+			commentBody.set('value', commentBodyValue);
+
+			A.one('#<portlet:namespace />type').set('value', '<%= TicketCommentConstants.TYPE_GAME_PLAN %>');
+
+			A.one('#<portlet:namespace />addCommentButton0').hide();
+			A.one('#<portlet:namespace />addGamePlanButton').hide();
+			A.one('#<portlet:namespace />postGamePlanButton').show();
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
 		'<portlet:namespace />updateLanguage',
 		function(languageId) {
 			var A = AUI();
