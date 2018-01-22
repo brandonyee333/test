@@ -179,15 +179,6 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 %>
 
 <aui:script>
-	function <portlet:namespace />closeTicket(resolution, addCommentBody) {
-		document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
-		document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
-		document.<portlet:namespace />fm1.<portlet:namespace />resolution.value = resolution;
-		document.<portlet:namespace />fm1.<portlet:namespace />body.value = addCommentBody;
-
-		submitForm(document.<portlet:namespace />fm1);
-	}
-
 	function <portlet:namespace />pinElement(id, pinOffset) {
 		var element = document.getElementById(id);
 
@@ -212,8 +203,13 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 		}
 	}
 
-	if (window.parent.document.getElementById('<portlet:namespace />loginDialog')) {
-		window.parent.<portlet:namespace />openDialog(3);
+	function <portlet:namespace />submitCloseTicketValues(resolution, addCommentBody) {
+		document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
+		document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
+		document.<portlet:namespace />fm1.<portlet:namespace />resolution.value = resolution;
+		document.<portlet:namespace />fm1.<portlet:namespace />body.value = addCommentBody;
+
+		submitForm(document.<portlet:namespace />fm1);
 	}
 
 	<c:if test="<%= clockedIn %>">
@@ -252,13 +248,9 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 
 		<portlet:namespace />setUpThreeDotMenus();
 	</c:if>
-</aui:script>
 
-<aui:script use="aui-base">
-	var advSearchIcon = A.one('#<portlet:namespace />advSearchIcon');
-
-	if (advSearchIcon) {
-		advSearchIcon.addClass('active');
+	if (window.parent.document.getElementById('<portlet:namespace />loginDialog')) {
+		window.parent.<portlet:namespace />openDialog(3);
 	}
 
 	window.addEventListener(
@@ -269,8 +261,9 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 		false
 	);
 
-	var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />detailViewFade', '<portlet:namespace />detailViewFilter'];
 	var offsetElementIds = ['<portlet:namespace />showMoreButtonContainer', '<portlet:namespace />ticketTabContent'];
+
+	var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />detailViewFade', '<portlet:namespace />detailViewFilter'];
 
 	window.addEventListener(
 		'scroll',
@@ -279,4 +272,12 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 		},
 		false
 	);
+</aui:script>
+
+<aui:script use="aui-base">
+	var advSearchIcon = A.one('#<portlet:namespace />advSearchIcon');
+
+	if (advSearchIcon) {
+		advSearchIcon.addClass('active');
+	}
 </aui:script>
