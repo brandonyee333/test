@@ -96,8 +96,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 			<div class="section-vertical-spacing solution-details-comments-container" id="<portlet:namespace />commentsContainer">
 				<div class="txt-b">
-					<span class="highlighted-flag">*</span>
-					<liferay-ui:message key="solution" />
+					<span class="highlighted-flag">*</span> <liferay-ui:message key="solution" />
 				</div>
 
 				<span><liferay-ui:message key="please-describe-how-to-resolve-the-issue-as-specifically-and-concisely-as-possible" /></span>
@@ -138,7 +137,9 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 				</div>
 
 				<div>
-					<div class="txt-b"><liferay-ui:message key="references" /></div>
+					<div class="txt-b">
+						<liferay-ui:message key="references" />
+					</div>
 
 					<liferay-ui:message key="please-include-any-links-to-related-articles-or-content-that-could-provide-further-context-for-the-solution" />
 
