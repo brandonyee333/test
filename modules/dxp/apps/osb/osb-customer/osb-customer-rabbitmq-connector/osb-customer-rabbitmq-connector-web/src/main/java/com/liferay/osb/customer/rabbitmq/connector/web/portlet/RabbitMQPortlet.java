@@ -113,20 +113,14 @@ public class RabbitMQPortlet extends MVCPortlet {
 	public void destroy() {
 		super.destroy();
 
-		RabbitMQConnectionManager connectionManager =
-			RabbitMQConnectionManager.getInstance();
-
-		connectionManager.disconnect();
+		_rabbitMQConnectionManager.disconnect();
 	}
 
 	public void restart(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		RabbitMQConnectionManager connectionManager =
-			RabbitMQConnectionManager.getInstance();
-
-		connectionManager.reconnect();
+		_rabbitMQConnectionManager.reconnect();
 
 		_consumerManagerLocalService.resetChannels();
 	}
@@ -140,11 +134,8 @@ public class RabbitMQPortlet extends MVCPortlet {
 	protected void addRabbitMQConsumer(RabbitMQConsumer rabbitMQConsumer)
 		throws Exception {
 
-		RabbitMQConnectionManager connectionManager =
-			RabbitMQConnectionManager.getInstance();
-
-		if (!connectionManager.isConnected()) {
-			connectionManager.connect();
+		if (!_rabbitMQConnectionManager.isConnected()) {
+			_rabbitMQConnectionManager.connect();
 		}
 
 		try {
@@ -183,5 +174,8 @@ public class RabbitMQPortlet extends MVCPortlet {
 	private final MethodKey _invokeMethodKey = new MethodKey(
 		PortletClassInvoker.class, "invoke", boolean.class, String.class,
 		MethodKey.class, Object[].class);
+
+	@Reference
+	private RabbitMQConnectionManager _rabbitMQConnectionManager;
 
 }

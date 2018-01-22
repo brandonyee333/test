@@ -31,6 +31,8 @@ import com.rabbitmq.client.GetResponse;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Amos Fong
  */
@@ -87,10 +89,7 @@ public class ConsumerManagerLocalServiceImpl
 		Channel channel = null;
 
 		try {
-			RabbitMQConnectionManager connectionManager =
-				RabbitMQConnectionManager.getInstance();
-
-			channel = connectionManager.createChannel(0);
+			channel = _rabbitMQConnectionManager.createChannel();
 
 			if (messageCount <= 0) {
 				messageCount = channel.messageCount(queue);
@@ -218,10 +217,7 @@ public class ConsumerManagerLocalServiceImpl
 			String queue, int prefetchCount, Object rabbitMQConsumer)
 		throws Exception {
 
-		RabbitMQConnectionManager connectionManager =
-			RabbitMQConnectionManager.getInstance();
-
-		Channel channel = connectionManager.createChannel(prefetchCount);
+		Channel channel = _rabbitMQConnectionManager.createChannel();
 
 		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
 			Consumer consumer = new RabbitMQConsumerDelegator(
@@ -238,5 +234,8 @@ public class ConsumerManagerLocalServiceImpl
 
 	private final Map<String, ConsumerBag> _consumers =
 		new ConcurrentHashMap<>();
+
+	@Reference
+	private RabbitMQConnectionManager _rabbitMQConnectionManager;
 
 }

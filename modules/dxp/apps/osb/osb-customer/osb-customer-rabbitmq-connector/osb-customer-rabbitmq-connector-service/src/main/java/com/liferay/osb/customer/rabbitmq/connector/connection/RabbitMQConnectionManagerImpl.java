@@ -24,20 +24,19 @@ import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+
 /**
- * @author Yury Butrymovich
- * @author Amos Fong
+ * @author Vishal Reddy
  */
-public class RabbitMQConnectionManager {
+@Component
+public class RabbitMQConnectionManagerImpl
+	implements RabbitMQConnectionManager {
 
-	public static RabbitMQConnectionManager getInstance() {
-		if (_instance == null) {
-			_instance = new RabbitMQConnectionManager();
-		}
-
-		return _instance;
-	}
-
+	@Activate
+	@Override
 	public void connect() {
 		String host = RabbitMQConnectorConfigurationValues.RABBITMQ_SERVER_HOST;
 		int port = RabbitMQConnectorConfigurationValues.RABBITMQ_SERVER_PORT;
@@ -70,16 +69,13 @@ public class RabbitMQConnectionManager {
 		}
 	}
 
-	public Channel createChannel(int prefetchCount) throws IOException {
-		Channel channel = _connection.createChannel();
-
-		if (prefetchCount > 0) {
-			channel.basicQos(prefetchCount);
-		}
-
-		return channel;
+	@Override
+	public Channel createChannel() throws IOException {
+		return _connection.createChannel(1);
 	}
 
+	@Deactivate
+	@Override
 	public void disconnect() {
 		try {
 			if (_connection != null) {
@@ -95,6 +91,7 @@ public class RabbitMQConnectionManager {
 		}
 	}
 
+	@Override
 	public boolean isConnected() {
 		if (_connection == null) {
 			return false;
@@ -103,19 +100,15 @@ public class RabbitMQConnectionManager {
 		return true;
 	}
 
+	@Override
 	public void reconnect() {
 		disconnect();
 
 		connect();
 	}
 
-	private RabbitMQConnectionManager() {
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(
-		RabbitMQConnectionManager.class);
-
-	private static RabbitMQConnectionManager _instance;
+	private static final Log _log = LogFactoryUtil.getLog(
+		RabbitMQConnectionManagerImpl.class);
 
 	private Connection _connection;
 
