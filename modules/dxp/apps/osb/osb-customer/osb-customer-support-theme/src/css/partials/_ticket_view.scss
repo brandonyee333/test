@@ -87,7 +87,7 @@
 
 	&.pinned {
 		height: 10px;
-		top: $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
+		top: $banner-height + $ticket-view-heading-height + (2 * $ticket-view-tab-height) + $standard-spacing;
 	}
 }
 
@@ -101,7 +101,7 @@
 	z-index: 1;
 
 	&.pinned {
-		height: $banner-height + $ticket-view-heading-height + 2 * $ticket-view-tab-height + $standard-spacing;
+		height: $banner-height + $ticket-view-heading-height + (2 * $ticket-view-tab-height) + $standard-spacing;
 	}
 }
 
@@ -280,11 +280,6 @@
 					margin-top: 10px;
 					text-align: center;
 
-					.solution-confirm-question {
-						font-weight: bold;
-						padding-bottom: 1em;
-					}
-
 					.solution-confirm-answer {
 						padding-bottom: 1em;
 
@@ -296,6 +291,11 @@
 								color: #FFF;
 							}
 						}
+					}
+
+					.solution-confirm-question {
+						font-weight: bold;
+						padding-bottom: 1em;
 					}
 				}
 			}

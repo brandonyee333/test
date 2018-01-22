@@ -391,18 +391,15 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			}
 
 			var resolutionDisplay = 'none';
-			var returnVal = '';
 
 			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>') {
 				resolutionDisplay = '';
-
-				returnVal = false;
 			}
 
 			document.getElementById('<portlet:namespace />resolution').style.display = resolutionDisplay;
 
-			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>' && !returnVal) {
-				return returnVal;
+			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>') {
+				return false;
 			}
 
 			<c:if test="<%= liferayIncOrg && (status != TicketEntryConstants.STATUS_REPRODUCED) %>">
