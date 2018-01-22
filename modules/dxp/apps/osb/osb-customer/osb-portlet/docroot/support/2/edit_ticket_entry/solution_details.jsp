@@ -127,7 +127,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 						<c:if test="<%= ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION %>">
 							<div class="hotfix">
-								<aui:input label='<%= LanguageUtil.get(request, "hotfix") %>' name='<%= "hotfix" + fileIndex %>' type="checkbox" />
+								<aui:input label="hotfix" name='<%= "hotfix" + fileIndex %>' type="checkbox" />
 							</div>
 						</c:if>
 
@@ -149,13 +149,13 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 						<div class="link-container">
 							<liferay-ui:message key="url" />:
 
-							<aui:input label="" name='<%= "ticketLinkURL" + urlIndex %>' style="width: 350px;" type="text" value="<%= HtmlUtil.escape(ticketLinkURLs[urlIndex - 1]) %>" />
+							<aui:input label="" name='<%= "ticketLinkURL" + urlIndex %>' style="width: 350px;" type="text" value="<%= ticketLinkURLs[urlIndex - 1] %>" />
 
 							<c:if test="<%= liferayIncOrg %>">
 								<liferay-ui:message key="type" />:
 
 								<aui:select label="" name='<%= "ticketLinkType" + urlIndex %>'>
-									<aui:option value=""></aui:option>
+									<aui:option value="" />
 									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_COMMUNITY_RESOURCE) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_COMMUNITY_RESOURCE) %>" value="<%= TicketLinkConstants.TYPE_COMMUNITY_RESOURCE %>" />
 									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE) %>" value="<%= TicketLinkConstants.TYPE_KNOWLEDGE_BASE_ARTICLE %>" />
 									<aui:option label="<%= TicketLinkConstants.getTypeLabel(TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION) %>" selected="<%= (ticketLinkTypes[urlIndex - 1] == TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION) %>" value="<%= TicketLinkConstants.TYPE_OFFICIAL_DOCUMENTATION %>" />
@@ -195,14 +195,14 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 						</c:if>
 
 						<c:if test="<%= !ArrayUtil.contains(subcomponents, TicketEntryConstants.SUBCOMPONENT_OTHER) %>">
-							<aui:option label="other" selected="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) %>" value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>" />
+							<aui:option label="other" selected="<%= subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER %>" value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>" />
 						</c:if>
 
 						<%
 						for (int curSubcomponent : subcomponents) {
 						%>
 
-							<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
+							<aui:option label="<%= TicketEntryConstants.getSubcomponentLabel(curSubcomponent) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
 
 						<%
 						}
@@ -210,7 +210,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 					</aui:select>
 
-					<aui:input cssClass="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "hide" %>" label="" name="ticketEntrySubcomponentCustom" type="text" value="<%= HtmlUtil.escapeAttribute(subcomponentCustom) %>" />
+					<aui:input cssClass='<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "hide" %>' label="" name="ticketEntrySubcomponentCustom" type="text" value="<%= HtmlUtil.escapeAttribute(subcomponentCustom) %>" />
 				</div>
 
 				<div class="inline-block w33">
@@ -262,7 +262,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 
 		<aui:button type="submit" value="send" />
 
-		<aui:button onClick="window.close();" type="button" value="cancel" />
+		<aui:button onClick="window.close();" value="cancel" />
 	</div>
 </aui:form>
 
@@ -276,7 +276,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 			var subcomponentCustom = A.one('#<portlet:namespace />ticketEntrySubcomponentCustom');
 
 			if (subcomponentCustom) {
-				var isSubcomponent = subcomponent == '<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>';
+				var isSubcomponent = (subcomponent == '<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>');
 
 				subcomponentCustom.toggle(isSubcomponent);
 
