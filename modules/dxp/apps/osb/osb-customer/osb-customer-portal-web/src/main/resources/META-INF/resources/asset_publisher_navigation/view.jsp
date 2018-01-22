@@ -92,7 +92,7 @@ for (long categoryId : categoryIds)) {
 
 <aui:script>
 	function <portlet:namespace />filter(oldCategoryId, newCategoryId) {
-		var categoryIds = document.getElementById("<portlet:namespace />categoryIds");
+		var categoryIds = document.getElementById('<portlet:namespace />categoryIds');
 
 		if (oldCategoryId == '0') {
 			if (categoryIds.value == '') {
@@ -106,7 +106,7 @@ for (long categoryId : categoryIds)) {
 			categoryIds.value = categoryIds.value.replace(oldCategoryId, newCategoryId);
 
 			if (newCategoryId == '') {
-				categoryIds.value = categoryIds.value.replace(",,", ",");
+				categoryIds.value = categoryIds.value.replace(',,', ',');
 
 				if (categoryIds.value.indexOf(',') == 0) {
 					categoryIds.value = categoryIds.value.substring(1);
