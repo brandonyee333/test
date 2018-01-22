@@ -142,8 +142,12 @@ if (supportRegion != null) {
 			<portlet:param name="callback" value="selectSupportTeam" />
 		</portlet:renderURL>
 
+		<%
+		String taglibSelectSupportTeam = "var categoryWindow = window.open('" + selectSupportTeamURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+		%>
+
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= selectSupportTeamURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-team" />
+			<aui:button onClick="<%= taglibSelectSupportTeam %>" value="add-team" />
 		</div>
 
 		<br />

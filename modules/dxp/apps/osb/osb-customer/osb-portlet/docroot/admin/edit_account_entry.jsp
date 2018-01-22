@@ -356,7 +356,11 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					<portlet:param name="callback" value="selectCorpProject" />
 				</portlet:renderURL>
 
-				<aui:button onClick="var corpProjectWindow = window.open('<%= selectCorpProjectURL %>', 'corp-project', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); corpProjectWindow.focus();" value="select" />
+				<%
+				String taglibSelectCorpProject = "var corpProjectWindow = window.open('" + selectCorpProjectURL + "', 'corp-project', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); corpProjectWindow.focus();";
+				%>
+
+				<aui:button onClick="<%= taglibSelectCorpProject %>" value="select" />
 
 				<aui:button onClick='<%= renderResponse.getNamespace() + "removeCorpProject();" %>' value="remove" />
 			</td>
@@ -447,7 +451,11 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					<portlet:param name="mvcPath" value="/admin/select_partner_entry.jsp" />
 				</portlet:renderURL>
 
-				<aui:button onClick="var partnerEntryWindow = window.open('<%= selectPartnerEntryURL %>', 'partner', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" value="select" />
+				<%
+				String taglibSelectPartnerEntry = "var partnerEntryWindow = window.open('" + selectPartnerEntryURL + "', 'partner', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();";
+				%>
+
+				<aui:button onClick="<%= taglibSelectPartnerEntry %>" value="select" />
 
 				<aui:button id="removePartnerEntryButton" onClick='<%= renderResponse.getNamespace() + "removePartnerEntry();" %>' value="remove" />
 			</td>

@@ -26,7 +26,7 @@
 		</tr>
 		<tr>
 			<td>
-				<aui:select label="" multiple="true" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>">
+				<aui:select label="" multiple="<%= true %>" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>">
 					<option value=""><liferay-ui:message key="any" /></option>
 
 					<%
@@ -44,7 +44,7 @@
 				</aui:select>
 			</td>
 			<td>
-				<aui:select label="" multiple="true" name="<%= displayTerms.SUPPORT_RESPONSE_IDS %>">
+				<aui:select label="" multiple="<%= true %>" name="<%= displayTerms.SUPPORT_RESPONSE_IDS %>">
 					<option value=""><liferay-ui:message key="any" /></option>
 
 					<%

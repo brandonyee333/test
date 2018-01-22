@@ -81,7 +81,11 @@ if (offeringBundle != null) {
 			<portlet:param name="callback" value="selectOfferingDefinition" />
 		</portlet:renderURL>
 
-		<aui:button onClick="var offeringWindow = window.open('<%= selectOfferingDefinitionURL %>', 'offering', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); offeringWindow.focus();" value="add-offering" />
+		<%
+		String taglibSelectOfferingDefinition = "var offeringWindow = window.open('" + selectOfferingDefinitionURL + "', 'offering', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); offeringWindow.focus();";
+		%>
+
+		<aui:button onClick="<%= taglibSelectOfferingDefinition %>" value="add-offering" />
 	</div>
 
 	<br />

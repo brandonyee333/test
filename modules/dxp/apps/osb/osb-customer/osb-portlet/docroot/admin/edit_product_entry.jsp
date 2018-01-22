@@ -109,7 +109,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 				<liferay-ui:message key="version-list-type" />
 			</td>
 			<td>
-				<aui:input name="versionsListType" type="text" value="<%= HtmlUtil.escapeAttribute(versionsListType) %>" />
+				<aui:input label="" name="versionsListType" type="text" value="<%= HtmlUtil.escapeAttribute(versionsListType) %>" />
 			</td>
 		</tr>
 
@@ -138,7 +138,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 
 	<br />
 
-	<aui:input type="submit" value="save" />
+	<aui:button type="submit" value="save" />
 
 	<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 </aui:form>

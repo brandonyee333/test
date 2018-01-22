@@ -285,8 +285,12 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			<portlet:param name="supportTeamId" value="<%= String.valueOf(supportTeamId) %>" />
 		</portlet:renderURL>
 
+		<%
+		String taglibSelectChildSupportTeam = "var categoryWindow = window.open('" + selectChildSupportTeamURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+		%>
+
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= selectChildSupportTeamURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-child-team" />
+			<aui:button onClick="<%= taglibSelectChildSupportTeam %>" value="add-child-team" />
 		</div>
 
 		<br />
@@ -344,8 +348,12 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			<portlet:param name="callback" value="selectAccountEntry" />
 		</portlet:renderURL>
 
+		<%
+		String taglibSelectAccountEntry = "var categoryWindow = window.open('" + selectAccountEntryURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+		%>
+
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= selectAccountEntryURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-project" />
+			<aui:button onClick="<%= taglibSelectAccountEntry %>" value="add-project" />
 		</div>
 
 		<br />
@@ -390,8 +398,12 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			<portlet:param name="mvcPath" value="/admin/select_language.jsp" />
 		</portlet:renderURL>
 
+		<%
+		String taglibSelectLanguage = "var categoryWindow = window.open('" + selectLanguageURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+		%>
+
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= selectLanguageURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-language" />
+			<aui:button onClick="<%= taglibSelectLanguage %>" value="add-language" />
 		</div>
 
 		<br />
@@ -433,8 +445,12 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			<portlet:param name="callback" value="selectSupportRegion" />
 		</portlet:renderURL>
 
+		<%
+		String taglibSelectSupportRegion = "var categoryWindow = window.open('" + selectSupportRegionURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+		%>
+
 		<div>
-			<aui:button onClick="var categoryWindow = window.open('<%= selectSupportRegionURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-support-region" />
+			<aui:button onClick="<%= taglibSelectSupportRegion %>" value="add-support-region" />
 		</div>
 
 		<br />

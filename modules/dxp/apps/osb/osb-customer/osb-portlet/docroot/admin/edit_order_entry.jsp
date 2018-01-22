@@ -423,14 +423,22 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<portlet:param name="callback" value="selectOfferingDefinitionId" />
 		</portlet:renderURL>
 
-		<aui:button onClick="var categoryWindow = window.open('<%= selectOfferingDefinitionURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-offering" />
+		<%
+		String taglibSelectOfferingDefinition = "var categoryWindow = window.open('" + selectOfferingDefinitionURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+		%>
+
+		<aui:button onClick="<%= taglibSelectOfferingDefinition %>" value="add-offering" />
 
 		<portlet:renderURL var="selectOfferingBundleURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 			<portlet:param name="mvcPath" value="/admin/select_offering_bundle.jsp" />
 			<portlet:param name="callback" value="selectOfferingBundle" />
 		</portlet:renderURL>
 
-		<aui:button onClick="var categoryWindow = window.open('<%= selectOfferingBundleURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-offering-bundle" />
+		<%
+		String taglibSelectOfferingBundle = "var categoryWindow = window.open('" + selectOfferingBundleURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+		%>
+
+		<aui:button onClick="<%= taglibSelectOfferingBundle %>" value="add-offering-bundle" />
 
 		<aui:button onClick='<%= renderResponse.getNamespace() + "updateOrderEntry();" %>' value="refresh" />
 	</div>

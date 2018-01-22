@@ -279,7 +279,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					<liferay-ui:search-container-column-text
 						name="max-work"
 					>
-						<aui:input disabled="<%= supportWorker != null %>" name="maxWork_<%= curUser.getUserId() %>" size="5" type="text" value="<%= maxWork %>" />
+						<aui:input disabled="<%= supportWorker != null %>" label="" name='<%= "maxWork_" + curUser.getUserId() %>' size="5" type="text" value="<%= maxWork %>" />
 					</liferay-ui:search-container-column-text>
 				</c:otherwise>
 			</c:choose>
@@ -305,7 +305,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			<liferay-ui:search-container-column-text
 				name="escalation-level"
 			>
-				<aui:select label="" name="<%= 'escalationLevel_" + curUser.getUserId() %>'>
+				<aui:select label="" name='<%= "escalationLevel_" + curUser.getUserId() %>'>
 
 					<%
 					List<ListType> escalationLevelTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL);

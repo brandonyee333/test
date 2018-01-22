@@ -83,7 +83,11 @@ Date lastEnabledDate = calendar.getTime();
 								<portlet:param name="mvcPath" value="/admin/select_partner_entry.jsp" />
 							</portlet:renderURL>
 
-							<aui:button cssClass="aui-button-input" onClick="var partnerEntryWindow = window.open('<%= selectPartnerEntryURL %>', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();" value="choose" />
+							<%
+							String taglibSelectPartnerEntry = "var partnerEntryWindow = window.open('" + selectPartnerEntryURL + "', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();";
+							%>
+
+							<aui:button cssClass="aui-button-input" onClick="<%= taglibSelectPartnerEntry %>" value="choose" />
 						</td>
 						<td colspan="2">
 							<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLE %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLE %>" type="hidden" value="<%= displayTerms.getAccountWorkerRole() %>" />
@@ -101,7 +105,11 @@ Date lastEnabledDate = calendar.getTime();
 								<portlet:param name="mvcPath" value="/admin/select_account_worker.jsp" />
 							</portlet:renderURL>
 
-							<aui:button cssClass="aui-button-input" onClick="var accountWorkerWindow = window.open('<%= selectAccountWorkerURL %>', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();" value="choose" />
+							<%
+							String taglibSelectAccountWorker = "var accountWorkerWindow = window.open('" + selectAccountWorkerURL + "', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();";
+							%>
+
+							<aui:button cssClass="aui-button-input" onClick="<%= taglibSelectAccountWorker %>" value="choose" />
 						</td>
 					</tr>
 					<tr>
@@ -226,7 +234,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td colspan="2">
-							<aui:select id="<%= displayTerms.INDUSTRIES %>" label="" multiple="true" name="<%= displayTerms.INDUSTRIES %>">
+							<aui:select id="<%= displayTerms.INDUSTRIES %>" label="" multiple="<%= true %>" name="<%= displayTerms.INDUSTRIES %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -245,7 +253,7 @@ Date lastEnabledDate = calendar.getTime();
 							</aui:select>
 						</td>
 						<td>
-							<aui:select id="<%= displayTerms.SUPPORT_RESPONSE_IDS %>" label="" multiple="true" name="<%= displayTerms.SUPPORT_RESPONSE_IDS %>">
+							<aui:select id="<%= displayTerms.SUPPORT_RESPONSE_IDS %>" label="" multiple="<%= true %>" name="<%= displayTerms.SUPPORT_RESPONSE_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -263,7 +271,7 @@ Date lastEnabledDate = calendar.getTime();
 							</aui:select>
 						</td>
 						<td>
-							<aui:select id="<%= displayTerms.TIERS %>" label="" multiple="true" name="<%= displayTerms.TIERS %>">
+							<aui:select id="<%= displayTerms.TIERS %>" label="" multiple="<%= true %>" name="<%= displayTerms.TIERS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -286,7 +294,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td colspan="4">
-							<aui:select id="<%= displayTerms.STATUSES %>" label="" multiple="true" name="<%= displayTerms.STATUSES %>">
+							<aui:select id="<%= displayTerms.STATUSES %>" label="" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
 								<option value="-1"><liferay-ui:message key="any" /></option>
 
 								<%
@@ -334,7 +342,11 @@ Date lastEnabledDate = calendar.getTime();
 								<portlet:param name="callback" value="selectCreateUser" />
 							</portlet:renderURL>
 
-							<aui:button cssClass="aui-button-input" onClick="var createUserWindow = window.open('<%= selectCreateUserURL %>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" value="choose" />
+							<%
+							String taglibSelectCreateUser = "var createUserWindow = window.open('" + selectCreateUserURL + "', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();";
+							%>
+
+							<aui:button cssClass="aui-button-input" onClick="<%= taglibSelectCreateUser %>" value="choose" />
 						</td>
 						<td colspan="2">
 							<aui:select id="<%= displayTerms.MODIFIED_USER_ID %>" label="" name="<%= displayTerms.MODIFIED_USER_ID %>">
@@ -354,7 +366,11 @@ Date lastEnabledDate = calendar.getTime();
 								<portlet:param name="callback" value="selectModifiedUser" />
 							</portlet:renderURL>
 
-							<aui:button cssClass="aui-button-input" onClick="var modifiedUserWindow = window.open('<%= selectModifiedUserURL %>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" value="choose" />
+							<%
+							String taglibSelectModifierUser = "var modifiedUserWindow = window.open('" + selectModifiedUserURL + "', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();";
+							%>
+
+							<aui:button cssClass="aui-button-input" onClick="<%= taglibSelectModifierUser %>" value="choose" />
 						</td>
 					</tr>
 					<tr>
@@ -445,7 +461,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td colspan="2">
-							<aui:select id="<%= displayTerms.PRODUCT_ENTRY_IDS %>" label="" multiple="true" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>">
+							<aui:select id="<%= displayTerms.PRODUCT_ENTRY_IDS %>" label="" multiple="<%= true %>" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -473,7 +489,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td>
-							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_LFR_IDS %>" label="" multiple="true" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_LFR_IDS %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_LFR_IDS %>" label="" multiple="<%= true %>" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_LFR_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -493,7 +509,7 @@ Date lastEnabledDate = calendar.getTime();
 							</aui:select>
 						</td>
 						<td>
-							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_OS_IDS %>" label="" multiple="true" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_OS_IDS %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_OS_IDS %>" label="" multiple="<%= true %>" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_OS_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -521,7 +537,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td>
-							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_JVM_IDS %>" label="" multiple="true" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_JVM_IDS %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_JVM_IDS %>" label="" multiple="<%= true %>" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_JVM_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -539,7 +555,7 @@ Date lastEnabledDate = calendar.getTime();
 							</aui:select>
 						</td>
 						<td>
-							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_DB_IDS %>" label="" multiple="true" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_DB_IDS %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_DB_IDS %>" label="" multiple="<%= true %>" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_DB_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%
@@ -564,7 +580,7 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td colspan="2">
-							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_AS_IDS %>" label="" multiple="true" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_AS_IDS %>">
+							<aui:select id="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_AS_IDS %>" label="" multiple="<%= true %>" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_AS_IDS %>">
 								<option value=""><liferay-ui:message key="any" /></option>
 
 								<%

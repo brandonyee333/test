@@ -107,7 +107,11 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					<portlet:param name="callback" value="selectSupportTeam" />
 				</portlet:renderURL>
 
-				<aui:button onClick="var supportTeamWindow = window.open('<%= selectSupportTeamURL %>', 'supportTeam', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); supportTeamWindow.focus();" value="change" />
+				<%
+				String taglibSelectSupportTeam = "var supportTeamWindow = window.open('" + selectSupportTeamURL + "', 'supportTeam', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); supportTeamWindow.focus();";
+				%>
+
+				<aui:button onClick="<%= taglibSelectSupportTeam %>" value="change" />
 
 				<input name="<portlet:namespace />supportTeamId" type="hidden" value="<%= supportTeam.getSupportTeamId() %>" />
 			</td>
@@ -510,8 +514,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 		<portlet:param name="mvcPath" value="/admin/select_severity.jsp" />
 	</portlet:renderURL>
 
+	<%
+	String taglibSelectSeverity = "var categoryWindow = window.open('" + selectSeverityURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+	%>
+
 	<div>
-		<aui:button onClick="var categoryWindow = window.open('<%= selectSeverityURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-severity" />
+		<aui:button onClick="<%= taglibSelectSeverity %>" value="add-severity" />
 	</div>
 
 	<br />
@@ -552,8 +560,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 		<portlet:param name="mvcPath" value="/admin/select_component.jsp" />
 	</portlet:renderURL>
 
+	<%
+	String taglibSelectComponent = "var categoryWindow = window.open('" + selectComponentURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+	%>
+
 	<div>
-		<aui:button onClick="var categoryWindow = window.open('<%= selectComponentURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-component" />
+		<aui:button onClick="<%= taglibSelectComponent %>" value="add-component" />
 	</div>
 
 	<br />
@@ -594,8 +606,12 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 		<portlet:param name="mvcPath" value="/admin/select_account_tier.jsp" />
 	</portlet:renderURL>
 
+	<%
+	String taglibSelectAccountTier = "var categoryWindow = window.open('" + selectAccountTierURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+	%>
+
 	<div>
-		<aui:button onClick="var categoryWindow = window.open('<%= selectAccountTierURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-project-tier" />
+		<aui:button onClick="<%= taglibSelectAccountTier %>" value="add-project-tier" />
 	</div>
 
 	<br />

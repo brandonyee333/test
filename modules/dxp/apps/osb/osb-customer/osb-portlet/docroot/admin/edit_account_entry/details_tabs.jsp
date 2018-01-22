@@ -471,7 +471,11 @@ for (SupportRegion supportRegion : supportRegions) {
 					<portlet:param name="callback" value="selectSupportRegion" />
 				</portlet:renderURL>
 
-				<aui:button onClick="var categoryWindow = window.open('<%= selectSupportRegionURL %>', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();" value="add-support-region" />
+				<%
+				String taglibSelectSupportRegion = "var categoryWindow = window.open('" + selectSupportRegionURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
+				%>
+
+				<aui:button onClick="<%= taglibSelectSupportRegion %>" value="add-support-region" />
 			</div>
 
 			<br />
@@ -508,7 +512,11 @@ for (SupportRegion supportRegion : supportRegions) {
 				<portlet:param name="mvcPath" value="/admin/select_language.jsp" />
 			</portlet:renderURL>
 
-			<aui:button onClick="var supportLanguageWindow = window.open('<%= selectSupportLanguageURL %>', 'support-language', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); supportLanguageWindow.focus();" value="add-support-language" />
+			<%
+			String taglibSelectSupportLanguage = "var supportLanguageWindow = window.open('" + selectSupportLanguageURL + "', 'support-language', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); supportLanguageWindow.focus();";
+			%>
+
+			<aui:button onClick="<%= taglibSelectSupportLanguage %>" value="add-support-language" />
 
 			<br />
 
