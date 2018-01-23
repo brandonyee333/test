@@ -207,8 +207,8 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 			totalPinOffset += offsetElement.offsetHeight;
 		}
 
-		for (var i = 0; i < pinElementIds.length; i++) {
-			<portlet:namespace />pinElement(pinElementIds[i], totalPinOffset);
+		for (var j = 0; j < pinElementIds.length; j++) {
+			<portlet:namespace />pinElement(pinElementIds[j], totalPinOffset);
 		}
 	}
 
