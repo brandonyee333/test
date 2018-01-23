@@ -452,7 +452,12 @@ class Form extends JSXComponent {
 				const value = formData[inputId] || '';
 
 				if (!value && defaultValue && action === 'create') {
-					this.handleUpdateValue(defaultValue, inputId);
+					if (htmlType === 'date') {
+						this.handleUpdateValue(Date.now(), inputId);
+					}
+					else {
+						this.handleUpdateValue(defaultValue, inputId);
+					}
 				}
 
 				const {inputTypes: inputTypeConstants} = WatsonConstants.inputConfig;

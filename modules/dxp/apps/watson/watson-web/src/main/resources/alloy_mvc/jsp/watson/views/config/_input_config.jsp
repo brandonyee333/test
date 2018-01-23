@@ -639,7 +639,7 @@
 						validations: []
 					},
 					reportDate: {
-						defaultValue: new Date().toISOString().substr(0,10),
+						defaultValue: true,
 						filterable: ${true},
 						htmlType: 'date',
 						label: '${AlloyLanguageUtil.formatUnicode("date-performed")}',
@@ -821,7 +821,7 @@
 						]
 					},
 					dateAccepted: {
-						defaultValue: new Date().toISOString().substr(0,10),
+						defaultValue: true,
 						filterable: ${true},
 						htmlType: 'date',
 						label: '${AlloyLanguageUtil.formatUnicode('date-accepted-to-zoe')}',
@@ -1203,7 +1203,7 @@
 					},
 					reportDate: {
 						controlledInputs: [],
-						defaultValue: new Date().toISOString().substr(0,10),
+						defaultValue: true,
 						filterable: ${true},
 						htmlType: 'date',
 						label: '${AlloyLanguageUtil.formatUnicode("date-performed")}',
@@ -1340,7 +1340,7 @@
 						]
 					},
 					receivedDate: {
-						defaultValue: new Date().toISOString().substr(0,10),
+						defaultValue: true,
 						filterable: ${true},
 						htmlType: 'date',
 						label: '${AlloyLanguageUtil.formatUnicode("date-received")}',
@@ -1522,7 +1522,7 @@
 					},
 					reportDate: {
 						controlledInputs: [],
-						defaultValue: new Date().toISOString().substr(0,10),
+						defaultValue: true,
 						filterable: ${true},
 						htmlType: 'date',
 						label: '${AlloyLanguageUtil.formatUnicode("date-reported")}',
@@ -1940,7 +1940,7 @@
 					},
 					reportDate: {
 						controlledInputs: [],
-						defaultValue: new Date().toISOString().substr(0,10),
+						defaultValue: true,
 						filterable: ${true},
 						htmlType: 'date',
 						label: '${AlloyLanguageUtil.formatUnicode("date-reported")}',
@@ -2256,7 +2256,7 @@
 					},
 					dateAccepted: {
 						controlledInputs: [],
-						defaultValue: new Date().toISOString().substr(0,10),
+						defaultValue: true,
 						dependentKey: ${true},
 						filterable: ${true},
 						htmlType: 'date',
@@ -2272,7 +2272,7 @@
 					},
 					dateRescued: {
 						controlledInputs: [],
-						defaultValue: new Date().toISOString().substr(0,10),
+						defaultValue: true,
 						dependentKey: ${true},
 						filterable: ${true},
 						htmlType: 'date',
