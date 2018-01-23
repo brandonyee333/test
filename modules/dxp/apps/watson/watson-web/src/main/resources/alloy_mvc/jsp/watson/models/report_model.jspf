@@ -101,7 +101,7 @@ public static class WatsonReport extends WatsonReportBaseModel {
 		jsonObject.put("originalWatsonReportId", watsonReport.getOriginalWatsonReportId());
 		jsonObject.put("reportDate", getFormattedDate(watsonReport.getReportDate(), locale));
 		jsonObject.put("reportedBy", watsonReport.getUserName());
-		jsonObject.put("reportedUser", watsonReport.getReportedUser());
+		jsonObject.put("reportedUser", watsonReport.getReportedUser(locale));
 		jsonObject.put("timeSpent", watsonReport.getTimeSpent());
 		jsonObject.put("typeWatsonListTypeId", watsonReport.getTypeWatsonListTypeId());
 		jsonObject.put("watsonChildId", watsonReport.getWatsonChildId());
