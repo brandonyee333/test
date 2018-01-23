@@ -141,14 +141,6 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 </c:if>
 
 <aui:script>
-	function <portlet:namespace />checkAll(id, check) {
-		var A = AUI();
-
-		A.all('#<portlet:namespace />' + id + ' input[type="checkbox"]').set('checked', check);
-
-		<portlet:namespace />updateSearchResults();
-	}
-
 	function <portlet:namespace />checkOnClick(element, event) {
 		var node = <portlet:namespace />getSelectionNode();
 
@@ -286,81 +278,11 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 		}
 	}
 
-	function <portlet:namespace />loadBulkEditToggle(searchTab) {
-		var A = AUI();
-
-		var bulkEditToggle = A.one('#<portlet:namespace />bulkEditToggle');
-
-		if (searchTab == 'tickets') {
-			var multipleTicketSelect = A.one('#<portlet:namespace />multipleTicketSelect');
-
-			multipleTicketSelect.on(
-				'click',
-				function() {
-					multipleTicketSelect.toggleClass('open-multiple-ticket-select-menu');
-				}
-			);
-
-			multipleTicketSelect.on(
-				'clickoutside',
-				function() {
-					multipleTicketSelect.removeClass('open-multiple-ticket-select-menu');
-				}
-			);
-
-			bulkEditToggle.show();
-		}
-		else {
-			bulkEditToggle.hide();
-		}
-	}
-
 	function <portlet:namespace />loadEventListeners() {
 		var dateSelectors = document.querySelectorAll('.search-param-config select');
 
 		for (var i = 0; i < dateSelectors.length; i++) {
-			dateSelectors[i].onchange = function() {
-				<portlet:namespace />updateSearchResults();
-			};
-		}
-	}
-
-	function <portlet:namespace />loadExportToggle() {
-		var A = AUI();
-
-		var exportMenu = A.one('#<portlet:namespace />exportMenu');
-
-		exportMenu.on(
-			'click',
-			function() {
-				exportMenu.toggleClass('open-drop-down');
-			}
-		);
-
-		exportMenu.on(
-			'clickoutside',
-			function() {
-				exportMenu.removeClass('open-drop-down');
-			}
-		);
-	}
-
-	function <portlet:namespace />multipleTicketSelect(selection) {
-		var A = AUI();
-
-		var checkmark = A.one('.multiple-ticket-checkmark');
-		var ticketRows = A.all('#<portlet:namespace />advancedSearchResultsContent .ticket-row');
-		var tickets = A.all('#<portlet:namespace />advancedSearchResultsContent input[type="checkbox"]');
-
-		if (selection == 'all') {
-			checkmark.show();
-			ticketRows.addClass('selected');
-			tickets.set('checked', true);
-		}
-		else if (selection == 'none') {
-			checkmark.hide();
-			ticketRows.removeClass('selected');
-			tickets.set('checked', false);
+			dateSelectors[i].onchange = <portlet:namespace />updateSearchResults;
 		}
 	}
 
@@ -614,35 +536,6 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 		}
 	}
 
-	function <portlet:namespace />setUpThreeDotMenus() {
-		var A = AUI();
-
-		A.all('.three-dot').each(
-			function(icon) {
-				var clickEvent = A.Event.getListeners(icon, 'click');
-				var clickOutsideEvent = A.Event.getListeners(icon, 'clickoutside');
-
-				if (!clickEvent) {
-					icon.on(
-						'click',
-						function() {
-							icon.toggleClass('open-drop-down');
-						}
-					);
-				}
-
-				if (!clickOutsideEvent) {
-					icon.on(
-						'clickoutside',
-						function() {
-							icon.removeClass('open-drop-down');
-						}
-					);
-				}
-			}
-		);
-	}
-
 	function <portlet:namespace />singleAccountEntryLoad(accountEntryId, accountEntryName) {
 		var accountEntryIds = document.getElementById('<portlet:namespace />accountEntryIds');
 
@@ -668,35 +561,6 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 		}
 	}
 
-	function <portlet:namespace />toggleBulkEdit(element) {
-		var A = AUI();
-
-		var bulkEdit = A.one('#<portlet:namespace />bulkEdit');
-		var toggleBulkEdit = A.all('.search-results .toggle-bulk-edit');
-		var toggleBulkEditCss = A.all('.search-results .toggle-bulk');
-
-		if (element.checked) {
-			bulkEdit.show();
-			toggleBulkEdit.show();
-			toggleBulkEditCss.removeClass('bulk-edit');
-
-			document.getElementsByName('<portlet:namespace />statuses')[0].checked = true;
-			document.getElementsByName('<portlet:namespace />escalationLevels')[0].checked = true;
-			document.getElementsByName('<portlet:namespace />escalationLevels')[1].checked = true;
-		}
-		else {
-			bulkEdit.hide();
-			toggleBulkEdit.hide();
-			toggleBulkEditCss.addClass('bulk-edit');
-
-			document.getElementsByName('<portlet:namespace />statuses')[0].checked = false;
-			document.getElementsByName('<portlet:namespace />escalationLevels')[0].checked = false;
-			document.getElementsByName('<portlet:namespace />escalationLevels')[1].checked = false;
-		}
-
-		<portlet:namespace />toggleCheckbox(element);
-	}
-
 	function <portlet:namespace />toggleCheckbox(element) {
 		if ((element.tagName == 'INPUT') && ((element.type == 'checkbox') || (element.type == 'radio'))) {
 			var elementParent = element.parentElement;
@@ -718,22 +582,6 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 		}
 
 		<portlet:namespace />updateSearchResults();
-	}
-
-	function <portlet:namespace />toggleExportButton(resultsCount) {
-		var A = AUI();
-
-		var exportButton = A.one('#<portlet:namespace/>exportButton');
-		var exportDropdown = A.one('#<portlet:namespace />exportDropdown');
-
-		if ((resultsCount > 0) && (resultsCount < 5000)) {
-			exportButton.removeClass('disabled');
-			exportDropdown.removeClass('hide');
-		}
-		else {
-			exportButton.addClass('disabled');
-			exportDropdown.addClass('hide');
-		}
 	}
 
 	function <portlet:namespace />toggleSelected(element) {
@@ -786,6 +634,83 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 			tab.innerHTML = '(-)';
 		}
 	}
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />checkAll',
+		function(id, check) {
+			var A = AUI();
+
+			A.all('#<portlet:namespace />' + id + ' input[type="checkbox"]').set('checked', check);
+
+			<portlet:namespace />updateSearchResults();
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />loadBulkEditToggle',
+		function(searchTab) {
+			var A = AUI();
+
+			var bulkEditToggle = A.one('#<portlet:namespace />bulkEditToggle');
+
+			if (bulkEditToggle) {
+				bulkEditToggle.hide();
+
+				if (searchTab == 'tickets') {
+					var multipleTicketSelect = A.one('#<portlet:namespace />multipleTicketSelect');
+
+					if (multipleTicketSelect) {
+						multipleTicketSelect.on(
+						'click',
+							function() {
+								multipleTicketSelect.toggleClass('open-multiple-ticket-select-menu');
+							}
+						);
+
+						multipleTicketSelect.on(
+							'clickoutside',
+							function() {
+								multipleTicketSelect.removeClass('open-multiple-ticket-select-menu');
+							}
+						);
+					}
+
+					bulkEditToggle.show();
+				}
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />loadExportToggle',
+		function() {
+			var A = AUI();
+
+			var exportMenu = A.one('#<portlet:namespace />exportMenu');
+
+			if (exportMenu) {
+				exportMenu.on(
+					'click',
+					function() {
+						exportMenu.toggleClass('open-drop-down');
+					}
+				);
+
+				exportMenu.on(
+					'clickoutside',
+					function() {
+						exportMenu.removeClass('open-drop-down');
+					}
+				);
+			}
+		},
+		['aui-base']
+	);
 
 	Liferay.provide(
 		window,
@@ -859,6 +784,112 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 
 	Liferay.provide(
 		window,
+		'<portlet:namespace />multipleTicketSelect',
+		function(selection) {
+			var A = AUI();
+
+			var checkmark = A.one('.multiple-ticket-checkmark');
+			var ticketRows = A.all('#<portlet:namespace />advancedSearchResultsContent .ticket-row');
+			var tickets = A.all('#<portlet:namespace />advancedSearchResultsContent input[type="checkbox"]');
+
+			if (checkmark) {
+				if (selection == 'all') {
+					checkmark.show();
+					ticketRows.addClass('selected');
+					tickets.set('checked', true);
+				}
+				else if (selection == 'none') {
+					checkmark.hide();
+					ticketRows.removeClass('selected');
+					tickets.set('checked', false);
+				}
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />setUpThreeDotMenus',
+		function() {
+			var A = AUI();
+
+			A.all('.three-dot').each(
+				function(icon) {
+					var clickEvent = A.Event.getListeners(icon, 'click');
+					var clickOutsideEvent = A.Event.getListeners(icon, 'clickoutside');
+
+					if (!clickEvent) {
+						icon.on(
+							'click',
+							function() {
+								icon.toggleClass('open-drop-down');
+							}
+						);
+					}
+
+					if (!clickOutsideEvent) {
+						icon.on(
+							'clickoutside',
+							function() {
+								icon.removeClass('open-drop-down');
+							}
+						);
+					}
+				}
+			);
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />toggleBulkEdit',
+		function(element) {
+			var A = AUI();
+
+			var bulkEdit = A.one('#<portlet:namespace />bulkEdit');
+			var toggleBulkEdit = A.all('.search-results .toggle-bulk-edit');
+			var toggleBulkEditCss = A.all('.search-results .toggle-bulk');
+
+			if (bulkEdit) {
+				var checked = element.checked;
+
+				bulkEdit.toggle(checked);
+				toggleBulkEdit.toggle(checked);
+				toggleBulkEditCss.toggleClass('bulk-edit', !checked);
+
+				document.getElementsByName('<portlet:namespace />statuses')[0].checked = checked;
+				document.getElementsByName('<portlet:namespace />escalationLevels')[0].checked = checked;
+				document.getElementsByName('<portlet:namespace />escalationLevels')[1].checked = checked;
+			}
+
+			<portlet:namespace />toggleCheckbox(element);
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />toggleExportButton',
+		function(resultsCount) {
+			var A = AUI();
+
+			var exportButton = A.one('#<portlet:namespace/>exportButton');
+			var exportDropdown = A.one('#<portlet:namespace />exportDropdown');
+
+			if (exportButton && exportDropdown) {
+				var resultsRange = resultsCount > 0 && resultsCount < 5000;
+
+				exportButton.toggleClass('disabled', !resultsRange);
+				exportDropdown.toggleClass('hide', !resultsRange);
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
 		'<portlet:namespace />updateSearchFilter',
 		function(searchFilterId, searchFilterName) {
 			var A = AUI();
@@ -867,8 +898,6 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 				if (confirm(Liferay.Language.get('are-you-sure-you-want-to-update-your-saved-custom-filter-x', searchFilterName))) {
 					<portlet:namespace />doUpdateSearchFilter(searchFilterId, '&<portlet:namespace />editFilterName=' + encodeURIComponent(searchFilterName));
 				}
-
-				return;
 			}
 			else {
 				if (searchFilterId == -1) {
@@ -1007,8 +1036,8 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 								if (activeFilters) {
 									var split = activeFilters.value.split(',');
 
-									for (var i = 0; i < split.length - 1; i++) {
-										var activeFilter = document.querySelectorAll('.search-param.' + split[i]);
+									for (var j = 0; j < split.length - 1; j++) {
+										var activeFilter = document.querySelectorAll('.search-param.' + split[j]);
 
 										if (activeFilter.length > 0) {
 											activeFilter[0].classList.add('active');
@@ -1035,9 +1064,7 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 		},
 		['aui-io']
 	);
-</aui:script>
 
-<aui:script use="aui-base">
 	<portlet:namespace />loadTab('<%= HtmlUtil.escape(searchTab) %>');
 
 	<portlet:namespace />navSelect('advSearch');
