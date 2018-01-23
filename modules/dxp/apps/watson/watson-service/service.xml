@@ -379,7 +379,7 @@
 		<column localized="true" name="fullReport" type="String" />
 		<column name="imagePayload" type="String" />
 		<column name="timeSpent" type="String" />
-		<column name="reportedUser" type="String" />
+		<column localized="true" name="reportedUser" type="String" />
 		<column name="reportDate" type="Date" />
 		<column name="key" type="int" />
 		<column name="status" type="int" />
