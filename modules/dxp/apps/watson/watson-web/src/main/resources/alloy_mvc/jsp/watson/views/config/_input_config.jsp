@@ -669,20 +669,6 @@
 						validations: [
 							'required'
 						]
-					},
-					watsonRelationships: {
-						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
-						cssClass: 'triple-dynamic',
-						disabled: ${true},
-						fancy: ${false},
-						filterable: ${false},
-						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
-						translatable: ${false},
-						tripleOnly: ${true},
-						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
-						validations: [
-							'arrayValues4'
-						]
 					}
 				},
 				key: '${WatsonReportConstants.REPORT_TYPE_CASEWORK}',
@@ -1155,21 +1141,6 @@
 						label: '${AlloyLanguageUtil.formatUnicode("vocational-training")}',
 						translatable: ${false},
 						type: 'INPUT'
-					},
-					watsonRelationships: {
-						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
-						cssClass: 'triple-dynamic',
-						disabled: ${true},
-						fancy: ${false},
-						filterable: ${false},
-						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
-						tooltipLabel: '',
-						translatable: ${false},
-						tripleOnly: ${true},
-						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
-						validations: [
-							'arrayValues4'
-						]
 					}
 				},
 				relationshipObjectOptions: {},
@@ -1283,20 +1254,6 @@
 						type: 'SELECT_INPUT',
 						validations: [
 							'required'
-						]
-					},
-					watsonRelationships: {
-						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
-						cssClass: 'triple-dynamic',
-						disabled: ${true},
-						fancy: ${false},
-						filterable: ${false},
-						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
-						translatable: ${false},
-						tripleOnly: ${true},
-						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
-						validations: [
-							'arrayValues4'
 						]
 					}
 				},
@@ -1429,20 +1386,6 @@
 						type: 'DEPENDENT_SELECT_INPUT',
 						validations: [
 							'required'
-						]
-					},
-					watsonRelationships: {
-						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
-						cssClass: 'triple-dynamic',
-						disabled: ${true},
-						fancy: ${false},
-						filterable: ${false},
-						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
-						translatable: ${false},
-						tripleOnly: ${true},
-						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
-						validations: [
-							'arrayValues4'
 						]
 					}
 				},
@@ -1588,20 +1531,6 @@
 						validations: [
 							'date',
 							'required'
-						]
-					},
-					watsonRelationships: {
-						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
-						cssClass: 'triple-dynamic',
-						disabled: ${true},
-						fancy: ${false},
-						filterable: ${false},
-						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
-						translatable: ${false},
-						tripleOnly: ${true},
-						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
-						validations: [
-							'arrayValues4'
 						]
 					}
 				},

@@ -89,8 +89,7 @@ class ChildForm extends JSXComponent {
 			'sourceSubtypeWatsonListTypeId',
 			'source',
 			'activitiesInvolvedWatsonListTypeRels',
-			'vocationalTrainingWatsonListTypeRels',
-			'watsonRelationships'
+			'vocationalTrainingWatsonListTypeRels'
 		];
 	};
 
@@ -110,8 +109,10 @@ class ChildForm extends JSXComponent {
 				const {nameWatsonListTypeRels: formDataNameWatsonListTypeRels} = formData;
 				const {nameWatsonListTypeRels: originalDataNameWatsonListTypeRels} = originalData;
 
-				formData.nameWatsonListTypeRels = formDataNameWatsonListTypeRels.length;
-				originalData.nameWatsonListTypeRels = originalDataNameWatsonListTypeRels.length;
+				if (formDataNameWatsonListTypeRels && originalDataNameWatsonListTypeRels) {
+					formData.nameWatsonListTypeRels = formDataNameWatsonListTypeRels.length;
+					originalData.nameWatsonListTypeRels = originalDataNameWatsonListTypeRels.length;
+				}
 
 				if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
 					this.setState(

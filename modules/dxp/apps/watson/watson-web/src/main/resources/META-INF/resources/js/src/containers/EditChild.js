@@ -104,8 +104,7 @@ class EditChild extends JSXComponent {
 							'typeWatsonListTypeId',
 							'reportDate',
 							'description',
-							'imagePayload',
-							'watsonRelationships'
+							'imagePayload'
 						]}
 						formData={props.modelFormData}
 						model={model}
@@ -168,8 +167,7 @@ class EditChild extends JSXComponent {
 							'typeWatsonListTypeId',
 							'timeSpent',
 							'reportedUser',
-							'description',
-							'watsonRelationships'
+							'description'
 						]}
 						formData={props.modelFormData}
 						model={model}
@@ -214,8 +212,7 @@ class EditChild extends JSXComponent {
 							'originalDocument',
 							'parentTypeWatsonListTypeId',
 							'typeWatsonListTypeId',
-							'subtypeWatsonListTypeId',
-							'watsonRelationships'
+							'subtypeWatsonListTypeId'
 						]}
 						formData={props.modelFormData}
 						model={model}
@@ -275,8 +272,7 @@ class EditChild extends JSXComponent {
 							'id',
 							'reportDate',
 							'description',
-							'fullReport',
-							'watsonRelationships'
+							'fullReport'
 						]}
 						formData={props.modelFormData}
 						model={model}
@@ -338,8 +334,7 @@ class EditChild extends JSXComponent {
 							'reportDate',
 							'timeSpent',
 							'reportedUser',
-							'description',
-							'watsonRelationships'
+							'description'
 						]}
 						formData={props.modelFormData}
 						model={model}
