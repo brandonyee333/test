@@ -404,6 +404,10 @@
 			align-items: flex-start;
 		}
 
+		&.pushDown {
+			margin-top: 5%;
+		}
+
 		.input-label {
 			@include input-label;
 
