@@ -429,8 +429,8 @@ class EditChild extends JSXComponent {
 		const illnessesNav = [];
 		const legalsNav = [];
 
-		if (childrenStoreData.get('caseworkActivities')) {
-			const caseworkActivities = Sort(childrenStoreData.get('caseworkActivities'), null, 'name');
+		if (childrenStoreData.get('casework_activities')) {
+			const caseworkActivities = Sort(childrenStoreData.get('casework_activities'), null, 'name');
 
 			const caseworkActivitiesList = [];
 
@@ -454,8 +454,8 @@ class EditChild extends JSXComponent {
 			);
 		}
 
-		if (childrenStoreData.get('counselingReports')) {
-			const counselingReports = Sort(childrenStoreData.get('counselingReports'), null, 'name');
+		if (childrenStoreData.get('counseling_reports')) {
+			const counselingReports = Sort(childrenStoreData.get('counseling_reports'), null, 'name');
 
 			const counselingReportsList = [];
 

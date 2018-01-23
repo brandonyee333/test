@@ -79,9 +79,9 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 
 		jsonObject.put("birthCountryId", watsonChild.getBirthCountryId());
-		jsonObject.put("caseworkActivities", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_CASEWORK, watsonChild.getWatsonChildId()));
+		jsonObject.put("casework_activities", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_CASEWORK, watsonChild.getWatsonChildId()));
 		jsonObject.put("citizenshipWatsonListTypeId", watsonChild.getCitizenshipWatsonListTypeId());
-		jsonObject.put("counselingReports", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_COUNSELING, watsonChild.getWatsonChildId()));
+		jsonObject.put("counseling_reports", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_COUNSELING, watsonChild.getWatsonChildId()));
 
 		if (countryIDWatsonListTypeRels != null) {
 			pushRelData(jsonObject, countryIDWatsonListTypeRels, "countryID", locale);
