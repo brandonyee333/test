@@ -39,7 +39,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (!watsonReport.isValid(null)) {
+		if (!watsonReport.isValid()) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 			jsonObject.put("errors", watsonReport.getReportFormErrors());
@@ -214,18 +214,12 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		long watsonChildId = watsonReport.getWatsonChildId();
 
-		JSONArray watsonRelationshipJSONArray = JSONFactoryUtil.createJSONArray(ParamUtil.getString(request, "watsonRelationships"));
-
-		Object[] generatedWatsonRelationships = WatsonRelationship.generateValidationData(request, watsonReport, watsonRelationshipJSONArray, watsonChildId);
-
-		List<WatsonRelationship> watsonRelationships = (List<WatsonRelationship>)generatedWatsonRelationships[0];
-
-		if (!watsonReport.isValid(watsonRelationships)) {
+		if (!watsonReport.isValid()) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 			jsonObject.put("errors", watsonReport.getReportFormErrors());
 
-			jsonObject.put("model", WatsonReport.getAsJSONObject(watsonReport, watsonRelationships));
+			jsonObject.put("model", WatsonReport.getAsJSONObject(watsonReport));
 
 			respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("report-was-not-saved"), jsonObject);
 
@@ -233,12 +227,6 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		watsonReport.update();
-
-		WatsonRelationship.batchUpdate(watsonRelationships);
-
-		List<WatsonRelationship> removableWatsonRelationships = (List<WatsonRelationship>)generatedWatsonRelationships[1];
-
-		WatsonRelationship.batchDelete(removableWatsonRelationships);
 
 		WatsonHistory.add(watsonReport.getWatsonChildId(), watsonReport, request, WatsonHistory.HISTORY_TYPE_UPDATED);
 

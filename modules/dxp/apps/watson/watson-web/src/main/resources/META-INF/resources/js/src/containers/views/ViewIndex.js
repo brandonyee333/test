@@ -21,6 +21,8 @@ import {indexIllnesses, searchIllnesses} from '../../actions/illnesses';
 import {indexIncidents, searchIncidents} from '../../actions/incidents';
 import {indexLegals, searchLegals} from '../../actions/legals';
 import {indexPeople, searchPeople} from '../../actions/people';
+import {indexPhysicalExams, searchPhysicalExams} from '../../actions/physical-exams';
+import {indexProgressReports, searchProgressReports} from '../../actions/progress-reports';
 import {indexResources, searchResources} from '../../actions/resources';
 import {indexVehicles, searchVehicles} from '../../actions/vehicles';
 
@@ -239,7 +241,7 @@ class ViewIndex extends JSXComponent {
 		const {actionDisplayed, modelDisplayed, resendSearchRequest} = state;
 
 		if (!disableDataFetch) {
-			if ((model !== modelDisplayed || action !== actionDisplayed) || forceReindex) {
+			if (((model !== modelDisplayed) || (action !== actionDisplayed)) || forceReindex) {
 				this.state.actionDisplayed = action;
 				this.state.modelDisplayed = model;
 
@@ -376,7 +378,7 @@ class ViewIndex extends JSXComponent {
 	}
 
 	syncFilter(newState, oldState) {
-		if (newState && newState !== oldState) {
+		if (oldState && newState && newState !== oldState) {
 			if (newState.size > 0) {
 				this.setState(
 					{
@@ -416,7 +418,7 @@ class ViewIndex extends JSXComponent {
 	}
 
 	syncSortBy(newState, oldState) {
-		if (newState && newState !== oldState) {
+		if (oldState && newState && newState !== oldState) {
 			this.state.itemsLoaded = 0;
 
 			this.refreshData(true);
@@ -520,6 +522,20 @@ function mapDispatchToProps(dispatch) {
 				indexPeople(data)
 			);
 		},
+		indexPhysicalExams: data => {
+			data.key = WatsonConstants.inputConfig.physical_exams.key;
+
+			dispatch(
+				indexPhysicalExams(data)
+			);
+		},
+		indexProgressReports: data => {
+			data.key = WatsonConstants.inputConfig.progress_reports.key;
+
+			dispatch(
+				indexProgressReports(data)
+			);
+		},
 		indexResources: data => {
 			dispatch(
 				indexResources(data)
@@ -586,6 +602,20 @@ function mapDispatchToProps(dispatch) {
 		searchPeople: data => {
 			dispatch(
 				searchPeople(data)
+			);
+		},
+		searchPhysicalExams: data => {
+			data.key = WatsonConstants.inputConfig.physical_exams.key;
+
+			dispatch(
+				searchPhysicalExams(data)
+			);
+		},
+		searchProgressReports: data => {
+			data.key = WatsonConstants.inputConfig.progress_reports.key;
+
+			dispatch(
+				searchProgressReports(data)
 			);
 		},
 		searchResources: data => {

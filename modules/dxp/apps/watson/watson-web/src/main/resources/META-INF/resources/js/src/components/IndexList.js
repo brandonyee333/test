@@ -755,7 +755,7 @@ function IndexList({data = OrderedMap(), hasMoreResults, incidentsData = Ordered
 	else if (model === 'documents') {
 		data = formatDocumentsData(data, keysToOmit, onClick, selectedIds, simple);
 	}
-	else if (model === 'casework_activities' || model === 'counseling_reports' || model === 'legals' || model === 'illnesses') {
+	else if (model === 'casework_activities' || model === 'counseling_reports' || model === 'legals' || model === 'illnesses' || model === 'physical_exams' || model === 'progress_reports') {
 		data = formatReportsData(data, model, keysToOmit, onClick, selectedIds, simple);
 	}
 	else if (model === 'people') {

@@ -242,6 +242,12 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		else if (model.equals("illnesses")) {
 			idJSONArray = WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_ILLNESS, watsonChildId);
 		}
+		else if (model.equals("physical_exams")) {
+			idJSONArray = WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_PHYSICAL_EXAM, watsonChildId);
+		}
+		else if (model.equals("progress_reports")) {
+			idJSONArray = WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_PROGRESS_REPORT, watsonChildId);
+		}
 
 		jsonObject.put("id", watsonChildId);
 		jsonObject.put("idArray", idJSONArray);

@@ -1141,6 +1141,20 @@
 						label: '${AlloyLanguageUtil.formatUnicode("vocational-training")}',
 						translatable: ${false},
 						type: 'INPUT'
+					},
+					watsonRelationships: {
+						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
+						cssClass: 'triple-dynamic',
+						disabled: ${true},
+						fancy: ${false},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("relationships")}',
+						translatable: ${false},
+						tripleOnly: ${true},
+						type: 'DYNAMIC_RELATIONSHIP_INPUT_GENERATOR',
+						validations: [
+							'arrayValues4'
+						]
 					}
 				},
 				relationshipObjectOptions: {},
@@ -2695,6 +2709,158 @@
 					LAST_MODIFIED: {
 						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
 						value: 'modifiedDate'
+					}
+				}
+			},
+			physical_exams: {
+				inputs: {
+					createDate: {
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-created")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: []
+					},
+					description: {
+						filterable: ${true},
+						cssClass: 'textarea',
+						label: '${AlloyLanguageUtil.formatUnicode("description")}',
+						translatable: ${true},
+						type: 'TEXT_AREA_INPUT',
+						validations: [
+							'required'
+						]
+					},
+					id: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("id")}',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'INPUT_VIEW',
+						validations: []
+					},
+					imagePayload: {
+						acceptedTypes: '.doc, .docx, .gif, .jpg, .odb, .odf, .odg, .odp, .ods, .odt, .pdf, .png, .ppt, .pptx, .rtf, .tar, .tiff, .tgz, .txt, .xls, .xlsx, .zip',
+						enableCropperTool: ${true},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("document")}',
+						multiple: ${false},
+						translatable: ${false},
+						type: 'FILE',
+						uploaderLabel: '${AlloyLanguageUtil.formatUnicode("add-document")}',
+						validations: []
+					},
+					reportDate: {
+						defaultValue: true,
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("exam-date")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: [
+							'required'
+						]
+					}
+				},
+				key: '${WatsonReportConstants.REPORT_TYPE_PHYSICAL_EXAM}',
+				relationshipObjectOptions: {},
+				pluralLabel: '${AlloyLanguageUtil.formatUnicode("physical-exams")}',
+					singularLabel: '${AlloyLanguageUtil.formatUnicode("physical-exam")}',
+					sortByDefault: 'watsonChildId',
+					sortByOptions: {
+					CREATED: {
+						label: '${AlloyLanguageUtil.formatUnicode("created")}',
+						value: 'createDate'
+					},
+					INCIDENT_ID: {
+						label: '${AlloyLanguageUtil.formatUnicode("child-id")}',
+						value: 'watsonChildId'
+					},
+					LAST_MODIFIED: {
+						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
+						value: 'modifiedDate'
+					},
+					TYPE: {
+						label: '${AlloyLanguageUtil.formatUnicode("type")}',
+						value: 'typeWatsonListTypeId'
+					}
+				}
+			},
+			progress_reports: {
+				inputs: {
+					createDate: {
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("date-created")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: []
+					},
+					id: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("report-id")}',
+						tooltipLabel: '',
+						translatable: ${false},
+						type: 'INPUT_VIEW',
+						validations: []
+					},
+					imagePayload: {
+						acceptedTypes: '.doc, .docx, .gif, .jpg, .odb, .odf, .odg, .odp, .ods, .odt, .pdf, .png, .ppt, .pptx, .rtf, .tar, .tiff, .tgz, .txt, .xls, .xlsx, .zip',
+						enableCropperTool: ${true},
+						filterable: ${false},
+						label: '${AlloyLanguageUtil.formatUnicode("document")}',
+						multiple: ${false},
+						translatable: ${false},
+						type: 'FILE',
+						uploaderLabel: '${AlloyLanguageUtil.formatUnicode("add-document")}',
+						validations: [
+							'required'
+						]
+					},
+					reportDate: {
+						defaultValue: true,
+						filterable: ${true},
+						htmlType: 'date',
+						label: '${AlloyLanguageUtil.formatUnicode("report-date")}',
+						translatable: ${false},
+						type: 'INPUT',
+						validations: [
+							'required'
+						]
+					},
+					reportedUser: {
+						filterable: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("recorder-name")}',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("name-of-the-recorder")}',
+						translatable: ${true},
+						type: 'INPUT',
+						validations: [
+							'required'
+						]
+					}
+				},
+				key: '${WatsonReportConstants.REPORT_TYPE_PROGRESS_REPORT}',
+				relationshipObjectOptions: {},
+				pluralLabel: '${AlloyLanguageUtil.formatUnicode("progress-reports")}',
+					singularLabel: '${AlloyLanguageUtil.formatUnicode("progress-report")}',
+					sortByDefault: 'watsonChildId',
+					sortByOptions: {
+					CREATED: {
+						label: '${AlloyLanguageUtil.formatUnicode("created")}',
+						value: 'createDate'
+					},
+					INCIDENT_ID: {
+						label: '${AlloyLanguageUtil.formatUnicode("child-id")}',
+						value: 'watsonChildId'
+					},
+					LAST_MODIFIED: {
+						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
+						value: 'modifiedDate'
+					},
+					TYPE: {
+						label: '${AlloyLanguageUtil.formatUnicode("type")}',
+						value: 'typeWatsonListTypeId'
 					}
 				}
 			},

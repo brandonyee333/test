@@ -51,6 +51,22 @@ import {
 	updateLegalsFormData
 } from '../../actions/legals';
 
+import {
+	destroyPhysicalExams,
+	editPhysicalExams,
+	updatePhysicalExams,
+	updatePhysicalExamsDataManually,
+	updatePhysicalExamsFormData
+} from '../../actions/physical-exams';
+
+import {
+	destroyProgressReports,
+	editProgressReports,
+	updateProgressReports,
+	updateProgressReportsDataManually,
+	updateProgressReportsFormData
+} from '../../actions/progress-reports';
+
 class GenericChildForm extends JSXComponent {
 	attached() {
 		const {props} = this;
@@ -394,6 +410,16 @@ function mapDispatchToProps(dispatch) {
 				destroyLegals(watsonReportId)
 			);
 		},
+		destroyPhysicalExams: watsonReportId => {
+			dispatch(
+				destroyPhysicalExams(watsonReportId)
+			);
+		},
+		destroyProgressReports: watsonReportId => {
+			dispatch(
+				destroyProgressReports(watsonReportId)
+			);
+		},
 		editCaseworkActivities: watsonReportId => {
 			dispatch(
 				editCaseworkActivities(watsonReportId)
@@ -417,6 +443,16 @@ function mapDispatchToProps(dispatch) {
 		editLegals: watsonReportId => {
 			dispatch(
 				editLegals(watsonReportId)
+			);
+		},
+		editPhysicalExams: watsonReportId => {
+			dispatch(
+				editPhysicalExams(watsonReportId)
+			);
+		},
+		editProgressReports: watsonReportId => {
+			dispatch(
+				editProgressReports(watsonReportId)
 			);
 		},
 		updateCaseworkActivities: data => {
@@ -517,6 +553,46 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				updateLegalsFormData(data)
+			);
+		},
+		updatePhysicalExams: data => {
+			dispatch(
+				updatePhysicalExams(data)
+			);
+		},
+		updatePhysicalExamsDataManually: data => {
+			dispatch(
+				updatePhysicalExamsDataManually(data)
+			);
+		},
+		updatePhysicalExamsFormData: (formData, watsonReportId = 0) => {
+			const data = {
+				formData,
+				watsonReportId
+			};
+
+			dispatch(
+				updatePhysicalExamsFormData(data)
+			);
+		},
+		updateProgressReports: data => {
+			dispatch(
+				updateProgressReports(data)
+			);
+		},
+		updateProgressReportsDataManually: data => {
+			dispatch(
+				updateProgressReportsDataManually(data)
+			);
+		},
+		updateProgressReportsFormData: (formData, watsonReportId = 0) => {
+			const data = {
+				formData,
+				watsonReportId
+			};
+
+			dispatch(
+				updateProgressReportsFormData(data)
 			);
 		}
 	};

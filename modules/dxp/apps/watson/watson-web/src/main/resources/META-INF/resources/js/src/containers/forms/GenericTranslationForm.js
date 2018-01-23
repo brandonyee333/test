@@ -17,6 +17,8 @@ import {fetchLegalsTranslation, updateLegals, viewLegals} from '../../actions/le
 import {fetchIllnessesTranslation, updateIllnesses, viewIllnesses} from '../../actions/illnesses';
 import {fetchIncidentsTranslation, updateIncidents, viewIncidents} from '../../actions/incidents';
 import {fetchPeopleTranslation, updatePeople, viewPeople} from '../../actions/people';
+import {fetchPhysicalExamsTranslation, updatePhysicalExams, viewPhysicalExams} from '../../actions/physical-exams';
+import {fetchProgressReportsTranslation, updateProgressReports, viewProgressReports} from '../../actions/progress-reports';
 import {fetchResourcesTranslation, updateResources, viewResources} from '../../actions/resources';
 import {fetchVehiclesTranslation, updateVehicles, viewVehicles} from '../../actions/vehicles';
 
@@ -316,6 +318,26 @@ function mapDispatchToProps(dispatch) {
 				fetchPeopleTranslation(data)
 			);
 		},
+		fetchPhysicalExamsTranslation: watsonReportId => {
+			const data = {
+				id: watsonReportId,
+				translatingTo: WatsonConstants.otherLanguageId
+			};
+
+			dispatch(
+				fetchPhysicalExamsTranslation(data)
+			);
+		},
+		fetchProgressReportsTranslation: watsonReportId => {
+			const data = {
+				id: watsonReportId,
+				translatingTo: WatsonConstants.otherLanguageId
+			};
+
+			dispatch(
+				fetchProgressReportsTranslation(data)
+			);
+		},
 		fetchResourcesTranslation: watsonResourceId => {
 			const data = {
 				id: watsonResourceId,
@@ -381,6 +403,16 @@ function mapDispatchToProps(dispatch) {
 				updatePeople(data, 'updateTranslation.json')
 			);
 		},
+		translatePhysicalExams: data => {
+			dispatch(
+				updatePhysicalExams(data, 'updateTranslation.json')
+			);
+		},
+		translateProgressReports: data => {
+			dispatch(
+				updateProgressReports(data, 'updateTranslation.json')
+			);
+		},
 		translateResources: data => {
 			dispatch(
 				updateResources(data, 'updateTranslation.json')
@@ -434,6 +466,16 @@ function mapDispatchToProps(dispatch) {
 		viewPeople: watsonPersonId => {
 			dispatch(
 				viewPeople(watsonPersonId)
+			);
+		},
+		viewPhysicalExams: watsonReportId => {
+			dispatch(
+				viewPhysicalExams(watsonReportId)
+			);
+		},
+		viewProgressReports: watsonReportId => {
+			dispatch(
+				viewProgressReports(watsonReportId)
 			);
 		},
 		viewResources: watsonResourceId => {

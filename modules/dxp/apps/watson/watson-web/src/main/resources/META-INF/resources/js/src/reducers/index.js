@@ -12,6 +12,8 @@ import illnesses from './illnesses';
 import incidents from './incidents';
 import list_types from './list-types';
 import people from './people';
+import physical_exams from './physical-exams';
+import progress_reports from './progress-reports';
 import relationships from './relationships';
 import legals from './legals';
 import resources from './resources';
@@ -37,6 +39,8 @@ export default combineReducers(
 		legals,
 		list_types,
 		people,
+		physical_exams,
+		progress_reports,
 		relationships,
 		resources,
 		vehicles

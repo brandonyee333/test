@@ -190,18 +190,6 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonDocumentRelationships(List<WatsonRelationship> watsonRelationships) throws Exception{
-		if (Validator.isNotNull(watsonRelationships)) {
-			for (WatsonRelationship watsonRelationship : watsonRelationships) {
-				if (!watsonRelationship.isValid()) {
-					return new KeyValuePair("watsonRelationships", "the-relationships-were-invalid");
-				}
-			}
-		}
-
-		return null;
-	}
-
 	public static KeyValuePair validateWatsonDocumentParentType(long parentTypeWatsonListTypeId) throws Exception {
 		if (parentTypeWatsonListTypeId <= 0) {
 			return new KeyValuePair("parentTypeWatsonListTypeId", "the-document-type-is-invalid");
@@ -266,12 +254,11 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 		return update(this);
 	}
 
-	public boolean isValid(List<WatsonRelationship> watsonRelationships) throws Exception {
+	public boolean isValid() throws Exception {
 		pushError(validateWatsonDocumentChild(getWatsonChildId()));
 		pushError(validateWatsonDocumentFile(getImagePayload()));
 		pushError(validateWatsonDocumentParentType(getParentTypeWatsonListTypeId()));
 		pushError(validateWatsonDocumentReceivedDate(getReceivedDate()));
-		pushError(validateWatsonDocumentRelationships(watsonRelationships));
 		pushError(validateWatsonDocumentSubtype(getSubtypeWatsonListTypeId()));
 		pushError(validateWatsonDocumentType(getTypeWatsonListTypeId()));
 

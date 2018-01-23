@@ -14,6 +14,8 @@ import {indexCounselingReports} from '../../actions/counseling-reports';
 import {indexDocuments} from '../../actions/documents';
 import {indexIllnesses} from '../../actions/illnesses';
 import {indexLegals} from '../../actions/legals';
+import {indexPhysicalExams} from '../../actions/physical-exams';
+import {indexProgressReports} from '../../actions/progress-reports';
 import {viewChildren} from '../../actions/children';
 
 import {getMimeType, updateDOMTitle} from '../../lib/util';
@@ -30,6 +32,9 @@ class ChildReport extends JSXComponent {
 			props.indexDocuments(watsonChildId);
 			props.indexIllnesses(watsonChildId);
 			props.indexLegals(watsonChildId);
+			props.indexPhysicalExams(watsonChildId);
+			props.indexProgressReports(watsonChildId);
+
 			props.viewChildren(watsonChildId);
 		}
 	}
@@ -374,6 +379,15 @@ class ChildReport extends JSXComponent {
 				{(!entryId || model === 'counseling_reports') &&
 					this.renderModel(entryId, 'counseling_reports')
 				}
+
+				{(!entryId || model === 'physical_exams') &&
+					this.renderModel(entryId, 'physical_exams')
+				}
+
+				{(!entryId || model === 'progress_reports') &&
+					this.renderModel(entryId, 'progress_reports')
+				}
+
 			</div>
 		);
 	}
@@ -406,6 +420,8 @@ ChildReport.PROPS = {
 	illnessesData: Config.value(new Map()),
 	legalsData: Config.value(new Map()),
 	model: Config.string(),
+	physicalExamsData: Config.value(new Map()),
+	progress_reportsData: Config.value(new Map()),
 	watsonChildId: Config.any()
 };
 
@@ -415,8 +431,7 @@ ChildReport.STATE = {
 			'typeWatsonListTypeId',
 			'reportDate',
 			'description',
-			'imagePayload',
-			'watsonRelationships'
+			'imagePayload'
 		]
 	),
 	childrenConfig: Config.array().value(
@@ -438,8 +453,7 @@ ChildReport.STATE = {
 			'sourceSubtypeWatsonListTypeId',
 			'source',
 			'activitiesInvolvedWatsonListTypeRels',
-			'vocationalTrainingWatsonListTypeRels',
-			'watsonRelationships'
+			'vocationalTrainingWatsonListTypeRels'
 		]
 	),
 	counseling_reportsConfig: Config.array().value(
@@ -448,8 +462,7 @@ ChildReport.STATE = {
 			'typeWatsonListTypeId',
 			'timeSpent',
 			'reportedUser',
-			'description',
-			'watsonRelationships'
+			'description'
 		]
 	),
 	documentsConfig: Config.array().value(
@@ -459,8 +472,7 @@ ChildReport.STATE = {
 			'originalDocument',
 			'parentTypeWatsonListTypeId',
 			'typeWatsonListTypeId',
-			'subtypeWatsonListTypeId',
-			'watsonRelationships'
+			'subtypeWatsonListTypeId'
 		]
 	),
 	elementStyle: Config.value(''),
@@ -469,9 +481,7 @@ ChildReport.STATE = {
 		[
 			'reportDate',
 			'description',
-			'fullReport',
-			'watsonRelationships'
-
+			'fullReport'
 		]
 	),
 	legalsConfig: Config.array().value(
@@ -479,11 +489,24 @@ ChildReport.STATE = {
 			'reportDate',
 			'timeSpent',
 			'reportedUser',
-			'description',
-			'watsonRelationships'
+			'description'
 		]
 	),
-	model: Config.string()
+	model: Config.string(),
+	physical_examsConfig: Config.array().value(
+		[
+			'reportDate',
+			'imagePayload',
+			'description'
+		]
+	),
+	progress_reportsConfig: Config.array().value(
+		[
+			'reportDate',
+			'reportedUser',
+			'imagePayload'
+		]
+	)
 };
 
 function mapDispatchToProps(dispatch) {
@@ -533,6 +556,26 @@ function mapDispatchToProps(dispatch) {
 				indexLegals(data)
 			);
 		},
+		indexPhysicalExams: id => {
+			const data = {
+				id,
+				key: WatsonConstants.inputConfig.physical_exams.key
+			};
+
+			dispatch(
+				indexPhysicalExams(data)
+			);
+		},
+		indexProgressReports: id => {
+			const data = {
+				id,
+				key: WatsonConstants.inputConfig.progress_reports.key
+			};
+
+			dispatch(
+				indexProgressReports(data)
+			);
+		},
 		viewChildren: id => {
 			dispatch(
 				viewChildren(id)
@@ -556,6 +599,10 @@ function mapStateToProps(state, props) {
 	const illnessesLoading = state.getIn(['illnesses', 'loading']);
 	const legalsData = state.getIn(['legals', 'data']) || new Map();
 	const legalsLoading = state.getIn(['legals', 'loading']);
+	const physical_examsData = state.getIn(['physical_exams', 'data']) || new Map();
+	const physical_examsLoading = state.getIn(['physical_exams', 'loading']);
+	const progress_reportsData = state.getIn(['progress_reports', 'data']) || new Map();
+	const progress_reportsLoading = state.getIn(['progress_reports', 'loading']);
 
 	const currentChildData = childrenData.get(watsonChildId) || new Map();
 
@@ -575,6 +622,10 @@ function mapStateToProps(state, props) {
 		legalsData,
 		legalsLoading,
 		model,
+		physical_examsData,
+		physical_examsLoading,
+		progress_reportsData,
+		progress_reportsLoading,
 		watsonChildId
 	};
 }

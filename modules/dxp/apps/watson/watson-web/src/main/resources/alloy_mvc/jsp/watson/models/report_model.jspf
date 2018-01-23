@@ -45,6 +45,10 @@ public static class WatsonReport extends WatsonReportBaseModel {
 
 	public static final String REPORT_TYPE_LABEL_LEGAL_STATUS = "legal-status";
 
+	public static final String REPORT_TYPE_LABEL_PHYSICAL_EXAM = "physical-exam";
+
+	public static final String REPORT_TYPE_LABEL_PROGRESS_REPORT = "progress-report";
+
 	public static final int REPORT_TYPE_CASEWORK = 0;
 
 	public static final int REPORT_TYPE_COUNSELING = 1;
@@ -52,6 +56,10 @@ public static class WatsonReport extends WatsonReportBaseModel {
 	public static final int REPORT_TYPE_ILLNESS = 2;
 
 	public static final int REPORT_TYPE_LEGAL_STATUS = 3;
+
+	public static final int REPORT_TYPE_PHYSICAL_EXAM = 4;
+
+	public static final int REPORT_TYPE_PROGRESS_REPORT = 5;
 
 	public static JSONObject getAsJSONDataArray(List<WatsonReport> watsonReports, long count) throws Exception {
 		JSONObject returnJSONObject = JSONFactoryUtil.createJSONObject();
@@ -140,6 +148,12 @@ public static class WatsonReport extends WatsonReportBaseModel {
 		else if (reportType == REPORT_TYPE_LEGAL_STATUS) {
 			return REPORT_TYPE_LABEL_LEGAL_STATUS;
 		}
+		else if (reportType == REPORT_TYPE_PHYSICAL_EXAM) {
+			return REPORT_TYPE_LABEL_PHYSICAL_EXAM;
+		}
+		else if (reportType == REPORT_TYPE_PROGRESS_REPORT) {
+			return REPORT_TYPE_LABEL_PROGRESS_REPORT;
+		}
 
 		return StringPool.BLANK;
 	}
@@ -171,25 +185,13 @@ public static class WatsonReport extends WatsonReportBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonReportDescription(String narrative) {
-		if (Validator.isNull(narrative)) {
+	public static KeyValuePair validateWatsonReportDescription(String description) {
+		if (Validator.isNull(description)) {
 			return new KeyValuePair("description", "description-is-required");
 		}
 
-		if (narrative.length() >= MAX_FIELD_LENGTH_TEXTAREA) {
+		if (description.length() >= MAX_FIELD_LENGTH_TEXTAREA) {
 			return new KeyValuePair("description", "the-description-exceeded-the-maximum-allowed-length");
-		}
-
-		return null;
-	}
-
-	public static KeyValuePair validateWatsonReportRelationships(List<WatsonRelationship> watsonRelationships) throws Exception{
-		if (Validator.isNotNull(watsonRelationships)) {
-			for (WatsonRelationship watsonRelationship : watsonRelationships) {
-				if (!watsonRelationship.isValid()) {
-					return new KeyValuePair("watsonRelationships", "the-relationships-were-invalid");
-				}
-			}
 		}
 
 		return null;
@@ -236,29 +238,18 @@ public static class WatsonReport extends WatsonReportBaseModel {
 	public String getReportName(Locale locale) throws Exception {
 		int reportType = this.getKey();
 
-		if (reportType == REPORT_TYPE_ILLNESS) {
+		if (reportType == REPORT_TYPE_CASEWORK) {
 			StringBundler reportName = new StringBundler(5);
 
-			reportName.append(LanguageUtil.format(locale, REPORT_TYPE_LABEL_ILLNESS, new Object[0]));
-			reportName.append(StringPool.SPACE);
-			reportName.append(StringPool.DASH);
-			reportName.append(StringPool.SPACE);
+			WatsonListType watsonListType = WatsonListType.fetch(getTypeWatsonListTypeId());
 
-			Date reportDate = getReportDate();
-
-			if (reportDate != null) {
-				reportName.append(getFormattedDate(reportDate, locale));
+			if (watsonListType != null) {
+				reportName.append(watsonListType.getName(locale));
 			}
 			else {
-				reportName.append(getFormattedDate(getCreateDate(), locale));
+				reportName.append(LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), REPORT_TYPE_LABEL_CASEWORK, new Object[0]));
 			}
 
-			return reportName.toString();
-		}
-		else if (reportType == REPORT_TYPE_LEGAL_STATUS) {
-			StringBundler reportName = new StringBundler(5);
-
-			reportName.append(LanguageUtil.format(locale, REPORT_TYPE_LABEL_LEGAL_STATUS, new Object[0]));
 			reportName.append(StringPool.SPACE);
 			reportName.append(StringPool.DASH);
 			reportName.append(StringPool.SPACE);
@@ -301,18 +292,10 @@ public static class WatsonReport extends WatsonReportBaseModel {
 
 			return reportName.toString();
 		}
-		else if (reportType == REPORT_TYPE_CASEWORK) {
+		else {
 			StringBundler reportName = new StringBundler(5);
 
-			WatsonListType watsonListType = WatsonListType.fetch(getTypeWatsonListTypeId());
-
-			if (watsonListType != null) {
-				reportName.append(watsonListType.getName(locale));
-			}
-			else {
-				reportName.append(LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), REPORT_TYPE_LABEL_CASEWORK, new Object[0]));
-			}
-
+			reportName.append(LanguageUtil.format(locale, getReportTypeLabel(reportType), new Object[0]));
 			reportName.append(StringPool.SPACE);
 			reportName.append(StringPool.DASH);
 			reportName.append(StringPool.SPACE);
@@ -328,8 +311,6 @@ public static class WatsonReport extends WatsonReportBaseModel {
 
 			return reportName.toString();
 		}
-
-		return StringPool.BLANK;
 	}
 
 	public WatsonReport updateTranslations(HttpServletRequest request, Locale locale) throws Exception {
@@ -338,11 +319,20 @@ public static class WatsonReport extends WatsonReportBaseModel {
 		return update(this);
 	}
 
-	public boolean isValid(List<WatsonRelationship> watsonRelationships) throws Exception {
+	public boolean isValid() throws Exception {
 		pushError(validateWatsonReportChild(getWatsonChildId()));
-		pushError(validateWatsonReportDescription(getDescription()));
-		pushError(validateWatsonReportRelationships(watsonRelationships));
+
+		if (getKey() != REPORT_TYPE_PROGRESS_REPORT) {
+			pushError(validateWatsonReportDescription(getDescription()));
+		}
+
 		pushError(validateWatsonReportReportDate(getReportDate()));
+
+		long reportKey = getKey();
+
+		if ((reportKey == REPORT_TYPE_CASEWORK) || (reportKey == REPORT_TYPE_COUNSELING)) {
+			pushError(validateWatsonReportType(getTypeWatsonListTypeId()));
+		}
 
 		return errors.isEmpty();
 	}

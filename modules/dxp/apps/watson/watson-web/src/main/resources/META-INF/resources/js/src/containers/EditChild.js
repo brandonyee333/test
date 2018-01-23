@@ -20,6 +20,8 @@ import {updateCollapsedEntries, updateCollapsedEntry} from '../actions/display';
 import {updateDocumentsDataManually} from '../actions/documents';
 import {updateIllnessesDataManually} from '../actions/illnesses';
 import {updateLegalsDataManually} from '../actions/legals';
+import {updatePhysicalExamsDataManually} from '../actions/physical-exams';
+import {updateProgressReportsDataManually} from '../actions/progress-reports';
 
 import {formatModelName, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
@@ -346,6 +348,127 @@ class EditChild extends JSXComponent {
 				);
 			}
 		}
+		else if (model === 'physical_exams') {
+			if (action === 'index') {
+				const buttonData = [
+					{
+						label: Liferay.Language.get('create-physical-exam'),
+						method: modelCreateMethod
+					}
+				];
+
+				view = (
+					<ViewIndex
+						action={action}
+						buttonData={buttonData}
+						disabled={childDisabled}
+						model={model}
+						primaryName={childName}
+						watsonChildId={watsonChildId}
+					/>
+				);
+			}
+			else if (action === 'translate') {
+				view = (
+					<GenericTranslationForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.physical_exams.inputs}
+						formConfig={[
+							'description'
+						]}
+						model={model}
+						parentModel="children"
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+			else {
+				view = (
+					<GenericChildForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.physical_exams.inputs}
+						formConfig={[
+							'id',
+							'reportDate',
+							'imagePayload',
+							'description'
+						]}
+						formData={props.modelFormData}
+						model={model}
+						modelKey={WatsonConstants.inputConfig.physical_exams.key}
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+		}
+		else if (model === 'progress_reports') {
+			if (action === 'index') {
+				const buttonData = [
+					{
+						label: Liferay.Language.get('create-progress-report'),
+						method: modelCreateMethod
+					}
+				];
+				view = (
+					<ViewIndex
+						action={action}
+						buttonData={buttonData}
+						disabled={childDisabled}
+						model={model}
+						primaryName={childName}
+						watsonChildId={watsonChildId}
+					/>
+				);
+			}
+			else if (action === 'translate') {
+				view = (
+					<GenericTranslationForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.progress_reports.inputs}
+						formConfig={[
+							'reportedUser'
+						]}
+						model={model}
+						parentModel="children"
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+			else {
+				view = (
+					<GenericChildForm
+						action={action}
+						childName={childName}
+						disabled={childDisabled}
+						fieldConfig={WatsonConstants.inputConfig.progress_reports.inputs}
+						formConfig={[
+							'id',
+							'reportDate',
+							'reportedUser',
+							'imagePayload'
+						]}
+						formData={props.modelFormData}
+						model={model}
+						modelKey={WatsonConstants.inputConfig.progress_reports.key}
+						storeData={props.modelStoreData}
+						watsonChildId={watsonChildId}
+						watsonPrimaryKey={entryId}
+					/>
+				);
+			}
+		}
 		else if (action === 'index') {
 			view = (
 				<ViewIndex
@@ -423,6 +546,8 @@ class EditChild extends JSXComponent {
 		const documentsNav = [];
 		const illnessesNav = [];
 		const legalsNav = [];
+		const physicalsNav = [];
+		const progressNav = [];
 
 		if (childrenStoreData.get('casework_activities')) {
 			const caseworkActivities = Sort(childrenStoreData.get('casework_activities'), null, 'name');
@@ -549,6 +674,56 @@ class EditChild extends JSXComponent {
 			);
 		}
 
+		if (childrenStoreData.get('physical_exams')) {
+			const childPhysicalExams = Sort(childrenStoreData.get('physical_exams'), null, 'name');
+
+			const physicalExamsList = [];
+
+			childPhysicalExams.forEach(
+				childPhysicalExam => {
+					const physicalExamId = childPhysicalExam.get('id');
+
+					physicalExamsList.push(physicalExamId);
+
+					const physicalExamName = childPhysicalExam.get('name') || physicalExamId;
+
+					physicalsNav.push(
+						{
+							href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/physical_exams/${physicalExamId}/edit`,
+							name: `physicals_${physicalExamId}`,
+							selected: (entryId === physicalExamId && model === 'physical_exams'),
+							text: physicalExamName
+						}
+					);
+				}
+			);
+		}
+
+		if (childrenStoreData.get('progress_reports')) {
+			const childProgressReports = Sort(childrenStoreData.get('progress_reports'), null, 'name');
+
+			const progressReportsList = [];
+
+			childProgressReports.forEach(
+				childProgressReport => {
+					const progressReportId = childProgressReport.get('id');
+
+					progressReportsList.push(progressReportId);
+
+					const progressReportName = childProgressReport.get('name') || progressReportId;
+
+					progressNav.push(
+						{
+							href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/progress_reports/${progressReportId}/edit`,
+							name: `progresses_${progressReportId}`,
+							selected: (entryId === progressReportId && model === 'progress_reports'),
+							text: progressReportName
+						}
+					);
+				}
+			);
+		}
+
 		const nav = [
 			{
 				collapsible: false,
@@ -591,6 +766,20 @@ class EditChild extends JSXComponent {
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/counseling_reports/index`,
 				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'counseling_reports'),
 				text: Liferay.Language.get('counseling-reports')
+			},
+			{
+				collapsible: true,
+				entries: physicalsNav,
+				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/physical_exams/index`,
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'physical_exams'),
+				text: Liferay.Language.get('physical-exams')
+			},
+			{
+				collapsible: true,
+				entries: progressNav,
+				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/progress_reports/index`,
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'progress_reports'),
+				text: Liferay.Language.get('progress-reports')
 			}
 		];
 
@@ -742,6 +931,16 @@ function mapDispatchToProps(dispatch) {
 		updateLegalsDataManually: data => {
 			dispatch(
 				updateLegalsDataManually(data)
+			);
+		},
+		updatePhysicalExamsDataManually: data => {
+			dispatch(
+				updatePhysicalExamsDataManually(data)
+			);
+		},
+		updateProgressReportsDataManually: data => {
+			dispatch(
+				updateProgressReportsDataManually(data)
 			);
 		}
 	};
