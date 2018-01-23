@@ -71,9 +71,9 @@ public class ContactConnectorTest {
 	public static void setUpClass() throws IOException {
 		_contactCount = 0L;
 
-		Assume.assumeNotNull(_contactsEngineURL);
-		Assume.assumeNotNull(_contactsProviderId);
-		Assume.assumeNotNull(_projectId);
+		Assume.assumeNotNull(_CONTACTS_ENGINE_URL);
+		Assume.assumeNotNull(_CONTACTS_PROVIDER_ID);
+		Assume.assumeNotNull(_PROJECT_ID);
 
 		FunctionalTestUtil.createReports();
 	}
@@ -342,7 +342,7 @@ public class ContactConnectorTest {
 			"wrapperQuery=" + URLEncoder.encode(wrapperQuery, "UTF-8");
 
 		String contactSearchCountUrl = String.format(
-			"%s/%s/%s/search_count?%s", _contactsEngineURL, _projectId,
+			"%s/%s/%s/search_count?%s", _CONTACTS_ENGINE_URL, _PROJECT_ID,
 			_CONTACTS_PROVIDER_ENTRY_SERVICE_PATH, queryString);
 
 		try {
@@ -370,7 +370,7 @@ public class ContactConnectorTest {
 
 	private static void _deleteProjectContacts() throws Throwable {
 		String deleteContactUrl = String.format(
-			"%s/%s/%s/delete_all", _contactsEngineURL, _projectId,
+			"%s/%s/%s/delete_all", _CONTACTS_ENGINE_URL, _PROJECT_ID,
 			_CONTACTS_ENTRY_SERVICE_PATH);
 
 		System.out.println("Delete contact url: " + deleteContactUrl);
@@ -424,6 +424,9 @@ public class ContactConnectorTest {
 		}
 	}
 
+	private static final String _CONTACTS_ENGINE_URL = System.getenv(
+		"PULPO_TEST_CONTACT_ENGINE_URL");
+
 	private static final String _CONTACTS_ENTRY_SERVICE_PATH = "contacts_entry";
 
 	private static final String _CONTACTS_PROVIDER_ENTRY_EMAIL_QUERY =
@@ -433,13 +436,13 @@ public class ContactConnectorTest {
 	private static final String _CONTACTS_PROVIDER_ENTRY_SERVICE_PATH =
 		"contacts_provider_entry";
 
-	private static Long _contactCount;
-	private static final String _contactsEngineURL = System.getenv(
-		"PULPO_TEST_CONTACT_ENGINE_URL");
-	private static final String _contactsProviderId = System.getenv(
+	private static final String _CONTACTS_PROVIDER_ID = System.getenv(
 		"PULPO_CONTACTS_PROVIDER_ID");
+
+	private static final String _PROJECT_ID = System.getenv("PULPO_PROJECT_ID");
+
+	private static Long _contactCount;
 	private static String _email;
-	private static final String _projectId = System.getenv("PULPO_PROJECT_ID");
 	private static String _screenName;
 
 	@ArquillianResource

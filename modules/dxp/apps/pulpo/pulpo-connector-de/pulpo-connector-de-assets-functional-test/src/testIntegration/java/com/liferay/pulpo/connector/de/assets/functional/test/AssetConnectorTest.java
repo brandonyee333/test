@@ -231,7 +231,7 @@ public class AssetConnectorTest {
 	public void theAssetCanBeFoundByAnAdministratorInTheBackend()
 		throws Throwable {
 
-		String lastAssetUrl = _assetEngineUrl + "/asset/last/" + _INSTANCE_ID;
+		String lastAssetUrl = _ASSET_ENGINE_URL + "/asset/last/" + _INSTANCE_ID;
 
 		String lastAsset = FunctionalTestUtil.getJsonFromURL(lastAssetUrl);
 
@@ -308,7 +308,7 @@ public class AssetConnectorTest {
 		}
 
 		String deleteAssetUrl =
-			_elasticSearchUrl + "/" + _assetIndexName + "/asset/" + id;
+			_ELASTIC_SEARCH_URL + "/" + _ASSET_INDEX_NAME + "/asset/" + id;
 
 		System.out.println("Delete asset url: " + deleteAssetUrl);
 
@@ -323,7 +323,7 @@ public class AssetConnectorTest {
 	private static String _getAssetIdByTitle(String title) throws IOException {
 		String assetSearchIdUrl = String.format(
 			"%s/%s/asset/_search?q=title.en_US:'%s'&filter_path=hits.hits._id",
-			_elasticSearchUrl, _assetIndexName, title);
+			_ELASTIC_SEARCH_URL, _ASSET_INDEX_NAME, title);
 
 		System.out.println("Asset search id url: " + assetSearchIdUrl);
 
@@ -343,7 +343,8 @@ public class AssetConnectorTest {
 	}
 
 	private static long _getNumberOfAssets() throws IOException {
-		String assetCountUrl = _assetEngineUrl + "/asset/count/" + _INSTANCE_ID;
+		String assetCountUrl =
+			_ASSET_ENGINE_URL + "/asset/count/" + _INSTANCE_ID;
 
 		return Long.parseLong(FunctionalTestUtil.getJsonFromURL(assetCountUrl));
 	}
@@ -354,7 +355,7 @@ public class AssetConnectorTest {
 		String assetCountUrl = String.format(
 			"%s/%s/asset/_search?pretty=true&q=title.en_US:'%s'&filter_path=" +
 				"hits.total",
-			_elasticSearchUrl, _assetIndexName, title);
+			_ELASTIC_SEARCH_URL, _ASSET_INDEX_NAME, title);
 
 		try {
 			System.out.println("Asset count url: " + assetCountUrl);
@@ -422,17 +423,21 @@ public class AssetConnectorTest {
 		_title = text + uuid.replace("-", "");
 	}
 
+	private static final String _ASSET_ENGINE_ENVIRONMENT_UNIQUE_NAME =
+		System.getenv("PULPO_TEST_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME");
+
+	private static final String _ASSET_ENGINE_URL = System.getenv(
+		"PULPO_TEST_ASSET_ENGINE_URL");
+
+	private static final String _ASSET_INDEX_NAME =
+		"asset_" + _ASSET_ENGINE_ENVIRONMENT_UNIQUE_NAME;
+
+	private static final String _ELASTIC_SEARCH_URL = System.getenv(
+		"PULPO_TEST_ASSET_ELASTIC_SEARCH_URL");
+
 	private static final int _INSTANCE_ID = 20116;
 
 	private static Long _assetCount;
-	private static final String _assetEngineEnvironmentUniquename =
-		System.getenv("PULPO_TEST_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME");
-	private static final String _assetEngineUrl = System.getenv(
-		"PULPO_TEST_ASSET_ENGINE_URL");
-	private static final String _assetIndexName =
-		"asset_" + _assetEngineEnvironmentUniquename;
-	private static final String _elasticSearchUrl = System.getenv(
-		"PULPO_TEST_ASSET_ELASTIC_SEARCH_URL");
 	private static String _title;
 
 	@ArquillianResource
