@@ -27,6 +27,8 @@ public interface RabbitMQConnectionManager {
 
 	public Channel createChannel() throws IOException;
 
+	public Channel createChannel(int prefetchCount) throws IOException;
+
 	public void disconnect();
 
 	public boolean isConnected();

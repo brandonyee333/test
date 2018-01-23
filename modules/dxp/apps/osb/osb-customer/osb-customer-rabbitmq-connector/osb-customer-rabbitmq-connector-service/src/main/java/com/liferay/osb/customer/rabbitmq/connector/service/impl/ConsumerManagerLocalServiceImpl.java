@@ -217,7 +217,8 @@ public class ConsumerManagerLocalServiceImpl
 			String queue, int prefetchCount, Object rabbitMQConsumer)
 		throws Exception {
 
-		Channel channel = _rabbitMQConnectionManager.createChannel();
+		Channel channel = _rabbitMQConnectionManager.createChannel(
+			prefetchCount);
 
 		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
 			Consumer consumer = new RabbitMQConsumerDelegator(

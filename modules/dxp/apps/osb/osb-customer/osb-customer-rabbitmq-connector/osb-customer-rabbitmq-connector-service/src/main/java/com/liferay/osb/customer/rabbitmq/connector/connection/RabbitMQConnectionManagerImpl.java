@@ -74,6 +74,17 @@ public class RabbitMQConnectionManagerImpl
 		return _connection.createChannel(1);
 	}
 
+	@Override
+	public Channel createChannel(int prefetchCount) throws IOException {
+		Channel channel = _connection.createChannel();
+
+		if (prefetchCount > 0) {
+			channel.basicQos(prefetchCount);
+		}
+
+		return channel;
+	}
+
 	@Deactivate
 	@Override
 	public void disconnect() {
