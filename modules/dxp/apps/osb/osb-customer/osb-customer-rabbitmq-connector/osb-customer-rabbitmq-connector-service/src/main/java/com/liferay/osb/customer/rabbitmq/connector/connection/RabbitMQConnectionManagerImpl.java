@@ -29,6 +29,8 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 
 /**
+ * @author Yury Butrymovich
+ * @author Amos Fong
  * @author Vishal Reddy
  */
 @Component
@@ -71,7 +73,7 @@ public class RabbitMQConnectionManagerImpl
 
 	@Override
 	public Channel createChannel() throws IOException {
-		return _connection.createChannel(1);
+		return createChannel(0);
 	}
 
 	@Override
