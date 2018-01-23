@@ -53,7 +53,7 @@
 
 <aui:script>
 	function <portlet:namespace />closeTicket() {
-		opener.<portlet:namespace />submitCloseTicketValues(document.<portlet:namespace />fm.<portlet:namespace />resolution.value, document.<portlet:namespace />fm.<portlet:namespace />addCommentBody.value);
+		opener.<portlet:namespace />submitCloseTicketValues(document.<portlet:namespace />selectResolutionFm.<portlet:namespace />resolution.value, document.<portlet:namespace />selectResolutionFm.<portlet:namespace />addCommentBody.value);
 
 		window.close();
 	}
