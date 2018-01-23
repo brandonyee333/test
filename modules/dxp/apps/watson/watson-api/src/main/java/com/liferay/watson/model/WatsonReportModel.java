@@ -574,8 +574,58 @@ public interface WatsonReportModel extends BaseModel<WatsonReport>, GroupedModel
 	 *
 	 * @return the reported user of this watson report
 	 */
-	@AutoEscape
 	public String getReportedUser();
+
+	/**
+	 * Returns the localized reported user of this watson report in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized reported user of this watson report
+	 */
+	@AutoEscape
+	public String getReportedUser(Locale locale);
+
+	/**
+	 * Returns the localized reported user of this watson report in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized reported user of this watson report. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
+	@AutoEscape
+	public String getReportedUser(Locale locale, boolean useDefault);
+
+	/**
+	 * Returns the localized reported user of this watson report in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized reported user of this watson report
+	 */
+	@AutoEscape
+	public String getReportedUser(String languageId);
+
+	/**
+	 * Returns the localized reported user of this watson report in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized reported user of this watson report
+	 */
+	@AutoEscape
+	public String getReportedUser(String languageId, boolean useDefault);
+
+	@AutoEscape
+	public String getReportedUserCurrentLanguageId();
+
+	@AutoEscape
+	public String getReportedUserCurrentValue();
+
+	/**
+	 * Returns a map of the locales and localized reported users of this watson report.
+	 *
+	 * @return the locales and localized reported users of this watson report
+	 */
+	public Map<Locale, String> getReportedUserMap();
 
 	/**
 	 * Sets the reported user of this watson report.
@@ -583,6 +633,42 @@ public interface WatsonReportModel extends BaseModel<WatsonReport>, GroupedModel
 	 * @param reportedUser the reported user of this watson report
 	 */
 	public void setReportedUser(String reportedUser);
+
+	/**
+	 * Sets the localized reported user of this watson report in the language.
+	 *
+	 * @param reportedUser the localized reported user of this watson report
+	 * @param locale the locale of the language
+	 */
+	public void setReportedUser(String reportedUser, Locale locale);
+
+	/**
+	 * Sets the localized reported user of this watson report in the language, and sets the default locale.
+	 *
+	 * @param reportedUser the localized reported user of this watson report
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
+	public void setReportedUser(String reportedUser, Locale locale,
+		Locale defaultLocale);
+
+	public void setReportedUserCurrentLanguageId(String languageId);
+
+	/**
+	 * Sets the localized reported users of this watson report from the map of locales and localized reported users.
+	 *
+	 * @param reportedUserMap the locales and localized reported users of this watson report
+	 */
+	public void setReportedUserMap(Map<Locale, String> reportedUserMap);
+
+	/**
+	 * Sets the localized reported users of this watson report from the map of locales and localized reported users, and sets the default locale.
+	 *
+	 * @param reportedUserMap the locales and localized reported users of this watson report
+	 * @param defaultLocale the default locale
+	 */
+	public void setReportedUserMap(Map<Locale, String> reportedUserMap,
+		Locale defaultLocale);
 
 	/**
 	 * Returns the report date of this watson report.

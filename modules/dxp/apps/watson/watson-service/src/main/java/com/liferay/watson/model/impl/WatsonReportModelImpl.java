@@ -116,7 +116,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonReport (watsonReportId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonReportId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,name STRING null,description STRING null,fullReport STRING null,imagePayload TEXT null,timeSpent VARCHAR(75) null,reportedUser VARCHAR(75) null,reportDate DATE null,key_ INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonReport (watsonReportId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonReportId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,name STRING null,description STRING null,fullReport STRING null,imagePayload TEXT null,timeSpent VARCHAR(75) null,reportedUser STRING null,reportDate DATE null,key_ INTEGER,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonReport";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonReport.watsonReportId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonReport.watsonReportId ASC";
@@ -783,8 +783,95 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	}
 
 	@Override
+	public String getReportedUser(Locale locale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getReportedUser(languageId);
+	}
+
+	@Override
+	public String getReportedUser(Locale locale, boolean useDefault) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getReportedUser(languageId, useDefault);
+	}
+
+	@Override
+	public String getReportedUser(String languageId) {
+		return LocalizationUtil.getLocalization(getReportedUser(), languageId);
+	}
+
+	@Override
+	public String getReportedUser(String languageId, boolean useDefault) {
+		return LocalizationUtil.getLocalization(getReportedUser(), languageId,
+			useDefault);
+	}
+
+	@Override
+	public String getReportedUserCurrentLanguageId() {
+		return _reportedUserCurrentLanguageId;
+	}
+
+	@JSON
+	@Override
+	public String getReportedUserCurrentValue() {
+		Locale locale = getLocale(_reportedUserCurrentLanguageId);
+
+		return getReportedUser(locale);
+	}
+
+	@Override
+	public Map<Locale, String> getReportedUserMap() {
+		return LocalizationUtil.getLocalizationMap(getReportedUser());
+	}
+
+	@Override
 	public void setReportedUser(String reportedUser) {
 		_reportedUser = reportedUser;
+	}
+
+	@Override
+	public void setReportedUser(String reportedUser, Locale locale) {
+		setReportedUser(reportedUser, locale, LocaleUtil.getSiteDefault());
+	}
+
+	@Override
+	public void setReportedUser(String reportedUser, Locale locale,
+		Locale defaultLocale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+
+		if (Validator.isNotNull(reportedUser)) {
+			setReportedUser(LocalizationUtil.updateLocalization(
+					getReportedUser(), "ReportedUser", reportedUser,
+					languageId, defaultLanguageId));
+		}
+		else {
+			setReportedUser(LocalizationUtil.removeLocalization(
+					getReportedUser(), "ReportedUser", languageId));
+		}
+	}
+
+	@Override
+	public void setReportedUserCurrentLanguageId(String languageId) {
+		_reportedUserCurrentLanguageId = languageId;
+	}
+
+	@Override
+	public void setReportedUserMap(Map<Locale, String> reportedUserMap) {
+		setReportedUserMap(reportedUserMap, LocaleUtil.getSiteDefault());
+	}
+
+	@Override
+	public void setReportedUserMap(Map<Locale, String> reportedUserMap,
+		Locale defaultLocale) {
+		if (reportedUserMap == null) {
+			return;
+		}
+
+		setReportedUser(LocalizationUtil.updateLocalization(reportedUserMap,
+				getReportedUser(), "ReportedUser",
+				LocaleUtil.toLanguageId(defaultLocale)));
 	}
 
 	@Override
@@ -867,6 +954,17 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 			}
 		}
 
+		Map<Locale, String> reportedUserMap = getReportedUserMap();
+
+		for (Map.Entry<Locale, String> entry : reportedUserMap.entrySet()) {
+			Locale locale = entry.getKey();
+			String value = entry.getValue();
+
+			if (Validator.isNotNull(value)) {
+				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
+			}
+		}
+
 		return availableLanguageIds.toArray(new String[availableLanguageIds.size()]);
 	}
 
@@ -929,6 +1027,17 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 		}
 		else {
 			setFullReport(getFullReport(defaultLocale), defaultLocale,
+				defaultLocale);
+		}
+
+		String reportedUser = getReportedUser(defaultLocale);
+
+		if (Validator.isNull(reportedUser)) {
+			setReportedUser(getReportedUser(modelDefaultLanguageId),
+				defaultLocale);
+		}
+		else {
+			setReportedUser(getReportedUser(defaultLocale), defaultLocale,
 				defaultLocale);
 		}
 	}
@@ -1300,6 +1409,7 @@ public class WatsonReportModelImpl extends BaseModelImpl<WatsonReport>
 	private String _imagePayload;
 	private String _timeSpent;
 	private String _reportedUser;
+	private String _reportedUserCurrentLanguageId;
 	private Date _reportDate;
 	private int _key;
 	private int _status;

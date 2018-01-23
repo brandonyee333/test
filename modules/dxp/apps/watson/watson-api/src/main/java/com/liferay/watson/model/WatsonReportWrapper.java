@@ -563,6 +563,74 @@ public class WatsonReportWrapper implements WatsonReport,
 	}
 
 	/**
+	* Returns the localized reported user of this watson report in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param locale the locale of the language
+	* @return the localized reported user of this watson report
+	*/
+	@Override
+	public java.lang.String getReportedUser(java.util.Locale locale) {
+		return _watsonReport.getReportedUser(locale);
+	}
+
+	/**
+	* Returns the localized reported user of this watson report in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param locale the local of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized reported user of this watson report. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	*/
+	@Override
+	public java.lang.String getReportedUser(java.util.Locale locale,
+		boolean useDefault) {
+		return _watsonReport.getReportedUser(locale, useDefault);
+	}
+
+	/**
+	* Returns the localized reported user of this watson report in the language. Uses the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @return the localized reported user of this watson report
+	*/
+	@Override
+	public java.lang.String getReportedUser(java.lang.String languageId) {
+		return _watsonReport.getReportedUser(languageId);
+	}
+
+	/**
+	* Returns the localized reported user of this watson report in the language, optionally using the default language if no localization exists for the requested language.
+	*
+	* @param languageId the ID of the language
+	* @param useDefault whether to use the default language if no localization exists for the requested language
+	* @return the localized reported user of this watson report
+	*/
+	@Override
+	public java.lang.String getReportedUser(java.lang.String languageId,
+		boolean useDefault) {
+		return _watsonReport.getReportedUser(languageId, useDefault);
+	}
+
+	@Override
+	public java.lang.String getReportedUserCurrentLanguageId() {
+		return _watsonReport.getReportedUserCurrentLanguageId();
+	}
+
+	@Override
+	public java.lang.String getReportedUserCurrentValue() {
+		return _watsonReport.getReportedUserCurrentValue();
+	}
+
+	/**
+	* Returns a map of the locales and localized reported users of this watson report.
+	*
+	* @return the locales and localized reported users of this watson report
+	*/
+	@Override
+	public Map<java.util.Locale, java.lang.String> getReportedUserMap() {
+		return _watsonReport.getReportedUserMap();
+	}
+
+	/**
 	* Returns the status of this watson report.
 	*
 	* @return the status of this watson report
@@ -998,6 +1066,60 @@ public class WatsonReportWrapper implements WatsonReport,
 	@Override
 	public void setReportedUser(java.lang.String reportedUser) {
 		_watsonReport.setReportedUser(reportedUser);
+	}
+
+	/**
+	* Sets the localized reported user of this watson report in the language.
+	*
+	* @param reportedUser the localized reported user of this watson report
+	* @param locale the locale of the language
+	*/
+	@Override
+	public void setReportedUser(java.lang.String reportedUser,
+		java.util.Locale locale) {
+		_watsonReport.setReportedUser(reportedUser, locale);
+	}
+
+	/**
+	* Sets the localized reported user of this watson report in the language, and sets the default locale.
+	*
+	* @param reportedUser the localized reported user of this watson report
+	* @param locale the locale of the language
+	* @param defaultLocale the default locale
+	*/
+	@Override
+	public void setReportedUser(java.lang.String reportedUser,
+		java.util.Locale locale, java.util.Locale defaultLocale) {
+		_watsonReport.setReportedUser(reportedUser, locale, defaultLocale);
+	}
+
+	@Override
+	public void setReportedUserCurrentLanguageId(java.lang.String languageId) {
+		_watsonReport.setReportedUserCurrentLanguageId(languageId);
+	}
+
+	/**
+	* Sets the localized reported users of this watson report from the map of locales and localized reported users.
+	*
+	* @param reportedUserMap the locales and localized reported users of this watson report
+	*/
+	@Override
+	public void setReportedUserMap(
+		Map<java.util.Locale, java.lang.String> reportedUserMap) {
+		_watsonReport.setReportedUserMap(reportedUserMap);
+	}
+
+	/**
+	* Sets the localized reported users of this watson report from the map of locales and localized reported users, and sets the default locale.
+	*
+	* @param reportedUserMap the locales and localized reported users of this watson report
+	* @param defaultLocale the default locale
+	*/
+	@Override
+	public void setReportedUserMap(
+		Map<java.util.Locale, java.lang.String> reportedUserMap,
+		java.util.Locale defaultLocale) {
+		_watsonReport.setReportedUserMap(reportedUserMap, defaultLocale);
 	}
 
 	/**

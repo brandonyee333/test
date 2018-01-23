@@ -240,7 +240,7 @@ create table WatsonReport (
 	fullReport STRING null,
 	imagePayload TEXT null,
 	timeSpent VARCHAR(75) null,
-	reportedUser VARCHAR(75) null,
+	reportedUser STRING null,
 	reportDate DATE null,
 	key_ INTEGER,
 	status INTEGER

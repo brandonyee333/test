@@ -256,7 +256,7 @@
 			<hint-collection name="CLOB" />
 		</field>
 		<field name="timeSpent" type="String" />
-		<field name="reportedUser" type="String" />
+		<field localized="true" name="reportedUser" type="String" />
 		<field name="reportDate" type="Date" />
 		<field name="key" type="int" />
 		<field name="status" type="int" />
