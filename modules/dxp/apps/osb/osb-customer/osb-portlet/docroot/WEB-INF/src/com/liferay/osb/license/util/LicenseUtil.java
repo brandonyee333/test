@@ -292,7 +292,7 @@ public class LicenseUtil {
 	}
 
 	public static String getLicenseKeyFileName(LicenseKey licenseKey) {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(7);
 
 		String productEntryName = StringUtil.extractChars(
 			licenseKey.getProductEntryName());

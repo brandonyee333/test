@@ -66,7 +66,7 @@ public class Upgrade_20160602105202547_OfferingDefinition
 	}
 
 	protected String getKey(OfferingDefinition offeringDefinition) {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append(offeringDefinition.getProductEntryId());
 		sb.append(StringPool.POUND);

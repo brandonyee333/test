@@ -85,7 +85,7 @@ public class TicketEntrySearchTerms extends TicketEntryDisplayTerms {
 	}
 
 	public String getActiveFilters() {
-		StringBundler sb = new StringBundler(18);
+		StringBundler sb = new StringBundler(20);
 
 		if (hasSearchableAccountValues()) {
 			sb.append("account");

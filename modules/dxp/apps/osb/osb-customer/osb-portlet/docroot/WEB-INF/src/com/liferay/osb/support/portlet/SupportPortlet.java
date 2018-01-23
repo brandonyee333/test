@@ -1439,9 +1439,7 @@ public class SupportPortlet extends MVCPortlet {
 			ParamUtil.getString(actionRequest, "offeringEntryIds"), 0L);
 		int status = ParamUtil.getInteger(actionRequest, "status_" + key);
 
-		for (int i = 0; i < offeringEntryIds.length; i++) {
-			long offeringEntryId = offeringEntryIds[i];
-
+		for (long offeringEntryId : offeringEntryIds) {
 			OfferingEntryServiceUtil.updateStatus(offeringEntryId, status);
 		}
 	}

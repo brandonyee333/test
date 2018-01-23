@@ -1405,9 +1405,7 @@ public class SupportUtil {
 
 		List<Long> ticketWorkerUserIds = new ArrayList<>();
 
-		for (int i = 0; i < ticketWorkers.size(); i++) {
-			TicketWorker ticketWorker = ticketWorkers.get(i);
-
+		for (TicketWorker ticketWorker : ticketWorkers) {
 			ticketWorkerUserIds.add(ticketWorker.getUserId());
 		}
 

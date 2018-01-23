@@ -93,7 +93,7 @@ public class PlainTextParser {
 		}
 
 		if (pos != 0) {
-			sb.append(text.substring(pos, text.length()));
+			sb.append(text.substring(pos));
 
 			text = sb.toString();
 		}

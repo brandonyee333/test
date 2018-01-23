@@ -317,7 +317,7 @@ public class AdminServletContextListenerExpandoHelper {
 	}
 
 	protected static String[] getOSBCountryData() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(45);
 
 		sb.append("afghanistan,albania,algeria,american-samoa,andorra,");
 		sb.append("angola,anguilla,antarctica,antigua,argentina,armenia,");

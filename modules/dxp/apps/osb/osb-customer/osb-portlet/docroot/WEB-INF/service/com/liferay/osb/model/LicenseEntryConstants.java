@@ -57,7 +57,7 @@ public class LicenseEntryConstants {
 	public static String getPortalVersionLabel(
 		int portalVersionMin, int portalVersionMax) {
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(3);
 
 		try {
 			ListType listType = ListTypeServiceUtil.getListType(

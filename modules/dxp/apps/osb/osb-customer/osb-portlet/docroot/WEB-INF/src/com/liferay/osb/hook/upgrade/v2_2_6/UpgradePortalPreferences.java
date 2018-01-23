@@ -28,7 +28,7 @@ public class UpgradePortalPreferences extends UpgradeProcess {
 	}
 
 	protected void updatePortalPreferences() throws Exception {
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(4);
 
 		sb.append("update PortalPreferences set preferences = ");
 		sb.append("replace(preferences, '<name>auto.deploy.deploy.dir</name>");

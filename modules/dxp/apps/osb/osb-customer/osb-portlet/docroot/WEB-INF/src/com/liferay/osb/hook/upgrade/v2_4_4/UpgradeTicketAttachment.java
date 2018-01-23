@@ -96,7 +96,7 @@ public class UpgradeTicketAttachment extends UpgradeProcess {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(7);
 
 		sb.append("select ticketEntryId from OSB_TicketEntry where ((select ");
 		sb.append("count(*) from OSB_TicketAttachment where ");

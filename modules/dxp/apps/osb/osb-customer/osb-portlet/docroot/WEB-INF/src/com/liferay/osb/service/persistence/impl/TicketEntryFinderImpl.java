@@ -268,7 +268,7 @@ public class TicketEntryFinderImpl
 		String sql = PortalCustomSQLUtil.get(
 			"com.liferay.util.dao.orm.CustomSQL.countBySelectSQL");
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(4);
 
 		sb.append(
 			replaceSQL(
@@ -710,7 +710,7 @@ public class TicketEntryFinderImpl
 			int pos = join.indexOf("WHERE");
 
 			if (pos != -1) {
-				join = join.substring(pos + 5, join.length()).concat(" AND ");
+				join = join.substring(pos + 5).concat(" AND ");
 			}
 			else {
 				join = StringPool.BLANK;

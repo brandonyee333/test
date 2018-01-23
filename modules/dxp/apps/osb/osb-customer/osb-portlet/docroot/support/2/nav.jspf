@@ -106,7 +106,9 @@
 			<svg height="27px" viewBox="0 0 27 27" width="27px">
 				<path d="M23.2, 20.9V6.8l-6-6h-15v25.5h19.1" />
 				<path d="M 23.2, 6.8 17.2, 6.8 17.2, 0.8" />
+
 				<circle cx="12.7" cy="13.8" r="6.6" />
+
 				<path d="M 16.9, 18.5 23.8, 25.4" />
 			</svg>
 		</a>
@@ -123,6 +125,7 @@
 			<a href="<%= newTicketURL %>">
 				<svg height="27px" viewBox="0 0 27 27" width="27px">
 					<circle cx="13.5" cy="13.5" r="12.5" />
+
 					<path d="M 13.5, 7.3 13.5, 19.7" />
 					<path d="M 7.3, 13.5 19.7, 13.5" />
 				</svg>
@@ -163,6 +166,7 @@
 		<a href="<%= helpURL %>">
 			<svg height="27px" viewBox="0 0 27 27" width="27px">
 				<circle cx="13.5" cy="13.5" r="12.75" />
+
 				<path d="m 7.5, 10.5 c 0, -4.5 3.52492, -5.9318174 6, -6 3.3, 0 6, 2.7 6, 6 0, 3 -2.3, 5.6 -5.2, 6 l 0, 3" />
 				<path d="M 13.5, 22 15, 22" />
 			</svg>

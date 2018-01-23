@@ -283,7 +283,7 @@ public class LicenseKeyFinderImpl
 		Timestamp expirationDateLT_TS = CalendarUtil.getTimestamp(
 			expirationDateLT);
 
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(7);
 
 		String sql = CustomSQLUtil.get(
 			getClass(), COUNT_BY_U_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A);
@@ -642,7 +642,7 @@ public class LicenseKeyFinderImpl
 			int pos = join.indexOf("WHERE");
 
 			if (pos != -1) {
-				join = join.substring(pos + 5, join.length()).concat(" AND ");
+				join = join.substring(pos + 5).concat(" AND ");
 			}
 			else {
 				join = StringPool.BLANK;

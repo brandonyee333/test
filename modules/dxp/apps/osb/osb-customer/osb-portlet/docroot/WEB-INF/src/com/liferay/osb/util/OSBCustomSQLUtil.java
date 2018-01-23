@@ -69,7 +69,7 @@ public class OSBCustomSQLUtil {
 				return joinSQL;
 			}
 
-			whereSQL = joinSQL.substring(pos + 5, joinSQL.length());
+			whereSQL = joinSQL.substring(pos + 5);
 		}
 
 		if (valuesLength == 0) {

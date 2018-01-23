@@ -70,7 +70,7 @@ public class ProvisioningAuditRabbitMQConsumer
 	}
 
 	protected String getKey(OfferingEntry offeringEntry) {
-		StringBundler sb = new StringBundler();
+		StringBundler sb = new StringBundler(22);
 
 		sb.append(offeringEntry.getProductEntryId());
 		sb.append(StringPool.POUND);

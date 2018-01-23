@@ -211,9 +211,7 @@ if (!closed) {
 		}
 	}
 
-	if (((status != TicketEntryConstants.STATUS_RESOLVED) && (status != TicketEntryConstants.STATUS_SOLUTION_DELIVERED) && (status != TicketEntryConstants.STATUS_SOLUTION_PROPOSED)) &&
-		(((status == TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) && hasUpdateAdvanced && ticketWorker) || (!hasUpdateAdvanced && (ticketEntry.getUserId() == user.getUserId())) || (hasUpdateBasic && accountCustomer))) {
-
+	if (((status != TicketEntryConstants.STATUS_RESOLVED) && (status != TicketEntryConstants.STATUS_SOLUTION_DELIVERED) && (status != TicketEntryConstants.STATUS_SOLUTION_PROPOSED)) && (((status == TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) && hasUpdateAdvanced && ticketWorker) || (!hasUpdateAdvanced && (ticketEntry.getUserId() == user.getUserId())) || (hasUpdateBasic && accountCustomer))) {
 		PortletURL buttonURL = renderResponse.createRenderURL();
 
 		buttonURL.setParameter("mvcPath", "/support/2/select_resolution.jsp");

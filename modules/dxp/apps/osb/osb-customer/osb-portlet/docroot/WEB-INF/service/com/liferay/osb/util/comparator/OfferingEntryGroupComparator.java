@@ -146,13 +146,13 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 		return 0;
 	}
 
-	private final int[] _orderedStatuses = {
+	private static final int[] _orderedStatuses = {
 		OfferingEntryConstants.STATUS_ACTIVE,
 		OfferingEntryConstants.STATUS_PENDING,
 		OfferingEntryConstants.STATUS_ON_HOLD,
 		OfferingEntryConstants.STATUS_CLOSED
 	};
-	private final int[] _orderedTypes = {
+	private static final int[] _orderedTypes = {
 		OfferingEntryConstants.TYPE_REGULAR, OfferingEntryConstants.TYPE_TRIAL
 	};
 

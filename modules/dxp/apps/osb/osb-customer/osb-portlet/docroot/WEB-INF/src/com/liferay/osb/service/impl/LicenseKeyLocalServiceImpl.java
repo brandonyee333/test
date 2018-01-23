@@ -1657,18 +1657,14 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			throw new LicenseKeyMACAddressException();
 		}
 
-		for (int i = 0; i < octets.length; i++) {
-			String octet = octets[i];
-
+		for (String octet : octets) {
 			if (octet.length() > 2) {
 				throw new LicenseKeyMACAddressException();
 			}
 
 			char[] charArray = octet.toCharArray();
 
-			for (int j = 0; j < charArray.length; j++) {
-				char c = charArray[j];
-
+			for (char c : charArray) {
 				if (!Validator.isDigit(c) &&
 					((c < 65) || ((c > 70) && (c < 97)) || (c > 102))) {
 

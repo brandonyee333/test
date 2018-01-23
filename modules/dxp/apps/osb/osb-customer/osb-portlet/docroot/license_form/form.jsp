@@ -305,6 +305,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 		<div class="field-group-grid">
 			<div class="unit">
 				<liferay-ui:input-field field="agreedToTermsOfUse" model="<%= User.class %>" />
+
 				<label id="<portlet:namespace />termsOfUseLabel"><liferay-ui:message key="i-understand-and-accept-the-terms-and-conditions-of-the-following-agreements" /></label>:
 
 				<a class="txt-u" onClick="var eulaWindow = window.open('/c/portal/register_trial_license?eula=evaluation-license-agreement', 'eula', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800'); void(''); eulaWindow.focus();">

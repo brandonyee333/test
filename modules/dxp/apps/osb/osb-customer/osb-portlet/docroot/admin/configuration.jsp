@@ -1009,9 +1009,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (int i = 0; i < locales.length; i++) {
 										String optionStyle = StringPool.BLANK;
 
-										if (Validator.isNotNull(portletPreferences.getValue("emailCustomerFeedbackSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
-											Validator.isNotNull(portletPreferences.getValue("emailCustomerFeedbackBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-
+										if (Validator.isNotNull(portletPreferences.getValue("emailCustomerFeedbackSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) || Validator.isNotNull(portletPreferences.getValue("emailCustomerFeedbackBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
 											optionStyle = "style=\"font-weight: bold;\"";
 										}
 									%>
@@ -1079,9 +1077,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (int i = 0; i < locales.length; i++) {
 										String optionStyle = StringPool.BLANK;
 
-										if (Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
-											Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-
+										if (Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountSubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) || Validator.isNotNull(portletPreferences.getValue("emailProvisioningCreateAccountBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
 											optionStyle = "style=\"font-weight: bold;\"";
 										}
 									%>
@@ -1131,9 +1127,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (int i = 0; i < locales.length; i++) {
 										String optionStyle = StringPool.BLANK;
 
-										if (Validator.isNotNull(portletPreferences.getValue("emailTicketEntrySubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) ||
-											Validator.isNotNull(portletPreferences.getValue("emailTicketEntryBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
-
+										if (Validator.isNotNull(portletPreferences.getValue("emailTicketEntrySubject_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK)) || Validator.isNotNull(portletPreferences.getValue("emailTicketEntryBody_" + LocaleUtil.toLanguageId(locales[i]), StringPool.BLANK))) {
 											optionStyle = "style=\"font-weight: bold;\"";
 										}
 									%>

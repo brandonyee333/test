@@ -57,7 +57,7 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 			Map<String, Serializable> workflowContext)
 		throws PortalException {
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(6);
 
 		sb.append("Provisioning Task - ");
 

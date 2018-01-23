@@ -51,7 +51,7 @@ public class SupportLaborImpl extends SupportLaborBaseImpl {
 	}
 
 	public String formatTime(Locale locale, int day, int type) {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(6);
 
 		int time = getTime(day, type);
 
