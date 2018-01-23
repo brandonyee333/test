@@ -219,24 +219,25 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 			function() {
 				var A = AUI();
 
-				A.all('.three-dot-icon').each(
+				A.all('.three-dot').each(
 					function(icon) {
-						var event = A.Event.getListeners(icon, 'click');
+						var clickEvent = A.Event.getListeners(icon, 'click');
+						var clickOutsideEvent = A.Event.getListeners(icon, 'clickoutside');
 
-						var parent = icon.get('parentNode');
-
-						if (!event) {
+						if (!clickEvent) {
 							icon.on(
 								'click',
 								function() {
-									parent.toggleClass('open-drop-down');
+									icon.toggleClass('open-drop-down');
 								}
 							);
+						}
 
+						if (!clickOutsideEvent) {
 							icon.on(
 								'clickoutside',
 								function() {
-									parent.removeClass('open-drop-down');
+									icon.removeClass('open-drop-down');
 								}
 							);
 						}
