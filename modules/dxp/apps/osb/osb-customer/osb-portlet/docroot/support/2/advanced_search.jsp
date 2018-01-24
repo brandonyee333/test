@@ -789,19 +789,25 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 			var A = AUI();
 
 			var checkmark = A.one('.multiple-ticket-checkmark');
-			var ticketRows = A.all('#<portlet:namespace />advancedSearchResultsContent .ticket-row');
-			var tickets = A.all('#<portlet:namespace />advancedSearchResultsContent input[type="checkbox"]');
 
 			if (checkmark) {
+				var ticketRows = A.all('#<portlet:namespace />advancedSearchResultsContent .ticket-row');
+				var tickets = A.all('#<portlet:namespace />advancedSearchResultsContent input[type="checkbox"]');
+
 				if (selection == 'all') {
 					checkmark.show();
+
 					ticketRows.addClass('selected');
+
 					tickets.set('checked', true);
 				}
 				else if (selection == 'none') {
 					checkmark.hide();
+
 					ticketRows.removeClass('selected');
+
 					tickets.set('checked', false);
+
 				}
 			}
 		},
@@ -849,17 +855,25 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 			var A = AUI();
 
 			var bulkEdit = A.one('#<portlet:namespace />bulkEdit');
-			var toggleBulkEdit = A.all('.search-results .toggle-bulk-edit');
-			var toggleBulkEditCss = A.all('.search-results .toggle-bulk');
 
 			if (bulkEdit) {
 				var checked = element.checked;
 
+				var toggleBulkEdit = A.all('.search-results .toggle-bulk-edit');
+				var toggleBulkEditCss = A.all('.search-results .toggle-bulk');
+
 				bulkEdit.toggle(checked);
+
 				toggleBulkEdit.toggle(checked);
+
 				toggleBulkEditCss.toggleClass('bulk-edit', !checked);
 
-				document.getElementsByName('<portlet:namespace />statuses')[0].checked = checked;
+				var status = A.one('[name="' + <portlet:namespace />statuses + '"]');
+
+				if (status) {
+					status.set('checked', checked);
+				}
+
 				document.getElementsByName('<portlet:namespace />escalationLevels')[0].checked = checked;
 				document.getElementsByName('<portlet:namespace />escalationLevels')[1].checked = checked;
 			}
@@ -881,7 +895,8 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 			if (exportButton && exportDropdown) {
 				var resultsRange = resultsCount > 0 && resultsCount < 5000;
 
-				exportButton.toggleClass('disabled', !resultsRange);
+				Liferay.Util.toggleDisabled(exportButton, !resultsRange);
+
 				exportDropdown.toggleClass('hide', !resultsRange);
 			}
 		},

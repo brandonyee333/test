@@ -219,7 +219,7 @@ else {
 		function <portlet:namespace />selectCannedResponse(ticketCannedResponseId, ticketCannedResponseContent) {
 			document.<portlet:namespace />fm2.<portlet:namespace />ticketCannedResponseId.value = ticketCannedResponseId;
 
-			var commentBody = document.getElementById("<portlet:namespace />commentBody0");
+			var commentBody = document.getElementById('<portlet:namespace />commentBody0');
 
 			if ((commentBody.value != '') && (commentBody.value.substr(-1) != '\n')) {
 				commentBody.value += '\n';
@@ -339,7 +339,12 @@ else {
 								var className = 'portlet-msg-success';
 								var message = '<%= UnicodeLanguageUtil.get(request, "comment-is-saved-as-draft") %>';
 
-								message += A.DataType.Date.format(new Date(), {format:"%X"});
+								message += A.DataType.Date.format(
+									new Date(),
+									{
+										format: '%X'
+									}
+								);
 
 								if (response.commentPublished) {
 									className = 'portlet-msg-error';
@@ -376,24 +381,48 @@ else {
 
 				var commentForm = A.one('#<portlet:namespace />commentForm' + suffix);
 
-				commentForm.setStyle('display', 'none');
-
-				if (suffix != 0) {
-					return;
+				if (commentForm) {
+					commentForm.hide();
 				}
 
-				var form = A.one(document.<portlet:namespace />fm2);
+				if (suffix === 0) {
+					var form = A.one(document.<portlet:namespace />fm2);
 
-				form.reset();
+					form.reset();
 
-				<c:if test='<%= discussionTab.equals("liferay") %>'>
-					A.one('#<portlet:namespace />addCommentButton0').show();
-					A.one('#<portlet:namespace />addGamePlanButton').show();
-					A.one('#<portlet:namespace />postGamePlanButton').hide();
-				</c:if>
+					<c:if test='<%= discussionTab.equals("liferay") %>'>
+						var addCommentButton = A.one('#<portlet:namespace />addCommentButton0');
 
-				A.one('#<portlet:namespace />addAttachments').hide();
-				A.one('#<portlet:namespace />addAttachmentsButton').show();
+						if (addCommentButton) {
+							addCommentButton.show();
+						}
+
+						var addGamePlanButton = A.one('#<portlet:namespace />addGamePlanButton');
+
+						if (addGamePlanButton) {
+							addGamePlanButton.show();
+						}
+
+						var postGamePlanButton = A.one('#<portlet:namespace />postGamePlanButton');
+
+						if (postGamePlanButton) {
+							postGamePlanButton.hide();
+						}
+
+					</c:if>
+
+					var addAttachments = A.one('#<portlet:namespace />addAttachments');
+
+					if (addAttachments) {
+						addAttachments.hide();
+					}
+
+					var addAttachmentsButton = A.one('#<portlet:namespace />addAttachmentsButton');
+
+					if (addAttachmentsButton) {
+						addAttachmentsButton.show();
+					}
+				}
 			},
 			['aui-base']
 		);
@@ -431,20 +460,21 @@ else {
 
 				var attachmentKeywords = ['<%= StringUtil.merge(SupportUtil.getAttachmentKeywords(), "', '") %>'];
 
-				for (var i = 0; i < attachmentKeywords.length; i++) {
-					var attachmentKeyword = attachmentKeywords[i].toLowerCase();
+				for (var j = 0; j < attachmentKeywords.length; j++) {
+					var attachmentKeyword = attachmentKeywords[j].toLowerCase();
 
 					if (commentBody.indexOf(attachmentKeyword) != -1) {
 						var confirmationMsg = '<%= UnicodeLanguageUtil.get(request, "no-attachments-confirmation") %>';
 
 						confirmationMsg = A.Lang.sub(confirmationMsg, [attachmentKeyword]);
 
+						var returnVal = false;
+
 						if (confirm(confirmationMsg)) {
-							return true;
+							returnVal = true;
 						}
-						else {
-							return false;
-						}
+
+						return returnVal;
 					}
 				}
 

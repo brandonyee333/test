@@ -83,21 +83,41 @@ String gamePlan = GetterUtil.get(gamePlanMap.get(locale), gamePlanMap.get(Locale
 
 			var commentBody = A.one('#<portlet:namespace />commentBody0');
 
-			var commentBodyValue = commentBody.get('value');
+			if (commentBody) {
+				var commentBodyValue = commentBody.val();
 
-			if ((commentBodyValue != '') && (commentBodyValue.substr(-1) != '\n')) {
-				commentBodyValue += '\n';
+				if ((commentBodyValue != '') && (commentBodyValue.substr(-1) != '\n')) {
+					commentBodyValue += '\n';
+				}
+
+				commentBodyValue += gamePlan;
+
+				commentBody.val(commentBodyValue);
+
+				var type = A.one('#<portlet:namespace />type');
+
+				if (type) {
+					type.val('<%= TicketCommentConstants.TYPE_GAME_PLAN %>');
+				}
+
+				var addCommentButton = A.one('#<portlet:namespace />addCommentButton0');
+
+				if (addCommentButton) {
+					addCommentButton.hide();
+				}
+
+				var addGamePlanButton = A.one('#<portlet:namespace />addGamePlanButton');
+
+				if (addGamePlanButton) {
+					addGamePlanButton.hide();
+				}
+
+				var postGamePlanButton = A.one('#<portlet:namespace />postGamePlanButton');
+
+				if (postGamePlanButton) {
+					postGamePlanButton.hide();
+				}
 			}
-
-			commentBodyValue += gamePlan;
-
-			commentBody.set('value', commentBodyValue);
-
-			A.one('#<portlet:namespace />type').set('value', '<%= TicketCommentConstants.TYPE_GAME_PLAN %>');
-
-			A.one('#<portlet:namespace />addCommentButton0').hide();
-			A.one('#<portlet:namespace />addGamePlanButton').hide();
-			A.one('#<portlet:namespace />postGamePlanButton').show();
 		},
 		['aui-base']
 	);
