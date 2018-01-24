@@ -372,7 +372,7 @@ public class AdminServletContextListenerExpandoHelper {
 		String s = "analyst-firm,other,printed-publication,".concat(
 			"trade-show-conference,web-search,word-of-mouth");
 
-		return StringUtil.split(s.toString());
+		return StringUtil.split(s);
 	}
 
 	protected static String[] getOSBIndustryData() {

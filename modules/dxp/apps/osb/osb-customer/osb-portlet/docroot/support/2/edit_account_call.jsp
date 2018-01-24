@@ -116,7 +116,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 					<br />
 
 					<div class="lfr-input-time">
-						<aui:select name="callLengthHours">
+						<aui:select label="" name="callLengthHours">
 
 							<%
 							for (int i = 0; i < 24; i++) {
@@ -132,7 +132,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 
 						<%= StringPool.COLON %>
 
-						<aui:select name="callLengthMinutes">
+						<aui:select label="" name="callLengthMinutes">
 
 							<%
 							for (int i = 0; i < 60; i++) {
@@ -148,7 +148,7 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 
 						<%= StringPool.COLON %>
 
-						<aui:select name="callLengthSeconds">
+						<aui:select label="" name="callLengthSeconds">
 
 							<%
 							for (int i = 0; i < 60; i++) {

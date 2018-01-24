@@ -31,13 +31,13 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 		</div>
 
 		<div>
-			<aui:input checked="<%= true %>" id="dialogYesRadioButton" name="dialogRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_YES %>" />
+			<aui:input checked="<%= true %>" id="dialogYesRadioButton" label="" name="dialogRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_YES %>" />
 
 			<liferay-ui:message key="yes" />
 		</div>
 
 		<div>
-			<aui:input id="dialogNoRadioButton" name="dialogRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_NO + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_NO %>" />
+			<aui:input id="dialogNoRadioButton" label="" name="dialogRadioButton" onClick='<%= renderResponse.getNamespace() + "toggleDialogSatisfied(" + TicketFeedbackConstants.SATISFIED_NO + ");" %>' type="radio" value="<%= TicketFeedbackConstants.SATISFIED_NO %>" />
 
 			<liferay-ui:message key="no" />
 		</div>
@@ -51,7 +51,7 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 				<liferay-ui:message key="were-sorry-to-hear-that-how-can-we-improve" />
 			</div>
 
-			<aui:input cssClass="textarea-comments" name="dialogComments" type="textarea" />
+			<aui:input cssClass="textarea-comments" label="" name="dialogComments" type="textarea" />
 		</div>
 
 		<div class="clearfix">

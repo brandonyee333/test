@@ -154,10 +154,10 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 				<div class="buttons pull-right">
 
 					<%
-					String uploadFileOnChange = renderResponse.getNamespace() + "uploadUpdate('" + HtmlUtil.escapeAttribute(fieldName) + "');";
+					String taglibUploadFile = renderResponse.getNamespace() + "uploadUpdate('" + HtmlUtil.escapeAttribute(fieldName) + "');";
 					%>
 
-					<aui:input cssClass="upload" name="<%= fieldName %>" onChange="<%= uploadFileOnChange %>" type="file" />
+					<aui:input cssClass="upload" name="<%= fieldName %>" onChange="<%= taglibUploadFile %>" type="file" />
 
 					<a class="btn" href="javascript:;" id="<portlet:namespace />select<%= HtmlUtil.escapeAttribute(fieldName) %>File"><liferay-ui:message key="upload" /></a>
 				</div>
@@ -165,16 +165,16 @@ if ((accountEnvironmentAttachment != null) || (ticketAttachment != null)) {
 			<c:otherwise>
 
 				<%
-				String uploadFileOnChange = renderResponse.getNamespace() + "uploadUpdate('" + HtmlUtil.escapeAttribute(fieldName) + "');";
+				String taglibUploadFile = renderResponse.getNamespace() + "uploadUpdate('" + HtmlUtil.escapeAttribute(fieldName) + "');";
 				%>
 
-				<aui:input cssClass="hide" name="<%= fieldName %>" onChange="<%= uploadFileOnChange %>" type="file" />
+				<aui:input cssClass="hide" name="<%= fieldName %>" onChange="<%= taglibUploadFile %>" type="file" />
 
 				<%
-				String uploadNewBtnOnClick = "javascript:document.getElementById('" + renderResponse.getNamespace() + HtmlUtil.escapeAttribute(fieldName) + "').click(); return;";
+				String taglibUploadNew = "javascript:document.getElementById('" + renderResponse.getNamespace() + HtmlUtil.escapeAttribute(fieldName) + "').click(); return;";
 				%>
 
-				<aui:button cssClass="btn" onClick="<%= uploadNewBtnOnClick %>" value="upload-new" />
+				<aui:button cssClass="btn" onClick="<%= taglibUploadNew %>" value="upload-new" />
 			</c:otherwise>
 		</c:choose>
 	</div>

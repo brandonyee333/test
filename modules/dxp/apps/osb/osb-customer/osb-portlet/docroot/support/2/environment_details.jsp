@@ -45,10 +45,10 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 
 				<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 
-				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+				<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 			</c:when>
 			<c:otherwise>
-				<aui:select name="accountEntryId" onChange='<%= renderResponse.getNamespace() + "selectAccountEnvironment();" %>'>
+				<aui:select label="" name="accountEntryId" onChange='<%= renderResponse.getNamespace() + "selectAccountEnvironment();" %>'>
 					<aui:option value="" />
 
 					<%

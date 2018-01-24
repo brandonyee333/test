@@ -212,7 +212,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 						<c:when test="<%= licenseKeySet != null %>">
 							<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 
-							<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+							<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 						</c:when>
 						<c:when test="<%= accountEntries.size() == 1 %>">
 
@@ -226,7 +226,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 							<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 
-							<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+							<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 						</c:when>
 						<c:otherwise>
 
@@ -234,7 +234,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey('', '', '', 0);";
 							%>
 
-							<aui:select name="accountEntryId" onChange="<%= taglibOnChange %>">
+							<aui:select label="" name="accountEntryId" onChange="<%= taglibOnChange %>">
 								<aui:option value="" />
 
 								<%
@@ -264,7 +264,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(this.value, '', '', 0);";
 					%>
 
-					<aui:select id="productEntryId" name="productEntryId" onChange="<%= taglibOnChange %>">
+					<aui:select label="" name="productEntryId" onChange="<%= taglibOnChange %>">
 						<aui:option value="" />
 
 						<%
@@ -353,7 +353,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productVersion.value, this.value, 0);";
 								%>
 
-								<aui:select id="licenseEntryId" name="licenseEntryId" onChange="<%= taglibOnChange %>">
+								<aui:select label="" name="licenseEntryId" onChange="<%= taglibOnChange %>">
 									<aui:option value="" />
 
 									<%
@@ -591,7 +591,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 							<%= productEntry.getName() %>
 
-							<aui:input name="productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
+							<aui:input label="" name="productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
 
 							<br />
 
@@ -611,7 +611,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 							<%= HtmlUtil.escape(LanguageUtil.get(request, licenseEntryType)) %>
 
-							<aui:input name="licenseEntryId" type="hidden" value="<%= licenseEntryId %>" />
+							<aui:input label="" name="licenseEntryId" type="hidden" value="<%= licenseEntryId %>" />
 
 							<br />
 

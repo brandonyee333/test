@@ -147,10 +147,10 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 						editAccountEnvironmentURL.setParameter("accountEnvironmentId", String.valueOf(accountEnvironment.getAccountEnvironmentId()));
 						editAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
 
-						String editEnvironmentConfigurationOnClick = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
+						String taglibEditEnvironmentConfiguration = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
 						%>
 
-						<aui:button cssClass="aui-button-input edit-button" onClick="<%= editEnvironmentConfigurationOnClick %>" value="edit" />
+						<aui:button cssClass="aui-button-input edit-button" onClick="<%= taglibEditEnvironmentConfiguration %>" value="edit" />
 					</c:if>
 
 					<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.DELETE) %>">
@@ -160,10 +160,10 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 						</portlet:actionURL>
 
 						<%
-						String deleteURL = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") +"')) { submitForm(document." + renderResponse.getNamespace() + "fm, '" + deleteAccountEnvironmentURL.toString() + "'); } else { return false; }";
+						String taglibDeleteURL = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") +"')) { submitForm(document." + renderResponse.getNamespace() + "fm, '" + deleteAccountEnvironmentURL.toString() + "'); } else { return false; }";
 						%>
 
-						<aui:button cssClass="aui-button-input edit-button" onClick="<%= deleteURL %>" value="delete" />
+						<aui:button cssClass="aui-button-input edit-button" onClick="<%= taglibDeleteURL %>" value="delete" />
 					</c:if>
 				</div>
 			</div>
@@ -183,10 +183,10 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 	addAccountEnvironmentURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	addAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
 
-	String addEnvironmentDetailsOnClick = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "add-environment-details") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
+	String taglibAddEnvironmentDetails = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "add-environment-details") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
 	%>
 
-	<aui:button cssClass="aui-button-input pull-right" onClick="<%= addEnvironmentDetailsOnClick %>" value="add" />
+	<aui:button cssClass="aui-button-input pull-right" onClick="<%= taglibAddEnvironmentDetails %>" value="add" />
 </c:if>
 
 <aui:script>

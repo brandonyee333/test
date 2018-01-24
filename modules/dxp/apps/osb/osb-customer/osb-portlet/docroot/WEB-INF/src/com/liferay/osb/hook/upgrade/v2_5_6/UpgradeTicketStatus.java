@@ -111,8 +111,8 @@ public class UpgradeTicketStatus extends BaseUpgradeProcess {
 		StringBundler sb = new StringBundler(17);
 
 		sb.append("insert into OSB_TicketFlag (ticketFlagId, userId, ");
-		sb.append("modifiedDate, accountEntryId, ticketEntryId, type_, ");
-		sb.append("flag) values (");
+		sb.append("modifiedDate, accountEntryId, ticketEntryId, type_, flag) ");
+		sb.append("values (");
 		sb.append(increment());
 		sb.append(", ");
 		sb.append(OSBConstants.USER_DEFAULT_USER_ID);

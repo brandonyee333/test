@@ -144,8 +144,8 @@ public class SupportUtil {
 
 		StringBundler sb = new StringBundler(35);
 
-		sb.append("https://issues.liferay.com/secure/");
-		sb.append("CreateIssueDetails!init.jspa?pid=11172&assignee=-1");
+		sb.append("https://issues.liferay.com/secure/CreateIssueDetails!");
+		sb.append("init.jspa?pid=11172&assignee=-1");
 
 		sb.append("&customfield_14827=");
 

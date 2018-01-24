@@ -76,10 +76,10 @@ public class AccountInformationLocalServiceImpl
 		List<AccountInformation> accountInformationList = new ArrayList<>(
 			data.size());
 
-		for (int fieldId : data.keySet()) {
+		for (Map.Entry<Integer, String> entry : data.entrySet()) {
 			AccountInformation accountInformation =
 				accountInformationPersistence.fetchByAEI_API_FI(
-					accountEntryId, accountProjectId, fieldId);
+					accountEntryId, accountProjectId, entry.getKey());
 
 			if (accountInformation == null) {
 				long accountInformationId = counterLocalService.increment();
@@ -93,8 +93,8 @@ public class AccountInformationLocalServiceImpl
 			accountInformation.setModifiedDate(now);
 			accountInformation.setAccountEntryId(accountEntryId);
 			accountInformation.setAccountProjectId(accountProjectId);
-			accountInformation.setFieldId(fieldId);
-			accountInformation.setData(data.get(fieldId));
+			accountInformation.setFieldId(entry.getKey());
+			accountInformation.setData(entry.getValue());
 
 			accountInformationPersistence.update(accountInformation);
 

@@ -96,12 +96,12 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			<c:if test="<%= OSBLicenseKeySetPermission.contains(permissionChecker, licenseKeySetId, OSBActionKeys.UPDATE) %>">
 
 				<%
-				String editOnClick = "javascript:" + renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "nameDisplay', '" + renderResponse.getNamespace() + "name');";
+				String taglibEdit = "javascript:" + renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "nameDisplay', '" + renderResponse.getNamespace() + "name');";
 				%>
 
 				<liferay-ui:icon
 					image="edit"
-					url="<%= editOnClick %>"
+					url="<%= taglibEdit %>"
 				/>
 			</c:if>
 		</div>

@@ -369,8 +369,8 @@ public class Upgrade_20140509155638740_PopulateData extends BaseUpgradeProcess {
 			sb.append("supportRegionId, userId, userName, createDate, ");
 			sb.append("modifiedDate, name, description) values (");
 			sb.append(supportRegionId);
-			sb.append(", 5, '', '2014-02-28 22:40:25', ");
-			sb.append("'2014-02-28 22:40:25', '");
+			sb.append(", 5, '', '2014-02-28 22:40:25', '2014-02-28 22:40:25'");
+			sb.append(", '");
 			sb.append(supportRegionNames[i]);
 			sb.append("', '')");
 
@@ -400,8 +400,8 @@ public class Upgrade_20140509155638740_PopulateData extends BaseUpgradeProcess {
 			sb.append("parentSupportTeamId, name, description, assignedWork, ");
 			sb.append("maxWork, type_) values (");
 			sb.append(supportTeamId);
-			sb.append(", 2, '', '2014-03-19 00:00:00', ");
-			sb.append("'2014-03-19 00:00:00', 0, 'Platinum Critical ");
+			sb.append(", 2, '', '2014-03-19 00:00:00', '2014-03-19 00:00:00'");
+			sb.append(", 0, 'Platinum Critical ");
 			sb.append(supportTeamNames[i][j]);
 			sb.append("', '', 0, 0, ");
 			sb.append(SupportTeamConstants.TYPE_PLATINUM_CRITICAL);

@@ -76,23 +76,23 @@ public class OSBCustomSQLUtil {
 			return StringUtil.replace(joinSQL, whereSQL, StringPool.BLANK);
 		}
 
-		StringBundler newSql = new StringBundler((valuesLength * 4) + 1);
+		StringBundler newSqlSB = new StringBundler((valuesLength * 4) + 1);
 
-		newSql.append("(");
+		newSqlSB.append("(");
 
 		for (int i = 0; i < valuesLength; i++) {
 			if (i > 0) {
-				newSql.append(" OR ");
+				newSqlSB.append(" OR ");
 			}
 
-			newSql.append("(");
-			newSql.append(whereSQL);
-			newSql.append(")");
+			newSqlSB.append("(");
+			newSqlSB.append(whereSQL);
+			newSqlSB.append(")");
 		}
 
-		newSql.append(")");
+		newSqlSB.append(")");
 
-		return StringUtil.replace(joinSQL, whereSQL, newSql.toString());
+		return StringUtil.replace(joinSQL, whereSQL, newSqlSB.toString());
 	}
 
 	public static String replaceKeywords(
@@ -103,45 +103,47 @@ public class OSBCustomSQLUtil {
 			return sql;
 		}
 
-		StringBundler oldSql = new StringBundler(6);
+		StringBundler oldSqlSB = new StringBundler(6);
 
-		oldSql.append("(");
-		oldSql.append(field);
-		oldSql.append(" ");
-		oldSql.append(comparator);
-		oldSql.append(" ?)");
+		oldSqlSB.append("(");
+		oldSqlSB.append(field);
+		oldSqlSB.append(" ");
+		oldSqlSB.append(comparator);
+		oldSqlSB.append(" ?)");
 
 		if (!last) {
-			oldSql.append(" [$AND_OR_CONNECTOR$]");
+			oldSqlSB.append(" [$AND_OR_CONNECTOR$]");
 		}
 
 		if ((values == null) || (values.length == 0)) {
-			return StringUtil.replace(sql, oldSql.toString(), StringPool.BLANK);
+			return StringUtil.replace(
+				sql, oldSqlSB.toString(), StringPool.BLANK);
 		}
 
-		StringBundler newSql = new StringBundler(values.length * 4 + 3);
+		StringBundler newSqlSB = new StringBundler(values.length * 4 + 3);
 
-		newSql.append("(");
+		newSqlSB.append("(");
 
 		for (int i = 0; i < values.length; i++) {
 			if (i > 0) {
-				newSql.append(" OR ");
+				newSqlSB.append(" OR ");
 			}
 
-			newSql.append("(");
-			newSql.append(field);
-			oldSql.append(" ");
-			oldSql.append(comparator);
-			oldSql.append(" ?)");
+			newSqlSB.append("(");
+			newSqlSB.append(field);
+			oldSqlSB.append(" ");
+			oldSqlSB.append(comparator);
+			oldSqlSB.append(" ?)");
 		}
 
-		newSql.append(")");
+		newSqlSB.append(")");
 
 		if (!last) {
-			newSql.append(" [$AND_OR_CONNECTOR$]");
+			newSqlSB.append(" [$AND_OR_CONNECTOR$]");
 		}
 
-		return StringUtil.replace(sql, oldSql.toString(), newSql.toString());
+		return StringUtil.replace(
+			sql, oldSqlSB.toString(), newSqlSB.toString());
 	}
 
 }

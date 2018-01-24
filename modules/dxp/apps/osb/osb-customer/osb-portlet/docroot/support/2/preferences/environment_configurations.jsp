@@ -73,10 +73,10 @@ else {
 				</portlet:renderURL>
 
 				<%
-				String accountEntryOnChange = "submitForm(document." + renderResponse.getNamespace() + "fm, '" + preferencesRenderURL.toString() + "');";
+				String taglibChooseAccountEntry = "submitForm(document." + renderResponse.getNamespace() + "fm, '" + preferencesRenderURL.toString() + "');";
 				%>
 
-				<aui:select label="" name="accountEntryId" onChange="<%= accountEntryOnChange %>">
+				<aui:select label="" name="accountEntryId" onChange="<%= taglibChooseAccountEntry %>">
 					<aui:option value="" />
 
 					<%
@@ -114,10 +114,10 @@ else {
 						<div class="create-env-button">
 
 							<%
-							String createEnvironmentOnClick = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "create-environment-configuration") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment')";
+							String taglibCreateEnvironment = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "create-environment-configuration") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment')";
 							%>
 
-							<aui:button cssClass="aui-button-input pull-right" name="createEnvironment" onClick="<%= createEnvironmentOnClick %>" value="create-environment" />
+							<aui:button cssClass="aui-button-input pull-right" name="createEnvironment" onClick="<%= taglibCreateEnvironment %>" value="create-environment" />
 						</div>
 					</c:if>
 
@@ -185,10 +185,10 @@ else {
 												</portlet:actionURL>
 
 												<%
-												String deleteAccountEnvironmentOnClick = renderResponse.getNamespace() + "deleteEnvironment('" + deleteAccountEnvironmentURL.toString() + "', '" + HtmlUtil.escapeJS(accountEnvironment.getName()) + "');";
+												String taglibDeleteAccountEnvironment = renderResponse.getNamespace() + "deleteEnvironment('" + deleteAccountEnvironmentURL.toString() + "', '" + HtmlUtil.escapeJS(accountEnvironment.getName()) + "');";
 												%>
 
-												<aui:button cssClass="aui-button-input pull-left" onClick="<%= deleteAccountEnvironmentOnClick %>" value="delete" />
+												<aui:button cssClass="aui-button-input pull-left" onClick="<%= taglibDeleteAccountEnvironment %>" value="delete" />
 											</c:if>
 
 											<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE) %>">
@@ -203,10 +203,10 @@ else {
 												%>
 
 												<%
-												String editAccountEnvironmentOnClick = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment')";
+												String taglibEditAccountEnvironment = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment')";
 												%>
 
-												<aui:button cssClass="aui-button-input pull-right" onClick="<%= editAccountEnvironmentOnClick %>" value="edit" />
+												<aui:button cssClass="aui-button-input pull-right" onClick="<%= taglibEditAccountEnvironment %>" value="edit" />
 											</c:if>
 										</div>
 									</div>

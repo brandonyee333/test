@@ -1053,19 +1053,19 @@ public class TicketEntryConstants {
 
 	public static int[] getEnvListTypeIds(int envLFR, String envListType) {
 		if (ProductEntryConstants.isPortalVersion5_2(envLFR)) {
-			return _envPortalVersion5_2.get(envListType);
+			return _envPortalVersion52.get(envListType);
 		}
 		else if (ProductEntryConstants.isPortalVersion6_0(envLFR)) {
-			return _envPortalVersion6_0.get(envListType);
+			return _envPortalVersion60.get(envListType);
 		}
 		else if (ProductEntryConstants.isPortalVersion6_1(envLFR)) {
-			return _envPortalVersion6_1.get(envListType);
+			return _envPortalVersion61.get(envListType);
 		}
 		else if (ProductEntryConstants.isPortalVersion6_2(envLFR)) {
-			return _envPortalVersion6_2.get(envListType);
+			return _envPortalVersion62.get(envListType);
 		}
 		else if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(envLFR)) {
-			return _envDigitalEnterpriseVersion7_0.get(envListType);
+			return _envDigitalEnterpriseVersion70.get(envListType);
 		}
 		else if ((envLFR >=
 					ProductEntryConstants.SOCIAL_OFFICE_VERSION_2_0_3) &&
@@ -1782,15 +1782,15 @@ public class TicketEntryConstants {
 		SYSTEM_STATUS_NEW_ACTIVATION, SYSTEM_STATUS_UPGRADING
 	};
 
-	private static final Map<String, int[]> _envDigitalEnterpriseVersion7_0 =
+	private static final Map<String, int[]> _envDigitalEnterpriseVersion70 =
 		new HashMap<>();
-	private static final Map<String, int[]> _envPortalVersion5_2 =
+	private static final Map<String, int[]> _envPortalVersion52 =
 		new HashMap<>();
-	private static final Map<String, int[]> _envPortalVersion6_0 =
+	private static final Map<String, int[]> _envPortalVersion60 =
 		new HashMap<>();
-	private static final Map<String, int[]> _envPortalVersion6_1 =
+	private static final Map<String, int[]> _envPortalVersion61 =
 		new HashMap<>();
-	private static final Map<String, int[]> _envPortalVersion6_2 =
+	private static final Map<String, int[]> _envPortalVersion62 =
 		new HashMap<>();
 	private static final Map<String, int[]> _envPortalVersionOther =
 		new HashMap<>();
@@ -1800,52 +1800,50 @@ public class TicketEntryConstants {
 		new HashMap<>();
 
 	static {
-		_envPortalVersion5_2.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_5_2);
-		_envPortalVersion5_2.put(
+		_envPortalVersion52.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_5_2);
+		_envPortalVersion52.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_OTHER);
-		_envPortalVersion5_2.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_5_2);
-		_envPortalVersion5_2.put(
+		_envPortalVersion52.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_5_2);
+		_envPortalVersion52.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_OTHER);
-		_envPortalVersion5_2.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_5_2);
+		_envPortalVersion52.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_5_2);
 
-		_envPortalVersion6_0.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_0);
-		_envPortalVersion6_0.put(
+		_envPortalVersion60.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_0);
+		_envPortalVersion60.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_OTHER);
-		_envPortalVersion6_0.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_0);
-		_envPortalVersion6_0.put(
+		_envPortalVersion60.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_0);
+		_envPortalVersion60.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_OTHER);
-		_envPortalVersion6_0.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_0);
+		_envPortalVersion60.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_0);
 
-		_envPortalVersion6_1.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_1);
-		_envPortalVersion6_1.put(
+		_envPortalVersion61.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_1);
+		_envPortalVersion61.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_OTHER);
-		_envPortalVersion6_1.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_1);
-		_envPortalVersion6_1.put(
-			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_6_1);
-		_envPortalVersion6_1.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_1);
+		_envPortalVersion61.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_1);
+		_envPortalVersion61.put(LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_6_1);
+		_envPortalVersion61.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_1);
 
-		_envPortalVersion6_2.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_2);
-		_envPortalVersion6_2.put(
+		_envPortalVersion62.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_6_2);
+		_envPortalVersion62.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_PORTAL_VERSION_6_2);
-		_envPortalVersion6_2.put(LIST_TYPE_ENV_CS, _ENV_CS_PORTAL_VERSION_ANY);
-		_envPortalVersion6_2.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_2);
-		_envPortalVersion6_2.put(
-			LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_6_2);
-		_envPortalVersion6_2.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_2);
+		_envPortalVersion62.put(LIST_TYPE_ENV_CS, _ENV_CS_PORTAL_VERSION_ANY);
+		_envPortalVersion62.put(LIST_TYPE_ENV_DB, _ENV_DB_PORTAL_VERSION_6_2);
+		_envPortalVersion62.put(LIST_TYPE_ENV_JVM, _ENV_JVM_PORTAL_VERSION_6_2);
+		_envPortalVersion62.put(LIST_TYPE_ENV_OS, _ENV_OS_PORTAL_VERSION_6_2);
 
-		_envDigitalEnterpriseVersion7_0.put(
+		_envDigitalEnterpriseVersion70.put(
 			LIST_TYPE_ENV_AS, _ENV_AS_DIGITAL_ENTERPRISE_VERSION_7_0);
-		_envDigitalEnterpriseVersion7_0.put(
+		_envDigitalEnterpriseVersion70.put(
 			LIST_TYPE_ENV_BROWSER, _ENV_BROWSER_DIGITAL_ENTERPRISE_VERSION_7_0);
-		_envDigitalEnterpriseVersion7_0.put(
+		_envDigitalEnterpriseVersion70.put(
 			LIST_TYPE_ENV_CS, _ENV_CS_PORTAL_VERSION_ANY);
-		_envDigitalEnterpriseVersion7_0.put(
+		_envDigitalEnterpriseVersion70.put(
 			LIST_TYPE_ENV_DB, _ENV_DB_DIGITAL_ENTERPRISE_VERSION_7_0);
-		_envDigitalEnterpriseVersion7_0.put(
+		_envDigitalEnterpriseVersion70.put(
 			LIST_TYPE_ENV_JVM, _ENV_JVM_DIGITAL_ENTERPRISE_VERSION_7_0);
-		_envDigitalEnterpriseVersion7_0.put(
+		_envDigitalEnterpriseVersion70.put(
 			LIST_TYPE_ENV_OS, _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_0);
-		_envDigitalEnterpriseVersion7_0.put(
+		_envDigitalEnterpriseVersion70.put(
 			LIST_TYPE_ENV_SEARCH, _ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0);
 
 		_envPortalVersionOther.put(

@@ -71,10 +71,10 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 
 						<strong><%= HtmlUtil.escape(curAccountEntry.getName()) %></strong>
 
-						<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+						<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 					</c:when>
 					<c:when test="<%= RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID) %>">
-						<aui:select name="accountEntryId" onChange='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
+						<aui:select label="" name="accountEntryId" onChange='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
 
 							<%
 							for (AccountEntry curAccountEntry : accountEntries) {
@@ -94,7 +94,7 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 						AccountEntry accountEntry = ticketEntry.getAccountEntry();
 						%>
 
-						<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+						<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 
 						<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 					</c:otherwise>

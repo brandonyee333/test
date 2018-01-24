@@ -99,7 +99,7 @@
 							<liferay-ui:message key="url" /> 1
 						</td>
 						<td>
-							<aui:input cssClass="lfr-input-text" name="url1" style="width: 350px;" type="text" value="<%= url1 %>" />
+							<aui:input cssClass="lfr-input-text" label="" name="url1" style="width: 350px;" type="text" value="<%= url1 %>" />
 						</td>
 					</tr>
 					<tr>
@@ -107,7 +107,7 @@
 							<liferay-ui:message key="url" /> 2
 						</td>
 						<td>
-							<aui:input cssClass="lfr-input-text" name="url2" style="width: 350px;" type="text" value="<%= url2 %>" />
+							<aui:input cssClass="lfr-input-text" label="" name="url2" style="width: 350px;" type="text" value="<%= url2 %>" />
 						</td>
 					</tr>
 					<tr>
@@ -115,7 +115,7 @@
 							<liferay-ui:message key="url" /> 3
 						</td>
 						<td>
-							<aui:input cssClass="lfr-input-text" name="url3" style="width: 350px;" type="text" value="<%= url3 %>" />
+							<aui:input cssClass="lfr-input-text" label="" name="url3" style="width: 350px;" type="text" value="<%= url3 %>" />
 						</td>
 					</tr>
 				</table>

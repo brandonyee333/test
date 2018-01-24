@@ -56,9 +56,9 @@ public class Upgrade_20170616160207742_AccountCustomer
 
 		StringBundler sb = new StringBundler(17);
 
-		sb.append("select OSB_AccountEntry.accountEntryId, ");
-		sb.append("Users_Orgs.userId FROM OSB_CorpProject inner join ");
-		sb.append("OSB_AccountEntry on OSB_AccountEntry.corpProjectId = ");
+		sb.append("select OSB_AccountEntry.accountEntryId, Users_Orgs.userId ");
+		sb.append("FROM OSB_CorpProject inner join OSB_AccountEntry on ");
+		sb.append("OSB_AccountEntry.corpProjectId = ");
 		sb.append("OSB_CorpProject.corpProjectId inner join Users_Orgs on ");
 		sb.append("Users_Orgs.organizationId = ");
 		sb.append("OSB_CorpProject.organizationId left join ");

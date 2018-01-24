@@ -86,10 +86,10 @@ Date lastEnabledDate = calendar.getTime();
 					</portlet:renderURL>
 
 					<%
-					String partnerEntryOnClick = "var partnerEntryWindow = window.open('" + selectPartnerEntryRenderURL.toString() + "', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();";
+					String taglibChoosePartnerEntry = "var partnerEntryWindow = window.open('" + selectPartnerEntryRenderURL.toString() + "', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();";
 					%>
 
-					<aui:button cssClass="aui-button-input" onClick="<%= partnerEntryOnClick %>" value="choose" />
+					<aui:button cssClass="aui-button-input" onClick="<%= taglibChoosePartnerEntry %>" value="choose" />
 				</td>
 				<td colspan="2">
 					<c:if test="<%= liferayIncOrg %>">
@@ -102,10 +102,10 @@ Date lastEnabledDate = calendar.getTime();
 						</portlet:renderURL>
 
 						<%
-						String accountWorkerOnClick = "var accountWorkerWindow = window.open('" + selectAccountWorkerRenderURL.toString() + "', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();";
+						String taglibChooseAccountWorker = "var accountWorkerWindow = window.open('" + selectAccountWorkerRenderURL.toString() + "', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();";
 						%>
 
-						<aui:button cssClass="aui-button-input" onClick="<%= accountWorkerOnClick %>" value="choose" />
+						<aui:button cssClass="aui-button-input" onClick="<%= taglibChooseAccountWorker %>" value="choose" />
 					</c:if>
 				</td>
 			</tr>
@@ -298,10 +298,10 @@ Date lastEnabledDate = calendar.getTime();
 						</portlet:renderURL>
 
 						<%
-						String createUserOnClick = "var createUserWindow = window.open('" + selectUserRenderURL.toString() + "', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();";
+						String taglibChooseCreateUser = "var createUserWindow = window.open('" + selectUserRenderURL.toString() + "', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();";
 						%>
 
-						<aui:button cssClass="aui-button-input" onClick="<%= createUserOnClick %>" value="choose" />
+						<aui:button cssClass="aui-button-input" onClick="<%= taglibChooseCreateUser %>" value="choose" />
 					</td>
 					<td colspan="2">
 						<aui:select name="<%= displayTerms.MODIFIED_USER_ID %>">
@@ -321,10 +321,10 @@ Date lastEnabledDate = calendar.getTime();
 						</portlet:renderURL>
 
 						<%
-						String modifiedOnClick = "var modifiedUserWindow = window.open('" + selectUserRenderURL.toString() + "', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();";
+						String taglibChooseModifiedUser = "var modifiedUserWindow = window.open('" + selectUserRenderURL.toString() + "', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();";
 						%>
 
-						<aui:button cssClass="aui-button-input" onClick="<%= modifiedOnClick %>" value="choose" />
+						<aui:button cssClass="aui-button-input" onClick="<%= taglibChooseModifiedUser %>" value="choose" />
 					</td>
 				</tr>
 			</c:if>

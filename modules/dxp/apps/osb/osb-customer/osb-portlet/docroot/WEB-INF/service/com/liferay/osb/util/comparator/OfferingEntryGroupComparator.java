@@ -116,7 +116,7 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 
 	public int compareStatus(int status, int status2) {
 		if (status != status2) {
-			for (int curStatus : _orderedStatuses) {
+			for (int curStatus : _ORDERED_STATUSES) {
 				if (curStatus == status) {
 					return -1;
 				}
@@ -132,7 +132,7 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 
 	public int compareType(int type, int type2) {
 		if (type != type2) {
-			for (int curType : _orderedTypes) {
+			for (int curType : _ORDERED_TYPES) {
 				if (curType == type) {
 					return -1;
 				}
@@ -146,13 +146,14 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 		return 0;
 	}
 
-	private static final int[] _orderedStatuses = {
+	private static final int[] _ORDERED_STATUSES = {
 		OfferingEntryConstants.STATUS_ACTIVE,
 		OfferingEntryConstants.STATUS_PENDING,
 		OfferingEntryConstants.STATUS_ON_HOLD,
 		OfferingEntryConstants.STATUS_CLOSED
 	};
-	private static final int[] _orderedTypes = {
+
+	private static final int[] _ORDERED_TYPES = {
 		OfferingEntryConstants.TYPE_REGULAR, OfferingEntryConstants.TYPE_TRIAL
 	};
 

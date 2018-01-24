@@ -70,17 +70,16 @@ public class Upgrade_20160413174405139_OfferingEntry
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
-		StringBundler sb = new StringBundler(12);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("select OSB_OfferingEntry.offeringEntryId, ");
 		sb.append("OSB_OfferingEntry.modifiedDate, ");
 		sb.append("OSB_ProductEntry.versionsListType from OSB_OfferingEntry ");
 		sb.append("inner join OSB_OfferingDefinition on ");
 		sb.append("OSB_OfferingDefinition.offeringDefinitionId = ");
-		sb.append("OSB_OfferingEntry.offeringDefinitionId inner ");
-		sb.append("join OSB_ProductEntry on OSB_ProductEntry.productEntryId ");
-		sb.append("= OSB_OfferingDefinition.productEntryId ");
-		sb.append("where (status = ");
+		sb.append("OSB_OfferingEntry.offeringDefinitionId inner join ");
+		sb.append("OSB_ProductEntry on OSB_ProductEntry.productEntryId = ");
+		sb.append("OSB_OfferingDefinition.productEntryId where (status = ");
 		sb.append(OfferingEntryConstants.STATUS_CLOSED);
 		sb.append(") and (OSB_ProductEntry.versionsListType = ");
 		sb.append("'portalMinorVersions')");
@@ -112,9 +111,9 @@ public class Upgrade_20160413174405139_OfferingEntry
 		sb.append("update OSB_OfferingEntry inner join ");
 		sb.append("OSB_OfferingDefinition on ");
 		sb.append("OSB_OfferingDefinition.offeringDefinitionId = ");
-		sb.append("OSB_OfferingEntry.offeringDefinitionId inner ");
-		sb.append("join OSB_ProductEntry on OSB_ProductEntry.productEntryId ");
-		sb.append("= OSB_OfferingDefinition.productEntryId set ");
+		sb.append("OSB_OfferingEntry.offeringDefinitionId inner join ");
+		sb.append("OSB_ProductEntry on OSB_ProductEntry.productEntryId = ");
+		sb.append("OSB_OfferingDefinition.productEntryId set ");
 		sb.append("OSB_OfferingEntry.version = 22004 where ");
 		sb.append("(OSB_ProductEntry.versionsListType = ");
 		sb.append("'portalMinorVersions') and (OSB_OfferingEntry.status != ");
