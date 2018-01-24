@@ -4,8 +4,8 @@
 [subrepo]
 	autopull = true
 	cmdver = liferay
-	commit = c5c85961ed4375ea5033c1626806fff4152f4938
+	commit = 91eebcae720827ba46679e387e85320984f31662
 	mergebuttonmergecommits = true
 	mode = pull
-	parent = e6351585e01e9089992defec77cddaa0111040dc
+	parent = 92ad6ac976003204c423ae70dbb480b4c7f1d93d
 	remote = git@github.com:liferay/com-liferay-pulpo-connector-de-private.git
