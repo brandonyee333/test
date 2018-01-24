@@ -22,6 +22,9 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.IOException;
+import java.io.Serializable;
+
+import java.util.Map;
 
 /**
  * @author Cristina González
@@ -41,7 +44,10 @@ public class ExpandoBridgeStdSerializer extends StdSerializer<ExpandoBridge> {
 		try {
 			String fieldPrefix = "custom" + StringPool.POUND;
 
-			expandoBridge.getAttributes(false).forEach(
+			Map<String, Serializable> attributes = expandoBridge.getAttributes(
+				false);
+
+			attributes.forEach(
 				(k, v) -> {
 					try {
 						jsonGenerator.writeStringField(

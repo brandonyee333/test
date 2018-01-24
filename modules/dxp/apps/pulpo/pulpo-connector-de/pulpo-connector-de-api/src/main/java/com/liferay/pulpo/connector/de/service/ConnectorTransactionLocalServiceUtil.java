@@ -54,13 +54,12 @@ public class ConnectorTransactionLocalServiceUtil {
 	}
 
 	public static com.liferay.pulpo.connector.de.model.ConnectorTransaction addConnectorTransaction(
-		long userId, java.lang.String className, long classPK,
-		java.lang.String status, java.lang.String operation,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long userId, long classNameId, long classPK, java.lang.String status,
+		java.lang.String operation)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addConnectorTransaction(userId, className, classPK, status,
-			operation, serviceContext);
+				   .addConnectorTransaction(userId, classNameId, classPK,
+			status, operation);
 	}
 
 	/**
@@ -190,17 +189,9 @@ public class ConnectorTransactionLocalServiceUtil {
 		return getService().fetchConnectorTransaction(connectorTransactionId);
 	}
 
-	/**
-	* Returns the connector transaction with the matching UUID and company.
-	*
-	* @param uuid the connector transaction's UUID
-	* @param companyId the primary key of the company
-	* @return the matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
-	*/
-	public static com.liferay.pulpo.connector.de.model.ConnectorTransaction fetchConnectorTransactionByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
-		return getService()
-				   .fetchConnectorTransactionByUuidAndCompanyId(uuid, companyId);
+	public static com.liferay.pulpo.connector.de.model.ConnectorTransaction fetchConnectorTransaction(
+		java.lang.String connectorTransactionUuid) {
+		return getService().fetchConnectorTransaction(connectorTransactionUuid);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -218,21 +209,6 @@ public class ConnectorTransactionLocalServiceUtil {
 		long connectorTransactionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getConnectorTransaction(connectorTransactionId);
-	}
-
-	/**
-	* Returns the connector transaction with the matching UUID and company.
-	*
-	* @param uuid the connector transaction's UUID
-	* @param companyId the primary key of the company
-	* @return the matching connector transaction
-	* @throws PortalException if a matching connector transaction could not be found
-	*/
-	public static com.liferay.pulpo.connector.de.model.ConnectorTransaction getConnectorTransactionByUuidAndCompanyId(
-		java.lang.String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getConnectorTransactionByUuidAndCompanyId(uuid, companyId);
 	}
 
 	/**
@@ -258,11 +234,6 @@ public class ConnectorTransactionLocalServiceUtil {
 	*/
 	public static int getConnectorTransactionsCount() {
 		return getService().getConnectorTransactionsCount();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
-		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {

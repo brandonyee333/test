@@ -15,18 +15,14 @@
 package com.liferay.pulpo.connector.de.service.impl.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.pulpo.connector.de.model.ConnectorTransaction;
 import com.liferay.pulpo.connector.de.service.ConnectorTransactionLocalServiceUtil;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,27 +39,50 @@ public class ConnectorTransactionLocalServiceTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Before
-	public void setUp() throws PortalException {
-		_serviceContext = ServiceContextTestUtil.getServiceContext(
-			TestPropsValues.getGroupId(), TestPropsValues.getUserId());
-	}
-
 	@Test
 	public void testAddConnectorTransaction() throws Exception {
 		int count =
 			ConnectorTransactionLocalServiceUtil.
 				getConnectorTransactionsCount();
 
-		ConnectorTransactionLocalServiceUtil.addConnectorTransaction(
-			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
-			RandomTestUtil.randomLong(), RandomTestUtil.randomString(),
-			RandomTestUtil.randomString(), _serviceContext);
+		ConnectorTransaction connectorTransaction =
+			ConnectorTransactionLocalServiceUtil.addConnectorTransaction(
+				TestPropsValues.getUserId(), RandomTestUtil.randomLong(),
+				RandomTestUtil.randomLong(), RandomTestUtil.randomString(),
+				RandomTestUtil.randomString());
 
 		Assert.assertEquals(
 			"ConnectorTransaction hasn't been created properly", count + 1,
 			ConnectorTransactionLocalServiceUtil.
 				getConnectorTransactionsCount());
+
+		Assert.assertNotNull(
+			"ConnectorTransaction does not contain a valid UUID",
+			connectorTransaction.getConnectorTransactionUuid());
+	}
+
+	@Test
+	public void testAddConnectorTransactionWithSameClassNameIdAndClassPK()
+		throws Exception {
+
+		long classNameId = RandomTestUtil.randomLong();
+		long classPK = RandomTestUtil.randomLong();
+
+		ConnectorTransaction connectorTransaction1 =
+			ConnectorTransactionLocalServiceUtil.addConnectorTransaction(
+				TestPropsValues.getUserId(), classNameId, classPK,
+				RandomTestUtil.randomString(), RandomTestUtil.randomString());
+
+		ConnectorTransaction connectorTransaction2 =
+			ConnectorTransactionLocalServiceUtil.addConnectorTransaction(
+				TestPropsValues.getUserId(), classNameId, classPK,
+				RandomTestUtil.randomString(), RandomTestUtil.randomString());
+
+		Assert.assertNotEquals(
+			"A new operation on the same model entity should result in a new " +
+				"ConnectorTransaction",
+			connectorTransaction1.getConnectorTransactionUuid(),
+			connectorTransaction2.getConnectorTransactionUuid());
 	}
 
 	@Test
@@ -74,9 +93,9 @@ public class ConnectorTransactionLocalServiceTest {
 
 		ConnectorTransaction connectorTransaction =
 			ConnectorTransactionLocalServiceUtil.addConnectorTransaction(
-				TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+				TestPropsValues.getUserId(), RandomTestUtil.randomLong(),
 				RandomTestUtil.randomLong(), RandomTestUtil.randomString(),
-				RandomTestUtil.randomString(), _serviceContext);
+				RandomTestUtil.randomString());
 
 		ConnectorTransactionLocalServiceUtil.deleteConnectorTransaction(
 			connectorTransaction.getConnectorTransactionId());
@@ -91,9 +110,9 @@ public class ConnectorTransactionLocalServiceTest {
 	public void testUpdateUnit() throws Exception {
 		ConnectorTransaction initialConnectorTransaction =
 			ConnectorTransactionLocalServiceUtil.addConnectorTransaction(
-				TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+				TestPropsValues.getUserId(), RandomTestUtil.randomLong(),
 				RandomTestUtil.randomLong(), RandomTestUtil.randomString(),
-				RandomTestUtil.randomString(), _serviceContext);
+				RandomTestUtil.randomString());
 
 		String updatedStatus = RandomTestUtil.randomString();
 
@@ -109,7 +128,5 @@ public class ConnectorTransactionLocalServiceTest {
 			"The ConnectorTransaction name has not been propertly updated",
 			updatedStatus, updatedConnectorTransaction.getStatus());
 	}
-
-	private ServiceContext _serviceContext;
 
 }

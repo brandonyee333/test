@@ -14,7 +14,12 @@
 
 package com.liferay.pulpo.connector.de.contacts.demo.service;
 
+import com.github.javafaker.Artist;
+import com.github.javafaker.Book;
+import com.github.javafaker.Color;
+import com.github.javafaker.Company;
 import com.github.javafaker.Faker;
+import com.github.javafaker.Pokemon;
 
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.expando.kernel.model.ExpandoBridge;
@@ -23,6 +28,7 @@ import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -86,8 +92,9 @@ public class ContactsDemoService {
 
 			JSONObject rootJSONObject = JSONFactoryUtil.createJSONObject(json);
 
-			JSONObject userJSONObject = rootJSONObject.getJSONArray(
-				"results").getJSONObject(0);
+			JSONArray jsonArray = rootJSONObject.getJSONArray("results");
+
+			JSONObject userJSONObject = jsonArray.getJSONObject(0);
 
 			String emailAddress = _getEmailAddress(userJSONObject);
 
@@ -134,21 +141,27 @@ public class ContactsDemoService {
 
 			_addAttributeIfNotexist(user, "favouriteArtist");
 
-			expandoBridge.setAttribute(
-				"favouriteArtist", faker.artist().name());
+			Artist artist = faker.artist();
+
+			expandoBridge.setAttribute("favouriteArtist", artist.name());
 
 			_addAttributeIfNotexist(user, "favouriteColor");
 
-			expandoBridge.setAttribute("favouriteColor", faker.color().name());
+			Color color = faker.color();
+
+			expandoBridge.setAttribute("favouriteColor", color.name());
 
 			_addAttributeIfNotexist(user, "favouriteGenre");
 
-			expandoBridge.setAttribute("favouriteGenre", faker.book().genre());
+			Book book = faker.book();
+
+			expandoBridge.setAttribute("favouriteGenre", book.genre());
 
 			_addAttributeIfNotexist(user, "favouritePokemon");
 
-			expandoBridge.setAttribute(
-				"favouritePokemon", faker.pokemon().name());
+			Pokemon pokemon = faker.pokemon();
+
+			expandoBridge.setAttribute("favouritePokemon", pokemon.name());
 
 			user.setModifiedDate(new Date());
 
@@ -221,7 +234,10 @@ public class ContactsDemoService {
 		address.setUserId(getUserId());
 
 		address.setClassName(Contact.class.getName());
-		address.setClassPK(user.getContact().getPrimaryKey());
+
+		Contact contact = user.getContact();
+
+		address.setClassPK(contact.getPrimaryKey());
 
 		List<ListType> listTypes = _listTypeService.getListTypes(
 			ListTypeConstants.CONTACT_ADDRESS);
@@ -277,7 +293,9 @@ public class ContactsDemoService {
 
 		Faker faker = new Faker();
 
-		String jobTitle = faker.company().profession();
+		Company company = faker.company();
+
+		String jobTitle = company.profession();
 
 		return _userLocalService.addUser(
 			UserConstants.USER_ID_DEFAULT, companyId, autoPassword, password1,

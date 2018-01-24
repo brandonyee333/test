@@ -27,6 +27,8 @@ import com.liferay.portal.kernel.service.ImageServiceUtil;
 
 import java.io.IOException;
 
+import java.util.TimeZone;
+
 /**
  * @author Cristina González
  */
@@ -83,8 +85,9 @@ public class UserModelStdSerializer extends StdSerializer<User> {
 
 		jsonGenerator.writeNumberField("status", user.getStatus());
 
-		jsonGenerator.writeStringField(
-			"timeZoneId", user.getTimeZone().getID());
+		TimeZone timeZone = user.getTimeZone();
+
+		jsonGenerator.writeStringField("timeZoneId", timeZone.getID());
 
 		jsonGenerator.writeObject(user.getExpandoBridge());
 

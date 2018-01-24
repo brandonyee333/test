@@ -49,12 +49,13 @@ public class ContactsConnectorImpl implements ContactsConnector {
 
 	@Override
 	public void sendMessage(String destinationName, String payload) {
-		sendMessage(destinationName, payload, null);
+		sendMessage(destinationName, payload, null, null);
 	}
 
 	@Override
 	public void sendMessage(
-		String destinationName, String payload, Map<String, String> metadata) {
+		String destinationName, String payload, Map<String, String> metadata,
+		String responseDestinationName) {
 
 		MessageBusMessage message = new MessageBusMessage();
 
@@ -66,6 +67,12 @@ public class ContactsConnectorImpl implements ContactsConnector {
 			values.putAll(metadata);
 
 			message.setValues(values);
+		}
+
+		if (responseDestinationName != null) {
+			responseDestinationName += "_" + _getEnvironmentUniqueName();
+
+			message.setResponseDestinationName(responseDestinationName);
 		}
 
 		destinationName += "_" + _getEnvironmentUniqueName();

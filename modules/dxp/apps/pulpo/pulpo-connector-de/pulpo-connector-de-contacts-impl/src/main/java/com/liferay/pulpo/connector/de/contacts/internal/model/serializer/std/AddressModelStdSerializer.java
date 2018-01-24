@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.model.Region;
 
 import java.io.IOException;
 
@@ -44,9 +46,15 @@ public class AddressModelStdSerializer extends StdSerializer<Address> {
 		jsonGenerator.writeStartObject();
 		jsonGenerator.writeStringField("zip", address.getZip());
 		jsonGenerator.writeStringField("city", address.getCity());
-		jsonGenerator.writeStringField("region", address.getRegion().getName());
-		jsonGenerator.writeStringField(
-			"country", address.getCountry().getName());
+
+		Region region = address.getRegion();
+
+		jsonGenerator.writeStringField("region", region.getName());
+
+		Country country = address.getCountry();
+
+		jsonGenerator.writeStringField("country", country.getName());
+
 		jsonGenerator.writeBooleanField("primary", address.getPrimary());
 		jsonGenerator.writeBooleanField("mailing", address.getMailing());
 		jsonGenerator.writeStringField("street1", address.getStreet1());

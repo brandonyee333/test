@@ -20,9 +20,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.lcs.messaging.MessageBusMessage;
 import com.liferay.osb.lcs.messaging.LCSMessageBusService;
 import com.liferay.osb.lcs.messaging.LCSMessageListener;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
-import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.pulpo.connector.de.contacts.impl.messaging.IndividualChunkReturnLCSMessageListener;
 import com.liferay.pulpo.connector.de.contacts.impl.model.ConnectorTransactionResponse;
@@ -77,15 +75,11 @@ public class IndividualChunkReturnLCSMessageListenerTest {
 		ConnectorTransactionLocalService connectorTransactionLocalService =
 			_connectorTransactionLocalServiceServiceTracker.getService();
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(
-				TestPropsValues.getGroupId(), TestPropsValues.getUserId());
-
 		ConnectorTransaction connectorTransaction =
 			connectorTransactionLocalService.addConnectorTransaction(
-				TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+				TestPropsValues.getUserId(), RandomTestUtil.randomLong(),
 				RandomTestUtil.randomLong(), RandomTestUtil.randomString(),
-				RandomTestUtil.randomString(), serviceContext);
+				RandomTestUtil.randomString());
 
 		ConnectorTransactionResponse connectorTransactionResponse =
 			new ConnectorTransactionResponse();

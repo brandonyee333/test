@@ -20,10 +20,10 @@ import com.liferay.expando.kernel.model.ExpandoBridge;
 
 import com.liferay.portal.kernel.bean.AutoEscape;
 import com.liferay.portal.kernel.model.AttachedModel;
+import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
-import com.liferay.portal.kernel.model.StagedAuditedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -44,8 +44,8 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface ConnectorTransactionModel extends AttachedModel,
-	BaseModel<ConnectorTransaction>, ShardedModel, StagedAuditedModel {
+public interface ConnectorTransactionModel extends AttachedModel, AuditedModel,
+	BaseModel<ConnectorTransaction>, ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -65,23 +65,6 @@ public interface ConnectorTransactionModel extends AttachedModel,
 	 * @param primaryKey the primary key of this connector transaction
 	 */
 	public void setPrimaryKey(long primaryKey);
-
-	/**
-	 * Returns the uuid of this connector transaction.
-	 *
-	 * @return the uuid of this connector transaction
-	 */
-	@AutoEscape
-	@Override
-	public String getUuid();
-
-	/**
-	 * Sets the uuid of this connector transaction.
-	 *
-	 * @param uuid the uuid of this connector transaction
-	 */
-	@Override
-	public void setUuid(String uuid);
 
 	/**
 	 * Returns the connector transaction ID of this connector transaction.
@@ -235,6 +218,21 @@ public interface ConnectorTransactionModel extends AttachedModel,
 	 */
 	@Override
 	public void setClassPK(long classPK);
+
+	/**
+	 * Returns the connector transaction uuid of this connector transaction.
+	 *
+	 * @return the connector transaction uuid of this connector transaction
+	 */
+	@AutoEscape
+	public String getConnectorTransactionUuid();
+
+	/**
+	 * Sets the connector transaction uuid of this connector transaction.
+	 *
+	 * @param connectorTransactionUuid the connector transaction uuid of this connector transaction
+	 */
+	public void setConnectorTransactionUuid(String connectorTransactionUuid);
 
 	/**
 	 * Returns the operation of this connector transaction.

@@ -42,445 +42,103 @@ public interface ConnectorTransactionPersistence extends BasePersistence<Connect
 	 */
 
 	/**
-	* Returns all the connector transactions where uuid = &#63;.
+	* Returns the connector transaction where connectorTransactionUuid = &#63; or throws a {@link NoSuchConnectorTransactionException} if it could not be found.
 	*
-	* @param uuid the uuid
-	* @return the matching connector transactions
+	* @param connectorTransactionUuid the connector transaction uuid
+	* @return the matching connector transaction
+	* @throws NoSuchConnectorTransactionException if a matching connector transaction could not be found
 	*/
-	public java.util.List<ConnectorTransaction> findByUuid(
-		java.lang.String uuid);
+	public ConnectorTransaction findByConnectorTransactionUUID(
+		java.lang.String connectorTransactionUuid)
+		throws NoSuchConnectorTransactionException;
 
 	/**
-	* Returns a range of all the connector transactions where uuid = &#63;.
+	* Returns the connector transaction where connectorTransactionUuid = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ConnectorTransactionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param uuid the uuid
-	* @param start the lower bound of the range of connector transactions
-	* @param end the upper bound of the range of connector transactions (not inclusive)
-	* @return the range of matching connector transactions
+	* @param connectorTransactionUuid the connector transaction uuid
+	* @return the matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
 	*/
-	public java.util.List<ConnectorTransaction> findByUuid(
-		java.lang.String uuid, int start, int end);
+	public ConnectorTransaction fetchByConnectorTransactionUUID(
+		java.lang.String connectorTransactionUuid);
 
 	/**
-	* Returns an ordered range of all the connector transactions where uuid = &#63;.
+	* Returns the connector transaction where connectorTransactionUuid = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ConnectorTransactionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param uuid the uuid
-	* @param start the lower bound of the range of connector transactions
-	* @param end the upper bound of the range of connector transactions (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching connector transactions
-	*/
-	public java.util.List<ConnectorTransaction> findByUuid(
-		java.lang.String uuid, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator);
-
-	/**
-	* Returns an ordered range of all the connector transactions where uuid = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ConnectorTransactionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param uuid the uuid
-	* @param start the lower bound of the range of connector transactions
-	* @param end the upper bound of the range of connector transactions (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param connectorTransactionUuid the connector transaction uuid
 	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of matching connector transactions
+	* @return the matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
 	*/
-	public java.util.List<ConnectorTransaction> findByUuid(
-		java.lang.String uuid, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator,
-		boolean retrieveFromCache);
+	public ConnectorTransaction fetchByConnectorTransactionUUID(
+		java.lang.String connectorTransactionUuid, boolean retrieveFromCache);
 
 	/**
-	* Returns the first connector transaction in the ordered set where uuid = &#63;.
+	* Removes the connector transaction where connectorTransactionUuid = &#63; from the database.
 	*
-	* @param uuid the uuid
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching connector transaction
-	* @throws NoSuchConnectorTransactionException if a matching connector transaction could not be found
+	* @param connectorTransactionUuid the connector transaction uuid
+	* @return the connector transaction that was removed
 	*/
-	public ConnectorTransaction findByUuid_First(java.lang.String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator)
+	public ConnectorTransaction removeByConnectorTransactionUUID(
+		java.lang.String connectorTransactionUuid)
 		throws NoSuchConnectorTransactionException;
 
 	/**
-	* Returns the first connector transaction in the ordered set where uuid = &#63;.
+	* Returns the number of connector transactions where connectorTransactionUuid = &#63;.
 	*
-	* @param uuid the uuid
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
-	*/
-	public ConnectorTransaction fetchByUuid_First(java.lang.String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator);
-
-	/**
-	* Returns the last connector transaction in the ordered set where uuid = &#63;.
-	*
-	* @param uuid the uuid
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching connector transaction
-	* @throws NoSuchConnectorTransactionException if a matching connector transaction could not be found
-	*/
-	public ConnectorTransaction findByUuid_Last(java.lang.String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator)
-		throws NoSuchConnectorTransactionException;
-
-	/**
-	* Returns the last connector transaction in the ordered set where uuid = &#63;.
-	*
-	* @param uuid the uuid
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
-	*/
-	public ConnectorTransaction fetchByUuid_Last(java.lang.String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator);
-
-	/**
-	* Returns the connector transactions before and after the current connector transaction in the ordered set where uuid = &#63;.
-	*
-	* @param connectorTransactionId the primary key of the current connector transaction
-	* @param uuid the uuid
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next connector transaction
-	* @throws NoSuchConnectorTransactionException if a connector transaction with the primary key could not be found
-	*/
-	public ConnectorTransaction[] findByUuid_PrevAndNext(
-		long connectorTransactionId, java.lang.String uuid,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator)
-		throws NoSuchConnectorTransactionException;
-
-	/**
-	* Removes all the connector transactions where uuid = &#63; from the database.
-	*
-	* @param uuid the uuid
-	*/
-	public void removeByUuid(java.lang.String uuid);
-
-	/**
-	* Returns the number of connector transactions where uuid = &#63;.
-	*
-	* @param uuid the uuid
+	* @param connectorTransactionUuid the connector transaction uuid
 	* @return the number of matching connector transactions
 	*/
-	public int countByUuid(java.lang.String uuid);
+	public int countByConnectorTransactionUUID(
+		java.lang.String connectorTransactionUuid);
 
 	/**
-	* Returns all the connector transactions where uuid = &#63; and companyId = &#63;.
+	* Returns the connector transaction where classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchConnectorTransactionException} if it could not be found.
 	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @return the matching connector transactions
+	* @param classNameId the class name ID
+	* @param classPK the class pk
+	* @return the matching connector transaction
+	* @throws NoSuchConnectorTransactionException if a matching connector transaction could not be found
 	*/
-	public java.util.List<ConnectorTransaction> findByUuid_C(
-		java.lang.String uuid, long companyId);
+	public ConnectorTransaction findByC_C(long classNameId, long classPK)
+		throws NoSuchConnectorTransactionException;
 
 	/**
-	* Returns a range of all the connector transactions where uuid = &#63; and companyId = &#63;.
+	* Returns the connector transaction where classNameId = &#63; and classPK = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ConnectorTransactionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param start the lower bound of the range of connector transactions
-	* @param end the upper bound of the range of connector transactions (not inclusive)
-	* @return the range of matching connector transactions
+	* @param classNameId the class name ID
+	* @param classPK the class pk
+	* @return the matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
 	*/
-	public java.util.List<ConnectorTransaction> findByUuid_C(
-		java.lang.String uuid, long companyId, int start, int end);
+	public ConnectorTransaction fetchByC_C(long classNameId, long classPK);
 
 	/**
-	* Returns an ordered range of all the connector transactions where uuid = &#63; and companyId = &#63;.
+	* Returns the connector transaction where classNameId = &#63; and classPK = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ConnectorTransactionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param start the lower bound of the range of connector transactions
-	* @param end the upper bound of the range of connector transactions (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching connector transactions
-	*/
-	public java.util.List<ConnectorTransaction> findByUuid_C(
-		java.lang.String uuid, long companyId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator);
-
-	/**
-	* Returns an ordered range of all the connector transactions where uuid = &#63; and companyId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ConnectorTransactionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param start the lower bound of the range of connector transactions
-	* @param end the upper bound of the range of connector transactions (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param classNameId the class name ID
+	* @param classPK the class pk
 	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of matching connector transactions
+	* @return the matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
 	*/
-	public java.util.List<ConnectorTransaction> findByUuid_C(
-		java.lang.String uuid, long companyId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator,
+	public ConnectorTransaction fetchByC_C(long classNameId, long classPK,
 		boolean retrieveFromCache);
 
 	/**
-	* Returns the first connector transaction in the ordered set where uuid = &#63; and companyId = &#63;.
+	* Removes the connector transaction where classNameId = &#63; and classPK = &#63; from the database.
 	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching connector transaction
-	* @throws NoSuchConnectorTransactionException if a matching connector transaction could not be found
+	* @param classNameId the class name ID
+	* @param classPK the class pk
+	* @return the connector transaction that was removed
 	*/
-	public ConnectorTransaction findByUuid_C_First(java.lang.String uuid,
-		long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator)
+	public ConnectorTransaction removeByC_C(long classNameId, long classPK)
 		throws NoSuchConnectorTransactionException;
 
 	/**
-	* Returns the first connector transaction in the ordered set where uuid = &#63; and companyId = &#63;.
+	* Returns the number of connector transactions where classNameId = &#63; and classPK = &#63;.
 	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
-	*/
-	public ConnectorTransaction fetchByUuid_C_First(java.lang.String uuid,
-		long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator);
-
-	/**
-	* Returns the last connector transaction in the ordered set where uuid = &#63; and companyId = &#63;.
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching connector transaction
-	* @throws NoSuchConnectorTransactionException if a matching connector transaction could not be found
-	*/
-	public ConnectorTransaction findByUuid_C_Last(java.lang.String uuid,
-		long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator)
-		throws NoSuchConnectorTransactionException;
-
-	/**
-	* Returns the last connector transaction in the ordered set where uuid = &#63; and companyId = &#63;.
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
-	*/
-	public ConnectorTransaction fetchByUuid_C_Last(java.lang.String uuid,
-		long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator);
-
-	/**
-	* Returns the connector transactions before and after the current connector transaction in the ordered set where uuid = &#63; and companyId = &#63;.
-	*
-	* @param connectorTransactionId the primary key of the current connector transaction
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next connector transaction
-	* @throws NoSuchConnectorTransactionException if a connector transaction with the primary key could not be found
-	*/
-	public ConnectorTransaction[] findByUuid_C_PrevAndNext(
-		long connectorTransactionId, java.lang.String uuid, long companyId,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator)
-		throws NoSuchConnectorTransactionException;
-
-	/**
-	* Removes all the connector transactions where uuid = &#63; and companyId = &#63; from the database.
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	*/
-	public void removeByUuid_C(java.lang.String uuid, long companyId);
-
-	/**
-	* Returns the number of connector transactions where uuid = &#63; and companyId = &#63;.
-	*
-	* @param uuid the uuid
-	* @param companyId the company ID
-	* @return the number of matching connector transactions
-	*/
-	public int countByUuid_C(java.lang.String uuid, long companyId);
-
-	/**
-	* Returns all the connector transactions where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
-	*
-	* @param companyId the company ID
-	* @param classNameId the class name ID
-	* @param classPK the class pk
-	* @return the matching connector transactions
-	*/
-	public java.util.List<ConnectorTransaction> findByC_C_C(long companyId,
-		long classNameId, long classPK);
-
-	/**
-	* Returns a range of all the connector transactions where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ConnectorTransactionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param companyId the company ID
-	* @param classNameId the class name ID
-	* @param classPK the class pk
-	* @param start the lower bound of the range of connector transactions
-	* @param end the upper bound of the range of connector transactions (not inclusive)
-	* @return the range of matching connector transactions
-	*/
-	public java.util.List<ConnectorTransaction> findByC_C_C(long companyId,
-		long classNameId, long classPK, int start, int end);
-
-	/**
-	* Returns an ordered range of all the connector transactions where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ConnectorTransactionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param companyId the company ID
-	* @param classNameId the class name ID
-	* @param classPK the class pk
-	* @param start the lower bound of the range of connector transactions
-	* @param end the upper bound of the range of connector transactions (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching connector transactions
-	*/
-	public java.util.List<ConnectorTransaction> findByC_C_C(long companyId,
-		long classNameId, long classPK, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator);
-
-	/**
-	* Returns an ordered range of all the connector transactions where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ConnectorTransactionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param companyId the company ID
-	* @param classNameId the class name ID
-	* @param classPK the class pk
-	* @param start the lower bound of the range of connector transactions
-	* @param end the upper bound of the range of connector transactions (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of matching connector transactions
-	*/
-	public java.util.List<ConnectorTransaction> findByC_C_C(long companyId,
-		long classNameId, long classPK, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator,
-		boolean retrieveFromCache);
-
-	/**
-	* Returns the first connector transaction in the ordered set where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
-	*
-	* @param companyId the company ID
-	* @param classNameId the class name ID
-	* @param classPK the class pk
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching connector transaction
-	* @throws NoSuchConnectorTransactionException if a matching connector transaction could not be found
-	*/
-	public ConnectorTransaction findByC_C_C_First(long companyId,
-		long classNameId, long classPK,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator)
-		throws NoSuchConnectorTransactionException;
-
-	/**
-	* Returns the first connector transaction in the ordered set where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
-	*
-	* @param companyId the company ID
-	* @param classNameId the class name ID
-	* @param classPK the class pk
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
-	*/
-	public ConnectorTransaction fetchByC_C_C_First(long companyId,
-		long classNameId, long classPK,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator);
-
-	/**
-	* Returns the last connector transaction in the ordered set where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
-	*
-	* @param companyId the company ID
-	* @param classNameId the class name ID
-	* @param classPK the class pk
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching connector transaction
-	* @throws NoSuchConnectorTransactionException if a matching connector transaction could not be found
-	*/
-	public ConnectorTransaction findByC_C_C_Last(long companyId,
-		long classNameId, long classPK,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator)
-		throws NoSuchConnectorTransactionException;
-
-	/**
-	* Returns the last connector transaction in the ordered set where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
-	*
-	* @param companyId the company ID
-	* @param classNameId the class name ID
-	* @param classPK the class pk
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
-	*/
-	public ConnectorTransaction fetchByC_C_C_Last(long companyId,
-		long classNameId, long classPK,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator);
-
-	/**
-	* Returns the connector transactions before and after the current connector transaction in the ordered set where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
-	*
-	* @param connectorTransactionId the primary key of the current connector transaction
-	* @param companyId the company ID
-	* @param classNameId the class name ID
-	* @param classPK the class pk
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next connector transaction
-	* @throws NoSuchConnectorTransactionException if a connector transaction with the primary key could not be found
-	*/
-	public ConnectorTransaction[] findByC_C_C_PrevAndNext(
-		long connectorTransactionId, long companyId, long classNameId,
-		long classPK,
-		com.liferay.portal.kernel.util.OrderByComparator<ConnectorTransaction> orderByComparator)
-		throws NoSuchConnectorTransactionException;
-
-	/**
-	* Removes all the connector transactions where companyId = &#63; and classNameId = &#63; and classPK = &#63; from the database.
-	*
-	* @param companyId the company ID
-	* @param classNameId the class name ID
-	* @param classPK the class pk
-	*/
-	public void removeByC_C_C(long companyId, long classNameId, long classPK);
-
-	/**
-	* Returns the number of connector transactions where companyId = &#63; and classNameId = &#63; and classPK = &#63;.
-	*
-	* @param companyId the company ID
 	* @param classNameId the class name ID
 	* @param classPK the class pk
 	* @return the number of matching connector transactions
 	*/
-	public int countByC_C_C(long companyId, long classNameId, long classPK);
+	public int countByC_C(long classNameId, long classPK);
 
 	/**
 	* Caches the connector transaction in the entity cache if it is enabled.
@@ -603,7 +261,4 @@ public interface ConnectorTransactionPersistence extends BasePersistence<Connect
 	* @return the number of connector transactions
 	*/
 	public int countAll();
-
-	@Override
-	public java.util.Set<java.lang.String> getBadColumnNames();
 }

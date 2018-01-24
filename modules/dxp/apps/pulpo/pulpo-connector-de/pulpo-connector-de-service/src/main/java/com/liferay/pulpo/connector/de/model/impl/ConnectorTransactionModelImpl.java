@@ -19,8 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.exportimport.kernel.lar.StagedModelType;
-
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -68,7 +66,6 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 	 */
 	public static final String TABLE_NAME = "PULPO_ConnectorTransaction";
 	public static final Object[][] TABLE_COLUMNS = {
-			{ "uuid_", Types.VARCHAR },
 			{ "connectorTransactionId", Types.BIGINT },
 			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
@@ -77,13 +74,13 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "classNameId", Types.BIGINT },
 			{ "classPK", Types.BIGINT },
+			{ "connectorTransactionUuid", Types.VARCHAR },
 			{ "operation", Types.VARCHAR },
 			{ "status", Types.VARCHAR }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
 	static {
-		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("connectorTransactionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
@@ -92,11 +89,12 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("classNameId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classPK", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("connectorTransactionUuid", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("operation", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("status", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table PULPO_ConnectorTransaction (uuid_ VARCHAR(75) null,connectorTransactionId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,operation VARCHAR(75) null,status VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table PULPO_ConnectorTransaction (connectorTransactionId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,classNameId LONG,classPK LONG,connectorTransactionUuid VARCHAR(75) null,operation VARCHAR(75) null,status VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table PULPO_ConnectorTransaction";
 	public static final String ORDER_BY_JPQL = " ORDER BY connectorTransaction.connectorTransactionId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY PULPO_ConnectorTransaction.connectorTransactionId ASC";
@@ -114,9 +112,8 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 			true);
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
-	public static final long COMPANYID_COLUMN_BITMASK = 4L;
-	public static final long UUID_COLUMN_BITMASK = 8L;
-	public static final long CONNECTORTRANSACTIONID_COLUMN_BITMASK = 16L;
+	public static final long CONNECTORTRANSACTIONUUID_COLUMN_BITMASK = 4L;
+	public static final long CONNECTORTRANSACTIONID_COLUMN_BITMASK = 8L;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.pulpo.connector.de.service.util.ServiceProps.get(
 				"lock.expiration.time.com.liferay.pulpo.connector.de.model.ConnectorTransaction"));
 
@@ -157,7 +154,6 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
 		attributes.put("connectorTransactionId", getConnectorTransactionId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
@@ -166,6 +162,7 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
+		attributes.put("connectorTransactionUuid", getConnectorTransactionUuid());
 		attributes.put("operation", getOperation());
 		attributes.put("status", getStatus());
 
@@ -177,12 +174,6 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
-
-		if (uuid != null) {
-			setUuid(uuid);
-		}
-
 		Long connectorTransactionId = (Long)attributes.get(
 				"connectorTransactionId");
 
@@ -232,6 +223,13 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 			setClassPK(classPK);
 		}
 
+		String connectorTransactionUuid = (String)attributes.get(
+				"connectorTransactionUuid");
+
+		if (connectorTransactionUuid != null) {
+			setConnectorTransactionUuid(connectorTransactionUuid);
+		}
+
 		String operation = (String)attributes.get("operation");
 
 		if (operation != null) {
@@ -243,29 +241,6 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 		if (status != null) {
 			setStatus(status);
 		}
-	}
-
-	@Override
-	public String getUuid() {
-		if (_uuid == null) {
-			return "";
-		}
-		else {
-			return _uuid;
-		}
-	}
-
-	@Override
-	public void setUuid(String uuid) {
-		if (_originalUuid == null) {
-			_originalUuid = _uuid;
-		}
-
-		_uuid = uuid;
-	}
-
-	public String getOriginalUuid() {
-		return GetterUtil.getString(_originalUuid);
 	}
 
 	@Override
@@ -287,19 +262,7 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 
 	@Override
 	public void setCompanyId(long companyId) {
-		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
-
-		if (!_setOriginalCompanyId) {
-			_setOriginalCompanyId = true;
-
-			_originalCompanyId = _companyId;
-		}
-
 		_companyId = companyId;
-	}
-
-	public long getOriginalCompanyId() {
-		return _originalCompanyId;
 	}
 
 	@Override
@@ -434,6 +397,31 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 	}
 
 	@Override
+	public String getConnectorTransactionUuid() {
+		if (_connectorTransactionUuid == null) {
+			return "";
+		}
+		else {
+			return _connectorTransactionUuid;
+		}
+	}
+
+	@Override
+	public void setConnectorTransactionUuid(String connectorTransactionUuid) {
+		_columnBitmask |= CONNECTORTRANSACTIONUUID_COLUMN_BITMASK;
+
+		if (_originalConnectorTransactionUuid == null) {
+			_originalConnectorTransactionUuid = _connectorTransactionUuid;
+		}
+
+		_connectorTransactionUuid = connectorTransactionUuid;
+	}
+
+	public String getOriginalConnectorTransactionUuid() {
+		return GetterUtil.getString(_originalConnectorTransactionUuid);
+	}
+
+	@Override
 	public String getOperation() {
 		if (_operation == null) {
 			return "";
@@ -461,12 +449,6 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 	@Override
 	public void setStatus(String status) {
 		_status = status;
-	}
-
-	@Override
-	public StagedModelType getStagedModelType() {
-		return new StagedModelType(PortalUtil.getClassNameId(
-				ConnectorTransaction.class.getName()), getClassNameId());
 	}
 
 	public long getColumnBitmask() {
@@ -500,7 +482,6 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 	public Object clone() {
 		ConnectorTransactionImpl connectorTransactionImpl = new ConnectorTransactionImpl();
 
-		connectorTransactionImpl.setUuid(getUuid());
 		connectorTransactionImpl.setConnectorTransactionId(getConnectorTransactionId());
 		connectorTransactionImpl.setCompanyId(getCompanyId());
 		connectorTransactionImpl.setUserId(getUserId());
@@ -509,6 +490,7 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 		connectorTransactionImpl.setModifiedDate(getModifiedDate());
 		connectorTransactionImpl.setClassNameId(getClassNameId());
 		connectorTransactionImpl.setClassPK(getClassPK());
+		connectorTransactionImpl.setConnectorTransactionUuid(getConnectorTransactionUuid());
 		connectorTransactionImpl.setOperation(getOperation());
 		connectorTransactionImpl.setStatus(getStatus());
 
@@ -579,12 +561,6 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 	public void resetOriginalValues() {
 		ConnectorTransactionModelImpl connectorTransactionModelImpl = this;
 
-		connectorTransactionModelImpl._originalUuid = connectorTransactionModelImpl._uuid;
-
-		connectorTransactionModelImpl._originalCompanyId = connectorTransactionModelImpl._companyId;
-
-		connectorTransactionModelImpl._setOriginalCompanyId = false;
-
 		connectorTransactionModelImpl._setModifiedDate = false;
 
 		connectorTransactionModelImpl._originalClassNameId = connectorTransactionModelImpl._classNameId;
@@ -595,20 +571,14 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 
 		connectorTransactionModelImpl._setOriginalClassPK = false;
 
+		connectorTransactionModelImpl._originalConnectorTransactionUuid = connectorTransactionModelImpl._connectorTransactionUuid;
+
 		connectorTransactionModelImpl._columnBitmask = 0;
 	}
 
 	@Override
 	public CacheModel<ConnectorTransaction> toCacheModel() {
 		ConnectorTransactionCacheModel connectorTransactionCacheModel = new ConnectorTransactionCacheModel();
-
-		connectorTransactionCacheModel.uuid = getUuid();
-
-		String uuid = connectorTransactionCacheModel.uuid;
-
-		if ((uuid != null) && (uuid.length() == 0)) {
-			connectorTransactionCacheModel.uuid = null;
-		}
 
 		connectorTransactionCacheModel.connectorTransactionId = getConnectorTransactionId();
 
@@ -646,6 +616,15 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 
 		connectorTransactionCacheModel.classPK = getClassPK();
 
+		connectorTransactionCacheModel.connectorTransactionUuid = getConnectorTransactionUuid();
+
+		String connectorTransactionUuid = connectorTransactionCacheModel.connectorTransactionUuid;
+
+		if ((connectorTransactionUuid != null) &&
+				(connectorTransactionUuid.length() == 0)) {
+			connectorTransactionCacheModel.connectorTransactionUuid = null;
+		}
+
 		connectorTransactionCacheModel.operation = getOperation();
 
 		String operation = connectorTransactionCacheModel.operation;
@@ -669,9 +648,7 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 	public String toString() {
 		StringBundler sb = new StringBundler(23);
 
-		sb.append("{uuid=");
-		sb.append(getUuid());
-		sb.append(", connectorTransactionId=");
+		sb.append("{connectorTransactionId=");
 		sb.append(getConnectorTransactionId());
 		sb.append(", companyId=");
 		sb.append(getCompanyId());
@@ -687,6 +664,8 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 		sb.append(getClassNameId());
 		sb.append(", classPK=");
 		sb.append(getClassPK());
+		sb.append(", connectorTransactionUuid=");
+		sb.append(getConnectorTransactionUuid());
 		sb.append(", operation=");
 		sb.append(getOperation());
 		sb.append(", status=");
@@ -704,10 +683,6 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 		sb.append("com.liferay.pulpo.connector.de.model.ConnectorTransaction");
 		sb.append("</model-name>");
 
-		sb.append(
-			"<column><column-name>uuid</column-name><column-value><![CDATA[");
-		sb.append(getUuid());
-		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>connectorTransactionId</column-name><column-value><![CDATA[");
 		sb.append(getConnectorTransactionId());
@@ -741,6 +716,10 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 		sb.append(getClassPK());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>connectorTransactionUuid</column-name><column-value><![CDATA[");
+		sb.append(getConnectorTransactionUuid());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>operation</column-name><column-value><![CDATA[");
 		sb.append(getOperation());
 		sb.append("]]></column-value></column>");
@@ -758,12 +737,8 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
 			ConnectorTransaction.class
 		};
-	private String _uuid;
-	private String _originalUuid;
 	private long _connectorTransactionId;
 	private long _companyId;
-	private long _originalCompanyId;
-	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;
@@ -775,6 +750,8 @@ public class ConnectorTransactionModelImpl extends BaseModelImpl<ConnectorTransa
 	private long _classPK;
 	private long _originalClassPK;
 	private boolean _setOriginalClassPK;
+	private String _connectorTransactionUuid;
+	private String _originalConnectorTransactionUuid;
 	private String _operation;
 	private String _status;
 	private long _columnBitmask;

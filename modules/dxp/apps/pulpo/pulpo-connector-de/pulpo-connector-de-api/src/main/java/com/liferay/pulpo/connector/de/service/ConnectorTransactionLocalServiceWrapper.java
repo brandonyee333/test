@@ -48,12 +48,11 @@ public class ConnectorTransactionLocalServiceWrapper
 
 	@Override
 	public com.liferay.pulpo.connector.de.model.ConnectorTransaction addConnectorTransaction(
-		long userId, java.lang.String className, long classPK,
-		java.lang.String status, java.lang.String operation,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		long userId, long classNameId, long classPK, java.lang.String status,
+		java.lang.String operation)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _connectorTransactionLocalService.addConnectorTransaction(userId,
-			className, classPK, status, operation, serviceContext);
+			classNameId, classPK, status, operation);
 	}
 
 	/**
@@ -196,18 +195,10 @@ public class ConnectorTransactionLocalServiceWrapper
 		return _connectorTransactionLocalService.fetchConnectorTransaction(connectorTransactionId);
 	}
 
-	/**
-	* Returns the connector transaction with the matching UUID and company.
-	*
-	* @param uuid the connector transaction's UUID
-	* @param companyId the primary key of the company
-	* @return the matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
-	*/
 	@Override
-	public com.liferay.pulpo.connector.de.model.ConnectorTransaction fetchConnectorTransactionByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) {
-		return _connectorTransactionLocalService.fetchConnectorTransactionByUuidAndCompanyId(uuid,
-			companyId);
+	public com.liferay.pulpo.connector.de.model.ConnectorTransaction fetchConnectorTransaction(
+		java.lang.String connectorTransactionUuid) {
+		return _connectorTransactionLocalService.fetchConnectorTransaction(connectorTransactionUuid);
 	}
 
 	@Override
@@ -227,22 +218,6 @@ public class ConnectorTransactionLocalServiceWrapper
 		long connectorTransactionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _connectorTransactionLocalService.getConnectorTransaction(connectorTransactionId);
-	}
-
-	/**
-	* Returns the connector transaction with the matching UUID and company.
-	*
-	* @param uuid the connector transaction's UUID
-	* @param companyId the primary key of the company
-	* @return the matching connector transaction
-	* @throws PortalException if a matching connector transaction could not be found
-	*/
-	@Override
-	public com.liferay.pulpo.connector.de.model.ConnectorTransaction getConnectorTransactionByUuidAndCompanyId(
-		java.lang.String uuid, long companyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _connectorTransactionLocalService.getConnectorTransactionByUuidAndCompanyId(uuid,
-			companyId);
 	}
 
 	/**
@@ -271,12 +246,6 @@ public class ConnectorTransactionLocalServiceWrapper
 	@Override
 	public int getConnectorTransactionsCount() {
 		return _connectorTransactionLocalService.getConnectorTransactionsCount();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
-		return _connectorTransactionLocalService.getExportActionableDynamicQuery(portletDataContext);
 	}
 
 	@Override

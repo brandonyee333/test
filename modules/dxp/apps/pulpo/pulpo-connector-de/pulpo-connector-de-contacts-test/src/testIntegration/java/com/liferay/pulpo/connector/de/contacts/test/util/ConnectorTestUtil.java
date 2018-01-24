@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.pulpo.connector.de.contacts.internal.model.listener.UserModelListener;
 
 import java.util.Map;
@@ -47,25 +48,24 @@ public class ConnectorTestUtil {
 					try {
 						validation.accept(payload);
 
-						long connectorTransactionId = MapUtil.getLong(
+						String connectorTransactionUuid = MapUtil.getString(
 							metadata,
 							UserModelListener.
-								CONNECTOR_TRANSACTION_ID_METADATA_KEY);
+								CONNECTOR_TRANSACTION_UUID_METADATA_KEY);
 
-						if (connectorTransactionId == 0) {
+						if (Validator.isNull(connectorTransactionUuid)) {
 							result.put(
 								new Result(
-									"Transaction was not registered",
-									connectorTransactionId));
+									"Transaction was not registered", null));
 						}
 						else {
 							result.put(
-								new Result("OK", connectorTransactionId));
+								new Result("OK", connectorTransactionUuid));
 						}
 					}
 					catch (AssertionError ae) {
 						try {
-							result.put(new Result(ae.getMessage(), 0));
+							result.put(new Result(ae.getMessage(), null));
 						}
 						catch (InterruptedException ie) {
 							ie.printStackTrace();
@@ -76,7 +76,7 @@ public class ConnectorTestUtil {
 					}
 					catch (Exception e) {
 						try {
-							result.put(new Result(e.getMessage(), 0));
+							result.put(new Result(e.getMessage(), null));
 						}
 						catch (InterruptedException ie) {
 							ie.printStackTrace();
@@ -95,20 +95,20 @@ public class ConnectorTestUtil {
 
 	public static class Result {
 
-		public Result(String message, long connectorTransactionId) {
+		public Result(String message, String connectorTransactionUuid) {
 			_message = message;
-			_connectorTransactionId = connectorTransactionId;
+			_connectorTransactionUuid = connectorTransactionUuid;
 		}
 
-		public long getConnectorTransactionId() {
-			return _connectorTransactionId;
+		public String getConnectorTransactionUuid() {
+			return _connectorTransactionUuid;
 		}
 
 		public String getMessage() {
 			return _message;
 		}
 
-		private final long _connectorTransactionId;
+		private final String _connectorTransactionUuid;
 		private final String _message;
 
 	}

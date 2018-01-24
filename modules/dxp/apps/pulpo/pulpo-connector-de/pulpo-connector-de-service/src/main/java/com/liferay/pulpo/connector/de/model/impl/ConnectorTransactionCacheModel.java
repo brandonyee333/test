@@ -67,9 +67,7 @@ public class ConnectorTransactionCacheModel implements CacheModel<ConnectorTrans
 	public String toString() {
 		StringBundler sb = new StringBundler(23);
 
-		sb.append("{uuid=");
-		sb.append(uuid);
-		sb.append(", connectorTransactionId=");
+		sb.append("{connectorTransactionId=");
 		sb.append(connectorTransactionId);
 		sb.append(", companyId=");
 		sb.append(companyId);
@@ -85,6 +83,8 @@ public class ConnectorTransactionCacheModel implements CacheModel<ConnectorTrans
 		sb.append(classNameId);
 		sb.append(", classPK=");
 		sb.append(classPK);
+		sb.append(", connectorTransactionUuid=");
+		sb.append(connectorTransactionUuid);
 		sb.append(", operation=");
 		sb.append(operation);
 		sb.append(", status=");
@@ -97,13 +97,6 @@ public class ConnectorTransactionCacheModel implements CacheModel<ConnectorTrans
 	@Override
 	public ConnectorTransaction toEntityModel() {
 		ConnectorTransactionImpl connectorTransactionImpl = new ConnectorTransactionImpl();
-
-		if (uuid == null) {
-			connectorTransactionImpl.setUuid("");
-		}
-		else {
-			connectorTransactionImpl.setUuid(uuid);
-		}
 
 		connectorTransactionImpl.setConnectorTransactionId(connectorTransactionId);
 		connectorTransactionImpl.setCompanyId(companyId);
@@ -133,6 +126,13 @@ public class ConnectorTransactionCacheModel implements CacheModel<ConnectorTrans
 		connectorTransactionImpl.setClassNameId(classNameId);
 		connectorTransactionImpl.setClassPK(classPK);
 
+		if (connectorTransactionUuid == null) {
+			connectorTransactionImpl.setConnectorTransactionUuid("");
+		}
+		else {
+			connectorTransactionImpl.setConnectorTransactionUuid(connectorTransactionUuid);
+		}
+
 		if (operation == null) {
 			connectorTransactionImpl.setOperation("");
 		}
@@ -154,8 +154,6 @@ public class ConnectorTransactionCacheModel implements CacheModel<ConnectorTrans
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
-		uuid = objectInput.readUTF();
-
 		connectorTransactionId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -168,6 +166,7 @@ public class ConnectorTransactionCacheModel implements CacheModel<ConnectorTrans
 		classNameId = objectInput.readLong();
 
 		classPK = objectInput.readLong();
+		connectorTransactionUuid = objectInput.readUTF();
 		operation = objectInput.readUTF();
 		status = objectInput.readUTF();
 	}
@@ -175,13 +174,6 @@ public class ConnectorTransactionCacheModel implements CacheModel<ConnectorTrans
 	@Override
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
-		if (uuid == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(uuid);
-		}
-
 		objectOutput.writeLong(connectorTransactionId);
 
 		objectOutput.writeLong(companyId);
@@ -202,6 +194,13 @@ public class ConnectorTransactionCacheModel implements CacheModel<ConnectorTrans
 
 		objectOutput.writeLong(classPK);
 
+		if (connectorTransactionUuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(connectorTransactionUuid);
+		}
+
 		if (operation == null) {
 			objectOutput.writeUTF("");
 		}
@@ -217,7 +216,6 @@ public class ConnectorTransactionCacheModel implements CacheModel<ConnectorTrans
 		}
 	}
 
-	public String uuid;
 	public long connectorTransactionId;
 	public long companyId;
 	public long userId;
@@ -226,6 +224,7 @@ public class ConnectorTransactionCacheModel implements CacheModel<ConnectorTrans
 	public long modifiedDate;
 	public long classNameId;
 	public long classPK;
+	public String connectorTransactionUuid;
 	public String operation;
 	public String status;
 }

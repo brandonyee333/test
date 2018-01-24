@@ -26,7 +26,6 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -55,9 +54,11 @@ public class UserJsonWrapperStdSerializer
 
 		jsonGenerator.writeObject(userJsonWrapper.getUser());
 
-		List<Object> customFields =
-			Optional.ofNullable(userJsonWrapper.getCustomFields()).orElse(
-				new ArrayList<>());
+		List<Object> customFields = userJsonWrapper.getCustomFields();
+
+		if (customFields == null) {
+			customFields = new ArrayList<>();
+		}
 
 		Stream<Object> customFieldStream = customFields.stream();
 

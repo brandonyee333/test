@@ -37,7 +37,9 @@ public class ContactsDemoProcessor {
 
 	@Activate
 	public void activate() {
-		int processors = Runtime.getRuntime().availableProcessors();
+		Runtime runtime = Runtime.getRuntime();
+
+		int processors = runtime.availableProcessors();
 
 		_executorService = Executors.newFixedThreadPool(processors);
 	}

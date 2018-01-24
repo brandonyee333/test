@@ -19,8 +19,8 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.pulpo.connector.de.constants.ConnectorTransactionOperation;
 import com.liferay.pulpo.connector.de.constants.ConnectorTransactionStatus;
 import com.liferay.pulpo.connector.de.contacts.ContactsConnector;
@@ -44,8 +44,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = ModelListener.class)
 public class UserModelListener extends ContactsModelListener<User> {
 
-	public static final String CONNECTOR_TRANSACTION_ID_METADATA_KEY =
-		"connectorTransactionId";
+	public static final String CONNECTOR_TRANSACTION_UUID_METADATA_KEY =
+		"connectorTransactionUUID";
 
 	@Override
 	public void onAfterCreate(User user) throws ModelListenerException {
@@ -56,6 +56,7 @@ public class UserModelListener extends ContactsModelListener<User> {
 	public void onAfterRemove(User user) throws ModelListenerException {
 		_sendMessage(
 			user, IndividualChunksDestinationNames.DELETE,
+			IndividualChunksDestinationNames.DELETE_RETURN,
 			ConnectorTransactionOperation.DELETE);
 	}
 
@@ -68,33 +69,35 @@ public class UserModelListener extends ContactsModelListener<User> {
 	public void sendModel(User user) {
 		_sendMessage(
 			user, IndividualChunksDestinationNames.ADD,
+			IndividualChunksDestinationNames.ADD_RETURN,
 			ConnectorTransactionOperation.ADD);
 	}
 
 	private void _sendMessage(
-		User user, String destinationName, String operation) {
+		User user, String destinationName, String responseDestinationName,
+		String operation) {
 
 		String payload = _serializer.writeAsString(user);
 
 		try {
-			ServiceContext serviceContext = new ServiceContext();
-
 			long defaultUserId = _userLocalService.getDefaultUserId(
 				user.getCompanyId());
 
 			ConnectorTransaction connectorTransaction =
 				_connectorTransactionLocalService.addConnectorTransaction(
-					defaultUserId, user.getModelClassName(), user.getUserId(),
-					ConnectorTransactionStatus.SENT, operation, serviceContext);
+					defaultUserId,
+					_portal.getClassNameId(user.getModelClassName()),
+					user.getUserId(), ConnectorTransactionStatus.SENT,
+					operation);
 
 			Map<String, String> metadata = new HashMap();
 
 			metadata.put(
-				CONNECTOR_TRANSACTION_ID_METADATA_KEY,
-				String.valueOf(
-					connectorTransaction.getConnectorTransactionId()));
+				CONNECTOR_TRANSACTION_UUID_METADATA_KEY,
+				connectorTransaction.getConnectorTransactionUuid());
 
-			_contactsConnector.sendMessage(destinationName, payload, metadata);
+			_contactsConnector.sendMessage(
+				destinationName, payload, metadata, responseDestinationName);
 		}
 		catch (Exception e) {
 			_log.error(
@@ -113,6 +116,9 @@ public class UserModelListener extends ContactsModelListener<User> {
 
 	@Reference
 	private ContactsConnector _contactsConnector;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference(
 		target = "(className=com.liferay.portal.kernel.model.User)",

@@ -16,11 +16,11 @@ package com.liferay.pulpo.connector.de.service.impl;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.pulpo.connector.de.model.ConnectorTransaction;
 import com.liferay.pulpo.connector.de.service.base.ConnectorTransactionLocalServiceBaseImpl;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * The implementation of the connector entity local service.
@@ -39,27 +39,36 @@ import java.util.Date;
 public class ConnectorTransactionLocalServiceImpl
 	extends ConnectorTransactionLocalServiceBaseImpl {
 
+	@Override
 	public ConnectorTransaction addConnectorTransaction(
-			long userId, String className, long classPK, String status,
-			String operation, ServiceContext serviceContext)
+			long userId, long classNameId, long classPK, String status,
+			String operation)
 		throws PortalException {
 
-		User user = userLocalService.getUserById(userId);
+		ConnectorTransaction connectorTransaction =
+			connectorTransactionPersistence.fetchByC_C(classNameId, classPK);
+
 		Date now = new Date();
 
-		long connectorTransactionId = counterLocalService.increment();
+		if (connectorTransaction == null) {
+			User user = userLocalService.getUserById(userId);
 
-		ConnectorTransaction connectorTransaction =
-			connectorTransactionPersistence.create(connectorTransactionId);
+			long connectorTransactionId = counterLocalService.increment();
 
-		connectorTransaction.setUuid(serviceContext.getUuid());
-		connectorTransaction.setCompanyId(user.getCompanyId());
-		connectorTransaction.setUserId(user.getUserId());
-		connectorTransaction.setUserName(user.getFullName());
-		connectorTransaction.setCreateDate(now);
+			connectorTransaction = connectorTransactionPersistence.create(
+				connectorTransactionId);
+
+			connectorTransaction.setCompanyId(user.getCompanyId());
+			connectorTransaction.setUserId(user.getUserId());
+			connectorTransaction.setUserName(user.getFullName());
+			connectorTransaction.setCreateDate(now);
+			connectorTransaction.setClassNameId(classNameId);
+			connectorTransaction.setClassPK(classPK);
+		}
+
 		connectorTransaction.setModifiedDate(now);
-		connectorTransaction.setClassName(className);
-		connectorTransaction.setClassPK(classPK);
+		connectorTransaction.setConnectorTransactionUuid(
+			UUID.randomUUID().toString());
 		connectorTransaction.setOperation(operation);
 		connectorTransaction.setStatus(status);
 
@@ -68,6 +77,15 @@ public class ConnectorTransactionLocalServiceImpl
 		return connectorTransaction;
 	}
 
+	@Override
+	public ConnectorTransaction fetchConnectorTransaction(
+		String connectorTransactionUuid) {
+
+		return connectorTransactionPersistence.fetchByConnectorTransactionUUID(
+			connectorTransactionUuid);
+	}
+
+	@Override
 	public ConnectorTransaction updateConnectorTransaction(
 			long connectorTransactionId, String status)
 		throws PortalException {

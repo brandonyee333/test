@@ -1,2 +1,2 @@
-create index IX_97D2994D on PULPO_ConnectorTransaction (companyId, classNameId, classPK);
-create index IX_540DCB24 on PULPO_ConnectorTransaction (uuid_[$COLUMN_LENGTH:75$], companyId);
+create unique index IX_D573A385 on PULPO_ConnectorTransaction (classNameId, classPK);
+create unique index IX_7D57D0D0 on PULPO_ConnectorTransaction (connectorTransactionUuid[$COLUMN_LENGTH:75$]);

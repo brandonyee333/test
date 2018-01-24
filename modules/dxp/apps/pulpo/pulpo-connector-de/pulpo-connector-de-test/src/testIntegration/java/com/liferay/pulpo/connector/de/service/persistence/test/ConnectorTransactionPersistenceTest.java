@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -55,6 +56,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -122,8 +124,6 @@ public class ConnectorTransactionPersistenceTest {
 
 		ConnectorTransaction newConnectorTransaction = _persistence.create(pk);
 
-		newConnectorTransaction.setUuid(RandomTestUtil.randomString());
-
 		newConnectorTransaction.setCompanyId(RandomTestUtil.nextLong());
 
 		newConnectorTransaction.setUserId(RandomTestUtil.nextLong());
@@ -138,6 +138,8 @@ public class ConnectorTransactionPersistenceTest {
 
 		newConnectorTransaction.setClassPK(RandomTestUtil.nextLong());
 
+		newConnectorTransaction.setConnectorTransactionUuid(RandomTestUtil.randomString());
+
 		newConnectorTransaction.setOperation(RandomTestUtil.randomString());
 
 		newConnectorTransaction.setStatus(RandomTestUtil.randomString());
@@ -146,8 +148,6 @@ public class ConnectorTransactionPersistenceTest {
 
 		ConnectorTransaction existingConnectorTransaction = _persistence.findByPrimaryKey(newConnectorTransaction.getPrimaryKey());
 
-		Assert.assertEquals(existingConnectorTransaction.getUuid(),
-			newConnectorTransaction.getUuid());
 		Assert.assertEquals(existingConnectorTransaction.getConnectorTransactionId(),
 			newConnectorTransaction.getConnectorTransactionId());
 		Assert.assertEquals(existingConnectorTransaction.getCompanyId(),
@@ -166,6 +166,8 @@ public class ConnectorTransactionPersistenceTest {
 			newConnectorTransaction.getClassNameId());
 		Assert.assertEquals(existingConnectorTransaction.getClassPK(),
 			newConnectorTransaction.getClassPK());
+		Assert.assertEquals(existingConnectorTransaction.getConnectorTransactionUuid(),
+			newConnectorTransaction.getConnectorTransactionUuid());
 		Assert.assertEquals(existingConnectorTransaction.getOperation(),
 			newConnectorTransaction.getOperation());
 		Assert.assertEquals(existingConnectorTransaction.getStatus(),
@@ -173,29 +175,20 @@ public class ConnectorTransactionPersistenceTest {
 	}
 
 	@Test
-	public void testCountByUuid() throws Exception {
-		_persistence.countByUuid("");
+	public void testCountByConnectorTransactionUUID() throws Exception {
+		_persistence.countByConnectorTransactionUUID("");
 
-		_persistence.countByUuid("null");
+		_persistence.countByConnectorTransactionUUID("null");
 
-		_persistence.countByUuid((String)null);
+		_persistence.countByConnectorTransactionUUID((String)null);
 	}
 
 	@Test
-	public void testCountByUuid_C() throws Exception {
-		_persistence.countByUuid_C("", RandomTestUtil.nextLong());
+	public void testCountByC_C() throws Exception {
+		_persistence.countByC_C(RandomTestUtil.nextLong(),
+			RandomTestUtil.nextLong());
 
-		_persistence.countByUuid_C("null", 0L);
-
-		_persistence.countByUuid_C((String)null, 0L);
-	}
-
-	@Test
-	public void testCountByC_C_C() throws Exception {
-		_persistence.countByC_C_C(RandomTestUtil.nextLong(),
-			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
-
-		_persistence.countByC_C_C(0L, 0L, 0L);
+		_persistence.countByC_C(0L, 0L);
 	}
 
 	@Test
@@ -223,10 +216,10 @@ public class ConnectorTransactionPersistenceTest {
 
 	protected OrderByComparator<ConnectorTransaction> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("PULPO_ConnectorTransaction",
-			"uuid", true, "connectorTransactionId", true, "companyId", true,
-			"userId", true, "userName", true, "createDate", true,
-			"modifiedDate", true, "classNameId", true, "classPK", true,
-			"operation", true, "status", true);
+			"connectorTransactionId", true, "companyId", true, "userId", true,
+			"userName", true, "createDate", true, "modifiedDate", true,
+			"classNameId", true, "classPK", true, "connectorTransactionUuid",
+			true, "operation", true, "status", true);
 	}
 
 	@Test
@@ -427,13 +420,34 @@ public class ConnectorTransactionPersistenceTest {
 		Assert.assertEquals(0, result.size());
 	}
 
+	@Test
+	public void testResetOriginalValues() throws Exception {
+		ConnectorTransaction newConnectorTransaction = addConnectorTransaction();
+
+		_persistence.clearCache();
+
+		ConnectorTransaction existingConnectorTransaction = _persistence.findByPrimaryKey(newConnectorTransaction.getPrimaryKey());
+
+		Assert.assertTrue(Objects.equals(
+				existingConnectorTransaction.getConnectorTransactionUuid(),
+				ReflectionTestUtil.invoke(existingConnectorTransaction,
+					"getOriginalConnectorTransactionUuid", new Class<?>[0])));
+
+		Assert.assertEquals(Long.valueOf(
+				existingConnectorTransaction.getClassNameId()),
+			ReflectionTestUtil.<Long>invoke(existingConnectorTransaction,
+				"getOriginalClassNameId", new Class<?>[0]));
+		Assert.assertEquals(Long.valueOf(
+				existingConnectorTransaction.getClassPK()),
+			ReflectionTestUtil.<Long>invoke(existingConnectorTransaction,
+				"getOriginalClassPK", new Class<?>[0]));
+	}
+
 	protected ConnectorTransaction addConnectorTransaction()
 		throws Exception {
 		long pk = RandomTestUtil.nextLong();
 
 		ConnectorTransaction connectorTransaction = _persistence.create(pk);
-
-		connectorTransaction.setUuid(RandomTestUtil.randomString());
 
 		connectorTransaction.setCompanyId(RandomTestUtil.nextLong());
 
@@ -448,6 +462,8 @@ public class ConnectorTransactionPersistenceTest {
 		connectorTransaction.setClassNameId(RandomTestUtil.nextLong());
 
 		connectorTransaction.setClassPK(RandomTestUtil.nextLong());
+
+		connectorTransaction.setConnectorTransactionUuid(RandomTestUtil.randomString());
 
 		connectorTransaction.setOperation(RandomTestUtil.randomString());
 

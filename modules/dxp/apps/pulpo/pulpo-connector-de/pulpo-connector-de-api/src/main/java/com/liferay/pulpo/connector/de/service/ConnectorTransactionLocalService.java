@@ -16,11 +16,8 @@ package com.liferay.pulpo.connector.de.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.exportimport.kernel.lar.PortletDataContext;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -30,7 +27,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -76,9 +72,8 @@ public interface ConnectorTransactionLocalService extends BaseLocalService,
 		ConnectorTransaction connectorTransaction);
 
 	public ConnectorTransaction addConnectorTransaction(long userId,
-		java.lang.String className, long classPK, java.lang.String status,
-		java.lang.String operation, ServiceContext serviceContext)
-		throws PortalException;
+		long classNameId, long classPK, java.lang.String status,
+		java.lang.String operation) throws PortalException;
 
 	/**
 	* Creates a new connector transaction with the primary key. Does not add the connector transaction to the database.
@@ -180,16 +175,9 @@ public interface ConnectorTransactionLocalService extends BaseLocalService,
 	public ConnectorTransaction fetchConnectorTransaction(
 		long connectorTransactionId);
 
-	/**
-	* Returns the connector transaction with the matching UUID and company.
-	*
-	* @param uuid the connector transaction's UUID
-	* @param companyId the primary key of the company
-	* @return the matching connector transaction, or <code>null</code> if a matching connector transaction could not be found
-	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ConnectorTransaction fetchConnectorTransactionByUuidAndCompanyId(
-		java.lang.String uuid, long companyId);
+	public ConnectorTransaction fetchConnectorTransaction(
+		java.lang.String connectorTransactionUuid);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -204,18 +192,6 @@ public interface ConnectorTransactionLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ConnectorTransaction getConnectorTransaction(
 		long connectorTransactionId) throws PortalException;
-
-	/**
-	* Returns the connector transaction with the matching UUID and company.
-	*
-	* @param uuid the connector transaction's UUID
-	* @param companyId the primary key of the company
-	* @return the matching connector transaction
-	* @throws PortalException if a matching connector transaction could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ConnectorTransaction getConnectorTransactionByUuidAndCompanyId(
-		java.lang.String uuid, long companyId) throws PortalException;
 
 	/**
 	* Returns a range of all the connector transactions.
@@ -239,10 +215,6 @@ public interface ConnectorTransactionLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getConnectorTransactionsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		PortletDataContext portletDataContext);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();

@@ -34,7 +34,6 @@ public class ConnectorTransactionSoap implements Serializable {
 		ConnectorTransaction model) {
 		ConnectorTransactionSoap soapModel = new ConnectorTransactionSoap();
 
-		soapModel.setUuid(model.getUuid());
 		soapModel.setConnectorTransactionId(model.getConnectorTransactionId());
 		soapModel.setCompanyId(model.getCompanyId());
 		soapModel.setUserId(model.getUserId());
@@ -43,6 +42,7 @@ public class ConnectorTransactionSoap implements Serializable {
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setClassNameId(model.getClassNameId());
 		soapModel.setClassPK(model.getClassPK());
+		soapModel.setConnectorTransactionUuid(model.getConnectorTransactionUuid());
 		soapModel.setOperation(model.getOperation());
 		soapModel.setStatus(model.getStatus());
 
@@ -98,14 +98,6 @@ public class ConnectorTransactionSoap implements Serializable {
 
 	public void setPrimaryKey(long pk) {
 		setConnectorTransactionId(pk);
-	}
-
-	public String getUuid() {
-		return _uuid;
-	}
-
-	public void setUuid(String uuid) {
-		_uuid = uuid;
 	}
 
 	public long getConnectorTransactionId() {
@@ -172,6 +164,14 @@ public class ConnectorTransactionSoap implements Serializable {
 		_classPK = classPK;
 	}
 
+	public String getConnectorTransactionUuid() {
+		return _connectorTransactionUuid;
+	}
+
+	public void setConnectorTransactionUuid(String connectorTransactionUuid) {
+		_connectorTransactionUuid = connectorTransactionUuid;
+	}
+
 	public String getOperation() {
 		return _operation;
 	}
@@ -188,7 +188,6 @@ public class ConnectorTransactionSoap implements Serializable {
 		_status = status;
 	}
 
-	private String _uuid;
 	private long _connectorTransactionId;
 	private long _companyId;
 	private long _userId;
@@ -197,6 +196,7 @@ public class ConnectorTransactionSoap implements Serializable {
 	private Date _modifiedDate;
 	private long _classNameId;
 	private long _classPK;
+	private String _connectorTransactionUuid;
 	private String _operation;
 	private String _status;
 }

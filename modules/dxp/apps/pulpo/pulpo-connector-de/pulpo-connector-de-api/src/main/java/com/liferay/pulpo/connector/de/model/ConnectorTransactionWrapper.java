@@ -18,8 +18,6 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 
-import com.liferay.exportimport.kernel.lar.StagedModelType;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -61,7 +59,6 @@ public class ConnectorTransactionWrapper implements ConnectorTransaction,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
-		attributes.put("uuid", getUuid());
 		attributes.put("connectorTransactionId", getConnectorTransactionId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
@@ -70,6 +67,7 @@ public class ConnectorTransactionWrapper implements ConnectorTransaction,
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
+		attributes.put("connectorTransactionUuid", getConnectorTransactionUuid());
 		attributes.put("operation", getOperation());
 		attributes.put("status", getStatus());
 
@@ -78,12 +76,6 @@ public class ConnectorTransactionWrapper implements ConnectorTransaction,
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
-		String uuid = (String)attributes.get("uuid");
-
-		if (uuid != null) {
-			setUuid(uuid);
-		}
-
 		Long connectorTransactionId = (Long)attributes.get(
 				"connectorTransactionId");
 
@@ -131,6 +123,13 @@ public class ConnectorTransactionWrapper implements ConnectorTransaction,
 
 		if (classPK != null) {
 			setClassPK(classPK);
+		}
+
+		String connectorTransactionUuid = (String)attributes.get(
+				"connectorTransactionUuid");
+
+		if (connectorTransactionUuid != null) {
+			setConnectorTransactionUuid(connectorTransactionUuid);
 		}
 
 		String operation = (String)attributes.get("operation");
@@ -204,6 +203,16 @@ public class ConnectorTransactionWrapper implements ConnectorTransaction,
 	@Override
 	public long getConnectorTransactionId() {
 		return _connectorTransaction.getConnectorTransactionId();
+	}
+
+	/**
+	* Returns the connector transaction uuid of this connector transaction.
+	*
+	* @return the connector transaction uuid of this connector transaction
+	*/
+	@Override
+	public java.lang.String getConnectorTransactionUuid() {
+		return _connectorTransaction.getConnectorTransactionUuid();
 	}
 
 	/**
@@ -296,16 +305,6 @@ public class ConnectorTransactionWrapper implements ConnectorTransaction,
 		return _connectorTransaction.getUserUuid();
 	}
 
-	/**
-	* Returns the uuid of this connector transaction.
-	*
-	* @return the uuid of this connector transaction
-	*/
-	@Override
-	public java.lang.String getUuid() {
-		return _connectorTransaction.getUuid();
-	}
-
 	@Override
 	public int hashCode() {
 		return _connectorTransaction.hashCode();
@@ -379,6 +378,17 @@ public class ConnectorTransactionWrapper implements ConnectorTransaction,
 	@Override
 	public void setConnectorTransactionId(long connectorTransactionId) {
 		_connectorTransaction.setConnectorTransactionId(connectorTransactionId);
+	}
+
+	/**
+	* Sets the connector transaction uuid of this connector transaction.
+	*
+	* @param connectorTransactionUuid the connector transaction uuid of this connector transaction
+	*/
+	@Override
+	public void setConnectorTransactionUuid(
+		java.lang.String connectorTransactionUuid) {
+		_connectorTransaction.setConnectorTransactionUuid(connectorTransactionUuid);
 	}
 
 	/**
@@ -487,16 +497,6 @@ public class ConnectorTransactionWrapper implements ConnectorTransaction,
 		_connectorTransaction.setUserUuid(userUuid);
 	}
 
-	/**
-	* Sets the uuid of this connector transaction.
-	*
-	* @param uuid the uuid of this connector transaction
-	*/
-	@Override
-	public void setUuid(java.lang.String uuid) {
-		_connectorTransaction.setUuid(uuid);
-	}
-
 	@Override
 	public com.liferay.portal.kernel.model.CacheModel<ConnectorTransaction> toCacheModel() {
 		return _connectorTransaction.toCacheModel();
@@ -540,11 +540,6 @@ public class ConnectorTransactionWrapper implements ConnectorTransaction,
 		}
 
 		return false;
-	}
-
-	@Override
-	public StagedModelType getStagedModelType() {
-		return _connectorTransaction.getStagedModelType();
 	}
 
 	@Override

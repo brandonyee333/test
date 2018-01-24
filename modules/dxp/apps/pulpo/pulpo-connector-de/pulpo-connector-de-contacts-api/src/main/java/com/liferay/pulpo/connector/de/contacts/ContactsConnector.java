@@ -37,8 +37,10 @@ public interface ContactsConnector {
 	 * @param destinationName - destination name
 	 * @param payload - payload
 	 * @param metadata - metadata
+	 * @param responseDestinationName - response destination name
 	 */
 	public void sendMessage(
-		String destinationName, String payload, Map<String, String> metadata);
+		String destinationName, String payload, Map<String, String> metadata,
+		String responseDestinationName);
 
 }

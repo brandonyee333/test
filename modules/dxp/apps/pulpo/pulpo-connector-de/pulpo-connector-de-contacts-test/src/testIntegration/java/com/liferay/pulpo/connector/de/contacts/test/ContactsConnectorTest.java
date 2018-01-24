@@ -253,7 +253,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 	}
 
@@ -335,7 +335,7 @@ public class ContactsConnectorTest {
 			Assert.assertTrue(
 				"The registered transaction is not valid",
 				_validateTransaction(
-					_user, result.getConnectorTransactionId(),
+					_user, result.getConnectorTransactionUuid(),
 					ConnectorTransactionOperation.ADD));
 		}
 		finally {
@@ -383,7 +383,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 	}
 
@@ -433,7 +433,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 
 		ExpandoColumnLocalServiceUtil.deleteColumn(expandoColumn.getColumnId());
@@ -482,7 +482,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 
 		GroupLocalServiceUtil.deleteGroup(group);
@@ -527,7 +527,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 
 		OrganizationLocalServiceUtil.deleteUserOrganization(
@@ -580,7 +580,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 	}
 
@@ -621,7 +621,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 
 		RoleLocalServiceUtil.deleteRole(role);
@@ -666,7 +666,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 	}
 
@@ -711,7 +711,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 
 		UserGroupLocalServiceUtil.deleteUserUserGroup(
@@ -759,7 +759,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 	}
 
@@ -794,7 +794,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				user, result.getConnectorTransactionId(),
+				user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.DELETE));
 	}
 
@@ -845,7 +845,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 	}
 
@@ -892,7 +892,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 	}
 
@@ -927,7 +927,7 @@ public class ContactsConnectorTest {
 		Assert.assertTrue(
 			"The registered transaction is not valid",
 			_validateTransaction(
-				_user, result.getConnectorTransactionId(),
+				_user, result.getConnectorTransactionUuid(),
 				ConnectorTransactionOperation.ADD));
 	}
 
@@ -1002,7 +1002,7 @@ public class ContactsConnectorTest {
 			Assert.assertTrue(
 				"The registered transaction is not valid",
 				_validateTransaction(
-					_user, result.getConnectorTransactionId(),
+					_user, result.getConnectorTransactionUuid(),
 					ConnectorTransactionOperation.ADD));
 		}
 	}
@@ -1033,11 +1033,11 @@ public class ContactsConnectorTest {
 	}
 
 	private boolean _validateTransaction(
-		User user, long connectorTransactionId, String operation) {
+		User user, String connectorTransactionUuid, String operation) {
 
 		ConnectorTransaction connectorTransaction =
 			ConnectorTransactionLocalServiceUtil.fetchConnectorTransaction(
-				connectorTransactionId);
+				connectorTransactionUuid);
 
 		if (connectorTransaction == null) {
 			return false;
