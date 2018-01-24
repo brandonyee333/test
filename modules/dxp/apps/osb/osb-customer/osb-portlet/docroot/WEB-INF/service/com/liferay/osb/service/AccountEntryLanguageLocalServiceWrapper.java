@@ -262,14 +262,6 @@ public class AccountEntryLanguageLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountEntryLanguageLocalService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
-	@Override
 	public void setAccountEntryLanguageIds(long accountEntryId,
 		java.lang.String[] languageIds) {
 		_accountEntryLanguageLocalService.setAccountEntryLanguageIds(accountEntryId,

@@ -59,13 +59,6 @@ public class TicketLinkServiceWrapper implements TicketLinkService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketLinkService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public TicketLinkService getWrappedService() {
 		return _ticketLinkService;
 	}

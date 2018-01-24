@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -110,12 +109,6 @@ public class TicketAttachmentServiceUtil {
 		return getService().getUploadToken(ticketEntryId, fileRepositoryId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
 		long ticketAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -153,15 +146,8 @@ public class TicketAttachmentServiceUtil {
 
 	public static TicketAttachmentService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketAttachmentService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketAttachmentService.class.getName());
-
-			if (invokableService instanceof TicketAttachmentService) {
-				_service = (TicketAttachmentService)invokableService;
-			}
-			else {
-				_service = new TicketAttachmentServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(TicketAttachmentServiceUtil.class,
 				"_service");

@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -284,12 +283,6 @@ public class OrderEntryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.osb.model.OrderEntry renewOrderEntry(
 		long userId, long orderEntryId, int renewCount)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -408,15 +401,8 @@ public class OrderEntryLocalServiceUtil {
 
 	public static OrderEntryLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (OrderEntryLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					OrderEntryLocalService.class.getName());
-
-			if (invokableLocalService instanceof OrderEntryLocalService) {
-				_service = (OrderEntryLocalService)invokableLocalService;
-			}
-			else {
-				_service = new OrderEntryLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(OrderEntryLocalServiceUtil.class,
 				"_service");

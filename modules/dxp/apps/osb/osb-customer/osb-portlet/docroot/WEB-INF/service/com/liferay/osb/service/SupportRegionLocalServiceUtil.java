@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -532,12 +531,6 @@ public class SupportRegionLocalServiceUtil {
 		return getService().hasSupportTeamSupportRegions(supportTeamId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void setAccountEntrySupportRegions(long accountEntryId,
 		long[] supportRegionIds) {
 		getService()
@@ -583,15 +576,8 @@ public class SupportRegionLocalServiceUtil {
 
 	public static SupportRegionLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (SupportRegionLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					SupportRegionLocalService.class.getName());
-
-			if (invokableLocalService instanceof SupportRegionLocalService) {
-				_service = (SupportRegionLocalService)invokableLocalService;
-			}
-			else {
-				_service = new SupportRegionLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(SupportRegionLocalServiceUtil.class,
 				"_service");

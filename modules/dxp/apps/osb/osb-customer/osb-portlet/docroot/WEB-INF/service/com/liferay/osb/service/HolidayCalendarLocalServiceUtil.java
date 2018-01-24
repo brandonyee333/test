@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -248,12 +247,6 @@ public class HolidayCalendarLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Updates the holiday calendar in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -281,15 +274,8 @@ public class HolidayCalendarLocalServiceUtil {
 
 	public static HolidayCalendarLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (HolidayCalendarLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					HolidayCalendarLocalService.class.getName());
-
-			if (invokableLocalService instanceof HolidayCalendarLocalService) {
-				_service = (HolidayCalendarLocalService)invokableLocalService;
-			}
-			else {
-				_service = new HolidayCalendarLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(HolidayCalendarLocalServiceUtil.class,
 				"_service");

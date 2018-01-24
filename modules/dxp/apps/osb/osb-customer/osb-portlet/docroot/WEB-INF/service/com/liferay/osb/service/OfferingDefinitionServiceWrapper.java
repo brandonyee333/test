@@ -45,14 +45,6 @@ public class OfferingDefinitionServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _offeringDefinitionService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public OfferingDefinitionService getWrappedService() {
 		return _offeringDefinitionService;
 	}

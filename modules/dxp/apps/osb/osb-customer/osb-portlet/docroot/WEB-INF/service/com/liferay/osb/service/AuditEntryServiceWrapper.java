@@ -43,13 +43,6 @@ public class AuditEntryServiceWrapper implements AuditEntryService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _auditEntryService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public AuditEntryService getWrappedService() {
 		return _auditEntryService;
 	}

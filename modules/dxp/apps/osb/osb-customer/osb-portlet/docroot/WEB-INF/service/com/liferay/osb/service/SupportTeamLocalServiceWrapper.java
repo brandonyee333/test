@@ -508,14 +508,6 @@ public class SupportTeamLocalServiceWrapper implements SupportTeamLocalService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _supportTeamLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.SupportTeam> search(
 		java.lang.String keywords, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc) {

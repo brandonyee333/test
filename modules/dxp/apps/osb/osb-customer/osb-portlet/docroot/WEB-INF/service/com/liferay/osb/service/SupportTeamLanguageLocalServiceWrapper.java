@@ -262,14 +262,6 @@ public class SupportTeamLanguageLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _supportTeamLanguageLocalService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
-	@Override
 	public void setSupportTeamLanguageIds(long supportTeamId,
 		java.lang.String[] languageIds) {
 		_supportTeamLanguageLocalService.setSupportTeamLanguageIds(supportTeamId,

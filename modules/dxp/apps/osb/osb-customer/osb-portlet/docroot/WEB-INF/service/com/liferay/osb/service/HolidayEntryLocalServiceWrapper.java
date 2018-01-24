@@ -281,14 +281,6 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 		return _holidayEntryLocalService.getPersistedModel(primaryKeyObj);
 	}
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _holidayEntryLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
 	/**
 	* Updates the holiday entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*

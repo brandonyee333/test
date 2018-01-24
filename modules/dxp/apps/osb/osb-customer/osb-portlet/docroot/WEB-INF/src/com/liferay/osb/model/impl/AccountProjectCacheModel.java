@@ -21,7 +21,6 @@ import com.liferay.osb.model.AccountProject;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -93,7 +92,7 @@ public class AccountProjectCacheModel implements CacheModel<AccountProject>,
 		accountProjectImpl.setModifiedUserId(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			accountProjectImpl.setModifiedUserName(StringPool.BLANK);
+			accountProjectImpl.setModifiedUserName("");
 		}
 		else {
 			accountProjectImpl.setModifiedUserName(modifiedUserName);
@@ -109,7 +108,7 @@ public class AccountProjectCacheModel implements CacheModel<AccountProject>,
 		accountProjectImpl.setAccountEntryId(accountEntryId);
 
 		if (name == null) {
-			accountProjectImpl.setName(StringPool.BLANK);
+			accountProjectImpl.setName("");
 		}
 		else {
 			accountProjectImpl.setName(name);
@@ -140,7 +139,7 @@ public class AccountProjectCacheModel implements CacheModel<AccountProject>,
 		objectOutput.writeLong(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(modifiedUserName);
@@ -151,7 +150,7 @@ public class AccountProjectCacheModel implements CacheModel<AccountProject>,
 		objectOutput.writeLong(accountEntryId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);

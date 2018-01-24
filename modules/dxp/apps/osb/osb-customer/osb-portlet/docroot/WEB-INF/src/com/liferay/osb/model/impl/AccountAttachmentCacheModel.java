@@ -21,7 +21,6 @@ import com.liferay.osb.model.AccountAttachment;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -99,7 +98,7 @@ public class AccountAttachmentCacheModel implements CacheModel<AccountAttachment
 		accountAttachmentImpl.setUserId(userId);
 
 		if (userName == null) {
-			accountAttachmentImpl.setUserName(StringPool.BLANK);
+			accountAttachmentImpl.setUserName("");
 		}
 		else {
 			accountAttachmentImpl.setUserName(userName);
@@ -116,7 +115,7 @@ public class AccountAttachmentCacheModel implements CacheModel<AccountAttachment
 		accountAttachmentImpl.setAccountProjectId(accountProjectId);
 
 		if (fileName == null) {
-			accountAttachmentImpl.setFileName(StringPool.BLANK);
+			accountAttachmentImpl.setFileName("");
 		}
 		else {
 			accountAttachmentImpl.setFileName(fileName);
@@ -156,7 +155,7 @@ public class AccountAttachmentCacheModel implements CacheModel<AccountAttachment
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -169,7 +168,7 @@ public class AccountAttachmentCacheModel implements CacheModel<AccountAttachment
 		objectOutput.writeLong(accountProjectId);
 
 		if (fileName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(fileName);

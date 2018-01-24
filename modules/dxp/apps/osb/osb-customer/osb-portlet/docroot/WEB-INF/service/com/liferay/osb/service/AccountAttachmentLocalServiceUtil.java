@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -291,12 +290,6 @@ public class AccountAttachmentLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Updates the account attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -314,15 +307,8 @@ public class AccountAttachmentLocalServiceUtil {
 
 	public static AccountAttachmentLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AccountAttachmentLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AccountAttachmentLocalService.class.getName());
-
-			if (invokableLocalService instanceof AccountAttachmentLocalService) {
-				_service = (AccountAttachmentLocalService)invokableLocalService;
-			}
-			else {
-				_service = new AccountAttachmentLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(AccountAttachmentLocalServiceUtil.class,
 				"_service");

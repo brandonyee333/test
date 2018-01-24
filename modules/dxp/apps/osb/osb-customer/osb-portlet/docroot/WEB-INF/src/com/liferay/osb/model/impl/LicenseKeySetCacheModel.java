@@ -21,7 +21,6 @@ import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -95,7 +94,7 @@ public class LicenseKeySetCacheModel implements CacheModel<LicenseKeySet>,
 		licenseKeySetImpl.setUserId(userId);
 
 		if (userName == null) {
-			licenseKeySetImpl.setUserName(StringPool.BLANK);
+			licenseKeySetImpl.setUserName("");
 		}
 		else {
 			licenseKeySetImpl.setUserName(userName);
@@ -118,7 +117,7 @@ public class LicenseKeySetCacheModel implements CacheModel<LicenseKeySet>,
 		licenseKeySetImpl.setAccountEntryId(accountEntryId);
 
 		if (name == null) {
-			licenseKeySetImpl.setName(StringPool.BLANK);
+			licenseKeySetImpl.setName("");
 		}
 		else {
 			licenseKeySetImpl.setName(name);
@@ -150,7 +149,7 @@ public class LicenseKeySetCacheModel implements CacheModel<LicenseKeySet>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -162,7 +161,7 @@ public class LicenseKeySetCacheModel implements CacheModel<LicenseKeySet>,
 		objectOutput.writeLong(accountEntryId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);

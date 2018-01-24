@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -449,12 +448,6 @@ public class LicenseKeyLocalServiceUtil {
 		return getService().getUserLicenseKeysCount(userId, accountEntryId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.osb.model.LicenseKey renewLicenseKey(
 		long userId, long licenseKeyId, java.util.Date startDate,
 		java.util.Date expirationDate)
@@ -617,15 +610,8 @@ public class LicenseKeyLocalServiceUtil {
 
 	public static LicenseKeyLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (LicenseKeyLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					LicenseKeyLocalService.class.getName());
-
-			if (invokableLocalService instanceof LicenseKeyLocalService) {
-				_service = (LicenseKeyLocalService)invokableLocalService;
-			}
-			else {
-				_service = new LicenseKeyLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(LicenseKeyLocalServiceUtil.class,
 				"_service");

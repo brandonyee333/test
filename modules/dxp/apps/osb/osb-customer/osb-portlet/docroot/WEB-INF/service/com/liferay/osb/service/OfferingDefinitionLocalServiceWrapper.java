@@ -397,14 +397,6 @@ public class OfferingDefinitionLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _offeringDefinitionLocalService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
-	@Override
 	public void setOfferingBundleOfferingDefinitions(long offeringBundleId,
 		long[] offeringDefinitionIds) {
 		_offeringDefinitionLocalService.setOfferingBundleOfferingDefinitions(offeringBundleId,

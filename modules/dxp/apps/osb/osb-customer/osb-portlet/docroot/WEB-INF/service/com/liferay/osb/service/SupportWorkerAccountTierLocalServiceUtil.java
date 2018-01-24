@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -251,12 +250,6 @@ public class SupportWorkerAccountTierLocalServiceUtil {
 		return getService().getSupportWorkerAccountTiersCount();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void setSupportWorkerAccountTiers(long supportWorkerId,
 		int[] accountTiers) {
 		getService().setSupportWorkerAccountTiers(supportWorkerId, accountTiers);
@@ -280,15 +273,8 @@ public class SupportWorkerAccountTierLocalServiceUtil {
 
 	public static SupportWorkerAccountTierLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (SupportWorkerAccountTierLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					SupportWorkerAccountTierLocalService.class.getName());
-
-			if (invokableLocalService instanceof SupportWorkerAccountTierLocalService) {
-				_service = (SupportWorkerAccountTierLocalService)invokableLocalService;
-			}
-			else {
-				_service = new SupportWorkerAccountTierLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(SupportWorkerAccountTierLocalServiceUtil.class,
 				"_service");

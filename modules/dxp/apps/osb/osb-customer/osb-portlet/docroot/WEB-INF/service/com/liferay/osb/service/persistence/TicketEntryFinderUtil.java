@@ -91,7 +91,7 @@ public class TicketEntryFinderUtil {
 
 	public static TicketEntryFinder getFinder() {
 		if (_finder == null) {
-			_finder = (TicketEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
+			_finder = (TicketEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
 					TicketEntryFinder.class.getName());
 
 			ReferenceRegistry.registerReference(TicketEntryFinderUtil.class,

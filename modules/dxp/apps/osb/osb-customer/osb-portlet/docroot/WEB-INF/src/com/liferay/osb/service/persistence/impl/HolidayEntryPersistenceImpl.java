@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -300,7 +299,7 @@ public class HolidayEntryPersistenceImpl extends BasePersistenceImpl<HolidayEntr
 		msg.append("holidayCalendarId=");
 		msg.append(holidayCalendarId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchHolidayEntryException(msg.toString());
 	}
@@ -351,7 +350,7 @@ public class HolidayEntryPersistenceImpl extends BasePersistenceImpl<HolidayEntr
 		msg.append("holidayCalendarId=");
 		msg.append(holidayCalendarId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchHolidayEntryException(msg.toString());
 	}
@@ -1027,12 +1026,12 @@ public class HolidayEntryPersistenceImpl extends BasePersistenceImpl<HolidayEntr
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			query.append(",");
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		query.append(")");
 
 		String sql = query.toString();
 

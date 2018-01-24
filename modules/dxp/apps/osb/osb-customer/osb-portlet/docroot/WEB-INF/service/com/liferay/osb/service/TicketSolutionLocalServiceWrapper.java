@@ -286,14 +286,6 @@ public class TicketSolutionLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketSolutionLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public void updateStatus(long ticketEntryId, int ticketEntryStatus,
 		int resolution) {
 		_ticketSolutionLocalService.updateStatus(ticketEntryId,

@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -449,12 +448,6 @@ public class SupportTeamLocalServiceUtil {
 		return getService().hasSupportRegionSupportTeams(supportRegionId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static java.util.List<com.liferay.osb.model.SupportTeam> search(
 		java.lang.String keywords, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc) {
@@ -529,15 +522,8 @@ public class SupportTeamLocalServiceUtil {
 
 	public static SupportTeamLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (SupportTeamLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					SupportTeamLocalService.class.getName());
-
-			if (invokableLocalService instanceof SupportTeamLocalService) {
-				_service = (SupportTeamLocalService)invokableLocalService;
-			}
-			else {
-				_service = new SupportTeamLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(SupportTeamLocalServiceUtil.class,
 				"_service");

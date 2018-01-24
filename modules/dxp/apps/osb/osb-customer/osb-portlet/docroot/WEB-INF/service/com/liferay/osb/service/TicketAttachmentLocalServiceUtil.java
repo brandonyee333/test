@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -347,12 +346,6 @@ public class TicketAttachmentLocalServiceUtil {
 				   .getTicketAttachmentsZipFile(ticketEntryId, visibilities);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
 		long userId, long ticketAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -425,15 +418,8 @@ public class TicketAttachmentLocalServiceUtil {
 
 	public static TicketAttachmentLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketAttachmentLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketAttachmentLocalService.class.getName());
-
-			if (invokableLocalService instanceof TicketAttachmentLocalService) {
-				_service = (TicketAttachmentLocalService)invokableLocalService;
-			}
-			else {
-				_service = new TicketAttachmentLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(TicketAttachmentLocalServiceUtil.class,
 				"_service");

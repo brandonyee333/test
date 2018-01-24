@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -309,7 +308,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 	@Override
 	public String getProduct() {
 		if (_product == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _product;
@@ -334,7 +333,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 	@Override
 	public String getType() {
 		if (_type == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _type;
@@ -349,7 +348,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 	@Override
 	public String getPlatform() {
 		if (_platform == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _platform;
@@ -364,7 +363,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 	@Override
 	public String getPlatformVersion() {
 		if (_platformVersion == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _platformVersion;
@@ -459,7 +458,7 @@ public class LCSSubscriptionEntryModelImpl extends BaseModelImpl<LCSSubscription
 	@Override
 	public String getCurrencyCode() {
 		if (_currencyCode == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _currencyCode;

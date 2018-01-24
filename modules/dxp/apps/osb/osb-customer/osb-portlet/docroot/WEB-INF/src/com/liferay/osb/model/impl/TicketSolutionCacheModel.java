@@ -21,7 +21,6 @@ import com.liferay.osb.model.TicketSolution;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -121,7 +120,7 @@ public class TicketSolutionCacheModel implements CacheModel<TicketSolution>,
 		ticketSolutionImpl.setUserId(userId);
 
 		if (userName == null) {
-			ticketSolutionImpl.setUserName(StringPool.BLANK);
+			ticketSolutionImpl.setUserName("");
 		}
 		else {
 			ticketSolutionImpl.setUserName(userName);
@@ -137,7 +136,7 @@ public class TicketSolutionCacheModel implements CacheModel<TicketSolution>,
 		ticketSolutionImpl.setTicketEntryId(ticketEntryId);
 
 		if (summary == null) {
-			ticketSolutionImpl.setSummary(StringPool.BLANK);
+			ticketSolutionImpl.setSummary("");
 		}
 		else {
 			ticketSolutionImpl.setSummary(summary);
@@ -147,7 +146,7 @@ public class TicketSolutionCacheModel implements CacheModel<TicketSolution>,
 		ticketSolutionImpl.setIssueType(issueType);
 
 		if (solution == null) {
-			ticketSolutionImpl.setSolution(StringPool.BLANK);
+			ticketSolutionImpl.setSolution("");
 		}
 		else {
 			ticketSolutionImpl.setSolution(solution);
@@ -162,7 +161,7 @@ public class TicketSolutionCacheModel implements CacheModel<TicketSolution>,
 		ticketSolutionImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			ticketSolutionImpl.setStatusByUserName(StringPool.BLANK);
+			ticketSolutionImpl.setStatusByUserName("");
 		}
 		else {
 			ticketSolutionImpl.setStatusByUserName(statusByUserName);
@@ -176,7 +175,7 @@ public class TicketSolutionCacheModel implements CacheModel<TicketSolution>,
 		}
 
 		if (statusMessage == null) {
-			ticketSolutionImpl.setStatusMessage(StringPool.BLANK);
+			ticketSolutionImpl.setStatusMessage("");
 		}
 		else {
 			ticketSolutionImpl.setStatusMessage(statusMessage);
@@ -233,7 +232,7 @@ public class TicketSolutionCacheModel implements CacheModel<TicketSolution>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -244,7 +243,7 @@ public class TicketSolutionCacheModel implements CacheModel<TicketSolution>,
 		objectOutput.writeLong(ticketEntryId);
 
 		if (summary == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(summary);
@@ -255,7 +254,7 @@ public class TicketSolutionCacheModel implements CacheModel<TicketSolution>,
 		objectOutput.writeInt(issueType);
 
 		if (solution == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(solution);
@@ -276,7 +275,7 @@ public class TicketSolutionCacheModel implements CacheModel<TicketSolution>,
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -285,7 +284,7 @@ public class TicketSolutionCacheModel implements CacheModel<TicketSolution>,
 		objectOutput.writeLong(statusDate);
 
 		if (statusMessage == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(statusMessage);

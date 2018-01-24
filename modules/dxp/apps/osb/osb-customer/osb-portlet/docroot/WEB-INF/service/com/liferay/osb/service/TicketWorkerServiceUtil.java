@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -65,12 +64,6 @@ public class TicketWorkerServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static java.util.List<com.liferay.osb.model.TicketWorker> updateTicketWorkers(
 		long[] addUserIds, int[] addRoles, long[] removeUserIds,
 		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
@@ -87,15 +80,8 @@ public class TicketWorkerServiceUtil {
 
 	public static TicketWorkerService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketWorkerService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketWorkerService.class.getName());
-
-			if (invokableService instanceof TicketWorkerService) {
-				_service = (TicketWorkerService)invokableService;
-			}
-			else {
-				_service = new TicketWorkerServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(TicketWorkerServiceUtil.class,
 				"_service");

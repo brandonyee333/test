@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -355,7 +354,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -367,7 +366,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -457,7 +456,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _name;
@@ -494,7 +493,7 @@ public class AccountEnvironmentModelImpl extends BaseModelImpl<AccountEnvironmen
 	@Override
 	public String getEnvOSCustom() {
 		if (_envOSCustom == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _envOSCustom;

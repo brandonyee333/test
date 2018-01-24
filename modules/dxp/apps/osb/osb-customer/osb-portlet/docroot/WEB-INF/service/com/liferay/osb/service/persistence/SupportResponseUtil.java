@@ -314,7 +314,7 @@ public class SupportResponseUtil {
 
 	public static SupportResponsePersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (SupportResponsePersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
+			_persistence = (SupportResponsePersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
 					SupportResponsePersistence.class.getName());
 
 			ReferenceRegistry.registerReference(SupportResponseUtil.class,

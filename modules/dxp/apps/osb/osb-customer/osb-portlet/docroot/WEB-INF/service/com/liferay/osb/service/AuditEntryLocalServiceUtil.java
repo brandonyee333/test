@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -305,12 +304,6 @@ public class AuditEntryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Updates the audit entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -328,15 +321,8 @@ public class AuditEntryLocalServiceUtil {
 
 	public static AuditEntryLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AuditEntryLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AuditEntryLocalService.class.getName());
-
-			if (invokableLocalService instanceof AuditEntryLocalService) {
-				_service = (AuditEntryLocalService)invokableLocalService;
-			}
-			else {
-				_service = new AuditEntryLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(AuditEntryLocalServiceUtil.class,
 				"_service");

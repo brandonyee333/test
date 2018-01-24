@@ -51,14 +51,6 @@ public class TicketCannedResponseServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketCannedResponseService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.TicketCannedResponse> search(
 		java.lang.String keywords, int start, int end)
 		throws com.liferay.portal.kernel.exception.PortalException {

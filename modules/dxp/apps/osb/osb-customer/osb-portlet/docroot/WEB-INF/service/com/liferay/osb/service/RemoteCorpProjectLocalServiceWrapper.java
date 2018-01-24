@@ -61,14 +61,6 @@ public class RemoteCorpProjectLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _remoteCorpProjectLocalService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.CorpProject updateCorpProject(
 		long corpProjectId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {

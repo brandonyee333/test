@@ -281,14 +281,6 @@ public class ExternalIdMapperLocalServiceWrapper
 		return _externalIdMapperLocalService.getPersistedModel(primaryKeyObj);
 	}
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _externalIdMapperLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
 	/**
 	* Updates the external ID mapper in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*

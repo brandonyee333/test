@@ -21,7 +21,6 @@ import com.liferay.osb.model.OfferingBundle;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -94,7 +93,7 @@ public class OfferingBundleCacheModel implements CacheModel<OfferingBundle>,
 		offeringBundleImpl.setUserId(userId);
 
 		if (userName == null) {
-			offeringBundleImpl.setUserName(StringPool.BLANK);
+			offeringBundleImpl.setUserName("");
 		}
 		else {
 			offeringBundleImpl.setUserName(userName);
@@ -108,7 +107,7 @@ public class OfferingBundleCacheModel implements CacheModel<OfferingBundle>,
 		}
 
 		if (name == null) {
-			offeringBundleImpl.setName(StringPool.BLANK);
+			offeringBundleImpl.setName("");
 		}
 		else {
 			offeringBundleImpl.setName(name);
@@ -141,7 +140,7 @@ public class OfferingBundleCacheModel implements CacheModel<OfferingBundle>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -150,7 +149,7 @@ public class OfferingBundleCacheModel implements CacheModel<OfferingBundle>,
 		objectOutput.writeLong(createDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);

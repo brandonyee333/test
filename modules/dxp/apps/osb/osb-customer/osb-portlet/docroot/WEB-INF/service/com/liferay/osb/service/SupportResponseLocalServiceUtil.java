@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -256,12 +255,6 @@ public class SupportResponseLocalServiceUtil {
 		return getService().getSupportResponsesCount();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.osb.model.SupportResponse updateSupportResponse(
 		long supportResponseId, java.lang.String name, int supportLevel,
 		int severity1Response, int severity1Resolution, int severity2Response,
@@ -291,15 +284,8 @@ public class SupportResponseLocalServiceUtil {
 
 	public static SupportResponseLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (SupportResponseLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					SupportResponseLocalService.class.getName());
-
-			if (invokableLocalService instanceof SupportResponseLocalService) {
-				_service = (SupportResponseLocalService)invokableLocalService;
-			}
-			else {
-				_service = new SupportResponseLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(SupportResponseLocalServiceUtil.class,
 				"_service");

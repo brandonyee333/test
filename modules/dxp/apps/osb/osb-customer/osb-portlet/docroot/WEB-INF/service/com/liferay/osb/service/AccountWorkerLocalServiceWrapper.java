@@ -318,14 +318,6 @@ public class AccountWorkerLocalServiceWrapper
 		return _accountWorkerLocalService.hasAccountWorkerRole(userId, role);
 	}
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountWorkerLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
 	/**
 	* Updates the account worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*

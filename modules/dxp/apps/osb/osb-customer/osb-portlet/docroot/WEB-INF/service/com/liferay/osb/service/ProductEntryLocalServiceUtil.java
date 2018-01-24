@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -265,12 +264,6 @@ public class ProductEntryLocalServiceUtil {
 		return getService().getProductEntryByName(name);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static java.util.List<com.liferay.osb.model.ProductEntry> search(
 		java.lang.String name,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
@@ -309,15 +302,8 @@ public class ProductEntryLocalServiceUtil {
 
 	public static ProductEntryLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (ProductEntryLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					ProductEntryLocalService.class.getName());
-
-			if (invokableLocalService instanceof ProductEntryLocalService) {
-				_service = (ProductEntryLocalService)invokableLocalService;
-			}
-			else {
-				_service = new ProductEntryLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(ProductEntryLocalServiceUtil.class,
 				"_service");

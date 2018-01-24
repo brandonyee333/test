@@ -43,13 +43,6 @@ public class HolidayEntryServiceWrapper implements HolidayEntryService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _holidayEntryService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public HolidayEntryService getWrappedService() {
 		return _holidayEntryService;
 	}

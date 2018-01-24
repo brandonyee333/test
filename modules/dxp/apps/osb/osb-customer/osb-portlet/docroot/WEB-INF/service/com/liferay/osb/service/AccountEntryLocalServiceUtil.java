@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -560,12 +559,6 @@ public class AccountEntryLocalServiceUtil {
 		return getService().hasValidSupportAccountEntry(userId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void recalculateHighestSupportResponse(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().recalculateHighestSupportResponse(accountEntryId);
@@ -759,15 +752,8 @@ public class AccountEntryLocalServiceUtil {
 
 	public static AccountEntryLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AccountEntryLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AccountEntryLocalService.class.getName());
-
-			if (invokableLocalService instanceof AccountEntryLocalService) {
-				_service = (AccountEntryLocalService)invokableLocalService;
-			}
-			else {
-				_service = new AccountEntryLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(AccountEntryLocalServiceUtil.class,
 				"_service");

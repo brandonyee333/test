@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -386,12 +385,6 @@ public class OfferingDefinitionLocalServiceUtil {
 				   .hasOfferingBundleOfferingDefinitions(offeringBundleId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void setOfferingBundleOfferingDefinitions(
 		long offeringBundleId, long[] offeringDefinitionIds) {
 		getService()
@@ -428,15 +421,8 @@ public class OfferingDefinitionLocalServiceUtil {
 
 	public static OfferingDefinitionLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (OfferingDefinitionLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					OfferingDefinitionLocalService.class.getName());
-
-			if (invokableLocalService instanceof OfferingDefinitionLocalService) {
-				_service = (OfferingDefinitionLocalService)invokableLocalService;
-			}
-			else {
-				_service = new OfferingDefinitionLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(OfferingDefinitionLocalServiceUtil.class,
 				"_service");

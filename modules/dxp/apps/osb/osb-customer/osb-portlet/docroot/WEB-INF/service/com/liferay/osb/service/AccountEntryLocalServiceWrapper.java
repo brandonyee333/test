@@ -634,14 +634,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountEntryLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public void recalculateHighestSupportResponse(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountEntryLocalService.recalculateHighestSupportResponse(accountEntryId);

@@ -82,14 +82,6 @@ public class TicketFeedbackServiceWrapper implements TicketFeedbackService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketFeedbackService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.TicketFeedback> search(
 		java.lang.String name, int createdGTDay, int createdGTMonth,
 		int createdGTYear, int createdLTDay, int createdLTMonth,

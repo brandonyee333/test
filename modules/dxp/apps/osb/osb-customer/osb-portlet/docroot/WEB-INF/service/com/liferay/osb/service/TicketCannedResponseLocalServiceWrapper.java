@@ -271,14 +271,6 @@ public class TicketCannedResponseLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketCannedResponseLocalService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
-	@Override
 	public void removeCannedResponseLocale(long ticketCannedResponseId,
 		java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {

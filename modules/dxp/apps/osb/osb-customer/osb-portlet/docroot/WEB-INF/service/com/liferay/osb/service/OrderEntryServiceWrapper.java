@@ -50,13 +50,6 @@ public class OrderEntryServiceWrapper implements OrderEntryService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _orderEntryService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public OrderEntryService getWrappedService() {
 		return _orderEntryService;
 	}

@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -258,12 +257,6 @@ public class TicketFeedbackLocalServiceUtil {
 		return getService().getTicketFeedbacksCount();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static java.util.List<com.liferay.osb.model.TicketFeedback> search(
 		java.lang.String name, int createdGTDay, int createdGTMonth,
 		int createdGTYear, int createdLTDay, int createdLTMonth,
@@ -356,15 +349,8 @@ public class TicketFeedbackLocalServiceUtil {
 
 	public static TicketFeedbackLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketFeedbackLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketFeedbackLocalService.class.getName());
-
-			if (invokableLocalService instanceof TicketFeedbackLocalService) {
-				_service = (TicketFeedbackLocalService)invokableLocalService;
-			}
-			else {
-				_service = new TicketFeedbackLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(TicketFeedbackLocalServiceUtil.class,
 				"_service");

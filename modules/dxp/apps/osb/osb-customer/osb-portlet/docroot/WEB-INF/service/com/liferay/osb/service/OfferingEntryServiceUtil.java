@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -62,12 +61,6 @@ public class OfferingEntryServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.osb.model.OfferingEntry updateOfferingEntry(
 		long offeringEntryId, long accountEntryId, long orderEntryId,
 		long productEntryId, long supportResponseId,
@@ -96,15 +89,8 @@ public class OfferingEntryServiceUtil {
 
 	public static OfferingEntryService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (OfferingEntryService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					OfferingEntryService.class.getName());
-
-			if (invokableService instanceof OfferingEntryService) {
-				_service = (OfferingEntryService)invokableService;
-			}
-			else {
-				_service = new OfferingEntryServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(OfferingEntryServiceUtil.class,
 				"_service");

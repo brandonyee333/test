@@ -21,7 +21,6 @@ import com.liferay.osb.model.TicketCannedResponse;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -97,7 +96,7 @@ public class TicketCannedResponseCacheModel implements CacheModel<TicketCannedRe
 		ticketCannedResponseImpl.setUserId(userId);
 
 		if (userName == null) {
-			ticketCannedResponseImpl.setUserName(StringPool.BLANK);
+			ticketCannedResponseImpl.setUserName("");
 		}
 		else {
 			ticketCannedResponseImpl.setUserName(userName);
@@ -118,14 +117,14 @@ public class TicketCannedResponseCacheModel implements CacheModel<TicketCannedRe
 		}
 
 		if (name == null) {
-			ticketCannedResponseImpl.setName(StringPool.BLANK);
+			ticketCannedResponseImpl.setName("");
 		}
 		else {
 			ticketCannedResponseImpl.setName(name);
 		}
 
 		if (content == null) {
-			ticketCannedResponseImpl.setContent(StringPool.BLANK);
+			ticketCannedResponseImpl.setContent("");
 		}
 		else {
 			ticketCannedResponseImpl.setContent(content);
@@ -160,7 +159,7 @@ public class TicketCannedResponseCacheModel implements CacheModel<TicketCannedRe
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -170,14 +169,14 @@ public class TicketCannedResponseCacheModel implements CacheModel<TicketCannedRe
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (content == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(content);

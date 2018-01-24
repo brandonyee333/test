@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -306,12 +305,6 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().hasAccountCustomer(userId, accountEntryId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void toggleNotifications(long accountCustomerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().toggleNotifications(accountCustomerId);
@@ -334,15 +327,8 @@ public class AccountCustomerLocalServiceUtil {
 
 	public static AccountCustomerLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AccountCustomerLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AccountCustomerLocalService.class.getName());
-
-			if (invokableLocalService instanceof AccountCustomerLocalService) {
-				_service = (AccountCustomerLocalService)invokableLocalService;
-			}
-			else {
-				_service = new AccountCustomerLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(AccountCustomerLocalServiceUtil.class,
 				"_service");

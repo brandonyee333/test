@@ -44,14 +44,6 @@ public class PartnerWorkerServiceWrapper implements PartnerWorkerService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _partnerWorkerService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public PartnerWorkerService getWrappedService() {
 		return _partnerWorkerService;
 	}

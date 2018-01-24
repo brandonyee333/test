@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -294,12 +293,6 @@ public class AccountWorkerLocalServiceUtil {
 		return getService().hasAccountWorkerRole(userId, role);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Updates the account worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -317,15 +310,8 @@ public class AccountWorkerLocalServiceUtil {
 
 	public static AccountWorkerLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AccountWorkerLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AccountWorkerLocalService.class.getName());
-
-			if (invokableLocalService instanceof AccountWorkerLocalService) {
-				_service = (AccountWorkerLocalService)invokableLocalService;
-			}
-			else {
-				_service = new AccountWorkerLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(AccountWorkerLocalServiceUtil.class,
 				"_service");

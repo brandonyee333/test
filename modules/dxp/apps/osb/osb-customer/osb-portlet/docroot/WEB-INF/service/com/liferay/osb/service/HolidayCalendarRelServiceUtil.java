@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -51,27 +50,14 @@ public class HolidayCalendarRelServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static HolidayCalendarRelService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (HolidayCalendarRelService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					HolidayCalendarRelService.class.getName());
-
-			if (invokableService instanceof HolidayCalendarRelService) {
-				_service = (HolidayCalendarRelService)invokableService;
-			}
-			else {
-				_service = new HolidayCalendarRelServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(HolidayCalendarRelServiceUtil.class,
 				"_service");

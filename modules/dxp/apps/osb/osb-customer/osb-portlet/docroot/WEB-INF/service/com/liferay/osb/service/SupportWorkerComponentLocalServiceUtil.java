@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -248,12 +247,6 @@ public class SupportWorkerComponentLocalServiceUtil {
 		return getService().getSupportWorkerComponentsCount();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void setSupportWorkerComponents(long supportWorkerId,
 		int[] components) {
 		getService().setSupportWorkerComponents(supportWorkerId, components);
@@ -276,15 +269,8 @@ public class SupportWorkerComponentLocalServiceUtil {
 
 	public static SupportWorkerComponentLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (SupportWorkerComponentLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					SupportWorkerComponentLocalService.class.getName());
-
-			if (invokableLocalService instanceof SupportWorkerComponentLocalService) {
-				_service = (SupportWorkerComponentLocalService)invokableLocalService;
-			}
-			else {
-				_service = new SupportWorkerComponentLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(SupportWorkerComponentLocalServiceUtil.class,
 				"_service");

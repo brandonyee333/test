@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -55,12 +54,6 @@ public class PartnerEntryServiceUtil {
 		long partnerEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getPartnerEntry(partnerEntryId);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static java.util.List<com.liferay.osb.model.PartnerEntry> search(
@@ -104,15 +97,8 @@ public class PartnerEntryServiceUtil {
 
 	public static PartnerEntryService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (PartnerEntryService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					PartnerEntryService.class.getName());
-
-			if (invokableService instanceof PartnerEntryService) {
-				_service = (PartnerEntryService)invokableService;
-			}
-			else {
-				_service = new PartnerEntryServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(PartnerEntryServiceUtil.class,
 				"_service");

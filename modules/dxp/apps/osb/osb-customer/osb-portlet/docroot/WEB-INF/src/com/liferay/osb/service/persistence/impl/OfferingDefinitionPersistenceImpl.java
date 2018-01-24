@@ -47,7 +47,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
@@ -322,7 +321,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 		msg.append("productEntryId=");
 		msg.append(productEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchOfferingDefinitionException(msg.toString());
 	}
@@ -373,7 +372,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 		msg.append("productEntryId=");
 		msg.append(productEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchOfferingDefinitionException(msg.toString());
 	}
@@ -843,7 +842,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 		msg.append("supportResponseId=");
 		msg.append(supportResponseId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchOfferingDefinitionException(msg.toString());
 	}
@@ -896,7 +895,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 		msg.append("supportResponseId=");
 		msg.append(supportResponseId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchOfferingDefinitionException(msg.toString());
 	}
@@ -1386,7 +1385,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 		msg.append(", supportResponseId=");
 		msg.append(supportResponseId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchOfferingDefinitionException(msg.toString());
 	}
@@ -1444,7 +1443,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 		msg.append(", supportResponseId=");
 		msg.append(supportResponseId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchOfferingDefinitionException(msg.toString());
 	}
@@ -1780,29 +1779,29 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 			query.append(_SQL_SELECT_OFFERINGDEFINITION_WHERE);
 
 			if (productEntryIds.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_PEI_SRI_PRODUCTENTRYID_7);
 
 				query.append(StringUtil.merge(productEntryIds));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
 				query.append(WHERE_AND);
 			}
 
 			if (supportResponseIds.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_PEI_SRI_SUPPORTRESPONSEID_7);
 
 				query.append(StringUtil.merge(supportResponseIds));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 			}
 
 			query.setStringAt(removeConjunction(query.stringAt(query.index() -
@@ -1970,29 +1969,29 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 			query.append(_SQL_COUNT_OFFERINGDEFINITION_WHERE);
 
 			if (productEntryIds.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_PEI_SRI_PRODUCTENTRYID_7);
 
 				query.append(StringUtil.merge(productEntryIds));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
 				query.append(WHERE_AND);
 			}
 
 			if (supportResponseIds.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_PEI_SRI_SUPPORTRESPONSEID_7);
 
 				query.append(StringUtil.merge(supportResponseIds));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 			}
 
 			query.setStringAt(removeConjunction(query.stringAt(query.index() -
@@ -2099,7 +2098,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 			msg.append(", supportTickets=");
 			msg.append(supportTickets);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			msg.append("}");
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -2188,7 +2187,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 			if (productDescription == null) {
 				query.append(_FINDER_COLUMN_PEI_SRI_PD_L_UL_ST_PRODUCTDESCRIPTION_1);
 			}
-			else if (productDescription.equals(StringPool.BLANK)) {
+			else if (productDescription.equals("")) {
 				query.append(_FINDER_COLUMN_PEI_SRI_PD_L_UL_ST_PRODUCTDESCRIPTION_3);
 			}
 			else {
@@ -2345,7 +2344,7 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 			if (productDescription == null) {
 				query.append(_FINDER_COLUMN_PEI_SRI_PD_L_UL_ST_PRODUCTDESCRIPTION_1);
 			}
-			else if (productDescription.equals(StringPool.BLANK)) {
+			else if (productDescription.equals("")) {
 				query.append(_FINDER_COLUMN_PEI_SRI_PD_L_UL_ST_PRODUCTDESCRIPTION_3);
 			}
 			else {
@@ -3023,12 +3022,12 @@ public class OfferingDefinitionPersistenceImpl extends BasePersistenceImpl<Offer
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			query.append(",");
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		query.append(")");
 
 		String sql = query.toString();
 

@@ -21,7 +21,6 @@ import com.liferay.osb.model.SupportRegion;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -102,7 +101,7 @@ public class SupportRegionCacheModel implements CacheModel<SupportRegion>,
 		supportRegionImpl.setUserId(userId);
 
 		if (userName == null) {
-			supportRegionImpl.setUserName(StringPool.BLANK);
+			supportRegionImpl.setUserName("");
 		}
 		else {
 			supportRegionImpl.setUserName(userName);
@@ -123,21 +122,21 @@ public class SupportRegionCacheModel implements CacheModel<SupportRegion>,
 		}
 
 		if (name == null) {
-			supportRegionImpl.setName(StringPool.BLANK);
+			supportRegionImpl.setName("");
 		}
 		else {
 			supportRegionImpl.setName(name);
 		}
 
 		if (description == null) {
-			supportRegionImpl.setDescription(StringPool.BLANK);
+			supportRegionImpl.setDescription("");
 		}
 		else {
 			supportRegionImpl.setDescription(description);
 		}
 
 		if (timeZoneId == null) {
-			supportRegionImpl.setTimeZoneId(StringPool.BLANK);
+			supportRegionImpl.setTimeZoneId("");
 		}
 		else {
 			supportRegionImpl.setTimeZoneId(timeZoneId);
@@ -177,7 +176,7 @@ public class SupportRegionCacheModel implements CacheModel<SupportRegion>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -187,21 +186,21 @@ public class SupportRegionCacheModel implements CacheModel<SupportRegion>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (timeZoneId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(timeZoneId);

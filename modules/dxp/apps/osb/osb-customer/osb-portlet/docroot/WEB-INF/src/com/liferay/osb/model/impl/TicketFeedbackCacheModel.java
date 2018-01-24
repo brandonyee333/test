@@ -21,7 +21,6 @@ import com.liferay.osb.model.TicketFeedback;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -117,7 +116,7 @@ public class TicketFeedbackCacheModel implements CacheModel<TicketFeedback>,
 		ticketFeedbackImpl.setUserId(userId);
 
 		if (userName == null) {
-			ticketFeedbackImpl.setUserName(StringPool.BLANK);
+			ticketFeedbackImpl.setUserName("");
 		}
 		else {
 			ticketFeedbackImpl.setUserName(userName);
@@ -150,7 +149,7 @@ public class TicketFeedbackCacheModel implements CacheModel<TicketFeedback>,
 		ticketFeedbackImpl.setRating4(rating4);
 
 		if (comments == null) {
-			ticketFeedbackImpl.setComments(StringPool.BLANK);
+			ticketFeedbackImpl.setComments("");
 		}
 		else {
 			ticketFeedbackImpl.setComments(comments);
@@ -206,7 +205,7 @@ public class TicketFeedbackCacheModel implements CacheModel<TicketFeedback>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -238,7 +237,7 @@ public class TicketFeedbackCacheModel implements CacheModel<TicketFeedback>,
 		objectOutput.writeInt(rating4);
 
 		if (comments == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(comments);

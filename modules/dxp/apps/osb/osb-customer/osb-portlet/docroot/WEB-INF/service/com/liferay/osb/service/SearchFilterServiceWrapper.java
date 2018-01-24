@@ -65,13 +65,6 @@ public class SearchFilterServiceWrapper implements SearchFilterService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _searchFilterService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.SearchFilter updateSearchFilter(
 		long searchFilterId, java.lang.String name, java.lang.String filter,
 		int visibility)

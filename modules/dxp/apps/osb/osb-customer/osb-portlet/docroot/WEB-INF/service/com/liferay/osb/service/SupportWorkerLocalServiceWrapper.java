@@ -411,14 +411,6 @@ public class SupportWorkerLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _supportWorkerLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public boolean isClockedIn(long userId) {
 		return _supportWorkerLocalService.isClockedIn(userId);
 	}

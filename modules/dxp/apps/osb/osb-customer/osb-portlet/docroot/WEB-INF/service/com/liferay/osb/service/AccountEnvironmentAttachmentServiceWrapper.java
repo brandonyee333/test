@@ -52,14 +52,6 @@ public class AccountEnvironmentAttachmentServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountEnvironmentAttachmentService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
-	@Override
 	public AccountEnvironmentAttachmentService getWrappedService() {
 		return _accountEnvironmentAttachmentService;
 	}

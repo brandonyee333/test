@@ -262,14 +262,6 @@ public class SupportWorkerAccountTierLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _supportWorkerAccountTierLocalService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
-	@Override
 	public void setSupportWorkerAccountTiers(long supportWorkerId,
 		int[] accountTiers) {
 		_supportWorkerAccountTierLocalService.setSupportWorkerAccountTiers(supportWorkerId,

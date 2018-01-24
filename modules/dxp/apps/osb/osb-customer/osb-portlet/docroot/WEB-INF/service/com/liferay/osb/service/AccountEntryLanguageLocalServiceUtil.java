@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -246,12 +245,6 @@ public class AccountEntryLanguageLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void setAccountEntryLanguageIds(long accountEntryId,
 		java.lang.String[] languageIds) {
 		getService().setAccountEntryLanguageIds(accountEntryId, languageIds);
@@ -274,15 +267,8 @@ public class AccountEntryLanguageLocalServiceUtil {
 
 	public static AccountEntryLanguageLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AccountEntryLanguageLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AccountEntryLanguageLocalService.class.getName());
-
-			if (invokableLocalService instanceof AccountEntryLanguageLocalService) {
-				_service = (AccountEntryLanguageLocalService)invokableLocalService;
-			}
-			else {
-				_service = new AccountEntryLanguageLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(AccountEntryLanguageLocalServiceUtil.class,
 				"_service");

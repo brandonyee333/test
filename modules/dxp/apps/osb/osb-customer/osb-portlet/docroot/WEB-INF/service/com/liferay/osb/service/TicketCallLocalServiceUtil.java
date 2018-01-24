@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -254,12 +253,6 @@ public class TicketCallLocalServiceUtil {
 		return getService().getTicketCallsCount();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Updates the ticket call in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -277,15 +270,8 @@ public class TicketCallLocalServiceUtil {
 
 	public static TicketCallLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketCallLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketCallLocalService.class.getName());
-
-			if (invokableLocalService instanceof TicketCallLocalService) {
-				_service = (TicketCallLocalService)invokableLocalService;
-			}
-			else {
-				_service = new TicketCallLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(TicketCallLocalServiceUtil.class,
 				"_service");

@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -246,12 +245,6 @@ public class AccountProjectLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Updates the account project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -279,15 +272,8 @@ public class AccountProjectLocalServiceUtil {
 
 	public static AccountProjectLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AccountProjectLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AccountProjectLocalService.class.getName());
-
-			if (invokableLocalService instanceof AccountProjectLocalService) {
-				_service = (AccountProjectLocalService)invokableLocalService;
-			}
-			else {
-				_service = new AccountProjectLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(AccountProjectLocalServiceUtil.class,
 				"_service");

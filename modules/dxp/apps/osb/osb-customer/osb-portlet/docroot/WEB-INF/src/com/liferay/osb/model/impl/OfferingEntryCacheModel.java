@@ -21,7 +21,6 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -129,7 +128,7 @@ public class OfferingEntryCacheModel implements CacheModel<OfferingEntry>,
 		offeringEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			offeringEntryImpl.setUserName(StringPool.BLANK);
+			offeringEntryImpl.setUserName("");
 		}
 		else {
 			offeringEntryImpl.setUserName(userName);
@@ -155,7 +154,7 @@ public class OfferingEntryCacheModel implements CacheModel<OfferingEntry>,
 		offeringEntryImpl.setSupportResponseId(supportResponseId);
 
 		if (productDescription == null) {
-			offeringEntryImpl.setProductDescription(StringPool.BLANK);
+			offeringEntryImpl.setProductDescription("");
 		}
 		else {
 			offeringEntryImpl.setProductDescription(productDescription);
@@ -165,14 +164,14 @@ public class OfferingEntryCacheModel implements CacheModel<OfferingEntry>,
 		offeringEntryImpl.setVersion(version);
 
 		if (platform == null) {
-			offeringEntryImpl.setPlatform(StringPool.BLANK);
+			offeringEntryImpl.setPlatform("");
 		}
 		else {
 			offeringEntryImpl.setPlatform(platform);
 		}
 
 		if (platformVersion == null) {
-			offeringEntryImpl.setPlatformVersion(StringPool.BLANK);
+			offeringEntryImpl.setPlatformVersion("");
 		}
 		else {
 			offeringEntryImpl.setPlatformVersion(platformVersion);
@@ -253,7 +252,7 @@ public class OfferingEntryCacheModel implements CacheModel<OfferingEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -271,7 +270,7 @@ public class OfferingEntryCacheModel implements CacheModel<OfferingEntry>,
 		objectOutput.writeLong(supportResponseId);
 
 		if (productDescription == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(productDescription);
@@ -282,14 +281,14 @@ public class OfferingEntryCacheModel implements CacheModel<OfferingEntry>,
 		objectOutput.writeInt(version);
 
 		if (platform == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(platform);
 		}
 
 		if (platformVersion == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(platformVersion);

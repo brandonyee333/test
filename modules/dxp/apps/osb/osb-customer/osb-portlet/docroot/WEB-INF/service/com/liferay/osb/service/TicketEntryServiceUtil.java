@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -92,12 +91,6 @@ public class TicketEntryServiceUtil {
 		long accountEntryId, long ticketId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTicketEntry(accountEntryId, ticketId);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static com.liferay.portal.kernel.search.Hits search(
@@ -247,15 +240,8 @@ public class TicketEntryServiceUtil {
 
 	public static TicketEntryService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketEntryService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketEntryService.class.getName());
-
-			if (invokableService instanceof TicketEntryService) {
-				_service = (TicketEntryService)invokableService;
-			}
-			else {
-				_service = new TicketEntryServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(TicketEntryServiceUtil.class,
 				"_service");

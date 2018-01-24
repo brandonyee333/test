@@ -75,14 +75,6 @@ public class TicketCommentServiceWrapper implements TicketCommentService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketCommentService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.TicketComment updateTicketComment(
 		long userId, long ticketCommentId, long ticketEntryId,
 		java.lang.String body, int visibility, int status,

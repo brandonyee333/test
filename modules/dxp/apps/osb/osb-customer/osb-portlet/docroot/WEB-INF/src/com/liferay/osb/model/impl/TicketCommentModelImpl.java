@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -348,7 +347,7 @@ public class TicketCommentModelImpl extends BaseModelImpl<TicketComment>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -364,7 +363,7 @@ public class TicketCommentModelImpl extends BaseModelImpl<TicketComment>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -433,7 +432,7 @@ public class TicketCommentModelImpl extends BaseModelImpl<TicketComment>
 	@Override
 	public String getBody() {
 		if (_body == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _body;
@@ -472,7 +471,7 @@ public class TicketCommentModelImpl extends BaseModelImpl<TicketComment>
 	@Override
 	public String getFormat() {
 		if (_format == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _format;
@@ -511,7 +510,7 @@ public class TicketCommentModelImpl extends BaseModelImpl<TicketComment>
 	@Override
 	public String getSettings() {
 		if (_settings == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _settings;

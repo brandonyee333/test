@@ -38,10 +38,8 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
@@ -312,7 +310,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append("licenseKeySetId=");
 		msg.append(licenseKeySetId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -363,7 +361,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append("licenseKeySetId=");
 		msg.append(licenseKeySetId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -825,7 +823,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -876,7 +874,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -1337,7 +1335,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append("offeringEntryId=");
 		msg.append(offeringEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -1388,7 +1386,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append("offeringEntryId=");
 		msg.append(offeringEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -1862,7 +1860,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -1918,7 +1916,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -2407,7 +2405,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -2463,7 +2461,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -2951,7 +2949,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", clusterId=");
 		msg.append(clusterId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -3007,7 +3005,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", clusterId=");
 		msg.append(clusterId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -3413,7 +3411,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (owner == null) {
 				query.append(_FINDER_COLUMN_OEI_O_OWNER_1);
 			}
-			else if (owner.equals(StringPool.BLANK)) {
+			else if (owner.equals("")) {
 				query.append(_FINDER_COLUMN_OEI_O_OWNER_3);
 			}
 			else {
@@ -3508,7 +3506,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", owner=");
 		msg.append(owner);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -3564,7 +3562,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", owner=");
 		msg.append(owner);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -3661,7 +3659,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if (owner == null) {
 			query.append(_FINDER_COLUMN_OEI_O_OWNER_1);
 		}
-		else if (owner.equals(StringPool.BLANK)) {
+		else if (owner.equals("")) {
 			query.append(_FINDER_COLUMN_OEI_O_OWNER_3);
 		}
 		else {
@@ -3803,7 +3801,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (owner == null) {
 				query.append(_FINDER_COLUMN_OEI_O_OWNER_1);
 			}
-			else if (owner.equals(StringPool.BLANK)) {
+			else if (owner.equals("")) {
 				query.append(_FINDER_COLUMN_OEI_O_OWNER_3);
 			}
 			else {
@@ -3998,7 +3996,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (productId == null) {
 				query.append(_FINDER_COLUMN_PI_SI_PRODUCTID_1);
 			}
-			else if (productId.equals(StringPool.BLANK)) {
+			else if (productId.equals("")) {
 				query.append(_FINDER_COLUMN_PI_SI_PRODUCTID_3);
 			}
 			else {
@@ -4012,7 +4010,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (serverId == null) {
 				query.append(_FINDER_COLUMN_PI_SI_SERVERID_1);
 			}
-			else if (serverId.equals(StringPool.BLANK)) {
+			else if (serverId.equals("")) {
 				query.append(_FINDER_COLUMN_PI_SI_SERVERID_3);
 			}
 			else {
@@ -4109,7 +4107,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", serverId=");
 		msg.append(serverId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -4165,7 +4163,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", serverId=");
 		msg.append(serverId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -4260,7 +4258,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if (productId == null) {
 			query.append(_FINDER_COLUMN_PI_SI_PRODUCTID_1);
 		}
-		else if (productId.equals(StringPool.BLANK)) {
+		else if (productId.equals("")) {
 			query.append(_FINDER_COLUMN_PI_SI_PRODUCTID_3);
 		}
 		else {
@@ -4274,7 +4272,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if (serverId == null) {
 			query.append(_FINDER_COLUMN_PI_SI_SERVERID_1);
 		}
-		else if (serverId.equals(StringPool.BLANK)) {
+		else if (serverId.equals("")) {
 			query.append(_FINDER_COLUMN_PI_SI_SERVERID_3);
 		}
 		else {
@@ -4416,7 +4414,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (productId == null) {
 				query.append(_FINDER_COLUMN_PI_SI_PRODUCTID_1);
 			}
-			else if (productId.equals(StringPool.BLANK)) {
+			else if (productId.equals("")) {
 				query.append(_FINDER_COLUMN_PI_SI_PRODUCTID_3);
 			}
 			else {
@@ -4430,7 +4428,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (serverId == null) {
 				query.append(_FINDER_COLUMN_PI_SI_SERVERID_1);
 			}
-			else if (serverId.equals(StringPool.BLANK)) {
+			else if (serverId.equals("")) {
 				query.append(_FINDER_COLUMN_PI_SI_SERVERID_3);
 			}
 			else {
@@ -4633,7 +4631,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (productId == null) {
 				query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_1);
 			}
-			else if (productId.equals(StringPool.BLANK)) {
+			else if (productId.equals("")) {
 				query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_3);
 			}
 			else {
@@ -4735,7 +4733,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", productId=");
 		msg.append(productId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -4798,7 +4796,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", productId=");
 		msg.append(productId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -4901,7 +4899,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if (productId == null) {
 			query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_1);
 		}
-		else if (productId.equals(StringPool.BLANK)) {
+		else if (productId.equals("")) {
 			query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_3);
 		}
 		else {
@@ -5054,7 +5052,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (productId == null) {
 				query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_1);
 			}
-			else if (productId.equals(StringPool.BLANK)) {
+			else if (productId.equals("")) {
 				query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_3);
 			}
 			else {
@@ -5364,7 +5362,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -5427,7 +5425,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -5962,7 +5960,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -6024,7 +6022,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -6561,7 +6559,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -6624,7 +6622,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -6960,15 +6958,15 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			query.append(_SQL_SELECT_LICENSEKEY_WHERE);
 
 			if (offeringEntryIds.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_OEI_C_A_OFFERINGENTRYID_7);
 
 				query.append(StringUtil.merge(offeringEntryIds));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
 				query.append(WHERE_AND);
 			}
@@ -7150,15 +7148,15 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			query.append(_SQL_COUNT_LICENSEKEY_WHERE);
 
 			if (offeringEntryIds.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_OEI_C_A_OFFERINGENTRYID_7);
 
 				query.append(StringUtil.merge(offeringEntryIds));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
 				query.append(WHERE_AND);
 			}
@@ -7374,7 +7372,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (productEntryName == null) {
 				query.append(_FINDER_COLUMN_PEN_SI_A_PRODUCTENTRYNAME_1);
 			}
-			else if (productEntryName.equals(StringPool.BLANK)) {
+			else if (productEntryName.equals("")) {
 				query.append(_FINDER_COLUMN_PEN_SI_A_PRODUCTENTRYNAME_3);
 			}
 			else {
@@ -7388,7 +7386,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (serverId == null) {
 				query.append(_FINDER_COLUMN_PEN_SI_A_SERVERID_1);
 			}
-			else if (serverId.equals(StringPool.BLANK)) {
+			else if (serverId.equals("")) {
 				query.append(_FINDER_COLUMN_PEN_SI_A_SERVERID_3);
 			}
 			else {
@@ -7494,7 +7492,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -7557,7 +7555,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -7656,7 +7654,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if (productEntryName == null) {
 			query.append(_FINDER_COLUMN_PEN_SI_A_PRODUCTENTRYNAME_1);
 		}
-		else if (productEntryName.equals(StringPool.BLANK)) {
+		else if (productEntryName.equals("")) {
 			query.append(_FINDER_COLUMN_PEN_SI_A_PRODUCTENTRYNAME_3);
 		}
 		else {
@@ -7670,7 +7668,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if (serverId == null) {
 			query.append(_FINDER_COLUMN_PEN_SI_A_SERVERID_1);
 		}
-		else if (serverId.equals(StringPool.BLANK)) {
+		else if (serverId.equals("")) {
 			query.append(_FINDER_COLUMN_PEN_SI_A_SERVERID_3);
 		}
 		else {
@@ -7820,7 +7818,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (productEntryName == null) {
 				query.append(_FINDER_COLUMN_PEN_SI_A_PRODUCTENTRYNAME_1);
 			}
-			else if (productEntryName.equals(StringPool.BLANK)) {
+			else if (productEntryName.equals("")) {
 				query.append(_FINDER_COLUMN_PEN_SI_A_PRODUCTENTRYNAME_3);
 			}
 			else {
@@ -7834,7 +7832,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (serverId == null) {
 				query.append(_FINDER_COLUMN_PEN_SI_A_SERVERID_1);
 			}
-			else if (serverId.equals(StringPool.BLANK)) {
+			else if (serverId.equals("")) {
 				query.append(_FINDER_COLUMN_PEN_SI_A_SERVERID_3);
 			}
 			else {
@@ -8066,7 +8064,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (productId == null) {
 				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_1);
 			}
-			else if (productId.equals(StringPool.BLANK)) {
+			else if (productId.equals("")) {
 				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_3);
 			}
 			else {
@@ -8080,7 +8078,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (serverId == null) {
 				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_1);
 			}
-			else if (serverId.equals(StringPool.BLANK)) {
+			else if (serverId.equals("")) {
 				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_3);
 			}
 			else {
@@ -8192,7 +8190,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -8260,7 +8258,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -8366,7 +8364,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if (productId == null) {
 			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_1);
 		}
-		else if (productId.equals(StringPool.BLANK)) {
+		else if (productId.equals("")) {
 			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_3);
 		}
 		else {
@@ -8380,7 +8378,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if (serverId == null) {
 			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_1);
 		}
-		else if (serverId.equals(StringPool.BLANK)) {
+		else if (serverId.equals("")) {
 			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_3);
 		}
 		else {
@@ -8539,7 +8537,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (productId == null) {
 				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_1);
 			}
-			else if (productId.equals(StringPool.BLANK)) {
+			else if (productId.equals("")) {
 				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_3);
 			}
 			else {
@@ -8553,7 +8551,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (serverId == null) {
 				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_1);
 			}
-			else if (serverId.equals(StringPool.BLANK)) {
+			else if (serverId.equals("")) {
 				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_3);
 			}
 			else {
@@ -8791,7 +8789,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (licenseEntryType == null) {
 				query.append(_FINDER_COLUMN_OEI_LET_C_A_LICENSEENTRYTYPE_1);
 			}
-			else if (licenseEntryType.equals(StringPool.BLANK)) {
+			else if (licenseEntryType.equals("")) {
 				query.append(_FINDER_COLUMN_OEI_LET_C_A_LICENSEENTRYTYPE_3);
 			}
 			else {
@@ -8903,7 +8901,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -8971,7 +8969,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -9078,7 +9076,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if (licenseEntryType == null) {
 			query.append(_FINDER_COLUMN_OEI_LET_C_A_LICENSEENTRYTYPE_1);
 		}
-		else if (licenseEntryType.equals(StringPool.BLANK)) {
+		else if (licenseEntryType.equals("")) {
 			query.append(_FINDER_COLUMN_OEI_LET_C_A_LICENSEENTRYTYPE_3);
 		}
 		else {
@@ -9237,7 +9235,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (licenseEntryType == null) {
 				query.append(_FINDER_COLUMN_OEI_LET_C_A_LICENSEENTRYTYPE_1);
 			}
-			else if (licenseEntryType.equals(StringPool.BLANK)) {
+			else if (licenseEntryType.equals("")) {
 				query.append(_FINDER_COLUMN_OEI_LET_C_A_LICENSEENTRYTYPE_3);
 			}
 			else {
@@ -9451,7 +9449,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (licenseEntryType == null) {
 				query.append(_FINDER_COLUMN_OEI_NOTLET_C_A_LICENSEENTRYTYPE_1);
 			}
-			else if (licenseEntryType.equals(StringPool.BLANK)) {
+			else if (licenseEntryType.equals("")) {
 				query.append(_FINDER_COLUMN_OEI_NOTLET_C_A_LICENSEENTRYTYPE_3);
 			}
 			else {
@@ -9563,7 +9561,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -9631,7 +9629,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		msg.append(", active=");
 		msg.append(active);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeyException(msg.toString());
 	}
@@ -9738,7 +9736,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if (licenseEntryType == null) {
 			query.append(_FINDER_COLUMN_OEI_NOTLET_C_A_LICENSEENTRYTYPE_1);
 		}
-		else if (licenseEntryType.equals(StringPool.BLANK)) {
+		else if (licenseEntryType.equals("")) {
 			query.append(_FINDER_COLUMN_OEI_NOTLET_C_A_LICENSEENTRYTYPE_3);
 		}
 		else {
@@ -9897,7 +9895,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			if (licenseEntryType == null) {
 				query.append(_FINDER_COLUMN_OEI_NOTLET_C_A_LICENSEENTRYTYPE_1);
 			}
-			else if (licenseEntryType.equals(StringPool.BLANK)) {
+			else if (licenseEntryType.equals("")) {
 				query.append(_FINDER_COLUMN_OEI_NOTLET_C_A_LICENSEENTRYTYPE_3);
 			}
 			else {
@@ -9962,8 +9960,10 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		setModelClass(LicenseKey.class);
 
 		try {
-			Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class,
+			Field field = BasePersistenceImpl.class.getDeclaredField(
 					"_dbColumnNames");
+
+			field.setAccessible(true);
 
 			Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -10864,12 +10864,12 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			query.append(",");
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		query.append(")");
 
 		String sql = query.toString();
 

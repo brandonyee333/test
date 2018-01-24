@@ -21,7 +21,6 @@ import com.liferay.osb.model.HolidayEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -95,14 +94,14 @@ public class HolidayEntryCacheModel implements CacheModel<HolidayEntry>,
 		holidayEntryImpl.setHolidayCalendarId(holidayCalendarId);
 
 		if (name == null) {
-			holidayEntryImpl.setName(StringPool.BLANK);
+			holidayEntryImpl.setName("");
 		}
 		else {
 			holidayEntryImpl.setName(name);
 		}
 
 		if (description == null) {
-			holidayEntryImpl.setDescription(StringPool.BLANK);
+			holidayEntryImpl.setDescription("");
 		}
 		else {
 			holidayEntryImpl.setDescription(description);
@@ -150,14 +149,14 @@ public class HolidayEntryCacheModel implements CacheModel<HolidayEntry>,
 		objectOutput.writeLong(holidayCalendarId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);

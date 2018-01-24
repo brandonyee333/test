@@ -50,13 +50,6 @@ public class AccountCallServiceWrapper implements AccountCallService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountCallService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.AccountCall updateAccountCall(
 		long accountCallId, long accountEntryId, int type, int callDateMonth,
 		int callDateDay, int callDateYear, int callDateHour,

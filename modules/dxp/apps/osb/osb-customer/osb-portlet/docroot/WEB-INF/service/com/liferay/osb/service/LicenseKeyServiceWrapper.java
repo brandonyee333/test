@@ -114,13 +114,6 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _licenseKeyService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.LicenseKey renewLicenseKey(long licenseKeyId,
 		java.util.Date startDate, java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {

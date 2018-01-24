@@ -273,14 +273,6 @@ public class SupportResponseLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _supportResponseLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.SupportResponse updateSupportResponse(
 		long supportResponseId, java.lang.String name, int supportLevel,
 		int severity1Response, int severity1Resolution, int severity2Response,

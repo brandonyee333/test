@@ -110,14 +110,6 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketAttachmentService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
 		long ticketAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {

@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -273,12 +272,6 @@ public class SecurityPatchLocalServiceUtil {
 		return getService().getSecurityPatchsCount();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.osb.model.SecurityPatch updateSecurityPatch(
 		long securityPatchId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -302,15 +295,8 @@ public class SecurityPatchLocalServiceUtil {
 
 	public static SecurityPatchLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (SecurityPatchLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					SecurityPatchLocalService.class.getName());
-
-			if (invokableLocalService instanceof SecurityPatchLocalService) {
-				_service = (SecurityPatchLocalService)invokableLocalService;
-			}
-			else {
-				_service = new SecurityPatchLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(SecurityPatchLocalServiceUtil.class,
 				"_service");

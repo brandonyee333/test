@@ -264,7 +264,7 @@ public class TicketCannedResponseUtil {
 
 	public static TicketCannedResponsePersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (TicketCannedResponsePersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
+			_persistence = (TicketCannedResponsePersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
 					TicketCannedResponsePersistence.class.getName());
 
 			ReferenceRegistry.registerReference(TicketCannedResponseUtil.class,

@@ -400,14 +400,6 @@ public class PartnerEntryLocalServiceWrapper implements PartnerEntryLocalService
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _partnerEntryLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.PartnerEntry> search(
 		java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,

@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -303,12 +302,6 @@ public class TicketWorkerLocalServiceUtil {
 		return getService().hasTicketWorker(userId, ticketEntryId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Updates the ticket worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -326,15 +319,8 @@ public class TicketWorkerLocalServiceUtil {
 
 	public static TicketWorkerLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketWorkerLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketWorkerLocalService.class.getName());
-
-			if (invokableLocalService instanceof TicketWorkerLocalService) {
-				_service = (TicketWorkerLocalService)invokableLocalService;
-			}
-			else {
-				_service = new TicketWorkerLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(TicketWorkerLocalServiceUtil.class,
 				"_service");

@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -82,12 +81,6 @@ public class TicketCommentServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.osb.model.TicketComment updateTicketComment(
 		long userId, long ticketCommentId, long ticketEntryId,
 		java.lang.String body, int visibility, int status,
@@ -113,15 +106,8 @@ public class TicketCommentServiceUtil {
 
 	public static TicketCommentService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketCommentService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketCommentService.class.getName());
-
-			if (invokableService instanceof TicketCommentService) {
-				_service = (TicketCommentService)invokableService;
-			}
-			else {
-				_service = new TicketCommentServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(TicketCommentServiceUtil.class,
 				"_service");

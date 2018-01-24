@@ -44,14 +44,6 @@ public class FeedbackEntryServiceWrapper implements FeedbackEntryService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _feedbackEntryService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public FeedbackEntryService getWrappedService() {
 		return _feedbackEntryService;
 	}

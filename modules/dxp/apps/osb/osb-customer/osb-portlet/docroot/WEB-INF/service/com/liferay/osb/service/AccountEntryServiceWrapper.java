@@ -71,13 +71,6 @@ public class AccountEntryServiceWrapper implements AccountEntryService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountEntryService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.AccountEntry> search(
 		java.lang.Long createUserId, int createDateGTDay,
 		int createDateGTMonth, int createDateGTYear, int createDateLTDay,

@@ -76,7 +76,7 @@ public class OrderEntryFinderUtil {
 
 	public static OrderEntryFinder getFinder() {
 		if (_finder == null) {
-			_finder = (OrderEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
+			_finder = (OrderEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
 					OrderEntryFinder.class.getName());
 
 			ReferenceRegistry.registerReference(OrderEntryFinderUtil.class,

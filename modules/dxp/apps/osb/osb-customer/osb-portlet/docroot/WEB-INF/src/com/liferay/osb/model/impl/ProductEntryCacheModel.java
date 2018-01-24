@@ -21,7 +21,6 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -99,7 +98,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		productEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			productEntryImpl.setUserName(StringPool.BLANK);
+			productEntryImpl.setUserName("");
 		}
 		else {
 			productEntryImpl.setUserName(userName);
@@ -120,7 +119,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		}
 
 		if (name == null) {
-			productEntryImpl.setName(StringPool.BLANK);
+			productEntryImpl.setName("");
 		}
 		else {
 			productEntryImpl.setName(name);
@@ -130,7 +129,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		productEntryImpl.setEnvironment(environment);
 
 		if (versionsListType == null) {
-			productEntryImpl.setVersionsListType(StringPool.BLANK);
+			productEntryImpl.setVersionsListType("");
 		}
 		else {
 			productEntryImpl.setVersionsListType(versionsListType);
@@ -165,7 +164,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -175,7 +174,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -186,7 +185,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		objectOutput.writeInt(environment);
 
 		if (versionsListType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(versionsListType);

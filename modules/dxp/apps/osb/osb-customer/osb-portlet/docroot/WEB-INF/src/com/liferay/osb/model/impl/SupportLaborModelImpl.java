@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -369,7 +368,7 @@ public class SupportLaborModelImpl extends BaseModelImpl<SupportLabor>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _name;
@@ -385,7 +384,7 @@ public class SupportLaborModelImpl extends BaseModelImpl<SupportLabor>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _description;
@@ -401,7 +400,7 @@ public class SupportLaborModelImpl extends BaseModelImpl<SupportLabor>
 	@Override
 	public String getTimeZoneId() {
 		if (_timeZoneId == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _timeZoneId;

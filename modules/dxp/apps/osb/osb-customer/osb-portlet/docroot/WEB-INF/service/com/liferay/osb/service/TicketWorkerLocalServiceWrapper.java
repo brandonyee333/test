@@ -326,14 +326,6 @@ public class TicketWorkerLocalServiceWrapper implements TicketWorkerLocalService
 		return _ticketWorkerLocalService.hasTicketWorker(userId, ticketEntryId);
 	}
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketWorkerLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
 	/**
 	* Updates the ticket worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*

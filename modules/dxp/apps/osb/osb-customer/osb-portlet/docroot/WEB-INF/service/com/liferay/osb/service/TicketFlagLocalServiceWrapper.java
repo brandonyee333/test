@@ -298,14 +298,6 @@ public class TicketFlagLocalServiceWrapper implements TicketFlagLocalService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketFlagLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.TicketFlag updateTicketFlag(long userId,
 		long accountEntryId, long ticketEntryId, int type, int flag)
 		throws com.liferay.portal.kernel.exception.PortalException {

@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -308,7 +307,7 @@ public class TicketFeedbackPersistenceImpl extends BasePersistenceImpl<TicketFee
 		msg.append("ticketEntryId=");
 		msg.append(ticketEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFeedbackException(msg.toString());
 	}
@@ -359,7 +358,7 @@ public class TicketFeedbackPersistenceImpl extends BasePersistenceImpl<TicketFee
 		msg.append("ticketEntryId=");
 		msg.append(ticketEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFeedbackException(msg.toString());
 	}
@@ -835,7 +834,7 @@ public class TicketFeedbackPersistenceImpl extends BasePersistenceImpl<TicketFee
 		msg.append(", subject=");
 		msg.append(subject);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFeedbackException(msg.toString());
 	}
@@ -891,7 +890,7 @@ public class TicketFeedbackPersistenceImpl extends BasePersistenceImpl<TicketFee
 		msg.append(", subject=");
 		msg.append(subject);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFeedbackException(msg.toString());
 	}
@@ -1387,7 +1386,7 @@ public class TicketFeedbackPersistenceImpl extends BasePersistenceImpl<TicketFee
 		msg.append(", status=");
 		msg.append(status);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFeedbackException(msg.toString());
 	}
@@ -1450,7 +1449,7 @@ public class TicketFeedbackPersistenceImpl extends BasePersistenceImpl<TicketFee
 		msg.append(", status=");
 		msg.append(status);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFeedbackException(msg.toString());
 	}
@@ -1975,7 +1974,7 @@ public class TicketFeedbackPersistenceImpl extends BasePersistenceImpl<TicketFee
 		msg.append(", status=");
 		msg.append(status);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFeedbackException(msg.toString());
 	}
@@ -2043,7 +2042,7 @@ public class TicketFeedbackPersistenceImpl extends BasePersistenceImpl<TicketFee
 		msg.append(", status=");
 		msg.append(status);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFeedbackException(msg.toString());
 	}
@@ -2831,12 +2830,12 @@ public class TicketFeedbackPersistenceImpl extends BasePersistenceImpl<TicketFee
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			query.append(",");
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		query.append(")");
 
 		String sql = query.toString();
 

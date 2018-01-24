@@ -21,7 +21,6 @@ import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -110,7 +109,7 @@ public class OfferingDefinitionCacheModel implements CacheModel<OfferingDefiniti
 		offeringDefinitionImpl.setUserId(userId);
 
 		if (userName == null) {
-			offeringDefinitionImpl.setUserName(StringPool.BLANK);
+			offeringDefinitionImpl.setUserName("");
 		}
 		else {
 			offeringDefinitionImpl.setUserName(userName);
@@ -134,7 +133,7 @@ public class OfferingDefinitionCacheModel implements CacheModel<OfferingDefiniti
 		offeringDefinitionImpl.setSupportResponseId(supportResponseId);
 
 		if (productDescription == null) {
-			offeringDefinitionImpl.setProductDescription(StringPool.BLANK);
+			offeringDefinitionImpl.setProductDescription("");
 		}
 		else {
 			offeringDefinitionImpl.setProductDescription(productDescription);
@@ -188,7 +187,7 @@ public class OfferingDefinitionCacheModel implements CacheModel<OfferingDefiniti
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -202,7 +201,7 @@ public class OfferingDefinitionCacheModel implements CacheModel<OfferingDefiniti
 		objectOutput.writeLong(supportResponseId);
 
 		if (productDescription == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(productDescription);

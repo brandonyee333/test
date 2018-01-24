@@ -262,14 +262,6 @@ public class SupportWorkerComponentLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _supportWorkerComponentLocalService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
-	@Override
 	public void setSupportWorkerComponents(long supportWorkerId,
 		int[] components) {
 		_supportWorkerComponentLocalService.setSupportWorkerComponents(supportWorkerId,

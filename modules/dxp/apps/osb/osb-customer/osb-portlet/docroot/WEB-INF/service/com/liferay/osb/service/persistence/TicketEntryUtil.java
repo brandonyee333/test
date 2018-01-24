@@ -996,7 +996,7 @@ public class TicketEntryUtil {
 
 	public static TicketEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (TicketEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
+			_persistence = (TicketEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
 					TicketEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(TicketEntryUtil.class,

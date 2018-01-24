@@ -36,10 +36,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
@@ -319,7 +317,7 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 		msg.append(", type=");
 		msg.append(type);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFlagException(msg.toString());
 	}
@@ -375,7 +373,7 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 		msg.append(", type=");
 		msg.append(type);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFlagException(msg.toString());
 	}
@@ -861,7 +859,7 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 		msg.append(", type=");
 		msg.append(type);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFlagException(msg.toString());
 	}
@@ -917,7 +915,7 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 		msg.append(", type=");
 		msg.append(type);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFlagException(msg.toString());
 	}
@@ -1434,7 +1432,7 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 		msg.append(", flag=");
 		msg.append(flag);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFlagException(msg.toString());
 	}
@@ -1495,7 +1493,7 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 		msg.append(", flag=");
 		msg.append(flag);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchTicketFlagException(msg.toString());
 	}
@@ -1827,15 +1825,15 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 			query.append(_FINDER_COLUMN_TEI_T_F_TICKETENTRYID_2);
 
 			if (types.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_TEI_T_F_TYPE_7);
 
 				query.append(StringUtil.merge(types));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
 				query.append(WHERE_AND);
 			}
@@ -2011,15 +2009,15 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 			query.append(_FINDER_COLUMN_TEI_T_F_TICKETENTRYID_2);
 
 			if (types.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_TEI_T_F_TYPE_7);
 
 				query.append(StringUtil.merge(types));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
 				query.append(WHERE_AND);
 			}
@@ -2119,7 +2117,7 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 			msg.append(", type=");
 			msg.append(type);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			msg.append("}");
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -2351,8 +2349,10 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 		setModelClass(TicketFlag.class);
 
 		try {
-			Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class,
+			Field field = BasePersistenceImpl.class.getDeclaredField(
 					"_dbColumnNames");
+
+			field.setAccessible(true);
 
 			Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -2914,12 +2914,12 @@ public class TicketFlagPersistenceImpl extends BasePersistenceImpl<TicketFlag>
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			query.append(",");
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		query.append(")");
 
 		String sql = query.toString();
 

@@ -91,13 +91,6 @@ public class TicketEntryServiceWrapper implements TicketEntryService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketEntryService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public com.liferay.portal.kernel.search.Hits search(long reportedByUserId,
 		long accountEntryId, java.lang.String name, int[] accountEntryTier,
 		java.lang.Boolean satisfiedDueDate, java.util.Date createDateGT,

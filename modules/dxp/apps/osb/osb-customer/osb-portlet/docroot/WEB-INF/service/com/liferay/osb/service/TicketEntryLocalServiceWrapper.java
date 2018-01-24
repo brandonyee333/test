@@ -344,14 +344,6 @@ public class TicketEntryLocalServiceWrapper implements TicketEntryLocalService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketEntryLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public void reindexTicketEntry(long ticketEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_ticketEntryLocalService.reindexTicketEntry(ticketEntryId);

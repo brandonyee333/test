@@ -21,7 +21,6 @@ import com.liferay.osb.model.CorpProject;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -99,7 +98,7 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 		corpProjectImpl.setUserId(userId);
 
 		if (userName == null) {
-			corpProjectImpl.setUserName(StringPool.BLANK);
+			corpProjectImpl.setUserName("");
 		}
 		else {
 			corpProjectImpl.setUserName(userName);
@@ -120,21 +119,21 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 		}
 
 		if (dossieraProjectKey == null) {
-			corpProjectImpl.setDossieraProjectKey(StringPool.BLANK);
+			corpProjectImpl.setDossieraProjectKey("");
 		}
 		else {
 			corpProjectImpl.setDossieraProjectKey(dossieraProjectKey);
 		}
 
 		if (salesforceProjectKey == null) {
-			corpProjectImpl.setSalesforceProjectKey(StringPool.BLANK);
+			corpProjectImpl.setSalesforceProjectKey("");
 		}
 		else {
 			corpProjectImpl.setSalesforceProjectKey(salesforceProjectKey);
 		}
 
 		if (name == null) {
-			corpProjectImpl.setName(StringPool.BLANK);
+			corpProjectImpl.setName("");
 		}
 		else {
 			corpProjectImpl.setName(name);
@@ -170,7 +169,7 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -180,21 +179,21 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (dossieraProjectKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(dossieraProjectKey);
 		}
 
 		if (salesforceProjectKey == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(salesforceProjectKey);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);

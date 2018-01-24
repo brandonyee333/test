@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -365,12 +364,6 @@ public class PartnerEntryLocalServiceUtil {
 				   .hasSupportRegionPartnerEntry(supportRegionId, partnerEntryId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static java.util.List<com.liferay.osb.model.PartnerEntry> search(
 		java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
@@ -430,15 +423,8 @@ public class PartnerEntryLocalServiceUtil {
 
 	public static PartnerEntryLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (PartnerEntryLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					PartnerEntryLocalService.class.getName());
-
-			if (invokableLocalService instanceof PartnerEntryLocalService) {
-				_service = (PartnerEntryLocalService)invokableLocalService;
-			}
-			else {
-				_service = new PartnerEntryLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(PartnerEntryLocalServiceUtil.class,
 				"_service");

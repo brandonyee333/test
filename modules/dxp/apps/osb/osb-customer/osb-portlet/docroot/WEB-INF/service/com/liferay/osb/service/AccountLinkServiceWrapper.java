@@ -56,13 +56,6 @@ public class AccountLinkServiceWrapper implements AccountLinkService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountLinkService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public AccountLinkService getWrappedService() {
 		return _accountLinkService;
 	}

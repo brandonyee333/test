@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -356,7 +355,7 @@ public class AccountCallModelImpl extends BaseModelImpl<AccountCall>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -368,7 +367,7 @@ public class AccountCallModelImpl extends BaseModelImpl<AccountCall>
 	@Override
 	public String getModifiedUserName() {
 		if (_modifiedUserName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _modifiedUserName;
@@ -457,7 +456,7 @@ public class AccountCallModelImpl extends BaseModelImpl<AccountCall>
 	@Override
 	public String getSummary() {
 		if (_summary == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _summary;
@@ -473,7 +472,7 @@ public class AccountCallModelImpl extends BaseModelImpl<AccountCall>
 	@Override
 	public String getClientsPresent() {
 		if (_clientsPresent == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _clientsPresent;
@@ -489,7 +488,7 @@ public class AccountCallModelImpl extends BaseModelImpl<AccountCall>
 	@Override
 	public String getNotes() {
 		if (_notes == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _notes;
@@ -505,7 +504,7 @@ public class AccountCallModelImpl extends BaseModelImpl<AccountCall>
 	@Override
 	public String getActionItems() {
 		if (_actionItems == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _actionItems;

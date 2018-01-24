@@ -2955,10 +2955,6 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		Class<?> clazz = getClass();
-
-		_classLoader = clazz.getClassLoader();
-
 		PersistedModelLocalServiceRegistryUtil.register("com.liferay.osb.model.LicenseKey",
 			licenseKeyLocalService);
 	}
@@ -2976,27 +2972,6 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return LicenseKeyLocalService.class.getName();
-	}
-
-	@Override
-	public Object invokeMethod(String name, String[] parameterTypes,
-		Object[] arguments) throws Throwable {
-		Thread currentThread = Thread.currentThread();
-
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-		if (contextClassLoader != _classLoader) {
-			currentThread.setContextClassLoader(_classLoader);
-		}
-
-		try {
-			return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
-		}
-		finally {
-			if (contextClassLoader != _classLoader) {
-				currentThread.setContextClassLoader(contextClassLoader);
-			}
-		}
 	}
 
 	protected Class<?> getModelClass() {
@@ -3303,6 +3278,4 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 	protected com.liferay.expando.kernel.service.ExpandoValueLocalService expandoValueLocalService;
 	@BeanReference(type = ExpandoValuePersistence.class)
 	protected ExpandoValuePersistence expandoValuePersistence;
-	private ClassLoader _classLoader;
-	private LicenseKeyLocalServiceClpInvoker _clpInvoker = new LicenseKeyLocalServiceClpInvoker();
 }

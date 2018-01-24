@@ -298,14 +298,6 @@ public class OfferingEntryLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _offeringEntryLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.OfferingEntry> search(
 		long userId, long accountEntryId, int[] types, int[] statuses,
 		int supportEndDateGTDay, int supportEndDateGTMonth,

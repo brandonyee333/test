@@ -257,14 +257,6 @@ public class AccountCallLocalServiceWrapper implements AccountCallLocalService,
 		return _accountCallLocalService.getPersistedModel(primaryKeyObj);
 	}
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountCallLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
 	/**
 	* Updates the account call in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*

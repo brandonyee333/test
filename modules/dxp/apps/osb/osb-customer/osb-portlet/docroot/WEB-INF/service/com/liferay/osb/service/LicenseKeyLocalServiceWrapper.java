@@ -470,14 +470,6 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _licenseKeyLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.LicenseKey renewLicenseKey(long userId,
 		long licenseKeyId, java.util.Date startDate,
 		java.util.Date expirationDate)

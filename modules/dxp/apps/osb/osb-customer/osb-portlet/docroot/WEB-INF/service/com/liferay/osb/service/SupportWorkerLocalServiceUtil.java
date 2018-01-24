@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -375,12 +374,6 @@ public class SupportWorkerLocalServiceUtil {
 		getService().increaseTicketEntryAssignedWork(ticketEntryId, work);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static boolean isClockedIn(long userId) {
 		return getService().isClockedIn(userId);
 	}
@@ -460,15 +453,8 @@ public class SupportWorkerLocalServiceUtil {
 
 	public static SupportWorkerLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (SupportWorkerLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					SupportWorkerLocalService.class.getName());
-
-			if (invokableLocalService instanceof SupportWorkerLocalService) {
-				_service = (SupportWorkerLocalService)invokableLocalService;
-			}
-			else {
-				_service = new SupportWorkerLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(SupportWorkerLocalServiceUtil.class,
 				"_service");

@@ -426,7 +426,7 @@ public class AccountCallUtil {
 
 	public static AccountCallPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AccountCallPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
+			_persistence = (AccountCallPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
 					AccountCallPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AccountCallUtil.class,

@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -262,12 +261,6 @@ public class ExternalIdMapperLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Updates the external ID mapper in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -294,15 +287,8 @@ public class ExternalIdMapperLocalServiceUtil {
 
 	public static ExternalIdMapperLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (ExternalIdMapperLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					ExternalIdMapperLocalService.class.getName());
-
-			if (invokableLocalService instanceof ExternalIdMapperLocalService) {
-				_service = (ExternalIdMapperLocalService)invokableLocalService;
-			}
-			else {
-				_service = new ExternalIdMapperLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(ExternalIdMapperLocalServiceUtil.class,
 				"_service");

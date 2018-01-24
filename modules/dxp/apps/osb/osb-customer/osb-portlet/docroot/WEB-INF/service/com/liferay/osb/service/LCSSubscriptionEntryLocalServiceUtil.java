@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -247,12 +246,6 @@ public class LCSSubscriptionEntryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void syncToLCS(long corpProjectId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().syncToLCS(corpProjectId);
@@ -275,15 +268,8 @@ public class LCSSubscriptionEntryLocalServiceUtil {
 
 	public static LCSSubscriptionEntryLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (LCSSubscriptionEntryLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					LCSSubscriptionEntryLocalService.class.getName());
-
-			if (invokableLocalService instanceof LCSSubscriptionEntryLocalService) {
-				_service = (LCSSubscriptionEntryLocalService)invokableLocalService;
-			}
-			else {
-				_service = new LCSSubscriptionEntryLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(LCSSubscriptionEntryLocalServiceUtil.class,
 				"_service");

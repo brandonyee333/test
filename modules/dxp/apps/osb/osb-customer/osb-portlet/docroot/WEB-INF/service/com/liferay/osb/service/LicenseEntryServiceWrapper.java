@@ -43,13 +43,6 @@ public class LicenseEntryServiceWrapper implements LicenseEntryService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _licenseEntryService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public LicenseEntryService getWrappedService() {
 		return _licenseEntryService;
 	}

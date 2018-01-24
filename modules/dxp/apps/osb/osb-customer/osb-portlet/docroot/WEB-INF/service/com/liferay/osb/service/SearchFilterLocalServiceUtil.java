@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -258,12 +257,6 @@ public class SearchFilterLocalServiceUtil {
 		return getService().getSearchFiltersCount();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.osb.model.SearchFilter updateSearchFilter(
 		long searchFilterId, java.lang.String name, java.lang.String filter,
 		int visibility)
@@ -289,15 +282,8 @@ public class SearchFilterLocalServiceUtil {
 
 	public static SearchFilterLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (SearchFilterLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					SearchFilterLocalService.class.getName());
-
-			if (invokableLocalService instanceof SearchFilterLocalService) {
-				_service = (SearchFilterLocalService)invokableLocalService;
-			}
-			else {
-				_service = new SearchFilterLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(SearchFilterLocalServiceUtil.class,
 				"_service");

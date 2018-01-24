@@ -44,14 +44,6 @@ public class TicketInformationServiceWrapper implements TicketInformationService
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketInformationService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public TicketInformationService getWrappedService() {
 		return _ticketInformationService;
 	}

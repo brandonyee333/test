@@ -262,14 +262,6 @@ public class SupportWorkerSeverityLocalServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _supportWorkerSeverityLocalService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
-	@Override
 	public void setSupportWorkerSeverities(long supportWorkerId,
 		int[] severities) {
 		_supportWorkerSeverityLocalService.setSupportWorkerSeverities(supportWorkerId,

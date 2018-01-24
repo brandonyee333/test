@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -56,12 +55,6 @@ public class AccountCallServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static com.liferay.osb.model.AccountCall updateAccountCall(
 		long accountCallId, long accountEntryId, int type, int callDateMonth,
 		int callDateDay, int callDateYear, int callDateHour,
@@ -82,15 +75,8 @@ public class AccountCallServiceUtil {
 
 	public static AccountCallService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AccountCallService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AccountCallService.class.getName());
-
-			if (invokableService instanceof AccountCallService) {
-				_service = (AccountCallService)invokableService;
-			}
-			else {
-				_service = new AccountCallServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(AccountCallServiceUtil.class,
 				"_service");

@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -246,12 +245,6 @@ public class SupportWorkerSeverityLocalServiceUtil {
 		return getService().getSupportWorkerSeverity(supportWorkerSeverityId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void setSupportWorkerSeverities(long supportWorkerId,
 		int[] severities) {
 		getService().setSupportWorkerSeverities(supportWorkerId, severities);
@@ -274,15 +267,8 @@ public class SupportWorkerSeverityLocalServiceUtil {
 
 	public static SupportWorkerSeverityLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (SupportWorkerSeverityLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					SupportWorkerSeverityLocalService.class.getName());
-
-			if (invokableLocalService instanceof SupportWorkerSeverityLocalService) {
-				_service = (SupportWorkerSeverityLocalService)invokableLocalService;
-			}
-			else {
-				_service = new SupportWorkerSeverityLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(SupportWorkerSeverityLocalServiceUtil.class,
 				"_service");

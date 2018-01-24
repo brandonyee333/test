@@ -281,14 +281,6 @@ public class SupportLaborLocalServiceWrapper implements SupportLaborLocalService
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _supportLaborLocalService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public void removeSupportWorkers(long[] supportWorkerIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_supportLaborLocalService.removeSupportWorkers(supportWorkerIds);

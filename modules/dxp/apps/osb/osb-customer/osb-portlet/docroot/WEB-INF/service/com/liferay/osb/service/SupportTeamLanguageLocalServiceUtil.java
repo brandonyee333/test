@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -246,12 +245,6 @@ public class SupportTeamLanguageLocalServiceUtil {
 		return getService().getSupportTeamLanguagesCount();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void setSupportTeamLanguageIds(long supportTeamId,
 		java.lang.String[] languageIds) {
 		getService().setSupportTeamLanguageIds(supportTeamId, languageIds);
@@ -274,15 +267,8 @@ public class SupportTeamLanguageLocalServiceUtil {
 
 	public static SupportTeamLanguageLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (SupportTeamLanguageLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					SupportTeamLanguageLocalService.class.getName());
-
-			if (invokableLocalService instanceof SupportTeamLanguageLocalService) {
-				_service = (SupportTeamLanguageLocalService)invokableLocalService;
-			}
-			else {
-				_service = new SupportTeamLanguageLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(SupportTeamLanguageLocalServiceUtil.class,
 				"_service");

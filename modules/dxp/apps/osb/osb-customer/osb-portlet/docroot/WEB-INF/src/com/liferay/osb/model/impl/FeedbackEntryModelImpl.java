@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
@@ -300,7 +299,7 @@ public class FeedbackEntryModelImpl extends BaseModelImpl<FeedbackEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -312,7 +311,7 @@ public class FeedbackEntryModelImpl extends BaseModelImpl<FeedbackEntry>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -338,7 +337,7 @@ public class FeedbackEntryModelImpl extends BaseModelImpl<FeedbackEntry>
 	@Override
 	public String getClassName() {
 		if (getClassNameId() <= 0) {
-			return StringPool.BLANK;
+			return "";
 		}
 
 		return PortalUtil.getClassName(getClassNameId());
@@ -392,7 +391,7 @@ public class FeedbackEntryModelImpl extends BaseModelImpl<FeedbackEntry>
 	@Override
 	public String getComments() {
 		if (_comments == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _comments;
@@ -408,7 +407,7 @@ public class FeedbackEntryModelImpl extends BaseModelImpl<FeedbackEntry>
 	@Override
 	public String getPageURL() {
 		if (_pageURL == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _pageURL;

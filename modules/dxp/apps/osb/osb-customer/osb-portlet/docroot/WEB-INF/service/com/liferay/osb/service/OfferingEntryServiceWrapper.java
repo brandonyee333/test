@@ -58,14 +58,6 @@ public class OfferingEntryServiceWrapper implements OfferingEntryService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _offeringEntryService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.OfferingEntry updateOfferingEntry(
 		long offeringEntryId, long accountEntryId, long orderEntryId,
 		long productEntryId, long supportResponseId,

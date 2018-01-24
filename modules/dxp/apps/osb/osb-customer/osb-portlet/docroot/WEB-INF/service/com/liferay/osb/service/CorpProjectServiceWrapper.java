@@ -43,13 +43,6 @@ public class CorpProjectServiceWrapper implements CorpProjectService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _corpProjectService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public CorpProjectService getWrappedService() {
 		return _corpProjectService;
 	}

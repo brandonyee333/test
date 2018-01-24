@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -62,27 +61,14 @@ public class AccountLinkServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static AccountLinkService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AccountLinkService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AccountLinkService.class.getName());
-
-			if (invokableService instanceof AccountLinkService) {
-				_service = (AccountLinkService)invokableService;
-			}
-			else {
-				_service = new AccountLinkServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(AccountLinkServiceUtil.class,
 				"_service");

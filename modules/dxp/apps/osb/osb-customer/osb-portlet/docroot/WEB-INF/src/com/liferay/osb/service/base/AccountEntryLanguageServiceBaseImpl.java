@@ -3470,9 +3470,6 @@ public abstract class AccountEntryLanguageServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		Class<?> clazz = getClass();
-
-		_classLoader = clazz.getClassLoader();
 	}
 
 	public void destroy() {
@@ -3486,27 +3483,6 @@ public abstract class AccountEntryLanguageServiceBaseImpl
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return AccountEntryLanguageService.class.getName();
-	}
-
-	@Override
-	public Object invokeMethod(String name, String[] parameterTypes,
-		Object[] arguments) throws Throwable {
-		Thread currentThread = Thread.currentThread();
-
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-		if (contextClassLoader != _classLoader) {
-			currentThread.setContextClassLoader(_classLoader);
-		}
-
-		try {
-			return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
-		}
-		finally {
-			if (contextClassLoader != _classLoader) {
-				currentThread.setContextClassLoader(contextClassLoader);
-			}
-		}
 	}
 
 	protected Class<?> getModelClass() {
@@ -3895,6 +3871,4 @@ public abstract class AccountEntryLanguageServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-	private ClassLoader _classLoader;
-	private AccountEntryLanguageServiceClpInvoker _clpInvoker = new AccountEntryLanguageServiceClpInvoker();
 }

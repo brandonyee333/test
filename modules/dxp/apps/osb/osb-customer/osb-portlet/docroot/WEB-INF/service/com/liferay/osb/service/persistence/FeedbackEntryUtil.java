@@ -259,7 +259,7 @@ public class FeedbackEntryUtil {
 
 	public static FeedbackEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (FeedbackEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
+			_persistence = (FeedbackEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
 					FeedbackEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(FeedbackEntryUtil.class,

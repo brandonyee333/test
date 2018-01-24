@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -56,12 +55,6 @@ public class AccountCustomerServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void toggleNotifications(long accountCustomerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().toggleNotifications(accountCustomerId);
@@ -73,15 +66,8 @@ public class AccountCustomerServiceUtil {
 
 	public static AccountCustomerService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AccountCustomerService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AccountCustomerService.class.getName());
-
-			if (invokableService instanceof AccountCustomerService) {
-				_service = (AccountCustomerService)invokableService;
-			}
-			else {
-				_service = new AccountCustomerServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(AccountCustomerServiceUtil.class,
 				"_service");

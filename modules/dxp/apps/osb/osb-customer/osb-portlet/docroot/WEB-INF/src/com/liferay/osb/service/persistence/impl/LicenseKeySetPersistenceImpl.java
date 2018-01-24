@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -308,7 +307,7 @@ public class LicenseKeySetPersistenceImpl extends BasePersistenceImpl<LicenseKey
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeySetException(msg.toString());
 	}
@@ -359,7 +358,7 @@ public class LicenseKeySetPersistenceImpl extends BasePersistenceImpl<LicenseKey
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeySetException(msg.toString());
 	}
@@ -772,7 +771,7 @@ public class LicenseKeySetPersistenceImpl extends BasePersistenceImpl<LicenseKey
 			if (name == null) {
 				query.append(_FINDER_COLUMN_U_AEI_N_NAME_1);
 			}
-			else if (name.equals(StringPool.BLANK)) {
+			else if (name.equals("")) {
 				query.append(_FINDER_COLUMN_U_AEI_N_NAME_3);
 			}
 			else {
@@ -873,7 +872,7 @@ public class LicenseKeySetPersistenceImpl extends BasePersistenceImpl<LicenseKey
 		msg.append(", name=");
 		msg.append(name);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeySetException(msg.toString());
 	}
@@ -934,7 +933,7 @@ public class LicenseKeySetPersistenceImpl extends BasePersistenceImpl<LicenseKey
 		msg.append(", name=");
 		msg.append(name);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchLicenseKeySetException(msg.toString());
 	}
@@ -1036,7 +1035,7 @@ public class LicenseKeySetPersistenceImpl extends BasePersistenceImpl<LicenseKey
 		if (name == null) {
 			query.append(_FINDER_COLUMN_U_AEI_N_NAME_1);
 		}
-		else if (name.equals(StringPool.BLANK)) {
+		else if (name.equals("")) {
 			query.append(_FINDER_COLUMN_U_AEI_N_NAME_3);
 		}
 		else {
@@ -1184,7 +1183,7 @@ public class LicenseKeySetPersistenceImpl extends BasePersistenceImpl<LicenseKey
 			if (name == null) {
 				query.append(_FINDER_COLUMN_U_AEI_N_NAME_1);
 			}
-			else if (name.equals(StringPool.BLANK)) {
+			else if (name.equals("")) {
 				query.append(_FINDER_COLUMN_U_AEI_N_NAME_3);
 			}
 			else {
@@ -1723,12 +1722,12 @@ public class LicenseKeySetPersistenceImpl extends BasePersistenceImpl<LicenseKey
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			query.append(",");
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		query.append(")");
 
 		String sql = query.toString();
 

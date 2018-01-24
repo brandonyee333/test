@@ -43,13 +43,6 @@ public class ProductEntryServiceWrapper implements ProductEntryService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _productEntryService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public ProductEntryService getWrappedService() {
 		return _productEntryService;
 	}

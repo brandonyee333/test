@@ -21,7 +21,6 @@ import com.liferay.osb.model.AccountEnvironment;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -109,7 +108,7 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 		accountEnvironmentImpl.setUserId(userId);
 
 		if (userName == null) {
-			accountEnvironmentImpl.setUserName(StringPool.BLANK);
+			accountEnvironmentImpl.setUserName("");
 		}
 		else {
 			accountEnvironmentImpl.setUserName(userName);
@@ -133,7 +132,7 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 		accountEnvironmentImpl.setProductEntryId(productEntryId);
 
 		if (name == null) {
-			accountEnvironmentImpl.setName(StringPool.BLANK);
+			accountEnvironmentImpl.setName("");
 		}
 		else {
 			accountEnvironmentImpl.setName(name);
@@ -142,7 +141,7 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 		accountEnvironmentImpl.setEnvOS(envOS);
 
 		if (envOSCustom == null) {
-			accountEnvironmentImpl.setEnvOSCustom(StringPool.BLANK);
+			accountEnvironmentImpl.setEnvOSCustom("");
 		}
 		else {
 			accountEnvironmentImpl.setEnvOSCustom(envOSCustom);
@@ -192,7 +191,7 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -206,7 +205,7 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 		objectOutput.writeLong(productEntryId);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -215,7 +214,7 @@ public class AccountEnvironmentCacheModel implements CacheModel<AccountEnvironme
 		objectOutput.writeInt(envOS);
 
 		if (envOSCustom == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(envOSCustom);

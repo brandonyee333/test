@@ -291,14 +291,6 @@ public class HolidayCalendarRelLocalServiceWrapper
 			userId);
 	}
 
-	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _holidayCalendarRelLocalService.invokeMethod(name,
-			parameterTypes, arguments);
-	}
-
 	/**
 	* Updates the holiday calendar rel in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*

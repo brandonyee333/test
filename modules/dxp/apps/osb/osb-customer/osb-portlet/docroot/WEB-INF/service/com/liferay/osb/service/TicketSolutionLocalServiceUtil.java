@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -269,12 +268,6 @@ public class TicketSolutionLocalServiceUtil {
 		return getService().getTicketSolutionsCount();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void updateStatus(long ticketEntryId, int ticketEntryStatus,
 		int resolution) {
 		getService().updateStatus(ticketEntryId, ticketEntryStatus, resolution);
@@ -306,15 +299,8 @@ public class TicketSolutionLocalServiceUtil {
 
 	public static TicketSolutionLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketSolutionLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketSolutionLocalService.class.getName());
-
-			if (invokableLocalService instanceof TicketSolutionLocalService) {
-				_service = (TicketSolutionLocalService)invokableLocalService;
-			}
-			else {
-				_service = new TicketSolutionLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(TicketSolutionLocalServiceUtil.class,
 				"_service");

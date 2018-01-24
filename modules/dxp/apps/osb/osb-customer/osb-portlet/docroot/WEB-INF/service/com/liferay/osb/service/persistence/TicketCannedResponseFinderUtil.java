@@ -47,7 +47,7 @@ public class TicketCannedResponseFinderUtil {
 
 	public static TicketCannedResponseFinder getFinder() {
 		if (_finder == null) {
-			_finder = (TicketCannedResponseFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
+			_finder = (TicketCannedResponseFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
 					TicketCannedResponseFinder.class.getName());
 
 			ReferenceRegistry.registerReference(TicketCannedResponseFinderUtil.class,

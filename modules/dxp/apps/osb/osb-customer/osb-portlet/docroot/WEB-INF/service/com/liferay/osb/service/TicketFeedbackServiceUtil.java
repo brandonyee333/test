@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -79,12 +78,6 @@ public class TicketFeedbackServiceUtil {
 		long ticketEntryId, int subject)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTicketFeedbacks(ticketEntryId, subject);
-	}
-
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketFeedback> search(
@@ -157,15 +150,8 @@ public class TicketFeedbackServiceUtil {
 
 	public static TicketFeedbackService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketFeedbackService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketFeedbackService.class.getName());
-
-			if (invokableService instanceof TicketFeedbackService) {
-				_service = (TicketFeedbackService)invokableService;
-			}
-			else {
-				_service = new TicketFeedbackServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(TicketFeedbackServiceUtil.class,
 				"_service");

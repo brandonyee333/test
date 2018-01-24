@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -278,12 +277,6 @@ public class AccountEnvironmentLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	/**
 	* Updates the account environment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -314,15 +307,8 @@ public class AccountEnvironmentLocalServiceUtil {
 
 	public static AccountEnvironmentLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (AccountEnvironmentLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					AccountEnvironmentLocalService.class.getName());
-
-			if (invokableLocalService instanceof AccountEnvironmentLocalService) {
-				_service = (AccountEnvironmentLocalService)invokableLocalService;
-			}
-			else {
-				_service = new AccountEnvironmentLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(AccountEnvironmentLocalServiceUtil.class,
 				"_service");

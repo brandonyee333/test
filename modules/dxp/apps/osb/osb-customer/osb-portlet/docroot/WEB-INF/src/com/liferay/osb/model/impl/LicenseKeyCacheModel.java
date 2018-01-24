@@ -21,7 +21,6 @@ import com.liferay.osb.model.LicenseKey;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -161,7 +160,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		licenseKeyImpl.setUserId(userId);
 
 		if (userName == null) {
-			licenseKeyImpl.setUserName(StringPool.BLANK);
+			licenseKeyImpl.setUserName("");
 		}
 		else {
 			licenseKeyImpl.setUserName(userName);
@@ -177,7 +176,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		licenseKeyImpl.setModifiedUserId(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			licenseKeyImpl.setModifiedUserName(StringPool.BLANK);
+			licenseKeyImpl.setModifiedUserName("");
 		}
 		else {
 			licenseKeyImpl.setModifiedUserName(modifiedUserName);
@@ -200,21 +199,21 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		licenseKeyImpl.setSupportResponseId(supportResponseId);
 
 		if (accountEntryName == null) {
-			licenseKeyImpl.setAccountEntryName(StringPool.BLANK);
+			licenseKeyImpl.setAccountEntryName("");
 		}
 		else {
 			licenseKeyImpl.setAccountEntryName(accountEntryName);
 		}
 
 		if (licenseEntryName == null) {
-			licenseKeyImpl.setLicenseEntryName(StringPool.BLANK);
+			licenseKeyImpl.setLicenseEntryName("");
 		}
 		else {
 			licenseKeyImpl.setLicenseEntryName(licenseEntryName);
 		}
 
 		if (licenseEntryType == null) {
-			licenseKeyImpl.setLicenseEntryType(StringPool.BLANK);
+			licenseKeyImpl.setLicenseEntryType("");
 		}
 		else {
 			licenseKeyImpl.setLicenseEntryType(licenseEntryType);
@@ -223,14 +222,14 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		licenseKeyImpl.setLicenseVersion(licenseVersion);
 
 		if (productEntryName == null) {
-			licenseKeyImpl.setProductEntryName(StringPool.BLANK);
+			licenseKeyImpl.setProductEntryName("");
 		}
 		else {
 			licenseKeyImpl.setProductEntryName(productEntryName);
 		}
 
 		if (productId == null) {
-			licenseKeyImpl.setProductId(StringPool.BLANK);
+			licenseKeyImpl.setProductId("");
 		}
 		else {
 			licenseKeyImpl.setProductId(productId);
@@ -239,7 +238,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		licenseKeyImpl.setProductVersion(productVersion);
 
 		if (productVersionLabel == null) {
-			licenseKeyImpl.setProductVersionLabel(StringPool.BLANK);
+			licenseKeyImpl.setProductVersionLabel("");
 		}
 		else {
 			licenseKeyImpl.setProductVersionLabel(productVersionLabel);
@@ -248,7 +247,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		licenseKeyImpl.setClusterId(clusterId);
 
 		if (owner == null) {
-			licenseKeyImpl.setOwner(StringPool.BLANK);
+			licenseKeyImpl.setOwner("");
 		}
 		else {
 			licenseKeyImpl.setOwner(owner);
@@ -260,42 +259,42 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		licenseKeyImpl.setMaxHttpSessions(maxHttpSessions);
 
 		if (description == null) {
-			licenseKeyImpl.setDescription(StringPool.BLANK);
+			licenseKeyImpl.setDescription("");
 		}
 		else {
 			licenseKeyImpl.setDescription(description);
 		}
 
 		if (hostName == null) {
-			licenseKeyImpl.setHostName(StringPool.BLANK);
+			licenseKeyImpl.setHostName("");
 		}
 		else {
 			licenseKeyImpl.setHostName(hostName);
 		}
 
 		if (ipAddresses == null) {
-			licenseKeyImpl.setIpAddresses(StringPool.BLANK);
+			licenseKeyImpl.setIpAddresses("");
 		}
 		else {
 			licenseKeyImpl.setIpAddresses(ipAddresses);
 		}
 
 		if (macAddresses == null) {
-			licenseKeyImpl.setMacAddresses(StringPool.BLANK);
+			licenseKeyImpl.setMacAddresses("");
 		}
 		else {
 			licenseKeyImpl.setMacAddresses(macAddresses);
 		}
 
 		if (serverId == null) {
-			licenseKeyImpl.setServerId(StringPool.BLANK);
+			licenseKeyImpl.setServerId("");
 		}
 		else {
 			licenseKeyImpl.setServerId(serverId);
 		}
 
 		if (key == null) {
-			licenseKeyImpl.setKey(StringPool.BLANK);
+			licenseKeyImpl.setKey("");
 		}
 		else {
 			licenseKeyImpl.setKey(key);
@@ -316,7 +315,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		}
 
 		if (additionalInfo == null) {
-			licenseKeyImpl.setAdditionalInfo(StringPool.BLANK);
+			licenseKeyImpl.setAdditionalInfo("");
 		}
 		else {
 			licenseKeyImpl.setAdditionalInfo(additionalInfo);
@@ -401,7 +400,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -412,7 +411,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		objectOutput.writeLong(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(modifiedUserName);
@@ -437,21 +436,21 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		objectOutput.writeLong(supportResponseId);
 
 		if (accountEntryName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(accountEntryName);
 		}
 
 		if (licenseEntryName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(licenseEntryName);
 		}
 
 		if (licenseEntryType == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(licenseEntryType);
@@ -460,14 +459,14 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		objectOutput.writeInt(licenseVersion);
 
 		if (productEntryName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(productEntryName);
 		}
 
 		if (productId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(productId);
@@ -476,7 +475,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		objectOutput.writeInt(productVersion);
 
 		if (productVersionLabel == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(productVersionLabel);
@@ -485,7 +484,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		objectOutput.writeLong(clusterId);
 
 		if (owner == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(owner);
@@ -500,42 +499,42 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		objectOutput.writeInt(maxHttpSessions);
 
 		if (description == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (hostName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(hostName);
 		}
 
 		if (ipAddresses == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(ipAddresses);
 		}
 
 		if (macAddresses == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(macAddresses);
 		}
 
 		if (serverId == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(serverId);
 		}
 
 		if (key == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(key);
@@ -545,7 +544,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		objectOutput.writeLong(expirationDate);
 
 		if (additionalInfo == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(additionalInfo);

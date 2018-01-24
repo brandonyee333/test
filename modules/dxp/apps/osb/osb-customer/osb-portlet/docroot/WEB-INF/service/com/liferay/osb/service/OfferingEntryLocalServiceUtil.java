@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -279,12 +278,6 @@ public class OfferingEntryLocalServiceUtil {
 		return getService().hasActiveTrialOfferingEntry(userId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static java.util.List<com.liferay.osb.model.OfferingEntry> search(
 		long userId, long accountEntryId, int[] types, int[] statuses,
 		int supportEndDateGTDay, int supportEndDateGTMonth,
@@ -353,15 +346,8 @@ public class OfferingEntryLocalServiceUtil {
 
 	public static OfferingEntryLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (OfferingEntryLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					OfferingEntryLocalService.class.getName());
-
-			if (invokableLocalService instanceof OfferingEntryLocalService) {
-				_service = (OfferingEntryLocalService)invokableLocalService;
-			}
-			else {
-				_service = new OfferingEntryLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(OfferingEntryLocalServiceUtil.class,
 				"_service");

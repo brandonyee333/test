@@ -60,13 +60,6 @@ public class TicketWorkerServiceWrapper implements TicketWorkerService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _ticketWorkerService.invokeMethod(name, parameterTypes, arguments);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.TicketWorker> updateTicketWorkers(
 		long[] addUserIds, int[] addRoles, long[] removeUserIds,
 		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,

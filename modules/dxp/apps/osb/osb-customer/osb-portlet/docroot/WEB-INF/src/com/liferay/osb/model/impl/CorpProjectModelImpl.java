@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -299,7 +298,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return StringPool.BLANK;
+			return "";
 		}
 	}
 
@@ -311,7 +310,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _userName;
@@ -355,7 +354,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	@Override
 	public String getDossieraProjectKey() {
 		if (_dossieraProjectKey == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _dossieraProjectKey;
@@ -371,7 +370,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	@Override
 	public String getSalesforceProjectKey() {
 		if (_salesforceProjectKey == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _salesforceProjectKey;
@@ -387,7 +386,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return StringPool.BLANK;
+			return "";
 		}
 		else {
 			return _name;

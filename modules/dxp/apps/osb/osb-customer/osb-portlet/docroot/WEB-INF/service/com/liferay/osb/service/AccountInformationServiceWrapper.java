@@ -45,14 +45,6 @@ public class AccountInformationServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountInformationService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.AccountInformation> updateAccountInformation(
 		long accountEntryId, long accountProjectId,
 		java.util.Map<java.lang.Integer, java.lang.String> data)

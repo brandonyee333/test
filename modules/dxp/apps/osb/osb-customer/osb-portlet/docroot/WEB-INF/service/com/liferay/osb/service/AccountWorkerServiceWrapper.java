@@ -44,14 +44,6 @@ public class AccountWorkerServiceWrapper implements AccountWorkerService,
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountWorkerService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public AccountWorkerService getWrappedService() {
 		return _accountWorkerService;
 	}

@@ -44,13 +44,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
@@ -132,7 +129,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			msg.append("corpProjectId=");
 			msg.append(corpProjectId);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			msg.append("}");
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -451,7 +448,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			if (name == null) {
 				query.append(_FINDER_COLUMN_NAME_NAME_1);
 			}
-			else if (name.equals(StringPool.BLANK)) {
+			else if (name.equals("")) {
 				query.append(_FINDER_COLUMN_NAME_NAME_3);
 			}
 			else {
@@ -539,7 +536,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append("name=");
 		msg.append(name);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -588,7 +585,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append("name=");
 		msg.append(name);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -680,7 +677,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		if (name == null) {
 			query.append(_FINDER_COLUMN_NAME_NAME_1);
 		}
-		else if (name.equals(StringPool.BLANK)) {
+		else if (name.equals("")) {
 			query.append(_FINDER_COLUMN_NAME_NAME_3);
 		}
 		else {
@@ -816,7 +813,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			if (name == null) {
 				query.append(_FINDER_COLUMN_NAME_NAME_1);
 			}
-			else if (name.equals(StringPool.BLANK)) {
+			else if (name.equals("")) {
 				query.append(_FINDER_COLUMN_NAME_NAME_3);
 			}
 			else {
@@ -890,7 +887,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			msg.append("code=");
 			msg.append(code);
 
-			msg.append(StringPool.CLOSE_CURLY_BRACE);
+			msg.append("}");
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -949,7 +946,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			if (code == null) {
 				query.append(_FINDER_COLUMN_CODE_CODE_1);
 			}
-			else if (code.equals(StringPool.BLANK)) {
+			else if (code.equals("")) {
 				query.append(_FINDER_COLUMN_CODE_CODE_3);
 			}
 			else {
@@ -1049,7 +1046,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			if (code == null) {
 				query.append(_FINDER_COLUMN_CODE_CODE_1);
 			}
-			else if (code.equals(StringPool.BLANK)) {
+			else if (code.equals("")) {
 				query.append(_FINDER_COLUMN_CODE_CODE_3);
 			}
 			else {
@@ -1320,7 +1317,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append("redirectAccountEntryId=");
 		msg.append(redirectAccountEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -1373,7 +1370,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append("redirectAccountEntryId=");
 		msg.append(redirectAccountEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -1841,7 +1838,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append("partnerEntryId=");
 		msg.append(partnerEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -1892,7 +1889,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append("partnerEntryId=");
 		msg.append(partnerEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -2365,7 +2362,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append(", type=");
 		msg.append(type);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -2421,7 +2418,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append(", type=");
 		msg.append(type);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -2915,7 +2912,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append(", status=");
 		msg.append(status);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -2971,7 +2968,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append(", status=");
 		msg.append(status);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -3293,15 +3290,15 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			query.append(_FINDER_COLUMN_RAEI_S_REDIRECTACCOUNTENTRYID_2);
 
 			if (statuses.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_RAEI_S_STATUS_7);
 
 				query.append(StringUtil.merge(statuses));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 			}
 
 			query.setStringAt(removeConjunction(query.stringAt(query.index() -
@@ -3464,15 +3461,15 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			query.append(_FINDER_COLUMN_RAEI_S_REDIRECTACCOUNTENTRYID_2);
 
 			if (statuses.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_RAEI_S_STATUS_7);
 
 				query.append(StringUtil.merge(statuses));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 			}
 
 			query.setStringAt(removeConjunction(query.stringAt(query.index() -
@@ -3752,7 +3749,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append(", status=");
 		msg.append(status);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -3813,7 +3810,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append(", status=");
 		msg.append(status);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -4161,29 +4158,29 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			query.append(_FINDER_COLUMN_RAEI_NOTT_S_REDIRECTACCOUNTENTRYID_2);
 
 			if (types.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_RAEI_NOTT_S_TYPE_7);
 
 				query.append(StringUtil.merge(types));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
 				query.append(WHERE_AND);
 			}
 
 			if (statuses.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_RAEI_NOTT_S_STATUS_7);
 
 				query.append(StringUtil.merge(statuses));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 			}
 
 			query.setStringAt(removeConjunction(query.stringAt(query.index() -
@@ -4367,29 +4364,29 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			query.append(_FINDER_COLUMN_RAEI_NOTT_S_REDIRECTACCOUNTENTRYID_2);
 
 			if (types.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_RAEI_NOTT_S_TYPE_7);
 
 				query.append(StringUtil.merge(types));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
 				query.append(WHERE_AND);
 			}
 
 			if (statuses.length > 0) {
-				query.append(StringPool.OPEN_PARENTHESIS);
+				query.append("(");
 
 				query.append(_FINDER_COLUMN_RAEI_NOTT_S_STATUS_7);
 
 				query.append(StringUtil.merge(statuses));
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 
-				query.append(StringPool.CLOSE_PARENTHESIS);
+				query.append(")");
 			}
 
 			query.setStringAt(removeConjunction(query.stringAt(query.index() -
@@ -4552,12 +4549,10 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			if ((list != null) && !list.isEmpty()) {
 				for (AccountEntry accountEntry : list) {
 					if (!StringUtil.wildcardMatches(accountEntry.getName(),
-								name, CharPool.UNDERLINE, CharPool.PERCENT,
-								CharPool.BACK_SLASH, false) ||
+								name, '_', '%', '\\', false) ||
 							!StringUtil.wildcardMatches(
-								accountEntry.getCode(), code,
-								CharPool.UNDERLINE, CharPool.PERCENT,
-								CharPool.BACK_SLASH, false) ||
+								accountEntry.getCode(), code, '_', '%', '\\',
+								false) ||
 							(redirectAccountEntryId != accountEntry.getRedirectAccountEntryId())) {
 						list = null;
 
@@ -4585,7 +4580,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			if (name == null) {
 				query.append(_FINDER_COLUMN_N_C_RAEI_NAME_1);
 			}
-			else if (name.equals(StringPool.BLANK)) {
+			else if (name.equals("")) {
 				query.append(_FINDER_COLUMN_N_C_RAEI_NAME_3);
 			}
 			else {
@@ -4599,7 +4594,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			if (code == null) {
 				query.append(_FINDER_COLUMN_N_C_RAEI_CODE_1);
 			}
-			else if (code.equals(StringPool.BLANK)) {
+			else if (code.equals("")) {
 				query.append(_FINDER_COLUMN_N_C_RAEI_CODE_3);
 			}
 			else {
@@ -4705,7 +4700,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append(", redirectAccountEntryId=");
 		msg.append(redirectAccountEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -4768,7 +4763,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		msg.append(", redirectAccountEntryId=");
 		msg.append(redirectAccountEntryId);
 
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
+		msg.append("}");
 
 		throw new NoSuchAccountEntryException(msg.toString());
 	}
@@ -4867,7 +4862,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		if (name == null) {
 			query.append(_FINDER_COLUMN_N_C_RAEI_NAME_1);
 		}
-		else if (name.equals(StringPool.BLANK)) {
+		else if (name.equals("")) {
 			query.append(_FINDER_COLUMN_N_C_RAEI_NAME_3);
 		}
 		else {
@@ -4881,7 +4876,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		if (code == null) {
 			query.append(_FINDER_COLUMN_N_C_RAEI_CODE_1);
 		}
-		else if (code.equals(StringPool.BLANK)) {
+		else if (code.equals("")) {
 			query.append(_FINDER_COLUMN_N_C_RAEI_CODE_3);
 		}
 		else {
@@ -5032,7 +5027,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			if (name == null) {
 				query.append(_FINDER_COLUMN_N_C_RAEI_NAME_1);
 			}
-			else if (name.equals(StringPool.BLANK)) {
+			else if (name.equals("")) {
 				query.append(_FINDER_COLUMN_N_C_RAEI_NAME_3);
 			}
 			else {
@@ -5046,7 +5041,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 			if (code == null) {
 				query.append(_FINDER_COLUMN_N_C_RAEI_CODE_1);
 			}
-			else if (code.equals(StringPool.BLANK)) {
+			else if (code.equals("")) {
 				query.append(_FINDER_COLUMN_N_C_RAEI_CODE_3);
 			}
 			else {
@@ -5108,8 +5103,10 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		setModelClass(AccountEntry.class);
 
 		try {
-			Field field = ReflectionUtil.getDeclaredField(BasePersistenceImpl.class,
+			Field field = BasePersistenceImpl.class.getDeclaredField(
 					"_dbColumnNames");
+
+			field.setAccessible(true);
 
 			Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -5780,12 +5777,12 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(StringPool.COMMA);
+			query.append(",");
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(StringPool.CLOSE_PARENTHESIS);
+		query.append(")");
 
 		String sql = query.toString();
 

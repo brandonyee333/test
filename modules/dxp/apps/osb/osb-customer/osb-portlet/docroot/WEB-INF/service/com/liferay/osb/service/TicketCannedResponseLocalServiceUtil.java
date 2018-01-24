@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -254,12 +253,6 @@ public class TicketCannedResponseLocalServiceUtil {
 		getService().incrementUseCount(ticketCannedResponseId);
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void removeCannedResponseLocale(long ticketCannedResponseId,
 		java.lang.String languageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -314,15 +307,8 @@ public class TicketCannedResponseLocalServiceUtil {
 
 	public static TicketCannedResponseLocalService getService() {
 		if (_service == null) {
-			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketCannedResponseLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketCannedResponseLocalService.class.getName());
-
-			if (invokableLocalService instanceof TicketCannedResponseLocalService) {
-				_service = (TicketCannedResponseLocalService)invokableLocalService;
-			}
-			else {
-				_service = new TicketCannedResponseLocalServiceClp(invokableLocalService);
-			}
 
 			ReferenceRegistry.registerReference(TicketCannedResponseLocalServiceUtil.class,
 				"_service");

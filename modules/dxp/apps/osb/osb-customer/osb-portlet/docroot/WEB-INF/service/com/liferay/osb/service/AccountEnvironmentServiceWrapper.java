@@ -86,14 +86,6 @@ public class AccountEnvironmentServiceWrapper
 	}
 
 	@Override
-	public java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return _accountEnvironmentService.invokeMethod(name, parameterTypes,
-			arguments);
-	}
-
-	@Override
 	public com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
 		long accountEnvironmentId, long productEntryId, java.lang.String name,
 		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,

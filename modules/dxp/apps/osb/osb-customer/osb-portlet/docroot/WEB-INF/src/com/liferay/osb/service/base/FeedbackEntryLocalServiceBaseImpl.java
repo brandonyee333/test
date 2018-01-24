@@ -2742,10 +2742,6 @@ public abstract class FeedbackEntryLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		Class<?> clazz = getClass();
-
-		_classLoader = clazz.getClassLoader();
-
 		PersistedModelLocalServiceRegistryUtil.register("com.liferay.osb.model.FeedbackEntry",
 			feedbackEntryLocalService);
 	}
@@ -2763,27 +2759,6 @@ public abstract class FeedbackEntryLocalServiceBaseImpl
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return FeedbackEntryLocalService.class.getName();
-	}
-
-	@Override
-	public Object invokeMethod(String name, String[] parameterTypes,
-		Object[] arguments) throws Throwable {
-		Thread currentThread = Thread.currentThread();
-
-		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
-
-		if (contextClassLoader != _classLoader) {
-			currentThread.setContextClassLoader(_classLoader);
-		}
-
-		try {
-			return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
-		}
-		finally {
-			if (contextClassLoader != _classLoader) {
-				currentThread.setContextClassLoader(contextClassLoader);
-			}
-		}
 	}
 
 	protected Class<?> getModelClass() {
@@ -3068,6 +3043,4 @@ public abstract class FeedbackEntryLocalServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-	private ClassLoader _classLoader;
-	private FeedbackEntryLocalServiceClpInvoker _clpInvoker = new FeedbackEntryLocalServiceClpInvoker();
 }

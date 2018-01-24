@@ -17,7 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -64,27 +63,14 @@ public class TicketCallServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.lang.Object invokeMethod(java.lang.String name,
-		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
-		throws java.lang.Throwable {
-		return getService().invokeMethod(name, parameterTypes, arguments);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static TicketCallService getService() {
 		if (_service == null) {
-			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
+			_service = (TicketCallService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
 					TicketCallService.class.getName());
-
-			if (invokableService instanceof TicketCallService) {
-				_service = (TicketCallService)invokableService;
-			}
-			else {
-				_service = new TicketCallServiceClp(invokableService);
-			}
 
 			ReferenceRegistry.registerReference(TicketCallServiceUtil.class,
 				"_service");
