@@ -877,9 +877,9 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 				var escalationLevels = A.all('[name="' + <portlet:namespace /> + 'escalationLevels"]');
 
 				escalationLevels.each(
-					function(escalationLevel, index) {
+					function(item, index) {
 						if (index < 2) {
-							escalationLevel.set('checked', checked);
+							item.set('checked', checked);
 						}
 					}
 				);
