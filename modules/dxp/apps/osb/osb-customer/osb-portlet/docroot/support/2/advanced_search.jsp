@@ -868,14 +868,21 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 
 				toggleBulkEditCss.toggleClass('bulk-edit', !checked);
 
-				var status = A.one('[name="' + <portlet:namespace />statuses + '"]');
+				var status = A.one('[name="' + <portlet:namespace /> + 'statuses"]');
 
 				if (status) {
 					status.set('checked', checked);
 				}
 
-				document.getElementsByName('<portlet:namespace />escalationLevels')[0].checked = checked;
-				document.getElementsByName('<portlet:namespace />escalationLevels')[1].checked = checked;
+				var escalationLevels = A.all('[name="' + <portlet:namespace /> + 'escalationLevels"]');
+
+				escalationLevels.each(
+					function(escalationLevel, index) {
+						if (index < 2) {
+							escalationLevel.set('checked', checked);
+						}
+					}
+				);
 			}
 
 			<portlet:namespace />toggleCheckbox(element);
