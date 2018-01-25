@@ -63,6 +63,7 @@
 	</portlet>
 	<portlet>
 		<portlet-name>2</portlet-name>
+		<indexer-class>com.liferay.osb.support.util.TicketEntryIndexer</indexer-class>
 		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.osb.support.messaging.CheckInactiveTicketEntriesMessageListener</scheduler-event-listener-class>
 			<trigger>

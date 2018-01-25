@@ -14,11 +14,75 @@
 
 package com.liferay.osb.support.util;
 
+import com.liferay.osb.model.AccountCustomer;
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.AccountWorkerConstants;
+import com.liferay.osb.model.PartnerWorker;
+import com.liferay.osb.model.SupportWorker;
+import com.liferay.osb.model.SupportWorkerConstants;
+import com.liferay.osb.model.TicketAttachment;
+import com.liferay.osb.model.TicketAttachmentConstants;
+import com.liferay.osb.model.TicketEntry;
+import com.liferay.osb.model.TicketEntryConstants;
+import com.liferay.osb.model.TicketFeedbackConstants;
+import com.liferay.osb.model.TicketFlagConstants;
+import com.liferay.osb.model.TicketWorker;
+import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
+import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
+import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
+import com.liferay.osb.service.TicketEntryLocalServiceUtil;
+import com.liferay.osb.service.TicketFlagLocalServiceUtil;
+import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.OSBPortletKeys;
+import com.liferay.osb.util.PortletPropsValues;
+import com.liferay.osb.util.VisibilityConstants;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Subscription;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BaseIndexer;
+import com.liferay.portal.kernel.search.BooleanClauseOccur;
+import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.DocumentImpl;
+import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
+import com.liferay.portal.kernel.search.ParseException;
+import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Summary;
+import com.liferay.portal.kernel.search.filter.BooleanFilter;
+import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
+import java.io.InputStream;
+
+import java.text.Format;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -26,87 +90,30 @@ import javax.portlet.PortletResponse;
 /**
  * @author Shinn Lok
  */
-public class SupportIndexer<T> extends BaseIndexer<T> {
+public class TicketEntryIndexer extends BaseIndexer<TicketEntry> {
 
-	@Override
-	public String getClassName() {
+	public static final String CLASS_NAME = TicketEntry.class.getName();
 
-		// TODO Auto-generated method stub
-
-		return null;
-	}
-
-	@Override
-	protected void doDelete(T object) throws Exception {
-
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected Document doGetDocument(T object) throws Exception {
-
-		// TODO Auto-generated method stub
-
-		return null;
-	}
-
-	@Override
-	protected Summary doGetSummary(
-			Document document, Locale locale, String snippet,
-			PortletRequest portletRequest, PortletResponse portletResponse)
-		throws Exception {
-
-		// TODO Auto-generated method stub
-
-		return null;
-	}
-
-	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void doReindex(String[] ids) throws Exception {
-
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void doReindex(T object) throws Exception {
-
-		// TODO Auto-generated method stub
-
-	}
-
-	/*public static final String[] CLASS_NAMES = {TicketEntry.class.getName()};
+	public static final String[] CLASS_NAMES = {TicketEntry.class.getName()};
 
 	public static final String PORTLET_ID = OSBPortletKeys.OSB_SUPPORT;
 
 	@Override
 	public String getClassName() {
-		return TicketEntry.class.getName();
+		return CLASS_NAME;
 	}
 
-	public String[] getClassNames() {
+	public String[] getSearchClassNames() {
 		return CLASS_NAMES;
-	}
-
-	public String getPortletId() {
-		return PORTLET_ID;
 	}
 
 	@Override
 	public void postProcessSearchQuery(
-			BooleanQuery searchQuery, SearchContext searchContext)
+			BooleanQuery searchQuery, BooleanFilter fullQueryBooleanFilter,
+			SearchContext searchContext)
 		throws Exception {
 
-		BooleanQuery subsearchQuery = BooleanQueryFactoryUtil.create(
-			searchContext);
+		BooleanQuery subsearchQuery = new BooleanQueryImpl();
 
 		LinkedHashMap<String, Object> params =
 			(LinkedHashMap<String, Object>)searchContext.getAttribute("params");
@@ -183,8 +190,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			"ticketWorkerUserIdsCount");
 
 		if (ArrayUtil.isNotEmpty(accountCustomerUserIds)) {
-			BooleanQuery accountCustomerQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery accountCustomerQuery = new BooleanQueryImpl();
 
 			Set<Long> accountCustomerAccountEntryIds = new HashSet<>();
 
@@ -209,8 +215,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (ArrayUtil.isNotEmpty(accountEntryIds)) {
-			BooleanQuery accountEntryQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery accountEntryQuery = new BooleanQueryImpl();
 
 			for (long accountEntryId : accountEntryIds) {
 				accountEntryQuery.addTerm("accountEntryId", accountEntryId);
@@ -220,8 +225,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (ArrayUtil.isNotEmpty(accountWorkers)) {
-			BooleanQuery accountWorkerQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery accountWorkerQuery = new BooleanQueryImpl();
 
 			for (long[] accountWorker : accountWorkers) {
 				long accountWorkerUserId = accountWorker[0];
@@ -240,8 +244,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			long searchUserId = (Long)searchContext.getAttribute(
 				"searchUserId");
 
-			BooleanQuery feedbackAvailableQuery =
-				BooleanQueryFactoryUtil.create(searchContext);
+			BooleanQuery feedbackAvailableQuery = new BooleanQueryImpl();
 
 			feedbackAvailableQuery.addRequiredTerm(
 				"ticketFeedbackUserIds", searchUserId);
@@ -263,8 +266,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (ArrayUtil.isNotEmpty(partnerEntryIds)) {
-			BooleanQuery partnerEntryQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery partnerEntryQuery = new BooleanQueryImpl();
 
 			for (long partnerEntryId : partnerEntryIds) {
 				List<AccountEntry> accountEntries =
@@ -285,8 +287,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (ArrayUtil.isNotEmpty(pendingTypes)) {
-			BooleanQuery pendingTypesQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery pendingTypesQuery = new BooleanQueryImpl();
 
 			for (int pendingType : pendingTypes) {
 				pendingTypesQuery.addTerm("pendingTypes", pendingType);
@@ -296,8 +297,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (ArrayUtil.isNotEmpty(primaryTicketWorker)) {
-			BooleanQuery primaryTicketWorkerQuery =
-				BooleanQueryFactoryUtil.create(searchContext);
+			BooleanQuery primaryTicketWorkerQuery = new BooleanQueryImpl();
 
 			Long ticketWorkerUserId = (Long)primaryTicketWorker[0];
 			Boolean primary = (Boolean)primaryTicketWorker[1];
@@ -310,21 +310,20 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 					primaryTicketWorkerQuery, BooleanClauseOccur.MUST);
 			}
 			else {
-				BooleanQuery ticketWorkerQuery = BooleanQueryFactoryUtil.create(
-					searchContext);
+				BooleanQuery ticketWorkerQuery = new BooleanQueryImpl();
 
 				ticketWorkerQuery.addTerm(
 					"ticketWorkerUserIds", ticketWorkerUserId);
 
 				searchQuery.add(ticketWorkerQuery, BooleanClauseOccur.MUST);
+
 				searchQuery.add(
 					primaryTicketWorkerQuery, BooleanClauseOccur.MUST_NOT);
 			}
 		}
 
 		if (ArrayUtil.isNotEmpty(productEntryIds)) {
-			BooleanQuery productEntryIdsQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery productEntryIdsQuery = new BooleanQueryImpl();
 
 			for (long productEntryId : productEntryIds) {
 				productEntryIdsQuery.addTerm("productEntryId", productEntryId);
@@ -334,8 +333,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (ArrayUtil.isNotEmpty(reporterUserIds)) {
-			BooleanQuery reporterQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery reporterQuery = new BooleanQueryImpl();
 
 			for (long reporterUserId : reporterUserIds) {
 				reporterQuery.addTerm("reporterUserId", reporterUserId);
@@ -345,8 +343,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (Validator.isNotNull(subscriptionUserId)) {
-			BooleanQuery subscriptionsQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery subscriptionsQuery = new BooleanQueryImpl();
 
 			subscriptionsQuery.addTerm("subscriptions", subscriptionUserId);
 
@@ -354,8 +351,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (ArrayUtil.isNotEmpty(supportRegionIds)) {
-			BooleanQuery supportRegionQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery supportRegionQuery = new BooleanQueryImpl();
 
 			for (long supportRegionId : supportRegionIds) {
 				supportRegionQuery.addTerm("supportRegionId", supportRegionId);
@@ -365,8 +361,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (ArrayUtil.isNotEmpty(supportTeamIds)) {
-			BooleanQuery supportTeamQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery supportTeamQuery = new BooleanQueryImpl();
 
 			for (long supportTeamId : supportTeamIds) {
 				List<SupportWorker> supportWorkers =
@@ -389,8 +384,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (ArrayUtil.isNotEmpty(ticketWorkerUserIds)) {
-			BooleanQuery ticketWorkerQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery ticketWorkerQuery = new BooleanQueryImpl();
 
 			for (long ticketWorkerUserId : ticketWorkerUserIds) {
 				ticketWorkerQuery.addTerm(
@@ -442,133 +436,21 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		document.add(field);
 	}
 
-	protected void deleteTicketEntry(TicketEntry ticketEntry)
-		throws SearchException {
-
+	@Override
+	protected void doDelete(TicketEntry ticketEntry) throws Exception {
 		Document document = new DocumentImpl();
 
 		document.addUID(
 			PORTLET_ID, TicketEntry.class.getName(),
 			String.valueOf(ticketEntry.getTicketEntryId()));
 
-		SearchEngineUtil.deleteDocument(
+		IndexWriterHelperUtil.deleteDocument(
 			getSearchEngineId(), OSBConstants.COMPANY_ID,
-			document.get(Field.UID));
+			document.get(Field.UID), false);
 	}
 
 	@Override
-	protected void doDelete(Object obj) throws Exception {
-		if (obj instanceof TicketEntry) {
-			deleteTicketEntry((TicketEntry)obj);
-		}
-	}
-
-	@Override
-	protected Document doGetDocument(Object obj) throws Exception {
-		Document document = new DocumentImpl();
-
-		if (obj instanceof TicketEntry) {
-			document = getTicketEntryDocument((TicketEntry)obj);
-		}
-
-		return document;
-	}
-
-	@Override
-	protected String doGetSortField(String orderByCol) {
-		String sortFieldName = orderByCol;
-
-		if (orderByCol.equals("account-code")) {
-			sortFieldName = "accountEntryCode";
-		}
-		else if (orderByCol.equals("assignee")) {
-			sortFieldName = "assignee";
-		}
-		else if (orderByCol.equals("create-date")) {
-			sortFieldName = "createDate";
-		}
-		else if (orderByCol.equals("due-date")) {
-			sortFieldName = "dueDate";
-		}
-		else if (orderByCol.equals("modified-date")) {
-			sortFieldName = "modifiedDate";
-		}
-		else if (orderByCol.equals("status")) {
-			sortFieldName = "status";
-		}
-		else if (orderByCol.equals("subject")) {
-			sortFieldName = "subject";
-		}
-		else if (orderByCol.equals("ticket-id")) {
-			sortFieldName = "ticketId";
-		}
-
-		return DocumentImpl.getSortableFieldName(sortFieldName);
-	}
-
-	@Override
-	protected Summary doGetSummary(
-		Document document, Locale locale, String snippet,
-		PortletRequest portletRequest, PortletResponse portletResponse) {
-
-		String title = document.get(Field.TITLE);
-
-		String description = snippet;
-
-		if (Validator.isNull(snippet)) {
-			description = StringUtil.shorten(
-				document.get(Field.DESCRIPTION), 200);
-		}
-
-		String entryClassName = document.get(Field.ENTRY_CLASS_NAME);
-
-		// TODO do we need this logic still?
-
-		if (entryClassName.equals(TicketEntry.class.getName())) {
-			String entryClassPK = document.get(Field.ENTRY_CLASS_PK);
-
-			portletURL.setParameter("ticketEntryId", entryClassPK);
-		}
-
-		return new Summary(locale, title, description);
-	}
-
-	@Override
-	protected void doReindex(Object obj) throws Exception {
-		if (obj instanceof TicketEntry) {
-			reindexTicketEntry((TicketEntry)obj);
-		}
-	}
-
-	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-		if (className.equals(TicketEntry.class.getName())) {
-			TicketEntry ticketEntry =
-				TicketEntryLocalServiceUtil.getTicketEntry(classPK);
-
-			doReindex(ticketEntry);
-		}
-	}
-
-	@Override
-	protected void doReindex(String[] ids) throws Exception {
-		long companyId = GetterUtil.getLong(ids[0]);
-
-		if (companyId != OSBConstants.COMPANY_ID) {
-			return;
-		}
-
-		reindexEntries(companyId);
-	}
-
-	@Override
-	protected String getPortletId(SearchContext searchContext) {
-		return PORTLET_ID;
-	}
-
-	protected Document getTicketEntryDocument(TicketEntry ticketEntry)
-		throws Exception {
-
+	protected Document doGetDocument(TicketEntry ticketEntry) throws Exception {
 		Document document = new DocumentImpl();
 
 		document.addUID(
@@ -592,6 +474,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			ticketEntry.getAccountEntryId());
 
 		document.addKeyword("accountWorkers", accountWorkerKeys);
+
 		document.addDate("closedDate", ticketEntry.getClosedDate());
 		document.addKeyword("component", ticketEntry.getComponent());
 		document.addDate("createDate", ticketEntry.getCreateDate());
@@ -788,8 +671,83 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		return document;
 	}
 
-	protected boolean isOrganizationLiferayInc(long userId) {
+	@Override
+	protected String doGetSortField(String orderByCol) {
+		String sortFieldName = orderByCol;
 
+		if (orderByCol.equals("account-code")) {
+			sortFieldName = "accountEntryCode";
+		}
+		else if (orderByCol.equals("assignee")) {
+			sortFieldName = "assignee";
+		}
+		else if (orderByCol.equals("create-date")) {
+			sortFieldName = "createDate";
+		}
+		else if (orderByCol.equals("due-date")) {
+			sortFieldName = "dueDate";
+		}
+		else if (orderByCol.equals("modified-date")) {
+			sortFieldName = "modifiedDate";
+		}
+		else if (orderByCol.equals("status")) {
+			sortFieldName = "status";
+		}
+		else if (orderByCol.equals("subject")) {
+			sortFieldName = "subject";
+		}
+		else if (orderByCol.equals("ticket-id")) {
+			sortFieldName = "ticketId";
+		}
+
+		return DocumentImpl.getSortableFieldName(sortFieldName);
+	}
+
+	@Override
+	protected Summary doGetSummary(
+		Document document, Locale locale, String snippet,
+		PortletRequest portletRequest, PortletResponse portletResponse) {
+
+		String title = document.get(Field.TITLE);
+
+		String description = snippet;
+
+		if (Validator.isNull(snippet)) {
+			description = StringUtil.shorten(
+				document.get(Field.DESCRIPTION), 200);
+		}
+
+		return new Summary(locale, title, description);
+	}
+
+	@Override
+	protected void doReindex(String className, long classPK) throws Exception {
+		TicketEntry ticketEntry = TicketEntryLocalServiceUtil.getTicketEntry(
+			classPK);
+
+		doReindex(ticketEntry);
+	}
+
+	@Override
+	protected void doReindex(String[] ids) throws Exception {
+		long companyId = GetterUtil.getLong(ids[0]);
+
+		reindexEntries(companyId);
+	}
+
+	@Override
+	protected void doReindex(TicketEntry ticketEntry) throws Exception {
+
+		// TODO refactor document object
+
+		Document document = getDocument(ticketEntry);
+
+		IndexWriterHelperUtil.updateDocument(
+			getSearchEngineId(), OSBConstants.COMPANY_ID, document,
+			isCommitImmediately());
+	}
+
+	protected boolean isOrganizationLiferayInc(long userId) {
 		if (OrganizationLocalServiceUtil.hasUserOrganization(
 				userId, OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
@@ -801,54 +759,43 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 	}
 
 	protected void reindexEntries(long companyId) throws PortalException {
+		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+			TicketEntryLocalServiceUtil.getIndexableActionableDynamicQuery();
 
-		IndexableActionableDynamicQuery actionableDynamicQuery =
-			new IndexableActionableDynamicQuery() {
+		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setPerformActionMethod(
+			new ActionableDynamicQuery.PerformActionMethod<TicketEntry>() {
 
-			@Override
-			protected void addDefaultCriteria(DynamicQuery dynamicQuery) {
-			}
+				@Override
+				public void performAction(TicketEntry ticketEntry) {
+					try {
+						Document document = getDocument(ticketEntry);
 
-			@Override
-			protected void performAction(Object object) throws PortalException {
+						indexableActionableDynamicQuery.addDocuments(document);
+					}
+					catch (PortalException pe) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"Unable to index ticket entry " +
+									ticketEntry.getTicketEntryId(),
+								pe);
+						}
+					}
+				}
 
-				TicketEntry ticketEntry = (TicketEntry)object;
+			});
+		indexableActionableDynamicQuery.setSearchEngineId(getSearchEngineId());
 
-				// TODO refactor document object
-
-				Document document = getDocument(ticketEntry);
-
-				addDocuments(document);
-			}
-
-		};
-
-		actionableDynamicQuery.setCompanyId(companyId);
-		actionableDynamicQuery.setSearchEngineId(getSearchEngineId());
-
-		actionableDynamicQuery.performActions();
-	}
-
-	protected void reindexTicketEntry(TicketEntry ticketEntry)
-		throws SearchException {
-
-		// TODO refactor document object
-
-		Document document = getDocument(ticketEntry);
-
-		SearchEngineUtil.updateDocument(
-			getSearchEngineId(), OSBConstants.COMPANY_ID, document);
+		indexableActionableDynamicQuery.performActions();
 	}
 
 	private void _addAccountEntryQuery(
-			BooleanQuery subSearchQuery, SearchContext searchContext)
+			BooleanQuery subsearchQuery, SearchContext searchContext)
 		throws Exception {
 
-		BooleanQuery accountEntryQuery = BooleanQueryFactoryUtil.create(
-			searchContext);
+		BooleanQuery accountEntryQuery = new BooleanQueryImpl();
 
-		BooleanQuery accountEntryCodeQuery = BooleanQueryFactoryUtil.create(
-			searchContext);
+		BooleanQuery accountEntryCodeQuery = new BooleanQueryImpl();
 
 		addSearchTerm(
 			accountEntryCodeQuery, searchContext, "accountEntryCode", true);
@@ -858,8 +805,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 				accountEntryCodeQuery, BooleanClauseOccur.SHOULD);
 		}
 
-		BooleanQuery accountEntryNameQuery = BooleanQueryFactoryUtil.create(
-			searchContext);
+		BooleanQuery accountEntryNameQuery = new BooleanQueryImpl();
 
 		addSearchTerm(
 			accountEntryNameQuery, searchContext, "accountEntryName", true);
@@ -873,8 +819,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			"accountEntryTier");
 
 		if ((accountEntryTiers != null) && (accountEntryTiers.length > 0)) {
-			BooleanQuery accountEntryTierQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery accountEntryTierQuery = new BooleanQueryImpl();
 
 			addSearchTerm(
 				accountEntryTierQuery, searchContext, "accountEntryTier",
@@ -885,7 +830,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		}
 
 		if (accountEntryQuery.hasClauses()) {
-			subSearchQuery.add(accountEntryQuery, BooleanClauseOccur.SHOULD);
+			subsearchQuery.add(accountEntryQuery, BooleanClauseOccur.SHOULD);
 		}
 	}
 
@@ -894,16 +839,14 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			boolean searchAttachments)
 		throws Exception {
 
-		BooleanQuery subSearchQuery = BooleanQueryFactoryUtil.create(
-			searchContext);
+		BooleanQuery subsearchQuery = new BooleanQueryImpl();
 
-		_addAccountEntryQuery(subSearchQuery, searchContext);
+		_addAccountEntryQuery(subsearchQuery, searchContext);
 
 		String content = (String)searchContext.getAttribute("content");
 
 		if (Validator.isNotNull(content)) {
-			BooleanQuery contentQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery contentQuery = new BooleanQueryImpl();
 
 			long userId = (Long)searchContext.getAttribute("searchUserId");
 
@@ -924,8 +867,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 				}
 			}
 
-			BooleanQuery accountEntryBooleanQuery =
-				BooleanQueryFactoryUtil.create(searchContext);
+			BooleanQuery accountEntryBooleanQuery = new BooleanQueryImpl();
 
 			for (AccountEntry accountEntry : accountEntries) {
 				accountEntryBooleanQuery.addTerm(
@@ -947,7 +889,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			}
 			else if (!accountEntries.isEmpty()) {
 				BooleanQuery workersTicketCommentsQuery =
-					BooleanQueryFactoryUtil.create(searchContext);
+					new BooleanQueryImpl();
 
 				workersTicketCommentsQuery.add(
 					accountEntryBooleanQuery, BooleanClauseOccur.MUST);
@@ -960,12 +902,12 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			}
 
 			if (contentQuery.hasClauses()) {
-				subSearchQuery.add(contentQuery, BooleanClauseOccur.SHOULD);
+				subsearchQuery.add(contentQuery, BooleanClauseOccur.SHOULD);
 			}
 		}
 
-		if (subSearchQuery.hasClauses()) {
-			searchQuery.add(subSearchQuery, BooleanClauseOccur.MUST);
+		if (subsearchQuery.hasClauses()) {
+			searchQuery.add(subsearchQuery, BooleanClauseOccur.MUST);
 		}
 	}
 
@@ -989,7 +931,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			endValue = _dateFormat.format(dateLT);
 		}
 
-		BooleanQuery dateQuery = BooleanQueryFactoryUtil.create(searchContext);
+		BooleanQuery dateQuery = new BooleanQueryImpl();
 
 		dateQuery.addRangeTerm(field, startValue, endValue);
 
@@ -1015,16 +957,14 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			return;
 		}
 
-		BooleanQuery statusQuery = BooleanQueryFactoryUtil.create(
-			searchContext);
+		BooleanQuery statusQuery = new BooleanQueryImpl();
 
 		if (resolutionValues != null) {
 			for (int resolutionValue : resolutionValues) {
 				if (ArrayUtil.contains(
 						statusValues, TicketEntryConstants.STATUS_CLOSED)) {
 
-					BooleanQuery resolutionQuery =
-						BooleanQueryFactoryUtil.create(searchContext);
+					BooleanQuery resolutionQuery = new BooleanQueryImpl();
 
 					resolutionQuery.addRequiredTerm(
 						"resolution", resolutionValue);
@@ -1055,8 +995,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 			(LinkedHashMap<String, Object>)searchContext.getAttribute("params");
 
 		if (params.containsKey("pendingCustomer")) {
-			BooleanQuery pendingCustomerQuery = BooleanQueryFactoryUtil.create(
-				searchContext);
+			BooleanQuery pendingCustomerQuery = new BooleanQueryImpl();
 
 			pendingCustomerQuery.addRequiredTerm(
 				"resolution", TicketEntryConstants.RESOLUTION_PENDING_CUSTOMER);
@@ -1083,8 +1022,7 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		long accountEntryId = (Long)searchContext.getAttribute(
 			"accountEntryId");
 
-		BooleanQuery accountEntriesQuery = BooleanQueryFactoryUtil.create(
-			searchContext);
+		BooleanQuery accountEntriesQuery = new BooleanQueryImpl();
 
 		if (userId <= 0) {
 			if (accountEntryId != 0) {
@@ -1122,10 +1060,10 @@ public class SupportIndexer<T> extends BaseIndexer<T> {
 		searchQuery.add(accountEntriesQuery, BooleanClauseOccur.MUST);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(SupportIndexer.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		TicketEntryIndexer.class);
 
-	private Format _dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-		"yyyyMMddHHmmss");
-	 */
+	private final Format _dateFormat =
+		FastDateFormatFactoryUtil.getSimpleDateFormat("yyyyMMddHHmmss");
 
 }

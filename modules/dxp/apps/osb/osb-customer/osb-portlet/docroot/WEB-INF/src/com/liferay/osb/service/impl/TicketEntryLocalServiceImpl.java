@@ -459,7 +459,7 @@ public class TicketEntryLocalServiceImpl
 
 		// Indexer
 
-		Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+		Indexer<TicketEntry> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
 			TicketEntry.class);
 
 		indexer.delete(ticketEntry);
@@ -823,8 +823,8 @@ public class TicketEntryLocalServiceImpl
 		throws PortalException {
 
 		if (TicketEntryThreadLocal.isReindex()) {
-			Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				TicketEntry.class);
+			Indexer<TicketEntry> indexer =
+				IndexerRegistryUtil.nullSafeGetIndexer(TicketEntry.class);
 
 			indexer.reindex(ticketEntry);
 		}
@@ -888,8 +888,8 @@ public class TicketEntryLocalServiceImpl
 			searchContext.setSorts(sorts);
 			searchContext.setStart(start);
 
-			Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(
-				TicketEntry.class);
+			Indexer<TicketEntry> indexer =
+				IndexerRegistryUtil.nullSafeGetIndexer(TicketEntry.class);
 
 			return indexer.search(searchContext);
 		}
