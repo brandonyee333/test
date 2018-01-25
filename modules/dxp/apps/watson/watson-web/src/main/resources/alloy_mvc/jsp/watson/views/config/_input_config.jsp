@@ -1737,6 +1737,20 @@
 							'required'
 						]
 					},
+					otherType: {
+						controlledInputs: [],
+						dependentKey: '${WatsonListTypeConstants.INCIDENT_SUBTYPE_OTHER}',
+						filterable: ${false},
+						htmlType: 'input',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode('other')}',
+						parentInputId: 'subtypeWatsonListTypeId',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: [
+							'required'
+						]
+					},
 					reportDate: {
 						filterable: ${true},
 						htmlType: 'date',
@@ -1813,6 +1827,9 @@
 						]
 					},
 					subtypeWatsonListTypeId: {
+						controlledInputs: [
+							'otherType'
+						],
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("type-of-report")}',
 						listTypeValue: '${WatsonIncident.modelClassName.concat(".subtype")}',

@@ -148,6 +148,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			jsonObject.put("natureWatsonListType", getIncidentNatureIds(watsonIncident.getWatsonIncidentId()).toArray());
 		}
 
+		jsonObject.put("otherType", watsonIncident.getOtherType());
 		jsonObject.put("people", WatsonPerson.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
 		jsonObject.put("relationships", JSONFactoryUtil.createJSONArray());
 		jsonObject.put("reportDate", getFormattedDate(watsonIncident.getReportDate(), locale));
@@ -520,6 +521,14 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		return null;
 	}
 
+	public static KeyValuePair validateWatsonIncidentOtherType(String otherType, long subtypeWatsonListTypeId) throws Exception {
+		if ((subtypeWatsonListTypeId == WatsonListType.INCIDENT_SUBTYPE_OTHER) && (Validator.isNull(otherType))) {
+			return new KeyValuePair("otherType", "the-report-type-is-invalid");
+		}
+
+		return null;
+	}
+
 	public static KeyValuePair validateWatsonIncidentReportDate(Date reportDate) {
 		if (reportDate == null) {
 			return new KeyValuePair("reportDate", "the-report-date-is-invalid");
@@ -625,6 +634,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		pushError(validateWatsonIncidentIncidentStatus(getIncidentStatus()));
 		pushError(validateWatsonIncidentNatures(natures, this.isNew()));
 		pushError(validateWatsonIncidentOccurrenceDates(getStartDate(), getEndDate()));
+		pushError(validateWatsonIncidentOtherType(getOtherType(), getSubtypeWatsonListTypeId()));
 		pushError(validateWatsonIncidentRels(watsonIncidentRels));
 		pushError(validateWatsonIncidentReportDate(getReportDate()));
 		pushError(validateWatsonIncidentSource(getSourceWatsonListTypeId()));
