@@ -83,7 +83,17 @@ public class SetupWatsonListTypes {
 
 		watsonListType.setCreateDate(new Date());
 		watsonListType.setModifiedDate(watsonListType.getCreateDate());
-		watsonListType.setParentWatsonListTypeId(parentWatsonListTypeId);
+
+		long suppliedParentWatsonListTypeId = GetterUtil.getLong(
+			watsonListTypeElement.attributeValue("parentWatsonListTypeId"));
+
+		if (suppliedParentWatsonListTypeId > 0) {
+			watsonListType.setParentWatsonListTypeId(
+				suppliedParentWatsonListTypeId);
+		}
+		else {
+			watsonListType.setParentWatsonListTypeId(parentWatsonListTypeId);
+		}
 
 		List<Element> nameElements = watsonListTypeElement.elements("name");
 
