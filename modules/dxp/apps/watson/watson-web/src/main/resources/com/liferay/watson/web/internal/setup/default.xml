@@ -40490,4 +40490,16 @@
 		<name locale="en_US">Child Pornography</name>
 		<name locale="th">ภาพอนาจารของเด็ก</name>
 	</watsonListType>
+	<watsonListType parentWatsonListTypeId="10457" type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10576">
+		<name locale="en_US">Village</name>
+		<name locale="th">หมู่บ้าน</name>
+	</watsonListType>
+	<watsonListType parentWatsonListTypeId="10457" type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10577">
+		<name locale="en_US">School</name>
+		<name locale="th">โรงเรียน</name>
+	</watsonListType>
+	<watsonListType parentWatsonListTypeId="10457" type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10578">
+		<name locale="en_US">Other</name>
+		<name locale="th">อื่น ๆ</name>
+	</watsonListType>
 </table>
