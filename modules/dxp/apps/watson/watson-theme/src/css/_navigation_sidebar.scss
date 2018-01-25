@@ -20,9 +20,8 @@
 		width: 100%;
 	}
 
-	.button {
-		height: 50px;
-		margin: 20px 0 30px;
+	.watson-button {
+		min-height: 35px;
 	}
 
 	.header-container {
@@ -54,10 +53,6 @@
 		color: $neutralMedium;
 		font-family: $primaryFontStack;
 		font-size: 15px;
-
-		.watson-button {
-			min-height: 30px;
-		}
 
 		ul > ul > li.watson-nav-entry {
 			&:hover .watson-nav-link:before {
