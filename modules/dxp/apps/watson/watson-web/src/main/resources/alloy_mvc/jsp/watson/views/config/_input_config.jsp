@@ -1505,7 +1505,7 @@
 						validations: []
 					},
 					description: {
-						cssClass: 'textarea pushDown',
+						cssClass: 'textarea push-down',
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("description-of-illness")}',
 						tooltipLabel: '',
