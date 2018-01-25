@@ -96,6 +96,10 @@ public class PortletPropsValues {
 		PortletProps.getArray(
 			PortletPropsKeys.TICKET_ATTACHMENT_PREVIEW_EXTENSIONS);
 
+	public static final int TICKET_ENTRY_INDEXING_INTERVAL =
+		GetterUtil.getInteger(
+			PortletProps.get(PortletPropsKeys.TICKET_ENTRY_INDEXING_INTERVAL));
+
 	public static final String WEB_API_TOKEN = PortletProps.get(
 		PortletPropsKeys.WEB_API_TOKEN);
 

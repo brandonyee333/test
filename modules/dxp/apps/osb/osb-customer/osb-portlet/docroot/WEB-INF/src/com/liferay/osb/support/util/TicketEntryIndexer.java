@@ -36,7 +36,6 @@ import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.service.TicketFlagLocalServiceUtil;
 import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -54,6 +53,7 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
+import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Summary;
@@ -87,24 +87,28 @@ import java.util.Set;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Shinn Lok
  */
+@Component(immediate = true, service = Indexer.class)
 public class TicketEntryIndexer extends BaseIndexer<TicketEntry> {
 
 	public static final String CLASS_NAME = TicketEntry.class.getName();
 
-	public static final String[] CLASS_NAMES = {TicketEntry.class.getName()};
-
-	public static final String PORTLET_ID = OSBPortletKeys.OSB_SUPPORT;
+	public TicketEntryIndexer() {
+		setDefaultSelectedFieldNames(
+			Field.COMPANY_ID, Field.UID, Field.ENTRY_CLASS_NAME,
+			Field.ENTRY_CLASS_PK, Field.TITLE, Field.DESCRIPTION);
+		setFilterSearch(true);
+		setPermissionAware(true);
+		setStagingAware(false);
+	}
 
 	@Override
 	public String getClassName() {
 		return CLASS_NAME;
-	}
-
-	public String[] getSearchClassNames() {
-		return CLASS_NAMES;
 	}
 
 	@Override
@@ -441,27 +445,24 @@ public class TicketEntryIndexer extends BaseIndexer<TicketEntry> {
 		Document document = new DocumentImpl();
 
 		document.addUID(
-			PORTLET_ID, TicketEntry.class.getName(),
-			String.valueOf(ticketEntry.getTicketEntryId()));
+			CLASS_NAME, String.valueOf(ticketEntry.getTicketEntryId()));
 
 		IndexWriterHelperUtil.deleteDocument(
 			getSearchEngineId(), OSBConstants.COMPANY_ID,
-			document.get(Field.UID), false);
+			document.get(Field.UID), isCommitImmediately());
 	}
 
 	@Override
 	protected Document doGetDocument(TicketEntry ticketEntry) throws Exception {
-		Document document = new DocumentImpl();
+		Document document = getBaseModelDocument(CLASS_NAME, ticketEntry);
 
 		document.addUID(
-			PORTLET_ID, TicketEntry.class.getName(),
-			String.valueOf(ticketEntry.getTicketEntryId()));
+			CLASS_NAME, String.valueOf(ticketEntry.getTicketEntryId()));
 
 		document.addKeyword(
 			Field.ENTRY_CLASS_NAME, TicketEntry.class.getName());
 		document.addKeyword(
 			Field.ENTRY_CLASS_PK, ticketEntry.getTicketEntryId());
-		document.addKeyword(Field.PORTLET_ID, PORTLET_ID);
 
 		AccountEntry accountEntry = ticketEntry.getAccountEntry();
 
@@ -737,9 +738,6 @@ public class TicketEntryIndexer extends BaseIndexer<TicketEntry> {
 
 	@Override
 	protected void doReindex(TicketEntry ticketEntry) throws Exception {
-
-		// TODO refactor document object
-
 		Document document = getDocument(ticketEntry);
 
 		IndexWriterHelperUtil.updateDocument(
@@ -763,6 +761,8 @@ public class TicketEntryIndexer extends BaseIndexer<TicketEntry> {
 			TicketEntryLocalServiceUtil.getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setCompanyId(companyId);
+		indexableActionableDynamicQuery.setInterval(
+			PortletPropsValues.TICKET_ENTRY_INDEXING_INTERVAL);
 		indexableActionableDynamicQuery.setPerformActionMethod(
 			new ActionableDynamicQuery.PerformActionMethod<TicketEntry>() {
 
