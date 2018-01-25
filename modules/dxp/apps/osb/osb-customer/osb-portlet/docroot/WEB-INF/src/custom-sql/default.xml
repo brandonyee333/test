@@ -97,25 +97,25 @@
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.filterByIndustry">
 		<![CDATA[
 			WHERE
-				OSB_AccountEntry.industry = ?
+				(OSB_AccountEntry.industry = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.filterByStatus">
 		<![CDATA[
 			WHERE
-				OSB_AccountEntry.status = ?
+				(OSB_AccountEntry.status = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.filterByTier">
 		<![CDATA[
 			WHERE
-				OSB_AccountEntry.tier = ?
+				(OSB_AccountEntry.tier = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.filterByType">
 		<![CDATA[
 			WHERE
-				OSB_AccountEntry.type_ = ?
+				(OSB_AccountEntry.type_ = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.findBySecurityPatch">
@@ -126,7 +126,7 @@
 				OSB_AccountEntry
 			INNER JOIN
 				OSB_SecurityPatch ON
-					OSB_SecurityPatch.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_SecurityPatch.accountEntryId = OSB_AccountEntry.accountEntryId)
 			[$JOIN$]
 			WHERE
 				[$WHERE$]
@@ -183,67 +183,71 @@
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountCustomer ON
-					OSB_AccountCustomer.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_AccountCustomer.accountEntryId = OSB_AccountEntry.accountEntryId)
 			WHERE
-				OSB_AccountCustomer.userId = ?
+				(OSB_AccountCustomer.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironment">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountEnvironment ON
-					OSB_AccountEnvironment.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_AccountEnvironment.accountEntryId = OSB_AccountEntry.accountEntryId)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvAS">
 		<![CDATA[
 			WHERE
-				OSB_AccountEnvironment.envAS = ?
+				(OSB_AccountEnvironment.envAS = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvDB">
 		<![CDATA[
 			WHERE
-				OSB_AccountEnvironment.envDB = ?
+				(OSB_AccountEnvironment.envDB = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvJVM">
 		<![CDATA[
 			WHERE
-				OSB_AccountEnvironment.envJVM = ?
+				(OSB_AccountEnvironment.envJVM = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvLFR">
 		<![CDATA[
 			WHERE
-				OSB_AccountEnvironment.envLFR = ?
+				(OSB_AccountEnvironment.envLFR = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvOS">
 		<![CDATA[
 			WHERE
-				OSB_AccountEnvironment.envOS = ?
+				(OSB_AccountEnvironment.envOS = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountWorker ON
-					OSB_AccountWorker.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_AccountWorker.accountEntryId = OSB_AccountEntry.accountEntryId)
 			WHERE
-				(OSB_AccountWorker.userId = ?) AND
-				(OSB_AccountWorker.role = ? [$AND_OR_NULL_CHECK$])
+				(
+					(OSB_AccountWorker.userId = ?) AND
+					(OSB_AccountWorker.role = ? [$AND_OR_NULL_CHECK$])
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByActiveLicense">
 		<![CDATA[
 			INNER JOIN
 				OSB_OfferingEntry ON
-					OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId)
 			WHERE
-				(OSB_AccountEntry.type_ = 4) AND
-				(OSB_OfferingEntry.licenses = [$TRUE$]) AND
-				(OSB_OfferingEntry.status = ?)
+				(
+					(OSB_AccountEntry.type_ = 4) AND
+					(OSB_OfferingEntry.licenses = [$TRUE$]) AND
+					(OSB_OfferingEntry.status = ?)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByActiveSupport">
@@ -256,8 +260,10 @@
 					FROM
 						OSB_OfferingEntry
 					WHERE
-						(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId) AND
-						(OSB_OfferingEntry.status = ?)
+						(
+							(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId) AND
+							(OSB_OfferingEntry.status = ?)
+						)
 				) [$ACTIVE_SUPPORT_COMPARATOR$] 0
 		]]>
 	</sql>
@@ -271,8 +277,10 @@
 					FROM
 						OSB_OfferingEntry
 					WHERE
-						(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId) AND
-						(OSB_OfferingEntry.supportEndDate > ?)
+						(
+							(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId) AND
+							(OSB_OfferingEntry.supportEndDate > ?)
+						)
 				) [$EXPIRED_SUPPORT_COMPARATOR$] 0
 		]]>
 	</sql>
@@ -282,14 +290,14 @@
 				OSB_OfferingEntry
 					(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId)
 			WHERE
-				OSB_OfferingEntry.accountEntryId IS NULL
+				(OSB_OfferingEntry.accountEntryId IS NULL)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByOfferingEntry">
 		<![CDATA[
 			INNER JOIN
 				OSB_OfferingEntry ON
-					OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByPartnerWorker">
@@ -299,28 +307,28 @@
 					(OSB_AccountEntry.partnerManagedSupport = [$TRUE$]) AND
 					(OSB_PartnerWorker.partnerEntryId = OSB_AccountEntry.partnerEntryId)
 			WHERE
-				OSB_PartnerWorker.userId = ?
+				(OSB_PartnerWorker.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByProductEntry">
 		<![CDATA[
 			WHERE
-				OSB_OfferingEntry.productEntryId = ?
+				(OSB_OfferingEntry.productEntryId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinBySupportRegion">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountEntries_SupportRegions ON
-					OSB_AccountEntries_SupportRegions.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_AccountEntries_SupportRegions.accountEntryId = OSB_AccountEntry.accountEntryId)
 			WHERE
-				OSB_AccountEntries_SupportRegions.supportRegionId = ?
+				(OSB_AccountEntries_SupportRegions.supportRegionId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinBySupportResponse">
 		<![CDATA[
 			WHERE
-				OSB_OfferingEntry.supportResponseId = ?
+				(OSB_OfferingEntry.supportResponseId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByTicketSupport">
@@ -346,10 +354,10 @@
 				OSB_HolidayEntry
 			INNER JOIN
 				OSB_HolidayCalendar ON
-					OSB_HolidayCalendar.holidayCalendarId = OSB_HolidayEntry.holidayCalendarId
+					(OSB_HolidayCalendar.holidayCalendarId = OSB_HolidayEntry.holidayCalendarId)
 			INNER JOIN
 				OSB_HolidayCalendarRel ON
-					OSB_HolidayCalendarRel.holidayCalendarId = OSB_HolidayCalendar.holidayCalendarId
+					(OSB_HolidayCalendarRel.holidayCalendarId = OSB_HolidayCalendar.holidayCalendarId)
 			WHERE
 				(OSB_HolidayCalendarRel.userId = ?) AND
 				(OSB_HolidayEntry.repeatYearly = ?)
@@ -363,10 +371,10 @@
 				OSB_HolidayEntry
 			INNER JOIN
 				OSB_HolidayCalendar ON
-					OSB_HolidayCalendar.holidayCalendarId = OSB_HolidayEntry.holidayCalendarId
+					(OSB_HolidayCalendar.holidayCalendarId = OSB_HolidayEntry.holidayCalendarId)
 			INNER JOIN
 				OSB_HolidayCalendarRel ON
-					OSB_HolidayCalendarRel.holidayCalendarId = OSB_HolidayCalendar.holidayCalendarId
+					(OSB_HolidayCalendarRel.holidayCalendarId = OSB_HolidayCalendar.holidayCalendarId)
 			WHERE
 				(OSB_HolidayCalendarRel.userId = ?) AND
 				(OSB_HolidayEntry.repeatYearly = ?) AND
@@ -478,46 +486,50 @@
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountCustomer ON
-					OSB_AccountCustomer.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_AccountCustomer.accountEntryId = OSB_AccountEntry.accountEntryId)
 			WHERE
-				(OSB_AccountCustomer.userId = ?) AND
-				(OSB_AccountEntry.type_ = 2) AND
-				(OSB_LicenseKey.userId = ?)
+				(
+					(OSB_AccountCustomer.userId = ?) AND
+					(OSB_AccountEntry.type_ = 2) AND
+					(OSB_LicenseKey.userId = ?)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.LicenseKeyFinder.joinByAccountWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountWorker ON
-					OSB_AccountWorker.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_AccountWorker.accountEntryId = OSB_AccountEntry.accountEntryId)
 			WHERE
-				(OSB_AccountWorker.userId = ?) AND
-				(OSB_AccountEntry.type_ = 2) AND
-				(OSB_LicenseKey.userId = ?)
+				(
+					(OSB_AccountWorker.userId = ?) AND
+					(OSB_AccountEntry.type_ = 2) AND
+					(OSB_LicenseKey.userId = ?)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.LicenseKeyFinder.joinByActive">
 		<![CDATA[
 			WHERE
-				OSB_LicenseKey.active_ = ?
+				(OSB_LicenseKey.active_ = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.LicenseKeyFinder.joinByAccountEntryType">
 		<![CDATA[
 			WHERE
-				OSB_AccountEntry.type_ = ?
+				(OSB_AccountEntry.type_ = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.LicenseKeyFinder.joinByAssetReceiptLicense">
 		<![CDATA[
 			WHERE
-				OSB_LicenseKey.assetReceiptLicenseId >= ?
+				(OSB_LicenseKey.assetReceiptLicenseId >= ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.LicenseKeyFinder.joinByOrderEntry">
 		<![CDATA[
 			WHERE
-				OSB_LicenseKey.orderEntryId >= ?
+				(OSB_LicenseKey.orderEntryId >= ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.LicenseKeyFinder.joinByPartnerWorker">
@@ -527,7 +539,7 @@
 					(OSB_AccountEntry.partnerManagedSupport = [$TRUE$]) AND
 					(OSB_PartnerWorker.partnerEntryId = OSB_AccountEntry.partnerEntryId)
 			WHERE
-				OSB_PartnerWorker.userId = ?
+				(OSB_PartnerWorker.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.countByU_AEI_PEI_T_S_SED">
@@ -551,7 +563,7 @@
 	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.filterByVersion">
 		<![CDATA[
 			WHERE
-				OSB_OfferingEntry.version = ?
+				(OSB_OfferingEntry.version = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.findByU_AEI_PEI_T_S_SED">
@@ -577,20 +589,22 @@
 	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.joinByLicenseLifetime">
 		<![CDATA[
 			WHERE
-				OSB_OfferingEntry.licenseLifetime = ?
+				(OSB_OfferingEntry.licenseLifetime = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.joinByUser">
 		<![CDATA[
 			INNER JOIN
 				User_ ON
-					OSB_OfferingEntry.userId = User_.userId
+					(OSB_OfferingEntry.userId = User_.userId)
 			WHERE
-				(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-				(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-				(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-				(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-				(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				(
+					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$])
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.joinByValidLicense">
@@ -606,7 +620,7 @@
 	<sql id="com.liferay.osb.service.persistence.OfferingEntryFinder.joinByValidTicket">
 		<![CDATA[
 			WHERE
-				OSB_OfferingEntry.supportTickets = [$TRUE$]
+				(OSB_OfferingEntry.supportTickets = [$TRUE$])
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.OrderEntryFinder.countByU_CD_MU_MD_AE_PO_S_SD_P_ASD">
@@ -667,9 +681,9 @@
 		<![CDATA[
 			INNER JOIN
 				OSB_OfferingEntry ON
-					OSB_OfferingEntry.orderEntryId = OSB_OrderEntry.orderEntryId
+					(OSB_OfferingEntry.orderEntryId = OSB_OrderEntry.orderEntryId)
 			WHERE
-				OSB_OfferingEntry.productEntryId = ?
+				(OSB_OfferingEntry.productEntryId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.PartnerEntryFinder.countByC_S">
@@ -688,7 +702,7 @@
 	<sql id="com.liferay.osb.service.persistence.PartnerEntryFinder.filterByStatus">
 		<![CDATA[
 			WHERE
-				OSB_PartnerEntry.status = ?
+				(OSB_PartnerEntry.status = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.PartnerEntryFinder.findByC_S">
@@ -709,42 +723,41 @@
 	<sql id="com.liferay.osb.service.persistence.PartnerEntryFinder.joinByChildPartnerEntry">
 		<![CDATA[
 			WHERE
-				OSB_PartnerEntry.partnerEntryId [$NOT_IN_OR_IN_CHECK$]
-					(
-						SELECT
-							DISTINCT OSB_PartnerEntry.parentPartnerEntryId
-						FROM
-							OSB_PartnerEntry
-						WHERE
-							OSB_PartnerEntry.parentPartnerEntryId > 0
-					)
+				OSB_PartnerEntry.partnerEntryId [$NOT_IN_OR_IN_CHECK$] (
+					SELECT
+						DISTINCT OSB_PartnerEntry.parentPartnerEntryId
+					FROM
+						OSB_PartnerEntry
+					WHERE
+						(OSB_PartnerEntry.parentPartnerEntryId > 0)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.PartnerEntryFinder.joinByPartnerManagedSupport">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountEntry ON
-					OSB_AccountEntry.partnerEntryId = OSB_PartnerEntry.partnerEntryId
+					(OSB_AccountEntry.partnerEntryId = OSB_PartnerEntry.partnerEntryId)
 			WHERE
-				OSB_AccountEntry.partnerManagedSupport = ?
+				(OSB_AccountEntry.partnerManagedSupport = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.PartnerEntryFinder.joinByPartnerWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_PartnerWorker ON
-					OSB_PartnerWorker.partnerEntryId = OSB_PartnerEntry.partnerEntryId
+					(OSB_PartnerWorker.partnerEntryId = OSB_PartnerEntry.partnerEntryId)
 			WHERE
-				OSB_PartnerWorker.userId = ?
+				(OSB_PartnerWorker.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.PartnerEntryFinder.joinBySupportRegion">
 		<![CDATA[
 			INNER JOIN
 				OSB_PartnerEntries_SupportRegions ON
-					OSB_PartnerEntries_SupportRegions.partnerEntryId = OSB_PartnerEntry.partnerEntryId
+					(OSB_PartnerEntries_SupportRegions.partnerEntryId = OSB_PartnerEntry.partnerEntryId)
 			WHERE
-				OSB_PartnerEntries_SupportRegions.supportRegionId = ?
+				(OSB_PartnerEntries_SupportRegions.supportRegionId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.ProductEntryFinder.countByName">
@@ -756,15 +769,14 @@
 			[$JOIN$]
 			WHERE
 				[$WHERE$]
-				(OSB_ProductEntry.name = ?) OR
-				(? IS NULL)
+				(OSB_ProductEntry.name = ? OR ? IS NULL)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.ProductEntryFinder.filterByLicenseOfferingEntries">
 		<![CDATA[
 			INNER JOIN
 				OSB_OfferingEntry ON
-					OSB_OfferingEntry.productEntryId = OSB_ProductEntry.productEntryId
+					(OSB_OfferingEntry.productEntryId = OSB_ProductEntry.productEntryId)
 			WHERE
 				(OSB_OfferingEntry.accountEntryId = ?) AND
 				(OSB_OfferingEntry.licenses = [$TRUE$])
@@ -778,7 +790,7 @@
 				OSB_ProductEntry
 			INNER JOIN
 				OSB_OfferingEntry ON
-					OSB_OfferingEntry.productEntryId = OSB_ProductEntry.productEntryId
+					(OSB_OfferingEntry.productEntryId = OSB_ProductEntry.productEntryId)
 			WHERE
 				(OSB_OfferingEntry.accountEntryId = ?) AND
 				(OSB_OfferingEntry.status = 1)
@@ -795,8 +807,7 @@
 			[$JOIN$]
 			WHERE
 				[$WHERE$]
-				(OSB_ProductEntry.name = ?) OR
-				(? IS NULL)
+				(OSB_ProductEntry.name = ? OR ? IS NULL)
 			ORDER BY
 				OSB_ProductEntry.name
 		]]>
@@ -809,7 +820,7 @@
 				OSB_SupportResponse
 			INNER JOIN
 				OSB_OfferingEntry ON
-					OSB_OfferingEntry.supportResponseId = OSB_SupportResponse.supportResponseId
+					(OSB_OfferingEntry.supportResponseId = OSB_SupportResponse.supportResponseId)
 			WHERE
 				(OSB_OfferingEntry.accountEntryId = ?) AND
 				(OSB_OfferingEntry.status = 1)
@@ -847,11 +858,10 @@
 				OSB_SupportTeam
 			INNER JOIN
 				OSB_SupportWorker ON
-					OSB_SupportWorker.supportTeamId = OSB_SupportTeam.supportTeamId
+					(OSB_SupportWorker.supportTeamId = OSB_SupportTeam.supportTeamId)
 			WHERE
 				(OSB_SupportWorker.userId = ?) AND
-				(OSB_SupportWorker.role = ?) OR
-				(? = 0)
+				(OSB_SupportWorker.role = ? OR ? = 0)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.countByU_E">
@@ -883,10 +893,7 @@
 				OSB_SupportTeam ON
 					OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId
 			WHERE
-				(
-					(OSB_SupportWorker.supportLaborId = ?) OR
-					(? = 0)
-				) AND
+				((OSB_SupportWorker.supportLaborId = ?) OR (? = 0)) AND
 				(
 					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
@@ -905,7 +912,7 @@
 				OSB_SupportWorker
 			INNER JOIN
 				User_ ON
-					User_.userId = OSB_SupportWorker.userId
+					(User_.userId = OSB_SupportWorker.userId)
 			WHERE
 				(OSB_SupportWorker.supportTeamId = ?)
 			ORDER BY
@@ -941,19 +948,16 @@
 				OSB_SupportWorker
 			INNER JOIN
 				OSB_SupportTeam ON
-					OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId
+					(OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId)
 			INNER JOIN
 				OSB_SupportTeams_SupportRegions ON
-					OSB_SupportTeams_SupportRegions.supportTeamId = OSB_SupportTeam.supportTeamId
+					(OSB_SupportTeams_SupportRegions.supportTeamId = OSB_SupportTeam.supportTeamId)
 			WHERE
 				[$WHERE$]
 				(OSB_SupportWorker.role [$ROLE_COMPARATOR$] ?) AND
 				(OSB_SupportWorker.autoAssign = [$TRUE$]) AND
 				(OSB_SupportTeam.type_ = ?) AND
-				(
-					(OSB_SupportTeams_SupportRegions.supportRegionId = ?) OR
-					(? = 0)
-				)
+				((OSB_SupportTeams_SupportRegions.supportRegionId = ?) OR (? = 0))
 			ORDER BY
 				(OSB_SupportWorker.assignedWork / OSB_SupportWorker.maxWork) ASC,
 				OSB_SupportWorker.maxWork DESC,
@@ -968,15 +972,12 @@
 				OSB_SupportWorker
 			INNER JOIN
 				User_ ON
-					User_.userId = OSB_SupportWorker.userId
+					(User_.userId = OSB_SupportWorker.userId)
 			INNER JOIN
 				OSB_SupportTeam ON
-					OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId
+					(OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId)
 			WHERE
-				(
-					(OSB_SupportWorker.supportLaborId = ?) OR
-					(? = 0)
-				) AND
+				((OSB_SupportWorker.supportLaborId = ?) OR (? = 0)) AND
 				(
 					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
@@ -991,82 +992,84 @@
 		<![CDATA[
 			INNER JOIN
 				OSB_SupportWorkerAccountTier ON
-					OSB_SupportWorkerAccountTier.supportWorkerId = OSB_SupportWorker.supportWorkerId
+					(OSB_SupportWorkerAccountTier.supportWorkerId = OSB_SupportWorker.supportWorkerId)
 			WHERE
-				OSB_SupportWorkerAccountTier.accountTier = ?
+				(OSB_SupportWorkerAccountTier.accountTier = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinByComponent">
 		<![CDATA[
 			INNER JOIN
 				OSB_SupportWorkerComponent ON
-					OSB_SupportWorkerComponent.supportWorkerId = OSB_SupportWorker.supportWorkerId
+					(OSB_SupportWorkerComponent.supportWorkerId = OSB_SupportWorker.supportWorkerId)
 			WHERE
-				OSB_SupportWorkerComponent.component = ?
+				(OSB_SupportWorkerComponent.component = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinByLocationSupportRegion">
 		<![CDATA[
 			WHERE
-				OSB_SupportTeam.locationSupportRegionId = ?
+				(OSB_SupportTeam.locationSupportRegionId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySeverity">
 		<![CDATA[
 			INNER JOIN
 				OSB_SupportWorkerSeverity ON
-					OSB_SupportWorkerSeverity.supportWorkerId = OSB_SupportWorker.supportWorkerId
+					(OSB_SupportWorkerSeverity.supportWorkerId = OSB_SupportWorker.supportWorkerId)
 			WHERE
-				OSB_SupportWorkerSeverity.severity = ?
+				(OSB_SupportWorkerSeverity.severity = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySupportRegion">
 		<![CDATA[
 			INNER JOIN
 				OSB_SupportTeams_SupportRegions ON
-					OSB_SupportTeams_SupportRegions.supportTeamId = OSB_SupportWorker.supportTeamId
+					(OSB_SupportTeams_SupportRegions.supportTeamId = OSB_SupportWorker.supportTeamId)
 			WHERE
-				OSB_SupportTeams_SupportRegions.supportRegionId = ?
+				(OSB_SupportTeams_SupportRegions.supportRegionId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySupportTeam">
 		<![CDATA[
 			WHERE
-				OSB_SupportWorker.supportTeamId = ?
+				(OSB_SupportWorker.supportTeamId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySupportTeamAccountEntry">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountEntries_SupportTeams ON
-					OSB_AccountEntries_SupportTeams.supportTeamId = OSB_SupportWorker.supportTeamId
+					(OSB_AccountEntries_SupportTeams.supportTeamId = OSB_SupportWorker.supportTeamId)
 			WHERE
-				OSB_AccountEntries_SupportTeams.accountEntryId = ?
+				(OSB_AccountEntries_SupportTeams.accountEntryId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySupportTeamLanguage">
 		<![CDATA[
 			INNER JOIN
 				OSB_SupportTeamLanguage ON
-					OSB_SupportTeamLanguage.supportTeamId = OSB_SupportWorker.supportTeamId
+					(OSB_SupportTeamLanguage.supportTeamId = OSB_SupportWorker.supportTeamId)
 			WHERE
-				(OSB_SupportTeamLanguage.languageId = ?) OR
-				(? = 0)
+				(
+					(OSB_SupportTeamLanguage.languageId = ?) OR
+					(? = 0)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySupportTeamType">
 		<![CDATA[
 			INNER JOIN
 				OSB_SupportTeam ON
-					OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId
+					(OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId)
 			WHERE
-				OSB_SupportTeam.type_ = ?
+				(OSB_SupportTeam.type_ = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinByUserId">
 		<![CDATA[
 			WHERE
-				OSB_SupportWorker.userId = ?
+				(OSB_SupportWorker.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketCannedResponseFinder.countByN_C">
@@ -1101,7 +1104,7 @@
 				OSB_TicketComment
 			INNER JOIN
 				Users_Orgs ON
-					OSB_TicketComment.userId = Users_Orgs.userId
+					(OSB_TicketComment.userId = Users_Orgs.userId)
 			WHERE
 				(OSB_TicketComment.ticketEntryId = ?) AND
 				(OSB_TicketComment.visibility = ?) AND
@@ -1117,7 +1120,7 @@
 				OSB_TicketEntry
 			INNER JOIN
 				OSB_AccountEntry ON
-					OSB_AccountEntry.accountEntryId = OSB_TicketEntry.accountEntryId
+					(OSB_AccountEntry.accountEntryId = OSB_TicketEntry.accountEntryId)
 			[$JOIN$]
 			WHERE
 				[$WHERE$]
@@ -1127,8 +1130,7 @@
 						(lower(OSB_AccountEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$])
 					) [$AND_OR_CONNECTOR$]
 					(OSB_AccountEntry.tier = ?) [$AND_OR_CONNECTOR$]
-					(OSB_TicketEntry.userId = ?) OR
-					(? = 0) [$AND_OR_CONNECTOR$]
+					(OSB_TicketEntry.userId = ? OR ? = 0) [$AND_OR_CONNECTOR$]
 					(OSB_TicketEntry.closedDate [$SATISFIED_DUE_DATE_COMPARATOR$] OSB_TicketEntry.dueDate) [$AND_OR_CONNECTOR$]
 					(OSB_TicketEntry.createDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(OSB_TicketEntry.createDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
@@ -1162,7 +1164,7 @@
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.filterByAccountEntry">
 		<![CDATA[
 			WHERE
-				OSB_AccountEntry.accountEntryId = ?
+				(OSB_AccountEntry.accountEntryId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.findByTicketComment">
@@ -1185,7 +1187,7 @@
 				OSB_TicketEntry
 			INNER JOIN
 				OSB_AccountEntry ON
-					OSB_AccountEntry.accountEntryId = OSB_TicketEntry.accountEntryId
+					(OSB_AccountEntry.accountEntryId = OSB_TicketEntry.accountEntryId)
 			[$JOIN$]
 			WHERE
 				[$WHERE$]
@@ -1195,8 +1197,7 @@
 						(lower(OSB_AccountEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$])
 					) [$AND_OR_CONNECTOR$]
 					(OSB_AccountEntry.tier = ?) [$AND_OR_CONNECTOR$]
-					(OSB_TicketEntry.userId = ?) OR
-					(? = 0) [$AND_OR_CONNECTOR$]
+					(OSB_TicketEntry.userId = ? OR ? = 0) [$AND_OR_CONNECTOR$]
 					(OSB_TicketEntry.closedDate [$SATISFIED_DUE_DATE_COMPARATOR$] OSB_TicketEntry.dueDate) [$AND_OR_CONNECTOR$]
 					(OSB_TicketEntry.createDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
 					(OSB_TicketEntry.createDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
@@ -1231,38 +1232,42 @@
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountCustomer ON
-					OSB_AccountCustomer.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_AccountCustomer.accountEntryId = OSB_AccountEntry.accountEntryId)
 			WHERE
-				OSB_AccountCustomer.userId = ?
+				(OSB_AccountCustomer.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinByAccountCustomerVisibility">
 		<![CDATA[
 			WHERE
-				OSB_TicketComment.visibility = 1
+				(OSB_TicketComment.visibility = 1)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinByAccountWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountWorker ON
-					OSB_AccountWorker.accountEntryId = OSB_AccountEntry.accountEntryId
+					(OSB_AccountWorker.accountEntryId = OSB_AccountEntry.accountEntryId)
 			WHERE
-				(OSB_AccountWorker.userId = ?) AND
-				(OSB_AccountWorker.role = ?)
+				(
+					(OSB_AccountWorker.userId = ?) AND
+					(OSB_AccountWorker.role = ?)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinByPartnerEntry">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker ON
-					OSB_TicketWorker.ticketEntryId = OSB_TicketEntry.ticketEntryId
+					(OSB_TicketWorker.ticketEntryId = OSB_TicketEntry.ticketEntryId)
 			INNER JOIN
 				OSB_PartnerWorker ON
-					(OSB_PartnerWorker.userId = OSB_TicketWorker.userId) OR
-					(OSB_PartnerWorker.userId = OSB_TicketEntry.userId)
+					(
+						(OSB_PartnerWorker.userId = OSB_TicketWorker.userId) OR
+						(OSB_PartnerWorker.userId = OSB_TicketEntry.userId)
+					)
 			WHERE
-				OSB_PartnerWorker.partnerEntryId = ?
+				(OSB_PartnerWorker.partnerEntryId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinByPartnerWorker">
@@ -1272,16 +1277,18 @@
 					(OSB_AccountEntry.partnerManagedSupport = [$TRUE$]) AND
 					(OSB_PartnerWorker.partnerEntryId = OSB_AccountEntry.partnerEntryId)
 			WHERE
-				OSB_PartnerWorker.userId = ?
+				(OSB_PartnerWorker.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinByPartnerWorkerVisibility">
 		<![CDATA[
 			WHERE
-				(OSB_TicketComment.visibility = 1) OR
 				(
-					(OSB_TicketComment.visibility = 2) AND
-					(OSB_PartnerWorker.userId = ?)
+					(OSB_TicketComment.visibility = 1) OR
+					(
+						(OSB_TicketComment.visibility = 2) AND
+						(OSB_PartnerWorker.userId = ?)
+					)
 				)
 		]]>
 	</sql>
@@ -1289,33 +1296,36 @@
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketFlag ON
-					OSB_TicketFlag.ticketEntryId = OSB_TicketEntry.ticketEntryId
+					(OSB_TicketFlag.ticketEntryId = OSB_TicketEntry.ticketEntryId)
 			WHERE
-				(OSB_TicketFlag.type_ = ?) AND
-				(OSB_TicketFlag.flag = [$TRUE$])
+				(
+					(OSB_TicketFlag.type_ = ?) AND
+					(OSB_TicketFlag.flag = [$TRUE$])
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinByPrimaryTicketWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker AS OSB_TicketWorker1 ON
-					OSB_TicketWorker1.ticketEntryId = OSB_TicketEntry.ticketEntryId
+					(OSB_TicketWorker1.ticketEntryId = OSB_TicketEntry.ticketEntryId)
 			INNER JOIN
 				OSB_TicketWorker AS OSB_TicketWorker2 ON
-					OSB_TicketWorker2.ticketEntryId = OSB_TicketEntry.ticketEntryId
+					(OSB_TicketWorker2.ticketEntryId = OSB_TicketEntry.ticketEntryId)
 			INNER JOIN
 				User_ ON
-					User_.userId = OSB_TicketWorker2.userId
+					(User_.userId = OSB_TicketWorker2.userId)
 			WHERE
-				(OSB_TicketWorker1.userId = ?) AND
-				(OSB_TicketWorker1.primary_ = ?) OR
-				(? IS NULL)
+				(
+					(OSB_TicketWorker1.userId = ?) AND
+					(OSB_TicketWorker1.primary_ = ? OR ? IS NULL)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinByProductEntry">
 		<![CDATA[
 			WHERE
-				OSB_OfferingEntry.productEntryId = ?
+				(OSB_OfferingEntry.productEntryId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinBySubscription">
@@ -1326,49 +1336,54 @@
 					(Subscription.classPK = OSB_TicketEntry.ticketEntryId)
 			INNER JOIN
 				OSB_TicketWorker ON
-					OSB_TicketWorker.ticketEntryId = OSB_TicketEntry.ticketEntryId
+					(OSB_TicketWorker.ticketEntryId = OSB_TicketEntry.ticketEntryId)
 			INNER JOIN
 				User_ ON
-					User_.userId = OSB_TicketWorker.userId
+					(User_.userId = OSB_TicketWorker.userId)
 			WHERE
-				(Subscription.userId = ?) AND
-				(OSB_TicketWorker.primary_ = [$TRUE$])
+				(
+					(Subscription.userId = ?) AND
+					(OSB_TicketWorker.primary_ = [$TRUE$])
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinBySupportTeam">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker ON
-					OSB_TicketWorker.ticketEntryId = OSB_TicketEntry.ticketEntryId
+					(OSB_TicketWorker.ticketEntryId = OSB_TicketEntry.ticketEntryId)
 			INNER JOIN
 				OSB_SupportWorker ON
-					OSB_SupportWorker.userId = OSB_TicketWorker.userId
+					(OSB_SupportWorker.userId = OSB_TicketWorker.userId)
 			WHERE
-				OSB_SupportWorker.supportTeamId = ?
+				(OSB_SupportWorker.supportTeamId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinByTicketWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker ON
-					OSB_TicketWorker.ticketEntryId = OSB_TicketEntry.ticketEntryId
+					(OSB_TicketWorker.ticketEntryId = OSB_TicketEntry.ticketEntryId)
 			INNER JOIN
 				User_ ON
-					User_.userId = OSB_TicketWorker.userId
+					(User_.userId = OSB_TicketWorker.userId)
 			WHERE
-				OSB_TicketWorker.userId = ?
+				(OSB_TicketWorker.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketEntryFinder.joinByTicketWorkerCount">
 		<![CDATA[
 			WHERE
-				SELECT
-					COUNT(*) AS COUNT_VALUE
-				FROM
-					OSB_TicketWorker
-				WHERE
-					OSB_TicketWorker.ticketEntryId = OSB_TicketEntry.ticketEntryId
-			 = ?
+				(
+					(
+						SELECT
+							COUNT(*) AS COUNT_VALUE
+						FROM
+							OSB_TicketWorker
+						WHERE
+							(OSB_TicketWorker.ticketEntryId = OSB_TicketEntry.ticketEntryId)
+					) = ?
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketFeedbackFinder.countByAE_CD_MD_S_S_C_S_R_R_R_R">
@@ -1383,7 +1398,7 @@
 					(OSB_TicketEntry.ticketEntryId = OSB_TicketFeedback.ticketEntryId)
 			INNER JOIN
 				OSB_AccountEntry ON
-					OSB_AccountEntry.accountEntryId = OSB_TicketEntry.accountEntryId
+					(OSB_AccountEntry.accountEntryId = OSB_TicketEntry.accountEntryId)
 			[$JOIN$]
 			WHERE
 				[$WHERE$]
@@ -1407,16 +1422,16 @@
 	<sql id="com.liferay.osb.service.persistence.TicketFeedbackFinder.filterByCreateDate">
 		<![CDATA[
 			WHERE
-				(OSB_TicketFeedback.createDate > ?) OR
-				(? IS NULL) AND
-				(OSB_TicketFeedback.createDate < ?) OR
-				(? IS NULL)
+				(
+					(OSB_TicketFeedback.createDate > ? OR ? IS NULL) AND
+					(OSB_TicketFeedback.createDate < ? OR ? IS NULL)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketFeedbackFinder.filterBySubject">
 		<![CDATA[
 			WHERE
-				OSB_TicketFeedback.subject = ?
+				(OSB_TicketFeedback.subject = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketFeedbackFinder.findByAE_CD_MD_S_S_C_S_R_R_R_R">
@@ -1431,7 +1446,7 @@
 					(OSB_TicketEntry.ticketEntryId = OSB_TicketFeedback.ticketEntryId)
 			INNER JOIN
 				OSB_AccountEntry ON
-					OSB_AccountEntry.accountEntryId = OSB_TicketEntry.accountEntryId
+					(OSB_AccountEntry.accountEntryId = OSB_TicketEntry.accountEntryId)
 			[$JOIN$]
 			WHERE
 				[$WHERE$]
@@ -1456,21 +1471,21 @@
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountCustomer ON
-					OSB_AccountCustomer.accountEntryId = OSB_TicketFeedback.accountEntryId
+					(OSB_AccountCustomer.accountEntryId = OSB_TicketFeedback.accountEntryId)
 			WHERE
-				OSB_AccountCustomer.userId = ?
+				(OSB_AccountCustomer.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketFeedbackFinder.joinByPartnerEntry">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker ON
-					OSB_TicketWorker.ticketEntryId = OSB_TicketFeedback.ticketEntryId
+					(OSB_TicketWorker.ticketEntryId = OSB_TicketFeedback.ticketEntryId)
 			INNER JOIN
 				OSB_PartnerWorker ON
-					OSB_PartnerWorker.userId = OSB_TicketWorker.userId
+					(OSB_PartnerWorker.userId = OSB_TicketWorker.userId)
 			WHERE
-				OSB_PartnerWorker.partnerEntryId = ?
+				(OSB_PartnerWorker.partnerEntryId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketFeedbackFinder.joinByPartnerWorker">
@@ -1480,56 +1495,60 @@
 					(OSB_AccountEntry.partnerManagedSupport = [$TRUE$]) AND
 					(OSB_PartnerWorker.partnerEntryId = OSB_AccountEntry.partnerEntryId)
 			WHERE
-				OSB_PartnerWorker.userId = ?
+				(OSB_PartnerWorker.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketFeedbackFinder.joinBySupportTeam">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker ON
-					OSB_TicketWorker.ticketEntryId = OSB_TicketFeedback.ticketEntryId
+					(OSB_TicketWorker.ticketEntryId = OSB_TicketFeedback.ticketEntryId)
 			INNER JOIN
 				OSB_SupportWorker ON
-					OSB_SupportWorker.userId = OSB_TicketWorker.userId
+					(OSB_SupportWorker.userId = OSB_TicketWorker.userId)
 			WHERE
-				OSB_SupportWorker.supportTeamId = ?
+				(OSB_SupportWorker.supportTeamId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketFeedbackFinder.joinByTicketEntryWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker ON
-					OSB_TicketWorker.ticketEntryId = OSB_TicketFeedback.ticketEntryId
+					(OSB_TicketWorker.ticketEntryId = OSB_TicketFeedback.ticketEntryId)
 			WHERE
-				OSB_TicketWorker.userId = ?
+				(OSB_TicketWorker.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountCustomer">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountCustomer ON
-					OSB_AccountCustomer.userId = User_.userId
+					(OSB_AccountCustomer.userId = User_.userId)
 			WHERE
-				(OSB_AccountCustomer.accountEntryId = ?) AND
-				(OSB_AccountCustomer.role = ?)
+				(
+					(OSB_AccountCustomer.accountEntryId = ?) AND
+					(OSB_AccountCustomer.role = ?)
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountCustomerPartnerWorker">
 		<![CDATA[
 			LEFT JOIN
 				OSB_AccountCustomer ON
-					OSB_AccountCustomer.userId = User_.userId
+					(OSB_AccountCustomer.userId = User_.userId)
 			LEFT JOIN
 				OSB_PartnerWorker ON
-					OSB_PartnerWorker.userId = User_.userId
+					(OSB_PartnerWorker.userId = User_.userId)
 			WHERE
 				(
-					(OSB_AccountCustomer.accountEntryId = ?) AND
-					(OSB_AccountCustomer.role = ?)
-				) OR
-				(
-					(OSB_PartnerWorker.partnerEntryId = ?) AND
-					(OSB_PartnerWorker.role = ?)
+					(
+						(OSB_AccountCustomer.accountEntryId = ?) AND
+						(OSB_AccountCustomer.role = ?)
+					) OR
+					(
+						(OSB_PartnerWorker.partnerEntryId = ?) AND
+						(OSB_PartnerWorker.role = ?)
+					)
 				)
 		]]>
 	</sql>
@@ -1537,142 +1556,144 @@
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountWorker ON
-					OSB_AccountWorker.userId = User_.userId
+					(OSB_AccountWorker.userId = User_.userId)
 			WHERE
-				OSB_AccountWorker.role = ?
+				(OSB_AccountWorker.role = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerEntryWorkers">
 		<![CDATA[
 			INNER JOIN
 				OSB_PartnerWorker AS OSB_PartnerWorker1 ON
-					OSB_PartnerWorker1.userId = User_.userId
+					(OSB_PartnerWorker1.userId = User_.userId)
 			INNER JOIN
 				OSB_AccountEntry ON
 					(OSB_AccountEntry.partnerManagedSupport = [$TRUE$]) AND
 					(OSB_AccountEntry.partnerEntryId = OSB_PartnerWorker1.partnerEntryId)
 			INNER JOIN
 				OSB_PartnerWorker AS OSB_PartnerWorker2 ON
-					OSB_PartnerWorker2.partnerEntryId = OSB_AccountEntry.partnerEntryId
+					(OSB_PartnerWorker2.partnerEntryId = OSB_AccountEntry.partnerEntryId)
 			WHERE
-				OSB_PartnerWorker2.userId = ?
+				(OSB_PartnerWorker2.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountEntryCreateUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountEntry ON
-					OSB_AccountEntry.userId = User_.userId
+					(OSB_AccountEntry.userId = User_.userId)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountEntryModifiedUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountEntry ON
-					OSB_AccountEntry.modifiedUserId = User_.userId
+					(OSB_AccountEntry.modifiedUserId = User_.userId)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountWorker ON
-					OSB_AccountWorker.userId = User_.userId
+					(OSB_AccountWorker.userId = User_.userId)
 			WHERE
-				OSB_AccountWorker.accountEntryId = ?
+				(OSB_AccountWorker.accountEntryId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyCreateUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_LicenseKey ON
-					OSB_LicenseKey.userId = User_.userId
+					(OSB_LicenseKey.userId = User_.userId)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByLicenseKeyModifiedUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_LicenseKey ON
-					OSB_LicenseKey.modifiedUserId = User_.userId
+					(OSB_LicenseKey.modifiedUserId = User_.userId)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAvailableTicketWorkers">
 		<![CDATA[
 			LEFT JOIN
 				Users_Orgs ON
-					Users_Orgs.userId = User_.userId
+					(Users_Orgs.userId = User_.userId)
 			LEFT JOIN
 				OSB_PartnerWorker ON
-					OSB_PartnerWorker.userId = User_.userId
+					(OSB_PartnerWorker.userId = User_.userId)
 			LEFT JOIN
 				OSB_AccountEntry ON
-					OSB_AccountEntry.partnerEntryId = OSB_PartnerWorker.partnerEntryId
+					(OSB_AccountEntry.partnerEntryId = OSB_PartnerWorker.partnerEntryId)
 			WHERE
-				(Users_Orgs.organizationId = ?) OR
-				(OSB_AccountEntry.partnerManagedSupport = [$TRUE$])
+				(
+					(Users_Orgs.organizationId = ?) OR
+					(OSB_AccountEntry.partnerManagedSupport = [$TRUE$])
+				)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByHolidayCalendar">
 		<![CDATA[
 			INNER JOIN
 				OSB_HolidayCalendarRel ON
-					OSB_HolidayCalendarRel.userId = User_.userId
+					(OSB_HolidayCalendarRel.userId = User_.userId)
 			WHERE
-				OSB_HolidayCalendarRel.holidayCalendarId = ?
+				(OSB_HolidayCalendarRel.holidayCalendarId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByOrderEntryCreateUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_OrderEntry ON
-					OSB_OrderEntry.userId = User_.userId
+					(OSB_OrderEntry.userId = User_.userId)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByOrderEntryModifiedUser">
 		<![CDATA[
 			INNER JOIN
 				OSB_OrderEntry ON
-					OSB_OrderEntry.modifiedUserId = User_.userId
+					(OSB_OrderEntry.modifiedUserId = User_.userId)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_PartnerWorker ON
-					OSB_PartnerWorker.userId = User_.userId
+					(OSB_PartnerWorker.userId = User_.userId)
 			WHERE
-				OSB_PartnerWorker.partnerEntryId = ?
+				(OSB_PartnerWorker.partnerEntryId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinBySupportWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_SupportWorker ON
-					OSB_SupportWorker.userId = User_.userId
+					(OSB_SupportWorker.userId = User_.userId)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinBySupportWorkerTeam">
 		<![CDATA[
 			INNER JOIN
 				OSB_SupportWorker ON
-					OSB_SupportWorker.userId = User_.userId
+					(OSB_SupportWorker.userId = User_.userId)
 			WHERE
-				OSB_SupportWorker.supportTeamId = ?
+				(OSB_SupportWorker.supportTeamId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByTicketWorker">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker ON
-					OSB_TicketWorker.userId = User_.userId
+					(OSB_TicketWorker.userId = User_.userId)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByTicketWorkerEntries">
 		<![CDATA[
 			INNER JOIN
 				OSB_TicketWorker ON
-					OSB_TicketWorker.userId = User_.userId
+					(OSB_TicketWorker.userId = User_.userId)
 			WHERE
-				OSB_TicketWorker.ticketEntryId = ?
+				(OSB_TicketWorker.ticketEntryId = ?)
 		]]>
 	</sql>
 </custom-sql>
