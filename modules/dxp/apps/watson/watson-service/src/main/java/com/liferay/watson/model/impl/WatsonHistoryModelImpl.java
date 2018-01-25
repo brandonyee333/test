@@ -73,7 +73,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
 			{ "modifiedDate", Types.TIMESTAMP },
-			{ "watsonIncidentId", Types.BIGINT },
+			{ "watsonParentId", Types.BIGINT },
 			{ "classNameId", Types.BIGINT },
 			{ "classPK", Types.BIGINT },
 			{ "type_", Types.INTEGER },
@@ -89,14 +89,14 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("watsonIncidentId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("watsonParentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classNameId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("classPK", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonHistory (watsonHistoryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,classNameId LONG,classPK LONG,type_ INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonHistory (watsonHistoryId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonParentId LONG,classNameId LONG,classPK LONG,type_ INTEGER,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonHistory";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonHistory.watsonHistoryId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonHistory.watsonHistoryId ASC";
@@ -157,7 +157,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("watsonIncidentId", getWatsonIncidentId());
+		attributes.put("watsonParentId", getWatsonParentId());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
 		attributes.put("type", getType());
@@ -213,10 +213,10 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			setModifiedDate(modifiedDate);
 		}
 
-		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
+		Long watsonParentId = (Long)attributes.get("watsonParentId");
 
-		if (watsonIncidentId != null) {
-			setWatsonIncidentId(watsonIncidentId);
+		if (watsonParentId != null) {
+			setWatsonParentId(watsonParentId);
 		}
 
 		Long classNameId = (Long)attributes.get("classNameId");
@@ -342,13 +342,13 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 	}
 
 	@Override
-	public long getWatsonIncidentId() {
-		return _watsonIncidentId;
+	public long getWatsonParentId() {
+		return _watsonParentId;
 	}
 
 	@Override
-	public void setWatsonIncidentId(long watsonIncidentId) {
-		_watsonIncidentId = watsonIncidentId;
+	public void setWatsonParentId(long watsonParentId) {
+		_watsonParentId = watsonParentId;
 	}
 
 	@Override
@@ -445,7 +445,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		watsonHistoryImpl.setUserName(getUserName());
 		watsonHistoryImpl.setCreateDate(getCreateDate());
 		watsonHistoryImpl.setModifiedDate(getModifiedDate());
-		watsonHistoryImpl.setWatsonIncidentId(getWatsonIncidentId());
+		watsonHistoryImpl.setWatsonParentId(getWatsonParentId());
 		watsonHistoryImpl.setClassNameId(getClassNameId());
 		watsonHistoryImpl.setClassPK(getClassPK());
 		watsonHistoryImpl.setType(getType());
@@ -553,7 +553,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 			watsonHistoryCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		watsonHistoryCacheModel.watsonIncidentId = getWatsonIncidentId();
+		watsonHistoryCacheModel.watsonParentId = getWatsonParentId();
 
 		watsonHistoryCacheModel.classNameId = getClassNameId();
 
@@ -584,8 +584,8 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		sb.append(getCreateDate());
 		sb.append(", modifiedDate=");
 		sb.append(getModifiedDate());
-		sb.append(", watsonIncidentId=");
-		sb.append(getWatsonIncidentId());
+		sb.append(", watsonParentId=");
+		sb.append(getWatsonParentId());
 		sb.append(", classNameId=");
 		sb.append(getClassNameId());
 		sb.append(", classPK=");
@@ -636,8 +636,8 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 		sb.append(getModifiedDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>watsonIncidentId</column-name><column-value><![CDATA[");
-		sb.append(getWatsonIncidentId());
+			"<column><column-name>watsonParentId</column-name><column-value><![CDATA[");
+		sb.append(getWatsonParentId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>classNameId</column-name><column-value><![CDATA[");
@@ -673,7 +673,7 @@ public class WatsonHistoryModelImpl extends BaseModelImpl<WatsonHistory>
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
-	private long _watsonIncidentId;
+	private long _watsonParentId;
 	private long _classNameId;
 	private long _classPK;
 	private int _type;

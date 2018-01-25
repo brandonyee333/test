@@ -356,7 +356,7 @@ public class WatsonChildPersistenceImpl extends BasePersistenceImpl<WatsonChild>
 		watsonChildImpl.setCountryWatsonListTypeId(watsonChild.getCountryWatsonListTypeId());
 		watsonChildImpl.setDischargeWatsonListTypeId(watsonChild.getDischargeWatsonListTypeId());
 		watsonChildImpl.setEthnicityWatsonListTypeId(watsonChild.getEthnicityWatsonListTypeId());
-		watsonChildImpl.setOriginalWatsonChildId(watsonChild.getOriginalWatsonChildId());
+		watsonChildImpl.setOriginalWatsonPersonId(watsonChild.getOriginalWatsonPersonId());
 		watsonChildImpl.setSexWatsonListTypeId(watsonChild.getSexWatsonListTypeId());
 		watsonChildImpl.setSourceSubtypeWatsonListTypeId(watsonChild.getSourceSubtypeWatsonListTypeId());
 		watsonChildImpl.setSourceWatsonListTypeId(watsonChild.getSourceWatsonListTypeId());

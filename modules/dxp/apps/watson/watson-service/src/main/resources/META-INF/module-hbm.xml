@@ -81,7 +81,7 @@
 		<property name="countryWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="dischargeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="ethnicityWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="originalWatsonChildId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="originalWatsonPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="sexWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="sourceSubtypeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="sourceWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
@@ -121,7 +121,7 @@
 		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="watsonIncidentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="watsonParentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
@@ -143,9 +143,12 @@
 		<property name="subtypeWatsonListTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="audienceAdultCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="audienceChildCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="victimAdultCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="victimChildCount" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="externalCaseId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="otherType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="reportDate" type="org.hibernate.type.TimestampType" />
 		<property name="startDate" type="org.hibernate.type.TimestampType" />
 		<property name="endDate" type="org.hibernate.type.TimestampType" />

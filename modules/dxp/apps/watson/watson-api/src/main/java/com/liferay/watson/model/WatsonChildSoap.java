@@ -45,7 +45,7 @@ public class WatsonChildSoap implements Serializable {
 		soapModel.setCountryWatsonListTypeId(model.getCountryWatsonListTypeId());
 		soapModel.setDischargeWatsonListTypeId(model.getDischargeWatsonListTypeId());
 		soapModel.setEthnicityWatsonListTypeId(model.getEthnicityWatsonListTypeId());
-		soapModel.setOriginalWatsonChildId(model.getOriginalWatsonChildId());
+		soapModel.setOriginalWatsonPersonId(model.getOriginalWatsonPersonId());
 		soapModel.setSexWatsonListTypeId(model.getSexWatsonListTypeId());
 		soapModel.setSourceSubtypeWatsonListTypeId(model.getSourceSubtypeWatsonListTypeId());
 		soapModel.setSourceWatsonListTypeId(model.getSourceWatsonListTypeId());
@@ -203,12 +203,12 @@ public class WatsonChildSoap implements Serializable {
 		_ethnicityWatsonListTypeId = ethnicityWatsonListTypeId;
 	}
 
-	public long getOriginalWatsonChildId() {
-		return _originalWatsonChildId;
+	public long getOriginalWatsonPersonId() {
+		return _originalWatsonPersonId;
 	}
 
-	public void setOriginalWatsonChildId(long originalWatsonChildId) {
-		_originalWatsonChildId = originalWatsonChildId;
+	public void setOriginalWatsonPersonId(long originalWatsonPersonId) {
+		_originalWatsonPersonId = originalWatsonPersonId;
 	}
 
 	public long getSexWatsonListTypeId() {
@@ -296,7 +296,7 @@ public class WatsonChildSoap implements Serializable {
 	private long _countryWatsonListTypeId;
 	private long _dischargeWatsonListTypeId;
 	private long _ethnicityWatsonListTypeId;
-	private long _originalWatsonChildId;
+	private long _originalWatsonPersonId;
 	private long _sexWatsonListTypeId;
 	private long _sourceSubtypeWatsonListTypeId;
 	private long _sourceWatsonListTypeId;

@@ -282,6 +282,34 @@ public interface WatsonIncidentModel extends BaseModel<WatsonIncident>,
 	public void setAudienceChildCount(long audienceChildCount);
 
 	/**
+	 * Returns the victim adult count of this watson incident.
+	 *
+	 * @return the victim adult count of this watson incident
+	 */
+	public long getVictimAdultCount();
+
+	/**
+	 * Sets the victim adult count of this watson incident.
+	 *
+	 * @param victimAdultCount the victim adult count of this watson incident
+	 */
+	public void setVictimAdultCount(long victimAdultCount);
+
+	/**
+	 * Returns the victim child count of this watson incident.
+	 *
+	 * @return the victim child count of this watson incident
+	 */
+	public long getVictimChildCount();
+
+	/**
+	 * Sets the victim child count of this watson incident.
+	 *
+	 * @param victimChildCount the victim child count of this watson incident
+	 */
+	public void setVictimChildCount(long victimChildCount);
+
+	/**
 	 * Returns the name of this watson incident.
 	 *
 	 * @return the name of this watson incident
@@ -411,6 +439,21 @@ public interface WatsonIncidentModel extends BaseModel<WatsonIncident>,
 	 * @param externalCaseId the external case ID of this watson incident
 	 */
 	public void setExternalCaseId(String externalCaseId);
+
+	/**
+	 * Returns the other type of this watson incident.
+	 *
+	 * @return the other type of this watson incident
+	 */
+	@AutoEscape
+	public String getOtherType();
+
+	/**
+	 * Sets the other type of this watson incident.
+	 *
+	 * @param otherType the other type of this watson incident
+	 */
+	public void setOtherType(String otherType);
 
 	/**
 	 * Returns the report date of this watson incident.

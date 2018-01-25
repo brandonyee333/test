@@ -65,7 +65,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(49);
 
 		sb.append("{watsonIncidentId=");
 		sb.append(watsonIncidentId);
@@ -93,12 +93,18 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		sb.append(audienceAdultCount);
 		sb.append(", audienceChildCount=");
 		sb.append(audienceChildCount);
+		sb.append(", victimAdultCount=");
+		sb.append(victimAdultCount);
+		sb.append(", victimChildCount=");
+		sb.append(victimChildCount);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", description=");
 		sb.append(description);
 		sb.append(", externalCaseId=");
 		sb.append(externalCaseId);
+		sb.append(", otherType=");
+		sb.append(otherType);
 		sb.append(", reportDate=");
 		sb.append(reportDate);
 		sb.append(", startDate=");
@@ -150,6 +156,8 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		watsonIncidentImpl.setSubtypeWatsonListTypeId(subtypeWatsonListTypeId);
 		watsonIncidentImpl.setAudienceAdultCount(audienceAdultCount);
 		watsonIncidentImpl.setAudienceChildCount(audienceChildCount);
+		watsonIncidentImpl.setVictimAdultCount(victimAdultCount);
+		watsonIncidentImpl.setVictimChildCount(victimChildCount);
 
 		if (name == null) {
 			watsonIncidentImpl.setName("");
@@ -170,6 +178,13 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		}
 		else {
 			watsonIncidentImpl.setExternalCaseId(externalCaseId);
+		}
+
+		if (otherType == null) {
+			watsonIncidentImpl.setOtherType("");
+		}
+		else {
+			watsonIncidentImpl.setOtherType(otherType);
 		}
 
 		if (reportDate == Long.MIN_VALUE) {
@@ -225,9 +240,14 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		audienceAdultCount = objectInput.readLong();
 
 		audienceChildCount = objectInput.readLong();
+
+		victimAdultCount = objectInput.readLong();
+
+		victimChildCount = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		externalCaseId = objectInput.readUTF();
+		otherType = objectInput.readUTF();
 		reportDate = objectInput.readLong();
 		startDate = objectInput.readLong();
 		endDate = objectInput.readLong();
@@ -270,6 +290,10 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 
 		objectOutput.writeLong(audienceChildCount);
 
+		objectOutput.writeLong(victimAdultCount);
+
+		objectOutput.writeLong(victimChildCount);
+
 		if (name == null) {
 			objectOutput.writeUTF("");
 		}
@@ -289,6 +313,13 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		}
 		else {
 			objectOutput.writeUTF(externalCaseId);
+		}
+
+		if (otherType == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(otherType);
 		}
 
 		objectOutput.writeLong(reportDate);
@@ -313,9 +344,12 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 	public long subtypeWatsonListTypeId;
 	public long audienceAdultCount;
 	public long audienceChildCount;
+	public long victimAdultCount;
+	public long victimChildCount;
 	public String name;
 	public String description;
 	public String externalCaseId;
+	public String otherType;
 	public long reportDate;
 	public long startDate;
 	public long endDate;

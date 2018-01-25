@@ -46,9 +46,12 @@ public class WatsonIncidentSoap implements Serializable {
 		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
 		soapModel.setAudienceAdultCount(model.getAudienceAdultCount());
 		soapModel.setAudienceChildCount(model.getAudienceChildCount());
+		soapModel.setVictimAdultCount(model.getVictimAdultCount());
+		soapModel.setVictimChildCount(model.getVictimChildCount());
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setExternalCaseId(model.getExternalCaseId());
+		soapModel.setOtherType(model.getOtherType());
 		soapModel.setReportDate(model.getReportDate());
 		soapModel.setStartDate(model.getStartDate());
 		soapModel.setEndDate(model.getEndDate());
@@ -211,6 +214,22 @@ public class WatsonIncidentSoap implements Serializable {
 		_audienceChildCount = audienceChildCount;
 	}
 
+	public long getVictimAdultCount() {
+		return _victimAdultCount;
+	}
+
+	public void setVictimAdultCount(long victimAdultCount) {
+		_victimAdultCount = victimAdultCount;
+	}
+
+	public long getVictimChildCount() {
+		return _victimChildCount;
+	}
+
+	public void setVictimChildCount(long victimChildCount) {
+		_victimChildCount = victimChildCount;
+	}
+
 	public String getName() {
 		return _name;
 	}
@@ -233,6 +252,14 @@ public class WatsonIncidentSoap implements Serializable {
 
 	public void setExternalCaseId(String externalCaseId) {
 		_externalCaseId = externalCaseId;
+	}
+
+	public String getOtherType() {
+		return _otherType;
+	}
+
+	public void setOtherType(String otherType) {
+		_otherType = otherType;
 	}
 
 	public Date getReportDate() {
@@ -288,9 +315,12 @@ public class WatsonIncidentSoap implements Serializable {
 	private long _subtypeWatsonListTypeId;
 	private long _audienceAdultCount;
 	private long _audienceChildCount;
+	private long _victimAdultCount;
+	private long _victimChildCount;
 	private String _name;
 	private String _description;
 	private String _externalCaseId;
+	private String _otherType;
 	private Date _reportDate;
 	private Date _startDate;
 	private Date _endDate;

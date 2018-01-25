@@ -85,9 +85,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			{ "subtypeWatsonListTypeId", Types.BIGINT },
 			{ "audienceAdultCount", Types.BIGINT },
 			{ "audienceChildCount", Types.BIGINT },
+			{ "victimAdultCount", Types.BIGINT },
+			{ "victimChildCount", Types.BIGINT },
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
 			{ "externalCaseId", Types.VARCHAR },
+			{ "otherType", Types.VARCHAR },
 			{ "reportDate", Types.TIMESTAMP },
 			{ "startDate", Types.TIMESTAMP },
 			{ "endDate", Types.TIMESTAMP },
@@ -110,9 +113,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		TABLE_COLUMNS_MAP.put("subtypeWatsonListTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("audienceAdultCount", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("audienceChildCount", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("victimAdultCount", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("victimChildCount", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("externalCaseId", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("otherType", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("reportDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("startDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("endDate", Types.TIMESTAMP);
@@ -120,7 +126,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonIncident (watsonIncidentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,externalCaseWatsonListTypeId LONG,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,audienceAdultCount LONG,audienceChildCount LONG,name VARCHAR(75) null,description STRING null,externalCaseId VARCHAR(75) null,reportDate DATE null,startDate DATE null,endDate DATE null,incidentStatus INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonIncident (watsonIncidentId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,externalCaseWatsonListTypeId LONG,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,audienceAdultCount LONG,audienceChildCount LONG,victimAdultCount LONG,victimChildCount LONG,name VARCHAR(75) null,description STRING null,externalCaseId VARCHAR(75) null,otherType VARCHAR(75) null,reportDate DATE null,startDate DATE null,endDate DATE null,incidentStatus INTEGER,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonIncident";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonIncident.watsonIncidentId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonIncident.watsonIncidentId ASC";
@@ -188,9 +194,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("audienceAdultCount", getAudienceAdultCount());
 		attributes.put("audienceChildCount", getAudienceChildCount());
+		attributes.put("victimAdultCount", getVictimAdultCount());
+		attributes.put("victimChildCount", getVictimChildCount());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("externalCaseId", getExternalCaseId());
+		attributes.put("otherType", getOtherType());
 		attributes.put("reportDate", getReportDate());
 		attributes.put("startDate", getStartDate());
 		attributes.put("endDate", getEndDate());
@@ -286,6 +295,18 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 			setAudienceChildCount(audienceChildCount);
 		}
 
+		Long victimAdultCount = (Long)attributes.get("victimAdultCount");
+
+		if (victimAdultCount != null) {
+			setVictimAdultCount(victimAdultCount);
+		}
+
+		Long victimChildCount = (Long)attributes.get("victimChildCount");
+
+		if (victimChildCount != null) {
+			setVictimChildCount(victimChildCount);
+		}
+
 		String name = (String)attributes.get("name");
 
 		if (name != null) {
@@ -302,6 +323,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 		if (externalCaseId != null) {
 			setExternalCaseId(externalCaseId);
+		}
+
+		String otherType = (String)attributes.get("otherType");
+
+		if (otherType != null) {
+			setOtherType(otherType);
 		}
 
 		Date reportDate = (Date)attributes.get("reportDate");
@@ -494,6 +521,26 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	}
 
 	@Override
+	public long getVictimAdultCount() {
+		return _victimAdultCount;
+	}
+
+	@Override
+	public void setVictimAdultCount(long victimAdultCount) {
+		_victimAdultCount = victimAdultCount;
+	}
+
+	@Override
+	public long getVictimChildCount() {
+		return _victimChildCount;
+	}
+
+	@Override
+	public void setVictimChildCount(long victimChildCount) {
+		_victimChildCount = victimChildCount;
+	}
+
+	@Override
 	public String getName() {
 		if (_name == null) {
 			return "";
@@ -623,6 +670,21 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	@Override
 	public void setExternalCaseId(String externalCaseId) {
 		_externalCaseId = externalCaseId;
+	}
+
+	@Override
+	public String getOtherType() {
+		if (_otherType == null) {
+			return "";
+		}
+		else {
+			return _otherType;
+		}
+	}
+
+	@Override
+	public void setOtherType(String otherType) {
+		_otherType = otherType;
 	}
 
 	@Override
@@ -777,9 +839,12 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		watsonIncidentImpl.setSubtypeWatsonListTypeId(getSubtypeWatsonListTypeId());
 		watsonIncidentImpl.setAudienceAdultCount(getAudienceAdultCount());
 		watsonIncidentImpl.setAudienceChildCount(getAudienceChildCount());
+		watsonIncidentImpl.setVictimAdultCount(getVictimAdultCount());
+		watsonIncidentImpl.setVictimChildCount(getVictimChildCount());
 		watsonIncidentImpl.setName(getName());
 		watsonIncidentImpl.setDescription(getDescription());
 		watsonIncidentImpl.setExternalCaseId(getExternalCaseId());
+		watsonIncidentImpl.setOtherType(getOtherType());
 		watsonIncidentImpl.setReportDate(getReportDate());
 		watsonIncidentImpl.setStartDate(getStartDate());
 		watsonIncidentImpl.setEndDate(getEndDate());
@@ -900,6 +965,10 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 		watsonIncidentCacheModel.audienceChildCount = getAudienceChildCount();
 
+		watsonIncidentCacheModel.victimAdultCount = getVictimAdultCount();
+
+		watsonIncidentCacheModel.victimChildCount = getVictimChildCount();
+
 		watsonIncidentCacheModel.name = getName();
 
 		String name = watsonIncidentCacheModel.name;
@@ -922,6 +991,14 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 		if ((externalCaseId != null) && (externalCaseId.length() == 0)) {
 			watsonIncidentCacheModel.externalCaseId = null;
+		}
+
+		watsonIncidentCacheModel.otherType = getOtherType();
+
+		String otherType = watsonIncidentCacheModel.otherType;
+
+		if ((otherType != null) && (otherType.length() == 0)) {
+			watsonIncidentCacheModel.otherType = null;
 		}
 
 		Date reportDate = getReportDate();
@@ -960,7 +1037,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(43);
+		StringBundler sb = new StringBundler(49);
 
 		sb.append("{watsonIncidentId=");
 		sb.append(getWatsonIncidentId());
@@ -988,12 +1065,18 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		sb.append(getAudienceAdultCount());
 		sb.append(", audienceChildCount=");
 		sb.append(getAudienceChildCount());
+		sb.append(", victimAdultCount=");
+		sb.append(getVictimAdultCount());
+		sb.append(", victimChildCount=");
+		sb.append(getVictimChildCount());
 		sb.append(", name=");
 		sb.append(getName());
 		sb.append(", description=");
 		sb.append(getDescription());
 		sb.append(", externalCaseId=");
 		sb.append(getExternalCaseId());
+		sb.append(", otherType=");
+		sb.append(getOtherType());
 		sb.append(", reportDate=");
 		sb.append(getReportDate());
 		sb.append(", startDate=");
@@ -1011,7 +1094,7 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(67);
+		StringBundler sb = new StringBundler(76);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonIncident");
@@ -1070,6 +1153,14 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		sb.append(getAudienceChildCount());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>victimAdultCount</column-name><column-value><![CDATA[");
+		sb.append(getVictimAdultCount());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>victimChildCount</column-name><column-value><![CDATA[");
+		sb.append(getVictimChildCount());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
 		sb.append(getName());
 		sb.append("]]></column-value></column>");
@@ -1080,6 +1171,10 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 		sb.append(
 			"<column><column-name>externalCaseId</column-name><column-value><![CDATA[");
 		sb.append(getExternalCaseId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>otherType</column-name><column-value><![CDATA[");
+		sb.append(getOtherType());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>reportDate</column-name><column-value><![CDATA[");
@@ -1125,10 +1220,13 @@ public class WatsonIncidentModelImpl extends BaseModelImpl<WatsonIncident>
 	private long _subtypeWatsonListTypeId;
 	private long _audienceAdultCount;
 	private long _audienceChildCount;
+	private long _victimAdultCount;
+	private long _victimChildCount;
 	private String _name;
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private String _externalCaseId;
+	private String _otherType;
 	private Date _reportDate;
 	private Date _startDate;
 	private Date _endDate;

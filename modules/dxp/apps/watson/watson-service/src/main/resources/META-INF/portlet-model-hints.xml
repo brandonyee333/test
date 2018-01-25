@@ -66,7 +66,7 @@
 		<field name="countryWatsonListTypeId" type="long" />
 		<field name="dischargeWatsonListTypeId" type="long" />
 		<field name="ethnicityWatsonListTypeId" type="long" />
-		<field name="originalWatsonChildId" type="long" />
+		<field name="originalWatsonPersonId" type="long" />
 		<field name="sexWatsonListTypeId" type="long" />
 		<field name="sourceSubtypeWatsonListTypeId" type="long" />
 		<field name="sourceWatsonListTypeId" type="long" />
@@ -104,7 +104,7 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
-		<field name="watsonIncidentId" type="long" />
+		<field name="watsonParentId" type="long" />
 		<field name="classNameId" type="long" />
 		<field name="classPK" type="long" />
 		<field name="type" type="int" />
@@ -124,11 +124,14 @@
 		<field name="subtypeWatsonListTypeId" type="long" />
 		<field name="audienceAdultCount" type="long" />
 		<field name="audienceChildCount" type="long" />
+		<field name="victimAdultCount" type="long" />
+		<field name="victimChildCount" type="long" />
 		<field name="name" type="String" />
 		<field localized="true" name="description" type="String">
 			<hint-collection name="TEXTAREA" />
 		</field>
 		<field name="externalCaseId" type="String" />
+		<field name="otherType" type="String" />
 		<field name="reportDate" type="Date" />
 		<field name="startDate" type="Date" />
 		<field name="endDate" type="Date" />

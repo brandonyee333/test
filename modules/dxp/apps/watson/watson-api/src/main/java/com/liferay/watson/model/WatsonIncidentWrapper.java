@@ -72,9 +72,12 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("audienceAdultCount", getAudienceAdultCount());
 		attributes.put("audienceChildCount", getAudienceChildCount());
+		attributes.put("victimAdultCount", getVictimAdultCount());
+		attributes.put("victimChildCount", getVictimChildCount());
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("externalCaseId", getExternalCaseId());
+		attributes.put("otherType", getOtherType());
 		attributes.put("reportDate", getReportDate());
 		attributes.put("startDate", getStartDate());
 		attributes.put("endDate", getEndDate());
@@ -167,6 +170,18 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 			setAudienceChildCount(audienceChildCount);
 		}
 
+		Long victimAdultCount = (Long)attributes.get("victimAdultCount");
+
+		if (victimAdultCount != null) {
+			setVictimAdultCount(victimAdultCount);
+		}
+
+		Long victimChildCount = (Long)attributes.get("victimChildCount");
+
+		if (victimChildCount != null) {
+			setVictimChildCount(victimChildCount);
+		}
+
 		String name = (String)attributes.get("name");
 
 		if (name != null) {
@@ -183,6 +198,12 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 
 		if (externalCaseId != null) {
 			setExternalCaseId(externalCaseId);
+		}
+
+		String otherType = (String)attributes.get("otherType");
+
+		if (otherType != null) {
+			setOtherType(otherType);
 		}
 
 		Date reportDate = (Date)attributes.get("reportDate");
@@ -430,6 +451,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	/**
+	* Returns the other type of this watson incident.
+	*
+	* @return the other type of this watson incident
+	*/
+	@Override
+	public java.lang.String getOtherType() {
+		return _watsonIncident.getOtherType();
+	}
+
+	/**
 	* Returns the primary key of this watson incident.
 	*
 	* @return the primary key of this watson incident
@@ -532,6 +563,26 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public java.lang.String getUserUuid() {
 		return _watsonIncident.getUserUuid();
+	}
+
+	/**
+	* Returns the victim adult count of this watson incident.
+	*
+	* @return the victim adult count of this watson incident
+	*/
+	@Override
+	public long getVictimAdultCount() {
+		return _watsonIncident.getVictimAdultCount();
+	}
+
+	/**
+	* Returns the victim child count of this watson incident.
+	*
+	* @return the victim child count of this watson incident
+	*/
+	@Override
+	public long getVictimChildCount() {
+		return _watsonIncident.getVictimChildCount();
 	}
 
 	/**
@@ -784,6 +835,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	/**
+	* Sets the other type of this watson incident.
+	*
+	* @param otherType the other type of this watson incident
+	*/
+	@Override
+	public void setOtherType(java.lang.String otherType) {
+		_watsonIncident.setOtherType(otherType);
+	}
+
+	/**
 	* Sets the primary key of this watson incident.
 	*
 	* @param primaryKey the primary key of this watson incident
@@ -886,6 +947,26 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_watsonIncident.setUserUuid(userUuid);
+	}
+
+	/**
+	* Sets the victim adult count of this watson incident.
+	*
+	* @param victimAdultCount the victim adult count of this watson incident
+	*/
+	@Override
+	public void setVictimAdultCount(long victimAdultCount) {
+		_watsonIncident.setVictimAdultCount(victimAdultCount);
+	}
+
+	/**
+	* Sets the victim child count of this watson incident.
+	*
+	* @param victimChildCount the victim child count of this watson incident
+	*/
+	@Override
+	public void setVictimChildCount(long victimChildCount) {
+		_watsonIncident.setVictimChildCount(victimChildCount);
 	}
 
 	/**

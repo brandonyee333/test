@@ -194,18 +194,18 @@ public interface WatsonHistoryModel extends AttachedModel,
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
-	 * Returns the watson incident ID of this watson history.
+	 * Returns the watson parent ID of this watson history.
 	 *
-	 * @return the watson incident ID of this watson history
+	 * @return the watson parent ID of this watson history
 	 */
-	public long getWatsonIncidentId();
+	public long getWatsonParentId();
 
 	/**
-	 * Sets the watson incident ID of this watson history.
+	 * Sets the watson parent ID of this watson history.
 	 *
-	 * @param watsonIncidentId the watson incident ID of this watson history
+	 * @param watsonParentId the watson parent ID of this watson history
 	 */
-	public void setWatsonIncidentId(long watsonIncidentId);
+	public void setWatsonParentId(long watsonParentId);
 
 	/**
 	 * Returns the fully qualified class name of this watson history.

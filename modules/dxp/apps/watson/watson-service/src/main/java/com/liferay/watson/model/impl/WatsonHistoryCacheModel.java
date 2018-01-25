@@ -81,8 +81,8 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", watsonIncidentId=");
-		sb.append(watsonIncidentId);
+		sb.append(", watsonParentId=");
+		sb.append(watsonParentId);
 		sb.append(", classNameId=");
 		sb.append(classNameId);
 		sb.append(", classPK=");
@@ -126,7 +126,7 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 			watsonHistoryImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		watsonHistoryImpl.setWatsonIncidentId(watsonIncidentId);
+		watsonHistoryImpl.setWatsonParentId(watsonParentId);
 		watsonHistoryImpl.setClassNameId(classNameId);
 		watsonHistoryImpl.setClassPK(classPK);
 		watsonHistoryImpl.setType(type);
@@ -150,7 +150,7 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
-		watsonIncidentId = objectInput.readLong();
+		watsonParentId = objectInput.readLong();
 
 		classNameId = objectInput.readLong();
 
@@ -182,7 +182,7 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
 
-		objectOutput.writeLong(watsonIncidentId);
+		objectOutput.writeLong(watsonParentId);
 
 		objectOutput.writeLong(classNameId);
 
@@ -200,7 +200,7 @@ public class WatsonHistoryCacheModel implements CacheModel<WatsonHistory>,
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
-	public long watsonIncidentId;
+	public long watsonParentId;
 	public long classNameId;
 	public long classPK;
 	public int type;

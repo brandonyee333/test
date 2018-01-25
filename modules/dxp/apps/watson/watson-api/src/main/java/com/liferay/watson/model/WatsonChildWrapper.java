@@ -73,7 +73,7 @@ public class WatsonChildWrapper implements WatsonChild,
 			getDischargeWatsonListTypeId());
 		attributes.put("ethnicityWatsonListTypeId",
 			getEthnicityWatsonListTypeId());
-		attributes.put("originalWatsonChildId", getOriginalWatsonChildId());
+		attributes.put("originalWatsonPersonId", getOriginalWatsonPersonId());
 		attributes.put("sexWatsonListTypeId", getSexWatsonListTypeId());
 		attributes.put("sourceSubtypeWatsonListTypeId",
 			getSourceSubtypeWatsonListTypeId());
@@ -166,11 +166,11 @@ public class WatsonChildWrapper implements WatsonChild,
 			setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
 		}
 
-		Long originalWatsonChildId = (Long)attributes.get(
-				"originalWatsonChildId");
+		Long originalWatsonPersonId = (Long)attributes.get(
+				"originalWatsonPersonId");
 
-		if (originalWatsonChildId != null) {
-			setOriginalWatsonChildId(originalWatsonChildId);
+		if (originalWatsonPersonId != null) {
+			setOriginalWatsonPersonId(originalWatsonPersonId);
 		}
 
 		Long sexWatsonListTypeId = (Long)attributes.get("sexWatsonListTypeId");
@@ -366,13 +366,13 @@ public class WatsonChildWrapper implements WatsonChild,
 	}
 
 	/**
-	* Returns the original watson child ID of this watson child.
+	* Returns the original watson person ID of this watson child.
 	*
-	* @return the original watson child ID of this watson child
+	* @return the original watson person ID of this watson child
 	*/
 	@Override
-	public long getOriginalWatsonChildId() {
-		return _watsonChild.getOriginalWatsonChildId();
+	public long getOriginalWatsonPersonId() {
+		return _watsonChild.getOriginalWatsonPersonId();
 	}
 
 	/**
@@ -662,13 +662,13 @@ public class WatsonChildWrapper implements WatsonChild,
 	}
 
 	/**
-	* Sets the original watson child ID of this watson child.
+	* Sets the original watson person ID of this watson child.
 	*
-	* @param originalWatsonChildId the original watson child ID of this watson child
+	* @param originalWatsonPersonId the original watson person ID of this watson child
 	*/
 	@Override
-	public void setOriginalWatsonChildId(long originalWatsonChildId) {
-		_watsonChild.setOriginalWatsonChildId(originalWatsonChildId);
+	public void setOriginalWatsonPersonId(long originalWatsonPersonId) {
+		_watsonChild.setOriginalWatsonPersonId(originalWatsonPersonId);
 	}
 
 	/**

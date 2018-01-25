@@ -76,7 +76,7 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 			{ "countryWatsonListTypeId", Types.BIGINT },
 			{ "dischargeWatsonListTypeId", Types.BIGINT },
 			{ "ethnicityWatsonListTypeId", Types.BIGINT },
-			{ "originalWatsonChildId", Types.BIGINT },
+			{ "originalWatsonPersonId", Types.BIGINT },
 			{ "sexWatsonListTypeId", Types.BIGINT },
 			{ "sourceSubtypeWatsonListTypeId", Types.BIGINT },
 			{ "sourceWatsonListTypeId", Types.BIGINT },
@@ -102,7 +102,7 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 		TABLE_COLUMNS_MAP.put("countryWatsonListTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dischargeWatsonListTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("ethnicityWatsonListTypeId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("originalWatsonChildId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("originalWatsonPersonId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("sexWatsonListTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("sourceSubtypeWatsonListTypeId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("sourceWatsonListTypeId", Types.BIGINT);
@@ -114,7 +114,7 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonChild (watsonChildId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,dischargeWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,originalWatsonChildId LONG,sexWatsonListTypeId LONG,sourceSubtypeWatsonListTypeId LONG,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,dateAccepted DATE null,dateDischarged DATE null,dateFollowUp DATE null,source VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonChild (watsonChildId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,birthCountryId LONG,citizenshipWatsonListTypeId LONG,countryWatsonListTypeId LONG,dischargeWatsonListTypeId LONG,ethnicityWatsonListTypeId LONG,originalWatsonPersonId LONG,sexWatsonListTypeId LONG,sourceSubtypeWatsonListTypeId LONG,sourceWatsonListTypeId LONG,typeWatsonListTypeId LONG,dateAccepted DATE null,dateDischarged DATE null,dateFollowUp DATE null,source VARCHAR(75) null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonChild";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonChild.watsonChildId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonChild.watsonChildId ASC";
@@ -183,7 +183,7 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 			getDischargeWatsonListTypeId());
 		attributes.put("ethnicityWatsonListTypeId",
 			getEthnicityWatsonListTypeId());
-		attributes.put("originalWatsonChildId", getOriginalWatsonChildId());
+		attributes.put("originalWatsonPersonId", getOriginalWatsonPersonId());
 		attributes.put("sexWatsonListTypeId", getSexWatsonListTypeId());
 		attributes.put("sourceSubtypeWatsonListTypeId",
 			getSourceSubtypeWatsonListTypeId());
@@ -279,11 +279,11 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 			setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
 		}
 
-		Long originalWatsonChildId = (Long)attributes.get(
-				"originalWatsonChildId");
+		Long originalWatsonPersonId = (Long)attributes.get(
+				"originalWatsonPersonId");
 
-		if (originalWatsonChildId != null) {
-			setOriginalWatsonChildId(originalWatsonChildId);
+		if (originalWatsonPersonId != null) {
+			setOriginalWatsonPersonId(originalWatsonPersonId);
 		}
 
 		Long sexWatsonListTypeId = (Long)attributes.get("sexWatsonListTypeId");
@@ -491,13 +491,13 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 	}
 
 	@Override
-	public long getOriginalWatsonChildId() {
-		return _originalWatsonChildId;
+	public long getOriginalWatsonPersonId() {
+		return _originalWatsonPersonId;
 	}
 
 	@Override
-	public void setOriginalWatsonChildId(long originalWatsonChildId) {
-		_originalWatsonChildId = originalWatsonChildId;
+	public void setOriginalWatsonPersonId(long originalWatsonPersonId) {
+		_originalWatsonPersonId = originalWatsonPersonId;
 	}
 
 	@Override
@@ -635,7 +635,7 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 		watsonChildImpl.setCountryWatsonListTypeId(getCountryWatsonListTypeId());
 		watsonChildImpl.setDischargeWatsonListTypeId(getDischargeWatsonListTypeId());
 		watsonChildImpl.setEthnicityWatsonListTypeId(getEthnicityWatsonListTypeId());
-		watsonChildImpl.setOriginalWatsonChildId(getOriginalWatsonChildId());
+		watsonChildImpl.setOriginalWatsonPersonId(getOriginalWatsonPersonId());
 		watsonChildImpl.setSexWatsonListTypeId(getSexWatsonListTypeId());
 		watsonChildImpl.setSourceSubtypeWatsonListTypeId(getSourceSubtypeWatsonListTypeId());
 		watsonChildImpl.setSourceWatsonListTypeId(getSourceWatsonListTypeId());
@@ -758,7 +758,7 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 
 		watsonChildCacheModel.ethnicityWatsonListTypeId = getEthnicityWatsonListTypeId();
 
-		watsonChildCacheModel.originalWatsonChildId = getOriginalWatsonChildId();
+		watsonChildCacheModel.originalWatsonPersonId = getOriginalWatsonPersonId();
 
 		watsonChildCacheModel.sexWatsonListTypeId = getSexWatsonListTypeId();
 
@@ -836,8 +836,8 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 		sb.append(getDischargeWatsonListTypeId());
 		sb.append(", ethnicityWatsonListTypeId=");
 		sb.append(getEthnicityWatsonListTypeId());
-		sb.append(", originalWatsonChildId=");
-		sb.append(getOriginalWatsonChildId());
+		sb.append(", originalWatsonPersonId=");
+		sb.append(getOriginalWatsonPersonId());
 		sb.append(", sexWatsonListTypeId=");
 		sb.append(getSexWatsonListTypeId());
 		sb.append(", sourceSubtypeWatsonListTypeId=");
@@ -918,8 +918,8 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 		sb.append(getEthnicityWatsonListTypeId());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>originalWatsonChildId</column-name><column-value><![CDATA[");
-		sb.append(getOriginalWatsonChildId());
+			"<column><column-name>originalWatsonPersonId</column-name><column-value><![CDATA[");
+		sb.append(getOriginalWatsonPersonId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>sexWatsonListTypeId</column-name><column-value><![CDATA[");
@@ -980,7 +980,7 @@ public class WatsonChildModelImpl extends BaseModelImpl<WatsonChild>
 	private long _countryWatsonListTypeId;
 	private long _dischargeWatsonListTypeId;
 	private long _ethnicityWatsonListTypeId;
-	private long _originalWatsonChildId;
+	private long _originalWatsonPersonId;
 	private long _sexWatsonListTypeId;
 	private long _sourceSubtypeWatsonListTypeId;
 	private long _sourceWatsonListTypeId;

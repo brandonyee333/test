@@ -65,7 +65,7 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("watsonIncidentId", getWatsonIncidentId());
+		attributes.put("watsonParentId", getWatsonParentId());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
 		attributes.put("type", getType());
@@ -118,10 +118,10 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 			setModifiedDate(modifiedDate);
 		}
 
-		Long watsonIncidentId = (Long)attributes.get("watsonIncidentId");
+		Long watsonParentId = (Long)attributes.get("watsonParentId");
 
-		if (watsonIncidentId != null) {
-			setWatsonIncidentId(watsonIncidentId);
+		if (watsonParentId != null) {
+			setWatsonParentId(watsonParentId);
 		}
 
 		Long classNameId = (Long)attributes.get("classNameId");
@@ -310,13 +310,13 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	/**
-	* Returns the watson incident ID of this watson history.
+	* Returns the watson parent ID of this watson history.
 	*
-	* @return the watson incident ID of this watson history
+	* @return the watson parent ID of this watson history
 	*/
 	@Override
-	public long getWatsonIncidentId() {
-		return _watsonHistory.getWatsonIncidentId();
+	public long getWatsonParentId() {
+		return _watsonHistory.getWatsonParentId();
 	}
 
 	@Override
@@ -511,13 +511,13 @@ public class WatsonHistoryWrapper implements WatsonHistory,
 	}
 
 	/**
-	* Sets the watson incident ID of this watson history.
+	* Sets the watson parent ID of this watson history.
 	*
-	* @param watsonIncidentId the watson incident ID of this watson history
+	* @param watsonParentId the watson parent ID of this watson history
 	*/
 	@Override
-	public void setWatsonIncidentId(long watsonIncidentId) {
-		_watsonHistory.setWatsonIncidentId(watsonIncidentId);
+	public void setWatsonParentId(long watsonParentId) {
+		_watsonHistory.setWatsonParentId(watsonParentId);
 	}
 
 	@Override

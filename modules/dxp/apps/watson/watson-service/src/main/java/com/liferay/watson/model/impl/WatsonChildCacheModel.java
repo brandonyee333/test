@@ -91,8 +91,8 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 		sb.append(dischargeWatsonListTypeId);
 		sb.append(", ethnicityWatsonListTypeId=");
 		sb.append(ethnicityWatsonListTypeId);
-		sb.append(", originalWatsonChildId=");
-		sb.append(originalWatsonChildId);
+		sb.append(", originalWatsonPersonId=");
+		sb.append(originalWatsonPersonId);
 		sb.append(", sexWatsonListTypeId=");
 		sb.append(sexWatsonListTypeId);
 		sb.append(", sourceSubtypeWatsonListTypeId=");
@@ -151,7 +151,7 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 		watsonChildImpl.setCountryWatsonListTypeId(countryWatsonListTypeId);
 		watsonChildImpl.setDischargeWatsonListTypeId(dischargeWatsonListTypeId);
 		watsonChildImpl.setEthnicityWatsonListTypeId(ethnicityWatsonListTypeId);
-		watsonChildImpl.setOriginalWatsonChildId(originalWatsonChildId);
+		watsonChildImpl.setOriginalWatsonPersonId(originalWatsonPersonId);
 		watsonChildImpl.setSexWatsonListTypeId(sexWatsonListTypeId);
 		watsonChildImpl.setSourceSubtypeWatsonListTypeId(sourceSubtypeWatsonListTypeId);
 		watsonChildImpl.setSourceWatsonListTypeId(sourceWatsonListTypeId);
@@ -215,7 +215,7 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 
 		ethnicityWatsonListTypeId = objectInput.readLong();
 
-		originalWatsonChildId = objectInput.readLong();
+		originalWatsonPersonId = objectInput.readLong();
 
 		sexWatsonListTypeId = objectInput.readLong();
 
@@ -263,7 +263,7 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 
 		objectOutput.writeLong(ethnicityWatsonListTypeId);
 
-		objectOutput.writeLong(originalWatsonChildId);
+		objectOutput.writeLong(originalWatsonPersonId);
 
 		objectOutput.writeLong(sexWatsonListTypeId);
 
@@ -298,7 +298,7 @@ public class WatsonChildCacheModel implements CacheModel<WatsonChild>,
 	public long countryWatsonListTypeId;
 	public long dischargeWatsonListTypeId;
 	public long ethnicityWatsonListTypeId;
-	public long originalWatsonChildId;
+	public long originalWatsonPersonId;
 	public long sexWatsonListTypeId;
 	public long sourceSubtypeWatsonListTypeId;
 	public long sourceWatsonListTypeId;

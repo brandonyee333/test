@@ -263,18 +263,18 @@ public interface WatsonChildModel extends BaseModel<WatsonChild>, GroupedModel,
 	public void setEthnicityWatsonListTypeId(long ethnicityWatsonListTypeId);
 
 	/**
-	 * Returns the original watson child ID of this watson child.
+	 * Returns the original watson person ID of this watson child.
 	 *
-	 * @return the original watson child ID of this watson child
+	 * @return the original watson person ID of this watson child
 	 */
-	public long getOriginalWatsonChildId();
+	public long getOriginalWatsonPersonId();
 
 	/**
-	 * Sets the original watson child ID of this watson child.
+	 * Sets the original watson person ID of this watson child.
 	 *
-	 * @param originalWatsonChildId the original watson child ID of this watson child
+	 * @param originalWatsonPersonId the original watson person ID of this watson child
 	 */
-	public void setOriginalWatsonChildId(long originalWatsonChildId);
+	public void setOriginalWatsonPersonId(long originalWatsonPersonId);
 
 	/**
 	 * Returns the sex watson list type ID of this watson child.

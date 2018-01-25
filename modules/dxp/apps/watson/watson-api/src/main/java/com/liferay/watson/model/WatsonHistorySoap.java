@@ -40,7 +40,7 @@ public class WatsonHistorySoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
-		soapModel.setWatsonIncidentId(model.getWatsonIncidentId());
+		soapModel.setWatsonParentId(model.getWatsonParentId());
 		soapModel.setClassNameId(model.getClassNameId());
 		soapModel.setClassPK(model.getClassPK());
 		soapModel.setType(model.getType());
@@ -153,12 +153,12 @@ public class WatsonHistorySoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
-	public long getWatsonIncidentId() {
-		return _watsonIncidentId;
+	public long getWatsonParentId() {
+		return _watsonParentId;
 	}
 
-	public void setWatsonIncidentId(long watsonIncidentId) {
-		_watsonIncidentId = watsonIncidentId;
+	public void setWatsonParentId(long watsonParentId) {
+		_watsonParentId = watsonParentId;
 	}
 
 	public long getClassNameId() {
@@ -200,7 +200,7 @@ public class WatsonHistorySoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
-	private long _watsonIncidentId;
+	private long _watsonParentId;
 	private long _classNameId;
 	private long _classPK;
 	private int _type;
