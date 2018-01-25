@@ -2,6 +2,7 @@ import {bindAll, debounce} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
 
 import DateInput from './DateInput';
+import TimeInput from './TimeInput';
 import Toggle from './Toggle';
 
 class Input extends JSXComponent {
@@ -67,6 +68,17 @@ class Input extends JSXComponent {
 				/>
 			);
 		}
+		else if (htmlType === 'time') {
+			retVal = (
+				<TimeInput
+					autoFocus={autoFocus}
+					cssClass="watson-input"
+					disabled={disabled}
+					onChange={this.handleOnChange}
+					value={value}
+				/>
+			);
+		}
 		else {
 			retVal = (
 				<input
@@ -90,7 +102,7 @@ Input.PROPS = {
 	disabled: Config.bool(),
 	htmlType: Config.string().value('input'),
 	tooltipLabel: Config.string(),
-	value: Config.any
+	value: Config.any()
 };
 
 export default Input;

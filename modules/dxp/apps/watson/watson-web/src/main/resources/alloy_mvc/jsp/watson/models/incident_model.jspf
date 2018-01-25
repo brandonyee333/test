@@ -522,7 +522,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonIncidentOtherType(String otherType, long subtypeWatsonListTypeId) throws Exception {
-		if ((subtypeWatsonListTypeId == WatsonListType.INCIDENT_SUBTYPE_OTHER) && (Validator.isNull(otherType))) {
+		if ((subtypeWatsonListTypeId == WatsonListType.INCIDENT_SUBTYPE_OTHER) && Validator.isNull(otherType)) {
 			return new KeyValuePair("otherType", "the-report-type-is-invalid");
 		}
 

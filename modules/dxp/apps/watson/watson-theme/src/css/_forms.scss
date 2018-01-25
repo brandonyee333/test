@@ -236,6 +236,10 @@
 				left: calc(100% - 8%);
 			}
 
+			&.time-wrapper:after {
+				left: calc(100% - 20%);
+			}
+
 			&.triple-dynamic:after {
 				left: calc(100% - 3%);
 			}
@@ -368,6 +372,15 @@
 						}
 					}
 				}
+			}
+		}
+
+		.time-input-wrapper {
+			display: flex;
+			width: 50%;
+
+			.select-wrapper {
+				padding-right: 2%;
 			}
 		}
 

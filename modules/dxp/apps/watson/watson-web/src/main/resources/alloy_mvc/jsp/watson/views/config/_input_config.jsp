@@ -1239,7 +1239,9 @@
 						]
 					},
 					timeSpent: {
+						cssClass: 'time-wrapper',
 						filterable: ${true},
+						htmlType: 'time',
 						label: '${AlloyLanguageUtil.formatUnicode("time-spent")}',
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("please-list-time-spent-in-hours-and-minutes")}',
 						translatable: ${true},
@@ -1993,7 +1995,9 @@
 						]
 					},
 					timeSpent: {
+						cssClass: 'time-wrapper',
 						filterable: ${true},
+						htmlType: 'time',
 						label: '${AlloyLanguageUtil.formatUnicode("time-spent")}',
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("please-list-time-spent-in-hours-and-minutes")}',
 						translatable: ${true},

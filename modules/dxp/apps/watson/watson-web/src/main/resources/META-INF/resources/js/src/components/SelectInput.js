@@ -29,6 +29,7 @@ class SelectInput extends JSXComponent {
 			omitBlankOption,
 			options,
 			optionsLoading,
+			placeHolder = Liferay.Language.get('select'),
 			sortOptions = false,
 			value = ''
 		} = this.props;
@@ -71,7 +72,7 @@ class SelectInput extends JSXComponent {
 					isLoading={optionsLoading}
 					onChange={this.handleOnChange}
 					options={renderedOptions}
-					placeholder={Liferay.Language.get('select')}
+					placeholder={placeHolder}
 					value={value ? value.toString() : ''}
 				/>
 			</div>
@@ -85,6 +86,7 @@ SelectInput.PROPS = {
 	disabled: Config.bool(),
 	omitBlankOption: Config.bool(),
 	optionsLoading: Config.bool(),
+	placeHolder: Config.string(),
 	sortOptions: Config.bool(),
 	tooltipLabel: Config.string(),
 	value: Config.any
