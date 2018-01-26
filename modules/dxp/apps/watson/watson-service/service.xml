@@ -191,6 +191,8 @@
 		<column name="subtypeWatsonListTypeId" type="long" />
 		<column name="audienceAdultCount" type="long" />
 		<column name="audienceChildCount" type="long" />
+		<column name="victimAdultCount" type="long" />
+		<column name="victimChildCount" type="long" />
 		<column name="name" type="String" />
 		<column localized="true" name="description" type="String" />
 		<column name="externalCaseId" type="String" />
