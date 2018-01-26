@@ -70,7 +70,6 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("mvcPath", "/admin/edit_account_entry.jsp");
 portletURL.setParameter("detailTab", detailTab);
-portletURL.setParameter("redirect", redirect);
 portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 %>
 
