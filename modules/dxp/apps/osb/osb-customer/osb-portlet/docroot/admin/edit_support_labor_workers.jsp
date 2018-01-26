@@ -166,7 +166,7 @@ portletURL.setParameter("supportLaborId", String.valueOf(supportLaborId));
 
 		<div class="separator"><!-- --></div>
 
-		<aui:button onClick='<%= renderResponse.getNamespace() + "updateSupportLaborWorkers('" + portletURL.toString() + "&" + renderResonse.getNamespace() + "cur=" + cur + "');" %>' value="update-associations" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "updateSupportLaborWorkers('" + portletURL.toString() + "&" + renderResponse.getNamespace() + "cur=" + cur + "');" %>' value="update-associations" />
 
 		<br /><br />
 
