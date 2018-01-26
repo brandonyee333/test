@@ -173,6 +173,8 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 		jsonObject.put("typeWatsonListTypeId", watsonIncident.getTypeWatsonListTypeId());
 		jsonObject.put("vehicles", WatsonVehicle.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
+		jsonObject.put("victimAdultCount", watsonIncident.getVictimAdultCount());
+		jsonObject.put("victimChildCount", watsonIncident.getVictimChildCount());
 		jsonObject.put("watsonIncidentId", watsonIncident.getWatsonIncidentId());
 
 		if (Validator.isNotNull(watsonIncidentRels)) {
@@ -529,6 +531,18 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		return null;
 	}
 
+	public static KeyValuePair validateWatsonIncidentRels(List<WatsonIncidentRel> watsonIncidentRels) throws Exception{
+		if (Validator.isNotNull(watsonIncidentRels)) {
+			for (WatsonIncidentRel watsonIncidentRel : watsonIncidentRels) {
+				if (!watsonIncidentRel.isValid()) {
+					return new KeyValuePair("watsonIncidentRels", "the-relationships-were-invalid");
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public static KeyValuePair validateWatsonIncidentReportDate(Date reportDate) {
 		if (reportDate == null) {
 			return new KeyValuePair("reportDate", "the-report-date-is-invalid");
@@ -576,18 +590,6 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 		if (WatsonListType.fetch(subtypeWatsonListTypeId) == null) {
 			return new KeyValuePair("subtypeWatsonListTypeId", "the-report-type-is-invalid");
-		}
-
-		return null;
-	}
-
-	public static KeyValuePair validateWatsonIncidentRels(List<WatsonIncidentRel> watsonIncidentRels) throws Exception{
-		if (Validator.isNotNull(watsonIncidentRels)) {
-			for (WatsonIncidentRel watsonIncidentRel : watsonIncidentRels) {
-				if (!watsonIncidentRel.isValid()) {
-					return new KeyValuePair("watsonIncidentRels", "the-relationships-were-invalid");
-				}
-			}
 		}
 
 		return null;

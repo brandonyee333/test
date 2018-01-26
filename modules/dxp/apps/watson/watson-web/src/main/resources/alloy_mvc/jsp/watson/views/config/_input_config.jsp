@@ -1855,6 +1855,34 @@
 							'required'
 						]
 					},
+					victimAdultCount: {
+						controlledInputs: [],
+						dependentKey: '${WatsonListTypeConstants.INCIDENT_TYPE_INVESTIGATION}',
+						filterable: ${false},
+						htmlType: 'number',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode('number-of-adult-victims')}',
+						parentInputId: 'typeWatsonListTypeId',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: [
+							'number'
+						]
+					},
+					victimChildCount: {
+						controlledInputs: [],
+						dependentKey: '${WatsonListTypeConstants.INCIDENT_TYPE_INVESTIGATION}',
+						filterable: ${false},
+						htmlType: 'number',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode('number-of-child-victims')}',
+						parentInputId: 'typeWatsonListTypeId',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: [
+							'number'
+						]
+					},
 					watsonIncidentRelIds: {
 						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-relations")}',
 						cssClass: 'dynamic',

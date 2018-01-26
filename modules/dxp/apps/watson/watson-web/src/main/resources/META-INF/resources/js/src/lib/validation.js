@@ -106,7 +106,7 @@ const validators = {
 	required(value) {
 		let errorMessage;
 
-		if (!value || value == '' || (isArray(value) && value.length < 1) || (isObject(value) && isEmpty(value))) {
+		if (!value || value === '' || (isArray(value) && value.length < 1) || (isObject(value) && isEmpty(value))) {
 			errorMessage = Liferay.Language.get('field-is-required');
 		}
 
