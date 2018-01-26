@@ -71,6 +71,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	public static final String TABLE_NAME = "OSB_TicketEntry";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "ticketEntryId", Types.BIGINT },
+			{ "companyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
@@ -116,6 +117,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 
 	static {
 		TABLE_COLUMNS_MAP.put("ticketEntryId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("companyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
@@ -158,7 +160,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 		TABLE_COLUMNS_MAP.put("workerModifiedDate", Types.TIMESTAMP);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_TicketEntry (ticketEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,accountEntryId LONG,orderEntryId LONG,productEntryId LONG,supportResponseId LONG,offeringEntryId LONG,supportRegionId LONG,languageId VARCHAR(75) null,ticketId LONG,subject VARCHAR(255) null,description STRING null,reproductionSteps STRING null,severity INTEGER,status INTEGER,weight INTEGER,escalationLevel INTEGER,envName VARCHAR(75) null,envOS INTEGER,envOSCustom VARCHAR(150) null,envDB INTEGER,envJVM INTEGER,envAS INTEGER,envLFR INTEGER,envBrowser INTEGER,envBrowserCustom VARCHAR(150) null,envCS INTEGER,envSearch VARCHAR(75) null,component INTEGER,subcomponent INTEGER,subcomponentCustom VARCHAR(150) null,resolution INTEGER,holdDate DATE null,closedDate DATE null,dueDate DATE null,ignoreDueDate BOOLEAN,customerModifiedDate DATE null,workerModifiedDate DATE null)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_TicketEntry (ticketEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,accountEntryId LONG,orderEntryId LONG,productEntryId LONG,supportResponseId LONG,offeringEntryId LONG,supportRegionId LONG,languageId VARCHAR(75) null,ticketId LONG,subject VARCHAR(255) null,description STRING null,reproductionSteps STRING null,severity INTEGER,status INTEGER,weight INTEGER,escalationLevel INTEGER,envName VARCHAR(75) null,envOS INTEGER,envOSCustom VARCHAR(150) null,envDB INTEGER,envJVM INTEGER,envAS INTEGER,envLFR INTEGER,envBrowser INTEGER,envBrowserCustom VARCHAR(150) null,envCS INTEGER,envSearch VARCHAR(75) null,component INTEGER,subcomponent INTEGER,subcomponentCustom VARCHAR(150) null,resolution INTEGER,holdDate DATE null,closedDate DATE null,dueDate DATE null,ignoreDueDate BOOLEAN,customerModifiedDate DATE null,workerModifiedDate DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_TicketEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY ticketEntry.modifiedDate DESC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_TicketEntry.modifiedDate DESC";
@@ -175,10 +177,11 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 				"value.object.column.bitmask.enabled.com.liferay.osb.model.TicketEntry"),
 			true);
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
-	public static final long MODIFIEDDATE_COLUMN_BITMASK = 2L;
-	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 4L;
-	public static final long RESOLUTION_COLUMN_BITMASK = 8L;
-	public static final long TICKETID_COLUMN_BITMASK = 16L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
+	public static final long MODIFIEDDATE_COLUMN_BITMASK = 4L;
+	public static final long OFFERINGENTRYID_COLUMN_BITMASK = 8L;
+	public static final long RESOLUTION_COLUMN_BITMASK = 16L;
+	public static final long TICKETID_COLUMN_BITMASK = 32L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -194,6 +197,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 		TicketEntry model = new TicketEntryImpl();
 
 		model.setTicketEntryId(soapModel.getTicketEntryId());
+		model.setCompanyId(soapModel.getCompanyId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
@@ -299,6 +303,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("ticketEntryId", getTicketEntryId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -352,6 +357,12 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 
 		if (ticketEntryId != null) {
 			setTicketEntryId(ticketEntryId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -604,6 +615,29 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public void setTicketEntryId(long ticketEntryId) {
 		_ticketEntryId = ticketEntryId;
+	}
+
+	@JSON
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public void setCompanyId(long companyId) {
+		_columnBitmask |= COMPANYID_COLUMN_BITMASK;
+
+		if (!_setOriginalCompanyId) {
+			_setOriginalCompanyId = true;
+
+			_originalCompanyId = _companyId;
+		}
+
+		_companyId = companyId;
+	}
+
+	public long getOriginalCompanyId() {
+		return _originalCompanyId;
 	}
 
 	@JSON
@@ -1188,7 +1222,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
-		return ExpandoBridgeFactoryUtil.getExpandoBridge(0,
+		return ExpandoBridgeFactoryUtil.getExpandoBridge(getCompanyId(),
 			TicketEntry.class.getName(), getPrimaryKey());
 	}
 
@@ -1214,6 +1248,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 		TicketEntryImpl ticketEntryImpl = new TicketEntryImpl();
 
 		ticketEntryImpl.setTicketEntryId(getTicketEntryId());
+		ticketEntryImpl.setCompanyId(getCompanyId());
 		ticketEntryImpl.setUserId(getUserId());
 		ticketEntryImpl.setUserName(getUserName());
 		ticketEntryImpl.setCreateDate(getCreateDate());
@@ -1317,6 +1352,10 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	public void resetOriginalValues() {
 		TicketEntryModelImpl ticketEntryModelImpl = this;
 
+		ticketEntryModelImpl._originalCompanyId = ticketEntryModelImpl._companyId;
+
+		ticketEntryModelImpl._setOriginalCompanyId = false;
+
 		ticketEntryModelImpl._originalModifiedDate = ticketEntryModelImpl._modifiedDate;
 
 		ticketEntryModelImpl._setModifiedDate = false;
@@ -1345,6 +1384,8 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 		TicketEntryCacheModel ticketEntryCacheModel = new TicketEntryCacheModel();
 
 		ticketEntryCacheModel.ticketEntryId = getTicketEntryId();
+
+		ticketEntryCacheModel.companyId = getCompanyId();
 
 		ticketEntryCacheModel.userId = getUserId();
 
@@ -1540,10 +1581,12 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(83);
+		StringBundler sb = new StringBundler(85);
 
 		sb.append("{ticketEntryId=");
 		sb.append(getTicketEntryId());
+		sb.append(", companyId=");
+		sb.append(getCompanyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
 		sb.append(", userName=");
@@ -1631,7 +1674,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(127);
+		StringBundler sb = new StringBundler(130);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.TicketEntry");
@@ -1640,6 +1683,10 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 		sb.append(
 			"<column><column-name>ticketEntryId</column-name><column-value><![CDATA[");
 		sb.append(getTicketEntryId());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>companyId</column-name><column-value><![CDATA[");
+		sb.append(getCompanyId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>userId</column-name><column-value><![CDATA[");
@@ -1812,6 +1859,9 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 			TicketEntry.class
 		};
 	private long _ticketEntryId;
+	private long _companyId;
+	private long _originalCompanyId;
+	private boolean _setOriginalCompanyId;
 	private long _userId;
 	private String _userName;
 	private Date _createDate;

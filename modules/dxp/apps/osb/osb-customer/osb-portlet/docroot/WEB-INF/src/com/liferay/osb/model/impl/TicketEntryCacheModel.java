@@ -65,10 +65,12 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(83);
+		StringBundler sb = new StringBundler(85);
 
 		sb.append("{ticketEntryId=");
 		sb.append(ticketEntryId);
+		sb.append(", companyId=");
+		sb.append(companyId);
 		sb.append(", userId=");
 		sb.append(userId);
 		sb.append(", userName=");
@@ -159,6 +161,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		TicketEntryImpl ticketEntryImpl = new TicketEntryImpl();
 
 		ticketEntryImpl.setTicketEntryId(ticketEntryId);
+		ticketEntryImpl.setCompanyId(companyId);
 		ticketEntryImpl.setUserId(userId);
 
 		if (userName == null) {
@@ -321,6 +324,8 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		ticketEntryId = objectInput.readLong();
 
+		companyId = objectInput.readLong();
+
 		userId = objectInput.readLong();
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
@@ -389,6 +394,8 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		objectOutput.writeLong(ticketEntryId);
+
+		objectOutput.writeLong(companyId);
 
 		objectOutput.writeLong(userId);
 
@@ -516,6 +523,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 	}
 
 	public long ticketEntryId;
+	public long companyId;
 	public long userId;
 	public String userName;
 	public long createDate;

@@ -59,6 +59,7 @@ public class TicketEntryWrapper implements TicketEntry,
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("ticketEntryId", getTicketEntryId());
+		attributes.put("companyId", getCompanyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
@@ -109,6 +110,12 @@ public class TicketEntryWrapper implements TicketEntry,
 
 		if (ticketEntryId != null) {
 			setTicketEntryId(ticketEntryId);
+		}
+
+		Long companyId = (Long)attributes.get("companyId");
+
+		if (companyId != null) {
+			setCompanyId(companyId);
 		}
 
 		Long userId = (Long)attributes.get("userId");
@@ -392,6 +399,16 @@ public class TicketEntryWrapper implements TicketEntry,
 	@Override
 	public Date getClosedDate() {
 		return _ticketEntry.getClosedDate();
+	}
+
+	/**
+	* Returns the company ID of this ticket entry.
+	*
+	* @return the company ID of this ticket entry
+	*/
+	@Override
+	public long getCompanyId() {
+		return _ticketEntry.getCompanyId();
 	}
 
 	/**
@@ -1045,6 +1062,16 @@ public class TicketEntryWrapper implements TicketEntry,
 	@Override
 	public void setClosedDate(Date closedDate) {
 		_ticketEntry.setClosedDate(closedDate);
+	}
+
+	/**
+	* Sets the company ID of this ticket entry.
+	*
+	* @param companyId the company ID of this ticket entry
+	*/
+	@Override
+	public void setCompanyId(long companyId) {
+		_ticketEntry.setCompanyId(companyId);
 	}
 
 	/**

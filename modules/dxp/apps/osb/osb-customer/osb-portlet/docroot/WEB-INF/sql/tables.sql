@@ -649,6 +649,7 @@ create table OSB_TicketComment (
 
 create table OSB_TicketEntry (
 	ticketEntryId LONG not null primary key,
+	companyId LONG,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,

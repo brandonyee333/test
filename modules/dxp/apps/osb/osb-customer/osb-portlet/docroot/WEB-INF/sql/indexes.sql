@@ -151,6 +151,7 @@ create index IX_304B8825 on OSB_TicketComment (ticketEntryId, visibility, status
 create index IX_565F15CA on OSB_TicketComment (userId, ticketEntryId, visibility, status, type_);
 
 create unique index IX_854674BA on OSB_TicketEntry (accountEntryId, ticketId);
+create index IX_F00D9FFD on OSB_TicketEntry (companyId);
 create index IX_E0167256 on OSB_TicketEntry (modifiedDate);
 create index IX_A5B233EC on OSB_TicketEntry (offeringEntryId, resolution);
 

@@ -649,6 +649,7 @@
 	</model>
 	<model name="com.liferay.osb.model.TicketEntry">
 		<field name="ticketEntryId" type="long" />
+		<field name="companyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
