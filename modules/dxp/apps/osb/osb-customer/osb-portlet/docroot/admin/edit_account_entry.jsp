@@ -351,6 +351,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						</a>
 					</c:if>
 				</span> --%>
+
 				<portlet:renderURL var="selectCorpProjectURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_corp_project.jsp" />
 					<portlet:param name="callback" value="selectCorpProject" />
