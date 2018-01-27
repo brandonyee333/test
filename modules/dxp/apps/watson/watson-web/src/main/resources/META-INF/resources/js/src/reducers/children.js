@@ -17,28 +17,41 @@ const actionHandlers = {
 			model
 		} = action.data;
 
-		const newData = {
-			data: {
-				[id]: {
-					[model]: idArray
+		let newState;
+
+		if (model !== 'children') {
+			const newData = {
+				data: {
+					[id]: {
+						[model]: idArray
+					}
+				},
+				loading: false
+			};
+
+			if (state.has('formData')) {
+				const formData = state.getIn(['formData', id]);
+
+				if (formData) {
+					formData[model] = idArray;
+
+					state = state.setIn(['formData', id], formData);
 				}
-			},
-			loading: false
-		};
-
-		if (state.has('formData')) {
-			const formData = state.getIn(['formData', id]);
-
-			if (formData) {
-				formData[model] = idArray;
-
-				state = state.setIn(['formData', id], formData);
 			}
+
+			state = state.removeIn(['data', id, model]);
+
+			newState = state.mergeDeep(newData);
+		}
+		else {
+			const newData = {
+				loading: false
+			};
+
+			newState = state.mergeDeep(newData);
 		}
 
-		state = state.removeIn(['data', id, model]);
-
-		return state.mergeDeep(newData);
+		return newState;
 	}
 };
 

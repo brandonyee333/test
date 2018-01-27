@@ -22,7 +22,7 @@ class MetricsReport extends JSXComponent {
 						const {key, label} = item;
 
 						tableHeaderColumns.push(
-							<TableHeaderColumn dataField={key} isKey={(index === 0)}>{label}</TableHeaderColumn>
+							<TableHeaderColumn dataField={key} isKey={(index === 0)} title={label}>{label}</TableHeaderColumn>
 						);
 					}
 				}
