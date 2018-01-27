@@ -94,7 +94,7 @@
 			left: 52px;
 			max-height: 80vh;
 			overflow: auto;
-			padding: 1em;
+			padding: $standard-spacing;
 			top: -22px;
 			z-index: 2;
 
@@ -150,7 +150,7 @@
 
 	nav {
 		background-color: $light-bg;
-		margin-bottom: -1em;
+		margin-bottom: -$standard-spacing;
 		overflow-x: scroll;
 		overflow-y: hidden;
 
@@ -165,7 +165,7 @@
 
 		li {
 			list-style: none;
-			padding: 1em;
+			padding: $standard-spacing;
 		}
 
 		ul {
@@ -202,7 +202,7 @@
 		padding: 0;
 
 		li {
-			padding: 1em;
+			padding: $standard-spacing;
 		}
 	}
 
@@ -456,12 +456,12 @@
 		.heading {
 			font-family: "Avenir Medium";
 			font-size: 18px;
-			margin: 0 0 15px;
+			margin: 0 0 $standard-spacing;
 		}
 
 		.sub-section {
 			color: $medium-gray;
-			margin: 0 0 15px;
+			margin: 0 0 $standard-spacing;
 
 			&.last {
 				margin: 0;

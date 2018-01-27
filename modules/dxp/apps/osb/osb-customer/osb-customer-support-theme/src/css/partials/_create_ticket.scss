@@ -24,7 +24,7 @@
 		}
 
 		.component-description {
-			margin-bottom: 1em;
+			margin-bottom: $standard-spacing;
 		}
 
 		.component-detail-environment {
@@ -57,14 +57,14 @@
 		}
 
 		.create-env-button {
-			padding-top: 15px;
+			padding-top: $standard-spacing;
 		}
 
 		.dxp-message {
 			color: $primary-blue;
 			cursor: pointer;
 			display: inline-block;
-			padding-top: 1em;
+			padding-top: $standard-spacing;
 		}
 
 		.foot-details {

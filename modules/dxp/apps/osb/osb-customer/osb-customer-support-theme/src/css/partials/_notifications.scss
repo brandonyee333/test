@@ -93,7 +93,7 @@
 
 	.notification-btn {
 		background-color: $light-bg;
-		margin-left: 1em;
+		margin-left: $standard-spacing;
 
 		&:hover {
 			background-color: $primary-blue;

@@ -2,7 +2,7 @@
 
 .jira-issue-modal {
 	.btn {
-		margin: 1em auto;
+		margin: $standard-spacing auto;
 	}
 }
 
@@ -139,6 +139,10 @@
 
 		.expand-collapse {
 			text-align: right;
+
+			a {
+				padding: $standard-spacing;
+			}
 		}
 
 		.portlet-msg-error {
@@ -281,7 +285,7 @@
 					text-align: center;
 
 					.solution-confirm-answer {
-						padding-bottom: 1em;
+						padding-bottom: $standard-spacing;
 
 						input.style-a {
 							border-color: $hover-blue;
@@ -295,7 +299,7 @@
 
 					.solution-confirm-question {
 						font-weight: bold;
-						padding-bottom: 1em;
+						padding-bottom: $standard-spacing;
 					}
 				}
 			}

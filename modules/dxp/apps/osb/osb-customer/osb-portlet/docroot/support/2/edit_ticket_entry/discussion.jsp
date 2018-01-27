@@ -131,8 +131,6 @@ else {
 			<div class="expand-collapse" id="<portlet:namespace />expandCollapse">
 				<a href="javascript:<portlet:namespace />toggleAll(false);">+ <liferay-ui:message key="expand-all" /></a>
 
-				&nbsp;&nbsp;&nbsp;
-
 				<a href="javascript:<portlet:namespace />toggleAll(true);">- <liferay-ui:message key="collapse-all" /></a>
 			</div>
 

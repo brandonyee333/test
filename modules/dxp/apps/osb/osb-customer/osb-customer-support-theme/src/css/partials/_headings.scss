@@ -26,7 +26,7 @@ h4 {
 	color: $text-color;
 	font-size: 2em;
 	font-weight: bold;
-	line-height: 1em;
+	line-height: $standard-spacing;
 	margin-top: 20px;
 	padding-bottom: 10px;
 	text-align: center;
@@ -45,7 +45,7 @@ h4 {
 	font-size: 16px;
 	font-weight: normal;
 	line-height: 1.5em;
-	padding-top: 15px;
+	padding-top: $standard-spacing;
 
 	&.steps {
 		font-size: 24px;
