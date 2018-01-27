@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.qa.infrastructure.internal.events;
+package com.liferay.osb.customer.qa.infrastructure.internal.messaging;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.qa.infrastructure.internal.configuration.OSBCustomerQAConfigurationKeys;
@@ -28,22 +28,23 @@ import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportWorker;
-import com.liferay.osb.service.AccountCustomerLocalService;
-import com.liferay.osb.service.AccountEntryLocalService;
-import com.liferay.osb.service.AccountEnvironmentLocalService;
-import com.liferay.osb.service.AccountWorkerLocalService;
-import com.liferay.osb.service.OfferingEntryLocalService;
+import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
+import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
+import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerEntryLocalService;
-import com.liferay.osb.service.PartnerWorkerLocalService;
-import com.liferay.osb.service.SupportRegionLocalService;
-import com.liferay.osb.service.SupportWorkerLocalService;
+import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
+import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
+import com.liferay.osb.service.SupportRegionLocalServiceUtil;
+import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.configuration.Filter;
-import com.liferay.portal.kernel.events.ActionException;
-import com.liferay.portal.kernel.events.SimpleAction;
 import com.liferay.portal.kernel.exception.UserScreenNameException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.BaseMessageListener;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
@@ -71,28 +72,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Brian Wing Shun Chan
- * @author Peter Shin
  * @author Jeremy Fu
- * @author Jenny Chen
  */
-@Component(immediate = true)
-public class StartupAction extends SimpleAction {
-
-	@Override
-	public void run(String[] ids) throws ActionException {
-		try {
-			doRun(GetterUtil.getLong(ids[0]));
-		}
-		catch (Exception e) {
-			throw new ActionException(e);
-		}
-	}
+@Component(
+	immediate = true, property = {"destination.name=liferay/qa_startup"},
+	service = MessageListener.class
+)
+public class OSBCustomerQAStartupMessageListener extends BaseMessageListener {
 
 	protected void checkAccountCustomer(
 			long companyId, String emailAddress, String accountEntryCode,
@@ -103,12 +93,13 @@ public class StartupAction extends SimpleAction {
 			companyId, emailAddress);
 
 		AccountEntry accountEntry =
-			_accountEntryLocalService.getAccountEntryByCode(accountEntryCode);
+			AccountEntryLocalServiceUtil.getAccountEntryByCode(
+				accountEntryCode);
 
-		if (!_accountCustomerLocalService.hasAccountCustomer(
+		if (!AccountCustomerLocalServiceUtil.hasAccountCustomer(
 				userId, accountEntry.getAccountEntryId())) {
 
-			_accountCustomerLocalService.addAccountCustomers(
+			AccountCustomerLocalServiceUtil.addAccountCustomers(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, new long[] {userId},
 				accountEntry.getAccountEntryId(), new int[] {role},
 				new int[] {notifications});
@@ -169,7 +160,7 @@ public class StartupAction extends SimpleAction {
 			boolean partnerManagedSupport)
 		throws Exception {
 
-		List<AccountEntry> accountEntries = _accountEntryLocalService.search(
+		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(
 			name, code);
 
 		if (accountEntries.isEmpty()) {
@@ -177,7 +168,7 @@ public class StartupAction extends SimpleAction {
 
 			if (Validator.isNotNull(partnerEntryCode)) {
 				PartnerEntry partnerEntry =
-					_partnerEntryLocalService.getPartnerEntryByCode(
+					PartnerEntryLocalServiceUtil.getPartnerEntryByCode(
 						partnerEntryCode);
 
 				partnerEntryId = partnerEntry.getPartnerEntryId();
@@ -187,7 +178,7 @@ public class StartupAction extends SimpleAction {
 				OSBCustomerQAConfigurationKeys.OSB_QA_SUPPORT_REGIONS,
 				new Filter(code, "support-region-ids"));
 
-			_accountEntryLocalService.addAccountEntry(
+			AccountEntryLocalServiceUtil.addAccountEntry(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, 0, StringPool.BLANK,
 				name, code, AccountEntryConstants.TYPE_INDIVIDUAL,
 				AccountEntryConstants.INDUSTRY_OTHER, partnerEntryId,
@@ -210,7 +201,7 @@ public class StartupAction extends SimpleAction {
 		throws Exception {
 
 		AccountEnvironment accountEnvironment =
-			_accountEnvironmentLocalService.fetchAccountEnvironment(
+			AccountEnvironmentLocalServiceUtil.fetchAccountEnvironment(
 				accountEntryId, productEntryId, name);
 
 		if (accountEnvironment == null) {
@@ -239,7 +230,7 @@ public class StartupAction extends SimpleAction {
 			types.add(AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
 			types.add(AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
 
-			_accountEnvironmentLocalService.addAccountEnvironment(
+			AccountEnvironmentLocalServiceUtil.addAccountEnvironment(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, accountEntryId,
 				productEntryId, name, envOS, envOSCustom, envDB, envJVM, envAS,
 				envLFR, files, types);
@@ -284,7 +275,7 @@ public class StartupAction extends SimpleAction {
 				new Filter(accountEnvironmentNameFilter, "productEntryId"));
 
 			AccountEntry accountEntry =
-				_accountEntryLocalService.getAccountEntryByCode(
+				AccountEntryLocalServiceUtil.getAccountEntryByCode(
 					accountEntryCode);
 
 			checkAccountEnvironment(
@@ -305,12 +296,13 @@ public class StartupAction extends SimpleAction {
 			companyId, emailAddress);
 
 		AccountEntry accountEntry =
-			_accountEntryLocalService.getAccountEntryByCode(accountEntryCode);
+			AccountEntryLocalServiceUtil.getAccountEntryByCode(
+				accountEntryCode);
 
-		if (!_accountWorkerLocalService.hasAccountWorker(
+		if (!AccountWorkerLocalServiceUtil.hasAccountWorker(
 				userId, accountEntry.getAccountEntryId())) {
 
-			_accountWorkerLocalService.addAccountWorkers(
+			AccountWorkerLocalServiceUtil.addAccountWorkers(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, new long[] {userId},
 				accountEntry.getAccountEntryId(), new int[] {role},
 				new int[] {notifications});
@@ -382,10 +374,11 @@ public class StartupAction extends SimpleAction {
 		throws Exception {
 
 		AccountEntry accountEntry =
-			_accountEntryLocalService.getAccountEntryByCode(accountEntryCode);
+			AccountEntryLocalServiceUtil.getAccountEntryByCode(
+				accountEntryCode);
 
 		List<OfferingEntry> accountOfferingEntries =
-			_offeringEntryLocalService.getAccountEntryOfferingEntries(
+			OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
 				accountEntry.getAccountEntryId());
 
 		OfferingEntry offeringEntry = null;
@@ -407,7 +400,8 @@ public class StartupAction extends SimpleAction {
 		if (offeringEntry == null) {
 			List<OfferingEntry> offeringEntries = new ArrayList<>();
 
-			offeringEntry = _offeringEntryLocalService.createOfferingEntry(0);
+			offeringEntry = OfferingEntryLocalServiceUtil.createOfferingEntry(
+				0);
 
 			offeringEntry.setLicenseLifetime(
 				OfferingDefinitionConstants.LIFETIME_INDEFINITE_VALUE);
@@ -463,10 +457,10 @@ public class StartupAction extends SimpleAction {
 		throws Exception {
 
 		try {
-			_partnerEntryLocalService.getPartnerEntryByCode(code);
+			PartnerEntryLocalServiceUtil.getPartnerEntryByCode(code);
 		}
 		catch (Exception e) {
-			_partnerEntryLocalService.addPartnerEntry(
+			PartnerEntryLocalServiceUtil.addPartnerEntry(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, 0, StringPool.BLANK,
 				code, StringPool.BLANK, supportRegionIds);
 		}
@@ -485,12 +479,13 @@ public class StartupAction extends SimpleAction {
 			companyId, emailAddress);
 
 		PartnerEntry partnerEntry =
-			_partnerEntryLocalService.getPartnerEntryByCode(partnerEntryCode);
+			PartnerEntryLocalServiceUtil.getPartnerEntryByCode(
+				partnerEntryCode);
 
-		if (!_partnerWorkerLocalService.hasPartnerWorker(
+		if (!PartnerWorkerLocalServiceUtil.hasPartnerWorker(
 				userId, partnerEntry.getPartnerEntryId())) {
 
-			_partnerWorkerLocalService.addPartnerWorkers(
+			PartnerWorkerLocalServiceUtil.addPartnerWorkers(
 				new long[] {userId}, partnerEntry.getPartnerEntryId(),
 				new int[] {role}, new int[] {notifications});
 		}
@@ -527,7 +522,8 @@ public class StartupAction extends SimpleAction {
 		throws Exception {
 
 		AccountEntry accountEntry =
-			_accountEntryLocalService.getAccountEntryByCode(accountEntryCode);
+			AccountEntryLocalServiceUtil.getAccountEntryByCode(
+				accountEntryCode);
 
 		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
 
@@ -540,7 +536,7 @@ public class StartupAction extends SimpleAction {
 		}
 
 		if (!hasSupportRegion) {
-			_supportRegionLocalService.addAccountEntrySupportRegions(
+			SupportRegionLocalServiceUtil.addAccountEntrySupportRegions(
 				accountEntry.getAccountEntryId(), new long[] {supportRegionId});
 		}
 
@@ -573,19 +569,19 @@ public class StartupAction extends SimpleAction {
 		long userId = _userLocalService.getUserIdByEmailAddress(
 			companyId, emailAddress);
 
-		if (!_supportWorkerLocalService.hasSupportWorker(
+		if (!SupportWorkerLocalServiceUtil.hasSupportWorker(
 				userId, supportTeamId)) {
 
-			_supportWorkerLocalService.addSupportWorkers(
+			SupportWorkerLocalServiceUtil.addSupportWorkers(
 				new long[] {userId}, supportTeamId, maxWork, escalationLevels,
 				roles, notifications);
 
 			SupportWorker supportWorker =
-				_supportWorkerLocalService.getSupportWorker(
+				SupportWorkerLocalServiceUtil.getSupportWorker(
 					userId, supportTeamId);
 
 			if (!supportWorker.isClockedIn()) {
-				_supportWorkerLocalService.clockInOut(
+				SupportWorkerLocalServiceUtil.clockInOut(
 					supportWorker.getSupportWorkerId());
 			}
 		}
@@ -749,25 +745,21 @@ public class StartupAction extends SimpleAction {
 		}
 	}
 
-	protected void doRun(long companyId) throws Exception {
+	@Override
+	protected void doReceive(Message message) throws Exception {
 		checkPartnerEntries();
 
 		checkAccountEntries();
 
-		checkUsers(companyId);
+		checkUsers(OSBCustomerConstants.COMPANY_ID);
 
-		checkAccountCustomers(companyId);
+		checkAccountCustomers(OSBCustomerConstants.COMPANY_ID);
 		checkAccountEnvironments();
-		checkAccountWorkers(companyId);
+		checkAccountWorkers(OSBCustomerConstants.COMPANY_ID);
 		checkOfferingEntries();
-		checkPartnerWorkers(companyId);
+		checkPartnerWorkers(OSBCustomerConstants.COMPANY_ID);
 		checkSupportRegions();
-		checkSupportWorkers(companyId);
-	}
-
-	@Activate
-	protected void run() throws ActionException {
-		run(new String[] {String.valueOf(OSBCustomerConstants.COMPANY_ID)});
+		checkSupportWorkers(OSBCustomerConstants.COMPANY_ID);
 	}
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
@@ -792,37 +784,10 @@ public class StartupAction extends SimpleAction {
 		_userLocalService = userLocalService;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(StartupAction.class);
-
-	@Reference
-	private AccountCustomerLocalService _accountCustomerLocalService;
-
-	@Reference
-	private AccountEntryLocalService _accountEntryLocalService;
-
-	@Reference
-	private AccountEnvironmentLocalService _accountEnvironmentLocalService;
-
-	@Reference
-	private AccountWorkerLocalService _accountWorkerLocalService;
-
-	@Reference
-	private OfferingEntryLocalService _offeringEntryLocalService;
-
-	@Reference
-	private PartnerEntryLocalService _partnerEntryLocalService;
-
-	@Reference
-	private PartnerWorkerLocalService _partnerWorkerLocalService;
+	private static final Log _log = LogFactoryUtil.getLog(
+		OSBCustomerQAStartupMessageListener.class);
 
 	private RoleLocalService _roleLocalService;
-
-	@Reference
-	private SupportRegionLocalService _supportRegionLocalService;
-
-	@Reference
-	private SupportWorkerLocalService _supportWorkerLocalService;
-
 	private UserGroupRoleLocalService _userGroupRoleLocalService;
 	private UserLocalService _userLocalService;
 

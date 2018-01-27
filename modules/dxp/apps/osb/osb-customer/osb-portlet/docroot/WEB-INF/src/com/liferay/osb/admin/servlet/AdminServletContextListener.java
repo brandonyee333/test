@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -258,6 +260,12 @@ public class AdminServletContextListener
 		}
 
 		*/
+
+		Message message = new Message();
+
+		message.setDestinationName("liferay/qa_startup");
+
+		MessageBusUtil.sendMessage(message.getDestinationName(), message);
 	}
 
 	protected void setupDeveloperMode() throws Exception {
