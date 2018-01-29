@@ -27,6 +27,7 @@
 				<action-key>DELETE#REPORTS</action-key>
 				<action-key>DELETE#RESOURCES</action-key>
 				<action-key>DELETE#VEHICLES</action-key>
+				<action-key>EDIT</action-key>
 				<action-key>INDEX#ACTIVITIES</action-key>
 				<action-key>INDEX#ADDRESSES</action-key>
 				<action-key>INDEX#CHILDREN</action-key>
