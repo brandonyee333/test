@@ -91,7 +91,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 				<liferay-ui:message key="type" />
 			</td>
 			<td>
-				<aui:select id="type" label="" name="type">
+				<aui:select label="" name="type">
 
 					<%
 					for (String curType : LicenseEntryConstants.TYPES) {

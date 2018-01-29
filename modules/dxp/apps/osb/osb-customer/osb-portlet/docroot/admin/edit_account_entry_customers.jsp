@@ -137,7 +137,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<liferay-ui:search-container-column-text
 				name="notifications"
 			>
-				<aui:select disabled="<%= !curUser.isActive() %>" id='<%= "notifications_" + curUser.getUserId() %>' label="" name='<%= "notifications_" + curUser.getUserId() %>'>
+				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "notifications_" + curUser.getUserId() %>'>
 
 					<%
 					for (int i = 1; i <= 2; i++) {

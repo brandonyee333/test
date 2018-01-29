@@ -91,7 +91,7 @@ Date lastEnabledDate = calendar.getTime();
 				<aui:input label="" name="<%= displayTerms.PURCHASE_ORDER_KEY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getPurchaseOrderKey()) %>" />
 			</td>
 			<td>
-				<aui:select id="<%= displayTerms.STATUSES %>" label="" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
+				<aui:select label="" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
 					<option value="-1"><liferay-ui:message key="any" /></option>
 
 					<%

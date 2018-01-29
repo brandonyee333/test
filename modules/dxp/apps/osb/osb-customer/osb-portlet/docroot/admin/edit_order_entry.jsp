@@ -566,7 +566,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="version"
 			>
-				<aui:select id='<%= "version_" + index %>' label="" name='<%= "version_" + index %>'>
+				<aui:select label="" name='<%= "version_" + index %>'>
 
 					<%
 					List<ListType> productEntryVersionsTypes = productEntry.getVersionsListTypes();
@@ -605,7 +605,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="quantity"
 			>
-				<aui:input id='<%= "quantity_" + index %>' label="" name='<%= "quantity_" + index %>' size="2" type="text" value="<%= offeringEntry.getQuantity() %>" />
+				<aui:input label="" name='<%= "quantity_" + index %>' size="2" type="text" value="<%= offeringEntry.getQuantity() %>" />
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

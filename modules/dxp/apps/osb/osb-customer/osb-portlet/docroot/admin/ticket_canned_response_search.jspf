@@ -30,10 +30,10 @@
 		</tr>
 		<tr>
 			<td>
-				<aui:input id="<%= displayTerms.NAME %>" label="" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
+				<aui:input label="" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
 			</td>
 			<td>
-				<aui:input id="<%= displayTerms.CONTENT %>" label="" name="<%= displayTerms.CONTENT %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getContent()) %>" />
+				<aui:input label="" name="<%= displayTerms.CONTENT %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getContent()) %>" />
 			</td>
 		</tr>
 	</table>
