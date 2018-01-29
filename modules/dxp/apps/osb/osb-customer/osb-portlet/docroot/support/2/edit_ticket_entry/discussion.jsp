@@ -468,13 +468,11 @@ else {
 
 						confirmationMsg = A.Lang.sub(confirmationMsg, [attachmentKeyword]);
 
-						var returnVal = false;
-
 						if (confirm(confirmationMsg)) {
-							returnVal = true;
+							return true;
 						}
 
-						return returnVal;
+						return false;
 					}
 				}
 

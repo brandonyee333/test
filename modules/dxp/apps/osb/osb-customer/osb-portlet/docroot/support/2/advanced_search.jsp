@@ -900,7 +900,7 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 			var exportDropdown = A.one('#<portlet:namespace />exportDropdown');
 
 			if (exportButton && exportDropdown) {
-				var resultsRange = resultsCount > 0 && resultsCount < 5000;
+				var resultsRange = (resultsCount > 0) && (resultsCount < 5000);
 
 				Liferay.Util.toggleDisabled(exportButton, !resultsRange);
 
