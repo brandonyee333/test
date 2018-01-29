@@ -632,16 +632,26 @@ else {
 			function() {
 				var A = AUI();
 
-				A.one('#<portlet:namespace />addAttachments').show();
-				A.one('#<portlet:namespace />addAttachmentsButton').hide();
+				var addAttachments = A.one('#<portlet:namespace />addAttachments');
 
-				A.one('#<portlet:namespace />hotfix0_1').val('false');
-				A.one('#<portlet:namespace />hotfix0_2').val('false');
-				A.one('#<portlet:namespace />hotfix0_3').val('false');
+				if (addAttachments) {
+					addAttachments.show()
 
-				A.one('#<portlet:namespace />hotfix0_1Checkbox').set('checked', false);
-				A.one('#<portlet:namespace />hotfix0_2Checkbox').set('checked', false);
-				A.one('#<portlet:namespace />hotfix0_3Checkbox').set('checked', false);
+					var hotfixCheckboxes = addAttachments.all('.hotfix-checkboxes');
+
+					hotfixCheckboxes.each(
+						function(checkbox) {
+							checkbox.val('false');
+							checkbox.set('checked', false);
+						}
+					);
+				}
+
+				var addAttachmentsButton = A.one('#<portlet:namespace />addAttachmentsButton');
+
+				if (addAttachmentsButton) {
+					addAttachmentsButton.hide();
+				}
 			},
 			['aui-base']
 		);

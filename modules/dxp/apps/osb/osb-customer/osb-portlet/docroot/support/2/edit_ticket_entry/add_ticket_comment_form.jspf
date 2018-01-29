@@ -86,7 +86,7 @@ String commentBody = ParamUtil.getString(request, "commentBody0");
 
 					<c:if test="<%= ticketWorker %>">
 						<td>
-							<aui:input label="" name='<%= "hotfix" + fileSuffix %>' type="checkbox" />
+							<aui:input cssClass="hotfix-checkboxes" label="" name='<%= "hotfix" + fileSuffix %>' type="checkbox" />
 						</td>
 					</c:if>
 				</tr>
