@@ -187,6 +187,22 @@
 	}
 }
 
+.comment-pending {
+	text-align: right;
+
+	.input-checkbox-wrapper {
+		display: inline-block;
+
+		input {
+			vertical-align: text-top;
+		}
+
+		label {
+			font-weight: normal;
+		}
+	}
+}
+
 .comment-scroll {
 	background-color: $light-bg;
 }
