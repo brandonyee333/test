@@ -20,7 +20,11 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 	}
 	else if (sortBy === 'modifiedDate') {
 		sorted = data.sort(
-			(a, b) => new Date(b.get('modifiedDateTimeStamp') || b.get('modifiedDate')) - new Date(a.get('modifiedDateTimeStamp') || a.get('modifiedDateTimeStamp'))
+			(a, b) => (b.get('modifiedDateTimeStamp')).localeCompare(
+				a.get('modifiedDateTimeStamp'),
+				{},
+				{ignorePunctuation: true, numeric: true}
+			)
 		);
 	}
 	else if (sortBy === 'makeWatsonListTypeId') {
