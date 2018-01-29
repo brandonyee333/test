@@ -36601,10 +36601,6 @@
 		<name locale="en_US">Intervention</name>
 		<name locale="th">การแทรกแซง</name>
 	</watsonListType>
-	<watsonListType type="com.liferay.watson.model.WatsonIncident.nature" watsonListTypeId="9387">
-		<name locale="en_US">Other</name>
-		<name locale="th">อื่นๆ</name>
-	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonPerson.citizenship" watsonListTypeId="9388">
 		<name locale="en_US">Stateless</name>
 		<name locale="th">ไม่มีสัญชาติ</name>
@@ -40501,5 +40497,9 @@
 	<watsonListType parentWatsonListTypeId="10457" type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10578">
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่น ๆ</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonIncident.nature" watsonListTypeId="10579">
+		<name locale="en_US">Other</name>
+		<name locale="th">อื่นๆ</name>
 	</watsonListType>
 </table>
