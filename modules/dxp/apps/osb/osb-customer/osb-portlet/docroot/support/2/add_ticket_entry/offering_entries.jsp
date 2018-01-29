@@ -94,19 +94,50 @@ PortletPreferences preferences = SupportUtil.getPortletPreferences();
 	String dxpMessage = GetterUtil.getString(preferences.getValue("dxpMessage", StringPool.BLANK));
 	%>
 
-	<div>
-		<div class="dxp-message" data-pop-display="#<portlet:namespace />dxpMessage" id="<portlet:namespace />dxpTitle">
-			<%= HtmlUtil.escape(dxpTitle) %>
-		</div>
+	<div class="dxp-message" id="<portlet:namespace />dxpTitle">
+		<%= HtmlUtil.escape(dxpTitle) %>
 	</div>
 
-	<div class="hide page-pop-up" data-overlay="true" id="<portlet:namespace />dxpMessage">
-		<div class="close-pop-up"></div>
+	<div id="<portlet:namespace />dxpMessage"></div>
 
-		<div class="pop-up-content">
-			<%= HtmlUtil.escape(dxpMessage) %>
-		</div>
-	</div>
+	<aui:script use="aui-modal">
+		var DOC = A.getDoc();
+
+		var modal = new A.Modal(
+			{
+				bodyContent: '<%= HtmlUtil.escape(dxpMessage) %>',
+				centered: true,
+				cssClass: 'page-pop-up',
+				hideOn: [
+					{
+					eventName: 'key',
+					keyCode: 'esc',
+					node: DOC
+					},
+					{
+						eventName: 'clickoutside',
+						node: DOC
+					}
+				],
+				modal: true,
+				render: '#<portlet:namespace />dxpMessage',
+				visible: false
+			}
+		).render();
+
+		var dxpTitle = A.one('#<portlet:namespace />dxpTitle');
+
+		if (dxpTitle) {
+			dxpTitle.on(
+				'click',
+				function(event) {
+					event.stopPropagation();
+
+					modal.show();
+				}
+			);
+		}
+	</aui:script>
 </c:if>
 
 <%
@@ -214,87 +245,7 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 	</c:choose>
 </c:if>
 
-<aui:script use="aui-base,aui-overlay-mask">
-	var centerOnPage = function(node) {
-		var WIN = A.getWin();
-
-		var winHeight = WIN.get('innerHeight');
-
-		if (winHeight == undefined) {
-			winHeight = document.documentElement.clientHeight;
-		}
-
-		var winWidth = WIN.get('innerWidth');
-
-		if (winWidth == undefined) {
-			winWidth = document.documentElement.clientWidth;
-		}
-
-		var nodeHeight = node.get('clientHeight');
-		var nodeWidth = node.get('clientWidth');
-
-		var xCenter = (winWidth / 2) - (nodeWidth / 2);
-		var yCenter = (winHeight / 2) - (nodeHeight / 2);
-
-		node.setStyle('left', xCenter);
-		node.setStyle('top', yCenter / 2);
-	};
-
-	var createOverlayMask = function() {
-		var bindUI = function() {
-			var overlayMask = A.one('.aui-overlaymask');
-
-			if (overlayMask) {
-				overlayMask.on(
-					'click',
-					function() {
-						overlayMask.remove(true);
-					}
-				);
-			}
-		};
-
-		var init = function() {
-			var overlay = new A.OverlayMask().render();
-
-			overlay.set('z-index', 20);
-			overlay.show();
-
-			bindUI();
-		};
-
-		return init();
-	};
-
-	var displayPopUp = function(node) {
-		node.show();
-
-		centerOnPage(node);
-
-		if (node.getAttribute('data-overlay')) {
-			createOverlayMask();
-		}
-
-		var popUpContent = node.one('.pop-up-content');
-
-		if (popUpContent) {
-			popUpContent.on(
-				'clickoutside',
-				function(event) {
-					var overlayMask = A.one('.aui-overlaymask');
-
-					if (overlayMask) {
-						overlayMask.remove();
-					}
-
-					node.hide();
-
-					popUpContent.detach('clickoutside');
-				}
-			);
-		}
-	};
-
+<aui:script use="aui-base">
 	A.all('.close-announcement').on(
 		'click',
 		function(event) {
@@ -303,30 +254,4 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 			announcementContainer.hide();
 		}
 	);
-
-	var iOS = /iPad/i.test(navigator.userAgent) || /iPhone/i.test(navigator.userAgent);
-	var mouseEvent = 'click';
-
-	if (iOS) {
-		mouseEvent = 'mousemove';
-	}
-
-	var dxpTitle = A.one('#<portlet:namespace />dxpTitle');
-
-	if (dxpTitle) {
-		dxpTitle.on(
-			mouseEvent,
-			function(event) {
-				event.stopPropagation();
-
-				var popDisplay = event.currentTarget.getAttribute('data-pop-display');
-
-				var popUp = A.one(popDisplay);
-
-				if (popUp) {
-					displayPopUp(popUp);
-				}
-			}
-		);
-	}
 </aui:script>
