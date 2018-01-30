@@ -110,7 +110,11 @@ String description = ParamUtil.getString(request, "description");
 			}
 
 			if (!firstNode) {
-				document.<portlet:namespace />fm.encoding = 'multipart/form-data';
+				var form = A.one('#<portlet:namespace />fm');
+
+				if (form) {
+					form.attr('encoding', 'multipart/form-data');
+				}
 
 				submitForm(document.<portlet:namespace />fm);
 			}
