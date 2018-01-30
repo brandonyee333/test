@@ -120,7 +120,7 @@ if (accountEntry != null) {
 			<div class="component-message portlet-msg-info <%= Validator.isNotNull(componentMessage) ? "" : "hide" %>" id="<portlet:namespace />componentMessageDisplay">
 				<c:choose>
 					<c:when test="<%= Validator.isNotNull(componentMessageLink) %>">
-						<a href="<%= HtmlUtil.escapeAttribute(componentMessageLink) %>" target="_blank"><%= HtmlUtil.escape(componentMessage) %></a>
+						<aui:a href="<%= HtmlUtil.escapeAttribute(componentMessageLink) %>" label="componentMessage" localizeLabel="<%= false %>" target="_blank" />
 					</c:when>
 					<c:otherwise>
 						<%= HtmlUtil.escape(componentMessage) %>
@@ -300,22 +300,46 @@ if (accountEntry != null) {
 		function() {
 			var A = AUI();
 
-			var ids = ['envAS', 'envBrowser', 'envDB', 'envJVM', 'envLFR', 'envOS'];
+			var envAS = A.one('#<portlet:namespace />envAS');
 
-			ids.forEach(
-				function(id) {
-					var node = A.one('#<portlet:namespace />' + id);
+			if (envAS) {
+				envAS.val('');
+			}
 
-					if (node) {
-						node.val('');
-					}
-				}
-			);
+			var envBrowser = A.one('#<portlet:namespace />envBrowser');
+
+			if (envBrowser) {
+				envBrowser.val('');
+			}
 
 			var envBrowserCustom = A.one('#<portlet:namespace />envBrowserCustom');
 
 			if (envBrowserCustom) {
 				envBrowserCustom.remove();
+			}
+
+			var envDB = A.one('#<portlet:namespace />envDB');
+
+			if (envDB) {
+				envDB.val('');
+			}
+
+			var envJVM = A.one('#<portlet:namespace />envJVM');
+
+			if (envJVM) {
+				envJVM.val('');
+			}
+
+			var envLFR = A.one('#<portlet:namespace />envLFR');
+
+			if (envLFR) {
+				envLFR.val('');
+			}
+
+			var envOS = A.one('#<portlet:namespace />envOS');
+
+			if (envOS) {
+				envOS.val('');
 			}
 
 			var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
@@ -362,7 +386,11 @@ if (accountEntry != null) {
 			else {
 				<portlet:namespace />clearAccountEnvironment();
 
-				document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
+				var form = A.one('#<portlet:namespace />fm');
+
+				if (form) {
+					form.attr('encoding', 'application/x-www-form-urlencoded');
+				}
 
 				var formUrl = '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /><portlet:param name="validateEnvironment" value="<%= Boolean.TRUE.toString() %>" /></portlet:renderURL>';
 
@@ -425,7 +453,11 @@ if (accountEntry != null) {
 					accountEnvironmentId.val(0);
 				}
 
-				document.<portlet:namespace />fm.encoding = 'application/x-www-form-urlencoded';
+				var form = A.one('#<portlet:namespace />fm');
+
+				if (form) {
+					form.attr('encoding', 'application/x-www-form-urlencoded');
+				}
 
 				submitForm(document.<portlet:namespace />fm, '<portlet:renderURL><portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" /></portlet:renderURL>');
 			}
