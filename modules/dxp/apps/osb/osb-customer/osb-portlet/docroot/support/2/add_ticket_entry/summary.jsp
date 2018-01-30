@@ -357,10 +357,10 @@ if (accountEntry != null) {
 		function() {
 			var A = AUI();
 
-			var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
+			var productEntryLESADisplayName = A.one('#<portlet:namespace />productEntryLESADisplayName');
 
-			if (productEntryDisplayName) {
-				productEntryDisplayName.val('');
+			if (productEntryLESADisplayName) {
+				productEntryLESADisplayName.val('');
 			}
 
 			<portlet:namespace />selectProductEntry();
@@ -442,13 +442,13 @@ if (accountEntry != null) {
 
 			var accountEntryId = A.one('#<portlet:namespace />accountEntryId');
 			var accountEnvironmentId = A.one('#<portlet:namespace />accountEnvironmentId');
-			var productEntryDisplayName = A.one('#<portlet:namespace />productEntryDisplayName');
+			var productEntryLESADisplayName = A.one('#<portlet:namespace />productEntryLESADisplayName');
 
 			var oldAccountEntryId = <%= (accountEntry != null) ? accountEntry.getAccountEntryId() : 0 %>;
-			var oldProductEntryDisplayName = '<%= (productEntry != null) ? HtmlUtil.escapeJS(productEntry.getLESADisplayName()) : "" %>';
+			var oldProductEntryLESADisplayName = '<%= (productEntry != null) ? HtmlUtil.escapeJS(productEntry.getLESADisplayName()) : "" %>';
 			var oldOfferingEntryId = <%= (offeringEntry != null) ? offeringEntry.getOfferingEntryId() : 0 %>;
 
-			if (!((accountEntryId && (accountEntryId.val() == oldAccountEntryId)) && productEntryDisplayName && (productEntryDisplayName.val() == oldProductEntryDisplayName) && component && offeringEntryId && ((component.val() == 0) || (offeringEntryId.val() == 0)) && !accountEnvironmentId)) {
+			if (!((accountEntryId && (accountEntryId.val() == oldAccountEntryId)) && productEntryLESADisplayName && (productEntryLESADisplayName.val() == oldProductEntryLESADisplayName) && component && offeringEntryId && ((component.val() == 0) || (offeringEntryId.val() == 0)) && !accountEnvironmentId)) {
 				if (accountEnvironmentId && offeringEntryId && (offeringEntryId.val() != oldOfferingEntryId)) {
 					accountEnvironmentId.val(0);
 				}
