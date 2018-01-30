@@ -408,7 +408,6 @@ else {
 						if (postGamePlanButton) {
 							postGamePlanButton.hide();
 						}
-
 					</c:if>
 
 					var addAttachments = A.one('#<portlet:namespace />addAttachments');

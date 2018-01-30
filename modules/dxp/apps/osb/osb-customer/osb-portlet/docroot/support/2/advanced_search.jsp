@@ -807,7 +807,6 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 					ticketRows.removeClass('selected');
 
 					tickets.set('checked', false);
-
 				}
 			}
 		},
