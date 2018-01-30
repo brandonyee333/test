@@ -44,12 +44,12 @@ public class VisibilityConstants {
 
 		List<Integer> userVisibilities = new ArrayList<>();
 
-		for (int i = 1; i < _VISIBILITIES.length; i++) {
-			if (!hasVisibility(userId, ticketEntryId, i)) {
+		for (int visibility : _DISPLAY_VISIBILITIES) {
+			if (!hasVisibility(userId, ticketEntryId, visibility)) {
 				continue;
 			}
 
-			userVisibilities.add(i);
+			userVisibilities.add(visibility);
 		}
 
 		return ArrayUtil.toArray(userVisibilities.toArray(new Integer[0]));
@@ -121,7 +121,7 @@ public class VisibilityConstants {
 		}
 	}
 
-	private static final int[] _VISIBILITIES =
-		{ADMIN, LIFERAY_INC, PUBLIC, WORKERS};
+	private static final int[] _DISPLAY_VISIBILITIES =
+		{LIFERAY_INC, PUBLIC, WORKERS};
 
 }
