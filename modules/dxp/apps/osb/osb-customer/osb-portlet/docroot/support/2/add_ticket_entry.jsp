@@ -67,7 +67,7 @@ if (offeringEntryId > 0) {
 		<portlet:param name="mvcPath" value="/support/2/add_ticket_entry.jsp" />
 	</portlet:actionURL>
 
-	<aui:form action="<%= updateTicketEntryURL %>" method="post" name="fm">
+	<aui:form action="<%= updateTicketEntryURL %>" enctype="multipart/form-data" method="post" name="fm">
 		<liferay-util:include page="/support/2/add_ticket_entry/summary.jsp" servletContext="<%= application %>" />
 
 		<%
@@ -90,6 +90,62 @@ if (offeringEntryId > 0) {
 <%@ include file="/support/2/common/javascript/ticket_entry_validator_js.jspf" %>
 
 <aui:script>
+	<portlet:namespace />navSelect('newTicket');
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />displayMessage',
+		function(options) {
+			var content = options.content || '';
+			var node = options.node;
+			var visible = options.visible;
+
+			node = A.one(node);
+
+			if (node) {
+				if (content) {
+					node.setContent(content);
+				}
+
+				node.toggle(visible);
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateSupportMessage',
+		function(envLFR, section) {
+			var A = AUI();
+
+			var is5_2 = ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>));
+
+			var supportMessageDisplay_5_2 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_5_2');
+
+			if (supportMessageDisplay_5_2) {
+				supportMessageDisplay_5_2.toggle(is5_2);
+			}
+
+			var is6_0 = ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>));
+
+			var supportMessageDisplay_6_0 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_0');
+
+			if (supportMessageDisplay_6_0) {
+				supportMessageDisplay_6_0.toggle(is6_0);
+			}
+
+			var is6_1 = ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>));
+
+			var supportMessageDisplay_6_1 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_1');
+
+			if (supportMessageDisplay_6_1) {
+				supportMessageDisplay_6_1.toggle(is6_1);
+			}
+		},
+		['aui-base']
+	);
+
 	function <portlet:namespace />validateFiles(field) {
 		var node = null;
 
@@ -169,62 +225,6 @@ if (offeringEntryId > 0) {
 
 		return node;
 	}
-
-	Liferay.provide(
-		window,
-		'<portlet:namespace />displayMessage',
-		function(options) {
-			var content = options.content || '';
-			var node = options.node;
-			var visible = options.visible;
-
-			node = A.one(node);
-
-			if (node) {
-				if (content) {
-					node.setContent(content);
-				}
-
-				node.toggle(visible);
-			}
-		},
-		['aui-node']
-	);
-
-	Liferay.provide(
-		window,
-		'<portlet:namespace />updateSupportMessage',
-		function(envLFR, section) {
-			var A = AUI();
-
-			var supportMessageDisplay_5_2 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_5_2');
-
-			if (supportMessageDisplay_5_2) {
-				var visibleSupportMessageDisplay_5_2 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>);
-
-				supportMessageDisplay_5_2.toggle(visibleSupportMessageDisplay_5_2);
-			}
-
-			var supportMessageDisplay_6_0 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_0');
-
-			if (supportMessageDisplay_6_0) {
-				var visibleSupportMessageDisplay_6_0 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>);
-
-				supportMessageDisplay_6_0.toggle(visibleSupportMessageDisplay_6_0);
-			}
-
-			var supportMessageDisplay_6_1 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_1');
-
-			if (supportMessageDisplay_6_1) {
-				var visibleSupportMessageDisplay_6_1 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>);
-
-				supportMessageDisplay_6_1.toggle(visibleSupportMessageDisplay_6_1);
-			}
-		},
-		['aui-base']
-	);
-
-	<portlet:namespace />navSelect('newTicket');
 </aui:script>
 
 <aui:script use="aui-base">
@@ -238,15 +238,14 @@ if (offeringEntryId > 0) {
 		}
 	);
 
-	function <portlet:namespace />createTicketChangeHandler(event) {
+	var onValidate = function(event) {
 		<portlet:namespace />validateRequiredField(event.currentTarget);
 	}
 
 	var createTicket = A.one('#<portlet:namespace />createTicket');
 
 	if (createTicket) {
-		createTicket.delegate('change', <portlet:namespace />createTicketChangeHandler, 'select[data-field-required-status]');
-
-		createTicket.delegate('keyup', <portlet:namespace />createTicketChangeHandler, 'input[data-field-required-status], textarea[data-field-required-status]');
+		createTicket.delegate('change', onValidate, 'select[data-field-required-status]');
+		createTicket.delegate('keyup', onValidate, 'input[data-field-required-status], textarea[data-field-required-status]');
 	}
 </aui:script>
