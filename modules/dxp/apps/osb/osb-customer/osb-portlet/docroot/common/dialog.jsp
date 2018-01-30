@@ -23,10 +23,10 @@ boolean border = ParamUtil.getBoolean(request, "border", Boolean.TRUE);
 boolean centered = ParamUtil.getBoolean(request, "centered");
 boolean close = ParamUtil.getBoolean(request, "close", Boolean.TRUE);
 String cssClass = ParamUtil.getString(request, "cssClass");
+String dialogMVCPath = ParamUtil.getString(request, "dialogMVCPath");
 boolean draggable = ParamUtil.getBoolean(request, "draggable", Boolean.TRUE);
 int height = ParamUtil.getInteger(request, "height");
 boolean modal = ParamUtil.getBoolean(request, "modal");
-String mvcPath = ParamUtil.getString(request, "mvcPath");
 String[] paramNames = ParamUtil.getParameterValues(request, "paramNames");
 String[] paramValues = ParamUtil.getParameterValues(request, "paramValues");
 boolean shadow = ParamUtil.getBoolean(request, "shadow", Boolean.TRUE);
@@ -67,8 +67,8 @@ if (width > 0) {
 	</c:if>
 
 	<div class="content" id="<%= renderResponse.getNamespace() + "dialogContent" + dialogId %>" style="<%= contentStyleSB.toString() %>">
-		<c:if test="<%= Validator.isNotNull(mvcPath) %>">
-			<liferay-util:include page="<%= mvcPath %>" servletContext="<%= application %>">
+		<c:if test="<%= Validator.isNotNull(dialogMVCPath) %>">
+			<liferay-util:include page="<%= dialogMVCPath %>" servletContext="<%= application %>">
 				<c:if test="<%= paramNames.length == paramValues.length %>">
 
 					<%

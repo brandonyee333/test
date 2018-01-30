@@ -30,9 +30,9 @@ boolean osbTrialPurchased = ExpandoValueLocalServiceUtil.getData(themeDisplay.ge
 		<liferay-util:param name="centered" value="<%= Boolean.TRUE.toString() %>" />
 		<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
 		<liferay-util:param name="cssClass" value="view-license-dialog" />
+		<liferay-util:param name="dialogMVCPath" value="/license/view_trial_license_dialog.jsp" />
 		<liferay-util:param name="draggable" value="<%= Boolean.FALSE.toString() %>" />
 		<liferay-util:param name="modal" value="<%= Boolean.TRUE.toString() %>" />
-		<liferay-util:param name="mvcPath" value="/license/view_trial_license_dialog.jsp" />
 		<liferay-util:param name="visible" value="<%= Boolean.TRUE.toString() %>" />
 	</liferay-util:include>
 </c:if>

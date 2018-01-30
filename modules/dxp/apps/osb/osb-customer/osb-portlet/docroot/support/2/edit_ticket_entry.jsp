@@ -135,9 +135,9 @@ request.setAttribute("edit_ticket_entry.jsp-ticketWorker", ticketWorker);
 		<liferay-util:param name="centered" value="<%= Boolean.TRUE.toString() %>" />
 		<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
 		<liferay-util:param name="cssClass" value="edit-ticket-dialog" />
+		<liferay-util:param name="dialogMVCPath" value="/support/2/edit_ticket_entry/edit_ticket_entry_dialog.jsp" />
 		<liferay-util:param name="draggable" value="<%= Boolean.FALSE.toString() %>" />
 		<liferay-util:param name="modal" value="<%= Boolean.TRUE.toString() %>" />
-		<liferay-util:param name="mvcPath" value="/support/2/edit_ticket_entry/edit_ticket_entry_dialog.jsp" />
 		<liferay-util:param name="paramNames" value="redirect, ticketEntryId" />
 		<liferay-util:param name="paramValues" value="<%= currentURL + StringPool.COMMA + String.valueOf(ticketEntry.getTicketEntryId()) %>" />
 		<liferay-util:param name="title" value='<%= LanguageUtil.get(request, "edit-ticket") + StringPool.COLON + StringPool.SPACE + ticketEntry.getDisplayId() %>' />
@@ -149,10 +149,10 @@ request.setAttribute("edit_ticket_entry.jsp-ticketWorker", ticketWorker);
 	<liferay-util:param name="centered" value="<%= Boolean.FALSE.toString() %>" />
 	<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
 	<liferay-util:param name="cssClass" value="login-info-dialog" />
+	<liferay-util:param name="dialogMVCPath" value="/support/2/edit_ticket_entry/login_info_dialog.jsp" />
 	<liferay-util:param name="draggable" value="<%= Boolean.FALSE.toString() %>" />
 	<liferay-util:param name="id" value="3" />
 	<liferay-util:param name="modal" value="<%= Boolean.FALSE.toString() %>" />
-	<liferay-util:param name="mvcPath" value="/support/2/edit_ticket_entry/login_info_dialog.jsp" />
 	<liferay-util:param name="width" value="715" />
 </liferay-util:include>
 
