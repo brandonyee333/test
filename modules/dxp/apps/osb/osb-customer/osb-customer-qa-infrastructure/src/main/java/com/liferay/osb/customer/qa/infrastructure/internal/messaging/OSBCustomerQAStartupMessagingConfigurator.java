@@ -43,7 +43,7 @@ public class OSBCustomerQAStartupMessagingConfigurator {
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				"liferay/qa_startup");
+				"liferay/osb_qa_infrastructure");
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);

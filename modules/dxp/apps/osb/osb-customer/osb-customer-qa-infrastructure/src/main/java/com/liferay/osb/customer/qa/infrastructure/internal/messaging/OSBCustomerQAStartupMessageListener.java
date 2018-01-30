@@ -79,7 +79,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jeremy Fu
  */
 @Component(
-	immediate = true, property = {"destination.name=liferay/qa_startup"},
+	immediate = true,
+	property = {"destination.name=liferay/osb_qa_infrastructure"},
 	service = MessageListener.class
 )
 public class OSBCustomerQAStartupMessageListener extends BaseMessageListener {

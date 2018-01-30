@@ -263,7 +263,7 @@ public class AdminServletContextListener
 
 		Message message = new Message();
 
-		message.setDestinationName("liferay/qa_startup");
+		message.setDestinationName("liferay/osb_qa_infrastructure");
 
 		MessageBusUtil.sendMessage(message.getDestinationName(), message);
 	}
