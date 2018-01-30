@@ -290,6 +290,32 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		respondWith(WatsonChild.getAsJSONDataArray(searchResultWatsonChildren, getTotalHits(searchContext)));
 	}
 
+	public void sendCitizenshipRequest() throws Exception {
+		if (!isRespondingTo("json")) {
+			return;
+		}
+
+		if (!WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_STAFF)) {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+
+			return;
+		}
+
+		long watsonChildId = ParamUtil.getLong(request, "watsonPrimaryKey");
+
+		WatsonChild watsonChild = WatsonChild.fetch(watsonChildId);
+
+		String url = ParamUtil.getString(request, "url", StringPool.BLANK);
+
+		WatsonWorkflowUtil.sendCitizenshipRequestEmail(user, watsonChild, url);
+
+		watsonChild.setCitizenshipWatsonListTypeId(WatsonListType.CHILD_CITIZENSHIP_TYPE_IN_PROGRESS);
+
+		watsonChild.update();
+
+		respondWith(translate("child-citizenship-status-updated"), WatsonChild.getAsJSONObject(watsonChild));
+	}
+
 	public void update() throws Exception {
 		if (!isRespondingTo("json")) {
 			return;

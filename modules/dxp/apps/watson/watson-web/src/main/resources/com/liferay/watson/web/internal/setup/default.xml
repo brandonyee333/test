@@ -40502,4 +40502,12 @@
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่นๆ</name>
 	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.citizenship" watsonListTypeId="10580">
+		<name locale="en_US">Unknown</name>
+		<name locale="th">ไม่ทราบ</name>
+	</watsonListType>
+	<watsonListType type="com.liferay.watson.model.WatsonPerson.citizenship" watsonListTypeId="10581">
+		<name locale="en_US">In Progress</name>
+		<name locale="th">กำลังดำเนินการ</name>
+	</watsonListType>
 </table>

@@ -6,6 +6,7 @@ import Router from 'metal-router';
 import sub from 'string-sub';
 
 import Button from '../../components/Button';
+import ButtonModal from '../../components/ButtonModal';
 import ContentHeader from '../../components/ContentHeader';
 import {convertMapToObject, deepCompareIsEqual, getModifiedMoment, updateDOMTitle} from '../../lib/util';
 import Form from '../../components/Form';
@@ -22,17 +23,7 @@ import {
 
 class ChildForm extends JSXComponent {
 	attached() {
-		const {props} = this;
-
-		const {watsonChildId} = props;
-
-		if (watsonChildId) {
-			props.editChildren(watsonChildId);
-		}
-
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
-
-		this.handleClearFormData();
 	}
 
 	created() {
@@ -40,6 +31,7 @@ class ChildForm extends JSXComponent {
 			this,
 			'handleBeforeLeave',
 			'handleCancel',
+			'handleCitizenshipRequest',
 			'handleClearFormData',
 			'handleClose',
 			'handleDelete',
@@ -78,6 +70,7 @@ class ChildForm extends JSXComponent {
 			'countryWatsonListTypeId',
 			'ethnicityWatsonListTypeId',
 			'birthCountryId',
+			'citizenshipWatsonListTypeId',
 			'parentNameWatsonListTypeRels',
 			'guardianNameWatsonListTypeRels',
 			'countryIDWatsonListTypeRels',
@@ -144,6 +137,21 @@ class ChildForm extends JSXComponent {
 		this.handleClearFormData();
 
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/index`);
+	}
+
+	handleCitizenshipRequest() {
+		const {props} = this;
+
+		const {requestChildCitizenship, watsonChildId} = props;
+
+		const childURL = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/`;
+
+		const citizenshipRequestData = {
+			url: childURL,
+			watsonPrimaryKey: watsonChildId
+		};
+
+		requestChildCitizenship(citizenshipRequestData);
 	}
 
 	handleClearFormData() {
@@ -227,6 +235,8 @@ class ChildForm extends JSXComponent {
 			showLeaveModal
 		} = this.state;
 
+		const additionalTopBarButtons = [];
+
 		let deleteMethod;
 		let requestTranslationMethod;
 		let translateHref;
@@ -242,6 +252,27 @@ class ChildForm extends JSXComponent {
 			if (!disabled && WatsonConstants.currentUser.translatorRole) {
 				translateHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/translate`;
 			}
+
+			const hasCitizenship = storeData.get('hasCitizenship');
+
+			if (hasCitizenship === false) {
+				const optionButtons = [];
+
+				optionButtons.push(
+					{
+						label: Liferay.Language.get('initiate-citizenship-process')
+					}
+				);
+
+				const modal = {
+					body: Liferay.Language.get('are-you-sure-that-you-would-like-to-request-the-citizenship-process-be-initiated')
+				};
+
+				additionalTopBarButtons.push(
+					<ButtonModal action={this.handleCitizenshipRequest} buttons={optionButtons} modalData={modal} />
+				);
+			}
+
 		}
 
 		const modalFooter = [
@@ -262,6 +293,7 @@ class ChildForm extends JSXComponent {
 				<div class="content">
 					<Form
 						action={action}
+						additionalTopBarButtons={additionalTopBarButtons}
 						button={button}
 						buttonLabel={buttonLabel}
 						cancelMethod={cancelMethod}
@@ -348,6 +380,11 @@ function mapDispatchToProps(dispatch) {
 		editChildren: watsonChildId => {
 			dispatch(
 				editChildren(watsonChildId)
+			);
+		},
+		requestChildCitizenship: data => {
+			dispatch(
+				updateChildren(data, 'sendCitizenshipRequest.json')
 			);
 		},
 		requestChildrenTranslation: data => {

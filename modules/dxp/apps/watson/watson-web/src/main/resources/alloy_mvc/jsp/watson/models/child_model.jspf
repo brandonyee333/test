@@ -120,6 +120,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			pushRelData(jsonObject, watsonChild.getWatsonChildId(), "guardianName", locale);
 		}
 
+		jsonObject.put("hasCitizenship", hasCitizenship(watsonChild.getCitizenshipWatsonListTypeId()));
 		jsonObject.put("id", watsonChild.getPrimaryKey());
 		jsonObject.put("illnesses", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_ILLNESS, watsonChild.getWatsonChildId()));
 		jsonObject.put("legals", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_LEGAL_STATUS, watsonChild.getWatsonChildId()));
@@ -285,6 +286,14 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 	}
 
+	public static boolean hasCitizenship(long citizenshipWatsonListTypeId) throws Exception {
+		if ((citizenshipWatsonListTypeId == 0) || (citizenshipWatsonListTypeId == WatsonListType.CHILD_CITIZENSHIP_TYPE_STATELESS) || (citizenshipWatsonListTypeId == WatsonListType.CHILD_CITIZENSHIP_TYPE_UNKNOWN)) {
+			return false;
+		}
+
+		return true;
+	}
+
 	public static KeyValuePair validateWatsonChildActivitiesInvolved(List<WatsonListTypeRel> activitiesInvolved) throws Exception {
 		for (WatsonListTypeRel watsonListTypeRel : activitiesInvolved) {
 			if ((watsonListTypeRel.getClassPK() <= 0)) {
@@ -310,6 +319,14 @@ public static class WatsonChild extends WatsonChildBaseModel {
 	public static KeyValuePair validateWatsonChildBirthCountry(long countryId) throws Exception {
 		if ((countryId != 0) && (CountryServiceUtil.fetchCountry(countryId) == null)) {
 			return new KeyValuePair("countryWatsonListTypeId", "the-country-is-invalid");
+		}
+
+		return null;
+	}
+
+	public static KeyValuePair validateWatsonChildCitizenshipType(long watsonListTypeId) throws Exception {
+		if ((watsonListTypeId > 0) && (WatsonListType.fetch(watsonListTypeId) == null)) {
+			return new KeyValuePair("citizenshipWatsonListTypeId", "the-type-is-invalid");
 		}
 
 		return null;
@@ -556,6 +573,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 	public boolean isValid(List<WatsonListTypeRel> activitiesInvolvedWatsonListTypeRels, List<WatsonListTypeRel> countryIDWatsonListTypeRels, List<WatsonListTypeRel> guardianNameWatsonListTypeRels, List<WatsonListTypeRel> nameWatsonListTypeRels, List<WatsonListTypeRel> parentNameWatsonListTypeRels, List<WatsonListTypeRel> vocationalTrainingWatsonListTypeRels, List<WatsonRelationship> watsonRelationships) throws Exception {
 		pushError(validateWatsonChildActivitiesInvolved(activitiesInvolvedWatsonListTypeRels));
 		pushError(validateWatsonChildBirthCountry(getBirthCountryId()));
+		pushError(validateWatsonChildCitizenshipType(getCitizenshipWatsonListTypeId()));
 		pushError(validateWatsonChildCountry(getCountryWatsonListTypeId()));
 		pushError(validateWatsonChildCountryIDs(countryIDWatsonListTypeRels));
 		pushError(validateWatsonChildDates(getDateAccepted(), getDateDischarged(), getDateFollowUp(), getDischargeWatsonListTypeId()));
