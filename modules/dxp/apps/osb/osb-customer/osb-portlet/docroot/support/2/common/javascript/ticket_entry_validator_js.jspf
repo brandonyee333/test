@@ -15,6 +15,45 @@
 --%>
 
 <aui:script>
+	Liferay.provide(
+		window,
+		'<portlet:namespace />displayValidation',
+		function(node, status) {
+			var A = AUI();
+
+			var nodeName = node.attr('name');
+
+			var messageDisplayName = nodeName + 'Message';
+
+			var messageDisplay = A.one('#' + messageDisplayName);
+
+			if (messageDisplay) {
+				messageDisplay.toggle(status);
+			}
+			else if (status) {
+				messageDisplay = A.Node.create('<div class="portlet-msg-error" />');
+
+				messageDisplay.attr('id', messageDisplayName);
+				messageDisplay.setContent(node.getAttribute('field-required-message'));
+
+				var childNode = node;
+
+				var parentNode = node.get('parentNode');
+
+				while (!parentNode.test('div')) {
+					childNode = parentNode;
+
+					parentNode = parentNode.get('parentNode');
+
+					messageDisplay.setContent(parentNode.attr('field-required-message'));
+				}
+
+				parentNode.insertBefore(messageDisplay, childNode);
+			}
+		},
+		['aui-node']
+	);
+
 	function <portlet:namespace />validateRequiredField(node) {
 		var returnVal = false;
 
@@ -46,48 +85,11 @@
 				returnVal = true;
 			}
 
-			requiredStatusNode.setAttribute('data-field-required-status', returnVal);
+			requiredStatusNode.attr('data-field-required-status', returnVal);
 
 			<portlet:namespace />displayValidation(node, !returnVal);
 		}
 
 		return returnVal;
 	}
-
-	Liferay.provide(
-		window,
-		'<portlet:namespace />displayValidation',
-		function(node, status) {
-			var A = AUI();
-
-			var messageDisplayName = node.getAttribute('name') + 'Message';
-
-			var messageDisplay = A.one('#' + messageDisplayName);
-
-			if (messageDisplay) {
-				messageDisplay.toggle(status);
-			}
-			else if (status) {
-				messageDisplay = A.Node.create('<div class="portlet-msg-error" />');
-
-				messageDisplay.setAttribute('id', messageDisplayName);
-				messageDisplay.setContent(node.getAttribute('field-required-message'));
-
-				var childNode = node;
-
-				var parentNode = node.get('parentNode');
-
-				while (!parentNode.test('div')) {
-					childNode = parentNode;
-
-					parentNode = parentNode.get('parentNode');
-
-					messageDisplay.setContent(parentNode.getAttribute('field-required-message'));
-				}
-
-				parentNode.insertBefore(messageDisplay, childNode);
-			}
-		},
-		['aui-node']
-	);
 </aui:script>
