@@ -62,7 +62,7 @@ class SidebarToolbar extends JSXComponent {
 					}
 
 					{WatsonConstants.currentUser.incidentStaffRole &&
-						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="reports" onClick={this.handleOnClick} title={Liferay.Language.get('reports')} />
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="report" onClick={this.handleOnClick} title={Liferay.Language.get('reports')} />
 					}
 
 				</span>
@@ -114,6 +114,8 @@ class SidebarToolbar extends JSXComponent {
 
 		const route = window.location.href;
 
+		let selectedFound = false;
+
 		if ((selected === undefined) && (route !== WatsonConstants.urls.baseURL)) {
 			const {sidebarURLs = {}} = this.state;
 
@@ -122,22 +124,40 @@ class SidebarToolbar extends JSXComponent {
 					const formattedURL = `${WatsonConstants.urls.baseURL}${sidebarURLs[key]}`;
 
 					if (route === formattedURL) {
-						this.state.selected = key;
+						selectedFound = key;
 					}
 				}
 			}
 
-			if (!this.state.selected) {
-				const {urls = {}} = WatsonConstants;
+			if (!selectedFound) {
+				const incidentsRegex = 'incidents\/[^\d]*(\d+)[^\d]';
 
-				for (const key in urls) {
-					if (urls.hasOwnProperty(key)) {
+				const childrenRegex = 'children\/[^\d]*(\d+)[^\d]';
 
-						if (route === urls[key]) {
-							this.state.selected = 'incidents';
+				if (route.match(incidentsRegex)) {
+					selectedFound = 'incidents';
+				}
+				else if (route.match(childrenRegex)) {
+					selectedFound = 'children'
+				}
+				else {
+					const {urls = {}} = WatsonConstants;
+
+					if (!route.includes('children') && !route.includes('documents')) {
+						for (const key in urls) {
+							if (urls.hasOwnProperty(key)) {
+
+								if (route === urls[key]) {
+									selectedFound = 'incidents';
+								}
+							}
 						}
 					}
 				}
+			}
+
+			if (selectedFound) {
+				this.state.selected = selectedFound;
 			}
 		}
 	}

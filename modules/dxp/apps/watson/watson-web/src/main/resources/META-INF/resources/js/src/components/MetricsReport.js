@@ -1,7 +1,8 @@
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import bridge from 'metal-react';
-import {forEach, isMap} from 'lodash';
+import {forEach} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
+import {Map} from 'immutable';
 
 import ContentHeader from './ContentHeader';
 
@@ -31,7 +32,7 @@ class MetricsReport extends JSXComponent {
 
 		const formattedData = [];
 
-		if (!loading && !isMap(data)) {
+		if (!loading && !Map.isMap(data)) {
 			forEach(
 				data,
 				(item, index) => {
