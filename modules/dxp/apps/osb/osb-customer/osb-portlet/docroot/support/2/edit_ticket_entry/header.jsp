@@ -221,9 +221,9 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					<div id="<portlet:namespace />statusDisplay" onClick="<%= statusOnClick %>">
 						<liferay-ui:message key="status" />:
 
-						<span class="txt-sb" id="<portlet:namespace />statusLabel"><%= LanguageUtil.get(request, ticketEntry.getStatusLabel()) %></span>
+						<span class="txt-sb"><%= LanguageUtil.get(request, ticketEntry.getStatusLabel()) %></span>
 
-						<span class="<%= (resolution == 0) ? "hide" : "txt-sb" %>" id="<portlet:namespace />resolutionLabel">(<%= LanguageUtil.get(request, ticketEntry.getResolutionLabel()) %>)</span>
+						<span class="<%= (resolution == 0) ? "hide" : "txt-sb" %>" id="<portlet:namespace />headerResolutionLabel">(<%= LanguageUtil.get(request, ticketEntry.getResolutionLabel()) %>)</span>
 
 						<%
 						String statusMessage = HtmlUtil.escape(SupportUtil.getPreferenceValue(locale, "statusMessage_" + status));
@@ -235,7 +235,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					</div>
 
 					<div id="<portlet:namespace/>statusDropDown" style="display: none;">
-						<select autocomplete="off" id="<portlet:namespace />status" name="<portlet:namespace />status" onChange="<portlet:namespace />updateStatus(this.value);">
+						<select autocomplete="off" id="<portlet:namespace />headerStatus" name="<portlet:namespace />status" onChange="<portlet:namespace />updateStatus(this.value);">
 
 							<%
 							for (int statusId : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
@@ -254,7 +254,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 						</select>
 
-						<select id="<portlet:namespace />resolution" name="<portlet:namespace />resolution" onChange="<portlet:namespace />updateResolution(this.value);" style="display: none;">
+						<select id="<portlet:namespace />headerResolution" name="<portlet:namespace />resolution" onChange="<portlet:namespace />updateResolution(this.value);" style="display: none;">
 							<option value=""></option>
 
 							<%
@@ -317,7 +317,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			document.getElementById('<portlet:namespace />resolutionDropDown').style.display = 'none';
 		}
 		else {
-			<portlet:namespace />toggleForm('<portlet:namespace />resolutionDropDown', '<portlet:namespace />resolutionLabel');
+			<portlet:namespace />toggleForm('<portlet:namespace />resolutionDropDown', '<portlet:namespace />headerResolutionLabel');
 		}
 
 		document.getElementById('<portlet:namespace />resolutionCancel').style.display = 'none';
@@ -352,7 +352,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			var A = AUI();
 
 			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(request, ticketEntry.getStatusLabel()) %>';
-			var newLabel = A.one('#<portlet:namespace />status option:selected').html() + ' - ' + A.one('#<portlet:namespace />resolution option:selected').html();
+			var newLabel = A.one('#<portlet:namespace />headerStatus option:selected').html() + ' - ' + A.one('#<portlet:namespace />headerResolution option:selected').html();
 
 			if (confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newLabel]))) {
 				document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
@@ -372,7 +372,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		function <portlet:namespace />updateStatus(status) {
 			var A = AUI();
 
-			var newStatusLabel = A.one('#<portlet:namespace />status option:selected').html();
+			var newStatusLabel = A.one('#<portlet:namespace />headerStatus option:selected').html();
 
 			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(request, ticketEntry.getStatusLabel()) %>';
 
@@ -396,7 +396,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				resolutionDisplay = '';
 			}
 
-			document.getElementById('<portlet:namespace />resolution').style.display = resolutionDisplay;
+			document.getElementById('<portlet:namespace />headerResolution').style.display = resolutionDisplay;
 
 			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>') {
 				return false;

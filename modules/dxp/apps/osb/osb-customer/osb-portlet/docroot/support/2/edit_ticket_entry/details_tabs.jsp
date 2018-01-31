@@ -67,31 +67,31 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 %>
 
 <div class="details-tabs">
-	<div class="details tab-view" id="<portlet:namespace />ticketDetails">
+	<div class="details tab-view">
 		<div class="tabs" id="<portlet:namespace />ticketTabsDetails">
 			<div>
 				<c:if test="<%= !screenShareMode && hasViewSupportInstructions %>">
-					<span class="first" id="<portlet:namespace />supportInstructions" onClick="<portlet:namespace />reveal('supportInstructions');"><liferay-ui:message key="support-instructions" /></span>
+					<span class="first" id="<portlet:namespace />supportInstructionsHeader" onClick="<portlet:namespace />reveal('supportInstructions');"><liferay-ui:message key="support-instructions" /></span>
 				</c:if>
 
-				<span class="<%= !hasViewSupportInstructions ? "first" : "" %>" id="<portlet:namespace />description" onClick="<portlet:namespace />reveal('description');"><liferay-ui:message key="description" /></span>
+				<span class="<%= !hasViewSupportInstructions ? "first" : "" %>" id="<portlet:namespace />descriptionHeader" onClick="<portlet:namespace />reveal('description');"><liferay-ui:message key="description" /></span>
 
 				<c:if test="<%= (component == TicketEntryConstants.COMPONENT_CLUSTERING) || (component == TicketEntryConstants.COMPONENT_LICENSE) || (component == TicketEntryConstants.COMPONENT_UPGRADE) %>">
-					<span id="<portlet:namespace />component" onClick="<portlet:namespace />reveal('component');"><liferay-ui:message key="<%= TicketEntryConstants.getComponentLabel(component) %>" /> <liferay-ui:message key="details" /></span>
+					<span id="<portlet:namespace />componentHeader" onClick="<portlet:namespace />reveal('component');"><liferay-ui:message key="<%= TicketEntryConstants.getComponentLabel(component) %>" /> <liferay-ui:message key="details" /></span>
 				</c:if>
 
 				<c:if test="<%= ticketWorker && !screenShareMode && Validator.isNotNull(reproductionSteps) %>">
-					<span id="<portlet:namespace />stepsToReproduce" onClick="<portlet:namespace />reveal('stepsToReproduce');"><liferay-ui:message key="steps-to-reproduce" /></span>
+					<span id="<portlet:namespace />stepsToReproduceHeader" onClick="<portlet:namespace />reveal('stepsToReproduce');"><liferay-ui:message key="steps-to-reproduce" /></span>
 				</c:if>
 
 				<c:if test="<%= hasViewTicketSolution %>">
-					<span class="highlight-red" id="<portlet:namespace />solution" onClick="<portlet:namespace />reveal('solution');">
+					<span class="highlight-red" id="<portlet:namespace />solutionHeader" onClick="<portlet:namespace />reveal('solution');">
 						<label class="highlighted-flag">*</label> <liferay-ui:message key="solution" />
 					</span>
 				</c:if>
 
 				<c:if test="<%= hasViewLiferayTicketFeedback || ((partnerTicketFeedback != null) && !screenShareMode && liferayIncOrg) %>">
-					<span id="<portlet:namespace />feedback" onClick="<portlet:namespace />reveal('feedback');"><liferay-ui:message key="feedback" /></span>
+					<span id="<portlet:namespace />feedbackHeader" onClick="<portlet:namespace />reveal('feedback');"><liferay-ui:message key="feedback" /></span>
 				</c:if>
 
 				<%
@@ -106,13 +106,13 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 				int attachmentsCount = TicketAttachmentLocalServiceUtil.getTicketAttachmentsCount(ticketEntry.getTicketEntryId(), types, userVisibilities);
 				%>
 
-				<span id="<portlet:namespace />attachments" onClick="<portlet:namespace />reveal('attachments');"><liferay-ui:message arguments="<%= attachmentsCount %>" key="attachments-x" /></span>
+				<span id="<portlet:namespace />attachmentsHeader" onClick="<portlet:namespace />reveal('attachments');"><liferay-ui:message arguments="<%= attachmentsCount %>" key="attachments-x" /></span>
 
 				<%
 				int linksCount = TicketLinkLocalServiceUtil.getTicketLinksCount(ticketEntry.getTicketEntryId(), userVisibilities);
 				%>
 
-				<span id="<portlet:namespace />links" onClick="<portlet:namespace />reveal('links');"><liferay-ui:message arguments="<%= linksCount %>" key="links-x" /></span>
+				<span id="<portlet:namespace />linksHeader" onClick="<portlet:namespace />reveal('links');"><liferay-ui:message arguments="<%= linksCount %>" key="links-x" /></span>
 			</div>
 		</div>
 
@@ -253,7 +253,7 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 		function(id) {
 			var A = AUI();
 
-			var tab = A.one('.details-tabs .details .tabs #<portlet:namespace />' + id);
+			var tab = A.one('.details-tabs .details .tabs #<portlet:namespace />' + id + 'Header');
 
 			if (tab) {
 				A.all('.details-tabs .details .tab-content-tab').hide();

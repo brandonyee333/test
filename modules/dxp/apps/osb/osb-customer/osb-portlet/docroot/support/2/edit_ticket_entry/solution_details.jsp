@@ -109,7 +109,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 			</div>
 
 			<liferay-ui:panel collapsible="<%= true %>" extended="<%= true %>" id="attachmentsAndLinksPanel" persistState="<%= true %>" title="attachments-links">
-				<div id="<portlet:namespace />addAttachments">
+				<div>
 					<span class="txt-b"><liferay-ui:message key="add-attachments" /></span>
 
 					<%

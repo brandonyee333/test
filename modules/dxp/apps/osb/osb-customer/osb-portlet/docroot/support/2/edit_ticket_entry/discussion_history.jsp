@@ -50,7 +50,7 @@ else {
 
 		<div class="audit-entry-set" id="<portlet:namespace />auditSet<%= auditEntry.getAuditSetId() %>">
 			<div class="header" id="<portlet:namespace />audit<%= auditEntry.getAuditEntryId() %>">
-				<div class="user-display" onClick="<portlet:namespace />toggleComment(event, <%= auditEntry.getAuditEntryId() %>);">
+				<div class="user-display" onClick="<portlet:namespace />toggleComment(event, <%= auditEntry.getAuditEntryId() %>, 'history');">
 
 					<%
 					String portraitURL = StringPool.BLANK;
@@ -115,7 +115,7 @@ else {
 			<div class="content">
 				<c:choose>
 					<c:when test="<%= (auditEntry.getFieldClassNameId() == PortalUtil.getClassNameId(TicketCall.class)) || (auditEntry.getFieldClassNameId() == PortalUtil.getClassNameId(TicketComment.class)) %>">
-						<div class="comment-collapsed content-column ticket-comment w100" id="<portlet:namespace />commentContainer<%= auditEntry.getAuditEntryId() %>">
+						<div class="comment-collapsed content-column ticket-comment w100" id="<portlet:namespace />historyCommentContainer<%= auditEntry.getAuditEntryId() %>">
 							<div class="comment">
 								<div class="comment-body <%= (auditEntry.getAction() == AuditEntryConstants.ACTION_SOLUTION_REJECTED) ? "rejected-comment-body" : "" %>">
 

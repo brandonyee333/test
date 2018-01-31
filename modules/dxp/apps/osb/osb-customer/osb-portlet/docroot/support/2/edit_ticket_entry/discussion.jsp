@@ -257,8 +257,8 @@ else {
 			);
 		}
 
-		function <portlet:namespace />toggleComment(event, i) {
-			var comment = document.getElementById('<portlet:namespace />commentContainer' + i);
+		function <portlet:namespace />toggleComment(event, i, type) {
+			var comment = document.getElementById('<portlet:namespace />' + type + 'CommentContainer' + i);
 
 			var text = document.all ? document.selection.createRange().text : document.getSelection();
 

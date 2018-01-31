@@ -71,19 +71,19 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		<div class="details" id="<portlet:namespace />editTicketDetails">
 			<div class="tabs" id="<portlet:namespace />editTicketTabsDetails">
 				<div>
-					<span class="first selected" id="<portlet:namespace />ticketDetails" onClick="<portlet:namespace />revealDialogTab('ticketDetails');">
+					<span class="first selected" id="<portlet:namespace />ticketDetailsHeader" onClick="<portlet:namespace />revealDialogTab('ticketDetails');">
 						<liferay-ui:message key="ticket-details" />
 					</span>
-					<span id="<portlet:namespace />environmentDetails" onClick="<portlet:namespace />revealDialogTab('environmentDetails');">
+					<span id="<portlet:namespace />environmentDetailsHeader" onClick="<portlet:namespace />revealDialogTab('environmentDetails');">
 						<liferay-ui:message key="environment-details" />
 					</span>
-					<span class="component-tab hide" id="<portlet:namespace />clusteringDetails" onClick="<portlet:namespace />revealDialogTab('clusteringDetails');">
+					<span class="component-tab hide" id="<portlet:namespace />clusteringDetailsHeader" onClick="<portlet:namespace />revealDialogTab('clusteringDetails');">
 						<liferay-ui:message key="clustering-details" />
 					</span>
-					<span class="component-tab hide" id="<portlet:namespace />activationKeyDetails" onClick="<portlet:namespace />revealDialogTab('activationKeyDetails');">
+					<span class="component-tab hide" id="<portlet:namespace />activationKeyDetailsHeader" onClick="<portlet:namespace />revealDialogTab('activationKeyDetails');">
 						<liferay-ui:message key="activation-key-details" />
 					</span>
-					<span class="component-tab hide" id="<portlet:namespace />upgradeDetails" onClick="<portlet:namespace />revealDialogTab('upgradeDetails');">
+					<span class="component-tab hide" id="<portlet:namespace />upgradeDetailsHeader" onClick="<portlet:namespace />revealDialogTab('upgradeDetails');">
 						<liferay-ui:message key="upgrade-details" />
 					</span>
 				</div>
@@ -318,7 +318,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		function(id) {
 			var A = AUI();
 
-			var tab = A.one('.tab-view-dialog .details .tabs #<portlet:namespace />' + id);
+			var tab = A.one('.tab-view-dialog .details .tabs #<portlet:namespace />' + id + 'Header');
 
 			if (tab) {
 				A.all('.tab-view-dialog .details .tab-content-tab').hide();

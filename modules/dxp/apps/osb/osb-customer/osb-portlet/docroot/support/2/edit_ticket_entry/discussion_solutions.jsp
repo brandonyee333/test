@@ -49,7 +49,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 
 		<div class="ticket-comment <%= cssClass %>" id="<portlet:namespace />commentContainer<%= j %>">
 			<div class="content-column w10">
-				<div class="content-column-content left-column" onClick="<portlet:namespace />toggleComment(event, <%= j %>);">
+				<div class="content-column-content left-column" onClick="<portlet:namespace />toggleComment(event, <%= j %>, 'solution');">
 
 					<%
 					User solutionUser = UserLocalServiceUtil.getUser(ticketSolution.getUserId());
@@ -63,7 +63,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 
 			<div class="content-column w90">
 				<div class="user-name">
-					<span onClick="<portlet:namespace />toggleComment(event, <%= j %>);">
+					<span onClick="<portlet:namespace />toggleComment(event, <%= j %>, 'solution');">
 						<%= HtmlUtil.escape(solutionUser.getFullName()) %>
 
 						<liferay-util:include page="/support/2/common/user_badge.jsp" servletContext="<%= application %>">
@@ -81,7 +81,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 					<%= shortDateFormatDate.format(ticketSolution.getCreateDate()) %> <%= shortDateFormatTime.format(ticketSolution.getCreateDate()) %>
 				</span>
 
-				<div class="comment" id="<portlet:namespace />comment<%= j %>">
+				<div class="comment">
 					<div class="comment-body">
 						<div class="comment-body-wrapper">
 							<c:if test="<%= liferayIncOrg || partnerWorker %>">
@@ -181,9 +181,9 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 		</div>
 
 		<c:if test="<%= Validator.isNotNull(ticketSolution.getStatusMessage()) %>">
-			<div class="ticket-comment <%= cssClass %>" id="<portlet:namespace />commentContainer<%= j + 1 %>">
+			<div class="ticket-comment <%= cssClass %>" id="<portlet:namespace />solutionCommentContainer<%= j + 1 %>">
 				<div class="content-column w10">
-					<div class="content-column-content left-column" onClick="<portlet:namespace />toggleComment(event, <%= j + 1 %>);">
+					<div class="content-column-content left-column" onClick="<portlet:namespace />toggleComment(event, <%= j + 1 %>, solution);">
 
 						<%
 						User statusByUser = UserLocalServiceUtil.getUser(ticketSolution.getStatusByUserId());
@@ -197,7 +197,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 
 				<div class="content-column w90">
 					<div class="user-name">
-						<span onClick="<portlet:namespace />toggleComment(event, <%= j + 1 %>);">
+						<span onClick="<portlet:namespace />toggleComment(event, <%= j + 1 %>, 'solution');">
 							<%= HtmlUtil.escape(statusByUser.getFullName()) %>
 
 							<liferay-util:include page="/support/2/common/user_badge.jsp" servletContext="<%= application %>">
@@ -215,7 +215,7 @@ List<TicketSolution> ticketSolutions = TicketSolutionLocalServiceUtil.getTicketS
 						<%= shortDateFormatDate.format(ticketSolution.getCreateDate()) %> <%= shortDateFormatTime.format(ticketSolution.getCreateDate()) %>
 					</span>
 
-					<div class="comment" id="<portlet:namespace />comment<%= j + 1 %>">
+					<div class="comment">
 						<div class="comment-body">
 							<div>
 								<strong>

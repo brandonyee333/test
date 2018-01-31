@@ -64,7 +64,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 			</c:if>
 		</div>
 
-		<div id="<portlet:namespace />productEntryName">
+		<div>
 			<%= HtmlUtil.escape(productEntry.getName()) %>
 		</div>
 
@@ -169,7 +169,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 					User reporterUser = UserLocalServiceUtil.fetchUserById(ticketEntry.getUserId());
 					%>
 
-					<span class="txt-sb" id="<portlet:namespace />reportedByUserName">
+					<span class="txt-sb">
 						<c:if test="<%= reporterUser != null %>">
 							<%= HtmlUtil.escape(reporterUser.getFullName()) %>
 

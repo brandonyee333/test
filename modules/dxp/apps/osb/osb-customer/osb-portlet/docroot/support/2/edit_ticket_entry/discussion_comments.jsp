@@ -135,8 +135,8 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 			}
 		%>
 
-			<div class="clearfix ticket-comment <%= cssClass %>" id="<portlet:namespace />commentContainer<%= i %>">
-				<div class="content-column" onClick="<portlet:namespace />toggleComment(event, <%= i %>);">
+			<div class="clearfix ticket-comment <%= cssClass %>" id="<portlet:namespace />ticketCommentContainer<%= i %>">
+				<div class="content-column" onClick="<portlet:namespace />toggleComment(event, <%= i %>, 'ticket');">
 					<div>
 						<div class="user-avatar" style="background-image: url('<%= ticketEntryDiscussion.getUserPortraitURL(themeDisplay) %>&height=70&width=70')"></div>
 
@@ -146,7 +146,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 
 				<div class="comment-text-container" id="<portlet:namespace />scroll_<%= ticketEntryDiscussion.getDiscussionId() %>">
 					<div class="user-name">
-						<span onClick="<portlet:namespace />toggleComment(event, <%= i %>);">
+						<span onClick="<portlet:namespace />toggleComment(event, <%= i %>, 'ticket');">
 							<%= HtmlUtil.escape(ticketEntryDiscussion.getUserName()) %>
 
 							<c:if test="<%= ticketEntryDiscussion.getUser() != null %>">
@@ -249,7 +249,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 						<%= shortDateFormatDate.format(ticketEntryDiscussion.getCreateDate()) %> <%= shortDateFormatTime.format(ticketEntryDiscussion.getCreateDate()) %>
 					</span>
 
-					<div class="comment" id="<portlet:namespace />comment<%= i %>">
+					<div class="comment">
 						<c:if test="<%= ticketComment != null %>">
 							<input name="<portlet:namespace />ticketCommentId<%= i %>" type="hidden" value="<%= ticketComment.getTicketCommentId() %>" />
 
@@ -499,10 +499,10 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 								<br />
 
 								<div class="comment-buttons pull-right">
-									<input class="aui-button-input" id="<portlet:namespace />editCommentButton<%= i %>" onClick="<portlet:namespace />updateComment(<%= i %>, <%= ticketComment.getStatus() %>);" type="button" value="<liferay-ui:message key="update" />" />
+									<input class="aui-button-input" onClick="<portlet:namespace />updateComment(<%= i %>, <%= ticketComment.getStatus() %>);" type="button" value="<liferay-ui:message key="update" />" />
 
 									<c:if test="<%= (ticketComment.getStatus() == WorkflowConstants.STATUS_DRAFT) && ((ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) || liferayIncOrg || partnerWorker) %>">
-										<input class="aui-button-input" id="<portlet:namespace />editCommentButton<%= i %>" onClick="<portlet:namespace />updateComment(<%= i %>, <%= WorkflowConstants.STATUS_APPROVED %>);" type="button" value="<liferay-ui:message key="publish" />" />
+										<input class="aui-button-input" onClick="<portlet:namespace />updateComment(<%= i %>, <%= WorkflowConstants.STATUS_APPROVED %>);" type="button" value="<liferay-ui:message key="publish" />" />
 									</c:if>
 
 									<c:if test='<%= !discussionTab.equals("liferay") && (ticketComment.getStatus() != WorkflowConstants.STATUS_DRAFT) && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) %>'>

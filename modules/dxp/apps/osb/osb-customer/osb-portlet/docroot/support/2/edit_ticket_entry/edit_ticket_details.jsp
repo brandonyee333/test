@@ -122,7 +122,7 @@ if (liferayIncOrg || partnerWorker) {
 		<div class="field-group <%= productEntry.isTicketComponentRequired() ? "" : "hide" %>" id="<portlet:namespace />componentFieldGroup">
 			<label id="<portlet:namespace />componentLabel"><liferay-ui:message key="component" /></label>
 
-			<select id="<portlet:namespace />component" name="<portlet:namespace />component" onChange="<%= renderResponse.getNamespace() %>selectComponent(this.value);">
+			<select id="<portlet:namespace />editComponent" name="<portlet:namespace />component" onChange="<%= renderResponse.getNamespace() %>selectComponent(this.value);">
 				<c:choose>
 					<c:when test="<%= productEntry.isDigitalEnterprise() %>">
 
@@ -523,7 +523,7 @@ if (liferayIncOrg || partnerWorker) {
 		var subcomponentFieldGroup = A.one('#<portlet:namespace />subcomponentFieldGroup');
 
 		if (selectData) {
-			var selectElement = A.one('#<portlet:namespace />component');
+			var selectElement = A.one('#<portlet:namespace />editComponent');
 
 			var selectOptions = [];
 
