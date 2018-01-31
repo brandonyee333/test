@@ -249,6 +249,7 @@ class GenericChildForm extends JSXComponent {
 			modelKey,
 			modelLabel,
 			response,
+			showTranslationButtons,
 			storeData = props.data,
 			watsonChildId
 		} = props;
@@ -293,9 +294,9 @@ class GenericChildForm extends JSXComponent {
 			headerStringRight = getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp'));
 
 			reportHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/report`;
-			requestTranslationMethod = this.handleTranslationRequest;
+			requestTranslationMethod = showTranslationButtons ? this.handleTranslationRequest : null;
 
-			if (!disabled && WatsonConstants.currentUser.translatorRole) {
+			if (!disabled && WatsonConstants.currentUser.translatorRole && showTranslationButtons) {
 				translateHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/translate`;
 			}
 		}
@@ -371,6 +372,7 @@ GenericChildForm.PROPS = {
 	modelKey: Config.any(),
 	modelLabel: Config.string(),
 	response: Config.object(),
+	showTranslationButtons: Config.bool().value(true),
 	storeData: Config.value(null),
 	watsonChildId: Config.value(''),
 	watsonPrimaryKey: Config.value('')

@@ -218,6 +218,7 @@ class EditChild extends JSXComponent {
 						]}
 						formData={props.modelFormData}
 						model={model}
+						showTranslationButtons={false}
 						storeData={props.modelStoreData}
 						watsonChildId={watsonChildId}
 						watsonPrimaryKey={entryId}
