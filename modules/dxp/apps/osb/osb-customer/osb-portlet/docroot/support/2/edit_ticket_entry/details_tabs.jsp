@@ -277,46 +277,63 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 		['aui-base']
 	);
 
-	function <portlet:namespace />updateDescription() {
-		var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />tabContent', '<portlet:namespace />detailViewFade', '<portlet:namespace />detailViewFilter'];
-		var offsetElementIds = ['<portlet:namespace />showMoreButtonContainer', '<portlet:namespace />ticketTabContent'];
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateDescription',
+		function() {
+			var A = AUI();
 
-		var showMoreButton = document.getElementById('<portlet:namespace />showMoreButton');
-		var ticketTabContent = document.getElementById('<portlet:namespace />ticketTabContent');
+			var showMoreButton = A.one('#<portlet:namespace />showMoreButton');
+			var ticketTabContent = A.one('#<portlet:namespace />ticketTabContent');
 
-		if (ticketTabContent.classList.contains('truncated')) {
-			showMoreButton.value = '<liferay-ui:message key="show-less" unicode="<%= true %>" />';
+			if (showMoreButton && ticketTabContent) {
+				var hasCssClass = ticketTabContent.hasClass('truncated');
 
-			ticketTabContent.classList.remove('truncated');
-		}
-		else {
-			showMoreButton.value = '<liferay-ui:message key="show-more" unicode="<%= true %>" />';
+				var message = '<liferay-ui:message key="show-more" />';
 
-			ticketTabContent.classList.add('truncated');
-		}
+				if (hasCssClass) {
+					message = '<liferay-ui:message key="show-less" />';
+				}
 
-		<portlet:namespace />pinElements(pinElementIds, offsetElementIds, 60);
-	}
+				showMoreButton.val(message);
 
-	function <portlet:namespace />updateShowMoreButton() {
-		var A = AUI();
+				ticketTabContent.toggleClass('truncated', !hasCssClass);
+			}
 
-		var description = document.getElementById('<portlet:namespace />description');
-		var showMoreButton = document.getElementById('<portlet:namespace />showMoreButton');
-		var showMoreButtonContainer = A.one('#<portlet:namespace />showMoreButtonContainer');
-		var ticketTabContent = document.getElementById('<portlet:namespace />ticketTabContent');
-		var ticketTabFullContent = document.getElementById('<portlet:namespace />ticketTabFullContent');
+			var pinElementIds = ['<portlet:namespace />discussionTabs', '<portlet:namespace />tabContent', '<portlet:namespace />detailViewFade', '<portlet:namespace />detailViewFilter'];
+			var offsetElementIds = ['<portlet:namespace />showMoreButtonContainer', '<portlet:namespace />ticketTabContent'];
 
-		if (description.classList.contains('selected') && (ticketTabFullContent.offsetHeight > 500)) {
-			showMoreButton.value = '<liferay-ui:message key="show-more" unicode="<%= true %>" />';
-			showMoreButtonContainer.show();
-			ticketTabContent.classList.add('truncated');
-		}
-		else {
-			showMoreButtonContainer.hide();
-			ticketTabContent.classList.remove('truncated');
-		}
-	}
+			<portlet:namespace />pinElements(pinElementIds, offsetElementIds, 60);
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateShowMoreButton',
+		function() {
+			var A = AUI();
+
+			var description = A.one('#<portlet:namespace />description');
+			var showMoreButton = A.one('#<portlet:namespace />showMoreButton');
+			var showMoreButtonContainer = A.one('#<portlet:namespace />showMoreButtonContainer');
+			var ticketTabContent = A.one('#<portlet:namespace />ticketTabContent');
+			var ticketTabFullContent = A.one('#<portlet:namespace />ticketTabFullContent');
+
+			if (description && showMoreButton && showMoreButtonContainer && ticketTabContent && ticketTabFullContent) {
+				var hasCssClass = description.hasClass('selected') && ticketTabFullContent.get('offsetHeight') > 500;
+
+				if (hasCssClass) {
+					showMoreButton.val('<liferay-ui:message key="show-more" />');
+				}
+
+				showMoreButtonContainer.toggle(hasCssClass);
+
+				ticketTabContent.toggleClass('truncated', hasCssClass);
+			}
+		},
+		['aui-base']
+	);
 </aui:script>
 
 <aui:script use="aui-base">
