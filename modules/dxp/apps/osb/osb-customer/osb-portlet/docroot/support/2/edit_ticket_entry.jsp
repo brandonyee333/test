@@ -204,12 +204,12 @@ PortalUtil.setPageSubtitle(sb.toString(), request);
 	}
 
 	function <portlet:namespace />submitCloseTicketValues(resolution, addCommentBody) {
-		document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
-		document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
-		document.<portlet:namespace />fm1.<portlet:namespace />resolution.value = resolution;
-		document.<portlet:namespace />fm1.<portlet:namespace />body.value = addCommentBody;
+		document.<portlet:namespace />ticketStatusFm.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
+		document.<portlet:namespace />ticketStatusFm.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
+		document.<portlet:namespace />ticketStatusFm.<portlet:namespace />resolution.value = resolution;
+		document.<portlet:namespace />ticketStatusFm.<portlet:namespace />body.value = addCommentBody;
 
-		submitForm(document.<portlet:namespace />fm1);
+		submitForm(document.<portlet:namespace />ticketStatusFm);
 	}
 
 	<c:if test="<%= clockedIn %>">
