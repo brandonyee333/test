@@ -255,249 +255,332 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 	</div>
 </c:if>
 
-<aui:script use="aui-base,aui-io">
-	<portlet:namespace />loadEnvironmentDetails('<%= component %>', '<%= toEnvLFR %>');
-</aui:script>
-
 <aui:script>
-	function <portlet:namespace />loadEnvironmentDetails(component, toEnvLFR) {
-		var A = AUI();
+	Liferay.provide(
+		window,
+		'<portlet:namespace />loadEnvironmentDetails',
+		function(component, toEnvLFR) {
+			var A = AUI();
 
-		var envLFREl = A.one('#<portlet:namespace />envLFR');
+			var envLFR = A.one('#<portlet:namespace />envLFR');
 
-		if (component == <%= TicketEntryConstants.COMPONENT_UPGRADE %>) {
-			<c:choose>
-				<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-					if (toEnvLFR > 0) {
-						<portlet:namespace />getEarlierLFRVersions(toEnvLFR);
-					}
+			if (envLFR) {
+				var envLFRVal = envLFR.val();
 
-					envLFREl = A.one('#<portlet:namespace />toEnvLFR');
-				</c:when>
-				<c:otherwise>
-					<portlet:namespace />getLaterLFRVersions(envLFREl.val(), <%= offeringEntryId %>);
-				</c:otherwise>
-			</c:choose>
-		}
+				if (component == <%= TicketEntryConstants.COMPONENT_UPGRADE %>) {
+					<c:choose>
+						<c:when test="<%= productEntry.isDigitalEnterprise() %>">
+							if (toEnvLFR > 0) {
+								<portlet:namespace />getEarlierLFRVersions(toEnvLFR);
+							}
 
-		<portlet:namespace />selectPortalVersion(envLFREl.val(), <%= envAS %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envAS)) %>', <%= envBrowser %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envBrowser)) %>', <%= envDB %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envOS)) %>');
-	}
+							envLFR = A.one('#<portlet:namespace />toEnvLFR');
+						</c:when>
+						<c:otherwise>
+							<portlet:namespace />getLaterLFRVersions(envLFRVal, <%= offeringEntryId %>);
+						</c:otherwise>
+					</c:choose>
+				}
 
-	function <portlet:namespace />selectBrowser(envBrowser) {
-		var A = AUI();
+				<portlet:namespace />selectPortalVersion(envLFRVal, <%= envAS %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envAS)) %>', <%= envBrowser %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envBrowser)) %>', <%= envDB %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envOS)) %>');
+			}
+		},
+		['aui-base']
+	);
 
-		var envBrowserCustom = A.one('#<portlet:namespace />envBrowserCustom');
+	Liferay.provide(
+		window,
+		'<portlet:namespace />selectBrowser',
+		function(envBrowser) {
+			var A = AUI();
 
-		if (envBrowserCustom) {
-			var other = (envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>');
+			var envBrowserCustom = A.one('#<portlet:namespace />envBrowserCustom');
 
-			envBrowserCustom.toggle(other);
+			if (envBrowserCustom) {
+				var other = envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>';
+
+				envBrowserCustom.toggle(other);
+
+				if (!other) {
+					envBrowserCustom.val('');
+				}
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />selectEnvOS',
+		function(envOS) {
+			var A = AUI();
+
+			var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
+
+			var other = envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>';
+
+			envOSCustom.toggle(other);
 
 			if (!other) {
-				envBrowserCustom.val('');
+				envOSCustom.val('');
 			}
-		}
-	}
+		},
+		['aui-base']
+	);
 
-	function <portlet:namespace />selectEnvOS(envOS) {
-		var A = AUI();
+	Liferay.provide(
+		window,
+		function <portlet:namespace />selectPortalVersionRetainValues(envLFR) {
+			var A = AUI();
 
-		var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
+			var envAS = A.one('#<portlet:namespace />envAS');
 
-		var other = (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>');
+			if (envAS) {
+				envAS = envAS.val();
+			}
 
-		envOSCustom.toggle(other);
+			var envASText = A.one('#<portlet:namespace />envASLabel');
 
-		if (!other) {
-			envOSCustom.val('');
-		}
-	}
+			if (envASText) {
+				envASText = envASText.html();
+			}
 
-	function <portlet:namespace />selectPortalVersionRetainValues(envLFR) {
-		var A = AUI();
+			var envBR = A.one('#<portlet:namespace />envBrowser');
 
-		var envAS = A.one('#<portlet:namespace />envAS').val();
-		var envASText = A.one('#<portlet:namespace />envASLabel').html();
+			if (envBR) {
+				envBR = envBR.val();
+			}
 
-		var envBR = A.one('#<portlet:namespace />envBrowser').val();
-		var envBRText = A.one('#<portlet:namespace />envBrowserLabel').html();
+			var envBRText = A.one('#<portlet:namespace />envBrowserLabel');
 
-		var envDB = A.one('#<portlet:namespace />envDB').val();
-		var envDBText = A.one('#<portlet:namespace />envDBLabel').html();
+			if (envBRText) {
+				envBRText = envBRText.html();
+			}
 
-		var envJVM = A.one('#<portlet:namespace />envJVM').val();
-		var envJVMText = A.one('#<portlet:namespace />envJVMLabel').html();
+			var envDB = A.one('#<portlet:namespace />envDB');
 
-		var envOS = A.one('#<portlet:namespace />envOS').val();
-		var envOSText = A.one('#<portlet:namespace />envOSLabel').html();
+			if (envDB) {
+				envDB = envDB.val();
+			}
 
-		<portlet:namespace />selectPortalVersion(envLFR, envAS, envASText, envBR, envBRText, envDB, envDBText, envJVM, envJVMText, envOS, envOSText);
-	}
+			var envDBText = A.one('#<portlet:namespace />envDBLabel');
 
-	function <portlet:namespace />updateEnvironmentField(selectId, selectDataKey, selectData, selectVal, selectName) {
-		var A = AUI();
+			if (envDBText) {
+				envDBText = envDBText.html();
+			}
 
-		var selectElement = A.one('#' + selectId);
+			var envJVM = A.one('#<portlet:namespace />envJVM');
 
-		if (selectElement.getData('key') == selectDataKey) {
-			return;
-		}
+			if (envJVM) {
+				envJVM = envJVM.val();
+			}
 
-		var selectValExists = false;
+			var envJVMText = A.one('#<portlet:namespace />envJVMLabel');
 
-		selectElement.setData('key', selectDataKey);
+			if (envJVMText) {
+				envJVMText = envJVMText.html();
+			}
 
-		var selectOptions = [];
+			var envOS = A.one('#<portlet:namespace />envOS');
 
-		if (selectId == '<portlet:namespace />envBrowser') {
-			selectOptions.push('<option value="0"></option>');
-		}
+			if (envOS) {
+				envOS = envOS.val();
+			}
 
-		if (selectData) {
-			for (var i = 0; i < selectData.length; i++) {
-				var value = selectData[i].value;
-				var name = selectData[i].name;
+			var envOSText = A.one('#<portlet:namespace />envOSLabel');
 
-				selectOptions.push('<option value="' + value + '">' + name + '</option>');
+			if (envOSText) {
+				envOSText = envOSText.html();
+			}
 
-				if (value == selectVal) {
-					selectValExists = true;
+			if (envAS && envASText && envBR && envBRText && envDB && envDBText && envJVM && envJVMText && envOS && envOSText) {
+				<portlet:namespace />selectPortalVersion(envLFR, envAS, envASText, envBR, envBRText, envDB, envDBText, envJVM, envJVMText, envOS, envOSText);
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		windows,
+		'<portlet:namespace />updateEnvironmentField',
+		function(selectId, selectDataKey, selectData, selectVal, selectName) {
+			var A = AUI();
+
+			var selectElement = A.one('#' + selectId);
+
+			if (selectElement) {
+				if (selectElement.getData('key') == selectDataKey) {
+					return;
+				}
+
+				var selectValExists = false;
+
+				selectElement.setData('key', selectDataKey);
+
+				var selectOptions = [];
+
+				if (selectId == '<portlet:namespace />envBrowser') {
+					selectOptions.push('<option value="0"></option>');
+				}
+
+				if (selectData) {
+					for (var i = 0; i < selectData.length; i++) {
+						var value = selectData[i].value;
+						var name = selectData[i].name;
+
+						selectOptions.push('<option value="' + value + '">' + name + '</option>');
+
+						if (value == selectVal) {
+							selectValExists = true;
+						}
+					}
+				}
+
+				if (!selectValExists && (selectVal > 0)) {
+					selectOptions.push('<option value="' + selectVal + '">' + selectName + '</option>');
+				}
+
+				selectOptions = selectOptions.join('');
+
+				selectElement.empty();
+
+				selectElement.append(selectOptions);
+
+				selectElement.val(String(selectVal));
+
+				if (selectId == '<portlet:namespace />envBrowser') {
+					<portlet:namespace />selectBrowser(selectVal);
+				}
+
+				if (selectId == '<portlet:namespace />envOS') {
+					<portlet:namespace />selectEnvOS(selectVal);
 				}
 			}
-		}
+		},
+		['aui-base']
+	);
 
-		if (!selectValExists && (selectVal > 0)) {
-			selectOptions.push('<option value="' + selectVal + '">' + selectName + '</option>');
-		}
-
-		selectOptions = selectOptions.join('');
-
-		selectElement.empty();
-
-		selectElement.append(selectOptions);
-
-		selectElement.val(String(selectVal));
-
-		if (selectId == '<portlet:namespace />envBrowser') {
-			<portlet:namespace />selectBrowser(selectVal);
-		}
-
-		if (selectId == '<portlet:namespace />envOS') {
-			<portlet:namespace />selectEnvOS(selectVal);
-		}
-	}
-
-	function <portlet:namespace />updateEnvLFR(selectData) {
-		var A = AUI();
-
-		var envLFR = '';
-		var selectElement = '';
-		var selectVal = '';
-
-		<c:choose>
-			<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-				envLFR = A.one('#<portlet:namespace />toEnvLFR');
-
-				selectElement = A.one('#<portlet:namespace />envLFR');
-
-				selectVal = <%= envLFR %>;
-			</c:when>
-			<c:otherwise>
-				envLFR = A.one('#<portlet:namespace />envLFR');
-
-				selectElement = A.one('#<portlet:namespace />toEnvLFR');
-
-				selectVal = selectElement.val();
-			</c:otherwise>
-		</c:choose>
-
-		var selectValExists = false;
-
-		var selectOptions = [];
-
-		if (selectData) {
-			var previousNamePrefix = '';
-
-			for (var i = 0; i < selectData.length; i++) {
-				var value = selectData[i].value;
-				var name = selectData[i].name;
-
-				var limited = '';
-
-				if (value < <%= ProductEntryConstants.PORTAL_VERSION_6_2_10 %>) {
-					limited = '(<%= UnicodeLanguageUtil.get(request, "limited") %>)';
-				}
-
-				var namePrefix = name.substring(0, 3);
-
-				if ((previousNamePrefix != '') && (previousNamePrefix != namePrefix)) {
-					selectOptions.push('<option disabled>--------</option>');
-				}
-
-				selectOptions.push('<option value="' + value + '">' + name + limited + '</option>');
-
-				if ((value == selectVal) && (envLFR.val() > 0)) {
-					selectValExists = true;
-				}
-
-				previousNamePrefix = namePrefix;
-			}
-		}
-
-		selectOptions = selectOptions.join('');
-
-		selectElement.empty();
-
-		selectElement.append(selectOptions);
-
-		if (selectValExists && (selectVal > 0)) {
-			selectElement.val(String(selectVal));
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateEnvLFR',
+		function(selectData) {
+			var A = AUI();
 
 			<c:choose>
 				<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-					selectVal = A.one('#<portlet:namespace />toEnvLFR').val();
+					var envLFR = A.one('#<portlet:namespace />toEnvLFR');
+
+					var selectElement = A.one('#<portlet:namespace />envLFR');
+
+					if (selectElement) {
+						var selectVal = <%= envLFR %>;
+					}
 				</c:when>
 				<c:otherwise>
-					selectVal = A.one('#<portlet:namespace />envLFR').val();
+					var envLFR = A.one('#<portlet:namespace />envLFR');
+
+					var selectElement = A.one('#<portlet:namespace />toEnvLFR');
+
+					if (selectElement) {
+						var selectVal = selectElement.val();
+					}
 				</c:otherwise>
 			</c:choose>
 
-			<portlet:namespace />selectPortalVersionRetainValues(selectVal);
-		}
-		else {
-			selectElement.val(0);
+			var selectValExists = false;
 
-			<portlet:namespace />updateSupportMessage(0);
-		}
-	}
+			var selectOptions = [];
 
-	function <portlet:namespace />updateSupportMessage(envLFR) {
-		var A = AUI();
+			if (selectData) {
+				var previousNamePrefix = '';
 
-		var supportMessageDisplay_5_2 = A.one('#<portlet:namespace />supportMessageDisplay_5_2');
+				for (var i = 0; i < selectData.length; i++) {
+					var value = selectData[i].value;
+					var name = selectData[i].name;
 
-		if (supportMessageDisplay_5_2) {
-			var visibleSupportMessageDisplay_5_2 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>);
+					var limited = '';
 
-			supportMessageDisplay_5_2.toggle(visibleSupportMessageDisplay_5_2);
-		}
+					if (value < <%= ProductEntryConstants.PORTAL_VERSION_6_2_10 %>) {
+						limited = '(<liferay-ui:messag key="limited" />)';
+					}
 
-		var supportMessageDisplay_6_0 = A.one('#<portlet:namespace />supportMessageDisplay_6_0');
+					var namePrefix = name.substring(0, 3);
 
-		if (supportMessageDisplay_6_0) {
-			var visibleSupportMessageDisplay_6_0 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>);
+					if ((previousNamePrefix != '') && (previousNamePrefix != namePrefix)) {
+						selectOptions.push('<option disabled>--------</option>');
+					}
 
-			supportMessageDisplay_6_0.toggle(visibleSupportMessageDisplay_6_0);
-		}
+					selectOptions.push('<option value="' + value + '">' + name + limited + '</option>');
 
-		var supportMessageDisplay_6_1 = A.one('#<portlet:namespace />supportMessageDisplay_6_1');
+					if ((value == selectVal) && (envLFR.val() > 0)) {
+						selectValExists = true;
+					}
 
-		if (supportMessageDisplay_6_1) {
-			var visibleSupportMessageDisplay_6_1 = (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>);
+					previousNamePrefix = namePrefix;
+				}
+			}
 
-			supportMessageDisplay_6_1.toggle(visibleSupportMessageDisplay_6_1);
-		}
-	}
+			selectOptions = selectOptions.join('');
+
+			selectElement.empty();
+
+			selectElement.append(selectOptions);
+
+			if (selectValExists && (selectVal > 0)) {
+				selectElement.val(String(selectVal));
+
+				<c:choose>
+					<c:when test="<%= productEntry.isDigitalEnterprise() %>">
+						selectVal = A.one('#<portlet:namespace />toEnvLFR').val();
+					</c:when>
+					<c:otherwise>
+						selectVal = A.one('#<portlet:namespace />envLFR').val();
+					</c:otherwise>
+				</c:choose>
+
+				<portlet:namespace />selectPortalVersionRetainValues(selectVal);
+			}
+			else {
+				selectElement.val(0);
+
+				<portlet:namespace />updateSupportMessage(0);
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateSupportMessage',
+		function(envLFR, section) {
+			var A = AUI();
+
+			var is5_2 = ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_4 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_5 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_6 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_7 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_8 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_5_2_9 %>));
+
+			var supportMessageDisplay_5_2 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_5_2');
+
+			if (supportMessageDisplay_5_2) {
+				supportMessageDisplay_5_2.toggle(is5_2);
+			}
+
+			var is6_0 = ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_11 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_0_12 %>));
+
+			var supportMessageDisplay_6_0 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_0');
+
+			if (supportMessageDisplay_6_0) {
+				supportMessageDisplay_6_0.toggle(is6_0);
+			}
+
+			var is6_1 = ((envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_10 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_20 %>) || (envLFR == <%= ProductEntryConstants.PORTAL_VERSION_6_1_30 %>));
+
+			var supportMessageDisplay_6_1 = A.one('#<portlet:namespace />support' + section + 'MessageDisplay_6_1');
+
+			if (supportMessageDisplay_6_1) {
+				supportMessageDisplay_6_1.toggle(is6_1);
+			}
+		},
+		['aui-base']
+	);
 
 	Liferay.provide(
 		window,
@@ -523,7 +606,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 				}
 			);
 		},
-		['aui-io']
+		['aui-io-request']
 	);
 
 	Liferay.provide(
@@ -551,7 +634,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 				}
 			);
 		},
-		['aui-io']
+		['aui-io-request']
 	);
 
 	Liferay.provide(
@@ -564,11 +647,13 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 				var envTypes = ['envAS', 'envBrowser', 'envDB', 'envJVM', 'envOS'];
 
 				for (var envType in envTypes) {
-					var envElement = A.one('#<portlet:namespace />' + envTypes[envType]);
+					var envNode = A.one('#<portlet:namespace />' + envTypes[envType]);
 
-					envElement.empty();
+					if (envNode) {
+						envElement.empty();
 
-					envElement.setData('key', 0);
+						envElement.setData('key', 0);
+					}
 				}
 
 				return;
@@ -596,6 +681,8 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 				}
 			);
 		},
-		['aui-io']
+		['aui-io-request']
 	);
+
+	<portlet:namespace />loadEnvironmentDetails('<%= component %>', '<%= toEnvLFR %>');
 </aui:script>
