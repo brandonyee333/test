@@ -717,6 +717,23 @@ else {
 
 		Liferay.provide(
 			window,
+			'<portlet:namespace />updateMessageDisplay',
+			function(suffix, className, message) {
+				var A = AUI();
+
+				var messageDisplay = A.one('#<portlet:namespace />commentMessageDisplay' + suffix);
+
+				if (className) {
+					messageDisplay.set('className', className);
+				}
+
+				messageDisplay.html(message);
+			},
+			['aui-base']
+		);
+
+		Liferay.provide(
+			window,
 			'<portlet:namespace />updateTicketCommentType',
 			function(ticketCommentId, type) {
 				var A = AUI();
@@ -750,16 +767,6 @@ else {
 	</aui:script>
 
 	<aui:script use="aui-base">
-		function <portlet:namespace />updateMessageDisplay(suffix, className, message) {
-			var messageDisplay = A.one('#<portlet:namespace />commentMessageDisplay' + suffix);
-
-			if (className) {
-				messageDisplay.set('className', className);
-			}
-
-			messageDisplay.html(message);
-		}
-
 		<portlet:namespace />loadTab('<%= HtmlUtil.escape(discussionTab) %>', true);
 
 		window.addEventListener(

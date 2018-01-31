@@ -19,7 +19,7 @@
 <%
 String content = ParamUtil.getString(request, "content");
 String editorId = renderResponse.getNamespace() + ParamUtil.getString(request, "editorId");
-String name = renderResponse.getNamespace() + ParamUtil.getString(request, "name");
+String name = ParamUtil.getString(request, "name");
 String onFocus = ParamUtil.getString(request, "onFocus");
 String placeholder = ParamUtil.getString(request, "placeholder");
 String resize = ParamUtil.getString(request, "resize", "both");
@@ -34,27 +34,27 @@ String resize = ParamUtil.getString(request, "resize", "both");
 
 	<div class="lfr-toolbar">
 		<div class="bb-code-icons">
-			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(name) %>', 'b');" title="<liferay-ui:message key="bold" />">
+			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'b');" title="<liferay-ui:message key="bold" />">
 				<img alt="<liferay-ui:message key="bold" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/bold.png" />
 			</a>
 
-			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(name) %>', 'i');" title="<liferay-ui:message key="italic" />">
+			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'i');" title="<liferay-ui:message key="italic" />">
 				<img alt="<liferay-ui:message key="italic" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/italic.png" />
 			</a>
 
-			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(name) %>', 'u');" title="<liferay-ui:message key="underline" />">
+			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'u');" title="<liferay-ui:message key="underline" />">
 				<img alt="<liferay-ui:message key="underline" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/underline.png" />
 			</a>
 
-			<a class="lfr-button" href="javascript:<portlet:namespace />insertURL('<%= HtmlUtil.escape(name) %>', 'url');" title="<liferay-ui:message key="url" />">
+			<a class="lfr-button" href="javascript:<portlet:namespace />insertURL('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'url');" title="<liferay-ui:message key="url" />">
 				<img alt="<liferay-ui:message key="url" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/link.png" />
 			</a>
 
-			<a class="lfr-button " href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(name) %>', 'quote');" title="<liferay-ui:message key="quote" />">
+			<a class="lfr-button " href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'quote');" title="<liferay-ui:message key="quote" />">
 				<img alt="<liferay-ui:message key="quote" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/quote.png" />
 			</a>
 
-			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(name) %>', 'code');" title="<liferay-ui:message key="code" />">
+			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'code');" title="<liferay-ui:message key="code" />">
 				<img alt="<liferay-ui:message key="code" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/code.png" />
 			</a>
 
