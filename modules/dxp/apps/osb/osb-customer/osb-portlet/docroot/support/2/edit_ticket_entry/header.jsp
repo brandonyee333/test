@@ -42,7 +42,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 	<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateStatusURL %>" method="post" name="fm1">
+<aui:form action="<%= updateStatusURL %>" method="post" name="ticketStatusFm">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 	<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
 	<aui:input name="ticketEntryId" type="hidden" value="<%= ticketEntry.getTicketEntryId() %>" />
@@ -323,8 +323,8 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		document.getElementById('<portlet:namespace />resolutionCancel').style.display = 'none';
 		document.getElementById('<portlet:namespace />statusCancel').style.display = 'none';
 
-		document.<portlet:namespace />fm1.<portlet:namespace />resolution.value = '<%= resolution %>';
-		document.<portlet:namespace />fm1.<portlet:namespace />status.value = '<%= status %>';
+		document.<portlet:namespace />ticketStatusFm.<portlet:namespace />resolution.value = '<%= resolution %>';
+		document.<portlet:namespace />ticketStatusFm.<portlet:namespace />status.value = '<%= status %>';
 	}
 
 	function <portlet:namespace />toggleForm(hideId, showId) {
@@ -336,16 +336,16 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		function <portlet:namespace />updatePendingTypes() {
 			var updatePendingURL = '<portlet:actionURL name="updatePendingTypes"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>';
 
-			document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
+			document.<portlet:namespace />ticketStatusFm.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
 
-			submitForm(document.<portlet:namespace />fm1, updatePendingURL);
+			submitForm(document.<portlet:namespace />ticketStatusFm, updatePendingURL);
 		}
 
 		function <portlet:namespace />updateReproductionStepValues(reproductionSteps) {
-			document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.REPRODUCE %>';
-			document.<portlet:namespace />fm1.<portlet:namespace />reproductionSteps.value = reproductionSteps;
+			document.<portlet:namespace />ticketStatusFm.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.REPRODUCE %>';
+			document.<portlet:namespace />ticketStatusFm.<portlet:namespace />reproductionSteps.value = reproductionSteps;
 
-			submitForm(document.<portlet:namespace />fm1);
+			submitForm(document.<portlet:namespace />ticketStatusFm);
 		}
 
 		function <portlet:namespace />updateResolution(resolution) {
@@ -355,18 +355,18 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			var newLabel = A.one('#<portlet:namespace />headerStatus option:selected').html() + ' - ' + A.one('#<portlet:namespace />headerResolution option:selected').html();
 
 			if (confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newLabel]))) {
-				document.<portlet:namespace />fm1.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
+				document.<portlet:namespace />ticketStatusFm.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
 
-				submitForm(document.<portlet:namespace />fm1);
+				submitForm(document.<portlet:namespace />ticketStatusFm);
 			}
 		}
 
 		function <portlet:namespace />updateSeverity() {
 			var updateSeverityURL = '<portlet:actionURL name="updateTicketEntrySeverity"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>';
 
-			document.<portlet:namespace />fm1.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
+			document.<portlet:namespace />ticketStatusFm.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
 
-			submitForm(document.<portlet:namespace />fm1, updateSeverityURL);
+			submitForm(document.<portlet:namespace />ticketStatusFm, updateSeverityURL);
 		}
 
 		function <portlet:namespace />updateStatus(status) {
@@ -410,7 +410,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				}
 			</c:if>
 
-			submitForm(document.<portlet:namespace />fm1);
+			submitForm(document.<portlet:namespace />ticketStatusFm);
 		}
 	</c:if>
 </aui:script>
