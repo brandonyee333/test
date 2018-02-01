@@ -40,12 +40,21 @@ TicketEntry ticketEntry = TicketEntryServiceUtil.getTicketEntry(ticketEntryId);
 	</div>
 
 	<aui:script>
-		function <portlet:namespace />updateReproductionSteps() {
-			var reproductionSteps = document.getElementById('<portlet:namespace />reproductionSteps');
+		Liferay.provide(
+			window,
+			'<portlet:namespace />updateReproductionSteps',
+			function() {
+				var A = AUI();
 
-			opener.<portlet:namespace />updateReproductionStepValues(reproductionSteps.value);
+				var reproductionSteps = A('#<portlet:namespace />reproductionSteps');
 
-			window.close();
-		}
+				if (reproductionSteps) {
+					opener.<portlet:namespace />updateReproductionStepValues(reproductionSteps.val());
+
+					window.close();
+				}
+			},
+			['aui-base']
+		);
 	</aui:script>
 </c:if>
