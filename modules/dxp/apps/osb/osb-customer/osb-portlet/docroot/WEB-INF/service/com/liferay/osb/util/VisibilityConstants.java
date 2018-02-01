@@ -122,6 +122,6 @@ public class VisibilityConstants {
 	}
 
 	private static final int[] _DISPLAY_VISIBILITIES =
-		{LIFERAY_INC, PUBLIC, WORKERS};
+		{PUBLIC, WORKERS, LIFERAY_INC};
 
 }
