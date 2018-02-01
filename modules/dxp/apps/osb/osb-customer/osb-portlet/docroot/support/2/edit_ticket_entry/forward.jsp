@@ -123,23 +123,39 @@ if (Validator.isNull(backURL)) {
 </div>
 
 <aui:script>
-	var forwardPopupWrapper = document.getElementById('<portlet:namespace />forwardPopupWrapper');
+	Liferay.provide(
+		window,
+		'<portlet:namespace />cancelForwardTicketEntry',
+		function() {
+			var A = AUI();
 
-	forwardPopupWrapper.style.height = (window.innerHeight - 200) + 'px';
+			var forwardPopup = A.one('#<portlet:namespace />forwardPopup');
 
-	function <portlet:namespace />cancelForwardTicketEntry() {
-		var A = AUI();
+			if (forwardPopup) {
+				forwardPopup.hide();
+			}
+		}.
+		['aui-base']
+	);
 
-		var forwardingPopup = A.one('#<portlet:namespace />forwardPopup');
+	Liferay.provide(
+		window,
+		'<portlet:namespace />forwardTicketEntry',
+		function() {
+			var A = AUI();
 
-		forwardingPopup.hide();
-	}
+			var forwardPopup = A.one('#<portlet:namespace />forwardPopup');
 
-	function <portlet:namespace />forwardTicketEntry() {
-		var A = AUI();
+			if (forwardPopup) {
+				forwardPopup.show();
+			}
+		},
+		['aui-base']
+	);
+</aui:script>
 
-		var forwardingPopup = A.one('#<portlet:namespace />forwardPopup');
+<aui:script use="aui-base">
+	var forwardPopupWrapper = A.one('#<portlet:namespace />forwardPopupWrapper');
 
-		forwardingPopup.show();
-	}
+	forwardPopupWrapper.height(window.innerHeight - 200);
 </aui:script>
