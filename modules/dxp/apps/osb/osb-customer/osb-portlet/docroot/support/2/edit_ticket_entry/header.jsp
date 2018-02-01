@@ -106,21 +106,22 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					</div>
 
 					<div id="<portlet:namespace />severityDropDown" style="display: none;">
-						<select autocomplete="off" id="<portlet:namespace />severity" name="<portlet:namespace />severity" onChange="<portlet:namespace />updateSeverity();">
+						<aui:select autocomplete="off" label="" name="severity" onChange='<%= renderResponse.getNamespace() + "updateSeverity();" %>'>
+
 
 							<%
 							for (int i = 1; i <= 3; i++) {
 							%>
 
-								<option <%= (i == severity) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(i)) %></option>
+								<aui:option label="<%= TicketEntryConstants.getSeverityLabel(i) %>" selected="<%= (i == severity) %>" value="<%= i %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 
-						<input class="aui-button-input" id="<portlet:namespace />severityCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>severityDropDown', '<portlet:namespace />severityDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
+						<aui:button name="severityCancel" onClick='<%= renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "severityDropDown', '" + renderResponse.getNamespace() + "severityDisplay');" %>' value="cancel" />
 					</div>
 				</span>
 				<span class="spacer"></span>
@@ -185,7 +186,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								for (int pendingType : TicketFlagConstants.TYPES_PENDING) {
 								%>
 
-									<input <%= ArrayUtil.contains(pendingTypes, pendingType) ? "checked=\"checked\"" : "" %> name="<portlet:namespace />pendingTypes" type="checkbox" value="<%= pendingType %>" />
+									<aui:input checked="<%= ArrayUtil.contains(pendingTypes, pendingType) %>" label="" name="pendingTypes" type="checkbox" value="<%= pendingType %>" />
 
 									<liferay-ui:message key="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" />
 
@@ -193,8 +194,8 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								}
 								%>
 
-								<input class="aui-button-input" id="<portlet:namespace />pendingSubmit" onclick="<portlet:namespace />updatePendingTypes();" type="button" value="<liferay-ui:message key="save" />" />
-								<input class="aui-button-input" id="<portlet:namespace />pendingCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>pendingCheckboxes', '<portlet:namespace />pendingDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
++								<aui:button name="pendingSubmit" onClick='<%= renderResponse.getNamespace() + "updatePendingTypes();" %>' value="save" />
++								<aui:button name="pendingCancel" onClick='<%= renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "pendingCheckboxes', '" + renderResponse.getNamespace() + "pendingDisplay');" %>' value="cancel" />
 							</div>
 						</c:if>
 					</span>
@@ -235,7 +236,8 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					</div>
 
 					<div id="<portlet:namespace/>statusDropDown" style="display: none;">
-						<select autocomplete="off" id="<portlet:namespace />headerStatus" name="<portlet:namespace />status" onChange="<portlet:namespace />updateStatus(this.value);">
+						<aui:select autocomplete="off" label="" name="status" onChange='<%= renderResponse.getNamespace() + "updateStatus(this.value);" %>'>
+
 
 							<%
 							for (int statusId : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
@@ -246,30 +248,30 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								}
 							%>
 
-								<option <%= (ticketEntry.getStatus() == statusId) ? "selected" : "" %> value="<%= statusId %>"><%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(statusId)) %></option>
+								<aui:option label="<%= TicketEntryConstants.getStatusLabel(statusId) %>" selected="<%= (ticketEntry.getStatus() == statusId) %>" value="<%= statusId %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 
-						<select id="<portlet:namespace />headerResolution" name="<portlet:namespace />resolution" onChange="<portlet:namespace />updateResolution(this.value);" style="display: none;">
-							<option value=""></option>
+						<aui:select cssClass="hide" label="" name="resolution" onChange='<%= renderResponse.getNamespace() + "updateResolution(this.value);"%>'>
+							<aui:option value="" />
 
 							<%
 							for (ListType resolutionType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
 							%>
 
-								<option <%= (resolutionType.getListTypeId() == resolution) ? "selected" : "" %> value="<%= resolutionType.getListTypeId() %>"><%= LanguageUtil.get(request, resolutionType.getName()) %></option>
+								<aui:option label="<%= resolutionType.getName() %>" selected="<%= (resolutionType.getListTypeId() == resolution) %>" value="<%= resolutionType.getListTypeId() %>" />
 
 							<%
 							}
 							%>
 
-						</select>
+						</aui:select>
 
-						<input class="aui-button-input" id="<portlet:namespace />statusCancel" onclick="<portlet:namespace />toggleForm('<portlet:namespace/>statusDropDown', '<portlet:namespace />statusDisplay');" type="button" value="<liferay-ui:message key="cancel" />" />
+						<aui:button name="statusCancel" onClick='<%= renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "statusDropDown', '" + renderResponse.getNamespace() + "statusDisplay');" %>' value="cancel" />
 					</div>
 				</span>
 			</div>
