@@ -70,12 +70,35 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			<div class="page-heading" id="<portlet:namespace/>pageHeading">
 				<span class="display-id" id="<portlet:namespace />ticketDisplayId"><a href="<%= ticketEntryURL %>"><%= ticketEntry.getDisplayId() %></a></span>
 
-				<span id="<portlet:namespace />subject"><%= HtmlUtil.escape(subject) %></span>
+				<%
+				String subjectTooltipTitle = StringPool.BLANK;
+				String subjectTooltipTrigger = StringPool.BLANK;
+
+				if (Validator.isNotNull(subject) && (subject.length() > 55)) {
+					subjectTooltipTitle = "title='" + HtmlUtil.escape(subject) + "'";
+
+					subjectTooltipTrigger = "tooltip-trigger";
+				}
+				%>
+
+				<span class="<%= subjectTooltipTrigger %>" id="<portlet:namespace />subject" <%= subjectTooltipTitle %>><%= HtmlUtil.escape(subject) %></span>
 			</div>
 
 			<div class="sub-header">
 				<span class="first segment">
-					<img class="ticket-img" id="<portlet:namespace />componentDisplay" src="<%= PortalUtil.getPathContext(request) %>/images/<%= ticketEntry.getComponentIcon() %>" />
+
+					<%
+					String componentLabelTooltipTitle = StringPool.BLANK;
+					String componentLabelTooltipTrigger = StringPool.BLANK;
+
+					if (Validator.isNotNull(ticketEntry.getComponentLabel())) {
+						componentLabelTooltipTitle = "title='" + LanguageUtil.get(request, ticketEntry.getComponentLabel()) + "'";
+
+						componentLabelTooltipTrigger = "tooltip-trigger";
+					}
+					%>
+
+					<img class="<%= componentLabelTooltipTrigger %> ticket-img" id="<portlet:namespace />componentDisplay" src="<%= PortalUtil.getPathContext(request) %>/images/<%= ticketEntry.getComponentIcon() %>" <%= componentLabelTooltipTitle %> />
 
 					<c:if test="<%= liferayIncOrg %>">
 						<c:if test="<%= subcomponent > 0 %>">
@@ -279,38 +302,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 	</div>
 </aui:form>
 
-<aui:script use="aui-tooltip">
-	<c:if test="<%= Validator.isNotNull(ticketEntry.getComponentLabel()) %>">
-		new A.Tooltip(
-			{
-				align: {
-					node: null,
-					points: ['tl', 'bl']
-				},
-				arrow: 'tl',
-				bodyContent: '<%= UnicodeLanguageUtil.get(request, ticketEntry.getComponentLabel()) %>',
-				hideDelay: 0,
-				trigger: '#<portlet:namespace />componentDisplay'
-			}
-		).render();
-	</c:if>
-
-	<c:if test="<%= Validator.isNotNull(subject) && (subject.length() > 55) %>">
-		new A.Tooltip(
-			{
-				align: {
-					node: null,
-					points: ['tl', 'bl']
-				},
-				arrow: 'tl',
-				bodyContent: '<%= HtmlUtil.escape(subject) %>',
-				hideDelay: 0,
-				trigger: '#<portlet:namespace/>subject'
-			}
-		).render();
-	</c:if>
-</aui:script>
-
 <aui:script>
 	function <portlet:namespace />resetStatus() {
 		<portlet:namespace />toggleForm('<portlet:namespace />statusDropDown', '<portlet:namespace />statusDisplay');
@@ -415,4 +406,12 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			submitForm(document.<portlet:namespace />ticketStatusFm);
 		}
 	</c:if>
+</aui:script>
+
+<aui:script use="aui-tooltip-delegate">
+	new A.TooltipDelegate(
+		{
+			trigger: '.tooltip-trigger'
+		}
+	)
 </aui:script>
