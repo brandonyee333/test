@@ -26,7 +26,7 @@ String resize = ParamUtil.getString(request, "resize", "both");
 %>
 
 <div class="edit editor" id="<%= HtmlUtil.escape(editorId) %>">
-	<aui:input cssClass="body" label="" maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name="<%= name %>" onFocus="<%= onFocus %>" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder='<%= Validator.isNotNull(placeholder) ? placeholder : "" %>' style='<%= "resize:" + resize %>' type="textarea" value="<%= content %>" wrap="soft" />
+	<aui:input cssClass="body" label="" maxlength="<%= OSBConstants.TEXTAREA_MAX_LENGTH %>" name="<%= name %>" onFocus="<%= onFocus %>" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" placeholder='<%= Validator.isNotNull(placeholder) ? placeholder : "" %>' style='<%= "resize: " + resize %>' type="textarea" value="<%= content %>" wrap="soft" />
 
 	<div class="preview-container">
 		<div class="preview-content"></div>
@@ -34,27 +34,27 @@ String resize = ParamUtil.getString(request, "resize", "both");
 
 	<div class="lfr-toolbar">
 		<div class="bb-code-icons">
-			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'b');" title="<liferay-ui:message key="bold" />">
+			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<portlet:namespace /><%= HtmlUtil.escape(name) %>', 'b');" title="<liferay-ui:message key="bold" />">
 				<img alt="<liferay-ui:message key="bold" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/bold.png" />
 			</a>
 
-			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'i');" title="<liferay-ui:message key="italic" />">
+			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<portlet:namespace /><%= HtmlUtil.escape(name) %>', 'i');" title="<liferay-ui:message key="italic" />">
 				<img alt="<liferay-ui:message key="italic" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/italic.png" />
 			</a>
 
-			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'u');" title="<liferay-ui:message key="underline" />">
+			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<portlet:namespace /><%= HtmlUtil.escape(name) %>', 'u');" title="<liferay-ui:message key="underline" />">
 				<img alt="<liferay-ui:message key="underline" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/underline.png" />
 			</a>
 
-			<a class="lfr-button" href="javascript:<portlet:namespace />insertURL('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'url');" title="<liferay-ui:message key="url" />">
+			<a class="lfr-button" href="javascript:<portlet:namespace />insertURL('<portlet:namespace /><%= HtmlUtil.escape(name) %>', 'url');" title="<liferay-ui:message key="url" />">
 				<img alt="<liferay-ui:message key="url" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/link.png" />
 			</a>
 
-			<a class="lfr-button " href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'quote');" title="<liferay-ui:message key="quote" />">
+			<a class="lfr-button " href="javascript:<portlet:namespace />formatText('<portlet:namespace /><%= HtmlUtil.escape(name) %>', 'quote');" title="<liferay-ui:message key="quote" />">
 				<img alt="<liferay-ui:message key="quote" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/quote.png" />
 			</a>
 
-			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<%= HtmlUtil.escape(renderResponse.getNamespace() + name) %>', 'code');" title="<liferay-ui:message key="code" />">
+			<a class="lfr-button" href="javascript:<portlet:namespace />formatText('<portlet:namespace /><%= HtmlUtil.escape(name) %>', 'code');" title="<liferay-ui:message key="code" />">
 				<img alt="<liferay-ui:message key="code" />" src="<%= PortalUtil.getPathContext(request) %>/support/2/images/code.png" />
 			</a>
 
