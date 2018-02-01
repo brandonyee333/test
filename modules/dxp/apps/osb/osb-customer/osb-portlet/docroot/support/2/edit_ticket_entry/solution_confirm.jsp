@@ -175,7 +175,7 @@ boolean hasUpdateTicketSolution = accountCustomer || (partnerWorker && PartnerWo
 						height: '90%',
 						modal: true,
 						resizable: false,
-						title: '<liferay-ui:message key="solution-rejected" unicode="<%= true %>" />',
+						title: '<liferay-ui:message key="solution-rejected" />',
 						width: '50%'
 					}
 				).plug(
@@ -190,12 +190,35 @@ boolean hasUpdateTicketSolution = accountCustomer || (partnerWorker && PartnerWo
 	</aui:script>
 
 	<aui:script>
-		function <portlet:namespace />updateTicketSolution(ticketSolutionStatus, statusReason, statusMessage) {
-			document.<portlet:namespace />fm7.<portlet:namespace />ticketSolutionStatus.value = ticketSolutionStatus;
-			document.<portlet:namespace />fm7.<portlet:namespace />statusReason.value = statusReason;
-			document.<portlet:namespace />fm7.<portlet:namespace />statusMessage.value = statusMessage;
+		Liferay.provide(
+			window,
+			'<portlet:namespace />updateTicketSolution',
+			function(ticketSolutionStatus, statusReason, statusMessage) {
+				var form = A.one('#<portlet:namespace />fm7');
 
-			submitForm(document.<portlet:namespace />fm7);
-		}
+				if (form) {
+					var ticketSolutionStatus = .one('#<portlet:namespace />ticketSolutionStatus');
+
+					if (ticketSolutionStatus) {
+						ticketSolutionStatus.val(ticketSolutionStatus);
+					}
+
+					var statusReason = form.one('#<portlet:namespace />statusReason');
+
+					if (statusReason) {
+						statusReason.val(statusReason);
+					}
+
+					var statusMessage = form.one('#<portlet:namespace />statusMessage');
+
+					if (statusMessage) {
+						statusMessage.val(statusMessage);
+					}
+
+					submitForm(form);
+				}
+			},
+			['aui-base']
+		);
 	</aui:script>
 </c:if>
