@@ -1183,6 +1183,30 @@
 					documents: {
 						label: '${AlloyLanguageUtil.formatUnicode("documents")}',
 						value: 'documents'
+					},
+					illnesses: {
+						label: '${AlloyLanguageUtil.formatUnicode("illness-reports")}',
+						value: 'illnesses'
+					},
+					legals: {
+						label: '${AlloyLanguageUtil.formatUnicode("legal-reports")}',
+						value: 'legals'
+					},
+					casework_activities: {
+						label: '${AlloyLanguageUtil.formatUnicode("casework-activities")}',
+						value: 'casework_activities'
+					},
+					counseling_reports: {
+						label: '${AlloyLanguageUtil.formatUnicode("counseling-reports")}',
+						value: 'counseling_reports'
+					},
+					physical_exams: {
+						label: '${AlloyLanguageUtil.formatUnicode("physical-exams")}',
+						value: 'physical_exams'
+					},
+					progress_reports: {
+						label: '${AlloyLanguageUtil.formatUnicode("progress-reports")}',
+						value: 'progress_reports'
 					}
 				}
 			},
@@ -2815,9 +2839,9 @@
 				key: '${WatsonReportConstants.REPORT_TYPE_PHYSICAL_EXAM}',
 				relationshipObjectOptions: {},
 				pluralLabel: '${AlloyLanguageUtil.formatUnicode("physical-exams")}',
-					singularLabel: '${AlloyLanguageUtil.formatUnicode("physical-exam")}',
-					sortByDefault: 'watsonChildId',
-					sortByOptions: {
+				singularLabel: '${AlloyLanguageUtil.formatUnicode("physical-exam")}',
+				sortByDefault: 'watsonChildId',
+				sortByOptions: {
 					CREATED: {
 						label: '${AlloyLanguageUtil.formatUnicode("created")}',
 						value: 'createDate'
@@ -2892,9 +2916,9 @@
 				key: '${WatsonReportConstants.REPORT_TYPE_PROGRESS_REPORT}',
 				relationshipObjectOptions: {},
 				pluralLabel: '${AlloyLanguageUtil.formatUnicode("progress-reports")}',
-					singularLabel: '${AlloyLanguageUtil.formatUnicode("progress-report")}',
-					sortByDefault: 'watsonChildId',
-					sortByOptions: {
+				singularLabel: '${AlloyLanguageUtil.formatUnicode("progress-report")}',
+				sortByDefault: 'watsonChildId',
+				sortByOptions: {
 					CREATED: {
 						label: '${AlloyLanguageUtil.formatUnicode("created")}',
 						value: 'createDate'

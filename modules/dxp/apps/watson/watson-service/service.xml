@@ -159,7 +159,7 @@
 
 		<!-- Other fields -->
 
-		<column name="watsonIncidentId" type="long" />
+		<column name="watsonParentId" type="long" />
 		<column name="classNameId" type="long" />
 		<column name="classPK" type="long" />
 		<column name="type" type="int" />

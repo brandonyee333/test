@@ -8,6 +8,7 @@ import Button from '../components/Button';
 import ChildForm from './forms/Child';
 import GenericChildForm from './forms/GenericChildForm';
 import GenericTranslationForm from './forms/GenericTranslationForm';
+import HistoryView from './views/History';
 import Navigation from '../components/Navigation';
 import NavigationHeader from '../components/NavigationHeader';
 import Sort from '../components/Sort';
@@ -18,6 +19,7 @@ import {updateCounselingReportsDataManually} from '../actions/counseling-reports
 import {editChildren, refreshSubModel, updateChildrenDataManually, updateChildrenFormData} from '../actions/children';
 import {updateCollapsedEntries, updateCollapsedEntry} from '../actions/display';
 import {updateDocumentsDataManually} from '../actions/documents';
+import {updateHistoriesDataManually} from '../actions/histories';
 import {updateIllnessesDataManually} from '../actions/illnesses';
 import {updateLegalsDataManually} from '../actions/legals';
 import {updatePhysicalExamsDataManually} from '../actions/physical-exams';
@@ -225,6 +227,17 @@ class EditChild extends JSXComponent {
 					/>
 				);
 			}
+		}
+		else if (model === 'histories') {
+			view = (
+				<HistoryView
+					action={action}
+					disabled={childDisabled}
+					primaryName={childName}
+					watsonParentId={watsonChildId}
+					watsonParentModel="children"
+				/>
+			);
 		}
 		else if (model === 'illnesses') {
 			if (action === 'index') {
@@ -781,6 +794,13 @@ class EditChild extends JSXComponent {
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/progress_reports/index`,
 				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'progress_reports'),
 				text: Liferay.Language.get('progress-reports')
+			},
+			{
+				collapsible: false,
+				entries: null,
+				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/histories/index`,
+				selected: (model === 'histories'),
+				text: Liferay.Language.get('history')
 			}
 		];
 
@@ -922,6 +942,11 @@ function mapDispatchToProps(dispatch) {
 		updateDocumentsDataManually: data => {
 			dispatch(
 				updateDocumentsDataManually(data)
+			);
+		},
+		updateHistoriesDataManually: data => {
+			dispatch(
+				updateHistoriesDataManually(data)
 			);
 		},
 		updateIllnessesDataManually: data => {

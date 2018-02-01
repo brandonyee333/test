@@ -9,7 +9,15 @@ import {formatModelName, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
 import {indexActivities} from '../actions/activities';
 import {indexAddresses} from '../actions/addresses';
+import {indexCaseworkActivities} from '../actions/casework-activities';
+import {indexCounselingReports} from '../actions/counseling-reports';
+import {indexChildren} from '../actions/children';
+import {indexDocuments} from '../actions/documents';
+import {indexIllnesses} from '../actions/illnesses';
+import {indexLegals} from '../actions/legals';
 import {indexPeople} from '../actions/people';
+import {indexPhysicalExams} from '../actions/physical-exams';
+import {indexProgressReports} from '../actions/progress-reports';
 import {indexResources} from '../actions/resources';
 import {indexVehicles} from '../actions/vehicles';
 
@@ -43,7 +51,7 @@ class HistoryView extends JSXComponent {
 						const indexModel = props[modelName];
 
 						if (indexModel) {
-							indexModel(props.watsonIncidentId);
+							indexModel(props.watsonParentId);
 						}
 
 						classPKArray.push(classPK);
@@ -57,7 +65,7 @@ class HistoryView extends JSXComponent {
 		return watsonModelObject;
 	}
 
-	formatHistoryData(watsonHistories, showCreated, showDeleted, showUpdated) {
+	formatHistoryData(watsonHistories, watsonParentModel, showCreated, showDeleted, showUpdated) {
 		const datesExist = {};
 		const formattedHistories = [];
 
@@ -67,8 +75,8 @@ class HistoryView extends JSXComponent {
 				const historyTypeId = watsonHistory.get('type');
 				const timeStamp = watsonHistory.get('timeStamp');
 				const watsonClassPK = watsonHistory.get('classPK');
-				const watsonIncidentId = watsonHistory.get('watsonIncidentId');
 				const watsonModelName = watsonHistory.get('watsonModel');
+				const watsonParentId = watsonHistory.get('watsonParentId');
 
 				const historyTypeLabel = getOptionsLabelFromWatsonConstants('histories', 'type', historyTypeId) || historyType || '';
 				let modelName = Liferay.Language.get('not-available');
@@ -87,9 +95,7 @@ class HistoryView extends JSXComponent {
 
 				modifiedTimeMoment = modifiedTimeMoment.locale(WatsonConstants.currentLanguageId);
 
-				const shouldHaveLink = ((watsonIncidentId > 0) && watsonModelName && watsonClassPK && (historyType != 'deleted'));
-
-				const modelLink = shouldHaveLink ? `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${watsonModelName}/${watsonClassPK}/edit` : '';
+				const modelLink = this.getModelLink(watsonModelName, watsonClassPK, watsonParentId, watsonParentModel, historyType);
 
 				const modelNameAndType = modelName.includes(modelTypeLabel) ? modelName : `${modelTypeLabel}  -  ${modelName}`;
 
@@ -129,22 +135,67 @@ class HistoryView extends JSXComponent {
 		return formattedHistories;
 	}
 
+	getModelLink(watsonModelName, watsonClassPK, watsonParentId, watsonParentModel, historyType) {
+		let linkRetVal = '';
+
+		if ((watsonParentId > 0) && watsonModelName && watsonClassPK && (historyType !== 'deleted')) {
+			if (watsonModelName === 'incidents' || watsonModelName === 'children') {
+				linkRetVal = `${WatsonConstants.urls.baseURL}/${watsonParentModel}/${watsonParentId}/edit/`;
+			}
+			else {
+				linkRetVal = `${WatsonConstants.urls.baseURL}/${watsonParentModel}/${watsonParentId}/edit/${watsonModelName}/${watsonClassPK}/edit`;
+			}
+		}
+
+		return linkRetVal;
+	}
+
 	render() {
-		const {historyData = new Map(), showCreated, showDeleted, showUpdated} = this.props;
+		const {historyData = new Map(), showCreated, showDeleted, showUpdated, watsonParentModel} = this.props;
 
 		return (
 			<div class="history-view">
-				{this.formatHistoryData(historyData, showCreated, showDeleted, showUpdated)}
+				{this.formatHistoryData(historyData, watsonParentModel, showCreated, showDeleted, showUpdated)}
 			</div>
 		);
 	}
 }
 
 HistoryView.PROPS = {
+	activitiesData: Config.value(new Map()),
+	activitiesLoading: Config.bool(),
+	addressesData: Config.value(new Map()),
+	addressesLoading: Config.bool(),
+	casework_activitiesData: Config.value(new Map()),
+	casework_activitiesLoading: Config.bool(),
+	childrenData: Config.value(new Map()),
+	childrenLoading: Config.bool(),
+	counseling_reportsData: Config.value(new Map()),
+	counseling_reportsLoading: Config.bool(),
+	documentsData: Config.value(new Map()),
+	documentsLoading: Config.bool(),
 	historyData: Config.value(new Map()),
+	illnessesData: Config.value(new Map()),
+	illnessesLoading: Config.bool(),
+	incidentsData: Config.value(new Map()),
+	incidentsLoading: Config.bool(),
+	legalsData: Config.value(new Map()),
+	legalsLoading: Config.bool(),
+	peopleData: Config.value(new Map()),
+	peopleLoading: Config.bool(),
+	physical_examsData: Config.value(new Map()),
+	physical_examsLoading: Config.bool(),
+	progress_reportsData: Config.value(new Map()),
+	progress_reportsLoading: Config.bool(),
+	resourcesData: Config.value(new Map()),
+	resourcesLoading: Config.bool(),
 	showCreated: Config.bool().value(true),
 	showDeleted: Config.bool().value(true),
-	showUpdated: Config.bool().value(true)
+	showUpdated: Config.bool().value(true),
+	vehiclesData: Config.value(new Map()),
+	vehiclesLoading: Config.bool(),
+	watsonParentId: Config.string(),
+	watsonParentModel: Config.string()
 };
 
 HistoryView.STATE = {
@@ -156,10 +207,26 @@ function mapStateToProps(state) {
 	const activitiesLoading = state.getIn(['activities', 'loading']);
 	const addressesData = state.getIn(['addresses', 'data']) || new Map();
 	const addressesLoading = state.getIn(['addresses', 'loading']);
+	const casework_activitiesData = state.getIn(['casework_activities', 'data']) || new Map();
+	const casework_activitiesLoading = state.getIn(['casework_activities', 'loading']);
+	const childrenData = state.getIn(['children', 'data']) || new Map();
+	const childrenLoading = state.getIn(['children', 'loading']);
+	const counseling_reportsData = state.getIn(['counseling_reports', 'data']) || new Map();
+	const counseling_reportsLoading = state.getIn(['counseling_reports', 'loading']);
+	const documentsData = state.getIn(['documents', 'data']) || new Map();
+	const documentsLoading = state.getIn(['documents', 'loading']);
+	const illnessesData = state.getIn(['illnesses', 'data']) || new Map();
+	const illnessesLoading = state.getIn(['illnesses', 'loading']);
 	const incidentsData = state.getIn(['incidents', 'data']) || new Map();
 	const incidentsLoading = state.getIn(['incidents', 'loading']);
+	const legalsData = state.getIn(['legals', 'data']) || new Map();
+	const legalsLoading = state.getIn(['legals', 'loading']);
 	const peopleData = state.getIn(['people', 'data']) || new Map();
 	const peopleLoading = state.getIn(['people', 'loading']);
+	const physical_examsData = state.getIn(['physical_exams', 'data']) || new Map();
+	const physical_examsLoading = state.getIn(['physical_exams', 'loading']);
+	const progress_reportsData = state.getIn(['progress_reports', 'data']) || new Map();
+	const progress_reportsLoading = state.getIn(['progress_reports', 'loading']);
 	const resourcesData = state.getIn(['resources', 'data']) || new Map();
 	const resourcesLoading = state.getIn(['resources', 'loading']);
 	const vehiclesData = state.getIn(['vehicles', 'data']) || new Map();
@@ -170,10 +237,26 @@ function mapStateToProps(state) {
 		activitiesLoading,
 		addressesData,
 		addressesLoading,
+		casework_activitiesData,
+		casework_activitiesLoading,
+		childrenData,
+		childrenLoading,
+		counseling_reportsData,
+		counseling_reportsLoading,
+		documentsData,
+		documentsLoading,
+		illnessesData,
+		illnessesLoading,
 		incidentsData,
 		incidentsLoading,
+		legalsData,
+		legalsLoading,
 		peopleData,
 		peopleLoading,
+		physical_examsData,
+		physical_examsLoading,
+		progress_reportsData,
+		progress_reportsLoading,
 		resourcesData,
 		resourcesLoading,
 		vehiclesData,
@@ -203,6 +286,70 @@ function mapDispatchToProps(dispatch) {
 				indexAddresses(data)
 			);
 		},
+		indexCaseworkActivities: id => {
+			const data = {
+				id,
+				includeInactive: true,
+				key: WatsonConstants.inputConfig.casework_activities.key
+			};
+
+			dispatch(
+				indexCaseworkActivities(data)
+			);
+		},
+		indexChildren: id => {
+			const data = {
+				id,
+				includeInactive: true
+			};
+
+			dispatch(
+				indexChildren(data)
+			);
+		},
+		indexCounselingReports: id => {
+			const data = {
+				id,
+				includeInactive: true,
+				key: WatsonConstants.inputConfig.counseling_reports.key
+			};
+
+			dispatch(
+				indexCounselingReports(data)
+			);
+		},
+		indexDocuments: id => {
+			const data = {
+				id,
+				includeInactive: true
+			};
+
+			dispatch(
+				indexDocuments(data)
+			);
+		},
+		indexIllnesses: id => {
+			const data = {
+				id,
+				includeInactive: true,
+				key: WatsonConstants.inputConfig.illnesses.key
+			};
+
+			dispatch(
+				indexIllnesses(data)
+			);
+		},
+		indexLegals: id => {
+			const data = {
+				id,
+				includeInactive: true,
+				key: WatsonConstants.inputConfig.legals.key
+			};
+
+			dispatch(
+				indexLegals(data)
+			);
+		},
 		indexPeople: id => {
 			const data = {
 				id,
@@ -211,6 +358,28 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				indexPeople(data)
+			);
+		},
+		indexPhysicalExams: id => {
+			const data = {
+				id,
+				includeInactive: true,
+				key: WatsonConstants.inputConfig.physical_exams.key
+			};
+
+			dispatch(
+				indexPhysicalExams(data)
+			);
+		},
+		indexProgressReports: id => {
+			const data = {
+				id,
+				includeInactive: true,
+				key: WatsonConstants.inputConfig.progress_reports.key
+			};
+
+			dispatch(
+				indexProgressReports(data)
 			);
 		},
 		indexResources: id => {

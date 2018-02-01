@@ -13,10 +13,15 @@ import {updateDOMTitle} from '../../lib/util';
 
 class HistoriesView extends JSXComponent {
 	attached() {
-		const {indexHistories, watsonIncidentId} = this.props;
+		const {indexHistories, watsonParentId, watsonParentModel} = this.props;
 
-		if (watsonIncidentId) {
-			indexHistories(watsonIncidentId);
+		if (watsonParentId) {
+			indexHistories(
+				{
+					model: watsonParentModel,
+					watsonParentId
+				}
+			);
 		}
 	}
 
@@ -46,7 +51,8 @@ class HistoriesView extends JSXComponent {
 			headerStringLeft = Liferay.Language.get('history'),
 			loading,
 			storeData,
-			watsonIncidentId
+			watsonParentId,
+			watsonParentModel
 		} = this.props;
 
 		const {
@@ -86,7 +92,8 @@ class HistoriesView extends JSXComponent {
 							showCreated={showCreated}
 							showDeleted={showDeleted}
 							showUpdated={showUpdated}
-							watsonIncidentId={watsonIncidentId}
+							watsonParentId={watsonParentId}
+							watsonParentModel={watsonParentModel}
 						/>
 
 						{((storeData.size < 1) && !loading) &&
@@ -101,17 +108,19 @@ class HistoriesView extends JSXComponent {
 	}
 
 	rendered() {
-		const {incidentName} = this.props;
+		const {primaryName, watsonParentModel} = this.props;
 
-		updateDOMTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, Liferay.Language.get('history')));
+		updateDOMTitle(`${WatsonConstants.inputConfig[watsonParentModel].singularLabel} ${primaryName}, ${Liferay.Language.get('history')}`);
 	}
 }
 
 HistoriesView.PROPS = {
 	action: Config.string().value(''),
 	loading: Config.bool().value(false),
+	primaryName: Config.string().value(''),
 	storeData: Config.value(null),
-	watsonIncidentId: Config.value('')
+	watsonParentId: Config.value(''),
+	watsonParentModel: Config.string()
 };
 
 HistoriesView.STATE = {
@@ -122,18 +131,18 @@ HistoriesView.STATE = {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		indexHistories: id => {
+		indexHistories: data => {
 			dispatch(
-				indexHistories({id})
+				indexHistories(data)
 			);
 		}
 	};
 }
 
 function mapStateToProps(state, props) {
-	const {watsonIncidentId} = props;
+	const {watsonParentId} = props;
 
-	const data = state.getIn(['histories', 'data', watsonIncidentId]) || new Map();
+	const data = state.getIn(['histories', 'data', watsonParentId]) || new Map();
 
 	const storeData = data.get('watsonHistories') || new Map();
 

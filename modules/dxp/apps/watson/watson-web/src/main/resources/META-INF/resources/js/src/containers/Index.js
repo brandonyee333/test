@@ -15,12 +15,17 @@ import SelectInput from '../components/SelectInput';
 
 import {indexActivities, searchActivities} from '../actions/activities';
 import {indexAddresses, searchAddresses} from '../actions/addresses';
+import {indexCaseworkActivities, searchCaseworkActivities} from '../actions/casework-activities';
 import {indexChildren, searchChildren} from '../actions/children';
+import {indexCounselingReports, searchCounselingReports} from '../actions/counseling-reports';
 import {updateDisplayBy, updateFilter, updateHideLoadingOverlay, updateLastFocus, updateLastItemsLoaded, updateSortBy} from '../actions/display';
 import {indexDocuments, searchDocuments} from '../actions/documents';
+import {indexIllnesses, searchIllnesses} from '../actions/illnesses';
 import {indexIncidents, searchIncidents} from '../actions/incidents';
 import {indexLegals, searchLegals} from '../actions/legals';
 import {indexPeople, searchPeople} from '../actions/people';
+import {indexPhysicalExams, searchPhysicalExams} from '../actions/physical-exams';
+import {indexProgressReports, searchProgressReports} from '../actions/progress-reports';
 import {indexResources, searchResources} from '../actions/resources';
 import {indexVehicles, searchVehicles} from '../actions/vehicles';
 
@@ -38,7 +43,8 @@ class Index extends JSXComponent {
 			'handleUpdateFilter',
 			'handleUpdateItemsLoaded',
 			'handleUpdateSortBy',
-			'handleUpdateViewBy',
+			'handleUpdateChildViewBy',
+			'handleUpdateIncidentViewBy',
 			'refreshData',
 			'scrollToPosition'
 		);
@@ -201,8 +207,12 @@ class Index extends JSXComponent {
 		updateSortBy(sortByData, 0, model);
 	}
 
-	handleUpdateViewBy(model) {
+	handleUpdateIncidentViewBy(model) {
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/${model}`);
+	}
+
+	handleUpdateChildViewBy(model) {
+		Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/index/${model}`);
 	}
 
 	refreshData(forceReindex) {
@@ -268,7 +278,7 @@ class Index extends JSXComponent {
 
 					<SelectInput
 						omitBlankOption={true}
-						onChange={this.handleUpdateViewBy}
+						onChange={this.handleUpdateChildViewBy}
 						options={WatsonConstants.inputConfig.children.viewByOptions}
 						value={model}
 					/>
@@ -294,7 +304,7 @@ class Index extends JSXComponent {
 
 					<SelectInput
 						omitBlankOption={true}
-						onChange={this.handleUpdateViewBy}
+						onChange={this.handleUpdateIncidentViewBy}
 						options={WatsonConstants.inputConfig.incidents.viewByOptions}
 						value={model}
 					/>
@@ -359,9 +369,9 @@ class Index extends JSXComponent {
 	rendered(firstRender) {
 		this.refreshData(false);
 
-		this.handleUpdateDisplayBy();
-
 		const {hideLoadingOverlay, lastFocus, lastLoadedItemData, loading, model, updateHideLoadingOverlay, updateLastFocus} = this.props;
+
+		this.handleUpdateDisplayBy();
 
 		updateDOMTitle(WatsonConstants.inputConfig[model].pluralLabel);
 
@@ -487,14 +497,35 @@ function mapDispatchToProps(dispatch) {
 				indexAddresses(data)
 			);
 		},
+		indexCaseworkActivities: data => {
+			data.key = WatsonConstants.inputConfig.casework_activities.key;
+
+			dispatch(
+				indexCaseworkActivities(data)
+			);
+		},
 		indexChildren: data => {
 			dispatch(
 				indexChildren(data)
 			);
 		},
+		indexCounselingReports: data => {
+			data.key = WatsonConstants.inputConfig.counseling_reports.key;
+
+			dispatch(
+				indexCounselingReports(data)
+			);
+		},
 		indexDocuments: data => {
 			dispatch(
 				indexDocuments(data)
+			);
+		},
+		indexIllnesses: data => {
+			data.key = WatsonConstants.inputConfig.illnesses.key;
+
+			dispatch(
+				indexIllnesses(data)
 			);
 		},
 		indexIncidents: data => {
@@ -503,6 +534,8 @@ function mapDispatchToProps(dispatch) {
 			);
 		},
 		indexLegals: data => {
+			data.key = WatsonConstants.inputConfig.legals.key;
+
 			dispatch(
 				indexLegals(data)
 			);
@@ -510,6 +543,20 @@ function mapDispatchToProps(dispatch) {
 		indexPeople: data => {
 			dispatch(
 				indexPeople(data)
+			);
+		},
+		indexPhysicalExams: data => {
+			data.key = WatsonConstants.inputConfig.physical_exams.key;
+
+			dispatch(
+				indexPhysicalExams(data)
+			);
+		},
+		indexProgressReports: data => {
+			data.key = WatsonConstants.inputConfig.progress_reports.key;
+
+			dispatch(
+				indexProgressReports(data)
 			);
 		},
 		indexResources: data => {
@@ -532,14 +579,35 @@ function mapDispatchToProps(dispatch) {
 				searchAddresses(data)
 			);
 		},
+		searchCaseworkActivities: data => {
+			data.key = WatsonConstants.inputConfig.casework_activities.key;
+
+			dispatch(
+				searchCaseworkActivities(data)
+			);
+		},
 		searchChildren: data => {
 			dispatch(
 				searchChildren(data)
 			);
 		},
+		searchCounselingReports: data => {
+			data.key = WatsonConstants.inputConfig.counseling_reports.key;
+
+			dispatch(
+				searchCounselingReports(data)
+			);
+		},
 		searchDocuments: data => {
 			dispatch(
 				searchDocuments(data)
+			);
+		},
+		searchIllnesses: data => {
+			data.key = WatsonConstants.inputConfig.illnesses.key;
+
+			dispatch(
+				searchIllnesses(data)
 			);
 		},
 		searchIncidents: data => {
@@ -555,6 +623,20 @@ function mapDispatchToProps(dispatch) {
 		searchPeople: data => {
 			dispatch(
 				searchPeople(data)
+			);
+		},
+		searchPhysicalExams: data => {
+			data.key = WatsonConstants.inputConfig.physical_exams.key;
+
+			dispatch(
+				searchPhysicalExams(data)
+			);
+		},
+		searchProgressReports: data => {
+			data.key = WatsonConstants.inputConfig.progress_reports.key;
+
+			dispatch(
+				searchProgressReports(data)
 			);
 		},
 		searchResources: data => {

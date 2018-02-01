@@ -90,7 +90,6 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 
 		jsonObject.put("createDate", getFormattedDate(createDate, locale));
 		jsonObject.put("id", watsonHistory.getPrimaryKey());
-		jsonObject.put("incidentName", WatsonIncident.getIncidentName(watsonHistory.getWatsonIncidentId()));
 
 		Date modifiedDate = watsonHistory.getModifiedDate();
 
@@ -101,13 +100,26 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 		jsonObject.put("type", watsonHistory.getType());
 		jsonObject.put("typeLabel", getHistoryTypeLabel(watsonHistory.getType()));
 		jsonObject.put("watsonHistoryId", watsonHistory.getWatsonHistoryId());
-		jsonObject.put("watsonIncidentId", watsonHistory.getWatsonIncidentId());
+		jsonObject.put("watsonParentId", watsonHistory.getWatsonParentId());
 
 		String watsonModel = WatsonAlloyControllerImpl.getControllerName(watsonHistory.getClassNameId());
+
+		if (watsonModel.equals("reports")) {
+			watsonModel = WatsonReport.getJSReportType(watsonHistory.getClassPK());
+		}
 
 		jsonObject.put("watsonModel", watsonModel);
 
 		return jsonObject;
+	}
+
+	public static String getFormattedDate(Date date, Locale locale) {
+		if (date != null) {
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
+		}
+		else {
+			return StringPool.BLANK;
+		}
 	}
 
 	public static String getHistoryTypeLabel(int historyType) {
@@ -121,17 +133,8 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 		return HISTORY_TYPE_LABEL_UPDATED;
 	}
 
-	public static String getFormattedDate(Date date, Locale locale) {
-		if (date != null) {
-			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
-		}
-		else {
-			return StringPool.BLANK;
-		}
-	}
-
-	public static KeyValuePair validateWatsonHistoryIncident(long watsonIncidentId) throws Exception {
-		if (WatsonIncident.fetch(watsonIncidentId) == null) {
+	public static KeyValuePair validateWatsonHistoryParent(long watsonParentId) throws Exception {
+		if (watsonParentId == 0) {
 			return new KeyValuePair("watsonIncidentId", "the-history-incident-is-invalid");
 		}
 
@@ -146,13 +149,13 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 		return null;
 	}
 
-	public static WatsonHistory add(long watsonIncidentId, AuditedModel ownerModel, HttpServletRequest request, int type) throws Exception {
+	public static WatsonHistory add(long watsonParentId, AuditedModel ownerModel, HttpServletRequest request, int type) throws Exception {
 		WatsonHistory watsonHistory = WatsonHistory.create(request);
 
 		watsonHistory.setClassName(ownerModel.getModelClassName());
 		watsonHistory.setClassPK((long)ownerModel.getPrimaryKeyObj());
 		watsonHistory.setType(type);
-		watsonHistory.setWatsonIncidentId(watsonIncidentId);
+		watsonHistory.setWatsonParentId(watsonParentId);
 
 		return add(watsonHistory);
 	}
@@ -168,7 +171,7 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 	}
 
 	public boolean isValid() throws Exception {
-		pushError(validateWatsonHistoryIncident(getWatsonIncidentId()));
+		pushError(validateWatsonHistoryParent(getWatsonParentId()));
 		pushError(validateWatsonHistoryType(getType()));
 
 		return errors.isEmpty();

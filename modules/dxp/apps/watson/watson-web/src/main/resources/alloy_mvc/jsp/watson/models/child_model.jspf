@@ -250,6 +250,20 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		return returnWatsonDocuments;
 	}
 
+	public static List<WatsonHistory> getWatsonHistories(long watsonParentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+		if (watsonParentId > 0) {
+			if (includeInactive) {
+				return WatsonHistory.queryAll("watsonParentId", watsonParentId);
+			}
+			else {
+				return WatsonHistory.queryRange(sort, start, end, "watsonParentId", watsonParentId);
+			}
+		}
+		else {
+			return WatsonHistory.get(start, end);
+		}
+	}
+
 	public static List<WatsonReport> getWatsonReports(int key, long watsonChildId, boolean includeInactive, String sort, int start, int end) throws Exception {
 		List<WatsonReport> returnWatsonReports = null;
 
@@ -262,7 +276,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			}
 		}
 		else {
-			returnWatsonReports = WatsonReport.get(start, end);
+			returnWatsonReports = WatsonReport.queryRange(sort, start, end, "key", key);
 		}
 
 		return returnWatsonReports;

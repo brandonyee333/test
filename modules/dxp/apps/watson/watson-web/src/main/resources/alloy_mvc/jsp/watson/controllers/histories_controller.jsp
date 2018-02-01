@@ -81,28 +81,36 @@
 				return;
 			}
 
-			long watsonIncidentId = ParamUtil.getLong(request, "id");
+			long watsonParentId = ParamUtil.getLong(request, "watsonParentId");
 
-			if (!WatsonPermission.check(user, watsonIncidentId, Constants.VIEW)) {
-				respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
+			if (WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_STAFF) || WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
+				String model = ParamUtil.getString(request, "model", StringPool.BLANK);
+				boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
+				int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
+				int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
+
+				List<WatsonHistory> watsonHistories = null;
+
+				if (model.equals("incidents")) {
+					watsonHistories = WatsonIncident.getWatsonHistories(watsonParentId, includeInactive, null, start, end);
+				}
+				else {
+					watsonHistories = WatsonChild.getWatsonHistories(watsonParentId, includeInactive, null, start, end);
+				}
+
+				Collections.reverse(watsonHistories);
+
+				JSONObject watsonHistoriesJSONObject = JSONFactoryUtil.createJSONObject();
+
+				watsonHistoriesJSONObject.put("watsonHistories", WatsonHistory.getAsJSONArray(watsonHistories));
+				watsonHistoriesJSONObject.put("watsonParentId", watsonParentId);
+
+				respondWith(watsonHistoriesJSONObject);
 
 				return;
 			}
 
-			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
-			int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
-			int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
-
-			List<WatsonHistory> watsonHistories = WatsonIncident.getWatsonHistories(watsonIncidentId, includeInactive, null, start, end);
-
-			Collections.reverse(watsonHistories);
-
-			JSONObject watsonHistoriesJSONObject = JSONFactoryUtil.createJSONObject();
-
-			watsonHistoriesJSONObject.put("watsonHistories", WatsonHistory.getAsJSONArray(watsonHistories));
-			watsonHistoriesJSONObject.put("watsonIncidentId", watsonIncidentId);
-
-			respondWith(watsonHistoriesJSONObject);
+			respondWith(HttpServletResponse.SC_FORBIDDEN, LanguageUtil.get(request, "you-do-not-have-the-required-permissions-to-access-this-content"), JSONFactoryUtil.createJSONObject());
 		}
 
 		public void update() throws Exception {

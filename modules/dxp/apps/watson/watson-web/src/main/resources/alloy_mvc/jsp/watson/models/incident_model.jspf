@@ -282,13 +282,13 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		return returnWatsonAddresses;
 	}
 
-	public static List<WatsonHistory> getWatsonHistories(long watsonIncidentId, boolean includeInactive, String sort, int start, int end) throws Exception {
-		if (watsonIncidentId > 0) {
+	public static List<WatsonHistory> getWatsonHistories(long watsonParentId, boolean includeInactive, String sort, int start, int end) throws Exception {
+		if (watsonParentId > 0) {
 			if (includeInactive) {
-				return WatsonHistory.queryAll("watsonIncidentId", watsonIncidentId);
+				return WatsonHistory.queryAll("watsonParentId", watsonParentId);
 			}
 			else {
-				return WatsonHistory.queryRange(sort, start, end, "watsonIncidentId", watsonIncidentId);
+				return WatsonHistory.queryRange(sort, start, end, "watsonParentId", watsonParentId);
 			}
 		}
 		else {

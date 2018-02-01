@@ -202,8 +202,9 @@ class EditIncident extends JSXComponent {
 				<HistoryView
 					action={action}
 					disabled={incidentDisabled}
-					incidentName={incidentName}
-					watsonIncidentId={watsonIncidentId}
+					primaryName={incidentName}
+					watsonParentId={watsonIncidentId}
+					watsonParentModel="incidents"
 				/>
 			);
 		}

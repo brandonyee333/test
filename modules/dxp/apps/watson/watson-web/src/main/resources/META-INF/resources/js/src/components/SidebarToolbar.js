@@ -138,7 +138,7 @@ class SidebarToolbar extends JSXComponent {
 					selectedFound = 'incidents';
 				}
 				else if (route.match(childrenRegex)) {
-					selectedFound = 'children'
+					selectedFound = 'children';
 				}
 				else {
 					const {urls = {}} = WatsonConstants;

@@ -212,8 +212,6 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		watsonDocument.setFields(request);
 
-		long watsonChildId = watsonDocument.getWatsonChildId();
-
 		if (!watsonDocument.isValid()) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 

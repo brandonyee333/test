@@ -11,7 +11,7 @@ function overrideCreateBaseReducer() {
 	delete actionHandlers[actionTypes.INDEX_SUCCESS];
 
 	actionHandlers[actionTypes.INDEX_SUCCESS] = (state, action) => {
-		return updateSingleEntry('watsonIncidentId', state, action);
+		return updateSingleEntry('watsonParentId', state, action);
 	};
 
 	return createReducer(OrderedMap(), actionHandlers);
