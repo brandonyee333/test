@@ -185,24 +185,56 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntryId));
 	</aui:form>
 
 	<aui:script>
-		function <portlet:namespace />resetPrimaryUserRadios() {
-			var radios = document.getElementsByName('<portlet:namespace />primaryUserId');
+		Liferay.provide(
+			window,
+			'<portlet:namespace />resetPrimaryUserRadios',
+			function() {
+				var A = AUI();
 
-			for (var i = 0; i < radios.length; i++) {
-				radios[i].checked = false;
-			}
-		}
+				var radios = A.all('input[name^=<portlet:namespace />primaryUserId]');
+
+				radios.each(
+					function(item) {
+						if (item.get('checked')) {
+							item.set('checked', false);
+						}
+					}
+				)
+			},
+			['aui-base']
+		);
 
 		Liferay.provide(
 			window,
 			'<portlet:namespace />updateTicketWorkers',
 			function(assignmentsRedirect) {
-				document.<portlet:namespace />fm.<portlet:namespace />assignmentsRedirect.value = assignmentsRedirect;
-				document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
-				document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
-				submitForm(document.<portlet:namespace />fm, "<portlet:actionURL name="updateTicketWorkers"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry/edit_ticket_workers.jsp" /><portlet:param name="tabs2" value="<%= tabs2 %>" /></portlet:actionURL>");
+				var A = AUI();
+
+				var form = A.one('#<portlet:namespace />fm');
+
+				if (form) {
+					var assignmentsRedirect = form.one('#<portlet:namespace />assignmentsRedirect');
+
+					if (assignmentsRedirect) {
+						assignmentsRedirect.val(assignmentsRedirect);
+					}
+
+					var addUserIds = form.one('#<portlet:namespace />addUserIds');
+
+					if (addUserIds) {
+						addUserIds.val(Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds'));
+					}
+
+					var removeUserIds = form.one('#<portlet:namespace />removeUserIds');
+
+					if (removeUserIds) {
+						removeUserIds.val(Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds'));
+					}
+
+					submitForm(form, '<portlet:actionURL name="updateTicketWorkers"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry/edit_ticket_workers.jsp" /><portlet:param name="tabs2" value="<%= tabs2 %>" /></portlet:actionURL>'');
+				}
 			},
-			['liferay-util-list-fields']
+			['aui-base', 'liferay-util-list-fields']
 		);
 	</aui:script>
 </c:if>
