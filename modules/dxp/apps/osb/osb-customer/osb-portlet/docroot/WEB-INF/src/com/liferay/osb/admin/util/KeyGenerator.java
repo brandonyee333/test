@@ -384,7 +384,9 @@ public class KeyGenerator {
 			sb.append(StringPool.NEW_LINE);
 		}
 
-		byte[] bytes = sb.toString().getBytes(StringPool.UTF8);
+		String propertiesString = sb.toString();
+
+		byte[] bytes = propertiesString.getBytes(StringPool.UTF8);
 
 		for (int i = _keys.length - 1; i >= 0; i--) {
 			bytes = Encryptor.encryptUnencoded(_keys[i], bytes);
@@ -458,7 +460,10 @@ public class KeyGenerator {
 				"macAddresses",
 				StringUtil.replace(
 					macAddresses, CharPool.DASH, CharPool.COLON));
-			serverIdProperties.put("salt", UUID.randomUUID().toString());
+
+			UUID uuid = UUID.randomUUID();
+
+			serverIdProperties.put("salt", uuid.toString());
 
 			String propertiesString = PropertiesUtil.toString(
 				serverIdProperties);

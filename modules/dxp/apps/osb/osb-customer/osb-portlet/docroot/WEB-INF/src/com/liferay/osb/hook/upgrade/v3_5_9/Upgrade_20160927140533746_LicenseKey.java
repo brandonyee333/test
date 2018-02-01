@@ -98,7 +98,9 @@ public class Upgrade_20160927140533746_LicenseKey extends BaseUpgradeProcess {
 				accountEntryId);
 
 		if (!licenseKeys.isEmpty()) {
-			long firstLicenseKeySetId = licenseKeys.get(0).getLicenseKeySetId();
+			LicenseKey firstLicenseKey = licenseKeys.get(0);
+
+			long firstLicenseKeySetId = firstLicenseKey.getLicenseKeySetId();
 
 			List<Long> licenseKeySetIds = new ArrayList<>();
 

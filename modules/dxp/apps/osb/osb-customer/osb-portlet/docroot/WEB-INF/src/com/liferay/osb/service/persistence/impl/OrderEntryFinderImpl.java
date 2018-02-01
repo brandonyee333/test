@@ -182,7 +182,9 @@ public class OrderEntryFinderImpl
 				startDateLT_TS, prorated, actualStartDateGT_TS,
 				actualStartDateLT_TS, params);
 
-			Iterator<Long> itr = q.list().iterator();
+			List list = q.list();
+
+			Iterator<Long> itr = list.iterator();
 
 			if (itr.hasNext()) {
 				Long count = itr.next();
