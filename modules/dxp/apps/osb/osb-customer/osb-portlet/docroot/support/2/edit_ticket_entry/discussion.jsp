@@ -723,11 +723,11 @@ else {
 
 				var messageDisplay = A.one('#<portlet:namespace />commentMessageDisplay' + suffix);
 
-				if (className) {
+				if (messageDisplay) {
 					messageDisplay.set('className', className);
-				}
 
-				messageDisplay.html(message);
+					messageDisplay.html(message);
+				}
 			},
 			['aui-base']
 		);
