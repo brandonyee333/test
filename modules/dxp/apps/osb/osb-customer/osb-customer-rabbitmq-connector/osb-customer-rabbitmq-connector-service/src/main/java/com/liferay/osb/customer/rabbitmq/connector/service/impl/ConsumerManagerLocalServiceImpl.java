@@ -60,6 +60,11 @@ public class ConsumerManagerLocalServiceImpl
 		}
 	}
 
+	@Override
+	public void connect() {
+		_rabbitMQConnectionManager.connect();
+	}
+
 	public void consumeMessage() {
 		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
 			return;
@@ -141,8 +146,23 @@ public class ConsumerManagerLocalServiceImpl
 		}
 	}
 
+	@Override
+	public void disconnect() {
+		_rabbitMQConnectionManager.disconnect();
+	}
+
 	public Map<String, ConsumerBag> getConsumersMap() {
 		return _consumers;
+	}
+
+	@Override
+	public boolean isConnected() {
+		return _rabbitMQConnectionManager.isConnected();
+	}
+
+	@Override
+	public void reconnect() {
+		_rabbitMQConnectionManager.reconnect();
 	}
 
 	public String registerConsumer(

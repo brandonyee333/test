@@ -26,6 +26,8 @@ public interface ConsumerManagerLocalService {
 
 	public void activateConsumer(String rabbitMQConsumerKey) throws Exception;
 
+	public void connect();
+
 	public void consumeMessage();
 
 	public void consumeMessages(
@@ -34,7 +36,13 @@ public interface ConsumerManagerLocalService {
 
 	public void deactivateConsumer(String rabbitMQConsumerKey);
 
+	public void disconnect();
+
 	public Map<String, ConsumerBag> getConsumersMap();
+
+	public boolean isConnected();
+
+	public void reconnect();
 
 	public String registerConsumer(
 			String queue, int prefetchCount, Object rabbitMQConsumer)

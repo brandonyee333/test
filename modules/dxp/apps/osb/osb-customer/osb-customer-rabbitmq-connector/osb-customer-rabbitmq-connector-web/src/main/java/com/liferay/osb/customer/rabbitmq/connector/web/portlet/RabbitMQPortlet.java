@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.web.portlet;
 
-import com.liferay.osb.customer.rabbitmq.connector.connection.RabbitMQConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.RabbitMQConsumer;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
 import com.liferay.osb.customer.rabbitmq.connector.web.internal.constants.RabbitMQPortletKeys;
@@ -114,7 +113,7 @@ public class RabbitMQPortlet extends MVCPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		_rabbitMQConnectionManager.reconnect();
+		_consumerManagerLocalService.reconnect();
 
 		_consumerManagerLocalService.resetChannels();
 	}
@@ -128,12 +127,8 @@ public class RabbitMQPortlet extends MVCPortlet {
 	protected void addRabbitMQConsumer(RabbitMQConsumer rabbitMQConsumer)
 		throws Exception {
 
-		if (_rabbitMQConnectionManager == null) {
-			_log.error("The RabbitMQ Connection Manager is not Initialized.");
-		}
-
-		if (!_rabbitMQConnectionManager.isConnected()) {
-			_rabbitMQConnectionManager.connect();
+		if (!_consumerManagerLocalService.isConnected()) {
+			_consumerManagerLocalService.connect();
 		}
 
 		_consumerManagerLocalService.registerConsumer(
@@ -165,8 +160,5 @@ public class RabbitMQPortlet extends MVCPortlet {
 	private final MethodKey _invokeMethodKey = new MethodKey(
 		PortletClassInvoker.class, "invoke", boolean.class, String.class,
 		MethodKey.class, Object[].class);
-
-	@Reference
-	private RabbitMQConnectionManager _rabbitMQConnectionManager;
 
 }
