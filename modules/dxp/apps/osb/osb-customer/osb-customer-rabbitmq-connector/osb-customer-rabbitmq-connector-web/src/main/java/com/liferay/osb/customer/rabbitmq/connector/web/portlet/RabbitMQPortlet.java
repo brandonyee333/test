@@ -109,13 +109,6 @@ public class RabbitMQPortlet extends MVCPortlet {
 		ClusterExecutorUtil.execute(clusterRequest);
 	}
 
-	@Override
-	public void destroy() {
-		super.destroy();
-
-		_rabbitMQConnectionManager.disconnect();
-	}
-
 	public void restart(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -136,13 +129,6 @@ public class RabbitMQPortlet extends MVCPortlet {
 
 		if (!_rabbitMQConnectionManager.isConnected()) {
 			_rabbitMQConnectionManager.connect();
-		}
-
-		try {
-			_consumerManagerLocalService.resetChannels();
-		}
-		catch (Exception e) {
-			_log.error(e, e);
 		}
 
 		_consumerManagerLocalService.registerConsumer(
