@@ -510,7 +510,7 @@ class Form extends JSXComponent {
 					hiddenInput = true;
 
 					if (parentInputValue) {
-						if ((!invertHidden && parentInputValue !== dependentKey) || (invertHidden && parentInputValue === dependentKey)) {
+						if ((!invertHidden && !dependentKey.includes(parentInputValue)) || (invertHidden && dependentKey.includes(parentInputValue))) {
 							hiddenInput = false;
 
 							if (state.hiddenInputs.includes(inputId)) {
@@ -543,6 +543,26 @@ class Form extends JSXComponent {
 								{...config}
 								options={currentInputConfig.options}
 								sortOptions={currentInputConfig.sortOptions}
+							/>
+						);
+					}
+					else if (currentInputConfig.inputType === inputTypeConstants.dependentSelectInput) {
+						const {
+							listTypeValue,
+							options: defaultOptions,
+							parentInputId,
+							showDefaultOptions
+						} = currentInputConfig;
+
+						const parentInputValue = formData[parentInputId];
+
+						inputComponent = (
+							<DependentSelectInput
+								{...config}
+								defaultOptions={defaultOptions}
+								listTypeValue={listTypeValue}
+								parentInputValue={parentInputValue}
+								showDefaultOptions={showDefaultOptions}
 							/>
 						);
 					}

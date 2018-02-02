@@ -39,7 +39,11 @@ class DependentSelectInput extends JSXComponent {
 		const options = (showDefaultOptions && isEmpty(requestOptions)) ? defaultOptions : requestOptions;
 
 		return (
-			<SelectInput {...props} options={options} optionsLoading={loading} />
+			<SelectInput
+				{...props}
+				options={options}
+				optionsLoading={loading}
+			/>
 		);
 	}
 

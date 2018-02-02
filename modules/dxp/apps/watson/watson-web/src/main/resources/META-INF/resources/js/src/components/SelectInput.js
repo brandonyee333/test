@@ -89,7 +89,7 @@ SelectInput.PROPS = {
 	placeHolder: Config.string(),
 	sortOptions: Config.bool(),
 	tooltipLabel: Config.string(),
-	value: Config.any
+	value: Config.any()
 };
 
 export default SelectInput;

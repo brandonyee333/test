@@ -1391,7 +1391,10 @@
 						]
 					},
 					subtypeWatsonListTypeId: {
+						dependentKey: '${WatsonListTypeConstants.DOCUMENT_TYPE_HOUSE_REGISTRATION} ${WatsonListTypeConstants.DOCUMENT_TYPE_RELATIVE_TYPE_OTHER}',
 						filterable: ${true},
+						inputType: 'DEPENDENT_SELECT_INPUT',
+						invertHidden: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("subtype")}',
 						listTypeValue: '${WatsonDocument.modelClassName.concat(".subtype")}',
 						options: {
@@ -1401,8 +1404,9 @@
 							}
 						},
 						parentInputId: 'typeWatsonListTypeId',
+						showDefaultOptions: ${false},
 						translatable: ${false},
-						type: 'DEPENDENT_SELECT_INPUT',
+						type: 'DEPENDENT_KEYED_INPUT',
 						validations: []
 					},
 					typeWatsonListTypeId: {
