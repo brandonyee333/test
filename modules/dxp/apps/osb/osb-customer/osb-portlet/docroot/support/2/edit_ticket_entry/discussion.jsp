@@ -642,6 +642,7 @@ else {
 					hotfixCheckboxes.each(
 						function(checkbox) {
 							checkbox.val('false');
+
 							checkbox.set('checked', false);
 						}
 					);
