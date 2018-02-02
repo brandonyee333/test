@@ -391,24 +391,6 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 	}
 </aui:script>
 
-<aui:script use="liferay-auto-fields">
-	new Liferay.AutoFields(
-		{
-			contentBox: '#<portlet:namespace />addresses > fieldset',
-			fieldIndexes: '<portlet:namespace />addressesIndexes',
-			namespace: '<portlet:namespace />'
-		}
-	).render();
-
-	new Liferay.AutoFields(
-		{
-			contentBox: '#<portlet:namespace />phoneNumbers > fieldset',
-			fieldIndexes: '<portlet:namespace />phonesIndexes',
-			namespace: '<portlet:namespace />'
-		}
-	).render();
-</aui:script>
-
 <c:if test="<%= windowState.equals(WindowState.MAXIMIZED) %>">
 	<script type="text/javascript">
 		Liferay.Util.focusFormField(document.<portlet:namespace />fm.<portlet:namespace />code);
