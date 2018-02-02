@@ -19,7 +19,7 @@ import com.liferay.osb.customer.rabbitmq.connector.connection.RabbitMQConnection
 import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBag;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBagImpl;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.RabbitMQConsumerDelegator;
-import com.liferay.osb.customer.rabbitmq.connector.service.base.ConsumerManagerLocalServiceBaseImpl;
+import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -31,13 +31,16 @@ import com.rabbitmq.client.GetResponse;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
+ * @author Vishal Reddy
  */
+@Component(immediate = true)
 public class ConsumerManagerLocalServiceImpl
-	extends ConsumerManagerLocalServiceBaseImpl {
+	implements ConsumerManagerLocalService {
 
 	public void activateConsumer(String rabbitMQConsumerKey) throws Exception {
 		ConsumerBag consumerBag = _consumers.get(rabbitMQConsumerKey);

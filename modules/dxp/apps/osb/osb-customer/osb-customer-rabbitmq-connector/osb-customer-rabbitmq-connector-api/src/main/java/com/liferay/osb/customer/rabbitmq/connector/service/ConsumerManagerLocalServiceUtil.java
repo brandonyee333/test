@@ -14,35 +14,20 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.service;
 
-import aQute.bnd.annotation.ProviderType;
-
+import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBag;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * Provides the local service utility for ConsumerManager. This utility wraps
- * {@link com.liferay.osb.customer.rabbitmq.connector.service.impl.ConsumerManagerLocalServiceImpl} and is the
- * primary access point for service operations in application layer code running
- * on the local server. Methods of this service will not have security checks
- * based on the propagated JAAS credentials because this service can only be
- * accessed from within the same VM.
- *
  * @author Amos Fong
- * @see ConsumerManagerLocalService
- * @see com.liferay.osb.customer.rabbitmq.connector.service.base.ConsumerManagerLocalServiceBaseImpl
- * @see com.liferay.osb.customer.rabbitmq.connector.service.impl.ConsumerManagerLocalServiceImpl
- * @generated
+ * @author Vishal Reddy
  */
-@ProviderType
 public class ConsumerManagerLocalServiceUtil {
-	/*
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.customer.rabbitmq.connector.service.impl.ConsumerManagerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
-	 */
-	public static void activateConsumer(java.lang.String rabbitMQConsumerKey)
-		throws java.lang.Exception {
+
+	public static void activateConsumer(String rabbitMQConsumerKey)
+		throws Exception {
+
 		getService().activateConsumer(rabbitMQConsumerKey);
 	}
 
@@ -50,48 +35,42 @@ public class ConsumerManagerLocalServiceUtil {
 		getService().consumeMessage();
 	}
 
-	public static void consumeMessages(java.lang.String queue,
-		long messageCount, java.lang.Object rabbitMQConsumer)
-		throws java.lang.Exception {
+	public static void consumeMessages(String queue,
+		long messageCount, Object rabbitMQConsumer)
+		throws Exception {
+
 		getService().consumeMessages(queue, messageCount, rabbitMQConsumer);
 	}
 
-	public static void deactivateConsumer(java.lang.String rabbitMQConsumerKey) {
+	public static void deactivateConsumer(String rabbitMQConsumerKey) {
 		getService().deactivateConsumer(rabbitMQConsumerKey);
 	}
 
-	public static java.util.Map<java.lang.String, com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBag> getConsumersMap() {
+	public static java.util.Map<String, ConsumerBag> getConsumersMap() {
 		return getService().getConsumersMap();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static java.lang.String registerConsumer(java.lang.String queue,
-		int prefetchCount, java.lang.Object rabbitMQConsumer)
-		throws java.lang.Exception {
-		return getService()
-				   .registerConsumer(queue, prefetchCount, rabbitMQConsumer);
-	}
-
-	public static void resetChannels() throws java.lang.Exception {
-		getService().resetChannels();
-	}
-
-	public static void unregisterConsumer(java.lang.String rabbitMQConsumerKey) {
-		getService().unregisterConsumer(rabbitMQConsumerKey);
 	}
 
 	public static ConsumerManagerLocalService getService() {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<ConsumerManagerLocalService, ConsumerManagerLocalService> _serviceTracker =
+	public static String registerConsumer(String queue,
+		int prefetchCount, Object rabbitMQConsumer)
+		throws Exception {
+
+		return getService()
+			.registerConsumer(queue, prefetchCount, rabbitMQConsumer);
+	}
+
+	public static void resetChannels() throws Exception {
+		getService().resetChannels();
+	}
+
+	public static void unregisterConsumer(String rabbitMQConsumerKey) {
+		getService().unregisterConsumer(rabbitMQConsumerKey);
+	}
+
+	private static final ServiceTracker<ConsumerManagerLocalService, ConsumerManagerLocalService> _serviceTracker =
 		ServiceTrackerFactory.open(ConsumerManagerLocalService.class);
+
 }
