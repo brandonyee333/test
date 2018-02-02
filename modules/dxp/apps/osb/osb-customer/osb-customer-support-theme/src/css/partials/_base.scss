@@ -62,7 +62,7 @@ blockquote, h2, h3 {
 div {
 	&.portlet-msg-error, .portlet-msg-success {
 		height: 22px;
-		left: calc(25vw - -60px);
+		left: calc(25vw + 60px);
 		overflow: hidden;
 		position: fixed;
 		right: 25vw;

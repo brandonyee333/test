@@ -35,10 +35,10 @@
 /* ---------- Heading ---------- */
 
 .detail-view-header {
-	left: calc(2vw - -80px);
+	left: calc(2vw + 80px);
 	max-height: 120px;
 	position: fixed;
-	right: calc(23vw - -20px);
+	right: calc(23vw + 20px);
 	z-index: 3;
 }
 
@@ -94,7 +94,7 @@
 .detail-view-filter {
 	background: #FFF;
 	height: $banner-height + $ticket-view-header-height;
-	left: calc(2vw - -80px);
+	left: calc(2vw + 80px);
 	position: fixed;
 	right: 0;
 	top: 0;
@@ -110,10 +110,10 @@
 
 	.tabs {
 		&.pinned {
-			left: calc(2vw - -80px);
+			left: calc(2vw + 80px);
 			margin: 0;
 			position: fixed;
-			right: calc(23vw - -20px);
+			right: calc(23vw + 20px);
 			top: $banner-height + $ticket-view-header-height;
 			z-index: 2;
 		}
@@ -162,15 +162,15 @@
 			margin: 0 2vw;
 
 			.tabs {
-				right: calc(2vw - -20px);
+				right: calc(2vw + 20px);
 			}
 		}
 
 		.tabs {
-			left: calc(2vw - -80px);
+			left: calc(2vw + 80px);
 			margin: 0;
 			position: fixed;
-			right: calc(23vw - -20px);
+			right: calc(23vw + 20px);
 			top: $banner-height + $ticket-view-heading-height;
 			z-index: 2;
 		}

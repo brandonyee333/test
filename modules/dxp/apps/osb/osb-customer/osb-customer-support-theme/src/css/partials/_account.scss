@@ -32,10 +32,10 @@
 
 	.tabs-details {
 		&.pinned {
-			left: calc(2vw - -80px);
+			left: calc(2vw + 80px);
 			margin: 0;
 			position: fixed;
-			right: calc(2vw - -20px);
+			right: calc(2vw + 20px);
 			top: 235px;
 			z-index: 2;
 		}
