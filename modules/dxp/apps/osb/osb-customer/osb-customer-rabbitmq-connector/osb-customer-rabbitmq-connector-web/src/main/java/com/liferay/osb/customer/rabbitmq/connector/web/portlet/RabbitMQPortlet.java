@@ -40,6 +40,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Amos Fong
+ * @author Vishal Reddy
  */
 @Component(
 	immediate = true,
@@ -126,6 +127,10 @@ public class RabbitMQPortlet extends MVCPortlet {
 	)
 	protected void addRabbitMQConsumer(RabbitMQConsumer rabbitMQConsumer)
 		throws Exception {
+
+		if (_rabbitMQConnectionManager == null) {
+			_log.error("The RabbitMQ Connection Manager is not Initialized.");
+		}
 
 		if (!_rabbitMQConnectionManager.isConnected()) {
 			_rabbitMQConnectionManager.connect();
