@@ -303,108 +303,231 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 </aui:form>
 
 <aui:script>
-	function <portlet:namespace />resetStatus() {
-		<portlet:namespace />toggleForm('<portlet:namespace />statusDropDown', '<portlet:namespace />statusDisplay');
-
-		if (<%= resolution == 0 %>) {
-			document.getElementById('<portlet:namespace />resolutionDropDown').style.display = 'none';
-		}
-		else {
-			<portlet:namespace />toggleForm('<portlet:namespace />resolutionDropDown', '<portlet:namespace />headerResolutionLabel');
-		}
-
-		document.getElementById('<portlet:namespace />resolutionCancel').style.display = 'none';
-		document.getElementById('<portlet:namespace />statusCancel').style.display = 'none';
-
-		document.<portlet:namespace />ticketStatusFm.<portlet:namespace />resolution.value = '<%= resolution %>';
-		document.<portlet:namespace />ticketStatusFm.<portlet:namespace />status.value = '<%= status %>';
-	}
-
-	function <portlet:namespace />toggleForm(hideId, showId) {
-		document.getElementById(showId).style.display = '';
-		document.getElementById(hideId).style.display = 'none';
-	}
-
-	<c:if test="<%= hasUpdateAdvanced %>">
-		function <portlet:namespace />updatePendingTypes() {
-			var updatePendingURL = '<portlet:actionURL name="updatePendingTypes"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>';
-
-			document.<portlet:namespace />ticketStatusFm.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
-
-			submitForm(document.<portlet:namespace />ticketStatusFm, updatePendingURL);
-		}
-
-		function <portlet:namespace />updateReproductionStepValues(reproductionSteps) {
-			document.<portlet:namespace />ticketStatusFm.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.REPRODUCE %>';
-			document.<portlet:namespace />ticketStatusFm.<portlet:namespace />reproductionSteps.value = reproductionSteps;
-
-			submitForm(document.<portlet:namespace />ticketStatusFm);
-		}
-
-		function <portlet:namespace />updateResolution(resolution) {
+	Liferay.provide(
+		window,
+		'<portlet:namespace />resetStatus',
+		function() {
 			var A = AUI();
 
-			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(request, ticketEntry.getStatusLabel()) %>';
-			var newLabel = A.one('#<portlet:namespace />headerStatus option:selected').html() + ' - ' + A.one('#<portlet:namespace />headerResolution option:selected').html();
+			<portlet:namespace />toggleForm('<portlet:namespace />statusDropDown', '<portlet:namespace />statusDisplay');
 
-			if (confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newLabel]))) {
-				document.<portlet:namespace />ticketStatusFm.<portlet:namespace /><%= CMDConstants.CMD %>.value = '<%= CMDConstants.CLOSE %>';
+			if (<%= resolution == 0 %>) {
+				var resolutionDropDown = A.one('#<portlet:namespace />resolutionDropDown');
 
-				submitForm(document.<portlet:namespace />ticketStatusFm);
+				if (resolutionDropDown) {
+					resolutionDropDown.hide();
+				}
 			}
-		}
+			else {
+				<portlet:namespace />toggleForm('<portlet:namespace />resolutionDropDown', '<portlet:namespace />headerResolutionLabel');
+			}
 
-		function <portlet:namespace />updateSeverity() {
-			var updateSeverityURL = '<portlet:actionURL name="updateTicketEntrySeverity"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>';
+			var resolutionCancel = A.one('#<portlet:namespace />resolutionCancel');
 
-			document.<portlet:namespace />ticketStatusFm.<portlet:namespace />redirect.value = '<%= portletURL.toString() %>';
+			if (resolutionCancel) {
+				resolutionCancel.hide();
+			}
 
-			submitForm(document.<portlet:namespace />ticketStatusFm, updateSeverityURL);
-		}
+			var statusCancel = A.one('#<portlet:namespace />statusCancel');
 
-		function <portlet:namespace />updateStatus(status) {
+			if (statusCancel) {
+				statusCancel.hide();
+			}
+
+			var ticketStatusFm = A.one('#<portlet:namespace />ticketStatusFm');
+
+			if (ticketStatusFm) {
+				var resolution = ticketStatusFm.one('#<portlet:namespace />resolution');
+
+				if (resolution) {
+					resolution.val('<%= resolution %>');
+				}
+
+				var status = ticketStatusFm.one('#<portlet:namespace />status');
+
+				if (status) {
+					status.val'<%= status %>');
+				}
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />toggleForm',
+		function(hideId, showId) {
 			var A = AUI();
 
-			var newStatusLabel = A.one('#<portlet:namespace />headerStatus option:selected').html();
+			var nodeShow = A.one('#' + showId);
+
+			if (nodeShow) {
+				nodeShow.show();
+			}
+
+			var nodeHide = A.one('#' + nodeHide);
+
+			if (nodeHide) {
+				nodeHide.show();
+			}
+		},
+		['aui-base']
+	);
+
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateResolution',
+		function(resolution) {
+			var A = AUI();
+
+			var headerResolution = A.one('#<portlet:namespace />headerResolution option:selected');
+			var headerStatus = A.one('#<portlet:namespace />headerStatus option:selected');
+
+			if (headerResolution && headerStatus) {
+				var oldStatusLabel = '<%= UnicodeLanguageUtil.get(request, ticketEntry.getStatusLabel()) %>';
+
+				var newLabel = headerStatus.html() + ' - ' + headerResolution.html();
+
+				if (confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newLabel]))) {
+					var ticketStatusFm = A.one('#<portlet:namespace />ticketStatusFm');
+
+					if (ticketStatusFm) {
+						var cmd = ticketStatusFm.one('#<portlet:namespace /><%= CMDConstants.CMD %>');
+
+						if (cmd) {
+							cmd.val('<%= CMDConstants.CLOSE %>');
+						}
+
+						submitForm(ticketStatusFm);
+					}
+				}
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateStatus',
+		function(status) {
+			var A = AUI();
+
+			var newStatusLabel = A.one('#<portlet:namespace />headerStatus option:selected');
+
+			if (newStatusLabel) {
+				newStatusLabel = newStatusLabel.html();
+			}
 
 			var oldStatusLabel = '<%= UnicodeLanguageUtil.get(request, ticketEntry.getStatusLabel()) %>';
 
 			if (newStatusLabel) {
-				if (oldStatusLabel == newStatusLabel) {
-					return false;
-				}
+				if (oldStatusLabel != newStatusLabel) {
+					if ((status != '<%= TicketEntryConstants.STATUS_CLOSED %>') && !confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newStatusLabel]))) {
+						<portlet:namespace />toggleForm('<portlet:namespace />statusDropDown', '<portlet:namespace />statusDisplay');
 
-				if ((status != '<%= TicketEntryConstants.STATUS_CLOSED %>') && !confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newStatusLabel]))) {
-					<portlet:namespace />toggleForm('<portlet:namespace />statusDropDown', '<portlet:namespace />statusDisplay');
+						var status = A.one('#<portlet:namespace />status');
 
-					A.one('#<portlet:namespace />status').set('value', '<%= ticketEntry.getStatus() %>');
+						if (status) {
+							status.val('<%= ticketEntry.getStatus() %>');
+						}
 
-					return false;
+						return false;
+					}
 				}
 			}
 
-			var resolutionDisplay = 'none';
+			var headerResolution = A.one('#<portlet:namespace />headerResolution');
 
-			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>') {
-				resolutionDisplay = '';
+			if (headerResolution) {
+				headerResolution.toggle(status == '<%= TicketEntryConstants.STATUS_CLOSED %>');
 			}
 
-			document.getElementById('<portlet:namespace />headerResolution').style.display = resolutionDisplay;
+			if (status != '<%= TicketEntryConstants.STATUS_CLOSED %>') {
+				<c:choose>
+					<c:when test="<%= liferayIncOrg && (status != TicketEntryConstants.STATUS_REPRODUCED) %>">
+						if (status == '<%= TicketEntryConstants.STATUS_REPRODUCED %>') {
+							window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="jspPage" value="/support/2/edit_ticket_entry/reproduction_steps.jsp" /><portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" /></portlet:renderURL>', 'reproductionSteps', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800').focus();
 
-			if (status == '<%= TicketEntryConstants.STATUS_CLOSED %>') {
-				return false;
+							return;
+						}
+					</c:when>
+					<c:otherwise>
+						submitForm(document.<portlet:namespace />ticketStatusFm);
+					</c:otherwise>
+				</c:choose>
 			}
+		},
+		['aui-base']
+	);
 
-			<c:if test="<%= liferayIncOrg && (status != TicketEntryConstants.STATUS_REPRODUCED) %>">
-				if (status == '<%= TicketEntryConstants.STATUS_REPRODUCED %>') {
-					window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="jspPage" value="/support/2/edit_ticket_entry/reproduction_steps.jsp" /><portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" /></portlet:renderURL>', 'reproductionSteps', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800').focus();
+	<c:if test="<%= hasUpdateAdvanced %>">
+		Liferay.provide(
+			window,
+			'<portlet:namespace />updatePendingTypes',
+			function() {
+				var A = AUI();
 
-					return;
+				var ticketStatusFm = A.one('#<portlet:namespace />ticketStatusFm');
+
+				if (ticketStatusFm) {
+					var redirect = ticketStatusFm.one('#<portlet:namespace />redirect');
+
+					if (redirect) {
+						redirect.val('<%= portletURL.toString() %>');
+
+						submitForm(ticketStatusFm, '<portlet:actionURL name="updatePendingTypes"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>');
+					}
 				}
-			</c:if>
+			},
+			['aui-base']
+		);
 
-			submitForm(document.<portlet:namespace />ticketStatusFm);
-		}
+		Liferay.provide(
+			window,
+			'<portlet:namespace />updateReproductionStepValues',
+			function(reproductionSteps) {
+				var A = AUI();
+
+				var ticketStatusFm = A.one('#<portlet:namespace />ticketStatusFm');
+
+				if (ticketStatusFm) {
+					var cmd = ticketStatusFm.one('#<portlet:namespace /><%= CMDConstants.CMD %>');
+
+					if (cmd) {
+						cmd.val('<%= CMDConstants.REPRODUCE %>');
+					}
+
+					var reproductionSteps = ticketStatusFm.one('#<portlet:namespace />reproductionSteps');
+
+					if (reproductionSteps) {
+						reproductionSteps.val(reproductionSteps);
+					}
+
+				submitForm(ticketStatusFm);
+			},
+			['aui-base']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />updateSeverity',
+			function() {
+
+				var ticketStatusFm = A.one('#<portlet:namespace />ticketStatusFm');
+
+				if (ticketStatusFm) {
+					var redirect = ticketStatusFm.one('#<portlet:namespace />redirect');
+
+					if (redirect) {
+						redirect.val('<%= portletURL.toString() %>');
+					}
+
+					submitForm(ticketStatusFm, '<portlet:actionURL name="updateTicketEntrySeverity"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>');
+				}
+			},
+			['aui-base']
+		);
 	</c:if>
 </aui:script>
 
