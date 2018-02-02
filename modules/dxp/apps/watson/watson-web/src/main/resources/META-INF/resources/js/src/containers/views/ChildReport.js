@@ -18,7 +18,7 @@ import {indexPhysicalExams} from '../../actions/physical-exams';
 import {indexProgressReports} from '../../actions/progress-reports';
 import {viewChildren} from '../../actions/children';
 
-import {getMimeType, updateDOMTitle} from '../../lib/util';
+import {getMimeType, formatModelName, updateDOMTitle} from '../../lib/util';
 
 class ChildReport extends JSXComponent {
 	attached() {
@@ -64,10 +64,10 @@ class ChildReport extends JSXComponent {
 		let watsonModelObject = new Map();
 
 		if (model && classPK > 0) {
-			const modelLoading = props[`${model}Loading`];
+			const modelLoading = props[`${formatModelName(model, false)}Loading`];
 
 			if (!modelLoading) {
-				const modelData = props[`${model}Data`];
+				const modelData = props[`${formatModelName(model, false)}Data`];
 
 				if (modelData) {
 					watsonModelObject = modelData.get(classPK);
@@ -125,12 +125,10 @@ class ChildReport extends JSXComponent {
 	}
 
 	renderEntity(data, displayFields, model) {
-		let headerName = '';
-
 		const entityName = data.get('name') || data.get('id') || '';
 		const entitySingularLabel = WatsonConstants.inputConfig[model].singularLabel;
 
-		headerName = entityName.includes(entitySingularLabel) ? entityName : `${WatsonConstants.inputConfig[model].singularLabel} - ${entityName}`;
+		const headerName = entityName.includes(entitySingularLabel) ? entityName : `${WatsonConstants.inputConfig[model].singularLabel} - ${entityName}`;
 
 		return (
 			<div class="body">
@@ -218,9 +216,15 @@ class ChildReport extends JSXComponent {
 	}
 
 	renderModel(entryId, modelName) {
-		const modelData = this.props[`${modelName}Data`];
+		const modelData = this.props[`${formatModelName(modelName, false)}Data`];
 
-		const displayFields = this.state[`${modelName}Config`];
+		const displayFields = this.state[`${formatModelName(modelName, false)}Config`];
+
+		console.log(modelName)
+
+		console.log(formatModelName(modelName, false));
+
+		console.log(modelData, displayFields)
 
 		return (
 			<div class={modelName}>
@@ -319,7 +323,7 @@ class ChildReport extends JSXComponent {
 					}
 				);
 			}
-			else if (type == inputTypes.richTextEditor || type === inputTypes.textareaInput) {
+			else if (type === inputTypes.richTextEditor || type === inputTypes.textareaInput) {
 				if (type === inputTypes.textareaInput) {
 					value = value.replace(/(?:\r\n|\r|\n)/g, '<br />');
 				}
@@ -360,6 +364,14 @@ class ChildReport extends JSXComponent {
 					this.renderChild()
 				}
 
+				{(!entryId || model === 'casework_activities') &&
+				 this.renderModel(entryId, 'casework_activities')
+				}
+
+				{(!entryId || model === 'counseling_reports') &&
+				 this.renderModel(entryId, 'counseling_reports')
+				}
+
 				{(!entryId || model === 'documents') &&
 					this.renderModel(entryId, 'documents')
 				}
@@ -370,14 +382,6 @@ class ChildReport extends JSXComponent {
 
 				{(!entryId || model === 'legals') &&
 					this.renderModel(entryId, 'legals')
-				}
-
-				{(!entryId || model === 'casework_activities') &&
-					this.renderModel(entryId, 'casework_activities')
-				}
-
-				{(!entryId || model === 'counseling_reports') &&
-					this.renderModel(entryId, 'counseling_reports')
 				}
 
 				{(!entryId || model === 'physical_exams') &&
@@ -412,21 +416,21 @@ class ChildReport extends JSXComponent {
 }
 
 ChildReport.PROPS = {
-	casework_activitiesData: Config.value(new Map()),
+	caseworkActivitiesData: Config.value(new Map()),
 	childrenData: Config.value(new Map()),
-	counseling_reportsData: Config.value(new Map()),
+	counselingReportsData: Config.value(new Map()),
 	documentsData: Config.value(new Map()),
 	entryId: Config.any(),
 	illnessesData: Config.value(new Map()),
 	legalsData: Config.value(new Map()),
 	model: Config.string(),
 	physicalExamsData: Config.value(new Map()),
-	progress_reportsData: Config.value(new Map()),
+	progressReportsData: Config.value(new Map()),
 	watsonChildId: Config.any()
 };
 
 ChildReport.STATE = {
-	casework_activitiesConfig: Config.array().value(
+	caseworkActivitiesConfig: Config.array().value(
 		[
 			'typeWatsonListTypeId',
 			'reportDate',
@@ -456,7 +460,7 @@ ChildReport.STATE = {
 			'vocationalTrainingWatsonListTypeRels'
 		]
 	),
-	counseling_reportsConfig: Config.array().value(
+	counselingReportsConfig: Config.array().value(
 		[
 			'reportDate',
 			'typeWatsonListTypeId',
@@ -493,14 +497,14 @@ ChildReport.STATE = {
 		]
 	),
 	model: Config.string(),
-	physical_examsConfig: Config.array().value(
+	physicalExamsConfig: Config.array().value(
 		[
 			'reportDate',
 			'imagePayload',
 			'description'
 		]
 	),
-	progress_reportsConfig: Config.array().value(
+	progressReportsConfig: Config.array().value(
 		[
 			'reportDate',
 			'reportedUser',
@@ -587,32 +591,32 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state, props) {
 	const {entryId, model, watsonChildId} = props.router.params;
 
-	const casework_activitiesData = state.getIn(['casework_activities', 'data']) || new Map();
-	const casework_activitiesLoading = state.getIn(['casework_activities', 'loading']);
+	const caseworkActivitiesData = state.getIn(['casework_activities', 'data']) || new Map();
+	const caseworkActivitiesLoading = state.getIn(['casework_activities', 'loading']);
 	const childrenData = state.getIn(['children', 'data']) || new Map();
 	const childrenLoading = state.getIn(['children', 'loading']);
-	const counseling_reportsData = state.getIn(['counseling_reports', 'data']) || new Map();
-	const counseling_reportsLoading = state.getIn(['counseling_reports', 'loading']);
+	const counselingReportsData = state.getIn(['counseling_reports', 'data']) || new Map();
+	const counselingReportsLoading = state.getIn(['counseling_reports', 'loading']);
 	const documentsData = state.getIn(['documents', 'data']) || new Map();
 	const documentsLoading = state.getIn(['documents', 'loading']);
 	const illnessesData = state.getIn(['illnesses', 'data']) || new Map();
 	const illnessesLoading = state.getIn(['illnesses', 'loading']);
 	const legalsData = state.getIn(['legals', 'data']) || new Map();
 	const legalsLoading = state.getIn(['legals', 'loading']);
-	const physical_examsData = state.getIn(['physical_exams', 'data']) || new Map();
-	const physical_examsLoading = state.getIn(['physical_exams', 'loading']);
-	const progress_reportsData = state.getIn(['progress_reports', 'data']) || new Map();
-	const progress_reportsLoading = state.getIn(['progress_reports', 'loading']);
+	const physicalExamsData = state.getIn(['physical_exams', 'data']) || new Map();
+	const physicalExamsLoading = state.getIn(['physical_exams', 'loading']);
+	const progressReportsData = state.getIn(['progress_reports', 'data']) || new Map();
+	const progressReportsLoading = state.getIn(['progress_reports', 'loading']);
 
 	const currentChildData = childrenData.get(watsonChildId) || new Map();
 
 	return {
-		casework_activitiesData,
-		casework_activitiesLoading,
+		caseworkActivitiesData,
+		caseworkActivitiesLoading,
 		childrenData,
 		childrenLoading,
-		counseling_reportsData,
-		counseling_reportsLoading,
+		counselingReportsData,
+		counselingReportsLoading,
 		currentChildData,
 		documentsData,
 		documentsLoading,
@@ -622,10 +626,10 @@ function mapStateToProps(state, props) {
 		legalsData,
 		legalsLoading,
 		model,
-		physical_examsData,
-		physical_examsLoading,
-		progress_reportsData,
-		progress_reportsLoading,
+		physicalExamsData,
+		physicalExamsLoading,
+		progressReportsData,
+		progressReportsLoading,
 		watsonChildId
 	};
 }

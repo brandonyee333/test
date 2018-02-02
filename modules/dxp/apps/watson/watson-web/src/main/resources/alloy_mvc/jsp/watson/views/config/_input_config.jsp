@@ -1180,6 +1180,14 @@
 						label: '${AlloyLanguageUtil.formatUnicode("children")}',
 						value: 'children'
 					},
+					casework_activities: {
+						label: '${AlloyLanguageUtil.formatUnicode("casework-activities")}',
+						value: 'casework_activities'
+					},
+					counseling_reports: {
+						label: '${AlloyLanguageUtil.formatUnicode("counseling-reports")}',
+						value: 'counseling_reports'
+					},
 					documents: {
 						label: '${AlloyLanguageUtil.formatUnicode("documents")}',
 						value: 'documents'
@@ -1191,14 +1199,6 @@
 					legals: {
 						label: '${AlloyLanguageUtil.formatUnicode("legal-reports")}',
 						value: 'legals'
-					},
-					casework_activities: {
-						label: '${AlloyLanguageUtil.formatUnicode("casework-activities")}',
-						value: 'casework_activities'
-					},
-					counseling_reports: {
-						label: '${AlloyLanguageUtil.formatUnicode("counseling-reports")}',
-						value: 'counseling_reports'
 					},
 					physical_exams: {
 						label: '${AlloyLanguageUtil.formatUnicode("physical-exams")}',
@@ -1406,6 +1406,9 @@
 						validations: []
 					},
 					typeWatsonListTypeId: {
+						controlledInputs: [
+							'subtypeWatsonListTypeId'
+						],
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("type")}',
 						listTypeValue: '${WatsonDocument.modelClassName.concat(".type")}',

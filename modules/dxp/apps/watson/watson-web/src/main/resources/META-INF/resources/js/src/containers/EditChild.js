@@ -748,6 +748,20 @@ class EditChild extends JSXComponent {
 			},
 			{
 				collapsible: true,
+				entries: caseworkActivitiesNav,
+				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/casework_activities/index`,
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'casework_activities'),
+				text: Liferay.Language.get('casework-activities')
+			},
+			{
+				collapsible: true,
+				entries: counselingReportsNav,
+				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/counseling_reports/index`,
+				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'counseling_reports'),
+				text: Liferay.Language.get('counseling-reports')
+			},
+			{
+				collapsible: true,
 				entries: documentsNav,
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/index`,
 				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'documents'),
@@ -766,20 +780,6 @@ class EditChild extends JSXComponent {
 				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/legals/index`,
 				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'legals'),
 				text: Liferay.Language.get('legal-reports')
-			},
-			{
-				collapsible: true,
-				entries: caseworkActivitiesNav,
-				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/casework_activities/index`,
-				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'casework_activities'),
-				text: Liferay.Language.get('casework-activities')
-			},
-			{
-				collapsible: true,
-				entries: counselingReportsNav,
-				href: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/counseling_reports/index`,
-				selected: ((action === 'create' || action === 'index' || action === 'import') && model === 'counseling_reports'),
-				text: Liferay.Language.get('counseling-reports')
 			},
 			{
 				collapsible: true,
@@ -838,7 +838,7 @@ class EditChild extends JSXComponent {
 				}
 			);
 
-			const updateDataManuallyMethodName = `update${formatModelName(model)}DataManually`;
+			const updateDataManuallyMethodName = `update${formatModelName(model, true)}DataManually`;
 
 			const updateManuallyMethod = this.props[updateDataManuallyMethodName];
 

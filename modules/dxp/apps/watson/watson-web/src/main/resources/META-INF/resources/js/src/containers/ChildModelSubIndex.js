@@ -34,7 +34,7 @@ class ChildModelSubIndex extends JSXComponent {
 
 		const singularLabel = WatsonConstants.inputConfig[model].singularLabel;
 
-		const editModelMethod = props[`edit${formatModelName(singularLabel)}`];
+		const editModelMethod = props[`edit${formatModelName(singularLabel, true)}`];
 
 		if (entryId) {
 			editModelMethod(entryId);

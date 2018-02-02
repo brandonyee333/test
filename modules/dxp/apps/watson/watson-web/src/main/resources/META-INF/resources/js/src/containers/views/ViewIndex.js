@@ -147,7 +147,7 @@ class ViewIndex extends JSXComponent {
 		if (!disableDataFetch) {
 			const {batchCount, itemsLoaded} = state;
 
-			const indexModelMethod = props[`index${formatModelName(model)}`];
+			const indexModelMethod = props[`index${formatModelName(model, true)}`];
 
 			if (indexModelMethod) {
 				indexModelMethod(
@@ -171,7 +171,7 @@ class ViewIndex extends JSXComponent {
 		if (!disableDataFetch) {
 			const {batchCount, itemsLoaded} = state;
 
-			const searchModelMethod = props[`search${formatModelName(model)}`];
+			const searchModelMethod = props[`search${formatModelName(model, true)}`];
 
 			const fieldsArray = [];
 			const keywordsArray = [];

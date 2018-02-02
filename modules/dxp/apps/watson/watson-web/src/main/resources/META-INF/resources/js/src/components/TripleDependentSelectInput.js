@@ -84,7 +84,7 @@ class TripleDependentSelectInput extends JSXComponent {
 		const {selectedModel2: oldSelectedModel2} = this.state;
 
 		if (selectedModel2 !== oldSelectedModel2 || forceRefresh) {
-			const modelName = `index${formatModelName(selectedModel2)}`;
+			const modelName = `index${formatModelName(selectedModel2, true)}`;
 
 			const indexModel = props[modelName];
 

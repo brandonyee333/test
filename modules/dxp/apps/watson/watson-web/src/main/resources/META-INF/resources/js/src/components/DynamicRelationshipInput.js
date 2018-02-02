@@ -87,7 +87,7 @@ class DynamicRelationshipInput extends JSXComponent {
 		const {selectedModel1: oldSelectedModel} = this.state;
 
 		if (selectedModel1 !== oldSelectedModel || forceRefresh) {
-			const modelName = `index${formatModelName(selectedModel1)}`;
+			const modelName = `index${formatModelName(selectedModel1, true)}`;
 
 			const indexModel = props[modelName];
 

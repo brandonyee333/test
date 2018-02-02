@@ -840,7 +840,7 @@ class EditIncident extends JSXComponent {
 				}
 			);
 
-			const updateDataManuallyMethodName = `update${formatModelName(model)}DataManually`;
+			const updateDataManuallyMethodName = `update${formatModelName(model, true)}DataManually`;
 
 			const updateManuallyMethod = this.props[updateDataManuallyMethodName];
 

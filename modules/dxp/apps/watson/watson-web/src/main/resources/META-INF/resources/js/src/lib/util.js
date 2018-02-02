@@ -89,16 +89,22 @@ export function formatBytesToString(bytes) {
 	return `${bytes.toFixed(1)} ${BYTE_UNITS[i]}`;
 }
 
-export function formatModelName(modelName = '') {
-	let name = capitalize(modelName);
-
+export function formatModelName(modelName = '', shouldCapitalize) {
 	if (modelName && modelName.includes('_')) {
 		const tempName = modelName.split('_');
 
-		name = `${(capitalize(tempName[0]))}${capitalize(tempName[1])}`;
+		if (shouldCapitalize) {
+			modelName = `${(capitalize(tempName[0]))}${capitalize(tempName[1])}`;
+		}
+		else {
+			modelName = `${tempName[0]}${capitalize(tempName[1])}`;
+		}
+	}
+	else if (shouldCapitalize) {
+		modelName = capitalize(modelName);
 	}
 
-	return name;
+	return modelName;
 }
 
 export function getMimeType(mimeType = '') {

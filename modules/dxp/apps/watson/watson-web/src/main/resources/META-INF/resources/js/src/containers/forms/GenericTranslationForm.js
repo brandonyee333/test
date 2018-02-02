@@ -32,8 +32,8 @@ class GenericTranslationForm extends JSXComponent {
 		const {model, watsonPrimaryKey} = props;
 
 		if (model && watsonPrimaryKey) {
-			const fetchTranslationMethod = props[`fetch${formatModelName(model)}Translation`];
-			const viewModelMethod = props[`view${formatModelName(model)}`];
+			const fetchTranslationMethod = props[`fetch${formatModelName(model, true)}Translation`];
+			const viewModelMethod = props[`view${formatModelName(model, true)}`];
 
 			if (viewModelMethod) {
 				viewModelMethod(watsonPrimaryKey);
@@ -108,7 +108,7 @@ class GenericTranslationForm extends JSXComponent {
 	handleSubmit(data) {
 		const {props} = this;
 
-		const submitMethod = props[`translate${formatModelName(props.model)}`];
+		const submitMethod = props[`translate${formatModelName(props.model, true)}`];
 
 		if (submitMethod) {
 			submitMethod(data);

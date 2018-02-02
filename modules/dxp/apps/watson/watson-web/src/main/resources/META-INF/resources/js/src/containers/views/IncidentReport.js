@@ -120,12 +120,10 @@ class IncidentReport extends JSXComponent {
 	}
 
 	renderEntity(data, displayFields, model) {
-		let headerName = '';
-
 		const entityName = data.get('name') || data.get('id') || '';
 		const entitySingularLabel = WatsonConstants.inputConfig[model].singularLabel;
 
-		headerName = entityName.includes(entitySingularLabel) ? entityName : `${WatsonConstants.inputConfig[model].singularLabel} - ${entityName}`;
+		const headerName = entityName.includes(entitySingularLabel) ? entityName : `${WatsonConstants.inputConfig[model].singularLabel} - ${entityName}`;
 
 		return (
 			<div class="body">

@@ -37,16 +37,16 @@ class HistoryView extends JSXComponent {
 		let watsonModelObject = null;
 
 		if (model && classPK > 0) {
-			const modelLoading = props[`${model}Loading`];
+			const modelLoading = props[`${formatModelName(model, false)}Loading`];
 
 			if (!modelLoading) {
-				const modelData = props[`${model}Data`];
+				const modelData = props[`${formatModelName(model, false)}Data`];
 
 				if (modelData) {
 					watsonModelObject = modelData.get(classPK);
 
 					if (!watsonModelObject && !classPKArray.includes(classPK)) {
-						const modelName = `index${formatModelName(model)}`;
+						const modelName = `index${formatModelName(model, true)}`;
 
 						const indexModel = props[modelName];
 
@@ -166,12 +166,12 @@ HistoryView.PROPS = {
 	activitiesLoading: Config.bool(),
 	addressesData: Config.value(new Map()),
 	addressesLoading: Config.bool(),
-	casework_activitiesData: Config.value(new Map()),
-	casework_activitiesLoading: Config.bool(),
+	caseworkActivitiesData: Config.value(new Map()),
+	caseworkActivitiesLoading: Config.bool(),
 	childrenData: Config.value(new Map()),
 	childrenLoading: Config.bool(),
-	counseling_reportsData: Config.value(new Map()),
-	counseling_reportsLoading: Config.bool(),
+	counselingReportsData: Config.value(new Map()),
+	counselingReportsLoading: Config.bool(),
 	documentsData: Config.value(new Map()),
 	documentsLoading: Config.bool(),
 	historyData: Config.value(new Map()),
@@ -183,10 +183,10 @@ HistoryView.PROPS = {
 	legalsLoading: Config.bool(),
 	peopleData: Config.value(new Map()),
 	peopleLoading: Config.bool(),
-	physical_examsData: Config.value(new Map()),
-	physical_examsLoading: Config.bool(),
-	progress_reportsData: Config.value(new Map()),
-	progress_reportsLoading: Config.bool(),
+	physicalExamsData: Config.value(new Map()),
+	physicalExamsLoading: Config.bool(),
+	progressReportsData: Config.value(new Map()),
+	progressReportsLoading: Config.bool(),
 	resourcesData: Config.value(new Map()),
 	resourcesLoading: Config.bool(),
 	showCreated: Config.bool().value(true),
@@ -207,12 +207,12 @@ function mapStateToProps(state) {
 	const activitiesLoading = state.getIn(['activities', 'loading']);
 	const addressesData = state.getIn(['addresses', 'data']) || new Map();
 	const addressesLoading = state.getIn(['addresses', 'loading']);
-	const casework_activitiesData = state.getIn(['casework_activities', 'data']) || new Map();
-	const casework_activitiesLoading = state.getIn(['casework_activities', 'loading']);
+	const caseworkActivitiesData = state.getIn(['casework_activities', 'data']) || new Map();
+	const caseworkActivitiesLoading = state.getIn(['casework_activities', 'loading']);
 	const childrenData = state.getIn(['children', 'data']) || new Map();
 	const childrenLoading = state.getIn(['children', 'loading']);
-	const counseling_reportsData = state.getIn(['counseling_reports', 'data']) || new Map();
-	const counseling_reportsLoading = state.getIn(['counseling_reports', 'loading']);
+	const counselingReportsData = state.getIn(['counseling_reports', 'data']) || new Map();
+	const counselingReportsLoading = state.getIn(['counseling_reports', 'loading']);
 	const documentsData = state.getIn(['documents', 'data']) || new Map();
 	const documentsLoading = state.getIn(['documents', 'loading']);
 	const illnessesData = state.getIn(['illnesses', 'data']) || new Map();
@@ -223,10 +223,10 @@ function mapStateToProps(state) {
 	const legalsLoading = state.getIn(['legals', 'loading']);
 	const peopleData = state.getIn(['people', 'data']) || new Map();
 	const peopleLoading = state.getIn(['people', 'loading']);
-	const physical_examsData = state.getIn(['physical_exams', 'data']) || new Map();
-	const physical_examsLoading = state.getIn(['physical_exams', 'loading']);
-	const progress_reportsData = state.getIn(['progress_reports', 'data']) || new Map();
-	const progress_reportsLoading = state.getIn(['progress_reports', 'loading']);
+	const physicalExamsData = state.getIn(['physical_exams', 'data']) || new Map();
+	const physicalExamsLoading = state.getIn(['physical_exams', 'loading']);
+	const progressReportsData = state.getIn(['progress_reports', 'data']) || new Map();
+	const progressReportsLoading = state.getIn(['progress_reports', 'loading']);
 	const resourcesData = state.getIn(['resources', 'data']) || new Map();
 	const resourcesLoading = state.getIn(['resources', 'loading']);
 	const vehiclesData = state.getIn(['vehicles', 'data']) || new Map();
@@ -237,12 +237,12 @@ function mapStateToProps(state) {
 		activitiesLoading,
 		addressesData,
 		addressesLoading,
-		casework_activitiesData,
-		casework_activitiesLoading,
+		caseworkActivitiesData,
+		caseworkActivitiesLoading,
 		childrenData,
 		childrenLoading,
-		counseling_reportsData,
-		counseling_reportsLoading,
+		counselingReportsData,
+		counselingReportsLoading,
 		documentsData,
 		documentsLoading,
 		illnessesData,
@@ -253,10 +253,10 @@ function mapStateToProps(state) {
 		legalsLoading,
 		peopleData,
 		peopleLoading,
-		physical_examsData,
-		physical_examsLoading,
-		progress_reportsData,
-		progress_reportsLoading,
+		physicalExamsData,
+		physicalExamsLoading,
+		progressReportsData,
+		progressReportsLoading,
 		resourcesData,
 		resourcesLoading,
 		vehiclesData,

@@ -46,7 +46,7 @@ class GenericIncidentForm extends JSXComponent {
 		const {model, watsonPrimaryKey} = props;
 
 		if (model && watsonPrimaryKey) {
-			const editModelMethod = props[`edit${formatModelName(model)}`];
+			const editModelMethod = props[`edit${formatModelName(model, true)}`];
 
 			editModelMethod(watsonPrimaryKey);
 		}
@@ -77,7 +77,7 @@ class GenericIncidentForm extends JSXComponent {
 		} = this.props;
 
 		if (action !== 'create' && response && response.get('status') === 'success' && response.get('message')) {
-			const updateModelDataManuallyMethod = this.props[`update${formatModelName(model)}DataManually`];
+			const updateModelDataManuallyMethod = this.props[`update${formatModelName(model, true)}DataManually`];
 
 			updateModelDataManuallyMethod(
 				{
@@ -145,7 +145,7 @@ class GenericIncidentForm extends JSXComponent {
 	handleCreate(data) {
 		const {props} = this;
 
-		const updateModelMethod = props[`update${formatModelName(props.model)}`];
+		const updateModelMethod = props[`update${formatModelName(props.model, true)}`];
 
 		updateModelMethod(data);
 
@@ -158,7 +158,7 @@ class GenericIncidentForm extends JSXComponent {
 		const {model, watsonIncidentId, watsonPrimaryKey} = props;
 
 		if (watsonPrimaryKey) {
-			const destroyModelMethod = props[`destroy${formatModelName(model)}`];
+			const destroyModelMethod = props[`destroy${formatModelName(model, true)}`];
 
 			destroyModelMethod(watsonPrimaryKey);
 
@@ -181,7 +181,7 @@ class GenericIncidentForm extends JSXComponent {
 
 		const {model, watsonIncidentId, watsonPrimaryKey} = props;
 
-		const requestModelTranslationMethod = props[`request${formatModelName(model)}Translation`];
+		const requestModelTranslationMethod = props[`request${formatModelName(model, true)}Translation`];
 
 		const translationURL = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/${model}/${watsonPrimaryKey}/translate`;
 
@@ -199,7 +199,7 @@ class GenericIncidentForm extends JSXComponent {
 
 		const {model, watsonPrimaryKey} = props;
 
-		const updateModelFormData = props[`update${formatModelName(model)}FormData`];
+		const updateModelFormData = props[`update${formatModelName(model, true)}FormData`];
 
 		updateModelFormData(formData, watsonPrimaryKey);
 	}
@@ -228,7 +228,7 @@ class GenericIncidentForm extends JSXComponent {
 			cancelMethod,
 			headerStringLeft,
 			headerStringRight,
-			submitMethod = props[`update${formatModelName(model)}`],
+			submitMethod = props[`update${formatModelName(model, true)}`],
 			watsonPrimaryKey
 		} = props;
 

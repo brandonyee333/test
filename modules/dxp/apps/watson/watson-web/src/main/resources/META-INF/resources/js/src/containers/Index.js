@@ -84,7 +84,7 @@ class Index extends JSXComponent {
 
 		const {batchCount, itemsLoaded} = state;
 
-		const indexModelMethod = props[`index${formatModelName(model)}`];
+		const indexModelMethod = props[`index${formatModelName(model, true)}`];
 
 		end = (end < 1) ? itemsLoaded + batchCount : end;
 
@@ -129,7 +129,7 @@ class Index extends JSXComponent {
 
 		const {batchCount, itemsLoaded} = state;
 
-		const searchModelMethod = props[`search${formatModelName(model)}`];
+		const searchModelMethod = props[`search${formatModelName(model, true)}`];
 
 		const fieldsArray = [];
 		const keywordsArray = [];
