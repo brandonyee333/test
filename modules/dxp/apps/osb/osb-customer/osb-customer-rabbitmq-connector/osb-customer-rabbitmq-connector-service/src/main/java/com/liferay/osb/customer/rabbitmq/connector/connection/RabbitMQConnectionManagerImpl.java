@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Amos Fong
  * @author Vishal Reddy
  */
-@Component
+@Component(immediate = true)
 public class RabbitMQConnectionManagerImpl
 	implements RabbitMQConnectionManager {
 
