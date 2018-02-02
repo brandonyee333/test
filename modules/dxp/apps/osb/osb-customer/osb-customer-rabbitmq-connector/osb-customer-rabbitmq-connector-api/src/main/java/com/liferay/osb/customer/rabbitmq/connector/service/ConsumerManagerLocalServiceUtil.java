@@ -17,6 +17,8 @@ package com.liferay.osb.customer.rabbitmq.connector.service;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBag;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 
+import java.util.Map;
+
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -46,7 +48,7 @@ public class ConsumerManagerLocalServiceUtil {
 		getService().deactivateConsumer(rabbitMQConsumerKey);
 	}
 
-	public static java.util.Map<String, ConsumerBag> getConsumersMap() {
+	public static Map<String, ConsumerBag> getConsumersMap() {
 		return getService().getConsumersMap();
 	}
 
@@ -70,7 +72,9 @@ public class ConsumerManagerLocalServiceUtil {
 		getService().unregisterConsumer(rabbitMQConsumerKey);
 	}
 
-	private static final ServiceTracker<ConsumerManagerLocalService, ConsumerManagerLocalService> _serviceTracker =
-		ServiceTrackerFactory.open(ConsumerManagerLocalService.class);
+	private static final ServiceTracker
+		<ConsumerManagerLocalService, ConsumerManagerLocalService>
+			_serviceTracker = ServiceTrackerFactory.open(
+				ConsumerManagerLocalService.class);
 
 }
