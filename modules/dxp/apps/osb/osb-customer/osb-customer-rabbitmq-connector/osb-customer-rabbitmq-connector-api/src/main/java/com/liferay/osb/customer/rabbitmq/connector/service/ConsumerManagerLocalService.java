@@ -28,15 +28,16 @@ public interface ConsumerManagerLocalService {
 
 	public void consumeMessage();
 
-	public void consumeMessages(String queue, long messageCount,
-		Object rabbitMQConsumer) throws Exception;
+	public void consumeMessages(
+			String queue, long messageCount, Object rabbitMQConsumer)
+		throws Exception;
 
 	public void deactivateConsumer(String rabbitMQConsumerKey);
 
 	public Map<String, ConsumerBag> getConsumersMap();
 
-	public String registerConsumer(String queue,
-		int prefetchCount, Object rabbitMQConsumer)
+	public String registerConsumer(
+			String queue, int prefetchCount, Object rabbitMQConsumer)
 		throws Exception;
 
 	public void resetChannels() throws Exception;

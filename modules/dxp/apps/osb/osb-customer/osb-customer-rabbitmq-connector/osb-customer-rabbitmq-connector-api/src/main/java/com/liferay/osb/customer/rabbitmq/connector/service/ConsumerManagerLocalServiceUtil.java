@@ -35,8 +35,8 @@ public class ConsumerManagerLocalServiceUtil {
 		getService().consumeMessage();
 	}
 
-	public static void consumeMessages(String queue,
-		long messageCount, Object rabbitMQConsumer)
+	public static void consumeMessages(
+			String queue, long messageCount, Object rabbitMQConsumer)
 		throws Exception {
 
 		getService().consumeMessages(queue, messageCount, rabbitMQConsumer);
@@ -54,12 +54,12 @@ public class ConsumerManagerLocalServiceUtil {
 		return _serviceTracker.getService();
 	}
 
-	public static String registerConsumer(String queue,
-		int prefetchCount, Object rabbitMQConsumer)
+	public static String registerConsumer(
+			String queue, int prefetchCount, Object rabbitMQConsumer)
 		throws Exception {
 
-		return getService()
-			.registerConsumer(queue, prefetchCount, rabbitMQConsumer);
+		return getService().registerConsumer(
+			queue, prefetchCount, rabbitMQConsumer);
 	}
 
 	public static void resetChannels() throws Exception {
