@@ -18,7 +18,7 @@ import {indexPhysicalExams} from '../../actions/physical-exams';
 import {indexProgressReports} from '../../actions/progress-reports';
 import {viewChildren} from '../../actions/children';
 
-import {getMimeType, formatModelName, updateDOMTitle} from '../../lib/util';
+import {formatModelName, getMimeType, updateDOMTitle} from '../../lib/util';
 
 class ChildReport extends JSXComponent {
 	attached() {
@@ -220,12 +220,6 @@ class ChildReport extends JSXComponent {
 
 		const displayFields = this.state[`${formatModelName(modelName, false)}Config`];
 
-		console.log(modelName)
-
-		console.log(formatModelName(modelName, false));
-
-		console.log(modelData, displayFields)
-
 		return (
 			<div class={modelName}>
 				{this.renderEntities(modelData, displayFields, modelName, entryId)}
@@ -365,11 +359,11 @@ class ChildReport extends JSXComponent {
 				}
 
 				{(!entryId || model === 'casework_activities') &&
-				 this.renderModel(entryId, 'casework_activities')
+					this.renderModel(entryId, 'casework_activities')
 				}
 
 				{(!entryId || model === 'counseling_reports') &&
-				 this.renderModel(entryId, 'counseling_reports')
+					this.renderModel(entryId, 'counseling_reports')
 				}
 
 				{(!entryId || model === 'documents') &&

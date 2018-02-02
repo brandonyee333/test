@@ -14,7 +14,7 @@ import {editVehicles} from '../actions/vehicles';
 
 import {formatModelName, getOptionsLabelFromWatsonConstants, getPluralMessage} from '../lib/util';
 
-class ChildModelSubIndex extends JSXComponent {
+class IncidentModelSubIndex extends JSXComponent {
 	attached() {
 		this.handleFetchDataRequest();
 	}
@@ -114,7 +114,7 @@ class ChildModelSubIndex extends JSXComponent {
 	}
 }
 
-ChildModelSubIndex.PROPS = {
+IncidentModelSubIndex.PROPS = {
 	action: Config.string().value('view'),
 	affiliationData: Config.any(),
 	entryId: Config.value(''),
@@ -173,4 +173,4 @@ function mapStateToProps(state, props) {
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChildModelSubIndex);
+export default connect(mapStateToProps, mapDispatchToProps)(IncidentModelSubIndex);

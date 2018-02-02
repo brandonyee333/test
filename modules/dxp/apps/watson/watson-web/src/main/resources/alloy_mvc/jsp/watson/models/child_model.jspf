@@ -139,6 +139,8 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			pushRelData(jsonObject, watsonChild.getWatsonChildId(), "name", locale);
 		}
 
+		jsonObject.put("originalWatsonPersonId", watsonChild.getOriginalWatsonPersonId());
+
 		if (parentNameWatsonListTypeRels != null) {
 			pushRelData(jsonObject, parentNameWatsonListTypeRels, "parentName", locale);
 		}

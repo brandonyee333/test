@@ -10,11 +10,12 @@ import SidebarToolbar from './components/SidebarToolbar';
 
 import AdminConsole from './containers/AdminConsole';
 import CreateChild from './containers/CreateChild';
+import ChildModelImport from './containers/ChildModelImport';
 import CreateIncident from './containers/CreateIncident';
-import ChildModelSubIndex from './containers/ChildModelSubIndex';
 import ChildReport from './containers/views/ChildReport';
 import EditChild from './containers/EditChild';
 import EditIncident from './containers/EditIncident';
+import IncidentModelSubIndex from './containers/IncidentModelSubIndex';
 import IncidentReport from './containers/views/IncidentReport';
 import Index from './containers/Index';
 import LandingPage from './containers/LandingPage';
@@ -85,6 +86,11 @@ class Watson extends JSXComponent {
 						/>
 
 						<Router
+							component={ChildModelImport}
+							path={`${WatsonConstants.urls.basePath}/children/import`}
+						/>
+
+						<Router
 							component={CreateIncident}
 							path={`${WatsonConstants.urls.basePath}/incidents/create/:model([a-z_A-Z]+)`}
 						/>
@@ -140,7 +146,7 @@ class Watson extends JSXComponent {
 						/>
 
 						<Router
-							component={ChildModelSubIndex}
+							component={IncidentModelSubIndex}
 							path={`${WatsonConstants.urls.basePath}/incidents/:watsonIncidentId(\\d+)/edit/:model([a-z_A-Z]+)/:entryId(\\d+)/view`}
 						/>
 

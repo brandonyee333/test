@@ -167,6 +167,50 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		respondWith(WatsonChild.getAsJSONObject(watsonChild));
 	}
 
+	public void executeImport() throws Exception {
+		if (!isRespondingTo("json")) {
+			return;
+		}
+
+		long[] watsonPeopleIds = ParamUtil.getLongValues(request, "selectedIds");
+
+		List<WatsonChild> addedChildren = new ArrayList<>();
+
+		for (long watsonPersonId : watsonPeopleIds) {
+			WatsonPerson originalWatsonPerson = WatsonPerson.fetch(watsonPersonId);
+
+			WatsonChild newWatsonChild = WatsonChild.create(request);
+
+			BeanPropertiesUtil.copyProperties(originalWatsonPerson, newWatsonChild);
+
+			if (originalWatsonPerson.getOriginalWatsonPersonId() == 0) {
+				newWatsonChild.setOriginalWatsonPersonId(originalWatsonPerson.getPrimaryKey());
+			}
+
+			List<WatsonListTypeRel> listTypeRelCopies = WatsonListTypeRel.copy(request, watsonPersonId, newWatsonChild.getWatsonChildId());
+
+			for (WatsonListTypeRel listTypeRelCopy : listTypeRelCopies) {
+				String type = listTypeRelCopy.getType();
+
+				if (type.contains("WatsonPerson")) {
+					type = StringUtil.replace(type, "WatsonPerson", "WatsonChild");
+
+					listTypeRelCopy.setType(type);
+
+					listTypeRelCopy.update();
+				}
+			}
+
+			newWatsonChild = WatsonChild.add(newWatsonChild);
+
+			WatsonHistory.add(newWatsonChild.getWatsonChildId(), newWatsonChild, request, WatsonHistory.HISTORY_TYPE_CREATED);
+
+			addedChildren.add(newWatsonChild);
+		}
+
+		respondWith(translate("child-saved-successfully"), WatsonChild.getAsJSONDataArray(addedChildren, WatsonChild.countAll()));
+	}
+
 	public void fetchTranslation() throws Exception {
 		if (!isRespondingTo("json")) {
 			return;

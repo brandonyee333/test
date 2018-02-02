@@ -257,6 +257,8 @@ class Index extends JSXComponent {
 			loading = modelLoading;
 		}
 
+		const {childrensHomeManagerRole, incidentManagerRole, watsonAdministratorRole} = WatsonConstants.currentUser;
+
 		let retVal = {};
 
 		if (WatsonConstants.inputConfig.children.viewByOptions[model]) {
@@ -271,6 +273,14 @@ class Index extends JSXComponent {
 						href={`${WatsonConstants.urls.baseURL}/children/create/`}
 						label={Liferay.Language.get('create-child')}
 					/>
+
+					{watsonAdministratorRole === true || (childrensHomeManagerRole === true && incidentManagerRole === true) &&
+						<LinkButton
+							className="primary"
+							href={`${WatsonConstants.urls.baseURL}/children/import/`}
+							label={Liferay.Language.get('import-from-ZCR')}
+						/>
+					}
 
 					<div class="view-by-label">
 						{Liferay.Language.get('display-by')}
