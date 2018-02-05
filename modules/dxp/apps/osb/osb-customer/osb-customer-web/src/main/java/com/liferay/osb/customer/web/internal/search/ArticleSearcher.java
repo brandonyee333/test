@@ -79,7 +79,7 @@ public class ArticleSearcher extends BaseSearcher {
 			BooleanQuery booleanQuery, Locale locale, String value)
 		throws ParseException {
 
-		for (String field : _keywordFields) {
+		for (String field : _KEYWORD_FIELDS) {
 			booleanQuery.addTerm(_getLocalizedName(locale, field), value);
 		}
 	}
@@ -282,7 +282,7 @@ public class ArticleSearcher extends BaseSearcher {
 
 				keywordsQuery.addExactTerm(Field.ASSET_TAG_NAMES, keywords);
 
-				keywordsQuery.addTerms(_keywordFields, keywords);
+				keywordsQuery.addTerms(_KEYWORD_FIELDS, keywords);
 
 				kbArticleQuery.add(keywordsQuery, BooleanClauseOccur.MUST);
 			}
@@ -420,7 +420,7 @@ public class ArticleSearcher extends BaseSearcher {
 		}
 	}
 
-	private static final String[] _keywordFields =
+	private static final String[] _KEYWORD_FIELDS =
 		{Field.ASSET_CATEGORY_TITLES, Field.CONTENT, Field.TITLE};
 
 	private final List<AssetCategory> _articleTypeAssetCategories =

@@ -52,8 +52,10 @@ public class ReleaseNotesUtil {
 				ReleaseNotesConfigurationValues.JIRA_COMPONENT_FILTERS) {
 
 			try {
-				JIRAComponentFilter jiraComponentFilter =
-					(JIRAComponentFilter)Class.forName(className).newInstance();
+				Class<JIRAComponentFilter> clazz =
+					(Class<JIRAComponentFilter>)Class.forName(className);
+
+				JIRAComponentFilter jiraComponentFilter = clazz.newInstance();
 
 				jiraComponentMap = jiraComponentFilter.processFilter(
 					jiraComponentMap, jiraProjectVersion);

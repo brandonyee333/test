@@ -244,7 +244,7 @@ public class KBArticleImporter {
 	protected String[] splitAssetCategoryName(String assetCategoryName) {
 		String[] specialNames = new String[0];
 
-		for (String specialAssetCategoryName : _specialAssetCategoryNames) {
+		for (String specialAssetCategoryName : _SPECIAL_ASSET_CATEGORY_NAMES) {
 			if (assetCategoryName.contains(specialAssetCategoryName)) {
 				specialNames = ArrayUtil.append(
 					specialNames, specialAssetCategoryName);
@@ -259,14 +259,15 @@ public class KBArticleImporter {
 		return ArrayUtil.append(names, specialNames);
 	}
 
-	private static final Pattern _delimiter = Pattern.compile(
-		",(?=(?:[^\"]*\"[^\"]*\"[^\"]*)*$|[^\"]*$)", Pattern.CASE_INSENSITIVE);
-	private static final String[] _specialAssetCategoryNames = {
+	private static final String[] _SPECIAL_ASSET_CATEGORY_NAMES = {
 		"Alerts, Announcements", "Categories, Tags, Vocabularies",
 		"Deployment, Environments", "Staging, Export/Import",
 		"UI Infrastructure, Accessibility",
 		"User, Membership, and Role Management", "Workflow, Workflow Forms"
 	};
+
+	private static final Pattern _delimiter = Pattern.compile(
+		",(?=(?:[^\"]*\"[^\"]*\"[^\"]*)*$|[^\"]*$)", Pattern.CASE_INSENSITIVE);
 
 	private final Map<String, AssetCategory> _assetCategoryMap =
 		new HashMap<>();

@@ -58,7 +58,7 @@ public class KBArticleInfo {
 
 		List<String> headers = new ArrayList<>();
 
-		for (String field : _fields) {
+		for (String field : _FIELDS) {
 			headers.add(field);
 		}
 
@@ -122,9 +122,9 @@ public class KBArticleInfo {
 
 	public String exportToCVS(List<AssetVocabulary> assetVocabularies) {
 		StringBundler sb = new StringBundler(
-			(assetVocabularies.size() + _fields.length) * 2);
+			(assetVocabularies.size() + _FIELDS.length) * 2);
 
-		for (String field : _fields) {
+		for (String field : _FIELDS) {
 			String content = _fieldInfo.get(field);
 
 			if (field.endsWith(FIELD_SECTION) && !_leafNode) {
@@ -159,7 +159,7 @@ public class KBArticleInfo {
 
 		Element articleElement = rootElement.addElement("article");
 
-		for (String field : _fields) {
+		for (String field : _FIELDS) {
 			String content = _fieldInfo.get(field);
 
 			if (field.equals(FIELD_TAG)) {
@@ -206,7 +206,7 @@ public class KBArticleInfo {
 		return _assetCategoryDisplay.renderVocabularyCategories(vocabularyId);
 	}
 
-	private static final String[] _fields = {
+	private static final String[] _FIELDS = {
 		FIELD_SECTION, FIELD_SUBSECTION, FIELD_TITLE, FIELD_URL_TITLE,
 		FIELD_AUDIENCE, FIELD_TAG
 	};
