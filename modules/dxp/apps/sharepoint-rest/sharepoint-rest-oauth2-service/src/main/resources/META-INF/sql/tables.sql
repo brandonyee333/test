@@ -3,8 +3,8 @@ create table SharepointOAuth2TokenEntry (
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
-	accessToken TEXT null,
+	accessToken VARCHAR(75) null,
 	configurationPid VARCHAR(75) null,
 	expirationDate DATE null,
-	refreshToken TEXT null
+	refreshToken VARCHAR(75) null
 );

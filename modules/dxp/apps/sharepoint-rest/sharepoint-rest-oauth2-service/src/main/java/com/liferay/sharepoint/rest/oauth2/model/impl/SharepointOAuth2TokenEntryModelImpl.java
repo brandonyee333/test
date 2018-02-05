@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.sharepoint.oauth2.model.impl;
+package com.liferay.sharepoint.rest.oauth2.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -30,8 +30,8 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 
-import com.liferay.sharepoint.oauth2.model.SharepointOAuth2TokenEntry;
-import com.liferay.sharepoint.oauth2.model.SharepointOAuth2TokenEntryModel;
+import com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry;
+import com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntryModel;
 
 import java.io.Serializable;
 
@@ -68,10 +68,10 @@ public class SharepointOAuth2TokenEntryModelImpl extends BaseModelImpl<Sharepoin
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
-			{ "accessToken", Types.CLOB },
+			{ "accessToken", Types.VARCHAR },
 			{ "configurationPid", Types.VARCHAR },
 			{ "expirationDate", Types.TIMESTAMP },
-			{ "refreshToken", Types.CLOB }
+			{ "refreshToken", Types.VARCHAR }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -80,33 +80,33 @@ public class SharepointOAuth2TokenEntryModelImpl extends BaseModelImpl<Sharepoin
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("accessToken", Types.CLOB);
+		TABLE_COLUMNS_MAP.put("accessToken", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("configurationPid", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("expirationDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("refreshToken", Types.CLOB);
+		TABLE_COLUMNS_MAP.put("refreshToken", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table SharepointOAuth2TokenEntry (sharepointOAuth2TokenEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,accessToken TEXT null,configurationPid VARCHAR(75) null,expirationDate DATE null,refreshToken TEXT null)";
+	public static final String TABLE_SQL_CREATE = "create table SharepointOAuth2TokenEntry (sharepointOAuth2TokenEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,accessToken VARCHAR(75) null,configurationPid VARCHAR(75) null,expirationDate DATE null,refreshToken VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table SharepointOAuth2TokenEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY sharepointOAuth2TokenEntry.sharepointOAuth2TokenEntryId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY SharepointOAuth2TokenEntry.sharepointOAuth2TokenEntryId ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.sharepoint.oauth2.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.sharepoint.oauth2.model.SharepointOAuth2TokenEntry"),
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.sharepoint.rest.oauth2.service.util.ServiceProps.get(
+				"value.object.entity.cache.enabled.com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry"),
 			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.sharepoint.oauth2.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.sharepoint.oauth2.model.SharepointOAuth2TokenEntry"),
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.sharepoint.rest.oauth2.service.util.ServiceProps.get(
+				"value.object.finder.cache.enabled.com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry"),
 			true);
-	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.sharepoint.oauth2.service.util.ServiceProps.get(
-				"value.object.column.bitmask.enabled.com.liferay.sharepoint.oauth2.model.SharepointOAuth2TokenEntry"),
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.sharepoint.rest.oauth2.service.util.ServiceProps.get(
+				"value.object.column.bitmask.enabled.com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry"),
 			true);
 	public static final long CONFIGURATIONPID_COLUMN_BITMASK = 1L;
 	public static final long USERID_COLUMN_BITMASK = 2L;
 	public static final long SHAREPOINTOAUTH2TOKENENTRYID_COLUMN_BITMASK = 4L;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.sharepoint.oauth2.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.sharepoint.oauth2.model.SharepointOAuth2TokenEntry"));
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.sharepoint.rest.oauth2.service.util.ServiceProps.get(
+				"lock.expiration.time.com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry"));
 
 	public SharepointOAuth2TokenEntryModelImpl() {
 	}
@@ -555,7 +555,7 @@ public class SharepointOAuth2TokenEntryModelImpl extends BaseModelImpl<Sharepoin
 
 		sb.append("<model><model-name>");
 		sb.append(
-			"com.liferay.sharepoint.oauth2.model.SharepointOAuth2TokenEntry");
+			"com.liferay.sharepoint.rest.oauth2.model.SharepointOAuth2TokenEntry");
 		sb.append("</model-name>");
 
 		sb.append(
