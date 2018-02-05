@@ -115,8 +115,6 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 		</c:if>
 	</c:if>
 
-	<br /><br />
-
 	<div>
 
 		<%

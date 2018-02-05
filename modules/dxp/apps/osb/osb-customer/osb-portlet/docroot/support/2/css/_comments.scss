@@ -21,12 +21,10 @@
 
 .comment-collapsed {
 	&.ticket-comment {
-		.comment-body {
+		.comment-body pre {
 			color: $info;
-			display: inline;
 			font-style: italic;
 			height: 1.5em;
-			margin: 0;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;

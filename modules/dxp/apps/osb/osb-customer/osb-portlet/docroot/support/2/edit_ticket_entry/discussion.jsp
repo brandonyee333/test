@@ -665,16 +665,18 @@ else {
 
 				var commentsContainer = A.one('#<portlet:namespace />commentsContainer');
 
-				commentsContainer.all('.ticket-comment').each(
-					function(item) {
-						if (collapse) {
-							item.set('className', item.get('className').replace('comment-expanded', 'comment-collapsed'));
+				if (commentsContainer) {
+					commentsContainer.all('.ticket-comment').each(
+						function(item) {
+							if (collapse) {
+								item.set('className', item.get('className').replace('comment-expanded', 'comment-collapsed'));
+							}
+							else {
+								item.set('className', item.get('className').replace('comment-collapsed', 'comment-expanded'));
+							}
 						}
-						else {
-							item.set('className', item.get('className').replace('comment-collapsed', 'comment-expanded'));
-						}
-					}
-				);
+					);
+				}
 			},
 			['aui-base']
 		);
