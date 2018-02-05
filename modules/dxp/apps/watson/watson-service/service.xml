@@ -99,7 +99,7 @@
 		<column name="countryWatsonListTypeId" type="long" />
 		<column name="dischargeWatsonListTypeId" type="long" />
 		<column name="ethnicityWatsonListTypeId" type="long" />
-		<column name="originalWatsonChildId" type="long" />
+		<column name="originalWatsonPersonId" type="long" />
 		<column name="sexWatsonListTypeId" type="long" />
 		<column name="sourceSubtypeWatsonListTypeId" type="long" />
 		<column name="sourceWatsonListTypeId" type="long" />
