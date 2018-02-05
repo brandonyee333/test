@@ -150,7 +150,7 @@ else {
 	<aui:script>
 		function <portlet:namespace />addComment(status) {
 			<c:if test="<%= OSBTicketEntryPermission.contains(permissionChecker, ticketEntry.getTicketEntryId(), ActionKeys.ADD_ATTACHMENT) %>">
-				var commentBody = document.<portlet:namespace />fm2.<portlet:namespace />commentBody0.value;
+				var commentBody = document.<portlet:namespace />ticketCommentFm.<portlet:namespace />commentBody0.value;
 
 				if (!<portlet:namespace />confirmAttachments(commentBody)) {
 					return;
@@ -158,8 +158,8 @@ else {
 			</c:if>
 
 			<c:if test="<%= ticketWorker && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) %>">
-				var checkbox = document.<portlet:namespace />fm2.<portlet:namespace />pendingTypes0;
-				var discussionTab = <portlet:namespace />fm2.<portlet:namespace />discussionTab;
+				var checkbox = document.<portlet:namespace />ticketCommentFm.<portlet:namespace />pendingTypes0;
+				var discussionTab = <portlet:namespace />ticketCommentFm.<portlet:namespace />discussionTab;
 
 				if (checkbox && (discussionTab == 'public')) {
 					var validPendingType = false;
@@ -200,10 +200,10 @@ else {
 				return;
 			}
 
-			eval('var ticketCommentId = document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentId' + suffix + '.value;');
+			eval('var ticketCommentId = document.<portlet:namespace />ticketCommentFm.<portlet:namespace />ticketCommentId' + suffix + '.value;');
 
-			document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentId.value = ticketCommentId;
-			submitForm(document.<portlet:namespace />fm2, '<portlet:actionURL name="deleteTicketComment"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>');
+			document.<portlet:namespace />ticketCommentFm.<portlet:namespace />ticketCommentId.value = ticketCommentId;
+			submitForm(document.<portlet:namespace />ticketCommentFm, '<portlet:actionURL name="deleteTicketComment"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>');
 		}
 
 		function <portlet:namespace />initDraftCommentMessage(hasMaximumDraftTicketComment) {
@@ -215,7 +215,7 @@ else {
 		}
 
 		function <portlet:namespace />selectCannedResponse(ticketCannedResponseId, ticketCannedResponseContent) {
-			document.<portlet:namespace />fm2.<portlet:namespace />ticketCannedResponseId.value = ticketCannedResponseId;
+			document.<portlet:namespace />ticketCommentFm.<portlet:namespace />ticketCannedResponseId.value = ticketCannedResponseId;
 
 			var commentBody = document.getElementById('<portlet:namespace />commentBody0');
 
@@ -244,8 +244,8 @@ else {
 				<portlet:namespace />updateMessageDisplay(suffix, 'portlet-msg-info', message);
 			}
 
-			document.<portlet:namespace />fm2.<portlet:namespace />suffix.value = suffix;
-			document.<portlet:namespace />fm2.<portlet:namespace />draftBody.value = commentBody.value;
+			document.<portlet:namespace />ticketCommentFm.<portlet:namespace />suffix.value = suffix;
+			document.<portlet:namespace />ticketCommentFm.<portlet:namespace />draftBody.value = commentBody.value;
 
 			document.getElementById('<portlet:namespace />intervalId').value = setInterval(
 				function() {
@@ -274,7 +274,7 @@ else {
 			window,
 			'<portlet:namespace />autoUpdateComment',
 			function(suffix) {
-				var form = document.<portlet:namespace />fm2;
+				var form = document.<portlet:namespace />ticketCommentFm;
 
 				eval('var commentBody = form.<portlet:namespace />commentBody' + suffix + '.value;');
 
@@ -384,7 +384,7 @@ else {
 				}
 
 				if (suffix === 0) {
-					var form = A.one(document.<portlet:namespace />fm2);
+					var form = A.one(document.<portlet:namespace />ticketCommentFm);
 
 					form.reset();
 
@@ -698,20 +698,20 @@ else {
 
 								if (response.sessionValid) {
 									if (response.pAuthToken) {
-										var actionURL = document.getElementById('<portlet:namespace />fm2').action;
+										var actionURL = document.getElementById('<portlet:namespace />ticketCommentFm').action;
 
-										document.getElementById('<portlet:namespace />fm2').action = actionURL.replace(/[?]p_auth=[A-Za-z0-9]+/g, '?p_auth=' + response.pAuthToken);
+										document.getElementById('<portlet:namespace />ticketCommentFm').action = actionURL.replace(/[?]p_auth=[A-Za-z0-9]+/g, '?p_auth=' + response.pAuthToken);
 									}
 
-									eval('var ticketCommentId = document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentId' + suffix + '.value;');
+									eval('var ticketCommentId = document.<portlet:namespace />ticketCommentFm.<portlet:namespace />ticketCommentId' + suffix + '.value;');
 
 									<portlet:namespace />clearInterval();
 
-									document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentId.value = ticketCommentId;
-									document.<portlet:namespace />fm2.<portlet:namespace />suffix.value = suffix;
-									document.<portlet:namespace />fm2.<portlet:namespace />ticketCommentStatus.value = status;
+									document.<portlet:namespace />ticketCommentFm.<portlet:namespace />ticketCommentId.value = ticketCommentId;
+									document.<portlet:namespace />ticketCommentFm.<portlet:namespace />suffix.value = suffix;
+									document.<portlet:namespace />ticketCommentFm.<portlet:namespace />ticketCommentStatus.value = status;
 
-									submitForm(document.<portlet:namespace />fm2);
+									submitForm(document.<portlet:namespace />ticketCommentFm);
 								}
 								else {
 									<portlet:namespace />loginDialog();

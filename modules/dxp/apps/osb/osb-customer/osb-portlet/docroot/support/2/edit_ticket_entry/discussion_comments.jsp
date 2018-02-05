@@ -96,7 +96,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 	<portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateTicketCommentURL %>" enctype="multipart/form-data" id="<portlet:namespace />fm2" method="post" name="fm2">
+<aui:form action="<%= updateTicketCommentURL %>" enctype="multipart/form-data" method="post" name="ticketCommentFm">
 	<input name="<portlet:namespace />discussionTab" type="hidden" value="<%= HtmlUtil.escapeAttribute(discussionTab) %>" />
 	<input name="<portlet:namespace />redirect" type="hidden" value="<%= redirectURL %>" />
 	<input name="<portlet:namespace />ticketCommentId" type="hidden" value="" />
