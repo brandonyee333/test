@@ -5,23 +5,10 @@
 		width: 100%;
 	}
 
-	.create-env-button {
-		padding-top: 15px;
-	}
-
 	.environment {
 		border: 1px solid $medium-gray;
 		margin-bottom: 20px;
 		padding: 15px 15px 40px 15px;
-
-		.configuration {
-			margin: 0 5px 5px 5px;
-			padding: 0 5px 5px 5px;
-		}
-
-		.env-button {
-			padding-top: 15px;
-		}
 
 		.portlet-msg-info {
 			margin-bottom: 15px;

@@ -111,14 +111,14 @@ else {
 						addAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
 						%>
 
-						<div class="create-env-button">
+						<aui:button-row>
 
 							<%
 							String taglibCreateEnvironment = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "create-environment-configuration") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment')";
 							%>
 
 							<aui:button cssClass="pull-right" name="createEnvironment" onClick="<%= taglibCreateEnvironment %>" value="create-environment" />
-						</div>
+						</aui:button-row>
 					</c:if>
 
 					<%
@@ -171,7 +171,7 @@ else {
 											<portlet:param name="validateEnvironment" value="<%= Boolean.FALSE.toString() %>" />
 										</liferay-util:include>
 
-										<div class="configuration env-button">
+										<aui:button-row>
 											<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.DELETE) %>">
 												<portlet:renderURL var="redirectURL">
 													<portlet:param name="mvcPath" value="/support/2/preferences.jsp" />
@@ -208,7 +208,7 @@ else {
 
 												<aui:button cssClass="pull-right" onClick="<%= taglibEditAccountEnvironment %>" value="edit" />
 											</c:if>
-										</div>
+										</aui:button-row>
 									</div>
 
 								<%
