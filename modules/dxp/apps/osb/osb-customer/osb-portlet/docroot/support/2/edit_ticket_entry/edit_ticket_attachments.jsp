@@ -36,26 +36,7 @@ boolean ticketWorker = (Boolean)request.getAttribute("edit_ticket_entry.jsp-tick
 PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-portletURL");
 %>
 
-<liferay-ui:error exception="<%= DuplicateTicketAttachmentException.class %>" message="please-enter-a-unique-document-name" />
-<liferay-ui:error exception="<%= FileNameException.class %>" message="please-enter-a-file-with-a-valid-file-name" />
 <liferay-ui:error exception="<%= FileRepositoryNotAvailableException.class %>" message="file-servers-are-not-available-please-contact-your-support-manager" />
-<liferay-ui:error exception="<%= TicketAttachmentVisibilityException.class %>" message="please-enter-a-valid-visibility" />
-
-<liferay-ui:error exception="<%= TicketEntryAttachmentSizeException.class %>">
-
-	<%
-	TicketEntryAttachmentSizeException tease = (TicketEntryAttachmentSizeException)errorException;
-	%>
-
-	<c:choose>
-		<c:when test="<%= tease.getType() == TicketEntryAttachmentSizeException.EMPTY_FILE %>">
-			<liferay-ui:message key="the-file-contains-no-data-and-cannot-be-uploaded" />
-		</c:when>
-		<c:when test="<%= tease.getType() == TicketEntryAttachmentSizeException.EXCEEDS_LIMIT %>">
-			<liferay-ui:message key="please-upload-a-file-less-than-100-mb" />
-		</c:when>
-	</c:choose>
-</liferay-ui:error>
 
 <div class="attachments">
 
