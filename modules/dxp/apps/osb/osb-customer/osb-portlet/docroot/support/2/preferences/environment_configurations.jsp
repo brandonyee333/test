@@ -248,7 +248,6 @@ else {
 				dialog: {
 					align: Liferay.Util.Window.ALIGN_CENTER,
 					centered: true,
-					close: false,
 					draggable: false,
 					modal: true,
 					resizable: false
