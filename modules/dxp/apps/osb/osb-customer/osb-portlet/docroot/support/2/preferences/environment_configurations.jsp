@@ -50,7 +50,7 @@ else {
 	<aui:input name="tabs1" type="hidden" value="<%= tabs1 %>" />
 
 	<div class="environment-configurations w50">
-		<h2 class="project-heading">
+		<h2>
 			<liferay-ui:message key="project" />:
 		</h2>
 
@@ -146,9 +146,9 @@ else {
 
 						<div>
 							<c:if test="<%= !prevDisplayName.equals(productEntry.getLESADisplayName()) %>">
-								<div class="product-heading">
+								<h3>
 									<liferay-ui:message key="<%= productEntry.getLESADisplayName() %>" />
-								</div>
+								</h3>
 							</c:if>
 
 							<%
