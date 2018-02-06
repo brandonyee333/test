@@ -50,14 +50,7 @@ if (liferayIncOrg || partnerWorker) {
 }
 %>
 
-<liferay-ui:error exception="<%= TicketEntryComponentException.class %>" message="please-select-a-valid-component" />
 <liferay-ui:error exception="<%= TicketEntryDescriptionException.class %>" message="please-enter-a-description-of-the-issue" />
-<liferay-ui:error exception="<%= TicketEntryResolutionException.class %>" message="please-select-a-valid-resolution" />
-<liferay-ui:error exception="<%= TicketEntrySeverityException.class %>" message="please-select-a-valid-severity" />
-<liferay-ui:error exception="<%= TicketEntryStatusException.class %>" message="please-select-a-valid-status" />
-<liferay-ui:error exception="<%= TicketEntrySubcomponentException.class %>" message="please-provide-a-valid-subcomponent" />
-<liferay-ui:error exception="<%= TicketEntrySubjectException.class %>" message="please-enter-a-valid-subject" />
-<liferay-ui:error exception="<%= TicketEntryWeightException.class %>" message="please-enter-a-valid-weight" />
 
 <div class="tab-content-tab" id="<portlet:namespace />ticketDetails">
 	<c:if test="<%= hasUpdateAdvanced %>">
