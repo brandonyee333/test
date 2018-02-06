@@ -307,23 +307,22 @@ public class AdminServletContextListener
 
 		OSBConstants.USER_SUPPORT_PM_USER_ID = user.getUserId();
 
-		// Customer portal
+		// Customer
 
-		Group group = null;
+		Group customerGroup = null;
 
 		try {
-			group = GroupLocalServiceUtil.getGroup(
-				OSBConstants.COMPANY_ID, "Customer Portal");
+			customerGroup = GroupLocalServiceUtil.getGroup(
+				OSBConstants.COMPANY_ID, "Customer");
 		}
 		catch (Exception e) {
-			group = GroupLocalServiceUtil.addGroup(
-				OSBConstants.USER_SUPPORT_PM_USER_ID, 0, null, 0, 0,
-				"Customer Portal", StringPool.BLANK,
-				GroupConstants.TYPE_SITE_PRIVATE, false, 0, "/customer", true,
-				true, null);
+			customerGroup = GroupLocalServiceUtil.addGroup(
+				OSBConstants.USER_SUPPORT_PM_USER_ID, 0, null, 0, 0, "Customer",
+				StringPool.BLANK, GroupConstants.TYPE_SITE_PRIVATE, false, 0,
+				"/customer", true, true, null);
 		}
 
-		OSBConstants.GROUP_CUSTOMER_ID = group.getGroupId();
+		OSBConstants.GROUP_CUSTOMER_ID = customerGroup.getGroupId();
 
 		// Global group
 
@@ -338,6 +337,40 @@ public class AdminServletContextListener
 			OSBConstants.COMPANY_ID, GroupConstants.GUEST);
 
 		OSBConstants.GROUP_GUEST_ID = guestGroup.getGroupId();
+
+		// License
+
+		Group licenseGroup = null;
+
+		try {
+			licenseGroup = GroupLocalServiceUtil.getGroup(
+				OSBConstants.COMPANY_ID, "License");
+		}
+		catch (Exception e) {
+			licenseGroup = GroupLocalServiceUtil.addGroup(
+				OSBConstants.USER_SUPPORT_PM_USER_ID, 0, null, 0, 0, "License",
+				StringPool.BLANK, GroupConstants.TYPE_SITE_PRIVATE, false, 0,
+				"/license", true, true, null);
+		}
+
+		OSBConstants.GROUP_LICENSE_ID = licenseGroup.getGroupId();
+
+		// Support
+
+		Group supportGroup = null;
+
+		try {
+			supportGroup = GroupLocalServiceUtil.getGroup(
+				OSBConstants.COMPANY_ID, "Support");
+		}
+		catch (Exception e) {
+			supportGroup = GroupLocalServiceUtil.addGroup(
+				OSBConstants.USER_SUPPORT_PM_USER_ID, 0, null, 0, 0, "Support",
+				StringPool.BLANK, GroupConstants.TYPE_SITE_PRIVATE, false, 0,
+				"/support", true, true, null);
+		}
+
+		OSBConstants.GROUP_SUPPORT_ID = supportGroup.getGroupId();
 
 		// Customer organization
 

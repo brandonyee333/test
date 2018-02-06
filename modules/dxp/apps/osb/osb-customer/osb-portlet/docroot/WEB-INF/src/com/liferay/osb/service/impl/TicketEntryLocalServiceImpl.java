@@ -1649,7 +1649,7 @@ public class TicketEntryLocalServiceImpl
 			SupportUtil.getEmailTicketEntryDueDateMap(preferences);
 
 		String layoutFullURL = PortalUtil.getLayoutFullURL(
-			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
+			OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
 
 		String ticketEntryURL =
 			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR + "support/ticket/" +
@@ -2310,7 +2310,7 @@ public class TicketEntryLocalServiceImpl
 			user.getTimeZone());
 
 		String layoutFullURL = PortalUtil.getLayoutFullURL(
-			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
+			OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
 
 		String ticketEntryURL =
 			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR + "support/ticket/" +

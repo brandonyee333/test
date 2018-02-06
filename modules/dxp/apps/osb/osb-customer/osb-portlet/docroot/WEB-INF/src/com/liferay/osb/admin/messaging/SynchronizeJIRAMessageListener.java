@@ -230,7 +230,7 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 		String displayId = message.getString("displayId");
 
 		String layoutFullURL = PortalUtil.getLayoutFullURL(
-			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
+			OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
 
 		return
 			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR + "support/ticket/" +

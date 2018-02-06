@@ -35,7 +35,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 		<div class="page-heading" id="<portlet:namespace/>pageHeading">
 
 			<%
-			long customerPlid = PortalUtil.getPlidFromPortletId(OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
+			long customerPlid = PortalUtil.getPlidFromPortletId(OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
 
 			PortletURL accountEntryURL = PortletURLFactoryUtil.create(request, OSBPortletKeys.OSB_SUPPORT, customerPlid, PortletRequest.RENDER_PHASE);
 

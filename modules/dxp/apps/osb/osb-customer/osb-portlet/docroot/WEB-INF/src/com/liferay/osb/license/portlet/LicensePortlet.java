@@ -137,7 +137,7 @@ public class LicensePortlet extends MVCPortlet {
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
 			if (themeDisplay.getScopeGroupId() ==
-					OSBConstants.GROUP_CUSTOMER_ID) {
+					OSBConstants.GROUP_LICENSE_ID) {
 
 				String redirect = getRedirect(
 					actionRequest, actionResponse, themeDisplay);

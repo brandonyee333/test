@@ -224,7 +224,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 						<c:if test="<%= ticketEntryDiscussion.getStatus() != WorkflowConstants.STATUS_DRAFT %>">
 
 							<%
-							long customerPlid = PortalUtil.getPlidFromPortletId(OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
+							long customerPlid = PortalUtil.getPlidFromPortletId(OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
 
 							PortletURL permalinkURL = PortletURLFactoryUtil.create(request, OSBPortletKeys.OSB_SUPPORT, customerPlid, PortletRequest.RENDER_PHASE);
 

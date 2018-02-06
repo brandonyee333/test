@@ -883,7 +883,7 @@ public class SupportUtil {
 		throws PortalException {
 
 		long customerPlid = PortalUtil.getPlidFromPortletId(
-			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
+			OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
 
 		PortletURL ticketEntryURL = PortletURLFactoryUtil.create(
 			request, OSBPortletKeys.OSB_SUPPORT, customerPlid,

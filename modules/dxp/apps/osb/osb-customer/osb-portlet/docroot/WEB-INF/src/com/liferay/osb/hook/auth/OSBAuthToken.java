@@ -165,7 +165,7 @@ public class OSBAuthToken implements AuthToken {
 				WebKeys.THEME_DISPLAY);
 
 			if (themeDisplay.getScopeGroupId() ==
-					OSBConstants.GROUP_CUSTOMER_ID) {
+					OSBConstants.GROUP_LICENSE_ID) {
 
 				return true;
 			}

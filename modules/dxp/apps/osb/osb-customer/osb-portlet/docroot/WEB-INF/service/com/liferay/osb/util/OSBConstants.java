@@ -42,11 +42,15 @@ public class OSBConstants {
 
 	public static final long EXPANDO_OSB_COUNTRY_COLUMN_ID = 29224278;
 
-	public static long GROUP_CUSTOMER_ID = 100876506;
+	public static long GROUP_CUSTOMER_ID = 2700986;
 
 	public static long GROUP_GLOBAL_ID = 10197;
 
 	public static long GROUP_GUEST_ID = 10184;
+
+	public static long GROUP_LICENSE_ID = 2701000;
+
+	public static long GROUP_SUPPORT_ID = 2700993;
 
 	public static long OFFERING_DEFINITION_TRIAL_ID = 5638713;
 

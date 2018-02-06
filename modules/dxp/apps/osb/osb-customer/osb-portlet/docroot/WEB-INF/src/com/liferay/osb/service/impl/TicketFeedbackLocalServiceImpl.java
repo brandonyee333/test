@@ -343,7 +343,7 @@ public class TicketFeedbackLocalServiceImpl
 				TicketEntry ticketEntry = ticketFeedback.getTicketEntry();
 
 				String layoutFullURL = PortalUtil.getLayoutFullURL(
-					OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
+					OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
 
 				String ticketEntryURL =
 					layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR +
@@ -534,7 +534,7 @@ public class TicketFeedbackLocalServiceImpl
 			SupportUtil.getEmailCustomerFeedbackBodyMap(preferences);
 
 		String layoutFullURL = PortalUtil.getLayoutFullURL(
-			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
+			OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
 
 		TicketEntry ticketEntry = ticketFeedback.getTicketEntry();
 
@@ -670,7 +670,7 @@ public class TicketFeedbackLocalServiceImpl
 			SupportUtil.getEmailPartnerFeedbackReminderBodyMap(preferences);
 
 		String layoutFullURL = PortalUtil.getLayoutFullURL(
-			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
+			OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
 
 		String ticketFeedbackURL =
 			layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR +
@@ -809,7 +809,7 @@ public class TicketFeedbackLocalServiceImpl
 			preferences);
 
 		String layoutFullURL = PortalUtil.getLayoutFullURL(
-			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_SUPPORT);
+			OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
 
 		TicketEntry ticketEntry = ticketFeedback.getTicketEntry();
 

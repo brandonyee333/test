@@ -758,7 +758,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			LicenseUtil.getEmailNotificationTrialLicenseBodyMap();
 
 		String layoutURL = PortalUtil.getLayoutFullURL(
-			OSBConstants.GROUP_CUSTOMER_ID, OSBPortletKeys.OSB_LICENSE);
+			OSBConstants.GROUP_LICENSE_ID, OSBPortletKeys.OSB_LICENSE);
 
 		String licenseURL =
 			layoutURL + Portal.FRIENDLY_URL_SEPARATOR + "license/offering/" +

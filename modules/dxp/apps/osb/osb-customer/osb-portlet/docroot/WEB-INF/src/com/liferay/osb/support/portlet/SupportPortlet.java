@@ -848,7 +848,7 @@ public class SupportPortlet extends MVCPortlet {
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
 			if (themeDisplay.getScopeGroupId() ==
-					OSBConstants.GROUP_CUSTOMER_ID) {
+					OSBConstants.GROUP_SUPPORT_ID) {
 
 				String redirect = getRedirect(
 					actionRequest, actionResponse, themeDisplay);
