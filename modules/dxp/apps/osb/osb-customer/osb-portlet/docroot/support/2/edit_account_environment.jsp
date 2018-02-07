@@ -20,7 +20,7 @@
 	<c:choose>
 		<c:when test="<%= SessionMessages.contains(renderRequest, PortalUtil.getPortletId(renderRequest) + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET) %>">
 			<aui:script>
-				Liferay.Util.getWindow().close();
+				Liferay.Util.getWindow().hide();
 			</aui:script>
 		</c:when>
 		<c:otherwise>
@@ -320,7 +320,7 @@
 						</div>
 
 						<div class="foot-details pull-left single-line">
-							<aui:button cssClass="aui-button-input pull-left" onClick="Liferay.Util.getWindow().close();" value="cancel" />
+							<aui:button cssClass="aui-button-input pull-left" onClick="Liferay.Util.getWindow().hide();" value="cancel" />
 
 							<aui:button cssClass="aui-button-input pull-right" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value='<%= (accountEnvironmentId == 0) ? "create" : "update" %>' />
 						</div>
