@@ -316,9 +316,9 @@ if (!screenShareMode) {
 				var modal = new A.Modal(
 					{
 						bodyContent:
-							'<button class="block btn" issueType="3" /><liferay-ui:message key="task" /></button>' +
-							'<button class="block btn" issueType="11" /><liferay-ui:message key="patch" /></button>' +
-							'<button class="block btn" issueType="46" /><liferay-ui:message key="l1-escalation" /></button>',
+							'<button class="block btn" issueType="3" /><liferay-ui:message key="task" unicode="<%= true %>" /></button>' +
+							'<button class="block btn" issueType="11" /><liferay-ui:message key="patch" unicode="<%= true %>" /></button>' +
+							'<button class="block btn" issueType="46" /><liferay-ui:message key="l1-escalation" unicode="<%= true %>" /></button>',
 						centered: true,
 						cssClass: 'jira-issue-modal',
 						destroyOnHide: true,

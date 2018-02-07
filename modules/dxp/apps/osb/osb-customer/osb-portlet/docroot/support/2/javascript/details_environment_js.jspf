@@ -285,7 +285,7 @@
 						var value = selectData[i].value;
 
 						if (value < <%= ProductEntryConstants.PORTAL_VERSION_6_2_10 %>) {
-							name += ' (<liferay-ui:message key="limited" />)';
+							name += ' (<liferay-ui:message key="limited" unicode="<%= true %>" />)';
 						}
 
 						selectOptions.push('<option value="' + value + '">' + name + '</option>');
@@ -645,7 +645,7 @@
 					name = prompt(Liferay.Language.get('x-already-exists.-please-choose-a-different-name-for-this-environment-configuration', name));
 				}
 				else {
-					name = prompt('<liferay-ui:message key="please-enter-a-valid-name-for-this-environment-configuration" />');
+					name = prompt('<liferay-ui:message key="please-enter-a-valid-name-for-this-environment-configuration" unicode="<%= true %>" />');
 				}
 
 				A.io.request(
