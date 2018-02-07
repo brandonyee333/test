@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  * @author Vishal Reddy
  */
-public interface RabbitMQConnectionManager {
+public interface ConnectionManager {
 
 	public void connect();
 

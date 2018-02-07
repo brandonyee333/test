@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.rabbitmq.connector.service.impl;
 
 import com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues;
-import com.liferay.osb.customer.rabbitmq.connector.connection.RabbitMQConnectionManager;
+import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.OSBConsumer;
 import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
@@ -58,11 +58,6 @@ public class ConsumerManagerLocalServiceImpl
 		}
 	}
 
-	@Override
-	public void connect() {
-		_rabbitMQConnectionManager.connect();
-	}
-
 	public void consumeMessage() {
 		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
 			return;
@@ -97,7 +92,7 @@ public class ConsumerManagerLocalServiceImpl
 		Channel channel = null;
 
 		try {
-			channel = _rabbitMQConnectionManager.createChannel();
+			channel = _connectionManager.createChannel();
 
 			if (messageCount <= 0) {
 				messageCount = channel.messageCount(
@@ -148,23 +143,8 @@ public class ConsumerManagerLocalServiceImpl
 		}
 	}
 
-	@Override
-	public void disconnect() {
-		_rabbitMQConnectionManager.disconnect();
-	}
-
 	public Consumer getConsumer(RabbitMQProcessor rabbitMQProcessor) {
 		return _consumers.get(rabbitMQProcessor);
-	}
-
-	@Override
-	public boolean isConnected() {
-		return _rabbitMQConnectionManager.isConnected();
-	}
-
-	@Override
-	public void reconnect() {
-		_rabbitMQConnectionManager.reconnect();
 	}
 
 	public void resetChannels() throws Exception {
@@ -206,7 +186,7 @@ public class ConsumerManagerLocalServiceImpl
 	protected Consumer createConsumer(RabbitMQProcessor rabbitMQProcessor)
 		throws Exception {
 
-		Channel channel = _rabbitMQConnectionManager.createChannel(
+		Channel channel = _connectionManager.createChannel(
 			rabbitMQProcessor.getPrefetchCount());
 
 		Consumer consumer = new OSBConsumer(channel, rabbitMQProcessor);
@@ -221,10 +201,10 @@ public class ConsumerManagerLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConsumerManagerLocalServiceImpl.class);
 
+	@Reference
+	private ConnectionManager _connectionManager;
+
 	private final Map<RabbitMQProcessor, Consumer> _consumers =
 		new ConcurrentHashMap<>();
-
-	@Reference
-	private RabbitMQConnectionManager _rabbitMQConnectionManager;
 
 }

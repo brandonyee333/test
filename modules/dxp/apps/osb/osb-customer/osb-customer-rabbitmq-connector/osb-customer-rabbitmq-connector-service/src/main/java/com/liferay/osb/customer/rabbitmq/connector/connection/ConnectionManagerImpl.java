@@ -34,8 +34,7 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Vishal Reddy
  */
 @Component(immediate = true)
-public class RabbitMQConnectionManagerImpl
-	implements RabbitMQConnectionManager {
+public class ConnectionManagerImpl implements ConnectionManager {
 
 	@Activate
 	@Override
@@ -121,7 +120,7 @@ public class RabbitMQConnectionManagerImpl
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RabbitMQConnectionManagerImpl.class);
+		ConnectionManagerImpl.class);
 
 	private Connection _connection;
 

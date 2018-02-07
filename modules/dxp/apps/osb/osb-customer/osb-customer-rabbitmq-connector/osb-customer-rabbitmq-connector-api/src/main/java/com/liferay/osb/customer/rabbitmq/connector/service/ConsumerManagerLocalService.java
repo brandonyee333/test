@@ -26,8 +26,6 @@ public interface ConsumerManagerLocalService {
 	public void addConsumer(RabbitMQProcessor rabbitMQProcessor)
 		throws Exception;
 
-	public void connect();
-
 	public void consumeMessage();
 
 	public void consumeMessages(
@@ -36,13 +34,7 @@ public interface ConsumerManagerLocalService {
 
 	public void deleteConsumer(RabbitMQProcessor rabbitMQProcessor);
 
-	public void disconnect();
-
 	public Consumer getConsumer(RabbitMQProcessor rabbitMQProcessor);
-
-	public boolean isConnected();
-
-	public void reconnect();
 
 	public void resetChannels() throws Exception;
 
