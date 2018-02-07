@@ -5,14 +5,12 @@
 		width: 100%;
 	}
 
-	.environment {
-		border: 1px solid $medium-gray;
-		margin-bottom: 20px;
-		padding: 15px 15px 40px 15px;
+	.panel-group {
+		margin: 0;
+	}
 
-		.portlet-msg-info {
-			margin-bottom: 15px;
-		}
+	.portlet-msg-info {
+		margin-bottom: 15px;
 	}
 
 	.field-label {

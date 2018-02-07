@@ -133,9 +133,13 @@ else {
 					%>
 
 						<c:if test="<%= !prevDisplayName.equals(productEntry.getLESADisplayName()) && !prevDisplayName.equals(StringPool.BLANK) && !environments %>">
-							<div class="portlet-msg-info">
-								<liferay-ui:message key="there-are-no-saved-environment-configurations-for-this-product" />
-							</div>
+							<aui:fieldset-group markupView="lexicon">
+								<aui:fieldset>
+									<div class="portlet-msg-info">
+										<liferay-ui:message key="there-are-no-saved-environment-configurations-for-this-product" />
+									</div>
+								</aui:fieldset>
+							</aui:fieldset-group>
 						</c:if>
 
 						<%
@@ -165,51 +169,53 @@ else {
 								for (AccountEnvironment accountEnvironment : accountEnvironments) {
 								%>
 
-									<div class="environment">
-										<liferay-util:include page="/support/2/common/details_environment.jsp" servletContext="<%= application %>">
-											<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
-											<portlet:param name="validateEnvironment" value="<%= Boolean.FALSE.toString() %>" />
-										</liferay-util:include>
+									<aui:fieldset-group markupView="lexicon">
+										<aui:fieldset>
+											<liferay-util:include page="/support/2/common/details_environment.jsp" servletContext="<%= application %>">
+												<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
+												<portlet:param name="validateEnvironment" value="<%= Boolean.FALSE.toString() %>" />
+											</liferay-util:include>
 
-										<aui:button-row>
-											<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.DELETE) %>">
-												<portlet:renderURL var="redirectURL">
-													<portlet:param name="mvcPath" value="/support/2/preferences.jsp" />
-													<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
-													<portlet:param name="tabs1" value="<%= tabs1 %>" />
-												</portlet:renderURL>
+											<aui:button-row>
+												<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.DELETE) %>">
+													<portlet:renderURL var="redirectURL">
+														<portlet:param name="mvcPath" value="/support/2/preferences.jsp" />
+														<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
+														<portlet:param name="tabs1" value="<%= tabs1 %>" />
+													</portlet:renderURL>
 
-												<portlet:actionURL name="deleteAccountEnvironment" var="deleteAccountEnvironmentURL">
-													<portlet:param name="redirect" value="<%= redirectURL %>" />
-													<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
-												</portlet:actionURL>
+													<portlet:actionURL name="deleteAccountEnvironment" var="deleteAccountEnvironmentURL">
+														<portlet:param name="redirect" value="<%= redirectURL %>" />
+														<portlet:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironment.getAccountEnvironmentId()) %>" />
+													</portlet:actionURL>
 
-												<%
-												String taglibDeleteAccountEnvironment = renderResponse.getNamespace() + "deleteEnvironment('" + deleteAccountEnvironmentURL.toString() + "', '" + HtmlUtil.escapeJS(accountEnvironment.getName()) + "');";
-												%>
+													<%
+													String taglibDeleteAccountEnvironment = renderResponse.getNamespace() + "deleteEnvironment('" + deleteAccountEnvironmentURL.toString() + "', '" + HtmlUtil.escapeJS(accountEnvironment.getName()) + "');";
+													%>
 
-												<aui:button cssClass="pull-left" onClick="<%= taglibDeleteAccountEnvironment %>" value="delete" />
-											</c:if>
+													<aui:button cssClass="pull-left" onClick="<%= taglibDeleteAccountEnvironment %>" value="delete" />
+												</c:if>
 
-											<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE) %>">
+												<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE) %>">
 
-												<%
-												PortletURL editAccountEnvironmentURL = renderResponse.createRenderURL();
+													<%
+													PortletURL editAccountEnvironmentURL = renderResponse.createRenderURL();
 
-												editAccountEnvironmentURL.setParameter("mvcPath", "/support/2/edit_account_environment.jsp");
-												editAccountEnvironmentURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
-												editAccountEnvironmentURL.setParameter("accountEnvironmentId", String.valueOf(accountEnvironment.getAccountEnvironmentId()));
-												editAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
-												%>
+													editAccountEnvironmentURL.setParameter("mvcPath", "/support/2/edit_account_environment.jsp");
+													editAccountEnvironmentURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
+													editAccountEnvironmentURL.setParameter("accountEnvironmentId", String.valueOf(accountEnvironment.getAccountEnvironmentId()));
+													editAccountEnvironmentURL.setWindowState(LiferayWindowState.POP_UP);
+													%>
 
-												<%
-												String taglibEditAccountEnvironment = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment')";
-												%>
+													<%
+													String taglibEditAccountEnvironment = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment')";
+													%>
 
-												<aui:button cssClass="pull-right" onClick="<%= taglibEditAccountEnvironment %>" value="edit" />
-											</c:if>
-										</aui:button-row>
-									</div>
+													<aui:button cssClass="pull-right" onClick="<%= taglibEditAccountEnvironment %>" value="edit" />
+												</c:if>
+											</aui:button-row>
+										</aui:fieldset>
+									</aui:fieldset-group>
 
 								<%
 								}
@@ -224,9 +230,13 @@ else {
 					%>
 
 					<c:if test="<%= !environments && !productEntries.isEmpty() %>">
-						<div class="portlet-msg-info">
-							<liferay-ui:message key="there-are-no-saved-environment-configurations-for-this-product" />
-						</div>
+						<aui:fieldset-group markupView="lexicon">
+							<aui:fieldset>
+								<div class="portlet-msg-info">
+									<liferay-ui:message key="there-are-no-saved-environment-configurations-for-this-product" />
+								</div>
+							</aui:fieldset>
+						</aui:fieldset-group>
 					</c:if>
 				</c:if>
 			</c:otherwise>
