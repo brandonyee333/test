@@ -685,7 +685,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 
 <aui:script use="aui-tooltip">
 	A.all('.status-<%= OfferingEntryConstants.STATUS_PENDING %>').each(
-		function(item, index, collection) {
+		function(item) {
 			new A.Tooltip(
 				{
 					align: {
