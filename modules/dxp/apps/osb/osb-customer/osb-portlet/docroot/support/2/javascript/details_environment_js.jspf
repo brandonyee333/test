@@ -28,22 +28,21 @@
 
 	<portlet:namespace />selectPortalVersion(envLFR, <%= envAS %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envAS)) %>', <%= envBrowser %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envBrowser)) %>', <%= envCS %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envCS)) %>', <%= envDB %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envOS)) %>', '<%= HtmlUtil.escapeJS(envSearch) %>');
 
+	<c:if test="<%= accountEnvironmentId > 0 %>">
+		<portlet:namespace />validateFiles();
 
-		<c:if test="<%= accountEnvironmentId > 0 %>">
-			<portlet:namespace />validateFiles();
+		var createButton = A.one('#<portlet:namespace />createEnvironment');
 
-			var createButton = A.one('#<portlet:namespace />createEnvironment');
+		if (createButton) {
+			createButton.hide();
+		}
 
-			if (createButton) {
-				createButton.hide();
-			}
+		var updateButton = A.one('#<portlet:namespace />updateEnvironment');
 
-			var updateButton = A.one('#<portlet:namespace />updateEnvironment');
-
-			if (updateButton) {
-				updateButton.show();
-			}
-		</c:if>
+		if (updateButton) {
+			updateButton.show();
+		}
+	</c:if>
 </aui:script>
 
 <aui:script>
@@ -54,7 +53,7 @@
 			var envBrowserCustom = A.one('#<portlet:namespace />envBrowserCustom');
 
 			if (envBrowserCustom) {
-				var otherBrowser = envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>';
+				var otherBrowser = (envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>');
 
 				envBrowserCustom.toggle(otherBrowser);
 
@@ -86,7 +85,7 @@
 			var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
 
 			if (envOSCustom) {
-				var envOther = envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>';
+				var envOther = (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>');
 
 				envOSCustom.toggle(envOther);
 
@@ -221,8 +220,8 @@
 
 				if (selectData) {
 					for (var i = 0; i < selectData.length; i++) {
-						var value = selectData[i].value;
 						var name = selectData[i].name;
+						var value = selectData[i].value;
 
 						selectOptions.push('<option value="' + value + '">' + name + '</option>');
 
@@ -275,7 +274,6 @@
 					var previousNamePrefix = '';
 
 					for (var i = 0; i < selectData.length; i++) {
-						var value = selectData[i].value;
 						var name = selectData[i].name;
 
 						var namePrefix = name.substring(0, 3);
@@ -283,6 +281,8 @@
 						if ((previousNamePrefix != '') && (previousNamePrefix != namePrefix)) {
 							selectOptions.push('<option disabled>--------</option>');
 						}
+
+						var value = selectData[i].value;
 
 						if (value < <%= ProductEntryConstants.PORTAL_VERSION_6_2_10 %>) {
 							name += ' (<liferay-ui:message key="limited" />)';

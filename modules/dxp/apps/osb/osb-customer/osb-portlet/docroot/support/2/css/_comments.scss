@@ -1,3 +1,11 @@
+.add-comment-attachments {
+	margin: 25px 10px;
+
+	.file-label {
+		margin: 5px;
+	}
+}
+
 .comment-body {
 	&.type-game-plan {
 		background-color: $game-plan-comment;

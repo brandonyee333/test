@@ -110,9 +110,9 @@ PortletPreferences preferences = SupportUtil.getPortletPreferences();
 				cssClass: 'page-pop-up',
 				hideOn: [
 					{
-					eventName: 'key',
-					keyCode: 'esc',
-					node: DOC
+						eventName: 'key',
+						keyCode: 'esc',
+						node: DOC
 					},
 					{
 						eventName: 'clickoutside',

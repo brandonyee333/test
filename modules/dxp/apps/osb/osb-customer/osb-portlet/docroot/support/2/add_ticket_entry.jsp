@@ -96,7 +96,7 @@ if (offeringEntryId > 0) {
 		window,
 		'<portlet:namespace />displayMessage',
 		function(options) {
-			var content = options.content || '';
+			var content = (options.content || '');
 			var node = options.node;
 			var visible = options.visible;
 

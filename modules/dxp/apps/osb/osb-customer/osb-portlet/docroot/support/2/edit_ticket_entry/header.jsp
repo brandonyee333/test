@@ -131,7 +131,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					<div id="<portlet:namespace />severityDropDown" style="display: none;">
 						<aui:select autocomplete="off" label="" name="severity" onChange='<%= renderResponse.getNamespace() + "updateSeverity();" %>'>
 
-
 							<%
 							for (int i = 1; i <= 3; i++) {
 							%>
@@ -217,8 +216,8 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								}
 								%>
 
-+								<aui:button name="pendingSubmit" onClick='<%= renderResponse.getNamespace() + "updatePendingTypes();" %>' value="save" />
-+								<aui:button name="pendingCancel" onClick='<%= renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "pendingCheckboxes', '" + renderResponse.getNamespace() + "pendingDisplay');" %>' value="cancel" />
+								<aui:button name="pendingSubmit" onClick='<%= renderResponse.getNamespace() + "updatePendingTypes();" %>' value="save" />
+								<aui:button name="pendingCancel" onClick='<%= renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "pendingCheckboxes', '" + renderResponse.getNamespace() + "pendingDisplay');" %>' value="cancel" />
 							</div>
 						</c:if>
 					</span>
@@ -259,8 +258,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					</div>
 
 					<div id="<portlet:namespace/>statusDropDown" style="display: none;">
-						<aui:select autocomplete="off" label="" name="status" onChange='<%= renderResponse.getNamespace() + "updateStatus(this.value);" %>'>
-
+						<aui:select autocomplete="off" id="headerStatus" label="" name="status" onChange='<%= renderResponse.getNamespace() + "updateStatus(this.value);" %>'>
 
 							<%
 							for (int statusId : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
@@ -279,7 +277,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 
 						</aui:select>
 
-						<aui:select cssClass="hide" label="" name="resolution" onChange='<%= renderResponse.getNamespace() + "updateResolution(this.value);"%>'>
+						<aui:select cssClass="hide" id="headerResolution" label="" name="resolution" onChange='<%= renderResponse.getNamespace() + "updateResolution(this.value);" %>'>
 							<aui:option value="" />
 
 							<%
@@ -346,7 +344,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				var status = ticketStatusFm.one('#<portlet:namespace />status');
 
 				if (status) {
-					status.val'<%= status %>');
+					status.val('<%= status %>');
 				}
 			}
 		},
@@ -373,7 +371,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		},
 		['aui-base']
 	);
-
 
 	Liferay.provide(
 		window,
@@ -504,7 +501,8 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						reproductionSteps.val(reproductionSteps);
 					}
 
-				submitForm(ticketStatusFm);
+					submitForm(ticketStatusFm);
+				}
 			},
 			['aui-base']
 		);
@@ -513,7 +511,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			window,
 			'<portlet:namespace />updateSeverity',
 			function() {
-
 				var ticketStatusFm = A.one('#<portlet:namespace />ticketStatusFm');
 
 				if (ticketStatusFm) {

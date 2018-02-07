@@ -297,7 +297,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 			var envBrowserCustom = A.one('#<portlet:namespace />envBrowserCustom');
 
 			if (envBrowserCustom) {
-				var other = envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>';
+				var other = (envBrowser == '<%= TicketEntryConstants.ENV_BROWSER_OTHER %>');
 
 				envBrowserCustom.toggle(other);
 
@@ -317,7 +317,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 
 			var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
 
-			var other = envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>';
+			var other = (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>');
 
 			envOSCustom.toggle(other);
 
@@ -401,7 +401,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 	);
 
 	Liferay.provide(
-		windows,
+		window,
 		'<portlet:namespace />updateEnvironmentField',
 		function(selectId, selectDataKey, selectData, selectVal, selectName) {
 			var A = AUI();
@@ -425,8 +425,8 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 
 				if (selectData) {
 					for (var i = 0; i < selectData.length; i++) {
-						var value = selectData[i].value;
 						var name = selectData[i].name;
+						var value = selectData[i].value;
 
 						selectOptions.push('<option value="' + value + '">' + name + '</option>');
 
@@ -495,13 +495,13 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 				var previousNamePrefix = '';
 
 				for (var i = 0; i < selectData.length; i++) {
-					var value = selectData[i].value;
 					var name = selectData[i].name;
+					var value = selectData[i].value;
 
 					var limited = '';
 
 					if (value < <%= ProductEntryConstants.PORTAL_VERSION_6_2_10 %>) {
-						limited = '(<liferay-ui:messag key="limited" />)';
+						limited = '(<liferay-ui:message key="limited" />)';
 					}
 
 					var namePrefix = name.substring(0, 3);

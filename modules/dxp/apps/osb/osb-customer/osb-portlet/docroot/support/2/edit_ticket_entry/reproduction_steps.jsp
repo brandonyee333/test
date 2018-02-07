@@ -46,7 +46,7 @@ TicketEntry ticketEntry = TicketEntryServiceUtil.getTicketEntry(ticketEntryId);
 			function() {
 				var A = AUI();
 
-				var reproductionSteps = A('#<portlet:namespace />reproductionSteps');
+				var reproductionSteps = A.one('#<portlet:namespace />reproductionSteps');
 
 				if (reproductionSteps) {
 					opener.<portlet:namespace />updateReproductionStepValues(reproductionSteps.val());

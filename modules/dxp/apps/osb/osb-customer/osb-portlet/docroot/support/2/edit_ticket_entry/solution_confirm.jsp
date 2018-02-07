@@ -153,7 +153,7 @@ boolean hasUpdateTicketSolution = accountCustomer || (partnerWorker && PartnerWo
 		<portlet:param name="ticketSolutionId" value="<%= String.valueOf(ticketSolution.getTicketSolutionId()) %>" />
 	</portlet:actionURL>
 
-	<aui:form action="<%= updateTicketSolutionURL %>" enctype="multipart/form-data" method="post" name="fm7">
+	<aui:form action="<%= updateTicketSolutionURL %>" enctype="multipart/form-data" method="post" name="solutionConfirmFm">
 		<input name="<portlet:namespace />ticketSolutionStatus" type="hidden" value="" />
 		<input name="<portlet:namespace />statusReason" type="hidden" value="" />
 		<input name="<portlet:namespace />statusMessage" type="hidden" value="" />
@@ -194,10 +194,10 @@ boolean hasUpdateTicketSolution = accountCustomer || (partnerWorker && PartnerWo
 			window,
 			'<portlet:namespace />updateTicketSolution',
 			function(ticketSolutionStatus, statusReason, statusMessage) {
-				var form = A.one('#<portlet:namespace />fm7');
+				var form = A.one('#<portlet:namespace />solutionConfirmFm');
 
 				if (form) {
-					var ticketSolutionStatus = .one('#<portlet:namespace />ticketSolutionStatus');
+					var ticketSolutionStatus = form.one('#<portlet:namespace />ticketSolutionStatus');
 
 					if (ticketSolutionStatus) {
 						ticketSolutionStatus.val(ticketSolutionStatus);
