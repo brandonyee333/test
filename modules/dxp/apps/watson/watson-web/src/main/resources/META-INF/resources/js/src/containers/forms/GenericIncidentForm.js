@@ -52,6 +52,8 @@ class GenericIncidentForm extends JSXComponent {
 		}
 
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+
+		window.onbeforeunload = this.handleBeforeLeave;
 	}
 
 	created() {
@@ -88,6 +90,8 @@ class GenericIncidentForm extends JSXComponent {
 			);
 		}
 
+		window.onbeforeunload = undefined;
+
 		Router.router().off('beforeNavigate', this.handleBeforeLeave);
 
 		this.handleClearFormData();
@@ -106,24 +110,33 @@ class GenericIncidentForm extends JSXComponent {
 			unlockNavigate
 		} = this.state;
 
+		let retVal = false;
+
 		if (watsonIncidentId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
 			const originalData = convertMapToObject(storeData);
 
 			if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
-				this.setState(
-					{
-						navigateAwayPath: data.path,
-						showLeaveModal: true
+				if (data) {
+					this.setState(
+						{
+							navigateAwayPath: data.path,
+							showLeaveModal: true
+						}
+					);
+
+					if (data.event) {
+						data.event.preventDefault();
 					}
-				);
 
-				if (data.event) {
-					data.event.preventDefault();
+					throw new Error();
 				}
-
-				throw new Error();
+				else {
+					retVal = true;
+				}
 			}
 		}
+
+		return retVal;
 	}
 
 	handleCancel() {

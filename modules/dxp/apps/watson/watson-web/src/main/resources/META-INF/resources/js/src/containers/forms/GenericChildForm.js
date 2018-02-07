@@ -80,6 +80,8 @@ class GenericChildForm extends JSXComponent {
 		}
 
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+
+		window.onbeforeunload = this.handleBeforeLeave;
 	}
 
 	created() {
@@ -118,6 +120,8 @@ class GenericChildForm extends JSXComponent {
 
 		Router.router().off('beforeNavigate', this.handleBeforeLeave);
 
+		window.onbeforeunload = undefined;
+
 		this.handleClearFormData();
 	}
 
@@ -134,24 +138,33 @@ class GenericChildForm extends JSXComponent {
 			unlockNavigate
 		} = this.state;
 
+		let retVal = false;
+
 		if (watsonChildId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
 			const originalData = convertMapToObject(storeData);
 
 			if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
-				this.setState(
-					{
-						navigateAwayPath: data.path,
-						showLeaveModal: true
+				if (data) {
+					this.setState(
+						{
+							navigateAwayPath: data.path,
+							showLeaveModal: true
+						}
+					);
+
+					if (data.event) {
+						data.event.preventDefault();
 					}
-				);
 
-				if (data.event) {
-					data.event.preventDefault();
+					throw new Error();
 				}
-
-				throw new Error();
+				else {
+					retVal = true;
+				}
 			}
 		}
+
+		return retVal;
 	}
 
 	handleCancel() {

@@ -24,6 +24,8 @@ import {
 class ChildForm extends JSXComponent {
 	attached() {
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+
+		window.onbeforeunload = this.handleBeforeLeave;
 	}
 
 	created() {
@@ -59,6 +61,8 @@ class ChildForm extends JSXComponent {
 		}
 
 		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+
+		window.onbeforeunload = undefined;
 	}
 
 	getConfig() {
@@ -95,6 +99,8 @@ class ChildForm extends JSXComponent {
 
 		const {unlockNavigate} = this.state;
 
+		let retVal = false;
+
 		if (watsonChildId > 0) {
 			if (!isEmpty(formData) && !isEmpty(storeData)) {
 				const originalData = convertMapToObject(storeData);
@@ -116,21 +122,28 @@ class ChildForm extends JSXComponent {
 				originalData.progress_reports = {};
 
 				if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
-					this.setState(
-						{
-							navigateAwayPath: data.path,
-							showLeaveModal: true
+					if (data) {
+						this.setState(
+							{
+								navigateAwayPath: data.path,
+								showLeaveModal: true
+							}
+						);
+
+						if (data.event) {
+							data.event.preventDefault();
 						}
-					);
 
-					if (data.event) {
-						data.event.preventDefault();
+						throw new Error();
 					}
-
-					throw new Error();
+					else {
+						retVal = true;
+					}
 				}
 			}
 		}
+
+		return retVal;
 	}
 
 	handleCancel() {

@@ -22,6 +22,8 @@ import {
 class IncidentForm extends JSXComponent {
 	attached() {
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+
+		window.onbeforeunload = this.handleBeforeLeave;
 	}
 
 	created() {
@@ -55,6 +57,8 @@ class IncidentForm extends JSXComponent {
 		}
 
 		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+
+		window.onbeforeunload = undefined;
 	}
 
 	getConfig() {
@@ -89,6 +93,8 @@ class IncidentForm extends JSXComponent {
 
 		const {unlockNavigate} = this.state;
 
+		let retVal = false;
+
 		if (watsonIncidentId > 0) {
 			const pathMatches = data.path.match(/\/web\/guest\/home\/-\/watson\/incidents\/([0-9]+)\/[a-zA-Z]+\/?$/);
 
@@ -98,21 +104,28 @@ class IncidentForm extends JSXComponent {
 				const originalData = convertMapToObject(storeData);
 
 				if (!unlockNavigate && !deepCompareIsEqual(formData, originalData)) {
-					this.setState(
-						{
-							navigateAwayPath: data.path,
-							showLeaveModal: true
+					if (data) {
+						this.setState(
+							{
+								navigateAwayPath: data.path,
+								showLeaveModal: true
+							}
+						);
+
+						if (data.event) {
+							data.event.preventDefault();
 						}
-					);
 
-					if (data.event) {
-						data.event.preventDefault();
+						throw new Error();
 					}
-
-					throw new Error();
+					else {
+						retVal = true;
+					}
 				}
 			}
 		}
+
+		return retVal;
 	}
 
 	handleClearFormData() {

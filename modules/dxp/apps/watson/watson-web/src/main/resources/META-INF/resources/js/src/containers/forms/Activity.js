@@ -42,6 +42,8 @@ class ActivityForm extends JSXComponent {
 		Router.router().on('beforeNavigate', this.handleBeforeLeave);
 
 		this.state.intervalId = setInterval(() => this.handleAutoSave(), 60000);
+
+		window.onbeforeunload = this.handleBeforeLeave;
 	}
 
 	created() {
@@ -80,6 +82,8 @@ class ActivityForm extends JSXComponent {
 		}
 
 		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+
+		window.onbeforeunload = undefined;
 
 		this.handleClearFormData();
 	}
@@ -203,6 +207,8 @@ class ActivityForm extends JSXComponent {
 			unlockNavigate
 		} = this.state;
 
+		let retVal = false;
+
 		if (watsonIncidentId > 0 && !isEmpty(formData) && (!isEmpty(storeData) || action === 'create' && !dataSent)) {
 			const originalData = convertMapToObject(storeData);
 
@@ -214,20 +220,27 @@ class ActivityForm extends JSXComponent {
 			}
 
 			if (!unlockNavigate && ((autoSaved && !isEqual(formData, autoSaveResponse)) || (!deepCompareIsEqual(formData, originalData) && autoSaved < 1))) {
-				this.setState(
-					{
-						navigateAwayPath: data.path,
-						showLeaveModal: true
+				if (data) {
+					this.setState(
+						{
+							navigateAwayPath: data.path,
+							showLeaveModal: true
+						}
+					);
+
+					if (data.event) {
+						data.event.preventDefault();
 					}
-				);
 
-				if (data.event) {
-					data.event.preventDefault();
+					throw new Error();
 				}
-
-				throw new Error();
+				else {
+					retVal = true;
+				}
 			}
 		}
+
+		return retVal;
 	}
 
 	handleCancel() {
