@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.consumer;
 
+import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQPropertyKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -27,27 +29,20 @@ import com.rabbitmq.client.Envelope;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import java.lang.reflect.Method;
-
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Amos Fong
  */
-public class RabbitMQConsumerDelegator extends DefaultConsumer {
+public class OSBConsumer extends DefaultConsumer implements Consumer {
 
-	public RabbitMQConsumerDelegator(Channel channel, Object delegate)
+	public OSBConsumer(Channel channel, RabbitMQProcessor rabbitMQProcessor)
 		throws Exception {
 
 		super(channel);
 
-		_delegate = delegate;
-
-		Class<?> clazz = delegate.getClass();
-
-		_delegateMethod = clazz.getMethod(
-			"parse", String.class, String.class, Map.class);
+		_rabbitMQProcessor = rabbitMQProcessor;
 	}
 
 	@Override
@@ -75,19 +70,27 @@ public class RabbitMQConsumerDelegator extends DefaultConsumer {
 		}
 
 		try {
-			int response = parse(
-				envelope.getRoutingKey(), message, translate(properties));
+			Map<String, Object> translatedProperties = translate(properties);
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Message: " + message);
+				_log.debug(
+					"Properties: " + MapUtil.toString(translatedProperties));
+			}
+
+			int response = _rabbitMQProcessor.process(
+				envelope.getRoutingKey(), message, translatedProperties);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Received response " + response);
 			}
 
-			if (response == RabbitMQConsumer.RESPONSE_ACK) {
+			if (response == RabbitMQProcessor.RESPONSE_ACK) {
 				basicAck(envelope);
 
 				return;
 			}
-			else if (response == RabbitMQConsumer.RESPONSE_REJECT) {
+			else if (response == RabbitMQProcessor.RESPONSE_REJECT) {
 				basicReject(envelope);
 
 				return;
@@ -154,19 +157,6 @@ public class RabbitMQConsumerDelegator extends DefaultConsumer {
 		}
 	}
 
-	protected int parse(
-			String routingKey, String message, Map<String, Object> properties)
-		throws Exception {
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Message: " + message);
-			_log.debug("Properties: " + MapUtil.toString(properties));
-		}
-
-		return (Integer)_delegateMethod.invoke(
-			_delegate, routingKey, message, properties);
-	}
-
 	protected Map<String, Object> translate(AMQP.BasicProperties properties) {
 		Map<String, Object> translatedProperties = new HashMap<>();
 
@@ -209,10 +199,8 @@ public class RabbitMQConsumerDelegator extends DefaultConsumer {
 		return translatedProperties;
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(
-		RabbitMQConsumerDelegator.class);
+	private static Log _log = LogFactoryUtil.getLog(OSBConsumer.class);
 
-	private final Object _delegate;
-	private final Method _delegateMethod;
+	private final RabbitMQProcessor _rabbitMQProcessor;
 
 }

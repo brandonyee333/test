@@ -86,10 +86,6 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 				</aui:fieldset>
 			</aui:form>
 
-			<%
-			Map<String, ConsumerBag> consumers = ConsumerManagerLocalServiceUtil.getConsumersMap();
-			%>
-
 			<liferay-frontend:management-bar>
 				<liferay-frontend:management-bar-buttons>
 					<liferay-frontend:management-bar-filters>
@@ -107,80 +103,84 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 				</liferay-frontend:management-bar-buttons>
 			</liferay-frontend:management-bar>
 
+			<%
+			Map<String, RabbitMQProcessor> rabbitMQProcessors = RabbitMQProcessorRegistryUtil.getRabbitMQProcessors();
+			%>
+
 			<liferay-ui:search-container
-				emptyResultsMessage="there-are-no-consumers"
+				emptyResultsMessage="there-are-no-processors"
 				emptyResultsMessageCssClass="taglib-empty-result-message-header"
 				headerNames="class,queue,channel,active"
-				total="<%= consumers.size() %>"
+				total="<%= rabbitMQProcessors.size() %>"
 			>
 				<liferay-ui:search-container-results
-					results="<%= ListUtil.fromCollection(consumers.entrySet()) %>"
+					results="<%= ListUtil.fromCollection(rabbitMQProcessors.entrySet()) %>"
 				/>
 
 				<liferay-ui:search-container-row
 					className="java.util.Map.Entry"
-					modelVar="consumerEntry"
+					modelVar="processorEntry"
 				>
 
 					<%
-					String rabbitMQConsumerKey = (String)consumerEntry.getKey();
-					ConsumerBag consumerBag = (ConsumerBag)consumerEntry.getValue();
+					RabbitMQProcessor rabbitMQProcessor = (RabbitMQProcessor)processorEntry.getValue();
 
-					Object rabbitMQConsumer = consumerBag.getRabbitMQConsumer();
+					Channel channel = null;
 
-					Class<?> rabbitMQClass = rabbitMQConsumer.getClass();
+					Consumer consumer = ConsumerManagerLocalServiceUtil.getConsumer(rabbitMQProcessor);
+
+					if (consumer != null) {
+						channel = consumer.getChannel();
+					}
+
+					Class<?> rabbitMQProcessorClass = rabbitMQProcessor.getClass();
 					%>
 
 					<liferay-ui:search-container-column-text
 						name="class"
-						value="<%= rabbitMQClass.getName() %>"
+						value="<%= rabbitMQProcessorClass.getName() %>"
 					/>
 
 					<liferay-ui:search-container-column-text
 						name="queue"
-						value="<%= consumerBag.getQueue() %>"
+						value="<%= rabbitMQProcessor.getQueue() %>"
 					/>
 
 					<liferay-ui:search-container-column-text
 						name="channel"
 					>
-
-						<%
-						Channel channel = consumerBag.getChannel();
-						%>
-
-						<c:if test="<%= channel != null %>">
+						<c:if test="<%= (channel != null) && channel.isOpen() %>">
 							<%= channel.getChannelNumber() %>
 						</c:if>
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text
 						name="active"
-						value="<%= String.valueOf(consumerBag.isActive()) %>"
+						value="<%= String.valueOf((channel != null) && channel.isOpen()) %>"
 					/>
 
 					<liferay-ui:search-container-column-text>
 						<liferay-ui:icon-menu>
 							<c:choose>
-								<c:when test="<%= consumerBag.isActive() %>">
-									<portlet:actionURL name="deactivateConsumer" var="deactivateURL">
+								<c:when test="<%= (channel != null) && channel.isOpen() %>">
+									<portlet:actionURL name="deactivateMessageProcessor" var="deactivateMessageProcessorURL">
 										<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-										<portlet:param name="rabbitMQConsumerKey" value="<%= rabbitMQConsumerKey %>" />
+										<portlet:param name="rabbitMQProcessorKey" value="<%= (String)processorEntry.getKey() %>" />
 									</portlet:actionURL>
 
 									<liferay-ui:icon-deactivate
-										url="<%= deactivateURL %>"
+										url="<%= deactivateMessageProcessorURL %>"
 									/>
 								</c:when>
 								<c:otherwise>
-									<portlet:actionURL name="activateConsumer" var="activateURL">
+									<portlet:actionURL name="activateMessageProcessor" var="activateMessageProcessorURL">
 										<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-										<portlet:param name="rabbitMQConsumerKey" value="<%= rabbitMQConsumerKey %>" />
+										<portlet:param name="rabbitMQProcessorKey" value="<%= (String)processorEntry.getKey() %>" />
 									</portlet:actionURL>
 
 									<liferay-ui:icon
 										image="activate"
-										url="<%= activateURL %>"
+										url="<%= activateMessageProcessorURL %>"
 									/>
 								</c:otherwise>
 							</c:choose>

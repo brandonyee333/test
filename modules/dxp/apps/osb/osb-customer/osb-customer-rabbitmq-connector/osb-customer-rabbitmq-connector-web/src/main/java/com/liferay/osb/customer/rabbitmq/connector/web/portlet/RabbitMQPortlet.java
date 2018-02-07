@@ -14,15 +14,12 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.web.portlet;
 
-import com.liferay.osb.customer.rabbitmq.connector.consumer.RabbitMQConsumer;
+import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessorRegistry;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
 import com.liferay.osb.customer.rabbitmq.connector.web.internal.constants.RabbitMQPortletKeys;
-import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
-import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortletClassInvoker;
@@ -33,9 +30,6 @@ import javax.portlet.Portlet;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Amos Fong
@@ -59,26 +53,27 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 )
 public class RabbitMQPortlet extends MVCPortlet {
 
-	public void activateConsumer(
+	public void activateRabbitMQProcessor(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String rabbitMQConsumerKey = ParamUtil.getString(
-			actionRequest, "rabbitMQConsumerKey");
+		String rabbitMQProcessorKey = ParamUtil.getString(
+			actionRequest, "rabbitMQProcessorKey");
 
-		_consumerManagerLocalService.activateConsumer(rabbitMQConsumerKey);
+		_rabbitMQProcessorRegistry.activateRabbitMQProcessor(
+			rabbitMQProcessorKey);
 
 		/*MessageValuesThreadLocal.setValue(
-			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);*/
+			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);
 
 		MethodHandler invokeMethodHandler = new MethodHandler(
 			_invokeMethodKey, false, RabbitMQPortletKeys.RABBIT_MQ,
-			_activateConsumerMethodKey, new Object[] {rabbitMQConsumerKey});
+			_addConsumerMethodKey, new Object[] {rabbitMQProcessorKey});
 
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
 			invokeMethodHandler, true);
 
-		ClusterExecutorUtil.execute(clusterRequest);
+		ClusterExecutorUtil.execute(clusterRequest);*/
 	}
 
 	public void consumeMessage(
@@ -87,17 +82,18 @@ public class RabbitMQPortlet extends MVCPortlet {
 		_consumerManagerLocalService.consumeMessage();
 	}
 
-	public void deactivateConsumer(
+	public void deactivateRabbitMQProcessor(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String rabbitMQConsumerKey = ParamUtil.getString(
-			actionRequest, "rabbitMQConsumerKey");
+		String rabbitMQProcessorKey = ParamUtil.getString(
+			actionRequest, "rabbitMQProcessorKey");
 
-		_consumerManagerLocalService.deactivateConsumer(rabbitMQConsumerKey);
+		_rabbitMQProcessorRegistry.deactivateRabbitMQProcessor(
+			rabbitMQProcessorKey);
 
 		/*MessageValuesThreadLocal.setValue(
-			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);*/
+			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);
 
 		MethodHandler invokeMethodHandler = new MethodHandler(
 			_invokeMethodKey, false, RabbitMQPortletKeys.RABBIT_MQ,
@@ -106,7 +102,7 @@ public class RabbitMQPortlet extends MVCPortlet {
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
 			invokeMethodHandler, true);
 
-		ClusterExecutorUtil.execute(clusterRequest);
+		ClusterExecutorUtil.execute(clusterRequest);*/
 	}
 
 	public void restart(
@@ -118,35 +114,18 @@ public class RabbitMQPortlet extends MVCPortlet {
 		_consumerManagerLocalService.resetChannels();
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.MULTIPLE,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "removeRabbitMQConsumer"
-	)
-	protected void addRabbitMQConsumer(RabbitMQConsumer rabbitMQConsumer)
-		throws Exception {
-
-		if (!_consumerManagerLocalService.isConnected()) {
-			_consumerManagerLocalService.connect();
-		}
-
-		_consumerManagerLocalService.registerConsumer(
-			rabbitMQConsumer.getQueue(), 1, rabbitMQConsumer);
-	}
-
-	protected void removeRabbitMQConsumer(RabbitMQConsumer rabbitMQConsumer)
-		throws Exception {
-
-		_consumerManagerLocalService.unregisterConsumer(
-			rabbitMQConsumer.getQueue());
-	}
-
 	@Reference(unbind = "-")
 	protected void setConsumerManagerLocalService(
 		ConsumerManagerLocalService consumerManagerLocalService) {
 
 		_consumerManagerLocalService = consumerManagerLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setRabbitMQProcessorRegistry(
+		RabbitMQProcessorRegistry rabbitMQProcessorRegistry) {
+
+		_rabbitMQProcessorRegistry = rabbitMQProcessorRegistry;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -160,5 +139,6 @@ public class RabbitMQPortlet extends MVCPortlet {
 	private final MethodKey _invokeMethodKey = new MethodKey(
 		PortletClassInvoker.class, "invoke", boolean.class, String.class,
 		MethodKey.class, Object[].class);
+	private RabbitMQProcessorRegistry _rabbitMQProcessorRegistry;
 
 }

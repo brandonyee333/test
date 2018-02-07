@@ -14,10 +14,9 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.service;
 
-import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBag;
+import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
+import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
 import com.liferay.osgi.util.ServiceTrackerFactory;
-
-import java.util.Map;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -27,10 +26,10 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class ConsumerManagerLocalServiceUtil {
 
-	public static void activateConsumer(String rabbitMQConsumerKey)
+	public static void addConsumer(RabbitMQProcessor rabbitMQProcessor)
 		throws Exception {
 
-		getService().activateConsumer(rabbitMQConsumerKey);
+		getService().addConsumer(rabbitMQProcessor);
 	}
 
 	public static void consumeMessage() {
@@ -38,38 +37,26 @@ public class ConsumerManagerLocalServiceUtil {
 	}
 
 	public static void consumeMessages(
-			String queue, long messageCount, Object rabbitMQConsumer)
+			RabbitMQProcessor rabbitMQProcessor, long messageCount)
 		throws Exception {
 
-		getService().consumeMessages(queue, messageCount, rabbitMQConsumer);
+		getService().consumeMessages(rabbitMQProcessor, messageCount);
 	}
 
-	public static void deactivateConsumer(String rabbitMQConsumerKey) {
-		getService().deactivateConsumer(rabbitMQConsumerKey);
+	public static void deleteConsumer(RabbitMQProcessor rabbitMQProcessor) {
+		getService().deleteConsumer(rabbitMQProcessor);
 	}
 
-	public static Map<String, ConsumerBag> getConsumersMap() {
-		return getService().getConsumersMap();
+	public static Consumer getConsumer(RabbitMQProcessor rabbitMQProcessor) {
+		return getService().getConsumer(rabbitMQProcessor);
 	}
 
 	public static ConsumerManagerLocalService getService() {
 		return _serviceTracker.getService();
 	}
 
-	public static String registerConsumer(
-			String queue, int prefetchCount, Object rabbitMQConsumer)
-		throws Exception {
-
-		return getService().registerConsumer(
-			queue, prefetchCount, rabbitMQConsumer);
-	}
-
 	public static void resetChannels() throws Exception {
 		getService().resetChannels();
-	}
-
-	public static void unregisterConsumer(String rabbitMQConsumerKey) {
-		getService().unregisterConsumer(rabbitMQConsumerKey);
 	}
 
 	private static final ServiceTracker

@@ -16,16 +16,14 @@ package com.liferay.osb.customer.rabbitmq.connector.service.impl;
 
 import com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues;
 import com.liferay.osb.customer.rabbitmq.connector.connection.RabbitMQConnectionManager;
-import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBag;
-import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBagImpl;
-import com.liferay.osb.customer.rabbitmq.connector.consumer.RabbitMQConsumerDelegator;
+import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
+import com.liferay.osb.customer.rabbitmq.connector.consumer.OSBConsumer;
+import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.GetResponse;
 
 import java.util.Map;
@@ -42,21 +40,21 @@ import org.osgi.service.component.annotations.Reference;
 public class ConsumerManagerLocalServiceImpl
 	implements ConsumerManagerLocalService {
 
-	public void activateConsumer(String rabbitMQConsumerKey) throws Exception {
-		ConsumerBag consumerBag = _consumers.get(rabbitMQConsumerKey);
+	public void addConsumer(RabbitMQProcessor rabbitMQProcessor)
+		throws Exception {
 
-		if (consumerBag.isActive()) {
+		if (_consumers.containsKey(rabbitMQProcessor)) {
 			return;
 		}
 
-		Channel channel = createChannel(
-			consumerBag.getQueue(), consumerBag.getPrefetchCount(),
-			consumerBag.getRabbitMQConsumer());
+		Consumer consumer = createConsumer(rabbitMQProcessor);
 
-		consumerBag.setChannel(channel);
+		_consumers.put(rabbitMQProcessor, consumer);
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Activated consumer " + rabbitMQConsumerKey);
+			Class<?> clazz = rabbitMQProcessor.getClass();
+
+			_log.info("Registered " + clazz.getName());
 		}
 	}
 
@@ -70,15 +68,17 @@ public class ConsumerManagerLocalServiceImpl
 			return;
 		}
 
-		for (ConsumerBag consumerBag : _consumers.values()) {
-			try {
-				Channel channel = consumerBag.getChannel();
+		for (Map.Entry<RabbitMQProcessor, Consumer> entry :
+				_consumers.entrySet()) {
 
-				Consumer consumer = new RabbitMQConsumerDelegator(
-					channel, consumerBag.getRabbitMQConsumer());
+			try {
+				RabbitMQProcessor rabbitMQProcessor = entry.getKey();
+				Consumer consumer = entry.getValue();
+
+				Channel channel = consumer.getChannel();
 
 				GetResponse getResponse = channel.basicGet(
-					consumerBag.getQueue(), false);
+					rabbitMQProcessor.getQueue(), false);
 
 				consumer.handleDelivery(
 					null, getResponse.getEnvelope(), getResponse.getProps(),
@@ -91,7 +91,7 @@ public class ConsumerManagerLocalServiceImpl
 	}
 
 	public void consumeMessages(
-			String queue, long messageCount, Object rabbitMQConsumer)
+			RabbitMQProcessor rabbitMQProcessor, long messageCount)
 		throws Exception {
 
 		Channel channel = null;
@@ -100,19 +100,21 @@ public class ConsumerManagerLocalServiceImpl
 			channel = _rabbitMQConnectionManager.createChannel();
 
 			if (messageCount <= 0) {
-				messageCount = channel.messageCount(queue);
+				messageCount = channel.messageCount(
+					rabbitMQProcessor.getQueue());
 			}
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Consuming " + messageCount + " messages on " + queue);
+					"Consuming " + messageCount + " messages on " +
+						rabbitMQProcessor.getQueue());
 			}
 
 			for (int i = 0; i < messageCount; i++) {
-				Consumer consumer = new RabbitMQConsumerDelegator(
-					channel, rabbitMQConsumer);
+				Consumer consumer = new OSBConsumer(channel, rabbitMQProcessor);
 
-				GetResponse getResponse = channel.basicGet(queue, false);
+				GetResponse getResponse = channel.basicGet(
+					rabbitMQProcessor.getQueue(), false);
 
 				if (getResponse == null) {
 					break;
@@ -130,19 +132,19 @@ public class ConsumerManagerLocalServiceImpl
 		}
 	}
 
-	public void deactivateConsumer(String rabbitMQConsumerKey) {
-		ConsumerBag consumerBag = _consumers.get(rabbitMQConsumerKey);
+	public void deleteConsumer(RabbitMQProcessor rabbitMQProcessor) {
+		Consumer consumer = _consumers.remove(rabbitMQProcessor);
 
-		if (!consumerBag.isActive()) {
+		if (consumer == null) {
 			return;
 		}
 
-		closeChannel(consumerBag.getChannel());
-
-		consumerBag.setChannel(null);
+		closeChannel(consumer.getChannel());
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Deactivated consumer " + rabbitMQConsumerKey);
+			Class<?> clazz = rabbitMQProcessor.getClass();
+
+			_log.info("Unregistered " + clazz.getName());
 		}
 	}
 
@@ -151,8 +153,8 @@ public class ConsumerManagerLocalServiceImpl
 		_rabbitMQConnectionManager.disconnect();
 	}
 
-	public Map<String, ConsumerBag> getConsumersMap() {
-		return _consumers;
+	public Consumer getConsumer(RabbitMQProcessor rabbitMQProcessor) {
+		return _consumers.get(rabbitMQProcessor);
 	}
 
 	@Override
@@ -165,59 +167,24 @@ public class ConsumerManagerLocalServiceImpl
 		_rabbitMQConnectionManager.reconnect();
 	}
 
-	public String registerConsumer(
-			String queue, int prefetchCount, Object rabbitMQConsumer)
-		throws Exception {
-
-		Channel channel = createChannel(queue, prefetchCount, rabbitMQConsumer);
-		Class<?> rabbitMQClass = rabbitMQConsumer.getClass();
-
-		ConsumerBag consumerBag = new ConsumerBagImpl(
-			rabbitMQConsumer, channel, prefetchCount, queue);
-
-		String rabbitMQConsumerKey =
-			rabbitMQClass.getName() + StringPool.POUND + queue;
-
-		_consumers.put(rabbitMQConsumerKey, consumerBag);
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Registered " + consumerBag.toString());
-		}
-
-		return rabbitMQConsumerKey;
-	}
-
 	public void resetChannels() throws Exception {
-		for (ConsumerBag consumerBag : _consumers.values()) {
-			closeChannel(consumerBag.getChannel());
+		for (Map.Entry<RabbitMQProcessor, Consumer> entry :
+				_consumers.entrySet()) {
 
-			Channel channel = createChannel(
-				consumerBag.getQueue(), consumerBag.getPrefetchCount(),
-				consumerBag.getRabbitMQConsumer());
+			RabbitMQProcessor rabbitMQProcessor = entry.getKey();
+			Consumer consumer = entry.getValue();
 
-			consumerBag.setChannel(channel);
+			closeChannel(consumer.getChannel());
+
+			Consumer newConsumer = createConsumer(rabbitMQProcessor);
+
+			entry.setValue(newConsumer);
 
 			if (_log.isInfoEnabled()) {
-				_log.info("Reset channel for " + consumerBag.toString());
+				Class<?> clazz = rabbitMQProcessor.getClass();
+
+				_log.info("Reset channel for " + clazz.getName());
 			}
-		}
-	}
-
-	public void unregisterConsumer(String rabbitMQConsumerKey) {
-		ConsumerBag consumerBag = _consumers.remove(rabbitMQConsumerKey);
-
-		if (consumerBag == null) {
-			if (_log.isInfoEnabled()) {
-				_log.info("No consumer exists with key " + rabbitMQConsumerKey);
-			}
-
-			return;
-		}
-
-		closeChannel(consumerBag.getChannel());
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Unregistered " + consumerBag.toString());
 		}
 	}
 
@@ -236,27 +203,25 @@ public class ConsumerManagerLocalServiceImpl
 		}
 	}
 
-	protected Channel createChannel(
-			String queue, int prefetchCount, Object rabbitMQConsumer)
+	protected Consumer createConsumer(RabbitMQProcessor rabbitMQProcessor)
 		throws Exception {
 
 		Channel channel = _rabbitMQConnectionManager.createChannel(
-			prefetchCount);
+			rabbitMQProcessor.getPrefetchCount());
+
+		Consumer consumer = new OSBConsumer(channel, rabbitMQProcessor);
 
 		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
-			Consumer consumer = new RabbitMQConsumerDelegator(
-				channel, rabbitMQConsumer);
-
-			channel.basicConsume(queue, false, consumer);
+			channel.basicConsume(rabbitMQProcessor.getQueue(), false, consumer);
 		}
 
-		return channel;
+		return consumer;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConsumerManagerLocalServiceImpl.class);
 
-	private final Map<String, ConsumerBag> _consumers =
+	private final Map<RabbitMQProcessor, Consumer> _consumers =
 		new ConcurrentHashMap<>();
 
 	@Reference

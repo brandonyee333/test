@@ -14,25 +14,13 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.consumer;
 
-import java.util.Map;
+import com.rabbitmq.client.Channel;
 
 /**
  * @author Amos Fong
  */
-public interface RabbitMQConsumer {
+public interface Consumer extends com.rabbitmq.client.Consumer {
 
-	public static final int RESPONSE_ACK = 1;
-
-	public static final int RESPONSE_REJECT = 2;
-
-	public static final int RESPONSE_REPUBLISH = 3;
-
-	public static final int[] RESPONSES =
-		{RESPONSE_ACK, RESPONSE_REJECT, RESPONSE_REPUBLISH};
-
-	public String getQueue();
-
-	public int parse(
-		String routingKey, String message, Map<String, Object> properties);
+	public Channel getChannel();
 
 }

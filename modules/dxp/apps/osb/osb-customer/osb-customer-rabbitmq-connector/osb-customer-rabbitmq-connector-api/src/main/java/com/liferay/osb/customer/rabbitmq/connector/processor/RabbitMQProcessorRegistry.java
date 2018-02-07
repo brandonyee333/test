@@ -12,25 +12,21 @@
  * details.
  */
 
-package com.liferay.osb.customer.rabbitmq.connector.consumer;
+package com.liferay.osb.customer.rabbitmq.connector.processor;
 
-import com.rabbitmq.client.Channel;
+import java.util.Map;
 
 /**
  * @author Amos Fong
  */
-public interface ConsumerBag {
+public interface RabbitMQProcessorRegistry {
 
-	public Channel getChannel();
+	public void activateRabbitMQProcessor(String rabbitMQProcessorId)
+		throws Exception;
 
-	public int getPrefetchCount();
+	public void deactivateRabbitMQProcessor(String rabbitMQProcessorId)
+		throws Exception;
 
-	public String getQueue();
-
-	public Object getRabbitMQConsumer();
-
-	public boolean isActive();
-
-	public void setChannel(Channel channel);
+	public Map<String, RabbitMQProcessor> getRabbitMQProcessors();
 
 }

@@ -14,9 +14,8 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.service;
 
-import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBag;
-
-import java.util.Map;
+import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
+import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
 
 /**
  * @author Amos Fong
@@ -24,32 +23,27 @@ import java.util.Map;
  */
 public interface ConsumerManagerLocalService {
 
-	public void activateConsumer(String rabbitMQConsumerKey) throws Exception;
+	public void addConsumer(RabbitMQProcessor rabbitMQProcessor)
+		throws Exception;
 
 	public void connect();
 
 	public void consumeMessage();
 
 	public void consumeMessages(
-			String queue, long messageCount, Object rabbitMQConsumer)
+			RabbitMQProcessor rabbitMQProcessor, long messageCount)
 		throws Exception;
 
-	public void deactivateConsumer(String rabbitMQConsumerKey);
+	public void deleteConsumer(RabbitMQProcessor rabbitMQProcessor);
 
 	public void disconnect();
 
-	public Map<String, ConsumerBag> getConsumersMap();
+	public Consumer getConsumer(RabbitMQProcessor rabbitMQProcessor);
 
 	public boolean isConnected();
 
 	public void reconnect();
 
-	public String registerConsumer(
-			String queue, int prefetchCount, Object rabbitMQConsumer)
-		throws Exception;
-
 	public void resetChannels() throws Exception;
-
-	public void unregisterConsumer(String rabbitMQConsumerKey);
 
 }

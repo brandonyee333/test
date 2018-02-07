@@ -25,7 +25,9 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues" %><%@
-page import="com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerBag" %><%@
+page import="com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer" %><%@
+page import="com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor" %><%@
+page import="com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessorRegistryUtil" %><%@
 page import="com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.util.ListUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
