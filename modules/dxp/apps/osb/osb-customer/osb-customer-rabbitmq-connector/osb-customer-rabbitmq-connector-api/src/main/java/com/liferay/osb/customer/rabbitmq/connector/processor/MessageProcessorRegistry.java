@@ -19,22 +19,14 @@ import java.util.Map;
 /**
  * @author Amos Fong
  */
-public interface RabbitMQProcessor {
+public interface MessageProcessorRegistry {
 
-	public static final int RESPONSE_ACK = 1;
+	public void activateMessageProcessor(String messageProcessorKey)
+		throws Exception;
 
-	public static final int RESPONSE_REJECT = 2;
+	public void deactivateMessageProcessor(String messageProcessorKey)
+		throws Exception;
 
-	public static final int RESPONSE_REPUBLISH = 3;
-
-	public static final int[] RESPONSES =
-		{RESPONSE_ACK, RESPONSE_REJECT, RESPONSE_REPUBLISH};
-
-	public int getPrefetchCount();
-
-	public String getQueue();
-
-	public int process(
-		String routingKey, String message, Map<String, Object> properties);
+	public Map<String, MessageProcessor> getMessageProcessors();
 
 }

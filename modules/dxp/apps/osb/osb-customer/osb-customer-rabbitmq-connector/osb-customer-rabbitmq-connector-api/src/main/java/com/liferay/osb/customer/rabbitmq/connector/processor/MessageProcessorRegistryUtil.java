@@ -23,37 +23,36 @@ import org.osgi.util.tracker.ServiceTracker;
 /**
  * @author Amos Fong
  */
-public class RabbitMQProcessorRegistryUtil {
+public class MessageProcessorRegistryUtil {
 
-	public static void activateRabbitMQProcessor(String rabbitMQProcessorKey)
+	public static void activateMessageProcessor(String messageProcessorKey)
 		throws Exception {
 
-		RabbitMQProcessorRegistry rabbitMQProcessorRegistry =
+		MessageProcessorRegistry messageProcessorRegistry =
 			_serviceTracker.getService();
 
-		rabbitMQProcessorRegistry.activateRabbitMQProcessor(
-			rabbitMQProcessorKey);
+		messageProcessorRegistry.activateMessageProcessor(messageProcessorKey);
 	}
 
-	public static void deactivateRabbitMQProcessor(String rabbitMQProcessorKey)
+	public static void deactivateMessageProcessor(String messageProcessorKey)
 		throws Exception {
 
-		RabbitMQProcessorRegistry rabbitMQProcessorRegistry =
+		MessageProcessorRegistry messageProcessorRegistry =
 			_serviceTracker.getService();
 
-		rabbitMQProcessorRegistry.deactivateRabbitMQProcessor(
-			rabbitMQProcessorKey);
+		messageProcessorRegistry.deactivateMessageProcessor(
+			messageProcessorKey);
 	}
 
-	public static Map<String, RabbitMQProcessor> getRabbitMQProcessors() {
-		RabbitMQProcessorRegistry rabbitMQProcessorRegistry =
+	public static Map<String, MessageProcessor> getMessageProcessors() {
+		MessageProcessorRegistry messageProcessorRegistry =
 			_serviceTracker.getService();
 
-		return rabbitMQProcessorRegistry.getRabbitMQProcessors();
+		return messageProcessorRegistry.getMessageProcessors();
 	}
 
 	private static final
-		ServiceTracker<?, RabbitMQProcessorRegistry> _serviceTracker =
-			ServiceTrackerFactory.open(RabbitMQProcessorRegistry.class);
+		ServiceTracker<?, MessageProcessorRegistry> _serviceTracker =
+			ServiceTrackerFactory.open(MessageProcessorRegistry.class);
 
 }

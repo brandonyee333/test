@@ -17,7 +17,7 @@ package com.liferay.osb.customer.rabbitmq.connector.processor;
 /**
  * @author Amos Fong
  */
-public interface RabbitMQPropertyKeys {
+public interface MessagePropertyKeys {
 
 	public static final String APP_ID = "appId";
 

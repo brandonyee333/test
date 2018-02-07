@@ -18,7 +18,7 @@ import com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnect
 import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
 import com.liferay.osb.customer.rabbitmq.connector.internal.consumer.OSBConsumer;
-import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -39,19 +39,19 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true)
 public class ConsumerManagerImpl implements ConsumerManager {
 
-	public void addConsumer(RabbitMQProcessor rabbitMQProcessor)
+	public void addConsumer(MessageProcessor messageProcessor)
 		throws Exception {
 
-		if (_consumers.containsKey(rabbitMQProcessor)) {
+		if (_consumers.containsKey(messageProcessor)) {
 			return;
 		}
 
-		Consumer consumer = createConsumer(rabbitMQProcessor);
+		Consumer consumer = createConsumer(messageProcessor);
 
-		_consumers.put(rabbitMQProcessor, consumer);
+		_consumers.put(messageProcessor, consumer);
 
 		if (_log.isInfoEnabled()) {
-			Class<?> clazz = rabbitMQProcessor.getClass();
+			Class<?> clazz = messageProcessor.getClass();
 
 			_log.info("Registered " + clazz.getName());
 		}
@@ -62,17 +62,17 @@ public class ConsumerManagerImpl implements ConsumerManager {
 			return;
 		}
 
-		for (Map.Entry<RabbitMQProcessor, Consumer> entry :
+		for (Map.Entry<MessageProcessor, Consumer> entry :
 				_consumers.entrySet()) {
 
 			try {
-				RabbitMQProcessor rabbitMQProcessor = entry.getKey();
+				MessageProcessor messageProcessor = entry.getKey();
 				Consumer consumer = entry.getValue();
 
 				Channel channel = consumer.getChannel();
 
 				GetResponse getResponse = channel.basicGet(
-					rabbitMQProcessor.getQueue(), false);
+					messageProcessor.getQueue(), false);
 
 				consumer.handleDelivery(
 					null, getResponse.getEnvelope(), getResponse.getProps(),
@@ -85,7 +85,7 @@ public class ConsumerManagerImpl implements ConsumerManager {
 	}
 
 	public void consumeMessages(
-			RabbitMQProcessor rabbitMQProcessor, long messageCount)
+			MessageProcessor messageProcessor, long messageCount)
 		throws Exception {
 
 		Channel channel = null;
@@ -95,20 +95,20 @@ public class ConsumerManagerImpl implements ConsumerManager {
 
 			if (messageCount <= 0) {
 				messageCount = channel.messageCount(
-					rabbitMQProcessor.getQueue());
+					messageProcessor.getQueue());
 			}
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Consuming " + messageCount + " messages on " +
-						rabbitMQProcessor.getQueue());
+						messageProcessor.getQueue());
 			}
 
 			for (int i = 0; i < messageCount; i++) {
-				Consumer consumer = new OSBConsumer(channel, rabbitMQProcessor);
+				Consumer consumer = new OSBConsumer(channel, messageProcessor);
 
 				GetResponse getResponse = channel.basicGet(
-					rabbitMQProcessor.getQueue(), false);
+					messageProcessor.getQueue(), false);
 
 				if (getResponse == null) {
 					break;
@@ -126,8 +126,8 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		}
 	}
 
-	public void deleteConsumer(RabbitMQProcessor rabbitMQProcessor) {
-		Consumer consumer = _consumers.remove(rabbitMQProcessor);
+	public void deleteConsumer(MessageProcessor messageProcessor) {
+		Consumer consumer = _consumers.remove(messageProcessor);
 
 		if (consumer == null) {
 			return;
@@ -136,31 +136,31 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		closeChannel(consumer.getChannel());
 
 		if (_log.isInfoEnabled()) {
-			Class<?> clazz = rabbitMQProcessor.getClass();
+			Class<?> clazz = messageProcessor.getClass();
 
 			_log.info("Unregistered " + clazz.getName());
 		}
 	}
 
-	public Consumer getConsumer(RabbitMQProcessor rabbitMQProcessor) {
-		return _consumers.get(rabbitMQProcessor);
+	public Consumer getConsumer(MessageProcessor messageProcessor) {
+		return _consumers.get(messageProcessor);
 	}
 
 	public void resetChannels() throws Exception {
-		for (Map.Entry<RabbitMQProcessor, Consumer> entry :
+		for (Map.Entry<MessageProcessor, Consumer> entry :
 				_consumers.entrySet()) {
 
-			RabbitMQProcessor rabbitMQProcessor = entry.getKey();
+			MessageProcessor messageProcessor = entry.getKey();
 			Consumer consumer = entry.getValue();
 
 			closeChannel(consumer.getChannel());
 
-			Consumer newConsumer = createConsumer(rabbitMQProcessor);
+			Consumer newConsumer = createConsumer(messageProcessor);
 
 			entry.setValue(newConsumer);
 
 			if (_log.isInfoEnabled()) {
-				Class<?> clazz = rabbitMQProcessor.getClass();
+				Class<?> clazz = messageProcessor.getClass();
 
 				_log.info("Reset channel for " + clazz.getName());
 			}
@@ -182,16 +182,16 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		}
 	}
 
-	protected Consumer createConsumer(RabbitMQProcessor rabbitMQProcessor)
+	protected Consumer createConsumer(MessageProcessor messageProcessor)
 		throws Exception {
 
 		Channel channel = _connectionManager.createChannel(
-			rabbitMQProcessor.getPrefetchCount());
+			messageProcessor.getPrefetchCount());
 
-		Consumer consumer = new OSBConsumer(channel, rabbitMQProcessor);
+		Consumer consumer = new OSBConsumer(channel, messageProcessor);
 
 		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
-			channel.basicConsume(rabbitMQProcessor.getQueue(), false, consumer);
+			channel.basicConsume(messageProcessor.getQueue(), false, consumer);
 		}
 
 		return consumer;
@@ -203,7 +203,7 @@ public class ConsumerManagerImpl implements ConsumerManager {
 	@Reference
 	private ConnectionManager _connectionManager;
 
-	private final Map<RabbitMQProcessor, Consumer> _consumers =
+	private final Map<MessageProcessor, Consumer> _consumers =
 		new ConcurrentHashMap<>();
 
 }

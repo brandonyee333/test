@@ -15,8 +15,8 @@
 package com.liferay.osb.customer.rabbitmq.connector.internal.consumer;
 
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
-import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
-import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQPropertyKeys;
+import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.processor.MessagePropertyKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -38,12 +38,12 @@ import java.util.Map;
  */
 public class OSBConsumer extends DefaultConsumer implements Consumer {
 
-	public OSBConsumer(Channel channel, RabbitMQProcessor rabbitMQProcessor)
+	public OSBConsumer(Channel channel, MessageProcessor messageProcessor)
 		throws Exception {
 
 		super(channel);
 
-		_rabbitMQProcessor = rabbitMQProcessor;
+		_messageProcessor = messageProcessor;
 	}
 
 	@Override
@@ -79,19 +79,19 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 					"Properties: " + MapUtil.toString(translatedProperties));
 			}
 
-			int response = _rabbitMQProcessor.process(
+			int response = _messageProcessor.process(
 				envelope.getRoutingKey(), message, translatedProperties);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug("Received response " + response);
 			}
 
-			if (response == RabbitMQProcessor.RESPONSE_ACK) {
+			if (response == MessageProcessor.RESPONSE_ACK) {
 				basicAck(envelope);
 
 				return;
 			}
-			else if (response == RabbitMQProcessor.RESPONSE_REJECT) {
+			else if (response == MessageProcessor.RESPONSE_REJECT) {
 				basicReject(envelope);
 
 				return;
@@ -162,46 +162,46 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 		Map<String, Object> translatedProperties = new HashMap<>();
 
 		translatedProperties.put(
-			RabbitMQPropertyKeys.APP_ID, properties.getAppId());
+			MessagePropertyKeys.APP_ID, properties.getAppId());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.BODY_SIZE, properties.getBodySize());
+			MessagePropertyKeys.BODY_SIZE, properties.getBodySize());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.CLASS_ID, properties.getClassId());
+			MessagePropertyKeys.CLASS_ID, properties.getClassId());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.CLASS_NAME, properties.getClassName());
+			MessagePropertyKeys.CLASS_NAME, properties.getClassName());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.CLUSTER_ID, properties.getClusterId());
+			MessagePropertyKeys.CLUSTER_ID, properties.getClusterId());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.CONTENT_ENCODING,
+			MessagePropertyKeys.CONTENT_ENCODING,
 			properties.getContentEncoding());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.CONTENT_TYPE, properties.getContentType());
+			MessagePropertyKeys.CONTENT_TYPE, properties.getContentType());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.CORRELATION_ID, properties.getCorrelationId());
+			MessagePropertyKeys.CORRELATION_ID, properties.getCorrelationId());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.DELIVERY_MODE, properties.getDeliveryMode());
+			MessagePropertyKeys.DELIVERY_MODE, properties.getDeliveryMode());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.EXPIRATION, properties.getExpiration());
+			MessagePropertyKeys.EXPIRATION, properties.getExpiration());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.HEADERS, properties.getHeaders());
+			MessagePropertyKeys.HEADERS, properties.getHeaders());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.MESSAGE_ID, properties.getMessageId());
+			MessagePropertyKeys.MESSAGE_ID, properties.getMessageId());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.PRIORITY, properties.getPriority());
+			MessagePropertyKeys.PRIORITY, properties.getPriority());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.REPLY_TO, properties.getReplyTo());
+			MessagePropertyKeys.REPLY_TO, properties.getReplyTo());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.TIMESTAMP, properties.getTimestamp());
+			MessagePropertyKeys.TIMESTAMP, properties.getTimestamp());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.TYPE, properties.getType());
+			MessagePropertyKeys.TYPE, properties.getType());
 		translatedProperties.put(
-			RabbitMQPropertyKeys.USER_ID, properties.getUserId());
+			MessagePropertyKeys.USER_ID, properties.getUserId());
 
 		return translatedProperties;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(OSBConsumer.class);
 
-	private final RabbitMQProcessor _rabbitMQProcessor;
+	private final MessageProcessor _messageProcessor;
 
 }

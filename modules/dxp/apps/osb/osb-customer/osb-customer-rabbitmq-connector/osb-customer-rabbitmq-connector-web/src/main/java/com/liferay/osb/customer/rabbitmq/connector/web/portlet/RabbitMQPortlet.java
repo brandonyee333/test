@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.rabbitmq.connector.web.portlet;
 
 import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
-import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessorRegistry;
+import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessorRegistry;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.osb.customer.rabbitmq.connector.web.internal.constants.RabbitMQPortletKeys;
 import com.liferay.portal.kernel.log.Log;
@@ -54,22 +54,21 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class RabbitMQPortlet extends MVCPortlet {
 
-	public void activateRabbitMQProcessor(
+	public void activateMessageProcessor(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String rabbitMQProcessorKey = ParamUtil.getString(
-			actionRequest, "rabbitMQProcessorKey");
+		String messageProcessorKey = ParamUtil.getString(
+			actionRequest, "messageProcessorKey");
 
-		_rabbitMQProcessorRegistry.activateRabbitMQProcessor(
-			rabbitMQProcessorKey);
+		_messageProcessorRegistry.activateMessageProcessor(messageProcessorKey);
 
 		/*MessageValuesThreadLocal.setValue(
 			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);
 
 		MethodHandler invokeMethodHandler = new MethodHandler(
 			_invokeMethodKey, false, RabbitMQPortletKeys.RABBIT_MQ,
-			_addConsumerMethodKey, new Object[] {rabbitMQProcessorKey});
+			_addConsumerMethodKey, new Object[] {messageProcessorKey});
 
 		ClusterRequest clusterRequest = ClusterRequest.createMulticastRequest(
 			invokeMethodHandler, true);
@@ -83,15 +82,15 @@ public class RabbitMQPortlet extends MVCPortlet {
 		_consumerManager.consumeMessage();
 	}
 
-	public void deactivateRabbitMQProcessor(
+	public void deactivateMessageProcessor(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String rabbitMQProcessorKey = ParamUtil.getString(
-			actionRequest, "rabbitMQProcessorKey");
+		String messageProcessorKey = ParamUtil.getString(
+			actionRequest, "messageProcessorKey");
 
-		_rabbitMQProcessorRegistry.deactivateRabbitMQProcessor(
-			rabbitMQProcessorKey);
+		_messageProcessorRegistry.deactivateMessageProcessor(
+			messageProcessorKey);
 
 		/*MessageValuesThreadLocal.setValue(
 			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);
@@ -134,6 +133,6 @@ public class RabbitMQPortlet extends MVCPortlet {
 		MethodKey.class, Object[].class);
 
 	@Reference
-	private RabbitMQProcessorRegistry _rabbitMQProcessorRegistry;
+	private MessageProcessorRegistry _messageProcessorRegistry;
 
 }

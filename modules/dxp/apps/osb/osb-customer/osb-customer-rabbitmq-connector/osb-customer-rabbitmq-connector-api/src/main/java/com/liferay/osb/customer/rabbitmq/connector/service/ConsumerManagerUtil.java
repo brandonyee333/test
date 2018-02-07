@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.rabbitmq.connector.service;
 
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
-import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 
 import org.osgi.util.tracker.ServiceTracker;
@@ -26,10 +26,10 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class ConsumerManagerUtil {
 
-	public static void addConsumer(RabbitMQProcessor rabbitMQProcessor)
+	public static void addConsumer(MessageProcessor messageProcessor)
 		throws Exception {
 
-		getService().addConsumer(rabbitMQProcessor);
+		getService().addConsumer(messageProcessor);
 	}
 
 	public static void consumeMessage() {
@@ -37,18 +37,18 @@ public class ConsumerManagerUtil {
 	}
 
 	public static void consumeMessages(
-			RabbitMQProcessor rabbitMQProcessor, long messageCount)
+			MessageProcessor messageProcessor, long messageCount)
 		throws Exception {
 
-		getService().consumeMessages(rabbitMQProcessor, messageCount);
+		getService().consumeMessages(messageProcessor, messageCount);
 	}
 
-	public static void deleteConsumer(RabbitMQProcessor rabbitMQProcessor) {
-		getService().deleteConsumer(rabbitMQProcessor);
+	public static void deleteConsumer(MessageProcessor messageProcessor) {
+		getService().deleteConsumer(messageProcessor);
 	}
 
-	public static Consumer getConsumer(RabbitMQProcessor rabbitMQProcessor) {
-		return getService().getConsumer(rabbitMQProcessor);
+	public static Consumer getConsumer(MessageProcessor messageProcessor) {
+		return getService().getConsumer(messageProcessor);
 	}
 
 	public static ConsumerManager getService() {

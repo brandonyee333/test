@@ -14,8 +14,8 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.internal.processor;
 
-import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
-import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessorRegistry;
+import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessorRegistry;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -34,56 +34,54 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Amos Fong
  */
-@Component(immediate = true, service = RabbitMQProcessorRegistry.class)
-public class RabbitMQProcessorRegistryImpl
-	implements RabbitMQProcessorRegistry {
+@Component(immediate = true, service = MessageProcessorRegistry.class)
+public class MessageProcessorRegistryImpl implements MessageProcessorRegistry {
 
-	public void activateRabbitMQProcessor(String rabbitMQProcessorKey)
+	public void activateMessageProcessor(String messageProcessorKey)
 		throws Exception {
 
-		RabbitMQProcessor rabbitMQProcessor = _rabbitMQProcessors.get(
-			rabbitMQProcessorKey);
+		MessageProcessor messageProcessor = _messageProcessors.get(
+			messageProcessorKey);
 
-		_consumerManager.addConsumer(rabbitMQProcessor);
+		_consumerManager.addConsumer(messageProcessor);
 	}
 
-	public void deactivateRabbitMQProcessor(String rabbitMQProcessorKey)
+	public void deactivateMessageProcessor(String messageProcessorKey)
 		throws Exception {
 
-		RabbitMQProcessor rabbitMQProcessor = _rabbitMQProcessors.get(
-			rabbitMQProcessorKey);
+		MessageProcessor messageProcessor = _messageProcessors.get(
+			messageProcessorKey);
 
-		_consumerManager.deleteConsumer(rabbitMQProcessor);
+		_consumerManager.deleteConsumer(messageProcessor);
 	}
 
-	public Map<String, RabbitMQProcessor> getRabbitMQProcessors() {
-		return _rabbitMQProcessors;
+	public Map<String, MessageProcessor> getMessageProcessors() {
+		return _messageProcessors;
 	}
 
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
 		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "unregisterRabbitMQProcessor"
+		unbind = "unregisterMessageProcessor"
 	)
-	protected void registerRabbitMQProcessor(
-			RabbitMQProcessor rabbitMQProcessor)
+	protected void registerMessageProcessor(MessageProcessor messageProcessor)
 		throws Exception {
 
-		_consumerManager.addConsumer(rabbitMQProcessor);
+		_consumerManager.addConsumer(messageProcessor);
 
-		_rabbitMQProcessors.put(PortalUUIDUtil.generate(), rabbitMQProcessor);
+		_messageProcessors.put(PortalUUIDUtil.generate(), messageProcessor);
 	}
 
-	protected void unregisterRabbitMQProcessor(
-		RabbitMQProcessor rabbitMQProcessor) {
+	protected void unregisterMessageProcessor(
+		MessageProcessor messageProcessor) {
 
-		Collection<RabbitMQProcessor> rabbitMQProcessors =
-			_rabbitMQProcessors.values();
+		Collection<MessageProcessor> messageProcessors =
+			_messageProcessors.values();
 
-		if (!rabbitMQProcessors.remove(rabbitMQProcessor)) {
+		if (!messageProcessors.remove(messageProcessor)) {
 			if (_log.isInfoEnabled()) {
-				Class<?> clazz = rabbitMQProcessor.getClass();
+				Class<?> clazz = messageProcessor.getClass();
 
 				_log.info("No message processor exists for " + clazz.getName());
 			}
@@ -91,16 +89,16 @@ public class RabbitMQProcessorRegistryImpl
 			return;
 		}
 
-		_consumerManager.deleteConsumer(rabbitMQProcessor);
+		_consumerManager.deleteConsumer(messageProcessor);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RabbitMQProcessorRegistryImpl.class);
+		MessageProcessorRegistryImpl.class);
 
 	@Reference
 	private ConsumerManager _consumerManager;
 
-	private final Map<String, RabbitMQProcessor> _rabbitMQProcessors =
+	private final Map<String, MessageProcessor> _messageProcessors =
 		new ConcurrentHashMap<>();
 
 }

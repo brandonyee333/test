@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.rabbitmq.connector.service;
 
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
-import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
 
 /**
  * @author Amos Fong
@@ -23,18 +23,17 @@ import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
  */
 public interface ConsumerManager {
 
-	public void addConsumer(RabbitMQProcessor rabbitMQProcessor)
-		throws Exception;
+	public void addConsumer(MessageProcessor messageProcessor) throws Exception;
 
 	public void consumeMessage();
 
 	public void consumeMessages(
-			RabbitMQProcessor rabbitMQProcessor, long messageCount)
+			MessageProcessor messageProcessor, long messageCount)
 		throws Exception;
 
-	public void deleteConsumer(RabbitMQProcessor rabbitMQProcessor);
+	public void deleteConsumer(MessageProcessor messageProcessor);
 
-	public Consumer getConsumer(RabbitMQProcessor rabbitMQProcessor);
+	public Consumer getConsumer(MessageProcessor messageProcessor);
 
 	public void resetChannels() throws Exception;
 

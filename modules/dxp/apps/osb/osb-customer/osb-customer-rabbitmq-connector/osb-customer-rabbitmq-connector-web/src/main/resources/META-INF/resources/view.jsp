@@ -104,17 +104,17 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 			</liferay-frontend:management-bar>
 
 			<%
-			Map<String, RabbitMQProcessor> rabbitMQProcessors = RabbitMQProcessorRegistryUtil.getRabbitMQProcessors();
+			Map<String, MessageProcessor> messageProcessors = MessageProcessorRegistryUtil.getMessageProcessors();
 			%>
 
 			<liferay-ui:search-container
 				emptyResultsMessage="there-are-no-processors"
 				emptyResultsMessageCssClass="taglib-empty-result-message-header"
 				headerNames="class,queue,channel,active"
-				total="<%= rabbitMQProcessors.size() %>"
+				total="<%= messageProcessors.size() %>"
 			>
 				<liferay-ui:search-container-results
-					results="<%= ListUtil.fromCollection(rabbitMQProcessors.entrySet()) %>"
+					results="<%= ListUtil.fromCollection(messageProcessors.entrySet()) %>"
 				/>
 
 				<liferay-ui:search-container-row
@@ -123,27 +123,27 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 				>
 
 					<%
-					RabbitMQProcessor rabbitMQProcessor = (RabbitMQProcessor)processorEntry.getValue();
+					MessageProcessor messageProcessor = (MessageProcessor)processorEntry.getValue();
 
 					Channel channel = null;
 
-					Consumer consumer = ConsumerManagerUtil.getConsumer(rabbitMQProcessor);
+					Consumer consumer = ConsumerManagerUtil.getConsumer(messageProcessor);
 
 					if (consumer != null) {
 						channel = consumer.getChannel();
 					}
 
-					Class<?> rabbitMQProcessorClass = rabbitMQProcessor.getClass();
+					Class<?> messageProcessorClass = messageProcessor.getClass();
 					%>
 
 					<liferay-ui:search-container-column-text
 						name="class"
-						value="<%= rabbitMQProcessorClass.getName() %>"
+						value="<%= messageProcessorClass.getName() %>"
 					/>
 
 					<liferay-ui:search-container-column-text
 						name="queue"
-						value="<%= rabbitMQProcessor.getQueue() %>"
+						value="<%= messageProcessor.getQueue() %>"
 					/>
 
 					<liferay-ui:search-container-column-text
@@ -165,7 +165,7 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 								<c:when test="<%= (channel != null) && channel.isOpen() %>">
 									<portlet:actionURL name="deactivateMessageProcessor" var="deactivateMessageProcessorURL">
 										<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-										<portlet:param name="rabbitMQProcessorKey" value="<%= (String)processorEntry.getKey() %>" />
+										<portlet:param name="messageProcessorKey" value="<%= (String)processorEntry.getKey() %>" />
 									</portlet:actionURL>
 
 									<liferay-ui:icon-deactivate
@@ -175,7 +175,7 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 								<c:otherwise>
 									<portlet:actionURL name="activateMessageProcessor" var="activateMessageProcessorURL">
 										<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-										<portlet:param name="rabbitMQProcessorKey" value="<%= (String)processorEntry.getKey() %>" />
+										<portlet:param name="messageProcessorKey" value="<%= (String)processorEntry.getKey() %>" />
 									</portlet:actionURL>
 
 									<liferay-ui:icon
