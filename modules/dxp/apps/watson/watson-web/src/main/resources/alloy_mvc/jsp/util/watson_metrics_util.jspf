@@ -140,6 +140,8 @@ public static class WatsonMetricsUtil {
 	}
 
 	protected static long getInvestigationLongValue(Date startDate, Date endDate, String propertyName, long watsonListTypeId) throws Exception {
+		long propertyTotalCount = 0;
+
 		DynamicQuery incidentDynamicQuery = _watsonIncidentAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", watsonListTypeId});
 
 		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
@@ -151,8 +153,6 @@ public static class WatsonMetricsUtil {
 		incidentDynamicQuery.setProjection(ProjectionFactoryUtil.distinct(propertyProjection));
 
 		List<Long> propertyCountLongs = _watsonIncidentAlloyServiceInvoker.executeDynamicQuery(incidentDynamicQuery);
-
-		long propertyTotalCount = 0;
 
 		for (long propertyCount : propertyCountLongs) {
 			propertyTotalCount += propertyCount;

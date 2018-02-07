@@ -178,36 +178,33 @@ public static class WatsonReport extends WatsonReportBaseModel {
 	}
 
 	public static String getJSReportType(long watsonReportId) throws Exception {
-		if (watsonReportId > 0) {
-			WatsonReport watsonReport = WatsonReport.fetch(watsonReportId);
-
-			int key = watsonReport.getKey();
-
-			String reportType = StringPool.BLANK;
-
-			if (key == REPORT_TYPE_CASEWORK) {
-				reportType = "casework_activities";
-			}
-			else if (key == REPORT_TYPE_COUNSELING) {
-				reportType = "counseling_reports";
-			}
-			else if (key == REPORT_TYPE_ILLNESS) {
-				reportType = "illnesses";
-			}
-			else if (key == REPORT_TYPE_LEGAL_STATUS) {
-				reportType = "legals";
-			}
-			else if (key == REPORT_TYPE_PHYSICAL_EXAM) {
-				reportType = "physical_exams";
-			}
-			else if (key == REPORT_TYPE_PROGRESS_REPORT) {
-				reportType = "progress_reports";
-			}
-
-			return reportType;
+		if (watsonReportId <= 0) {
+			return StringPool.BLANK;
 		}
 
-		return StringPool.BLANK;
+		WatsonReport watsonReport = WatsonReport.fetch(watsonReportId);
+
+		if (watsonReport.getKey() == REPORT_TYPE_CASEWORK) {
+			return "casework_activities";
+		}
+		else if (watsonReport.getKey() == REPORT_TYPE_COUNSELING) {
+			return "counseling_reports";
+		}
+		else if (watsonReport.getKey() == REPORT_TYPE_ILLNESS) {
+			return "illnesses";
+		}
+		else if (watsonReport.getKey() == REPORT_TYPE_LEGAL_STATUS) {
+			return "legals";
+		}
+		else if (watsonReport.getKey() == REPORT_TYPE_PHYSICAL_EXAM) {
+			return "physical_exams";
+		}
+		else if (watsonReport.getKey() == REPORT_TYPE_PROGRESS_REPORT) {
+			return "progress_reports";
+		}
+		else {
+			return StringPool.BLANK;
+		}
 	}
 
 	public static KeyValuePair validateWatsonReportChild(long watsonChildId) throws Exception {

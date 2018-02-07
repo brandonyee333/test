@@ -172,9 +172,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		long[] watsonPeopleIds = ParamUtil.getLongValues(request, "selectedIds");
-
 		List<WatsonChild> addedChildren = new ArrayList<>();
+
+		long[] watsonPeopleIds = ParamUtil.getLongValues(request, "selectedIds");
 
 		for (long watsonPersonId : watsonPeopleIds) {
 			WatsonPerson originalWatsonPerson = WatsonPerson.fetch(watsonPersonId);
