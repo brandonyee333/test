@@ -42,7 +42,13 @@ class Input extends JSXComponent {
 	}
 
 	render() {
-		const {autoFocus, disabled, htmlType, value} = this.props;
+		const {
+			autoFocus,
+			disabled,
+			htmlType,
+			placeholder,
+			value
+		} = this.props;
 
 		let retVal = {};
 
@@ -87,6 +93,7 @@ class Input extends JSXComponent {
 					data-onblur={this.handleOnBlur}
 					data-oninput={this.debouncedOnChangeValue_}
 					disabled={disabled}
+					placeholder={placeholder}
 					type={htmlType}
 					value={value}
 				/>
@@ -101,6 +108,7 @@ Input.PROPS = {
 	autoFocus: Config.bool(),
 	disabled: Config.bool(),
 	htmlType: Config.string().value('input'),
+	placeholder: Config.string(),
 	tooltipLabel: Config.string(),
 	value: Config.any()
 };

@@ -1661,6 +1661,19 @@
 							'date'
 						]
 					},
+					expenses: {
+						cssClass: 'baht-svg',
+						dependentKey: '${WatsonListTypeConstants.INCIDENT_TYPE_INVESTIGATION} ${WatsonListTypeConstants.INCIDENT_TYPE_PREVENTION_OUTREACH}',
+						filterable: ${false},
+						htmlType: 'number',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode("expenses")}',
+						parentInputId: 'typeWatsonListTypeId',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("thai-baht")}',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: []
+					},
 					externalCase: {
 						controlledInputs: [
 							'externalCaseId',

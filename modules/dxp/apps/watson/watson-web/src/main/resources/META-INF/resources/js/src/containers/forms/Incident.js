@@ -70,6 +70,7 @@ class IncidentForm extends JSXComponent {
 			'victimChildCount',
 			'audienceAdultCount',
 			'audienceChildCount',
+			'expenses',
 			'subtypeWatsonListTypeId',
 			'otherType',
 			'externalCase',
@@ -96,7 +97,11 @@ class IncidentForm extends JSXComponent {
 		let retVal = false;
 
 		if (watsonIncidentId > 0) {
-			const pathMatches = data.path.match(/\/web\/guest\/home\/-\/watson\/incidents\/([0-9]+)\/[a-zA-Z]+\/?$/);
+			let pathMatches;
+
+			if (data.path) {
+				pathMatches = data.path.match(/\/web\/guest\/home\/-\/watson\/incidents\/([0-9]+)\/[a-zA-Z]+\/?$/);
+			}
 
 			const pathChanged = !pathMatches || pathMatches[1] != watsonIncidentId;
 

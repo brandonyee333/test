@@ -11,10 +11,12 @@ class TextAreaInput extends JSXComponent {
 	}
 
 	handleOnBlur(event) {
-		const value = event.target.value;
+		const {value} = event.target;
 
-		if (this.props.onBlur) {
-			this.props.onBlur(value, this.props.inputId);
+		const {inputId, onBlur} = this.props;
+
+		if (onBlur) {
+			onBlur(value, inputId);
 		}
 	}
 
@@ -34,9 +36,11 @@ class TextAreaInput extends JSXComponent {
 	}
 
 	handleOnChange(event) {
-		const value = event.target.value;
+		const {value} = event.target;
 
-		this.props.onChange(value, this.props.inputId);
+		const {inputId, onChange} = this.props;
+
+		onChange(value, inputId);
 	}
 }
 
