@@ -12,8 +12,10 @@
  * details.
  */
 
-package com.liferay.osb.customer.rabbitmq.connector.processor;
+package com.liferay.osb.customer.rabbitmq.connector.internal.processor;
 
+import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessorRegistry;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

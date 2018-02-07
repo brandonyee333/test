@@ -17,7 +17,7 @@ package com.liferay.osb.customer.rabbitmq.connector.service.impl;
 import com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues;
 import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
-import com.liferay.osb.customer.rabbitmq.connector.consumer.OSBConsumer;
+import com.liferay.osb.customer.rabbitmq.connector.internal.consumer.OSBConsumer;
 import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.portal.kernel.log.Log;
