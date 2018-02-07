@@ -21,7 +21,7 @@ import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
  * @author Amos Fong
  * @author Vishal Reddy
  */
-public interface ConsumerManagerLocalService {
+public interface ConsumerManager {
 
 	public void addConsumer(RabbitMQProcessor rabbitMQProcessor)
 		throws Exception;

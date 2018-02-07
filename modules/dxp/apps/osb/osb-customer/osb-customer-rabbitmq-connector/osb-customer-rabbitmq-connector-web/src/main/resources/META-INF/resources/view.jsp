@@ -127,7 +127,7 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 
 					Channel channel = null;
 
-					Consumer consumer = ConsumerManagerLocalServiceUtil.getConsumer(rabbitMQProcessor);
+					Consumer consumer = ConsumerManagerUtil.getConsumer(rabbitMQProcessor);
 
 					if (consumer != null) {
 						channel = consumer.getChannel();

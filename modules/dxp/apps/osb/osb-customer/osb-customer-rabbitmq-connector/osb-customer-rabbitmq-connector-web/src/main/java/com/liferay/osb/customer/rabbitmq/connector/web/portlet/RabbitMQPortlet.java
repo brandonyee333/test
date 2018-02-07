@@ -16,7 +16,7 @@ package com.liferay.osb.customer.rabbitmq.connector.web.portlet;
 
 import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessorRegistry;
-import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
+import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.osb.customer.rabbitmq.connector.web.internal.constants.RabbitMQPortletKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -80,7 +80,7 @@ public class RabbitMQPortlet extends MVCPortlet {
 	public void consumeMessage(
 		ActionRequest actionRequest, ActionResponse actionResponse) {
 
-		_consumerManagerLocalService.consumeMessage();
+		_consumerManager.consumeMessage();
 	}
 
 	public void deactivateRabbitMQProcessor(
@@ -112,23 +112,23 @@ public class RabbitMQPortlet extends MVCPortlet {
 
 		_connectionManager.reconnect();
 
-		_consumerManagerLocalService.resetChannels();
+		_consumerManager.resetChannels();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RabbitMQPortlet.class);
 
 	private final MethodKey _activateConsumerMethodKey = new MethodKey(
-		ConsumerManagerLocalService.class, "activateConsumer", String.class);
+		ConsumerManager.class, "activateConsumer", String.class);
 
 	@Reference
 	private ConnectionManager _connectionManager;
 
 	@Reference
-	private ConsumerManagerLocalService _consumerManagerLocalService;
+	private ConsumerManager _consumerManager;
 
 	private final MethodKey _deactivateConsumerMethodKey = new MethodKey(
-		ConsumerManagerLocalService.class, "deactivateConsumer", String.class);
+		ConsumerManager.class, "deactivateConsumer", String.class);
 	private final MethodKey _invokeMethodKey = new MethodKey(
 		PortletClassInvoker.class, "invoke", boolean.class, String.class,
 		MethodKey.class, Object[].class);

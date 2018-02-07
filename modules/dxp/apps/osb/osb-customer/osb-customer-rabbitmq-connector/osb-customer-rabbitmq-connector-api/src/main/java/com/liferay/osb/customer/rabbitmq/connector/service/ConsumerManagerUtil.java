@@ -24,7 +24,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * @author Amos Fong
  * @author Vishal Reddy
  */
-public class ConsumerManagerLocalServiceUtil {
+public class ConsumerManagerUtil {
 
 	public static void addConsumer(RabbitMQProcessor rabbitMQProcessor)
 		throws Exception {
@@ -51,7 +51,7 @@ public class ConsumerManagerLocalServiceUtil {
 		return getService().getConsumer(rabbitMQProcessor);
 	}
 
-	public static ConsumerManagerLocalService getService() {
+	public static ConsumerManager getService() {
 		return _serviceTracker.getService();
 	}
 
@@ -59,9 +59,7 @@ public class ConsumerManagerLocalServiceUtil {
 		getService().resetChannels();
 	}
 
-	private static final ServiceTracker
-		<ConsumerManagerLocalService, ConsumerManagerLocalService>
-			_serviceTracker = ServiceTrackerFactory.open(
-				ConsumerManagerLocalService.class);
+	private static final ServiceTracker<ConsumerManager, ConsumerManager>
+		_serviceTracker = ServiceTrackerFactory.open(ConsumerManager.class);
 
 }

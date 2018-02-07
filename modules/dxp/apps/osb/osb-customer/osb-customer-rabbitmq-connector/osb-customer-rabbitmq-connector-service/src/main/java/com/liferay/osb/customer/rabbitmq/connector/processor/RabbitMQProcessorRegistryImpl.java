@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.processor;
 
-import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
+import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
@@ -42,7 +42,7 @@ public class RabbitMQProcessorRegistryImpl
 		RabbitMQProcessor rabbitMQProcessor = _rabbitMQProcessors.get(
 			rabbitMQProcessorKey);
 
-		_consumerManagerLocalService.addConsumer(rabbitMQProcessor);
+		_consumerManager.addConsumer(rabbitMQProcessor);
 	}
 
 	public void deactivateRabbitMQProcessor(String rabbitMQProcessorKey)
@@ -51,7 +51,7 @@ public class RabbitMQProcessorRegistryImpl
 		RabbitMQProcessor rabbitMQProcessor = _rabbitMQProcessors.get(
 			rabbitMQProcessorKey);
 
-		_consumerManagerLocalService.deleteConsumer(rabbitMQProcessor);
+		_consumerManager.deleteConsumer(rabbitMQProcessor);
 	}
 
 	public Map<String, RabbitMQProcessor> getRabbitMQProcessors() {
@@ -68,7 +68,7 @@ public class RabbitMQProcessorRegistryImpl
 			RabbitMQProcessor rabbitMQProcessor)
 		throws Exception {
 
-		_consumerManagerLocalService.addConsumer(rabbitMQProcessor);
+		_consumerManager.addConsumer(rabbitMQProcessor);
 
 		_rabbitMQProcessors.put(PortalUUIDUtil.generate(), rabbitMQProcessor);
 	}
@@ -89,14 +89,14 @@ public class RabbitMQProcessorRegistryImpl
 			return;
 		}
 
-		_consumerManagerLocalService.deleteConsumer(rabbitMQProcessor);
+		_consumerManager.deleteConsumer(rabbitMQProcessor);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RabbitMQProcessorRegistryImpl.class);
 
 	@Reference
-	private ConsumerManagerLocalService _consumerManagerLocalService;
+	private ConsumerManager _consumerManager;
 
 	private final Map<String, RabbitMQProcessor> _rabbitMQProcessors =
 		new ConcurrentHashMap<>();

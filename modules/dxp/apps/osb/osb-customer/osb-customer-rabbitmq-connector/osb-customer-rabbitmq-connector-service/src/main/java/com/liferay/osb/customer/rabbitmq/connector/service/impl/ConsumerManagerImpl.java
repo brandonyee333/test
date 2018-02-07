@@ -19,7 +19,7 @@ import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.OSBConsumer;
 import com.liferay.osb.customer.rabbitmq.connector.processor.RabbitMQProcessor;
-import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerLocalService;
+import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -37,8 +37,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Vishal Reddy
  */
 @Component(immediate = true)
-public class ConsumerManagerLocalServiceImpl
-	implements ConsumerManagerLocalService {
+public class ConsumerManagerImpl implements ConsumerManager {
 
 	public void addConsumer(RabbitMQProcessor rabbitMQProcessor)
 		throws Exception {
@@ -199,7 +198,7 @@ public class ConsumerManagerLocalServiceImpl
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ConsumerManagerLocalServiceImpl.class);
+		ConsumerManagerImpl.class);
 
 	@Reference
 	private ConnectionManager _connectionManager;
