@@ -85,7 +85,7 @@
 				returnVal = true;
 			}
 
-			requiredStatusNode.attr('data-field-required-status', returnVal);
+			requiredStatusNode.setAttribute('data-field-required-status', returnVal);
 
 			<portlet:namespace />displayValidation(node, !returnVal);
 		}
