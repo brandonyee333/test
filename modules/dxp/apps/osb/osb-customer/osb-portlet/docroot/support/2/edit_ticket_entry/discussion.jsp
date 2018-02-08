@@ -227,7 +227,13 @@ else {
 		}
 
 		function <portlet:namespace />showForm(suffix, isDraft, hasMaximumDraftTicketComment) {
-			document.getElementById('<portlet:namespace />commentForm' + suffix).style.display = '';
+			var A = AUI();
+
+			var commentForm = A.one('#<portlet:namespace />commentForm' + suffix);
+
+			if (commentForm) {
+				commentForm.show();
+			}
 
 			var commentBody = document.getElementById('<portlet:namespace />commentBody' + suffix);
 
