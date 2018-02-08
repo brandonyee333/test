@@ -100,7 +100,7 @@ class MetricsConsole extends JSXComponent {
 	render() {
 		const {props, state} = this;
 
-		const {action, incidentsFilter, incidentsMetricsData, loading} = props;
+		const {action, incidentsFilter, incidentsLoading, incidentsMetricsData} = props;
 
 		const {viewBy} = state;
 
@@ -155,7 +155,7 @@ class MetricsConsole extends JSXComponent {
 				</div>
 
 				<div class="metrics-content">
-					{this.getCurrentView(action, incidentsMetricsData, loading, viewBy)}
+					{this.getCurrentView(action, incidentsMetricsData, incidentsLoading, viewBy)}
 				</div>
 			</div>
 		);
@@ -194,6 +194,7 @@ class MetricsConsole extends JSXComponent {
 
 			this.clearHeatmap();
 
+			this.state.actionDisplayed = action;
 			this.state.resendRequest = false;
 		}
 
@@ -255,8 +256,8 @@ function mapStateToProps(state, props) {
 	return {
 		action,
 		incidentsFilter,
+		incidentsLoading,
 		incidentsMetricsData,
-		loading: incidentsLoading
 	};
 }
 

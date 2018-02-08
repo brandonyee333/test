@@ -1,6 +1,6 @@
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import BootstrapTable from 'react-bootstrap-table-next';
 import bridge from 'metal-react';
-import {forEach} from 'lodash';
+import {forEach, isEmpty} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
 import {Map} from 'immutable';
 
@@ -9,38 +9,41 @@ import ContentHeader from './ContentHeader';
 const Datatable = bridge(BootstrapTable);
 
 class MetricsReport extends JSXComponent {
-	render() {
-		const {data = {}, loading} = this.props;
+	_handleRowClasses = row => {
+		let classes = null;
 
-		const columns = WatsonConstants.inputConfig.metrics.reports.columns;
-
-		const tableHeaderColumns = [];
-
-		if (!loading) {
-			columns.forEach(
-				(item, index) => {
-					if (item) {
-						const {key, label} = item;
-
-						tableHeaderColumns.push(
-							<TableHeaderColumn dataField={key} isKey={(index === 0)} title={label}>{label}</TableHeaderColumn>
-						);
-					}
-				}
-			);
+		if (row.child === true) {
+			classes = 'row-padding';
 		}
+
+		return classes;
+	};
+
+	render() {
+		const {columns} = this.state;
+
+		const {data = {}, loading} = this.props;
 
 		const formattedData = [];
 
-		if (!loading && !Map.isMap(data)) {
-			forEach(
-				data,
-				(item, index) => {
-					const formattedObject = Object.assign({}, item);
+		if (!loading && !Map.isMap(data) && !isEmpty(data)) {
+			const oneYearData = data.value;
 
-					formattedObject.id = index;
+			const {rows} = WatsonConstants.inputConfig.metrics.reports;
 
-					formattedData.push(formattedObject);
+			rows.forEach(
+				item => {
+					if (item) {
+						const {child, key, label} = item;
+
+						const formattedObject = {};
+
+						formattedObject.child = child;
+						formattedObject.metric = label;
+						formattedObject.number = oneYearData[key];
+
+						formattedData.push(formattedObject);
+					}
 				}
 			);
 		}
@@ -52,14 +55,14 @@ class MetricsReport extends JSXComponent {
 				</div>
 
 				<div class="content" id="table">
-
-					<Datatable data={formattedData.reverse()}>
-						{tableHeaderColumns}
-					</Datatable>
-
-					{loading &&
-						<span class="input-text">{Liferay.Language.get('loading')}</span>
-					}
+					<Datatable
+						columns={columns}
+						data={formattedData}
+						hover={true}
+						keyField="metric"
+						noDataIndication={Liferay.Language.get('no-metrics-data-was-found')}
+						rowClasses={this._handleRowClasses}
+					/>
 				</div>
 			</div>
 		);
@@ -71,6 +74,19 @@ MetricsReport.PROPS = {
 	loading: Config.bool().value(true)
 };
 
-MetricsReport.STATE = {};
+MetricsReport.STATE = {
+	columns: Config.array().value(
+		[
+			{
+				dataField: 'metric',
+				text: Liferay.Language.get('metric')
+			},
+			{
+				dataField: 'number',
+				text: Liferay.Language.get('number')
+			}
+		]
+	)
+};
 
 export default MetricsReport;

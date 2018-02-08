@@ -45,36 +45,37 @@ public static class WatsonMetricsUtil {
 
 			Date endDate = new Date(GetterUtil.getLong(dateRangeParts[1]));
 
-			jsonObject.put("yourResults", getMetricsByDate(startDate, endDate));
+			jsonObject.put("value", getMetricsByDate(startDate, endDate));
 		}
+		else {
+			Date now = new Date();
 
-		Date now = new Date();
+			Calendar endCalendar = Calendar.getInstance();
 
-		Calendar endCalendar = Calendar.getInstance();
+			endCalendar.setTime(now);
 
-		endCalendar.setTime(now);
+			endCalendar.add(Calendar.YEAR, 1);
 
-		endCalendar.add(Calendar.YEAR, 1);
+			endCalendar.set(Calendar.DAY_OF_YEAR, 1);
+			endCalendar.set(Calendar.HOUR_OF_DAY, 0);
+			endCalendar.set(Calendar.MINUTE, 0);
+			endCalendar.set(Calendar.SECOND, 0);
+			endCalendar.set(Calendar.MILLISECOND, 0);
 
-		endCalendar.set(Calendar.DAY_OF_YEAR, 1);
-		endCalendar.set(Calendar.HOUR_OF_DAY, 0);
-		endCalendar.set(Calendar.MINUTE, 0);
-		endCalendar.set(Calendar.SECOND, 0);
-		endCalendar.set(Calendar.MILLISECOND, 0);
+			Calendar startCalendar = (Calendar)endCalendar.clone();
 
-		Calendar startCalendar = (Calendar)endCalendar.clone();
+			startCalendar.add(Calendar.YEAR, -1);
 
-		startCalendar.add(Calendar.YEAR, -11);
+			while (startCalendar.getTimeInMillis() < endCalendar.getTimeInMillis()) {
+				Calendar endOfYearCalendar = (Calendar)startCalendar.clone();
 
-		while (startCalendar.getTimeInMillis() < endCalendar.getTimeInMillis()) {
-			Calendar endOfYearCalendar = (Calendar)startCalendar.clone();
+				endOfYearCalendar.set(Calendar.MONTH, 11);
+				endOfYearCalendar.set(Calendar.DAY_OF_MONTH, 31);
 
-			endOfYearCalendar.set(Calendar.MONTH, 11);
-			endOfYearCalendar.set(Calendar.DAY_OF_MONTH, 31);
+				jsonObject.put("value", getMetricsByDate(startCalendar.getTime(), endOfYearCalendar.getTime()));
 
-			jsonObject.put(String.valueOf(startCalendar.get(Calendar.YEAR)), getMetricsByDate(startCalendar.getTime(), endOfYearCalendar.getTime()));
-
-			startCalendar.add(Calendar.YEAR, 1);
+				startCalendar.add(Calendar.YEAR, 1);
+			}
 		}
 
 		return jsonObject;
@@ -87,13 +88,16 @@ public static class WatsonMetricsUtil {
 		jsonObject.put("childrenRescuedCount", getChildrenRescuedCount(startDate, endDate));
 		jsonObject.put("incidentTipCount", getIncidentTipCount(startDate, endDate));
 		jsonObject.put("investigationCount", getInvestigationCount(startDate, endDate));
+		jsonObject.put("investigationExpenses", getInvestigationExpenses(startDate, endDate));
 		jsonObject.put("outreachAdultCount", getOutreachAdultCount(startDate, endDate));
 		jsonObject.put("outreachChildCount", getOutreachChildrenCount(startDate, endDate));
 		jsonObject.put("outreachCount", getOutreachCount(startDate, endDate));
+		jsonObject.put("outreachExpenses", getOutreachExpenses(startDate, endDate));
 		jsonObject.put("ticacAssistCount", getTICACAssistCount(startDate, endDate));
 		jsonObject.put("ticacBothAssistCount", getTICACBothAssistCount(startDate, endDate));
 		jsonObject.put("ticacForensicAssistCount", getTICACForensicAssistCount(startDate, endDate));
 		jsonObject.put("ticacInvestigationAssistCount", getTICACInvestigationAssistCount(startDate, endDate));
+		jsonObject.put("totalExpenses", getIncidentExpenses(startDate, endDate));
 		jsonObject.put("victimCount", getVictimCount(startDate, endDate));
 
 		return jsonObject;
@@ -119,27 +123,29 @@ public static class WatsonMetricsUtil {
 		return _watsonPersonAlloyServiceInvoker.executeDynamicQueryCount(personDynamicQuery);
 	}
 
-	protected static long getIncidentTipCount(Date startDate, Date endDate) throws Exception {
-		DynamicQuery incidentDynamicQuery = _watsonIncidentAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_INVESTIGATION, "subtypeWatsonListTypeId", WatsonListType.INCIDENT_REPORT_TYPE_TIP});
+	protected static long getIncidentPropertyDoubleValue(Date startDate, Date endDate, String propertyName, long watsonListTypeId) throws Exception {
+		long propertyTotalCount = 0;
+
+		DynamicQuery incidentDynamicQuery = _watsonIncidentAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", watsonListTypeId});
 
 		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
 
 		incidentDynamicQuery.add(dateCriterion);
 
-		return _watsonIncidentAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+		Projection propertyProjection = ProjectionFactoryUtil.property(propertyName);
+
+		incidentDynamicQuery.setProjection(ProjectionFactoryUtil.distinct(propertyProjection));
+
+		List<Double> propertyCountDoubles = _watsonIncidentAlloyServiceInvoker.executeDynamicQuery(incidentDynamicQuery);
+
+		for (double propertyCount : propertyCountDoubles) {
+			propertyTotalCount += propertyCount;
+		}
+
+		return propertyTotalCount;
 	}
 
-	protected static long getInvestigationCount(Date startDate, Date endDate) throws Exception {
-		DynamicQuery incidentDynamicQuery = _watsonIncidentAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_INVESTIGATION});
-
-		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
-
-		incidentDynamicQuery.add(dateCriterion);
-
-		return _watsonIncidentAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
-	}
-
-	protected static long getInvestigationLongValue(Date startDate, Date endDate, String propertyName, long watsonListTypeId) throws Exception {
+	protected static long getIncidentPropertyLongValue(Date startDate, Date endDate, String propertyName, long watsonListTypeId) throws Exception {
 		long propertyTotalCount = 0;
 
 		DynamicQuery incidentDynamicQuery = _watsonIncidentAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", watsonListTypeId});
@@ -161,12 +167,44 @@ public static class WatsonMetricsUtil {
 		return propertyTotalCount;
 	}
 
+	protected static long getInvestigationExpenses(Date startDate, Date endDate) throws Exception {
+		return getIncidentPropertyDoubleValue(startDate, endDate, "expenses", WatsonListType.INCIDENT_TYPE_INVESTIGATION);
+	}
+
+	protected static long getIncidentExpenses(Date startDate, Date endDate) throws Exception {
+		long totalExpenses = getIncidentPropertyDoubleValue(startDate, endDate, "expenses", WatsonListType.INCIDENT_TYPE_INVESTIGATION);
+
+		totalExpenses += getIncidentPropertyDoubleValue(startDate, endDate, "expenses", WatsonListType.INCIDENT_TYPE_PREVENTION_OUTREACH);
+
+		return totalExpenses;
+	}
+
+	protected static long getIncidentTipCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = _watsonIncidentAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_INVESTIGATION, "subtypeWatsonListTypeId", WatsonListType.INCIDENT_REPORT_TYPE_TIP});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		return _watsonIncidentAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+	}
+
+	protected static long getInvestigationCount(Date startDate, Date endDate) throws Exception {
+		DynamicQuery incidentDynamicQuery = _watsonIncidentAlloyServiceInvoker.buildDynamicQuery(new Object[] {"status", WorkflowConstants.STATUS_APPROVED, "typeWatsonListTypeId", WatsonListType.INCIDENT_TYPE_INVESTIGATION});
+
+		Criterion dateCriterion = RestrictionsFactoryUtil.between("reportDate", startDate, endDate);
+
+		incidentDynamicQuery.add(dateCriterion);
+
+		return _watsonIncidentAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+	}
+
 	protected static long getOutreachAdultCount(Date startDate, Date endDate) throws Exception {
-		return getInvestigationLongValue(startDate, endDate, "audienceAdultCount", WatsonListType.INCIDENT_TYPE_PREVENTION_OUTREACH);
+		return getIncidentPropertyLongValue(startDate, endDate, "audienceAdultCount", WatsonListType.INCIDENT_TYPE_PREVENTION_OUTREACH);
 	}
 
 	protected static long getOutreachChildrenCount(Date startDate, Date endDate) throws Exception {
-		return getInvestigationLongValue(startDate, endDate, "audienceChildCount", WatsonListType.INCIDENT_TYPE_PREVENTION_OUTREACH);
+		return getIncidentPropertyLongValue(startDate, endDate, "audienceChildCount", WatsonListType.INCIDENT_TYPE_PREVENTION_OUTREACH);
 	}
 
 	protected static long getOutreachCount(Date startDate, Date endDate) throws Exception {
@@ -177,6 +215,10 @@ public static class WatsonMetricsUtil {
 		incidentDynamicQuery.add(dateCriterion);
 
 		return _watsonIncidentAlloyServiceInvoker.executeDynamicQueryCount(incidentDynamicQuery);
+	}
+
+	protected static long getOutreachExpenses(Date startDate, Date endDate) throws Exception {
+		return getIncidentPropertyDoubleValue(startDate, endDate, "expenses", WatsonListType.INCIDENT_TYPE_PREVENTION_OUTREACH);
 	}
 
 	protected static long getTICACAssistCount(Date startDate, Date endDate) throws Exception {
@@ -244,9 +286,9 @@ public static class WatsonMetricsUtil {
 
 		long personVictimCount = _watsonPersonAlloyServiceInvoker.executeDynamicQueryCount(personDynamicQuery);
 
-		long incidentAdultVictimCount = getInvestigationLongValue(startDate, endDate, "victimAdultCount", WatsonListType.INCIDENT_TYPE_INVESTIGATION);
+		long incidentAdultVictimCount = getIncidentPropertyLongValue(startDate, endDate, "victimAdultCount", WatsonListType.INCIDENT_TYPE_INVESTIGATION);
 
-		long incidentChildVictimCount = getInvestigationLongValue(startDate, endDate, "victimChildCount", WatsonListType.INCIDENT_TYPE_INVESTIGATION);
+		long incidentChildVictimCount = getIncidentPropertyLongValue(startDate, endDate, "victimChildCount", WatsonListType.INCIDENT_TYPE_INVESTIGATION);
 
 		return (personVictimCount + incidentAdultVictimCount + incidentChildVictimCount);
 	}

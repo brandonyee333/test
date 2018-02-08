@@ -2183,58 +2183,81 @@
 					}
 				},
 				reports: {
-					columns: [
+					rows: [
 						{
-							key: 'id',
-							label: '${AlloyLanguageUtil.formatUnicode("id")}'
-						},
-						{
+							child: false,
 							key: 'victimCount',
-							label: '${AlloyLanguageUtil.formatUnicode("victim-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("new-victims")}'
 						},
 						{
+							child: false,
 							key: 'investigationCount',
-							label: '${AlloyLanguageUtil.formatUnicode("investigation-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("new-investigations")}'
 						},
 						{
+							child: false,
 							key: 'outreachCount',
-							label: '${AlloyLanguageUtil.formatUnicode("outreach-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("new-outreaches")}'
 						},
 						{
+							child: true,
 							key: 'outreachAdultCount',
-							label: '${AlloyLanguageUtil.formatUnicode("outreach-adult-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("adults-reached")}'
 						},
 						{
+							child: true,
 							key: 'outreachChildCount',
-							label: '${AlloyLanguageUtil.formatUnicode("outreach-child-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("children-reached")}'
 						},
 						{
+							child: false,
 							key: 'childrenRescuedCount',
-							label: '${AlloyLanguageUtil.formatUnicode("children-rescued-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("children-rescued")}'
 						},
 						{
+							child: false,
 							key: 'childrenAcceptedCount',
-							label: '${AlloyLanguageUtil.formatUnicode("children-accepted-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("children-came-to-zoe")}'
 						},
 						{
+							child: false,
 							key: 'ticacAssistCount',
-							label: '${AlloyLanguageUtil.formatUnicode("ticac-assist-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("ticac-assists")}'
 						},
 						{
+							child: true,
 							key: 'ticacInvestigationAssistCount',
-							label: '${AlloyLanguageUtil.formatUnicode("ticac-investigation-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("ticac-investigation-assists")}'
 						},
 						{
+							child: true,
 							key: 'ticacForensicAssistCount',
-							label: '${AlloyLanguageUtil.formatUnicode("ticac-forensic-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("ticac-forensic-assists")}'
 						},
 						{
+							child: true,
 							key: 'ticacBothAssistCount',
-							label: '${AlloyLanguageUtil.formatUnicode("ticac-both-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("ticac-investigation-forensic-assists")}'
 						},
 						{
+							child: false,
 							key: 'incidentTipCount',
-							label: '${AlloyLanguageUtil.formatUnicode("incident-tip-count")}'
+							label: '${AlloyLanguageUtil.formatUnicode("tips-received")}'
+						},
+						{
+							child: false,
+							key: 'totalExpenses',
+							label: '${AlloyLanguageUtil.formatUnicode("total-expenses")}'
+						},
+						{
+							child: true,
+							key: 'investigationExpenses',
+							label: '${AlloyLanguageUtil.formatUnicode("investigation-expenses")}'
+						},
+						{
+							child: true,
+							key: 'outreachExpenses',
+							label: '${AlloyLanguageUtil.formatUnicode("prevention-outreach-expenses")}'
 						}
 					]
 				}

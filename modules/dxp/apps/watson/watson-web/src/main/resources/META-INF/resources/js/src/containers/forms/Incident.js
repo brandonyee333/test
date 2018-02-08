@@ -99,7 +99,7 @@ class IncidentForm extends JSXComponent {
 		if (watsonIncidentId > 0) {
 			let pathMatches;
 
-			if (data.path) {
+			if (data && data.path) {
 				pathMatches = data.path.match(/\/web\/guest\/home\/-\/watson\/incidents\/([0-9]+)\/[a-zA-Z]+\/?$/);
 			}
 
