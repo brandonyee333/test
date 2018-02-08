@@ -330,7 +330,8 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 
 	Liferay.provide(
 		window,
-		function <portlet:namespace />selectPortalVersionRetainValues(envLFR) {
+		'<portlet:namespace />selectPortalVersionRetainValues',
+		function(envLFR) {
 			var A = AUI();
 
 			var envAS = A.one('#<portlet:namespace />envAS');

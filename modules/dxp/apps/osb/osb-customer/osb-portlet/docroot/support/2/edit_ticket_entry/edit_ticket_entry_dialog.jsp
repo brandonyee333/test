@@ -128,7 +128,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 	<c:choose>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_CLUSTERING %>">
-			var clusteringDetails = A.one('.component-tab#<portlet:namespace />clusteringDetails');
+			var clusteringDetails = A.one('.component-tab#<portlet:namespace />clusteringDetailsHeader');
 
 			if (clusteringDetails) {
 				clusteringDetails.show();
@@ -137,14 +137,14 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 			requiredStatus = 'false';
 		</c:when>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_LICENSE %>">
-			var activationKeyDetails = A.one('.component-tab#<portlet:namespace />activationKeyDetails');
+			var activationKeyDetails = A.one('.component-tab#<portlet:namespace />activationKeyDetailsHeader');
 
 			if (activationKeyDetails) {
 				activationKeyDetails.show();
 			}
 		</c:when>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_UPGRADE %>">
-			var upgradeDetails = A.one('.component-tab#<portlet:namespace />upgradeDetails');
+			var upgradeDetails = A.one('.component-tab#<portlet:namespace />upgradeDetailsHeader');
 
 			if (upgradeDetails) {
 				upgradeDetails.show();

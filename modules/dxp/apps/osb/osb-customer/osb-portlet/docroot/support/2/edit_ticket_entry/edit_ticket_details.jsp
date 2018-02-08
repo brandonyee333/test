@@ -596,27 +596,27 @@ if (liferayIncOrg || partnerWorker) {
 		function(component) {
 			var A = AUI();
 
-			var serverTypeNode = A.one('#<portlet:namespace />serverCommunicationType');
+			var requiredStatus = 'true';
 
 			if (component == <%= TicketEntryConstants.COMPONENT_CLUSTERING %>) {
-				<portlet:namespace />revealComponentTab('clusteringDetails');
+				<portlet:namespace />revealComponentTab('clusteringDetailsHeader');
 
-				serverTypeNode.setAttribute('data-field-required-status', 'false');
+				requiredStatus = 'false';
 			}
 			else if (component == <%= TicketEntryConstants.COMPONENT_LICENSE %>) {
-				<portlet:namespace />revealComponentTab('activationKeyDetails');
-
-				serverTypeNode.setAttribute('data-field-required-status', 'true');
+				<portlet:namespace />revealComponentTab('activationKeyDetailsHeader');
 			}
 			else if (component == <%= TicketEntryConstants.COMPONENT_UPGRADE %>) {
-				<portlet:namespace />revealComponentTab('upgradeDetails');
-
-				serverTypeNode.setAttribute('data-field-required-status', 'true');
+				<portlet:namespace />revealComponentTab('upgradeDetailsHeader');
 			}
 			else {
 				<portlet:namespace />revealComponentTab();
+			}
 
-				serverTypeNode.setAttribute('data-field-required-status', 'true');
+			var serverTypeNode = A.one('#<portlet:namespace />serverCommunicationType');
+
+			if (serverTypeNode) {
+				serverTypeNode.attr('data-field-required-status', requiredStatus);
 			}
 
 			<portlet:namespace />loadEnvironmentDetailsTab(component);
