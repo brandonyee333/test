@@ -70,7 +70,7 @@
 				<portlet:param name="mvcPath" value="/support/2/edit_account_environment.jsp" />
 			</portlet:actionURL>
 
-			<aui:form action="<%= updateAccountEnvironmentURL %>" enctype="multipart/form-data" method="post" name="fm1">
+			<aui:form action="<%= updateAccountEnvironmentURL %>" enctype="multipart/form-data" method="post" name="updateAccountEnvironmentFm">
 				<aui:input name="accountEnvironmentId" type="hidden" value="<%= accountEnvironmentId %>" />
 				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
@@ -102,21 +102,14 @@
 				</liferay-util:include>
 
 				<div class="edit-account-environment">
-					<div class="clearfix">
-						<div class="pull-left single-line">
-							<div class="content-column w50">
-								<div class="content-column-content">
-									<span class="txt-b">*<liferay-ui:message key="name" />:</span>
+					<aui:container>
+						<aui:row>
+							<aui:col width="<%= 50 %>">
+								<aui:input label="name" maxLength='<%= ModelHintsUtil.getMaxLength(AccountEnvironment.class.getName(), "name") %>' name="name" required="<%= true %>" type="text" value='<%= (accountEnvironment != null) ? accountEnvironment.getName() : "" %>' />
+							</aui:col>
 
-									<aui:input label="" maxLength='<%= ModelHintsUtil.getMaxLength(AccountEnvironment.class.getName(), "name") %>' name="name" type="text" value='<%= (accountEnvironment != null) ? accountEnvironment.getName() : "" %>' />
-								</div>
-							</div>
-
-							<div class="content-column w50">
-								<div class="content-column-content">
-									<span class="txt-b">*<liferay-ui:message key="product" />:</span>
-
-									<aui:select label="" name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectProductEntry(this.value);" %>'>
+							<aui:col width="<%= 50 %>">
+								<aui:select label="product" name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectProductEntry(this.value);" %>' required="<%= true %>">
 										<aui:option label="select" value="0" />
 
 										<%
@@ -152,187 +145,146 @@
 									<c:if test="<%= productEntryId > 0 %>">
 										<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
 									</c:if>
-								</div>
-							</div>
-						</div>
+							</aui:col>
+						</aui:row>
 
-						<br />
+						<aui:row>
+							<aui:col width="<%= 33 %>">
+								<%
+								String envLFROnChange = renderResponse.getNamespace() + "selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, ''); " + renderResponse.getNamespace() + "updateSupportMessage(this.value);";
+								%>
 
-						<div class="pull-left single-line">
-							<div class="content-column w33">
-								<div class="content-column-content">
-									<span class="txt-b" id="<portlet:namespace />portalVersion" title="<liferay-ui:message key="liferay-version" />">*<liferay-ui:message key="lr" />:</span>
+								<aui:select label="lr" name="envLFR" onChange="<%= envLFROnChange.toString() %>" required="<%= true %>" title="liferay-version">
+									<c:if test="<%= productEntry != null %>">
+										<aui:option label="select" value="0" />
+
+										<%
+										List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
+
+										String previousNamePrefix = StringPool.BLANK;
+
+										long[] listTypesDeprecated = Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).asLongStream().toArray();
+
+										for (ListType envLFRType : envLFRTypes) {
+											if ((envLFR != envLFRType.getListTypeId()) && ArrayUtil.contains(listTypesDeprecated, envLFRType.getListTypeId())) {
+												continue;
+											}
+
+											String name = envLFRType.getName();
+
+											String namePrefix = name.substring(0, 3);
+										%>
+
+											<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
+												<aui:option disabled="<%= true %>" label="--------" />
+											</c:if>
+
+											<aui:option label="<%= envLFRType.getName() %>" selected="<%= envLFRType.getListTypeId() == envLFR %>" value="<%= envLFRType.getListTypeId() %>" />
+
+										<%
+											previousNamePrefix = namePrefix;
+										}
+										%>
+
+									</c:if>
+								</aui:select>
+							</aui:col>
+
+							<aui:col width="<%= 33 %>">
+								<aui:select label="os" name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>' required="<%= true %>" title="operating-system">
+									<aui:option value="0" />
+								</aui:select>
+
+								<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= envOSCustom %>" />
+							</aui:col>
+
+							<aui:col width="<%= 33 %>">
+								<aui:select label="jvm" name="envJVM" required="<%= true %>" title="java-virtual-machine">
+									<aui:option value="0" />
+								</aui:select>
+							</aui:col>
+						</aui:row>
+
+						<aui:row>
+							<aui:col width="<%= 33 %>">
+								<aui:select label="as" name="envAS" required="<%= true %>" title="application-server">
+									<aui:option value="0" />
+								</aui:select>
+							</aui:col>
+
+							<aui:col width="<%= 33 %>">
+								<aui:select label="db" name="envDB" required="<%= true %>" title="database">
+									<aui:option value="0" />
+								</aui:select>
+							</aui:col>
+						</aui:row>
+
+						<aui:row>
+							<aui:col width="<%= 100 %>">
+								<aui:field-wrapper>
+									<aui:input label="portal-ext" name="portalExt" required="<%= true %>" type="file" value="upload" />
 
 									<%
-									String envLFROnChange = renderResponse.getNamespace() + "selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, ''); " + renderResponse.getNamespace() + "updateSupportMessage(this.value);";
+									AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = null;
+
+									if (accountEnvironment != null) {
+										portalExtAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironmentId, AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
+									}
 									%>
 
-									<aui:select label="" name="envLFR" onChange="<%= envLFROnChange.toString() %>">
-										<c:if test="<%= productEntry != null %>">
-											<aui:option label="select" value="0" />
-
-											<%
-											List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
-
-											String previousNamePrefix = StringPool.BLANK;
-
-											long[] listTypesDeprecated = Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).asLongStream().toArray();
-
-											for (ListType envLFRType : envLFRTypes) {
-												if ((envLFR != envLFRType.getListTypeId()) && ArrayUtil.contains(listTypesDeprecated, envLFRType.getListTypeId())) {
-													continue;
-												}
-
-												String name = envLFRType.getName();
-
-												String namePrefix = name.substring(0, 3);
-											%>
-
-												<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-													<aui:option disabled="<%= true %>" label="--------" />
-												</c:if>
-
-												<aui:option label="<%= envLFRType.getName() %>" selected="<%= envLFRType.getListTypeId() == envLFR %>" value="<%= envLFRType.getListTypeId() %>" />
-
-											<%
-												previousNamePrefix = namePrefix;
-											}
-											%>
-
-										</c:if>
-									</aui:select>
-								</div>
-							</div>
-
-							<div class="content-column w33">
-								<div class="content-column-content">
-									<span class="txt-b" title="<liferay-ui:message key="operating-system" />">*<liferay-ui:message key="os" />:</span>
-
-									<aui:select label="" name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>'>
-										<aui:option value="0" />
-									</aui:select>
-
-									<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= envOSCustom %>" />
-								</div>
-							</div>
-
-							<div class="content-column w33">
-								<div class="content-column-content">
-									<span class="txt-b" title="<liferay-ui:message key="java-virtual-machine" />">*<liferay-ui:message key="jvm" />:</span>
-
-									<aui:select label="" name="envJVM">
-										<aui:option value="0" />
-									</aui:select>
-								</div>
-							</div>
-						</div>
-
-						<div class="pull-left single-line">
-							<div class="content-column w33">
-								<div class="content-column-content">
-									<span class="txt-b" title="<liferay-ui:message key="application-server" />">*<liferay-ui:message key="as" />:</span>
-
-									<aui:select label="" name="envAS">
-										<aui:option value="0" />
-									</aui:select>
-								</div>
-							</div>
-
-							<div class="content-column w33">
-								<div class="content-column-content">
-									<span class="txt-b" title="<liferay-ui:message key="database" />">*<liferay-ui:message key="db" />:</span>
-
-									<aui:select label="" name="envDB">
-										<aui:option value="0" />
-									</aui:select>
-								</div>
-							</div>
-						</div>
-
-						<br />
-
-						<div class="pull-left single-line">
-							<div class="content-column w100">
-								<div class="content-column-content">
-									<span class="txt-b">*<liferay-ui:message key="portal-ext" /> <a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142855" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
-
-									<span id="<portlet:namespace />portalExtFilename">
+									<c:if test="<%= portalExtAccountEnvironmentAttachment != null %>">
 
 										<%
-										AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = null;
+										LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
 
-										if (accountEnvironment != null) {
-											portalExtAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironmentId, AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
-										}
+										accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
+										accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(portalExtAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
+										accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
 										%>
 
-										<c:if test="<%= portalExtAccountEnvironmentAttachment != null %>">
+										<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %>"  target="_blank" />
+									</c:if>
+								</aui:field-wrapper>
+							</aui:col>
+						</aui:row>
 
-											<%
-											LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+						<aui:row>
+							<aui:col width="<%= 100 %>">
+								<aui:field-wrapper>
+									<aui:input label="patch-level" name="patchLevel" type="file" required="<%= true %>" value="upload" />
 
-											accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
-											accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(portalExtAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
-											accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
-											%>
+									<%
+									AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment = null;
 
-											<a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %></a>
-										</c:if>
-									</span>
+									if (accountEnvironment != null) {
+										patchLevelAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironmentId, AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
+									}
+									%>
 
-									<aui:input label="" name="portalExt" type="file" value="upload" />
-								</div>
-							</div>
-						</div>
-
-						<div class="pull-left single-line">
-							<div class="content-column w100">
-								<div class="content-column-content">
-									<span class="txt-b">*<liferay-ui:message key="patch-level" /> <a class="help-link" href="/group/customer/kbase/-/knowledge_base/article/33142925" target="_blank"><img src="<%= themeDisplay.getPathThemeImages() + "/common/help.png" %>" /></a>:</span>
-
-									<span id="<portlet:namespace />patchLevelFilename">
+									<c:if test="<%= patchLevelAccountEnvironmentAttachment != null %>">
 
 										<%
-										AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment = null;
+										LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
 
-										if (accountEnvironment != null) {
-											patchLevelAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironmentId, AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
-										}
+										accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
+										accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(patchLevelAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
+										accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
 										%>
 
-										<c:if test="<%= patchLevelAccountEnvironmentAttachment != null %>">
+										<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %>" target="_blank" />
+									</c:if>
+								</aui:field-wrapper>
+							</aui:col>
+						</aui:row>
 
-											<%
-											LiferayPortletURL accountEnvironmentAttachmentURL = PortletURLFactoryUtil.create(request, portletDisplay.getId(), layout.getPlid(), PortletRequest.RESOURCE_PHASE);
+						<aui:button-row>
+							<aui:button cssClass="pull-left" onClick="Liferay.Util.getWindow().hide();" value="cancel" />
 
-											accountEnvironmentAttachmentURL.setCopyCurrentRenderParameters(false);
-											accountEnvironmentAttachmentURL.setParameter("accountEnvironmentAttachmentId", String.valueOf(patchLevelAccountEnvironmentAttachment.getAccountEnvironmentAttachmentId()));
-											accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
-											%>
-
-											<a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %></a>
-										</c:if>
-									</span>
-
-									<aui:input label="" name="patchLevel" type="file" value="upload" />
-								</div>
-							</div>
-						</div>
-
-						<div class="foot-details pull-left single-line">
-							<aui:button cssClass="aui-button-input pull-left" onClick="Liferay.Util.getWindow().hide();" value="cancel" />
-
-							<aui:button cssClass="aui-button-input pull-right" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value='<%= (accountEnvironmentId == 0) ? "create" : "update" %>' />
-						</div>
-					</div>
+							<aui:button cssClass="pull-right" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value='<%= (accountEnvironmentId == 0) ? "create" : "update" %>' />
+						</aui:button-row>
+					</aui:container>
 				</div>
 			</aui:form>
-
-			<c:if test="<%= accountEnvironment != null %>">
-				<aui:script>
-					<portlet:namespace />selectPortalVersion(<%= envLFR %>, <%= envAS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envAS)) %>', <%= envDB %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envOS)) %>');
-				</aui:script>
-			</c:if>
 
 			<aui:script>
 				function <portlet:namespace />focusNode(node) {
@@ -341,20 +293,29 @@
 					return false;
 				}
 
-				function <portlet:namespace />toggleProduct(liferay) {
-					var envLFR = document.getElementById('<portlet:namespace />portalVersion');
+				Liferay.provide(
+					window,
+					'<portlet:namespace />toggleProduct',
+					function(liferay) {
+						var A = AUI();
 
-					if (envLFR) {
-						if (liferay == false) {
-							envLFR.innerHTML = '*<liferay-ui:message key="so" />:';
-							envLFR.title = '<liferay-ui:message key="social-office" />';
+						var envLFR = A.one('#<portlet:namespace />portalVersion');
+
+						if (envLFR) {
+							if (liferay == false) {
+								envLFR.set('text', '*<liferay-ui:message key="so" />:');
+
+								envLFR.attr('title', '<liferay-ui:message key="social-office" />');
+							}
+							else if (envLFR.get('text') != '*<liferay-ui:message key="lr" />:') {
+								envLFR.set('text', '*<liferay-ui:message key="lr" />:');
+
+								envLFR.attr('title', '<liferay-ui:message key="liferay-version" />');
+							}
 						}
-						else if (envLFR.innerHTML != '*<liferay-ui:message key="lr" />:') {
-							envLFR.innerHTML = '*<liferay-ui:message key="lr" />:';
-							envLFR.title = '<liferay-ui:message key="liferay-version" />';
-						}
-					}
-				}
+					},
+					['aui-base']
+				);
 
 				Liferay.provide(
 					window,
@@ -389,9 +350,11 @@
 							for (var envType in envTypes) {
 								var envElement = A.one('#<portlet:namespace />' + envTypes[envType]);
 
-								envElement.empty();
+								if (envElement) {
+									envElement.empty();
 
-								envElement.setData('key', 0);
+									envElement.setData('key', 0);
+								}
 							}
 
 							return;
@@ -418,7 +381,7 @@
 							}
 						);
 					},
-					['aui-io']
+					['aui-io-request']
 				);
 
 				Liferay.provide(
@@ -459,7 +422,7 @@
 							}
 						);
 					},
-					['aui-io']
+					['aui-io-request']
 				);
 
 				Liferay.provide(
@@ -547,14 +510,14 @@
 											name.focus();
 										}
 										else {
-											submitForm(document.<portlet:namespace />fm1);
+											submitForm(document.<portlet:namespace />updateAccountEnvironmentFm);
 										}
 									}
 								}
 							}
 						);
 					},
-					['aui-io']
+					['aui-io-request']
 				);
 
 				Liferay.provide(
@@ -691,6 +654,10 @@
 				if (server.options[server.selectedIndex].text.includes('<liferay-ui:message key="social-office" />')) {
 					<portlet:namespace />toggleProduct(false);
 				}
+
+				<c:if test="<%= accountEnvironment != null %>">
+					<portlet:namespace />selectPortalVersion(<%= envLFR %>, <%= envAS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envAS)) %>', <%= envDB %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envDB)) %>', <%= envJVM %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envJVM)) %>', <%= envOS %>, '<%= LanguageUtil.get(request, AccountEnvironmentConstants.getEnvLabel(envOS)) %>');
+				</c:if>
 			</aui:script>
 		</c:otherwise>
 	</c:choose>
