@@ -40,6 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true)
 public class ConsumerManagerImpl implements ConsumerManager {
 
+	@Override
 	public void addConsumer(String queue) throws Exception {
 		if (_consumers.containsKey(queue)) {
 			throw new DuplicateConsumerException();
@@ -54,6 +55,7 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		}
 	}
 
+	@Override
 	public void consumeMessage() {
 		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
 			return;
@@ -78,6 +80,7 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		}
 	}
 
+	@Override
 	public void consumeMessages(
 			String queue, long messageCount,
 			final MessageProcessor messageProcessor)
@@ -98,6 +101,12 @@ public class ConsumerManagerImpl implements ConsumerManager {
 			}
 
 			for (int i = 0; i < messageCount; i++) {
+				GetResponse getResponse = channel.basicGet(queue, false);
+
+				if (getResponse == null) {
+					break;
+				}
+
 				Consumer consumer = new OSBConsumer(channel, queue) {
 
 					@Override
@@ -111,12 +120,6 @@ public class ConsumerManagerImpl implements ConsumerManager {
 
 				};
 
-				GetResponse getResponse = channel.basicGet(queue, false);
-
-				if (getResponse == null) {
-					break;
-				}
-
 				consumer.handleDelivery(
 					null, getResponse.getEnvelope(), getResponse.getProps(),
 					getResponse.getBody());
@@ -129,6 +132,7 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		}
 	}
 
+	@Override
 	public void deleteConsumer(String queue) {
 		Consumer consumer = _consumers.remove(queue);
 
@@ -143,10 +147,12 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		}
 	}
 
+	@Override
 	public Consumer getConsumer(String queue) {
 		return _consumers.get(queue);
 	}
 
+	@Override
 	public void resetChannels() throws Exception {
 		for (Map.Entry<String, Consumer> entry : _consumers.entrySet()) {
 			String queue = entry.getKey();

@@ -32,9 +32,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 public interface RabbitMQConfiguration {
 
-	@Meta.AD(
-		deflt = "is_osb_customer_queue", name = "queue-name", required = false
-	)
+	@Meta.AD(deflt = "is_customer_queue", name = "queue-name", required = false)
 	public String queue();
 
 }
