@@ -55,203 +55,194 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 
 <c:if test="<%= hasUpdateAdvanced %>">
 	<div class="hide tab-content-tab" id="<portlet:namespace />environmentDetails">
-		<div>
+
+		<%
+		int envLFRNotification = 0;
+
+		if (component == TicketEntryConstants.COMPONENT_UPGRADE) {
+			envLFRNotification = toEnvLFR;
+		}
+		else {
+			envLFRNotification = envLFR;
+		}
+		%>
+
+		<liferay-util:include page="/support/2/common/eosl_environment_liferay.jsp" servletContext="<%= application %>">
+			<portlet:param name="envLFR" value="<%= String.valueOf(envLFRNotification) %>" />
+		</liferay-util:include>
+
+		<c:if test="<%= Validator.isNotNull(envName) %>">
+			<aui:input label="" name="envName" type="hidden" value="<%= HtmlUtil.escapeAttribute(envName) %>" />
+		</c:if>
+
+
+		<label id="<portlet:namespace />envLFRLabel"><liferay-ui:message key="liferay-version" /></label>
+
+		<%
+		StringBundler envLFROnChangeSB = new StringBundler(6);
+
+		envLFROnChangeSB.append(renderResponse.getNamespace());
+		envLFROnChangeSB.append("loadEnvironmentDetails(");
+		envLFROnChangeSB.append(component);
+		envLFROnChangeSB.append(", 0);");
+
+		if (!productEntry.isDigitalEnterprise()) {
+			envLFROnChangeSB.append(renderResponse.getNamespace());
+			envLFROnChangeSB.append("updateSupportMessage(this.value);");
+		}
+
+		List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
+
+		String previousNamePrefix = StringPool.BLANK;
+		%>
+
+		<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-liferay-version") %>" label="" name="envLFR" onChange="<%= envLFROnChangeSB.toString() %>">
 
 			<%
-			int envLFRNotification = 0;
+			long[] listTypesDeprecated = Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).asLongStream().toArray();
 
-			if (component == TicketEntryConstants.COMPONENT_UPGRADE) {
-				envLFRNotification = toEnvLFR;
-			}
-			else {
-				envLFRNotification = envLFR;
+			for (ListType envLFRType : envLFRTypes) {
+				if ((envLFRType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) && (envLFR != ProductEntryConstants.PORTAL_VERSION_OTHER) || ArrayUtil.contains(listTypesDeprecated, envLFRType.getListTypeId())) {
+					continue;
+				}
+
+				boolean limited = false;
+
+				if (envLFRType.getListTypeId() < ProductEntryConstants.PORTAL_VERSION_6_2_10) {
+					limited = true;
+				}
+
+				String name = envLFRType.getName();
+
+				String namePrefix = name.substring(0, 3);
+			%>
+
+				<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
+					<aui:option disabled="true" label="--------" />
+				</c:if>
+
+				<%
+				String envLFRTypeLabel = LanguageUtil.get(request, envLFRType.getName());
+
+				if (limited) {
+					envLFRTypeLabel = envLFRTypeLabel +  " (" + LanguageUtil.get(request, "limited") + ")";
+				}
+				%>
+
+				<aui:option label="<%= envLFRTypeLabel %>" value="<%= envLFRType.getListTypeId() %>" />
+
+			<%
+				previousNamePrefix = namePrefix;
 			}
 			%>
 
-			<liferay-util:include page="/support/2/common/eosl_environment_liferay.jsp" servletContext="<%= application %>">
-				<portlet:param name="envLFR" value="<%= String.valueOf(envLFRNotification) %>" />
-			</liferay-util:include>
+		</aui:select>
 
-			<c:if test="<%= Validator.isNotNull(envName) %>">
-				<input name="<portlet:namespace />envName" type="hidden" value="<%= HtmlUtil.escapeAttribute(envName) %>" />
-			</c:if>
+		<c:if test="<%= component == TicketEntryConstants.COMPONENT_UPGRADE %>">
 
-			<div class="field-group">
-				<label id="<portlet:namespace />envLFRLabel"><liferay-ui:message key="liferay-version" /></label>
+			<%
+			StringBundler toEnvLFROnChangeSB = new StringBundler(6);
+
+			toEnvLFROnChangeSB.append(renderResponse.getNamespace());
+			toEnvLFROnChangeSB.append("loadEnvironmentDetails(");
+			toEnvLFROnChangeSB.append(component);
+			toEnvLFROnChangeSB.append(", this.value);");
+			toEnvLFROnChangeSB.append(renderResponse.getNamespace());
+			toEnvLFROnChangeSB.append("updateSupportMessage(this.value)");
+			%>
+
+			<span id="<portlet:namespace />toEnvLFRLabel"><liferay-ui:message key="to" /></span>
+
+			<aui:select label="" name="toEnvLFR" onChange="<%= toEnvLFROnChangeSB.toString() %>">
 
 				<%
-				StringBundler envLFROnChangeSB = new StringBundler(6);
+				previousNamePrefix = StringPool.BLANK;
 
-				envLFROnChangeSB.append(renderResponse.getNamespace());
-				envLFROnChangeSB.append("loadEnvironmentDetails(");
-				envLFROnChangeSB.append(component);
-				envLFROnChangeSB.append(", 0);");
+				for (ListType envLFRType : envLFRTypes) {
+					boolean toEnvLFRLimited = false;
 
-				if (!productEntry.isDigitalEnterprise()) {
-					envLFROnChangeSB.append(renderResponse.getNamespace());
-					envLFROnChangeSB.append("updateSupportMessage(this.value);");
-				}
+					if (envLFRType.getListTypeId() < ProductEntryConstants.PORTAL_VERSION_6_2_10) {
+						toEnvLFRLimited = true;
+					}
 
-				List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
+					String name = envLFRType.getName();
 
-				String previousNamePrefix = StringPool.BLANK;
+					String namePrefix = StringPool.BLANK;
+
+					if (envLFRType.getListTypeId() > envLFR) {
+						namePrefix = name.substring(0, 3);
+					}
 				%>
 
-				<div class="field-align">
-					<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-liferay-version") %>" id="<portlet:namespace />envLFR" name="<portlet:namespace />envLFR" onChange="<%= envLFROnChangeSB.toString() %>">
+					<c:if test="<%= envLFRType.getListTypeId() > envLFR %>">
+						<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
+							<aui:option disabled="true" label="--------" />
+						</c:if>
 
 						<%
-						long[] listTypesDeprecated = Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).asLongStream().toArray();
+						String envLFRLimitedTypeLabel = LanguageUtil.get(request, envLFRType.getName());
 
-						for (ListType envLFRType : envLFRTypes) {
-							if ((envLFRType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) && (envLFR != ProductEntryConstants.PORTAL_VERSION_OTHER) || ArrayUtil.contains(listTypesDeprecated, envLFRType.getListTypeId())) {
-								continue;
-							}
-
-							boolean limited = false;
-
-							if (envLFRType.getListTypeId() < ProductEntryConstants.PORTAL_VERSION_6_2_10) {
-								limited = true;
-							}
-
-							String name = envLFRType.getName();
-
-							String namePrefix = name.substring(0, 3);
-						%>
-
-							<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-								<option disabled>--------</option>
-							</c:if>
-
-							<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %><%= limited ? " (" + LanguageUtil.get(request, "limited") + ")" : "" %></option>
-
-						<%
-							previousNamePrefix = namePrefix;
+						if (toEnvLFRLimited) {
+							envLFRLimitedTypeLabel = envLFRLimitedTypeLabel +  " (" + LanguageUtil.get(request, "limited") + ")";
 						}
 						%>
 
-					</select>
-
-					<c:if test="<%= component == TicketEntryConstants.COMPONENT_UPGRADE %>">
-
-						<%
-						StringBundler toEnvLFROnChangeSB = new StringBundler(6);
-
-						toEnvLFROnChangeSB.append(renderResponse.getNamespace());
-						toEnvLFROnChangeSB.append("loadEnvironmentDetails(");
-						toEnvLFROnChangeSB.append(component);
-						toEnvLFROnChangeSB.append(", this.value);");
-						toEnvLFROnChangeSB.append(renderResponse.getNamespace());
-						toEnvLFROnChangeSB.append("updateSupportMessage(this.value)");
-						%>
-
-						<span id="<portlet:namespace />toEnvLFRLabel"><liferay-ui:message key="to" /></span>
-
-						<select id="<portlet:namespace />toEnvLFR" name="<portlet:namespace />toEnvLFR" onChange="<%= toEnvLFROnChangeSB %>">
-
-							<%
-							previousNamePrefix = StringPool.BLANK;
-
-							for (ListType envLFRType : envLFRTypes) {
-								boolean toEnvLFRLimited = false;
-
-								if (envLFRType.getListTypeId() < ProductEntryConstants.PORTAL_VERSION_6_2_10) {
-									toEnvLFRLimited = true;
-								}
-
-								String name = envLFRType.getName();
-
-								String namePrefix = StringPool.BLANK;
-
-								if (envLFRType.getListTypeId() > envLFR) {
-									namePrefix = name.substring(0, 3);
-								}
-							%>
-
-								<c:if test="<%= envLFRType.getListTypeId() > envLFR %>">
-									<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-										<option disabled>--------</option>
-									</c:if>
-
-									<option <%= (envLFRType.getListTypeId() == toEnvLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %><%= toEnvLFRLimited ? " (" + LanguageUtil.get(request, "limited") + ")" : "" %></option>
-								</c:if>
-
-							<%
-								previousNamePrefix = namePrefix;
-							}
-							%>
-
-						</select>
+						<aui:option label="<%= envLFRLimitedTypeLabel %>" selected="<%= (envLFRType.getListTypeId() == toEnvLFR) %>" value="<%= envLFRType.getListTypeId() %>" />
 					</c:if>
-				</div>
-			</div>
 
-			<c:if test="<%= component != TicketEntryConstants.COMPONENT_LICENSE %>">
-				<div class="field-group">
-					<label id="<portlet:namespace />envOSLabel"><liferay-ui:message key="operating-system" /></label>
+				<%
+					previousNamePrefix = namePrefix;
+				}
+				%>
 
-					<div class="field-align">
-						<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-operating-system") %>" id="<portlet:namespace />envOS" name="<portlet:namespace />envOS" onChange="<portlet:namespace />selectEnvOS(this.value);">
-							<c:if test="<%= envOS != 0 %>">
-								<option selected value="<%= envOS %>"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envOS)) %></option>
-							</c:if>
-						</select>
+			</aui:select>
+		</c:if>
 
-						<br />
+		<c:if test="<%= component != TicketEntryConstants.COMPONENT_LICENSE %>">
+			<label id="<portlet:namespace />envOSLabel"><liferay-ui:message key="operating-system" /></label>
 
-						<input class="<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>" id="<portlet:namespace />envOSCustom" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="<portlet:namespace />envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" />
-					</div>
-				</div>
+			<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-operating-system") %>" label="" name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>'>
+				<c:if test="<%= envOS != 0 %>">
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envOS) %>" selected="true" value="<%= envOS %>" />
+				</c:if>
+			</aui:select>
 
-				<div class="field-group">
-					<label id="<portlet:namespace />envASLabel"><liferay-ui:message key="application-server" /></label>
+			<aui:input cssClass="<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>" label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" />
 
-					<div class="field-align">
-						<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-application-server") %>" id="<portlet:namespace />envAS" name="<portlet:namespace />envAS">
-							<c:if test="<%= envAS != 0 %>">
-								<option selected value="<%= envAS %>"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envAS)) %></option>
-							</c:if>
-						</select>
-					</div>
-				</div>
+			<label id="<portlet:namespace />envASLabel"><liferay-ui:message key="application-server" /></label>
 
-				<div class="field-group">
-					<label id="<portlet:namespace />envJVMLabel"><liferay-ui:message key="java-virtual-machine" /></label>
+			<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-application-server") %>" label="" name="envAS">
+				<c:if test="<%= envAS != 0 %>">
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envAS) %>" selected="true" value="<%= envAS %>" />
+				</c:if>
+			</aui:select>
 
-					<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-java-virtual-machine") %>" id="<portlet:namespace />envJVM" name="<portlet:namespace />envJVM">
-						<c:if test="<%= envJVM != 0 %>">
-							<option selected value="<%= envJVM %>"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envJVM)) %></option>
-						</c:if>
-					</select>
-				</div>
+			<label id="<portlet:namespace />envJVMLabel"><liferay-ui:message key="java-virtual-machine" /></label>
 
-				<div class="field-group">
-					<label id="<portlet:namespace />envDBLabel"><liferay-ui:message key="database" /></label>
+			<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-java-virtual-machine") %>" label="" name="envJVM">
+				<c:if test="<%= envJVM != 0 %>">
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envJVM) %>" selected="true" value="<%= envJVM %>" />
+				</c:if>
+			</aui:select>
 
-					<div class="field-align">
-						<select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-database") %>" id="<portlet:namespace />envDB" name="<portlet:namespace />envDB">
-							<c:if test="<%= envDB != 0 %>">
-								<option selected value="<%= envDB %>"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envDB)) %></option>
-							</c:if>
-						</select>
-					</div>
-				</div>
+			<label id="<portlet:namespace />envDBLabel"><liferay-ui:message key="database" /></label>
 
-				<div class="field-group">
-					<label id="<portlet:namespace />envBrowserLabel"><liferay-ui:message key="primary-browser" /></label>
+			<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-database") %>" label="" name="envDB">
+				<c:if test="<%= envDB != 0 %>">
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envDB) %>" selected="true" value="<%= envDB %>" />
+				</c:if>
+			</aui:select>
 
-					<select id="<portlet:namespace />envBrowser" name="<portlet:namespace />envBrowser" onChange="<portlet:namespace />selectBrowser(this.value);">
-						<c:if test="<%= envBrowser != 0 %>">
-							<option selected value="<%= envBrowser %>"><%= LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envBrowser)) %></option>
-						</c:if>
-					</select>
+			<label id="<portlet:namespace />envBrowserLabel"><liferay-ui:message key="primary-browser" /></label>
 
-					<br />
+			<aui:select label="" name="envBrowser" onChange='<%= renderResponse.getNamespace() + "selectBrowser(this.value);" %>'>
+				<c:if test="<%= envBrowser != 0 %>">
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envBrowser) %>" selected="true" value="<%= envBrowser %>" />
+				</c:if>
+			</aui:select>
 
-					<input class="<%= (envBrowser == TicketEntryConstants.ENV_BROWSER_OTHER) ? "" : "hide" %>" id="<portlet:namespace />envBrowserCustom" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_BROWSER_CUSTOM) %>" name="<portlet:namespace />envBrowserCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envBrowserCustom) %>" />
-				</div>
-			</c:if>
-		</div>
+			<aui:input cssClass="<%= (envBrowser == TicketEntryConstants.ENV_BROWSER_OTHER) ? "" : "hide" %>" label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_BROWSER_CUSTOM) %>" name="envBrowserCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envBrowserCustom) %>" />
+		</c:if>
 	</div>
 </c:if>
 
