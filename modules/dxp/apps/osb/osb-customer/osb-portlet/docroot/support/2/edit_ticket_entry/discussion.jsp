@@ -235,9 +235,11 @@ else {
 				commentForm.show();
 			}
 
-			var commentBody = document.getElementById('<portlet:namespace />commentBody' + suffix);
+			var commentBody = A.one('#<portlet:namespace />commentBody' + suffix);
 
-			commentBody.focus();
+			if (commentBody) {
+				commentBody.focus();
+			}
 
 			if (!hasMaximumDraftTicketComment || isDraft) {
 				var message = '<%= UnicodeLanguageUtil.get(request, "comment-will-be-auto-saved-as-draft-every-30-seconds,-excluding-attachments") %>';
@@ -250,15 +252,31 @@ else {
 				<portlet:namespace />updateMessageDisplay(suffix, 'portlet-msg-info', message);
 			}
 
-			document.<portlet:namespace />ticketCommentFm.<portlet:namespace />suffix.value = suffix;
-			document.<portlet:namespace />ticketCommentFm.<portlet:namespace />draftBody.value = commentBody.value;
+			var formSuffix = A.one('#<portlet:namespace />suffix');
 
-			document.getElementById('<portlet:namespace />intervalId').value = setInterval(
-				function() {
-					<portlet:namespace />autoUpdateComment(suffix);
-				},
-				30000
-			);
+			if (formSuffix) {
+				formSuffix.set('value', suffix);
+			}
+
+			var draftBody = A.one('#<portlet:namespace />draftBody');
+
+			if (draftBody) {
+				draftBody.set('value', commentBody.get('value'));
+			}
+
+			var intervalId = A.one('#<portlet:namespace />intervalId');
+
+			if (intervalId) {
+				intervalId.set(
+					'value',
+					setInterval(
+						function() {
+							<portlet:namespace />autoUpdateComment(suffix);
+						},
+						30000
+					)
+				);
+			}
 		}
 
 		function <portlet:namespace />toggleComment(event, i, type) {
