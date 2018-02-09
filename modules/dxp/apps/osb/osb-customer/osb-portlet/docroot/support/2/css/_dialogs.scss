@@ -1,33 +1,16 @@
 .account-environment-dialog {
-	padding: 2em;
+	.container-fluid-1280 {
+		padding: 20px;
 
-	.edit-account-environment {
-		input[type=text], select {
-			width: calc(100% - 100px);
+		.edit-account-environment {
+			.properties-file {
+				margin-bottom: 15px;
+
+				.properties-file-input {
+					margin-bottom: 0;
+				}
+			}
 		}
-
-		select {
-			border-radius: 5px;
-		}
-
-		.foot-details {
-			float: left;
-			margin: 20px 0;
-			width: 100%;
-		}
-
-		.single-line {
-			padding: 5px 0;
-			width: 100%;
-		}
-
-		.txt-b {
-			color: $medium-gray;
-		}
-	}
-
-	.portlet-msg-error, .portlet-msg-info {
-		position: inherit;
 	}
 }
 

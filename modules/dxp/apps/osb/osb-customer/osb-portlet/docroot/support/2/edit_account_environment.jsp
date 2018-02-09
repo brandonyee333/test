@@ -70,7 +70,7 @@
 				<portlet:param name="mvcPath" value="/support/2/edit_account_environment.jsp" />
 			</portlet:actionURL>
 
-			<aui:form action="<%= updateAccountEnvironmentURL %>" enctype="multipart/form-data" method="post" name="updateAccountEnvironmentFm">
+			<aui:form action="<%= updateAccountEnvironmentURL %>" cssClass="container-fluid-1280" enctype="multipart/form-data" method="post" name="updateAccountEnvironmentFm">
 				<aui:input name="accountEnvironmentId" type="hidden" value="<%= accountEnvironmentId %>" />
 				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
@@ -110,7 +110,7 @@
 
 							<aui:col width="<%= 50 %>">
 								<aui:select label="product" name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectProductEntry(this.value);" %>' required="<%= true %>">
-										<aui:option label="select" value="0" />
+										<aui:option label="select" value="" />
 
 										<%
 										LinkedHashMap params = new LinkedHashMap();
@@ -156,7 +156,7 @@
 
 								<aui:select label="lr" name="envLFR" onChange="<%= envLFROnChange.toString() %>" required="<%= true %>" title="liferay-version">
 									<c:if test="<%= productEntry != null %>">
-										<aui:option label="select" value="0" />
+										<aui:option label="select" />
 
 										<%
 										List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
@@ -192,7 +192,7 @@
 
 							<aui:col width="<%= 33 %>">
 								<aui:select label="os" name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>' required="<%= true %>" title="operating-system">
-									<aui:option value="0" />
+									<aui:option />
 								</aui:select>
 
 								<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= envOSCustom %>" />
@@ -200,7 +200,7 @@
 
 							<aui:col width="<%= 33 %>">
 								<aui:select label="jvm" name="envJVM" required="<%= true %>" title="java-virtual-machine">
-									<aui:option value="0" />
+									<aui:option />
 								</aui:select>
 							</aui:col>
 						</aui:row>
@@ -208,22 +208,20 @@
 						<aui:row>
 							<aui:col width="<%= 33 %>">
 								<aui:select label="as" name="envAS" required="<%= true %>" title="application-server">
-									<aui:option value="0" />
+									<aui:option />
 								</aui:select>
 							</aui:col>
 
 							<aui:col width="<%= 33 %>">
 								<aui:select label="db" name="envDB" required="<%= true %>" title="database">
-									<aui:option value="0" />
+									<aui:option />
 								</aui:select>
 							</aui:col>
 						</aui:row>
 
 						<aui:row>
 							<aui:col width="<%= 100 %>">
-								<aui:field-wrapper>
-									<aui:input label="portal-ext" name="portalExt" required="<%= true %>" type="file" value="upload" />
-
+								<div class="properties-file">
 									<%
 									AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = null;
 
@@ -231,6 +229,14 @@
 										portalExtAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironmentId, AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT);
 									}
 									%>
+
+									<aui:input label="portal-ext" name="portalExt" type="file" value="upload" wrapperCssClass="properties-file-input">
+										<aui:validator name="required">
+											function() {
+												return !<%= portalExtAccountEnvironmentAttachment != null %>;
+											}
+										</aui:validator>
+									</aui:input>
 
 									<c:if test="<%= portalExtAccountEnvironmentAttachment != null %>">
 
@@ -244,14 +250,13 @@
 
 										<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %>"  target="_blank" />
 									</c:if>
-								</aui:field-wrapper>
+								</div>
 							</aui:col>
 						</aui:row>
 
 						<aui:row>
 							<aui:col width="<%= 100 %>">
-								<aui:field-wrapper>
-									<aui:input label="patch-level" name="patchLevel" type="file" required="<%= true %>" value="upload" />
+								<div class="properties-file">
 
 									<%
 									AccountEnvironmentAttachment patchLevelAccountEnvironmentAttachment = null;
@@ -260,6 +265,14 @@
 										patchLevelAccountEnvironmentAttachment = AccountEnvironmentAttachmentLocalServiceUtil.fetchAccountEnvironmentAttachment(accountEnvironmentId, AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL);
 									}
 									%>
+
+									<aui:input label="patch-level" name="patchLevel" type="file" value="upload" wrapperCssClass="properties-file-input">
+										<aui:validator name="required">
+											function() {
+												return !<%= patchLevelAccountEnvironmentAttachment != null %>;
+											}
+										</aui:validator>
+									</aui:input>
 
 									<c:if test="<%= patchLevelAccountEnvironmentAttachment != null %>">
 
@@ -273,7 +286,7 @@
 
 										<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %>" target="_blank" />
 									</c:if>
-								</aui:field-wrapper>
+								</div>
 							</aui:col>
 						</aui:row>
 
@@ -353,35 +366,34 @@
 								if (envElement) {
 									envElement.empty();
 
-									envElement.setData('key', 0);
+									envElement.setData('key', '');
 								}
 							}
-
-							return;
 						}
+						else {
+							A.io.request(
+								'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="ticketEnvironment" />',
+								{
+									data: {
+										<portlet:namespace />envLFR: envLFR
+									},
+									dataType: 'JSON',
+									method: 'POST',
+									on: {
+										success: function() {
+											var response = this.get('responseData');
 
-						A.io.request(
-							'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="ticketEnvironment" />',
-							{
-								data: {
-									<portlet:namespace />envLFR: envLFR
-								},
-								dataType: 'JSON',
-								method: 'POST',
-								on: {
-									success: function() {
-										var response = this.get('responseData');
-
-										<portlet:namespace />updateEnvironmentField('<portlet:namespace />envAS', response['ENV_AS#key'], response['ENV_AS'], envAS, envASName);
-										<portlet:namespace />updateEnvironmentField('<portlet:namespace />envDB', response['ENV_DB#key'], response['ENV_DB'], envDB, envDBName);
-										<portlet:namespace />updateEnvironmentField('<portlet:namespace />envJVM', response['ENV_JVM#key'], response['ENV_JVM'], envJVM, envJVMName);
-										<portlet:namespace />updateEnvironmentField('<portlet:namespace />envOS', response['ENV_OS#key'], response['ENV_OS'], envOS, envOSName);
+											<portlet:namespace />updateEnvironmentField('<portlet:namespace />envAS', response['ENV_AS#key'], response['ENV_AS'], envAS, envASName);
+											<portlet:namespace />updateEnvironmentField('<portlet:namespace />envDB', response['ENV_DB#key'], response['ENV_DB'], envDB, envDBName);
+											<portlet:namespace />updateEnvironmentField('<portlet:namespace />envJVM', response['ENV_JVM#key'], response['ENV_JVM'], envJVM, envJVMName);
+											<portlet:namespace />updateEnvironmentField('<portlet:namespace />envOS', response['ENV_OS#key'], response['ENV_OS'], envOS, envOSName);
+										}
 									}
 								}
-							}
-						);
+							);
+						}
 					},
-					['aui-io-request']
+					['aui-io']
 				);
 
 				Liferay.provide(
@@ -390,7 +402,7 @@
 					function(offeringEntryId) {
 						var A = AUI();
 
-						if (offeringEntryId <= 0) {
+						if (offeringEntryId === 0) {
 							var envLFR = A.one('#<portlet:namespace />envLFR');
 
 							if (envLFR) {
@@ -398,31 +410,30 @@
 
 								envLFR.setData('key', '');
 							}
-
-							return;
 						}
+						else {
+							A.io.request(
+								'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="ticketEnvLFR" />',
+								{
+									data: {
+										<portlet:namespace />offeringEntryId: offeringEntryId
+									},
+									dataType: 'JSON',
+									method: 'POST',
+									on: {
+										success: function() {
+											var response = this.get('responseData');
 
-						A.io.request(
-							'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="ticketEnvLFR" />',
-							{
-								data: {
-									<portlet:namespace />offeringEntryId: offeringEntryId
-								},
-								dataType: 'JSON',
-								method: 'POST',
-								on: {
-									success: function() {
-										var response = this.get('responseData');
+											<portlet:namespace />toggleProduct(response.portal);
 
-										<portlet:namespace />toggleProduct(response.portal);
-
-										<portlet:namespace />updateTicketEnvLFR(response['ENV_LFR#key'], response['ENV_LFR']);
+											<portlet:namespace />updateTicketEnvLFR(response['ENV_LFR#key'], response['ENV_LFR']);
+										}
 									}
 								}
-							}
-						);
+							);
+						}
 					},
-					['aui-io-request']
+					['aui-io']
 				);
 
 				Liferay.provide(
@@ -432,92 +443,48 @@
 						var A = AUI();
 
 						var name = A.one('#<portlet:namespace />name');
+						var offeringEntryId = A.one('#<portlet:namespace />offeringEntryId');
 
-						if (name && (name.val().trim().length == 0)) {
-							alert('<liferay-ui:message key="please-provide-a-unique-environment-name" />');
+						if (name && offeringEntryId) {
+							var nameVal = name.val().trim();
+							var offeringEntryIdVal = offeringEntryId.val();
 
-							return <portlet:namespace />focusNode(name);
-						}
+							if (offeringEntryIdVal === 0) {
+								alert('<liferay-ui:message key="please-choose-a-product" />');
 
-						var offering = A.one('#<portlet:namespace />offeringEntryId');
-
-						if (offering && (offering.val() == 0)) {
-							alert('<liferay-ui:message key="please-choose-a-product" />');
-
-							return <portlet:namespace />focusNode(offering);
-						}
-
-						var envLFR = A.one('#<portlet:namespace />envLFR');
-
-						if (envLFR) {
-							if (envLFR.val() == 0) {
-								alert('<liferay-ui:message key="please-choose-a-liferay-portal-version" />');
-
-								return <portlet:namespace />focusNode(envLFR);
+								return <portlet:namespace />focusNode(offeringEntryId);
 							}
 
-							var envAS = A.one('#<portlet:namespace />envAS');
+							A.io.request(
+								'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="accountEnvironment" />',
+								{
+									data: {
+										<portlet:namespace />accountEntryId: <%= accountEntryId %>,
+										<portlet:namespace />accountEnvironmentId: <%= accountEnvironmentId %>,
+										<portlet:namespace />name: nameVal,
+										<portlet:namespace />offeringEntryId: offeringEntryIdVal
+									},
+									dataType: 'JSON',
+									method: 'POST',
+									on: {
+										success: function() {
+											var response = this.get('responseData');
 
-							if (envAS && (envAS.val() == 0)) {
-								alert('<liferay-ui:message key="please-choose-an-application-server" />');
+											if (response && response.exists == 'true') {
+												alert('<liferay-ui:message key="please-provide-a-unique-environment-name" />');
 
-								return <portlet:namespace />focusNode(envLFR);
-							}
-
-							var envDB = A.one('#<portlet:namespace />envDB');
-
-							if (envDB && (envDB.val() == 0)) {
-								alert('<liferay-ui:message key="please-choose-a-database" />');
-
-								return <portlet:namespace />focusNode(envLFR);
-							}
-
-							var envJVM = A.one('#<portlet:namespace />envJVM');
-
-							if (envJVM && (envJVM.val() == 0)) {
-								alert('<liferay-ui:message key="please-choose-a-java-virtual-machine" />');
-
-								return <portlet:namespace />focusNode(envLFR);
-							}
-
-							var envOS = A.one('#<portlet:namespace />envOS');
-
-							if (envOS && (envOS.val() == 0)) {
-								alert('<liferay-ui:message key="please-choose-an-operating-system" />');
-
-								return <portlet:namespace />focusNode(envLFR);
-							}
-						}
-
-						A.io.request(
-							'<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="accountEnvironment" />',
-							{
-								data: {
-									<portlet:namespace />accountEntryId: <%= accountEntryId %>,
-									<portlet:namespace />accountEnvironmentId: <%= accountEnvironmentId %>,
-									<portlet:namespace />name: name.val().trim(),
-									<portlet:namespace />offeringEntryId: offering.val()
-								},
-								dataType: 'JSON',
-								method: 'POST',
-								on: {
-									success: function() {
-										var response = this.get('responseData');
-
-										if (response && (response.exists == 'true')) {
-											alert('<liferay-ui:message key="please-provide-a-unique-environment-name" />');
-
-											name.focus();
-										}
-										else {
-											submitForm(document.<portlet:namespace />updateAccountEnvironmentFm);
+												Liferay.Util.focusFormField(name)
+											}
+											else {
+												submitForm(document.<portlet:namespace />updateAccountEnvironmentFm);
+											}
 										}
 									}
 								}
-							}
-						);
+							);
+						}
 					},
-					['aui-io-request']
+					['aui-io']
 				);
 
 				Liferay.provide(
@@ -533,7 +500,7 @@
 
 							var selectOptions = [];
 
-							selectOptions.push('<option value="0"></option>');
+							selectOptions.push('<option></option>');
 
 							var selectValExists = false;
 
@@ -614,7 +581,7 @@
 
 							var envLFROptions = [];
 
-							envLFROptions.push('<option value="0"><liferay-ui:message key="select" /></option>');
+							envLFROptions.push('<option><liferay-ui:message key="select" /></option>');
 
 							if (envLFRData) {
 								var previousNamePrefix = '';
