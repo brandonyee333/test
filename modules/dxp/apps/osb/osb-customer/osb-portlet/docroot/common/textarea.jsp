@@ -118,8 +118,8 @@ if (Validator.isNotNull(textInputHandler)) {
 String textareaEventHandlers = StringUtil.trim(sb.toString());
 %>
 
-<div class="common-textarea">
-	<textarea id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(editorId) %>" <%= fieldRequiredSB.toString() %> name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(name) %>" <%= textareaEventHandlers %> style="<%= (height > 0) ? ("height: " + height + "px;") : "" %>" wrap="soft"><%= HtmlUtil.escape(content) %></textarea>
+<div class="common-textarea form-group">
+	<textarea class="form-control" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(editorId) %>" <%= fieldRequiredSB.toString() %> name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(name) %>" <%= textareaEventHandlers %> style="<%= (height > 0) ? ("height: " + height + "px;") : "" %>" wrap="soft"><%= HtmlUtil.escape(content) %></textarea>
 
 	<c:if test="<%= showCounter %>">
 		<div class="pull-right">
