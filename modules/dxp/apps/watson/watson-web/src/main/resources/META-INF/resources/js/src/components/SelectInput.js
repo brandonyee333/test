@@ -1,4 +1,4 @@
-import {bindAll} from 'lodash';
+import {bindAll, isEmpty} from 'lodash';
 import bridge from 'metal-react';
 import JSXComponent, {Config} from 'metal-jsx';
 import Select from 'react-select';
@@ -11,6 +11,26 @@ class SelectInput extends JSXComponent {
 			this,
 			'handleOnChange'
 		);
+	}
+
+	_formatOptions(options, renderedOptions, sortOptions) {
+		for (const entry in options) {
+			if (options.hasOwnProperty(entry)) {
+				const {label, value} = options[entry];
+				renderedOptions.push(
+					{
+						label,
+						value: value || entry
+					}
+				);
+			}
+
+			if (sortOptions) {
+				renderedOptions.sort((a, b) => a.label.localeCompare(b.label));
+			}
+		}
+
+		return renderedOptions;
 	}
 
 	handleOnChange(option) {
@@ -34,7 +54,7 @@ class SelectInput extends JSXComponent {
 			value = ''
 		} = this.props;
 
-		const renderedOptions = [];
+		let renderedOptions = [];
 
 		if (!omitBlankOption) {
 			renderedOptions.push(
@@ -45,24 +65,7 @@ class SelectInput extends JSXComponent {
 			);
 		}
 
-		if (options) {
-			for (const entry in options) {
-				if (options.hasOwnProperty(entry)) {
-					const {label, value} = options[entry];
-
-					renderedOptions.push(
-						{
-							label,
-							value: value || entry
-						}
-					);
-				}
-			}
-
-			if (sortOptions) {
-				renderedOptions.sort((a, b) => a.label.localeCompare(b.label));
-			}
-		}
+		renderedOptions = isEmpty(options) ? renderedOptions : this._formatOptions(options, renderedOptions, sortOptions);
 
 		return (
 			<div class={`select-wrapper ${cssClassName}`}>
