@@ -152,7 +152,7 @@ function formatChildData(watsonChildren, keysToOmit, onClick, selectedIds, simpl
 					onClick,
 					reportedBy: watsonChild.get('reportedBy'),
 					reportedDate: watsonChild.get('reportDate'),
-					rowContent: formatPersonRowContent(watsonChild),
+					rowContent: formatChildRowContent(watsonChild),
 					subHeader: getOptionsLabelFromWatsonConstants('children', 'typeWatsonListTypeId', watsonChild.get('typeWatsonListTypeId'))
 				};
 			}
@@ -160,6 +160,17 @@ function formatChildData(watsonChildren, keysToOmit, onClick, selectedIds, simpl
 	}
 
 	return formattedData;
+}
+
+function formatChildRowContent(watsonChild) {
+	const childDetails = [];
+
+	const unknownLabel = Liferay.Language.get('unknown');
+
+	childDetails.push(sub(Liferay.Language.get('country-of-ethnicity-x'), watsonChild.get('country') || unknownLabel));
+	childDetails.push(sub(Liferay.Language.get('date-of-entry-x'), watsonChild.get('dateAccepted') || unknownLabel));
+
+	return childDetails;
 }
 
 function formatDocumentsData(watsonDocuments, keysToOmit, onClick, selectedIds, simple) {
