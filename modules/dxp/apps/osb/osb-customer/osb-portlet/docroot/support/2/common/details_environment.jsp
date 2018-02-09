@@ -378,6 +378,7 @@ if (productEntry != null) {
 
 		<c:if test="<%= edit %>">
 			<aui:input name="name" type="hidden" value='<%= (accountEnvironment != null) ? accountEnvironment.getName() : "" %>' />
+
 			<aui:input name="productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
 
 			<div class="create-env-button">
