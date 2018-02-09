@@ -16,10 +16,10 @@ package com.liferay.osb.customer.rabbitmq.connector.internal.consumer;
 
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessorRegistryUtil;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessagePropertyKeys;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 
 import com.rabbitmq.client.AMQP;
@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,12 +39,10 @@ import java.util.Map;
  */
 public class OSBConsumer extends DefaultConsumer implements Consumer {
 
-	public OSBConsumer(Channel channel, MessageProcessor messageProcessor)
-		throws Exception {
-
+	public OSBConsumer(Channel channel, String queue) throws Exception {
 		super(channel);
 
-		_messageProcessor = messageProcessor;
+		_queue = queue;
 	}
 
 	@Override
@@ -71,37 +70,16 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 		}
 
 		try {
-			Map<String, Object> translatedProperties = translate(properties);
+			processMessage(
+				envelope.getRoutingKey(), message, translate(properties));
 
-			if (_log.isDebugEnabled()) {
-				_log.debug("Message: " + message);
-				_log.debug(
-					"Properties: " + MapUtil.toString(translatedProperties));
-			}
-
-			int response = _messageProcessor.process(
-				envelope.getRoutingKey(), message, translatedProperties);
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Received response " + response);
-			}
-
-			if (response == MessageProcessor.RESPONSE_ACK) {
-				basicAck(envelope);
-
-				return;
-			}
-			else if (response == MessageProcessor.RESPONSE_REJECT) {
-				basicReject(envelope);
-
-				return;
-			}
+			basicAck(envelope);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
-		}
 
-		basicRepublish(envelope, properties, body);
+			basicReject(envelope);
+		}
 	}
 
 	protected void basicAck(Envelope envelope) {
@@ -126,35 +104,20 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 		}
 	}
 
-	protected void basicRepublish(
-		Envelope envelope, AMQP.BasicProperties properties, byte[] body) {
+	protected void processMessage(
+		String routingKey, String message, Map<String, Object> properties) {
 
-		Channel channel = getChannel();
-
-		try {
-			Map<String, Object> headers = properties.getHeaders();
-
-			if (headers == null) {
-				headers = new HashMap<>();
-			}
-
-			int republishCount = GetterUtil.getInteger(
-				headers.get("republishCount"));
-
-			headers.put("republishCount", republishCount + 1);
-
-			AMQP.BasicProperties.Builder builder = properties.builder();
-
-			builder.headers(headers);
-
-			channel.basicPublish(
-				envelope.getExchange(), envelope.getRoutingKey(), properties,
-				body);
-
-			channel.basicAck(envelope.getDeliveryTag(), false);
+		if (_log.isDebugEnabled()) {
+			_log.debug("Message: " + message);
+			_log.debug("Properties: " + MapUtil.toString(properties));
 		}
-		catch (IOException ioe) {
-			_log.error(ioe, ioe);
+
+		List<MessageProcessor> messageProcessors =
+			MessageProcessorRegistryUtil.getMessageProcessors(
+				_queue, routingKey);
+
+		for (MessageProcessor messageProcessor : messageProcessors) {
+			messageProcessor.process(routingKey, message, properties);
 		}
 	}
 
@@ -202,6 +165,6 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 
 	private static Log _log = LogFactoryUtil.getLog(OSBConsumer.class);
 
-	private final MessageProcessor _messageProcessor;
+	private final String _queue;
 
 }

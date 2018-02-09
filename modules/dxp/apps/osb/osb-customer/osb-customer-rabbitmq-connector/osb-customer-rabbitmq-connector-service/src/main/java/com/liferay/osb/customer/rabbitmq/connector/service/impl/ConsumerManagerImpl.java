@@ -17,6 +17,7 @@ package com.liferay.osb.customer.rabbitmq.connector.service.impl;
 import com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues;
 import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
+import com.liferay.osb.customer.rabbitmq.connector.exception.DuplicateConsumerException;
 import com.liferay.osb.customer.rabbitmq.connector.internal.consumer.OSBConsumer;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
@@ -39,21 +40,17 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true)
 public class ConsumerManagerImpl implements ConsumerManager {
 
-	public void addConsumer(MessageProcessor messageProcessor)
-		throws Exception {
-
-		if (_consumers.containsKey(messageProcessor)) {
-			return;
+	public void addConsumer(String queue) throws Exception {
+		if (_consumers.containsKey(queue)) {
+			throw new DuplicateConsumerException();
 		}
 
-		Consumer consumer = createConsumer(messageProcessor);
+		Consumer consumer = createConsumer(queue);
 
-		_consumers.put(messageProcessor, consumer);
+		_consumers.put(queue, consumer);
 
 		if (_log.isInfoEnabled()) {
-			Class<?> clazz = messageProcessor.getClass();
-
-			_log.info("Registered " + clazz.getName());
+			_log.info("Registered consumer on " + queue);
 		}
 	}
 
@@ -62,17 +59,14 @@ public class ConsumerManagerImpl implements ConsumerManager {
 			return;
 		}
 
-		for (Map.Entry<MessageProcessor, Consumer> entry :
-				_consumers.entrySet()) {
-
+		for (Map.Entry<String, Consumer> entry : _consumers.entrySet()) {
 			try {
-				MessageProcessor messageProcessor = entry.getKey();
+				String queue = entry.getKey();
 				Consumer consumer = entry.getValue();
 
 				Channel channel = consumer.getChannel();
 
-				GetResponse getResponse = channel.basicGet(
-					messageProcessor.getQueue(), false);
+				GetResponse getResponse = channel.basicGet(queue, false);
 
 				consumer.handleDelivery(
 					null, getResponse.getEnvelope(), getResponse.getProps(),
@@ -85,7 +79,8 @@ public class ConsumerManagerImpl implements ConsumerManager {
 	}
 
 	public void consumeMessages(
-			MessageProcessor messageProcessor, long messageCount)
+			String queue, long messageCount,
+			final MessageProcessor messageProcessor)
 		throws Exception {
 
 		Channel channel = null;
@@ -94,21 +89,29 @@ public class ConsumerManagerImpl implements ConsumerManager {
 			channel = _connectionManager.createChannel();
 
 			if (messageCount <= 0) {
-				messageCount = channel.messageCount(
-					messageProcessor.getQueue());
+				messageCount = channel.messageCount(queue);
 			}
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Consuming " + messageCount + " messages on " +
-						messageProcessor.getQueue());
+					"Consuming " + messageCount + " messages on " + queue);
 			}
 
 			for (int i = 0; i < messageCount; i++) {
-				Consumer consumer = new OSBConsumer(channel, messageProcessor);
+				Consumer consumer = new OSBConsumer(channel, queue) {
 
-				GetResponse getResponse = channel.basicGet(
-					messageProcessor.getQueue(), false);
+					@Override
+					protected void processMessage(
+						String routingKey, String message,
+						Map<String, Object> properties) {
+
+						messageProcessor.process(
+							routingKey, message, properties);
+					}
+
+				};
+
+				GetResponse getResponse = channel.basicGet(queue, false);
 
 				if (getResponse == null) {
 					break;
@@ -126,8 +129,8 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		}
 	}
 
-	public void deleteConsumer(MessageProcessor messageProcessor) {
-		Consumer consumer = _consumers.remove(messageProcessor);
+	public void deleteConsumer(String queue) {
+		Consumer consumer = _consumers.remove(queue);
 
 		if (consumer == null) {
 			return;
@@ -136,33 +139,27 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		closeChannel(consumer.getChannel());
 
 		if (_log.isInfoEnabled()) {
-			Class<?> clazz = messageProcessor.getClass();
-
-			_log.info("Unregistered " + clazz.getName());
+			_log.info("Unregistered consumer on " + queue);
 		}
 	}
 
-	public Consumer getConsumer(MessageProcessor messageProcessor) {
-		return _consumers.get(messageProcessor);
+	public Consumer getConsumer(String queue) {
+		return _consumers.get(queue);
 	}
 
 	public void resetChannels() throws Exception {
-		for (Map.Entry<MessageProcessor, Consumer> entry :
-				_consumers.entrySet()) {
-
-			MessageProcessor messageProcessor = entry.getKey();
+		for (Map.Entry<String, Consumer> entry : _consumers.entrySet()) {
+			String queue = entry.getKey();
 			Consumer consumer = entry.getValue();
 
 			closeChannel(consumer.getChannel());
 
-			Consumer newConsumer = createConsumer(messageProcessor);
+			Consumer newConsumer = createConsumer(queue);
 
 			entry.setValue(newConsumer);
 
 			if (_log.isInfoEnabled()) {
-				Class<?> clazz = messageProcessor.getClass();
-
-				_log.info("Reset channel for " + clazz.getName());
+				_log.info("Reset channel for " + queue);
 			}
 		}
 	}
@@ -182,16 +179,13 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		}
 	}
 
-	protected Consumer createConsumer(MessageProcessor messageProcessor)
-		throws Exception {
+	protected Consumer createConsumer(String queue) throws Exception {
+		Channel channel = _connectionManager.createChannel();
 
-		Channel channel = _connectionManager.createChannel(
-			messageProcessor.getPrefetchCount());
-
-		Consumer consumer = new OSBConsumer(channel, messageProcessor);
+		Consumer consumer = new OSBConsumer(channel, queue);
 
 		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
-			channel.basicConsume(messageProcessor.getQueue(), false, consumer);
+			channel.basicConsume(queue, false, consumer);
 		}
 
 		return consumer;
@@ -203,7 +197,6 @@ public class ConsumerManagerImpl implements ConsumerManager {
 	@Reference
 	private ConnectionManager _connectionManager;
 
-	private final Map<MessageProcessor, Consumer> _consumers =
-		new ConcurrentHashMap<>();
+	private final Map<String, Consumer> _consumers = new ConcurrentHashMap<>();
 
 }

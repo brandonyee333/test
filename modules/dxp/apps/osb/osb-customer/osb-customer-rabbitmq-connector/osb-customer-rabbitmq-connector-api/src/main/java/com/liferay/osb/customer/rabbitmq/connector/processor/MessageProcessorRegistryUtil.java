@@ -16,6 +16,7 @@ package com.liferay.osb.customer.rabbitmq.connector.processor;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.util.tracker.ServiceTracker;
@@ -25,30 +26,22 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class MessageProcessorRegistryUtil {
 
-	public static void activateMessageProcessor(String messageProcessorKey)
-		throws Exception {
+	public static List<MessageProcessor> getMessageProcessors(
+		String queue, String routingKey) {
 
 		MessageProcessorRegistry messageProcessorRegistry =
 			_serviceTracker.getService();
 
-		messageProcessorRegistry.activateMessageProcessor(messageProcessorKey);
+		return messageProcessorRegistry.getMessageProcessors(queue, routingKey);
 	}
 
-	public static void deactivateMessageProcessor(String messageProcessorKey)
-		throws Exception {
+	public static Map<String, List<MessageProcessor>>
+		getMessageProcessorsMap() {
 
 		MessageProcessorRegistry messageProcessorRegistry =
 			_serviceTracker.getService();
 
-		messageProcessorRegistry.deactivateMessageProcessor(
-			messageProcessorKey);
-	}
-
-	public static Map<String, MessageProcessor> getMessageProcessors() {
-		MessageProcessorRegistry messageProcessorRegistry =
-			_serviceTracker.getService();
-
-		return messageProcessorRegistry.getMessageProcessors();
+		return messageProcessorRegistry.getMessageProcessorsMap();
 	}
 
 	private static final

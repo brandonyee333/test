@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.processor;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,12 +22,9 @@ import java.util.Map;
  */
 public interface MessageProcessorRegistry {
 
-	public void activateMessageProcessor(String messageProcessorKey)
-		throws Exception;
+	public List<MessageProcessor> getMessageProcessors(
+		String queue, String routingKey);
 
-	public void deactivateMessageProcessor(String messageProcessorKey)
-		throws Exception;
-
-	public Map<String, MessageProcessor> getMessageProcessors();
+	public Map<String, List<MessageProcessor>> getMessageProcessorsMap();
 
 }

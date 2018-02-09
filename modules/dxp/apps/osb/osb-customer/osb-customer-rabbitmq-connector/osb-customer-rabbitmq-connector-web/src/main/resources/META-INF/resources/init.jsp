@@ -35,7 +35,8 @@ page import="com.liferay.portal.kernel.util.PortalUtil" %>
 
 <%@ page import="com.rabbitmq.client.Channel" %>
 
-<%@ page import="java.util.Map" %>
+<%@ page import="java.util.List" %><%@
+page import="java.util.Map" %>
 
 <%@ page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>

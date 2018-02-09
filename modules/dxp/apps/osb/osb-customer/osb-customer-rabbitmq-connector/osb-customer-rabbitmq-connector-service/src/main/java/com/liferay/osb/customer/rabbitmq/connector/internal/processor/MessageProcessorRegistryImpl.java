@@ -19,9 +19,10 @@ import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessorReg
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,26 +38,46 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 @Component(immediate = true, service = MessageProcessorRegistry.class)
 public class MessageProcessorRegistryImpl implements MessageProcessorRegistry {
 
-	public void activateMessageProcessor(String messageProcessorKey)
-		throws Exception {
+	@Override
+	public List<MessageProcessor> getMessageProcessors(
+		String queue, String routingKey) {
 
-		MessageProcessor messageProcessor = _messageProcessors.get(
-			messageProcessorKey);
+		String cacheKey = queue + StringPool.POUND + routingKey;
 
-		_consumerManager.addConsumer(messageProcessor);
+		List<MessageProcessor> messageProcessors =
+			_messageProcessorsFinderCache.get(cacheKey);
+
+		if (messageProcessors != null) {
+			return messageProcessors;
+		}
+
+		messageProcessors = new ArrayList<>();
+
+		List<MessageProcessor> queueMessageProcessors =
+			_messageProcessorsMap.get(queue);
+
+		for (MessageProcessor messageProcessor : queueMessageProcessors) {
+			String[] routingKeys = messageProcessor.getRoutingKeys();
+
+			for (String curRoutingKey : routingKeys) {
+				if (curRoutingKey.equals(routingKey) ||
+					curRoutingKey.equals(StringPool.STAR)) {
+
+					messageProcessors.add(messageProcessor);
+
+					break;
+				}
+			}
+		}
+
+		_messageProcessorsFinderCache.put(cacheKey, messageProcessors);
+
+		return messageProcessors;
 	}
 
-	public void deactivateMessageProcessor(String messageProcessorKey)
-		throws Exception {
-
-		MessageProcessor messageProcessor = _messageProcessors.get(
-			messageProcessorKey);
-
-		_consumerManager.deleteConsumer(messageProcessor);
-	}
-
-	public Map<String, MessageProcessor> getMessageProcessors() {
-		return _messageProcessors;
+	@Override
+	public Map<String, List<MessageProcessor>> getMessageProcessorsMap() {
+		return _messageProcessorsMap;
 	}
 
 	@Reference(
@@ -65,31 +86,44 @@ public class MessageProcessorRegistryImpl implements MessageProcessorRegistry {
 		policyOption = ReferencePolicyOption.GREEDY,
 		unbind = "unregisterMessageProcessor"
 	)
-	protected void registerMessageProcessor(MessageProcessor messageProcessor)
+	protected synchronized void registerMessageProcessor(
+			MessageProcessor messageProcessor)
 		throws Exception {
 
-		_consumerManager.addConsumer(messageProcessor);
+		_consumerManager.addConsumer(messageProcessor.getQueue());
 
-		_messageProcessors.put(PortalUUIDUtil.generate(), messageProcessor);
-	}
+		List<MessageProcessor> messageProcessors = _messageProcessorsMap.get(
+			messageProcessor.getQueue());
 
-	protected void unregisterMessageProcessor(
-		MessageProcessor messageProcessor) {
+		if (messageProcessors == null) {
+			messageProcessors = new ArrayList<>();
 
-		Collection<MessageProcessor> messageProcessors =
-			_messageProcessors.values();
-
-		if (!messageProcessors.remove(messageProcessor)) {
-			if (_log.isInfoEnabled()) {
-				Class<?> clazz = messageProcessor.getClass();
-
-				_log.info("No message processor exists for " + clazz.getName());
-			}
-
-			return;
+			_messageProcessorsMap.put(
+				messageProcessor.getQueue(), messageProcessors);
 		}
 
-		_consumerManager.deleteConsumer(messageProcessor);
+		messageProcessors.add(messageProcessor);
+
+		_messageProcessorsFinderCache.clear();
+	}
+
+	protected synchronized void unregisterMessageProcessor(
+		MessageProcessor messageProcessor) {
+
+		List<MessageProcessor> messageProcessors = _messageProcessorsMap.get(
+			messageProcessor.getQueue());
+
+		if (messageProcessors != null) {
+			messageProcessors.remove(messageProcessor);
+
+			if (messageProcessors.isEmpty()) {
+				_messageProcessorsMap.remove(messageProcessor.getQueue());
+
+				_consumerManager.deleteConsumer(messageProcessor.getQueue());
+			}
+		}
+
+		_messageProcessorsFinderCache.clear();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -98,7 +132,9 @@ public class MessageProcessorRegistryImpl implements MessageProcessorRegistry {
 	@Reference
 	private ConsumerManager _consumerManager;
 
-	private final Map<String, MessageProcessor> _messageProcessors =
+	private final Map<String, List<MessageProcessor>>
+		_messageProcessorsFinderCache = new ConcurrentHashMap<>();
+	private final Map<String, List<MessageProcessor>> _messageProcessorsMap =
 		new ConcurrentHashMap<>();
 
 }

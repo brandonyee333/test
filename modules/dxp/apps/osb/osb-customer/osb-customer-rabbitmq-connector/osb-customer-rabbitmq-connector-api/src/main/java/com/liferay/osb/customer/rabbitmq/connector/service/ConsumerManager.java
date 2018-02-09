@@ -23,17 +23,17 @@ import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
  */
 public interface ConsumerManager {
 
-	public void addConsumer(MessageProcessor messageProcessor) throws Exception;
+	public void addConsumer(String queue) throws Exception;
 
 	public void consumeMessage();
 
 	public void consumeMessages(
-			MessageProcessor messageProcessor, long messageCount)
+			String queue, long messageCount, MessageProcessor messageProcessor)
 		throws Exception;
 
-	public void deleteConsumer(MessageProcessor messageProcessor);
+	public void deleteConsumer(String queue);
 
-	public Consumer getConsumer(MessageProcessor messageProcessor);
+	public Consumer getConsumer(String queue);
 
 	public void resetChannels() throws Exception;
 

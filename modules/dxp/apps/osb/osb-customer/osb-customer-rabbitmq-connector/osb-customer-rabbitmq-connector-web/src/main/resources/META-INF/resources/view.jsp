@@ -104,47 +104,60 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 			</liferay-frontend:management-bar>
 
 			<%
-			Map<String, MessageProcessor> messageProcessors = MessageProcessorRegistryUtil.getMessageProcessors();
+			Map<String, List<MessageProcessor>> messageProcessorsMap = MessageProcessorRegistryUtil.getMessageProcessorsMap();
 			%>
 
 			<liferay-ui:search-container
 				emptyResultsMessage="there-are-no-processors"
 				emptyResultsMessageCssClass="taglib-empty-result-message-header"
 				headerNames="class,queue,channel,active"
-				total="<%= messageProcessors.size() %>"
+				total="<%= messageProcessorsMap.size() %>"
 			>
 				<liferay-ui:search-container-results
-					results="<%= ListUtil.fromCollection(messageProcessors.entrySet()) %>"
+					results="<%= ListUtil.fromCollection(messageProcessorsMap.entrySet()) %>"
 				/>
 
 				<liferay-ui:search-container-row
 					className="java.util.Map.Entry"
-					modelVar="processorEntry"
+					modelVar="messageProcessorsEntry"
 				>
 
 					<%
-					MessageProcessor messageProcessor = (MessageProcessor)processorEntry.getValue();
+					String queue = (String)messageProcessorsEntry.getKey();
+					List<MessageProcessor> messageProcessors = (List<MessageProcessor>)messageProcessorsEntry.getValue();
 
 					Channel channel = null;
 
-					Consumer consumer = ConsumerManagerUtil.getConsumer(messageProcessor);
+					Consumer consumer = ConsumerManagerUtil.getConsumer(queue);
 
 					if (consumer != null) {
 						channel = consumer.getChannel();
 					}
-
-					Class<?> messageProcessorClass = messageProcessor.getClass();
 					%>
 
 					<liferay-ui:search-container-column-text
-						name="class"
-						value="<%= messageProcessorClass.getName() %>"
+						name="queue"
+						value="<%= queue %>"
 					/>
 
 					<liferay-ui:search-container-column-text
-						name="queue"
-						value="<%= messageProcessor.getQueue() %>"
-					/>
+						name="processors"
+					>
+
+						<%
+						for (MessageProcessor messageProcessor : messageProcessors) {
+							Class<?> messageProcessorClass = messageProcessor.getClass();
+						%>
+
+							<%= messageProcessorClass.getName() %>
+
+							<br />
+
+						<%
+						}
+						%>
+
+					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text
 						name="channel"
@@ -163,24 +176,24 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 						<liferay-ui:icon-menu>
 							<c:choose>
 								<c:when test="<%= (channel != null) && channel.isOpen() %>">
-									<portlet:actionURL name="deactivateMessageProcessor" var="deactivateMessageProcessorURL">
+									<portlet:actionURL name="deactivateConsumer" var="deactivateConsumerURL">
 										<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-										<portlet:param name="messageProcessorKey" value="<%= (String)processorEntry.getKey() %>" />
+										<portlet:param name="queue" value="<%= queue %>" />
 									</portlet:actionURL>
 
 									<liferay-ui:icon-deactivate
-										url="<%= deactivateMessageProcessorURL %>"
+										url="<%= deactivateConsumerURL %>"
 									/>
 								</c:when>
 								<c:otherwise>
-									<portlet:actionURL name="activateMessageProcessor" var="activateMessageProcessorURL">
+									<portlet:actionURL name="activateConsumer" var="activateConsumerURL">
 										<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-										<portlet:param name="messageProcessorKey" value="<%= (String)processorEntry.getKey() %>" />
+										<portlet:param name="queue" value="<%= queue %>" />
 									</portlet:actionURL>
 
 									<liferay-ui:icon
 										image="activate"
-										url="<%= activateMessageProcessorURL %>"
+										url="<%= activateConsumerURL %>"
 									/>
 								</c:otherwise>
 							</c:choose>

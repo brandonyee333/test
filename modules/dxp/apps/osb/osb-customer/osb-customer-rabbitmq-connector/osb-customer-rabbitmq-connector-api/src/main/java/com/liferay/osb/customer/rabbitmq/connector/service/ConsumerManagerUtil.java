@@ -26,10 +26,8 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class ConsumerManagerUtil {
 
-	public static void addConsumer(MessageProcessor messageProcessor)
-		throws Exception {
-
-		getService().addConsumer(messageProcessor);
+	public static void addConsumer(String queue) throws Exception {
+		getService().addConsumer(queue);
 	}
 
 	public static void consumeMessage() {
@@ -37,18 +35,18 @@ public class ConsumerManagerUtil {
 	}
 
 	public static void consumeMessages(
-			MessageProcessor messageProcessor, long messageCount)
+			String queue, long messageCount, MessageProcessor messageProcessor)
 		throws Exception {
 
-		getService().consumeMessages(messageProcessor, messageCount);
+		getService().consumeMessages(queue, messageCount, messageProcessor);
 	}
 
-	public static void deleteConsumer(MessageProcessor messageProcessor) {
-		getService().deleteConsumer(messageProcessor);
+	public static void deleteConsumer(String queue) {
+		getService().deleteConsumer(queue);
 	}
 
-	public static Consumer getConsumer(MessageProcessor messageProcessor) {
-		return getService().getConsumer(messageProcessor);
+	public static Consumer getConsumer(String queue) {
+		return getService().getConsumer(queue);
 	}
 
 	public static ConsumerManager getService() {

@@ -12,17 +12,28 @@
  * details.
  */
 
-package com.liferay.osb.customer.rabbitmq.parsers;
+package com.liferay.osb.customer.rabbitmq.connector.exception;
+
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Amos Fong
  */
-public interface MessageParser {
+public class DuplicateConsumerException extends PortalException {
 
-	public static final String FIELD_NAME = "name";
+	public DuplicateConsumerException() {
+	}
 
-	public static final String FIELD_UUID = "uuid";
+	public DuplicateConsumerException(String msg) {
+		super(msg);
+	}
 
-	public void parse(String message);
+	public DuplicateConsumerException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public DuplicateConsumerException(Throwable cause) {
+		super(cause);
+	}
 
 }

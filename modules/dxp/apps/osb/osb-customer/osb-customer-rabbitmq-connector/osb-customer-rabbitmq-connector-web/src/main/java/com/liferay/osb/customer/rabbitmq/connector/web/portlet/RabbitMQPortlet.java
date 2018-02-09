@@ -54,14 +54,13 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class RabbitMQPortlet extends MVCPortlet {
 
-	public void activateMessageProcessor(
+	public void activateConsumer(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String messageProcessorKey = ParamUtil.getString(
-			actionRequest, "messageProcessorKey");
+		String queue = ParamUtil.getString(actionRequest, "queue");
 
-		_messageProcessorRegistry.activateMessageProcessor(messageProcessorKey);
+		_consumerManager.addConsumer(queue);
 
 		/*MessageValuesThreadLocal.setValue(
 			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);
@@ -82,15 +81,13 @@ public class RabbitMQPortlet extends MVCPortlet {
 		_consumerManager.consumeMessage();
 	}
 
-	public void deactivateMessageProcessor(
+	public void deactivateConsumer(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String messageProcessorKey = ParamUtil.getString(
-			actionRequest, "messageProcessorKey");
+		String queue = ParamUtil.getString(actionRequest, "queue");
 
-		_messageProcessorRegistry.deactivateMessageProcessor(
-			messageProcessorKey);
+		_consumerManager.deleteConsumer(queue);
 
 		/*MessageValuesThreadLocal.setValue(
 			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);

@@ -21,20 +21,11 @@ import java.util.Map;
  */
 public interface MessageProcessor {
 
-	public static final int RESPONSE_ACK = 1;
-
-	public static final int RESPONSE_REJECT = 2;
-
-	public static final int RESPONSE_REPUBLISH = 3;
-
-	public static final int[] RESPONSES =
-		{RESPONSE_ACK, RESPONSE_REJECT, RESPONSE_REPUBLISH};
-
-	public int getPrefetchCount();
-
 	public String getQueue();
 
-	public int process(
+	public String[] getRoutingKeys();
+
+	public void process(
 		String routingKey, String message, Map<String, Object> properties);
 
 }

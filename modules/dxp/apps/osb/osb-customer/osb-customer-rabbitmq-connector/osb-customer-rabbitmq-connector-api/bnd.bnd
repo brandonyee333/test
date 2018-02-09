@@ -4,5 +4,6 @@ Bundle-Version: 1.0.0
 Export-Package:\
 	com.liferay.osb.customer.rabbitmq.connector.connection,\
 	com.liferay.osb.customer.rabbitmq.connector.consumer,\
+	com.liferay.osb.customer.rabbitmq.connector.exception,\
 	com.liferay.osb.customer.rabbitmq.connector.processor,\
 	com.liferay.osb.customer.rabbitmq.connector.service
