@@ -528,6 +528,12 @@
 				envOSCustom = envOSCustom.val();
 			}
 
+			var nameNode = A.one('#<portlet:namespace />name');
+
+			if (nameNode) {
+				nameNode.val(name);
+			}
+
 			var patchLevel = null;
 			var portalExt = null;
 
@@ -580,10 +586,23 @@
 									selectOptions.add(option);
 									selectOptions.selectedIndex = selectOptions.length - 1;
 
-									document.getElementById('<portlet:namespace />name').value = name;
+									var nameNode = A.one('#<portlet:namespace />nameNode');
 
-									createButton.hide();
-									updateButton.show();
+									if (nameNode) {
+										nameNode.val(name);
+									}
+
+									var createButton = A.one('#<portlet:namespace />createEnvironment');
+
+									if (createButton) {
+										createButton.hide();
+									}
+
+									var updateButton = A.one('#<portlet:namespace />updateEnvironment');
+
+									if (updateButton) {
+										updateButton.show();
+									}
 								}
 							}
 						}
@@ -591,7 +610,7 @@
 				);
 			}
 		},
-		['aui-io-request-deprecated']
+		['aui-io']
 	);
 
 	Liferay.provide(
@@ -666,7 +685,7 @@
 								if (response.duplicateEnvironmentName) {
 									<portlet:namespace />updateAccountEnvironment(-3, name);
 								}
-								else {
+								else if (name) {
 									if (name == '') {
 										<portlet:namespace />updateAccountEnvironment(-1, name);
 									}
