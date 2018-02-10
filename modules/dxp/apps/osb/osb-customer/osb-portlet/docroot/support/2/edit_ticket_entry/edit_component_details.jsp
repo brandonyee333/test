@@ -42,177 +42,141 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 
 <c:if test="<%= hasUpdateAdvanced %>">
 	<div class="hide tab-content-tab" id="<portlet:namespace />clusteringDetails">
-		<div class="field-group">
-			<label id="<portlet:namespace />serverCommunicationTypeLabel"><liferay-ui:message key="server-communication-type" /></label>
+		<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-server-communication-type") %>">
+			<aui:select data-field-required-status="<%= false %>" label="server-communication-type" name="serverCommunicationType">
+				<aui:option label="" value="" />
 
-			<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-server-communication-type") %>">
-				<span class="inline">
-					<select data-field-required-status="<%= false %>" id="<portlet:namespace />serverCommunicationType" name="<portlet:namespace />serverCommunicationType">
-						<option value=""></option>
+				<%
+				for (int curServerCommunicationType : TicketEntryConstants.CLUSTER_SERVER_COMMUNICATION_TYPES) {
+				%>
 
-						<%
-						for (int curServerCommunicationType : TicketEntryConstants.CLUSTER_SERVER_COMMUNICATION_TYPES) {
-						%>
+					<aui:option label="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" selected="<%= (serverCommunicationType == curServerCommunicationType) %>" value="<%= curServerCommunicationType %>" />
 
-							<option <%= (serverCommunicationType == curServerCommunicationType) ? "selected" : "" %> value="<%= curServerCommunicationType %>"><liferay-ui:message key="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" /></option>
+				<%
+				}
+				%>
 
-						<%
-						}
-						%>
-
-					</select>
-				</span>
-			</div>
+			</aui:select>
 		</div>
 
-		<div class="field-group">
-			<label id="<portlet:namespace />numberOfNodesLabel"><liferay-ui:message key="number-of-nodes" /></label>
+		<aui:select label="number-of-nodes" name="numberOfNodes">
+			<aui:option label="" value="0" />
+			<aui:option label="1" selected="<%= (numberOfNodes == 1) %>" value="1" />
+			<aui:option label="2" selected="<%= (numberOfNodes == 2) %>" value="2" />
+			<aui:option label="3" selected="<%= (numberOfNodes == 3) %>" value="3" />
+			<aui:option label="4" selected="<%= (numberOfNodes == 4) %>" value="4" />
+			<aui:option label="5" selected="<%= (numberOfNodes == 5) %>" value="5" />
+			<aui:option label="6" selected="<%= (numberOfNodes == 6) %>" value="6" />
+			<aui:option label="7" selected="<%= (numberOfNodes == 7) %>" value="7" />
+			<aui:option label="8+" selected="<%= (numberOfNodes >= 8) %>" value="8" />
+		</aui:select>
 
-			<select id="<portlet:namespace />numberOfNodes" name="<portlet:namespace />numberOfNodes">
-				<option value="0"></option>
-				<option <%= (numberOfNodes == 1) ? "selected" : "" %> value="1">1</option>
-				<option <%= (numberOfNodes == 2) ? "selected" : "" %> value="2">2</option>
-				<option <%= (numberOfNodes == 3) ? "selected" : "" %> value="3">3</option>
-				<option <%= (numberOfNodes == 4) ? "selected" : "" %> value="4">4</option>
-				<option <%= (numberOfNodes == 5) ? "selected" : "" %> value="5">5</option>
-				<option <%= (numberOfNodes == 6) ? "selected" : "" %> value="6">6</option>
-				<option <%= (numberOfNodes == 7) ? "selected" : "" %> value="7">7</option>
-				<option <%= (numberOfNodes >= 8) ? "selected" : "" %> value="8">8+</option>
-			</select>
-		</div>
+		<label id="<portlet:namespace />serverConfigurationsLabel"><liferay-ui:message key="jvm-arguments-settings-optional" /></label>
 
-		<div class="field-group">
-			<label id="<portlet:namespace />serverConfigurationsLabel"><liferay-ui:message key="jvm-arguments-settings-optional" /></label>
-
-			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="content" value="<%= serverConfigurations %>" />
-				<liferay-util:param name="editorId" value="serverConfigurations" />
-				<liferay-util:param name="height" value="150" />
-				<liferay-util:param name="name" value="serverConfigurations" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
-			</liferay-util:include>
-		</div>
+		<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+			<liferay-util:param name="content" value="<%= serverConfigurations %>" />
+			<liferay-util:param name="editorId" value="serverConfigurations" />
+			<liferay-util:param name="height" value="150" />
+			<liferay-util:param name="name" value="serverConfigurations" />
+			<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+		</liferay-util:include>
 	</div>
 
 	<div class="hide tab-content-tab" id="<portlet:namespace />activationKeyDetails">
-		<div class="field-group">
-			<label id="<portlet:namespace />typeLabel"><liferay-ui:message key="type-of-key" /></label>
+		<aui:select label="type-of-key" name="type">
+			<aui:option label="" value="0" />
 
-			<select name="<portlet:namespace />type">
-				<option value="0"></option>
+			<%
+			int[] types = TicketEntryConstants.getLicenseTypes();
 
-				<%
-				int[] types = TicketEntryConstants.getLicenseTypes();
+			for (int curType : types) {
+			%>
 
-				for (int curType : types) {
-				%>
+				<aui:option label="<%= TicketEntryConstants.getLicenseTypeLabel(curType) %>" selected="<%= (curType == type) %>" value="<%= curType %>" />
 
-					<option <%= (curType == type) ? "selected" : "" %> value="<%= curType %>"><%= LanguageUtil.get(request, TicketEntryConstants.getLicenseTypeLabel(curType)) %></option>
+			<%
+			}
+			%>
 
-				<%
-				}
-				%>
+		</aui:select>
 
-			</select>
-		</div>
+		<aui:select label="purpose" name="purpose">
+			<aui:option label="" value="0" />
 
-		<div class="field-group">
-			<label id="<portlet:namespace />purposeLabel"><liferay-ui:message key="purpose" /></label>
+			<%
+			for (int curPurpose : TicketEntryConstants.getLicensePurposes()) {
+			%>
 
-			<select name="<portlet:namespace />purpose">
-				<option value="0"></option>
+				<aui:option label="<%= TicketEntryConstants.getLicensePurposeLabel(curPurpose) %>" selected="<%= (curPurpose == purpose) %>" value="<%= curPurpose %>" />
 
-				<%
-				for (int curPurpose : TicketEntryConstants.getLicensePurposes()) {
-				%>
+			<%
+			}
+			%>
 
-					<option <%= (curPurpose == purpose) ? "selected" : "" %> value="<%= curPurpose %>"><%= LanguageUtil.get(request, TicketEntryConstants.getLicensePurposeLabel(curPurpose)) %></option>
+		</aui:select>
 
-				<%
-				}
-				%>
+		<label id="<portlet:namespace />serverIdsLabel"><liferay-ui:message key="server-ids-mac-addresses" /></label>
 
-			</select>
-		</div>
+		<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+			<liferay-util:param name="content" value="<%= serverIds %>" />
+			<liferay-util:param name="editorId" value="serverIds" />
+			<liferay-util:param name="name" value="serverIds" />
+			<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+		</liferay-util:include>
 
-		<div class="field-group">
-			<label id="<portlet:namespace />serverIdsLabel"><liferay-ui:message key="server-ids-mac-addresses" /></label>
+		<label id="<portlet:namespace />ipAddressesLabel"><liferay-ui:message key="ip-addresses" /></label>
 
-			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="content" value="<%= serverIds %>" />
-				<liferay-util:param name="editorId" value="serverIds" />
-				<liferay-util:param name="name" value="serverIds" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
-			</liferay-util:include>
-		</div>
+		<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+			<liferay-util:param name="content" value="<%= ipAddresses %>" />
+			<liferay-util:param name="editorId" value="ipAddresses" />
+			<liferay-util:param name="name" value="ipAddresses" />
+			<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+		</liferay-util:include>
 
-		<div class="field-group">
-			<label id="<portlet:namespace />ipAddressesLabel"><liferay-ui:message key="ip-addresses" /></label>
+		<label id="<portlet:namespace />hostNamesLabel"><liferay-ui:message key="host-names" /></label>
 
-			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="content" value="<%= ipAddresses %>" />
-				<liferay-util:param name="editorId" value="ipAddresses" />
-				<liferay-util:param name="name" value="ipAddresses" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
-			</liferay-util:include>
-		</div>
+		<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+			<liferay-util:param name="content" value="<%= hostNames %>" />
+			<liferay-util:param name="editorId" value="hostNames" />
+			<liferay-util:param name="name" value="hostNames" />
+			<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+		</liferay-util:include>
 
-		<div class="field-group">
-			<label id="<portlet:namespace />hostNamesLabel"><liferay-ui:message key="host-names" /></label>
+		<label id="<portlet:namespace />additionalCommentsLabel"><liferay-ui:message key="additional-comments-unstable-server-details-multiple-jvms-etc" /></label>
 
-			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="content" value="<%= hostNames %>" />
-				<liferay-util:param name="editorId" value="hostNames" />
-				<liferay-util:param name="name" value="hostNames" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
-			</liferay-util:include>
-		</div>
-
-		<div class="field-group">
-			<label id="<portlet:namespace />additionalCommentsLabel"><liferay-ui:message key="additional-comments-unstable-server-details-multiple-jvms-etc" /></label>
-
-			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="content" value="<%= additionalComments %>" />
-				<liferay-util:param name="editorId" value="additionalComments" />
-				<liferay-util:param name="height" value="150" />
-				<liferay-util:param name="name" value="additionalComments" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
-			</liferay-util:include>
-		</div>
+		<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+			<liferay-util:param name="content" value="<%= additionalComments %>" />
+			<liferay-util:param name="editorId" value="additionalComments" />
+			<liferay-util:param name="height" value="150" />
+			<liferay-util:param name="name" value="additionalComments" />
+			<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+		</liferay-util:include>
 	</div>
 
 	<div class="hide tab-content-tab" id="<portlet:namespace />upgradeDetails">
-		<div class="field-group">
-			<label id="<portlet:namespace />docLibPersistenceLabel"><liferay-ui:message key="how-is-the-document-library-server-persisting-documents" /></label>
+		<aui:select label="how-is-the-document-library-server-persisting-documents" name="docLibPersistence">
+			<aui:option label="" value="0" />
 
-			<span class="inline">
-				<select id="<portlet:namespace />docLibPersistence" name="<portlet:namespace />docLibPersistence">
-					<option value="0"></option>
+			<%
+			for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
+			%>
 
-					<%
-					for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
-					%>
+				<aui:option label="<%= TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence) %>" selected="<%= (curDocLibPersistence == docLibPersistence) %>" value="<%= curDocLibPersistence %>" />
 
-						<option <%= (curDocLibPersistence == docLibPersistence) ? "selected" : "" %> value="<%= curDocLibPersistence %>"><%= LanguageUtil.get(request, TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence)) %></option>
+			<%
+			}
+			%>
 
-					<%
-					}
-					%>
+		</aui:select>
 
-				</select>
-			</span>
-		</div>
+		<label id="<portlet:namespace />stepsToUpgradeLabel"><liferay-ui:message key="steps-used-to-perform-the-upgrade" /></label>
 
-		<div class="field-group">
-			<label id="<portlet:namespace />stepsToUpgradeLabel"><liferay-ui:message key="steps-used-to-perform-the-upgrade" /></label>
-
-			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="content" value="<%= stepsToUpgrade %>" />
-				<liferay-util:param name="editorId" value="stepsToUpgrade" />
-				<liferay-util:param name="height" value="150" />
-				<liferay-util:param name="name" value="stepsToUpgrade" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
-			</liferay-util:include>
-		</div>
+		<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+			<liferay-util:param name="content" value="<%= stepsToUpgrade %>" />
+			<liferay-util:param name="editorId" value="stepsToUpgrade" />
+			<liferay-util:param name="height" value="150" />
+			<liferay-util:param name="name" value="stepsToUpgrade" />
+			<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+		</liferay-util:include>
 	</div>
 </c:if>
