@@ -220,7 +220,7 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced && liferayIncOrg %>">
-		<div id="<portlet:namespace />severityDetails" style="display: none;">
+		<div class="hide" id="<portlet:namespace />severityDetails">
 			<span class="field-input-align inline long-field">
 				<liferay-ui:message key="what-is-the-reason-for-changing-the-ticket-severity" />
 
@@ -398,12 +398,6 @@ if (liferayIncOrg || partnerWorker) {
 </div>
 
 <aui:script>
-	function <portlet:namespace />resetSeverityDetails() {
-		document.<portlet:namespace />fm3.<portlet:namespace />severity.value = '<%= severity %>';
-
-		document.getElementById('<portlet:namespace />severityDetails').style.display = 'none';
-	}
-
 	function <portlet:namespace />selectOfferingEntry(accountEntryId, offeringEntryId, accountEntryName, supportResponseName, productEntryName) {
 		document.<portlet:namespace />fm3.<portlet:namespace />accountEntryId.value = accountEntryId;
 		document.<portlet:namespace />fm3.<portlet:namespace />offeringEntryId.value = offeringEntryId;
@@ -427,124 +421,6 @@ if (liferayIncOrg || partnerWorker) {
 		userNameEl.innerHTML = userName;
 
 		reporterLabelEl.classList.add('field-modified');
-	}
-
-	function <portlet:namespace />selectSeverity(severity, newSeverity) {
-		var A = AUI();
-
-		var selectElement = A.one('#<portlet:namespace />severityReason');
-
-		var selectOptions = [];
-
-		if (severity == newSeverity) {
-			<portlet:namespace />resetSeverityDetails();
-
-			return;
-		}
-		else if (severity < newSeverity) {
-			selectOptions.push('<option value="customer-did-not-understand-the-meaning-of-critical"><liferay-ui:message key="customer-did-not-understand-the-meaning-of-critical" unicode="<%= true %>" /></option>');
-			selectOptions.push('<option value="other"><liferay-ui:message key="other" /></option>');
-		}
-		else {
-			selectOptions.push('<option value="customer-did-not-understand-the-meaning-of-critical"><liferay-ui:message key="customer-did-not-understand-the-meaning-of-critical" unicode="<%= true %>" /></option>');
-			selectOptions.push('<option value="customer-wanted-more-urgent-action"><liferay-ui:message key="customer-wanted-more-urgent-action" unicode="<%= true %>" /></option>');
-
-			if (newSeverity == <%= SupportResponseConstants.SEVERITY_MAJOR %>) {
-				selectOptions.push('<option value="critical-production-down-that-was-stabilized-to-major"><liferay-ui:message key="critical-production-down-that-was-stabilized-to-major" unicode="<%= true %>" /></option>');
-			}
-			else {
-				selectOptions.push('<option value="other"><liferay-ui:message key="other" unicode="<%= true %>" /></option>');
-			}
-		}
-
-		selectOptions = selectOptions.join('');
-
-		selectElement.empty();
-
-		selectElement.append(selectOptions);
-
-		document.getElementById('<portlet:namespace />severityDetails').style.display = '';
-	}
-
-	function <portlet:namespace />updateComponent(selectData) {
-		var A = AUI();
-
-		var componentFieldGroup = A.one('#<portlet:namespace />componentFieldGroup');
-		var subcomponentFieldGroup = A.one('#<portlet:namespace />subcomponentFieldGroup');
-
-		if (selectData) {
-			var selectElement = A.one('#<portlet:namespace />editComponent');
-
-			var selectOptions = [];
-
-			selectOptions.push('<option value="0"></option>');
-
-			if (selectData[0].componentGroup) {
-				var componentGroup = selectData[0].componentGroup;
-
-				selectOptions.push('<optgroup label="' + componentGroup + '">');
-
-				for (var i = 0; i < selectData.length; i++) {
-					if (componentGroup != selectData[i].componentGroup) {
-						selectOptions.push('</optgroup>');
-						selectOptions.push('<optgroup label="' + selectData[i].componentGroup + '">');
-
-						componentGroup = selectData[i].componentGroup;
-					}
-
-					selectOptions.push('<option value="' + selectData[i].value + '">' + selectData[i].name + '</option>');
-				}
-
-				selectOptions.push('</optgroup>');
-			}
-			else {
-				for (var i = 0; i < selectData.length; i++) {
-					selectOptions.push('<option value="' + selectData[i].value + '">' + selectData[i].name + '</option>');
-				}
-			}
-
-			selectOptions = selectOptions.join('');
-
-			selectElement.empty();
-
-			selectElement.append(selectOptions);
-
-			selectElement.val(0);
-
-			componentFieldGroup.show();
-			subcomponentFieldGroup.show();
-		}
-		else {
-			componentFieldGroup.hide();
-			subcomponentFieldGroup.hide();
-		}
-	}
-
-	function <portlet:namespace />updateSubcomponent(selectData) {
-		var A = AUI();
-
-		var selectElement = A.one('#<portlet:namespace />subcomponent');
-
-		var selectOptions = [];
-
-		selectOptions.push('<option value="0"><liferay-ui:message key="none" /></option>');
-
-		if (selectData) {
-			for (var i = 0; i < selectData.length; i++) {
-				var value = selectData[i].value;
-				var name = selectData[i].name;
-
-				selectOptions.push('<option value="' + value + '">' + name + '</option>');
-			}
-		}
-
-		selectOptions = selectOptions.join('');
-
-		selectElement.empty();
-
-		selectElement.append(selectOptions);
-
-		selectElement.val(0);
 	}
 
 	Liferay.provide(
@@ -626,5 +502,152 @@ if (liferayIncOrg || partnerWorker) {
 			);
 		},
 		['aui-io']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />selectSeverity',
+		function(severity, newSeverity) {
+			var A = AUI();
+
+			var selectOptions = [];
+
+			var severityDetails = A.one('#<portlet:namespace />severityDetails');
+
+			if (severity == newSeverity) {
+				var severity = A.one('#<portlet:namespace />severity');
+
+				if (severity) {
+					severity.val('<%= severity %>');
+				}
+
+				if (severityDetails) {
+					severityDetails.hide();
+				}
+
+				return;
+			}
+			else if (severity < newSeverity) {
+				selectOptions.push('<option value="customer-did-not-understand-the-meaning-of-critical"><liferay-ui:message key="customer-did-not-understand-the-meaning-of-critical" unicode="<%= true %>" /></option>');
+				selectOptions.push('<option value="other"><liferay-ui:message key="other" /></option>');
+			}
+			else {
+				selectOptions.push('<option value="customer-did-not-understand-the-meaning-of-critical"><liferay-ui:message key="customer-did-not-understand-the-meaning-of-critical" unicode="<%= true %>" /></option>');
+				selectOptions.push('<option value="customer-wanted-more-urgent-action"><liferay-ui:message key="customer-wanted-more-urgent-action" unicode="<%= true %>" /></option>');
+
+				if (newSeverity == <%= SupportResponseConstants.SEVERITY_MAJOR %>) {
+					selectOptions.push('<option value="critical-production-down-that-was-stabilized-to-major"><liferay-ui:message key="critical-production-down-that-was-stabilized-to-major" unicode="<%= true %>" /></option>');
+				}
+				else {
+					selectOptions.push('<option value="other"><liferay-ui:message key="other" unicode="<%= true %>" /></option>');
+				}
+			}
+
+			selectOptions = selectOptions.join('');
+
+			var selectElement = A.one('#<portlet:namespace />severityReason');
+
+			if (selectElement) {
+				selectElement.empty();
+
+				selectElement.append(selectOptions);
+			}
+
+			if (severityDetails) {
+				severityDetails.show();
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateComponent',
+		function(selectData) {
+			var A = AUI();
+
+			var componentFieldGroup = A.one('#<portlet:namespace />componentFieldGroup');
+			var subcomponentFieldGroup = A.one('#<portlet:namespace />subcomponentFieldGroup');
+
+			if (selectData) {
+				var selectElement = A.one('#<portlet:namespace />editComponent');
+
+				var selectOptions = [];
+
+				selectOptions.push('<option value="0"></option>');
+
+				if (selectData[0].componentGroup) {
+					var componentGroup = selectData[0].componentGroup;
+
+					selectOptions.push('<optgroup label="' + componentGroup + '">');
+
+					for (var i = 0; i < selectData.length; i++) {
+						if (componentGroup != selectData[i].componentGroup) {
+							selectOptions.push('</optgroup>');
+							selectOptions.push('<optgroup label="' + selectData[i].componentGroup + '">');
+
+							componentGroup = selectData[i].componentGroup;
+						}
+
+						selectOptions.push('<option value="' + selectData[i].value + '">' + selectData[i].name + '</option>');
+					}
+
+					selectOptions.push('</optgroup>');
+				}
+				else {
+					for (var i = 0; i < selectData.length; i++) {
+						selectOptions.push('<option value="' + selectData[i].value + '">' + selectData[i].name + '</option>');
+					}
+				}
+
+				selectOptions = selectOptions.join('');
+
+				selectElement.empty();
+
+				selectElement.append(selectOptions);
+
+				selectElement.val(0);
+
+				componentFieldGroup.show();
+				subcomponentFieldGroup.show();
+			}
+			else {
+				componentFieldGroup.hide();
+				subcomponentFieldGroup.hide();
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateSubcomponent',
+		function(selectData) {
+			var A = AUI();
+
+			var selectElement = A.one('#<portlet:namespace />subcomponent');
+
+			var selectOptions = [];
+
+			selectOptions.push('<option value="0"><liferay-ui:message key="none" /></option>');
+
+			if (selectData) {
+				for (var i = 0; i < selectData.length; i++) {
+					var value = selectData[i].value;
+					var name = selectData[i].name;
+
+					selectOptions.push('<option value="' + value + '">' + name + '</option>');
+				}
+			}
+
+			selectOptions = selectOptions.join('');
+
+			selectElement.empty();
+
+			selectElement.append(selectOptions);
+
+			selectElement.val(0);
+		},
+		['aui-base']
 	);
 </aui:script>

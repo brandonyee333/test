@@ -514,9 +514,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 
 			selectOptions = selectOptions.join('');
 
-			selectElement.empty();
-
-			selectElement.append(selectOptions);
+			selectElement.setHTML(selectOptions);
 
 			if (selectValExists && (selectVal > 0)) {
 				selectElement.val(String(selectVal));
