@@ -22,54 +22,6 @@
 	margin: 10px 0;
 }
 
-.field-group {
-	display: block;
-	margin: 1px 0;
-	overflow: hidden;
-	padding: 4px 0;
-
-	label {
-		color: $medium-gray;
-		float: left;
-		padding: 5px 15px 0 0;
-		text-align: right;
-		width: 135px;
-		word-wrap: break-word;
-	}
-
-	textarea {
-		margin-top: 5px;
-		max-width: 500px;
-		width: 100%;
-	}
-
-	.field-align {
-		margin-left: 150px;
-	}
-
-	.field-input-align {
-		padding-top: 5px;
-	}
-
-	.field-modified {
-		color: $text-color;
-		font-weight: bold;
-	}
-
-	.long-field {
-		max-width: 500px;
-		width: 100%;
-
-		.aui-field-input-text {
-			width: 100%;
-		}
-	}
-
-	.portlet-msg-error {
-		margin: 0 0 5px;
-	}
-}
-
 .file-list {
 	float: left;
 	list-style: none;

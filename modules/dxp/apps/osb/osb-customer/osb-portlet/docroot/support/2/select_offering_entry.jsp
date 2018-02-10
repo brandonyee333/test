@@ -41,179 +41,172 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 
 <aui:form action="<%= selectOfferingEntryURL %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
 	<div class="unit">
-		<div>
-			<h2 class="section-heading">
-				<liferay-ui:message key="project" />
-			</h2>
+		<h2 class="section-heading">
+			<liferay-ui:message key="project" />
+		</h2>
 
-			<%
-			List<AccountEntry> accountEntries = null;
+		<%
+		List<AccountEntry> accountEntries = null;
 
-			if (liferayIncOrg || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-				accountEntries = AccountEntryLocalServiceUtil.getAccountEntries(new int[] {AccountEntryConstants.TYPE_TRIAL}, AccountEntryConstants.STATUSES_ACTIVE, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-			}
-			else {
-				accountEntries = AccountEntryLocalServiceUtil.getUserAccountEntries(user.getUserId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-			}
-			%>
+		if (liferayIncOrg || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+			accountEntries = AccountEntryLocalServiceUtil.getAccountEntries(new int[] {AccountEntryConstants.TYPE_TRIAL}, AccountEntryConstants.STATUSES_ACTIVE, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		}
+		else {
+			accountEntries = AccountEntryLocalServiceUtil.getUserAccountEntries(user.getUserId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		}
+		%>
 
-			<div>
-				<c:choose>
-					<c:when test="<%= accountEntries.size() == 1 %>">
-
-						<%
-						AccountEntry curAccountEntry = accountEntries.get(0);
-
-						accountEntryId = curAccountEntry.getAccountEntryId();
-
-						addTicketPermission = OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.ADD_TICKET);
-						%>
-
-						<strong><%= HtmlUtil.escape(curAccountEntry.getName()) %></strong>
-
-						<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
-					</c:when>
-					<c:when test="<%= RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID) %>">
-						<aui:select label="" name="accountEntryId" onChange='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
-
-							<%
-							for (AccountEntry curAccountEntry : accountEntries) {
-							%>
-
-								<aui:option label="<%= curAccountEntry.getName() %>" selected="<%= curAccountEntry.getAccountEntryId() == accountEntryId %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
-
-							<%
-							}
-							%>
-
-						</aui:select>
-					</c:when>
-					<c:otherwise>
-
-						<%
-						AccountEntry accountEntry = ticketEntry.getAccountEntry();
-						%>
-
-						<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
-
-						<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
-					</c:otherwise>
-				</c:choose>
-			</div>
-
-			<h2 class="section-heading">
-				<liferay-ui:message key="choose-support" />
-			</h2>
-
-			<div>
+		<c:choose>
+			<c:when test="<%= accountEntries.size() == 1 %>">
 
 				<%
-				LinkedHashMap params = new LinkedHashMap();
+				AccountEntry curAccountEntry = accountEntries.get(0);
 
-				params.put("validTicket", StringPool.BLANK);
+				accountEntryId = curAccountEntry.getAccountEntryId();
 
-				List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+				addTicketPermission = OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.ADD_TICKET);
 				%>
 
-				<liferay-ui:search-container
-					delta="<%= 10 %>"
-					headerNames="product,support,start-date,support-end-date,tickets-used"
-					iteratorURL="<%= portletURL %>"
-					total="<%= offeringEntryGroups.size() %>"
+				<strong><%= HtmlUtil.escape(curAccountEntry.getName()) %></strong>
+
+				<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+			</c:when>
+			<c:when test="<%= RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID) %>">
+				<aui:select label="" name="accountEntryId" onChange='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
+
+					<%
+					for (AccountEntry curAccountEntry : accountEntries) {
+					%>
+
+						<aui:option label="<%= curAccountEntry.getName() %>" selected="<%= curAccountEntry.getAccountEntryId() == accountEntryId %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
+
+					<%
+					}
+					%>
+
+				</aui:select>
+			</c:when>
+			<c:otherwise>
+
+				<%
+				AccountEntry accountEntry = ticketEntry.getAccountEntry();
+				%>
+
+				<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+
+				<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
+			</c:otherwise>
+		</c:choose>
+
+		<h2 class="section-heading">
+			<liferay-ui:message key="choose-support" />
+		</h2>
+
+		<%
+		LinkedHashMap params = new LinkedHashMap();
+
+		params.put("validTicket", StringPool.BLANK);
+
+		List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+		%>
+
+		<liferay-ui:search-container
+			delta="<%= 10 %>"
+			headerNames="product,support,start-date,support-end-date,tickets-used"
+			iteratorURL="<%= portletURL %>"
+			total="<%= offeringEntryGroups.size() %>"
+		>
+			<liferay-ui:search-container-results
+				results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
+			/>
+
+			<liferay-ui:search-container-row
+				className="com.liferay.osb.model.OfferingEntryGroup"
+				modelVar="offeringEntryGroup"
+			>
+
+				<%
+				AccountEntry curAccountEntry = offeringEntryGroup.getAccountEntry();
+				ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
+				SupportResponse curSupportResponse = offeringEntryGroup.getSupportResponse();
+
+				String rowHREF = null;
+
+				String key = offeringEntryGroup.getKey();
+
+				if (!key.equals(offeringEntry.getKey()) && offeringEntryGroup.hasAvailableSupportTickets()) {
+					OfferingEntry availableOfferingEntry = offeringEntryGroup.getAvailableSupportOfferingEntry();
+
+					StringBuilder sb = new StringBuilder();
+
+					sb.append("javascript:opener.");
+					sb.append(renderResponse.getNamespace());
+					sb.append("selectOfferingEntry('");
+					sb.append(curAccountEntry.getAccountEntryId());
+					sb.append("', '");
+					sb.append(availableOfferingEntry.getOfferingEntryId());
+					sb.append("', '");
+					sb.append(UnicodeFormatter.toString(curAccountEntry.getName()));
+					sb.append("', '");
+					sb.append(UnicodeFormatter.toString(curSupportResponse.getName()));
+					sb.append("', '");
+					sb.append(UnicodeFormatter.toString((curProductEntry.getName())));
+					sb.append("'); window.close();");
+
+					rowHREF = sb.toString();
+				}
+				%>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowHREF %>"
+					name="product"
+					value="<%= curProductEntry.getName() %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowHREF %>"
+					name="sla"
+					value="<%= curSupportResponse.getName() %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowHREF %>"
+					name="start-date"
+					value="<%= longDateFormatDate.format(offeringEntryGroup.getActualStartDate()) %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowHREF %>"
+					name="support-end-date"
+					value="<%= longDateFormatDate.format(offeringEntryGroup.getSupportEndDate()) %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					href="<%= rowHREF %>"
+					name="tickets-used"
 				>
-					<liferay-ui:search-container-results
-						results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
-					/>
+					<%= offeringEntryGroup.getTicketEntriesCount() %> / <%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(request, "unlimited") : "0" %>
+				</liferay-ui:search-container-column-text>
 
-					<liferay-ui:search-container-row
-						className="com.liferay.osb.model.OfferingEntryGroup"
-						modelVar="offeringEntryGroup"
-					>
+				<liferay-ui:search-container-column-text
+					href="<%= rowHREF %>"
+				>
+					<c:choose>
+						<c:when test="<%= key.equals(offeringEntry.getKey()) %>">
+							<liferay-ui:icon
+								image="checked"
+								label="<%= true %>"
+								message="current"
+							/>
+						</c:when>
+						<c:otherwise>
+							<aui:button onClick="<%= rowHREF %>" value="choose" />
+						</c:otherwise>
+					</c:choose>
+				</liferay-ui:search-container-column-text>
+			</liferay-ui:search-container-row>
 
-						<%
-						AccountEntry curAccountEntry = offeringEntryGroup.getAccountEntry();
-						ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
-						SupportResponse curSupportResponse = offeringEntryGroup.getSupportResponse();
-
-						String rowHREF = null;
-
-						String key = offeringEntryGroup.getKey();
-
-						if (!key.equals(offeringEntry.getKey()) && offeringEntryGroup.hasAvailableSupportTickets()) {
-							OfferingEntry availableOfferingEntry = offeringEntryGroup.getAvailableSupportOfferingEntry();
-
-							StringBuilder sb = new StringBuilder();
-
-							sb.append("javascript:opener.");
-							sb.append(renderResponse.getNamespace());
-							sb.append("selectOfferingEntry('");
-							sb.append(curAccountEntry.getAccountEntryId());
-							sb.append("', '");
-							sb.append(availableOfferingEntry.getOfferingEntryId());
-							sb.append("', '");
-							sb.append(UnicodeFormatter.toString(curAccountEntry.getName()));
-							sb.append("', '");
-							sb.append(UnicodeFormatter.toString(curSupportResponse.getName()));
-							sb.append("', '");
-							sb.append(UnicodeFormatter.toString((curProductEntry.getName())));
-							sb.append("'); window.close();");
-
-							rowHREF = sb.toString();
-						}
-						%>
-
-						<liferay-ui:search-container-column-text
-							href="<%= rowHREF %>"
-							name="product"
-							value="<%= curProductEntry.getName() %>"
-						/>
-
-						<liferay-ui:search-container-column-text
-							href="<%= rowHREF %>"
-							name="sla"
-							value="<%= curSupportResponse.getName() %>"
-						/>
-
-						<liferay-ui:search-container-column-text
-							href="<%= rowHREF %>"
-							name="start-date"
-							value="<%= longDateFormatDate.format(offeringEntryGroup.getActualStartDate()) %>"
-						/>
-
-						<liferay-ui:search-container-column-text
-							href="<%= rowHREF %>"
-							name="support-end-date"
-							value="<%= longDateFormatDate.format(offeringEntryGroup.getSupportEndDate()) %>"
-						/>
-
-						<liferay-ui:search-container-column-text
-							href="<%= rowHREF %>"
-							name="tickets-used"
-						>
-							<%= offeringEntryGroup.getTicketEntriesCount() %> / <%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(request, "unlimited") : "0" %>
-						</liferay-ui:search-container-column-text>
-
-						<liferay-ui:search-container-column-text
-							href="<%= rowHREF %>"
-						>
-							<c:choose>
-								<c:when test="<%= key.equals(offeringEntry.getKey()) %>">
-									<liferay-ui:icon
-										image="checked"
-										label="<%= true %>"
-										message="current"
-									/>
-								</c:when>
-								<c:otherwise>
-									<aui:button onClick="<%= rowHREF %>" value="choose" />
-								</c:otherwise>
-							</c:choose>
-						</liferay-ui:search-container-column-text>
-					</liferay-ui:search-container-row>
-
-					<liferay-ui:search-iterator />
-				</liferay-ui:search-container>
-			</div>
-		</div>
+			<liferay-ui:search-iterator />
+		</liferay-ui:search-container>
 	</div>
 </aui:form>
