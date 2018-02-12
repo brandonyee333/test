@@ -121,6 +121,145 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 <%@ include file="/support/2/common/javascript/ticket_entry_validator_js.jspf" %>
 
+<aui:script>
+	function <portlet:namespace />closeEditTicketDialog() {
+		var modified = document.getElementById('<portlet:namespace />modified');
+
+		if (modified.value == 'true') {
+			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-ticket.-are-you-sure-you-want-to-cancel-editing") %>');
+
+			if (cancelEdit) {
+				<portlet:namespace />closeDialog(0);
+			}
+		}
+		else {
+			<portlet:namespace />closeDialog(0);
+		}
+	}
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />loadEnvironmentDetailsTab',
+		function(component) {
+			var A = AUI();
+
+			<portlet:renderURL copyCurrentRenderParameters="<%= true %>" var="tabURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
+				<portlet:param name="mvcPath" value="/support/2/edit_ticket_entry/edit_environment_details.jsp" />
+				<portlet:param name="envLFR" value="<%= ((component != TicketEntryConstants.COMPONENT_UPGRADE) && productEntry.isDigitalEnterprise()) ? String.valueOf(0) : String.valueOf(envLFR) %>" />
+				<portlet:param name="toEnvLFR" value="<%= String.valueOf(toEnvLFR) %>" />
+				<portlet:param name="hasUpdateAdmin" value="<%= String.valueOf(hasUpdateAdmin) %>" />
+				<portlet:param name="hasUpdateAdvanced" value="<%= String.valueOf(hasUpdateAdvanced) %>" />
+				<portlet:param name="offeringEntryId" value="<%= String.valueOf(offeringEntryId) %>" />
+				<portlet:param name="productEntryId" value="<%= String.valueOf(productEntry.getProductEntryId()) %>" />
+			</portlet:renderURL>
+
+			var tabURL = '<%= tabURL %>&<portlet:namespace />component=' + component;
+
+			var tabContentDiv = A.one('#<portlet:namespace />editEnvironmentDetails');
+
+			A.io.request(
+				tabURL,
+				{
+					on: {
+						start: function() {
+							tabContentDiv.html('<img src="<%= themeDisplay.getPathThemeImages() + "/aui/loading_indicator.gif" %>" style="display: block; margin: auto;" />');
+						},
+						success: function() {
+							var response = this.get('responseData');
+
+							tabContentDiv.html(response);
+
+							<portlet:namespace />loadEnvironmentDetails(component, '<%= toEnvLFR %>');
+						}
+					}
+				}
+			);
+		},
+		['aui-io']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />revealComponentTab',
+		function(id) {
+			var A = AUI();
+
+			A.all('.component-tab').hide();
+
+			var tab = A.one('.tab-view-dialog .details .tabs #<portlet:namespace />' + id);
+
+			if (tab) {
+				tab.show();
+			}
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />revealDialogTab',
+		function(id) {
+			var A = AUI();
+
+			var tab = A.one('.tab-view-dialog .details .tabs #<portlet:namespace />' + id + 'Header');
+
+			if (tab) {
+				A.all('.tab-view-dialog .details .tab-content-tab').hide();
+
+				var tabContent = A.one('.tab-view-dialog .details .tab-content #<portlet:namespace />' + id);
+
+				tabContent.show();
+
+				A.all('.tab-view-dialog .details .tabs span').removeClass('selected');
+
+				tab.addClass('selected');
+			}
+			else {
+				<portlet:namespace />reveal('details');
+			}
+
+			window.scroll(0, 0);
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />submit',
+		function() {
+			var A = AUI();
+
+			var firstNode = null;
+			var requiredFields = A.all('#<portlet:namespace />editTicketDetails input[data-field-required-status="false"], select[data-field-required-status="false"], textarea[data-field-required-status="false"]');
+
+			if (requiredFields.size() > 0) {
+				requiredFields.each(
+					function(requiredField) {
+						if (!<portlet:namespace />validateRequiredField(requiredField) && !firstNode) {
+							firstNode = requiredField;
+						}
+					}
+				);
+
+				if (firstNode) {
+					<portlet:namespace />reveal('editTicketDetails');
+
+					firstNode.scrollIntoView();
+
+					return false;
+				}
+			}
+
+			var form = A.one('#<portlet:namespace />fm3');
+
+			if (form) {
+				submitForm(form);
+			}
+		},
+		['aui-base']
+	);
+</aui:script>
+
 <aui:script use="aui-base">
 	A.all('.component-tab').hide();
 
@@ -205,9 +344,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		editTicketTabContent.delegate('change', onChange, 'input[type=checkbox], select');
 		editTicketTabContent.delegate('keyup', onChange, 'input[type=text], textarea');
 	}
-</aui:script>
 
-<aui:script>
 	window.addEventListener(
 		'keydown',
 		function(A) {
@@ -215,128 +352,5 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 				<portlet:namespace />closeEditTicketDialog();
 			}
 		}
-	);
-
-	function <portlet:namespace />closeEditTicketDialog() {
-		var modified = document.getElementById('<portlet:namespace />modified');
-
-		if (modified.value == 'true') {
-			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-ticket.-are-you-sure-you-want-to-cancel-editing") %>');
-
-			if (cancelEdit) {
-				<portlet:namespace />closeDialog(0);
-			}
-		}
-		else {
-			<portlet:namespace />closeDialog(0);
-		}
-	}
-
-	function <portlet:namespace />revealComponentTab(id) {
-		var A = AUI();
-
-		A.all('.component-tab').hide();
-
-		var tab = A.one('.tab-view-dialog .details .tabs #<portlet:namespace />' + id);
-
-		if (tab) {
-			tab.show();
-		}
-	}
-
-	function <portlet:namespace />submit() {
-		var A = AUI();
-
-		var firstNode = null;
-		var requiredFields = A.all('#<portlet:namespace />editTicketDetails input[data-field-required-status="false"], select[data-field-required-status="false"], textarea[data-field-required-status="false"]');
-
-		if (requiredFields.size() > 0) {
-			requiredFields.each(
-				function(requiredField) {
-					if (!<portlet:namespace />validateRequiredField(requiredField) && !firstNode) {
-						firstNode = requiredField;
-					}
-				}
-			);
-
-			if (firstNode) {
-				<portlet:namespace />reveal('editTicketDetails');
-
-				firstNode.scrollIntoView();
-
-				return false;
-			}
-		}
-
-		submitForm(document.<portlet:namespace />fm3);
-	}
-
-	Liferay.provide(
-		window,
-		'<portlet:namespace />loadEnvironmentDetailsTab',
-		function(component) {
-			var A = AUI();
-
-			<portlet:renderURL copyCurrentRenderParameters="<%= true %>" var="tabURL" windowState="<%= LiferayWindowState.EXCLUSIVE.toString() %>">
-				<portlet:param name="mvcPath" value="/support/2/edit_ticket_entry/edit_environment_details.jsp" />
-				<portlet:param name="envLFR" value="<%= ((component != TicketEntryConstants.COMPONENT_UPGRADE) && productEntry.isDigitalEnterprise()) ? String.valueOf(0) : String.valueOf(envLFR) %>" />
-				<portlet:param name="toEnvLFR" value="<%= String.valueOf(toEnvLFR) %>" />
-				<portlet:param name="hasUpdateAdmin" value="<%= String.valueOf(hasUpdateAdmin) %>" />
-				<portlet:param name="hasUpdateAdvanced" value="<%= String.valueOf(hasUpdateAdvanced) %>" />
-				<portlet:param name="offeringEntryId" value="<%= String.valueOf(offeringEntryId) %>" />
-				<portlet:param name="productEntryId" value="<%= String.valueOf(productEntry.getProductEntryId()) %>" />
-			</portlet:renderURL>
-
-			var tabURL = '<%= tabURL %>&<portlet:namespace />component=' + component;
-
-			var tabContentDiv = A.one('#<portlet:namespace />editEnvironmentDetails');
-
-			A.io.request(
-				tabURL,
-				{
-					on: {
-						start: function() {
-							tabContentDiv.html('<img src="<%= themeDisplay.getPathThemeImages() + "/aui/loading_indicator.gif" %>" style="display: block; margin: auto;" />');
-						},
-						success: function() {
-							var response = this.get('responseData');
-
-							tabContentDiv.html(response);
-
-							<portlet:namespace />loadEnvironmentDetails(component, '<%= toEnvLFR %>');
-						}
-					}
-				}
-			);
-		},
-		['aui-io']
-	);
-
-	Liferay.provide(
-		window,
-		'<portlet:namespace />revealDialogTab',
-		function(id) {
-			var A = AUI();
-
-			var tab = A.one('.tab-view-dialog .details .tabs #<portlet:namespace />' + id + 'Header');
-
-			if (tab) {
-				A.all('.tab-view-dialog .details .tab-content-tab').hide();
-
-				var tabContent = A.one('.tab-view-dialog .details .tab-content #<portlet:namespace />' + id);
-
-				tabContent.show();
-
-				A.all('.tab-view-dialog .details .tabs span').removeClass('selected');
-
-				tab.addClass('selected');
-			}
-			else {
-				<portlet:namespace />reveal('details');
-			}
-
-			window.scroll(0, 0);
-		},
-		['aui-base']
 	);
 </aui:script>
