@@ -260,7 +260,7 @@
 
 							<div class="clearfix customer-info">
 								<div class="customer-info-label pull-left w20">
-									<span class="customer-info-label"><liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />:</span>
+									<span class="customer-info-label"><liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" /></span>
 								</div>
 
 								<div class="pull-left w80">
@@ -348,7 +348,7 @@
 
 							<div class="clearfix customer-info">
 								<div class="pull-left w20">
-									<span class="customer-info-label"><liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" />:</span>
+									<span class="customer-info-label"><liferay-ui:message key="<%= AccountInformationConstants.getFieldLabel(fieldId) %>" /></span>
 								</div>
 
 								<div class="pull-left w80">
