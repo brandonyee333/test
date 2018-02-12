@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Fabrica Core
 Bundle-SymbolicName: com.liferay.fabrica.core
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Export-Package:\
 	com.liferay.fabrica.core.admin,\
 	com.liferay.fabrica.core.discovery,\
