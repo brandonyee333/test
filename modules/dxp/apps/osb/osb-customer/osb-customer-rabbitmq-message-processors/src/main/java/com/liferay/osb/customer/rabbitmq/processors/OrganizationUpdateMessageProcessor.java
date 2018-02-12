@@ -95,11 +95,14 @@ public class OrganizationUpdateMessageProcessor implements MessageProcessor {
 			organization.getComments(), true, null, group.isSite(), null);
 	}
 
+	private static final long _COMPANY_ID =
+		PortalInstances.getDefaultCompanyId();
+
+	private static final String[] _ROUTING_KEYS =
+		{"entity.organization.update"};
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		OrganizationUpdateMessageProcessor.class);
-
-	private static final long _companyId =
-		PortalInstances.getDefaultCompanyId();
 
 	private volatile RabbitMQConfiguration _configuration;
 
@@ -108,7 +111,5 @@ public class OrganizationUpdateMessageProcessor implements MessageProcessor {
 
 	@Reference
 	private OrganizationLocalService _organizationLocalService;
-
-	private final String[] _routingKeys = {"entity.organization.update"};
 
 }
