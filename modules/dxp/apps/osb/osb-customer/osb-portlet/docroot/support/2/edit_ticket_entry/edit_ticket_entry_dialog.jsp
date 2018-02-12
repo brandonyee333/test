@@ -60,12 +60,12 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 </portlet:actionURL>
 
 <aui:form action="<%= updateTicketEntryURL %>" enctype="multipart/form-data" method="post" name="fm3">
-	<input name="<portlet:namespace />ticketEntryId" type="hidden" value="<%= ticketEntry.getTicketEntryId() %>" />
-	<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
-	<input id="<portlet:namespace />modified" name="<portlet:namespace />modified" type="hidden" value="false" />
-	<input name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
-	<input name="<portlet:namespace />reportedByUserId" type="hidden" value="<%= ticketEntry.getUserId() %>" />
-	<input name="<portlet:namespace />weight" type="hidden" value="<%= ticketEntry.getWeight() %>" />
+	<aui:input name="ticketEntryId" type="hidden" value="<%= ticketEntry.getTicketEntryId() %>" />
+	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+	<aui:input name="modified" type="hidden" value="false" />
+	<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
+	<aui:input name="reportedByUserId" type="hidden" value="<%= ticketEntry.getUserId() %>" />
+	<aui:input name="weight" type="hidden" value="<%= ticketEntry.getWeight() %>" />
 
 	<div class="tab-view-dialog">
 		<div class="details" id="<portlet:namespace />editTicketDetails">
@@ -112,9 +112,9 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		</div>
 
 		<div align="right">
-			<input class="aui-button-input" onClick="<portlet:namespace />submit();" type="button" value="<liferay-ui:message key="save" />" />
+			<aui:button onClick='<%= renderResponse.getNamespace() + "closeEditTicketDialog();" %>' value="cancel" />
 
-			<input class="aui-button-input pull-left" onClick="<portlet:namespace />closeEditTicketDialog();" type="button" value="<liferay-ui:message key="cancel" />" />
+			<aui:button onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="save" />
 		</div>
 	</div>
 </aui:form>
