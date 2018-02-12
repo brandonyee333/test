@@ -110,46 +110,47 @@
 
 							<aui:col width="<%= 50 %>">
 								<aui:select label="product" name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectProductEntry(this.value);" %>' required="<%= true %>">
-										<aui:option label="select" value="" />
+									<aui:option label="select" value="" />
 
-										<%
-										LinkedHashMap params = new LinkedHashMap();
+									<%
+									LinkedHashMap params = new LinkedHashMap();
 
-										params.put("validTicket", StringPool.BLANK);
+									params.put("validTicket", StringPool.BLANK);
 
-										List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[0], new int[] {OfferingEntryConstants.STATUS_ACTIVE, OfferingEntryConstants.STATUS_ON_HOLD}, 0, 0, 0, 0, 0, 0, params, true);
+									List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[0], new int[] {OfferingEntryConstants.STATUS_ACTIVE, OfferingEntryConstants.STATUS_ON_HOLD}, 0, 0, 0, 0, 0, 0, params, true);
 
-										Map<String, Long> productEntryEnvironments = new HashMap<String, Long>();
+									Map<String, Long> productEntryEnvironments = new HashMap<String, Long>();
 
-										for (OfferingEntryGroup offeringEntryGroup : offeringEntryGroups) {
-											ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
+									for (OfferingEntryGroup offeringEntryGroup : offeringEntryGroups) {
+										ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
 
-											if (!productEntryEnvironments.containsKey(curProductEntry.getName())) {
-												OfferingEntry curOfferingEntry = offeringEntryGroup.getAvailableSupportOfferingEntry();
+										if (!productEntryEnvironments.containsKey(curProductEntry.getName())) {
+											OfferingEntry curOfferingEntry = offeringEntryGroup.getAvailableSupportOfferingEntry();
 
-												productEntryEnvironments.put(curProductEntry.getName(), curOfferingEntry.getOfferingEntryId());
-											}
+											productEntryEnvironments.put(curProductEntry.getName(), curOfferingEntry.getOfferingEntryId());
 										}
+									}
 
-										for (Map.Entry<String, Long> entry : productEntryEnvironments.entrySet()) {
-										%>
+									for (Map.Entry<String, Long> entry : productEntryEnvironments.entrySet()) {
+									%>
 
-											<aui:option label="<%= entry.getKey() %>" selected="<%= productEntryName.equals(entry.getKey()) %>" value="<%= entry.getValue() %>" />
+										<aui:option label="<%= entry.getKey() %>" selected="<%= productEntryName.equals(entry.getKey()) %>" value="<%= entry.getValue() %>" />
 
-										<%
-										}
-										%>
+									<%
+									}
+									%>
 
-									</aui:select>
+								</aui:select>
 
-									<c:if test="<%= productEntryId > 0 %>">
-										<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
-									</c:if>
+								<c:if test="<%= productEntryId > 0 %>">
+									<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
+								</c:if>
 							</aui:col>
 						</aui:row>
 
 						<aui:row>
 							<aui:col width="<%= 33 %>">
+
 								<%
 								String envLFROnChange = renderResponse.getNamespace() + "selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, ''); " + renderResponse.getNamespace() + "updateSupportMessage(this.value);";
 								%>
@@ -222,6 +223,7 @@
 						<aui:row>
 							<aui:col width="<%= 100 %>">
 								<div class="properties-file">
+
 									<%
 									AccountEnvironmentAttachment portalExtAccountEnvironmentAttachment = null;
 
@@ -248,7 +250,7 @@
 										accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
 										%>
 
-										<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %>"  target="_blank" />
+										<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %>" target="_blank" />
 									</c:if>
 								</div>
 							</aui:col>
