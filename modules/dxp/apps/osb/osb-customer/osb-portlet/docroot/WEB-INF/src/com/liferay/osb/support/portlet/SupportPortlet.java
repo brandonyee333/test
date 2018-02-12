@@ -1369,7 +1369,7 @@ public class SupportPortlet extends MVCPortlet {
 
 			for (int sectionFieldId : sectionFieldIds) {
 				String value = ParamUtil.getString(
-					actionRequest, "field--" + sectionFieldId);
+					actionRequest, "field--" + sectionFieldId + "--");
 
 				data.put(sectionFieldId, value);
 			}
@@ -1398,7 +1398,8 @@ public class SupportPortlet extends MVCPortlet {
 			String param = enu.nextElement();
 
 			if (param.startsWith("field--")) {
-				int key = GetterUtil.getInteger(param.substring(7));
+				int key = GetterUtil.getInteger(
+					param.substring(7, param.indexOf("--", 7)));
 				String value = ParamUtil.getString(actionRequest, param);
 
 				data.put(key, value);
