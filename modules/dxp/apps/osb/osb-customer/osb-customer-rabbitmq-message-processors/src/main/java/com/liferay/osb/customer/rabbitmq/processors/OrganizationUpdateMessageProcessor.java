@@ -46,7 +46,7 @@ public class OrganizationUpdateMessageProcessor implements MessageProcessor {
 
 	@Override
 	public String[] getRoutingKeys() {
-		return _routingKeys;
+		return _ROUTING_KEYS;
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class OrganizationUpdateMessageProcessor implements MessageProcessor {
 
 		Organization organization =
 			_organizationLocalService.fetchOrganizationByUuidAndCompanyId(
-				uuid, _companyId);
+				uuid, _COMPANY_ID);
 
 		if (organization == null) {
 			return;
