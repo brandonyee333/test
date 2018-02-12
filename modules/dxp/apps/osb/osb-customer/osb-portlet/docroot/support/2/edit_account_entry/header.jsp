@@ -101,7 +101,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 						String taglibCancel = renderResponse.getNamespace() + "toggleForm('" + renderResponse.getNamespace() + "tierDropDown, '" + renderResponse.getNamespace() + "tierDisplay');";
 						%>
 
-						<aui:button cssClass="aui-button-input" name="tierCancel" onclick="<%= taglibCancel %>" value="cancel" />
+						<aui:button name="tierCancel" onclick="<%= taglibCancel %>" value="cancel" />
 					</div>
 				</span>
 				<span class="spacer"></span>

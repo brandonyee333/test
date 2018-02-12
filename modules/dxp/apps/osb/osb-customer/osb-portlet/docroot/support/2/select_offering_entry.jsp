@@ -205,7 +205,7 @@ boolean addTicketPermission = OSBAccountEntryPermission.contains(permissionCheck
 									/>
 								</c:when>
 								<c:otherwise>
-									<aui:button cssClass="aui-button-input" onClick="<%= rowHREF %>" value="choose" />
+									<aui:button onClick="<%= rowHREF %>" value="choose" />
 								</c:otherwise>
 							</c:choose>
 						</liferay-ui:search-container-column-text>

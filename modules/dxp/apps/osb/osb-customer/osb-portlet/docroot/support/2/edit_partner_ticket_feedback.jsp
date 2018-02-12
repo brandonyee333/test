@@ -190,9 +190,9 @@ if (liferayIncOrg && OSBTicketFeedbackPermission.contains(permissionChecker, tic
 			<c:if test="<%= hasUpdate %>">
 				<br />
 
-				<aui:button cssClass="aui-button-input" type="submit" value="save" />
+				<aui:button type="submit" value="save" />
 
-				<aui:button cssClass="aui-button-input" href="<%= backURL %>" value="cancel" />
+				<aui:button href="<%= backURL %>" value="cancel" />
 			</c:if>
 		</div>
 	</aui:form>

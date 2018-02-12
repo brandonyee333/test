@@ -69,9 +69,9 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 				</div>
 
 				<div align="right">
-					<aui:button cssClass="aui-button-input buttons" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="save" />
+					<aui:button cssClass="buttons" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="save" />
 
-					<aui:button cssClass="aui-button-input buttons pull-left" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' value="cancel" />
+					<aui:button cssClass="buttons pull-left" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' value="cancel" />
 				</div>
 			</aui:form>
 		</div>
@@ -98,9 +98,9 @@ long accountEntryId = ParamUtil.getLong(request, "accountEntryId");
 				</div>
 
 				<div align="right">
-					<aui:button cssClass="aui-button-input buttons" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="save" />
+					<aui:button cssClass="buttons" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="save" />
 
-					<aui:button cssClass="aui-button-input buttons pull-left" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' value="cancel" />
+					<aui:button cssClass="buttons pull-left" onClick='<%= renderResponse.getNamespace() + "closePopup();" %>' value="cancel" />
 				</div>
 			</aui:form>
 		</div>

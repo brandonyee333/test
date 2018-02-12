@@ -47,9 +47,9 @@
 
 			<aui:input label="" name="body" style="height: 250px; width: 750px;" type="textarea" value="<%= SupportUtil.getEscalationDetails() %>" wrap="soft" />
 
-			<aui:button cssClass="aui-button-input" type="submit" value="escalate" />
+			<aui:button type="submit" value="escalate" />
 
-			<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
+			<aui:button onClick="window.close();" value="cancel" />
 		</aui:form>
 	</c:otherwise>
 </c:choose>

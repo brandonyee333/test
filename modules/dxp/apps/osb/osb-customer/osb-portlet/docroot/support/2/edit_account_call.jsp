@@ -212,9 +212,9 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 					<liferay-ui:message arguments="<%= new Object[] {accountCall.getModifiedUserName(), fullDateFormatDateTime.format(accountCall.getModifiedDate())} %>" key="x-on-x" />
 				</c:if>
 
-				<aui:button cssClass="aui-button-input" type="submit" value="save" />
+				<aui:button type="submit" value="save" />
 
-				<aui:button cssClass="aui-button-input" onClick="javascript:Liferay.Util.getWindow().close();" value="cancel" />
+				<aui:button onClick="javascript:Liferay.Util.getWindow().close();" value="cancel" />
 			</div>
 		</div>
 	</aui:form>

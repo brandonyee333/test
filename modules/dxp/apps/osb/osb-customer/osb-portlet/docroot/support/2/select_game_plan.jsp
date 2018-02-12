@@ -56,9 +56,9 @@ String gamePlan = GetterUtil.get(gamePlanMap.get(locale), gamePlanMap.get(Locale
 	</div>
 
 	<div>
-		<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "chooseGamePlan();" %>' value="choose" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "chooseGamePlan();" %>' value="choose" />
 
-		<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
+		<aui:button onClick="window.close();" value="cancel" />
 	</div>
 </div>
 

@@ -193,7 +193,7 @@
 															String taglibEdit = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-project-call") + "', '" + editAccountCallURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountCall');";
 															%>
 
-															<aui:button cssClass="aui-button-input" onClick="<%= taglibEdit %>" value="edit" />
+															<aui:button onClick="<%= taglibEdit %>" value="edit" />
 
 															<portlet:actionURL name="deleteAccountCall" var="deleteAccountCallURL">
 																<portlet:param name="redirect" value="<%= currentURL %>" />
@@ -204,7 +204,7 @@
 															String taglibDelete = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this-call-log") + "')) { location.href='" + deleteAccountCallURL + "'; } else { self.focus(); }";
 															%>
 
-															<aui:button cssClass="aui-button-input" onClick="<%= taglibDelete %>" value="delete" />
+															<aui:button onClick="<%= taglibDelete %>" value="delete" />
 														</div>
 													</c:if>
 												</div>
@@ -239,7 +239,7 @@
 								String taglibAddCallLog = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "add-call-log") + "', '" + addAccountCallURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountCall');";
 								%>
 
-								<aui:button cssClass="aui-button-input" onClick="<%= taglibAddCallLog %>" value="add-call-log" />
+								<aui:button onClick="<%= taglibAddCallLog %>" value="add-call-log" />
 							</div>
 						</div>
 					</c:if>
@@ -286,7 +286,7 @@
 									String taglibEdit = renderResponse.getNamespace() + "toggleSection('" + casSectionLabel + "', '" + casSectionEditLabel + "');";
 									%>
 
-									<aui:button cssClass="aui-button-input" onClick="<%= taglibEdit %>" value="edit" />
+									<aui:button onClick="<%= taglibEdit %>" value="edit" />
 								</c:if>
 							</div>
 						</div>
@@ -320,13 +320,13 @@
 									String taglibSave = renderResponse.getNamespace() + "updateAccountInformation('" + AccountInformationConstants.SECTION_ADVOCACY_SPECIALIST + "', 'casInformation');";
 									%>
 
-									<aui:button cssClass="aui-button-input" onClick="<%= taglibSave %>" value="save" />
+									<aui:button onClick="<%= taglibSave %>" value="save" />
 
 									<%
 									String taglibCancel = renderResponse.getNamespace() + "toggleSection('" + casSectionEditLabel + "', '" + casSectionLabel + "');";
 									%>
 
-									<aui:button cssClass="aui-button-input" onClick="<%= taglibCancel %>" value="cancel" />
+									<aui:button onClick="<%= taglibCancel %>" value="cancel" />
 								</div>
 							</div>
 						</div>
@@ -374,7 +374,7 @@
 									String taglibEdit = renderResponse.getNamespace() + "toggleSection('" + salesSectionLabel + "', '" + salesSectionEditLabel + "');";
 									%>
 
-									<aui:button cssClass="aui-button-input" onClick="<%= taglibEdit %>" value="edit" />
+									<aui:button onClick="<%= taglibEdit %>" value="edit" />
 								</c:if>
 							</div>
 						</div>
@@ -408,13 +408,13 @@
 									String taglibSave = renderResponse.getNamespace() + "updateAccountInformation('" + AccountInformationConstants.SECTION_SALES + "', 'salesInformation');";
 									%>
 
-									<aui:button cssClass="aui-button-input" onClick="<%= taglibSave %>" value="save" />
+									<aui:button onClick="<%= taglibSave %>" value="save" />
 
 									<%
 									String taglibcancel = renderResponse.getNamespace() + "toggleSection('" + salesSectionEditLabel + "', '" + salesSectionLabel + "');";
 									%>
 
-									<aui:button cssClass="aui-button-input" onClick="<%= taglibcancel %>" value="cancel" />
+									<aui:button onClick="<%= taglibcancel %>" value="cancel" />
 								</div>
 							</div>
 						</div>

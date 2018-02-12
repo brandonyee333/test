@@ -87,7 +87,7 @@ Date lastEnabledDate = calendar.getTime();
 							String taglibSelectPartnerEntry = "var partnerEntryWindow = window.open('" + selectPartnerEntryURL + "', 'partner_entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); partnerEntryWindow.focus();";
 							%>
 
-							<aui:button cssClass="aui-button-input" onClick="<%= taglibSelectPartnerEntry %>" value="choose" />
+							<aui:button onClick="<%= taglibSelectPartnerEntry %>" value="choose" />
 						</td>
 						<td colspan="2">
 							<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLE %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLE %>" type="hidden" value="<%= displayTerms.getAccountWorkerRole() %>" />
@@ -109,7 +109,7 @@ Date lastEnabledDate = calendar.getTime();
 							String taglibSelectAccountWorker = "var accountWorkerWindow = window.open('" + selectAccountWorkerURL + "', 'account_worker', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountWorkerWindow.focus();";
 							%>
 
-							<aui:button cssClass="aui-button-input" onClick="<%= taglibSelectAccountWorker %>" value="choose" />
+							<aui:button onClick="<%= taglibSelectAccountWorker %>" value="choose" />
 						</td>
 					</tr>
 					<tr>
@@ -346,7 +346,7 @@ Date lastEnabledDate = calendar.getTime();
 							String taglibSelectCreateUser = "var createUserWindow = window.open('" + selectCreateUserURL + "', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();";
 							%>
 
-							<aui:button cssClass="aui-button-input" onClick="<%= taglibSelectCreateUser %>" value="choose" />
+							<aui:button onClick="<%= taglibSelectCreateUser %>" value="choose" />
 						</td>
 						<td colspan="2">
 							<aui:select label="" name="<%= displayTerms.MODIFIED_USER_ID %>">
@@ -370,7 +370,7 @@ Date lastEnabledDate = calendar.getTime();
 							String taglibSelectModifierUser = "var modifiedUserWindow = window.open('" + selectModifiedUserURL + "', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();";
 							%>
 
-							<aui:button cssClass="aui-button-input" onClick="<%= taglibSelectModifierUser %>" value="choose" />
+							<aui:button onClick="<%= taglibSelectModifierUser %>" value="choose" />
 						</td>
 					</tr>
 					<tr>

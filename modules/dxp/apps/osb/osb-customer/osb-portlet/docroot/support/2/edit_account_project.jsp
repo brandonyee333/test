@@ -74,9 +74,9 @@ String name = BeanParamUtil.getString(accountProject, request, "name");
 					<liferay-ui:message arguments="<%= new Object[] {accountProject.getModifiedUserName(), fullDateFormatDateTime.format(accountProject.getModifiedDate())} %>" key="x-on-x" />
 				</c:if>
 
-				<aui:button cssClass="aui-button-input" type="submit" value="save" />
+				<aui:button type="submit" value="save" />
 
-				<aui:button cssClass="aui-button-input" onClick="Liferay.Util.getWindow().close();" value="cancel" />
+				<aui:button onClick="Liferay.Util.getWindow().close();" value="cancel" />
 			</div>
 		</div>
 	</aui:form>

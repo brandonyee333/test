@@ -45,9 +45,9 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEnt
 			</div>
 
 			<div class="aui-field-inline indent">
-				<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "updateSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' value="yes" />
+				<aui:button onClick='<%= renderResponse.getNamespace() + "updateSatisfied(" + TicketFeedbackConstants.SATISFIED_YES + ");" %>' value="yes" />
 
-				<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "updateSatisfied(" + TicketFeedbackConstants.SATISFIED_NO + ");" %>' value="no" />
+				<aui:button onClick='<%= renderResponse.getNamespace() + "updateSatisfied(" + TicketFeedbackConstants.SATISFIED_NO + ");" %>' value="no" />
 			</div>
 		</div>
 
@@ -71,7 +71,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEnt
 
 				<br /><br />
 
-				<aui:button cssClass="aui-button-input" type="submit" value="submit" />
+				<aui:button type="submit" value="submit" />
 			</div>
 		</div>
 	</div>

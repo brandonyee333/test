@@ -315,7 +315,7 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 					String taglibCreateEnvironment = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "create-environment-configuration") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
 					%>
 
-					<aui:button cssClass="aui-button-input" onClick="<%= taglibCreateEnvironment %>" value="create-environment" />
+					<aui:button onClick="<%= taglibCreateEnvironment %>" value="create-environment" />
 
 					<br /><br />
 				</c:if>

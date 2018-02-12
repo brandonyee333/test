@@ -157,9 +157,9 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		</div>
 	</div>
 
-	<aui:button cssClass="aui-button-input" type="submit" value="log-call" />
+	<aui:button type="submit" value="log-call" />
 
-	<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
+	<aui:button onClick="window.close();" value="cancel" />
 </aui:form>
 
 <c:if test="<%= ticketCallId > 0 %>">

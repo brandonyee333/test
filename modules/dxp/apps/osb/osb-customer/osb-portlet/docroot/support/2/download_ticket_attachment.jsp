@@ -53,7 +53,7 @@ List<FileRepository> fileRepositories = SupportUtil.getFileRepositories();
 					<portlet:param name="fileRepositoryId" value="<%= fileRepository.getFileRepositoryId() %>" />
 				</liferay-portlet:resourceURL>
 
-				<aui:button cssClass='aui-button-input <%= available ? "" : "hide" %>' href="<%= ticketAttachmentURL.toString() %>" id='<%= fileRepository.getFileRepositoryId() + "download" %>' value="download" />
+				<aui:button cssClass='<%= available ? "" : "hide" %>' href="<%= ticketAttachmentURL.toString() %>" id='<%= fileRepository.getFileRepositoryId() + "download" %>' value="download" />
 
 				<c:if test="<%= !available %>">
 					<div class="attachment-syncing aui-button-input" id="<portlet:namespace/><%= fileRepository.getFileRepositoryId() %>waiting">

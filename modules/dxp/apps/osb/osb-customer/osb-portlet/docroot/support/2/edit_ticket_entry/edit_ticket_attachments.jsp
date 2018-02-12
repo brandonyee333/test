@@ -405,7 +405,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			<br />
 
 			<div class="button-holder">
-				<aui:button cssClass="aui-button-input hide" name="saveButton" type="submit" value="save" />
+				<aui:button cssClass="hide" name="saveButton" type="submit" value="save" />
 			</div>
 		</div>
 	</aui:form>

@@ -26,7 +26,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 	<portlet:param name="accountEntryIds" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
 </portlet:renderURL>
 
-<aui:button cssClass="aui-button-input" onClick='<%= "location.href = '" + viewTicketsURL.toString() + "';" %>' value="view-tickets" />
+<aui:button onClick='<%= "location.href = '" + viewTicketsURL.toString() + "';" %>' value="view-tickets" />
 
 <%
 Map<String, String> dropDownList = new TreeMap<String, String>();

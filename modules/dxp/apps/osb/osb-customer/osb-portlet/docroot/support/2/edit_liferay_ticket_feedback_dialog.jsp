@@ -55,9 +55,9 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 		</div>
 
 		<div class="clearfix">
-			<aui:button cssClass="aui-button-input pull-left" name="dialogCancelButton" onClick='<%= renderResponse.getNamespace() + "closeDialog(1);" %>' value="cancel" />
+			<aui:button cssClass="pull-left" name="dialogCancelButton" onClick='<%= renderResponse.getNamespace() + "closeDialog(1);" %>' value="cancel" />
 
-			<aui:button cssClass="aui-button-input pull-right" name="dialogSubmitButton" onClick='<%= renderResponse.getNamespace() + "submitLiferayTicketFeedback();" %>' value="submit" />
+			<aui:button cssClass="pull-right" name="dialogSubmitButton" onClick='<%= renderResponse.getNamespace() + "submitLiferayTicketFeedback();" %>' value="submit" />
 		</div>
 	</div>
 </div>

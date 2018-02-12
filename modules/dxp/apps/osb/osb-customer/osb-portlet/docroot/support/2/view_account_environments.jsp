@@ -150,7 +150,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 						String taglibEditEnvironmentConfiguration = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "edit-environment-configuration") + "', '" + editAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
 						%>
 
-						<aui:button cssClass="aui-button-input edit-button" onClick="<%= taglibEditEnvironmentConfiguration %>" value="edit" />
+						<aui:button cssClass="edit-button" onClick="<%= taglibEditEnvironmentConfiguration %>" value="edit" />
 					</c:if>
 
 					<c:if test="<%= OSBAccountEnvironmentPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.DELETE) %>">
@@ -163,7 +163,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 						String taglibDeleteURL = "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-delete-this") +"')) { submitForm(document." + renderResponse.getNamespace() + "fm, '" + deleteAccountEnvironmentURL.toString() + "'); } else { return false; }";
 						%>
 
-						<aui:button cssClass="aui-button-input edit-button" onClick="<%= taglibDeleteURL %>" value="delete" />
+						<aui:button cssClass="edit-button" onClick="<%= taglibDeleteURL %>" value="delete" />
 					</c:if>
 				</div>
 			</div>
@@ -186,7 +186,7 @@ for (String productEntryName : accountEnvironmentsMap.keySet()) {
 	String taglibAddEnvironmentDetails = renderResponse.getNamespace() + "openDialog('" + LanguageUtil.get(request, "add-environment-details") + "', '" + addAccountEnvironmentURL.toString() + "', '" + renderResponse.getNamespace() + "updateAccountEnvironment');";
 	%>
 
-	<aui:button cssClass="aui-button-input pull-right" onClick="<%= taglibAddEnvironmentDetails %>" value="add" />
+	<aui:button cssClass="pull-right" onClick="<%= taglibAddEnvironmentDetails %>" value="add" />
 </c:if>
 
 <aui:script>

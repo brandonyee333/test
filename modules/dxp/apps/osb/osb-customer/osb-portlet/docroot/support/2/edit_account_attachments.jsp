@@ -157,9 +157,9 @@
 						</table>
 
 						<div class="button-holder">
-							<aui:button cssClass="aui-button-input" type="submit" value="save" />
+							<aui:button type="submit" value="save" />
 
-							<aui:button cssClass="aui-button-input" onClick="javascript:window.close();" value="cancel" />
+							<aui:button onClick="javascript:window.close();" value="cancel" />
 						</div>
 					</div>
 				</div>

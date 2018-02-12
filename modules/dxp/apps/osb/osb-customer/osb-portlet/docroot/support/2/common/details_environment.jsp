@@ -382,13 +382,13 @@ if (productEntry != null) {
 			<aui:input name="productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
 
 			<div class="create-env-button">
-				<aui:button cssClass="aui-button-input pull-left" id="createEnvironment" onClick='<%= renderResponse.getNamespace() + "updateAccountEnvironment(0, '');" %>' value="create-environment" />
+				<aui:button cssClass="pull-left" id="createEnvironment" onClick='<%= renderResponse.getNamespace() + "updateAccountEnvironment(0, '');" %>' value="create-environment" />
 
 				<%
 				String taglibUpdateEnvironment = renderResponse.getNamespace() + "updateAccountEnvironment(document.getElementById('" + renderResponse.getNamespace() + "accountEnvironmentId').value, document.getElementById('" + renderResponse.getNamespace() + "name').value);";
 				%>
 
-				<aui:button cssClass="aui-button-input hide pull-left" id="updateEnvironment" onClick="<%= taglibUpdateEnvironment %>" value="update-environment" />
+				<aui:button cssClass="hide pull-left" id="updateEnvironment" onClick="<%= taglibUpdateEnvironment %>" value="update-environment" />
 			</div>
 		</c:if>
 	</div>

@@ -45,9 +45,9 @@
 
 		<aui:input label="" name="addCommentBody" style="height: 250px; width: 700px;" type="textarea" wrap="soft" />
 
-		<aui:button cssClass="aui-button-input" onClick='<%= renderResponse.getNamespace() + "closeTicket();" %>' value="close-ticket" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "closeTicket();" %>' value="close-ticket" />
 
-		<aui:button cssClass="aui-button-input" onClick="window.close();" value="cancel" />
+		<aui:button onClick="window.close();" value="cancel" />
 	</div>
 </aui:form>
 

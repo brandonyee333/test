@@ -112,6 +112,6 @@
 	</table>
 
 	<div>
-		<aui:button cssClass="aui-button-input" onClick="window.close();" value="close" />
+		<aui:button onClick="window.close();" value="close" />
 	</div>
 </div>

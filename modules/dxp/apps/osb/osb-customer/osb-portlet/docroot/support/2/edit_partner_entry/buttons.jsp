@@ -26,7 +26,7 @@ partnerEntryTicketSearchURL.setParameter("mvcPath", "/support/2/advanced_search.
 partnerEntryTicketSearchURL.setParameter("assignedPartnerEntryIds", String.valueOf(partnerEntry.getPartnerEntryId()));
 %>
 
-<aui:button cssClass="aui-button-input" href="<%= partnerEntryTicketSearchURL.toString() %>" value="view-tickets" />
+<aui:button href="<%= partnerEntryTicketSearchURL.toString() %>" value="view-tickets" />
 
 <%
 Map<String, String> dropDownList = new TreeMap<String, String>();
