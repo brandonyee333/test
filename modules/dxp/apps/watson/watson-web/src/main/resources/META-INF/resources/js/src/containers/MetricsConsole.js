@@ -257,7 +257,7 @@ function mapStateToProps(state, props) {
 		action,
 		incidentsFilter,
 		incidentsLoading,
-		incidentsMetricsData,
+		incidentsMetricsData
 	};
 }
 

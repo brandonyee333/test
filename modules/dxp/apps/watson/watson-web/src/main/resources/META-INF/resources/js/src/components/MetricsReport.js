@@ -1,6 +1,6 @@
 import BootstrapTable from 'react-bootstrap-table-next';
 import bridge from 'metal-react';
-import {forEach, isEmpty} from 'lodash';
+import {isEmpty} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
 import {Map} from 'immutable';
 

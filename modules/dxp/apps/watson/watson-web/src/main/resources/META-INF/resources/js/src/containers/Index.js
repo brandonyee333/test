@@ -274,11 +274,11 @@ class Index extends JSXComponent {
 						label={Liferay.Language.get('create-child')}
 					/>
 
-					{watsonAdministratorRole == true || (childrensHomeManagerRole == true && incidentManagerRole == true) &&
+					{(watsonAdministratorRole === true || (childrensHomeManagerRole === true && incidentManagerRole === true)) &&
 						<LinkButton
 							className="primary"
-							href={`${WatsonConstants.urls.baseURL}/children/import/`}
-							label={Liferay.Language.get('import-from-ZCR')}
+							href={`${WatsonConstants.urls.baseURL}/children/link/`}
+							label={Liferay.Language.get('link-to-zcr-person')}
 						/>
 					}
 

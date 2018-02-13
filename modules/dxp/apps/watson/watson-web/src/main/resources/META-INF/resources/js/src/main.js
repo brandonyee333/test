@@ -10,7 +10,7 @@ import SidebarToolbar from './components/SidebarToolbar';
 
 import AdminConsole from './containers/AdminConsole';
 import CreateChild from './containers/CreateChild';
-import ChildModelImport from './containers/ChildModelImport';
+import ChildModelLink from './containers/ChildModelLink';
 import CreateIncident from './containers/CreateIncident';
 import ChildReport from './containers/views/ChildReport';
 import EditChild from './containers/EditChild';
@@ -86,8 +86,8 @@ class Watson extends JSXComponent {
 						/>
 
 						<Router
-							component={ChildModelImport}
-							path={`${WatsonConstants.urls.basePath}/children/import`}
+							component={ChildModelLink}
+							path={`${WatsonConstants.urls.basePath}/children/link`}
 						/>
 
 						<Router

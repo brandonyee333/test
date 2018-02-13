@@ -7,39 +7,39 @@ import ViewIndex from './views/ViewIndex';
 
 import {importChildren} from '../actions/children';
 
-class ChildModelImport extends JSXComponent {
+class ChildModelLink extends JSXComponent {
 	render() {
 		const {
 			action,
-			importChildren
+			linkChildren
 		} = this.props;
 
-		const childrenImportRedirect = () => Router.router().navigate(`${WatsonConstants.urls.baseURL}/children`);
+		const childrenLinkRedirect = () => Router.router().navigate(`${WatsonConstants.urls.baseURL}/children`);
 
 		const buttonData = [
 			{
-				label: Liferay.Language.get('import')
+				label: Liferay.Language.get('link')
 			},
 			{
 				label: Liferay.Language.get('cancel'),
-				method: childrenImportRedirect
+				method: childrenLinkRedirect
 			}
 		];
 
 		return (
 			<div class="model-index page-container hidden-print">
 				<div class="navigation-sidebar">
-					<NavigationHeader mainHeader={Liferay.Language.get('import-child')} />
+					<NavigationHeader mainHeader={Liferay.Language.get('link-child')} />
 				</div>
 
 				<ViewIndex
 					action={action}
 					buttonData={buttonData}
-					headerStringLeft={Liferay.Language.get('import-child')}
+					headerStringLeft={Liferay.Language.get('link-child')}
 					model="people"
-					redirect={childrenImportRedirect}
+					redirect={childrenLinkRedirect}
 					selectedIds={[]}
-					submitMethod={importChildren}
+					submitMethod={linkChildren}
 					watsonwatsonIncidentId={0}
 				/>
 			</div>
@@ -47,14 +47,14 @@ class ChildModelImport extends JSXComponent {
 	}
 }
 
-ChildModelImport.PROPS = {
-	action: Config.string().value('import'),
+ChildModelLink.PROPS = {
+	action: Config.string().value('link'),
 	model: Config.string().value('people')
 };
 
 function mapDispatchToProps(dispatch) {
 	return {
-		importChildren: data => {
+		linkChildren: data => {
 			dispatch(
 				importChildren(data)
 			);
@@ -62,4 +62,4 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default connect(null, mapDispatchToProps)(ChildModelImport);
+export default connect(null, mapDispatchToProps)(ChildModelLink);
