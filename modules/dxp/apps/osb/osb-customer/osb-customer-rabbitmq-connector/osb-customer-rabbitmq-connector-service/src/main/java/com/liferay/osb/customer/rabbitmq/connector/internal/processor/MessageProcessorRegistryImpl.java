@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.internal.processor;
 
+import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessorRegistry;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
@@ -90,7 +91,12 @@ public class MessageProcessorRegistryImpl implements MessageProcessorRegistry {
 			MessageProcessor messageProcessor)
 		throws Exception {
 
-		_consumerManager.addConsumer(messageProcessor.getQueue());
+		Consumer consumer = _consumerManager.getConsumer(
+			messageProcessor.getQueue());
+
+		if (consumer == null) {
+			_consumerManager.addConsumer(messageProcessor.getQueue());
+		}
 
 		List<MessageProcessor> messageProcessors = _messageProcessorsMap.get(
 			messageProcessor.getQueue());
