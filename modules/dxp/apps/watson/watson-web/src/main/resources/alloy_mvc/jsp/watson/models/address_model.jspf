@@ -117,6 +117,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonAddress));
 		jsonObject.put("name", watsonAddress.getName(locale));
 		jsonObject.put("number", watsonAddress.getNumber());
+		jsonObject.put("otherType", watsonAddress.getOtherType());
 		jsonObject.put("postalCode", watsonAddress.getPostalCode());
 
 		watsonListType = WatsonListType.fetch(watsonAddress.getProvinceWatsonListTypeId());
@@ -126,7 +127,6 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		}
 
 		jsonObject.put("provinceWatsonListTypeId", watsonAddress.getProvinceWatsonListTypeId());
-		jsonObject.put("otherType", watsonAddress.getOtherType());
 		jsonObject.put("region", watsonAddress.getRegion());
 		jsonObject.put("reportedBy", watsonAddress.getUserName());
 		jsonObject.put("room", watsonAddress.getRoom());

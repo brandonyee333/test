@@ -118,7 +118,7 @@ public static class WatsonWorkflowUtil {
 		MailServiceUtil.sendEmail(mailMessage);
 	}
 
-	public static void sendCitizenshipRequestEmail(User fromUser, WatsonChild watsonChild, String childURL) throws Exception {
+	public static void sendCitizenshipRequestEmail(User fromUser, String childURL) throws Exception {
 		UserGroup userGroup = UserGroupLocalServiceUtil.getUserGroup(fromUser.getCompanyId(), _CITIZENSHIP_USER_GROUP);
 
 		List<User> citizenshipGroupUsers = UserLocalServiceUtil.getUserGroupUsers(userGroup.getUserGroupId());
@@ -134,12 +134,10 @@ public static class WatsonWorkflowUtil {
 			String beginChildLinkTag = "<a href=" + childURL + ">";
 			String endChildLinkTag = "</a>";
 
-			sb.append(LanguageUtil.format(citizenshipGroupUser.getLocale(), "please-begin-the-citizenship-process-for-x-click-x-x-for-child-details", new String[] {watsonChild.getPrimaryName(), beginChildLinkTag, endChildLinkTag}));
+			sb.append(LanguageUtil.format(citizenshipGroupUser.getLocale(), "x-has-requested-that-you-begin-the-citizenship-process-for-x-x", new String[] {fromUser.getFullName(), beginChildLinkTag, endChildLinkTag}));
 
 			sb.append("<br /><br />");
-			sb.append(LanguageUtil.format(citizenshipGroupUser.getLocale(), "sincerely", new String[0]));
-			sb.append("<br />");
-			sb.append(fromUser.getFullName());
+			sb.append(LanguageUtil.format(citizenshipGroupUser.getLocale(), "thank-you", new String[0]));
 
 			mailMessage.setBody(sb.toString());
 
@@ -149,7 +147,7 @@ public static class WatsonWorkflowUtil {
 
 			mailMessage.setHTMLFormat(true);
 
-			String subject = LanguageUtil.format(citizenshipGroupUser.getLocale(), "a-citizenship-request-has-been-initiated", new Object[0]);
+			String subject = LanguageUtil.format(citizenshipGroupUser.getLocale(), "citizenship-process-initiated", new Object[0]);
 
 			mailMessage.setSubject(subject);
 

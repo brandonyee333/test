@@ -349,15 +349,22 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonChild watsonChild = WatsonChild.fetch(watsonChildId);
 
-		String url = ParamUtil.getString(request, "url", StringPool.BLANK);
+		String url = ParamUtil.getString(request, "url");
 
-		WatsonWorkflowUtil.sendCitizenshipRequestEmail(user, watsonChild, url);
+		if (Validator.isNotNull(url)) {
+			WatsonWorkflowUtil.sendCitizenshipRequestEmail(user, url);
 
-		watsonChild.setCitizenshipWatsonListTypeId(WatsonListType.CHILD_CITIZENSHIP_TYPE_IN_PROGRESS);
+			watsonChild.setCitizenshipWatsonListTypeId(WatsonListType.CHILD_CITIZENSHIP_TYPE_IN_PROGRESS);
 
-		watsonChild.update();
+			watsonChild.update();
 
-		respondWith(translate("child-citizenship-status-updated"), WatsonChild.getAsJSONObject(watsonChild));
+			respondWith(translate("child-citizenship-status-updated"), WatsonChild.getAsJSONObject(watsonChild));
+
+			return;
+		}
+
+		respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("child-was-not-saved"), jsonObject);
+
 	}
 
 	public void update() throws Exception {
