@@ -117,7 +117,7 @@ class TimeInput extends JSXComponent {
 	setMinutesOptions() {
 		const minutesOptions = {};
 
-		for (let minute = 0; minute < 60; minute++) {
+		for (let minute = 1; minute < 60; minute++) {
 			minutesOptions[minute] = {
 				label: `${minute} ${Liferay.Language.get('minutes')}`,
 				value: minute.toString()
