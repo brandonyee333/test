@@ -83,6 +83,7 @@ public class WatsonAddressWrapper implements WatsonAddress,
 		attributes.put("room", getRoom());
 		attributes.put("description", getDescription());
 		attributes.put("imagePayload", getImagePayload());
+		attributes.put("otherType", getOtherType());
 		attributes.put("lastSeenDate", getLastSeenDate());
 		attributes.put("latitude", getLatitude());
 		attributes.put("longitude", getLongitude());
@@ -239,6 +240,12 @@ public class WatsonAddressWrapper implements WatsonAddress,
 
 		if (imagePayload != null) {
 			setImagePayload(imagePayload);
+		}
+
+		String otherType = (String)attributes.get("otherType");
+
+		if (otherType != null) {
+			setOtherType(otherType);
 		}
 
 		Date lastSeenDate = (Date)attributes.get("lastSeenDate");
@@ -652,6 +659,16 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public long getOriginalWatsonAddressId() {
 		return _watsonAddress.getOriginalWatsonAddressId();
+	}
+
+	/**
+	* Returns the other type of this watson address.
+	*
+	* @return the other type of this watson address
+	*/
+	@Override
+	public java.lang.String getOtherType() {
+		return _watsonAddress.getOtherType();
 	}
 
 	/**
@@ -1179,6 +1196,16 @@ public class WatsonAddressWrapper implements WatsonAddress,
 	@Override
 	public void setOriginalWatsonAddressId(long originalWatsonAddressId) {
 		_watsonAddress.setOriginalWatsonAddressId(originalWatsonAddressId);
+	}
+
+	/**
+	* Sets the other type of this watson address.
+	*
+	* @param otherType the other type of this watson address
+	*/
+	@Override
+	public void setOtherType(java.lang.String otherType) {
+		_watsonAddress.setOtherType(otherType);
 	}
 
 	/**

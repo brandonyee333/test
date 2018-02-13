@@ -51,10 +51,10 @@ public class WatsonIncidentSoap implements Serializable {
 		soapModel.setName(model.getName());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setExternalCaseId(model.getExternalCaseId());
-		soapModel.setOtherType(model.getOtherType());
 		soapModel.setReportDate(model.getReportDate());
 		soapModel.setStartDate(model.getStartDate());
 		soapModel.setEndDate(model.getEndDate());
+		soapModel.setExpenses(model.getExpenses());
 		soapModel.setIncidentStatus(model.getIncidentStatus());
 		soapModel.setStatus(model.getStatus());
 
@@ -254,14 +254,6 @@ public class WatsonIncidentSoap implements Serializable {
 		_externalCaseId = externalCaseId;
 	}
 
-	public String getOtherType() {
-		return _otherType;
-	}
-
-	public void setOtherType(String otherType) {
-		_otherType = otherType;
-	}
-
 	public Date getReportDate() {
 		return _reportDate;
 	}
@@ -284,6 +276,14 @@ public class WatsonIncidentSoap implements Serializable {
 
 	public void setEndDate(Date endDate) {
 		_endDate = endDate;
+	}
+
+	public double getExpenses() {
+		return _expenses;
+	}
+
+	public void setExpenses(double expenses) {
+		_expenses = expenses;
 	}
 
 	public int getIncidentStatus() {
@@ -320,10 +320,10 @@ public class WatsonIncidentSoap implements Serializable {
 	private String _name;
 	private String _description;
 	private String _externalCaseId;
-	private String _otherType;
 	private Date _reportDate;
 	private Date _startDate;
 	private Date _endDate;
+	private double _expenses;
 	private int _incidentStatus;
 	private int _status;
 }

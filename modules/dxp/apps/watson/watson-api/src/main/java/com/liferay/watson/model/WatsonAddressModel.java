@@ -700,6 +700,21 @@ public interface WatsonAddressModel extends BaseModel<WatsonAddress>,
 	public void setImagePayload(String imagePayload);
 
 	/**
+	 * Returns the other type of this watson address.
+	 *
+	 * @return the other type of this watson address
+	 */
+	@AutoEscape
+	public String getOtherType();
+
+	/**
+	 * Sets the other type of this watson address.
+	 *
+	 * @param otherType the other type of this watson address
+	 */
+	public void setOtherType(String otherType);
+
+	/**
 	 * Returns the last seen date of this watson address.
 	 *
 	 * @return the last seen date of this watson address

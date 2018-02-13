@@ -40,6 +40,7 @@ create table WatsonAddress (
 	room VARCHAR(75) null,
 	description STRING null,
 	imagePayload TEXT null,
+	otherType VARCHAR(75) null,
 	lastSeenDate DATE null,
 	latitude DOUBLE,
 	longitude DOUBLE,
@@ -123,10 +124,10 @@ create table WatsonIncident (
 	name VARCHAR(75) null,
 	description STRING null,
 	externalCaseId VARCHAR(75) null,
-	otherType VARCHAR(75) null,
 	reportDate DATE null,
 	startDate DATE null,
 	endDate DATE null,
+	expenses DOUBLE,
 	incidentStatus INTEGER,
 	status INTEGER
 );

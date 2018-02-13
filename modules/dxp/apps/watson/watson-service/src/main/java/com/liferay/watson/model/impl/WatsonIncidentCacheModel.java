@@ -103,14 +103,14 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		sb.append(description);
 		sb.append(", externalCaseId=");
 		sb.append(externalCaseId);
-		sb.append(", otherType=");
-		sb.append(otherType);
 		sb.append(", reportDate=");
 		sb.append(reportDate);
 		sb.append(", startDate=");
 		sb.append(startDate);
 		sb.append(", endDate=");
 		sb.append(endDate);
+		sb.append(", expenses=");
+		sb.append(expenses);
 		sb.append(", incidentStatus=");
 		sb.append(incidentStatus);
 		sb.append(", status=");
@@ -180,13 +180,6 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			watsonIncidentImpl.setExternalCaseId(externalCaseId);
 		}
 
-		if (otherType == null) {
-			watsonIncidentImpl.setOtherType("");
-		}
-		else {
-			watsonIncidentImpl.setOtherType(otherType);
-		}
-
 		if (reportDate == Long.MIN_VALUE) {
 			watsonIncidentImpl.setReportDate(null);
 		}
@@ -208,6 +201,7 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			watsonIncidentImpl.setEndDate(new Date(endDate));
 		}
 
+		watsonIncidentImpl.setExpenses(expenses);
 		watsonIncidentImpl.setIncidentStatus(incidentStatus);
 		watsonIncidentImpl.setStatus(status);
 
@@ -247,10 +241,11 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		externalCaseId = objectInput.readUTF();
-		otherType = objectInput.readUTF();
 		reportDate = objectInput.readLong();
 		startDate = objectInput.readLong();
 		endDate = objectInput.readLong();
+
+		expenses = objectInput.readDouble();
 
 		incidentStatus = objectInput.readInt();
 
@@ -315,16 +310,11 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 			objectOutput.writeUTF(externalCaseId);
 		}
 
-		if (otherType == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(otherType);
-		}
-
 		objectOutput.writeLong(reportDate);
 		objectOutput.writeLong(startDate);
 		objectOutput.writeLong(endDate);
+
+		objectOutput.writeDouble(expenses);
 
 		objectOutput.writeInt(incidentStatus);
 
@@ -349,10 +339,10 @@ public class WatsonIncidentCacheModel implements CacheModel<WatsonIncident>,
 	public String name;
 	public String description;
 	public String externalCaseId;
-	public String otherType;
 	public long reportDate;
 	public long startDate;
 	public long endDate;
+	public double expenses;
 	public int incidentStatus;
 	public int status;
 }

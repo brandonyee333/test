@@ -61,6 +61,7 @@
 		<property name="room" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
+		<property name="otherType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="lastSeenDate" type="org.hibernate.type.TimestampType" />
 		<property name="latitude" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="longitude" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
@@ -148,10 +149,10 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="externalCaseId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="otherType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="reportDate" type="org.hibernate.type.TimestampType" />
 		<property name="startDate" type="org.hibernate.type.TimestampType" />
 		<property name="endDate" type="org.hibernate.type.TimestampType" />
+		<property name="expenses" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
 		<property name="incidentStatus" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>

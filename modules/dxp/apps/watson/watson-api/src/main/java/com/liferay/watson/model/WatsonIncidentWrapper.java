@@ -77,10 +77,10 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 		attributes.put("name", getName());
 		attributes.put("description", getDescription());
 		attributes.put("externalCaseId", getExternalCaseId());
-		attributes.put("otherType", getOtherType());
 		attributes.put("reportDate", getReportDate());
 		attributes.put("startDate", getStartDate());
 		attributes.put("endDate", getEndDate());
+		attributes.put("expenses", getExpenses());
 		attributes.put("incidentStatus", getIncidentStatus());
 		attributes.put("status", getStatus());
 
@@ -200,12 +200,6 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 			setExternalCaseId(externalCaseId);
 		}
 
-		String otherType = (String)attributes.get("otherType");
-
-		if (otherType != null) {
-			setOtherType(otherType);
-		}
-
 		Date reportDate = (Date)attributes.get("reportDate");
 
 		if (reportDate != null) {
@@ -222,6 +216,12 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 
 		if (endDate != null) {
 			setEndDate(endDate);
+		}
+
+		Double expenses = (Double)attributes.get("expenses");
+
+		if (expenses != null) {
+			setExpenses(expenses);
 		}
 
 		Integer incidentStatus = (Integer)attributes.get("incidentStatus");
@@ -391,6 +391,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	/**
+	* Returns the expenses of this watson incident.
+	*
+	* @return the expenses of this watson incident
+	*/
+	@Override
+	public double getExpenses() {
+		return _watsonIncident.getExpenses();
+	}
+
+	/**
 	* Returns the external case ID of this watson incident.
 	*
 	* @return the external case ID of this watson incident
@@ -448,16 +458,6 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public java.lang.String getName() {
 		return _watsonIncident.getName();
-	}
-
-	/**
-	* Returns the other type of this watson incident.
-	*
-	* @return the other type of this watson incident
-	*/
-	@Override
-	public java.lang.String getOtherType() {
-		return _watsonIncident.getOtherType();
 	}
 
 	/**
@@ -769,6 +769,16 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	}
 
 	/**
+	* Sets the expenses of this watson incident.
+	*
+	* @param expenses the expenses of this watson incident
+	*/
+	@Override
+	public void setExpenses(double expenses) {
+		_watsonIncident.setExpenses(expenses);
+	}
+
+	/**
 	* Sets the external case ID of this watson incident.
 	*
 	* @param externalCaseId the external case ID of this watson incident
@@ -832,16 +842,6 @@ public class WatsonIncidentWrapper implements WatsonIncident,
 	@Override
 	public void setNew(boolean n) {
 		_watsonIncident.setNew(n);
-	}
-
-	/**
-	* Sets the other type of this watson incident.
-	*
-	* @param otherType the other type of this watson incident
-	*/
-	@Override
-	public void setOtherType(java.lang.String otherType) {
-		_watsonIncident.setOtherType(otherType);
 	}
 
 	/**

@@ -65,7 +65,7 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(57);
+		StringBundler sb = new StringBundler(59);
 
 		sb.append("{watsonAddressId=");
 		sb.append(watsonAddressId);
@@ -115,6 +115,8 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		sb.append(description);
 		sb.append(", imagePayload=");
 		sb.append(imagePayload);
+		sb.append(", otherType=");
+		sb.append(otherType);
 		sb.append(", lastSeenDate=");
 		sb.append(lastSeenDate);
 		sb.append(", latitude=");
@@ -236,6 +238,13 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 			watsonAddressImpl.setImagePayload(imagePayload);
 		}
 
+		if (otherType == null) {
+			watsonAddressImpl.setOtherType("");
+		}
+		else {
+			watsonAddressImpl.setOtherType(otherType);
+		}
+
 		if (lastSeenDate == Long.MIN_VALUE) {
 			watsonAddressImpl.setLastSeenDate(null);
 		}
@@ -288,6 +297,7 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 		room = objectInput.readUTF();
 		description = objectInput.readUTF();
 		imagePayload = objectInput.readUTF();
+		otherType = objectInput.readUTF();
 		lastSeenDate = objectInput.readLong();
 
 		latitude = objectInput.readDouble();
@@ -402,6 +412,13 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 			objectOutput.writeUTF(imagePayload);
 		}
 
+		if (otherType == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(otherType);
+		}
+
 		objectOutput.writeLong(lastSeenDate);
 
 		objectOutput.writeDouble(latitude);
@@ -435,6 +452,7 @@ public class WatsonAddressCacheModel implements CacheModel<WatsonAddress>,
 	public String room;
 	public String description;
 	public String imagePayload;
+	public String otherType;
 	public long lastSeenDate;
 	public double latitude;
 	public double longitude;

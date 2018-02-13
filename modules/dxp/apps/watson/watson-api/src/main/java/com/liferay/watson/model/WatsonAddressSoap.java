@@ -57,6 +57,7 @@ public class WatsonAddressSoap implements Serializable {
 		soapModel.setRoom(model.getRoom());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setImagePayload(model.getImagePayload());
+		soapModel.setOtherType(model.getOtherType());
 		soapModel.setLastSeenDate(model.getLastSeenDate());
 		soapModel.setLatitude(model.getLatitude());
 		soapModel.setLongitude(model.getLongitude());
@@ -305,6 +306,14 @@ public class WatsonAddressSoap implements Serializable {
 		_imagePayload = imagePayload;
 	}
 
+	public String getOtherType() {
+		return _otherType;
+	}
+
+	public void setOtherType(String otherType) {
+		_otherType = otherType;
+	}
+
 	public Date getLastSeenDate() {
 		return _lastSeenDate;
 	}
@@ -361,6 +370,7 @@ public class WatsonAddressSoap implements Serializable {
 	private String _room;
 	private String _description;
 	private String _imagePayload;
+	private String _otherType;
 	private Date _lastSeenDate;
 	private double _latitude;
 	private double _longitude;

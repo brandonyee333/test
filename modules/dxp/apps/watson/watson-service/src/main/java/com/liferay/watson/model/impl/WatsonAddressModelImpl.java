@@ -96,6 +96,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 			{ "room", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
 			{ "imagePayload", Types.CLOB },
+			{ "otherType", Types.VARCHAR },
 			{ "lastSeenDate", Types.TIMESTAMP },
 			{ "latitude", Types.DOUBLE },
 			{ "longitude", Types.DOUBLE },
@@ -128,13 +129,14 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		TABLE_COLUMNS_MAP.put("room", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
+		TABLE_COLUMNS_MAP.put("otherType", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("lastSeenDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("latitude", Types.DOUBLE);
 		TABLE_COLUMNS_MAP.put("longitude", Types.DOUBLE);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonAddress (watsonAddressId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,countryId LONG,districtWatsonListTypeId LONG,originalWatsonAddressId LONG,provinceWatsonListTypeId LONG,subDistrictWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,postalCode VARCHAR(75) null,region VARCHAR(75) null,street VARCHAR(75) null,number_ VARCHAR(75) null,building STRING null,floor VARCHAR(75) null,room VARCHAR(75) null,description STRING null,imagePayload TEXT null,lastSeenDate DATE null,latitude DOUBLE,longitude DOUBLE,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonAddress (watsonAddressId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,countryId LONG,districtWatsonListTypeId LONG,originalWatsonAddressId LONG,provinceWatsonListTypeId LONG,subDistrictWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonIncidentId LONG,name STRING null,postalCode VARCHAR(75) null,region VARCHAR(75) null,street VARCHAR(75) null,number_ VARCHAR(75) null,building STRING null,floor VARCHAR(75) null,room VARCHAR(75) null,description STRING null,imagePayload TEXT null,otherType VARCHAR(75) null,lastSeenDate DATE null,latitude DOUBLE,longitude DOUBLE,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonAddress";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonAddress.watsonAddressId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonAddress.watsonAddressId ASC";
@@ -213,6 +215,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		attributes.put("room", getRoom());
 		attributes.put("description", getDescription());
 		attributes.put("imagePayload", getImagePayload());
+		attributes.put("otherType", getOtherType());
 		attributes.put("lastSeenDate", getLastSeenDate());
 		attributes.put("latitude", getLatitude());
 		attributes.put("longitude", getLongitude());
@@ -372,6 +375,12 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 		if (imagePayload != null) {
 			setImagePayload(imagePayload);
+		}
+
+		String otherType = (String)attributes.get("otherType");
+
+		if (otherType != null) {
+			setOtherType(otherType);
 		}
 
 		Date lastSeenDate = (Date)attributes.get("lastSeenDate");
@@ -972,6 +981,21 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	}
 
 	@Override
+	public String getOtherType() {
+		if (_otherType == null) {
+			return "";
+		}
+		else {
+			return _otherType;
+		}
+	}
+
+	@Override
+	public void setOtherType(String otherType) {
+		_otherType = otherType;
+	}
+
+	@Override
 	public Date getLastSeenDate() {
 		return _lastSeenDate;
 	}
@@ -1164,6 +1188,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		watsonAddressImpl.setRoom(getRoom());
 		watsonAddressImpl.setDescription(getDescription());
 		watsonAddressImpl.setImagePayload(getImagePayload());
+		watsonAddressImpl.setOtherType(getOtherType());
 		watsonAddressImpl.setLastSeenDate(getLastSeenDate());
 		watsonAddressImpl.setLatitude(getLatitude());
 		watsonAddressImpl.setLongitude(getLongitude());
@@ -1365,6 +1390,14 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 			watsonAddressCacheModel.imagePayload = null;
 		}
 
+		watsonAddressCacheModel.otherType = getOtherType();
+
+		String otherType = watsonAddressCacheModel.otherType;
+
+		if ((otherType != null) && (otherType.length() == 0)) {
+			watsonAddressCacheModel.otherType = null;
+		}
+
 		Date lastSeenDate = getLastSeenDate();
 
 		if (lastSeenDate != null) {
@@ -1385,7 +1418,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(57);
+		StringBundler sb = new StringBundler(59);
 
 		sb.append("{watsonAddressId=");
 		sb.append(getWatsonAddressId());
@@ -1435,6 +1468,8 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		sb.append(getDescription());
 		sb.append(", imagePayload=");
 		sb.append(getImagePayload());
+		sb.append(", otherType=");
+		sb.append(getOtherType());
 		sb.append(", lastSeenDate=");
 		sb.append(getLastSeenDate());
 		sb.append(", latitude=");
@@ -1450,7 +1485,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(88);
+		StringBundler sb = new StringBundler(91);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.model.WatsonAddress");
@@ -1553,6 +1588,10 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 		sb.append(getImagePayload());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>otherType</column-name><column-value><![CDATA[");
+		sb.append(getOtherType());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>lastSeenDate</column-name><column-value><![CDATA[");
 		sb.append(getLastSeenDate());
 		sb.append("]]></column-value></column>");
@@ -1606,6 +1645,7 @@ public class WatsonAddressModelImpl extends BaseModelImpl<WatsonAddress>
 	private String _description;
 	private String _descriptionCurrentLanguageId;
 	private String _imagePayload;
+	private String _otherType;
 	private Date _lastSeenDate;
 	private double _latitude;
 	private double _longitude;

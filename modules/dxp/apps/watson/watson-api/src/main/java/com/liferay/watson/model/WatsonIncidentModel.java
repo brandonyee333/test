@@ -441,21 +441,6 @@ public interface WatsonIncidentModel extends BaseModel<WatsonIncident>,
 	public void setExternalCaseId(String externalCaseId);
 
 	/**
-	 * Returns the other type of this watson incident.
-	 *
-	 * @return the other type of this watson incident
-	 */
-	@AutoEscape
-	public String getOtherType();
-
-	/**
-	 * Sets the other type of this watson incident.
-	 *
-	 * @param otherType the other type of this watson incident
-	 */
-	public void setOtherType(String otherType);
-
-	/**
 	 * Returns the report date of this watson incident.
 	 *
 	 * @return the report date of this watson incident
@@ -496,6 +481,20 @@ public interface WatsonIncidentModel extends BaseModel<WatsonIncident>,
 	 * @param endDate the end date of this watson incident
 	 */
 	public void setEndDate(Date endDate);
+
+	/**
+	 * Returns the expenses of this watson incident.
+	 *
+	 * @return the expenses of this watson incident
+	 */
+	public double getExpenses();
+
+	/**
+	 * Sets the expenses of this watson incident.
+	 *
+	 * @param expenses the expenses of this watson incident
+	 */
+	public void setExpenses(double expenses);
 
 	/**
 	 * Returns the incident status of this watson incident.

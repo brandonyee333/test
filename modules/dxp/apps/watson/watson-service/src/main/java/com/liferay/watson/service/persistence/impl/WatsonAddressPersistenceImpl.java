@@ -394,6 +394,7 @@ public class WatsonAddressPersistenceImpl extends BasePersistenceImpl<WatsonAddr
 		watsonAddressImpl.setRoom(watsonAddress.getRoom());
 		watsonAddressImpl.setDescription(watsonAddress.getDescription());
 		watsonAddressImpl.setImagePayload(watsonAddress.getImagePayload());
+		watsonAddressImpl.setOtherType(watsonAddress.getOtherType());
 		watsonAddressImpl.setLastSeenDate(watsonAddress.getLastSeenDate());
 		watsonAddressImpl.setLatitude(watsonAddress.getLatitude());
 		watsonAddressImpl.setLongitude(watsonAddress.getLongitude());
