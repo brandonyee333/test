@@ -126,6 +126,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		}
 
 		jsonObject.put("provinceWatsonListTypeId", watsonAddress.getProvinceWatsonListTypeId());
+		jsonObject.put("otherType", watsonAddress.getOtherType());
 		jsonObject.put("region", watsonAddress.getRegion());
 		jsonObject.put("reportedBy", watsonAddress.getUserName());
 		jsonObject.put("room", watsonAddress.getRoom());
@@ -319,6 +320,14 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		return null;
 	}
 
+	public static KeyValuePair validateWatsonAddressOtherType(String otherType, long typeWatsonListTypeId) throws Exception {
+		if ((typeWatsonListTypeId == WatsonListType.ADDRESS_TYPE_OTHER) && Validator.isNull(otherType)) {
+			return new KeyValuePair("otherType", "the-report-type-is-invalid");
+		}
+
+		return null;
+	}
+
 	public static KeyValuePair validateWatsonAddressPostalCode(String postalCode) {
 		if (Validator.isNotNull(postalCode) && !Validator.isNumber(postalCode)) {
 			return new KeyValuePair("postalCode", "postalCode-must-be-a-number");
@@ -448,6 +457,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		pushError(validateWatsonAddressLatitude(getLatitude()));
 		pushError(validateWatsonAddressLongitude(getLongitude()));
 		pushError(validateWatsonAddressName(getName()));
+		pushError(validateWatsonAddressOtherType(getOtherType(), getTypeWatsonListTypeId()));
 		pushError(validateWatsonAddressPostalCode(getPostalCode()));
 		pushError(validateWatsonAddressType(getTypeWatsonListTypeId()));
 

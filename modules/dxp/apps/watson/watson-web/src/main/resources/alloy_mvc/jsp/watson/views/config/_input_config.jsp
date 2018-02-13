@@ -361,7 +361,7 @@
 						htmlType: 'input',
 						invertHidden: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode('other')}',
-						parentInputId: 'subtypeWatsonListTypeId',
+						parentInputId: 'typeWatsonListTypeId',
 						translatable: ${false},
 						type: 'DEPENDENT_KEYED_INPUT',
 						validations: [
@@ -457,6 +457,9 @@
 						type: 'DEPENDENT_SELECT_INPUT'
 					},
 					typeWatsonListTypeId: {
+						controlledInputs: [
+							'otherType'
+						],
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("type")}',
 						options: {

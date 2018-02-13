@@ -149,7 +149,6 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			jsonObject.put("natureWatsonListType", getIncidentNatureIds(watsonIncident.getWatsonIncidentId()).toArray());
 		}
 
-		jsonObject.put("otherType", watsonIncident.getOtherType());
 		jsonObject.put("people", WatsonPerson.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
 		jsonObject.put("relationships", JSONFactoryUtil.createJSONArray());
 		jsonObject.put("reportDate", getFormattedDate(watsonIncident.getReportDate(), locale));
@@ -524,14 +523,6 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonIncidentOtherType(String otherType, long subtypeWatsonListTypeId) throws Exception {
-		if ((subtypeWatsonListTypeId == WatsonListType.INCIDENT_SUBTYPE_OTHER) && Validator.isNull(otherType)) {
-			return new KeyValuePair("otherType", "the-report-type-is-invalid");
-		}
-
-		return null;
-	}
-
 	public static KeyValuePair validateWatsonIncidentRels(List<WatsonIncidentRel> watsonIncidentRels) throws Exception{
 		if (Validator.isNotNull(watsonIncidentRels)) {
 			for (WatsonIncidentRel watsonIncidentRel : watsonIncidentRels) {
@@ -634,10 +625,10 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 	public boolean isValid(List<WatsonListTypeRel> natures, List<WatsonIncidentRel> watsonIncidentRels) throws Exception {
 		pushError(validateWatsonIncidentDescription(getDescription()));
+//		pushError(validatorWatsonIncidentExpenses(get));
 		pushError(validateWatsonIncidentIncidentStatus(getIncidentStatus()));
 		pushError(validateWatsonIncidentNatures(natures, this.isNew()));
 		pushError(validateWatsonIncidentOccurrenceDates(getStartDate(), getEndDate()));
-		pushError(validateWatsonIncidentOtherType(getOtherType(), getSubtypeWatsonListTypeId()));
 		pushError(validateWatsonIncidentRels(watsonIncidentRels));
 		pushError(validateWatsonIncidentReportDate(getReportDate()));
 		pushError(validateWatsonIncidentSource(getSourceWatsonListTypeId()));

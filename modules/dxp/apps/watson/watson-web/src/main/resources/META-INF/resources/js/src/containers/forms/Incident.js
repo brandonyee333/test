@@ -72,7 +72,6 @@ class IncidentForm extends JSXComponent {
 			'audienceChildCount',
 			'expenses',
 			'subtypeWatsonListTypeId',
-			'otherType',
 			'externalCase',
 			'externalCaseId',
 			'externalCaseWatsonListTypeId',

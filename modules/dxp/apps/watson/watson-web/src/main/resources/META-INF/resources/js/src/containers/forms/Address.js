@@ -92,6 +92,7 @@ class AddressForm extends JSXComponent {
 			'imagePayload',
 			'typeWatsonListTypeId',
 			'lastSeenDate',
+			'otherType',
 			'googleMap',
 			'countryId',
 			'region',

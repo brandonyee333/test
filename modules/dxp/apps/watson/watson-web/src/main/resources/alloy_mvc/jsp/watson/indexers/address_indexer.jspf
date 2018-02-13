@@ -46,6 +46,7 @@ public static class WatsonAddressIndexer extends BaseAlloyIndexer {
 		document.addDate("modifiedDate", watsonAddress.getModifiedDate());
 		document.addLocalizedKeyword("name", watsonAddress.getNameMap());
 		document.addKeyword("number", watsonAddress.getNumber());
+		document.addKeyword("otherType", watsonAddress.getOtherType());
 		document.addKeyword("postalCode", watsonAddress.getPostalCode());
 
 		watsonListType = WatsonListType.fetch(watsonAddress.getProvinceWatsonListTypeId());

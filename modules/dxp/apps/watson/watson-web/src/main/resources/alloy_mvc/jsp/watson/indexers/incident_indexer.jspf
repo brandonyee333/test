@@ -37,7 +37,6 @@ public static class WatsonIncidentIndexer extends BaseAlloyIndexer {
 		document.addDate("modifiedDate", watsonIncident.getModifiedDate());
 		document.addKeyword("name", watsonIncident.getName());
 		document.addKeyword("natureWatsonListType", watsonIncident.getIncidentNatures());
-		document.addKeyword("otherType", watsonIncident.getOtherType());
 		document.addDate("reportDate", watsonIncident.getReportDate());
 		document.addKeyword("reportedBy", watsonIncident.getUserName());
 
