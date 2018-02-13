@@ -117,6 +117,13 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 				_queue, routingKey);
 
 		for (MessageProcessor messageProcessor : messageProcessors) {
+			if (_log.isDebugEnabled()) {
+				Class<?> messageProcessorClass = messageProcessor.getClass();
+
+				_log.debug(
+					"Routing message to " + messageProcessorClass.getName());
+			}
+
 			messageProcessor.process(routingKey, message, properties);
 		}
 	}
