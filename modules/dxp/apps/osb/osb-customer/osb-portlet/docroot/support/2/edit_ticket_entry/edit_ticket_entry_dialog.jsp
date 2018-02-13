@@ -111,11 +111,11 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 			</div>
 		</div>
 
-		<div align="right">
+		<aui:button-row>
 			<aui:button onClick='<%= renderResponse.getNamespace() + "closeEditTicketDialog();" %>' value="cancel" />
 
-			<aui:button onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="save" />
-		</div>
+			<aui:button cssClass="pull-right" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="save" />
+		</aui:button-row>
 	</div>
 </aui:form>
 
