@@ -103,6 +103,20 @@ const validators = {
 		return errorMessage;
 	},
 
+	positiveNumber(value) {
+		let errorMessage;
+
+		if (value && isNaN(value)) {
+			errorMessage = Liferay.Language.get('invalid-number');
+		}
+
+		if (!errorMessage && value < 0) {
+			errorMessage = Liferay.Language.get('invalid-number');
+		}
+
+		return errorMessage;
+	},
+
 	required(value) {
 		let errorMessage;
 

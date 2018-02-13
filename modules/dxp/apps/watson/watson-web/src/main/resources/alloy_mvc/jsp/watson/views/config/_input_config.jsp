@@ -354,6 +354,20 @@
 							'required'
 						]
 					},
+					otherType: {
+						controlledInputs: [],
+						dependentKey: '${WatsonListTypeConstants.ADDRESS_TYPE_OTHER}',
+						filterable: ${false},
+						htmlType: 'input',
+						invertHidden: ${true},
+						label: '${AlloyLanguageUtil.formatUnicode('other')}',
+						parentInputId: 'subtypeWatsonListTypeId',
+						translatable: ${false},
+						type: 'DEPENDENT_KEYED_INPUT',
+						validations: [
+							'required'
+						]
+					},
 					number: {
 						filterable: ${true},
 						htmlType: 'input',
@@ -1614,7 +1628,8 @@
 						translatable: ${false},
 						type: 'DEPENDENT_KEYED_INPUT',
 						validations: [
-							'required'
+							'required',
+							'positiveNumbers'
 						]
 					},
 					audienceChildCount: {
@@ -1628,7 +1643,8 @@
 						translatable: ${false},
 						type: 'DEPENDENT_KEYED_INPUT',
 						validations: [
-							'required'
+							'required',
+							'positiveNumbers'
 						]
 					},
 					createDate: {
@@ -1672,7 +1688,9 @@
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("thai-baht")}',
 						translatable: ${false},
 						type: 'DEPENDENT_KEYED_INPUT',
-						validations: []
+						validations: [
+							'positiveNumber'
+						]
 					},
 					externalCase: {
 						controlledInputs: [
@@ -1779,20 +1797,6 @@
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-nature-of-the-incident")}',
 						translatable: ${false},
 						type: 'MULTI_SELECT_INPUT',
-						validations: [
-							'required'
-						]
-					},
-					otherType: {
-						controlledInputs: [],
-						dependentKey: '${WatsonListTypeConstants.INCIDENT_SUBTYPE_OTHER}',
-						filterable: ${false},
-						htmlType: 'input',
-						invertHidden: ${true},
-						label: '${AlloyLanguageUtil.formatUnicode('other')}',
-						parentInputId: 'subtypeWatsonListTypeId',
-						translatable: ${false},
-						type: 'DEPENDENT_KEYED_INPUT',
 						validations: [
 							'required'
 						]
@@ -1910,7 +1914,8 @@
 						translatable: ${false},
 						type: 'DEPENDENT_KEYED_INPUT',
 						validations: [
-							'number'
+							'number',
+							'positiveNumbers'
 						]
 					},
 					victimChildCount: {
@@ -1924,7 +1929,8 @@
 						translatable: ${false},
 						type: 'DEPENDENT_KEYED_INPUT',
 						validations: [
-							'number'
+							'number',
+							'positiveNumbers'
 						]
 					},
 					watsonIncidentRelIds: {
