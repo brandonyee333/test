@@ -1,4 +1,4 @@
-import Alert from 'metal-alert';
+import Alert from 'marble-alert';
 import {bindAll, isEmpty} from 'lodash';
 import bridge from 'metal-react';
 import dropzone from 'react-dropzone';

@@ -37,6 +37,7 @@ module.exports = {
 				loader: 'babel-loader',
 				query: {
 					babelrc: false,
+					cacheDirectory: true,
 					plugins: ['lodash'],
 					presets: ['env', 'metal-jsx', 'stage-2']
 				},

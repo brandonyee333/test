@@ -1,4 +1,4 @@
-import Alert from 'metal-alert';
+import Alert from 'marble-alert';
 import {bindAll} from 'lodash';
 import JSXComponent, {Config} from 'metal-jsx';
 
