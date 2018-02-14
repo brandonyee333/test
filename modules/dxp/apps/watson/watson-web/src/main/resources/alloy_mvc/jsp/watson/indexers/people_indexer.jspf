@@ -28,6 +28,7 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonPerson);
 
 		document.addKeyword("accepted", watsonPerson.getAccepted());
+		document.addDate("acceptedDate", watsonPerson.getDateAccepted());
 		document.addKeyword("birthCountryId", watsonPerson.getBirthCountryId());
 		document.addDate("birthDate", watsonPerson.getBirthDate());
 		document.addKeyword("citizenshipWatsonListTypeId", watsonPerson.getCitizenshipWatsonListTypeId());
@@ -39,8 +40,7 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 		}
 
 		document.addKeyword("countryWatsonListTypeId", watsonPerson.getCountryWatsonListTypeId());
-		document.addDate("acceptedDate", watsonPerson.getDateAccepted());
-		document.addLocalizedText("description", watsonPerson.getDescriptionMap());
+		document.addLocalizedText(Field.DESCRIPTION, watsonPerson.getDescriptionMap());
 		document.addKeyword("endAge", watsonPerson.getEndAge());
 
 		watsonListType = WatsonListType.fetch(watsonPerson.getEthnicityWatsonListTypeId());
@@ -68,7 +68,6 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 		document.addKeyword("hairWatsonListTypeId", watsonPerson.getHairWatsonListTypeId());
 		document.addKeyword("height", watsonPerson.getHeight());
 		document.addKeyword("id", watsonPerson.getPrimaryKey());
-		document.addDate("modifiedDate", watsonPerson.getModifiedDate());
 		document.addKeyword("nameWatsonListTypeRelString", watsonPerson.getNamesString());
 		document.addLocalizedKeyword("occupation", watsonPerson.getOccupationMap());
 		document.addKeyword("primaryNameString", watsonPerson.getPrimaryName());
@@ -90,7 +89,7 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 			document.addLocalizedKeyword("type", watsonListType.getNameMap());
 		}
 
-		document.addKeyword("status", watsonPerson.getStatus());
+		document.addKeyword(Field.STATUS, watsonPerson.getStatus());
 		document.addKeyword("typeWatsonListTypeId", watsonPerson.getTypeWatsonListTypeId());
 		document.addKeyword("watsonIncidentId", watsonPerson.getWatsonIncidentId());
 		document.addKeyword("watsonPersonId", watsonPerson.getWatsonPersonId());

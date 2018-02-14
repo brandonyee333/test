@@ -28,7 +28,7 @@ public static class WatsonVehicleIndexer extends BaseAlloyIndexer {
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonVehicle);
 
 		document.addKeyword("colorWatsonListTypeId", watsonVehicle.getColorWatsonListTypeId());
-		document.addLocalizedText("description", watsonVehicle.getDescriptionMap());
+		document.addLocalizedText(Field.DESCRIPTION, watsonVehicle.getDescriptionMap());
 		document.addKeyword("id", watsonVehicle.getPrimaryKey());
 		document.addKeyword("licensePlate", watsonVehicle.getLicensePlate());
 
@@ -49,10 +49,9 @@ public static class WatsonVehicleIndexer extends BaseAlloyIndexer {
 		}
 
 		document.addKeyword("modelWatsonListTypeId", watsonVehicle.getModelWatsonListTypeId());
-		document.addDate("modifiedDate", watsonVehicle.getModifiedDate());
-		document.addKeyword("name", watsonVehicle.getName(locale));
+		document.addKeyword(Field.NAME, watsonVehicle.getName(locale));
 		document.addKeyword("reportedBy", watsonVehicle.getUserName());
-		document.addKeyword("status", watsonVehicle.getStatus());
+		document.addKeyword(Field.STATUS, watsonVehicle.getStatus());
 
 		if (watsonListType != null) {
 			document.addLocalizedKeyword("type", watsonListType.getNameMap());

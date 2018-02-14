@@ -28,13 +28,12 @@ public static class WatsonActivityIndexer extends BaseAlloyIndexer {
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonActivity);
 
 		document.addKeyword("id", watsonActivity.getPrimaryKey());
-		document.addDate("modifiedDate", watsonActivity.getModifiedDate());
-		document.addKeyword("name", watsonActivity.getName(LocaleUtil.getMostRelevantLocale()));
+		document.addKeyword(Field.NAME, watsonActivity.getName(LocaleUtil.getMostRelevantLocale()));
 		document.addLocalizedText("narrative", watsonActivity.getNarrativeMap());
 		document.addDate("reportDate", watsonActivity.getReportDate());
 		document.addKeyword("reportedBy", watsonActivity.getUserName());
 		document.addDate("startDate", watsonActivity.getStartDate());
-		document.addKeyword("status", watsonActivity.getStatus());
+		document.addKeyword(Field.STATUS, watsonActivity.getStatus());
 		document.addKeyword("subtypeWatsonListTypeId", watsonActivity.getSubtypeWatsonListTypeId());
 		document.addKeyword("typeWatsonListTypeId", watsonActivity.getTypeWatsonListTypeId());
 		document.addKeyword("watsonActivityId", watsonActivity.getWatsonActivityId());

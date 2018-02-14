@@ -29,12 +29,12 @@ public static class WatsonRelationshipIndexer extends BaseAlloyIndexer {
 
 		document.addKeyword("classNameId2", watsonRelationship.getClassNameId1());
 		document.addKeyword("classPK2", watsonRelationship.getClassPK1());
-		document.addText("description", watsonRelationship.getDescription());
+		document.addText(Field.DESCRIPTION, watsonRelationship.getDescription());
 
 		String selectedModel = WatsonAlloyControllerImpl.getControllerName(watsonRelationship.getClassNameId1());
 
 		document.addKeyword("selectedModel2", selectedModel);
-		document.addKeyword("status", watsonRelationship.getStatus());
+		document.addKeyword(Field.STATUS, watsonRelationship.getStatus());
 
 		WatsonListType watsonListType = WatsonListType.fetch(watsonRelationship.getTypeWatsonListTypeId());
 

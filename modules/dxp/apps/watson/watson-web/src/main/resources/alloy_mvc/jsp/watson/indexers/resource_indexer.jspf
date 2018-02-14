@@ -27,13 +27,12 @@ public static class WatsonResourceIndexer extends BaseAlloyIndexer {
 
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonResource);
 
-		document.addLocalizedText("description", watsonResource.getDescriptionMap());
+		document.addLocalizedText(Field.DESCRIPTION, watsonResource.getDescriptionMap());
 		document.addKeyword("id", watsonResource.getPrimaryKey());
-		document.addDate("modifiedDate", watsonResource.getModifiedDate());
-		document.addLocalizedKeyword("name", watsonResource.getNameMap());
+		document.addLocalizedKeyword(Field.NAME, watsonResource.getNameMap());
 		document.addDate("reportDate", watsonResource.getCreateDate());
 		document.addKeyword("reportedBy", watsonResource.getUserName());
-		document.addKeyword("status", watsonResource.getStatus());
+		document.addKeyword(Field.STATUS, watsonResource.getStatus());
 		document.addKeyword("typeWatsonListTypeId", watsonResource.getTypeWatsonListTypeId());
 		document.addKeyword("watsonIncidentId", watsonResource.getWatsonIncidentId());
 		document.addKeyword("watsonResourceId", watsonResource.getWatsonResourceId());

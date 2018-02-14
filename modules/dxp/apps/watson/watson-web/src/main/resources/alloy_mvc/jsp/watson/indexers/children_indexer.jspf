@@ -49,7 +49,6 @@ public static class WatsonChildrenIndexer extends BaseAlloyIndexer {
 		document.addKeyword("ethnicityWatsonListTypeId", watsonChild.getEthnicityWatsonListTypeId());
 		document.addDate("followUpDate", watsonChild.getDateFollowUp());
 		document.addKeyword("id", watsonChild.getPrimaryKey());
-		document.addDate("modifiedDate", watsonChild.getModifiedDate());
 		document.addKeyword("nameWatsonListTypeRelString", watsonChild.getNamesString());
 		document.addKeyword("primaryNameString", watsonChild.getPrimaryName());
 		document.addDate("reportDate", watsonChild.getCreateDate());
@@ -65,7 +64,7 @@ public static class WatsonChildrenIndexer extends BaseAlloyIndexer {
 		document.addKeyword("source", watsonChild.getSource());
 		document.addKeyword("sourceSubtypeWatsonListTypeId", watsonChild.getSourceSubtypeWatsonListTypeId());
 		document.addKeyword("sourceWatsonListTypeId", watsonChild.getSourceWatsonListTypeId());
-		document.addKeyword("status", watsonChild.getStatus());
+		document.addKeyword(Field.STATUS, watsonChild.getStatus());
 
 		watsonListType = WatsonListType.fetch(watsonChild.getTypeWatsonListTypeId());
 
