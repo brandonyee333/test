@@ -772,6 +772,17 @@
 						filterable: ${true},
 						label: '${AlloyLanguageUtil.formatUnicode("citizenship")}',
 						options: {
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonChild.modelClassName.concat(".citizenship"))}' var="childCitizenshipWatsonListTypes" />
+
+							<c:forEach items="${childCitizenshipWatsonListTypes}" var="childCitizenshipWatsonListType" varStatus="childCitizenshipWatsonListTypesIndex">
+								<c:set value='${childCitizenshipWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
+
+								${childCitizenshipWatsonListType.watsonListTypeId}: {
+									label: '${AlloyLanguageUtil.formatUnicode(childCitizenshipWatsonListType.getName(locale))}',
+									value: '${childCitizenshipWatsonListType.watsonListTypeId}'
+								}${delimiter}
+							</c:forEach>
+
 							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".citizenship"))}' var="citizenshipWatsonListTypes" />
 
 							<c:forEach items="${citizenshipWatsonListTypes}" var="citizenshipWatsonListType" varStatus="citizenshipWatsonListTypesIndex">
