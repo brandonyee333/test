@@ -68,7 +68,7 @@ public class SharepointOAuth2TokenEntryModelImpl extends BaseModelImpl<Sharepoin
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
-			{ "accessToken", Types.VARCHAR },
+			{ "accessToken", Types.CLOB },
 			{ "configurationPid", Types.VARCHAR },
 			{ "expirationDate", Types.TIMESTAMP },
 			{ "refreshToken", Types.VARCHAR }
@@ -80,13 +80,13 @@ public class SharepointOAuth2TokenEntryModelImpl extends BaseModelImpl<Sharepoin
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("accessToken", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("accessToken", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("configurationPid", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("expirationDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("refreshToken", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table SharepointOAuth2TokenEntry (sharepointOAuth2TokenEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,accessToken VARCHAR(75) null,configurationPid VARCHAR(75) null,expirationDate DATE null,refreshToken VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table SharepointOAuth2TokenEntry (sharepointOAuth2TokenEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,accessToken TEXT null,configurationPid VARCHAR(75) null,expirationDate DATE null,refreshToken VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table SharepointOAuth2TokenEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY sharepointOAuth2TokenEntry.sharepointOAuth2TokenEntryId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY SharepointOAuth2TokenEntry.sharepointOAuth2TokenEntryId ASC";
