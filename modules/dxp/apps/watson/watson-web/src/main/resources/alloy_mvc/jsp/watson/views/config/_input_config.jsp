@@ -242,7 +242,7 @@
 								}${delimiter}
 							</c:forEach>
 						},
-						sortOptions: ${true},
+						sortOptions: 'alpha',
 						tooltipLabel: '',
 						translatable: ${false},
 						type: 'SELECT_INPUT',
@@ -754,7 +754,7 @@
 							}${delimiter}
 							</c:forEach>
 						},
-						sortOptions: ${true},
+						sortOptions: 'alpha',
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-country-where-this-person-was-born")}',
 						translatable: ${false},
 						type: 'SELECT_INPUT',
@@ -775,12 +775,10 @@
 							<c:set value='${WatsonListType.getWatsonListTypes(WatsonChild.modelClassName.concat(".citizenship"))}' var="childCitizenshipWatsonListTypes" />
 
 							<c:forEach items="${childCitizenshipWatsonListTypes}" var="childCitizenshipWatsonListType" varStatus="childCitizenshipWatsonListTypesIndex">
-								<c:set value='${childCitizenshipWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
-
 								${childCitizenshipWatsonListType.watsonListTypeId}: {
 									label: '${AlloyLanguageUtil.formatUnicode(childCitizenshipWatsonListType.getName(locale))}',
 									value: '${childCitizenshipWatsonListType.watsonListTypeId}'
-								}${delimiter}
+								}${","}
 							</c:forEach>
 
 							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".citizenship"))}' var="citizenshipWatsonListTypes" />
@@ -794,6 +792,7 @@
 								}${delimiter}
 							</c:forEach>
 						},
+						sortOptions: 'numerical',
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-this-persons-citizenship")}',
 						translatable: ${false},
 						type: 'SELECT_INPUT',
@@ -2310,7 +2309,7 @@
 								}${delimiter}
 							</c:forEach>
 						},
-						sortOptions: ${true},
+						sortOptions: 'alpha',
 						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-country-where-this-person-was-born")}',
 						translatable: ${false},
 						type: 'SELECT_INPUT',

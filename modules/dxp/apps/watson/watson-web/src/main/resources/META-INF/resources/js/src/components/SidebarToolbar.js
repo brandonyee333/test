@@ -1,5 +1,5 @@
 import {bindAll} from 'lodash';
-import DropDown from 'metal-dropdown';
+import DropDown from 'marble-dropdown';
 import JSXComponent, {Config} from 'metal-jsx';
 
 import {getURLForLanguageId} from '../lib/util';

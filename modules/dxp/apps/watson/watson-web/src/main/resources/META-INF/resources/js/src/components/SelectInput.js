@@ -25,8 +25,11 @@ class SelectInput extends JSXComponent {
 				);
 			}
 
-			if (sortOptions) {
+			if (sortOptions === 'alpha') {
 				renderedOptions.sort((a, b) => a.label.localeCompare(b.label));
+			}
+			else if (sortOptions === 'numerical') {
+				renderedOptions.sort((a, b) => a.value.localeCompare(b.value), {}, {ignorePunctuation: true, numeric: true});
 			}
 		}
 
@@ -90,7 +93,7 @@ SelectInput.PROPS = {
 	omitBlankOption: Config.bool(),
 	optionsLoading: Config.bool(),
 	placeHolder: Config.string(),
-	sortOptions: Config.bool(),
+	sortOptions: Config.string().value(''),
 	tooltipLabel: Config.string(),
 	value: Config.any()
 };

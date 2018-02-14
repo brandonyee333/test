@@ -363,7 +363,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("child-was-not-saved"), jsonObject);
+		respondWith(HttpServletResponse.SC_BAD_REQUEST, translate("child-was-not-saved"), JSONFactoryUtil.createJSONObject());
 
 	}
 
