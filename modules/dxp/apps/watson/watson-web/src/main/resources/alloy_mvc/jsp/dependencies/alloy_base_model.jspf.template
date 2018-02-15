@@ -195,6 +195,12 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 		return ${instancename};
 	}
 
+	public static ${classname} fetch(long ${instancename}Id, boolean skipValidate) throws Exception {
+		${classname} ${instancename} = new ${classname}((${modelpath}.${classname})baseModelAlloyServiceInvoker.fetchModel(${instancename}Id));
+
+		return ${instancename};
+	}
+
 	public static List<${classname}> get(int start, int end) throws Exception {
 		List<${modelpath}.${classname}> ${pluralinstancename} = (List<${modelpath}.${classname}>)baseModelAlloyServiceInvoker.getModels(start, end);
 
