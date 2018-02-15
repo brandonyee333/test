@@ -815,7 +815,7 @@ public class TicketEntryIndexer extends BaseIndexer<TicketEntry> {
 				accountEntryNameQuery, BooleanClauseOccur.SHOULD);
 		}
 
-		int[] accountEntryTiers = (int[])searchContext.getAttribute(
+		Integer[] accountEntryTiers = (Integer[])searchContext.getAttribute(
 			"accountEntryTier");
 
 		if ((accountEntryTiers != null) && (accountEntryTiers.length > 0)) {
@@ -947,9 +947,9 @@ public class TicketEntryIndexer extends BaseIndexer<TicketEntry> {
 			BooleanQuery searchQuery, SearchContext searchContext)
 		throws Exception {
 
-		int[] resolutionValues = (int[])searchContext.getAttribute(
+		Integer[] resolutionValues = (Integer[])searchContext.getAttribute(
 			"resolution");
-		int[] statusValues = (int[])searchContext.getAttribute("status");
+		Integer[] statusValues = (Integer[])searchContext.getAttribute("status");
 
 		if (ArrayUtil.isEmpty(resolutionValues) &&
 			ArrayUtil.isEmpty(statusValues)) {

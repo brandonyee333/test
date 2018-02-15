@@ -850,27 +850,29 @@ public class TicketEntryLocalServiceImpl
 			attributes.put("accountEntryCode", name);
 			attributes.put("accountEntryId", accountEntryId);
 			attributes.put("accountEntryName", name);
-			attributes.put("accountEntryTier", accountEntryTiers);
+			attributes.put(
+				"accountEntryTier", ArrayUtil.toArray(accountEntryTiers));
 			attributes.put("closedDateGT", closedDateGT);
 			attributes.put("closedDateLT", closedDateLT);
-			attributes.put("component", components);
+			attributes.put("component", ArrayUtil.toArray(components));
 			attributes.put("content", content);
 			attributes.put("createDateGT", createDateGT);
 			attributes.put("createDateLT", createDateLT);
 			attributes.put("dueDateGT", dueDateGT);
 			attributes.put("dueDateLT", dueDateLT);
-			attributes.put("envAS", envAS);
-			attributes.put("envDB", envDB);
-			attributes.put("envJVM", envJVM);
-			attributes.put("envLFR", envLFR);
-			attributes.put("envOS", envOS);
-			attributes.put("escalationLevel", escalationLevel);
+			attributes.put("envAS", ArrayUtil.toArray(envAS));
+			attributes.put("envDB", ArrayUtil.toArray(envDB));
+			attributes.put("envJVM", ArrayUtil.toArray(envJVM));
+			attributes.put("envLFR", ArrayUtil.toArray(envLFR));
+			attributes.put("envOS", ArrayUtil.toArray(envOS));
+			attributes.put(
+				"escalationLevel", ArrayUtil.toArray(escalationLevel));
 			attributes.put("params", params);
-			attributes.put("resolution", resolution);
+			attributes.put("resolution", ArrayUtil.toArray(resolution));
 			attributes.put("satisfiedDueDate", satisfiedDueDate);
 			attributes.put("searchUserId", searchUserId);
-			attributes.put("severity", severity);
-			attributes.put("status", status);
+			attributes.put("severity", ArrayUtil.toArray(severity));
+			attributes.put("status", ArrayUtil.toArray(status));
 			attributes.put("userId", reportedByUserId);
 
 			searchContext.setAttributes(attributes);
@@ -880,8 +882,7 @@ public class TicketEntryLocalServiceImpl
 
 			QueryConfig queryConfig = new QueryConfig();
 
-			queryConfig.setAttribute(
-				"selectedFieldNames", new String[] {Field.ENTRY_CLASS_PK});
+			queryConfig.setSelectedFieldNames(new String[] {Field.ENTRY_CLASS_PK});
 
 			searchContext.setQueryConfig(queryConfig);
 
