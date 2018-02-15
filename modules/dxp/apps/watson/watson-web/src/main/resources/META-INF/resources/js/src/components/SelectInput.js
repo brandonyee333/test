@@ -29,7 +29,13 @@ class SelectInput extends JSXComponent {
 				renderedOptions.sort((a, b) => a.label.localeCompare(b.label));
 			}
 			else if (sortOptions === 'numerical') {
-				renderedOptions.sort((a, b) => a.value.localeCompare(b.value), {}, {ignorePunctuation: true, numeric: true});
+				renderedOptions.sort(
+					(a, b) => a.value.localeCompare(
+						b.value,
+						{},
+						{ignorePunctuation: true, numeric: true}
+					)
+				);
 			}
 		}
 

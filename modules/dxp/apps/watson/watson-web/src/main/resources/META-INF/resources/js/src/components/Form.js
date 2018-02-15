@@ -27,17 +27,7 @@ class Form extends JSXComponent {
 	checkConditionalValidation(inputId) {
 		const {hiddenInputs = []} = this.state;
 
-		let retVal = false;
-
-		hiddenInputs.forEach(
-			disabledInputId => {
-				if (disabledInputId === inputId) {
-					retVal = true;
-				}
-			}
-		);
-
-		return retVal;
+		return hiddenInputs.includes(inputId);
 	}
 
 	created() {
@@ -849,7 +839,7 @@ class Form extends JSXComponent {
 	}
 
 	syncAutoSaved(newState) {
-		if (newState && newState > 0) {
+		if (newState) {
 			this.setState({changedFields: []});
 		}
 	}

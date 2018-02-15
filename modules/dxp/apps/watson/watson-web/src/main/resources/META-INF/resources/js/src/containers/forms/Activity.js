@@ -378,17 +378,17 @@ class ActivityForm extends JSXComponent {
 
 			headerStringRight = !autoSaved ? getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp')) : getModifiedMoment(storeData.get('modifiedUserName'), autoSaved);
 
-			if (storeData.get('createDate')) {
-				const createDateTimeStamp = storeData.get('createDate');
+			if (storeData.get('modifiedDateTimeStamp')) {
+				const modifiedDateTimeStamp = storeData.get('modifiedDateTimeStamp');
 
-				const lessThanOneMinuteAgo = createDateTimeStamp => {
+				const lessThanOneMinuteAgo = modifiedDateTimeStamp => {
 					const oneMinuteAgo = Date.now() - 60000;
 
-					return createDateTimeStamp >= oneMinuteAgo;
+					return modifiedDateTimeStamp >= oneMinuteAgo;
 				};
 
-				if (lessThanOneMinuteAgo) {
-					autoSaved = createDateTimeStamp;
+				if (lessThanOneMinuteAgo === true) {
+					autoSaved = modifiedDateTimeStamp;
 				}
 			}
 
