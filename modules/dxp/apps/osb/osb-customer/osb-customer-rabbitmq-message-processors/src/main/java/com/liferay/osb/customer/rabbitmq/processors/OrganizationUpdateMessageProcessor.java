@@ -19,11 +19,13 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
-import com.liferay.portal.util.PortalInstances;
 
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -52,14 +54,28 @@ public class OrganizationUpdateMessageProcessor implements MessageProcessor {
 		}
 	}
 
+	protected Organization fetchOrganization(String uuid) {
+		List<Company> companies = _companyLocalService.getCompanies();
+
+		for (Company company : companies) {
+			Organization organization =
+				_organizationLocalService.fetchOrganizationByUuidAndCompanyId(
+					uuid, company.getCompanyId());
+
+			if (organization != null) {
+				return organization;
+			}
+		}
+
+		return null;
+	}
+
 	protected void updateOrganization(String message) throws Exception {
 		JSONObject jsonObject = _jsonFactory.createJSONObject(message.trim());
 
 		String uuid = jsonObject.getString("uuid");
 
-		Organization organization =
-			_organizationLocalService.fetchOrganizationByUuidAndCompanyId(
-				uuid, PortalInstances.getDefaultCompanyId());
+		Organization organization = fetchOrganization(uuid);
 
 		if (organization == null) {
 			return;
@@ -79,6 +95,9 @@ public class OrganizationUpdateMessageProcessor implements MessageProcessor {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		OrganizationUpdateMessageProcessor.class);
+
+	@Reference
+	private CompanyLocalService _companyLocalService;
 
 	@Reference
 	private JSONFactory _jsonFactory;

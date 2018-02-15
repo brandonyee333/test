@@ -19,12 +19,14 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.util.PortalInstances;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
@@ -53,13 +55,27 @@ public class UserUpdateMessageProcessor implements MessageProcessor {
 		}
 	}
 
+	protected User fetchUser(String uuid) {
+		List<Company> companies = _companyLocalService.getCompanies();
+
+		for (Company company : companies) {
+			User user = _userLocalService.fetchUserByUuidAndCompanyId(
+				uuid, company.getCompanyId());
+
+			if (user != null) {
+				return user;
+			}
+		}
+
+		return null;
+	}
+
 	protected void updateUser(String message) throws Exception {
 		JSONObject jsonObject = _jsonFactory.createJSONObject(message.trim());
 
 		String uuid = jsonObject.getString("uuid");
 
-		User user = _userLocalService.fetchUserByUuidAndCompanyId(
-			uuid, PortalInstances.getDefaultCompanyId());
+		User user = fetchUser(uuid);
 
 		if (user == null) {
 			return;
@@ -95,6 +111,9 @@ public class UserUpdateMessageProcessor implements MessageProcessor {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		UserUpdateMessageProcessor.class);
+
+	@Reference
+	private CompanyLocalService _companyLocalService;
 
 	@Reference
 	private JSONFactory _jsonFactory;
