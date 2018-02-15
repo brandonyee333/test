@@ -107,8 +107,8 @@ public class LiferayTemplateClassResolver implements TemplateClassResolver {
 		if (allowed) {
 			try {
 				ClassLoader[] wwhitelistedClassLoaders =
-					_wwhitelistedClassLoaders.toArray(
-						new ClassLoader[_wwhitelistedClassLoaders.size()]);
+					_whitelistedClassLoaders.toArray(
+						new ClassLoader[_whitelistedClassLoaders.size()]);
 
 				ClassLoader[] classLoaders = ArrayUtil.append(
 					wwhitelistedClassLoaders,
@@ -145,7 +145,7 @@ public class LiferayTemplateClassResolver implements TemplateClassResolver {
 
 		_classLoaderBundleTracker.open();
 
-		_wwhitelistedClassLoaders.add(
+		_whitelistedClassLoaders.add(
 			LiferayTemplateClassResolver.class.getClassLoader());
 	}
 
@@ -171,12 +171,13 @@ public class LiferayTemplateClassResolver implements TemplateClassResolver {
 				BundleRevision.PACKAGE_NAMESPACE);
 
 			if (clazz.equals(StringPool.STAR)) {
-				continue;
+				return null;
 			}
 			else if (clazz.endsWith(StringPool.STAR)) {
-				clazz = clazz.substring(0, clazz.length() - 1);
+				String allowedClassPackage = clazz.substring(
+					0, clazz.length() - 1);
 
-				if (exportPackage.startsWith(clazz)) {
+				if (exportPackage.startsWith(allowedClassPackage)) {
 					BundleRevision bundleRevision =
 						bundleCapability.getRevision();
 
@@ -199,19 +200,23 @@ public class LiferayTemplateClassResolver implements TemplateClassResolver {
 				return bundleRevisionBundleWiring.getClassLoader();
 			}
 			else {
-				String allowedClassPackage = clazz.substring(
-					0, clazz.lastIndexOf("."));
+				int pos = clazz.lastIndexOf(".");
 
-				if (allowedClassPackage.equals(exportPackage)) {
-					BundleRevision bundleRevision =
-						bundleCapability.getRevision();
+				if (pos > 0) {
+					String allowedClassPackage = clazz.substring(0, pos);
 
-					Bundle bundleRevisionBundle = bundleRevision.getBundle();
+					if (allowedClassPackage.equals(exportPackage)) {
+						BundleRevision bundleRevision =
+							bundleCapability.getRevision();
 
-					BundleWiring bundleRevisionBundleWiring =
-						bundleRevisionBundle.adapt(BundleWiring.class);
+						Bundle bundleRevisionBundle =
+							bundleRevision.getBundle();
 
-					return bundleRevisionBundleWiring.getClassLoader();
+						BundleWiring bundleRevisionBundleWiring =
+							bundleRevisionBundle.adapt(BundleWiring.class);
+
+						return bundleRevisionBundleWiring.getClassLoader();
+					}
 				}
 			}
 		}
@@ -266,11 +271,14 @@ public class LiferayTemplateClassResolver implements TemplateClassResolver {
 			return true;
 		}
 		else {
-			String packageName = matchedClassName.substring(
-				0, matchedClassName.lastIndexOf("."));
+			int pos = className.lastIndexOf(".");
 
-			if (packageName.equals(className)) {
-				return true;
+			if (pos > 0) {
+				String packageName = matchedClassName.substring(0, pos);
+
+				if (packageName.equals(className)) {
+					return true;
+				}
 			}
 		}
 
@@ -290,7 +298,7 @@ public class LiferayTemplateClassResolver implements TemplateClassResolver {
 				bundle.getBundleContext());
 
 			if (classLoader != null) {
-				_wwhitelistedClassLoaders.add(classLoader);
+				_whitelistedClassLoaders.add(classLoader);
 			}
 		}
 	}
@@ -303,7 +311,7 @@ public class LiferayTemplateClassResolver implements TemplateClassResolver {
 	private BundleTracker<ClassLoader> _classLoaderBundleTracker;
 	private volatile FreeMarkerEngineConfiguration
 		_freemarkerEngineConfiguration;
-	private final Set<ClassLoader> _wwhitelistedClassLoaders =
+	private final Set<ClassLoader> _whitelistedClassLoaders =
 		Collections.newSetFromMap(new ConcurrentHashMap<>());
 
 	private class ClassLoaderBundleTrackerCustomizer
@@ -318,7 +326,7 @@ public class LiferayTemplateClassResolver implements TemplateClassResolver {
 				bundle.getBundleContext());
 
 			if (classLoader != null) {
-				_wwhitelistedClassLoaders.add(classLoader);
+				_whitelistedClassLoaders.add(classLoader);
 			}
 
 			_bundles.add(bundle);
@@ -337,7 +345,7 @@ public class LiferayTemplateClassResolver implements TemplateClassResolver {
 		public void removedBundle(
 			Bundle bundle, BundleEvent bundleEvent, ClassLoader classLoader) {
 
-			_wwhitelistedClassLoaders.remove(classLoader);
+			_whitelistedClassLoaders.remove(classLoader);
 
 			_bundles.remove(bundle);
 		}
