@@ -60,17 +60,6 @@ blockquote, h2, h3 {
 }
 
 div {
-	&.portlet-msg-error, .portlet-msg-success {
-		height: 22px;
-		left: calc(25vw + 60px);
-		overflow: hidden;
-		position: fixed;
-		right: 25vw;
-		top: 55px;
-		transition: top 1s ease;
-		white-space: nowrap;
-	}
-
 	&.table {
 		border-collapse: collapse;
 		display: table;
@@ -163,6 +152,14 @@ textarea {
 
 .portal-popup .portlet-msg-info {
 	top: inherit;
+}
+
+.portlet-msg-error, .portlet-msg-success {
+	overflow: hidden;
+	position: fixed;
+	top: 55px;
+	transition: top 1s ease;
+	white-space: nowrap;
 }
 
 .portlet-msg-error, .portlet-msg-info, .portlet-msg-success {
