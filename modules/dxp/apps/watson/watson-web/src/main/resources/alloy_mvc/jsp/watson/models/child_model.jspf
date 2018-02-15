@@ -278,7 +278,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			}
 		}
 		else {
-			returnWatsonReports = WatsonReport.queryRange(sort, start, end, "key", key);
+			returnWatsonReports = WatsonReport.queryAll("key", key);
 		}
 
 		return returnWatsonReports;
