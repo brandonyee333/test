@@ -195,6 +195,12 @@ public static class WatsonIncidentRelBaseModel extends WatsonIncidentRelWrapper 
 		return watsonIncidentRel;
 	}
 
+	public static WatsonIncidentRel fetch(long watsonIncidentRelId, boolean skipValidate) throws Exception {
+		WatsonIncidentRel watsonIncidentRel = new WatsonIncidentRel((com.liferay.watson.model.WatsonIncidentRel)baseModelAlloyServiceInvoker.fetchModel(watsonIncidentRelId));
+
+		return watsonIncidentRel;
+	}
+
 	public static List<WatsonIncidentRel> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonIncidentRel> watsonIncidentRels = (List<com.liferay.watson.model.WatsonIncidentRel>)baseModelAlloyServiceInvoker.getModels(start, end);
 

@@ -195,6 +195,12 @@ public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 		return watsonResource;
 	}
 
+	public static WatsonResource fetch(long watsonResourceId, boolean skipValidate) throws Exception {
+		WatsonResource watsonResource = new WatsonResource((com.liferay.watson.model.WatsonResource)baseModelAlloyServiceInvoker.fetchModel(watsonResourceId));
+
+		return watsonResource;
+	}
+
 	public static List<WatsonResource> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonResource> watsonResources = (List<com.liferay.watson.model.WatsonResource>)baseModelAlloyServiceInvoker.getModels(start, end);
 

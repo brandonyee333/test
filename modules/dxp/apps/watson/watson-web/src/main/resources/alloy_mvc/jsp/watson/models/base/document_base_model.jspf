@@ -195,6 +195,12 @@ public static class WatsonDocumentBaseModel extends WatsonDocumentWrapper {
 		return watsonDocument;
 	}
 
+	public static WatsonDocument fetch(long watsonDocumentId, boolean skipValidate) throws Exception {
+		WatsonDocument watsonDocument = new WatsonDocument((com.liferay.watson.model.WatsonDocument)baseModelAlloyServiceInvoker.fetchModel(watsonDocumentId));
+
+		return watsonDocument;
+	}
+
 	public static List<WatsonDocument> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonDocument> watsonDocuments = (List<com.liferay.watson.model.WatsonDocument>)baseModelAlloyServiceInvoker.getModels(start, end);
 

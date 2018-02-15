@@ -195,6 +195,12 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 		return watsonHistory;
 	}
 
+	public static WatsonHistory fetch(long watsonHistoryId, boolean skipValidate) throws Exception {
+		WatsonHistory watsonHistory = new WatsonHistory((com.liferay.watson.model.WatsonHistory)baseModelAlloyServiceInvoker.fetchModel(watsonHistoryId));
+
+		return watsonHistory;
+	}
+
 	public static List<WatsonHistory> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonHistory> watsonHistories = (List<com.liferay.watson.model.WatsonHistory>)baseModelAlloyServiceInvoker.getModels(start, end);
 

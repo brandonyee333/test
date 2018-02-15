@@ -195,6 +195,12 @@ public static class WatsonReportBaseModel extends WatsonReportWrapper {
 		return watsonReport;
 	}
 
+	public static WatsonReport fetch(long watsonReportId, boolean skipValidate) throws Exception {
+		WatsonReport watsonReport = new WatsonReport((com.liferay.watson.model.WatsonReport)baseModelAlloyServiceInvoker.fetchModel(watsonReportId));
+
+		return watsonReport;
+	}
+
 	public static List<WatsonReport> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonReport> watsonReports = (List<com.liferay.watson.model.WatsonReport>)baseModelAlloyServiceInvoker.getModels(start, end);
 

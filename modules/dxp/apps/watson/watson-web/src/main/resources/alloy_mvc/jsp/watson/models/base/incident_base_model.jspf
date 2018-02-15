@@ -195,6 +195,12 @@ public static class WatsonIncidentBaseModel extends WatsonIncidentWrapper {
 		return watsonIncident;
 	}
 
+	public static WatsonIncident fetch(long watsonIncidentId, boolean skipValidate) throws Exception {
+		WatsonIncident watsonIncident = new WatsonIncident((com.liferay.watson.model.WatsonIncident)baseModelAlloyServiceInvoker.fetchModel(watsonIncidentId));
+
+		return watsonIncident;
+	}
+
 	public static List<WatsonIncident> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonIncident> watsonIncidents = (List<com.liferay.watson.model.WatsonIncident>)baseModelAlloyServiceInvoker.getModels(start, end);
 

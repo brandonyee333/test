@@ -195,6 +195,12 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 		return watsonListType;
 	}
 
+	public static WatsonListType fetch(long watsonListTypeId, boolean skipValidate) throws Exception {
+		WatsonListType watsonListType = new WatsonListType((com.liferay.watson.model.WatsonListType)baseModelAlloyServiceInvoker.fetchModel(watsonListTypeId));
+
+		return watsonListType;
+	}
+
 	public static List<WatsonListType> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonListType> watsonListTypes = (List<com.liferay.watson.model.WatsonListType>)baseModelAlloyServiceInvoker.getModels(start, end);
 

@@ -195,6 +195,12 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 		return watsonAddress;
 	}
 
+	public static WatsonAddress fetch(long watsonAddressId, boolean skipValidate) throws Exception {
+		WatsonAddress watsonAddress = new WatsonAddress((com.liferay.watson.model.WatsonAddress)baseModelAlloyServiceInvoker.fetchModel(watsonAddressId));
+
+		return watsonAddress;
+	}
+
 	public static List<WatsonAddress> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonAddress> watsonAddresses = (List<com.liferay.watson.model.WatsonAddress>)baseModelAlloyServiceInvoker.getModels(start, end);
 

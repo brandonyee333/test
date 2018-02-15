@@ -195,6 +195,12 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 		return watsonChild;
 	}
 
+	public static WatsonChild fetch(long watsonChildId, boolean skipValidate) throws Exception {
+		WatsonChild watsonChild = new WatsonChild((com.liferay.watson.model.WatsonChild)baseModelAlloyServiceInvoker.fetchModel(watsonChildId));
+
+		return watsonChild;
+	}
+
 	public static List<WatsonChild> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonChild> watsonChildren = (List<com.liferay.watson.model.WatsonChild>)baseModelAlloyServiceInvoker.getModels(start, end);
 

@@ -195,6 +195,12 @@ public static class WatsonActivityBaseModel extends WatsonActivityWrapper {
 		return watsonActivity;
 	}
 
+	public static WatsonActivity fetch(long watsonActivityId, boolean skipValidate) throws Exception {
+		WatsonActivity watsonActivity = new WatsonActivity((com.liferay.watson.model.WatsonActivity)baseModelAlloyServiceInvoker.fetchModel(watsonActivityId));
+
+		return watsonActivity;
+	}
+
 	public static List<WatsonActivity> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonActivity> watsonActivities = (List<com.liferay.watson.model.WatsonActivity>)baseModelAlloyServiceInvoker.getModels(start, end);
 

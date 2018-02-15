@@ -195,6 +195,12 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 		return watsonVehicle;
 	}
 
+	public static WatsonVehicle fetch(long watsonVehicleId, boolean skipValidate) throws Exception {
+		WatsonVehicle watsonVehicle = new WatsonVehicle((com.liferay.watson.model.WatsonVehicle)baseModelAlloyServiceInvoker.fetchModel(watsonVehicleId));
+
+		return watsonVehicle;
+	}
+
 	public static List<WatsonVehicle> get(int start, int end) throws Exception {
 		List<com.liferay.watson.model.WatsonVehicle> watsonVehicles = (List<com.liferay.watson.model.WatsonVehicle>)baseModelAlloyServiceInvoker.getModels(start, end);
 
