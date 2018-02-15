@@ -12,11 +12,10 @@
  * details.
  */
 
-package com.liferay.osb.customer.rabbitmq.connector.processor;
+package com.liferay.osb.customer.rabbitmq.connector.router;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 
-import java.util.List;
 import java.util.Map;
 
 import org.osgi.util.tracker.ServiceTracker;
@@ -24,28 +23,24 @@ import org.osgi.util.tracker.ServiceTracker;
 /**
  * @author Amos Fong
  */
-public class MessageProcessorRegistryUtil {
+public class MessageRouterRegistryUtil {
 
-	public static List<MessageProcessor> getMessageProcessors(
-		String queue, String routingKey) {
-
-		MessageProcessorRegistry messageProcessorRegistry =
+	public static MessageRouter getMessageRouter(String queue) {
+		MessageRouterRegistry messageRouterRegistry =
 			_serviceTracker.getService();
 
-		return messageProcessorRegistry.getMessageProcessors(queue, routingKey);
+		return messageRouterRegistry.getMessageRouter(queue);
 	}
 
-	public static Map<String, List<MessageProcessor>>
-		getMessageProcessorsMap() {
-
-		MessageProcessorRegistry messageProcessorRegistry =
+	public static Map<String, MessageRouter> getMessageRoutersMap() {
+		MessageRouterRegistry messageRouterRegistry =
 			_serviceTracker.getService();
 
-		return messageProcessorRegistry.getMessageProcessorsMap();
+		return messageRouterRegistry.getMessageRoutersMap();
 	}
 
 	private static final
-		ServiceTracker<?, MessageProcessorRegistry> _serviceTracker =
-			ServiceTrackerFactory.open(MessageProcessorRegistry.class);
+		ServiceTracker<?, MessageRouterRegistry> _serviceTracker =
+			ServiceTrackerFactory.open(MessageRouterRegistry.class);
 
 }

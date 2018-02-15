@@ -15,9 +15,8 @@
 package com.liferay.osb.customer.rabbitmq.connector.internal.consumer;
 
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
-import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
-import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessorRegistryUtil;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessagePropertyKeys;
+import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.MapUtil;
@@ -31,7 +30,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,10 +37,17 @@ import java.util.Map;
  */
 public class OSBConsumer extends DefaultConsumer implements Consumer {
 
-	public OSBConsumer(Channel channel, String queue) throws Exception {
+	public OSBConsumer(Channel channel, MessageRouter messageRouter)
+		throws Exception {
+
 		super(channel);
 
-		_queue = queue;
+		_messageRouter = messageRouter;
+	}
+
+	@Override
+	public MessageRouter getMessageRouter() {
+		return _messageRouter;
 	}
 
 	@Override
@@ -70,8 +75,7 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 		}
 
 		try {
-			processMessage(
-				envelope.getRoutingKey(), message, translate(properties));
+			route(envelope.getRoutingKey(), message, translate(properties));
 
 			basicAck(envelope);
 		}
@@ -104,7 +108,7 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 		}
 	}
 
-	protected void processMessage(
+	protected void route(
 		String routingKey, String message, Map<String, Object> properties) {
 
 		if (_log.isDebugEnabled()) {
@@ -112,20 +116,7 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 			_log.debug("Properties: " + MapUtil.toString(properties));
 		}
 
-		List<MessageProcessor> messageProcessors =
-			MessageProcessorRegistryUtil.getMessageProcessors(
-				_queue, routingKey);
-
-		for (MessageProcessor messageProcessor : messageProcessors) {
-			if (_log.isDebugEnabled()) {
-				Class<?> messageProcessorClass = messageProcessor.getClass();
-
-				_log.debug(
-					"Routing message to " + messageProcessorClass.getName());
-			}
-
-			messageProcessor.process(routingKey, message, properties);
-		}
+		_messageRouter.route(routingKey, message, properties);
 	}
 
 	protected Map<String, Object> translate(AMQP.BasicProperties properties) {
@@ -172,6 +163,6 @@ public class OSBConsumer extends DefaultConsumer implements Consumer {
 
 	private static Log _log = LogFactoryUtil.getLog(OSBConsumer.class);
 
-	private final String _queue;
+	private final MessageRouter _messageRouter;
 
 }

@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.rabbitmq.connector.service;
 
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
-import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 
 /**
  * @author Amos Fong
@@ -23,12 +23,13 @@ import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
  */
 public interface ConsumerManager {
 
-	public void addConsumer(String queue) throws Exception;
+	public void addConsumer(String queue, MessageRouter messageRouter)
+		throws Exception;
 
 	public void consumeMessage();
 
 	public void consumeMessages(
-			String queue, long messageCount, MessageProcessor messageProcessor)
+			String queue, long messageCount, MessageRouter messageRouter)
 		throws Exception;
 
 	public void deleteConsumer(String queue);

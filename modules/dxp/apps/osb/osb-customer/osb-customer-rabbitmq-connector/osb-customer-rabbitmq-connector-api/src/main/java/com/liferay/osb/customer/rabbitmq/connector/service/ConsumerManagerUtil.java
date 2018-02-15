@@ -15,7 +15,7 @@
 package com.liferay.osb.customer.rabbitmq.connector.service;
 
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
-import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.osgi.util.ServiceTrackerFactory;
 
 import org.osgi.util.tracker.ServiceTracker;
@@ -26,8 +26,10 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class ConsumerManagerUtil {
 
-	public static void addConsumer(String queue) throws Exception {
-		getService().addConsumer(queue);
+	public static void addConsumer(String queue, MessageRouter messageRouter)
+		throws Exception {
+
+		getService().addConsumer(queue, messageRouter);
 	}
 
 	public static void consumeMessage() {
@@ -35,10 +37,10 @@ public class ConsumerManagerUtil {
 	}
 
 	public static void consumeMessages(
-			String queue, long messageCount, MessageProcessor messageProcessor)
+			String queue, long messageCount, MessageRouter messageRouter)
 		throws Exception {
 
-		getService().consumeMessages(queue, messageCount, messageProcessor);
+		getService().consumeMessages(queue, messageCount, messageRouter);
 	}
 
 	public static void deleteConsumer(String queue) {

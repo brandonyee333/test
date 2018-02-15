@@ -19,7 +19,7 @@ import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
 import com.liferay.osb.customer.rabbitmq.connector.exception.DuplicateConsumerException;
 import com.liferay.osb.customer.rabbitmq.connector.internal.consumer.OSBConsumer;
-import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -41,12 +41,14 @@ import org.osgi.service.component.annotations.Reference;
 public class ConsumerManagerImpl implements ConsumerManager {
 
 	@Override
-	public void addConsumer(String queue) throws Exception {
+	public void addConsumer(String queue, MessageRouter messageRouter)
+		throws Exception {
+
 		if (_consumers.containsKey(queue)) {
 			throw new DuplicateConsumerException();
 		}
 
-		Consumer consumer = createConsumer(queue);
+		Consumer consumer = createConsumer(queue, messageRouter);
 
 		_consumers.put(queue, consumer);
 
@@ -82,8 +84,7 @@ public class ConsumerManagerImpl implements ConsumerManager {
 
 	@Override
 	public void consumeMessages(
-			String queue, long messageCount,
-			final MessageProcessor messageProcessor)
+			String queue, long messageCount, final MessageRouter messageRouter)
 		throws Exception {
 
 		Channel channel = null;
@@ -107,15 +108,14 @@ public class ConsumerManagerImpl implements ConsumerManager {
 					break;
 				}
 
-				Consumer consumer = new OSBConsumer(channel, queue) {
+				Consumer consumer = new OSBConsumer(channel, messageRouter) {
 
 					@Override
-					protected void processMessage(
+					protected void route(
 						String routingKey, String message,
 						Map<String, Object> properties) {
 
-						messageProcessor.process(
-							routingKey, message, properties);
+						messageRouter.route(routingKey, message, properties);
 					}
 
 				};
@@ -160,7 +160,8 @@ public class ConsumerManagerImpl implements ConsumerManager {
 
 			closeChannel(consumer.getChannel());
 
-			Consumer newConsumer = createConsumer(queue);
+			Consumer newConsumer = createConsumer(
+				queue, consumer.getMessageRouter());
 
 			entry.setValue(newConsumer);
 
@@ -185,10 +186,12 @@ public class ConsumerManagerImpl implements ConsumerManager {
 		}
 	}
 
-	protected Consumer createConsumer(String queue) throws Exception {
+	protected Consumer createConsumer(String queue, MessageRouter messageRouter)
+		throws Exception {
+
 		Channel channel = _connectionManager.createChannel();
 
-		Consumer consumer = new OSBConsumer(channel, queue);
+		Consumer consumer = new OSBConsumer(channel, messageRouter);
 
 		if (!RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED) {
 			channel.basicConsume(queue, false, consumer);

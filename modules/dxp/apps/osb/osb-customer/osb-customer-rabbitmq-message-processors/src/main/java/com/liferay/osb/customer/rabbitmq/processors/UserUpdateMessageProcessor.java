@@ -14,9 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
-import com.liferay.osb.customer.rabbitmq.configuration.RabbitMQConfiguration;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -29,26 +27,17 @@ import com.liferay.portal.util.PortalInstances;
 import java.util.Calendar;
 import java.util.Map;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
  */
-@Component(immediate = true)
+@Component(
+	immediate = true, property = {"routing.key=entity.user.update"},
+	service = UserUpdateMessageProcessor.class
+)
 public class UserUpdateMessageProcessor implements MessageProcessor {
-
-	@Override
-	public String getQueue() {
-		return _configuration.queue();
-	}
-
-	@Override
-	public String[] getRoutingKeys() {
-		return _ROUTING_KEYS;
-	}
 
 	@Override
 	public void process(
@@ -64,20 +53,13 @@ public class UserUpdateMessageProcessor implements MessageProcessor {
 		}
 	}
 
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_configuration = ConfigurableUtil.createConfigurable(
-			RabbitMQConfiguration.class, properties);
-	}
-
 	protected void updateUser(String message) throws Exception {
 		JSONObject jsonObject = _jsonFactory.createJSONObject(message.trim());
 
 		String uuid = jsonObject.getString("uuid");
 
 		User user = _userLocalService.fetchUserByUuidAndCompanyId(
-			uuid, _COMPANY_ID);
+			uuid, PortalInstances.getDefaultCompanyId());
 
 		if (user == null) {
 			return;
@@ -111,15 +93,8 @@ public class UserUpdateMessageProcessor implements MessageProcessor {
 			null, null, null, null);
 	}
 
-	private static final long _COMPANY_ID =
-		PortalInstances.getDefaultCompanyId();
-
-	private static final String[] _ROUTING_KEYS = {"entity.user.update"};
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		UserUpdateMessageProcessor.class);
-
-	private volatile RabbitMQConfiguration _configuration;
 
 	@Reference
 	private JSONFactory _jsonFactory;

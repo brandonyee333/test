@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.consumer;
 
+import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
+
 import com.rabbitmq.client.Channel;
 
 /**
@@ -22,5 +24,7 @@ import com.rabbitmq.client.Channel;
 public interface Consumer extends com.rabbitmq.client.Consumer {
 
 	public Channel getChannel();
+
+	public MessageRouter getMessageRouter();
 
 }

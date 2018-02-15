@@ -104,27 +104,27 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 			</liferay-frontend:management-bar>
 
 			<%
-			Map<String, List<MessageProcessor>> messageProcessorsMap = MessageProcessorRegistryUtil.getMessageProcessorsMap();
+			Map<String, MessageRouter> messageRoutersMap = MessageRouterRegistryUtil.getMessageRoutersMap();
 			%>
 
 			<liferay-ui:search-container
-				emptyResultsMessage="there-are-no-processors"
+				emptyResultsMessage="there-are-no-routers"
 				emptyResultsMessageCssClass="taglib-empty-result-message-header"
 				headerNames="class,queue,channel,active"
-				total="<%= messageProcessorsMap.size() %>"
+				total="<%= messageRoutersMap.size() %>"
 			>
 				<liferay-ui:search-container-results
-					results="<%= ListUtil.fromCollection(messageProcessorsMap.entrySet()) %>"
+					results="<%= ListUtil.fromCollection(messageRoutersMap.entrySet()) %>"
 				/>
 
 				<liferay-ui:search-container-row
 					className="java.util.Map.Entry"
-					modelVar="messageProcessorsEntry"
+					modelVar="messageRoutersEntry"
 				>
 
 					<%
-					String queue = (String)messageProcessorsEntry.getKey();
-					List<MessageProcessor> messageProcessors = (List<MessageProcessor>)messageProcessorsEntry.getValue();
+					String queue = (String)messageRoutersEntry.getKey();
+					MessageRouter messageRouter = (MessageRouter)messageRoutersEntry.getValue();
 
 					Channel channel = null;
 
@@ -141,22 +141,14 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 					/>
 
 					<liferay-ui:search-container-column-text
-						name="processors"
+						name="router"
 					>
 
 						<%
-						for (MessageProcessor messageProcessor : messageProcessors) {
-							Class<?> messageProcessorClass = messageProcessor.getClass();
+						Class<?> messageRouterClass = messageRouter.getClass();
 						%>
 
-							<%= messageProcessorClass.getName() %>
-
-							<br />
-
-						<%
-						}
-						%>
-
+						<%= messageRouterClass.getName() %>
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text

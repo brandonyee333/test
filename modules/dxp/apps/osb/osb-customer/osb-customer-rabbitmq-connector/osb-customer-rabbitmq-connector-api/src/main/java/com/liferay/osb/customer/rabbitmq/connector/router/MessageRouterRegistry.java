@@ -12,16 +12,17 @@
  * details.
  */
 
-package com.liferay.osb.customer.rabbitmq.connector.processor;
+package com.liferay.osb.customer.rabbitmq.connector.router;
 
 import java.util.Map;
 
 /**
  * @author Amos Fong
  */
-public interface MessageProcessor {
+public interface MessageRouterRegistry {
 
-	public void process(
-		String routingKey, String message, Map<String, Object> properties);
+	public MessageRouter getMessageRouter(String queue);
+
+	public Map<String, MessageRouter> getMessageRoutersMap();
 
 }

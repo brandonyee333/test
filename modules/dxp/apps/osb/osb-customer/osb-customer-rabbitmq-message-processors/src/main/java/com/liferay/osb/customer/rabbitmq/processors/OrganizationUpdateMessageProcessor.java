@@ -14,9 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
-import com.liferay.osb.customer.rabbitmq.configuration.RabbitMQConfiguration;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -28,26 +26,17 @@ import com.liferay.portal.util.PortalInstances;
 
 import java.util.Map;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
  */
-@Component(immediate = true)
+@Component(
+	immediate = true, property = {"routing.key=entity.organization.update"},
+	service = OrganizationUpdateMessageProcessor.class
+)
 public class OrganizationUpdateMessageProcessor implements MessageProcessor {
-
-	@Override
-	public String getQueue() {
-		return _configuration.queue();
-	}
-
-	@Override
-	public String[] getRoutingKeys() {
-		return _ROUTING_KEYS;
-	}
 
 	@Override
 	public void process(
@@ -63,13 +52,6 @@ public class OrganizationUpdateMessageProcessor implements MessageProcessor {
 		}
 	}
 
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_configuration = ConfigurableUtil.createConfigurable(
-			RabbitMQConfiguration.class, properties);
-	}
-
 	protected void updateOrganization(String message) throws Exception {
 		JSONObject jsonObject = _jsonFactory.createJSONObject(message.trim());
 
@@ -77,7 +59,7 @@ public class OrganizationUpdateMessageProcessor implements MessageProcessor {
 
 		Organization organization =
 			_organizationLocalService.fetchOrganizationByUuidAndCompanyId(
-				uuid, _COMPANY_ID);
+				uuid, PortalInstances.getDefaultCompanyId());
 
 		if (organization == null) {
 			return;
@@ -95,16 +77,8 @@ public class OrganizationUpdateMessageProcessor implements MessageProcessor {
 			organization.getComments(), true, null, group.isSite(), null);
 	}
 
-	private static final long _COMPANY_ID =
-		PortalInstances.getDefaultCompanyId();
-
-	private static final String[] _ROUTING_KEYS =
-		{"entity.organization.update"};
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		OrganizationUpdateMessageProcessor.class);
-
-	private volatile RabbitMQConfiguration _configuration;
 
 	@Reference
 	private JSONFactory _jsonFactory;

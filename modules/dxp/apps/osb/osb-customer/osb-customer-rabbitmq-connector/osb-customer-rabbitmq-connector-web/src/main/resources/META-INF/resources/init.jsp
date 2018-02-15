@@ -26,8 +26,8 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues" %><%@
 page import="com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer" %><%@
-page import="com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor" %><%@
-page import="com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessorRegistryUtil" %><%@
+page import="com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter" %><%@
+page import="com.liferay.osb.customer.rabbitmq.connector.router.MessageRouterRegistryUtil" %><%@
 page import="com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManagerUtil" %><%@
 page import="com.liferay.portal.kernel.util.ListUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
@@ -35,8 +35,7 @@ page import="com.liferay.portal.kernel.util.PortalUtil" %>
 
 <%@ page import="com.rabbitmq.client.Channel" %>
 
-<%@ page import="java.util.List" %><%@
-page import="java.util.Map" %>
+<%@ page import="java.util.Map" %>
 
 <%@ page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>

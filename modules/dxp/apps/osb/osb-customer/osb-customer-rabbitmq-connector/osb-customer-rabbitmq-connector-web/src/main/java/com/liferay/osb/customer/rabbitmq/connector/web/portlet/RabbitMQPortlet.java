@@ -15,7 +15,8 @@
 package com.liferay.osb.customer.rabbitmq.connector.web.portlet;
 
 import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
-import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessorRegistry;
+import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
+import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouterRegistry;
 import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.osb.customer.rabbitmq.connector.web.internal.constants.RabbitMQPortletKeys;
 import com.liferay.portal.kernel.log.Log;
@@ -60,7 +61,10 @@ public class RabbitMQPortlet extends MVCPortlet {
 
 		String queue = ParamUtil.getString(actionRequest, "queue");
 
-		_consumerManager.addConsumer(queue);
+		MessageRouter messageRouter = _messageRouterRegistry.getMessageRouter(
+			queue);
+
+		_consumerManager.addConsumer(queue, messageRouter);
 
 		/*MessageValuesThreadLocal.setValue(
 			ClusterLinkUtil.CLUSTER_FORWARD_MESSAGE, true);
@@ -130,6 +134,6 @@ public class RabbitMQPortlet extends MVCPortlet {
 		MethodKey.class, Object[].class);
 
 	@Reference
-	private MessageProcessorRegistry _messageProcessorRegistry;
+	private MessageRouterRegistry _messageRouterRegistry;
 
 }
