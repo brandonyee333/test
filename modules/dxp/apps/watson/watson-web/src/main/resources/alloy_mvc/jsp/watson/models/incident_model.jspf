@@ -625,7 +625,6 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 	public boolean isValid(List<WatsonListTypeRel> natures, List<WatsonIncidentRel> watsonIncidentRels) throws Exception {
 		pushError(validateWatsonIncidentDescription(getDescription()));
-//		pushError(validatorWatsonIncidentExpenses(get));
 		pushError(validateWatsonIncidentIncidentStatus(getIncidentStatus()));
 		pushError(validateWatsonIncidentNatures(natures, this.isNew()));
 		pushError(validateWatsonIncidentOccurrenceDates(getStartDate(), getEndDate()));
