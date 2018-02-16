@@ -41,8 +41,8 @@ public class MessagePublisherImpl implements MessagePublisher {
 			String exchange, String routingKey, JSONObject messageJSONObject)
 		throws IOException, TimeoutException {
 
-		if (!_connectionManager.isConnected()) {
-			_log.error("The RabbitMQ Connection has failed");
+		if (!_connectionManager.isConnected() && _log.isInfoEnabled()) {
+			_log.info("The RabbitMQ connection has failed");
 		}
 
 		Channel channel = null;
