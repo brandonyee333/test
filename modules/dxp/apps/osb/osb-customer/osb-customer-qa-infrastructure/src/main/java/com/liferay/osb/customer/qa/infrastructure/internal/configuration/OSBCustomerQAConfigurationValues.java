@@ -19,40 +19,8 @@ package com.liferay.osb.customer.qa.infrastructure.internal.configuration;
  */
 public class OSBCustomerQAConfigurationValues {
 
-	public static final String[] OSB_QA_ACCOUNT_CUSTOMER_EMAIL_ADDRESSES =
-		OSBCustomerQAConfigurationUtil.getArray(
-			OSBCustomerQAConfigurationKeys.
-				OSB_QA_ACCOUNT_CUSTOMER_EMAIL_ADDRESSES);
-
-	public static final String[] OSB_QA_ACCOUNT_ENTRY_CODES =
-		OSBCustomerQAConfigurationUtil.getArray(
-			OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENTRY_CODES);
-
-	public static final String[] OSB_QA_ACCOUNT_ENVIRONMENT_NAMES =
-		OSBCustomerQAConfigurationUtil.getArray(
-			OSBCustomerQAConfigurationKeys.OSB_QA_ACCOUNT_ENVIRONMENT_NAMES);
-
-	public static final String[] OSB_QA_ACCOUNT_WORKER_EMAIL_ADDRESSES =
-		OSBCustomerQAConfigurationUtil.getArray(
-			OSBCustomerQAConfigurationKeys.
-				OSB_QA_ACCOUNT_WORKER_EMAIL_ADDRESSES);
-
-	public static final String[] OSB_QA_PARTNER_ENTRY_CODES =
-		OSBCustomerQAConfigurationUtil.getArray(
-			OSBCustomerQAConfigurationKeys.OSB_QA_PARTNER_ENTRY_CODES);
-
-	public static final String[] OSB_QA_PARTNER_WORKER_EMAIL_ADDRESSES =
-		OSBCustomerQAConfigurationUtil.getArray(
-			OSBCustomerQAConfigurationKeys.
-				OSB_QA_PARTNER_WORKER_EMAIL_ADDRESSES);
-
-	public static final String[] OSB_QA_SUPPORT_WORKER_EMAIL_ADDRESSES =
-		OSBCustomerQAConfigurationUtil.getArray(
-			OSBCustomerQAConfigurationKeys.
-				OSB_QA_SUPPORT_WORKER_EMAIL_ADDRESSES);
-
-	public static final String[] OSB_QA_USER_EMAIL_ADDRESSES =
-		OSBCustomerQAConfigurationUtil.getArray(
+	public static final String OSB_QA_USER_EMAIL_ADDRESSES =
+		OSBCustomerQAConfigurationUtil.get(
 			OSBCustomerQAConfigurationKeys.OSB_QA_USER_EMAIL_ADDRESSES);
 
 }

@@ -31,10 +31,6 @@ public class OSBCustomerQAConfigurationUtil {
 		return _configuration.get(key, filter);
 	}
 
-	public static String[] getArray(String key) {
-		return _configuration.getArray(key);
-	}
-
 	public static String[] getArray(String key, Filter filter) {
 		return _configuration.getArray(key, filter);
 	}
