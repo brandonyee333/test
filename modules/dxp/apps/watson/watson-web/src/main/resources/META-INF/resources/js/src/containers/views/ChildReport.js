@@ -18,7 +18,7 @@ import {indexPhysicalExams} from '../../actions/physical-exams';
 import {indexProgressReports} from '../../actions/progress-reports';
 import {viewChildren} from '../../actions/children';
 
-import {formatModelName, getMimeType, updateDOMTitle} from '../../lib/util';
+import {formatModelName, getFormattedDate, getMimeType, updateDOMTitle} from '../../lib/util';
 
 class ChildReport extends JSXComponent {
 	attached() {
@@ -209,7 +209,7 @@ class ChildReport extends JSXComponent {
 				</div>
 
 				<div class="child-subtitle">
-					{sub(Liferay.Language.get('created-by-x-on-x'), currentChildData.get('reportedBy') || '', currentChildData.get('createDate') || '')}
+					{sub(Liferay.Language.get('created-by-x-on-x'), currentChildData.get('reportedBy') || '', getFormattedDate(currentChildData.get('createDate')) || '')}
 				</div>
 			</div>
 		);

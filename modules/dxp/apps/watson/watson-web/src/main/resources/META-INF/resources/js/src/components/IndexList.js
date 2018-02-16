@@ -6,7 +6,7 @@ import List from './List';
 import LoadingCard from './LoadingCard';
 import Sort from './Sort';
 
-import {convertHtmlToText, getOptionsLabelFromWatsonConstants} from '../lib/util';
+import {convertHtmlToText, getFormattedDate, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
 function fetchIncidentData(incidents, watsonIncidentId) {
 	return incidents.get(watsonIncidentId);
@@ -44,11 +44,11 @@ function formatActivityData(watsonActivities, watsonIncidents, keysToOmit, onCli
 				return {
 					header: watsonActivity.get('name'),
 					id: key,
-					lastEdited: watsonActivity.get('modifiedDate'),
+					lastEdited: getFormattedDate(watsonActivity.get('modifiedDate')),
 					link: `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${key}/edit`,
 					onClick,
 					reportedBy: watsonActivity.get('reportedBy'),
-					reportedDate: watsonActivity.get('createDate'),
+					reportedDate: getFormattedDate(watsonActivity.get('createDate')),
 					rowContent: convertHtmlToText(watsonActivity.get('narrative')),
 					smallIncidentName: incidentName || watsonActivity.get('incidentName'),
 					status: statusLabel,
@@ -96,11 +96,11 @@ function formatAddressData(watsonAddresses, watsonIncidents, keysToOmit, onClick
 					file: watsonAddress.get('imagePayload'),
 					header: watsonAddress.get('name'),
 					id: key,
-					lastEdited: watsonAddress.get('modifiedDate'),
+					lastEdited: getFormattedDate(watsonAddress.get('modifiedDate')),
 					link: `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/addresses/${key}/edit`,
 					onClick,
 					reportedBy: watsonAddress.get('reportedBy'),
-					reportedDate: watsonAddress.get('createDate'),
+					reportedDate: getFormattedDate(watsonAddress.get('createDate')),
 					rowContent: formatAddressRowContent(watsonAddress),
 					smallIncidentName: incidentName || watsonAddress.get('incidentName'),
 					status: statusLabel,
@@ -147,11 +147,11 @@ function formatChildData(watsonChildren, keysToOmit, onClick, selectedIds, simpl
 				return {
 					header: watsonChild.get('name'),
 					id: key,
-					lastEdited: watsonChild.get('modifiedDate'),
+					lastEdited: getFormattedDate(watsonChild.get('modifiedDate')),
 					link: `${WatsonConstants.urls.baseURL}/children/${key}/edit/`,
 					onClick,
 					reportedBy: watsonChild.get('reportedBy'),
-					reportedDate: watsonChild.get('reportDate'),
+					reportedDate: getFormattedDate(watsonChild.get('reportDate')),
 					rowContent: formatChildRowContent(watsonChild),
 					subHeader: getOptionsLabelFromWatsonConstants('children', 'typeWatsonListTypeId', watsonChild.get('typeWatsonListTypeId'))
 				};
@@ -168,7 +168,7 @@ function formatChildRowContent(watsonChild) {
 	const unknownLabel = Liferay.Language.get('unknown');
 
 	childDetails.push(sub(Liferay.Language.get('country-of-ethnicity-x'), watsonChild.get('country') || unknownLabel));
-	childDetails.push(sub(Liferay.Language.get('date-of-entry-x'), watsonChild.get('dateAccepted') || unknownLabel));
+	childDetails.push(sub(Liferay.Language.get('date-of-entry-x'), getFormattedDate(watsonChild.get('dateAccepted')) || unknownLabel));
 
 	return childDetails;
 }
@@ -187,11 +187,11 @@ function formatDocumentsData(watsonDocuments, keysToOmit, onClick, selectedIds, 
 				return {
 					header: watsonDocument.get('name'),
 					id: key,
-					lastEdited: watsonDocument.get('modifiedDate'),
+					lastEdited: getFormattedDate(watsonDocument.get('modifiedDate')),
 					link: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/${key}/edit`,
 					onClick,
 					reportedBy: watsonDocument.get('reportedBy'),
-					reportedDate: watsonDocument.get('createDate'),
+					reportedDate: getFormattedDate(watsonDocument.get('createDate')),
 					smallIncidentName: watsonDocument.get('childName'),
 					subHeader: getOptionsLabelFromWatsonConstants('documents', 'typeWatsonListTypeId', watsonDocument.get('typeWatsonListTypeId'))
 
@@ -224,11 +224,11 @@ function formatIncidentData(watsonIncidents, keysToOmit, onClick, selectedIds, s
 				return {
 					header: watsonIncident.get('name'),
 					id: key,
-					lastEdited: watsonIncident.get('modifiedDate'),
+					lastEdited: getFormattedDate(watsonIncident.get('modifiedDate')),
 					link: `${WatsonConstants.urls.baseURL}/incidents/${key}/edit/`,
 					onClick,
 					reportedBy: watsonIncident.get('reportedBy'),
-					reportedDate: watsonIncident.get('reportDate'),
+					reportedDate: getFormattedDate(watsonIncident.get('reportDate')),
 					rowContent: formatIncidentRowContent(watsonIncident),
 					status: statusLabel,
 					statusCssClass,
@@ -255,11 +255,11 @@ function formatReportsData(watsonReports, model, keysToOmit, onClick, selectedId
 				return {
 					header: watsonReport.get('name'),
 					id: key,
-					lastEdited: watsonReport.get('modifiedDate'),
+					lastEdited: getFormattedDate(watsonReport.get('modifiedDate')),
 					link: `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${key}/edit`,
 					onClick,
 					reportedBy: watsonReport.get('reportedBy'),
-					reportedDate: watsonReport.get('createDate'),
+					reportedDate: getFormattedDate(watsonReport.get('createDate')),
 					smallIncidentName: watsonReport.get('childName'),
 					subHeader: getOptionsLabelFromWatsonConstants(model, 'typeWatsonListTypeId', watsonReports.get('typeWatsonListTypeId'))
 				};
@@ -321,11 +321,11 @@ function formatPeopleData(watsonPeople, watsonIncidents, keysToOmit, onClick, se
 					file: watsonPerson.get('imagePayload'),
 					header: watsonPerson.get('name'),
 					id: key,
-					lastEdited: watsonPerson.get('modifiedDate'),
+					lastEdited: getFormattedDate(watsonPerson.get('modifiedDate')),
 					link: `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/people/${key}/edit`,
 					onClick,
 					reportedBy: watsonPerson.get('reportedBy'),
-					reportedDate: watsonPerson.get('createDate'),
+					reportedDate: getFormattedDate(watsonPerson.get('createDate')),
 					rowContent: formatPersonRowContent(watsonPerson),
 					smallIncidentName: incidentName || watsonPerson.get('incidentName'),
 					status: statusLabel,
@@ -346,7 +346,7 @@ function formatPersonRowContent(watsonPerson) {
 	const unknownLabel = Liferay.Language.get('unknown');
 
 	personDetails.push(sub(Liferay.Language.get('country-of-ethnicity-x'), watsonPerson.get('ethnicity') || unknownLabel));
-	personDetails.push(sub(Liferay.Language.get('birth-date-x'), watsonPerson.get('birthDate') || unknownLabel));
+	personDetails.push(sub(Liferay.Language.get('birth-date-x'), getFormattedDate(watsonPerson.get('birthDate')) || unknownLabel));
 
 	return personDetails;
 }
@@ -383,11 +383,11 @@ function formatResourcesData(watsonResources, watsonIncidents, keysToOmit, onCli
 				return {
 					header: watsonResource.get('name'),
 					id: key,
-					lastEdited: watsonResource.get('modifiedDate'),
+					lastEdited: getFormattedDate(watsonResource.get('modifiedDate')),
 					link: `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/${key}/edit`,
 					onClick,
 					reportedBy: watsonResource.get('reportedBy'),
-					reportedDate: watsonResource.get('createDate'),
+					reportedDate: getFormattedDate(watsonResource.get('createDate')),
 					smallIncidentName: incidentName || watsonResource.get('incidentName'),
 					status: statusLabel,
 					statusCssClass,
@@ -412,7 +412,7 @@ function formatSimpleActivityData(watsonActivities, keysToOmit, onClick, selecte
 
 			return {
 				disabled: disabled ? 'disabled' : '',
-				header: watsonActivity.get('reportDate'),
+				header: getFormattedDate(watsonActivity.get('reportDate')),
 				id: key,
 				link: `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${key}/edit`,
 				onClick,
@@ -459,7 +459,7 @@ function formatSimpleAddressData(watsonAddresses, keysToOmit, onClick, selectedI
 				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/addresses/${key}/edit`,
 				onClick: disabled ? undefined : onClick,
 				reportedBy: watsonAddress.get('reportedBy'),
-				reportedDate: watsonAddress.get('createDate'),
+				reportedDate: getFormattedDate(watsonAddress.get('createDate')),
 				selected,
 				smallIncidentName: childRegionLabel,
 				status: regionLabel,
@@ -480,7 +480,7 @@ function formatSimpleChildData(watsonChildren, keysToOmit, onClick, selectedIds)
 
 			const unknownLabel = Liferay.Language.get('unknown');
 
-			const birthDate = sub(Liferay.Language.get('birth-date-x'), watsonChild.get('birthDate') || unknownLabel);
+			const birthDate = sub(Liferay.Language.get('birth-date-x'), getFormattedDate(watsonChild.get('birthDate')) || unknownLabel);
 			const ethnicity = sub(Liferay.Language.get('country-of-ethnicity-x'), watsonChild.get('ethnicity') || unknownLabel);
 
 			return {
@@ -490,7 +490,7 @@ function formatSimpleChildData(watsonChildren, keysToOmit, onClick, selectedIds)
 				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/children/${key}/edit/`,
 				onClick: disabled ? undefined : onClick,
 				reportedBy: watsonChild.get('reportedBy'),
-				reportedDate: watsonChild.get('createDate'),
+				reportedDate: getFormattedDate(watsonChild.get('createDate')),
 				selected,
 				smallIncidentName: ethnicity,
 				status: birthDate,
@@ -519,7 +519,7 @@ function formatSimpleDocumentsData(watsonDocuments, keysToOmit, onClick, selecte
 				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/documents/${key}/edit`,
 				onClick: disabled ? undefined : onClick,
 				reportedBy: watsonDocument.get('reportedBy'),
-				reportedDate: watsonDocument.get('createDate'),
+				reportedDate: getFormattedDate(watsonDocument.get('createDate')),
 				rowContent: watsonDocument.get('description'),
 				selected,
 				subHeader: getOptionsLabelFromWatsonConstants('documents', 'parentTypeWatsonListTypeId', watsonDocument.get('parentTypeWatsonListTypeId'))
@@ -550,11 +550,11 @@ function formatSimpleIncidentData(watsonIncidents, keysToOmit, onClick, selected
 				disabled: disabled ? 'disabled' : '',
 				header: watsonIncident.get('name'),
 				id: key,
-				lastEdited: watsonIncident.get('modifiedDate'),
+				lastEdited: getFormattedDate(watsonIncident.get('modifiedDate')),
 				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${key}/edit`,
 				onClick: disabled ? undefined : onClick,
 				reportedBy: watsonIncident.get('reportedBy'),
-				reportedDate: watsonIncident.get('reportDate'),
+				reportedDate: getFormattedDate(watsonIncident.get('reportDate')),
 				selected,
 				status: statusLabel,
 				statusCssClass,
@@ -582,7 +582,7 @@ function formatSimpleReportsData(watsonReports, model, keysToOmit, onClick, sele
 				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${key}/edit`,
 				onClick: disabled ? undefined : onClick,
 				reportedBy: watsonReport.get('reportedBy'),
-				reportedDate: watsonReport.get('createDate'),
+				reportedDate: getFormattedDate(watsonReport.get('createDate')),
 				rowContent: watsonReport.get('description'),
 				selected,
 				subHeader: getOptionsLabelFromWatsonConstants(model, 'typeWatsonListTypeId', watsonReports.get('typeWatsonListTypeId'))
@@ -602,7 +602,7 @@ function formatSimplePersonData(watsonPeople, keysToOmit, onClick, selectedIds) 
 
 			const unknownLabel = Liferay.Language.get('unknown');
 
-			const birthDate = sub(Liferay.Language.get('birth-date-x'), watsonPerson.get('birthDate') || unknownLabel);
+			const birthDate = sub(Liferay.Language.get('birth-date-x'), getFormattedDate(watsonPerson.get('birthDate')) || unknownLabel);
 			const ethnicity = sub(Liferay.Language.get('country-of-ethnicity-x'), watsonPerson.get('ethnicity') || unknownLabel);
 
 			const watsonIncidentId = watsonPerson.get('watsonIncidentId');
@@ -615,7 +615,7 @@ function formatSimplePersonData(watsonPeople, keysToOmit, onClick, selectedIds) 
 				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/people/${key}/edit`,
 				onClick: disabled ? undefined : onClick,
 				reportedBy: watsonPerson.get('reportedBy'),
-				reportedDate: watsonPerson.get('createDate'),
+				reportedDate: getFormattedDate(watsonPerson.get('createDate')),
 				selected,
 				smallIncidentName: ethnicity,
 				status: birthDate,
@@ -644,7 +644,7 @@ function formatSimpleResourcesData(watsonResources, keysToOmit, onClick, selecte
 				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/resources/${key}/edit`,
 				onClick: disabled ? undefined : onClick,
 				reportedBy: watsonResource.get('reportedBy'),
-				reportedDate: watsonResource.get('createDate'),
+				reportedDate: getFormattedDate(watsonResource.get('createDate')),
 				rowContent: watsonResource.get('description'),
 				selected,
 				subHeader: getOptionsLabelFromWatsonConstants('resources', 'typeWatsonListTypeId', watsonResource.get('typeWatsonListTypeId'))
@@ -675,7 +675,7 @@ function formatSimpleVehicleData(watsonVehicles, keysToOmit, onClick, selectedId
 				link: onClick ? undefined : `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/vehicles/${key}/edit`,
 				onClick: disabled ? undefined : onClick,
 				reportedBy: watsonVehicle.get('reportedBy'),
-				reportedDate: watsonVehicle.get('createDate'),
+				reportedDate: getFormattedDate(watsonVehicle.get('createDate')),
 				selected,
 				smallIncidentName: typeLabel,
 				status: licensePlate,
@@ -732,11 +732,11 @@ function formatVehicleData(watsonVehicles, watsonIncidents, keysToOmit, onClick,
 					file: watsonVehicle.get('imagePayload'),
 					header: watsonVehicle.get('name'),
 					id: key,
-					lastEdited: watsonVehicle.get('modifiedDate'),
+					lastEdited: getFormattedDate(watsonVehicle.get('modifiedDate')),
 					link: `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/vehicles/${key}/edit`,
 					onClick,
 					reportedBy: watsonVehicle.get('reportedBy'),
-					reportedDate: watsonVehicle.get('createDate'),
+					reportedDate: getFormattedDate(watsonVehicle.get('createDate')),
 					rowContent: formatVehicleRowContent(watsonVehicle),
 					smallIncidentName: incidentName || watsonVehicle.get('incidentName'),
 					status: statusLabel,

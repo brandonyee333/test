@@ -12,7 +12,7 @@ import {editPeople} from '../actions/people';
 import {editResources} from '../actions/resources';
 import {editVehicles} from '../actions/vehicles';
 
-import {formatModelName, getOptionsLabelFromWatsonConstants, getPluralMessage} from '../lib/util';
+import {formatModelName, getFormattedDate, getOptionsLabelFromWatsonConstants, getPluralMessage} from '../lib/util';
 
 class IncidentModelSubIndex extends JSXComponent {
 	attached() {
@@ -86,7 +86,7 @@ class IncidentModelSubIndex extends JSXComponent {
 			watsonIncidentId
 		} = this.props;
 
-		const modelMetaHeader = `${sub(Liferay.Language.get('created-by-x-on-x'), modelData.get('reportedBy') || '', modelData.get('createDate') || '')}`;
+		const modelMetaHeader = `${sub(Liferay.Language.get('created-by-x-on-x'), modelData.get('reportedBy') || '', getFormattedDate(modelData.get('createDate')) || '')}`;
 		const modelName = modelData.get('name');
 
 		const modelTypeLabel = getOptionsLabelFromWatsonConstants(model, 'typeWatsonListTypeId', modelData.get('typeWatsonListTypeId'));

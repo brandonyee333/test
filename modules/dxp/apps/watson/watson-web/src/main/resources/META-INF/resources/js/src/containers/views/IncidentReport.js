@@ -16,7 +16,7 @@ import {indexPeople} from '../../actions/people';
 import {indexResources} from '../../actions/resources';
 import {indexVehicles} from '../../actions/vehicles';
 
-import {getMimeType, updateDOMTitle} from '../../lib/util';
+import {getFormattedDate, getMimeType, updateDOMTitle} from '../../lib/util';
 
 class IncidentReport extends JSXComponent {
 	attached() {
@@ -204,7 +204,7 @@ class IncidentReport extends JSXComponent {
 				</div>
 
 				<div class="child-subtitle">
-					{sub(Liferay.Language.get('created-by-x-on-x'), currentIncidentData.get('reportedBy') || '', currentIncidentData.get('createDate') || '')}
+					{sub(Liferay.Language.get('created-by-x-on-x'), currentIncidentData.get('reportedBy') || '', getFormattedDate(currentIncidentData.get('createDate')) || '')}
 				</div>
 			</div>
 		);

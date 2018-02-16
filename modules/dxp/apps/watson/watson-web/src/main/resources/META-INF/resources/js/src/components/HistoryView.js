@@ -5,7 +5,7 @@ import {Map} from 'immutable';
 import moment from 'moment';
 import sub from 'string-sub';
 
-import {formatModelName, getOptionsLabelFromWatsonConstants} from '../lib/util';
+import {formatModelName, getFormattedDate, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
 import {indexActivities} from '../actions/activities';
 import {indexAddresses} from '../actions/addresses';
@@ -108,7 +108,7 @@ class HistoryView extends JSXComponent {
 					</a>
 				);
 
-				const createDate = modifiedTimeMoment ? modifiedTimeMoment.format('LL') : watsonHistory.get('createDate');
+				const createDate = modifiedTimeMoment ? modifiedTimeMoment.format('LL') : getFormattedDate(watsonHistory.get('createDate'));
 
 				if ((showCreated && historyType === 'created') || (showDeleted && historyType === 'deleted') || (showUpdated && historyType === 'updated')) {
 					const dateMissing = !datesExist[createDate];

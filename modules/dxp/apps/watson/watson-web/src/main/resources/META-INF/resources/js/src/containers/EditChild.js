@@ -25,7 +25,7 @@ import {updateLegalsDataManually} from '../actions/legals';
 import {updatePhysicalExamsDataManually} from '../actions/physical-exams';
 import {updateProgressReportsDataManually} from '../actions/progress-reports';
 
-import {formatModelName, getOptionsLabelFromWatsonConstants} from '../lib/util';
+import {formatModelName, getFormattedDate, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
 class EditChild extends JSXComponent {
 	attached() {
@@ -550,7 +550,7 @@ class EditChild extends JSXComponent {
 		} = this.props;
 
 		const childDisabled = false;
-		const childMetaHeader = `${sub(Liferay.Language.get('created-by-x-on-x'), childrenStoreData.get('reportedBy') || '', childrenStoreData.get('createDate') || '')}`;
+		const childMetaHeader = `${sub(Liferay.Language.get('created-by-x-on-x'), childrenStoreData.get('reportedBy') || '', getFormattedDate(childrenStoreData.get('createDate')) || '')}`;
 		const childName = childrenStoreData.get('name') || Liferay.Language.get('loading');
 
 		const childTypeLabel = getOptionsLabelFromWatsonConstants('children', 'typeWatsonListTypeId', childrenStoreData.get('typeWatsonListTypeId'));

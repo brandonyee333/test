@@ -107,6 +107,18 @@ export function formatModelName(modelName = '', shouldCapitalize) {
 	return modelName;
 }
 
+export function getFormattedDate(date) {
+	let retVal = date;
+
+	if (date) {
+		const dateTimeMoment = moment(date);
+
+		retVal = dateTimeMoment.format('YYYY-MM-DD');
+	}
+
+	return retVal;
+}
+
 export function getMimeType(mimeType = '') {
 	let type = '';
 

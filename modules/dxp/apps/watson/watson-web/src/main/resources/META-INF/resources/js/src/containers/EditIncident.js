@@ -27,7 +27,7 @@ import {updateRelationshipsDataManually} from '../actions/relationships';
 import {importResources, updateResourcesDataManually} from '../actions/resources';
 import {importVehicles, updateVehiclesDataManually} from '../actions/vehicles';
 
-import {formatModelName, getOptionsLabelFromWatsonConstants} from '../lib/util';
+import {formatModelName, getFormattedDate, getOptionsLabelFromWatsonConstants} from '../lib/util';
 
 class EditIncident extends JSXComponent {
 	attached() {
@@ -617,7 +617,7 @@ class EditIncident extends JSXComponent {
 		const vehicleNav = [];
 
 		const incidentDisabled = incidentStoreData.get('disabled');
-		const incidentMetaHeader = `${sub(Liferay.Language.get('created-by-x-on-x'), incidentStoreData.get('reportedBy') || '', incidentStoreData.get('createDate') || '')}`;
+		const incidentMetaHeader = `${sub(Liferay.Language.get('created-by-x-on-x'), incidentStoreData.get('reportedBy') || '', getFormattedDate(incidentStoreData.get('createDate')) || '')}`;
 		const incidentName = incidentStoreData.get('name') || Liferay.Language.get('loading');
 
 		const incidentTypeLabel = getOptionsLabelFromWatsonConstants('incidents', 'typeWatsonListTypeId', incidentStoreData.get('typeWatsonListTypeId'));
