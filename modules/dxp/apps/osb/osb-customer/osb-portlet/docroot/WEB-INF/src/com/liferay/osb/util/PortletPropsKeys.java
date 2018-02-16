@@ -41,6 +41,9 @@ public interface PortletPropsKeys {
 	public static final String PROVISIONING_EMAIL_ADDRESS =
 		"provisioning.email.address";
 
+	public static final String QA_INFRASTRUCTURE_ENABLED =
+		"qa.infrastructure.enabled";
+
 	public static final String RABBITMQ_MESSAGE_DEAD_LETTER_QUEUE_NAME =
 		"rabbitmq.message.dead.letter.queue.name";
 

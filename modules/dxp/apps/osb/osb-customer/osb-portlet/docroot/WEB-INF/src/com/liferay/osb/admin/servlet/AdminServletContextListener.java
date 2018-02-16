@@ -17,6 +17,7 @@ package com.liferay.osb.admin.servlet;
 import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.permission.OSBCommonPermission;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.OSBCustomerQAInfrastructureUtil;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -59,7 +60,6 @@ import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
 import com.liferay.rabbitmq.service.ConsumerManagerLocalServiceUtil;
 */
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -187,6 +187,12 @@ public class AdminServletContextListener
 
 		if (PortletPropsValues.DEVELOPER_MODE_ENABLED) {
 			setupDeveloperMode();
+		}
+
+		//QA Infrastructure
+
+		if (PortletPropsValues.QA_INFRASTRUCTURE_ENABLED) {
+			OSBCustomerQAInfrastructureUtil.setupQAInfrastructure();
 		}
 
 		// TODO need database for OSBConstants.*_USER_ID calls
