@@ -203,6 +203,7 @@ else {
 			eval('var ticketCommentId = document.<portlet:namespace />ticketCommentFm.<portlet:namespace />ticketCommentId' + suffix + '.value;');
 
 			document.<portlet:namespace />ticketCommentFm.<portlet:namespace />ticketCommentId.value = ticketCommentId;
+
 			submitForm(document.<portlet:namespace />ticketCommentFm, '<portlet:actionURL name="deleteTicketComment"><portlet:param name="mvcPath" value="/support/2/edit_ticket_entry.jsp" /></portlet:actionURL>');
 		}
 
@@ -224,59 +225,6 @@ else {
 			}
 
 			commentBody.value += ticketCannedResponseContent;
-		}
-
-		function <portlet:namespace />showForm(suffix, isDraft, hasMaximumDraftTicketComment) {
-			var A = AUI();
-
-			var commentForm = A.one('#<portlet:namespace />commentForm' + suffix);
-
-			if (commentForm) {
-				commentForm.show();
-			}
-
-			var commentBody = A.one('#<portlet:namespace />commentBody' + suffix);
-
-			if (commentBody) {
-				commentBody.focus();
-			}
-
-			if (!hasMaximumDraftTicketComment || isDraft) {
-				var message = '<%= UnicodeLanguageUtil.get(request, "comment-will-be-auto-saved-as-draft-every-30-seconds,-excluding-attachments") %>';
-
-				<portlet:namespace />updateMessageDisplay(suffix, 'portlet-msg-info', message);
-			}
-			else {
-				var message = '<%= UnicodeLanguageUtil.get(request, "your-draft-comments-have-reached-maximum-comment-cannot-be-automatically-saved-as-draft") %>';
-
-				<portlet:namespace />updateMessageDisplay(suffix, 'portlet-msg-info', message);
-			}
-
-			var formSuffix = A.one('#<portlet:namespace />suffix');
-
-			if (formSuffix) {
-				formSuffix.set('value', suffix);
-			}
-
-			var draftBody = A.one('#<portlet:namespace />draftBody');
-
-			if (draftBody) {
-				draftBody.set('value', commentBody.get('value'));
-			}
-
-			var intervalId = A.one('#<portlet:namespace />intervalId');
-
-			if (intervalId) {
-				intervalId.set(
-					'value',
-					setInterval(
-						function() {
-							<portlet:namespace />autoUpdateComment(suffix);
-						},
-						30000
-					)
-				);
-			}
 		}
 
 		function <portlet:namespace />toggleComment(event, i, type) {
@@ -460,7 +408,7 @@ else {
 					clearInterval(intervalId.get('value'));
 				}
 
-				intervalId.set('value', '');
+				intervalId.val('');
 			},
 			['aui-base']
 		);
@@ -549,7 +497,7 @@ else {
 				var intervalId = A.one('#<portlet:namespace />intervalId');
 
 				if (intervalId) {
-					intervalId.set('value', 'disabled');
+					intervalId.val('disabled');
 				}
 			},
 			['aui-base']
@@ -676,6 +624,60 @@ else {
 
 				if (addAttachmentsButton) {
 					addAttachmentsButton.hide();
+				}
+			},
+			['aui-base']
+		);
+
+		Liferay.provide(
+			window,
+			'<portlet:namespace />showForm',
+			function(suffix, isDraft, hasMaximumDraftTicketComment) {
+				var A = AUI();
+
+				var commentForm = A.one('#<portlet:namespace />commentForm' + suffix);
+
+				if (commentForm) {
+					commentForm.show();
+				}
+
+				var commentBody = A.one('#<portlet:namespace />commentBody' + suffix);
+
+				if (commentBody) {
+					commentBody.focus();
+
+					var draftBody = A.one('#<portlet:namespace />draftBody');
+
+					if (draftBody) {
+						draftBody.val(commentBody.get('value'));
+					}
+				}
+
+				var message = '<%= UnicodeLanguageUtil.get(request, "your-draft-comments-have-reached-maximum-comment-cannot-be-automatically-saved-as-draft") %>';
+
+				if (!hasMaximumDraftTicketComment || isDraft) {
+					message = '<%= UnicodeLanguageUtil.get(request, "comment-will-be-auto-saved-as-draft-every-30-seconds,-excluding-attachments") %>';
+				}
+
+				<portlet:namespace />updateMessageDisplay(suffix, 'portlet-msg-info', message);
+
+				var formSuffix = A.one('#<portlet:namespace />suffix');
+
+				if (formSuffix) {
+					formSuffix.val(suffix);
+				}
+
+				var intervalId = A.one('#<portlet:namespace />intervalId');
+
+				if (intervalId) {
+					intervalId.val(
+						setInterval(
+							function() {
+								<portlet:namespace />autoUpdateComment(suffix);
+							},
+							30000
+						)
+					);
 				}
 			},
 			['aui-base']
