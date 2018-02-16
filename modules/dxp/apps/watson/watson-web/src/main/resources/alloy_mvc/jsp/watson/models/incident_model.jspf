@@ -459,6 +459,14 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		return null;
 	}
 
+	public static KeyValuePair validateWatsonIncidentExpenses(double expenses) {
+		if (Validator.isNotNull(expenses) && (expenses < 0)) {
+			return new KeyValuePair("expenses", "the-expenses-can-not-be-negative");
+		}
+
+		return null;
+	}
+
 	public static KeyValuePair validateWatsonIncidentIncidentStatus(int incidentStatus) {
 		if ((incidentStatus != INCIDENT_STATUS_OPEN) && (incidentStatus != INCIDENT_STATUS_CLOSED) && (incidentStatus != INCIDENT_STATUS_INACTIVE)) {
 			return new KeyValuePair("incidentStatus", "the-incident-status-is-invalid");
@@ -625,6 +633,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 	public boolean isValid(List<WatsonListTypeRel> natures, List<WatsonIncidentRel> watsonIncidentRels) throws Exception {
 		pushError(validateWatsonIncidentDescription(getDescription()));
+		pushError(validateWatsonIncidentExpenses(getExpenses()));
 		pushError(validateWatsonIncidentIncidentStatus(getIncidentStatus()));
 		pushError(validateWatsonIncidentNatures(natures, this.isNew()));
 		pushError(validateWatsonIncidentOccurrenceDates(getStartDate(), getEndDate()));
