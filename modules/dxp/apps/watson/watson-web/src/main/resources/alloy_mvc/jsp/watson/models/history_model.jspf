@@ -93,7 +93,7 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 
 		Date modifiedDate = watsonHistory.getModifiedDate();
 
-		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
+		jsonObject.put("modifiedDate", modifiedDate);
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 		jsonObject.put("reportedBy", watsonHistory.getUserName());
 		jsonObject.put("timeStamp", createDate.getTime());

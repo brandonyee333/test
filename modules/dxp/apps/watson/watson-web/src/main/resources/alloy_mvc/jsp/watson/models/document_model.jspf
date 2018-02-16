@@ -81,21 +81,21 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("childName", WatsonChild.getChildName(watsonDocument.getWatsonChildId()));
-		jsonObject.put("createDate", getFormattedDate(watsonDocument.getCreateDate(), locale));
+		jsonObject.put("createDate", watsonDocument.getCreateDate());
 		jsonObject.put("id", watsonDocument.getWatsonDocumentId());
 		jsonObject.put("imagePayload", JSONFactoryUtil.createJSONObject(watsonDocument.getImagePayload()));
 
 		Date modifiedDate = watsonDocument.getModifiedDate();
 
-		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
+		jsonObject.put("modifiedDate", modifiedDate);
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonDocument));
 		jsonObject.put("name", watsonDocument.getName(locale));
 		jsonObject.put("originalDocument", String.valueOf(watsonDocument.getOriginalDocument()));
 		jsonObject.put("parentTypeWatsonListTypeId", watsonDocument.getParentTypeWatsonListTypeId());
-		jsonObject.put("receivedDate", getFormattedDate(watsonDocument.getReceivedDate(), locale));
-		jsonObject.put("reportDate", getFormattedDate(watsonDocument.getCreateDate(), locale));
+		jsonObject.put("receivedDate", watsonDocument.getReceivedDate());
+		jsonObject.put("reportDate", watsonDocument.getCreateDate());
 		jsonObject.put("reportedBy", watsonDocument.getUserName());
 
 		WatsonListType watsonListType = WatsonListType.fetch(watsonDocument.getSubtypeWatsonListTypeId());

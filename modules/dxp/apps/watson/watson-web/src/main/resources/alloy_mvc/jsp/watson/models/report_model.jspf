@@ -92,7 +92,7 @@ public static class WatsonReport extends WatsonReportBaseModel {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("childName", WatsonChild.getChildName(watsonReport.getWatsonChildId()));
-		jsonObject.put("createDate", getFormattedDate(watsonReport.getCreateDate(), locale));
+		jsonObject.put("createDate", watsonReport.getCreateDate());
 		jsonObject.put("description", watsonReport.getDescription(locale));
 		jsonObject.put("fullReport", watsonReport.getFullReport(locale));
 		jsonObject.put("id", watsonReport.getPrimaryKey());
@@ -101,13 +101,13 @@ public static class WatsonReport extends WatsonReportBaseModel {
 
 		Date modifiedDate = watsonReport.getModifiedDate();
 
-		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
+		jsonObject.put("modifiedDate", modifiedDate);
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonReport));
 		jsonObject.put("name", watsonReport.getReportName(locale));
 		jsonObject.put("originalWatsonReportId", watsonReport.getOriginalWatsonReportId());
-		jsonObject.put("reportDate", getFormattedDate(watsonReport.getReportDate(), locale));
+		jsonObject.put("reportDate", watsonReport.getReportDate());
 		jsonObject.put("reportedBy", watsonReport.getUserName());
 		jsonObject.put("reportedUser", watsonReport.getReportedUser(locale));
 		jsonObject.put("timeSpent", watsonReport.getTimeSpent());
