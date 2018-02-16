@@ -27,9 +27,12 @@ public static class WatsonAddressIndexer extends BaseAlloyIndexer {
 
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonAddress);
 
+		document.addLocalizedText(Field.DESCRIPTION, watsonAddress.getDescriptionMap());
+		document.addLocalizedKeyword(Field.NAME, watsonAddress.getNameMap());
+		document.addKeyword(Field.STATUS, watsonAddress.getStatus());
+
 		document.addLocalizedKeyword("building", watsonAddress.getBuildingMap());
 		document.addKeyword("countryId", watsonAddress.getCountryId());
-		document.addLocalizedText(Field.DESCRIPTION, watsonAddress.getDescriptionMap());
 
 		WatsonListType watsonListType = WatsonListType.fetch(watsonAddress.getDistrictWatsonListTypeId());
 
@@ -43,7 +46,6 @@ public static class WatsonAddressIndexer extends BaseAlloyIndexer {
 		document.addDate("lastSeenDate", watsonAddress.getLastSeenDate());
 		document.addKeyword("latitude", watsonAddress.getLatitude());
 		document.addKeyword("longitude", watsonAddress.getLongitude());
-		document.addLocalizedKeyword(Field.NAME, watsonAddress.getNameMap());
 		document.addKeyword("number", watsonAddress.getNumber());
 		document.addKeyword("otherType", watsonAddress.getOtherType());
 		document.addKeyword("postalCode", watsonAddress.getPostalCode());
@@ -66,7 +68,6 @@ public static class WatsonAddressIndexer extends BaseAlloyIndexer {
 			document.addLocalizedKeyword("subdistrict", watsonListType.getNameMap());
 		}
 
-		document.addKeyword(Field.STATUS, watsonAddress.getStatus());
 		document.addKeyword("subDistrictWatsonListTypeId", watsonAddress.getSubDistrictWatsonListTypeId());
 		document.addKeyword("typeWatsonListTypeId", watsonAddress.getTypeWatsonListTypeId());
 		document.addKeyword("watsonAddressId", watsonAddress.getWatsonAddressId());

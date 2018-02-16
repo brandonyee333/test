@@ -27,6 +27,9 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonPerson);
 
+		document.addLocalizedText(Field.DESCRIPTION, watsonPerson.getDescriptionMap());
+		document.addKeyword(Field.STATUS, watsonPerson.getStatus());
+
 		document.addKeyword("accepted", watsonPerson.getAccepted());
 		document.addDate("acceptedDate", watsonPerson.getDateAccepted());
 		document.addKeyword("birthCountryId", watsonPerson.getBirthCountryId());
@@ -40,7 +43,6 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 		}
 
 		document.addKeyword("countryWatsonListTypeId", watsonPerson.getCountryWatsonListTypeId());
-		document.addLocalizedText(Field.DESCRIPTION, watsonPerson.getDescriptionMap());
 		document.addKeyword("endAge", watsonPerson.getEndAge());
 
 		watsonListType = WatsonListType.fetch(watsonPerson.getEthnicityWatsonListTypeId());
@@ -89,7 +91,6 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 			document.addLocalizedKeyword("type", watsonListType.getNameMap());
 		}
 
-		document.addKeyword(Field.STATUS, watsonPerson.getStatus());
 		document.addKeyword("typeWatsonListTypeId", watsonPerson.getTypeWatsonListTypeId());
 		document.addKeyword("watsonIncidentId", watsonPerson.getWatsonIncidentId());
 		document.addKeyword("watsonPersonId", watsonPerson.getWatsonPersonId());

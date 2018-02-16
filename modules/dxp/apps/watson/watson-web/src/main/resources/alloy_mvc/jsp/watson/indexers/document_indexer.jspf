@@ -27,14 +27,15 @@ public static class WatsonDocumentIndexer extends BaseAlloyIndexer {
 
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonDocument);
 
-		document.addKeyword("id", watsonDocument.getWatsonDocumentId());
 		document.addKeyword(Field.NAME, watsonDocument.getName(LocaleUtil.getMostRelevantLocale()));
+		document.addKeyword(Field.STATUS, watsonDocument.getStatus());
+
+		document.addKeyword("id", watsonDocument.getWatsonDocumentId());
 		document.addKeyword("originalDocument", watsonDocument.getOriginalDocument());
 		document.addKeyword("parentTypeWatsonListTypeId", watsonDocument.getParentTypeWatsonListTypeId());
 		document.addDate("receivedDate", watsonDocument.getReceivedDate());
 		document.addDate("reportDate", watsonDocument.getCreateDate());
 		document.addKeyword("reportedBy", watsonDocument.getUserName());
-		document.addKeyword(Field.STATUS, watsonDocument.getStatus());
 		document.addKeyword("subtypeWatsonListTypeId", watsonDocument.getSubtypeWatsonListTypeId());
 		document.addKeyword("typeWatsonListTypeId", watsonDocument.getTypeWatsonListTypeId());
 		document.addKeyword("watsonChildId", watsonDocument.getWatsonChildId());

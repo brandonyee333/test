@@ -28,13 +28,15 @@ public static class WatsonIncidentIndexer extends BaseAlloyIndexer {
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonIncident);
 
 		document.addLocalizedText(Field.DESCRIPTION, watsonIncident.getDescriptionMap());
+		document.addKeyword(Field.NAME, watsonIncident.getName());
+		document.addKeyword(Field.STATUS, watsonIncident.getStatus());
+
 		document.addDate("endDate", watsonIncident.getEndDate());
 		document.addKeyword("expenses", watsonIncident.getExpenses());
 		document.addKeyword("externalCaseId", watsonIncident.getExternalCaseId());
 		document.addKeyword("externalCaseWatsonListTypeId", watsonIncident.getExternalCaseWatsonListTypeId());
 		document.addKeyword("id", watsonIncident.getPrimaryKey());
 		document.addKeyword("incidentStatus", String.valueOf(watsonIncident.getIncidentStatus()));
-		document.addKeyword(Field.NAME, watsonIncident.getName());
 		document.addKeyword("natureWatsonListType", watsonIncident.getIncidentNatures());
 		document.addDate("reportDate", watsonIncident.getReportDate());
 		document.addKeyword("reportedBy", watsonIncident.getUserName());
@@ -54,7 +56,6 @@ public static class WatsonIncidentIndexer extends BaseAlloyIndexer {
 			document.addLocalizedKeyword("typeLabel", watsonListType.getNameMap());
 		}
 
-		document.addKeyword(Field.STATUS, watsonIncident.getStatus());
 		document.addKeyword("subtypeWatsonListTypeId", watsonIncident.getSubtypeWatsonListTypeId());
 		document.addKeyword("typeWatsonListTypeId", watsonIncident.getTypeWatsonListTypeId());
 		document.addKeyword("watsonIncidentId", watsonIncident.getWatsonIncidentId());

@@ -28,14 +28,15 @@ public static class WatsonReportIndexer extends BaseAlloyIndexer {
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonReport);
 
 		document.addLocalizedText(Field.DESCRIPTION, watsonReport.getDescriptionMap());
+		document.addKeyword(Field.NAME, watsonReport.getReportName(LocaleUtil.getMostRelevantLocale()));
+		document.addKeyword(Field.STATUS, watsonReport.getStatus());
+
 		document.addLocalizedText("fullReport", watsonReport.getFullReportMap());
 		document.addKeyword("id", watsonReport.getPrimaryKey());
 		document.addKeyword("key", watsonReport.getKey());
-		document.addKeyword(Field.NAME, watsonReport.getReportName(LocaleUtil.getMostRelevantLocale()));
 		document.addDate("reportDate", watsonReport.getReportDate());
 		document.addKeyword("reportedBy", watsonReport.getUserName());
 		document.addKeyword("reportedUser", watsonReport.getReportedUser());
-		document.addKeyword(Field.STATUS, watsonReport.getStatus());
 		document.addKeyword("timeSpent", watsonReport.getTimeSpent());
 		document.addKeyword("typeWatsonListTypeId", watsonReport.getTypeWatsonListTypeId());
 		document.addKeyword("watsonChildId", watsonReport.getWatsonChildId());

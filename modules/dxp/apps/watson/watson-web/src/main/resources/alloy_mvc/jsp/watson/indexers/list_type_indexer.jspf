@@ -28,8 +28,9 @@ public static class WatsonListTypeIndexer extends BaseAlloyIndexer {
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonListType);
 
 		document.addLocalizedKeyword(Field.NAME, watsonListType.getNameMap());
-		document.addKeyword("parentWatsonListTypeId", watsonListType.getParentWatsonListTypeId());
 		document.addKeyword(Field.STATUS, watsonListType.getStatus());
+
+		document.addKeyword("parentWatsonListTypeId", watsonListType.getParentWatsonListTypeId());
 		document.addKeyword("type", watsonListType.getType());
 
 		return document;
