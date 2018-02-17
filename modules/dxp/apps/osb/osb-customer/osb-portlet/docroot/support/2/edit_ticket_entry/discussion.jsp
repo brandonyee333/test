@@ -152,16 +152,14 @@ else {
 			<c:if test="<%= OSBTicketEntryPermission.contains(permissionChecker, ticketEntry.getTicketEntryId(), ActionKeys.ADD_ATTACHMENT) %>">
 				var commentBody = document.<portlet:namespace />ticketCommentFm.<portlet:namespace />commentBody0.value;
 
-				if (!<portlet:namespace />confirmAttachments(commentBody)) {
-					return;
-				}
+				<portlet:namespace />confirmAttachments(commentBody);
 			</c:if>
 
 			<c:if test="<%= ticketWorker && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) %>">
 				var checkbox = document.<portlet:namespace />ticketCommentFm.<portlet:namespace />pendingTypes0;
 				var discussionTab = <portlet:namespace />ticketCommentFm.<portlet:namespace />discussionTab;
 
-				if (checkbox && (discussionTab == 'public')) {
+				if (checkbox && (discussionTab.value === 'public')) {
 					var validPendingType = false;
 
 					for (var i = 0; i < checkbox.length; i++) {
