@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.customer.rabbitmq.connector.service.impl;
+package com.liferay.osb.customer.rabbitmq.connector.internal.publisher;
 
 import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.publisher.MessagePublisher;

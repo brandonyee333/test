@@ -7,5 +7,4 @@ Export-Package:\
 	com.liferay.osb.customer.rabbitmq.connector.exception,\
 	com.liferay.osb.customer.rabbitmq.connector.processor,\
 	com.liferay.osb.customer.rabbitmq.connector.publisher,\
-	com.liferay.osb.customer.rabbitmq.connector.router,\
-	com.liferay.osb.customer.rabbitmq.connector.service
+	com.liferay.osb.customer.rabbitmq.connector.router

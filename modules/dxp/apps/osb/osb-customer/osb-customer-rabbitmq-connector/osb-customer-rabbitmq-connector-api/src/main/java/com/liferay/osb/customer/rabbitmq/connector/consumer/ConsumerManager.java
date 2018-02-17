@@ -12,9 +12,8 @@
  * details.
  */
 
-package com.liferay.osb.customer.rabbitmq.connector.service;
+package com.liferay.osb.customer.rabbitmq.connector.consumer;
 
-import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 
 /**

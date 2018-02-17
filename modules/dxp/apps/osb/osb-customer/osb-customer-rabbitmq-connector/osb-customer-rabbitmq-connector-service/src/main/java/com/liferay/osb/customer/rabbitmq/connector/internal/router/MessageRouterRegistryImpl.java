@@ -14,9 +14,9 @@
 
 package com.liferay.osb.customer.rabbitmq.connector.internal.router;
 
+import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerManager;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouterRegistry;
-import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;

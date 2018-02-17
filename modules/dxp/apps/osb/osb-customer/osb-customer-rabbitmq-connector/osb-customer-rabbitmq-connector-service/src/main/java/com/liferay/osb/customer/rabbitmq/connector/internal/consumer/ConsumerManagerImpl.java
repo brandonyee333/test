@@ -12,15 +12,14 @@
  * details.
  */
 
-package com.liferay.osb.customer.rabbitmq.connector.service.impl;
+package com.liferay.osb.customer.rabbitmq.connector.internal.consumer;
 
 import com.liferay.osb.customer.rabbitmq.connector.configuration.RabbitMQConnectorConfigurationValues;
 import com.liferay.osb.customer.rabbitmq.connector.connection.ConnectionManager;
 import com.liferay.osb.customer.rabbitmq.connector.consumer.Consumer;
+import com.liferay.osb.customer.rabbitmq.connector.consumer.ConsumerManager;
 import com.liferay.osb.customer.rabbitmq.connector.exception.DuplicateConsumerException;
-import com.liferay.osb.customer.rabbitmq.connector.internal.consumer.OSBConsumer;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
-import com.liferay.osb.customer.rabbitmq.connector.service.ConsumerManager;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
