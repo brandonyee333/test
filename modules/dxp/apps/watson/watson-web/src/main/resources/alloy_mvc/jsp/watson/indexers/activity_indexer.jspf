@@ -29,7 +29,6 @@ public static class WatsonActivityIndexer extends BaseAlloyIndexer {
 
 		document.addKeyword(Field.NAME, watsonActivity.getName(LocaleUtil.getMostRelevantLocale()));
 		document.addKeyword(Field.STATUS, watsonActivity.getStatus());
-
 		document.addKeyword("id", watsonActivity.getPrimaryKey());
 		document.addLocalizedText("narrative", watsonActivity.getNarrativeMap());
 		document.addDate("reportDate", watsonActivity.getReportDate());
