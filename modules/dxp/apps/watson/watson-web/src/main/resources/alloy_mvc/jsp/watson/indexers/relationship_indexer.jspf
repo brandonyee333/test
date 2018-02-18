@@ -29,7 +29,6 @@ public static class WatsonRelationshipIndexer extends BaseAlloyIndexer {
 
 		document.addText(Field.DESCRIPTION, watsonRelationship.getDescription());
 		document.addKeyword(Field.STATUS, watsonRelationship.getStatus());
-
 		document.addKeyword("classNameId2", watsonRelationship.getClassNameId1());
 		document.addKeyword("classPK2", watsonRelationship.getClassPK1());
 
