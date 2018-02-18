@@ -29,7 +29,6 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 
 		document.addLocalizedText(Field.DESCRIPTION, watsonPerson.getDescriptionMap());
 		document.addKeyword(Field.STATUS, watsonPerson.getStatus());
-
 		document.addKeyword("accepted", watsonPerson.getAccepted());
 		document.addDate("acceptedDate", watsonPerson.getDateAccepted());
 		document.addKeyword("birthCountryId", watsonPerson.getBirthCountryId());

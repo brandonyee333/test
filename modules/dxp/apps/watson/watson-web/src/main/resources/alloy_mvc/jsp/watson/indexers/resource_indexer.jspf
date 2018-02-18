@@ -30,7 +30,6 @@ public static class WatsonResourceIndexer extends BaseAlloyIndexer {
 		document.addLocalizedText(Field.DESCRIPTION, watsonResource.getDescriptionMap());
 		document.addLocalizedKeyword(Field.NAME, watsonResource.getNameMap());
 		document.addKeyword(Field.STATUS, watsonResource.getStatus());
-
 		document.addKeyword("id", watsonResource.getPrimaryKey());
 		document.addDate("reportDate", watsonResource.getCreateDate());
 		document.addKeyword("reportedBy", watsonResource.getUserName());
