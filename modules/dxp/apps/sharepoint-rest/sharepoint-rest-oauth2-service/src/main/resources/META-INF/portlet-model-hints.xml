@@ -11,6 +11,8 @@
 		</field>
 		<field name="configurationPid" type="String" />
 		<field name="expirationDate" type="Date" />
-		<field name="refreshToken" type="String" />
+		<field name="refreshToken" type="String">
+			<hint-collection name="CLOB" />
+		</field>
 	</model>
 </model-hints>
