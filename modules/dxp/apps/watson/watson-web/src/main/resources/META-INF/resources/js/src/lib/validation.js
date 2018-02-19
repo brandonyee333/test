@@ -103,7 +103,7 @@ const validators = {
 		return errorMessage;
 	},
 
-	positiveNumber(value) {
+	positiveNumbers(value) {
 		let errorMessage;
 
 		if (value && isNaN(value)) {

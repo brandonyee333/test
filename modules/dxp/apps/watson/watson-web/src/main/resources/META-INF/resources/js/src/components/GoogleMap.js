@@ -52,7 +52,9 @@ class GoogleMapWrapper extends JSXComponent {
 			onReady();
 		}
 
-		this.setState({mapsReady: true});
+		if (this.state) {
+			this.setState({mapsReady: true});
+		}
 	}
 
 	render() {
