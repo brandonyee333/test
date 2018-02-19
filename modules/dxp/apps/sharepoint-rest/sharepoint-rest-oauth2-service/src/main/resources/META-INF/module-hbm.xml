@@ -13,6 +13,6 @@
 		<property name="accessToken" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 		<property name="configurationPid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="expirationDate" type="org.hibernate.type.TimestampType" />
-		<property name="refreshToken" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="refreshToken" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
 	</class>
 </hibernate-mapping>

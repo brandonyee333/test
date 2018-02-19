@@ -6,5 +6,5 @@ create table SharepointOAuth2TokenEntry (
 	accessToken TEXT null,
 	configurationPid VARCHAR(75) null,
 	expirationDate DATE null,
-	refreshToken VARCHAR(75) null
+	refreshToken TEXT null
 );
