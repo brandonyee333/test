@@ -45,11 +45,12 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		"after-filter=SPA Filter", "dispatcher=FORWARD", "dispatcher=REQUEST",
-		"servlet-filter-name=Watson Login Forward Filter", "url-pattern=/*"
+		"servlet-context-name=", "servlet-filter-name=Watson Login Filter",
+		"url-pattern=/*"
 	},
 	service = Filter.class
 )
-public class WatsonFilter extends BaseFilter {
+public class WatsonLoginFilter extends BaseFilter {
 
 	@Override
 	public boolean isFilterEnabled(
@@ -116,19 +117,8 @@ public class WatsonFilter extends BaseFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	@Reference(unbind = "-")
-	protected void setTicketLocalService(
-		TicketLocalService ticketLocalService) {
-
-		_ticketLocalService = ticketLocalService;
-	}
-
-	@Reference(unbind = "-")
-	protected void setUserLocalService(UserLocalService userLocalService) {
-		_userLocalService = userLocalService;
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(WatsonFilter.class);
+	private static final Log _log = LogFactoryUtil.getLog(
+		WatsonLoginFilter.class);
 
 	@Reference
 	private Http _http;
@@ -136,7 +126,10 @@ public class WatsonFilter extends BaseFilter {
 	@Reference
 	private Portal _portal;
 
+	@Reference
 	private TicketLocalService _ticketLocalService;
+
+	@Reference
 	private UserLocalService _userLocalService;
 
 }

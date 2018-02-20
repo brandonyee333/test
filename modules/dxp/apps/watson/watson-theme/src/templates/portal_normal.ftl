@@ -35,10 +35,6 @@
 				<@liferay_util["include"] page=content_include />
 			</@>
 		</#if>
-
-		<#if !is_signed_in>
-			<a class="sign-in" data-redirect="${is_login_redirect_required?string}" href="${sign_in_url}" id="sign-in" rel="nofollow">${sign_in_text}</a>
-		</#if>
 	</section>
 </div>
 
