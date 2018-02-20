@@ -54,14 +54,10 @@ if (liferayIncOrg || partnerWorker) {
 
 <div class="tab-content-tab" id="<portlet:namespace />ticketDetails">
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:field-wrapper>
-			<div field-required-message="<%= LanguageUtil.get(request, "please-enter-a-valid-subject") %>">
-				<aui:input bean="<%= ticketEntry %>" data-field-required-status="<%= false %>" maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' model="<%= TicketEntry.class %>" name="subject" type="text" />
-			</div>
-		</aui:field-wrapper>
-	</c:if>
+			<aui:input bean="<%= ticketEntry %>" maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' model="<%= TicketEntry.class %>" name="subject" type="text">
+				<aui:validator errorMessage="please-enter-a-valid-subject" name="required" />
+			</aui:input>
 
-	<c:if test="<%= hasUpdateAdvanced %>">
 		<aui:field-wrapper>
 			<label id="<portlet:namespace />descriptionLabel"><liferay-ui:message key="description" /></label>
 
@@ -79,9 +75,7 @@ if (liferayIncOrg || partnerWorker) {
 
 	<c:choose>
 		<c:when test="<%= hasUpdateAdvanced && liferayIncOrg %>">
-			<aui:field-wrapper>
-				<aui:input max="<%= ModelHintsConstants.TEXTAREA_MAX_LENGTH %>" name="reproductionSteps" style="height: 150px;" type="textarea" value="<%= reproductionSteps %>" />
-			</aui:field-wrapper>
+			<aui:input max="<%= ModelHintsConstants.TEXTAREA_MAX_LENGTH %>" name="reproductionSteps" style="height: 150px;" type="textarea" value="<%= reproductionSteps %>" />
 		</c:when>
 		<c:otherwise>
 			<aui:input name="reproductionSteps" type="hidden" value="<%= HtmlUtil.escapeAttribute(reproductionSteps) %>" />
@@ -110,231 +104,210 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:field-wrapper>
-			<div class="<%= productEntry.isTicketComponentRequired() ? "" : "hide" %>" id="<portlet:namespace />componentFieldGroup">
-				<aui:select id="editComponent" name="component" onChange='<%= renderResponse.getNamespace() + "selectComponent(this.value);" %>'>
-					<c:choose>
-						<c:when test="<%= productEntry.isDigitalEnterprise() %>">
+		<div class="<%= productEntry.isTicketComponentRequired() ? "" : "hide" %>" id="<portlet:namespace />componentFieldGroup">
+			<aui:select id="editComponent" name="component" onChange='<%= renderResponse.getNamespace() + "selectComponent(this.value);" %>'>
+				<c:choose>
+					<c:when test="<%= productEntry.isDigitalEnterprise() %>">
+
+						<%
+						for (String componentGroup : TicketEntryConstants.COMPONENT_GROUPS_DE) {
+						%>
+
+							<optgroup label="<%= LanguageUtil.get(request, componentGroup) %>">
 
 							<%
-							for (String componentGroup : TicketEntryConstants.COMPONENT_GROUPS_DE) {
-							%>
-
-								<optgroup label="<%= LanguageUtil.get(request, componentGroup) %>">
-
-								<%
-								for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
-								%>
-
-									<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>" />
-
-								<%
-									}
-								%>
-
-								</optgroup>
-
-							<%
-							}
-							%>
-
-						</c:when>
-						<c:otherwise>
-
-							<%
-							for (int curComponent : TicketEntryConstants.getProductComponents(productEntry)) {
+							for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
 							%>
 
 								<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>" />
 
 							<%
-							}
+								}
 							%>
 
-						</c:otherwise>
-					</c:choose>
-				</aui:select>
-			</div>
-		</aui:field-wrapper>
+							</optgroup>
+
+						<%
+						}
+						%>
+
+					</c:when>
+					<c:otherwise>
+
+						<%
+						for (int curComponent : TicketEntryConstants.getProductComponents(productEntry)) {
+						%>
+
+							<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>" />
+
+						<%
+						}
+						%>
+
+					</c:otherwise>
+				</c:choose>
+			</aui:select>
+		</div>
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced && liferayIncOrg %>">
 		<div class="<%= productEntry.isTicketComponentRequired() ? "" : "hide" %>" id="<portlet:namespace />subcomponentFieldGroup">
-			<aui:field-wrapper>
+
+			<%
+			int[] subcomponents = TicketEntryConstants.getSubcomponents(component);
+			%>
+
+			<aui:select name="subcomponent">
+				<c:if test="<%= ticketEntry.getSubcomponent() <= 0 %>">
+					<aui:option label="none" value="0" />
+				</c:if>
+
+				<c:if test="<%= !ArrayUtil.contains(subcomponents, TicketEntryConstants.SUBCOMPONENT_OTHER) %>">
+					<aui:option label="other" selected="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) %>" value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>" />
+				</c:if>
 
 				<%
-				int[] subcomponents = TicketEntryConstants.getSubcomponents(component);
+				for (int curSubcomponent : subcomponents) {
 				%>
 
-				<aui:select name="subcomponent">
-					<c:if test="<%= ticketEntry.getSubcomponent() <= 0 %>">
-						<aui:option label="none" value="0" />
-					</c:if>
+					<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %>" selected="<%= (curSubcomponent == subcomponent) %>" value="<%= curSubcomponent %>" />
 
-					<c:if test="<%= !ArrayUtil.contains(subcomponents, TicketEntryConstants.SUBCOMPONENT_OTHER) %>">
-						<aui:option label="other" selected="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) %>" value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>" />
-					</c:if>
+				<%
+				}
+				%>
 
-					<%
-					for (int curSubcomponent : subcomponents) {
-					%>
+			</aui:select>
 
-						<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %>" selected="<%= (curSubcomponent == subcomponent) %>" value="<%= curSubcomponent %>" />
-
-					<%
-					}
-					%>
-
-				</aui:select>
-
-				<aui:input cssClass='<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "hide" %>' label="" name="subcomponentCustom" type="text" value="<%= subcomponentCustom %>" />
-			</aui:field-wrapper>
+			<aui:input cssClass='<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "hide" %>' label="" name="subcomponentCustom" type="text" value="<%= subcomponentCustom %>" />
 		</div>
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:field-wrapper>
-			<aui:select name="escalationLevel">
+		<aui:select name="escalationLevel">
 
-				<%
-				for (ListType escalationLevelType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL)) {
-				%>
-
-					<aui:option label="<%= LanguageUtil.get(request, escalationLevelType.getName()) %>" selected="<%= (escalationLevelType.getListTypeId() == escalationLevel) %>" value="<%= escalationLevelType.getListTypeId() %>" />
-
-				<%
-				}
-				%>
-
-			</aui:select>
-		</aui:field-wrapper>
-	</c:if>
-
-	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:field-wrapper>
 			<%
-			String severityOnChange = StringPool.BLANK;
+			for (ListType escalationLevelType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL)) {
+			%>
 
-			if (liferayIncOrg) {
-				severityOnChange = renderResponse.getNamespace() + "selectSeverity(" + severity + ", this.value);";
+				<aui:option label="<%= LanguageUtil.get(request, escalationLevelType.getName()) %>" selected="<%= (escalationLevelType.getListTypeId() == escalationLevel) %>" value="<%= escalationLevelType.getListTypeId() %>" />
+
+			<%
 			}
 			%>
 
-			<aui:select name="severity" onChange="<%= severityOnChange %>">
+		</aui:select>
+	</c:if>
 
-				<%
-				for (int i = 1; i <= 3; i++) {
-				%>
+	<c:if test="<%= hasUpdateAdvanced %>">
 
-					<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(i)) %>" selected="<%= (i == severity) %>" value="<%= i %>" />
+		<%
+		String severityOnChange = StringPool.BLANK;
 
-				<%
-				}
-				%>
+		if (liferayIncOrg) {
+			severityOnChange = renderResponse.getNamespace() + "selectSeverity(" + severity + ", this.value);";
+		}
+		%>
 
-			</aui:select>
-		</aui:field-wrapper>
+		<aui:select name="severity" onChange="<%= severityOnChange %>">
+
+			<%
+			for (int i = 1; i <= 3; i++) {
+			%>
+
+				<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(i)) %>" selected="<%= (i == severity) %>" value="<%= i %>" />
+
+			<%
+			}
+			%>
+
+		</aui:select>
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced && liferayIncOrg %>">
 		<div class="hide" id="<portlet:namespace />severityDetails">
-			<aui:field-wrapper>
-				<aui:select label="what-is-the-reason-for-changing-the-ticket-severity" name="severityReason" />
+			<aui:select label="what-is-the-reason-for-changing-the-ticket-severity" name="severityReason" />
 
-				<aui:input label="please-explain-optional" name="severityReasonComments" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 150px; max-width: 505px;" type="textarea"  wrap="soft" />
-			</aui:field-wrapper>
+			<aui:input label="please-explain-optional" name="severityReasonComments" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 150px; max-width: 505px;" type="textarea"  wrap="soft" />
 		</div>
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<div id="<portlet:namespace/>statusDropDown">
-			<aui:field-wrapper>
-				<aui:select data-field-required-status="<%= true %>" label="status" name="status">
+		<aui:select id="statusDropDown" label="status" name="status">
 
-					<%
-					for (int statusId : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
-						if ((statusId == TicketEntryConstants.STATUS_INACTIVE) || (statusId == TicketEntryConstants.STATUS_PENDING_WORKER) || ((statusId == TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) && !OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.UPDATE_SOLUTION)) || ((statusId == TicketEntryConstants.STATUS_SOLUTION_DELIVERED) && (status != TicketEntryConstants.STATUS_SOLUTION_PROPOSED)) || (statusId == TicketEntryConstants.STATUS_SOLUTION_PROPOSED)) {
-							if (statusId != status) {
-								continue;
-							}
-						}
-					%>
-
-						<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(statusId)) %>" selected="<%= (statusId == status) %>" value="<%= statusId %>" />
-
-					<%
+			<%
+			for (int statusId : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
+				if ((statusId == TicketEntryConstants.STATUS_INACTIVE) || (statusId == TicketEntryConstants.STATUS_PENDING_WORKER) || ((statusId == TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION) && !OSBTicketEntryPermission.contains(permissionChecker, ticketEntry, OSBActionKeys.UPDATE_SOLUTION)) || ((statusId == TicketEntryConstants.STATUS_SOLUTION_DELIVERED) && (status != TicketEntryConstants.STATUS_SOLUTION_PROPOSED)) || (statusId == TicketEntryConstants.STATUS_SOLUTION_PROPOSED)) {
+					if (statusId != status) {
+						continue;
 					}
-					%>
+				}
+			%>
 
-				</aui:select>
-			</aui:field-wrapper>
+				<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(statusId)) %>" selected="<%= (statusId == status) %>" value="<%= statusId %>" />
+
+			<%
+			}
+			%>
+
+		</aui:select>
 		</div>
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<div id="<portlet:namespace/>resolutionDropDown">
-			<aui:field-wrapper>
-				<aui:select data-field-required-status="<%= false %>" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-resolution") %>" name="resolution">
-					<aui:option label="" value="0" />
+		<aui:select id="resolutionDropDown" name="resolution">
+			<aui:option label="" value="0" />
 
-					<%
-					for (ListType resolutionType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
-					%>
+			<%
+			for (ListType resolutionType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
+			%>
 
-						<aui:option label="<%= LanguageUtil.get(request, resolutionType.getName()) %>" selected="<%= (resolutionType.getListTypeId() == resolution) %>" value="<%= resolutionType.getListTypeId() %>" />
+				<aui:option label="<%= LanguageUtil.get(request, resolutionType.getName()) %>" selected="<%= (resolutionType.getListTypeId() == resolution) %>" value="<%= resolutionType.getListTypeId() %>" />
 
-					<%
-					}
-					%>
+			<%
+			}
+			%>
 
-				</aui:select>
+			<aui:validator name="required" errorMessage="please-select-a-valid-resolution" />
+		</aui:select>
 
-				<aui:button cssClass="hide" name="resolutionCancel" onClick='<%= renderResponse.getNamespace() + "resetStatus()" %>' value="cancel" />
-			</aui:field-wrapper>
-		</div>
+		<aui:button cssClass="hide" name="resolutionCancel" onClick='<%= renderResponse.getNamespace() + "resetStatus()" %>' value="cancel" />
 	</c:if>
 
 	<c:if test="<%= !screenShareMode && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && ticketWorker %>">
-		<aui:field-wrapper>
-			<label id="<portlet:namespace />pendingTypesLabel"><liferay-ui:message key="need-response-from" /></label>
+		<aui:field-wrapper label="need-response-from">
 
-			<div class="pending-types">
+			<%
+			int[] pendingTypes = TicketFlagLocalServiceUtil.getTicketFlagTypes(ticketEntry.getTicketEntryId(), TicketFlagConstants.TYPES_PENDING, TicketFlagConstants.FLAG_TRUE);
 
-				<%
-				int[] pendingTypes = TicketFlagLocalServiceUtil.getTicketFlagTypes(ticketEntry.getTicketEntryId(), TicketFlagConstants.TYPES_PENDING, TicketFlagConstants.FLAG_TRUE);
+			for (int pendingType : TicketFlagConstants.TYPES_PENDING) {
+			%>
 
-				for (int pendingType : TicketFlagConstants.TYPES_PENDING) {
-				%>
+				<aui:input checked="<%= ArrayUtil.contains(pendingTypes, pendingType) %>" inlineField="<%= true %>" label="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" name="pendingTypes" type="checkbox" value="<%= pendingType %>" />
 
-					<aui:input checked="<%= ArrayUtil.contains(pendingTypes, pendingType) %>" inlineField="true" label="<%= TicketFlagConstants.getTypeLabel(pendingType) %>" name="pendingTypes" type="checkbox" value="<%= pendingType %>" />
+			<%
+			}
+			%>
 
-				<%
-				}
-				%>
-
-			</div>
 		</aui:field-wrapper>
 	</c:if>
 
 	<c:choose>
 		<c:when test="<%= hasUpdateAdvanced && liferayIncOrg %>">
-			<aui:field-wrapper>
-				<aui:select label="support-region" name="supportRegionId">
+			<aui:select label="support-region" name="supportRegionId">
 
-					<%
-					List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+				<%
+				List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-					for (SupportRegion supportRegion : supportRegions) {
-					%>
+				for (SupportRegion supportRegion : supportRegions) {
+				%>
 
-						<aui:option label="<%= HtmlUtil.escape(supportRegion.getName()) %>" selected="<%= (supportRegion.getSupportRegionId() == supportRegionId) %>" value="<%= supportRegion.getSupportRegionId() %>" />
+					<aui:option label="<%= HtmlUtil.escape(supportRegion.getName()) %>" selected="<%= (supportRegion.getSupportRegionId() == supportRegionId) %>" value="<%= supportRegion.getSupportRegionId() %>" />
 
-					<%
-					}
-					%>
+				<%
+				}
+				%>
 
-				</aui:select>
-			</aui:field-wrapper>
+			</aui:select>
 		</c:when>
 		<c:otherwise>
 			<aui:input name="supportRegionId" type="hidden" value="<%= supportRegionId %>" />
@@ -343,21 +316,19 @@ if (liferayIncOrg || partnerWorker) {
 
 	<c:choose>
 		<c:when test="<%= hasUpdateAdvanced && liferayIncOrg %>">
-			<aui:field-wrapper>
-				<aui:select label="support-language" name="languageId">
+			<aui:select label="support-language" name="languageId">
 
-					<%
-					for (String curLanguageId : AccountEntryConstants.LANGUAGES) {
-					%>
+				<%
+				for (String curLanguageId : AccountEntryConstants.LANGUAGES) {
+				%>
 
-						<aui:option label="<%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(curLanguageId)) %>" selected="<%= languageId.equals(curLanguageId) %>" value="<%= curLanguageId %>" />
+					<aui:option label="<%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(curLanguageId)) %>" selected="<%= languageId.equals(curLanguageId) %>" value="<%= curLanguageId %>" />
 
-					<%
-					}
-					%>
+				<%
+				}
+				%>
 
-				</aui:select>
-			</aui:field-wrapper>
+			</aui:select>
 		</c:when>
 		<c:otherwise>
 			<aui:input label="" name="languageId" type="hidden" value="<%= HtmlUtil.escapeAttribute(languageId) %>" />
@@ -387,36 +358,37 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:field-wrapper>
-			<label id="<portlet:namespace />reporterLabel"><liferay-ui:message key="reporter" /></label>
+		<div id="<portlet:namespace />reporterLabel">
+			<aui:field-wrapper label="reporter">
 
-			<%
-			User reporterUser = UserLocalServiceUtil.fetchUserById(ticketEntry.getUserId());
-			%>
+				<%
+				User reporterUser = UserLocalServiceUtil.fetchUserById(ticketEntry.getUserId());
+				%>
 
-			<span class="inline" id="<portlet:namespace />reportedByUserName">
-				<c:if test="<%= reporterUser != null %>">
-					<%= HtmlUtil.escape(reporterUser.getFullName()) %>
+				<span class="inline" id="<portlet:namespace />reportedByUserName">
+					<c:if test="<%= reporterUser != null %>">
+						<%= HtmlUtil.escape(reporterUser.getFullName()) %>
 
-					<liferay-util:include page="/support/2/common/user_badge.jsp" servletContext="<%= application %>">
-						<portlet:param name="partnerEntryId" value="<%= String.valueOf(accountEntry.getPartnerEntryId()) %>" />
-						<portlet:param name="userId" value="<%= String.valueOf(reporterUser.getUserId()) %>" />
-					</liferay-util:include>
-				</c:if>
-			</span>
+						<liferay-util:include page="/support/2/common/user_badge.jsp" servletContext="<%= application %>">
+							<portlet:param name="partnerEntryId" value="<%= String.valueOf(accountEntry.getPartnerEntryId()) %>" />
+							<portlet:param name="userId" value="<%= String.valueOf(reporterUser.getUserId()) %>" />
+						</liferay-util:include>
+					</c:if>
+				</span>
 
-			<portlet:renderURL var="selectReportedByRenderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-				<portlet:param name="mvcPath" value="/support/2/select_user.jsp" />
-				<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
-				<portlet:param name="callback" value="selectReportedBy" />
-			</portlet:renderURL>
+				<portlet:renderURL var="selectReportedByRenderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+					<portlet:param name="mvcPath" value="/support/2/select_user.jsp" />
+					<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
+					<portlet:param name="callback" value="selectReportedBy" />
+				</portlet:renderURL>
 
-			<%
-			String taglibOpenReportedByWindow = "var reportedByWindow = window.open('" + selectReportedByRenderURL.toString() + "', 'reported_by', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); reportedByWindow.focus();";
-			%>
+				<%
+				String taglibOpenReportedByWindow = "var reportedByWindow = window.open('" + selectReportedByRenderURL.toString() + "', 'reported_by', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); reportedByWindow.focus();";
+				%>
 
-			<aui:button onClick="<%= taglibOpenReportedByWindow %>" value="choose" />
-		</aui:field-wrapper>
+				<aui:button onClick="<%= taglibOpenReportedByWindow %>" value="choose" />
+			</aui:field-wrapper>
+		</div>
 	</c:if>
 </div>
 
