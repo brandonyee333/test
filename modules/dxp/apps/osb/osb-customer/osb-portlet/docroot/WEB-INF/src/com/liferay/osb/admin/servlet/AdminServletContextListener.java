@@ -189,7 +189,7 @@ public class AdminServletContextListener
 			setupDeveloperMode();
 		}
 
-		//QA Infrastructure
+		// QA Infrastructure
 
 		if (PortletPropsValues.QA_INFRASTRUCTURE_ENABLED) {
 			OSBCustomerQAInfrastructureUtil.setupQAInfrastructure();
