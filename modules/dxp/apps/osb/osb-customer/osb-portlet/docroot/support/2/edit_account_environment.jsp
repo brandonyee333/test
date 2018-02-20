@@ -475,7 +475,7 @@
 											if (response && response.exists == 'true') {
 												alert('<liferay-ui:message key="please-provide-a-unique-environment-name" />');
 
-												Liferay.Util.focusFormField(name)
+												Liferay.Util.focusFormField(name);
 											}
 											else {
 												submitForm(document.<portlet:namespace />updateAccountEnvironmentFm);

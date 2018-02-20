@@ -240,7 +240,7 @@ if (offeringEntryId > 0) {
 
 	var onValidate = function(event) {
 		<portlet:namespace />validateRequiredField(event.currentTarget);
-	}
+	};
 
 	var createTicket = A.one('#<portlet:namespace />createTicket');
 
