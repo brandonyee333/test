@@ -60,11 +60,11 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 </portlet:actionURL>
 
 <aui:form action="<%= updateTicketEntryURL %>" enctype="multipart/form-data" method="post" name="fm3">
-	<aui:input name="ticketEntryId" type="hidden" value="<%= ticketEntry.getTicketEntryId() %>" />
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 	<aui:input name="modified" type="hidden" value="false" />
 	<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
 	<aui:input name="reportedByUserId" type="hidden" value="<%= ticketEntry.getUserId() %>" />
+	<aui:input name="ticketEntryId" type="hidden" value="<%= ticketEntry.getTicketEntryId() %>" />
 	<aui:input name="weight" type="hidden" value="<%= ticketEntry.getWeight() %>" />
 
 	<div class="tab-view-dialog">
