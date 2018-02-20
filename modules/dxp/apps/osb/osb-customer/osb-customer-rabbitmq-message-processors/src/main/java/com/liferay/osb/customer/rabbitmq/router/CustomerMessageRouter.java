@@ -17,6 +17,7 @@ package com.liferay.osb.customer.rabbitmq.router;
 import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationUpdateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.RoleUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.UserDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.UserUpdateMessageProcessor;
 import com.liferay.portal.kernel.log.Log;
@@ -44,6 +45,14 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(organizationUpdateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setRoleUpdateMessageProcessor(
+		RoleUpdateMessageProcessor roleUpdateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(roleUpdateMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")
