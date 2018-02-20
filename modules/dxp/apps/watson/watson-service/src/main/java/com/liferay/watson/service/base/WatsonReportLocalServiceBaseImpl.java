@@ -43,19 +43,33 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import com.liferay.watson.model.WatsonReport;
 import com.liferay.watson.service.WatsonReportLocalService;
+import com.liferay.watson.service.persistence.WatsonActivityAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonActivityPersistence;
+import com.liferay.watson.service.persistence.WatsonAddressAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonAddressPersistence;
+import com.liferay.watson.service.persistence.WatsonChildAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonChildPersistence;
+import com.liferay.watson.service.persistence.WatsonDocumentAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonDocumentPersistence;
+import com.liferay.watson.service.persistence.WatsonHistoryAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonHistoryPersistence;
+import com.liferay.watson.service.persistence.WatsonIncidentAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonIncidentPersistence;
+import com.liferay.watson.service.persistence.WatsonIncidentRelAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonIncidentRelPersistence;
+import com.liferay.watson.service.persistence.WatsonListTypeAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonListTypePersistence;
+import com.liferay.watson.service.persistence.WatsonListTypeRelAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonListTypeRelPersistence;
+import com.liferay.watson.service.persistence.WatsonPersonAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonPersonPersistence;
+import com.liferay.watson.service.persistence.WatsonRelationshipAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonRelationshipPersistence;
+import com.liferay.watson.service.persistence.WatsonReportAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonReportPersistence;
+import com.liferay.watson.service.persistence.WatsonResourceAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonResourcePersistence;
+import com.liferay.watson.service.persistence.WatsonVehicleAuditPersistence;
 import com.liferay.watson.service.persistence.WatsonVehiclePersistence;
 
 import java.io.Serializable;
@@ -366,6 +380,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the watson activity audit local service.
+	 *
+	 * @return the watson activity audit local service
+	 */
+	public com.liferay.watson.service.WatsonActivityAuditLocalService getWatsonActivityAuditLocalService() {
+		return watsonActivityAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson activity audit local service.
+	 *
+	 * @param watsonActivityAuditLocalService the watson activity audit local service
+	 */
+	public void setWatsonActivityAuditLocalService(
+		com.liferay.watson.service.WatsonActivityAuditLocalService watsonActivityAuditLocalService) {
+		this.watsonActivityAuditLocalService = watsonActivityAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson activity audit persistence.
+	 *
+	 * @return the watson activity audit persistence
+	 */
+	public WatsonActivityAuditPersistence getWatsonActivityAuditPersistence() {
+		return watsonActivityAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson activity audit persistence.
+	 *
+	 * @param watsonActivityAuditPersistence the watson activity audit persistence
+	 */
+	public void setWatsonActivityAuditPersistence(
+		WatsonActivityAuditPersistence watsonActivityAuditPersistence) {
+		this.watsonActivityAuditPersistence = watsonActivityAuditPersistence;
+	}
+
+	/**
 	 * Returns the watson address local service.
 	 *
 	 * @return the watson address local service
@@ -401,6 +453,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	public void setWatsonAddressPersistence(
 		WatsonAddressPersistence watsonAddressPersistence) {
 		this.watsonAddressPersistence = watsonAddressPersistence;
+	}
+
+	/**
+	 * Returns the watson address audit local service.
+	 *
+	 * @return the watson address audit local service
+	 */
+	public com.liferay.watson.service.WatsonAddressAuditLocalService getWatsonAddressAuditLocalService() {
+		return watsonAddressAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson address audit local service.
+	 *
+	 * @param watsonAddressAuditLocalService the watson address audit local service
+	 */
+	public void setWatsonAddressAuditLocalService(
+		com.liferay.watson.service.WatsonAddressAuditLocalService watsonAddressAuditLocalService) {
+		this.watsonAddressAuditLocalService = watsonAddressAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson address audit persistence.
+	 *
+	 * @return the watson address audit persistence
+	 */
+	public WatsonAddressAuditPersistence getWatsonAddressAuditPersistence() {
+		return watsonAddressAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson address audit persistence.
+	 *
+	 * @param watsonAddressAuditPersistence the watson address audit persistence
+	 */
+	public void setWatsonAddressAuditPersistence(
+		WatsonAddressAuditPersistence watsonAddressAuditPersistence) {
+		this.watsonAddressAuditPersistence = watsonAddressAuditPersistence;
 	}
 
 	/**
@@ -442,6 +532,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the watson child audit local service.
+	 *
+	 * @return the watson child audit local service
+	 */
+	public com.liferay.watson.service.WatsonChildAuditLocalService getWatsonChildAuditLocalService() {
+		return watsonChildAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson child audit local service.
+	 *
+	 * @param watsonChildAuditLocalService the watson child audit local service
+	 */
+	public void setWatsonChildAuditLocalService(
+		com.liferay.watson.service.WatsonChildAuditLocalService watsonChildAuditLocalService) {
+		this.watsonChildAuditLocalService = watsonChildAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson child audit persistence.
+	 *
+	 * @return the watson child audit persistence
+	 */
+	public WatsonChildAuditPersistence getWatsonChildAuditPersistence() {
+		return watsonChildAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson child audit persistence.
+	 *
+	 * @param watsonChildAuditPersistence the watson child audit persistence
+	 */
+	public void setWatsonChildAuditPersistence(
+		WatsonChildAuditPersistence watsonChildAuditPersistence) {
+		this.watsonChildAuditPersistence = watsonChildAuditPersistence;
+	}
+
+	/**
 	 * Returns the watson document local service.
 	 *
 	 * @return the watson document local service
@@ -477,6 +605,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	public void setWatsonDocumentPersistence(
 		WatsonDocumentPersistence watsonDocumentPersistence) {
 		this.watsonDocumentPersistence = watsonDocumentPersistence;
+	}
+
+	/**
+	 * Returns the watson document audit local service.
+	 *
+	 * @return the watson document audit local service
+	 */
+	public com.liferay.watson.service.WatsonDocumentAuditLocalService getWatsonDocumentAuditLocalService() {
+		return watsonDocumentAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson document audit local service.
+	 *
+	 * @param watsonDocumentAuditLocalService the watson document audit local service
+	 */
+	public void setWatsonDocumentAuditLocalService(
+		com.liferay.watson.service.WatsonDocumentAuditLocalService watsonDocumentAuditLocalService) {
+		this.watsonDocumentAuditLocalService = watsonDocumentAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson document audit persistence.
+	 *
+	 * @return the watson document audit persistence
+	 */
+	public WatsonDocumentAuditPersistence getWatsonDocumentAuditPersistence() {
+		return watsonDocumentAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson document audit persistence.
+	 *
+	 * @param watsonDocumentAuditPersistence the watson document audit persistence
+	 */
+	public void setWatsonDocumentAuditPersistence(
+		WatsonDocumentAuditPersistence watsonDocumentAuditPersistence) {
+		this.watsonDocumentAuditPersistence = watsonDocumentAuditPersistence;
 	}
 
 	/**
@@ -518,6 +684,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the watson history audit local service.
+	 *
+	 * @return the watson history audit local service
+	 */
+	public com.liferay.watson.service.WatsonHistoryAuditLocalService getWatsonHistoryAuditLocalService() {
+		return watsonHistoryAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson history audit local service.
+	 *
+	 * @param watsonHistoryAuditLocalService the watson history audit local service
+	 */
+	public void setWatsonHistoryAuditLocalService(
+		com.liferay.watson.service.WatsonHistoryAuditLocalService watsonHistoryAuditLocalService) {
+		this.watsonHistoryAuditLocalService = watsonHistoryAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson history audit persistence.
+	 *
+	 * @return the watson history audit persistence
+	 */
+	public WatsonHistoryAuditPersistence getWatsonHistoryAuditPersistence() {
+		return watsonHistoryAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson history audit persistence.
+	 *
+	 * @param watsonHistoryAuditPersistence the watson history audit persistence
+	 */
+	public void setWatsonHistoryAuditPersistence(
+		WatsonHistoryAuditPersistence watsonHistoryAuditPersistence) {
+		this.watsonHistoryAuditPersistence = watsonHistoryAuditPersistence;
+	}
+
+	/**
 	 * Returns the watson incident local service.
 	 *
 	 * @return the watson incident local service
@@ -553,6 +757,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	public void setWatsonIncidentPersistence(
 		WatsonIncidentPersistence watsonIncidentPersistence) {
 		this.watsonIncidentPersistence = watsonIncidentPersistence;
+	}
+
+	/**
+	 * Returns the watson incident audit local service.
+	 *
+	 * @return the watson incident audit local service
+	 */
+	public com.liferay.watson.service.WatsonIncidentAuditLocalService getWatsonIncidentAuditLocalService() {
+		return watsonIncidentAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson incident audit local service.
+	 *
+	 * @param watsonIncidentAuditLocalService the watson incident audit local service
+	 */
+	public void setWatsonIncidentAuditLocalService(
+		com.liferay.watson.service.WatsonIncidentAuditLocalService watsonIncidentAuditLocalService) {
+		this.watsonIncidentAuditLocalService = watsonIncidentAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson incident audit persistence.
+	 *
+	 * @return the watson incident audit persistence
+	 */
+	public WatsonIncidentAuditPersistence getWatsonIncidentAuditPersistence() {
+		return watsonIncidentAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson incident audit persistence.
+	 *
+	 * @param watsonIncidentAuditPersistence the watson incident audit persistence
+	 */
+	public void setWatsonIncidentAuditPersistence(
+		WatsonIncidentAuditPersistence watsonIncidentAuditPersistence) {
+		this.watsonIncidentAuditPersistence = watsonIncidentAuditPersistence;
 	}
 
 	/**
@@ -594,6 +836,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the watson incident rel audit local service.
+	 *
+	 * @return the watson incident rel audit local service
+	 */
+	public com.liferay.watson.service.WatsonIncidentRelAuditLocalService getWatsonIncidentRelAuditLocalService() {
+		return watsonIncidentRelAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson incident rel audit local service.
+	 *
+	 * @param watsonIncidentRelAuditLocalService the watson incident rel audit local service
+	 */
+	public void setWatsonIncidentRelAuditLocalService(
+		com.liferay.watson.service.WatsonIncidentRelAuditLocalService watsonIncidentRelAuditLocalService) {
+		this.watsonIncidentRelAuditLocalService = watsonIncidentRelAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson incident rel audit persistence.
+	 *
+	 * @return the watson incident rel audit persistence
+	 */
+	public WatsonIncidentRelAuditPersistence getWatsonIncidentRelAuditPersistence() {
+		return watsonIncidentRelAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson incident rel audit persistence.
+	 *
+	 * @param watsonIncidentRelAuditPersistence the watson incident rel audit persistence
+	 */
+	public void setWatsonIncidentRelAuditPersistence(
+		WatsonIncidentRelAuditPersistence watsonIncidentRelAuditPersistence) {
+		this.watsonIncidentRelAuditPersistence = watsonIncidentRelAuditPersistence;
+	}
+
+	/**
 	 * Returns the watson list type local service.
 	 *
 	 * @return the watson list type local service
@@ -629,6 +909,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	public void setWatsonListTypePersistence(
 		WatsonListTypePersistence watsonListTypePersistence) {
 		this.watsonListTypePersistence = watsonListTypePersistence;
+	}
+
+	/**
+	 * Returns the watson list type audit local service.
+	 *
+	 * @return the watson list type audit local service
+	 */
+	public com.liferay.watson.service.WatsonListTypeAuditLocalService getWatsonListTypeAuditLocalService() {
+		return watsonListTypeAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson list type audit local service.
+	 *
+	 * @param watsonListTypeAuditLocalService the watson list type audit local service
+	 */
+	public void setWatsonListTypeAuditLocalService(
+		com.liferay.watson.service.WatsonListTypeAuditLocalService watsonListTypeAuditLocalService) {
+		this.watsonListTypeAuditLocalService = watsonListTypeAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson list type audit persistence.
+	 *
+	 * @return the watson list type audit persistence
+	 */
+	public WatsonListTypeAuditPersistence getWatsonListTypeAuditPersistence() {
+		return watsonListTypeAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson list type audit persistence.
+	 *
+	 * @param watsonListTypeAuditPersistence the watson list type audit persistence
+	 */
+	public void setWatsonListTypeAuditPersistence(
+		WatsonListTypeAuditPersistence watsonListTypeAuditPersistence) {
+		this.watsonListTypeAuditPersistence = watsonListTypeAuditPersistence;
 	}
 
 	/**
@@ -670,6 +988,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the watson list type rel audit local service.
+	 *
+	 * @return the watson list type rel audit local service
+	 */
+	public com.liferay.watson.service.WatsonListTypeRelAuditLocalService getWatsonListTypeRelAuditLocalService() {
+		return watsonListTypeRelAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson list type rel audit local service.
+	 *
+	 * @param watsonListTypeRelAuditLocalService the watson list type rel audit local service
+	 */
+	public void setWatsonListTypeRelAuditLocalService(
+		com.liferay.watson.service.WatsonListTypeRelAuditLocalService watsonListTypeRelAuditLocalService) {
+		this.watsonListTypeRelAuditLocalService = watsonListTypeRelAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson list type rel audit persistence.
+	 *
+	 * @return the watson list type rel audit persistence
+	 */
+	public WatsonListTypeRelAuditPersistence getWatsonListTypeRelAuditPersistence() {
+		return watsonListTypeRelAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson list type rel audit persistence.
+	 *
+	 * @param watsonListTypeRelAuditPersistence the watson list type rel audit persistence
+	 */
+	public void setWatsonListTypeRelAuditPersistence(
+		WatsonListTypeRelAuditPersistence watsonListTypeRelAuditPersistence) {
+		this.watsonListTypeRelAuditPersistence = watsonListTypeRelAuditPersistence;
+	}
+
+	/**
 	 * Returns the watson person local service.
 	 *
 	 * @return the watson person local service
@@ -705,6 +1061,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	public void setWatsonPersonPersistence(
 		WatsonPersonPersistence watsonPersonPersistence) {
 		this.watsonPersonPersistence = watsonPersonPersistence;
+	}
+
+	/**
+	 * Returns the watson person audit local service.
+	 *
+	 * @return the watson person audit local service
+	 */
+	public com.liferay.watson.service.WatsonPersonAuditLocalService getWatsonPersonAuditLocalService() {
+		return watsonPersonAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson person audit local service.
+	 *
+	 * @param watsonPersonAuditLocalService the watson person audit local service
+	 */
+	public void setWatsonPersonAuditLocalService(
+		com.liferay.watson.service.WatsonPersonAuditLocalService watsonPersonAuditLocalService) {
+		this.watsonPersonAuditLocalService = watsonPersonAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson person audit persistence.
+	 *
+	 * @return the watson person audit persistence
+	 */
+	public WatsonPersonAuditPersistence getWatsonPersonAuditPersistence() {
+		return watsonPersonAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson person audit persistence.
+	 *
+	 * @param watsonPersonAuditPersistence the watson person audit persistence
+	 */
+	public void setWatsonPersonAuditPersistence(
+		WatsonPersonAuditPersistence watsonPersonAuditPersistence) {
+		this.watsonPersonAuditPersistence = watsonPersonAuditPersistence;
 	}
 
 	/**
@@ -746,6 +1140,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the watson relationship audit local service.
+	 *
+	 * @return the watson relationship audit local service
+	 */
+	public com.liferay.watson.service.WatsonRelationshipAuditLocalService getWatsonRelationshipAuditLocalService() {
+		return watsonRelationshipAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson relationship audit local service.
+	 *
+	 * @param watsonRelationshipAuditLocalService the watson relationship audit local service
+	 */
+	public void setWatsonRelationshipAuditLocalService(
+		com.liferay.watson.service.WatsonRelationshipAuditLocalService watsonRelationshipAuditLocalService) {
+		this.watsonRelationshipAuditLocalService = watsonRelationshipAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson relationship audit persistence.
+	 *
+	 * @return the watson relationship audit persistence
+	 */
+	public WatsonRelationshipAuditPersistence getWatsonRelationshipAuditPersistence() {
+		return watsonRelationshipAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson relationship audit persistence.
+	 *
+	 * @param watsonRelationshipAuditPersistence the watson relationship audit persistence
+	 */
+	public void setWatsonRelationshipAuditPersistence(
+		WatsonRelationshipAuditPersistence watsonRelationshipAuditPersistence) {
+		this.watsonRelationshipAuditPersistence = watsonRelationshipAuditPersistence;
+	}
+
+	/**
 	 * Returns the watson report local service.
 	 *
 	 * @return the watson report local service
@@ -781,6 +1213,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	public void setWatsonReportPersistence(
 		WatsonReportPersistence watsonReportPersistence) {
 		this.watsonReportPersistence = watsonReportPersistence;
+	}
+
+	/**
+	 * Returns the watson report audit local service.
+	 *
+	 * @return the watson report audit local service
+	 */
+	public com.liferay.watson.service.WatsonReportAuditLocalService getWatsonReportAuditLocalService() {
+		return watsonReportAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson report audit local service.
+	 *
+	 * @param watsonReportAuditLocalService the watson report audit local service
+	 */
+	public void setWatsonReportAuditLocalService(
+		com.liferay.watson.service.WatsonReportAuditLocalService watsonReportAuditLocalService) {
+		this.watsonReportAuditLocalService = watsonReportAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson report audit persistence.
+	 *
+	 * @return the watson report audit persistence
+	 */
+	public WatsonReportAuditPersistence getWatsonReportAuditPersistence() {
+		return watsonReportAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson report audit persistence.
+	 *
+	 * @param watsonReportAuditPersistence the watson report audit persistence
+	 */
+	public void setWatsonReportAuditPersistence(
+		WatsonReportAuditPersistence watsonReportAuditPersistence) {
+		this.watsonReportAuditPersistence = watsonReportAuditPersistence;
 	}
 
 	/**
@@ -822,6 +1292,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the watson resource audit local service.
+	 *
+	 * @return the watson resource audit local service
+	 */
+	public com.liferay.watson.service.WatsonResourceAuditLocalService getWatsonResourceAuditLocalService() {
+		return watsonResourceAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson resource audit local service.
+	 *
+	 * @param watsonResourceAuditLocalService the watson resource audit local service
+	 */
+	public void setWatsonResourceAuditLocalService(
+		com.liferay.watson.service.WatsonResourceAuditLocalService watsonResourceAuditLocalService) {
+		this.watsonResourceAuditLocalService = watsonResourceAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson resource audit persistence.
+	 *
+	 * @return the watson resource audit persistence
+	 */
+	public WatsonResourceAuditPersistence getWatsonResourceAuditPersistence() {
+		return watsonResourceAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson resource audit persistence.
+	 *
+	 * @param watsonResourceAuditPersistence the watson resource audit persistence
+	 */
+	public void setWatsonResourceAuditPersistence(
+		WatsonResourceAuditPersistence watsonResourceAuditPersistence) {
+		this.watsonResourceAuditPersistence = watsonResourceAuditPersistence;
+	}
+
+	/**
 	 * Returns the watson vehicle local service.
 	 *
 	 * @return the watson vehicle local service
@@ -857,6 +1365,44 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	public void setWatsonVehiclePersistence(
 		WatsonVehiclePersistence watsonVehiclePersistence) {
 		this.watsonVehiclePersistence = watsonVehiclePersistence;
+	}
+
+	/**
+	 * Returns the watson vehicle audit local service.
+	 *
+	 * @return the watson vehicle audit local service
+	 */
+	public com.liferay.watson.service.WatsonVehicleAuditLocalService getWatsonVehicleAuditLocalService() {
+		return watsonVehicleAuditLocalService;
+	}
+
+	/**
+	 * Sets the watson vehicle audit local service.
+	 *
+	 * @param watsonVehicleAuditLocalService the watson vehicle audit local service
+	 */
+	public void setWatsonVehicleAuditLocalService(
+		com.liferay.watson.service.WatsonVehicleAuditLocalService watsonVehicleAuditLocalService) {
+		this.watsonVehicleAuditLocalService = watsonVehicleAuditLocalService;
+	}
+
+	/**
+	 * Returns the watson vehicle audit persistence.
+	 *
+	 * @return the watson vehicle audit persistence
+	 */
+	public WatsonVehicleAuditPersistence getWatsonVehicleAuditPersistence() {
+		return watsonVehicleAuditPersistence;
+	}
+
+	/**
+	 * Sets the watson vehicle audit persistence.
+	 *
+	 * @param watsonVehicleAuditPersistence the watson vehicle audit persistence
+	 */
+	public void setWatsonVehicleAuditPersistence(
+		WatsonVehicleAuditPersistence watsonVehicleAuditPersistence) {
+		this.watsonVehicleAuditPersistence = watsonVehicleAuditPersistence;
 	}
 
 	/**
@@ -1028,58 +1574,114 @@ public abstract class WatsonReportLocalServiceBaseImpl
 	protected com.liferay.watson.service.WatsonActivityLocalService watsonActivityLocalService;
 	@BeanReference(type = WatsonActivityPersistence.class)
 	protected WatsonActivityPersistence watsonActivityPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonActivityAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonActivityAuditLocalService watsonActivityAuditLocalService;
+	@BeanReference(type = WatsonActivityAuditPersistence.class)
+	protected WatsonActivityAuditPersistence watsonActivityAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonAddressLocalService.class)
 	protected com.liferay.watson.service.WatsonAddressLocalService watsonAddressLocalService;
 	@BeanReference(type = WatsonAddressPersistence.class)
 	protected WatsonAddressPersistence watsonAddressPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonAddressAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonAddressAuditLocalService watsonAddressAuditLocalService;
+	@BeanReference(type = WatsonAddressAuditPersistence.class)
+	protected WatsonAddressAuditPersistence watsonAddressAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonChildLocalService.class)
 	protected com.liferay.watson.service.WatsonChildLocalService watsonChildLocalService;
 	@BeanReference(type = WatsonChildPersistence.class)
 	protected WatsonChildPersistence watsonChildPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonChildAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonChildAuditLocalService watsonChildAuditLocalService;
+	@BeanReference(type = WatsonChildAuditPersistence.class)
+	protected WatsonChildAuditPersistence watsonChildAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonDocumentLocalService.class)
 	protected com.liferay.watson.service.WatsonDocumentLocalService watsonDocumentLocalService;
 	@BeanReference(type = WatsonDocumentPersistence.class)
 	protected WatsonDocumentPersistence watsonDocumentPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonDocumentAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonDocumentAuditLocalService watsonDocumentAuditLocalService;
+	@BeanReference(type = WatsonDocumentAuditPersistence.class)
+	protected WatsonDocumentAuditPersistence watsonDocumentAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonHistoryLocalService.class)
 	protected com.liferay.watson.service.WatsonHistoryLocalService watsonHistoryLocalService;
 	@BeanReference(type = WatsonHistoryPersistence.class)
 	protected WatsonHistoryPersistence watsonHistoryPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonHistoryAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonHistoryAuditLocalService watsonHistoryAuditLocalService;
+	@BeanReference(type = WatsonHistoryAuditPersistence.class)
+	protected WatsonHistoryAuditPersistence watsonHistoryAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonIncidentLocalService.class)
 	protected com.liferay.watson.service.WatsonIncidentLocalService watsonIncidentLocalService;
 	@BeanReference(type = WatsonIncidentPersistence.class)
 	protected WatsonIncidentPersistence watsonIncidentPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonIncidentAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonIncidentAuditLocalService watsonIncidentAuditLocalService;
+	@BeanReference(type = WatsonIncidentAuditPersistence.class)
+	protected WatsonIncidentAuditPersistence watsonIncidentAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonIncidentRelLocalService.class)
 	protected com.liferay.watson.service.WatsonIncidentRelLocalService watsonIncidentRelLocalService;
 	@BeanReference(type = WatsonIncidentRelPersistence.class)
 	protected WatsonIncidentRelPersistence watsonIncidentRelPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonIncidentRelAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonIncidentRelAuditLocalService watsonIncidentRelAuditLocalService;
+	@BeanReference(type = WatsonIncidentRelAuditPersistence.class)
+	protected WatsonIncidentRelAuditPersistence watsonIncidentRelAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonListTypeLocalService.class)
 	protected com.liferay.watson.service.WatsonListTypeLocalService watsonListTypeLocalService;
 	@BeanReference(type = WatsonListTypePersistence.class)
 	protected WatsonListTypePersistence watsonListTypePersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonListTypeAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonListTypeAuditLocalService watsonListTypeAuditLocalService;
+	@BeanReference(type = WatsonListTypeAuditPersistence.class)
+	protected WatsonListTypeAuditPersistence watsonListTypeAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonListTypeRelLocalService.class)
 	protected com.liferay.watson.service.WatsonListTypeRelLocalService watsonListTypeRelLocalService;
 	@BeanReference(type = WatsonListTypeRelPersistence.class)
 	protected WatsonListTypeRelPersistence watsonListTypeRelPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonListTypeRelAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonListTypeRelAuditLocalService watsonListTypeRelAuditLocalService;
+	@BeanReference(type = WatsonListTypeRelAuditPersistence.class)
+	protected WatsonListTypeRelAuditPersistence watsonListTypeRelAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonPersonLocalService.class)
 	protected com.liferay.watson.service.WatsonPersonLocalService watsonPersonLocalService;
 	@BeanReference(type = WatsonPersonPersistence.class)
 	protected WatsonPersonPersistence watsonPersonPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonPersonAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonPersonAuditLocalService watsonPersonAuditLocalService;
+	@BeanReference(type = WatsonPersonAuditPersistence.class)
+	protected WatsonPersonAuditPersistence watsonPersonAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonRelationshipLocalService.class)
 	protected com.liferay.watson.service.WatsonRelationshipLocalService watsonRelationshipLocalService;
 	@BeanReference(type = WatsonRelationshipPersistence.class)
 	protected WatsonRelationshipPersistence watsonRelationshipPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonRelationshipAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonRelationshipAuditLocalService watsonRelationshipAuditLocalService;
+	@BeanReference(type = WatsonRelationshipAuditPersistence.class)
+	protected WatsonRelationshipAuditPersistence watsonRelationshipAuditPersistence;
 	@BeanReference(type = WatsonReportLocalService.class)
 	protected WatsonReportLocalService watsonReportLocalService;
 	@BeanReference(type = WatsonReportPersistence.class)
 	protected WatsonReportPersistence watsonReportPersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonReportAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonReportAuditLocalService watsonReportAuditLocalService;
+	@BeanReference(type = WatsonReportAuditPersistence.class)
+	protected WatsonReportAuditPersistence watsonReportAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonResourceLocalService.class)
 	protected com.liferay.watson.service.WatsonResourceLocalService watsonResourceLocalService;
 	@BeanReference(type = WatsonResourcePersistence.class)
 	protected WatsonResourcePersistence watsonResourcePersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonResourceAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonResourceAuditLocalService watsonResourceAuditLocalService;
+	@BeanReference(type = WatsonResourceAuditPersistence.class)
+	protected WatsonResourceAuditPersistence watsonResourceAuditPersistence;
 	@BeanReference(type = com.liferay.watson.service.WatsonVehicleLocalService.class)
 	protected com.liferay.watson.service.WatsonVehicleLocalService watsonVehicleLocalService;
 	@BeanReference(type = WatsonVehiclePersistence.class)
 	protected WatsonVehiclePersistence watsonVehiclePersistence;
+	@BeanReference(type = com.liferay.watson.service.WatsonVehicleAuditLocalService.class)
+	protected com.liferay.watson.service.WatsonVehicleAuditLocalService watsonVehicleAuditLocalService;
+	@BeanReference(type = WatsonVehicleAuditPersistence.class)
+	protected WatsonVehicleAuditPersistence watsonVehicleAuditPersistence;
 	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
 	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
 	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)

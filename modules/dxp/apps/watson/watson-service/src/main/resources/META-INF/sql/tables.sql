@@ -15,6 +15,24 @@ create table WatsonActivity (
 	status INTEGER
 );
 
+create table WatsonActivityAudit (
+	watsonActivityAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	watsonActivityId LONG,
+	typeWatsonListTypeId LONG,
+	subtypeWatsonListTypeId LONG,
+	watsonIncidentId LONG,
+	narrative STRING null,
+	reportDate DATE null,
+	startDate DATE null,
+	status INTEGER
+);
+
 create table WatsonAddress (
 	watsonAddressId LONG not null primary key,
 	groupId LONG,
@@ -47,6 +65,39 @@ create table WatsonAddress (
 	status INTEGER
 );
 
+create table WatsonAddressAudit (
+	watsonAddressAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	countryId LONG,
+	districtWatsonListTypeId LONG,
+	originalWatsonAddressId LONG,
+	provinceWatsonListTypeId LONG,
+	subDistrictWatsonListTypeId LONG,
+	typeWatsonListTypeId LONG,
+	watsonAddressId LONG,
+	watsonIncidentId LONG,
+	name STRING null,
+	postalCode VARCHAR(75) null,
+	region VARCHAR(75) null,
+	street VARCHAR(75) null,
+	number_ VARCHAR(75) null,
+	building STRING null,
+	floor VARCHAR(75) null,
+	room VARCHAR(75) null,
+	description STRING null,
+	imagePayload VARCHAR(75) null,
+	otherType VARCHAR(75) null,
+	lastSeenDate DATE null,
+	latitude DOUBLE,
+	longitude DOUBLE,
+	status INTEGER
+);
+
 create table WatsonChild (
 	watsonChildId LONG not null primary key,
 	groupId LONG,
@@ -72,6 +123,32 @@ create table WatsonChild (
 	status INTEGER
 );
 
+create table WatsonChildAudit (
+	watsonChildAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	birthCountryId LONG,
+	citizenshipWatsonListTypeId LONG,
+	countryWatsonListTypeId LONG,
+	dischargeWatsonListTypeId LONG,
+	ethnicityWatsonListTypeId LONG,
+	originalWatsonPersonId LONG,
+	sexWatsonListTypeId LONG,
+	sourceSubtypeWatsonListTypeId LONG,
+	sourceWatsonListTypeId LONG,
+	typeWatsonListTypeId LONG,
+	watsonChildId LONG,
+	dateAccepted DATE null,
+	dateDischarged DATE null,
+	dateFollowUp DATE null,
+	source VARCHAR(75) null,
+	status INTEGER
+);
+
 create table WatsonDocument (
 	watsonDocumentId LONG not null primary key,
 	groupId LONG,
@@ -90,6 +167,25 @@ create table WatsonDocument (
 	status INTEGER
 );
 
+create table WatsonDocumentAudit (
+	watsonDocumentAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	parentTypeWatsonListTypeId LONG,
+	subtypeWatsonListTypeId LONG,
+	typeWatsonListTypeId LONG,
+	watsonChildId LONG,
+	watsonDocumentId LONG,
+	originalDocument BOOLEAN,
+	receivedDate DATE null,
+	imagePayload VARCHAR(75) null,
+	status INTEGER
+);
+
 create table WatsonHistory (
 	watsonHistoryId LONG not null primary key,
 	groupId LONG,
@@ -98,6 +194,22 @@ create table WatsonHistory (
 	userName VARCHAR(75) null,
 	createDate DATE null,
 	modifiedDate DATE null,
+	watsonParentId LONG,
+	classNameId LONG,
+	classPK LONG,
+	type_ INTEGER,
+	status INTEGER
+);
+
+create table WatsonHistoryAudit (
+	watsonHistoryAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	watsonHistoryId LONG,
 	watsonParentId LONG,
 	classNameId LONG,
 	classPK LONG,
@@ -132,6 +244,34 @@ create table WatsonIncident (
 	status INTEGER
 );
 
+create table WatsonIncidentAudit (
+	watsonIncidentAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	externalCaseWatsonListTypeId LONG,
+	sourceWatsonListTypeId LONG,
+	typeWatsonListTypeId LONG,
+	subtypeWatsonListTypeId LONG,
+	audienceAdultCount LONG,
+	audienceChildCount LONG,
+	victimAdultCount LONG,
+	victimChildCount LONG,
+	watsonIncidentId LONG,
+	name VARCHAR(75) null,
+	description STRING null,
+	externalCaseId VARCHAR(75) null,
+	reportDate DATE null,
+	startDate DATE null,
+	endDate DATE null,
+	expenses DOUBLE,
+	incidentStatus INTEGER,
+	status INTEGER
+);
+
 create table WatsonIncidentRel (
 	watsonIncidentRelId LONG not null primary key,
 	groupId LONG,
@@ -142,6 +282,21 @@ create table WatsonIncidentRel (
 	modifiedDate DATE null,
 	watsonIncidentId1 LONG,
 	watsonIncidentId2 LONG,
+	type_ VARCHAR(75) null,
+	status INTEGER
+);
+
+create table WatsonIncidentRelAudit (
+	watsonIncidentRelAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	watsonIncidentId1 LONG,
+	watsonIncidentId2 LONG,
+	watsonIncidentRelId LONG,
 	type_ VARCHAR(75) null,
 	status INTEGER
 );
@@ -160,6 +315,21 @@ create table WatsonListType (
 	status INTEGER
 );
 
+create table WatsonListTypeAudit (
+	watsonListTypeAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	parentWatsonListTypeId LONG,
+	watsonListTypeId LONG,
+	name STRING null,
+	type_ VARCHAR(75) null,
+	status INTEGER
+);
+
 create table WatsonListTypeRel (
 	watsonListTypeRelId LONG not null primary key,
 	groupId LONG,
@@ -169,6 +339,24 @@ create table WatsonListTypeRel (
 	createDate DATE null,
 	modifiedDate DATE null,
 	watsonListTypeId LONG,
+	classNameId LONG,
+	classPK LONG,
+	primary_ BOOLEAN,
+	value STRING null,
+	type_ VARCHAR(75) null,
+	status INTEGER
+);
+
+create table WatsonListTypeRelAudit (
+	watsonListTypeRelAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	watsonListTypeId LONG,
+	watsonListTypeRelId LONG,
 	classNameId LONG,
 	classPK LONG,
 	primary_ BOOLEAN,
@@ -210,6 +398,40 @@ create table WatsonPerson (
 	status INTEGER
 );
 
+create table WatsonPersonAudit (
+	watsonPersonAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	birthCountryId LONG,
+	citizenshipWatsonListTypeId LONG,
+	countryWatsonListTypeId LONG,
+	ethnicityWatsonListTypeId LONG,
+	eyesWatsonListTypeId LONG,
+	hairWatsonListTypeId LONG,
+	originalWatsonPersonId LONG,
+	sexWatsonListTypeId LONG,
+	typeWatsonListTypeId LONG,
+	watsonIncidentId LONG,
+	watsonPersonId LONG,
+	description STRING null,
+	imagePayload VARCHAR(75) null,
+	birthDate DATE null,
+	dateAccepted DATE null,
+	dateRescued DATE null,
+	startAge VARCHAR(75) null,
+	endAge VARCHAR(75) null,
+	occupation STRING null,
+	height VARCHAR(75) null,
+	weight VARCHAR(75) null,
+	accepted BOOLEAN,
+	rescued BOOLEAN,
+	status INTEGER
+);
+
 create table WatsonRelationship (
 	watsonRelationshipId LONG not null primary key,
 	groupId LONG,
@@ -225,6 +447,25 @@ create table WatsonRelationship (
 	classNameId2 LONG,
 	classPK2 LONG,
 	description STRING null,
+	status INTEGER
+);
+
+create table WatsonRelationshipAudit (
+	watsonRelationshipAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	watsonIncidentId LONG,
+	watsonRelationshipId LONG,
+	typeWatsonListTypeId LONG,
+	classNameId1 LONG,
+	classPK1 LONG,
+	classNameId2 LONG,
+	classPK2 LONG,
+	description VARCHAR(75) null,
 	status INTEGER
 );
 
@@ -250,6 +491,29 @@ create table WatsonReport (
 	status INTEGER
 );
 
+create table WatsonReportAudit (
+	watsonReportAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	originalWatsonReportId LONG,
+	typeWatsonListTypeId LONG,
+	watsonChildId LONG,
+	watsonReportId LONG,
+	name STRING null,
+	description STRING null,
+	fullReport STRING null,
+	imagePayload VARCHAR(75) null,
+	timeSpent VARCHAR(75) null,
+	reportedUser STRING null,
+	reportDate DATE null,
+	key_ INTEGER,
+	status INTEGER
+);
+
 create table WatsonResource (
 	watsonResourceId LONG not null primary key,
 	groupId LONG,
@@ -264,6 +528,24 @@ create table WatsonResource (
 	name STRING null,
 	description STRING null,
 	imagePayload TEXT null,
+	status INTEGER
+);
+
+create table WatsonResourceAudit (
+	watsonResourceAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	originalWatsonResourceId LONG,
+	typeWatsonListTypeId LONG,
+	watsonIncidentId LONG,
+	watsonResourceId LONG,
+	name STRING null,
+	description STRING null,
+	imagePayload VARCHAR(75) null,
 	status INTEGER
 );
 
@@ -285,6 +567,29 @@ create table WatsonVehicle (
 	year INTEGER,
 	description STRING null,
 	imagePayload TEXT null,
+	licensePlate VARCHAR(75) null,
+	status INTEGER
+);
+
+create table WatsonVehicleAudit (
+	watsonVehicleAuditId LONG not null primary key,
+	groupId LONG,
+	companyId LONG,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	colorWatsonListTypeId LONG,
+	makeWatsonListTypeId LONG,
+	modelWatsonListTypeId LONG,
+	originalWatsonVehicleId LONG,
+	typeWatsonListTypeId LONG,
+	yearWatsonListTypeId LONG,
+	watsonIncidentId LONG,
+	watsonVehicleId LONG,
+	year INTEGER,
+	description STRING null,
+	imagePayload VARCHAR(75) null,
 	licensePlate VARCHAR(75) null,
 	status INTEGER
 );
