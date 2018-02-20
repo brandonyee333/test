@@ -55,6 +55,10 @@ public class BaseMessageRouter implements MessageRouter {
 
 			messageProcessor.process(routingKey, message, properties);
 		}
+
+		if (_log.isDebugEnabled() && messageProcessors.isEmpty()) {
+			_log.debug("No processor was found with routing key " + routingKey);
+		}
 	}
 
 	protected void addRoute(
