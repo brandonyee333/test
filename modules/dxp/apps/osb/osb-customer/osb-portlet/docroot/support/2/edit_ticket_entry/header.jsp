@@ -363,10 +363,10 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				nodeShow.show();
 			}
 
-			var nodeHide = A.one('#' + nodeHide);
+			var nodeHide = A.one('#' + hideId);
 
 			if (nodeHide) {
-				nodeHide.show();
+				nodeHide.hide();
 			}
 		},
 		['aui-base']
