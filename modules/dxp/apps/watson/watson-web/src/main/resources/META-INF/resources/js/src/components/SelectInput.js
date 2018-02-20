@@ -1,4 +1,4 @@
-import {bindAll, isEmpty} from 'lodash';
+import {bindAll, forEach, isEmpty, isEqual} from 'lodash';
 import bridge from 'metal-react';
 import JSXComponent, {Config} from 'metal-jsx';
 import Select from 'react-select';
@@ -9,21 +9,26 @@ class SelectInput extends JSXComponent {
 	created() {
 		bindAll(
 			this,
+			'_formatOptions',
 			'handleOnChange'
 		);
 	}
 
 	_formatOptions(options, renderedOptions, sortOptions) {
-		for (const entry in options) {
-			if (options.hasOwnProperty(entry)) {
-				const {label, value} = options[entry];
-				renderedOptions.push(
-					{
-						label,
-						value: value || entry
-					}
-				);
-			}
+		if (!isEmpty(options)) {
+			forEach(
+				options,
+				entry => {
+					const {label, value} = entry;
+
+					renderedOptions.push(
+						{
+							label,
+							value: value || entry
+						}
+					);
+				}
+			);
 
 			if (sortOptions === 'alpha') {
 				renderedOptions.sort((a, b) => a.label.localeCompare(b.label));
@@ -39,7 +44,12 @@ class SelectInput extends JSXComponent {
 			}
 		}
 
-		return renderedOptions;
+		this.setState(
+			{
+				formattedOptions: renderedOptions,
+				givenOptions: options
+			}
+		);
 	}
 
 	handleOnChange(option) {
@@ -63,6 +73,11 @@ class SelectInput extends JSXComponent {
 			value = ''
 		} = this.props;
 
+		const {
+			formattedOptions,
+			givenOptions
+		} = this.state;
+
 		let renderedOptions = [];
 
 		if (!omitBlankOption) {
@@ -74,7 +89,7 @@ class SelectInput extends JSXComponent {
 			);
 		}
 
-		renderedOptions = isEmpty(options) ? renderedOptions : this._formatOptions(options, renderedOptions, sortOptions);
+		renderedOptions = isEqual(givenOptions, options) ? formattedOptions : this._formatOptions(options, renderedOptions, sortOptions);
 
 		return (
 			<div class={`select-wrapper ${cssClassName}`}>
@@ -102,6 +117,11 @@ SelectInput.PROPS = {
 	sortOptions: Config.string().value(''),
 	tooltipLabel: Config.string(),
 	value: Config.any()
+};
+
+SelectInput.STATE = {
+	formattedOptions: Config.array(),
+	givenOptions: Config.object()
 };
 
 export default SelectInput;
