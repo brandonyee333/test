@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.watson.web.internal.servlet.taglib;
+package com.liferay.watson.login.web.internal.servlet.taglib;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -78,7 +78,7 @@ public class WatsonAlertPreDynamicInclude extends BaseDynamicInclude {
 	private static final Log _log = LogFactoryUtil.getLog(
 		WatsonAlertPreDynamicInclude.class);
 
-	@Reference(target = "(osgi.web.symbolicname=com.liferay.watson.web)")
+	@Reference(target = "(osgi.web.symbolicname=com.liferay.watson.login.web)")
 	private ServletContext _servletContext;
 
 }
