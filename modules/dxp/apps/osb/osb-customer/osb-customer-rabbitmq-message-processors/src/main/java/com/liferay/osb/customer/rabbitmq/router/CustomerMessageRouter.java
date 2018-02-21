@@ -16,6 +16,8 @@ package com.liferay.osb.customer.rabbitmq.router;
 
 import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
+import com.liferay.osb.customer.rabbitmq.processors.OrganizationAssignmentMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.OrganizationUnassignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.RoleAssignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.RoleUnassignmentMessageProcessor;
@@ -40,6 +42,24 @@ import org.osgi.service.component.annotations.Reference;
 	property = {"queue=is_customer_queue"}, service = MessageRouter.class
 )
 public class CustomerMessageRouter extends BaseMessageRouter {
+
+	@Reference(unbind = "-")
+	protected void setOrganizationAssignmentMessageProcessor(
+		OrganizationAssignmentMessageProcessor
+			organizationAssignmentMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(organizationAssignmentMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setOrganizationUnassignmentMessageProcessor(
+		OrganizationUnassignmentMessageProcessor
+			organizationUnassignmentMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(organizationUnassignmentMessageProcessor, properties);
+	}
 
 	@Reference(unbind = "-")
 	protected void setOrganizationUpdateMessageProcessor(
