@@ -30,6 +30,7 @@ public static class WatsonIncidentIndexer extends BaseAlloyIndexer {
 		document.addLocalizedText(Field.DESCRIPTION, watsonIncident.getDescriptionMap());
 		document.addKeyword(Field.NAME, watsonIncident.getName());
 		document.addKeyword(Field.STATUS, watsonIncident.getStatus());
+
 		document.addDate("endDate", watsonIncident.getEndDate());
 		document.addKeyword("expenses", watsonIncident.getExpenses());
 		document.addKeyword("externalCaseId", watsonIncident.getExternalCaseId());

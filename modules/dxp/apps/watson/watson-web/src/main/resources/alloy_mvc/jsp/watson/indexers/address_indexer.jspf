@@ -30,6 +30,7 @@ public static class WatsonAddressIndexer extends BaseAlloyIndexer {
 		document.addLocalizedText(Field.DESCRIPTION, watsonAddress.getDescriptionMap());
 		document.addLocalizedKeyword(Field.NAME, watsonAddress.getNameMap());
 		document.addKeyword(Field.STATUS, watsonAddress.getStatus());
+
 		document.addLocalizedKeyword("building", watsonAddress.getBuildingMap());
 		document.addKeyword("countryId", watsonAddress.getCountryId());
 

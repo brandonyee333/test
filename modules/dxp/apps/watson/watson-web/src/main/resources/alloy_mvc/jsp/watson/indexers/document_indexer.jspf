@@ -29,6 +29,7 @@ public static class WatsonDocumentIndexer extends BaseAlloyIndexer {
 
 		document.addKeyword(Field.NAME, watsonDocument.getName(LocaleUtil.getMostRelevantLocale()));
 		document.addKeyword(Field.STATUS, watsonDocument.getStatus());
+
 		document.addKeyword("id", watsonDocument.getWatsonDocumentId());
 		document.addKeyword("originalDocument", watsonDocument.getOriginalDocument());
 		document.addKeyword("parentTypeWatsonListTypeId", watsonDocument.getParentTypeWatsonListTypeId());

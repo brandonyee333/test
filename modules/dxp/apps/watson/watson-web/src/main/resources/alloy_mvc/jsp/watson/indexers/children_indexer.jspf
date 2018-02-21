@@ -28,6 +28,7 @@ public static class WatsonChildrenIndexer extends BaseAlloyIndexer {
 		Document document = getBaseModelDocument(WatsonPortletKeys.WATSON, watsonChild);
 
 		document.addKeyword(Field.STATUS, watsonChild.getStatus());
+
 		document.addKeyword("birthCountryId", watsonChild.getBirthCountryId());
 		document.addKeyword("citizenshipWatsonListTypeId", watsonChild.getCitizenshipWatsonListTypeId());
 
