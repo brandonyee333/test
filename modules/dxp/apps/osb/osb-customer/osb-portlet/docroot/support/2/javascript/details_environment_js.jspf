@@ -448,8 +448,11 @@
 						success: function() {
 							var response = this.get('responseData');
 
-							<portlet:namespace />selectCS(response['ENV_CS#key']);
-							<portlet:namespace />selectSearch(response['ENV_Search#key']);
+							var envCs = !!response.EVN_CS;
+							var envSearch = !!response.ENV_Search;
+
+							<portlet:namespace />selectCS(envCs);
+							<portlet:namespace />selectSearch(envSearch);
 
 							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envAS', response['ENV_AS#key'], response['ENV_AS'], envAS, envASName);
 							<portlet:namespace />updateEnvironmentField('<portlet:namespace />envBrowser', response['ENV_Browser#key'], response['ENV_Browser'], envBrowser, envBrowserName);
