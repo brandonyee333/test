@@ -452,7 +452,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 	public static KeyValuePair validateWatsonIncidentExpenses(double expenses) {
 		if (Validator.isNotNull(expenses) && (expenses < 0)) {
-			return new KeyValuePair("expenses", "the-expenses-can-not-be-negative");
+			return new KeyValuePair("expenses", "the-expenses-cannot-be-negative");
 		}
 
 		return null;
