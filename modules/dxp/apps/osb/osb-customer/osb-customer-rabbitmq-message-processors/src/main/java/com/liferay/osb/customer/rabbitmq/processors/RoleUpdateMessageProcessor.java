@@ -14,21 +14,10 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
-import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
-import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.service.RoleLocalService;
-
-import java.util.List;
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -37,43 +26,10 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true, property = {"routing.key=entity.role.update"},
 	service = RoleUpdateMessageProcessor.class
 )
-public class RoleUpdateMessageProcessor implements MessageProcessor {
+public class RoleUpdateMessageProcessor extends BaseMessageProcessor {
 
-	@Override
-	public void process(
-		String routingKey, String message, Map<String, Object> properties) {
-
-		try {
-			updateRole(message);
-		}
-		catch (Exception e) {
-			_log.error(message);
-
-			_log.error(e, e);
-		}
-	}
-
-	protected Role fetchRole(String uuid) {
-		List<Company> companies = _companyLocalService.getCompanies();
-
-		for (Company company : companies) {
-			Role role = _roleLocalService.fetchRoleByUuidAndCompanyId(
-				uuid, company.getCompanyId());
-
-			if (role != null) {
-				return role;
-			}
-		}
-
-		return null;
-	}
-
-	protected void updateRole(String message) throws Exception {
-		JSONObject jsonObject = _jsonFactory.createJSONObject(message.trim());
-
-		String uuid = jsonObject.getString("uuid");
-
-		Role role = fetchRole(uuid);
+	protected void doProcess(JSONObject jsonObject) throws Exception {
+		Role role = fetchRole(jsonObject);
 
 		if (role == null) {
 			return;
@@ -81,21 +37,9 @@ public class RoleUpdateMessageProcessor implements MessageProcessor {
 
 		String name = jsonObject.getString("name");
 
-		_roleLocalService.updateRole(
+		roleLocalService.updateRole(
 			role.getRoleId(), name, role.getTitleMap(),
 			role.getDescriptionMap(), role.getSubtype(), null);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		RoleUpdateMessageProcessor.class);
-
-	@Reference
-	private CompanyLocalService _companyLocalService;
-
-	@Reference
-	private JSONFactory _jsonFactory;
-
-	@Reference
-	private RoleLocalService _roleLocalService;
 
 }

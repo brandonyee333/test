@@ -14,22 +14,11 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
-import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
-import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
-import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.service.OrganizationLocalService;
-
-import java.util.List;
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -38,44 +27,10 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true, property = {"routing.key=entity.organization.update"},
 	service = OrganizationUpdateMessageProcessor.class
 )
-public class OrganizationUpdateMessageProcessor implements MessageProcessor {
+public class OrganizationUpdateMessageProcessor extends BaseMessageProcessor {
 
-	@Override
-	public void process(
-		String routingKey, String message, Map<String, Object> properties) {
-
-		try {
-			updateOrganization(message);
-		}
-		catch (Exception e) {
-			_log.error(message);
-
-			_log.error(e, e);
-		}
-	}
-
-	protected Organization fetchOrganization(String uuid) {
-		List<Company> companies = _companyLocalService.getCompanies();
-
-		for (Company company : companies) {
-			Organization organization =
-				_organizationLocalService.fetchOrganizationByUuidAndCompanyId(
-					uuid, company.getCompanyId());
-
-			if (organization != null) {
-				return organization;
-			}
-		}
-
-		return null;
-	}
-
-	protected void updateOrganization(String message) throws Exception {
-		JSONObject jsonObject = _jsonFactory.createJSONObject(message.trim());
-
-		String uuid = jsonObject.getString("uuid");
-
-		Organization organization = fetchOrganization(uuid);
+	protected void doProcess(JSONObject jsonObject) throws Exception {
+		Organization organization = fetchOrganization(jsonObject);
 
 		if (organization == null) {
 			return;
@@ -85,24 +40,12 @@ public class OrganizationUpdateMessageProcessor implements MessageProcessor {
 
 		Group group = organization.getGroup();
 
-		_organizationLocalService.updateOrganization(
+		organizationLocalService.updateOrganization(
 			organization.getCompanyId(), organization.getOrganizationId(),
 			organization.getParentOrganizationId(), name,
 			organization.getType(), organization.getRegionId(),
 			organization.getCountryId(), organization.getStatusId(),
 			organization.getComments(), true, null, group.isSite(), null);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		OrganizationUpdateMessageProcessor.class);
-
-	@Reference
-	private CompanyLocalService _companyLocalService;
-
-	@Reference
-	private JSONFactory _jsonFactory;
-
-	@Reference
-	private OrganizationLocalService _organizationLocalService;
 
 }
