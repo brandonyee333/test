@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.util.comparator.RoleNameComparator;
@@ -452,11 +453,13 @@ public class KaleoDesignerPortlet extends MVCPortlet {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		for (Object scriptLanguage : sortedSupportedScriptLanguages) {
+		for (Object supportedScriptLanguage : sortedSupportedScriptLanguages) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
+			String scriptLanguage = supportedScriptLanguage.toString();
+
 			jsonObject.put(
-				"scriptLanguage", scriptLanguage.toString().toLowerCase());
+				"scriptLanguage", StringUtil.toLowerCase(scriptLanguage));
 
 			jsonArray.put(jsonObject);
 		}
