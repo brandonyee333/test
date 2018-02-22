@@ -127,12 +127,12 @@ public class MinifierUtil {
 				replacement = _separateOperatorsFromNegativeNumbers(
 					replacement);
 
-				replacement = _surroundSumOperatorsWithSpaces(replacement);
-				replacement = _surroundSubstractionOperatorsWithSpaces(
-					replacement);
+				replacement = _surroundDivisionOperatorsWithSpaces(replacement);
 				replacement = _surroundMultiplicationOperatorsWithSpaces(
 					replacement);
-				replacement = _surroundDivisionOperatorsWithSpaces(replacement);
+				replacement = _surroundSubstractionOperatorsWithSpaces(
+					replacement);
+				replacement = _surroundSumOperatorsWithSpaces(replacement);
 
 				replacement = _removeSpacesInsideNegativeNumbers(replacement);
 
