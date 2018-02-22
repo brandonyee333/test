@@ -1702,7 +1702,7 @@
 						translatable: ${false},
 						type: 'DEPENDENT_KEYED_INPUT',
 						validations: [
-							'positiveNumber'
+							'positiveNumbers'
 						]
 					},
 					externalCase: {
