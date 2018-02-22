@@ -441,18 +441,15 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			}
 
 			if (status != '<%= TicketEntryConstants.STATUS_CLOSED %>') {
-				<c:choose>
-					<c:when test="<%= liferayIncOrg && (status != TicketEntryConstants.STATUS_REPRODUCED) %>">
-						if (status == '<%= TicketEntryConstants.STATUS_REPRODUCED %>') {
-							window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="jspPage" value="/support/2/edit_ticket_entry/reproduction_steps.jsp" /><portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" /></portlet:renderURL>', 'reproductionSteps', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800').focus();
+				<c:if test="<%= liferayIncOrg && (status != TicketEntryConstants.STATUS_REPRODUCED) %>">
+					if (status == '<%= TicketEntryConstants.STATUS_REPRODUCED %>') {
+						window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="jspPage" value="/support/2/edit_ticket_entry/reproduction_steps.jsp" /><portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" /></portlet:renderURL>', 'reproductionSteps', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800').focus();
 
-							return;
-						}
-					</c:when>
-					<c:otherwise>
-						submitForm(document.<portlet:namespace />ticketStatusFm);
-					</c:otherwise>
-				</c:choose>
+						return;
+					}
+				</c:if>
+
+				submitForm(document.<portlet:namespace />ticketStatusFm);
 			}
 		},
 		['aui-base']
