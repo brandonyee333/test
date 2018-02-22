@@ -30,16 +30,14 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
  */
 @Component(
-	configurationPid = "com.liferay.osb.customer.rabbitmq.configuration.RabbitMQConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
-	property = {"queue=is_customer_queue"}, service = MessageRouter.class
+	immediate = true, property = {"queue=is_customer_queue"},
+	service = MessageRouter.class
 )
 public class CustomerMessageRouter extends BaseMessageRouter {
 
