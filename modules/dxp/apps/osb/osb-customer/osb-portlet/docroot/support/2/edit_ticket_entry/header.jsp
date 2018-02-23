@@ -508,6 +508,8 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			window,
 			'<portlet:namespace />updateSeverity',
 			function() {
+				var A = AUI();
+
 				var ticketStatusFm = A.one('#<portlet:namespace />ticketStatusFm');
 
 				if (ticketStatusFm) {
