@@ -193,5 +193,4 @@ export function getURLForLanguageId(languageId) {
 }
 
 export function updateDOMTitle(newTitle) {
-	window.document.title = newTitle;
 }
