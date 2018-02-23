@@ -33,7 +33,7 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEnt
 	<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateTicketFeedbackURL %>" class="uni-form" method="post" name="fm">
+<aui:form action="<%= updateTicketFeedbackURL %>" class="uni-form" method="post" name="liferayFeedbackFm">
 	<aui:input name="redirect" type="hidden" value="<%= portletURL.toString() %>" />
 	<aui:input name="ticketFeedbackId" type="hidden" />
 	<aui:input name="satisfied" type="hidden" />
@@ -130,8 +130,8 @@ portletURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEnt
 						success: function() {
 							var response = this.get('responseData');
 
-							document.<portlet:namespace />fm.<portlet:namespace />satisfied.value = response.satisfied;
-							document.<portlet:namespace />fm.<portlet:namespace />ticketFeedbackId.value = response.ticketFeedbackId;
+							document.<portlet:namespace />liferayFeedbackFm.<portlet:namespace />satisfied.value = response.satisfied;
+							document.<portlet:namespace />liferayFeedbackFm.<portlet:namespace />ticketFeedbackId.value = response.ticketFeedbackId;
 						}
 					}
 				}

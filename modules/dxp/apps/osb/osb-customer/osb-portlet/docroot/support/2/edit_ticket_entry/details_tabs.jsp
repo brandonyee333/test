@@ -217,19 +217,6 @@ String generalTab = ParamUtil.getString(request, "generalTab", defaultGeneralTab
 					</c:if>
 				</div>
 
-				<c:if test="<%= (liferayTicketFeedback == null) && closed && OSBTicketFeedbackPermission.containsSubjectLiferay(permissionChecker, ticketEntry.getTicketEntryId(), OSBActionKeys.UPDATE) %>">
-					<liferay-util:include page="/common/dialog.jsp" servletContext="<%= application %>">
-						<liferay-util:param name="centered" value="<%= Boolean.TRUE.toString() %>" />
-						<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
-						<liferay-util:param name="cssClass" value="edit-liferay-ticket-feedback-dialog" />
-						<liferay-util:param name="dialogMVCPath" value="/support/2/edit_liferay_ticket_feedback_dialog.jsp" />
-						<liferay-util:param name="draggable" value="<%= Boolean.FALSE.toString() %>" />
-						<liferay-util:param name="id" value="1" />
-						<liferay-util:param name="modal" value="<%= Boolean.TRUE.toString() %>" />
-						<liferay-util:param name="visible" value="<%= Boolean.TRUE.toString() %>" />
-					</liferay-util:include>
-				</c:if>
-
 				<div class="hide tab-content-tab" id="<portlet:namespace />attachments">
 					<liferay-util:include page="/support/2/edit_ticket_entry/edit_ticket_attachments.jsp" servletContext="<%= application %>" />
 				</div>

@@ -43,7 +43,7 @@ if (ticketEntry != null) {
 		<c:if test="<%= liferayIncOrg %>">
 			<c:choose>
 				<c:when test="<%= ticketFeedbacks.isEmpty() %>">
-					<div class="txt-b>
+					<div class="txt-b">
 						<liferay-ui:message key="no-feedback-was-provided" />
 					</div>
 				</c:when>
@@ -184,6 +184,8 @@ if (ticketEntry != null) {
 
 		<c:if test="<%= (ticketFeedback == null) && OSBTicketFeedbackPermission.containsSubjectLiferay(permissionChecker, ticketEntry.getTicketEntryId(), OSBActionKeys.UPDATE) %>">
 			<liferay-util:include page="/support/2/edit_liferay_ticket_feedback.jsp" servletContext="<%= application %>" />
+
+			<liferay-util:include page="/support/2/edit_liferay_ticket_feedback_dialog.jsp" servletContext="<%= application %>" />
 		</c:if>
 	</div>
 </c:if>
