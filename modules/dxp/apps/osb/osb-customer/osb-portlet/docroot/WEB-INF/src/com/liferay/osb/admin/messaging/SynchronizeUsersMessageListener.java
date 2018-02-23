@@ -14,15 +14,23 @@
 
 package com.liferay.osb.admin.messaging;
 
+import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.ProductEntryConstants;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -493,6 +501,17 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			long accountEntryId, String getUserIdsSQL)
 		throws Exception {
 
+		AccountEntry accountEntry =
+			AccountEntryLocalServiceUtil.fetchAccountEntry(accountEntryId);
+
+		if (accountEntry == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Account does not exist for " + accountEntryId);
+			}
+
+			return;
+		}
+
 		addAccountWorkers(accountEntryId, getUserIdsSQL);
 		removeAccountWorkers(accountEntryId, getUserIdsSQL);
 	}
@@ -501,6 +520,17 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			long organizationId, String getUserIdsSQL, String userIdColumn)
 		throws Exception {
 
+		Organization organization =
+			OrganizationLocalServiceUtil.fetchOrganization(organizationId);
+
+		if (organization == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Organization does not exist for " + organizationId);
+			}
+
+			return;
+		}
+
 		addOrganizationUsers(organizationId, getUserIdsSQL, userIdColumn);
 		removeOrganizationUsers(organizationId, getUserIdsSQL);
 	}
@@ -508,8 +538,21 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 	protected void updateRoles(long roleId, String getUserIdsSQL)
 		throws Exception {
 
+		Role role = RoleLocalServiceUtil.fetchRole(roleId);
+
+		if (role == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Role does not exist for " + roleId);
+			}
+
+			return;
+		}
+
 		addRoleUsers(roleId, getUserIdsSQL);
 		removeRoleUsers(roleId, getUserIdsSQL);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		SynchronizeUsersMessageListener.class);
 
 }
