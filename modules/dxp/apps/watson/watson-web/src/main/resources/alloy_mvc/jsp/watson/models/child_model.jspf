@@ -35,6 +35,20 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		super(watsonChild);
 	}
 
+	public static void clearWatsonChildChildren(long watsonChildId) throws Exception {
+		List<WatsonDocument> watsonDocuments = WatsonDocument.queryAll("watsonChildId", watsonChildId);
+
+		for (WatsonDocument watsonDocument : watsonDocuments) {
+			watsonDocument.delete();
+		}
+
+		List<WatsonReport> watsonReports = WatsonReport.queryAll("watsonChildId", watsonChildId);
+
+		for (WatsonReport watsonReport : watsonReports) {
+			watsonReport.delete();
+		}
+	}
+
 	public static JSONObject getAsJSONDataArray(List<WatsonChild> watsonChildren, long count) throws Exception {
 		JSONObject returnJSONObject = JSONFactoryUtil.createJSONObject();
 

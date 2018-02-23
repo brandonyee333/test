@@ -142,6 +142,8 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		WatsonRelationship.clearWatsonRelationships(watsonChild.getWatsonChildId(), watsonChildId);
 
+		WatsonChild.clearWatsonChildChildren(watsonChildId);
+
 		WatsonHistory.add(watsonChild.getWatsonChildId(), watsonChild, request, WatsonHistory.HISTORY_TYPE_DELETED);
 
 		watsonChild.delete();
