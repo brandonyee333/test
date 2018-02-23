@@ -22,7 +22,7 @@ class MetricsReport extends JSXComponent {
 	render() {
 		const {columns} = this.state;
 
-		const {data = {}, loading} = this.props;
+		const {contentHeader, data = {}, loading} = this.props;
 
 		const formattedData = [];
 
@@ -51,7 +51,7 @@ class MetricsReport extends JSXComponent {
 		return (
 			<div class="content-container">
 				<div class="content-header">
-					<ContentHeader headerStringLeft={Liferay.Language.get('report')} />
+					<ContentHeader headerStringLeft={contentHeader} />
 				</div>
 
 				<div class="content" id="table">
@@ -70,6 +70,7 @@ class MetricsReport extends JSXComponent {
 }
 
 MetricsReport.PROPS = {
+	contentHeader: Config.string(),
 	data: Config.object(),
 	loading: Config.bool().value(true)
 };

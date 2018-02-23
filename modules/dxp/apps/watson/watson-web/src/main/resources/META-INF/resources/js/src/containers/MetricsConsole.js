@@ -53,8 +53,13 @@ class MetricsConsole extends JSXComponent {
 			);
 		}
 		else if (action === 'report') {
+			const {dateRangeString} = this.state;
+
+			const contentHeader = !dateRangeString ? Liferay.Language.get('report-year-to-date') : Liferay.Language.get('report-by-date-range');
+
 			currentView = (
 				<MetricsReport
+					contentHeader={contentHeader}
 					data={data}
 					loading={loading}
 					onChange={this.handleOnChange}
