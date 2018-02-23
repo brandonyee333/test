@@ -184,6 +184,10 @@ public static class WatsonReport extends WatsonReportBaseModel {
 
 		WatsonReport watsonReport = WatsonReport.fetch(watsonReportId, true);
 
+		if (Validator.isNull(watsonReport)) {
+			return StringPool.BLANK;
+		}
+
 		if (watsonReport.getKey() == REPORT_TYPE_CASEWORK) {
 			return "casework_activities";
 		}
