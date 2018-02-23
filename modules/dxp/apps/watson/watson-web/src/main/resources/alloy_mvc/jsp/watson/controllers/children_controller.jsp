@@ -183,7 +183,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			WatsonChild newWatsonChild = WatsonChild.create(request);
 
-			BeanPropertiesUtil.copyProperties(originalWatsonPerson, newWatsonChild);
+			BeanPropertiesUtil.copyProperties(originalWatsonPerson, newWatsonChild, new String[] {"new", "primaryKey", "primaryKeyObj"});
 
 			if (originalWatsonPerson.getOriginalWatsonPersonId() == 0) {
 				newWatsonChild.setOriginalWatsonPersonId(originalWatsonPerson.getPrimaryKey());

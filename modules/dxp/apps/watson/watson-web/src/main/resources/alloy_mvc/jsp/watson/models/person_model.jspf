@@ -66,6 +66,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("accepted", watsonPerson.getAccepted());
+		jsonObject.put("affiliationData", getAffiliatedChild(watsonPerson));
 
 		List<WatsonIncident> affiliatedIncidents = getAffiliatedIncidents(watsonPerson);
 
@@ -223,6 +224,21 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		}
 
 		return jsonArray;
+	}
+
+	public static JSONObject getAffiliatedChild(WatsonPerson watsonPerson) throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		List<WatsonChild> watsonChildren = WatsonChild.query("originalWatsonPersonId", watsonPerson.getWatsonPersonId());
+
+		if (!watsonChildren.isEmpty()) {
+			WatsonChild watsonChild = watsonChildren.get(0);
+
+			jsonObject.put("name", watsonChild.getPrimaryName());
+			jsonObject.put("watsonChildId", watsonChild.getWatsonChildId());
+		}
+
+		return jsonObject;
 	}
 
 	public static List<WatsonListTypeRel> getCountryIds(long watsonPersonId) throws Exception {

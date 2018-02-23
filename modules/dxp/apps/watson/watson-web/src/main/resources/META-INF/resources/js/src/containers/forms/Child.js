@@ -11,6 +11,7 @@ import ContentHeader from '../../components/ContentHeader';
 import {convertMapToObject, deepCompareIsEqual, getModifiedMoment, updateDOMTitle} from '../../lib/util';
 import Form from '../../components/Form';
 import Modal from '../../components/Modal';
+import PersonChildLink from '../../components/PersonChildLink';
 
 import {
 	destroyChildren,
@@ -304,6 +305,11 @@ class ChildForm extends JSXComponent {
 				}
 
 				<div class="content">
+					<PersonChildLink
+						affiliationData={storeData.get('affiliationData')}
+						model="people"
+					/>
+
 					<Form
 						action={action}
 						additionalTopBarButtons={additionalTopBarButtons}

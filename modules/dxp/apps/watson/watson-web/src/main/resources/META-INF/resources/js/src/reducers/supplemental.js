@@ -31,9 +31,17 @@ export function generateActionHandlers(actionTypes, key) {
 		},
 		[actionTypes.IMPORT_FAILURE]: updateErrorDisplay,
 
-		[actionTypes.IMPORT_REQUEST]: updateLoading(true),
+		[actionTypes.IMPORT_REQUEST]: state => {
+			state = state.set('imported', true);
+
+			return state.set('loading', true);
+		},
 
 		[actionTypes.IMPORT_SUCCESS]: state => {
+			state = state.set('imported', true);
+
+			state = state.set('loading', false);
+
 			return state.set('update', true);
 		},
 		[actionTypes.REQUEST_TRANSLATION_FAILURE]: updateErrorDisplay,

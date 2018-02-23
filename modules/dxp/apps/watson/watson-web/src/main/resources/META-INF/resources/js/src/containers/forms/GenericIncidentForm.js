@@ -11,6 +11,7 @@ import ContentHeader from '../../components/ContentHeader';
 import {convertMapToObject, deepCompareIsEqual, formatModelName, getModifiedMoment, updateDOMTitle} from '../../lib/util';
 import Form from '../../components/Form';
 import Modal from '../../components/Modal';
+import PersonChildLink from '../../components/PersonChildLink';
 
 import {
 	destroyPeople,
@@ -312,6 +313,11 @@ class GenericIncidentForm extends JSXComponent {
 						entryId={watsonPrimaryKey}
 						model={model}
 						watsonIncidentId={watsonIncidentId}
+					/>
+
+					<PersonChildLink
+						affiliationData={storeData.get('affiliationData')}
+						model="children"
 					/>
 
 					<Form

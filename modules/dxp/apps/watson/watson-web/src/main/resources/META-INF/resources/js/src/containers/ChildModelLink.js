@@ -1,3 +1,4 @@
+import {bindAll} from 'lodash';
 import {connect} from 'metal-redux';
 import JSXComponent, {Config} from 'metal-jsx';
 import Router from 'metal-router';
@@ -8,6 +9,17 @@ import ViewIndex from './views/ViewIndex';
 import {importChildren} from '../actions/children';
 
 class ChildModelLink extends JSXComponent {
+	created() {
+		bindAll(
+			this,
+			'_handleDataSent'
+		);
+	}
+
+	_handleDataSent() {
+		this.setState({dataSent: true});
+	}
+
 	render() {
 		const {
 			action,
@@ -37,19 +49,35 @@ class ChildModelLink extends JSXComponent {
 					buttonData={buttonData}
 					headerStringLeft={Liferay.Language.get('link-child')}
 					model="people"
-					redirect={childrenLinkRedirect}
+					redirect={this._handleDataSent}
 					selectedIds={[]}
 					submitMethod={linkChildren}
-					watsonwatsonIncidentId={0}
+					watsonIncidentId={0}
 				/>
 			</div>
 		);
+	}
+
+	rendered() {
+		const {loading, responseStatus} = this.props;
+
+		const {dataSent} = this.state;
+
+		if (dataSent && !loading && responseStatus === true) {
+			Router.router().navigate(`${WatsonConstants.urls.baseURL}/children`);
+		}
 	}
 }
 
 ChildModelLink.PROPS = {
 	action: Config.string().value('link'),
-	model: Config.string().value('people')
+	loading: Config.bool(),
+	model: Config.string().value('people'),
+	responseStatus: Config.bool()
+};
+
+ChildModelLink.STATE = {
+	dataSent: Config.bool().value(false)
 };
 
 function mapDispatchToProps(dispatch) {
@@ -62,4 +90,14 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default connect(null, mapDispatchToProps)(ChildModelLink);
+function mapStateToProps(state) {
+	const loading = state.getIn(['children', 'loading']);
+	const responseStatus = state.getIn(['children', 'imported']);
+
+	return {
+		loading,
+		responseStatus
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChildModelLink);

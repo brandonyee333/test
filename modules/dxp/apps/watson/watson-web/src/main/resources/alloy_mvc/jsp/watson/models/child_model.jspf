@@ -92,6 +92,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			jsonObject.put("activitiesInvolvedWatsonListTypeRels", getActivitiesInvolvedIds(watsonChild.getWatsonChildId()).toArray());
 		}
 
+		jsonObject.put("affiliationData", getAffiliatedPerson(watsonChild));
 		jsonObject.put("birthCountryId", watsonChild.getBirthCountryId());
 		jsonObject.put("casework_activities", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_CASEWORK, watsonChild.getWatsonChildId()));
 		jsonObject.put("citizenshipWatsonListTypeId", watsonChild.getCitizenshipWatsonListTypeId());
@@ -238,6 +239,26 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 
 		return jsonArray;
+	}
+
+	public static JSONObject getAffiliatedPerson(WatsonChild watsonChild) throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		long originalWatsonPersonId = watsonChild.getOriginalWatsonPersonId();
+
+		if (originalWatsonPersonId > 0) {
+			WatsonPerson watsonPerson = WatsonPerson.fetch(originalWatsonPersonId);
+
+			long watsonIncidentId = watsonPerson.getWatsonIncidentId();
+
+			if (watsonIncidentId > 0) {
+				jsonObject.put("name", watsonPerson.getPrimaryName());
+				jsonObject.put("watsonPersonId", originalWatsonPersonId);
+				jsonObject.put("watsonIncidentId", watsonIncidentId);
+			}
+		}
+
+		return jsonObject;
 	}
 
 	public static List<WatsonDocument> getWatsonDocuments(long watsonChildId, boolean includeInactive, String sort, int start, int end) throws Exception {

@@ -493,7 +493,7 @@ class Form extends JSXComponent {
 					);
 				}
 				else if (currentType === inputTypeConstants.dependentKeyedInput) {
-					const {controlledInputs, dependentKey, invertHidden = false, parentInputId} = currentInputConfig;
+					const {controlledInputs, dependentKey = '', invertHidden = false, parentInputId} = currentInputConfig;
 
 					const parentInputValue = formData[parentInputId];
 
