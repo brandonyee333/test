@@ -10,12 +10,20 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 	}
 	else if (sortBy === 'watsonIncidentId') {
 		sorted = data.sort(
-			(a, b) => (b.get('watsonIncidentId') - (a.get('watsonIncidentId')))
+			(a, b) => b.get('watsonIncidentId').localeCompare(
+				a.get('watsonIncidentId'),
+				{},
+				{ignorePunctuation: true, numeric: true}
+			)
 		);
 	}
 	else if (sortBy === 'watsonChildId') {
 		sorted = data.sort(
-			(a, b) => (b.get('watsonChildId') - (a.get('watsonChildId')))
+			(a, b) => b.get('watsonChildId').localeCompare(
+				a.get('watsonChildId'),
+				{},
+				{ignorePunctuation: true, numeric: true}
+			)
 		);
 	}
 	else if (sortBy === 'modifiedDate') {
@@ -65,12 +73,20 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 	}
 	else if (sortBy === 'typeWatsonListTypeId') {
 		sorted = data.sort(
-			(a, b) => a.get('typeWatsonListTypeId').localeCompare(b.get('typeWatsonListTypeId'))
+			(a, b) => b.get('typeWatsonListTypeId').localeCompare(
+				a.get('typeWatsonListTypeId'),
+				{},
+				{ignorePunctuation: true, numeric: true}
+			)
 		);
 	}
 	else {
 		sorted = data.sort(
-			(a, b) => (b.get('id') - (a.get('id')))
+			(a, b) => b.get('id').localeCompare(
+				a.get('id'),
+				{},
+				{ignorePunctuation: true, numeric: true}
+			)
 		);
 	}
 
