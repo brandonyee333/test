@@ -74,6 +74,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 
 		jsonObject.put("modifiedDate", watsonActivity.getModifiedDate());
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonActivity));
 		jsonObject.put("name", watsonActivity.getName(locale));
 		jsonObject.put("narrative", watsonActivity.getNarrative(locale));
