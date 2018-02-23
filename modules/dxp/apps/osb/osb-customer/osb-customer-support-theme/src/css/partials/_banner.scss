@@ -2,6 +2,7 @@
 
 .lesa-nav {
 	display: none;
+	z-index: 20;
 
 	@include sm() {
 		background-color: $light-bg;
@@ -96,7 +97,6 @@
 			overflow: auto;
 			padding: $standard-spacing;
 			top: -22px;
-			z-index: 2;
 
 			li {
 				font-family: "Avenir Medium";
@@ -194,7 +194,7 @@
 		right: 0;
 		top: 0;
 		width: 2em;
-		z-index: 2;
+		z-index: 20;
 	}
 
 	.nav-submenu {
@@ -220,7 +220,7 @@
 	position: fixed;
 	top: 0;
 	width: 100%;
-	z-index: 2;
+	z-index: 20;
 
 	a {
 		color: $text-color;
@@ -440,7 +440,7 @@
 	right: 3%;
 	top: $banner-height + $ticket-view-header-height;
 	width: 15%;
-	z-index: 2;
+	z-index: 12;
 
 	.section {
 		margin: 0 0 30px;

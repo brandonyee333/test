@@ -39,7 +39,7 @@
 	max-height: 120px;
 	position: fixed;
 	right: calc(23vw + 20px);
-	z-index: 3;
+	z-index: 11;
 }
 
 .header {
@@ -98,7 +98,7 @@
 	position: fixed;
 	right: 0;
 	top: 0;
-	z-index: 1;
+	z-index:10;
 
 	&.pinned {
 		height: $banner-height + $ticket-view-heading-height + (2 * $ticket-view-tab-height) + $standard-spacing;
@@ -115,7 +115,7 @@
 			position: fixed;
 			right: calc(23vw + 20px);
 			top: $banner-height + $ticket-view-header-height;
-			z-index: 2;
+			z-index: 11;
 		}
 
 		span {
@@ -176,7 +176,7 @@
 			position: fixed;
 			right: calc(23vw + 20px);
 			top: $banner-height + $ticket-view-heading-height;
-			z-index: 2;
+			z-index: 11;
 		}
 
 		.tab-content {
