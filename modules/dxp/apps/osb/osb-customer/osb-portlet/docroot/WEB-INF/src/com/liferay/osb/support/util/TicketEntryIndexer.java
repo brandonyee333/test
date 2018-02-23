@@ -923,12 +923,15 @@ public class TicketEntryIndexer extends BaseIndexer<TicketEntry> {
 		String startValue = null;
 		String endValue = null;
 
+		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			"yyyyMMddHHmmss");
+
 		if (dateGT != null) {
-			startValue = _dateFormat.format(dateGT);
+			startValue = dateFormat.format(dateGT);
 		}
 
 		if (dateLT != null) {
-			endValue = _dateFormat.format(dateLT);
+			endValue = dateFormat.format(dateLT);
 		}
 
 		BooleanQuery dateQuery = new BooleanQueryImpl();
@@ -1062,8 +1065,5 @@ public class TicketEntryIndexer extends BaseIndexer<TicketEntry> {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		TicketEntryIndexer.class);
-
-	private final Format _dateFormat =
-		FastDateFormatFactoryUtil.getSimpleDateFormat("yyyyMMddHHmmss");
 
 }
