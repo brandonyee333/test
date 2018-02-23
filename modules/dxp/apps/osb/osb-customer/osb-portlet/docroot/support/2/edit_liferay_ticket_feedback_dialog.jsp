@@ -57,7 +57,7 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 		<div class="clearfix">
 			<aui:button cssClass="pull-left" name="dialogCancelButton" value="cancel" />
 
-			<aui:button cssClass="pull-right" name="dialogSubmitButton" onClick='<%= renderResponse.getNamespace() + "submitLiferayTicketFeedback();" %>' value="submit" />
+			<aui:button cssClass="pull-right" name="dialogSubmitButton" value="submit" />
 		</div>
 	</div>
 </div>
@@ -66,7 +66,7 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 	Liferay.provide(
 		window,
 		'<portlet:namespace />submitLiferayTicketFeedback',
-		function() {
+		function(modal) {
 			var A = AUI();
 
 			var satisfied;
@@ -100,11 +100,13 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 						success: function() {
 							var response = this.get('responseData');
 
-							document.<portlet:namespace />liferayFeedbackFm.<portlet:namespace />satisfied.value = response.satisfied;
-							document.<portlet:namespace />liferayFeedbackFm.<portlet:namespace />ticketFeedbackId.value = response.ticketFeedbackId;
-							document.<portlet:namespace />liferayFeedbackFm.<portlet:namespace />comments.value = document.getElementById('<portlet:namespace />dialogComments').value;
+							document.<portlet:namespace />liferayTicketFeedbackFm.<portlet:namespace />satisfied.value = response.satisfied;
+							document.<portlet:namespace />liferayTicketFeedbackFm.<portlet:namespace />ticketFeedbackId.value = response.ticketFeedbackId;
+							document.<portlet:namespace />liferayTicketFeedbackFm.<portlet:namespace />comments.value = document.getElementById('<portlet:namespace />dialogComments').value;
 
-							submitForm(document.<portlet:namespace />liferayFeedbackFm);
+							submitForm(document.<portlet:namespace />liferayTicketFeedbackFm);
+
+							modal.hide();
 						}
 					}
 				}
@@ -138,14 +140,14 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 </aui:script>
 
 <aui:script use="aui-base,aui-modal">
-	function <portlet:namespace />createLiferayFeedbackModal() {
-		var liferayFeedbackDialog = A.one('#<portlet:namespace />liferayTicketFeedbackDialogContainer');
+	function <portlet:namespace />createLiferayTicketFeedbackModal() {
+		var liferayTicketFeedbackDialog = A.one('#<portlet:namespace />liferayTicketFeedbackDialogContainer');
 
-		var liferayFeedbackModal = new A.Modal(
+		var liferayTicketFeedbackModal = new A.Modal(
 			{
-				bodyContent: liferayFeedbackDialog,
+				bodyContent: liferayTicketFeedbackDialog,
 				centered: true,
-				cssClass: 'liferay-feedback-modal',
+				cssClass: 'liferay-ticket-feedback-modal',
 				destroyOnHide: true,
 				draggable: false,
 				modal: true,
@@ -154,17 +156,28 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 			}
 		).render();
 
-		var liferayFeedbackCancelButton = A.one('#<portlet:namespace />dialogCancelButton');
+		var liferayTicketFeedbackCancelButton = A.one('#<portlet:namespace />dialogCancelButton');
 
-		if (liferayFeedbackCancelButton) {
-			liferayFeedbackCancelButton.on(
+		if (liferayTicketFeedbackCancelButton) {
+			liferayTicketFeedbackCancelButton.on(
 				'click',
 				function() {
-					liferayFeedbackModal.hide();
+					liferayTicketFeedbackModal.hide();
+				}
+			);
+		}
+
+		var liferayTicketFeedbackSubmitButton = A.one('#<portlet:namespace />dialogSubmitButton');
+
+		if (liferayTicketFeedbackSubmitButton) {
+			liferayTicketFeedbackSubmitButton.on(
+				'click',
+				function() {
+					<portlet:namespace />submitLiferayTicketFeedback(liferayTicketFeedbackModal);
 				}
 			);
 		}
 	}
 
-	<portlet:namespace />createLiferayFeedbackModal();
+	<portlet:namespace />createLiferayTicketFeedbackModal();
 </aui:script>
