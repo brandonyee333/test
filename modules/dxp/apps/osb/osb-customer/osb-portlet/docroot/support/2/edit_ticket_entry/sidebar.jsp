@@ -154,7 +154,7 @@ int component = BeanParamUtil.getInteger(ticketEntry, request, "component");
 					<span class="txt-sb" title="<%= longDateFormatDateTime.format(dueDate.getTime()) %>"><%= mediumDateFormatDate.format(dueDate.getTime()) %></span>
 
 					<c:if test="<%= hasUpdateAdmin && ticketEntry.isIgnoreDueDate() %>">
-						<span class="ignore-due-date">(<liferay-ui:message key="ignored" />)</span>
+						<span class="txt-b">(<liferay-ui:message key="ignored" />)</span>
 					</c:if>
 				</div>
 			</c:if>

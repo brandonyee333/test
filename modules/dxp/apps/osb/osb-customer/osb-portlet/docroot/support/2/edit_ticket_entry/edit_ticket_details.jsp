@@ -350,9 +350,7 @@ if (liferayIncOrg || partnerWorker) {
 				<liferay-ui:input-field bean="<%= ticketEntry %>" defaultValue="<%= dueDate %>" field="dueDate" formName="fm3" model="<%= TicketEntry.class %>" />
 			</div>
 		</aui:field-wrapper>
-	</c:if>
 
-	<c:if test="<%= hasUpdateAdmin %>">
 		<aui:field-wrapper label="ignore-due-date" cssClass="form-field-wrapper">
 			<aui:input cssClass='<%= ticketEntry.getIgnoreDueDate() ? "checked" : "" %>' label="" name="ignoreDueDate" type="checkbox" />
 		</aui:field-wrapper>
