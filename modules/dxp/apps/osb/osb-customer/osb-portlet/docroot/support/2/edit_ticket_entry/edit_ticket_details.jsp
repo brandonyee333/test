@@ -270,8 +270,6 @@ if (liferayIncOrg || partnerWorker) {
 
 			<aui:validator name="required" errorMessage="please-select-a-valid-resolution" />
 		</aui:select>
-
-		<aui:button cssClass="hide" name="resolutionCancel" onClick='<%= renderResponse.getNamespace() + "resetStatus()" %>' value="cancel" />
 	</c:if>
 
 	<c:if test="<%= !screenShareMode && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && ticketWorker %>">

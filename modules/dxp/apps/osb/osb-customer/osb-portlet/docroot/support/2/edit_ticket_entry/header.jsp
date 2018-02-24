@@ -320,12 +320,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				<portlet:namespace />toggleForm('<portlet:namespace />resolutionDropDown', '<portlet:namespace />headerResolutionLabel');
 			}
 
-			var resolutionCancel = A.one('#<portlet:namespace />resolutionCancel');
-
-			if (resolutionCancel) {
-				resolutionCancel.hide();
-			}
-
 			var statusCancel = A.one('#<portlet:namespace />statusCancel');
 
 			if (statusCancel) {
