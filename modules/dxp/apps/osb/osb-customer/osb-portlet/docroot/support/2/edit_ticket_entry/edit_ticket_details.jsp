@@ -54,11 +54,11 @@ if (liferayIncOrg || partnerWorker) {
 
 <div class="tab-content-tab" id="<portlet:namespace />ticketDetails">
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:input bean="<%= ticketEntry %>" cssClass="pull-right w80" maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' model="<%= TicketEntry.class %>" name="subject" type="text" wrapperCssClass="clearfix">
+		<aui:input bean="<%= ticketEntry %>" inlineField="<%= true %>" maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' model="<%= TicketEntry.class %>" name="subject" type="text" wrapperCssClass="form-field-wrapper">
 			<aui:validator errorMessage="please-enter-a-valid-subject" name="required" />
 		</aui:input>
 
-		<aui:field-wrapper cssClass="clearfix">
+		<aui:field-wrapper cssClass="form-field-wrapper">
 			<label class="control-label" id="<portlet:namespace />descriptionLabel"><liferay-ui:message key="description" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
@@ -75,7 +75,7 @@ if (liferayIncOrg || partnerWorker) {
 
 	<c:choose>
 		<c:when test="<%= hasUpdateAdvanced && liferayIncOrg %>">
-			<aui:input cssClass="pull-right w80" max="<%= ModelHintsConstants.TEXTAREA_MAX_LENGTH %>" name="reproductionSteps" style="height: 150px;" type="textarea" value="<%= reproductionSteps %>" wrapperCssClass="clearfix" />
+			<aui:input inlineField="<%= true %>" max="<%= ModelHintsConstants.TEXTAREA_MAX_LENGTH %>" name="reproductionSteps" style="height: 150px;" type="textarea" value="<%= reproductionSteps %>" wrapperCssClass="form-field-wrapper" />
 		</c:when>
 		<c:otherwise>
 			<aui:input name="reproductionSteps" type="hidden" value="<%= HtmlUtil.escapeAttribute(reproductionSteps) %>" />
@@ -83,10 +83,10 @@ if (liferayIncOrg || partnerWorker) {
 	</c:choose>
 
 	<c:if test="<%= hasUpdateAdvanced && liferayIncOrg %>">
-		<aui:field-wrapper cssClass="clearfix">
+		<aui:field-wrapper cssClass="form-field-wrapper">
 			<label class="control-label" id="<portlet:namespace />productLabel"><liferay-ui:message key="product" /></label>
 
-			<div class="pull-right w80">
+			<div class="inline">
 				<span class="inline" id="<portlet:namespace />productEntryName">
 					<%= HtmlUtil.escape(productEntry.getName()) %>
 				</span>
@@ -107,7 +107,7 @@ if (liferayIncOrg || partnerWorker) {
 
 	<c:if test="<%= hasUpdateAdvanced %>">
 		<div class="<%= productEntry.isTicketComponentRequired() ? "" : "hide" %>" id="<portlet:namespace />componentFieldGroup">
-			<aui:select cssClass="pull-right w80" id="editComponent" name="component" onChange='<%= renderResponse.getNamespace() + "selectComponent(this.value);" %>' wrapperCssClass="clearfix">
+			<aui:select id="editComponent" inlineField="<%= true %>" label="component" name="component" onChange='<%= renderResponse.getNamespace() + "selectComponent(this.value);" %>' wrapperCssClass="form-field-wrapper">
 				<c:choose>
 					<c:when test="<%= productEntry.isDigitalEnterprise() %>">
 
@@ -159,7 +159,7 @@ if (liferayIncOrg || partnerWorker) {
 			int[] subcomponents = TicketEntryConstants.getSubcomponents(component);
 			%>
 
-			<aui:select cssClass="pull-right w80" name="subcomponent" wrapperCssClass="clearfix">
+			<aui:select inlineField="<%= true %>" name="subcomponent" wrapperCssClass="form-field-wrapper">
 				<c:if test="<%= ticketEntry.getSubcomponent() <= 0 %>">
 					<aui:option label="none" value="0" />
 				</c:if>
@@ -180,12 +180,12 @@ if (liferayIncOrg || partnerWorker) {
 
 			</aui:select>
 
-			<aui:input cssClass='<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "" : "hide" %>' label="" name="subcomponentCustom" type="text" value="<%= subcomponentCustom %>" />
+			<aui:input cssClass="no-label" inlineField="<%= true %>" label="" name="subcomponentCustom" type="text" value="<%= subcomponentCustom %>" wrapperCssClass='<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER ? "form-field-wrapper" : "hide") %>' />
 		</div>
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:select cssClass="pull-right w80" name="escalationLevel" wrapperCssClass="clearfix">
+		<aui:select inlineField="<%= true %>" name="escalationLevel" wrapperCssClass="form-field-wrapper">
 
 			<%
 			for (ListType escalationLevelType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL)) {
@@ -210,7 +210,7 @@ if (liferayIncOrg || partnerWorker) {
 		}
 		%>
 
-		<aui:select cssClass="pull-right w80" name="severity" onChange="<%= severityOnChange %>" wrapperCssClass="clearfix">
+		<aui:select inlineField="<%= true %>" name="severity" onChange="<%= severityOnChange %>" wrapperCssClass="form-field-wrapper">
 
 			<%
 			for (int i = 1; i <= 3; i++) {
@@ -227,14 +227,14 @@ if (liferayIncOrg || partnerWorker) {
 
 	<c:if test="<%= hasUpdateAdvanced && liferayIncOrg %>">
 		<div class="hide" id="<portlet:namespace />severityDetails">
-			<aui:select cssClass="pull-right w80" label="what-is-the-reason-for-changing-the-ticket-severity" name="severityReason" wrapperCssClass="clearfix" />
+			<aui:select inlineField="<%= true %>" label="what-is-the-reason-for-changing-the-ticket-severity" name="severityReason" wrapperCssClass="clearfix" />
 
-			<aui:input cssClass="pull-right w80" label="please-explain-optional" name="severityReasonComments" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 150px; max-width: 505px;" type="textarea"  wrap="soft" wrapperCssClass="clearfix" />
+			<aui:input inlineField="<%= true %>" label="please-explain-optional" name="severityReasonComments" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 150px; max-width: 505px;" type="textarea"  wrap="soft" wrapperCssClass="form-field-wrapper" />
 		</div>
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:select cssClass="pull-right w80" id="statusDropDown" label="status" name="status" wrapperCssClass="clearfix">
+		<aui:select id="statusDropDown" inlineField="<%= true %>" name="status" wrapperCssClass="form-field-wrapper">
 
 			<%
 			for (int statusId : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
@@ -255,7 +255,7 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:select cssClass="pull-right w80" id="resolutionDropDown" name="resolution" wrapperCssClass="clearfix">
+		<aui:select id="resolutionDropDown" inlineField="<%= true %>" name="resolution" wrapperCssClass="form-field-wrapper">
 			<aui:option label="" value="0" />
 
 			<%
@@ -273,7 +273,7 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= !screenShareMode && (ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) && ticketWorker %>">
-		<aui:field-wrapper cssClass="clearfix" label="need-response-from">
+		<aui:field-wrapper cssClass="form-field-wrapper" label="need-response-from">
 
 			<%
 			int[] pendingTypes = TicketFlagLocalServiceUtil.getTicketFlagTypes(ticketEntry.getTicketEntryId(), TicketFlagConstants.TYPES_PENDING, TicketFlagConstants.FLAG_TRUE);
@@ -292,7 +292,7 @@ if (liferayIncOrg || partnerWorker) {
 
 	<c:choose>
 		<c:when test="<%= hasUpdateAdvanced && liferayIncOrg %>">
-			<aui:select cssClass="pull-right w80" label="support-region" name="supportRegionId" wrapperCssClass="clearfix">
+			<aui:select inlineField="<%= true %>" label="support-region" name="supportRegionId" wrapperCssClass="form-field-wrapper">
 
 				<%
 				List<SupportRegion> supportRegions = SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -315,7 +315,7 @@ if (liferayIncOrg || partnerWorker) {
 
 	<c:choose>
 		<c:when test="<%= hasUpdateAdvanced && liferayIncOrg %>">
-			<aui:select cssClass="pull-right w80" label="support-language" name="languageId" wrapperCssClass="clearfix">
+			<aui:select inlineField="<%= true %>" label="support-language" name="languageId" wrapperCssClass="form-field-wrapper">
 
 				<%
 				for (String curLanguageId : AccountEntryConstants.LANGUAGES) {
@@ -335,7 +335,7 @@ if (liferayIncOrg || partnerWorker) {
 	</c:choose>
 
 	<c:if test="<%= hasUpdateAdmin %>">
-		<aui:field-wrapper cssClass="clearfix">
+		<aui:field-wrapper cssClass="form-field-wrapper">
 			<label class="control-label" id="<portlet:namespace />dueDateLabel"><liferay-ui:message key="due" /></label>
 
 			<%
@@ -346,48 +346,48 @@ if (liferayIncOrg || partnerWorker) {
 			}
 			%>
 
-			<liferay-ui:input-field bean="<%= ticketEntry %>" defaultValue="<%= dueDate %>" field="dueDate" formName="fm3" model="<%= TicketEntry.class %>" />
+			<div class="inline-block">
+				<liferay-ui:input-field bean="<%= ticketEntry %>" defaultValue="<%= dueDate %>" field="dueDate" formName="fm3" model="<%= TicketEntry.class %>" />
+			</div>
 		</aui:field-wrapper>
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdmin %>">
-		<aui:field-wrapper label="ignore-due-date" cssClass="clearfix">
+		<aui:field-wrapper label="ignore-due-date" cssClass="form-field-wrapper">
 			<aui:input cssClass='<%= ticketEntry.getIgnoreDueDate() ? "checked" : "" %>' label="" name="ignoreDueDate" type="checkbox" />
 		</aui:field-wrapper>
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<div id="<portlet:namespace />reporterLabel">
-			<aui:field-wrapper cssClass="clearfix" label="reporter">
+		<aui:field-wrapper cssClass="form-field-wrapper" label="reporter">
 
-				<%
-				User reporterUser = UserLocalServiceUtil.fetchUserById(ticketEntry.getUserId());
-				%>
+			<%
+			User reporterUser = UserLocalServiceUtil.fetchUserById(ticketEntry.getUserId());
+			%>
 
-				<span id="<portlet:namespace />reportedByUserName">
-					<c:if test="<%= reporterUser != null %>">
-						<%= HtmlUtil.escape(reporterUser.getFullName()) %>
+			<span id="<portlet:namespace />reportedByUserName">
+				<c:if test="<%= reporterUser != null %>">
+					<%= HtmlUtil.escape(reporterUser.getFullName()) %>
 
-						<liferay-util:include page="/support/2/common/user_badge.jsp" servletContext="<%= application %>">
-							<portlet:param name="partnerEntryId" value="<%= String.valueOf(accountEntry.getPartnerEntryId()) %>" />
-							<portlet:param name="userId" value="<%= String.valueOf(reporterUser.getUserId()) %>" />
-						</liferay-util:include>
-					</c:if>
-				</span>
+					<liferay-util:include page="/support/2/common/user_badge.jsp" servletContext="<%= application %>">
+						<portlet:param name="partnerEntryId" value="<%= String.valueOf(accountEntry.getPartnerEntryId()) %>" />
+						<portlet:param name="userId" value="<%= String.valueOf(reporterUser.getUserId()) %>" />
+					</liferay-util:include>
+				</c:if>
+			</span>
 
-				<portlet:renderURL var="selectReportedByRenderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-					<portlet:param name="mvcPath" value="/support/2/select_user.jsp" />
-					<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
-					<portlet:param name="callback" value="selectReportedBy" />
-				</portlet:renderURL>
+			<portlet:renderURL var="selectReportedByRenderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="mvcPath" value="/support/2/select_user.jsp" />
+				<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
+				<portlet:param name="callback" value="selectReportedBy" />
+			</portlet:renderURL>
 
-				<%
-				String taglibOpenReportedByWindow = "var reportedByWindow = window.open('" + selectReportedByRenderURL.toString() + "', 'reported_by', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); reportedByWindow.focus();";
-				%>
+			<%
+			String taglibOpenReportedByWindow = "var reportedByWindow = window.open('" + selectReportedByRenderURL.toString() + "', 'reported_by', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); reportedByWindow.focus();";
+			%>
 
-				<aui:button onClick="<%= taglibOpenReportedByWindow %>" value="choose" />
-			</aui:field-wrapper>
-		</div>
+			<aui:button onClick="<%= taglibOpenReportedByWindow %>" value="choose" />
+		</aui:field-wrapper>
 	</c:if>
 </div>
 

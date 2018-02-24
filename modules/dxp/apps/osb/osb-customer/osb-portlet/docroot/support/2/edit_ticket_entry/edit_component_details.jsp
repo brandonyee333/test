@@ -42,41 +42,36 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 
 <c:if test="<%= hasUpdateAdvanced %>">
 	<div class="hide tab-content-tab" id="<portlet:namespace />clusteringDetails">
-		<aui:field-wrapper>
-			<div class="field-align" field-required-message="<%= LanguageUtil.get(request, "please-select-a-valid-server-communication-type") %>">
-				<aui:select data-field-required-status="<%= false %>" label="server-communication-type" name="serverCommunicationType">
-					<aui:option label="" value="" />
+		<aui:select inlineField="<%= true %>" label="server-communication-type" name="serverCommunicationType" wrapperCssClass="form-field-wrapper">
+			<aui:option label="" value="" />
 
-					<%
-					for (int curServerCommunicationType : TicketEntryConstants.CLUSTER_SERVER_COMMUNICATION_TYPES) {
-					%>
+			<%
+			for (int curServerCommunicationType : TicketEntryConstants.CLUSTER_SERVER_COMMUNICATION_TYPES) {
+			%>
 
-						<aui:option label="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" selected="<%= (serverCommunicationType == curServerCommunicationType) %>" value="<%= curServerCommunicationType %>" />
+				<aui:option label="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" selected="<%= (serverCommunicationType == curServerCommunicationType) %>" value="<%= curServerCommunicationType %>" />
 
-					<%
-					}
-					%>
+			<%
+			}
+			%>
 
-				</aui:select>
-			</div>
-		</aui:field-wrapper>
+			<aui:validator name="required" errorMessage="please-select-a-valid-server-communication-type" />
+		</aui:select>
 
-		<aui:field-wrapper>
-			<aui:select label="number-of-nodes" name="numberOfNodes">
-				<aui:option label="" value="0" />
-				<aui:option label="1" selected="<%= (numberOfNodes == 1) %>" value="1" />
-				<aui:option label="2" selected="<%= (numberOfNodes == 2) %>" value="2" />
-				<aui:option label="3" selected="<%= (numberOfNodes == 3) %>" value="3" />
-				<aui:option label="4" selected="<%= (numberOfNodes == 4) %>" value="4" />
-				<aui:option label="5" selected="<%= (numberOfNodes == 5) %>" value="5" />
-				<aui:option label="6" selected="<%= (numberOfNodes == 6) %>" value="6" />
-				<aui:option label="7" selected="<%= (numberOfNodes == 7) %>" value="7" />
-				<aui:option label="8+" selected="<%= (numberOfNodes >= 8) %>" value="8" />
-			</aui:select>
-		</aui:field-wrapper>
+		<aui:select inlineField="<%= true %>" label="number-of-nodes" name="numberOfNodes" wrapperCssClass="form-field-wrapper">
+			<aui:option label="" value="0" />
+			<aui:option label="1" selected="<%= (numberOfNodes == 1) %>" value="1" />
+			<aui:option label="2" selected="<%= (numberOfNodes == 2) %>" value="2" />
+			<aui:option label="3" selected="<%= (numberOfNodes == 3) %>" value="3" />
+			<aui:option label="4" selected="<%= (numberOfNodes == 4) %>" value="4" />
+			<aui:option label="5" selected="<%= (numberOfNodes == 5) %>" value="5" />
+			<aui:option label="6" selected="<%= (numberOfNodes == 6) %>" value="6" />
+			<aui:option label="7" selected="<%= (numberOfNodes == 7) %>" value="7" />
+			<aui:option label="8+" selected="<%= (numberOfNodes >= 8) %>" value="8" />
+		</aui:select>
 
-		<aui:field-wrapper>
-			<label id="<portlet:namespace />serverConfigurationsLabel"><liferay-ui:message key="jvm-arguments-settings-optional" /></label>
+		<aui:field-wrapper cssClass="form-field-wrapper">
+			<label class="control-label" id="<portlet:namespace />serverConfigurationsLabel"><liferay-ui:message key="jvm-arguments-settings-optional" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= serverConfigurations %>" />
@@ -89,44 +84,40 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 	</div>
 
 	<div class="hide tab-content-tab" id="<portlet:namespace />activationKeyDetails">
-		<aui:field-wrapper>
-			<aui:select label="type-of-key" name="type">
-				<aui:option label="" value="0" />
+		<aui:select inlineField="<%= true %>" label="type-of-key" name="type" wrapperCssClass="form-field-wrapper">
+			<aui:option label="" value="0" />
 
-				<%
-				int[] types = TicketEntryConstants.getLicenseTypes();
+			<%
+			int[] types = TicketEntryConstants.getLicenseTypes();
 
-				for (int curType : types) {
-				%>
+			for (int curType : types) {
+			%>
 
-					<aui:option label="<%= TicketEntryConstants.getLicenseTypeLabel(curType) %>" selected="<%= (curType == type) %>" value="<%= curType %>" />
+				<aui:option label="<%= TicketEntryConstants.getLicenseTypeLabel(curType) %>" selected="<%= (curType == type) %>" value="<%= curType %>" />
 
-				<%
-				}
-				%>
+			<%
+			}
+			%>
 
-			</aui:select>
-		</aui:field-wrapper>
+		</aui:select>
 
-		<aui:field-wrapper>
-			<aui:select label="purpose" name="purpose">
-				<aui:option label="" value="0" />
+		<aui:select inlineField="<%= true %>" label="purpose" name="purpose" wrapperCssClass="form-field-wrapper">
+			<aui:option label="" value="0" />
 
-				<%
-				for (int curPurpose : TicketEntryConstants.getLicensePurposes()) {
-				%>
+			<%
+			for (int curPurpose : TicketEntryConstants.getLicensePurposes()) {
+			%>
 
-					<aui:option label="<%= TicketEntryConstants.getLicensePurposeLabel(curPurpose) %>" selected="<%= (curPurpose == purpose) %>" value="<%= curPurpose %>" />
+				<aui:option label="<%= TicketEntryConstants.getLicensePurposeLabel(curPurpose) %>" selected="<%= (curPurpose == purpose) %>" value="<%= curPurpose %>" />
 
-				<%
-				}
-				%>
+			<%
+			}
+			%>
 
-			</aui:select>
-		</aui:field-wrapper>
+		</aui:select>
 
-		<aui:field-wrapper>
-			<label id="<portlet:namespace />serverIdsLabel"><liferay-ui:message key="server-ids-mac-addresses" /></label>
+		<aui:field-wrapper cssClass="form-field-wrapper">
+			<label class="control-label" id="<portlet:namespace />serverIdsLabel"><liferay-ui:message key="server-ids-mac-addresses" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= serverIds %>" />
@@ -136,8 +127,8 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 			</liferay-util:include>
 		</aui:field-wrapper>
 
-		<aui:field-wrapper>
-			<label id="<portlet:namespace />ipAddressesLabel"><liferay-ui:message key="ip-addresses" /></label>
+		<aui:field-wrapper cssClass="form-field-wrapper">
+			<label class="control-label" id="<portlet:namespace />ipAddressesLabel"><liferay-ui:message key="ip-addresses" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= ipAddresses %>" />
@@ -147,8 +138,8 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 			</liferay-util:include>
 		</aui:field-wrapper>
 
-		<aui:field-wrapper>
-			<label id="<portlet:namespace />hostNamesLabel"><liferay-ui:message key="host-names" /></label>
+		<aui:field-wrapper cssClass="form-field-wrapper">
+			<label class="control-label" id="<portlet:namespace />hostNamesLabel"><liferay-ui:message key="host-names" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= hostNames %>" />
@@ -158,8 +149,8 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 			</liferay-util:include>
 		</aui:field-wrapper>
 
-		<aui:field-wrapper>
-			<label id="<portlet:namespace />additionalCommentsLabel"><liferay-ui:message key="additional-comments-unstable-server-details-multiple-jvms-etc" /></label>
+		<aui:field-wrapper cssClass="form-field-wrapper">
+			<label class="control-label" id="<portlet:namespace />additionalCommentsLabel"><liferay-ui:message key="additional-comments-unstable-server-details-multiple-jvms-etc" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= additionalComments %>" />
@@ -172,25 +163,23 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 	</div>
 
 	<div class="hide tab-content-tab" id="<portlet:namespace />upgradeDetails">
-		<aui:field-wrapper>
-			<aui:select label="how-is-the-document-library-server-persisting-documents" name="docLibPersistence">
-				<aui:option label="" value="0" />
+		<aui:select inlineField="<%= true %>" label="how-is-the-document-library-server-persisting-documents" name="docLibPersistence" wrapperCssClass="form-field-wrapper">
+			<aui:option label="" value="0" />
 
-				<%
-				for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
-				%>
+			<%
+			for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
+			%>
 
-					<aui:option label="<%= TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence) %>" selected="<%= (curDocLibPersistence == docLibPersistence) %>" value="<%= curDocLibPersistence %>" />
+				<aui:option label="<%= TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence) %>" selected="<%= (curDocLibPersistence == docLibPersistence) %>" value="<%= curDocLibPersistence %>" />
 
-				<%
-				}
-				%>
+			<%
+			}
+			%>
 
-			</aui:select>
-		</aui:field-wrapper>
+		</aui:select>
 
-		<aui:field-wrapper>
-			<label id="<portlet:namespace />stepsToUpgradeLabel"><liferay-ui:message key="steps-used-to-perform-the-upgrade" /></label>
+		<aui:field-wrapper cssClass="form-field-wrapper">
+			<label class="control-label" id="<portlet:namespace />stepsToUpgradeLabel"><liferay-ui:message key="steps-used-to-perform-the-upgrade" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= stepsToUpgrade %>" />

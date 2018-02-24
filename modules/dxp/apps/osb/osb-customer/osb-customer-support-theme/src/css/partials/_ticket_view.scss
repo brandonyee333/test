@@ -37,19 +37,31 @@
 .tab-view-dialog {
 	padding: 1em;
 
-	.clearfix {
-		.common-textarea {
-			float: right;
-			width: 80%
+	.form-field-wrapper {
+		width: 100%;
+
+		.common-textarea, .control-label, .form-control {
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.common-textarea, .form-control {
+			width: 75%;
+
+			textarea {
+				width: 100%;
+			}
 		}
 
 		.control-label {
-			color: $medium-gray;
-			float: left;
 			font-weight: normal;
 			padding-right: 1.5em;
 			text-align: right;
 			width: 20%;
+		}
+
+		.help-block, .no-label {
+			margin-left: 140px;
 		}
 	}
 
