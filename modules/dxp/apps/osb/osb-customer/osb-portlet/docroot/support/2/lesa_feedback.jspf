@@ -15,7 +15,7 @@
 --%>
 
 <div class="hide">
-	<div class="lesa-feedback-container" id="<portlet:namespace />lesaFeedbackContainer">
+	<div class="feedback-container" id="<portlet:namespace />lesaFeedbackContainer">
 		<aui:form action="" method="post" name="lesaFeedbackFm">
 			<h2 class="text-center txt-b">
 				<liferay-ui:message key="submit-feedback" />

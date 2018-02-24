@@ -1,26 +1,26 @@
-.lesa-feedback-modal {
-	.lesa-feedback-container {
-		margin: 20px;
+.feedback-container {
+	margin: 20px;
 
-		textarea {
-			resize: none;
+	textarea {
+		resize: none;
 
-			&.comments {
-				height: 100px;
-			}
-		}
-
-		.has-error {
-			.control-label, .help-block {
-				color: $urgent;
-			}
-
-			.form-control {
-				border-color: $urgent;
-			}
+		&.comments {
+			height: 100px;
 		}
 	}
 
+	.has-error {
+		.control-label, .help-block {
+			color: $urgent;
+		}
+
+		.form-control {
+			border-color: $urgent;
+		}
+	}
+}
+
+.lesa-feedback-modal {
 	.modal-body {
 		bottom: auto;
 		overflow: initial;
@@ -32,40 +32,6 @@
 }
 
 .liferay-ticket-feedback-modal {
-	input[type=button] {
-		margin-top: 30px;
-	}
-
-	input[type=radio] {
-		margin-left: 20px;
-	}
-
-	.edit-liferay-ticket-feedback-container {
-		margin: 20px;
-
-		textarea {
-			padding: 0;
-			resize: none;
-			width: 100%;
-
-			&.textarea-comments {
-				height: 100px;
-			}
-		}
-
-		.center {
-			text-align: center;
-		}
-
-		.margin-top-10 {
-			margin-top: 10px;
-		}
-
-		.margin-top-30 {
-			margin-top: 30px;
-		}
-	}
-
 	.modal-header {
 		display: none;
 	}

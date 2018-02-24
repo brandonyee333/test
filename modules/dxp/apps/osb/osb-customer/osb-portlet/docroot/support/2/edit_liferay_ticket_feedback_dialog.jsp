@@ -20,13 +20,13 @@
 TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKET_ENTRY);
 %>
 
-<div class="edit-liferay-ticket-feedback-container" id="<portlet:namespace />liferayTicketFeedbackDialogContainer">
+<div class="feedback-container" id="<portlet:namespace />liferayTicketFeedbackDialogContainer">
 	<div>
-		<h2 class="center txt-b">
+		<h2 class="text-center txt-b">
 			<liferay-ui:message key="liferay-ticket-feedback" />
 		</h2>
 
-		<div class="margin-top-30 txt-b">
+		<div class="margin-top txt-b">
 			<liferay-ui:message key="are-you-satisfied-with-the-service-provided-by-the-support-engineers-on-this-ticket" />
 		</div>
 
@@ -42,7 +42,7 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 			<liferay-ui:message key="no" />
 		</div>
 
-		<div class="margin-top-10 txt-b">
+		<div class="margin-top txt-b">
 			<div id="<portlet:namespace />dialogAnswerSatisfied">
 				<liferay-ui:message key="were-glad-to-hear-that-what-went-well" />
 			</div>
@@ -51,10 +51,10 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 				<liferay-ui:message key="were-sorry-to-hear-that-how-can-we-improve" />
 			</div>
 
-			<aui:input cssClass="textarea-comments" label="" name="dialogComments" type="textarea" />
+			<aui:input cssClass="comments" label="" name="dialogComments" type="textarea" />
 		</div>
 
-		<div class="clearfix">
+		<div class="clearfix margin-top">
 			<aui:button cssClass="pull-left" name="dialogCancelButton" value="cancel" />
 
 			<aui:button cssClass="pull-right" name="dialogSubmitButton" value="submit" />
