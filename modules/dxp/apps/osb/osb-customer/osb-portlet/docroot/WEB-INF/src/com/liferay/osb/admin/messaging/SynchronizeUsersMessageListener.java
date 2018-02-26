@@ -505,9 +505,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			AccountEntryLocalServiceUtil.fetchAccountEntry(accountEntryId);
 
 		if (accountEntry == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Account does not exist for " + accountEntryId);
-			}
+			_log.error("Account entry does not exist for " + accountEntryId);
 
 			return;
 		}
@@ -524,9 +522,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			OrganizationLocalServiceUtil.fetchOrganization(organizationId);
 
 		if (organization == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Organization does not exist for " + organizationId);
-			}
+			_log.error("Organization does not exist for " + organizationId);
 
 			return;
 		}
@@ -541,9 +537,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 		Role role = RoleLocalServiceUtil.fetchRole(roleId);
 
 		if (role == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Role does not exist for " + roleId);
-			}
+			_log.error("Role does not exist for " + roleId);
 
 			return;
 		}
