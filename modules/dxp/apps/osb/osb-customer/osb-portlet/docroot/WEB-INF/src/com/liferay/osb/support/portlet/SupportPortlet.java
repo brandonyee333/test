@@ -1398,8 +1398,9 @@ public class SupportPortlet extends MVCPortlet {
 			String param = enu.nextElement();
 
 			if (param.startsWith("field--")) {
-				int key = GetterUtil.getInteger(
-					param.substring(7, param.indexOf("--", 7)));
+				int endPos = param.indexOf("--", 7);
+
+				int key = GetterUtil.getInteger(param.substring(7, endPos));
 				String value = ParamUtil.getString(actionRequest, param);
 
 				data.put(key, value);
