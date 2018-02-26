@@ -119,8 +119,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 	</div>
 </aui:form>
 
-<%@ include file="/support/2/common/javascript/ticket_entry_validator_js.jspf" %>
-
 <aui:script>
 	function <portlet:namespace />closeEditTicketDialog() {
 		var modified = document.getElementById('<portlet:namespace />modified');
