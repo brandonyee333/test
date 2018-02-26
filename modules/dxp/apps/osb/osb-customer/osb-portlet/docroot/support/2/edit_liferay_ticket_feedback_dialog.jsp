@@ -22,7 +22,7 @@ TicketEntry ticketEntry = (TicketEntry)request.getAttribute(OSBWebKeys.OSB_TICKE
 
 <div class="feedback-container" id="<portlet:namespace />liferayTicketFeedbackDialogContainer">
 	<div>
-		<h2 class="text-center txt-b">
+		<h2 class="txt-b text-center">
 			<liferay-ui:message key="liferay-ticket-feedback" />
 		</h2>
 
