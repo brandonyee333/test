@@ -180,23 +180,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 	Liferay.provide(
 		window,
-		'<portlet:namespace />revealComponentTab',
-		function(id) {
-			var A = AUI();
-
-			A.all('.component-tab').hide();
-
-			var tab = A.one('.tab-view-dialog .details .tabs #<portlet:namespace />' + id);
-
-			if (tab) {
-				tab.show();
-			}
-		},
-		['aui-base']
-	);
-
-	Liferay.provide(
-		window,
 		'<portlet:namespace />revealDialogTab',
 		function(id) {
 			var A = AUI();
