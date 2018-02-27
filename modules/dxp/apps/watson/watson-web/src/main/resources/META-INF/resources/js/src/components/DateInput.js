@@ -18,12 +18,12 @@ class DateInput extends JSXComponent {
 	handleOnChange(date) {
 		const {props} = this;
 
-		const dateInMillis = date ? date._d.getTime() : null;
+		const dateState = date ? date.format('YYYY-MM-DD') : null;
 
-		this.setState({dateInMillis});
+		this.setState({dateState});
 
-		if (props.value !== dateInMillis) {
-			props.onChange(dateInMillis);
+		if (props.value !== dateState) {
+			props.onChange(dateState);
 		}
 	}
 
@@ -36,10 +36,10 @@ class DateInput extends JSXComponent {
 
 		const {focused} = this.state;
 
-		let {dateInMillis} = this.state;
+		let {dateState} = this.state;
 
-		if (!dateInMillis && value) {
-			dateInMillis = isNumber(value) ? value : Date.parse(value);
+		if (!dateState && value) {
+			dateState = isNumber(value) ? value : Date.parse(value);
 		}
 
 		const outsideRangeBypass = () => false;
@@ -47,7 +47,7 @@ class DateInput extends JSXComponent {
 		return (
 			<div class="date-wrapper">
 				<MetalDateInput
-					date={dateInMillis ? moment(dateInMillis) : null}
+					date={dateState ? moment(dateState) : null}
 					disabled={disabled}
 					elementClasses="watson-input"
 					focused={focused}
@@ -73,7 +73,7 @@ DateInput.Props = {
 };
 
 DateInput.STATE = {
-	dateInMillis: Config.any(),
+	dateState: Config.any(),
 	focused: Config.bool()
 };
 
