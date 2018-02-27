@@ -44,9 +44,9 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"after-filter=SPA Filter", "dispatcher=FORWARD", "dispatcher=REQUEST",
-		"servlet-context-name=", "servlet-filter-name=Watson Login Filter",
-		"url-pattern=/*"
+		"after-filter=Virtual Host Filter", "dispatcher=FORWARD",
+		"dispatcher=REQUEST", "servlet-context-name=",
+		"servlet-filter-name=Watson Login Filter", "url-pattern=/*"
 	},
 	service = Filter.class
 )
@@ -58,7 +58,9 @@ public class WatsonLoginFilter extends BaseFilter {
 
 		String currentURL = (String)request.getAttribute(WebKeys.CURRENT_URL);
 
-		if (currentURL.startsWith("/c") || currentURL.startsWith("/o")) {
+		if (Validator.isNull(currentURL) || currentURL.startsWith("/c") ||
+			currentURL.startsWith("/o")) {
+
 			return false;
 		}
 
