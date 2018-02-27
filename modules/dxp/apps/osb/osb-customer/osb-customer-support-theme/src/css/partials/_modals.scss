@@ -1,3 +1,13 @@
+.edit-ticket-modal {
+	.modal-header {
+		background-color: $primary-blue;
+
+		&, .close {
+			color: #FFF;
+		}
+	}
+}
+
 .feedback-container {
 	margin: 20px;
 

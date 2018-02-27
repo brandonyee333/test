@@ -175,7 +175,13 @@ if (hasUpdateBasic && (((status == TicketEntryConstants.STATUS_CLOSED) && (!acco
 Map<String, String> dropDownList = new TreeMap<String, String>();
 
 if (!screenShareMode && hasUpdateAdvanced && (!closed || liferayIncOrg)) {
-	dropDownList.put("edit", renderResponse.getNamespace() + "openDialog(0)");
+	PortletURL buttonURL = renderResponse.createRenderURL();
+
+	buttonURL.setParameter("mvcPath", "/support/2/edit_ticket_entry/edit_ticket_entry_dialog.jsp");
+	buttonURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEntryId()));
+	buttonURL.setWindowState(LiferayWindowState.POP_UP);
+
+	dropDownList.put("edit", renderResponse.getNamespace() + "openEditTicketPopup('" + buttonURL.toString() + "')");
 }
 
 if (!closed) {
@@ -359,6 +365,28 @@ if (!screenShareMode) {
 		}
 	</aui:script>
 </c:if>
+
+<aui:script>
+	Liferay.provide(
+		window,
+		'<portlet:namespace />openEditTicketPopup',
+		function(uri) {
+			Liferay.Util.openWindow(
+				{
+					dialog: {
+						centered: true,
+						cssClass: 'edit-ticket-modal',
+						destroyOnHide: true,
+						modal: true,
+						width: 760
+					},
+					title: '<%= LanguageUtil.get(request, "edit-ticket") + StringPool.COLON + StringPool.SPACE + ticketEntry.getDisplayId() %>',
+					uri: uri
+				}
+			);
+		}
+	);
+</aui:script>
 
 <%!
 private static final String _POP_UP_WINDOW_PARAMETERS = "directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=800";

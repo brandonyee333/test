@@ -130,7 +130,7 @@ if (!supportTeams.isEmpty() || RoleLocalServiceUtil.hasUserRole(user.getUserId()
 	<liferay-util:include page="/common/dialog.jsp" servletContext="<%= application %>">
 		<liferay-util:param name="centered" value="<%= Boolean.TRUE.toString() %>" />
 		<liferay-util:param name="close" value="<%= Boolean.FALSE.toString() %>" />
-		<liferay-util:param name="cssClass" value="edit-ticket-dialog" />
+		<liferay-util:param name="cssClass" value="edit-ticket-modal" />
 		<liferay-util:param name="dialogMVCPath" value="/support/2/advanced_search/bulk_edit_ticket_dialog.jsp" />
 		<liferay-util:param name="draggable" value="<%= Boolean.FALSE.toString() %>" />
 		<liferay-util:param name="id" value="1" />
