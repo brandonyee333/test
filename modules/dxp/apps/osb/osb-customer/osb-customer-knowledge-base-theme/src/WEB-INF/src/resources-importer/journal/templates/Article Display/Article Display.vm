@@ -48,17 +48,13 @@
 
 			#if ($validator.isNotNull($description.getData().trim()))
 				<div>
-					<h1>$languageUtil.get($locale, "description")</h1>
-
-					<div>
-						$description.getData()
-					</div>
+					$description.getData()
 				</div>
 			#end
 
 			#if ($validator.isNotNull($resolution.getData().trim()))
 				<div>
-					<h1>$languageUtil.get($locale, "resolution")</h1>
+					<h2>$languageUtil.get($locale, "resolution")</h2>
 
 					<div>
 						$resolution.getData()
@@ -68,7 +64,7 @@
 
 			#if ($validator.isNotNull($additionalInformation.getData().trim()))
 				<div>
-					<h1>$languageUtil.get($locale, "additional-information")</h1>
+					<h2>$languageUtil.get($locale, "additional-information")</h2>
 
 					<div>
 						$additionalInformation.getData()
