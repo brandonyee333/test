@@ -114,7 +114,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		<aui:button-row>
 			<aui:button onClick='<%= renderResponse.getNamespace() + "closeEditTicketDialog();" %>' value="cancel" />
 
-			<aui:button cssClass="pull-right" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="save" />
+			<aui:button cssClass="pull-right" type="submit" value="save" />
 		</aui:button-row>
 	</div>
 </aui:form>
@@ -200,43 +200,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 			}
 
 			window.scroll(0, 0);
-		},
-		['aui-base']
-	);
-
-	Liferay.provide(
-		window,
-		'<portlet:namespace />submit',
-		function() {
-			var A = AUI();
-
-			var firstNode = null;
-
-			var requiredFields = A.all('#<portlet:namespace />editTicketDetails input[data-field-required-status="false"], select[data-field-required-status="false"], textarea[data-field-required-status="false"]');
-
-			if (requiredFields.size()) {
-				requiredFields.each(
-					function(requiredField) {
-						if (!<portlet:namespace />validateRequiredField(requiredField) && !firstNode) {
-							firstNode = requiredField;
-						}
-					}
-				);
-
-				if (firstNode) {
-					<portlet:namespace />reveal('editTicketDetails');
-
-					firstNode.scrollIntoView();
-
-					return false;
-				}
-			}
-
-			var form = A.one('#<portlet:namespace />fm3');
-
-			if (form) {
-				submitForm(form);
-			}
 		},
 		['aui-base']
 	);
