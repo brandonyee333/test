@@ -882,7 +882,7 @@
 						validations: []
 					},
 					dischargeWatsonListTypeId: {
-						dependentKey: ${true},
+						dependentKey: '${true}',
 						filterable: ${true},
 						inputType: 'SELECT_INPUT',
 						label: '${AlloyLanguageUtil.formatUnicode("reason-for-discharge")}',
@@ -1717,7 +1717,7 @@
 						type: 'INPUT'
 					},
 					externalCaseId: {
-						dependentKey: ${true},
+						dependentKey: '${true}',
 						filterable: ${true},
 						htmlType: 'input',
 						invertHidden: ${true},
@@ -1729,7 +1729,7 @@
 						validations: []
 					},
 					externalCaseWatsonListTypeId: {
-						dependentKey: ${true},
+						dependentKey: '${true}',
 						filterable: ${true},
 						inputType: 'SELECT_INPUT',
 						invertHidden: ${true},
@@ -2406,7 +2406,7 @@
 					dateAccepted: {
 						controlledInputs: [],
 						defaultValue: true,
-						dependentKey: ${true},
+						dependentKey: '${true}',
 						filterable: ${true},
 						htmlType: 'date',
 						invertHidden: ${true},
@@ -2422,7 +2422,7 @@
 					dateRescued: {
 						controlledInputs: [],
 						defaultValue: true,
-						dependentKey: ${true},
+						dependentKey: '${true}',
 						filterable: ${true},
 						htmlType: 'date',
 						invertHidden: ${true},
