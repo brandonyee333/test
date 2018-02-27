@@ -26,8 +26,8 @@ class MetricsReport extends JSXComponent {
 
 		const formattedData = [];
 
-		if (!loading && !Map.isMap(data) && !isEmpty(data)) {
-			const oneYearData = data.value;
+		if (!loading && !Map.isMap(data) && !isEmpty(data.value)) {
+			const {value: oneYearData = {}} = data;
 
 			const {rows} = WatsonConstants.inputConfig.metrics.reports;
 
