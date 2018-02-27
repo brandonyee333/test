@@ -717,7 +717,7 @@
 					activitiesInvolvedWatsonListTypeRels: {
 						buttonLabel: '${AlloyLanguageUtil.formatUnicode("add-activities")}',
 						filterable: ${false},
-						label: '${AlloyLanguageUtil.formatUnicode("activities")}',
+						label: '${AlloyLanguageUtil.formatUnicode("accomplishments")}',
 							options: {
 							<c:set value='${WatsonListType.getWatsonListTypes(WatsonChild.modelClassName.concat(".activitiesInvolved"))}' var="activitiesInvolvedWatsonListTypes" />
 
@@ -737,7 +737,7 @@
 					},
 					activitiesInvolvedWatsonListTypeRelString: {
 						filterable: ${true},
-						label: '${AlloyLanguageUtil.formatUnicode("activities")}',
+						label: '${AlloyLanguageUtil.formatUnicode("accomplishments")}',
 						translatable: ${false},
 						type: 'INPUT'
 					},
@@ -827,7 +827,7 @@
 					},
 					countryWatsonListTypeId: {
 						filterable: ${true},
-						label: '${AlloyLanguageUtil.formatUnicode("country-of-ethnicity")}',
+						label: '${AlloyLanguageUtil.formatUnicode("parents-country-of-origin")}',
 						options: {
 							<c:set value='${WatsonListType.getWatsonListTypes(WatsonPerson.modelClassName.concat(".ethnicityCountry"))}' var="countryWatsonListTypes" />
 
@@ -840,7 +840,7 @@
 								}${delimiter}
 							</c:forEach>
 						},
-						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-country-of-ethnicity-for-this-person")}',
+						tooltipLabel: '${AlloyLanguageUtil.formatUnicode("provide-the-parents-country-of-origin-for-this-child")}',
 						translatable: ${false},
 						type: 'SELECT_INPUT',
 						validations: [
