@@ -882,7 +882,8 @@ public class TicketEntryLocalServiceImpl
 
 			QueryConfig queryConfig = new QueryConfig();
 
-			queryConfig.setSelectedFieldNames(new String[] {Field.ENTRY_CLASS_PK});
+			queryConfig.setSelectedFieldNames(
+				new String[] {Field.ENTRY_CLASS_PK});
 
 			searchContext.setQueryConfig(queryConfig);
 

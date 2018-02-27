@@ -952,7 +952,8 @@ public class TicketEntryIndexer extends BaseIndexer<TicketEntry> {
 
 		Integer[] resolutionValues = (Integer[])searchContext.getAttribute(
 			"resolution");
-		Integer[] statusValues = (Integer[])searchContext.getAttribute("status");
+		Integer[] statusValues = (Integer[])searchContext.getAttribute(
+			"status");
 
 		if (ArrayUtil.isEmpty(resolutionValues) &&
 			ArrayUtil.isEmpty(statusValues)) {

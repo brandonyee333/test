@@ -1401,6 +1401,7 @@ public class SupportPortlet extends MVCPortlet {
 				int endPos = param.indexOf("--", 7);
 
 				int key = GetterUtil.getInteger(param.substring(7, endPos));
+
 				String value = ParamUtil.getString(actionRequest, param);
 
 				data.put(key, value);
