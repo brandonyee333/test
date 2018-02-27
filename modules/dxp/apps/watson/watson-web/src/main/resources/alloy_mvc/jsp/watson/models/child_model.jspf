@@ -253,8 +253,8 @@ public static class WatsonChild extends WatsonChildBaseModel {
 
 			if (watsonIncidentId > 0) {
 				jsonObject.put("name", watsonPerson.getPrimaryName());
-				jsonObject.put("watsonPersonId", originalWatsonPersonId);
 				jsonObject.put("watsonIncidentId", watsonIncidentId);
+				jsonObject.put("watsonPersonId", originalWatsonPersonId);
 			}
 		}
 
