@@ -33,16 +33,6 @@ enforceTextAreaMaxLengthSB.append("enforceTextAreaMaxLength('");
 enforceTextAreaMaxLengthSB.append(HtmlUtil.escapeAttribute(editorId));
 enforceTextAreaMaxLengthSB.append("');");
 
-StringBundler fieldRequiredSB = new StringBundler(5);
-
-if (fieldRequired) {
-	fieldRequiredSB.append("field-required-message=\"");
-	fieldRequiredSB.append(HtmlUtil.escapeAttribute(fieldRequiredMessage));
-	fieldRequiredSB.append("\" data-field-required-status=\"");
-	fieldRequiredSB.append(fieldRequiredStatus);
-	fieldRequiredSB.append("\" ");
-}
-
 StringBundler updateCharactersRemainingSB = new StringBundler(8);
 
 updateCharactersRemainingSB.append(renderResponse.getNamespace());
@@ -119,7 +109,7 @@ String textareaEventHandlers = StringUtil.trim(sb.toString());
 %>
 
 <div class="common-textarea form-group">
-	<textarea class="form-control" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(editorId) %>" <%= fieldRequiredSB.toString() %> name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(name) %>" <%= textareaEventHandlers %> style="<%= (height > 0) ? ("height: " + height + "px;") : "" %>" wrap="soft"><%= HtmlUtil.escape(content) %></textarea>
+	<textarea class="form-control" id="<portlet:namespace /><%= HtmlUtil.escapeAttribute(editorId) %>" name="<portlet:namespace /><%= HtmlUtil.escapeAttribute(name) %>" <%= textareaEventHandlers %> style="<%= (height > 0) ? ("height: " + height + "px;") : "" %>" wrap="soft"><%= HtmlUtil.escape(content) %></textarea>
 
 	<c:if test="<%= showCounter %>">
 		<div class="pull-right">
