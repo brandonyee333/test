@@ -295,6 +295,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 			Object object = jsonObject.get(key);
 
 			properties.add(key);
+
 			properties.add(object);
 		}
 
