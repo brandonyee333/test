@@ -347,7 +347,7 @@ if (liferayIncOrg || partnerWorker) {
 			%>
 
 			<div class="inline-block">
-				<liferay-ui:input-field bean="<%= ticketEntry %>" defaultValue="<%= dueDate %>" field="dueDate" formName="fm3" model="<%= TicketEntry.class %>" />
+				<liferay-ui:input-field bean="<%= ticketEntry %>" defaultValue="<%= dueDate %>" field="dueDate" formName="updateTicketfm" model="<%= TicketEntry.class %>" />
 			</div>
 		</aui:field-wrapper>
 
@@ -391,8 +391,8 @@ if (liferayIncOrg || partnerWorker) {
 
 <aui:script>
 	function <portlet:namespace />selectOfferingEntry(accountEntryId, offeringEntryId, accountEntryName, supportResponseName, productEntryName) {
-		document.<portlet:namespace />fm3.<portlet:namespace />accountEntryId.value = accountEntryId;
-		document.<portlet:namespace />fm3.<portlet:namespace />offeringEntryId.value = offeringEntryId;
+		document.<portlet:namespace />updateTicketfm.<portlet:namespace />accountEntryId.value = accountEntryId;
+		document.<portlet:namespace />updateTicketfm.<portlet:namespace />offeringEntryId.value = offeringEntryId;
 
 		var productEntryNameEl = document.getElementById('<portlet:namespace />productEntryName');
 		var productLabelEl = document.getElementById('<portlet:namespace />productLabel');
@@ -405,7 +405,7 @@ if (liferayIncOrg || partnerWorker) {
 	}
 
 	function <portlet:namespace />selectReportedBy(userId, userName) {
-		document.<portlet:namespace />fm3.<portlet:namespace />reportedByUserId.value = userId;
+		document.<portlet:namespace />updateTicketfm.<portlet:namespace />reportedByUserId.value = userId;
 
 		var reporterLabelEl = document.getElementById('<portlet:namespace />reporterLabel');
 		var userNameEl = document.getElementById('<portlet:namespace />reportedByUserName');
