@@ -133,6 +133,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 		jsonObject.put("modifiedDate", modifiedDate);
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonIncident));
 		jsonObject.put("name", watsonIncident.getName());
 
