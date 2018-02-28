@@ -396,9 +396,9 @@ public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 		while (keys.hasNext()) {
 			String key = GetterUtil.getString(keys.next());
 
-			Object object = jsonObject.get(key);
-
 			properties.add(key);
+
+			Object object = jsonObject.get(key);
 
 			properties.add(object);
 		}
