@@ -230,6 +230,7 @@ public static class WatsonIncidentRel extends WatsonIncidentRelBaseModel {
 
 		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+
 		jsonObject.put("reportedBy", watsonIncidentRel.getUserName());
 		jsonObject.put("timeStamp", createDate.getTime());
 		jsonObject.put("type", watsonIncidentRel.getType());
