@@ -99,6 +99,7 @@ public static class WatsonWorkflowUtil {
 		String endAddressLinkTag = "</a>";
 
 		email.append(LanguageUtil.format(locale, "link-to-map-x-x", new String[] {beginAddressLinkTag, endAddressLinkTag}));
+
 		email.append("<br />");
 
 		email.append(LanguageUtil.format(locale, "notes", new String[0]));
