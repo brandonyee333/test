@@ -218,6 +218,7 @@ public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 		Date modifiedDate = watsonRelationship.getModifiedDate();
 
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+
 		jsonObject.put("selectedModel1", selectedModel1);
 		jsonObject.put("selectedModel2", selectedModel2);
 		jsonObject.put("typeWatsonListTypeId", watsonRelationship.getTypeWatsonListTypeId());
