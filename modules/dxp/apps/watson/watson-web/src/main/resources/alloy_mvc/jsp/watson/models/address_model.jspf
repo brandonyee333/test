@@ -90,6 +90,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		List<WatsonIncident> affiliatedIncidents = getAffiliatedIncidents(watsonAddress);
 
 		jsonObject.put("affiliatedIncidents", affiliatedIncidents.size());
+
 		jsonObject.put("building", watsonAddress.getBuilding(locale));
 		jsonObject.put("countryId", watsonAddress.getCountryId());
 		jsonObject.put("createDate", watsonAddress.getCreateDate());
