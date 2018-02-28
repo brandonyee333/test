@@ -70,6 +70,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		List<WatsonIncident> affiliatedIncidents = getAffiliatedIncidents(watsonPerson);
 
 		jsonObject.put("affiliatedIncidents", affiliatedIncidents.size());
+
 		jsonObject.put("birthCountryId", watsonPerson.getBirthCountryId());
 		jsonObject.put("birthDate", watsonPerson.getBirthDate());
 		jsonObject.put("citizenshipWatsonListTypeId", watsonPerson.getCitizenshipWatsonListTypeId());
