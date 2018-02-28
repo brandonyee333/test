@@ -99,6 +99,7 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 
 		jsonObject.put("reportedBy", watsonHistory.getUserName());
 		jsonObject.put("timeStamp", createDate.getTime());
+
 		jsonObject.put("type", watsonHistory.getType());
 		jsonObject.put("typeLabel", getHistoryTypeLabel(watsonHistory.getType()));
 		jsonObject.put("watsonHistoryId", watsonHistory.getWatsonHistoryId());
