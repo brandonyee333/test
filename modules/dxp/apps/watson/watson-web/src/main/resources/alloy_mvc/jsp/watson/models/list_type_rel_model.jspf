@@ -399,6 +399,7 @@ public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 			Object object = jsonObject.get(key);
 
 			properties.add(key);
+
 			properties.add(object);
 		}
 
