@@ -95,6 +95,7 @@ public static class WatsonWorkflowUtil {
 		mapsLink.append(watsonAddress.getLongitude());
 
 		String beginAddressLinkTag = "<a href=" + mapsLink.toString() + ">";
+
 		String endAddressLinkTag = "</a>";
 
 		email.append(LanguageUtil.format(locale, "link-to-map-x-x", new String[] {beginAddressLinkTag, endAddressLinkTag}));
