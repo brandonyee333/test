@@ -70,6 +70,7 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 		List<WatsonIncident> affiliatedIncidents = getAffiliatedIncidents(watsonVehicle);
 
 		jsonObject.put("affiliatedIncidents", affiliatedIncidents.size());
+
 		jsonObject.put("colorWatsonListTypeId", watsonVehicle.getColorWatsonListTypeId());
 		jsonObject.put("createDate", watsonVehicle.getCreateDate());
 		jsonObject.put("description", watsonVehicle.getDescription(locale));
