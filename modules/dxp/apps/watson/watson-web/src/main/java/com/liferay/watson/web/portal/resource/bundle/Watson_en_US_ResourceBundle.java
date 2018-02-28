@@ -14,6 +14,7 @@
 
 package com.liferay.watson.web.portal.resource.bundle;
 
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
 import java.util.Enumeration;
@@ -41,6 +42,6 @@ public class Watson_en_US_ResourceBundle extends ResourceBundle {
 	}
 
 	private final ResourceBundle _resourceBundle = ResourceBundleUtil.getBundle(
-		"content.Language", getClass());
+		"content.Language", LocaleUtil.fromLanguageId("en_US"), getClass());
 
 }
