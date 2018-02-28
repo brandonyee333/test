@@ -94,6 +94,7 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 
 		jsonObject.put("modifiedDate", modifiedDate);
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonResource));
 		jsonObject.put("name", watsonResource.getName(locale));
 		jsonObject.put("reportDate", watsonResource.getCreateDate());
