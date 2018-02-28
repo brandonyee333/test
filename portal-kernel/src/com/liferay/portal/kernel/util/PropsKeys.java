@@ -2067,6 +2067,10 @@ public interface PropsKeys {
 	public static final String MINIFIER_INLINE_CONTENT_CACHE_SKIP_JAVASCRIPT =
 		"minifier.inline.content.cache.skip.javascript";
 
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String MINIFIER_JAVASCRIPT_IMPL =
 		"minifier.javascript.impl";
 
@@ -3690,18 +3694,38 @@ public interface PropsKeys {
 	public static final String YUI_COMPRESSOR_CSS_LINE_BREAK =
 		"yui.compressor.css.line.break";
 
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String YUI_COMPRESSOR_JS_DISABLE_OPTIMIZATIONS =
 		"yui.compressor.js.disable.optimizations";
 
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String YUI_COMPRESSOR_JS_LINE_BREAK =
 		"yui.compressor.js.line.break";
 
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String YUI_COMPRESSOR_JS_MUNGE =
 		"yui.compressor.js.munge";
 
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String YUI_COMPRESSOR_JS_PRESERVE_ALL_SEMICOLONS =
 		"yui.compressor.js.preserve.all.semicolons";
 
+	/**
+	 * @deprecated As of Wilberforce (7.0.x), with no direct replacement, as minifiers have been extracted as OSGi components
+	 */
+	@Deprecated
 	public static final String YUI_COMPRESSOR_JS_VERBOSE =
 		"yui.compressor.js.verbose";
 
