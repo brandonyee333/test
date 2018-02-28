@@ -44,6 +44,7 @@ public static class WatsonWorkflowUtil {
 				WatsonListType watsonListType = WatsonListType.fetch(watsonAddress.getSubDistrictWatsonListTypeId());
 
 				address.append(watsonListType.getName(locale));
+
 				address.append(StringPool.COMMA_AND_SPACE);
 
 				watsonListType = WatsonListType.fetch(watsonAddress.getDistrictWatsonListTypeId());
