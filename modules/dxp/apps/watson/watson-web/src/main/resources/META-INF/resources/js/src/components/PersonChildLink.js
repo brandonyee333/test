@@ -1,4 +1,4 @@
-import {isEmpty} from 'lodash';
+import {Map} from 'immutable';
 import sub from 'string-sub';
 
 import {getPluralMessage} from '../lib/util';
@@ -6,7 +6,7 @@ import {getPluralMessage} from '../lib/util';
 function PersonChildLink({affiliationData = 0, model}) {
 	let retVal = {};
 
-	if (!isEmpty(affiliationData)) {
+	if (Map.isMap(affiliationData) && affiliationData.size > 0) {
 		if (model === 'people') {
 			const watsonChildName = affiliationData.get('name');
 			const watsonIncidentId = affiliationData.get('watsonIncidentId');
