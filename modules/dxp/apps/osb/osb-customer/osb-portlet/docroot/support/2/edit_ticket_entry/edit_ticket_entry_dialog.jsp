@@ -126,13 +126,17 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		if (modified.value == 'true') {
 			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-ticket.-are-you-sure-you-want-to-cancel-editing") %>');
 
-			if (cancelEdit) {
-				<portlet:namespace />closeDialog(0);
+			if (!cancelEdit) {
+				return;
 			}
 		}
-		else {
-			<portlet:namespace />closeDialog(0);
-		}
+
+		Liferay.fire(
+			'closeWindow',
+			{
+				id: '<portlet:namespace />editTicketPopup'
+			}
+		);
 	}
 
 	Liferay.provide(
@@ -205,7 +209,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 	);
 </aui:script>
 
-<aui:script use="aui-base">
+<aui:script use="aui-base,event-key">
 	A.all('.component-tab').hide();
 
 	var requiredStatus = 'true';
@@ -290,12 +294,5 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		editTicketTabContent.delegate('keyup', onChange, 'input[type=text], textarea');
 	}
 
-	window.addEventListener(
-		'keydown',
-		function(A) {
-			if (A.keyCode === 27) {
-				<portlet:namespace />closeEditTicketDialog();
-			}
-		}
-	);
+	A.getDoc().on('key', <portlet:namespace />closeEditTicketDialog, 'esc');
 </aui:script>

@@ -380,6 +380,7 @@ if (!screenShareMode) {
 						modal: true,
 						width: 760
 					},
+					id: '<portlet:namespace />editTicketPopup',
 					title: '<%= LanguageUtil.get(request, "edit-ticket") + StringPool.COLON + StringPool.SPACE + ticketEntry.getDisplayId() %>',
 					uri: uri
 				}

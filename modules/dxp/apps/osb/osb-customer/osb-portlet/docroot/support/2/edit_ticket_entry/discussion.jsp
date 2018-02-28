@@ -580,8 +580,7 @@ else {
 						uri: themeDisplay.getPathMain() + '/login/login?redirect=/group/customer/support/-/support/ticket/<%= ticketEntry.getDisplayId() %>'
 					}
 				);
-			},
-			['aui-base', 'aui-dialog', 'aui-overlay-manager', 'liferay-util-window']
+			}
 		);
 
 		Liferay.provide(
