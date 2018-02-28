@@ -12,32 +12,15 @@
  * details.
  */
 
-package com.liferay.osb.remote;
+package com.liferay.osb.remote.dossiera;
 
 import com.liferay.portal.kernel.json.JSONArray;
 
 /**
  * @author Amos Fong
  */
-public class RemoteDossieraWebServiceUtil {
+public interface RemoteDossieraOpportunityService {
 
-	public static JSONArray getOpportunitiesJSONArray(
-		String salesforceProjectKey) {
-
-		return getRemoteDossieraWebService().getOpportunitiesJSONArray(
-			salesforceProjectKey);
-	}
-
-	public static RemoteDossieraWebService getRemoteDossieraWebService() {
-		return _remoteDossieraWebService;
-	}
-
-	public void setRemoteDossieraWebService(
-		RemoteDossieraWebService remoteDossieraWebService) {
-
-		_remoteDossieraWebService = remoteDossieraWebService;
-	}
-
-	private static RemoteDossieraWebService _remoteDossieraWebService;
+	public JSONArray getOpportunitiesJSONArray(String salesforceProjectKey);
 
 }

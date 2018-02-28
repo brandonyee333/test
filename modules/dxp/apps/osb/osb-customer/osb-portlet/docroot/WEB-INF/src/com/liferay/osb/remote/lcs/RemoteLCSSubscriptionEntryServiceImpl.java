@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.remote;
+package com.liferay.osb.remote.lcs;
 
 import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.PortletPropsValues;
@@ -32,39 +32,13 @@ import java.util.Map;
 /**
  * @author Amos Fong
  */
-public class RemoteLCSWebServiceImpl
-	extends BaseJSONWebServiceClientHandler implements RemoteLCSWebService {
-
-	public void deleteLCSMessage(
-		long corpProjectId, long corpProjectMessageId) {
-
-		Map<String, String> parameters = new HashMap<>();
-
-		parameters.put("corpProjectId", String.valueOf(corpProjectId));
-		parameters.put("sourceMessageId", String.valueOf(corpProjectMessageId));
-
-		doPost(_URL_API_JSONWS_LCS_GATEWAY + "/delete-lcs-message", parameters);
-	}
+public class RemoteLCSSubscriptionEntryServiceImpl
+	extends BaseJSONWebServiceClientHandler
+	implements RemoteLCSSubscriptionEntryService {
 
 	@Override
 	public JSONWebServiceClient getJSONWebServiceClient() {
 		return _jsonWebServiceClient;
-	}
-
-	public void sendLCSMessage(
-		long corpProjectId, long corpProjectMessageId, String content,
-		int severityLevel, String title, int type) {
-
-		Map<String, String> parameters = new HashMap<>();
-
-		parameters.put("content", content);
-		parameters.put("corpProjectId", String.valueOf(corpProjectId));
-		parameters.put("severityLevel", String.valueOf(severityLevel));
-		parameters.put("sourceMessageId", String.valueOf(corpProjectMessageId));
-		parameters.put("title", title);
-		parameters.put("type", String.valueOf(type));
-
-		doPost(_URL_API_JSONWS_LCS_GATEWAY + "/send-lcs-message", parameters);
 	}
 
 	public void sendLCSSubscriptionEntries(
@@ -129,7 +103,7 @@ public class RemoteLCSWebServiceImpl
 		_URL_API_JSONWS + "/lcsgateway";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RemoteLCSWebServiceImpl.class);
+		RemoteLCSSubscriptionEntryServiceImpl.class);
 
 	private JSONWebServiceClient _jsonWebServiceClient;
 

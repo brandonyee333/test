@@ -52,7 +52,7 @@ import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.TicketEntry;
 import com.liferay.osb.model.TicketFlagConstants;
-import com.liferay.osb.remote.RemoteDossieraWebServiceUtil;
+import com.liferay.osb.remote.dossiera.RemoteDossieraOpportunityServiceUtil;
 import com.liferay.osb.service.base.AccountEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
@@ -587,7 +587,7 @@ public class AccountEntryLocalServiceImpl
 
 		try {
 			JSONArray jsonArray =
-				RemoteDossieraWebServiceUtil.getOpportunitiesJSONArray(
+				RemoteDossieraOpportunityServiceUtil.getOpportunitiesJSONArray(
 					corpProject.getSalesforceProjectKey());
 
 			if (jsonArray == null) {

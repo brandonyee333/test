@@ -27,7 +27,7 @@ import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.osb.model.impl.LCSSubscriptionEntryImpl;
-import com.liferay.osb.remote.RemoteLCSWebServiceUtil;
+import com.liferay.osb.remote.lcs.RemoteLCSSubscriptionEntryServiceUtil;
 import com.liferay.osb.service.base.LCSSubscriptionEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -105,7 +105,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		String lcsSubscriptionEntriesJSON = JSONFactoryUtil.looseSerialize(
 			lcsSubscriptionEntries);
 
-		RemoteLCSWebServiceUtil.sendLCSSubscriptionEntries(
+		RemoteLCSSubscriptionEntryServiceUtil.sendLCSSubscriptionEntries(
 			corpProjectId, lcsSubscriptionEntriesJSON);
 	}
 

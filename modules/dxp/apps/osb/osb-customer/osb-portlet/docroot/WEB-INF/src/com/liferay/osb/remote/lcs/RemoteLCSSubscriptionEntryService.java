@@ -12,18 +12,12 @@
  * details.
  */
 
-package com.liferay.osb.remote;
+package com.liferay.osb.remote.lcs;
 
 /**
  * @author Amos Fong
  */
-public interface RemoteLCSWebService {
-
-	public void deleteLCSMessage(long corpProjectId, long corpProjectMessageId);
-
-	public void sendLCSMessage(
-		long corpProjectId, long corpProjectMessageId, String content,
-		int severityLevel, String title, int type);
+public interface RemoteLCSSubscriptionEntryService {
 
 	public void sendLCSSubscriptionEntries(
 		long corpProjectId, String lcsSubscriptionEntriesJSON);

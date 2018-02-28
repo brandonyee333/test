@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.remote;
+package com.liferay.osb.remote.dossiera;
 
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientHandler;
@@ -33,9 +33,9 @@ import java.util.Map;
 /**
  * @author Amos Fong
  */
-public class RemoteDossieraWebServiceImpl
+public class RemoteDossieraOpportunityServiceImpl
 	extends BaseJSONWebServiceClientHandler
-	implements RemoteDossieraWebService {
+	implements RemoteDossieraOpportunityService {
 
 	@Override
 	public JSONWebServiceClient getJSONWebServiceClient() {
@@ -101,7 +101,7 @@ public class RemoteDossieraWebServiceImpl
 		_URL_API_REST + "/purchased-product";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RemoteDossieraWebServiceImpl.class);
+		RemoteDossieraOpportunityServiceImpl.class);
 
 	private JSONWebServiceClient _jsonWebServiceClient;
 
