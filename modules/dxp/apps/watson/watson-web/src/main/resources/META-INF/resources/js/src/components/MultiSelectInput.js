@@ -9,11 +9,11 @@ class MultiSelectInput extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnChange'
+			'_handleOnChange'
 		);
 	}
 
-	handleOnChange(values) {
+	_handleOnChange(values) {
 		const {props} = this;
 
 		const formattedOptions = [...(new Set(values.split(',')))];
@@ -65,7 +65,7 @@ class MultiSelectInput extends JSXComponent {
 					disabled={disabled}
 					isLoading={optionsLoading}
 					multi={true}
-					onChange={this.handleOnChange}
+					onChange={this._handleOnChange}
 					options={renderedOptions}
 					placeholder={Liferay.Language.get('select')}
 					simpleValue={true}

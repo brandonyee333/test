@@ -28,21 +28,21 @@ class HistoriesView extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleUpdateCreatedChecked',
-			'handleUpdateDeletedChecked',
-			'handleUpdateUpdatedChecked'
+			'_handleUpdateCreatedChecked',
+			'_handleUpdateDeletedChecked',
+			'_handleUpdateUpdatedChecked'
 		);
 	}
 
-	handleUpdateCreatedChecked(checked) {
+	_handleUpdateCreatedChecked(checked) {
 		this.setState({showCreated: checked});
 	}
 
-	handleUpdateDeletedChecked(checked) {
+	_handleUpdateDeletedChecked(checked) {
 		this.setState({showDeleted: checked});
 	}
 
-	handleUpdateUpdatedChecked(checked) {
+	_handleUpdateUpdatedChecked(checked) {
 		this.setState({showUpdated: checked});
 	}
 
@@ -70,17 +70,17 @@ class HistoriesView extends JSXComponent {
 						<Toggle
 							checked={showCreated}
 							label={['', Liferay.Language.get('created')]}
-							onChange={this.handleUpdateCreatedChecked}
+							onChange={this._handleUpdateCreatedChecked}
 						/>
 						<Toggle
 							checked={showDeleted}
 							label={['', Liferay.Language.get('deleted')]}
-							onChange={this.handleUpdateDeletedChecked}
+							onChange={this._handleUpdateDeletedChecked}
 						/>
 						<Toggle
 							checked={showUpdated}
 							label={['', Liferay.Language.get('updated')]}
-							onChange={this.handleUpdateUpdatedChecked}
+							onChange={this._handleUpdateUpdatedChecked}
 						/>
 					</div>
 				</div>

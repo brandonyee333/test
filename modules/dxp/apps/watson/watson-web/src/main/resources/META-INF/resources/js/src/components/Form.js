@@ -33,14 +33,14 @@ class Form extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleBlur',
-			'handleConditionalInput',
-			'handleMultiInputChange',
-			'handleNavigationReport',
-			'handleNavigationTranslate',
-			'handleResetFormChanges',
-			'handleSubmit',
-			'handleUpdateValue'
+			'_handleBlur',
+			'_handleConditionalInput',
+			'_handleMultiInputChange',
+			'_handleNavigationReport',
+			'_handleNavigationTranslate',
+			'_handleResetFormChanges',
+			'_handleSubmit',
+			'_handleUpdateValue'
 		);
 
 		this.state.changedFields = [];
@@ -48,17 +48,17 @@ class Form extends JSXComponent {
 		this.state.originalFormData = {};
 	}
 
-	handleBlur(value, inputId) {
+	_handleBlur(value, inputId) {
 		if (inputId) {
 			const currentInputConfig = this.props.fieldConfig[inputId];
 
 			const {validations} = currentInputConfig;
 
-			this.handleValidate(inputId, validations, value);
+			this._handleValidate(inputId, validations, value);
 		}
 	}
 
-	handleConditionalInput(inputId, hiddenInput, controlledInputs = []) {
+	_handleConditionalInput(inputId, hiddenInput, controlledInputs = []) {
 		let {hiddenInputs = []} = this.state;
 		const {validationErrors} = this.state;
 
@@ -90,7 +90,7 @@ class Form extends JSXComponent {
 		this.setState({hiddenInputs, validationErrors});
 	}
 
-	handleMultiInputChange(inputs, inputId, key) {
+	_handleMultiInputChange(inputs, inputId, key) {
 		const formattedValue = [];
 
 		inputs.forEach(
@@ -101,18 +101,18 @@ class Form extends JSXComponent {
 			}
 		);
 
-		this.handleUpdateValue(formattedValue, inputId);
+		this._handleUpdateValue(formattedValue, inputId);
 	}
 
-	handleNavigationReport() {
+	_handleNavigationReport() {
 		Router.router().navigate(this.props.reportHref);
 	}
 
-	handleNavigationTranslate() {
+	_handleNavigationTranslate() {
 		Router.router().navigate(this.props.translateHref);
 	}
 
-	handleResetFormChanges() {
+	_handleResetFormChanges() {
 		const {originalFormData} = this.state;
 
 		const unfrozenFormData = JSON.parse(JSON.stringify(originalFormData));
@@ -122,7 +122,7 @@ class Form extends JSXComponent {
 		this.setState({formDataReset: true, validationErrors: {}});
 	}
 
-	handleSubmit() {
+	_handleSubmit() {
 		const {props, state} = this;
 
 		const {disabled, fieldConfig, modelKey, redirect, submitMethod, watsonChildId = 0, watsonIncidentId = 0} = props;
@@ -136,7 +136,7 @@ class Form extends JSXComponent {
 
 					const {[inputId]: {validations}} = fieldConfig;
 
-					this.handleValidate(inputId, validations, value);
+					this._handleValidate(inputId, validations, value);
 				}
 			);
 
@@ -164,8 +164,8 @@ class Form extends JSXComponent {
 		}
 	}
 
-	handleUpdateValue(value = '', inputId) {
-		this.handleBlur(value, inputId);
+	_handleUpdateValue(value = '', inputId) {
+		this._handleBlur(value, inputId);
 
 		const {formData = {}} = this.state;
 
@@ -178,7 +178,7 @@ class Form extends JSXComponent {
 		Liferay.Watson.debouncedSessionExtend();
 	}
 
-	handleValidate(inputId, validations, value) {
+	_handleValidate(inputId, validations, value) {
 		if (validations) {
 			const {validationErrors} = this.state;
 
@@ -297,7 +297,7 @@ class Form extends JSXComponent {
 			};
 
 			optionalButtons.push(
-				<ButtonModal action={this.handleResetFormChanges} buttons={resetFormDataButtons} modalData={modal} />
+				<ButtonModal action={this._handleResetFormChanges} buttons={resetFormDataButtons} modalData={modal} />
 			);
 		}
 
@@ -389,14 +389,14 @@ class Form extends JSXComponent {
 						{translateHref &&
 							<Button
 								label={Liferay.Language.get('translate')}
-								onClick={this.handleNavigationTranslate}
+								onClick={this._handleNavigationTranslate}
 							/>
 						}
 
 						{reportHref &&
 							<Button
 								label={Liferay.Language.get('print')}
-								onClick={this.handleNavigationReport}
+								onClick={this._handleNavigationReport}
 							/>
 						}
 					</div>
@@ -409,7 +409,7 @@ class Form extends JSXComponent {
 				<BottomBar
 					buttons={bottomBarButtons}
 					formIsValid={formErrorsCount < 1 || !disabled}
-					handleSubmit={this.handleSubmit}
+					_handleSubmit={this._handleSubmit}
 					message={message}
 					messageCssClass={status}
 					optionalButtons={optionalButtons}
@@ -443,10 +443,10 @@ class Form extends JSXComponent {
 
 				if (!value && defaultValue && action === 'create') {
 					if (htmlType === 'date') {
-						this.handleUpdateValue(Date.now(), inputId);
+						this._handleUpdateValue(Date.now(), inputId);
 					}
 					else {
-						this.handleUpdateValue(defaultValue, inputId);
+						this._handleUpdateValue(defaultValue, inputId);
 					}
 				}
 
@@ -462,8 +462,8 @@ class Form extends JSXComponent {
 					autoFocus,
 					disabled,
 					inputId,
-					onBlur: this.handleBlur,
-					onChange: this.handleUpdateValue,
+					onBlur: this._handleBlur,
+					onChange: this._handleUpdateValue,
 					value
 				};
 
@@ -504,17 +504,17 @@ class Form extends JSXComponent {
 							hiddenInput = false;
 
 							if (state.hiddenInputs.includes(inputId)) {
-								this.handleConditionalInput(inputId, hiddenInput, controlledInputs);
+								this._handleConditionalInput(inputId, hiddenInput, controlledInputs);
 							}
 						}
 					}
 
 					if (hiddenInput && !state.hiddenInputs.includes(inputId)) {
-						this.handleConditionalInput(inputId, hiddenInput, controlledInputs);
+						this._handleConditionalInput(inputId, hiddenInput, controlledInputs);
 					}
 
 					if (currentInputConfig.inputType === inputTypeConstants.microForm) {
-						config.onChange = this.handleMultiInputChange;
+						config.onChange = this._handleMultiInputChange;
 
 						inputComponent = (
 							<DynamicInputGenerator
@@ -608,7 +608,7 @@ class Form extends JSXComponent {
 				}
 				else if (currentType === inputTypeConstants.dynamicRelationshipInputGenerator) {
 					if (action !== 'create') {
-						config.onChange = this.handleMultiInputChange;
+						config.onChange = this._handleMultiInputChange;
 
 						const {buttonLabel, fancy, tripleOnly} = currentInputConfig;
 
@@ -631,7 +631,7 @@ class Form extends JSXComponent {
 					}
 				}
 				else if (currentType === inputTypeConstants.doubleDependentInput) {
-					config.onChange = this.handleMultiInputChange;
+					config.onChange = this._handleMultiInputChange;
 
 					const {buttonLabel} = currentInputConfig;
 
@@ -646,7 +646,7 @@ class Form extends JSXComponent {
 					);
 				}
 				else if (currentType === inputTypeConstants.dynamicInputGenerator) {
-					config.onChange = this.handleMultiInputChange;
+					config.onChange = this._handleMultiInputChange;
 
 					const {buttonLabel} = currentInputConfig;
 

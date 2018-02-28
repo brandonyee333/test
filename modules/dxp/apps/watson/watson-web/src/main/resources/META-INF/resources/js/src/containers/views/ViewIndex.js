@@ -32,11 +32,11 @@ class ViewIndex extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleButtonClick',
-			'handleLoadMore',
-			'handleOnClick',
-			'handleUpdateFilter',
-			'handleUpdateSortBy',
+			'_handleButtonClick',
+			'_handleLoadMore',
+			'_handleOnClick',
+			'_handleUpdateFilter',
+			'_handleUpdateSortBy',
 			'refreshData'
 		);
 
@@ -72,7 +72,7 @@ class ViewIndex extends JSXComponent {
 		return headerStringLeft;
 	}
 
-	handleButtonClick() {
+	_handleButtonClick() {
 		const {props, state} = this;
 
 		const {buttonMethod, redirect, submitMethod} = props;
@@ -96,20 +96,20 @@ class ViewIndex extends JSXComponent {
 		}
 	}
 
-	handleLoadMore() {
+	_handleLoadMore() {
 		const {batchCount, filterActive, itemsLoaded} = this.state;
 
 		if (filterActive) {
-			this.handleSearchRequest();
+			this._handleSearchRequest();
 		}
 		else {
-			this.handleIndexRequest();
+			this._handleIndexRequest();
 		}
 
 		this.state.itemsLoaded = itemsLoaded + batchCount;
 	}
 
-	handleOnClick(event) {
+	_handleOnClick(event) {
 		const {delegateTarget} = event;
 
 		let entryId = 0;
@@ -139,7 +139,7 @@ class ViewIndex extends JSXComponent {
 		}
 	}
 
-	handleIndexRequest() {
+	_handleIndexRequest() {
 		const {props, state} = this;
 
 		const {action, disableDataFetch, model, sortBy, watsonParentPrimaryKey} = props;
@@ -163,7 +163,7 @@ class ViewIndex extends JSXComponent {
 		}
 	}
 
-	handleSearchRequest() {
+	_handleSearchRequest() {
 		const {props, state} = this;
 
 		const {action, disableDataFetch, filter, model, sortBy} = props;
@@ -213,7 +213,7 @@ class ViewIndex extends JSXComponent {
 		}
 	}
 
-	handleUpdateFilter(filterData) {
+	_handleUpdateFilter(filterData) {
 		const {
 			model,
 			updateFilter,
@@ -223,7 +223,7 @@ class ViewIndex extends JSXComponent {
 		updateFilter(filterData, model, watsonParentPrimaryKey);
 	}
 
-	handleUpdateSortBy(sortByData) {
+	_handleUpdateSortBy(sortByData) {
 		const {
 			model,
 			updateSortBy,
@@ -247,11 +247,11 @@ class ViewIndex extends JSXComponent {
 
 				this.state.itemsLoaded = 0;
 
-				this.handleIndexRequest();
+				this._handleIndexRequest();
 			}
 
 			if (!loading && resendSearchRequest) {
-				this.handleSearchRequest();
+				this._handleSearchRequest();
 
 				this.state.resendSearchRequest = false;
 			}
@@ -299,7 +299,7 @@ class ViewIndex extends JSXComponent {
 		if (buttonData && !disabled) {
 			buttonData.forEach(
 				button => {
-					buttons.push(<Button label={button.label} onClick={button.method || this.handleButtonClick} />);
+					buttons.push(<Button label={button.label} onClick={button.method || this._handleButtonClick} />);
 				}
 			);
 		}
@@ -314,7 +314,7 @@ class ViewIndex extends JSXComponent {
 
 					<SelectInput
 						omitBlankOption={true}
-						onChange={this.handleUpdateSortBy}
+						onChange={this._handleUpdateSortBy}
 						options={WatsonConstants.inputConfig[model].sortByOptions}
 						value={sortBy || 'watsonIncidentId'}
 					/>
@@ -333,7 +333,7 @@ class ViewIndex extends JSXComponent {
 							filter={filter}
 							inputConfig={WatsonConstants.inputConfig[model].inputs}
 							label={Liferay.Language.get('add-filter')}
-							onChange={this.handleUpdateFilter}
+							onChange={this._handleUpdateFilter}
 						/>
 					</div>
 
@@ -345,9 +345,9 @@ class ViewIndex extends JSXComponent {
 								hasMoreResults={data.size < modelCount}
 								keysToOmit={keysToOmit}
 								loading={loading}
-								loadMoreMethod={this.handleLoadMore}
+								loadMoreMethod={this._handleLoadMore}
 								model={model}
-								onClick={action === 'index' ? undefined : this.handleOnClick}
+								onClick={action === 'index' ? undefined : this._handleOnClick}
 								selectedIds={selectedIds}
 								simple={true}
 								sortBy={sortBy}

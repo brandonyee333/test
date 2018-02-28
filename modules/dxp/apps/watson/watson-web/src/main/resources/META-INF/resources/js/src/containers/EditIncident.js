@@ -43,9 +43,9 @@ class EditIncident extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleNavigationOnChange',
-			'handlePrintReport',
-			'handleUpdateIncidentRelationshipsFormData'
+			'_handleNavigationOnChange',
+			'_handlePrintReport',
+			'_handleUpdateIncidentRelationshipsFormData'
 		);
 	}
 
@@ -556,7 +556,7 @@ class EditIncident extends JSXComponent {
 					primaryName={incidentName}
 					redirect={incidentRelateRedirect}
 					selectedIds={selectedIds}
-					submitMethod={this.handleUpdateIncidentRelationshipsFormData}
+					submitMethod={this._handleUpdateIncidentRelationshipsFormData}
 					watsonIncidentId={watsonIncidentId}
 				/>
 			);
@@ -578,17 +578,17 @@ class EditIncident extends JSXComponent {
 		return view;
 	}
 
-	handleNavigationOnChange(newNavigationState) {
+	_handleNavigationOnChange(newNavigationState) {
 		const {updateCollapsedEntries, watsonIncidentId} = this.props;
 
 		updateCollapsedEntries(newNavigationState, watsonIncidentId);
 	}
 
-	handlePrintReport() {
+	_handlePrintReport() {
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${this.props.watsonIncidentId}/report`);
 	}
 
-	handleUpdateIncidentRelationshipsFormData(relationshipIds) {
+	_handleUpdateIncidentRelationshipsFormData(relationshipIds) {
 		const {
 			incidentFormData = {},
 			updateIncidentsFormData,
@@ -811,9 +811,9 @@ class EditIncident extends JSXComponent {
 				<div class="navigation-sidebar">
 					<NavigationHeader mainHeader={incidentName} metaHeader={incidentMetaHeader} subHeader={incidentTypeLabel} />
 
-					<Navigation entries={nav} navigationState={collapsedEntries} onChange={this.handleNavigationOnChange} />
+					<Navigation entries={nav} navigationState={collapsedEntries} onChange={this._handleNavigationOnChange} />
 
-					<Button label={Liferay.Language.get('print-report')} onClick={this.handlePrintReport} />
+					<Button label={Liferay.Language.get('print-report')} onClick={this._handlePrintReport} />
 				</div>
 
 				{this.getCurrentView(action, entryId, incidentDisabled, incidentName, model, watsonIncidentId)}

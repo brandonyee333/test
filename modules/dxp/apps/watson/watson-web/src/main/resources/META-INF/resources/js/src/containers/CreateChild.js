@@ -14,25 +14,25 @@ import {updateDOMTitle} from '../lib/util';
 
 class CreateChild extends JSXComponent {
 	attached() {
-		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+		Router.router().on('beforeNavigate', this._handleBeforeLeave);
 	}
 
 	created() {
 		bindAll(
 			this,
-			'handleBeforeLeave',
-			'handleClearFormData',
-			'handleClose',
-			'handleLeave',
-			'handleSubmit'
+			'_handleBeforeLeave',
+			'_handleClearFormData',
+			'_handleClose',
+			'_handleLeave',
+			'_handleSubmit'
 		);
 	}
 
 	detached() {
-		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+		Router.router().off('beforeNavigate', this._handleBeforeLeave);
 	}
 
-	handleBeforeLeave(data) {
+	_handleBeforeLeave(data) {
 		const {
 			childFormData = {}
 		} = this.props;
@@ -58,7 +58,7 @@ class CreateChild extends JSXComponent {
 		}
 	}
 
-	handleClearFormData() {
+	_handleClearFormData() {
 		const {
 			updateChildrenFormData
 		} = this.props;
@@ -66,21 +66,21 @@ class CreateChild extends JSXComponent {
 		updateChildrenFormData({}, 0);
 	}
 
-	handleClose() {
+	_handleClose() {
 		this.setState({showLeaveModal: false});
 	}
 
-	handleLeave() {
-		this.handleClearFormData();
+	_handleLeave() {
+		this._handleClearFormData();
 
-		this.handleClose();
+		this._handleClose();
 
 		this.setState({unlockNavigate: true});
 
 		Router.router().navigate(this.state.navigateAwayPath);
 	}
 
-	handleSubmit() {
+	_handleSubmit() {
 		const {props} = this;
 
 		const {childFormData} = props;
@@ -145,8 +145,8 @@ class CreateChild extends JSXComponent {
 		];
 
 		const modalFooter = [
-			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('leave')} onClick={this.handleLeave} />,
-			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this.handleClose} />
+			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('leave')} onClick={this._handleLeave} />,
+			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this._handleClose} />
 		];
 
 		const cancelMethod = () => Router.router().navigate(WatsonConstants.urls.children);
@@ -162,7 +162,7 @@ class CreateChild extends JSXComponent {
 				{showLeaveModal &&
 					<Modal
 						body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')}
-						close={this.handleClose}
+						close={this._handleClose}
 						footer={modalFooter}
 						header={Liferay.Language.get('do-you-want-to-leave-this-page')}
 					/>
@@ -175,7 +175,7 @@ class CreateChild extends JSXComponent {
 					headerStringLeft={Liferay.Language.get('create-child')}
 					headerStringRight={Liferay.Language.get('unsaved')}
 					storeData={storeData}
-					submitMethod={this.handleSubmit}
+					submitMethod={this._handleSubmit}
 				/>
 			</div>
 		);

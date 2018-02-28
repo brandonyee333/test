@@ -5,7 +5,7 @@ import Transition from 'metal-css-transitions';
 import Spinner from './Spinner';
 
 class LoadingIndicator extends JSXComponent {
-	handleOnClick() {
+	_handleOnClick() {
 		window.location.href = WatsonConstants.urls.baseURL;
 	}
 
@@ -37,7 +37,7 @@ class LoadingIndicator extends JSXComponent {
 				}
 
 				{requestFailure &&
-					<a class="request-failure-error" onClick={this.handleOnClick}>
+					<a class="request-failure-error" onClick={this._handleOnClick}>
 						<span class="failure-text">
 							{Liferay.Language.get('sorry-we-encountered-an-error-please-try-again')}
 						</span>
@@ -48,7 +48,7 @@ class LoadingIndicator extends JSXComponent {
 				}
 
 				{requestForbidden &&
-					<a class="request-forbidden-error" onClick={this.handleOnClick}>
+					<a class="request-forbidden-error" onClick={this._handleOnClick}>
 						<span class="failure-text">
 							{Liferay.Language.get('you-do-not-have-the-required-permissions-to-access-this-content')}
 						</span>

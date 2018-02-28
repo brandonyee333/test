@@ -15,23 +15,23 @@ import {updateDOMTitle} from '../lib/util';
 
 class CreateIncident extends JSXComponent {
 	attached() {
-		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+		Router.router().on('beforeNavigate', this._handleBeforeLeave);
 	}
 
 	created() {
 		bindAll(
 			this,
-			'handleBeforeLeave',
-			'handleClearFormData',
-			'handleClose',
-			'handleLeave',
-			'handleSubmit',
-			'handleSubmitIncident',
+			'_handleBeforeLeave',
+			'_handleClearFormData',
+			'_handleClose',
+			'_handleLeave',
+			'_handleSubmit',
+			'_handleSubmitIncident',
 		);
 	}
 
 	detached() {
-		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+		Router.router().off('beforeNavigate', this._handleBeforeLeave);
 	}
 
 	getCurrentForm(action, model) {
@@ -60,7 +60,7 @@ class CreateIncident extends JSXComponent {
 					headerStringLeft={Liferay.Language.get('create-incident')}
 					headerStringRight={Liferay.Language.get('unsaved')}
 					storeData={storeData}
-					submitMethod={this.handleSubmit}
+					submitMethod={this._handleSubmit}
 					watsonAddressId={0}
 				/>
 			);
@@ -75,7 +75,7 @@ class CreateIncident extends JSXComponent {
 					headerStringLeft={Liferay.Language.get('create-incident')}
 					headerStringRight={Liferay.Language.get('unsaved')}
 					storeData={storeData}
-					submitMethod={this.handleSubmitIncident}
+					submitMethod={this._handleSubmitIncident}
 					watsonIncidentId={0}
 				/>
 			);
@@ -84,7 +84,7 @@ class CreateIncident extends JSXComponent {
 		return form;
 	}
 
-	handleBeforeLeave(data) {
+	_handleBeforeLeave(data) {
 		const {
 			addressFormData = {},
 			incidentFormData = {}
@@ -113,7 +113,7 @@ class CreateIncident extends JSXComponent {
 		}
 	}
 
-	handleClearFormData() {
+	_handleClearFormData() {
 		const {
 			updateIncidentAddressFormData,
 			updateIncidentsFormData
@@ -124,21 +124,21 @@ class CreateIncident extends JSXComponent {
 		updateIncidentsFormData({}, 0);
 	}
 
-	handleClose() {
+	_handleClose() {
 		this.setState({showLeaveModal: false});
 	}
 
-	handleLeave() {
-		this.handleClearFormData();
+	_handleLeave() {
+		this._handleClearFormData();
 
-		this.handleClose();
+		this._handleClose();
 
 		this.setState({unlockNavigate: true});
 
 		Router.router().navigate(this.state.navigateAwayPath);
 	}
 
-	handleSubmit() {
+	_handleSubmit() {
 		const {props} = this;
 
 		const {incidentFormData} = props;
@@ -155,7 +155,7 @@ class CreateIncident extends JSXComponent {
 		}
 	}
 
-	handleSubmitIncident() {
+	_handleSubmitIncident() {
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/create/address`);
 	}
 
@@ -208,8 +208,8 @@ class CreateIncident extends JSXComponent {
 		];
 
 		const modalFooter = [
-			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('leave')} onClick={this.handleLeave} />,
-			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this.handleClose} />
+			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('leave')} onClick={this._handleLeave} />,
+			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this._handleClose} />
 		];
 
 		return (
@@ -219,7 +219,7 @@ class CreateIncident extends JSXComponent {
 				</div>
 
 				{showLeaveModal &&
-					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this.handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
+					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this._handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
 				}
 
 				{this.getCurrentForm(action, model)}

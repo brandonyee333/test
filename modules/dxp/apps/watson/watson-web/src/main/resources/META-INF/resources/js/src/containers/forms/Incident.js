@@ -21,21 +21,21 @@ import {
 
 class IncidentForm extends JSXComponent {
 	attached() {
-		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+		Router.router().on('beforeNavigate', this._handleBeforeLeave);
 
-		window.onbeforeunload = this.handleBeforeLeave;
+		window.onbeforeunload = this._handleBeforeLeave;
 	}
 
 	created() {
 		bindAll(
 			this,
-			'handleBeforeLeave',
-			'handleClearFormData',
-			'handleClose',
-			'handleLeave',
-			'handleSubmit',
-			'handleTranslationRequest',
-			'handleUpdateFormData'
+			'_handleBeforeLeave',
+			'_handleClearFormData',
+			'_handleClose',
+			'_handleLeave',
+			'_handleSubmit',
+			'_handleTranslationRequest',
+			'_handleUpdateFormData'
 		);
 	}
 
@@ -56,7 +56,7 @@ class IncidentForm extends JSXComponent {
 			);
 		}
 
-		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+		Router.router().off('beforeNavigate', this._handleBeforeLeave);
 
 		window.onbeforeunload = undefined;
 	}
@@ -84,7 +84,7 @@ class IncidentForm extends JSXComponent {
 		];
 	}
 
-	handleBeforeLeave(data) {
+	_handleBeforeLeave(data) {
 		const {
 			formData = {},
 			storeData,
@@ -132,29 +132,29 @@ class IncidentForm extends JSXComponent {
 		return retVal;
 	}
 
-	handleClearFormData() {
-		this.handleUpdateFormData({});
+	_handleClearFormData() {
+		this._handleUpdateFormData({});
 	}
 
-	handleClose() {
+	_handleClose() {
 		this.setState({showLeaveModal: false});
 	}
 
-	handleLeave() {
-		this.handleClearFormData();
+	_handleLeave() {
+		this._handleClearFormData();
 
-		this.handleClose();
+		this._handleClose();
 
 		this.setState({unlockNavigate: true});
 
 		Router.router().navigate(this.state.navigateAwayPath);
 	}
 
-	handleSubmit(formData) {
+	_handleSubmit(formData) {
 		this.props.updateIncidents(formData);
 	}
 
-	handleTranslationRequest() {
+	_handleTranslationRequest() {
 		const {props} = this;
 
 		const {model, requestIncidentsTranslation, watsonIncidentId} = props;
@@ -170,7 +170,7 @@ class IncidentForm extends JSXComponent {
 		requestIncidentsTranslation(translationRequestData);
 	}
 
-	handleUpdateFormData(formData) {
+	_handleUpdateFormData(formData) {
 		const {
 			updateIncidentsFormData,
 			watsonIncidentId
@@ -194,7 +194,7 @@ class IncidentForm extends JSXComponent {
 			model,
 			response,
 			storeData,
-			submitMethod = this.handleSubmit,
+			submitMethod = this._handleSubmit,
 			watsonIncidentId
 		} = props;
 
@@ -215,7 +215,7 @@ class IncidentForm extends JSXComponent {
 
 			relateOnClick = () => Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/relate`);
 
-			requestTranslationMethod = this.handleTranslationRequest;
+			requestTranslationMethod = this._handleTranslationRequest;
 
 			if (!disabled && WatsonConstants.currentUser.translatorRole) {
 				translateHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/translate`;
@@ -223,8 +223,8 @@ class IncidentForm extends JSXComponent {
 		}
 
 		const modalFooter = [
-			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('watson-leave')} onClick={this.handleLeave} />,
-			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this.handleClose} />
+			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('watson-leave')} onClick={this._handleLeave} />,
+			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this._handleClose} />
 		];
 
 		return (
@@ -234,7 +234,7 @@ class IncidentForm extends JSXComponent {
 				</div>
 
 				{showLeaveModal &&
-					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this.handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
+					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this._handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
 				}
 
 				<div class="content">
@@ -256,7 +256,7 @@ class IncidentForm extends JSXComponent {
 						storeData={storeData}
 						submitMethod={submitMethod}
 						translateHref={translateHref}
-						updateFormData={this.handleUpdateFormData}
+						updateFormData={this._handleUpdateFormData}
 						watsonIncidentId={watsonIncidentId}
 						watsonPrimaryKey={watsonIncidentId}
 					/>

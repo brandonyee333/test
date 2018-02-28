@@ -43,7 +43,7 @@ class ChildReport extends JSXComponent {
 		bindAll(
 			this,
 			'fetchModelData',
-			'handleBack',
+			'_handleBack',
 			'renderChild',
 			'renderChildHeader',
 			'renderModel'
@@ -78,7 +78,7 @@ class ChildReport extends JSXComponent {
 		return watsonModelObject;
 	}
 
-	handleBack() {
+	_handleBack() {
 		const {entryId, model, watsonChildId} = this.props;
 
 		if (model) {
@@ -89,7 +89,7 @@ class ChildReport extends JSXComponent {
 		}
 	}
 
-	handlePrint() {
+	_handlePrint() {
 		window.print();
 	}
 
@@ -345,12 +345,12 @@ class ChildReport extends JSXComponent {
 				<div class="top-buttons">
 					<Button
 						label={`< ${Liferay.Language.get('back')}`}
-						onClick={this.handleBack}
+						onClick={this._handleBack}
 					/>
 
 					<Button
 						icon="print-icon"
-						onClick={this.handlePrint}
+						onClick={this._handlePrint}
 					/>
 				</div>
 

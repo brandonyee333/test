@@ -10,16 +10,16 @@ class IncidentImporter extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleButtonOnClick',
-			'handleOnChange'
+			'_handleButtonOnClick',
+			'_handleOnChange'
 		);
 	}
 
-	handleButtonOnClick() {
+	_handleButtonOnClick() {
 		this.setState({valueAccepted: false});
 	}
 
-	handleOnChange() {
+	_handleOnChange() {
 		this.setState({valueAccepted: true});
 	}
 
@@ -41,7 +41,7 @@ class IncidentImporter extends JSXComponent {
 							disabled={valueAccepted}
 							enableCropperTool={false}
 							multiple={false}
-							onChange={this.handleOnChange}
+							onChange={this._handleOnChange}
 							uploaderLabel={Liferay.Language.get('upload-your-csv-file-here')}
 						/>
 					}
@@ -56,7 +56,7 @@ class IncidentImporter extends JSXComponent {
 					{valueAccepted &&
 						<Button
 							label={Liferay.Language.get('save-and-add-another')}
-							onClick={this.handleButtonOnClick}
+							onClick={this._handleButtonOnClick}
 						/>
 					}
 				</div>

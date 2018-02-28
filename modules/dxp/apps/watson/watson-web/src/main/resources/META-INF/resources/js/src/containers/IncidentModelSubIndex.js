@@ -16,18 +16,18 @@ import {formatModelName, getFormattedDate, getOptionsLabelFromWatsonConstants, g
 
 class IncidentModelSubIndex extends JSXComponent {
 	attached() {
-		this.handleFetchDataRequest();
+		this._handleFetchDataRequest();
 	}
 
 	created() {
 		bindAll(
 			this,
-			'handleFetchDataRequest',
-			'handleSearchRequest'
+			'_handleFetchDataRequest',
+			'_handleSearchRequest'
 		);
 	}
 
-	handleFetchDataRequest() {
+	_handleFetchDataRequest() {
 		const {props} = this;
 
 		const {entryId, fetchIncidentAffiliations, model} = props;
@@ -42,7 +42,7 @@ class IncidentModelSubIndex extends JSXComponent {
 		}
 	}
 
-	handleSearchRequest(filter) {
+	_handleSearchRequest(filter) {
 		const {entryId, fetchIncidentAffiliations, model} = this.props;
 
 		const fieldsArray = [];
@@ -71,7 +71,7 @@ class IncidentModelSubIndex extends JSXComponent {
 			);
 		}
 		else {
-			this.handleFetchDataRequest();
+			this._handleFetchDataRequest();
 		}
 	}
 
@@ -102,7 +102,7 @@ class IncidentModelSubIndex extends JSXComponent {
 					buttonData={[]}
 					disableDataFetch={true}
 					entryId={entryId}
-					filterActiveCallback={this.handleSearchRequest}
+					filterActiveCallback={this._handleSearchRequest}
 					forwardedData={affiliationData}
 					forwardedLoading={modelLoading}
 					headerStringLeft={sub(Liferay.Language.get('affiliated-with-x-other-x'), affiliationData.size, getPluralMessage(Liferay.Language.get('incident'), Liferay.Language.get('incidents'), affiliationData.size))}

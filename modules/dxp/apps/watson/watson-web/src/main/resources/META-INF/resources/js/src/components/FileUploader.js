@@ -16,14 +16,14 @@ class FileDropzone extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleCancel',
-			'handleOnDropAccepted',
-			'handleOnDropRejected',
-			'handleUploadFile'
+			'_handleCancel',
+			'_handleOnDropAccepted',
+			'_handleOnDropRejected',
+			'_handleUploadFile'
 		);
 	}
 
-	handleCancel() {
+	_handleCancel() {
 		this.setState(
 			{
 				acceptedFileData: {},
@@ -32,7 +32,7 @@ class FileDropzone extends JSXComponent {
 		);
 	}
 
-	handleError(rejectedFileData, filesAccepted, maxFileSize) {
+	_handleError(rejectedFileData, filesAccepted, maxFileSize) {
 		let alertLanguageKey = null;
 
 		if (!isEmpty(rejectedFileData) && !filesAccepted) {
@@ -50,7 +50,7 @@ class FileDropzone extends JSXComponent {
 		return alertLanguageKey;
 	}
 
-	handleOnDropAccepted(files) {
+	_handleOnDropAccepted(files) {
 		const {disabled, enableCropperTool, multiple} = this.props;
 
 		if (!disabled) {
@@ -76,17 +76,17 @@ class FileDropzone extends JSXComponent {
 			else if (files.length < WatsonConstants.uploadSettings.maxFileCount) {
 				files.forEach(
 					file => {
-						this.handleUploadFile(file);
+						this._handleUploadFile(file);
 					}
 				);
 			}
 			else {
-				this.handleOnDropRejected(files, true);
+				this._handleOnDropRejected(files, true);
 			}
 		}
 	}
 
-	handleOnDropRejected([file], exceededMaxFileCount = false) {
+	_handleOnDropRejected([file], exceededMaxFileCount = false) {
 		const rejectedFileData = {
 			exceededMaxFileCount,
 			size: file.size,
@@ -102,7 +102,7 @@ class FileDropzone extends JSXComponent {
 		);
 	}
 
-	handleUploadFile(file, cropData = {}) {
+	_handleUploadFile(file, cropData = {}) {
 		const {classPK = 0, controller, controllerMethod, disabled, inputId, onChange} = this.props;
 
 		if (!disabled && onChange) {
@@ -128,7 +128,7 @@ class FileDropzone extends JSXComponent {
 					() => {
 						this.setState({filesAccepted: false});
 
-						this.handleOnDropRejected([file]);
+						this._handleOnDropRejected([file]);
 					}
 				);
 			};
@@ -153,7 +153,7 @@ class FileDropzone extends JSXComponent {
 
 		const maxFileSize = disabled ? 0 : WatsonConstants.uploadSettings.maxFileSize;
 
-		const alertLanguageKey = this.handleError(rejectedFileData, filesAccepted, maxFileSize);
+		const alertLanguageKey = this._handleError(rejectedFileData, filesAccepted, maxFileSize);
 
 		const helperMessage = alertLanguageKey ? '' : sub(Liferay.Language.get('max-file-size-x'), formatBytesToString(maxFileSize));
 
@@ -166,8 +166,8 @@ class FileDropzone extends JSXComponent {
 				{(enableCropperTool && !isEmpty(acceptedFileData)) &&
 					<CropImageModal
 						imageData={acceptedFileData}
-						onCancel={this.handleCancel}
-						onSubmit={this.handleUploadFile}
+						onCancel={this._handleCancel}
+						onSubmit={this._handleUploadFile}
 					/>
 				}
 
@@ -179,8 +179,8 @@ class FileDropzone extends JSXComponent {
 						disableClick={disabled}
 						maxSize={maxFileSize}
 						multiple={multiple}
-						onDropAccepted={this.handleOnDropAccepted}
-						onDropRejected={this.handleOnDropRejected}
+						onDropAccepted={this._handleOnDropAccepted}
+						onDropRejected={this._handleOnDropRejected}
 						rejectClassName="reject"
 					>
 						<span className="uploader-label" key={'key'}>{uploaderLabel}</span>

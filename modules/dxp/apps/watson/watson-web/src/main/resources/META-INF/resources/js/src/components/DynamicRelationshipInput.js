@@ -18,9 +18,9 @@ class DynamicRelationshipInput extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnChangeModel',
-			'handleOnChangeModelId',
-			'handleUpdateValue'
+			'_handleOnChangeModel',
+			'_handleOnChangeModelId',
+			'_handleUpdateValue'
 		);
 	}
 
@@ -41,7 +41,7 @@ class DynamicRelationshipInput extends JSXComponent {
 		return options;
 	}
 
-	handleOnChangeModel(selectedModel1) {
+	_handleOnChangeModel(selectedModel1) {
 		let classNameId1 = '';
 
 		if (selectedModel1) {
@@ -53,16 +53,16 @@ class DynamicRelationshipInput extends JSXComponent {
 		formattedValue.classNameId1 = classNameId1;
 		formattedValue.selectedModel1 = selectedModel1;
 
-		this.handleUpdateValue(selectedModel1, 'selectedModel1', formattedValue);
+		this._handleUpdateValue(selectedModel1, 'selectedModel1', formattedValue);
 
 		this.refreshData(selectedModel1, false);
 	}
 
-	handleOnChangeModelId(classPK1) {
-		this.handleUpdateValue(classPK1, 'classPK1');
+	_handleOnChangeModelId(classPK1) {
+		this._handleUpdateValue(classPK1, 'classPK1');
 	}
 
-	handleUpdateValue(option, key, formattedValue) {
+	_handleUpdateValue(option, key, formattedValue) {
 		const {
 			props: {
 				inputId,
@@ -148,7 +148,7 @@ class DynamicRelationshipInput extends JSXComponent {
 
 					<TripleDependentSelectInput
 						omitClassPK={watsonPrimaryKey || classPK1}
-						onChange={this.handleUpdateValue}
+						onChange={this._handleUpdateValue}
 						tripleOnly={tripleOnly}
 						value={values}
 						watsonIncidentId={watsonIncidentId}
@@ -164,7 +164,7 @@ class DynamicRelationshipInput extends JSXComponent {
 							<SelectInput
 								cssClassName="narrow"
 								disabled={disabled}
-								onChange={this.handleOnChangeModel}
+								onChange={this._handleOnChangeModel}
 								options={WatsonConstants.inputConfig.relationships.relationshipObjectOptions}
 								value={selectedModel1}
 							/>
@@ -174,7 +174,7 @@ class DynamicRelationshipInput extends JSXComponent {
 							<SelectInput
 								cssClassName="wide"
 								disabled={disabled}
-								onChange={this.handleOnChangeModelId}
+								onChange={this._handleOnChangeModelId}
 								options={this.getIndexModelOptions(selectedModelData)}
 								value={classPK1}
 							/>
@@ -187,7 +187,7 @@ class DynamicRelationshipInput extends JSXComponent {
 
 					<TripleDependentSelectInput
 						omitClassPK={watsonPrimaryKey || classPK1}
-						onChange={this.handleUpdateValue}
+						onChange={this._handleUpdateValue}
 						tripleOnly={tripleOnly}
 						value={values}
 						watsonIncidentId={watsonIncidentId}

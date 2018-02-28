@@ -12,16 +12,16 @@ import Tooltip from './Tooltip';
 
 class TranslationForm extends JSXComponent {
 	attached() {
-		this.state.intervalId = setInterval(() => this.handleSoftSave(), 60000);
+		this.state.intervalId = setInterval(() => this._handleSoftSave(), 60000);
 	}
 
 	created() {
 		bindAll(
 			this,
-			'handleCancel',
-			'handleSoftSave',
-			'handleSubmit',
-			'handleUpdateValue'
+			'_handleCancel',
+			'_handleSoftSave',
+			'_handleSubmit',
+			'_handleUpdateValue'
 		);
 
 		this.state.changedFields = [];
@@ -35,7 +35,7 @@ class TranslationForm extends JSXComponent {
 		clearInterval(intervalId);
 	}
 
-	handleCancel() {
+	_handleCancel() {
 		const {redirect: cancelMethod} = this.props;
 
 		if (cancelMethod) {
@@ -43,7 +43,7 @@ class TranslationForm extends JSXComponent {
 		}
 	}
 
-	handleSoftSave() {
+	_handleSoftSave() {
 		const {props, state} = this;
 
 		if (props.autoSaveEnabled && props.autoSaveMethod) {
@@ -53,7 +53,7 @@ class TranslationForm extends JSXComponent {
 				inputId => {
 					const {[inputId]: {translatable}} = props.fieldConfig;
 
-					formData = this.handleUntranslatableFields(formData, inputId, translatable);
+					formData = this._handleUntranslatableFields(formData, inputId, translatable);
 				}
 			);
 
@@ -67,7 +67,7 @@ class TranslationForm extends JSXComponent {
 		}
 	}
 
-	handleSubmit() {
+	_handleSubmit() {
 		const {props, state} = this;
 
 		const {fieldConfig, id, redirect, submitMethod} = props;
@@ -79,7 +79,7 @@ class TranslationForm extends JSXComponent {
 				inputId => {
 					const {[inputId]: {translatable}} = fieldConfig;
 
-					formData = this.handleUntranslatableFields(formData, inputId, translatable);
+					formData = this._handleUntranslatableFields(formData, inputId, translatable);
 				}
 			);
 
@@ -96,7 +96,7 @@ class TranslationForm extends JSXComponent {
 		}
 	}
 
-	handleUntranslatableFields(formData, inputId, translatable) {
+	_handleUntranslatableFields(formData, inputId, translatable) {
 		if (translatable !== true) {
 			delete formData[inputId];
 		}
@@ -104,7 +104,7 @@ class TranslationForm extends JSXComponent {
 		return formData;
 	}
 
-	handleUpdateValue(value, inputId) {
+	_handleUpdateValue(value, inputId) {
 		const {formData} = this.state;
 
 		this.setState(
@@ -171,7 +171,7 @@ class TranslationForm extends JSXComponent {
 				<BottomBar
 					buttons={bottomBarButtons}
 					formIsValid={!disabled}
-					handleSubmit={this.handleSubmit}
+					_handleSubmit={this._handleSubmit}
 					message={message}
 				/>
 			</div>
@@ -216,7 +216,7 @@ class TranslationForm extends JSXComponent {
 					disabled,
 					inputId,
 					onBlur: null,
-					onChange: this.handleUpdateValue,
+					onChange: this._handleUpdateValue,
 					value
 				};
 

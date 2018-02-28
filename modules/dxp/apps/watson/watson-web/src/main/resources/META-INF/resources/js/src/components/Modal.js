@@ -1,6 +1,6 @@
 import {bindAll} from 'lodash';
 import dom from 'metal-dom';
-import {EventHandler} from 'metal-events';
+import {Event_handler} from 'metal-events';
 import JSXComponent, {Config} from 'metal-jsx';
 
 class Modal extends JSXComponent {
@@ -10,7 +10,7 @@ class Modal extends JSXComponent {
 			'hide'
 		);
 
-		this.eventHandler_ = new EventHandler();
+		this.event_handler_ = new Event_handler();
 	}
 
 	attached() {
@@ -30,7 +30,7 @@ class Modal extends JSXComponent {
 	detached() {
 		super.detached();
 
-		this.eventHandler_.removeAllListeners();
+		this.event_handler_.removeAllListeners();
 	}
 
 	disposeInternal() {
@@ -41,13 +41,13 @@ class Modal extends JSXComponent {
 		super.disposeInternal();
 	}
 
-	handleDocumentFocus_(event) {
+	_handleDocumentFocus_(event) {
 		if (this.overlay && !this.element.contains(event.target)) {
 			this.autoFocus_('.modal-dialog');
 		}
 	}
 
-	handleKeyup_(event) {
+	_handleKeyup_(event) {
 		if (event.keyCode === 27) {
 			this.hide();
 		}
@@ -62,8 +62,8 @@ class Modal extends JSXComponent {
 	}
 
 	restrictFocus_() {
-		if (!this.restrictFocusHandle_) {
-			this.restrictFocusHandle_ = dom.on(document, 'focus', this.handleDocumentFocus_.bind(this), true);
+		if (!this.restrictFocus_handle_) {
+			this.restrictFocus_handle_ = dom.on(document, 'focus', this._handleDocumentFocus_.bind(this), true);
 		}
 	}
 
@@ -105,10 +105,10 @@ class Modal extends JSXComponent {
 
 	syncHideOnEscape(hideOnEscape) {
 		if (hideOnEscape) {
-			this.eventHandler_.add(dom.on(document, 'keyup', this.handleKeyup_.bind(this)));
+			this.event_handler_.add(dom.on(document, 'keyup', this._handleKeyup_.bind(this)));
 		}
 		else {
-			this.eventHandler_.removeAllListeners();
+			this.event_handler_.removeAllListeners();
 		}
 	}
 
@@ -136,10 +136,10 @@ class Modal extends JSXComponent {
 		}
 	}
 	unrestrictFocus_() {
-		if (this.restrictFocusHandle_) {
-			this.restrictFocusHandle_.removeListener();
+		if (this.restrictFocus_handle_) {
+			this.restrictFocus_handle_.removeListener();
 
-			this.restrictFocusHandle_ = null;
+			this.restrictFocus_handle_ = null;
 		}
 	}
 

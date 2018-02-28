@@ -26,8 +26,8 @@ class DynamicInputGenerator extends JSXComponent {
 		bindAll(
 			this,
 			'addInput',
-			'handleOnChange',
-			'handleRemoveInput'
+			'_handleOnChange',
+			'_handleRemoveInput'
 		);
 	}
 
@@ -74,7 +74,7 @@ class DynamicInputGenerator extends JSXComponent {
 					last,
 					path
 				},
-				onChange: this.handleOnChange,
+				onChange: this._handleOnChange,
 				value
 			};
 
@@ -224,7 +224,7 @@ class DynamicInputGenerator extends JSXComponent {
 		);
 	}
 
-	handleOnChange(value, data, key) {
+	_handleOnChange(value, data, key) {
 		const {addedInputs: prevAddedInputs} = this.state;
 
 		const {index, last, path} = data;
@@ -259,7 +259,7 @@ class DynamicInputGenerator extends JSXComponent {
 		}
 	}
 
-	handleRemoveInput(event) {
+	_handleRemoveInput(event) {
 		const target = event.target;
 
 		const index = target.dataset.index;
@@ -311,7 +311,7 @@ class DynamicInputGenerator extends JSXComponent {
 				return prev.concat(
 					<div class="dynamic-select-input-group">
 						{!disabled &&
-							<Button className="remove-button" data-index={index} onClick={this.handleRemoveInput} />
+							<Button className="remove-button" data-index={index} onClick={this._handleRemoveInput} />
 						}
 
 						{inputGroup}

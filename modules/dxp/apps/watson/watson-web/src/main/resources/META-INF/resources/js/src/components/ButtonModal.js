@@ -8,9 +8,9 @@ class ButtonModal extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleClick',
-			'handleClose',
-			'handleConfirm'
+			'_handleClick',
+			'_handleClose',
+			'_handleConfirm'
 		);
 	}
 
@@ -24,15 +24,15 @@ class ButtonModal extends JSXComponent {
 		for (const button of buttons) {
 			const {className = 'modal-button', label} = button;
 
-			renderedButtons.push(<Button className={className} key="btn-primary" label={label} onClick={this.handleClick} />);
+			renderedButtons.push(<Button className={className} key="btn-primary" label={label} onClick={this._handleClick} />);
 
 			if (this.state.showModal) {
 				const modalFooter = [
-					<Button className={className} key="btn-action" label={confirmLabel} onClick={this.handleConfirm} />,
-					<Button className={className} key="btn-cancel" label={cancelLabel} onclick={this.handleClose} />
+					<Button className={className} key="btn-action" label={confirmLabel} onClick={this._handleConfirm} />,
+					<Button className={className} key="btn-cancel" label={cancelLabel} onclick={this._handleClose} />
 				];
 
-				modalWindow = <Modal body={body} close={this.handleClose} footer={footer || modalFooter} header={header} label={label} />;
+				modalWindow = <Modal body={body} close={this._handleClose} footer={footer || modalFooter} header={header} label={label} />;
 			}
 		}
 
@@ -46,23 +46,23 @@ class ButtonModal extends JSXComponent {
 		);
 	}
 
-	handleClick() {
+	_handleClick() {
 		this.state.showModal = true;
 	}
 
-	handleClose() {
+	_handleClose() {
 		this.state.showModal = false;
 	}
 
-	handleConfirm() {
+	_handleConfirm() {
 		this.props.action();
 
-		this.handleClose();
+		this._handleClose();
 	}
 
 	syncRemoteCloseModal(newState) {
 		if (newState === true) {
-			this.handleClose();
+			this._handleClose();
 		}
 	}
 }

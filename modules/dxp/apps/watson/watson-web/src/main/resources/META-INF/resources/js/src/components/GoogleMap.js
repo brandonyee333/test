@@ -11,8 +11,8 @@ class GoogleMapWrapper extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleMapsReady',
-			'handleOnClick'
+			'_handleMapsReady',
+			'_handleOnClick'
 		);
 	}
 
@@ -34,7 +34,7 @@ class GoogleMapWrapper extends JSXComponent {
 		Liferay.Watson.mapComponent.markers = null;
 	}
 
-	handleOnClick(event) {
+	_handleOnClick(event) {
 		const {onClick} = this.props;
 
 		if (onClick) {
@@ -42,7 +42,7 @@ class GoogleMapWrapper extends JSXComponent {
 		}
 	}
 
-	handleMapsReady(googleMapObject) {
+	_handleMapsReady(googleMapObject) {
 		Liferay.Watson.mapComponent.map = googleMapObject.map;
 		Liferay.Watson.mapComponent.geocoder = new googleMapObject.maps.Geocoder();
 
@@ -76,8 +76,8 @@ class GoogleMapWrapper extends JSXComponent {
 				<MetalGoogleMap
 					bootstrapURLKeys={urlKeys}
 					center={center}
-					onClick={this.handleOnClick}
-					onGoogleApiLoaded={this.handleMapsReady}
+					onClick={this._handleOnClick}
+					onGoogleApiLoaded={this._handleMapsReady}
 					options={options || defaultMapOptions}
 					yesIWantToUseGoogleMapApiInternals={true}
 					zoom={zoom}

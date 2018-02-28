@@ -10,12 +10,12 @@ class DateInput extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnChange',
+			'_handleOnChange',
 			'onFocusChange'
 		);
 	}
 
-	handleOnChange(date) {
+	_handleOnChange(date) {
 		const {props} = this;
 
 		const dateState = date ? date.format('YYYY-MM-DD') : null;
@@ -53,7 +53,7 @@ class DateInput extends JSXComponent {
 					focused={focused}
 					isOutsideRange={outsideRangeBypass}
 					numberOfMonths={1}
-					onDateChange={this.handleOnChange}
+					onDateChange={this._handleOnChange}
 					onFocusChange={this.onFocusChange}
 					orientation="vertical"
 					placeholder={Liferay.Language.get('pick-date')}

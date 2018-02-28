@@ -14,25 +14,25 @@ class TimeInput extends JSXComponent {
 			this,
 			'setHoursOptions',
 			'setMinutesOptions',
-			'handleHourOnChange',
-			'handleMinuteOnChange',
-			'handleOnChange'
+			'_handleHourOnChange',
+			'_handleMinuteOnChange',
+			'_handleOnChange'
 		);
 	}
 
-	handleMinuteOnChange(minutes) {
+	_handleMinuteOnChange(minutes) {
 		this.setState({minutesValue: toNumber(minutes)});
 
-		this.handleOnChange();
+		this._handleOnChange();
 	}
 
-	handleHourOnChange(hours) {
+	_handleHourOnChange(hours) {
 		this.setState({hoursValue: toNumber(hours)});
 
-		this.handleOnChange();
+		this._handleOnChange();
 	}
 
-	handleOnChange() {
+	_handleOnChange() {
 		const {disabled, onChange} = this.props;
 
 		if (!disabled) {
@@ -53,7 +53,7 @@ class TimeInput extends JSXComponent {
 			<div class="time-input-wrapper">
 				<SelectInput
 					disabled={disabled}
-					onChange={this.handleHourOnChange}
+					onChange={this._handleHourOnChange}
 					options={hoursOptions}
 					placeHolder={Liferay.Language.get('hours')}
 					value={hoursValue}
@@ -61,7 +61,7 @@ class TimeInput extends JSXComponent {
 
 				<SelectInput
 					disabled={disabled}
-					onChange={this.handleMinuteOnChange}
+					onChange={this._handleMinuteOnChange}
 					options={minutesOptions}
 					placeHolder={Liferay.Language.get('minutes')}
 					value={minutesValue}

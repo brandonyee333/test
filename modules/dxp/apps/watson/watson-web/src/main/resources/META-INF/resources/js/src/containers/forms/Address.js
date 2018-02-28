@@ -36,25 +36,25 @@ class AddressForm extends JSXComponent {
 			props.editAddresses(watsonAddressId);
 		}
 
-		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+		Router.router().on('beforeNavigate', this._handleBeforeLeave);
 
-		window.onbeforeunload = this.handleBeforeLeave;
+		window.onbeforeunload = this._handleBeforeLeave;
 	}
 
 	created() {
 		bindAll(
 			this,
-			'handleBeforeLeave',
-			'handleCancel',
-			'handleClearFormData',
-			'handleClose',
-			'handleCreate',
-			'handleDelete',
-			'handleLeave',
-			'handleMicroFormClose',
-			'handleMicroFormSubmit',
-			'handleTranslationRequest',
-			'handleUpdateFormData'
+			'_handleBeforeLeave',
+			'_handleCancel',
+			'_handleClearFormData',
+			'_handleClose',
+			'_handleCreate',
+			'_handleDelete',
+			'_handleLeave',
+			'_handleMicroFormClose',
+			'_handleMicroFormSubmit',
+			'_handleTranslationRequest',
+			'_handleUpdateFormData'
 		);
 	}
 
@@ -76,12 +76,12 @@ class AddressForm extends JSXComponent {
 			);
 		}
 
-		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+		Router.router().off('beforeNavigate', this._handleBeforeLeave);
 
 		window.onbeforeunload = undefined;
 
 		if (watsonIncidentId && watsonIncidentId > 0) {
-			this.handleClearFormData();
+			this._handleClearFormData();
 		}
 	}
 
@@ -112,7 +112,7 @@ class AddressForm extends JSXComponent {
 		];
 	};
 
-	handleBeforeLeave(data) {
+	_handleBeforeLeave(data) {
 		const {
 			action,
 			formData = {},
@@ -154,29 +154,29 @@ class AddressForm extends JSXComponent {
 		return retVal;
 	}
 
-	handleCancel() {
-		this.handleClearFormData();
+	_handleCancel() {
+		this._handleClearFormData();
 
 		const {watsonIncidentId} = this.props;
 
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/addresses/index`);
 	}
 
-	handleClearFormData() {
-		this.handleUpdateFormData({});
+	_handleClearFormData() {
+		this._handleUpdateFormData({});
 	}
 
-	handleClose() {
+	_handleClose() {
 		this.setState({showLeaveModal: false});
 	}
 
-	handleCreate(data) {
+	_handleCreate(data) {
 		this.props.updateAddresses(data);
 
 		this.state.dataSent = true;
 	}
 
-	handleDelete() {
+	_handleDelete() {
 		const {watsonAddressId, watsonIncidentId} = this.props;
 
 		if (watsonAddressId) {
@@ -186,27 +186,27 @@ class AddressForm extends JSXComponent {
 		}
 	}
 
-	handleLeave() {
-		this.handleClearFormData();
+	_handleLeave() {
+		this._handleClearFormData();
 
-		this.handleClose();
+		this._handleClose();
 
 		this.setState({unlockNavigate: true});
 
 		Router.router().navigate(this.state.navigateAwayPath);
 	}
 
-	handleMicroFormClose() {
+	_handleMicroFormClose() {
 		this.setState({closeMicroFormModal: true});
 	}
 
-	handleMicroFormSubmit(data) {
+	_handleMicroFormSubmit(data) {
 		this.props.sendAddressesCoordinates(data);
 
-		this.handleMicroFormClose();
+		this._handleMicroFormClose();
 	}
 
-	handleTranslationRequest() {
+	_handleTranslationRequest() {
 		const {props} = this;
 
 		const {model, requestAddressesTranslation, watsonAddressId, watsonIncidentId} = props;
@@ -222,7 +222,7 @@ class AddressForm extends JSXComponent {
 		requestAddressesTranslation(translationRequestData);
 	}
 
-	handleUpdateFormData(formData) {
+	_handleUpdateFormData(formData) {
 		const {
 			updateAddressesFormData,
 			updateIncidentAddressFormData,
@@ -293,14 +293,14 @@ class AddressForm extends JSXComponent {
 		let translateHref;
 
 		if (action === 'edit') {
-			deleteMethod = disabled ? undefined : this.handleDelete;
+			deleteMethod = disabled ? undefined : this._handleDelete;
 			headerStringLeft = storeData.get('name') || Liferay.Language.get('edit-address');
 
 			headerStringRight = getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp'));
 
 			reportHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/addresses/${watsonAddressId}/report`;
 
-			requestTranslationMethod = this.handleTranslationRequest;
+			requestTranslationMethod = this._handleTranslationRequest;
 
 			const optionButtons = [];
 
@@ -313,11 +313,11 @@ class AddressForm extends JSXComponent {
 			const modal = {
 				body: (
 					<MicroForm
-						cancelMethod={this.handleMicroFormClose}
+						cancelMethod={this._handleMicroFormClose}
 						fieldConfig={WatsonConstants.inputConfig.addresses.miscInputs}
 						formConfig={['address', 'coordinates', 'emailAddress', 'description']}
 						id={watsonAddressId}
-						submitMethod={this.handleMicroFormSubmit}
+						submitMethod={this._handleMicroFormSubmit}
 					/>
 				),
 				footer: [],
@@ -334,9 +334,9 @@ class AddressForm extends JSXComponent {
 		}
 		else if (action === 'create') {
 			if (watsonIncidentId) {
-				cancelMethod = this.handleCancel;
+				cancelMethod = this._handleCancel;
 				headerStringRight = Liferay.Language.get('unsaved');
-				submitMethod = this.handleCreate;
+				submitMethod = this._handleCreate;
 			}
 			else {
 				message = sub(Liferay.Language.get('step-x-of-x'), '2', '2');
@@ -344,8 +344,8 @@ class AddressForm extends JSXComponent {
 		}
 
 		const modalFooter = [
-			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('watson-leave')} onClick={this.handleLeave} />,
-			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this.handleClose} />
+			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('watson-leave')} onClick={this._handleLeave} />,
+			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this._handleClose} />
 		];
 
 		return (
@@ -355,7 +355,7 @@ class AddressForm extends JSXComponent {
 				</div>
 
 				{showLeaveModal &&
-					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this.handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
+					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this._handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
 				}
 
 				<div class="content">
@@ -387,7 +387,7 @@ class AddressForm extends JSXComponent {
 						storeData={storeData}
 						submitMethod={submitMethod}
 						translateHref={translateHref}
-						updateFormData={this.handleUpdateFormData}
+						updateFormData={this._handleUpdateFormData}
 						watsonIncidentId={watsonIncidentId}
 						watsonPrimaryKey={watsonAddressId}
 					/>

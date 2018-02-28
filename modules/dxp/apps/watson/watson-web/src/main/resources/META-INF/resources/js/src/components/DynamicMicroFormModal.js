@@ -8,17 +8,17 @@ class DynamicMicroFormModal extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleMicroFormClose',
-			'handleMicroFormSubmit'
+			'_handleMicroFormClose',
+			'_handleMicroFormSubmit'
 		);
 	}
 
-	handleMicroFormClose() {
+	_handleMicroFormClose() {
 		this.setState({showModal: false});
 	}
 
-	handleMicroFormSubmit(data) {
-		this.handleMicroFormClose();
+	_handleMicroFormSubmit(data) {
+		this._handleMicroFormClose();
 
 		const {inputId, onChange} = this.props;
 
@@ -41,10 +41,10 @@ class DynamicMicroFormModal extends JSXComponent {
 		const modal = {
 			body: (
 				<MicroForm
-					cancelMethod={this.handleMicroFormClose}
+					cancelMethod={this._handleMicroFormClose}
 					fieldConfig={WatsonConstants.inputConfig.resources.inputs}
 					formConfig={['name', 'imagePayload', 'description']}
-					submitMethod={this.handleMicroFormSubmit}
+					submitMethod={this._handleMicroFormSubmit}
 					watsonIncidentId={props.watsonIncidentId}
 				/>
 			),
@@ -67,7 +67,7 @@ class DynamicMicroFormModal extends JSXComponent {
 				<div class="micro-form-modal">
 					<Modal
 						body={modal.body}
-						close={this.handleMicroFormClose}
+						close={this._handleMicroFormClose}
 						header={modal.header}
 						visible={this.state.showModal}
 					/>

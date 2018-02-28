@@ -14,28 +14,28 @@ class MicroForm extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleCancel',
-			'handleBlur',
-			'handleSubmit',
-			'handleUpdateValue',
-			'handleValidate',
+			'_handleCancel',
+			'_handleBlur',
+			'_handleSubmit',
+			'_handleUpdateValue',
+			'_handleValidate',
 			'renderInputs'
 		);
 
 		this.state.microFormData = {};
 	}
 
-	handleBlur(value, inputId) {
+	_handleBlur(value, inputId) {
 		if (inputId) {
 			const currentInputConfig = this.props.fieldConfig[inputId];
 
 			const {validations} = currentInputConfig;
 
-			this.handleValidate(inputId, validations, value);
+			this._handleValidate(inputId, validations, value);
 		}
 	}
 
-	handleCancel() {
+	_handleCancel() {
 		const {cancelMethod} = this.props;
 
 		if (cancelMethod) {
@@ -43,7 +43,7 @@ class MicroForm extends JSXComponent {
 		}
 	}
 
-	handleSubmit() {
+	_handleSubmit() {
 		const {props, state} = this;
 
 		const {fieldConfig, id, submitMethod, watsonIncidentId} = props;
@@ -57,7 +57,7 @@ class MicroForm extends JSXComponent {
 
 					const {[inputId]: {validations}} = fieldConfig;
 
-					this.handleValidate(inputId, validations, value);
+					this._handleValidate(inputId, validations, value);
 				}
 			);
 
@@ -74,7 +74,7 @@ class MicroForm extends JSXComponent {
 		}
 	}
 
-	handleUpdateValue(value, inputId) {
+	_handleUpdateValue(value, inputId) {
 		const {microFormData} = this.state;
 
 		this.setState(
@@ -92,7 +92,7 @@ class MicroForm extends JSXComponent {
 		Liferay.Watson.debouncedSessionExtend();
 	}
 
-	handleValidate(inputId, validations, value) {
+	_handleValidate(inputId, validations, value) {
 		if (validations) {
 			const {validationErrors} = this.state;
 
@@ -140,7 +140,7 @@ class MicroForm extends JSXComponent {
 
 		bottomBarButtons.push(
 			{
-				action: this.handleCancel,
+				action: this._handleCancel,
 				label: Liferay.Language.get('cancel')
 			}
 		);
@@ -157,7 +157,7 @@ class MicroForm extends JSXComponent {
 				<BottomBar
 					buttons={bottomBarButtons}
 					formIsValid={formErrorsCount < 1}
-					handleSubmit={this.handleSubmit}
+					_handleSubmit={this._handleSubmit}
 					message={message}
 					messageCssClass={status}
 				/>
@@ -193,8 +193,8 @@ class MicroForm extends JSXComponent {
 				const config = {
 					disabled,
 					inputId,
-					onBlur: this.handleBlur,
-					onChange: this.handleUpdateValue,
+					onBlur: this._handleBlur,
+					onChange: this._handleUpdateValue,
 					value
 				};
 
@@ -290,7 +290,7 @@ class MicroForm extends JSXComponent {
 
 	rendered() {
 		if (this.props.triggerSubmit) {
-			this.handleSubmit();
+			this._handleSubmit();
 		}
 	}
 }

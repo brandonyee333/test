@@ -35,23 +35,23 @@ class Index extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleLoadMore',
-			'handleIndexRequest',
-			'handleItemClick',
-			'handleSearchRequest',
-			'handleUpdateDisplayBy',
-			'handleUpdateFilter',
-			'handleUpdateItemsLoaded',
-			'handleUpdateSortBy',
-			'handleUpdateChildViewBy',
-			'handleUpdateIncidentViewBy',
+			'_handleLoadMore',
+			'_handleIndexRequest',
+			'_handleItemClick',
+			'_handleSearchRequest',
+			'_handleUpdateDisplayBy',
+			'_handleUpdateFilter',
+			'_handleUpdateItemsLoaded',
+			'_handleUpdateSortBy',
+			'_handleUpdateChildViewBy',
+			'_handleUpdateIncidentViewBy',
 			'refreshData',
 			'scrollToPosition'
 		);
 	}
 
 	detached() {
-		this.handleUpdateItemsLoaded();
+		this._handleUpdateItemsLoaded();
 	}
 
 	disposed() {
@@ -77,7 +77,7 @@ class Index extends JSXComponent {
 		return headerStringLeft;
 	}
 
-	handleIndexRequest(end = 0) {
+	_handleIndexRequest(end = 0) {
 		const {props, state} = this;
 
 		const {model, sortBy} = props;
@@ -99,7 +99,7 @@ class Index extends JSXComponent {
 		}
 	}
 
-	handleItemClick(event) {
+	_handleItemClick(event) {
 		const {delegateTarget} = event;
 
 		if (delegateTarget && delegateTarget.attributes.id) {
@@ -109,20 +109,20 @@ class Index extends JSXComponent {
 		}
 	}
 
-	handleLoadMore() {
+	_handleLoadMore() {
 		const {batchCount, filterActive, itemsLoaded} = this.state;
 
 		if (filterActive) {
-			this.handleSearchRequest();
+			this._handleSearchRequest();
 		}
 		else {
-			this.handleIndexRequest();
+			this._handleIndexRequest();
 		}
 
 		this.state.itemsLoaded = itemsLoaded + batchCount;
 	}
 
-	handleSearchRequest(end = 0) {
+	_handleSearchRequest(end = 0) {
 		const {props, state} = this;
 
 		const {filter, model, sortBy} = props;
@@ -161,7 +161,7 @@ class Index extends JSXComponent {
 		}
 	}
 
-	handleUpdateDisplayBy() {
+	_handleUpdateDisplayBy() {
 		const {displayBy, model, updateDisplayBy} = this.props;
 
 		if ((model && model !== displayBy) || model === '') {
@@ -169,7 +169,7 @@ class Index extends JSXComponent {
 		}
 	}
 
-	handleUpdateFilter(filterData) {
+	_handleUpdateFilter(filterData) {
 		const {
 			model,
 			updateFilter
@@ -178,7 +178,7 @@ class Index extends JSXComponent {
 		updateFilter(filterData, 0, model);
 	}
 
-	handleUpdateItemsLoaded() {
+	_handleUpdateItemsLoaded() {
 		const {
 			model,
 			updateLastItemsLoaded
@@ -198,7 +198,7 @@ class Index extends JSXComponent {
 		}
 	}
 
-	handleUpdateSortBy(sortByData) {
+	_handleUpdateSortBy(sortByData) {
 		const {
 			model,
 			updateSortBy
@@ -207,11 +207,11 @@ class Index extends JSXComponent {
 		updateSortBy(sortByData, 0, model);
 	}
 
-	handleUpdateIncidentViewBy(model) {
+	_handleUpdateIncidentViewBy(model) {
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/${model}`);
 	}
 
-	handleUpdateChildViewBy(model) {
+	_handleUpdateChildViewBy(model) {
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/index/${model}`);
 	}
 
@@ -227,11 +227,11 @@ class Index extends JSXComponent {
 
 			this.state.itemsLoaded = 0;
 
-			this.handleLoadMore();
+			this._handleLoadMore();
 		}
 
 		if (!loading && resendSearchRequest) {
-			this.handleSearchRequest();
+			this._handleSearchRequest();
 
 			this.state.resendSearchRequest = false;
 		}
@@ -288,7 +288,7 @@ class Index extends JSXComponent {
 
 					<SelectInput
 						omitBlankOption={true}
-						onChange={this.handleUpdateChildViewBy}
+						onChange={this._handleUpdateChildViewBy}
 						options={WatsonConstants.inputConfig.children.viewByOptions}
 						value={model}
 					/>
@@ -314,7 +314,7 @@ class Index extends JSXComponent {
 
 					<SelectInput
 						omitBlankOption={true}
-						onChange={this.handleUpdateIncidentViewBy}
+						onChange={this._handleUpdateIncidentViewBy}
 						options={WatsonConstants.inputConfig.incidents.viewByOptions}
 						value={model}
 					/>
@@ -337,7 +337,7 @@ class Index extends JSXComponent {
 						filter={filter}
 						inputConfig={WatsonConstants.inputConfig[model].inputs}
 						label={Liferay.Language.get('add-filter')}
-						onChange={this.handleUpdateFilter}
+						onChange={this._handleUpdateFilter}
 					/>
 				</div>
 
@@ -345,7 +345,7 @@ class Index extends JSXComponent {
 					<div class="content-header">
 						<ContentHeader headerStringLeft={this.formatHeaderString(data, model)} headerStringRight={Liferay.Language.get('sort-by')} />
 
-						<SelectInput omitBlankOption={true} onChange={this.handleUpdateSortBy} options={WatsonConstants.inputConfig[model].sortByOptions} value={sortBy} />
+						<SelectInput omitBlankOption={true} onChange={this._handleUpdateSortBy} options={WatsonConstants.inputConfig[model].sortByOptions} value={sortBy} />
 					</div>
 
 					{((data.size > 0) || loading) &&
@@ -356,9 +356,9 @@ class Index extends JSXComponent {
 								hasMoreResults={data.size < modelCount}
 								incidentsData={incidentsData}
 								loading={loading}
-								loadMoreMethod={this.handleLoadMore}
+								loadMoreMethod={this._handleLoadMore}
 								model={model}
-								onClick={this.handleItemClick}
+								onClick={this._handleItemClick}
 								simple={false}
 								sortBy={sortBy}
 							/>
@@ -381,7 +381,7 @@ class Index extends JSXComponent {
 
 		const {hideLoadingOverlay, lastFocus, lastLoadedItemData, loading, model, updateHideLoadingOverlay, updateLastFocus} = this.props;
 
-		this.handleUpdateDisplayBy();
+		this._handleUpdateDisplayBy();
 
 		updateDOMTitle(WatsonConstants.inputConfig[model].pluralLabel);
 
@@ -414,10 +414,10 @@ class Index extends JSXComponent {
 
 		if (!firstRender && !loading && lastLoaded > 0 && (itemsLoaded < lastLoaded)) {
 			if (filterActive) {
-				this.handleSearchRequest(lastLoaded);
+				this._handleSearchRequest(lastLoaded);
 			}
 			else {
-				this.handleIndexRequest(lastLoaded);
+				this._handleIndexRequest(lastLoaded);
 			}
 
 			this.state.itemsLoaded = lastLoaded + itemsLoaded;

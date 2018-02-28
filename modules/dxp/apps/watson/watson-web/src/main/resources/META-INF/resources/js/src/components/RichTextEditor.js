@@ -9,11 +9,11 @@ class RichTextEditor extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnChange'
+			'_handleOnChange'
 		);
 	}
 
-	handleOnChange(newValue, delta, source) {
+	_handleOnChange(newValue, delta, source) {
 		const {disabled, inputId, onChange} = this.props;
 
 		const emptyEditorValue = newValue === '<p><br></p>';
@@ -34,7 +34,7 @@ class RichTextEditor extends JSXComponent {
 					className="watson-input rich-editor"
 					formats={formats}
 					modules={modules}
-					onChange={this.handleOnChange}
+					onChange={this._handleOnChange}
 					placeHolder={Liferay.Language.get('write-your-content-here')}
 					readOnly={disabled}
 					theme="snow"

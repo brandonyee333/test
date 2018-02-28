@@ -48,13 +48,13 @@ class GenericTranslationForm extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleAutoSave',
-			'handleRedirect',
-			'handleSubmit'
+			'_handleAutoSave',
+			'_handleRedirect',
+			'_handleSubmit'
 		);
 	}
 
-	handleAutoSave(formData) {
+	_handleAutoSave(formData) {
 		const {
 			disabled,
 			loading,
@@ -92,7 +92,7 @@ class GenericTranslationForm extends JSXComponent {
 		}
 	}
 
-	handleRedirect() {
+	_handleRedirect() {
 		const {model, parentModel, watsonChildId, watsonIncidentId, watsonPrimaryKey} = this.props;
 
 		const watsonParentPrimaryKey = watsonIncidentId ? watsonIncidentId : watsonChildId;
@@ -105,7 +105,7 @@ class GenericTranslationForm extends JSXComponent {
 		}
 	}
 
-	handleSubmit(data) {
+	_handleSubmit(data) {
 		const {props} = this;
 
 		const submitMethod = props[`translate${formatModelName(props.model, true)}`];
@@ -147,7 +147,7 @@ class GenericTranslationForm extends JSXComponent {
 				<div class="content">
 					<TranslationForm
 						autoSaveEnabled={autoSavedEnabled}
-						autoSaveMethod={this.handleAutoSave}
+						autoSaveMethod={this._handleAutoSave}
 						autoSaveResponse={autoSaveResponse}
 						disabled={disabled}
 						errors={errors}
@@ -155,10 +155,10 @@ class GenericTranslationForm extends JSXComponent {
 						formConfig={formConfig}
 						id={watsonPrimaryKey}
 						loading={loading}
-						redirect={this.handleRedirect}
+						redirect={this._handleRedirect}
 						response={response}
 						storeData={storeData}
-						submitMethod={this.handleSubmit}
+						submitMethod={this._handleSubmit}
 						translatedData={translatedData}
 					/>
 				</div>

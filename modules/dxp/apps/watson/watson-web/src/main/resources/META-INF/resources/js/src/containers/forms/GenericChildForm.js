@@ -79,23 +79,23 @@ class GenericChildForm extends JSXComponent {
 			editModelMethod(watsonPrimaryKey);
 		}
 
-		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+		Router.router().on('beforeNavigate', this._handleBeforeLeave);
 
-		window.onbeforeunload = this.handleBeforeLeave;
+		window.onbeforeunload = this._handleBeforeLeave;
 	}
 
 	created() {
 		bindAll(
 			this,
-			'handleBeforeLeave',
-			'handleCancel',
-			'handleClearFormData',
-			'handleClose',
-			'handleCreate',
-			'handleDelete',
-			'handleLeave',
-			'handleTranslationRequest',
-			'handleUpdateFormData'
+			'_handleBeforeLeave',
+			'_handleCancel',
+			'_handleClearFormData',
+			'_handleClose',
+			'_handleCreate',
+			'_handleDelete',
+			'_handleLeave',
+			'_handleTranslationRequest',
+			'_handleUpdateFormData'
 		);
 	}
 
@@ -118,14 +118,14 @@ class GenericChildForm extends JSXComponent {
 			);
 		}
 
-		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+		Router.router().off('beforeNavigate', this._handleBeforeLeave);
 
 		window.onbeforeunload = undefined;
 
-		this.handleClearFormData();
+		this._handleClearFormData();
 	}
 
-	handleBeforeLeave(data) {
+	_handleBeforeLeave(data) {
 		const {
 			action,
 			formData = {},
@@ -167,23 +167,23 @@ class GenericChildForm extends JSXComponent {
 		return retVal;
 	}
 
-	handleCancel() {
-		this.handleClearFormData();
+	_handleCancel() {
+		this._handleClearFormData();
 
 		const {model, watsonChildId} = this.props;
 
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/index`);
 	}
 
-	handleClearFormData() {
-		this.handleUpdateFormData({});
+	_handleClearFormData() {
+		this._handleUpdateFormData({});
 	}
 
-	handleClose() {
+	_handleClose() {
 		this.setState({showLeaveModal: false});
 	}
 
-	handleCreate(data) {
+	_handleCreate(data) {
 		const {props} = this;
 
 		const updateModelMethod = props[`update${formatModelName(props.model, true)}`];
@@ -193,7 +193,7 @@ class GenericChildForm extends JSXComponent {
 		this.state.dataSent = true;
 	}
 
-	handleDelete() {
+	_handleDelete() {
 		const {props} = this;
 
 		const {model, watsonChildId, watsonPrimaryKey} = props;
@@ -207,17 +207,17 @@ class GenericChildForm extends JSXComponent {
 		}
 	}
 
-	handleLeave() {
-		this.handleClearFormData();
+	_handleLeave() {
+		this._handleClearFormData();
 
-		this.handleClose();
+		this._handleClose();
 
 		this.setState({unlockNavigate: true});
 
 		Router.router().navigate(this.state.navigateAwayPath);
 	}
 
-	handleTranslationRequest() {
+	_handleTranslationRequest() {
 		const {props} = this;
 
 		const {model, watsonChildId, watsonPrimaryKey} = props;
@@ -235,7 +235,7 @@ class GenericChildForm extends JSXComponent {
 		requestModelTranslationMethod(translationRequestData);
 	}
 
-	handleUpdateFormData(formData) {
+	_handleUpdateFormData(formData) {
 		const {props} = this;
 
 		const {model, watsonPrimaryKey} = props;
@@ -301,28 +301,28 @@ class GenericChildForm extends JSXComponent {
 		let translateHref;
 
 		if (action === 'edit') {
-			deleteMethod = disabled ? undefined : this.handleDelete;
+			deleteMethod = disabled ? undefined : this._handleDelete;
 
 			headerStringLeft = storeData.get('name') || sub(Liferay.Language.get('edit-x'), modelLabel);
 			headerStringRight = getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp'));
 
 			reportHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/report`;
-			requestTranslationMethod = showTranslationButtons ? this.handleTranslationRequest : null;
+			requestTranslationMethod = showTranslationButtons ? this._handleTranslationRequest : null;
 
 			if (!disabled && WatsonConstants.currentUser.translatorRole && showTranslationButtons) {
 				translateHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/edit/${model}/${watsonPrimaryKey}/translate`;
 			}
 		}
 		else if (action === 'create' && watsonChildId) {
-			cancelMethod = this.handleCancel;
+			cancelMethod = this._handleCancel;
 			headerStringLeft = sub(Liferay.Language.get('create-x'), modelLabel);
 			headerStringRight = Liferay.Language.get('unsaved');
-			submitMethod = this.handleCreate;
+			submitMethod = this._handleCreate;
 		}
 
 		const modalFooter = [
-			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('watson-leave')} onClick={this.handleLeave} />,
-			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this.handleClose} />
+			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('watson-leave')} onClick={this._handleLeave} />,
+			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this._handleClose} />
 		];
 
 		return (
@@ -332,7 +332,7 @@ class GenericChildForm extends JSXComponent {
 				</div>
 
 				{showLeaveModal &&
-					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this.handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
+					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this._handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
 				}
 
 				<div class="content">
@@ -356,7 +356,7 @@ class GenericChildForm extends JSXComponent {
 						storeData={storeData}
 						submitMethod={submitMethod}
 						translateHref={translateHref}
-						updateFormData={this.handleUpdateFormData}
+						updateFormData={this._handleUpdateFormData}
 						watsonChildId={watsonChildId}
 						watsonPrimaryKey={watsonPrimaryKey}
 					/>

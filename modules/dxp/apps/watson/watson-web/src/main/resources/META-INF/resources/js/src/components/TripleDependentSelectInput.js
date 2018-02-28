@@ -17,10 +17,10 @@ class TripleDependentSelectInput extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnChangeModel',
-			'handleOnChangeModelId',
-			'handleOnChangeTypeId',
-			'handleUpdateValue'
+			'_handleOnChangeModel',
+			'_handleOnChangeModelId',
+			'_handleOnChangeTypeId',
+			'_handleUpdateValue'
 		);
 	}
 
@@ -43,7 +43,7 @@ class TripleDependentSelectInput extends JSXComponent {
 		return options;
 	}
 
-	handleOnChangeModel(selectedModel2) {
+	_handleOnChangeModel(selectedModel2) {
 		let classNameId2 = '';
 
 		if (selectedModel2) {
@@ -56,25 +56,25 @@ class TripleDependentSelectInput extends JSXComponent {
 			formattedValue.selectedModel2 = selectedModel2;
 			formattedValue.classNameId2 = classNameId2;
 
-			this.handleUpdateValue(selectedModel2, 'selectedModel2', formattedValue);
+			this._handleUpdateValue(selectedModel2, 'selectedModel2', formattedValue);
 		}
 		else {
-			this.handleUpdateValue(classNameId2, 'classNameId2');
-			this.handleUpdateValue(selectedModel2, 'selectedModel2');
+			this._handleUpdateValue(classNameId2, 'classNameId2');
+			this._handleUpdateValue(selectedModel2, 'selectedModel2');
 		}
 
 		this.refreshData(selectedModel2, false);
 	}
 
-	handleOnChangeModelId(classPK2) {
-		this.handleUpdateValue(classPK2, 'classPK2');
+	_handleOnChangeModelId(classPK2) {
+		this._handleUpdateValue(classPK2, 'classPK2');
 	}
 
-	handleOnChangeTypeId(typeWatsonListTypeId) {
-		this.handleUpdateValue(typeWatsonListTypeId, 'typeWatsonListTypeId');
+	_handleOnChangeTypeId(typeWatsonListTypeId) {
+		this._handleUpdateValue(typeWatsonListTypeId, 'typeWatsonListTypeId');
 	}
 
-	handleUpdateValue(option, key, formattedValue) {
+	_handleUpdateValue(option, key, formattedValue) {
 		this.props.onChange(option, key, formattedValue);
 	}
 
@@ -154,7 +154,7 @@ class TripleDependentSelectInput extends JSXComponent {
 					<SelectInput
 						cssClassName="narrow"
 						disabled={disabled}
-						onChange={this.handleOnChangeModel}
+						onChange={this._handleOnChangeModel}
 						options={selectedModelOptions}
 						value={selectedModel2}
 					/>
@@ -163,7 +163,7 @@ class TripleDependentSelectInput extends JSXComponent {
 						<SelectInput
 							cssClassName="wide"
 							disabled={disabled}
-							onChange={this.handleOnChangeModelId}
+							onChange={this._handleOnChangeModelId}
 							options={this.getIndexModelOptions(selectedModel2Data, omitClassPK)}
 							value={classPK2}
 						/>
@@ -173,7 +173,7 @@ class TripleDependentSelectInput extends JSXComponent {
 						<SelectInput
 							cssClassName="narrow"
 							disabled={disabled}
-							onChange={this.handleOnChangeTypeId}
+							onChange={this._handleOnChangeTypeId}
 							options={relationshipTypeOptions}
 							value={typeWatsonListTypeId}
 						/>

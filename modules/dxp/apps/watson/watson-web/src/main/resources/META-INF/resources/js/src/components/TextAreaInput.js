@@ -5,12 +5,12 @@ class TextAreaInput extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnBlur',
-			'handleOnChange'
+			'_handleOnBlur',
+			'_handleOnChange'
 		);
 	}
 
-	handleOnBlur(event) {
+	_handleOnBlur(event) {
 		const {value} = event.target;
 
 		const {inputId, onBlur} = this.props;
@@ -27,15 +27,15 @@ class TextAreaInput extends JSXComponent {
 			<textarea
 				autoFocus={autoFocus}
 				class="watson-input"
-				data-onblur={this.handleOnBlur}
-				data-oninput={this.handleOnChange}
+				data-onblur={this._handleOnBlur}
+				data-oninput={this._handleOnChange}
 				disabled={disabled}
 				value={value}
 			/>
 		);
 	}
 
-	handleOnChange(event) {
+	_handleOnChange(event) {
 		const {value} = event.target;
 
 		const {inputId, onChange} = this.props;

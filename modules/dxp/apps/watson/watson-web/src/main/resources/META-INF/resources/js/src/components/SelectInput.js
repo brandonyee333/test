@@ -10,7 +10,7 @@ class SelectInput extends JSXComponent {
 		bindAll(
 			this,
 			'_formatOptions',
-			'handleOnChange'
+			'_handleOnChange'
 		);
 	}
 
@@ -52,7 +52,7 @@ class SelectInput extends JSXComponent {
 		);
 	}
 
-	handleOnChange(option) {
+	_handleOnChange(option) {
 		const {props} = this;
 
 		if (props.onChange) {
@@ -97,7 +97,7 @@ class SelectInput extends JSXComponent {
 					autoFocus={autoFocus}
 					disabled={disabled}
 					isLoading={optionsLoading}
-					onChange={this.handleOnChange}
+					onChange={this._handleOnChange}
 					options={renderedOptions}
 					placeholder={placeHolder}
 					value={value ? value.toString() : ''}

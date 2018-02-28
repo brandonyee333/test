@@ -20,7 +20,7 @@ class HeatMap extends JSXComponent {
 			'drawHeatMap',
 			'formatHeatMapData',
 			'formatMarkerData',
-			'handleMapsReady'
+			'_handleMapsReady'
 		);
 	}
 
@@ -101,7 +101,7 @@ class HeatMap extends JSXComponent {
 		return markers;
 	}
 
-	handleMapsReady() {
+	_handleMapsReady() {
 		this.setState({mapsReady: true});
 	}
 
@@ -127,8 +127,8 @@ class HeatMap extends JSXComponent {
 					<div class="map-wrapper" >
 						<GoogleMap
 							center={center}
-							onClick={this.handleOnClick}
-							onReady={this.handleMapsReady}
+							onClick={this._handleOnClick}
+							onReady={this._handleMapsReady}
 							options={specialMapOptions}
 							zoom={zoom}
 						/>

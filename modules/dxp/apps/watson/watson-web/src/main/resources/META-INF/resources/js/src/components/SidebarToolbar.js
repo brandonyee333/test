@@ -9,7 +9,7 @@ class SidebarToolbar extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnClick'
+			'_handleOnClick'
 		);
 	}
 
@@ -23,7 +23,7 @@ class SidebarToolbar extends JSXComponent {
 		return formattedOptions;
 	}
 
-	handleOnClick(event) {
+	_handleOnClick(event) {
 		const {target} = event;
 
 		if (target) {
@@ -47,22 +47,22 @@ class SidebarToolbar extends JSXComponent {
 		return (
 			<div class="watson-sidebar-toolbar">
 				<span class="upper">
-					<a href={WatsonConstants.urls.baseURL} id="watson-logo-link" onClick={this.handleOnClick} />
+					<a href={WatsonConstants.urls.baseURL} id="watson-logo-link" onClick={this._handleOnClick} />
 
 					{WatsonConstants.currentUser.incidentStaffRole &&
-						<a href={`${WatsonConstants.urls.baseURL}/incidents`} id="incidents" onClick={this.handleOnClick} title={Liferay.Language.get('incident-report')} />
+						<a href={`${WatsonConstants.urls.baseURL}/incidents`} id="incidents" onClick={this._handleOnClick} title={Liferay.Language.get('incident-report')} />
 					}
 
 					{WatsonConstants.currentUser.childrensHomeStaffRole &&
-						<a href={WatsonConstants.urls.children} id="children" onClick={this.handleOnClick} title={Liferay.Language.get('children-home')} />
+						<a href={WatsonConstants.urls.children} id="children" onClick={this._handleOnClick} title={Liferay.Language.get('children-home')} />
 					}
 
 					{WatsonConstants.currentUser.incidentStaffRole &&
-						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="heatmap" onClick={this.handleOnClick} title={Liferay.Language.get('heatmap')} />
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/heatmap`} id="heatmap" onClick={this._handleOnClick} title={Liferay.Language.get('heatmap')} />
 					}
 
 					{WatsonConstants.currentUser.incidentStaffRole &&
-						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="report" onClick={this.handleOnClick} title={Liferay.Language.get('reports')} />
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/metrics/report`} id="report" onClick={this._handleOnClick} title={Liferay.Language.get('reports')} />
 					}
 
 				</span>
@@ -78,7 +78,7 @@ class SidebarToolbar extends JSXComponent {
 					</div>
 
 					{WatsonConstants.currentUser.portalAdministratorRole &&
-						<a href={`${WatsonConstants.urls.baseURL}/incidents/admin`} id="admin" onClick={this.handleOnClick} title={Liferay.Language.get('administrator-console')} />
+						<a href={`${WatsonConstants.urls.baseURL}/incidents/admin`} id="admin" onClick={this._handleOnClick} title={Liferay.Language.get('administrator-console')} />
 					}
 
 					<a href={`${themeDisplay.getPortalURL()}${themeDisplay.getPathMain()}/portal/logout`} id="logout" title={Liferay.Language.get('logout')} />

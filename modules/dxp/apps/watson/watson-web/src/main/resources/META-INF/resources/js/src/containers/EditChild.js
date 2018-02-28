@@ -41,8 +41,8 @@ class EditChild extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleNavigationOnChange',
-			'handlePrintReport'
+			'_handleNavigationOnChange',
+			'_handlePrintReport'
 		);
 	}
 
@@ -529,13 +529,13 @@ class EditChild extends JSXComponent {
 		return view;
 	}
 
-	handleNavigationOnChange(newNavigationState) {
+	_handleNavigationOnChange(newNavigationState) {
 		const {updateCollapsedEntries, watsonChildId} = this.props;
 
 		updateCollapsedEntries(newNavigationState, watsonChildId);
 	}
 
-	handlePrintReport() {
+	_handlePrintReport() {
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/${this.props.watsonChildId}/report`);
 	}
 
@@ -809,9 +809,9 @@ class EditChild extends JSXComponent {
 				<div class="navigation-sidebar">
 					<NavigationHeader mainHeader={childName} metaHeader={childMetaHeader} subHeader={childTypeLabel} />
 
-					<Navigation entries={nav} navigationState={collapsedEntries} onChange={this.handleNavigationOnChange} />
+					<Navigation entries={nav} navigationState={collapsedEntries} onChange={this._handleNavigationOnChange} />
 
-					<Button label={Liferay.Language.get('print-report')} onClick={this.handlePrintReport} />
+					<Button label={Liferay.Language.get('print-report')} onClick={this._handlePrintReport} />
 				</div>
 
 				{this.getCurrentView(action, childDisabled, childName, entryId, model, watsonChildId)}

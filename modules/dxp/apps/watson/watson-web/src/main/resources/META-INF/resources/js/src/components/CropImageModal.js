@@ -9,8 +9,8 @@ class CropImageModal extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleCancel',
-			'handleSave',
+			'_handleCancel',
+			'_handleSave',
 			'initializeCropper_'
 		);
 	}
@@ -21,13 +21,13 @@ class CropImageModal extends JSXComponent {
 		}
 	}
 
-	handleCancel() {
+	_handleCancel() {
 		this.setState({showModal: false});
 
 		this.props.onCancel();
 	}
 
-	handleSave() {
+	_handleSave() {
 		const {imageData, onSubmit} = this.props;
 
 		const cropData = mapValues(
@@ -61,8 +61,8 @@ class CropImageModal extends JSXComponent {
 		);
 
 		const modalFooter = [
-			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('cancel')} onClick={this.handleCancel} />,
-			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('save')} onclick={this.handleSave} />
+			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('cancel')} onClick={this._handleCancel} />,
+			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('save')} onclick={this._handleSave} />
 		];
 
 		return (
@@ -70,7 +70,7 @@ class CropImageModal extends JSXComponent {
 				{showModal &&
 					<Modal
 						body={modalBody}
-						close={this.handleCancel}
+						close={this._handleCancel}
 						footer={modalFooter}
 						header={Liferay.Language.get('crop-image')}
 					/>

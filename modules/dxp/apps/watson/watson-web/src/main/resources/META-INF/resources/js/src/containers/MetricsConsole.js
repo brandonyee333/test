@@ -27,9 +27,9 @@ class MetricsConsole extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnChange',
-			'handleUpdateFilter',
-			'handleUpdateViewBy'
+			'_handleOnChange',
+			'_handleUpdateFilter',
+			'_handleUpdateViewBy'
 		);
 	}
 
@@ -47,7 +47,7 @@ class MetricsConsole extends JSXComponent {
 				<HeatMap
 					data={data}
 					loading={loading}
-					updateViewBy={this.handleUpdateViewBy}
+					updateViewBy={this._handleUpdateViewBy}
 					viewBy={viewBy}
 				/>
 			);
@@ -62,7 +62,7 @@ class MetricsConsole extends JSXComponent {
 					contentHeader={contentHeader}
 					data={data}
 					loading={loading}
-					onChange={this.handleOnChange}
+					onChange={this._handleOnChange}
 				/>
 			);
 		}
@@ -70,7 +70,7 @@ class MetricsConsole extends JSXComponent {
 		return currentView;
 	}
 
-	handleOnChange(dateRangeString) {
+	_handleOnChange(dateRangeString) {
 		if (this.state.dateRangeString !== dateRangeString) {
 			this.setState(
 				{
@@ -81,7 +81,7 @@ class MetricsConsole extends JSXComponent {
 		}
 	}
 
-	handleUpdateFilter(filterData) {
+	_handleUpdateFilter(filterData) {
 		const {updateFilter} = this.props;
 
 		updateFilter(filterData, 1, 'incidents');
@@ -89,7 +89,7 @@ class MetricsConsole extends JSXComponent {
 		this.state.resendRequest = true;
 	}
 
-	handleUpdateViewBy(viewBy) {
+	_handleUpdateViewBy(viewBy) {
 		const {state} = this;
 
 		if (state.viewBy !== viewBy) {
@@ -139,7 +139,7 @@ class MetricsConsole extends JSXComponent {
 							filter={incidentsFilter}
 							inputConfig={WatsonConstants.inputConfig.metrics.heatmaps.inputs}
 							label={Liferay.Language.get('add-filter')}
-							onChange={this.handleUpdateFilter}
+							onChange={this._handleUpdateFilter}
 						/>
 					}
 
@@ -150,7 +150,7 @@ class MetricsConsole extends JSXComponent {
 
 						<DateRangeInput
 							disabled={false}
-							onChange={this.handleOnChange}
+							onChange={this._handleOnChange}
 						/>
 					}
 

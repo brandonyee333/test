@@ -9,26 +9,26 @@ class DoubleDependentSelectInput extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnChangeInputValue',
-			'handleOnChangeListType',
-			'handleOnChangePrimaryValue',
-			'handleUpdateValue'
+			'_handleOnChangeInputValue',
+			'_handleOnChangeListType',
+			'_handleOnChangePrimaryValue',
+			'_handleUpdateValue'
 		);
 	}
 
-	handleOnChangeInputValue(textValue) {
-		this.handleUpdateValue(textValue, 'value');
+	_handleOnChangeInputValue(textValue) {
+		this._handleUpdateValue(textValue, 'value');
 	}
 
-	handleOnChangeListType(selectedListType) {
-		this.handleUpdateValue(selectedListType, 'watsonListTypeId');
+	_handleOnChangeListType(selectedListType) {
+		this._handleUpdateValue(selectedListType, 'watsonListTypeId');
 	}
 
-	handleOnChangePrimaryValue(primary) {
-		this.handleUpdateValue(primary, 'primary');
+	_handleOnChangePrimaryValue(primary) {
+		this._handleUpdateValue(primary, 'primary');
 	}
 
-	handleUpdateValue(option, key) {
+	_handleUpdateValue(option, key) {
 		const {
 			props: {
 				inputId,
@@ -63,7 +63,7 @@ class DoubleDependentSelectInput extends JSXComponent {
 			<div class="dynamic-double-select-group">
 				<SelectInput
 					disabled={disabled}
-					onChange={this.handleOnChangeListType}
+					onChange={this._handleOnChangeListType}
 					options={options}
 					value={watsonListTypeId}
 				/>
@@ -72,7 +72,7 @@ class DoubleDependentSelectInput extends JSXComponent {
 					<div class="input-and-toggle" >
 						<Input
 							disabled={disabled}
-							onChange={this.handleOnChangeInputValue}
+							onChange={this._handleOnChangeInputValue}
 							value={inputValue}
 						/>
 
@@ -82,7 +82,7 @@ class DoubleDependentSelectInput extends JSXComponent {
 								cssClass="primary"
 								disabled={disabled}
 								label={['', toggleLabel]}
-								onChange={this.handleOnChangePrimaryValue}
+								onChange={this._handleOnChangePrimaryValue}
 							/>
 						}
 					</div>

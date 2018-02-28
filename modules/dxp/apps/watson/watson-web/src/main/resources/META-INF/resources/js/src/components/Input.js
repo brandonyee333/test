@@ -9,19 +9,19 @@ class Input extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnBlur',
-			'handleOnChange',
-			'handleOnChangeValue'
+			'_handleOnBlur',
+			'_handleOnChange',
+			'_handleOnChangeValue'
 		);
 
-		this.debouncedOnChangeValue_ = debounce(this.handleOnChangeValue, 100);
+		this.debouncedOnChangeValue_ = debounce(this._handleOnChangeValue, 100);
 	}
 
 	detached() {
 		this.debouncedOnChangeValue_.cancel();
 	}
 
-	handleOnBlur(event) {
+	_handleOnBlur(event) {
 		const {inputId, onBlur} = this.props;
 
 		const {value} = event.target;
@@ -31,14 +31,14 @@ class Input extends JSXComponent {
 		}
 	}
 
-	handleOnChange(value) {
+	_handleOnChange(value) {
 		const {inputId, onChange} = this.props;
 
 		onChange(value, inputId);
 	}
 
-	handleOnChangeValue(event) {
-		this.handleOnChange(event.target.value);
+	_handleOnChangeValue(event) {
+		this._handleOnChange(event.target.value);
 	}
 
 	render() {
@@ -60,7 +60,7 @@ class Input extends JSXComponent {
 					cssClass="watson-input"
 					disabled={disabled}
 					label={[Liferay.Language.get('no'), Liferay.Language.get('yes')]}
-					onChange={this.handleOnChange}
+					onChange={this._handleOnChange}
 				/>
 			);
 		}
@@ -69,7 +69,7 @@ class Input extends JSXComponent {
 				<DateInput
 					autoFocus={autoFocus}
 					disabled={disabled}
-					onChange={this.handleOnChange}
+					onChange={this._handleOnChange}
 					value={value}
 				/>
 			);
@@ -80,7 +80,7 @@ class Input extends JSXComponent {
 					autoFocus={autoFocus}
 					cssClass="watson-input"
 					disabled={disabled}
-					onChange={this.handleOnChange}
+					onChange={this._handleOnChange}
 					value={value}
 				/>
 			);
@@ -90,7 +90,7 @@ class Input extends JSXComponent {
 				<input
 					autoFocus={autoFocus}
 					class="watson-input"
-					data-onblur={this.handleOnBlur}
+					data-onblur={this._handleOnBlur}
 					data-oninput={this.debouncedOnChangeValue_}
 					disabled={disabled}
 					placeholder={placeholder}

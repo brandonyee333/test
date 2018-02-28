@@ -8,19 +8,19 @@ class FileViewer extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleRemoveImage',
-			'handleKeyUp',
-			'handleMaximize',
-			'handleMinimizeClick',
+			'_handleRemoveImage',
+			'_handleKeyUp',
+			'_handleMaximize',
+			'_handleMinimizeClick',
 			'minimize'
 		);
 	}
 
 	detached() {
-		document.removeEventListener('keyup', this.handleKeyUp);
+		document.removeEventListener('keyup', this._handleKeyUp);
 	}
 
-	handleRemoveImage() {
+	_handleRemoveImage() {
 		const {disabled, inputId, onChange} = this.props;
 
 		if (!disabled && onChange) {
@@ -28,21 +28,21 @@ class FileViewer extends JSXComponent {
 		}
 	}
 
-	handleKeyUp(event) {
+	_handleKeyUp(event) {
 		if (event.keyCode === 27) {
 			this.minimize();
 		}
 	}
 
-	handleMaximize() {
+	_handleMaximize() {
 		if (this.state.type) {
 			this.state.maximized = true;
 
-			document.addEventListener('keyup', this.handleKeyUp);
+			document.addEventListener('keyup', this._handleKeyUp);
 		}
 	}
 
-	handleMinimizeClick(event) {
+	_handleMinimizeClick(event) {
 		const {type} = this.state;
 
 		if (event.target.nodeName !== type) {
@@ -51,7 +51,7 @@ class FileViewer extends JSXComponent {
 	}
 
 	minimize() {
-		document.removeEventListener('keyup', this.handleKeyUp);
+		document.removeEventListener('keyup', this._handleKeyUp);
 
 		this.state.maximized = false;
 	}
@@ -67,17 +67,17 @@ class FileViewer extends JSXComponent {
 
 		if (type) {
 			if (type === 'IMG') {
-				filePreview = (<div class="file-viewer-small" onClick={this.handleMaximize} style={`background-image: url(${fileData.previewURL});`} title={Liferay.Language.get('maximize')} />);
+				filePreview = (<div class="file-viewer-small" onClick={this._handleMaximize} style={`background-image: url(${fileData.previewURL});`} title={Liferay.Language.get('maximize')} />);
 
 				fullScreenView = (<img class="file" src={fileData.previewURL} />);
 			}
 			else if (type === 'VIDEO') {
-				filePreview = (<div class="file-viewer-small" onClick={this.handleMaximize} style={`background-image: url(${clickToPlay});`} title={Liferay.Language.get('maximize')} />);
+				filePreview = (<div class="file-viewer-small" onClick={this._handleMaximize} style={`background-image: url(${clickToPlay});`} title={Liferay.Language.get('maximize')} />);
 
 				fullScreenView = (<video class="file" controls={true} src={fileData.previewURL} />);
 			}
 			else if (type === 'AUDIO') {
-				filePreview = (<div class="file-viewer-small" onClick={this.handleMaximize} style={`background-image: url(${clickToPlay});`} title={Liferay.Language.get('maximize')} />);
+				filePreview = (<div class="file-viewer-small" onClick={this._handleMaximize} style={`background-image: url(${clickToPlay});`} title={Liferay.Language.get('maximize')} />);
 
 				fullScreenView = (<audio class="file" controls={true} src={fileData.previewURL} />);
 			}
@@ -104,18 +104,18 @@ class FileViewer extends JSXComponent {
 					{filePreview}
 
 					{!disabled &&
-						<Button className={`remove-button ${className}`} onClick={this.handleRemoveImage} />
+						<Button className={`remove-button ${className}`} onClick={this._handleRemoveImage} />
 					}
 				</div>
 
 				{(maximized && fullScreenView) &&
 					<div class="file-viewer-maximized-wrapper">
-						<a class="view-port" onClick={this.handleMinimizeClick}>
+						<a class="view-port" onClick={this._handleMinimizeClick}>
 							{fullScreenView}
 						</a>
 
 						<span class="viewer-close">
-							<Button className="close-button" onClick={this.handleMinimizeClick} />
+							<Button className="close-button" onClick={this._handleMinimizeClick} />
 						</span>
 					</div>
 				}

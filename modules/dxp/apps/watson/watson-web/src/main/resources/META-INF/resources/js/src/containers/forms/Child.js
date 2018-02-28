@@ -24,23 +24,23 @@ import {
 
 class ChildForm extends JSXComponent {
 	attached() {
-		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+		Router.router().on('beforeNavigate', this._handleBeforeLeave);
 
-		window.onbeforeunload = this.handleBeforeLeave;
+		window.onbeforeunload = this._handleBeforeLeave;
 	}
 
 	created() {
 		bindAll(
 			this,
-			'handleBeforeLeave',
-			'handleCancel',
-			'handleCitizenshipRequest',
-			'handleClearFormData',
-			'handleClose',
-			'handleDelete',
-			'handleLeave',
-			'handleTranslationRequest',
-			'handleUpdateFormData'
+			'_handleBeforeLeave',
+			'_handleCancel',
+			'_handleCitizenshipRequest',
+			'_handleClearFormData',
+			'_handleClose',
+			'_handleDelete',
+			'_handleLeave',
+			'_handleTranslationRequest',
+			'_handleUpdateFormData'
 		);
 	}
 
@@ -61,7 +61,7 @@ class ChildForm extends JSXComponent {
 			);
 		}
 
-		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+		Router.router().off('beforeNavigate', this._handleBeforeLeave);
 
 		window.onbeforeunload = undefined;
 	}
@@ -91,7 +91,7 @@ class ChildForm extends JSXComponent {
 		];
 	};
 
-	handleBeforeLeave(data) {
+	_handleBeforeLeave(data) {
 		const {
 			formData = {},
 			storeData,
@@ -147,13 +147,13 @@ class ChildForm extends JSXComponent {
 		return retVal;
 	}
 
-	handleCancel() {
-		this.handleClearFormData();
+	_handleCancel() {
+		this._handleClearFormData();
 
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/children/index`);
 	}
 
-	handleCitizenshipRequest() {
+	_handleCitizenshipRequest() {
 		const {props} = this;
 
 		const {requestChildCitizenship, watsonChildId} = props;
@@ -168,15 +168,15 @@ class ChildForm extends JSXComponent {
 		requestChildCitizenship(citizenshipRequestData);
 	}
 
-	handleClearFormData() {
-		this.handleUpdateFormData({});
+	_handleClearFormData() {
+		this._handleUpdateFormData({});
 	}
 
-	handleClose() {
+	_handleClose() {
 		this.setState({showLeaveModal: false});
 	}
 
-	handleDelete() {
+	_handleDelete() {
 		const {watsonChildId} = this.props;
 
 		if (watsonChildId) {
@@ -186,17 +186,17 @@ class ChildForm extends JSXComponent {
 		}
 	}
 
-	handleLeave() {
-		this.handleClearFormData();
+	_handleLeave() {
+		this._handleClearFormData();
 
-		this.handleClose();
+		this._handleClose();
 
 		this.setState({unlockNavigate: true});
 
 		Router.router().navigate(this.state.navigateAwayPath);
 	}
 
-	handleTranslationRequest() {
+	_handleTranslationRequest() {
 		const {props} = this;
 
 		const {model, requestChildrenTranslation, watsonChildId} = props;
@@ -212,7 +212,7 @@ class ChildForm extends JSXComponent {
 		requestChildrenTranslation(translationRequestData);
 	}
 
-	handleUpdateFormData(formData) {
+	_handleUpdateFormData(formData) {
 		const {
 			updateChildrenFormData,
 			watsonChildId
@@ -256,12 +256,12 @@ class ChildForm extends JSXComponent {
 		let translateHref;
 
 		if (action === 'edit') {
-			deleteMethod = disabled ? undefined : this.handleDelete;
+			deleteMethod = disabled ? undefined : this._handleDelete;
 
 			headerStringLeft = storeData.get('name') || Liferay.Language.get('edit-child');
 			headerStringRight = getModifiedMoment(storeData.get('modifiedUserName'), storeData.get('modifiedDateTimeStamp'));
 
-			requestTranslationMethod = this.handleTranslationRequest;
+			requestTranslationMethod = this._handleTranslationRequest;
 
 			if (!disabled && WatsonConstants.currentUser.translatorRole) {
 				translateHref = `${WatsonConstants.urls.baseURL}/children/${watsonChildId}/translate`;
@@ -283,15 +283,15 @@ class ChildForm extends JSXComponent {
 				};
 
 				additionalTopBarButtons.push(
-					<ButtonModal action={this.handleCitizenshipRequest} buttons={optionButtons} modalData={modal} />
+					<ButtonModal action={this._handleCitizenshipRequest} buttons={optionButtons} modalData={modal} />
 				);
 			}
 
 		}
 
 		const modalFooter = [
-			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('watson-leave')} onClick={this.handleLeave} />,
-			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this.handleClose} />
+			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('watson-leave')} onClick={this._handleLeave} />,
+			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this._handleClose} />
 		];
 
 		return (
@@ -301,7 +301,7 @@ class ChildForm extends JSXComponent {
 				</div>
 
 				{showLeaveModal &&
-					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this.handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
+					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this._handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
 				}
 
 				<div class="content">
@@ -329,7 +329,7 @@ class ChildForm extends JSXComponent {
 						storeData={storeData}
 						submitMethod={submitMethod}
 						translateHref={translateHref}
-						updateFormData={this.handleUpdateFormData}
+						updateFormData={this._handleUpdateFormData}
 						watsonChildId={watsonChildId}
 						watsonPrimaryKey={watsonChildId}
 					/>

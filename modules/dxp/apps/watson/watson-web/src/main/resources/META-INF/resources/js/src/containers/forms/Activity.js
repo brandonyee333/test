@@ -39,28 +39,28 @@ class ActivityForm extends JSXComponent {
 			props.fetchActivitiesDraft(watsonIncidentId);
 		}
 
-		Router.router().on('beforeNavigate', this.handleBeforeLeave);
+		Router.router().on('beforeNavigate', this._handleBeforeLeave);
 
-		this.state.intervalId = setInterval(() => this.handleAutoSave(), 60000);
+		this.state.intervalId = setInterval(() => this._handleAutoSave(), 60000);
 
-		window.onbeforeunload = this.handleBeforeLeave;
+		window.onbeforeunload = this._handleBeforeLeave;
 	}
 
 	created() {
 		bindAll(
 			this,
-			'handleAutoCreate',
-			'handleAutoSave',
-			'handleBeforeLeave',
-			'handleCancel',
-			'handleClearFormData',
-			'handleClose',
-			'handleCreate',
-			'handleDelete',
-			'handleLeave',
-			'handleTranslationRequest',
-			'handleUpdate',
-			'handleUpdateFormData'
+			'_handleAutoCreate',
+			'_handleAutoSave',
+			'_handleBeforeLeave',
+			'_handleCancel',
+			'_handleClearFormData',
+			'_handleClose',
+			'_handleCreate',
+			'_handleDelete',
+			'_handleLeave',
+			'_handleTranslationRequest',
+			'_handleUpdate',
+			'_handleUpdateFormData'
 		);
 	}
 
@@ -81,11 +81,11 @@ class ActivityForm extends JSXComponent {
 			);
 		}
 
-		Router.router().off('beforeNavigate', this.handleBeforeLeave);
+		Router.router().off('beforeNavigate', this._handleBeforeLeave);
 
 		window.onbeforeunload = undefined;
 
-		this.handleClearFormData();
+		this._handleClearFormData();
 	}
 
 	disposed() {
@@ -107,7 +107,7 @@ class ActivityForm extends JSXComponent {
 		];
 	};
 
-	handleAutoCreate() {
+	_handleAutoCreate() {
 		const {
 			autoCreateActivities,
 			formData = {},
@@ -143,7 +143,7 @@ class ActivityForm extends JSXComponent {
 		}
 	}
 
-	handleAutoSave() {
+	_handleAutoSave() {
 		const {
 			action,
 			disabled,
@@ -156,7 +156,7 @@ class ActivityForm extends JSXComponent {
 
 		if (!requestFailure && !loading && !disabled) {
 			if (action === 'create') {
-				this.handleAutoCreate();
+				this._handleAutoCreate();
 			}
 			else {
 				formData.id = watsonActivityId;
@@ -192,7 +192,7 @@ class ActivityForm extends JSXComponent {
 		}
 	}
 
-	handleBeforeLeave(data) {
+	_handleBeforeLeave(data) {
 		const {
 			action,
 			formData = {},
@@ -243,29 +243,29 @@ class ActivityForm extends JSXComponent {
 		return retVal;
 	}
 
-	handleCancel() {
-		this.handleClearFormData();
+	_handleCancel() {
+		this._handleClearFormData();
 
 		const {watsonIncidentId} = this.props;
 
 		Router.router().navigate(`${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/index`);
 	}
 
-	handleClearFormData() {
-		this.handleUpdateFormData({});
+	_handleClearFormData() {
+		this._handleUpdateFormData({});
 	}
 
-	handleClose() {
+	_handleClose() {
 		this.setState({showLeaveModal: false});
 	}
 
-	handleCreate(data) {
+	_handleCreate(data) {
 		this.props.updateActivities(data);
 
 		this.state.dataSent = true;
 	}
 
-	handleDelete() {
+	_handleDelete() {
 		const {destroyActivities, watsonActivityId, watsonIncidentId} = this.props;
 
 		if (watsonActivityId) {
@@ -275,17 +275,17 @@ class ActivityForm extends JSXComponent {
 		}
 	}
 
-	handleLeave() {
-		this.handleClearFormData();
+	_handleLeave() {
+		this._handleClearFormData();
 
-		this.handleClose();
+		this._handleClose();
 
 		this.setState({unlockNavigate: true});
 
 		Router.router().navigate(this.state.navigateAwayPath);
 	}
 
-	handleTranslationRequest() {
+	_handleTranslationRequest() {
 		const {props} = this;
 
 		const {model, requestActivitiesTranslation, watsonActivityId, watsonIncidentId} = props;
@@ -301,13 +301,13 @@ class ActivityForm extends JSXComponent {
 		requestActivitiesTranslation(translationRequestData);
 	}
 
-	handleUpdate(data) {
+	_handleUpdate(data) {
 		this.props.updateActivities(data);
 
 		this.state.autoCreated = false;
 	}
 
-	handleUpdateFormData(formData) {
+	_handleUpdateFormData(formData) {
 		const {
 			updateActivitiesFormData,
 			watsonActivityId
@@ -337,7 +337,7 @@ class ActivityForm extends JSXComponent {
 			disabled,
 			headerStringLeft = Liferay.Language.get('create-activity'),
 			headerStringRight,
-			submitMethod = this.handleUpdate,
+			submitMethod = this._handleUpdate,
 			watsonActivityId
 		} = props;
 
@@ -370,7 +370,7 @@ class ActivityForm extends JSXComponent {
 		let translateHref;
 
 		if (action === 'edit') {
-			deleteMethod = disabled ? undefined : this.handleDelete;
+			deleteMethod = disabled ? undefined : this._handleDelete;
 
 			disabled = disabled || !storeData.get('editable');
 
@@ -396,21 +396,21 @@ class ActivityForm extends JSXComponent {
 
 			reportHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${watsonActivityId}/report`;
 
-			requestTranslationMethod = this.handleTranslationRequest;
+			requestTranslationMethod = this._handleTranslationRequest;
 
 			if (!disabled && WatsonConstants.currentUser.translatorRole) {
 				translateHref = `${WatsonConstants.urls.baseURL}/incidents/${watsonIncidentId}/edit/activities/${watsonActivityId}/translate`;
 			}
 		}
 		else if (action === 'create' && watsonIncidentId) {
-			cancelMethod = this.handleCancel;
+			cancelMethod = this._handleCancel;
 			headerStringRight = Liferay.Language.get('unsaved');
-			submitMethod = this.handleCreate;
+			submitMethod = this._handleCreate;
 		}
 
 		const modalFooter = [
-			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('watson-leave')} onClick={this.handleLeave} />,
-			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this.handleClose} />
+			<Button className="modal-button" key="btn-action" label={Liferay.Language.get('watson-leave')} onClick={this._handleLeave} />,
+			<Button className="modal-button" key="btn-cancel" label={Liferay.Language.get('stay')} onclick={this._handleClose} />
 		];
 
 		return (
@@ -420,7 +420,7 @@ class ActivityForm extends JSXComponent {
 				</div>
 
 				{showLeaveModal &&
-					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this.handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
+					<Modal body={Liferay.Language.get('you-have-unsaved-changes-that-will-be-lost-if-you-continue')} close={this._handleClose} footer={modalFooter} header={Liferay.Language.get('do-you-want-to-leave-this-page')} />
 				}
 
 				<div class="content">
@@ -445,7 +445,7 @@ class ActivityForm extends JSXComponent {
 						storeData={storeData}
 						submitMethod={submitMethod}
 						translateHref={translateHref}
-						updateFormData={this.handleUpdateFormData}
+						updateFormData={this._handleUpdateFormData}
 						watsonIncidentId={watsonIncidentId}
 						watsonPrimaryKey={watsonActivityId}
 					/>

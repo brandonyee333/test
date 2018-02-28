@@ -9,13 +9,13 @@ class DateRangeInput extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleOnChange',
+			'_handleOnChange',
 			'onDatesChange',
 			'onFocusChange'
 		);
 	}
 
-	handleOnChange(dateRangeString) {
+	_handleOnChange(dateRangeString) {
 		const {inputId, onChange} = this.props;
 
 		onChange(dateRangeString, inputId);
@@ -73,7 +73,7 @@ class DateRangeInput extends JSXComponent {
 			const dateRangeString = `${startDateMillis}-${endDateMillis}`;
 
 			if (this.props.value !== dateRangeString) {
-				this.handleOnChange(dateRangeString);
+				this._handleOnChange(dateRangeString);
 			}
 		}
 	}

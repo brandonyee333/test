@@ -11,9 +11,9 @@ class GoogleMapWrapper extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'handleMapsReady',
-			'handleOnClick',
-			'handleUpdateValue'
+			'_handleMapsReady',
+			'_handleOnClick',
+			'_handleUpdateValue'
 		);
 	}
 
@@ -94,7 +94,7 @@ class GoogleMapWrapper extends JSXComponent {
 			}
 
 			if (Liferay.Watson.mapComponent.marker) {
-				this.handleUpdateValue(
+				this._handleUpdateValue(
 					Liferay.Watson.mapComponent.marker.getPosition().lat(),
 					Liferay.Watson.mapComponent.marker.getPosition().lng()
 				);
@@ -102,11 +102,11 @@ class GoogleMapWrapper extends JSXComponent {
 		}
 	}
 
-	handleMapsReady() {
+	_handleMapsReady() {
 		this.setState({mapsReady: true});
 	}
 
-	handleOnClick(event) {
+	_handleOnClick(event) {
 		const {disabled = false} = this.props;
 
 		if (!disabled) {
@@ -121,11 +121,11 @@ class GoogleMapWrapper extends JSXComponent {
 
 			this.findStreet(latLng);
 
-			this.handleUpdateValue(latitude, longitude);
+			this._handleUpdateValue(latitude, longitude);
 		}
 	}
 
-	handleUpdateValue(latitude, longitude) {
+	_handleUpdateValue(latitude, longitude) {
 		latitude = parseFloat(latitude);
 		longitude = parseFloat(longitude);
 
@@ -299,8 +299,8 @@ class GoogleMapWrapper extends JSXComponent {
 			<div class="map-wrapper" >
 				<GoogleMap
 					center={center}
-					onClick={this.handleOnClick}
-					onReady={this.handleMapsReady}
+					onClick={this._handleOnClick}
+					onReady={this._handleMapsReady}
 					zoom={zoomLevel}
 				/>
 			</div>
