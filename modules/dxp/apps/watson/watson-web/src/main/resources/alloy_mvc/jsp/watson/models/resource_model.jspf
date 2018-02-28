@@ -84,6 +84,7 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 		List<WatsonIncident> affiliatedIncidents = getAffiliatedIncidents(watsonResource);
 
 		jsonObject.put("affiliatedIncidents", affiliatedIncidents.size());
+
 		jsonObject.put("createDate", watsonResource.getCreateDate());
 		jsonObject.put("description", watsonResource.getDescription(locale));
 		jsonObject.put("id", watsonResource.getPrimaryKey());
