@@ -8,7 +8,7 @@ import sub from 'string-sub';
 import Button from '../../components/Button';
 import ButtonModal from '../../components/ButtonModal';
 import ContentHeader from '../../components/ContentHeader';
-import {convertMapToObject, deepCompareIsEqual, getModifiedMoment, updateDOMTitle} from '../../lib/util';
+import {convertMapToObject, deepCompareIsEqual, getModifiedMoment} from '../../lib/util';
 import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 import PersonChildLink from '../../components/PersonChildLink';
@@ -21,6 +21,8 @@ import {
 	updateChildrenDataManually,
 	updateChildrenFormData
 } from '../../actions/children';
+
+import {updatePageTitle} from '../../actions/display';
 
 class ChildForm extends JSXComponent {
 	attached() {
@@ -42,6 +44,12 @@ class ChildForm extends JSXComponent {
 			'_handleTranslationRequest',
 			'_handleUpdateFormData'
 		);
+
+		const {updatePageTitle, watsonChildId} = this.props;
+
+		const childName = sub(Liferay.Language.get('child-x'), watsonChildId);
+
+		updatePageTitle(childName);
 	}
 
 	detached() {
@@ -337,14 +345,6 @@ class ChildForm extends JSXComponent {
 			</div>
 		);
 	}
-
-	rendered() {
-		const {storeData} = this.props;
-
-		const childName = sub(Liferay.Language.get('child-x'), storeData.get('id') || '');
-
-		updateDOMTitle(childName);
-	}
 }
 
 ChildForm.PROPS = {
@@ -429,6 +429,11 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				updateChildrenFormData(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		}
 	};

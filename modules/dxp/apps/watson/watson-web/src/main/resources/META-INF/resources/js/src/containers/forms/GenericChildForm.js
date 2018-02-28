@@ -7,7 +7,7 @@ import sub from 'string-sub';
 
 import Button from '../../components/Button';
 import ContentHeader from '../../components/ContentHeader';
-import {convertMapToObject, deepCompareIsEqual, formatModelName, getModifiedMoment, updateDOMTitle} from '../../lib/util';
+import {convertMapToObject, deepCompareIsEqual, formatModelName, getModifiedMoment} from '../../lib/util';
 import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 
@@ -34,6 +34,8 @@ import {
 	updateDocumentsDataManually,
 	updateDocumentsFormData
 } from '../../actions/documents';
+
+import {updatePageTitle} from '../../actions/display';
 
 import {
 	destroyIllnesses,
@@ -97,6 +99,12 @@ class GenericChildForm extends JSXComponent {
 			'_handleTranslationRequest',
 			'_handleUpdateFormData'
 		);
+
+		const {modelLabel, updatePageTitle, watsonPrimaryKey} = this.props;
+
+		const modelName = sub(Liferay.Language.get('x-x'), modelLabel, watsonPrimaryKey);
+
+		updatePageTitle(modelName);
 	}
 
 	detached() {
@@ -364,14 +372,6 @@ class GenericChildForm extends JSXComponent {
 			</div>
 		);
 	}
-
-	rendered() {
-		const {childName, modelLabel, storeData} = this.props;
-
-		const modelName = sub(Liferay.Language.get('x-x'), modelLabel, storeData.get('id') || '');
-
-		updateDOMTitle(sub(Liferay.Language.get('child-x-x'), childName, modelName));
-	}
 }
 
 GenericChildForm.PROPS = {
@@ -568,6 +568,11 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				updateLegalsFormData(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		},
 		updatePhysicalExams: data => {

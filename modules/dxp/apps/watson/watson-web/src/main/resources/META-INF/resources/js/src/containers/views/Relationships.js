@@ -5,8 +5,8 @@ import sub from 'string-sub';
 
 import ContentHeader from '../../components/ContentHeader';
 import RelationshipsView from '../../components/RelationshipsView';
-import {updateDOMTitle} from '../../lib/util';
 
+import {updatePageTitle} from '../../actions/display';
 import {editRelationships, updateRelationshipsDataManually} from '../../actions/relationships';
 
 class RelationshipsForm extends JSXComponent {
@@ -16,6 +16,12 @@ class RelationshipsForm extends JSXComponent {
 		if (watsonIncidentId) {
 			editRelationships(watsonIncidentId);
 		}
+	}
+
+	created() {
+		const {incidentName, updatePageTitle} = this.props;
+
+		updatePageTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, Liferay.Language.get('relationships')));
 	}
 
 	render() {
@@ -48,14 +54,6 @@ class RelationshipsForm extends JSXComponent {
 			</div>
 		);
 	}
-
-	rendered() {
-		const {props} = this;
-
-		const {incidentName} = props;
-
-		updateDOMTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, Liferay.Language.get('relationships')));
-	}
 }
 
 RelationshipsForm.PROPS = {
@@ -70,6 +68,11 @@ function mapDispatchToProps(dispatch) {
 		editRelationships: watsonIncidentId => {
 			dispatch(
 				editRelationships(watsonIncidentId)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		},
 		updateRelationshipsDataManually: data => {

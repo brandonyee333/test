@@ -191,6 +191,3 @@ export function getURLForLanguageId(languageId) {
 
 	return `${origin}/${languageId}${pathName}`;
 }
-
-export function updateDOMTitle(newTitle) {
-}

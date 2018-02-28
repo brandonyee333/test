@@ -171,7 +171,7 @@ class TranslationForm extends JSXComponent {
 				<BottomBar
 					buttons={bottomBarButtons}
 					formIsValid={!disabled}
-					_handleSubmit={this._handleSubmit}
+					handleSubmit={this._handleSubmit}
 					message={message}
 				/>
 			</div>

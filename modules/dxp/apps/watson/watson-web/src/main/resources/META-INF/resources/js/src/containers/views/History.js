@@ -9,7 +9,7 @@ import HistoryView from '../../components/HistoryView';
 import Toggle from '../../components/Toggle';
 
 import {indexHistories} from '../../actions/histories';
-import {updateDOMTitle} from '../../lib/util';
+import {updatePageTitle} from '../../actions/display';
 
 class HistoriesView extends JSXComponent {
 	attached() {
@@ -32,6 +32,10 @@ class HistoriesView extends JSXComponent {
 			'_handleUpdateDeletedChecked',
 			'_handleUpdateUpdatedChecked'
 		);
+
+		const {primaryName, updatePageTitle, watsonParentModel} = this.props;
+
+		updatePageTitle(`${WatsonConstants.inputConfig[watsonParentModel].singularLabel} ${primaryName}, ${Liferay.Language.get('history')}`);
 	}
 
 	_handleUpdateCreatedChecked(checked) {
@@ -106,12 +110,6 @@ class HistoriesView extends JSXComponent {
 			</div>
 		);
 	}
-
-	rendered() {
-		const {primaryName, watsonParentModel} = this.props;
-
-		updateDOMTitle(`${WatsonConstants.inputConfig[watsonParentModel].singularLabel} ${primaryName}, ${Liferay.Language.get('history')}`);
-	}
 }
 
 HistoriesView.PROPS = {
@@ -134,6 +132,11 @@ function mapDispatchToProps(dispatch) {
 		indexHistories: data => {
 			dispatch(
 				indexHistories(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		}
 	};

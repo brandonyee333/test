@@ -11,7 +11,7 @@ import Navigation from '../components/Navigation';
 
 import {addIncidents, updateIncidentAddressFormData, updateIncidentsFormData} from '../actions/incidents';
 
-import {updateDOMTitle} from '../lib/util';
+import {updatePageTitle} from '../actions/display';
 
 class CreateIncident extends JSXComponent {
 	attached() {
@@ -227,8 +227,10 @@ class CreateIncident extends JSXComponent {
 		);
 	}
 
-	rendered() {
-		updateDOMTitle(Liferay.Language.get('create-incident'));
+	rendered(firstRender) {
+		if (firstRender) {
+			this.props.updatePageTitle(Liferay.Language.get('create-incident'));
+		}
 	}
 }
 
@@ -264,6 +266,11 @@ function mapDispatchToProps(dispatch) {
 		updateIncidentsFormData: data => {
 			dispatch(
 				updateIncidentsFormData(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		}
 	};

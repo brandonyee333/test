@@ -9,7 +9,7 @@ import AffiliationLink from '../../components/AffiliationLink';
 import Button from '../../components/Button';
 import ButtonModal from '../../components/ButtonModal';
 import ContentHeader from '../../components/ContentHeader';
-import {convertMapToObject, deepCompareIsEqual, getModifiedMoment, updateDOMTitle} from '../../lib/util';
+import {convertMapToObject, deepCompareIsEqual, getModifiedMoment} from '../../lib/util';
 import Form from '../../components/Form';
 import MicroForm from '../../components/MicroForm';
 import Modal from '../../components/Modal';
@@ -25,6 +25,8 @@ import {
 } from '../../actions/addresses';
 
 import {updateIncidentAddressFormData} from '../../actions/incidents';
+
+import {updatePageTitle} from '../../actions/display';
 
 class AddressForm extends JSXComponent {
 	attached() {
@@ -56,6 +58,12 @@ class AddressForm extends JSXComponent {
 			'_handleTranslationRequest',
 			'_handleUpdateFormData'
 		);
+
+		const {updatePageTitle, watsonAddressId} = this.props;
+
+		const addressName = sub(Liferay.Language.get('address-x'), watsonAddressId);
+
+		updatePageTitle(addressName);
 	}
 
 	detached() {
@@ -395,14 +403,6 @@ class AddressForm extends JSXComponent {
 			</div>
 		);
 	}
-
-	rendered() {
-		const {incidentName, storeData} = this.props;
-
-		const addressName = sub(Liferay.Language.get('address-x'), storeData.get('id') || '');
-
-		updateDOMTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, addressName));
-	}
 }
 
 AddressForm.PROPS = {
@@ -516,6 +516,11 @@ function mapDispatchToProps(dispatch) {
 		updateIncidentAddressFormData: data => {
 			dispatch(
 				updateIncidentAddressFormData(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		}
 	};

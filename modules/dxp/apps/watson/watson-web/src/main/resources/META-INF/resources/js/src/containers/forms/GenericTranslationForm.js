@@ -13,6 +13,7 @@ import {fetchAddressesTranslation, updateAddresses, viewAddresses} from '../../a
 import {fetchCaseworkActivitiesTranslation, updateCaseworkActivities, viewCaseworkActivities} from '../../actions/casework-activities';
 import {fetchCounselingReportsTranslation, updateCounselingReports, viewCounselingReports} from '../../actions/counseling-reports';
 import {fetchChildrenTranslation, updateChildren, viewChildren} from '../../actions/children';
+import {updatePageTitle} from '../../actions/display';
 import {fetchLegalsTranslation, updateLegals, viewLegals} from '../../actions/legals';
 import {fetchIllnessesTranslation, updateIllnesses, viewIllnesses} from '../../actions/illnesses';
 import {fetchIncidentsTranslation, updateIncidents, viewIncidents} from '../../actions/incidents';
@@ -23,7 +24,7 @@ import {fetchResourcesTranslation, updateResources, viewResources} from '../../a
 import {fetchVehiclesTranslation, updateVehicles, viewVehicles} from '../../actions/vehicles';
 
 import sendRequest from '../../lib/request';
-import {formatModelName, getModifiedMoment, updateDOMTitle} from '../../lib/util';
+import {formatModelName, getModifiedMoment} from '../../lib/util';
 
 class GenericTranslationForm extends JSXComponent {
 	attached() {
@@ -52,6 +53,12 @@ class GenericTranslationForm extends JSXComponent {
 			'_handleRedirect',
 			'_handleSubmit'
 		);
+
+		const {primaryName, updatePageTitle, watsonPrimaryKey} = this.props;
+
+		const translateName = sub(Liferay.Language.get('translate-x'), watsonPrimaryKey);
+
+		updatePageTitle(`${primaryName} ${translateName}`);
 	}
 
 	_handleAutoSave(formData) {
@@ -164,14 +171,6 @@ class GenericTranslationForm extends JSXComponent {
 				</div>
 			</div>
 		);
-	}
-
-	rendered() {
-		const {primaryName, storeData} = this.props;
-
-		const translateName = sub(Liferay.Language.get('translate-x'), storeData.get('id') || '');
-
-		updateDOMTitle(`${primaryName} ${translateName}`);
 	}
 }
 
@@ -421,6 +420,11 @@ function mapDispatchToProps(dispatch) {
 		translateVehicles: data => {
 			dispatch(
 				updateVehicles(data, 'updateTranslation.json')
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		},
 		viewActivities: watsonActivityId => {

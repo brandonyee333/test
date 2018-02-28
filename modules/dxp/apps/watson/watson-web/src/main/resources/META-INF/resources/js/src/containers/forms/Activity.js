@@ -7,7 +7,7 @@ import sub from 'string-sub';
 
 import Button from '../../components/Button';
 import ContentHeader from '../../components/ContentHeader';
-import {convertMapToObject, deepCompareIsEqual, getModifiedMoment, updateDOMTitle} from '../../lib/util';
+import {convertMapToObject, deepCompareIsEqual, getModifiedMoment} from '../../lib/util';
 import Form from '../../components/Form';
 import Modal from '../../components/Modal';
 import sendRequest from '../../lib/request';
@@ -21,6 +21,8 @@ import {
 	updateActivitiesDataManually,
 	updateActivitiesFormData
 } from '../../actions/activities';
+
+import {updatePageTitle} from '../../actions/display';
 
 class ActivityForm extends JSXComponent {
 	attached() {
@@ -62,6 +64,12 @@ class ActivityForm extends JSXComponent {
 			'_handleUpdate',
 			'_handleUpdateFormData'
 		);
+
+		const {updatePageTitle, watsonActivityId} = this.props;
+
+		const activityName = sub(Liferay.Language.get('activity-x'), watsonActivityId);
+
+		updatePageTitle(activityName);
 	}
 
 	detached() {
@@ -453,14 +461,6 @@ class ActivityForm extends JSXComponent {
 			</div>
 		);
 	}
-
-	rendered() {
-		const {incidentName, storeData} = this.props;
-
-		const activityName = sub(Liferay.Language.get('activity-x'), storeData.get('id') || '');
-
-		updateDOMTitle(sub(Liferay.Language.get('incident-x-x'), incidentName, activityName));
-	}
 }
 
 ActivityForm.PROPS = {
@@ -559,6 +559,11 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				updateActivitiesFormData(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		}
 	};

@@ -11,7 +11,7 @@ import Navigation from '../components/Navigation';
 import NavigationHeader from '../components/NavigationHeader';
 
 import {fetchIncidentMetrics, updateIncidentsDataManually} from '../actions/incidents';
-import {updateFilter} from '../actions/display';
+import {updateFilter, updatePageTitle} from '../actions/display';
 
 class MetricsConsole extends JSXComponent {
 	clearHeatmap() {
@@ -31,6 +31,8 @@ class MetricsConsole extends JSXComponent {
 			'_handleUpdateFilter',
 			'_handleUpdateViewBy'
 		);
+
+		this.props.updatePageTitle('metrics');
 	}
 
 	detached() {
@@ -246,6 +248,11 @@ function mapDispatchToProps(dispatch) {
 		updateIncidentsDataManually: () => {
 			dispatch(
 				updateIncidentsDataManually({metricsData: []})
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		}
 	};

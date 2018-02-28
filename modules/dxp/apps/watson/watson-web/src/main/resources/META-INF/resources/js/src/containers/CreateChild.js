@@ -10,7 +10,7 @@ import Navigation from '../components/Navigation';
 
 import {addChildren, updateChildrenFormData} from '../actions/children';
 
-import {updateDOMTitle} from '../lib/util';
+import {updatePageTitle} from '../actions/display';
 
 class CreateChild extends JSXComponent {
 	attached() {
@@ -181,8 +181,10 @@ class CreateChild extends JSXComponent {
 		);
 	}
 
-	rendered() {
-		updateDOMTitle(Liferay.Language.get('create-child'));
+	rendered(firstRender) {
+		if (firstRender) {
+			this.props.updatePageTitle(Liferay.Language.get('create-child'));
+		}
 	}
 }
 
@@ -212,6 +214,11 @@ function mapDispatchToProps(dispatch) {
 		updateChildrenFormData: data => {
 			dispatch(
 				updateChildrenFormData(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		}
 	};

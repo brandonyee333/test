@@ -15,7 +15,7 @@ import {indexAddresses, searchAddresses} from '../../actions/addresses';
 import {indexCaseworkActivities, searchCaseworkActivities} from '../../actions/casework-activities';
 import {indexChildren, searchChildren} from '../../actions/children';
 import {indexCounselingReports, searchCounselingReports} from '../../actions/counseling-reports';
-import {updateFilter, updateHideLoadingOverlay, updateSortBy} from '../../actions/display';
+import {updateFilter, updateHideLoadingOverlay, updatePageTitle, updateSortBy} from '../../actions/display';
 import {indexDocuments, searchDocuments} from '../../actions/documents';
 import {indexIllnesses, searchIllnesses} from '../../actions/illnesses';
 import {indexIncidents, searchIncidents} from '../../actions/incidents';
@@ -26,7 +26,7 @@ import {indexProgressReports, searchProgressReports} from '../../actions/progres
 import {indexResources, searchResources} from '../../actions/resources';
 import {indexVehicles, searchVehicles} from '../../actions/vehicles';
 
-import {formatModelName, getPluralMessage, updateDOMTitle} from '../../lib/util';
+import {formatModelName, getPluralMessage} from '../../lib/util';
 
 class ViewIndex extends JSXComponent {
 	created() {
@@ -40,7 +40,11 @@ class ViewIndex extends JSXComponent {
 			'refreshData'
 		);
 
-		this.props.updateHideLoadingOverlay(true);
+		const {model, primaryName, updateHideLoadingOverlay, updatePageTitle} = this.props;
+
+		updateHideLoadingOverlay(true);
+
+		updatePageTitle(`${primaryName} ${WatsonConstants.inputConfig[model].pluralLabel}`);
 	}
 
 	disposed() {
@@ -368,13 +372,11 @@ class ViewIndex extends JSXComponent {
 	rendered() {
 		this.refreshData(false);
 
-		const {hideLoadingOverlay, model, primaryName, updateHideLoadingOverlay} = this.props;
+		const {hideLoadingOverlay, updateHideLoadingOverlay} = this.props;
 
 		if (!hideLoadingOverlay) {
 			updateHideLoadingOverlay(true);
 		}
-
-		updateDOMTitle(`${primaryName} ${WatsonConstants.inputConfig[model].pluralLabel}`);
 	}
 
 	syncFilter(newState, oldState) {
@@ -642,6 +644,11 @@ function mapDispatchToProps(dispatch) {
 		updateHideLoadingOverlay: data => {
 			dispatch(
 				updateHideLoadingOverlay(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		},
 		updateSortBy: (sortByData, model, watsonParentPrimaryKey) => {

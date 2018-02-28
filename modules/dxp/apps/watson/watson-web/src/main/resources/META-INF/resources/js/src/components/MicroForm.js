@@ -157,7 +157,7 @@ class MicroForm extends JSXComponent {
 				<BottomBar
 					buttons={bottomBarButtons}
 					formIsValid={formErrorsCount < 1}
-					_handleSubmit={this._handleSubmit}
+					handleSubmit={this._handleSubmit}
 					message={message}
 					messageCssClass={status}
 				/>

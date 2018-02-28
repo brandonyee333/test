@@ -7,9 +7,11 @@ import sub from 'string-sub';
 
 import Button from '../../components/Button';
 import ContentHeader from '../../components/ContentHeader';
-import {convertMapToObject, deepCompareIsEqual, getModifiedMoment, updateDOMTitle} from '../../lib/util';
+import {convertMapToObject, deepCompareIsEqual, getModifiedMoment} from '../../lib/util';
 import Form from '../../components/Form';
 import Modal from '../../components/Modal';
+
+import {updatePageTitle} from '../../actions/display';
 
 import {
 	indexIncidents,
@@ -37,6 +39,10 @@ class IncidentForm extends JSXComponent {
 			'_handleTranslationRequest',
 			'_handleUpdateFormData'
 		);
+
+		const {incidentName, updatePageTitle, watsonIncidentId} = this.props;
+
+		updatePageTitle(sub(Liferay.Language.get('incident-x'), incidentName || watsonIncidentId));
 	}
 
 	detached() {
@@ -264,12 +270,6 @@ class IncidentForm extends JSXComponent {
 			</div>
 		);
 	}
-
-	rendered() {
-		const {incidentName} = this.props;
-
-		updateDOMTitle(sub(Liferay.Language.get('incident-x'), incidentName || ''));
-	}
 }
 
 IncidentForm.PROPS = {
@@ -361,6 +361,11 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				updateIncidentsFormData(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		}
 	};

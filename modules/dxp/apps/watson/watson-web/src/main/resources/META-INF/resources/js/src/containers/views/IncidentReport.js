@@ -12,11 +12,12 @@ import GoogleMap from '../../components/GoogleMap';
 import {viewIncidents} from '../../actions/incidents';
 import {indexActivities} from '../../actions/activities';
 import {indexAddresses} from '../../actions/addresses';
+import {updatePageTitle} from '../../actions/display';
 import {indexPeople} from '../../actions/people';
 import {indexResources} from '../../actions/resources';
 import {indexVehicles} from '../../actions/vehicles';
 
-import {getFormattedDate, getMimeType, updateDOMTitle} from '../../lib/util';
+import {getFormattedDate, getMimeType} from '../../lib/util';
 
 class IncidentReport extends JSXComponent {
 	attached() {
@@ -43,6 +44,12 @@ class IncidentReport extends JSXComponent {
 			'renderIncidentHeader',
 			'renderModel'
 		);
+
+		const {updatePageTitle, watsonIncidentId} = this.props;
+
+		const incidentName = sub(Liferay.Language.get('incident-x'), watsonIncidentId);
+
+		updatePageTitle(sub(Liferay.Language.get('print-x'), incidentName));
 	}
 
 	disposed() {
@@ -377,12 +384,6 @@ class IncidentReport extends JSXComponent {
 	}
 
 	rendered(firstRender) {
-		const {currentIncidentData} = this.props;
-
-		const incidentName = currentIncidentData.get('name') || '';
-
-		updateDOMTitle(sub(Liferay.Language.get('print-x'), incidentName));
-
 		if (firstRender) {
 			const element = document.getElementById('print-helper-message');
 
@@ -537,6 +538,11 @@ function mapDispatchToProps(dispatch) {
 		indexVehicles: id => {
 			dispatch(
 				indexVehicles({id})
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		},
 		viewIncidents: id => {

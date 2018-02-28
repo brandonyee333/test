@@ -18,7 +18,7 @@ import {indexAddresses, searchAddresses} from '../actions/addresses';
 import {indexCaseworkActivities, searchCaseworkActivities} from '../actions/casework-activities';
 import {indexChildren, searchChildren} from '../actions/children';
 import {indexCounselingReports, searchCounselingReports} from '../actions/counseling-reports';
-import {updateDisplayBy, updateFilter, updateHideLoadingOverlay, updateLastFocus, updateLastItemsLoaded, updateSortBy} from '../actions/display';
+import {updateDisplayBy, updateFilter, updateHideLoadingOverlay, updateLastFocus, updateLastItemsLoaded, updatePageTitle, updateSortBy} from '../actions/display';
 import {indexDocuments, searchDocuments} from '../actions/documents';
 import {indexIllnesses, searchIllnesses} from '../actions/illnesses';
 import {indexIncidents, searchIncidents} from '../actions/incidents';
@@ -29,7 +29,7 @@ import {indexProgressReports, searchProgressReports} from '../actions/progress-r
 import {indexResources, searchResources} from '../actions/resources';
 import {indexVehicles, searchVehicles} from '../actions/vehicles';
 
-import {formatModelName, getPluralMessage, updateDOMTitle} from '../lib/util';
+import {formatModelName, getPluralMessage} from '../lib/util';
 
 class Index extends JSXComponent {
 	created() {
@@ -48,6 +48,10 @@ class Index extends JSXComponent {
 			'refreshData',
 			'scrollToPosition'
 		);
+
+		const {model, updatePageTitle} = this.props;
+
+		updatePageTitle(WatsonConstants.inputConfig[model].pluralLabel);
 	}
 
 	detached() {
@@ -379,11 +383,9 @@ class Index extends JSXComponent {
 	rendered(firstRender) {
 		this.refreshData(false);
 
-		const {hideLoadingOverlay, lastFocus, lastLoadedItemData, loading, model, updateHideLoadingOverlay, updateLastFocus} = this.props;
+		const {hideLoadingOverlay, lastFocus, lastLoadedItemData, loading, updateHideLoadingOverlay, updateLastFocus} = this.props;
 
 		this._handleUpdateDisplayBy();
-
-		updateDOMTitle(WatsonConstants.inputConfig[model].pluralLabel);
 
 		const autoScrolling = this.scrollToPosition(firstRender, lastLoadedItemData, loading);
 
@@ -688,6 +690,11 @@ function mapDispatchToProps(dispatch) {
 		updateLastItemsLoaded: data => {
 			dispatch(
 				updateLastItemsLoaded(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		},
 		updateSortBy: (sortByData, watsonParentPrimaryKey, model) => {

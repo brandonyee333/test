@@ -12,13 +12,14 @@ import GoogleMap from '../../components/GoogleMap';
 import {indexCaseworkActivities} from '../../actions/casework-activities';
 import {indexCounselingReports} from '../../actions/counseling-reports';
 import {indexDocuments} from '../../actions/documents';
+import {updatePageTitle} from '../../actions/display';
 import {indexIllnesses} from '../../actions/illnesses';
 import {indexLegals} from '../../actions/legals';
 import {indexPhysicalExams} from '../../actions/physical-exams';
 import {indexProgressReports} from '../../actions/progress-reports';
 import {viewChildren} from '../../actions/children';
 
-import {formatModelName, getFormattedDate, getMimeType, updateDOMTitle} from '../../lib/util';
+import {formatModelName, getFormattedDate, getMimeType} from '../../lib/util';
 
 class ChildReport extends JSXComponent {
 	attached() {
@@ -48,6 +49,12 @@ class ChildReport extends JSXComponent {
 			'renderChildHeader',
 			'renderModel'
 		);
+
+		const {updatePageTitle, watsonChildId} = this.props;
+
+		const childName = sub(Liferay.Language.get('child-x'), watsonChildId);
+
+		updatePageTitle(sub(Liferay.Language.get('print-x'), childName));
 	}
 
 	disposed() {
@@ -391,12 +398,6 @@ class ChildReport extends JSXComponent {
 	}
 
 	rendered(firstRender) {
-		const {currentChildData} = this.props;
-
-		const childName = currentChildData.get('name') || '';
-
-		updateDOMTitle(sub(Liferay.Language.get('print-x'), childName));
-
 		if (firstRender) {
 			const element = document.getElementById('print-helper-message');
 
@@ -572,6 +573,11 @@ function mapDispatchToProps(dispatch) {
 
 			dispatch(
 				indexProgressReports(data)
+			);
+		},
+		updatePageTitle: data => {
+			dispatch(
+				updatePageTitle(data)
 			);
 		},
 		viewChildren: id => {
