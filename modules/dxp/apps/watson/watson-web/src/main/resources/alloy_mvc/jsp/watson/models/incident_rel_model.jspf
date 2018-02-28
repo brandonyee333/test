@@ -225,6 +225,7 @@ public static class WatsonIncidentRel extends WatsonIncidentRelBaseModel {
 		Date createDate = watsonIncidentRel.getCreateDate();
 
 		jsonObject.put("createDate", getFormattedDate(createDate, locale));
+		jsonObject.put("timeStamp", createDate.getTime());
 
 		jsonObject.put("id", watsonIncidentRel.getPrimaryKey());
 
@@ -234,7 +235,6 @@ public static class WatsonIncidentRel extends WatsonIncidentRelBaseModel {
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("reportedBy", watsonIncidentRel.getUserName());
-		jsonObject.put("timeStamp", createDate.getTime());
 		jsonObject.put("type", watsonIncidentRel.getType());
 		jsonObject.put("watsonIncidentId1", watsonIncidentRel.getWatsonIncidentId1());
 		jsonObject.put("watsonIncidentId2", watsonIncidentRel.getWatsonIncidentId2());
