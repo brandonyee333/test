@@ -114,6 +114,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 
 		jsonObject.put("modifiedDate", modifiedDate);
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonAddress));
 		jsonObject.put("name", watsonAddress.getName(locale));
 		jsonObject.put("number", watsonAddress.getNumber());
