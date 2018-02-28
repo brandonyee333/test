@@ -129,6 +129,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 
 		jsonObject.put("modifiedDate", modifiedDate);
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
+
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonChild));
 		jsonObject.put("name", watsonChild.getPrimaryName());
 
