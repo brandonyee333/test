@@ -131,6 +131,7 @@ public static class WatsonIncidentRel extends WatsonIncidentRelBaseModel {
 
 				incidentRelJSONObject.put("name", watsonIncident.getName());
 				incidentRelJSONObject.put("typeWatsonListTypeId", watsonIncident.getTypeWatsonListTypeId());
+
 				incidentRelJSONObject.put("watsonIncidentId", watsonIncidentRel.getWatsonIncidentId2());
 				incidentRelJSONObject.put("watsonIncidentRelId", watsonIncidentRel.getWatsonIncidentRelId());
 			}
