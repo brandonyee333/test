@@ -89,6 +89,7 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 		Date createDate = watsonHistory.getCreateDate();
 
 		jsonObject.put("createDate", getFormattedDate(createDate, locale));
+		jsonObject.put("timeStamp", createDate.getTime());
 
 		jsonObject.put("id", watsonHistory.getPrimaryKey());
 
@@ -98,8 +99,6 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("reportedBy", watsonHistory.getUserName());
-		jsonObject.put("timeStamp", createDate.getTime());
-
 		jsonObject.put("type", watsonHistory.getType());
 		jsonObject.put("typeLabel", getHistoryTypeLabel(watsonHistory.getType()));
 		jsonObject.put("watsonHistoryId", watsonHistory.getWatsonHistoryId());
