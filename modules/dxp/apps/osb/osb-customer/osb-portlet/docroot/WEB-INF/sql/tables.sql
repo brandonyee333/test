@@ -621,17 +621,6 @@ create table OSB_TicketCall (
 	instructions TEXT null
 );
 
-create table OSB_TicketCannedResponse (
-	ticketCannedResponseId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	name STRING null,
-	content STRING null,
-	useCount INTEGER
-);
-
 create table OSB_TicketComment (
 	ticketCommentId LONG not null primary key,
 	userId LONG,

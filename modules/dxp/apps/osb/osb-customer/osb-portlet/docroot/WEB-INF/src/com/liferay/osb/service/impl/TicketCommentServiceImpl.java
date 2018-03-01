@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.exception.TicketCommentBodyException;
 import com.liferay.osb.model.TicketComment;
 import com.liferay.osb.model.TicketSolutionConstants;
 import com.liferay.osb.service.base.TicketCommentServiceBaseImpl;
@@ -44,9 +43,9 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 
 	public TicketComment addTicketComment(
 			long userId, long ticketEntryId, String body, int type,
-			int visibility, int status, long ticketCannedResponseId,
-			int[] pendingTypes, List<ObjectValuePair<String, File>> files,
-			List<Integer> types, ServiceContext serviceContext)
+			int visibility, int status, int[] pendingTypes,
+			List<ObjectValuePair<String, File>> files, List<Integer> types,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		if ((files != null) && !files.isEmpty()) {
@@ -65,25 +64,21 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 		}
 
 		return addTicketComment(
-			userId, ticketEntryId, body, type, visibility, status,
-			ticketCannedResponseId, pendingTypes, serviceContext);
+			userId, ticketEntryId, body, type, visibility, status, pendingTypes,
+			serviceContext);
 	}
 
 	public TicketComment addTicketComment(
 			long userId, long ticketEntryId, String body, int type,
-			int visibility, int status, long ticketCannedResponseId,
-			int[] pendingTypes, ServiceContext serviceContext)
+			int visibility, int status, int[] pendingTypes,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		validateAddTicketComment(ticketEntryId, status, visibility);
 
-		if (ticketCannedResponseId > 0) {
-			checkTokens(body);
-		}
-
 		return ticketCommentLocalService.addTicketComment(
-			userId, ticketEntryId, body, type, visibility, status,
-			ticketCannedResponseId, pendingTypes, serviceContext);
+			userId, ticketEntryId, body, type, visibility, status, pendingTypes,
+			serviceContext);
 	}
 
 	public TicketComment deleteTicketComment(long ticketCommentId)
@@ -101,9 +96,8 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 
 	public TicketComment updateTicketComment(
 			long userId, long ticketCommentId, long ticketEntryId, String body,
-			int visibility, int status, long ticketCannedResponseId,
-			int[] pendingTypes, List<ObjectValuePair<String, File>> files,
-			List<Integer> types)
+			int visibility, int status, int[] pendingTypes,
+			List<ObjectValuePair<String, File>> files, List<Integer> types)
 		throws PortalException {
 
 		TicketComment ticketComment =
@@ -146,7 +140,7 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 
 		return ticketCommentLocalService.updateTicketComment(
 			userId, ticketCommentId, ticketEntryId, body, visibility, status,
-			ticketCannedResponseId, pendingTypes, serviceContext);
+			pendingTypes, serviceContext);
 	}
 
 	public TicketComment updateTicketCommentType(long ticketCommentId, int type)
@@ -157,12 +151,6 @@ public class TicketCommentServiceImpl extends TicketCommentServiceBaseImpl {
 
 		return ticketCommentLocalService.updateTicketCommentType(
 			ticketCommentId, type);
-	}
-
-	protected void checkTokens(String body) throws PortalException {
-		if ((body.indexOf("<[[") != -1) || (body.indexOf("]]>") != -1)) {
-			throw new TicketCommentBodyException();
-		}
 	}
 
 	protected void validateAddTicketComment(

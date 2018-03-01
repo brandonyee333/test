@@ -213,18 +213,6 @@ else {
 			<portlet:namespace />showForm(0, false, hasMaximumDraftTicketComment);
 		}
 
-		function <portlet:namespace />selectCannedResponse(ticketCannedResponseId, ticketCannedResponseContent) {
-			document.<portlet:namespace />ticketCommentFm.<portlet:namespace />ticketCannedResponseId.value = ticketCannedResponseId;
-
-			var commentBody = document.getElementById('<portlet:namespace />commentBody0');
-
-			if ((commentBody.value != '') && (commentBody.value.substr(-1) != '\n')) {
-				commentBody.value += '\n';
-			}
-
-			commentBody.value += ticketCannedResponseContent;
-		}
-
 		function <portlet:namespace />toggleComment(event, i, type) {
 			var comment = document.getElementById('<portlet:namespace />' + type + 'CommentContainer' + i);
 

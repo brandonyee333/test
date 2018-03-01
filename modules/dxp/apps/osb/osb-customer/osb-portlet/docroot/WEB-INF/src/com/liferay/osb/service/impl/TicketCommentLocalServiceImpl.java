@@ -151,13 +151,13 @@ public class TicketCommentLocalServiceImpl
 			ticketWorker.getUserId(), ticketEntryId,
 			preferences.getValue("awayMessage", StringPool.BLANK),
 			TicketCommentConstants.TYPE_AUTOMATED, VisibilityConstants.PUBLIC,
-			WorkflowConstants.STATUS_APPROVED, 0, new int[0], serviceContext);
+			WorkflowConstants.STATUS_APPROVED, new int[0], serviceContext);
 	}
 
 	public TicketComment addTicketComment(
 			long userId, long ticketEntryId, String body, int type,
-			int visibility, int status, long ticketCannedResponseId,
-			int[] pendingTypes, ServiceContext serviceContext)
+			int visibility, int status, int[] pendingTypes,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -208,8 +208,8 @@ public class TicketCommentLocalServiceImpl
 		}
 
 		updateStatus(
-			user, ticketComment, ticketEntry, status, ticketCannedResponseId,
-			pendingTypes, serviceContext);
+			user, ticketComment, ticketEntry, status, pendingTypes,
+			serviceContext);
 
 		if (type != TicketCommentConstants.TYPE_AUTOMATED) {
 			addAwayMessageTicketComment(userId, ticketEntryId);
@@ -343,8 +343,8 @@ public class TicketCommentLocalServiceImpl
 
 	public synchronized TicketComment updateTicketComment(
 			long userId, long ticketCommentId, long ticketEntryId, String body,
-			int visibility, int status, long ticketCannedResponseId,
-			int[] pendingTypes, ServiceContext serviceContext)
+			int visibility, int status, int[] pendingTypes,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		EntityCacheUtil.clearLocalCache();
@@ -390,8 +390,8 @@ public class TicketCommentLocalServiceImpl
 		}
 
 		updateStatus(
-			user, ticketComment, ticketEntry, status, ticketCannedResponseId,
-			pendingTypes, serviceContext);
+			user, ticketComment, ticketEntry, status, pendingTypes,
+			serviceContext);
 
 		return ticketComment;
 	}
@@ -416,8 +416,7 @@ public class TicketCommentLocalServiceImpl
 
 	protected void updateStatus(
 			User user, TicketComment ticketComment, TicketEntry ticketEntry,
-			int status, long ticketCannedResponseId, int[] pendingTypes,
-			ServiceContext serviceContext)
+			int status, int[] pendingTypes, ServiceContext serviceContext)
 		throws PortalException {
 
 		Date now = serviceContext.getCreateDate(new Date());
@@ -453,13 +452,6 @@ public class TicketCommentLocalServiceImpl
 					user, ticketAttachments, ticketComment.getTicketEntryId(),
 					status, serviceContext);
 			}
-		}
-
-		// Ticket canned response
-
-		if (ticketCannedResponseId > 0) {
-			ticketCannedResponseLocalService.incrementUseCount(
-				ticketCannedResponseId);
 		}
 
 		// Ticket entry

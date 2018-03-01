@@ -1384,31 +1384,6 @@
 			<order-column name="createDate" />
 		</order>
 	</entity>
-	<entity local-service="true" name="TicketCannedResponse" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="ticketCannedResponseId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-		<column name="modifiedDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column localized="true" name="name" type="String" />
-		<column localized="true" name="content" type="String" />
-		<column name="useCount" type="int" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column case-sensitive="false" name="name" />
-		</order>
-	</entity>
 	<entity local-service="true" name="TicketComment" remote-service="true">
 
 		<!-- PK fields -->
@@ -1886,8 +1861,6 @@
 		<exception>TicketCallDate</exception>
 		<exception>TicketCallType</exception>
 		<exception>TicketCallLength</exception>
-		<exception>TicketCannedResponseContent</exception>
-		<exception>TicketCannedResponseName</exception>
 		<exception>TicketCommentBody</exception>
 		<exception>TicketCommentPendingType</exception>
 		<exception>TicketCommentVisibility</exception>

@@ -287,7 +287,7 @@ public class TicketEntryLocalServiceImpl
 						OSBConstants.USER_DEFAULT_USER_ID,
 						ticketEntry.getTicketEntryId(), body,
 						TicketCommentConstants.TYPE_NORMAL, visibility,
-						WorkflowConstants.STATUS_APPROVED, 0,
+						WorkflowConstants.STATUS_APPROVED,
 						TicketFlagConstants.TYPES_PENDING,
 						new ServiceContext());
 
@@ -345,7 +345,7 @@ public class TicketEntryLocalServiceImpl
 						OSBConstants.USER_DEFAULT_USER_ID,
 						ticketEntry.getTicketEntryId(), body,
 						TicketCommentConstants.TYPE_NORMAL, visibility,
-						WorkflowConstants.STATUS_APPROVED, 0,
+						WorkflowConstants.STATUS_APPROVED,
 						TicketFlagConstants.TYPES_PENDING,
 						new ServiceContext());
 
@@ -599,7 +599,7 @@ public class TicketEntryLocalServiceImpl
 				userId, ticketEntry.getTicketEntryId(), commentBody,
 				TicketCommentConstants.TYPE_FORWARD,
 				VisibilityConstants.LIFERAY_INC,
-				WorkflowConstants.STATUS_APPROVED, 0,
+				WorkflowConstants.STATUS_APPROVED,
 				new int[] {TicketFlagConstants.TYPE_PENDING_LIFERAY},
 				new ServiceContext());
 

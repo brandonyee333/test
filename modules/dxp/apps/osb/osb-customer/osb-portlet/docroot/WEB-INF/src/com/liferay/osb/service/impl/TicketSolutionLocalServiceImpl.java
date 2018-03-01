@@ -195,7 +195,7 @@ public class TicketSolutionLocalServiceImpl
 				userId, ticketEntryId, sb.toString(),
 				TicketCommentConstants.TYPE_SOLUTION,
 				VisibilityConstants.PUBLIC, WorkflowConstants.STATUS_APPROVED,
-				0, pendingTypes, serviceContext);
+				pendingTypes, serviceContext);
 
 		// Ticket link
 
@@ -371,7 +371,7 @@ public class TicketSolutionLocalServiceImpl
 			ticketComment = ticketCommentLocalService.addTicketComment(
 				statusByUserId, ticketEntryId, statusMessage,
 				TicketCommentConstants.TYPE_NORMAL, VisibilityConstants.PUBLIC,
-				WorkflowConstants.STATUS_APPROVED, 0, pendingTypes,
+				WorkflowConstants.STATUS_APPROVED, pendingTypes,
 				serviceContext);
 		}
 

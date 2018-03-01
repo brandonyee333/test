@@ -741,7 +741,7 @@ public class SupportPortlet extends MVCPortlet {
 		TicketComment ticketComment = TicketCommentServiceUtil.addTicketComment(
 			themeDisplay.getUserId(), ticketEntryId, body,
 			TicketCommentConstants.TYPE_NORMAL, visibility,
-			WorkflowConstants.STATUS_APPROVED, 0,
+			WorkflowConstants.STATUS_APPROVED,
 			new int[] {TicketFlagConstants.TYPE_PENDING_LIFERAY}, null, null,
 			new ServiceContext());
 
@@ -1590,8 +1590,6 @@ public class SupportPortlet extends MVCPortlet {
 			int type = ParamUtil.getInteger(
 				uploadPortletRequest, "type",
 				TicketCommentConstants.TYPE_NORMAL);
-			long ticketCannedResponseId = ParamUtil.getLong(
-				uploadPortletRequest, "ticketCannedResponseId");
 			int[] pendingTypes = ParamUtil.getIntegerValues(
 				uploadPortletRequest, "pendingTypes" + suffix);
 
@@ -1631,15 +1629,14 @@ public class SupportPortlet extends MVCPortlet {
 				try {
 					TicketCommentServiceUtil.addTicketComment(
 						themeDisplay.getUserId(), ticketEntryId, commentBody,
-						type, visibility, status, ticketCannedResponseId,
-						pendingTypes, files, fileTypes, new ServiceContext());
+						type, visibility, status, pendingTypes, files,
+						fileTypes, new ServiceContext());
 				}
 				catch (PrincipalException pe) {
 					TicketCommentServiceUtil.addTicketComment(
 						themeDisplay.getUserId(), ticketEntryId, commentBody,
 						type, visibility, WorkflowConstants.STATUS_DRAFT,
-						ticketCannedResponseId, pendingTypes, files, fileTypes,
-						new ServiceContext());
+						pendingTypes, files, fileTypes, new ServiceContext());
 
 					throw pe;
 				}
@@ -1649,14 +1646,14 @@ public class SupportPortlet extends MVCPortlet {
 					TicketCommentServiceUtil.updateTicketComment(
 						themeDisplay.getUserId(), ticketCommentId,
 						ticketEntryId, commentBody, visibility, status,
-						ticketCannedResponseId, pendingTypes, files, fileTypes);
+						pendingTypes, files, fileTypes);
 				}
 				catch (PrincipalException pe) {
 					TicketCommentServiceUtil.updateTicketComment(
 						themeDisplay.getUserId(), ticketCommentId,
 						ticketEntryId, commentBody, visibility,
-						WorkflowConstants.STATUS_DRAFT, ticketCannedResponseId,
-						pendingTypes, files, fileTypes);
+						WorkflowConstants.STATUS_DRAFT, pendingTypes, files,
+						fileTypes);
 
 					throw pe;
 				}
@@ -3300,7 +3297,7 @@ public class SupportPortlet extends MVCPortlet {
 			if (ticketCommentId <= 0) {
 				ticketComment = TicketCommentServiceUtil.addTicketComment(
 					themeDisplay.getUserId(), ticketEntryId, commentBody, type,
-					visibility, WorkflowConstants.STATUS_DRAFT, 0, pendingTypes,
+					visibility, WorkflowConstants.STATUS_DRAFT, pendingTypes,
 					null, null, new ServiceContext());
 			}
 			else {
@@ -3317,8 +3314,8 @@ public class SupportPortlet extends MVCPortlet {
 						TicketCommentServiceUtil.updateTicketComment(
 							themeDisplay.getUserId(), ticketCommentId,
 							ticketEntryId, commentBody, visibility,
-							WorkflowConstants.STATUS_DRAFT, 0, pendingTypes,
-							null, null);
+							WorkflowConstants.STATUS_DRAFT, pendingTypes, null,
+							null);
 				}
 			}
 

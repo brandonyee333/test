@@ -105,7 +105,6 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 	<input name="<portlet:namespace />visibility" type="hidden" value="<%= VisibilityConstants.toVisibility(discussionTab) %>" />
 	<input name="<portlet:namespace />ticketCommentStatus" type="hidden" value="" />
 	<input id="<portlet:namespace />type" name="<portlet:namespace />type" type="hidden" value="" />
-	<input name="<portlet:namespace />ticketCannedResponseId" type="hidden" value="" />
 	<input id="<portlet:namespace />intervalId" type="hidden" />
 	<input id="<portlet:namespace />draftBody" type="hidden" />
 

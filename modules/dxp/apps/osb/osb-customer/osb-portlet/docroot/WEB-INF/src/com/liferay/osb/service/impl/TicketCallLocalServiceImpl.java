@@ -98,8 +98,7 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 				userId, ticketEntryId, commentBodyLiferay,
 				TicketCommentConstants.TYPE_TICKET_CALL,
 				VisibilityConstants.LIFERAY_INC,
-				WorkflowConstants.STATUS_APPROVED, 0, new int[0],
-				serviceContext);
+				WorkflowConstants.STATUS_APPROVED, new int[0], serviceContext);
 
 		ticketEntryLocalService.sendEmail(
 			userId, ticketEntryId, ticketCommentLiferay,
@@ -113,7 +112,7 @@ public class TicketCallLocalServiceImpl extends TicketCallLocalServiceBaseImpl {
 				userId, ticketEntryId, commentBodyPublic,
 				TicketCommentConstants.TYPE_TICKET_CALL,
 				VisibilityConstants.PUBLIC, WorkflowConstants.STATUS_APPROVED,
-				0, new int[0], serviceContext);
+				new int[0], serviceContext);
 
 		ticketEntryLocalService.sendEmail(
 			userId, ticketEntryId, ticketCommentPublic,

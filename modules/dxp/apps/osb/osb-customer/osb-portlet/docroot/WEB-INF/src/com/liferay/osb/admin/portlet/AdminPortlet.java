@@ -76,8 +76,6 @@ import com.liferay.osb.exception.SupportTeamLocationException;
 import com.liferay.osb.exception.SupportTeamNameException;
 import com.liferay.osb.exception.SupportTeamSupportLaborException;
 import com.liferay.osb.exception.SupportWorkerMaxWorkException;
-import com.liferay.osb.exception.TicketCannedResponseContentException;
-import com.liferay.osb.exception.TicketCannedResponseNameException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.model.AccountEntry;
@@ -121,7 +119,6 @@ import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerServiceUtil;
 import com.liferay.osb.service.SupportWorkerSeverityLocalServiceUtil;
 import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
-import com.liferay.osb.service.TicketCannedResponseLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.OSBRequestUtil;
@@ -164,7 +161,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -474,17 +470,6 @@ public class AdminPortlet extends MVCPortlet {
 		long supportTeamId = ParamUtil.getLong(actionRequest, "supportTeamId");
 
 		SupportTeamLocalServiceUtil.deleteSupportTeam(supportTeamId);
-	}
-
-	public void deleteTicketCannedResponse(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long ticketCannedResponseId = ParamUtil.getLong(
-			actionRequest, "ticketCannedResponseId");
-
-		TicketCannedResponseLocalServiceUtil.deleteTicketCannedResponse(
-			ticketCannedResponseId);
 	}
 
 	public void migrateTicketAttachments(
@@ -1524,45 +1509,6 @@ public class AdminPortlet extends MVCPortlet {
 			removeUserIds, supportTeamId);
 	}
 
-	public void updateTicketCannedResponse(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
-
-		if (Validator.isNull(cmd)) {
-			return;
-		}
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long ticketCannedResponseId = ParamUtil.getLong(
-			actionRequest, "ticketCannedResponseId");
-
-		String defaultLanguageId = ParamUtil.getString(
-			actionRequest, "defaultLanguageId");
-		String languageId = ParamUtil.getString(actionRequest, "languageId");
-		String name = ParamUtil.getString(actionRequest, "name");
-		String content = ParamUtil.getString(actionRequest, "content");
-
-		if (cmd.equals(Constants.DELETE_TRANSLATION)) {
-			TicketCannedResponseLocalServiceUtil.removeCannedResponseLocale(
-				ticketCannedResponseId, languageId);
-		}
-		else if (cmd.equals(Constants.UPDATE)) {
-			if (ticketCannedResponseId <= 0) {
-				TicketCannedResponseLocalServiceUtil.addTicketCannedResponse(
-					themeDisplay.getUserId(), languageId, name, content);
-			}
-			else {
-				TicketCannedResponseLocalServiceUtil.updateTicketCannedResponse(
-					ticketCannedResponseId, defaultLanguageId, languageId, name,
-					content);
-			}
-		}
-	}
-
 	protected Properties getLicenseProperties(
 			ObjectInputStream objectInputStream)
 		throws ClassNotFoundException, IOException {
@@ -1745,8 +1691,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof SupportTeamNameException ||
 			cause instanceof SupportTeamSupportLaborException ||
 			cause instanceof SupportWorkerMaxWorkException ||
-			cause instanceof TicketCannedResponseContentException ||
-			cause instanceof TicketCannedResponseNameException ||
 			cause instanceof UserEmailAddressException) {
 
 			return true;

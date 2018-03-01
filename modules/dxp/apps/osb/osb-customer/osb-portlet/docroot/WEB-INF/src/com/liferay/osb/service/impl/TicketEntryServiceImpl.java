@@ -116,7 +116,7 @@ public class TicketEntryServiceImpl extends TicketEntryServiceBaseImpl {
 			ticketComment = ticketCommentLocalService.addTicketComment(
 				getUserId(), ticketEntryId, body,
 				TicketCommentConstants.TYPE_NORMAL, VisibilityConstants.PUBLIC,
-				WorkflowConstants.STATUS_APPROVED, 0, new int[0],
+				WorkflowConstants.STATUS_APPROVED, new int[0],
 				new ServiceContext());
 		}
 

@@ -1072,30 +1072,6 @@
 				(OSB_SupportWorker.userId = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.TicketCannedResponseFinder.countByN_C">
-		<![CDATA[
-			SELECT
-				COUNT(*) AS COUNT_VALUE
-			FROM
-				OSB_TicketCannedResponse
-			WHERE
-				(lower(OSB_TicketCannedResponse.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-				(lower(OSB_TicketCannedResponse.content) LIKE ? [$AND_OR_NULL_CHECK$])
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.TicketCannedResponseFinder.findByN_C">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_TicketCannedResponse.*}
-			FROM
-				OSB_TicketCannedResponse
-			WHERE
-				(lower(OSB_TicketCannedResponse.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-				(lower(OSB_TicketCannedResponse.content) LIKE ? [$AND_OR_NULL_CHECK$])
-			ORDER BY
-				OSB_TicketCannedResponse.useCount DESC, OSB_TicketCannedResponse.name ASC
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.service.persistence.TicketCommentFinder.countByTEI_V_S_O">
 		<![CDATA[
 			SELECT
