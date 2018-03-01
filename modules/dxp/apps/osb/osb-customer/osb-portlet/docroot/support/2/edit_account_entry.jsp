@@ -114,8 +114,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			if (tab) {
 				tab.addClass('selected');
 			}
-
-			window.scroll(0, 0);
 		},
 		['aui-base']
 	);
