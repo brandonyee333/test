@@ -20,29 +20,26 @@ import com.liferay.portal.kernel.json.JSONArray;
 /**
  * @author Amos Fong
  */
-public class RemoteDossieraOpportunityServiceUtil {
+public class DossieraRESTWebServiceUtil {
+
+	public static DossieraRESTWebService getDossieraRESTWebService() {
+		return _dossieraRESTWebService;
+	}
 
 	public static JSONArray getOpportunitiesJSONArray(
 			String salesforceProjectKey)
 		throws RemoteServiceException {
 
-		return getRemoteDossieraOpportunityService().getOpportunitiesJSONArray(
+		return getDossieraRESTWebService().getOpportunitiesJSONArray(
 			salesforceProjectKey);
 	}
 
-	public static RemoteDossieraOpportunityService
-		getRemoteDossieraOpportunityService() {
+	public void setDossieraRESTWebService(
+		DossieraRESTWebService dossieraRESTWebService) {
 
-		return _remoteDossieraOpportunityService;
+		_dossieraRESTWebService = dossieraRESTWebService;
 	}
 
-	public void setRemoteDossieraOpportunityService(
-		RemoteDossieraOpportunityService remoteDossieraOpportunityService) {
-
-		_remoteDossieraOpportunityService = remoteDossieraOpportunityService;
-	}
-
-	private static RemoteDossieraOpportunityService
-		_remoteDossieraOpportunityService;
+	private static DossieraRESTWebService _dossieraRESTWebService;
 
 }

@@ -15,7 +15,7 @@
 package com.liferay.osb.remote.dossiera;
 
 import com.liferay.osb.exception.RemoteServiceException;
-import com.liferay.osb.remote.BaseRemoteService;
+import com.liferay.osb.remote.BaseWebService;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -29,22 +29,10 @@ import org.apache.http.HttpMessage;
 /**
  * @author Amos Fong
  */
-public class RemoteDossieraOpportunityServiceImpl
-	extends BaseRemoteService implements RemoteDossieraOpportunityService {
+public class DossieraRESTWebServiceImpl
+	extends BaseWebService implements DossieraRESTWebService {
 
-	public JSONArray doGetToJSONArray(String url)
-		throws RemoteServiceException {
-
-		try {
-			String response = doGet(url);
-
-			return JSONFactoryUtil.createJSONArray(response);
-		}
-		catch (Exception e) {
-			throw new RemoteServiceException(e);
-		}
-	}
-
+	@Override
 	public JSONArray getOpportunitiesJSONArray(String salesforceProjectKey)
 		throws RemoteServiceException {
 
@@ -64,12 +52,25 @@ public class RemoteDossieraOpportunityServiceImpl
 		super.addHeaders(httpMessage, headers);
 	}
 
+	protected JSONArray doGetToJSONArray(String url)
+		throws RemoteServiceException {
+
+		try {
+			String response = doGet(url);
+
+			return JSONFactoryUtil.createJSONArray(response);
+		}
+		catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
+	}
+
 	private static final String _URL_API_REST = "/osb-dossiera-portlet/rest";
 
 	private static final String _URL_API_REST_PURCHASED_PRODUCT =
 		_URL_API_REST + "/purchased-product";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RemoteDossieraOpportunityServiceImpl.class);
+		DossieraRESTWebServiceImpl.class);
 
 }

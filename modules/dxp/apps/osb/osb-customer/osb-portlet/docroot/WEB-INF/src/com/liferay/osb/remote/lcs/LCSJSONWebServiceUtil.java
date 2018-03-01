@@ -19,29 +19,24 @@ import com.liferay.osb.exception.RemoteServiceException;
 /**
  * @author Amos Fong
  */
-public class RemoteLCSSubscriptionEntryServiceUtil {
+public class LCSJSONWebServiceUtil {
 
-	public static RemoteLCSSubscriptionEntryService
-		getRemoteLCSSubscriptionEntryService() {
-
-		return _remoteLCSSubscriptionEntryService;
+	public static LCSJSONWebService getLCSJSONWebService() {
+		return _lcsJSONWebService;
 	}
 
 	public static void sendLCSSubscriptionEntries(
 			long corpProjectId, String lcsSubscriptionEntriesJSON)
 		throws RemoteServiceException {
 
-		getRemoteLCSSubscriptionEntryService().sendLCSSubscriptionEntries(
+		getLCSJSONWebService().sendLCSSubscriptionEntries(
 			corpProjectId, lcsSubscriptionEntriesJSON);
 	}
 
-	public void setRemoteLCSSubscriptionEntryService(
-		RemoteLCSSubscriptionEntryService remoteLCSSubscriptionEntryService) {
-
-		_remoteLCSSubscriptionEntryService = remoteLCSSubscriptionEntryService;
+	public void setLCSJSONWebService(LCSJSONWebService lcsJSONWebService) {
+		_lcsJSONWebService = lcsJSONWebService;
 	}
 
-	private static RemoteLCSSubscriptionEntryService
-		_remoteLCSSubscriptionEntryService;
+	private static LCSJSONWebService _lcsJSONWebService;
 
 }

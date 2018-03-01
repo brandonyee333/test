@@ -54,7 +54,7 @@ import org.apache.http.util.EntityUtils;
 /**
  * @author Amos Fong
  */
-public class BaseRemoteService {
+public class BaseWebService {
 
 	public void afterPropertiesSet() {
 		HttpClientBuilder httpClientBuilder = HttpClients.custom();
@@ -269,8 +269,7 @@ public class BaseRemoteService {
 		return nameValuePairs;
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseRemoteService.class);
+	private static final Log _log = LogFactoryUtil.getLog(BaseWebService.class);
 
 	private CloseableHttpClient _closeableHttpClient;
 	private String _hostName;

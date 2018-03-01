@@ -15,7 +15,7 @@
 package com.liferay.osb.remote.lcs;
 
 import com.liferay.osb.exception.RemoteServiceException;
-import com.liferay.osb.remote.BaseRemoteService;
+import com.liferay.osb.remote.BaseWebService;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -28,9 +28,10 @@ import org.apache.http.HttpMessage;
 /**
  * @author Amos Fong
  */
-public class RemoteLCSSubscriptionEntryServiceImpl
-	extends BaseRemoteService implements RemoteLCSSubscriptionEntryService {
+public class LCSJSONWebServiceImpl
+	extends BaseWebService implements LCSJSONWebService {
 
+	@Override
 	public void sendLCSSubscriptionEntries(
 			long corpProjectId, String lcsSubscriptionEntriesJSON)
 		throws RemoteServiceException {
@@ -63,6 +64,6 @@ public class RemoteLCSSubscriptionEntryServiceImpl
 		_URL_API_JSONWS + "/lcsgateway";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RemoteLCSSubscriptionEntryServiceImpl.class);
+		LCSJSONWebServiceImpl.class);
 
 }

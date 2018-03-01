@@ -19,7 +19,7 @@ import com.liferay.osb.exception.RemoteServiceException;
 /**
  * @author Amos Fong
  */
-public interface RemoteLCSSubscriptionEntryService {
+public interface LCSJSONWebService {
 
 	public void sendLCSSubscriptionEntries(
 			long corpProjectId, String lcsSubscriptionEntriesJSON)

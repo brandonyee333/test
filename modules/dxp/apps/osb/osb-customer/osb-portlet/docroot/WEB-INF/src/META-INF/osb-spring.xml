@@ -7,20 +7,20 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
 >
-	<bean class="com.liferay.osb.remote.dossiera.RemoteDossieraOpportunityServiceImpl" id="com.liferay.osb.remote.dossiera.RemoteDossieraOpportunityServiceImpl">
+	<bean class="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceImpl" id="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceImpl">
 		<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.host')}" />
 		<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.port')}" />
 		<property name="protocol" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.protocol')}" />
 	</bean>
-	<bean class="com.liferay.osb.remote.dossiera.RemoteDossieraOpportunityServiceUtil" id="com.liferay.osb.remote.dossiera.RemoteDossieraOpportunityServiceUtil">
-		<property name="RemoteDossieraOpportunityService" ref="com.liferay.osb.remote.dossiera.RemoteDossieraOpportunityServiceImpl" />
+	<bean class="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil" id="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil">
+		<property name="DossieraRESTWebService" ref="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceImpl" />
 	</bean>
-	<bean class="com.liferay.osb.remote.lcs.RemoteLCSSubscriptionEntryServiceImpl" id="com.liferay.osb.remote.lcs.RemoteLCSSubscriptionEntryServiceImpl">
+	<bean class="com.liferay.osb.remote.lcs.LCSJSONWebServiceImpl" id="com.liferay.osb.remote.lcs.LCSJSONWebServiceImpl">
 		<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.host')}" />
 		<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.port')}" />
 		<property name="protocol" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.protocol')}" />
 	</bean>
-	<bean class="com.liferay.osb.remote.lcs.RemoteLCSSubscriptionEntryServiceUtil" id="com.liferay.osb.remote.lcs.RemoteLCSSubscriptionEntryServiceUtil">
-		<property name="RemoteLCSSubscriptionEntryService" ref="com.liferay.osb.remote.lcs.RemoteLCSSubscriptionEntryServiceImpl" />
+	<bean class="com.liferay.osb.remote.lcs.LCSJSONWebServiceUtil" id="com.liferay.osb.remote.lcs.LCSJSONWebServiceUtil">
+		<property name="LCSJSONWebService" ref="com.liferay.osb.remote.lcs.LCSJSONWebServiceImpl" />
 	</bean>
 </beans>

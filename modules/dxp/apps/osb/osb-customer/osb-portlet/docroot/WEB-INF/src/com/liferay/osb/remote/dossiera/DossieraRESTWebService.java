@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 /**
  * @author Amos Fong
  */
-public interface RemoteDossieraOpportunityService {
+public interface DossieraRESTWebService {
 
 	public JSONArray getOpportunitiesJSONArray(String salesforceProjectKey)
 		throws RemoteServiceException;
