@@ -45,6 +45,7 @@ public class FileRepository {
 		_fileRepositoryId = fileRepositoryId;
 		_name = name;
 		_host = host;
+
 		_status = WorkflowConstants.STATUS_APPROVED;
 		_supportRegionIds = supportRegionIds;
 	}
