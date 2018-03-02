@@ -67,6 +67,11 @@
 			padding-top: $standard-spacing;
 		}
 
+		.field-wrapper .control-label, .section-heading {
+			font-weight: bold;
+			padding: 0;
+		}
+
 		.foot-details {
 			float: left;
 			margin: 20px 0;
@@ -85,11 +90,6 @@
 
 		.portlet-msg-info {
 			color: $text-color;
-		}
-
-		.field-wrapper .control-label, .section-heading {
-			font-weight: bold;
-			padding: 0;
 		}
 
 		.section-heading {

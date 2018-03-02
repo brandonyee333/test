@@ -56,7 +56,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 </liferay-ui:error>
 
 <aui:fieldset-group>
-	<aui:fieldset label="clustering-details" helpMessage="please-provide-accurate-environment-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution">
+	<aui:fieldset helpMessage="please-provide-accurate-environment-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution" label="clustering-details">
 		<div class="clearfix">
 			<div class="pull-left w45">
 				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "server-communication-type")) %>' label="server-communication-type" name="serverCommunicationType">

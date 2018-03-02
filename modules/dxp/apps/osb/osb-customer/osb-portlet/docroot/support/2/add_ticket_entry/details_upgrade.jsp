@@ -74,7 +74,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 </liferay-ui:error>
 
 <aui:fieldset-group>
-	<aui:fieldset label="upgrade-details" helpMessage="please-provide-accurate-upgrade-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution">
+	<aui:fieldset helpMessage="please-provide-accurate-upgrade-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution" label="upgrade-details">
 		<c:if test="<%= !productEntryLESADisplayNames.contains(ProductEntryConstants.DISPLAY_NAME_DIGITAL_ENTERPRISE) %>">
 			<div class="portlet-msg-info">
 				<liferay-ui:message key="if-you-require-support-for-a-potential-upgrade-to-dxp-please-contact-you-provisioning-representative-for-further-assistance" />
@@ -100,7 +100,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 			<div class="pull-left w45">
 				<c:choose>
 					<c:when test="<%= productEntry.isDigitalEnterprise() %>">
-						<aui:select helpMessage='<%= !productEntry.isDigitalEnterprise() ? "please-update-this-field-from-the-above-lr-field-under-environment-configuration" : StringPool.BLANK  %>' id="fromEnvLFR" label="from-liferay-version" name="envLFR" onChange='<%= renderResponse.getNamespace() + "updateSupportMessage(this.value, 'Upgrade');" %>'>
+						<aui:select helpMessage='<%= !productEntry.isDigitalEnterprise() ? "please-update-this-field-from-the-above-lr-field-under-environment-configuration" : StringPool.BLANK %>' id="fromEnvLFR" label="from-liferay-version" name="envLFR" onChange='<%= renderResponse.getNamespace() + "updateSupportMessage(this.value, 'Upgrade');" %>'>
 							<aui:option value="0" />
 
 							<%
@@ -118,7 +118,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 						</aui:select>
 					</c:when>
 					<c:otherwise>
-						<aui:select disabled="<%= true %>" helpMessage='<%= !productEntry.isDigitalEnterprise() ? "please-update-this-field-from-the-above-lr-field-under-environment-configuration" : StringPool.BLANK  %>' label="from-liferay-version" name="fromEnvLFR">
+						<aui:select disabled="<%= true %>" helpMessage='<%= !productEntry.isDigitalEnterprise() ? "please-update-this-field-from-the-above-lr-field-under-environment-configuration" : StringPool.BLANK %>' label="from-liferay-version" name="fromEnvLFR">
 
 							<%
 							String optionLabel = LanguageUtil.get(request, TicketEntryConstants.getEnvLabel(envLFR));

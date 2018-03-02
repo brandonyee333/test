@@ -21,6 +21,11 @@ h4 {
 	font-size: 110%;
 }
 
+.field-wrapper .control-label, .section-heading {
+	color: $text-color;
+	font-size: 16px;
+}
+
 .page-title {
 	background: #FFF;
 	color: $text-color;
@@ -38,11 +43,6 @@ h4 {
 		position: fixed;
 		width: calc(100% - 160px);
 	}
-}
-
-.field-wrapper .control-label, .section-heading {
-	color: $text-color;
-	font-size: 16px;
 }
 
 .section-heading {

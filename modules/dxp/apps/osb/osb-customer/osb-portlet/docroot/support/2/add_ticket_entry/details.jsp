@@ -29,7 +29,7 @@ String description = ParamUtil.getString(request, "description");
 <div class="ticket-detail">
 	<aui:input data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(request, "please-enter-a-summary-of-the-issue")) %>' label="summary" maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' name="subject" type="text" value="<%= subject %>" />
 
-	<aui:field-wrapper helpMessage='<%= component != TicketEntryConstants.COMPONENT_LICENSE ? "please-try-to-be-as-specific-as-possible-when-describing-your-issue" : StringPool.BLANK %>' label="description">
+	<aui:field-wrapper helpMessage='<%= (component != TicketEntryConstants.COMPONENT_LICENSE) ? "please-try-to-be-as-specific-as-possible-when-describing-your-issue" : StringPool.BLANK %>' label="description">
 		<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 			<liferay-util:param name="content" value="<%= description %>" />
 			<liferay-util:param name="editorId" value="description" />

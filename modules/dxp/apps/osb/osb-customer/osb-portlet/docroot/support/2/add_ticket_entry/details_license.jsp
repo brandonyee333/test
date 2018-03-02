@@ -31,7 +31,7 @@ String additionalComments = ParamUtil.getString(request, "additionalComments");
 %>
 
 <aui:fieldset-group>
-	<aui:fieldset label="activation-key-details" helpMessage="please-provide-accurate-activation-key-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution">
+	<aui:fieldset helpMessage="please-provide-accurate-activation-key-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution" label="activation-key-details">
 		<div class="clearfix">
 			<div class="pull-left w45">
 				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "type-of-key")) %>' label="type-of-key" name="type">
