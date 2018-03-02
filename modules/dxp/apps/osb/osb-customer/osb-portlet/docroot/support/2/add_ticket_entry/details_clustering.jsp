@@ -55,100 +55,72 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 	</c:choose>
 </liferay-ui:error>
 
-<div>
-	<h2 class="component-title section-heading">
-		<liferay-ui:message key="clustering-details" />
-	</h2>
+<aui:fieldset-group>
+	<aui:fieldset label="clustering-details" helpMessage="please-provide-accurate-environment-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution">
+		<div class="clearfix">
+			<div class="pull-left w45">
+				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "server-communication-type")) %>' label="server-communication-type" name="serverCommunicationType">
+					<aui:option value="" />
 
-	<div class="component-description">
-		<liferay-ui:message key="please-provide-accurate-environment-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution" />
-	</div>
-</div>
+					<%
+					for (int curServerCommunicationType : TicketEntryConstants.CLUSTER_SERVER_COMMUNICATION_TYPES) {
+					%>
 
-<br />
+						<aui:option label="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" selected="<%= curServerCommunicationType == serverCommunicationType %>" value="<%= curServerCommunicationType %>" />
 
-<div class="clearfix">
-	<div class="pull-left w45">
-		<div class="section-heading">
-			<liferay-ui:message key="server-communication-type" />:
+					<%
+					}
+					%>
+
+				</aui:select>
+			</div>
+
+			<div class="pull-right w45">
+				<aui:select label="number-of-nodes" name="numberOfNodes">
+					<aui:option value="0" />
+					<aui:option label="1" selected="<%= numberOfNodes == 1 %>" value="1" />
+					<aui:option label="2" selected="<%= numberOfNodes == 2 %>" value="2" />
+					<aui:option label="3" selected="<%= numberOfNodes == 3 %>" value="3" />
+					<aui:option label="4" selected="<%= numberOfNodes == 4 %>" value="4" />
+					<aui:option label="5" selected="<%= numberOfNodes == 5 %>" value="5" />
+					<aui:option label="6" selected="<%= numberOfNodes == 6 %>" value="6" />
+					<aui:option label="7" selected="<%= numberOfNodes == 7 %>" value="7" />
+					<aui:option label="8+" selected="<%= numberOfNodes == 8 %>" value="8" />
+				</aui:select>
+			</div>
 		</div>
 
-		<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "server-communication-type")) %>' label="" name="serverCommunicationType">
-			<aui:option value="" />
+		<aui:field-wrapper label="jvm-arguments-settings-optional">
+			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+				<liferay-util:param name="content" value="<%= serverConfigurations %>" />
+				<liferay-util:param name="editorId" value="serverConfigurations" />
+				<liferay-util:param name="name" value="serverConfigurations" />
+				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.FALSE) %>" />
+			</liferay-util:include>
+		</aui:field-wrapper>
 
-			<%
-			for (int curServerCommunicationType : TicketEntryConstants.CLUSTER_SERVER_COMMUNICATION_TYPES) {
-			%>
+		<aui:field-wrapper label="please-provide-all-portal-ext-files-from-all-nodes-within-the-cluster">
+			<div class="clearfix">
+				<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
+					<liferay-util:param name="kBaseArticleId" value="33142855" />
+					<liferay-util:param name="label" value="zip-file-containing-portal-ext-files" />
+					<liferay-util:param name="required" value="<%= String.valueOf(Boolean.TRUE) %>" />
+					<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(toPortalExtTicketAttachmentId) %>" />
+					<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_NEW_PORTAL_EXT) %>" />
+				</liferay-util:include>
+			</div>
+		</aui:field-wrapper>
 
-				<aui:option label="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" selected="<%= curServerCommunicationType == serverCommunicationType %>" value="<%= curServerCommunicationType %>" />
-
-			<%
-			}
-			%>
-
-		</aui:select>
-	</div>
-
-	<div class="pull-right w45">
-		<div class="section-heading">
-			<liferay-ui:message key="number-of-nodes" />:
-		</div>
-
-		<aui:select label="" name="numberOfNodes">
-			<aui:option value="0" />
-			<aui:option label="1" selected="<%= numberOfNodes == 1 %>" value="1" />
-			<aui:option label="2" selected="<%= numberOfNodes == 2 %>" value="2" />
-			<aui:option label="3" selected="<%= numberOfNodes == 3 %>" value="3" />
-			<aui:option label="4" selected="<%= numberOfNodes == 4 %>" value="4" />
-			<aui:option label="5" selected="<%= numberOfNodes == 5 %>" value="5" />
-			<aui:option label="6" selected="<%= numberOfNodes == 6 %>" value="6" />
-			<aui:option label="7" selected="<%= numberOfNodes == 7 %>" value="7" />
-			<aui:option label="8+" selected="<%= numberOfNodes == 8 %>" value="8" />
-		</aui:select>
-	</div>
-</div>
-
-<div>
-	<h2 class="section-heading">
-		<liferay-ui:message key="jvm-arguments-settings-optional" />:
-	</h2>
-
-	<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-		<liferay-util:param name="content" value="<%= serverConfigurations %>" />
-		<liferay-util:param name="editorId" value="serverConfigurations" />
-		<liferay-util:param name="name" value="serverConfigurations" />
-		<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.FALSE) %>" />
-	</liferay-util:include>
-</div>
-
-<div>
-	<h2 class="section-heading">
-		<liferay-ui:message key="please-provide-all-portal-ext-files-from-all-nodes-within-the-cluster" />:
-	</h2>
-
-	<div class="clearfix">
-		<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
-			<liferay-util:param name="kBaseArticleId" value="33142855" />
-			<liferay-util:param name="label" value="zip-file-containing-portal-ext-files" />
-			<liferay-util:param name="required" value="<%= String.valueOf(Boolean.TRUE) %>" />
-			<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(toPortalExtTicketAttachmentId) %>" />
-			<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_NEW_PORTAL_EXT) %>" />
-		</liferay-util:include>
-	</div>
-</div>
-
-<div>
-	<h2 class="section-heading">
-		<liferay-ui:message key="please-provide-all-patching-tool-info-files-from-all-nodes-within-the-cluster" />:
-	</h2>
-
-	<div class="clearfix">
-		<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
-			<liferay-util:param name="kBaseArticleId" value="33142925" />
-			<liferay-util:param name="label" value="zip-file-containing-patching-tool-info-files" />
-			<liferay-util:param name="required" value="<%= String.valueOf(Boolean.TRUE) %>" />
-			<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(toPatchLevelTicketAttachmentId) %>" />
-			<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_NEW_PATCH_LEVEL) %>" />
-		</liferay-util:include>
-	</div>
-</div>
+		<aui:field-wrapper label="please-provide-all-patching-tool-info-files-from-all-nodes-within-the-cluster">
+			<div class="clearfix">
+				<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
+					<liferay-util:param name="kBaseArticleId" value="33142925" />
+					<liferay-util:param name="label" value="zip-file-containing-patching-tool-info-files" />
+					<liferay-util:param name="required" value="<%= String.valueOf(Boolean.TRUE) %>" />
+					<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(toPatchLevelTicketAttachmentId) %>" />
+					<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_NEW_PATCH_LEVEL) %>" />
+				</liferay-util:include>
+			</div>
+		</aui:field-wrapper>
+	</aui:fieldset>
+</aui:fieldset-group>

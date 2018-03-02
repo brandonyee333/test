@@ -87,6 +87,11 @@
 			color: $text-color;
 		}
 
+		.field-wrapper .control-label, .section-heading {
+			font-weight: bold;
+			padding: 0;
+		}
+
 		.section-heading {
 			font-weight: bold;
 			padding: 0;

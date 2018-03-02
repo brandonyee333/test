@@ -39,42 +39,38 @@ else {
 		<liferay-ui:message key="create-a-ticket" />
 	</h2>
 
-	<h2 class="section-heading">
-		<liferay-ui:message key="project" />:
-	</h2>
+	<c:choose>
+		<c:when test="<%= accountEntries.size() == 1 %>">
 
-	<div>
-		<c:choose>
-			<c:when test="<%= accountEntries.size() == 1 %>">
+			<%
+			accountEntry = accountEntries.get(0);
+
+			request.setAttribute("add_ticket_entry.jsp-accountEntry", accountEntry);
+			%>
+
+			<aui:select disabled="<%= true %>" label="project" name="accountEntryId">
+				<aui:option label="<%= HtmlUtil.escape(accountEntry.getName()) %>" value="<%= accountEntry.getAccountEntryId() %>" />
+			</aui:select>
+
+			<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+		</c:when>
+		<c:otherwise>
+			<aui:select label="project" name="accountEntryId" onChange='<%= renderResponse.getNamespace() + "selectAccountEntry();" %>'>
+				<aui:option value="" />
 
 				<%
-				accountEntry = accountEntries.get(0);
-
-				request.setAttribute("add_ticket_entry.jsp-accountEntry", accountEntry);
+				for (AccountEntry curAccountEntry : accountEntries) {
 				%>
 
-				<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
+					<aui:option label="<%= HtmlUtil.escape(curAccountEntry.getName()) %>" selected="<%= (accountEntry != null) && (curAccountEntry.getAccountEntryId() == accountEntry.getAccountEntryId()) %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
 
-				<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
-			</c:when>
-			<c:otherwise>
-				<aui:select label="" name="accountEntryId" onChange='<%= renderResponse.getNamespace() + "selectAccountEntry();" %>'>
-					<aui:option value="" />
+				<%
+				}
+				%>
 
-					<%
-					for (AccountEntry curAccountEntry : accountEntries) {
-					%>
-
-						<aui:option label="<%= HtmlUtil.escape(curAccountEntry.getName()) %>" selected="<%= (accountEntry != null) && (curAccountEntry.getAccountEntryId() == accountEntry.getAccountEntryId()) %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
-
-					<%
-					}
-					%>
-
-				</aui:select>
-			</c:otherwise>
-		</c:choose>
-	</div>
+			</aui:select>
+		</c:otherwise>
+	</c:choose>
 </c:if>
 
 <%
@@ -130,116 +126,100 @@ if (accountEntry != null) {
 		</c:if>
 
 		<c:if test="<%= (productEntry != null) && productEntry.isTicketComponentRequired() %>">
-			<h2 class="section-heading">
-				<liferay-ui:message key="component" />:
-			</h2>
+			<aui:select label="component" name="component" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
+				<aui:option selected="<%= component == 0 %>" value="0" />
 
-			<div>
-				<aui:select label="" name="component" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
-					<aui:option selected="<%= component == 0 %>" value="0" />
+				<c:choose>
+					<c:when test="<%= productEntry.isDigitalEnterprise() %>">
 
-					<c:choose>
-						<c:when test="<%= productEntry.isDigitalEnterprise() %>">
+						<%
+						for (String componentGroup : TicketEntryConstants.COMPONENT_GROUPS_DE) {
+						%>
 
-							<%
-							for (String componentGroup : TicketEntryConstants.COMPONENT_GROUPS_DE) {
-							%>
-
-								<optgroup label="<%= LanguageUtil.get(request, componentGroup) %>">
-
-									<%
-									for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
-									%>
-
-										<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
-
-									<%
-									}
-									%>
-
-								</optgroup>
-
-							<%
-							}
-							%>
-
-						</c:when>
-						<c:otherwise>
-
-							<%
-							Map<String, Integer> componentMap = new TreeMap<String, Integer>();
-
-							for (int curComponent : TicketEntryConstants.getProductComponents(productEntry)) {
-								componentMap.put(TicketEntryConstants.getComponentLabel(curComponent), curComponent);
-							}
-
-							for (Map.Entry<String, Integer> componentEntry : componentMap.entrySet()) {
-								String curComponentLabel = componentEntry.getKey();
-								int curComponent = componentEntry.getValue();
-							%>
-
-								<aui:option label="<%= curComponentLabel %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
-
-							<%
-							}
-							%>
-
-						</c:otherwise>
-					</c:choose>
-				</aui:select>
-
-				<c:if test="<%= component > 0 %>">
-
-					<%
-					String componentLink = SupportUtil.getPreferenceValue("componentLink_" + component);
-					%>
-
-					<c:if test="<%= Validator.isNotNull(componentLink) %>">
-						<span class="component-link" id="<portlet:namespace />componentLinkDisplay">
-							<%= LanguageUtil.format(request, "creating-x-tickets", new Object[] {"<a href=\"" + componentLink + "\" target=\"_blank\">", TicketEntryConstants.getComponentLabel(component), "</a>"}) %>
-						</span>
-					</c:if>
-
-					<c:if test="<%= component == TicketEntryConstants.COMPONENT_LIFERAY_CONNECTED_SERVICES %>">
-						<div>
-							<h2 class="section-heading">
-								<liferay-ui:message key="subcomponent" />:
-							</h2>
-
-							<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-subcomponent") %>' label="" name="subcomponent" onChange='<%= renderResponse.getNamespace() + "validateSubcomponent();" %>'>
-								<aui:option value="" />
+							<optgroup label="<%= LanguageUtil.get(request, componentGroup) %>">
 
 								<%
-								int[] subcomponents = TicketEntryConstants.getSubcomponents(component);
-
-								for (int curSubcomponent : subcomponents) {
+								for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
 								%>
 
-									<aui:option label="<%= TicketEntryConstants.getSubcomponentLabel(curSubcomponent) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
+									<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
 
 								<%
 								}
 								%>
 
-							</aui:select>
-						</div>
-					</c:if>
+							</optgroup>
+
+						<%
+						}
+						%>
+
+					</c:when>
+					<c:otherwise>
+
+						<%
+						Map<String, Integer> componentMap = new TreeMap<String, Integer>();
+
+						for (int curComponent : TicketEntryConstants.getProductComponents(productEntry)) {
+							componentMap.put(TicketEntryConstants.getComponentLabel(curComponent), curComponent);
+						}
+
+						for (Map.Entry<String, Integer> componentEntry : componentMap.entrySet()) {
+							String curComponentLabel = componentEntry.getKey();
+							int curComponent = componentEntry.getValue();
+						%>
+
+							<aui:option label="<%= curComponentLabel %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
+
+						<%
+						}
+						%>
+
+					</c:otherwise>
+				</c:choose>
+			</aui:select>
+
+			<c:if test="<%= component > 0 %>">
+
+				<%
+				String componentLink = SupportUtil.getPreferenceValue("componentLink_" + component);
+				%>
+
+				<c:if test="<%= Validator.isNotNull(componentLink) %>">
+					<span class="component-link" id="<portlet:namespace />componentLinkDisplay">
+						<%= LanguageUtil.format(request, "creating-x-tickets", new Object[] {"<a href=\"" + componentLink + "\" target=\"_blank\">", TicketEntryConstants.getComponentLabel(component), "</a>"}) %>
+					</span>
 				</c:if>
-			</div>
+
+				<c:if test="<%= component == TicketEntryConstants.COMPONENT_LIFERAY_CONNECTED_SERVICES %>">
+					<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-subcomponent") %>' label="subcomponent" name="subcomponent" onChange='<%= renderResponse.getNamespace() + "validateSubcomponent();" %>'>
+						<aui:option value="" />
+
+						<%
+						int[] subcomponents = TicketEntryConstants.getSubcomponents(component);
+
+						for (int curSubcomponent : subcomponents) {
+						%>
+
+							<aui:option label="<%= TicketEntryConstants.getSubcomponentLabel(curSubcomponent) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
+
+						<%
+						}
+						%>
+
+					</aui:select>
+				</c:if>
+			</c:if>
 		</c:if>
 
 		<c:if test="<%= (offeringEntry != null) && ((component > 0) || !productEntry.isTicketComponentRequired()) %>">
-			<h2 class="section-heading">
-				<liferay-ui:message key="saved-environment-configuration" />:
-			</h2>
+			<aui:field-wrapper label="saved-environment-configuration">
+				<c:if test="<%= productEntry.isDigitalEnterprise() && (component == TicketEntryConstants.COMPONENT_UPGRADE) %>">
+					<div class="portlet-msg-error">
+						<liferay-ui:message key="please-provide-the-environment-configuration-details-for-the-liferay-dxp-environment-that-you-are-upgrading-to" />
+					</div>
+				</c:if>
 
-			<c:if test="<%= productEntry.isDigitalEnterprise() && (component == TicketEntryConstants.COMPONENT_UPGRADE) %>">
-				<div>
-					<liferay-ui:message key="please-provide-the-environment-configuration-details-for-the-liferay-dxp-environment-that-you-are-upgrading-to" />
-				</div>
-			</c:if>
-
-			<div>
 				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-environment-configuration") %>' label="" name="accountEnvironmentId" onChange='<%= renderResponse.getNamespace() + "selectAccountEnvironment(this);" %>'>
 					<aui:option value="0" />
 					<aui:option label="select-new-configuration" selected="<%= accountEnvironmentId == -1 %>" value="-1" />
@@ -257,37 +237,31 @@ if (accountEntry != null) {
 					%>
 
 				</aui:select>
+			</aui:field-wrapper>
 
-				<div class="<%= (accountEnvironmentId == 0) ? "hide" : "" %> component-detail-environment" id="<portlet:namespace />componentDetailEnvironment">
-					<div class="environment-detail" id="<portlet:namespace />environmentDetail">
-						<liferay-util:include page="/support/2/common/details_environment.jsp" servletContext="<%= application %>">
-							<portlet:param name="edit" value="<%= Boolean.TRUE.toString() %>" />
-						</liferay-util:include>
-					</div>
+			<div class="<%= (accountEnvironmentId == 0) ? "hide" : "" %> component-detail-environment" id="<portlet:namespace />componentDetailEnvironment">
+				<div class="environment-detail" id="<portlet:namespace />environmentDetail">
+					<liferay-util:include page="/support/2/common/details_environment.jsp" servletContext="<%= application %>">
+						<portlet:param name="edit" value="<%= Boolean.TRUE.toString() %>" />
+					</liferay-util:include>
 				</div>
 			</div>
 
 			<c:if test="<%= !productEntry.isSocialOffice() %>">
-				<h2 class="section-heading">
-					<liferay-ui:message key="system-status" />:
-				</h2>
+				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-system-status") %>' label="system-status" name="systemStatus">
+					<aui:option value="" />
 
-				<div>
-					<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-system-status") %>' label="" name="systemStatus">
-						<aui:option value="" />
+					<%
+					for (Integer curSystemStatus : TicketEntryConstants.getSystemStatuses(component)) {
+					%>
 
-						<%
-						for (Integer curSystemStatus : TicketEntryConstants.getSystemStatuses(component)) {
-						%>
+						<aui:option label="<%= TicketEntryConstants.getSystemStatusLabel(curSystemStatus) %>" selected="<%= curSystemStatus == systemStatus %>" value="<%= curSystemStatus %>" />
 
-							<aui:option label="<%= TicketEntryConstants.getSystemStatusLabel(curSystemStatus) %>" selected="<%= curSystemStatus == systemStatus %>" value="<%= curSystemStatus %>" />
+					<%
+					}
+					%>
 
-						<%
-						}
-						%>
-
-					</aui:select>
-				</div>
+				</aui:select>
 			</c:if>
 		</c:if>
 	</c:when>

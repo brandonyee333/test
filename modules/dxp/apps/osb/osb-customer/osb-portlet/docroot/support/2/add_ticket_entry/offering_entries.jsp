@@ -39,49 +39,49 @@ for (OfferingEntryGroup offeringEntryGroup : offeringEntryGroups) {
 request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", productEntryLESADisplayNames);
 %>
 
-<h2 class="section-heading">
-	<liferay-ui:message key="product" />:
-</h2>
-
-<c:choose>
-	<c:when test="<%= productEntryLESADisplayNames.isEmpty() %>">
-		<div class="portlet-msg-error">
-			<liferay-ui:message key="the-requested-resource-was-not-found" />
-		</div>
-	</c:when>
-	<c:when test="<%= productEntryLESADisplayNames.size() == 1 %>">
-
-		<%
-		productEntryLESADisplayName = productEntryLESADisplayNames.first();
-		%>
-
-		<span><%= LanguageUtil.get(request, productEntryLESADisplayName) %></span>
-
-		<aui:input label="" name="productEntryLESADisplayName" type="hidden" value="<%= productEntryLESADisplayName %>" />
-	</c:when>
-	<c:when test="<%= productEntryLESADisplayNames.size() > 1 %>">
-		<c:if test="<%= productEntryLESADisplayNames.contains(ProductEntryConstants.DISPLAY_NAME_DIGITAL_ENTERPRISE) %>">
-			<div class="portlet-msg-info">
-				<liferay-ui:message key="if-you-require-support-for-a-potential-upgrade-to-dxp-please-choose-digital-enterprise-as-your-product-and-upgrade-as-your-component" />
+<aui:field-wrapper label="product">
+	<c:choose>
+		<c:when test="<%= productEntryLESADisplayNames.isEmpty() %>">
+			<div class="portlet-msg-error">
+				<liferay-ui:message key="the-requested-resource-was-not-found" />
 			</div>
-		</c:if>
-
-		<aui:select label="" name="productEntryLESADisplayName" onChange='<%= renderResponse.getNamespace() + "selectProductEntry();" %>'>
-			<aui:option value="" />
+		</c:when>
+		<c:when test="<%= productEntryLESADisplayNames.size() == 1 %>">
 
 			<%
-			for (String curProductEntryLESADisplayName : productEntryLESADisplayNames) {
+			productEntryLESADisplayName = productEntryLESADisplayNames.first();
 			%>
 
-				<aui:option label="<%= curProductEntryLESADisplayName %>" selected="<%= productEntryLESADisplayName.equals(curProductEntryLESADisplayName) %>" value="<%= curProductEntryLESADisplayName %>" />
+			<aui:select disabled="<%= true %>" label="" name="productEntryLESADisplayName">
+				<aui:option label="productEntryLESADisplayName" value="<%= productEntryLESADisplayName %>" />
+			</aui:select>
 
-			<%
-			}
-			%>
+			<aui:input label="" name="productEntryLESADisplayName" type="hidden" value="<%= productEntryLESADisplayName %>" />
+		</c:when>
+		<c:when test="<%= productEntryLESADisplayNames.size() > 1 %>">
+			<c:if test="<%= productEntryLESADisplayNames.contains(ProductEntryConstants.DISPLAY_NAME_DIGITAL_ENTERPRISE) %>">
+				<div class="portlet-msg-info">
+					<liferay-ui:message key="if-you-require-support-for-a-potential-upgrade-to-dxp-please-choose-digital-enterprise-as-your-product-and-upgrade-as-your-component" />
+				</div>
+			</c:if>
 
-		</aui:select>
-	</c:when>
-</c:choose>
+			<aui:select label="" name="productEntryLESADisplayName" onChange='<%= renderResponse.getNamespace() + "selectProductEntry();" %>'>
+				<aui:option value="" />
+
+				<%
+				for (String curProductEntryLESADisplayName : productEntryLESADisplayNames) {
+				%>
+
+					<aui:option label="<%= curProductEntryLESADisplayName %>" selected="<%= productEntryLESADisplayName.equals(curProductEntryLESADisplayName) %>" value="<%= curProductEntryLESADisplayName %>" />
+
+				<%
+				}
+				%>
+
+			</aui:select>
+		</c:when>
+	</c:choose>
+</aui:field-wrapper>
 
 <%
 PortletPreferences preferences = SupportUtil.getPortletPreferences();
@@ -98,30 +98,29 @@ PortletPreferences preferences = SupportUtil.getPortletPreferences();
 		<%= HtmlUtil.escape(dxpTitle) %>
 	</div>
 
-	<div id="<portlet:namespace />dxpMessage"></div>
-
-	<aui:script use="aui-modal">
+	<aui:script use="aui-base,liferay-util-window">
 		var DOC = A.getDoc();
 
-		var modal = new A.Modal(
+		var dialog = Liferay.Util.Window.getWindow(
 			{
-				bodyContent: '<%= HtmlUtil.escape(dxpMessage) %>',
-				centered: true,
-				cssClass: 'page-pop-up',
-				hideOn: [
-					{
-						eventName: 'key',
-						keyCode: 'esc',
-						node: DOC
-					},
-					{
-						eventName: 'clickoutside',
-						node: DOC
-					}
-				],
-				modal: true,
-				render: '#<portlet:namespace />dxpMessage',
-				visible: false
+				dialog: {
+					bodyContent: '<%= HtmlUtil.escape(dxpMessage) %>',
+					centered: true,
+					hideOn: [
+						{
+							eventName: 'key',
+							keyCode: 'esc',
+							node: DOC
+						},
+						{
+							eventName: 'clickoutside',
+							node: DOC
+						}
+					],
+					modal: true,
+					id: '<portlet:namespace />dxpMessage',
+					visible: false
+				}
 			}
 		).render();
 
@@ -131,9 +130,7 @@ PortletPreferences preferences = SupportUtil.getPortletPreferences();
 			dxpTitle.on(
 				'click',
 				function(event) {
-					event.stopPropagation();
-
-					modal.show();
+					dialog.show();
 				}
 			);
 		}
@@ -146,18 +143,15 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 
 <c:if test="<%= Validator.isNotNull(productLink) %>">
 	<div class="portlet-msg-info">
-		<div class="txt-b">
+		<div class="txt-sb">
 			<liferay-ui:message arguments="<%= productEntryLESADisplayName %>" key="known-issues" translateArguments="<%= true %>" />
 		</div>
 
-		<div>
+		<%
+		String[] arguments = {LanguageUtil.get(request, productEntryLESADisplayName), "<a href=\"" + productLink + "\" target=\"_blank\">", "</a>"};
+		%>
 
-			<%
-			String[] arguments = {LanguageUtil.get(request, productEntryLESADisplayName), "<a href=\"" + productLink + "\" target=\"_blank\">", "</a>"};
-			%>
-
-			<liferay-ui:message arguments="<%= arguments %>" key="known-issues-message" />
-		</div>
+		<liferay-ui:message arguments="<%= arguments %>" key="known-issues-message" />
 	</div>
 </c:if>
 
@@ -181,10 +175,6 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 
 	<c:choose>
 		<c:when test="<%= productEntryLESADisplayName.equals(ProductEntryConstants.DISPLAY_NAME_MOBILE_DEVICE_DETECTION) || productEntryLESADisplayName.equals(ProductEntryConstants.DISPLAY_NAME_ENTERPRISE_SEARCH_PREMIUM) || productEntryLESADisplayName.equals(ProductEntryConstants.DISPLAY_NAME_ENTERPRISE_SEARCH_STANDARD) || productEntryLESADisplayName.equals(ProductEntryConstants.DISPLAY_NAME_PORTAL) || productEntryLESADisplayName.equals(ProductEntryConstants.DISPLAY_NAME_DIGITAL_ENTERPRISE) %>">
-			<h2 class="section-heading">
-				<liferay-ui:message key="server" />:
-			</h2>
-
 			<c:choose>
 				<c:when test="<%= productEntryEnvironments.size() == 1 %>">
 
@@ -201,27 +191,27 @@ String productLink = GetterUtil.getString(preferences.getValue("productLink_" + 
 					request.setAttribute("add_ticket_entry.jsp-productEntry", offeringEntry.getProductEntry());
 					%>
 
-					<liferay-ui:message key="<%= entry.getKey() %>" />
+					<aui:select disabled="<%= true %>" label="server" name="offeringEntryId">
+						<aui:option label="<%= entry.getKey() %>" value="<%= entry.getValue() %>" />
+					</aui:select>
 
 					<aui:input label="" name="offeringEntryId" type="hidden" value="<%= entry.getValue() %>" />
 				</c:when>
 				<c:when test="<%= productEntryEnvironments.size() > 1 %>">
-					<div>
-						<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-server") %>' label="" name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
-							<aui:option value="0" />
+					<aui:select data-field-required-status="<%= false %>" field-required-message='<%= LanguageUtil.get(request, "please-select-a-valid-server") %>' label="server" name="offeringEntryId" onChange='<%= renderResponse.getNamespace() + "selectServerComponent();" %>'>
+						<aui:option value="0" />
 
-							<%
-							for (Map.Entry<String, Long> entry : productEntryEnvironments.entrySet()) {
-							%>
+						<%
+						for (Map.Entry<String, Long> entry : productEntryEnvironments.entrySet()) {
+						%>
 
-								<aui:option label="<%= entry.getKey() %>" selected="<%= (offeringEntry != null) && (entry.getValue() == offeringEntry.getOfferingEntryId()) %>" value="<%= entry.getValue() %>" />
+							<aui:option label="<%= entry.getKey() %>" selected="<%= (offeringEntry != null) && (entry.getValue() == offeringEntry.getOfferingEntryId()) %>" value="<%= entry.getValue() %>" />
 
-							<%
-							}
-							%>
+						<%
+						}
+						%>
 
-						</aui:select>
-					</div>
+					</aui:select>
 				</c:when>
 			</c:choose>
 		</c:when>

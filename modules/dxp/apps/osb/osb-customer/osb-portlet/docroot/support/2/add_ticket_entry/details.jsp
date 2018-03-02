@@ -27,36 +27,18 @@ String description = ParamUtil.getString(request, "description");
 %>
 
 <div class="ticket-detail">
-	<div>
-		<h2 class="section-heading">
-			<liferay-ui:message key="summary" />:
-		</h2>
+	<aui:input data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(request, "please-enter-a-summary-of-the-issue")) %>' label="summary" maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' name="subject" type="text" value="<%= subject %>" />
 
-		<div>
-			<aui:input data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.get(request, "please-enter-a-summary-of-the-issue")) %>' label="" maxLength='<%= ModelHintsUtil.getMaxLength(TicketEntry.class.getName(), "subject") %>' name="subject" type="text" value="<%= subject %>" />
-		</div>
-	</div>
-
-	<div>
-		<h2 class="section-heading">
-			<liferay-ui:message key="description" />:
-		</h2>
-
-		<div>
-			<c:if test="<%= component != TicketEntryConstants.COMPONENT_LICENSE %>">
-				<liferay-ui:message key="please-try-to-be-as-specific-as-possible-when-describing-your-issue" />
-			</c:if>
-
-			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-				<liferay-util:param name="content" value="<%= description %>" />
-				<liferay-util:param name="editorId" value="description" />
-				<liferay-util:param name="fieldRequired" value="<%= Boolean.TRUE.toString() %>" />
-				<liferay-util:param name="fieldRequiredMessage" value='<%= LanguageUtil.get(request, "please-enter-a-description-of-the-issue") %>' />
-				<liferay-util:param name="name" value="description" />
-				<liferay-util:param name="height" value='<%= (component != TicketEntryConstants.COMPONENT_LICENSE) ? "300" : "" %>' />
-			</liferay-util:include>
-		</div>
-	</div>
+	<aui:field-wrapper helpMessage='<%= component != TicketEntryConstants.COMPONENT_LICENSE ? "please-try-to-be-as-specific-as-possible-when-describing-your-issue" : StringPool.BLANK %>' label="description">
+		<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+			<liferay-util:param name="content" value="<%= description %>" />
+			<liferay-util:param name="editorId" value="description" />
+			<liferay-util:param name="fieldRequired" value="<%= Boolean.TRUE.toString() %>" />
+			<liferay-util:param name="fieldRequiredMessage" value='<%= LanguageUtil.get(request, "please-enter-a-description-of-the-issue") %>' />
+			<liferay-util:param name="name" value="description" />
+			<liferay-util:param name="height" value='<%= (component != TicketEntryConstants.COMPONENT_LICENSE) ? "300" : "" %>' />
+		</liferay-util:include>
+	</aui:field-wrapper>
 
 	<div class="component-details">
 		<c:choose>
@@ -75,7 +57,7 @@ String description = ParamUtil.getString(request, "description");
 		</c:choose>
 	</div>
 
-	<div class="foot-details">
+	<aui:button-row cssClass="foot-details">
 		<portlet:renderURL var="cancelURL">
 			<portlet:param name="mvcPath" value="/support/2/view.jsp" />
 		</portlet:renderURL>
@@ -83,7 +65,7 @@ String description = ParamUtil.getString(request, "description");
 		<aui:button cssClass="pull-left" href="<%= cancelURL.toString() %>" value="cancel" />
 
 		<aui:button cssClass="pull-right" onClick='<%= renderResponse.getNamespace() + "submit();" %>' value="create" />
-	</div>
+	</aui:button-row>
 </div>
 
 <aui:script>

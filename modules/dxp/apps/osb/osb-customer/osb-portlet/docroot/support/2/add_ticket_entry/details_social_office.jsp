@@ -20,11 +20,7 @@
 long socialOfficePluginTicketAttachmentId = ParamUtil.getLong(request, "socialOfficePluginTicketAttachmentId");
 %>
 
-<div>
-	<h2 class="section-heading">
-		<liferay-ui:message key="please-provide-a-copy-of-the-social-office-plugin" />
-	</h2>
-
+<aui:field-wrapper label="please-provide-a-copy-of-the-social-office-plugin">
 	<div class="clearfix">
 		<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 			<liferay-util:param name="edit" value="<%= String.valueOf(Boolean.TRUE) %>" />
@@ -33,5 +29,5 @@ long socialOfficePluginTicketAttachmentId = ParamUtil.getLong(request, "socialOf
 			<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(socialOfficePluginTicketAttachmentId) %>" />
 			<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_SOCIAL_OFFICE_PLUGIN) %>" />
 		</liferay-util:include>
-	</di>
-</div>
+	</div>
+</aui:field-wrapper>

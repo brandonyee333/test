@@ -30,92 +30,70 @@ String hostNames = ParamUtil.getString(request, "hostNames");
 String additionalComments = ParamUtil.getString(request, "additionalComments");
 %>
 
-<div>
-	<h2 class="component-title section-heading">
-		<liferay-ui:message key="activation-key-details" />
-	</h2>
+<aui:fieldset-group>
+	<aui:fieldset label="activation-key-details" helpMessage="please-provide-accurate-activation-key-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution">
+		<div class="clearfix">
+			<div class="pull-left w45">
+				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "type-of-key")) %>' label="type-of-key" name="type">
+					<aui:option value="0" />
 
-	<div class="component-description">
-		<liferay-ui:message key="please-provide-accurate-activation-key-details-these-details-will-help-us-reproduce-your-issue-and-come-to-a-faster-resolution" />
-	</div>
-</div>
+					<%
+					int[] types = TicketEntryConstants.getLicenseTypes();
 
-<div class="clearfix">
-	<div class="pull-left w45">
-		<span class="section-heading"><liferay-ui:message key="type-of-key" />:</span>
+					for (int curType : types) {
+					%>
 
-		<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "type-of-key")) %>' label="" name="type">
-			<aui:option value="0" />
+						<aui:option label="<%= TicketEntryConstants.getLicenseTypeLabel(curType) %>" selected="<%= curType == type %>" value="<%= curType %>" />
 
-			<%
-			int[] types = TicketEntryConstants.getLicenseTypes();
+					<%
+					}
+					%>
 
-			for (int curType : types) {
-			%>
+				</aui:select>
+			</div>
 
-				<aui:option label="<%= TicketEntryConstants.getLicenseTypeLabel(curType) %>" selected="<%= curType == type %>" value="<%= curType %>" />
+			<div class="pull-right w45">
+				<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "purpose")) %>' label="purpose" name="purpose">
+					<aui:option value="0" />
 
-			<%
-			}
-			%>
+					<%
+					int[] purposes = TicketEntryConstants.getLicensePurposes();
 
-		</aui:select>
-	</div>
+					for (int curPurpose : purposes) {
+					%>
 
-	<div class="pull-right w45">
-		<div class="section-heading"><liferay-ui:message key="purpose" />:</div>
+						<aui:option label="<%= TicketEntryConstants.getLicensePurposeLabel(curPurpose) %>" selected="<%= curPurpose == purpose %>" value="<%= curPurpose %>" />
 
-		<aui:select data-field-required-status="<%= false %>" field-required-message='<%= HtmlUtil.escapeAttribute(LanguageUtil.format(request, "invalid-value-provided-for-x", "purpose")) %>' label="" name="purpose">
-			<aui:option value="0" />
+					<%
+					}
+					%>
 
-			<%
-			int[] purposes = TicketEntryConstants.getLicensePurposes();
+				</aui:select>
+			</div>
+		</div>
 
-			for (int curPurpose : purposes) {
-			%>
+		<aui:field-wrapper label="server-ids-mac-addresses-optional">
+			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+				<liferay-util:param name="content" value="<%= serverIds %>" />
+				<liferay-util:param name="editorId" value="serverIds" />
+				<liferay-util:param name="name" value="serverIds" />
+			</liferay-util:include>
+		</aui:field-wrapper>
 
-				<aui:option label="<%= TicketEntryConstants.getLicensePurposeLabel(curPurpose) %>" selected="<%= curPurpose == purpose %>" value="<%= curPurpose %>" />
+		<aui:field-wrapper label="ip-addresses-optional">
+			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+				<liferay-util:param name="content" value="<%= ipAddresses %>" />
+				<liferay-util:param name="editorId" value="ipAddresses" />
+				<liferay-util:param name="name" value="ipAddresses" />
+			</liferay-util:include>
+		</aui:field-wrapper>
 
-			<%
-			}
-			%>
-
-		</aui:select>
-	</div>
-</div>
-
-<div>
-	<h2 class="section-heading">
-		<liferay-ui:message key="server-ids-mac-addresses-optional" />:
-	</h2>
-
-	<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-		<liferay-util:param name="content" value="<%= serverIds %>" />
-		<liferay-util:param name="editorId" value="serverIds" />
-		<liferay-util:param name="name" value="serverIds" />
-	</liferay-util:include>
-</div>
-
-<div>
-	<h2 class="section-heading">
-		<liferay-ui:message key="ip-addresses-optional" />:
-	</h2>
-
-	<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-		<liferay-util:param name="content" value="<%= ipAddresses %>" />
-		<liferay-util:param name="editorId" value="ipAddresses" />
-		<liferay-util:param name="name" value="ipAddresses" />
-	</liferay-util:include>
-</div>
-
-<div>
-	<h2 class="section-heading">
-		<liferay-ui:message key="host-names-optional" />:
-	</h2>
-
-	<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
-		<liferay-util:param name="content" value="<%= hostNames %>" />
-		<liferay-util:param name="editorId" value="hostNames" />
-		<liferay-util:param name="name" value="hostNames" />
-	</liferay-util:include>
-</div>
+		<aui:field-wrapper label="host-names-optional">
+			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
+				<liferay-util:param name="content" value="<%= hostNames %>" />
+				<liferay-util:param name="editorId" value="hostNames" />
+				<liferay-util:param name="name" value="hostNames" />
+			</liferay-util:include>
+		</aui:field-wrapper>
+	</aui:fieldset>
+</aui:fieldset-group>
