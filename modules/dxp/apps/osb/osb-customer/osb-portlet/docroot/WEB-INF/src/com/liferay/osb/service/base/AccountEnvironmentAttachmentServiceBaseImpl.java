@@ -69,8 +69,6 @@ import com.liferay.osb.service.persistence.SupportWorkerPersistence;
 import com.liferay.osb.service.persistence.SupportWorkerSeverityPersistence;
 import com.liferay.osb.service.persistence.TicketAttachmentPersistence;
 import com.liferay.osb.service.persistence.TicketCallPersistence;
-import com.liferay.osb.service.persistence.TicketCannedResponseFinder;
-import com.liferay.osb.service.persistence.TicketCannedResponsePersistence;
 import com.liferay.osb.service.persistence.TicketCommentFinder;
 import com.liferay.osb.service.persistence.TicketCommentPersistence;
 import com.liferay.osb.service.persistence.TicketEntryFinder;
@@ -2732,82 +2730,6 @@ public abstract class AccountEnvironmentAttachmentServiceBaseImpl
 	}
 
 	/**
-	 * Returns the ticket canned response local service.
-	 *
-	 * @return the ticket canned response local service
-	 */
-	public com.liferay.osb.service.TicketCannedResponseLocalService getTicketCannedResponseLocalService() {
-		return ticketCannedResponseLocalService;
-	}
-
-	/**
-	 * Sets the ticket canned response local service.
-	 *
-	 * @param ticketCannedResponseLocalService the ticket canned response local service
-	 */
-	public void setTicketCannedResponseLocalService(
-		com.liferay.osb.service.TicketCannedResponseLocalService ticketCannedResponseLocalService) {
-		this.ticketCannedResponseLocalService = ticketCannedResponseLocalService;
-	}
-
-	/**
-	 * Returns the ticket canned response remote service.
-	 *
-	 * @return the ticket canned response remote service
-	 */
-	public com.liferay.osb.service.TicketCannedResponseService getTicketCannedResponseService() {
-		return ticketCannedResponseService;
-	}
-
-	/**
-	 * Sets the ticket canned response remote service.
-	 *
-	 * @param ticketCannedResponseService the ticket canned response remote service
-	 */
-	public void setTicketCannedResponseService(
-		com.liferay.osb.service.TicketCannedResponseService ticketCannedResponseService) {
-		this.ticketCannedResponseService = ticketCannedResponseService;
-	}
-
-	/**
-	 * Returns the ticket canned response persistence.
-	 *
-	 * @return the ticket canned response persistence
-	 */
-	public TicketCannedResponsePersistence getTicketCannedResponsePersistence() {
-		return ticketCannedResponsePersistence;
-	}
-
-	/**
-	 * Sets the ticket canned response persistence.
-	 *
-	 * @param ticketCannedResponsePersistence the ticket canned response persistence
-	 */
-	public void setTicketCannedResponsePersistence(
-		TicketCannedResponsePersistence ticketCannedResponsePersistence) {
-		this.ticketCannedResponsePersistence = ticketCannedResponsePersistence;
-	}
-
-	/**
-	 * Returns the ticket canned response finder.
-	 *
-	 * @return the ticket canned response finder
-	 */
-	public TicketCannedResponseFinder getTicketCannedResponseFinder() {
-		return ticketCannedResponseFinder;
-	}
-
-	/**
-	 * Sets the ticket canned response finder.
-	 *
-	 * @param ticketCannedResponseFinder the ticket canned response finder
-	 */
-	public void setTicketCannedResponseFinder(
-		TicketCannedResponseFinder ticketCannedResponseFinder) {
-		this.ticketCannedResponseFinder = ticketCannedResponseFinder;
-	}
-
-	/**
 	 * Returns the ticket comment local service.
 	 *
 	 * @return the ticket comment local service
@@ -3793,14 +3715,6 @@ public abstract class AccountEnvironmentAttachmentServiceBaseImpl
 	protected com.liferay.osb.service.TicketCallService ticketCallService;
 	@BeanReference(type = TicketCallPersistence.class)
 	protected TicketCallPersistence ticketCallPersistence;
-	@BeanReference(type = com.liferay.osb.service.TicketCannedResponseLocalService.class)
-	protected com.liferay.osb.service.TicketCannedResponseLocalService ticketCannedResponseLocalService;
-	@BeanReference(type = com.liferay.osb.service.TicketCannedResponseService.class)
-	protected com.liferay.osb.service.TicketCannedResponseService ticketCannedResponseService;
-	@BeanReference(type = TicketCannedResponsePersistence.class)
-	protected TicketCannedResponsePersistence ticketCannedResponsePersistence;
-	@BeanReference(type = TicketCannedResponseFinder.class)
-	protected TicketCannedResponseFinder ticketCannedResponseFinder;
 	@BeanReference(type = com.liferay.osb.service.TicketCommentLocalService.class)
 	protected com.liferay.osb.service.TicketCommentLocalService ticketCommentLocalService;
 	@BeanReference(type = com.liferay.osb.service.TicketCommentService.class)

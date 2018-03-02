@@ -45,7 +45,6 @@
 	<import class="com.liferay.osb.model.SupportWorkerSeverity" />
 	<import class="com.liferay.osb.model.TicketAttachment" />
 	<import class="com.liferay.osb.model.TicketCall" />
-	<import class="com.liferay.osb.model.TicketCannedResponse" />
 	<import class="com.liferay.osb.model.TicketComment" />
 	<import class="com.liferay.osb.model.TicketEntry" />
 	<import class="com.liferay.osb.model.TicketFeedback" />
@@ -684,18 +683,6 @@
 		<property name="customerContact" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="confirmation" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="instructions" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.TicketCannedResponseImpl" table="OSB_TicketCannedResponse">
-		<id name="ticketCannedResponseId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="useCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.TicketCommentImpl" table="OSB_TicketComment">
 		<id name="ticketCommentId" type="long">

@@ -48,14 +48,12 @@ public class TicketCommentLocalServiceUtil {
 
 	public static com.liferay.osb.model.TicketComment addTicketComment(
 		long userId, long ticketEntryId, java.lang.String body, int type,
-		int visibility, int status, long ticketCannedResponseId,
-		int[] pendingTypes,
+		int visibility, int status, int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addTicketComment(userId, ticketEntryId, body, type,
-			visibility, status, ticketCannedResponseId, pendingTypes,
-			serviceContext);
+			visibility, status, pendingTypes, serviceContext);
 	}
 
 	/**
@@ -331,14 +329,12 @@ public class TicketCommentLocalServiceUtil {
 
 	public static com.liferay.osb.model.TicketComment updateTicketComment(
 		long userId, long ticketCommentId, long ticketEntryId,
-		java.lang.String body, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
+		java.lang.String body, int visibility, int status, int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateTicketComment(userId, ticketCommentId, ticketEntryId,
-			body, visibility, status, ticketCannedResponseId, pendingTypes,
-			serviceContext);
+			body, visibility, status, pendingTypes, serviceContext);
 	}
 
 	/**

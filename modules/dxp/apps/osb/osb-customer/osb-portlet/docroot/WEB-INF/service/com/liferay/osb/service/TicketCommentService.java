@@ -56,15 +56,15 @@ public interface TicketCommentService extends BaseService {
 	 */
 	public TicketComment addTicketComment(long userId, long ticketEntryId,
 		java.lang.String body, int type, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
+		int[] pendingTypes,
 		List<ObjectValuePair<java.lang.String, File>> files,
 		List<java.lang.Integer> types, ServiceContext serviceContext)
 		throws PortalException;
 
 	public TicketComment addTicketComment(long userId, long ticketEntryId,
 		java.lang.String body, int type, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
-		ServiceContext serviceContext) throws PortalException;
+		int[] pendingTypes, ServiceContext serviceContext)
+		throws PortalException;
 
 	public TicketComment deleteTicketComment(long ticketCommentId)
 		throws PortalException;
@@ -78,7 +78,7 @@ public interface TicketCommentService extends BaseService {
 
 	public TicketComment updateTicketComment(long userId, long ticketCommentId,
 		long ticketEntryId, java.lang.String body, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
+		int[] pendingTypes,
 		List<ObjectValuePair<java.lang.String, File>> files,
 		List<java.lang.Integer> types) throws PortalException;
 

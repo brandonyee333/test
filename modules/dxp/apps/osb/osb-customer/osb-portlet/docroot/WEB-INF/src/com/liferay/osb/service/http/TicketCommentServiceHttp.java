@@ -58,7 +58,7 @@ public class TicketCommentServiceHttp {
 	public static com.liferay.osb.model.TicketComment addTicketComment(
 		HttpPrincipal httpPrincipal, long userId, long ticketEntryId,
 		java.lang.String body, int type, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
+		int[] pendingTypes,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -69,8 +69,7 @@ public class TicketCommentServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
 					ticketEntryId, body, type, visibility, status,
-					ticketCannedResponseId, pendingTypes, files, types,
-					serviceContext);
+					pendingTypes, files, types, serviceContext);
 
 			Object returnObj = null;
 
@@ -97,7 +96,7 @@ public class TicketCommentServiceHttp {
 	public static com.liferay.osb.model.TicketComment addTicketComment(
 		HttpPrincipal httpPrincipal, long userId, long ticketEntryId,
 		java.lang.String body, int type, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
+		int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -106,7 +105,7 @@ public class TicketCommentServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
 					ticketEntryId, body, type, visibility, status,
-					ticketCannedResponseId, pendingTypes, serviceContext);
+					pendingTypes, serviceContext);
 
 			Object returnObj = null;
 
@@ -165,7 +164,7 @@ public class TicketCommentServiceHttp {
 	public static com.liferay.osb.model.TicketComment updateTicketComment(
 		HttpPrincipal httpPrincipal, long userId, long ticketCommentId,
 		long ticketEntryId, java.lang.String body, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
+		int[] pendingTypes,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -175,7 +174,7 @@ public class TicketCommentServiceHttp {
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
 					ticketCommentId, ticketEntryId, body, visibility, status,
-					ticketCannedResponseId, pendingTypes, files, types);
+					pendingTypes, files, types);
 
 			Object returnObj = null;
 
@@ -235,13 +234,12 @@ public class TicketCommentServiceHttp {
 	private static Log _log = LogFactoryUtil.getLog(TicketCommentServiceHttp.class);
 	private static final Class<?>[] _addTicketCommentParameterTypes0 = new Class[] {
 			long.class, long.class, java.lang.String.class, int.class, int.class,
-			int.class, long.class, int[].class, java.util.List.class,
-			java.util.List.class,
+			int.class, int[].class, java.util.List.class, java.util.List.class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _addTicketCommentParameterTypes1 = new Class[] {
 			long.class, long.class, java.lang.String.class, int.class, int.class,
-			int.class, long.class, int[].class,
+			int.class, int[].class,
 			com.liferay.portal.kernel.service.ServiceContext.class
 		};
 	private static final Class<?>[] _deleteTicketCommentParameterTypes2 = new Class[] {
@@ -249,7 +247,7 @@ public class TicketCommentServiceHttp {
 		};
 	private static final Class<?>[] _updateTicketCommentParameterTypes3 = new Class[] {
 			long.class, long.class, long.class, java.lang.String.class,
-			int.class, int.class, long.class, int[].class, java.util.List.class,
+			int.class, int.class, int[].class, java.util.List.class,
 			java.util.List.class
 		};
 	private static final Class<?>[] _updateTicketCommentTypeParameterTypes4 = new Class[] {

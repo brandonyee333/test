@@ -36,25 +36,24 @@ public class TicketCommentServiceWrapper implements TicketCommentService,
 	@Override
 	public com.liferay.osb.model.TicketComment addTicketComment(long userId,
 		long ticketEntryId, java.lang.String body, int type, int visibility,
-		int status, long ticketCannedResponseId, int[] pendingTypes,
+		int status, int[] pendingTypes,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketCommentService.addTicketComment(userId, ticketEntryId,
-			body, type, visibility, status, ticketCannedResponseId,
-			pendingTypes, files, types, serviceContext);
+			body, type, visibility, status, pendingTypes, files, types,
+			serviceContext);
 	}
 
 	@Override
 	public com.liferay.osb.model.TicketComment addTicketComment(long userId,
 		long ticketEntryId, java.lang.String body, int type, int visibility,
-		int status, long ticketCannedResponseId, int[] pendingTypes,
+		int status, int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketCommentService.addTicketComment(userId, ticketEntryId,
-			body, type, visibility, status, ticketCannedResponseId,
-			pendingTypes, serviceContext);
+			body, type, visibility, status, pendingTypes, serviceContext);
 	}
 
 	@Override
@@ -77,14 +76,13 @@ public class TicketCommentServiceWrapper implements TicketCommentService,
 	@Override
 	public com.liferay.osb.model.TicketComment updateTicketComment(
 		long userId, long ticketCommentId, long ticketEntryId,
-		java.lang.String body, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
+		java.lang.String body, int visibility, int status, int[] pendingTypes,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketCommentService.updateTicketComment(userId,
 			ticketCommentId, ticketEntryId, body, visibility, status,
-			ticketCannedResponseId, pendingTypes, files, types);
+			pendingTypes, files, types);
 	}
 
 	@Override

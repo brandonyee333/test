@@ -66,8 +66,8 @@ public interface TicketCommentLocalService extends BaseLocalService,
 
 	public TicketComment addTicketComment(long userId, long ticketEntryId,
 		java.lang.String body, int type, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
-		ServiceContext serviceContext) throws PortalException;
+		int[] pendingTypes, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	* Adds the ticket comment to the database. Also notifies the appropriate model listeners.
@@ -269,8 +269,8 @@ public interface TicketCommentLocalService extends BaseLocalService,
 
 	public TicketComment updateTicketComment(long userId, long ticketCommentId,
 		long ticketEntryId, java.lang.String body, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
-		ServiceContext serviceContext) throws PortalException;
+		int[] pendingTypes, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	* Updates the ticket comment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

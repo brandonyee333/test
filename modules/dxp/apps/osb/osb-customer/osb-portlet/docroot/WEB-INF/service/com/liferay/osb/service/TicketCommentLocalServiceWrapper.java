@@ -45,12 +45,12 @@ public class TicketCommentLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.TicketComment addTicketComment(long userId,
 		long ticketEntryId, java.lang.String body, int type, int visibility,
-		int status, long ticketCannedResponseId, int[] pendingTypes,
+		int status, int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketCommentLocalService.addTicketComment(userId,
-			ticketEntryId, body, type, visibility, status,
-			ticketCannedResponseId, pendingTypes, serviceContext);
+			ticketEntryId, body, type, visibility, status, pendingTypes,
+			serviceContext);
 	}
 
 	/**
@@ -356,13 +356,12 @@ public class TicketCommentLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.TicketComment updateTicketComment(
 		long userId, long ticketCommentId, long ticketEntryId,
-		java.lang.String body, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
+		java.lang.String body, int visibility, int status, int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketCommentLocalService.updateTicketComment(userId,
 			ticketCommentId, ticketEntryId, body, visibility, status,
-			ticketCannedResponseId, pendingTypes, serviceContext);
+			pendingTypes, serviceContext);
 	}
 
 	/**

@@ -67,8 +67,7 @@ import java.rmi.RemoteException;
 public class TicketCommentServiceSoap {
 	public static com.liferay.osb.model.TicketCommentSoap addTicketComment(
 		long userId, long ticketEntryId, java.lang.String body, int type,
-		int visibility, int status, long ticketCannedResponseId,
-		int[] pendingTypes,
+		int visibility, int status, int[] pendingTypes,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -76,8 +75,7 @@ public class TicketCommentServiceSoap {
 		try {
 			com.liferay.osb.model.TicketComment returnValue = TicketCommentServiceUtil.addTicketComment(userId,
 					ticketEntryId, body, type, visibility, status,
-					ticketCannedResponseId, pendingTypes, files, types,
-					serviceContext);
+					pendingTypes, files, types, serviceContext);
 
 			return com.liferay.osb.model.TicketCommentSoap.toSoapModel(returnValue);
 		}
@@ -90,14 +88,13 @@ public class TicketCommentServiceSoap {
 
 	public static com.liferay.osb.model.TicketCommentSoap addTicketComment(
 		long userId, long ticketEntryId, java.lang.String body, int type,
-		int visibility, int status, long ticketCannedResponseId,
-		int[] pendingTypes,
+		int visibility, int status, int[] pendingTypes,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
 		try {
 			com.liferay.osb.model.TicketComment returnValue = TicketCommentServiceUtil.addTicketComment(userId,
 					ticketEntryId, body, type, visibility, status,
-					ticketCannedResponseId, pendingTypes, serviceContext);
+					pendingTypes, serviceContext);
 
 			return com.liferay.osb.model.TicketCommentSoap.toSoapModel(returnValue);
 		}
@@ -124,14 +121,13 @@ public class TicketCommentServiceSoap {
 
 	public static com.liferay.osb.model.TicketCommentSoap updateTicketComment(
 		long userId, long ticketCommentId, long ticketEntryId,
-		java.lang.String body, int visibility, int status,
-		long ticketCannedResponseId, int[] pendingTypes,
+		java.lang.String body, int visibility, int status, int[] pendingTypes,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types) throws RemoteException {
 		try {
 			com.liferay.osb.model.TicketComment returnValue = TicketCommentServiceUtil.updateTicketComment(userId,
 					ticketCommentId, ticketEntryId, body, visibility, status,
-					ticketCannedResponseId, pendingTypes, files, types);
+					pendingTypes, files, types);
 
 			return com.liferay.osb.model.TicketCommentSoap.toSoapModel(returnValue);
 		}

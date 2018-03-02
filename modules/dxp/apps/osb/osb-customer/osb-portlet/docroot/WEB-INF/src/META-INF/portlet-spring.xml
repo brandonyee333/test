@@ -139,10 +139,6 @@
 	<bean class="com.liferay.osb.service.impl.TicketCallLocalServiceImpl" id="com.liferay.osb.service.TicketCallLocalService" />
 	<bean class="com.liferay.osb.service.impl.TicketCallServiceImpl" id="com.liferay.osb.service.TicketCallService" />
 	<bean class="com.liferay.osb.service.persistence.impl.TicketCallPersistenceImpl" id="com.liferay.osb.service.persistence.TicketCallPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.TicketCannedResponseLocalServiceImpl" id="com.liferay.osb.service.TicketCannedResponseLocalService" />
-	<bean class="com.liferay.osb.service.impl.TicketCannedResponseServiceImpl" id="com.liferay.osb.service.TicketCannedResponseService" />
-	<bean class="com.liferay.osb.service.persistence.impl.TicketCannedResponsePersistenceImpl" id="com.liferay.osb.service.persistence.TicketCannedResponsePersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.persistence.impl.TicketCannedResponseFinderImpl" id="com.liferay.osb.service.persistence.TicketCannedResponseFinder" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.TicketCommentLocalServiceImpl" id="com.liferay.osb.service.TicketCommentLocalService" />
 	<bean class="com.liferay.osb.service.impl.TicketCommentServiceImpl" id="com.liferay.osb.service.TicketCommentService" />
 	<bean class="com.liferay.osb.service.persistence.impl.TicketCommentPersistenceImpl" id="com.liferay.osb.service.persistence.TicketCommentPersistence" parent="basePersistence" />
