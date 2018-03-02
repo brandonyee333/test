@@ -417,48 +417,26 @@ if (liferayIncOrg || partnerWorker) {
 
 	Liferay.provide(
 		window,
-		'<portlet:namespace />revealComponentTab',
-		function(id) {
-			var A = AUI();
-
-			A.all('.component-tab').hide();
-
-			var tab = A.one('.tab-view-dialog .details .tabs #<portlet:namespace />' + id);
-
-			if (tab) {
-				tab.show();
-			}
-		},
-		['aui-base']
-	);
-
-	Liferay.provide(
-		window,
 		'<portlet:namespace />selectComponent',
 		function(component) {
 			var A = AUI();
 
-			var requiredStatus = 'true';
+			var COMPONENTS = {
+				[<%= TicketEntryConstants.COMPONENT_CLUSTERING %>]: 'clusteringDetailsHeader',
+				[<%= TicketEntryConstants.COMPONENT_LICENSE %>]: 'activationKeyDetailsHeader',
+				[<%= TicketEntryConstants.COMPONENT_UPGRADE %>]: 'upgradeDetailsHeader'
+			};
 
-			if (component == <%= TicketEntryConstants.COMPONENT_CLUSTERING %>) {
-				<portlet:namespace />revealComponentTab('clusteringDetailsHeader');
+			A.all('.component-tab').hide();
 
-				requiredStatus = 'false';
-			}
-			else if (component == <%= TicketEntryConstants.COMPONENT_LICENSE %>) {
-				<portlet:namespace />revealComponentTab('activationKeyDetailsHeader');
-			}
-			else if (component == <%= TicketEntryConstants.COMPONENT_UPGRADE %>) {
-				<portlet:namespace />revealComponentTab('upgradeDetailsHeader');
-			}
-			else {
-				<portlet:namespace />revealComponentTab();
-			}
+			var activeComponent = COMPONENTS[component];
 
-			var serverTypeNode = A.one('#<portlet:namespace />serverCommunicationType');
+			if (activeComponent) {
+				var componentTab = A.one('#<portlet:namespace />' + activeComponent);
 
-			if (serverTypeNode) {
-				serverTypeNode.attr('data-field-required-status', requiredStatus);
+				if (componentTab) {
+					componentTab.show();
+				}
 			}
 
 			<portlet:namespace />loadEnvironmentDetailsTab(component);
@@ -472,7 +450,7 @@ if (liferayIncOrg || partnerWorker) {
 					dataType: 'JSON',
 					method: 'POST',
 					on: {
-						success: function(event, id, obj) {
+						success: function() {
 							var response = this.get('responseData');
 
 							<portlet:namespace />updateSubcomponent(response);
@@ -504,7 +482,7 @@ if (liferayIncOrg || partnerWorker) {
 
 							<portlet:namespace />updateComponent(response);
 
-							<portlet:namespace />selectComponent(0);
+							<portlet:namespace />selectComponent();
 						}
 					}
 				}
@@ -519,7 +497,7 @@ if (liferayIncOrg || partnerWorker) {
 		function(severity, newSeverity) {
 			var A = AUI();
 
-			var selectOptions = [];
+			var selectOptions = ['<option value="customer-did-not-understand-the-meaning-of-critical"><liferay-ui:message key="customer-did-not-understand-the-meaning-of-critical" unicode="<%= true %>" /></option>'];
 
 			var severityDetails = A.one('#<portlet:namespace />severityDetails');
 
@@ -537,11 +515,9 @@ if (liferayIncOrg || partnerWorker) {
 				return;
 			}
 			else if (severity < newSeverity) {
-				selectOptions.push('<option value="customer-did-not-understand-the-meaning-of-critical"><liferay-ui:message key="customer-did-not-understand-the-meaning-of-critical" unicode="<%= true %>" /></option>');
 				selectOptions.push('<option value="other"><liferay-ui:message key="other" /></option>');
 			}
 			else {
-				selectOptions.push('<option value="customer-did-not-understand-the-meaning-of-critical"><liferay-ui:message key="customer-did-not-understand-the-meaning-of-critical" unicode="<%= true %>" /></option>');
 				selectOptions.push('<option value="customer-wanted-more-urgent-action"><liferay-ui:message key="customer-wanted-more-urgent-action" unicode="<%= true %>" /></option>');
 
 				if (newSeverity == <%= SupportResponseConstants.SEVERITY_MAJOR %>) {
@@ -552,14 +528,10 @@ if (liferayIncOrg || partnerWorker) {
 				}
 			}
 
-			selectOptions = selectOptions.join('');
-
 			var selectElement = A.one('#<portlet:namespace />severityReason');
 
 			if (selectElement) {
-				selectElement.empty();
-
-				selectElement.append(selectOptions);
+				selectElement.setHTML(selectOptions.join(''));
 			}
 
 			if (severityDetails) {
@@ -581,9 +553,7 @@ if (liferayIncOrg || partnerWorker) {
 			if (selectData) {
 				var selectElement = A.one('#<portlet:namespace />editComponent');
 
-				var selectOptions = [];
-
-				selectOptions.push('<option value="0"></option>');
+				var selectOptions = ['<option value="0"></option>'];
 
 				if (selectData[0].componentGroup) {
 					var componentGroup = selectData[0].componentGroup;
@@ -609,11 +579,7 @@ if (liferayIncOrg || partnerWorker) {
 					}
 				}
 
-				selectOptions = selectOptions.join('');
-
-				selectElement.empty();
-
-				selectElement.append(selectOptions);
+				selectElement.setHTML(selectOptions.join(''));
 
 				selectElement.val(0);
 
@@ -631,31 +597,21 @@ if (liferayIncOrg || partnerWorker) {
 	Liferay.provide(
 		window,
 		'<portlet:namespace />updateSubcomponent',
-		function(selectData) {
+		function(data) {
 			var A = AUI();
 
-			var selectElement = A.one('#<portlet:namespace />subcomponent');
+			var subcomponentNode = A.one('#<portlet:namespace />subcomponent');
 
-			var selectOptions = [];
+			var subcomponentOptions = ['<option value="0"><liferay-ui:message key="none" /></option>'];
 
-			selectOptions.push('<option value="0"><liferay-ui:message key="none" /></option>');
+			for (var i = 0; i < data.length; i++) {
+				var value = data[i].value;
+				var name = data[i].name;
 
-			if (selectData) {
-				for (var i = 0; i < selectData.length; i++) {
-					var value = selectData[i].value;
-					var name = selectData[i].name;
-
-					selectOptions.push('<option value="' + value + '">' + name + '</option>');
-				}
+				subcomponentOptions.push('<option value="' + value + '">' + name + '</option>');
 			}
 
-			selectOptions = selectOptions.join('');
-
-			selectElement.empty();
-
-			selectElement.append(selectOptions);
-
-			selectElement.val(0);
+			subcomponentNode.setHTML(subcomponentOptions.join(''));
 		},
 		['aui-base']
 	);

@@ -202,8 +202,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 			else {
 				<portlet:namespace />reveal('details');
 			}
-
-			window.scroll(0, 0);
 		},
 		['aui-base']
 	);
@@ -212,8 +210,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 <aui:script use="aui-base,event-key">
 	A.all('.component-tab').hide();
 
-	var requiredStatus = 'true';
-
 	<c:choose>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_CLUSTERING %>">
 			var clusteringDetails = A.one('.component-tab#<portlet:namespace />clusteringDetailsHeader');
@@ -221,8 +217,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 			if (clusteringDetails) {
 				clusteringDetails.show();
 			}
-
-			requiredStatus = 'false';
 		</c:when>
 		<c:when test="<%= component == TicketEntryConstants.COMPONENT_LICENSE %>">
 			var activationKeyDetails = A.one('.component-tab#<portlet:namespace />activationKeyDetailsHeader');
@@ -239,12 +233,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 			}
 		</c:when>
 	</c:choose>
-
-	var serverTypeNode = A.one('#<portlet:namespace />serverCommunicationType');
-
-	if (serverTypeNode) {
-		serverTypeNode.attr('data-field-required-status', requiredStatus);
-	}
 
 	var onChange = function(event) {
 		var name = event.currentTarget.getAttribute('name');
@@ -279,10 +267,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 				}
 
 				document.getElementById('<portlet:namespace />modified').value = 'true';
-
-				if (this.hasAttribute('data-field-required-status')) {
-					<portlet:namespace />validateRequiredField(this);
-				}
 			}
 		}
 	};
