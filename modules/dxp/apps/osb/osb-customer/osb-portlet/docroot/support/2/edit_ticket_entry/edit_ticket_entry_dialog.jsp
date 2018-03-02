@@ -230,9 +230,10 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 			var A = AUI();
 
 			var firstNode = null;
+
 			var requiredFields = A.all('#<portlet:namespace />editTicketDetails input[data-field-required-status="false"], select[data-field-required-status="false"], textarea[data-field-required-status="false"]');
 
-			if (requiredFields.size() > 0) {
+			if (requiredFields.size()) {
 				requiredFields.each(
 					function(requiredField) {
 						if (!<portlet:namespace />validateRequiredField(requiredField) && !firstNode) {

@@ -55,7 +55,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 			}
 			%>
 
-			<aui:validator name="required" errorMessage="please-select-a-valid-server-communication-type" />
+			<aui:validator errorMessage="please-select-a-valid-server-communication-type" name="required" />
 		</aui:select>
 
 		<aui:select inlineField="<%= true %>" label="number-of-nodes" name="numberOfNodes" wrapperCssClass="form-field-wrapper">
