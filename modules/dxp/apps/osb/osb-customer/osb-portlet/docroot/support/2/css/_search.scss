@@ -425,12 +425,11 @@
 	}
 
 	.ticket-row {
-		background-color: $light-bg;
 		border: 1px solid $border-color;
 		color: $medium-gray;
 
-		&.need-response {
-			background-color: #FFF;
+		.no-response-needed {
+			background-color: $light-bg;
 		}
 
 		&.selected {

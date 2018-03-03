@@ -75,11 +75,11 @@ if (!mvcPath.endsWith("search.jsp")) {
 						ticketWorkerUser = UserLocalServiceUtil.getUser(curTicketWorker.getUserId());
 					}
 
-					String rowCssClass = StringPool.BLANK;
+					String rowCssClass = "no-response-needed";
 
 					if ((ticketEntry.getStatus() != TicketEntryConstants.STATUS_CLOSED) || (ticketEntry.getResolution() == TicketEntryConstants.RESOLUTION_PENDING_CUSTOMER)) {
 						if ((liferayIncOrg && ticketEntry.isPendingLiferay()) || (supportPartnerWorker && ticketEntry.isPendingPartner()) || (!ticketWorker && ticketEntry.isPendingCustomer())) {
-							rowCssClass = "need-response";
+							rowCssClass = StringPool.BLANK;
 						}
 					}
 
@@ -114,7 +114,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 						<portlet:param name="ticketEntryId" value="<%= String.valueOf(ticketEntry.getTicketEntryId()) %>" />
 					</liferay-portlet:renderURL>
 
-					<div class="<%= rowCssClass %> row-url ticket-row">
+					<div class="row-url ticket-row">
 						<c:if test="<%= supportManager %>">
 							<div class="column select ticket-column toggle-bulk-edit <%= bulkEdit ? "" : "hide" %>">
 								<input class="bulk-edit-checkbox" id="<portlet:namespace /><%= ticketEntry.getTicketEntryId() %>" onChange="<portlet:namespace />selectTicket(this);" type="checkbox" />
@@ -124,7 +124,7 @@ if (!mvcPath.endsWith("search.jsp")) {
 						<div class="column ticket-column">
 							<a draggable="false" href="<%= rowURL %>" <%= rowJS %>>
 								<div class="table">
-									<div class="row">
+									<div class="<%= rowCssClass %> row">
 										<div class="column severity ticket-column <%= ticketEntry.getSeverityLabel() %>"></div>
 
 										<div class="column img ticket-column" <%= columnJS %>>

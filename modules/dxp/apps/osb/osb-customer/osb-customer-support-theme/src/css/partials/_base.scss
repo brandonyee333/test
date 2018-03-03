@@ -63,17 +63,23 @@ div {
 	&.table {
 		border-collapse: collapse;
 		display: table;
+		margin-bottom: 0px;
 		table-layout: fixed;
 		width: 100%;
 
 		div.column {
 			display: table-cell;
+			float: none;
 			vertical-align: middle;
 		}
 
 		div.row, .row-url {
 			display: table-row;
 			width: 100%;
+
+			&:before {
+				content: none;
+			}
 		}
 	}
 }
