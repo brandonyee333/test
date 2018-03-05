@@ -227,9 +227,9 @@ if (liferayIncOrg || partnerWorker) {
 
 	<c:if test="<%= hasUpdateAdvanced && liferayIncOrg %>">
 		<div class="hide" id="<portlet:namespace />severityDetails">
-			<aui:select inlineField="<%= true %>" label="what-is-the-reason-for-changing-the-ticket-severity" name="severityReason" wrapperCssClass="clearfix" />
+			<aui:select inlineField="<%= true %>" label="what-is-the-reason-for-changing-the-ticket-severity" name="severityReason" wrapperCssClass="form-field-wrapper" />
 
-			<aui:input inlineField="<%= true %>" label="please-explain-optional" name="severityReasonComments" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 150px; max-width: 505px;" type="textarea" wrap="soft" wrapperCssClass="form-field-wrapper" />
+			<aui:input inlineField="<%= true %>" label="please-explain-optional" name="severityReasonComments" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 150px;" type="textarea"  wrap="soft" wrapperCssClass="form-field-wrapper" />
 		</div>
 	</c:if>
 
