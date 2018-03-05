@@ -159,7 +159,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 				<c:if test="<%= SupportUtil.hasAttachmentPreview(ticketAttachment.getFileName()) %>">
 
 					<%
-					ticketAttachmentURL.setParameter("preview", String.valueOf(Boolean.TRUE));
+					ticketAttachmentURL.setParameter("preview", Boolean.TRUE.toString());
 					%>
 
 					<liferay-ui:icon

@@ -68,7 +68,7 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 			portletRequest, displayTerms, searchTerms, DEFAULT_CUR_PARAM,
 			DEFAULT_DELTA, iteratorURL, headerNames, EMPTY_RESULTS_MESSAGE);
 
-		iteratorURL.setParameter("sessionSearch", String.valueOf(Boolean.TRUE));
+		iteratorURL.setParameter("sessionSearch", Boolean.TRUE.toString());
 
 		PortletSession session = portletRequest.getPortletSession();
 

@@ -93,7 +93,7 @@ public class AccountCustomerLocalServiceImpl
 							SupportUtil.getUserPreferences(curUserId);
 
 						portletPreferences.setValue(
-							"version2Enabled", String.valueOf(true));
+							"version2Enabled", Boolean.TRUE.toString());
 
 						portletPreferences.store();
 					}

@@ -95,7 +95,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 				<liferay-util:param name="content" value="<%= serverConfigurations %>" />
 				<liferay-util:param name="editorId" value="serverConfigurations" />
 				<liferay-util:param name="name" value="serverConfigurations" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.FALSE) %>" />
+				<liferay-util:param name="showCounter" value="<%= Boolean.FALSE.toString() %>" />
 			</liferay-util:include>
 		</aui:field-wrapper>
 
@@ -104,7 +104,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 				<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 					<liferay-util:param name="kBaseArticleId" value="33142855" />
 					<liferay-util:param name="label" value="zip-file-containing-portal-ext-files" />
-					<liferay-util:param name="required" value="<%= String.valueOf(Boolean.TRUE) %>" />
+					<liferay-util:param name="required" value="<%= Boolean.TRUE.toString() %>" />
 					<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(toPortalExtTicketAttachmentId) %>" />
 					<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_NEW_PORTAL_EXT) %>" />
 				</liferay-util:include>
@@ -116,7 +116,7 @@ long toPatchLevelTicketAttachmentId = ParamUtil.getLong(request, "toPatchLevelTi
 				<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 					<liferay-util:param name="kBaseArticleId" value="33142925" />
 					<liferay-util:param name="label" value="zip-file-containing-patching-tool-info-files" />
-					<liferay-util:param name="required" value="<%= String.valueOf(Boolean.TRUE) %>" />
+					<liferay-util:param name="required" value="<%= Boolean.TRUE.toString() %>" />
 					<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(toPatchLevelTicketAttachmentId) %>" />
 					<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_NEW_PATCH_LEVEL) %>" />
 				</liferay-util:include>

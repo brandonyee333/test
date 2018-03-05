@@ -68,7 +68,7 @@ if (liferayIncOrg || partnerWorker) {
 				<liferay-util:param name="fieldRequiredMessage" value='<%= LanguageUtil.get(request, "please-enter-a-description-of-the-issue") %>' />
 				<liferay-util:param name="height" value="150" />
 				<liferay-util:param name="name" value="description" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(true) %>" />
+				<liferay-util:param name="showCounter" value="<%= Boolean.TRUE.toString() %>" />
 			</liferay-util:include>
 		</aui:field-wrapper>
 	</c:if>

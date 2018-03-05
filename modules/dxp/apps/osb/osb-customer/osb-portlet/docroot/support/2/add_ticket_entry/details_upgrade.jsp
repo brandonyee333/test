@@ -229,14 +229,14 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				<liferay-util:param name="content" value="<%= stepsToUpgrade %>" />
 				<liferay-util:param name="editorId" value="stepsToUpgrade" />
 				<liferay-util:param name="name" value="stepsToUpgrade" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.FALSE) %>" />
+				<liferay-util:param name="showCounter" value="<%= Boolean.FALSE.toString() %>" />
 			</liferay-util:include>
 		</aui:field-wrapper>
 
 		<c:if test="<%= !productEntry.isDigitalEnterprise() %>">
 			<aui:field-wrapper label="please-provide-the-new-portal-ext.properties-file">
 				<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
-					<liferay-util:param name="confirm" value="<%= String.valueOf(Boolean.TRUE) %>" />
+					<liferay-util:param name="confirm" value="<%= Boolean.TRUE.toString() %>" />
 					<liferay-util:param name="cssClass" value="clearfix file-container" />
 					<liferay-util:param name="kBaseArticleId" value="33142855" />
 					<liferay-util:param name="label" value="new-liferay-server" />
@@ -247,7 +247,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 			<aui:field-wrapper label="please-provide-the-new-patching-tool-info-file">
 				<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
-					<liferay-util:param name="confirm" value="<%= String.valueOf(Boolean.TRUE) %>" />
+					<liferay-util:param name="confirm" value="<%= Boolean.TRUE.toString() %>" />
 					<liferay-util:param name="cssClass" value="clearfix file-container" />
 					<liferay-util:param name="kBaseArticleId" value="33142855" />
 					<liferay-util:param name="label" value="new-liferay-server" />

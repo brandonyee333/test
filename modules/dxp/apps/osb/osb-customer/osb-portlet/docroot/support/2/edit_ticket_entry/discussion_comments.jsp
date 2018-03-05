@@ -229,7 +229,7 @@ boolean hasMarkAsSolutionPermission = OSBTicketCommentPermission.contains(permis
 							permalinkURL.setParameter("ticketEntryId", String.valueOf(ticketEntry.getTicketEntryId()));
 							permalinkURL.setParameter("discussionId", String.valueOf(ticketEntryDiscussion.getDiscussionId()));
 							permalinkURL.setParameter("discussionType", ticketEntryDiscussion.getDiscussionType());
-							permalinkURL.setParameter("friendly", String.valueOf(Boolean.TRUE));
+							permalinkURL.setParameter("friendly", Boolean.TRUE.toString());
 							%>
 
 							<div class="permalink">

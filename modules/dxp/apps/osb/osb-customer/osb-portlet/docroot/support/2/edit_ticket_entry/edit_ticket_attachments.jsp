@@ -694,7 +694,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 					data: {
 						<portlet:namespace />fileName: file.fileName,
 						<portlet:namespace />ticketEntryId: <%= ticketEntry.getTicketEntryId() %>,
-						<portlet:namespace />validateDuplicate: <%= ticketWorker ? String.valueOf(Boolean.FALSE) : String.valueOf(Boolean.TRUE) %>
+						<portlet:namespace />validateDuplicate: <%= ticketWorker ? Boolean.FALSE.toString() : Boolean.TRUE.toString() %>
 					},
 					dataType: 'JSON',
 					method: 'POST',

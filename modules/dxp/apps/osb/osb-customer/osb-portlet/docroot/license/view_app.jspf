@@ -108,7 +108,7 @@
 				<%
 				PortletURL redirectURL = PortletURLUtil.clone(portletURL, renderResponse);
 
-				redirectURL.setParameter("sessionSearch", String.valueOf(Boolean.TRUE));
+				redirectURL.setParameter("sessionSearch", Boolean.TRUE.toString());
 
 				PortletURL rowURL = renderResponse.createRenderURL();
 

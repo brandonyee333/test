@@ -121,7 +121,7 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 							<liferay-util:param name="fieldName" value='<%= "file" + fileIndex %>' />
 							<liferay-util:param name="label" value='<%= LanguageUtil.get(request, "file") + StringPool.SPACE + fileIndex %>' />
 							<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(fileAttachmentIds[fileIndex - 1]) %>" />
-							<liferay-util:param name="translate" value="<%= String.valueOf(Boolean.FALSE) %>" />
+							<liferay-util:param name="translate" value="<%= Boolean.FALSE.toString() %>" />
 						</liferay-util:include>
 
 						<c:if test="<%= ticketEntry.getStatus() != TicketEntryConstants.STATUS_RESOLVED_IN_PRODUCTION %>">

@@ -78,7 +78,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 				<liferay-util:param name="editorId" value="serverConfigurations" />
 				<liferay-util:param name="height" value="150" />
 				<liferay-util:param name="name" value="serverConfigurations" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+				<liferay-util:param name="showCounter" value="<%= Boolean.TRUE.toString() %>" />
 			</liferay-util:include>
 		</aui:field-wrapper>
 	</div>
@@ -123,7 +123,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 				<liferay-util:param name="content" value="<%= serverIds %>" />
 				<liferay-util:param name="editorId" value="serverIds" />
 				<liferay-util:param name="name" value="serverIds" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+				<liferay-util:param name="showCounter" value="<%= Boolean.TRUE.toString() %>" />
 			</liferay-util:include>
 		</aui:field-wrapper>
 
@@ -134,7 +134,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 				<liferay-util:param name="content" value="<%= ipAddresses %>" />
 				<liferay-util:param name="editorId" value="ipAddresses" />
 				<liferay-util:param name="name" value="ipAddresses" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+				<liferay-util:param name="showCounter" value="<%= Boolean.TRUE.toString() %>" />
 			</liferay-util:include>
 		</aui:field-wrapper>
 
@@ -145,7 +145,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 				<liferay-util:param name="content" value="<%= hostNames %>" />
 				<liferay-util:param name="editorId" value="hostNames" />
 				<liferay-util:param name="name" value="hostNames" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+				<liferay-util:param name="showCounter" value="<%= Boolean.TRUE.toString() %>" />
 			</liferay-util:include>
 		</aui:field-wrapper>
 
@@ -157,7 +157,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 				<liferay-util:param name="editorId" value="additionalComments" />
 				<liferay-util:param name="height" value="150" />
 				<liferay-util:param name="name" value="additionalComments" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+				<liferay-util:param name="showCounter" value="<%= Boolean.TRUE.toString() %>" />
 			</liferay-util:include>
 		</aui:field-wrapper>
 	</div>
@@ -186,7 +186,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 				<liferay-util:param name="editorId" value="stepsToUpgrade" />
 				<liferay-util:param name="height" value="150" />
 				<liferay-util:param name="name" value="stepsToUpgrade" />
-				<liferay-util:param name="showCounter" value="<%= String.valueOf(Boolean.TRUE) %>" />
+				<liferay-util:param name="showCounter" value="<%= Boolean.TRUE.toString() %>" />
 			</liferay-util:include>
 		</aui:field-wrapper>
 	</div>

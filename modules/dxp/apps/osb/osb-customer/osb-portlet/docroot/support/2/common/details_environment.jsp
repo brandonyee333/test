@@ -299,11 +299,11 @@ if (productEntry != null) {
 					<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 						<liferay-util:param name="accountEnvironmentAttachmentType" value="<%= String.valueOf(AccountEnvironmentAttachmentConstants.TYPE_PORTAL_EXT) %>" />
 						<liferay-util:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironmentId) %>" />
-						<liferay-util:param name="confirm" value="<%= String.valueOf(Boolean.TRUE) %>" />
+						<liferay-util:param name="confirm" value="<%= Boolean.TRUE.toString() %>" />
 						<liferay-util:param name="confirmCheckbox" value="<%= portalExtCheckbox %>" />
 						<liferay-util:param name="kBaseArticleId" value="33142855" />
 						<liferay-util:param name="label" value="portal-ext" />
-						<liferay-util:param name="required" value="<%= String.valueOf(Boolean.TRUE) %>" />
+						<liferay-util:param name="required" value="<%= Boolean.TRUE.toString() %>" />
 						<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(portalExtTicketAttachmentId) %>" />
 						<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_PORTAL_EXT) %>" />
 					</liferay-util:include>
@@ -315,11 +315,11 @@ if (productEntry != null) {
 					<liferay-util:include page="/support/2/common/ticket_attachment_upload.jsp" servletContext="<%= application %>">
 						<liferay-util:param name="accountEnvironmentAttachmentType" value="<%= String.valueOf(AccountEnvironmentAttachmentConstants.TYPE_PATCH_LEVEL) %>" />
 						<liferay-util:param name="accountEnvironmentId" value="<%= String.valueOf(accountEnvironmentId) %>" />
-						<liferay-util:param name="confirm" value="<%= String.valueOf(Boolean.TRUE) %>" />
+						<liferay-util:param name="confirm" value="<%= Boolean.TRUE.toString() %>" />
 						<liferay-util:param name="confirmCheckbox" value="<%= patchLevelCheckbox %>" />
 						<liferay-util:param name="kBaseArticleId" value="33142925" />
 						<liferay-util:param name="label" value="patch-level" />
-						<liferay-util:param name="required" value="<%= String.valueOf(Boolean.TRUE) %>" />
+						<liferay-util:param name="required" value="<%= Boolean.TRUE.toString() %>" />
 						<liferay-util:param name="ticketAttachmentId" value="<%= String.valueOf(patchLevelTicketAttachmentId) %>" />
 						<liferay-util:param name="ticketAttachmentType" value="<%= String.valueOf(TicketAttachmentConstants.TYPE_PATCH_LEVEL) %>" />
 					</liferay-util:include>

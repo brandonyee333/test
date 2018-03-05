@@ -49,7 +49,7 @@ AccountAttachment accountAttachment = (AccountAttachment)row.getObject();
 	<c:if test="<%= SupportUtil.hasAttachmentPreview(accountAttachment.getFileName()) %>">
 
 		<%
-		accountAttachmentURL.setParameter("preview", String.valueOf(Boolean.TRUE));
+		accountAttachmentURL.setParameter("preview", Boolean.TRUE.toString());
 		%>
 
 		<liferay-ui:icon

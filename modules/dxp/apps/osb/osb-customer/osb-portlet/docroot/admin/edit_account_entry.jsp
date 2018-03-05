@@ -633,7 +633,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<portlet:param name="tabs1" value="sales" />
 				<portlet:param name="tabs2" value="orders" />
 				<portlet:param name="redirect" value="<%= redirect %>" />
-				<portlet:param name="advancedSearch" value="<%= String.valueOf(Boolean.TRUE) %>" />
+				<portlet:param name="advancedSearch" value="<%= Boolean.TRUE.toString() %>" />
 				<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
 				<portlet:param name="accountEntryName" value="<%= accountEntry.getName() %>" />
 			</portlet:renderURL>

@@ -41,7 +41,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp
 
 			accountEntryURL.setParameter("mvcPath", "/support/2/edit_account_entry.jsp");
 			accountEntryURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
-			accountEntryURL.setParameter("friendly", String.valueOf(Boolean.TRUE));
+			accountEntryURL.setParameter("friendly", Boolean.TRUE.toString());
 			%>
 
 			<span class="account-code"><a href="<%= accountEntryURL.toString() %>"><%= accountEntry.getCode() %></a></span>

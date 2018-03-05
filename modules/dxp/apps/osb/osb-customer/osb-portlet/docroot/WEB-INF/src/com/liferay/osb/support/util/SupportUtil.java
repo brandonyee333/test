@@ -893,7 +893,7 @@ public class SupportUtil {
 			"mvcPath", "/support/2/edit_ticket_entry.jsp");
 		ticketEntryURL.setParameter(
 			"ticketEntryId", String.valueOf(ticketEntryId));
-		ticketEntryURL.setParameter("friendly", String.valueOf(Boolean.TRUE));
+		ticketEntryURL.setParameter("friendly", Boolean.TRUE.toString());
 
 		return ticketEntryURL.toString();
 	}
