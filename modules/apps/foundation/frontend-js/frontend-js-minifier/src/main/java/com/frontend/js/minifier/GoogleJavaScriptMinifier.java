@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.minifier;
+package com.frontend.js.minifier;
 
 import com.google.javascript.jscomp.BasicErrorManager;
 import com.google.javascript.jscomp.CheckLevel;
@@ -30,10 +30,17 @@ import com.google.javascript.jscomp.VariableRenamingPolicy;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.minifier.JavaScriptMinifier;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Carlos Sierra Andrés
  */
+@Component(
+	immediate = true, property = "service.ranking:Integer=100",
+	service = JavaScriptMinifier.class
+)
 public class GoogleJavaScriptMinifier implements JavaScriptMinifier {
 
 	@Override
