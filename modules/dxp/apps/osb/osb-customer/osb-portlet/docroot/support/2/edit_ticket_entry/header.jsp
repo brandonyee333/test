@@ -135,7 +135,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 							for (int i = 1; i <= 3; i++) {
 							%>
 
-								<aui:option label="<%= TicketEntryConstants.getSeverityLabel(i) %>" selected="<%= (i == severity) %>" value="<%= i %>" />
+								<aui:option label="<%= TicketEntryConstants.getSeverityLabel(i) %>" selected="<%= i == severity %>" value="<%= i %>" />
 
 							<%
 							}
@@ -269,7 +269,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 								}
 							%>
 
-								<aui:option label="<%= TicketEntryConstants.getStatusLabel(statusId) %>" selected="<%= (ticketEntry.getStatus() == statusId) %>" value="<%= statusId %>" />
+								<aui:option label="<%= TicketEntryConstants.getStatusLabel(statusId) %>" selected="<%= ticketEntry.getStatus() == statusId %>" value="<%= statusId %>" />
 
 							<%
 							}
@@ -284,7 +284,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 							for (ListType resolutionType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
 							%>
 
-								<aui:option label="<%= resolutionType.getName() %>" selected="<%= (resolutionType.getListTypeId() == resolution) %>" value="<%= resolutionType.getListTypeId() %>" />
+								<aui:option label="<%= resolutionType.getName() %>" selected="<%= resolutionType.getListTypeId() == resolution %>" value="<%= resolutionType.getListTypeId() %>" />
 
 							<%
 							}

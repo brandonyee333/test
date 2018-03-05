@@ -49,7 +49,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 			for (int curServerCommunicationType : TicketEntryConstants.CLUSTER_SERVER_COMMUNICATION_TYPES) {
 			%>
 
-				<aui:option label="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" selected="<%= (serverCommunicationType == curServerCommunicationType) %>" value="<%= curServerCommunicationType %>" />
+				<aui:option label="<%= TicketEntryConstants.getClusterServerCommunicationTypeLabel(curServerCommunicationType) %>" selected="<%= serverCommunicationType == curServerCommunicationType %>" value="<%= curServerCommunicationType %>" />
 
 			<%
 			}
@@ -60,14 +60,14 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 
 		<aui:select inlineField="<%= true %>" label="number-of-nodes" name="numberOfNodes" wrapperCssClass="form-field-wrapper">
 			<aui:option label="" value="0" />
-			<aui:option label="1" selected="<%= (numberOfNodes == 1) %>" value="1" />
-			<aui:option label="2" selected="<%= (numberOfNodes == 2) %>" value="2" />
-			<aui:option label="3" selected="<%= (numberOfNodes == 3) %>" value="3" />
-			<aui:option label="4" selected="<%= (numberOfNodes == 4) %>" value="4" />
-			<aui:option label="5" selected="<%= (numberOfNodes == 5) %>" value="5" />
-			<aui:option label="6" selected="<%= (numberOfNodes == 6) %>" value="6" />
-			<aui:option label="7" selected="<%= (numberOfNodes == 7) %>" value="7" />
-			<aui:option label="8+" selected="<%= (numberOfNodes >= 8) %>" value="8" />
+			<aui:option label="1" selected="<%= numberOfNodes == 1 %>" value="1" />
+			<aui:option label="2" selected="<%= numberOfNodes == 2 %>" value="2" />
+			<aui:option label="3" selected="<%= numberOfNodes == 3 %>" value="3" />
+			<aui:option label="4" selected="<%= numberOfNodes == 4 %>" value="4" />
+			<aui:option label="5" selected="<%= numberOfNodes == 5 %>" value="5" />
+			<aui:option label="6" selected="<%= numberOfNodes == 6 %>" value="6" />
+			<aui:option label="7" selected="<%= numberOfNodes == 7 %>" value="7" />
+			<aui:option label="8+" selected="<%= numberOfNodes >= 8 %>" value="8" />
 		</aui:select>
 
 		<aui:field-wrapper cssClass="form-field-wrapper">
@@ -93,7 +93,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 			for (int curType : types) {
 			%>
 
-				<aui:option label="<%= TicketEntryConstants.getLicenseTypeLabel(curType) %>" selected="<%= (curType == type) %>" value="<%= curType %>" />
+				<aui:option label="<%= TicketEntryConstants.getLicenseTypeLabel(curType) %>" selected="<%= curType == type %>" value="<%= curType %>" />
 
 			<%
 			}
@@ -108,7 +108,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 			for (int curPurpose : TicketEntryConstants.getLicensePurposes()) {
 			%>
 
-				<aui:option label="<%= TicketEntryConstants.getLicensePurposeLabel(curPurpose) %>" selected="<%= (curPurpose == purpose) %>" value="<%= curPurpose %>" />
+				<aui:option label="<%= TicketEntryConstants.getLicensePurposeLabel(curPurpose) %>" selected="<%= curPurpose == purpose %>" value="<%= curPurpose %>" />
 
 			<%
 			}
@@ -170,7 +170,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 			for (int curDocLibPersistence : TicketEntryConstants.DOC_LIB_PERSISTENCES) {
 			%>
 
-				<aui:option label="<%= TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence) %>" selected="<%= (curDocLibPersistence == docLibPersistence) %>" value="<%= curDocLibPersistence %>" />
+				<aui:option label="<%= TicketEntryConstants.getDocLibPersistenceLabel(curDocLibPersistence) %>" selected="<%= curDocLibPersistence == docLibPersistence %>" value="<%= curDocLibPersistence %>" />
 
 			<%
 			}

@@ -36,6 +36,10 @@
 
 .tab-view-dialog {
 	padding: 1em;
+	
+	.details {
+		padding-bottom: 1em;
+	}
 
 	.form-field-wrapper {
 		width: 100%;
@@ -63,10 +67,6 @@
 		.help-block, .no-label {
 			margin-left: 140px;
 		}
-	}
-
-	.details {
-		padding-bottom: 1em;
 	}
 
 	.portlet-msg-error, .portlet-msg-success {

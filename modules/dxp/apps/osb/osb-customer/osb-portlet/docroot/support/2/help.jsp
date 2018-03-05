@@ -81,7 +81,7 @@ boolean osbAdmin = RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstan
 		</div>
 
 		<c:if test="<%= osbAdmin %>">
-			<div class="help-edit-display hide" id="<portlet:namespace />helpEditDisplay">
+			<div class="hide" id="<portlet:namespace />helpEditDisplay">
 				<div class="callout-content clearfix">
 					<br />
 

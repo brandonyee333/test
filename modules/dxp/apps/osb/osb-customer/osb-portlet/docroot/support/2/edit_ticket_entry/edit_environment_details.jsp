@@ -115,14 +115,14 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 			%>
 
 				<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-					<aui:option disabled="true" label="--------" />
+					<aui:option disabled="<%= true %>" label="--------" />
 				</c:if>
 
 				<%
 				String envLFRTypeLabel = LanguageUtil.get(request, envLFRType.getName());
 
 				if (limited) {
-					envLFRTypeLabel = envLFRTypeLabel +  " (" + LanguageUtil.get(request, "limited") + ")";
+					envLFRTypeLabel = envLFRTypeLabel + " (" + LanguageUtil.get(request, "limited") + ")";
 				}
 				%>
 
@@ -133,7 +133,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 			}
 			%>
 
-			<aui:validator name="required" errorMessage="please-select-a-valid-liferay-version" />
+			<aui:validator errorMessage="please-select-a-valid-liferay-version" name="required" />
 		</aui:select>
 
 		<c:if test="<%= component == TicketEntryConstants.COMPONENT_UPGRADE %>">
@@ -172,18 +172,18 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 
 					<c:if test="<%= envLFRType.getListTypeId() > envLFR %>">
 						<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-							<aui:option disabled="true" label="--------" />
+							<aui:option disabled="<%= true %>" label="--------" />
 						</c:if>
 
 						<%
 						String envLFRLimitedTypeLabel = LanguageUtil.get(request, envLFRType.getName());
 
 						if (toEnvLFRLimited) {
-							envLFRLimitedTypeLabel = envLFRLimitedTypeLabel +  " (" + LanguageUtil.get(request, "limited") + ")";
+							envLFRLimitedTypeLabel = envLFRLimitedTypeLabel + " (" + LanguageUtil.get(request, "limited") + ")";
 						}
 						%>
 
-						<aui:option label="<%= envLFRLimitedTypeLabel %>" selected="<%= (envLFRType.getListTypeId() == toEnvLFR) %>" value="<%= envLFRType.getListTypeId() %>" />
+						<aui:option label="<%= envLFRLimitedTypeLabel %>" selected="<%= envLFRType.getListTypeId() == toEnvLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 					</c:if>
 
 				<%
@@ -197,41 +197,41 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 		<c:if test="<%= component != TicketEntryConstants.COMPONENT_LICENSE %>">
 			<aui:select inlineField="<%= true %>" label="operating-system" name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>' wrapperCssClass="form-field-wrapper">
 				<c:if test="<%= envOS != 0 %>">
-					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envOS) %>" selected="true" value="<%= envOS %>" />
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envOS) %>" selected="<%= true %>" value="<%= envOS %>" />
 				</c:if>
 
-				<aui:validator name="required" errorMessage="please-select-a-valid-operating-system" />
+				<aui:validator errorMessage="please-select-a-valid-operating-system" name="required" />
 			</aui:select>
 
 			<aui:input cssClass="no-label" inlineField="<%= true %>" label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" wrapperCssClass='<%= envOS == TicketEntryConstants.ENV_OS_OTHER ? "form-field-wrapper" : "hide" %>' />
 
 			<aui:select inlineField="<%= true %>" label="application-server" name="envAS" wrapperCssClass="form-field-wrapper">
 				<c:if test="<%= envAS != 0 %>">
-					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envAS) %>" selected="true" value="<%= envAS %>" />
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envAS) %>" selected="<%= true %>" value="<%= envAS %>" />
 				</c:if>
 
-				<aui:validator name="required" errorMessage="please-select-a-valid-application-server" />
+				<aui:validator errorMessage="please-select-a-valid-application-server" name="required" />
 			</aui:select>
 
 			<aui:select inlineField="<%= true %>" label="java-virtual-machine" name="envJVM" wrapperCssClass="form-field-wrapper">
 				<c:if test="<%= envJVM != 0 %>">
-					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envJVM) %>" selected="true" value="<%= envJVM %>" />
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envJVM) %>" selected="<%= true %>" value="<%= envJVM %>" />
 				</c:if>
 
-				<aui:validator name="required" errorMessage="please-select-a-valid-java-virtual-machine" />
+				<aui:validator errorMessage="please-select-a-valid-java-virtual-machine" name="required" />
 			</aui:select>
 
 			<aui:select inlineField="<%= true %>" label="database" name="envDB" wrapperCssClass="form-field-wrapper">
 				<c:if test="<%= envDB != 0 %>">
-					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envDB) %>" selected="true" value="<%= envDB %>" />
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envDB) %>" selected="<%= true %>" value="<%= envDB %>" />
 				</c:if>
 
-				<aui:validator name="required" errorMessage="please-select-a-valid-database" />
+				<aui:validator errorMessage="please-select-a-valid-database" name="required" />
 			</aui:select>
 
 			<aui:select inlineField="<%= true %>" label="primary-browser" name="envBrowser" onChange='<%= renderResponse.getNamespace() + "selectBrowser(this.value);" %>' wrapperCssClass="form-field-wrapper">
 				<c:if test="<%= envBrowser != 0 %>">
-					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envBrowser) %>" selected="true" value="<%= envBrowser %>" />
+					<aui:option label="<%= TicketEntryConstants.getEnvLabel(envBrowser) %>" selected="<%= true %>" value="<%= envBrowser %>" />
 				</c:if>
 			</aui:select>
 

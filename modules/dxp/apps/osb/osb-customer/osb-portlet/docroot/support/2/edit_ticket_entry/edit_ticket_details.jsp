@@ -117,15 +117,15 @@ if (liferayIncOrg || partnerWorker) {
 
 							<optgroup label="<%= LanguageUtil.get(request, componentGroup) %>">
 
-							<%
-							for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
-							%>
+								<%
+								for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
+								%>
 
-								<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>" />
+									<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
 
-							<%
+								<%
 								}
-							%>
+								%>
 
 							</optgroup>
 
@@ -140,7 +140,7 @@ if (liferayIncOrg || partnerWorker) {
 						for (int curComponent : TicketEntryConstants.getProductComponents(productEntry)) {
 						%>
 
-							<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= (curComponent == component) %>" value="<%= curComponent %>" />
+							<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
 
 						<%
 						}
@@ -165,14 +165,14 @@ if (liferayIncOrg || partnerWorker) {
 				</c:if>
 
 				<c:if test="<%= !ArrayUtil.contains(subcomponents, TicketEntryConstants.SUBCOMPONENT_OTHER) %>">
-					<aui:option label="other" selected="<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) %>" value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>" />
+					<aui:option label="other" selected="<%= subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER %>" value="<%= TicketEntryConstants.SUBCOMPONENT_OTHER %>" />
 				</c:if>
 
 				<%
 				for (int curSubcomponent : subcomponents) {
 				%>
 
-					<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %>" selected="<%= (curSubcomponent == subcomponent) %>" value="<%= curSubcomponent %>" />
+					<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
 
 				<%
 				}
@@ -191,7 +191,7 @@ if (liferayIncOrg || partnerWorker) {
 			for (ListType escalationLevelType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL)) {
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(request, escalationLevelType.getName()) %>" selected="<%= (escalationLevelType.getListTypeId() == escalationLevel) %>" value="<%= escalationLevelType.getListTypeId() %>" />
+				<aui:option label="<%= LanguageUtil.get(request, escalationLevelType.getName()) %>" selected="<%= escalationLevelType.getListTypeId() == escalationLevel %>" value="<%= escalationLevelType.getListTypeId() %>" />
 
 			<%
 			}
@@ -216,7 +216,7 @@ if (liferayIncOrg || partnerWorker) {
 			for (int i = 1; i <= 3; i++) {
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(i)) %>" selected="<%= (i == severity) %>" value="<%= i %>" />
+				<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(i)) %>" selected="<%= i == severity %>" value="<%= i %>" />
 
 			<%
 			}
@@ -229,7 +229,7 @@ if (liferayIncOrg || partnerWorker) {
 		<div class="hide" id="<portlet:namespace />severityDetails">
 			<aui:select inlineField="<%= true %>" label="what-is-the-reason-for-changing-the-ticket-severity" name="severityReason" wrapperCssClass="clearfix" />
 
-			<aui:input inlineField="<%= true %>" label="please-explain-optional" name="severityReasonComments" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 150px; max-width: 505px;" type="textarea"  wrap="soft" wrapperCssClass="form-field-wrapper" />
+			<aui:input inlineField="<%= true %>" label="please-explain-optional" name="severityReasonComments" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 150px; max-width: 505px;" type="textarea" wrap="soft" wrapperCssClass="form-field-wrapper" />
 		</div>
 	</c:if>
 
@@ -245,7 +245,7 @@ if (liferayIncOrg || partnerWorker) {
 				}
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(statusId)) %>" selected="<%= (statusId == status) %>" value="<%= statusId %>" />
+				<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(statusId)) %>" selected="<%= statusId == status %>" value="<%= statusId %>" />
 
 			<%
 			}
@@ -262,13 +262,13 @@ if (liferayIncOrg || partnerWorker) {
 			for (ListType resolutionType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(request, resolutionType.getName()) %>" selected="<%= (resolutionType.getListTypeId() == resolution) %>" value="<%= resolutionType.getListTypeId() %>" />
+				<aui:option label="<%= LanguageUtil.get(request, resolutionType.getName()) %>" selected="<%= resolutionType.getListTypeId() == resolution %>" value="<%= resolutionType.getListTypeId() %>" />
 
 			<%
 			}
 			%>
 
-			<aui:validator name="required" errorMessage="please-select-a-valid-resolution" />
+			<aui:validator errorMessage="please-select-a-valid-resolution" name="required" />
 		</aui:select>
 	</c:if>
 
@@ -300,7 +300,7 @@ if (liferayIncOrg || partnerWorker) {
 				for (SupportRegion supportRegion : supportRegions) {
 				%>
 
-					<aui:option label="<%= HtmlUtil.escape(supportRegion.getName()) %>" selected="<%= (supportRegion.getSupportRegionId() == supportRegionId) %>" value="<%= supportRegion.getSupportRegionId() %>" />
+					<aui:option label="<%= HtmlUtil.escape(supportRegion.getName()) %>" selected="<%= supportRegion.getSupportRegionId() == supportRegionId %>" value="<%= supportRegion.getSupportRegionId() %>" />
 
 				<%
 				}
@@ -351,7 +351,7 @@ if (liferayIncOrg || partnerWorker) {
 			</div>
 		</aui:field-wrapper>
 
-		<aui:field-wrapper label="ignore-due-date" cssClass="form-field-wrapper">
+		<aui:field-wrapper cssClass="form-field-wrapper" label="ignore-due-date">
 			<aui:input cssClass='<%= ticketEntry.getIgnoreDueDate() ? "checked" : "" %>' label="" name="ignoreDueDate" type="checkbox" />
 		</aui:field-wrapper>
 	</c:if>
