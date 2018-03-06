@@ -102,6 +102,14 @@
 		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="RemoteCorpProject" remote-service="false" />
+	<entity local-service="true" name="RemoteUser" remote-service="false">
+
+		<!-- References -->
+
+		<reference entity="Organization" package-path="com.liferay.portal" />
+		<reference entity="Role" package-path="com.liferay.portal" />
+		<reference entity="User" package-path="com.liferay.portal" />
+	</entity>
 	<exceptions>
 		<exception>RemoteService</exception>
 	</exceptions>

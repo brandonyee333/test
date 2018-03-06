@@ -21,6 +21,7 @@ import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
+import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
@@ -31,7 +32,6 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -131,7 +131,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			while (rs.next()) {
 				long userId = rs.getLong("userId");
 
-				UserLocalServiceUtil.addOrganizationUsers(
+				RemoteUserLocalServiceUtil.addOrganizationUsers(
 					organizationId, new long[] {userId});
 			}
 		}
@@ -167,7 +167,8 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			while (rs.next()) {
 				long userId = rs.getLong("userId");
 
-				UserLocalServiceUtil.addRoleUsers(roleId, new long[] {userId});
+				RemoteUserLocalServiceUtil.addRoleUsers(
+					roleId, new long[] {userId});
 			}
 		}
 		finally {
@@ -450,7 +451,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			while (rs.next()) {
 				long userId = rs.getLong(1);
 
-				UserLocalServiceUtil.unsetOrganizationUsers(
+				RemoteUserLocalServiceUtil.unsetOrganizationUsers(
 					organizationId, new long[] {userId});
 			}
 		}
@@ -489,7 +490,7 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 			while (rs.next()) {
 				long userId = rs.getLong("userId");
 
-				UserLocalServiceUtil.deleteRoleUser(roleId, userId);
+				RemoteUserLocalServiceUtil.deleteRoleUser(roleId, userId);
 			}
 		}
 		finally {

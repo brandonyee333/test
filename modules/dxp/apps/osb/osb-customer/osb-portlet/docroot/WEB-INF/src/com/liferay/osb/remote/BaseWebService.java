@@ -39,8 +39,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.HttpClientConnectionManager;
@@ -93,6 +95,42 @@ public class BaseWebService {
 		_closeableHttpClient = null;
 
 		_idleConnectionMonitorThread.shutdown();
+	}
+
+	public String doDelete(String url, Map<String, String> parameters)
+		throws RemoteServiceException {
+
+		return doDelete(url, parameters, new HashMap<String, String>());
+	}
+
+	public String doDelete(
+			String url, Map<String, String> parameters,
+			Map<String, String> headers)
+		throws RemoteServiceException {
+
+		HttpHost httpHost = new HttpHost(_hostName, _hostPort, _protocol);
+
+		List<NameValuePair> nameValuePairs = toNameValuePairs(parameters);
+
+		if (!nameValuePairs.isEmpty()) {
+			String queryString = URLEncodedUtils.format(
+				nameValuePairs, StandardCharsets.UTF_8);
+
+			url += "?" + queryString;
+		}
+
+		HttpDelete httpDelete = new HttpDelete(url);
+
+		addHeaders(httpDelete, headers);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Sending DELETE request to " + httpHost.toString() + url);
+			_log.debug("HTTP parameters: " + MapUtil.toString(parameters));
+			_log.debug("HTTP headers: " + MapUtil.toString(headers));
+		}
+
+		return execute(httpHost, httpDelete);
 	}
 
 	public String doGet(String url) throws RemoteServiceException {
@@ -167,6 +205,39 @@ public class BaseWebService {
 		}
 
 		return execute(httpHost, httpPost);
+	}
+
+	public String doPut(String url, Map<String, String> parameters)
+		throws RemoteServiceException {
+
+		return doPut(url, parameters, new HashMap<String, String>());
+	}
+
+	public String doPut(
+			String url, Map<String, String> parameters,
+			Map<String, String> headers)
+		throws RemoteServiceException {
+
+		HttpHost httpHost = new HttpHost(_hostName, _hostPort, _protocol);
+
+		HttpPut httpPut = new HttpPut(url);
+
+		List<NameValuePair> nameValuePairs = toNameValuePairs(parameters);
+
+		HttpEntity httpEntity = new UrlEncodedFormEntity(
+			nameValuePairs, StandardCharsets.UTF_8);
+
+		addHeaders(httpPut, headers);
+
+		httpPut.setEntity(httpEntity);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Sending PUT request to " + httpHost.toString() + url);
+			_log.debug("HTTP parameters: " + MapUtil.toString(parameters));
+			_log.debug("HTTP headers: " + MapUtil.toString(headers));
+		}
+
+		return execute(httpHost, httpPut);
 	}
 
 	public void setHostName(String hostName) {

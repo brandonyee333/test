@@ -80,6 +80,16 @@ public class PortletPropsValues {
 			PortletProps.get(
 				PortletPropsKeys.REMOTE_REST_SERVICE_API_DOSSIERA_TOKEN));
 
+	public static final boolean REMOTE_REST_SERVICE_API_WEB_ENABLED =
+		GetterUtil.getBoolean(
+			PortletProps.get(
+				PortletPropsKeys.REMOTE_REST_SERVICE_API_WEB_ENABLED));
+
+	public static final String REMOTE_REST_SERVICE_API_WEB_TOKEN =
+		GetterUtil.getString(
+			PortletProps.get(
+				PortletPropsKeys.REMOTE_REST_SERVICE_API_WEB_TOKEN));
+
 	public static final String SUPPORT_EMAIL_ADDRESS_FROM = PortletProps.get(
 		PortletPropsKeys.SUPPORT_EMAIL_ADDRESS_FROM);
 
