@@ -17,11 +17,11 @@ ${"--%>"}
 ${"<%!"}
 public static class ${baseclassname} extends ${classname}Wrapper {
 
-	${baseclassname}() {
+	public ${baseclassname}() {
 		super(new ${classname}Impl());
 	}
 
-	${baseclassname}(${modelpath}.${classname} ${instancename}) {
+	public ${baseclassname}(${modelpath}.${classname} ${instancename}) {
 		super(${instancename});
 	}
 
