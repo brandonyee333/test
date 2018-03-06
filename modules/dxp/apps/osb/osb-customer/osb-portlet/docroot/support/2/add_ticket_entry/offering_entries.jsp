@@ -53,7 +53,7 @@ request.setAttribute("add_ticket_entry.jsp-productEntryLESADisplayNames", produc
 			%>
 
 			<aui:select disabled="<%= true %>" label="" name="productEntryLESADisplayName">
-				<aui:option label="productEntryLESADisplayName" value="<%= productEntryLESADisplayName %>" />
+				<aui:option label="<%= productEntryLESADisplayName %>" value="<%= productEntryLESADisplayName %>" />
 			</aui:select>
 
 			<aui:input label="" name="productEntryLESADisplayName" type="hidden" value="<%= productEntryLESADisplayName %>" />
