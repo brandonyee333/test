@@ -26,7 +26,7 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 	}
 
 	public static ${classname} add(HttpServletRequest request) throws Exception {
-		${classname} ${instancename} = ${baseclassname}.create();
+		${classname} ${instancename} = create();
 
 		return add(${instancename}, request, false);
 	}
@@ -130,7 +130,7 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 	}
 
 	public static ${classname} create(HttpServletRequest request) throws Exception {
-		${classname} ${instancename} = ${baseclassname}.create();
+		${classname} ${instancename} = create();
 
 		if (request != null) {
 			BeanPropertiesUtil.setProperties(${instancename}, request, ${instancename}.getLocalizedProperties());
@@ -150,7 +150,7 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 	}
 
 	public static ${classname} create(long ${instancename}Id, HttpServletRequest request) throws Exception {
-		${classname} ${instancename} = ${baseclassname}.create(${instancename}Id);
+		${classname} ${instancename} = create(${instancename}Id);
 
 		BaseAlloyControllerImpl.setAuditedModel(${instancename}, request);
 
@@ -241,10 +241,10 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
-			Map<String, Object> modelAttributes = this.getModelAttributes();
+			Map<String, Object> modelAttributes = getModelAttributes();
 
 			for (String propertyName : modelAttributes.keySet()) {
-				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+				boolean localized = ModelHintsUtil.isLocalized(getModelClassName(), propertyName);
 
 				if (localized) {
 					localizedPropertiesList.add(propertyName);
