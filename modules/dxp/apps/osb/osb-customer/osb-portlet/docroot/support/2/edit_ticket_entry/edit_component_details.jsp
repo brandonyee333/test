@@ -55,7 +55,11 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 			}
 			%>
 
-			<aui:validator errorMessage="please-select-a-valid-server-communication-type" name="required" />
+			<aui:validator errorMessage="please-select-a-valid-server-communication-type" name="required">
+				function() {
+					return !A.one('#<portlet:namespace />clusteringDetailsHeader').hasClass('hide');
+				}
+			</aui:validator>
 		</aui:select>
 
 		<aui:select inlineField="<%= true %>" label="number-of-nodes" name="numberOfNodes" wrapperCssClass="form-field-wrapper">
