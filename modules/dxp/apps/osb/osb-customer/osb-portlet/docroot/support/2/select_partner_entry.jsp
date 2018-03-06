@@ -27,6 +27,9 @@ portletURL.setParameter("mvcPath", "/support/2/select_partner_entry.jsp");
 		<liferay-ui:tabs names="partners" />
 
 		<liferay-ui:search-container
+			emptyResultsMessage="no-partners-were-found"
+			id="partnerEntrySearchContainer"
+			iteratorURL="<%= portletURL %>"
 			searchContainer="<%= new PartnerEntrySearch(renderRequest, portletURL) %>"
 		>
 
@@ -37,9 +40,7 @@ portletURL.setParameter("mvcPath", "/support/2/select_partner_entry.jsp");
 
 			<%@ include file="/support/2/partner_entry_search.jspf" %>
 
-			<liferay-ui:search-container-results>
-				<%@ include file="/support/2/partner_entry_search_results.jspf" %>
-			</liferay-ui:search-container-results>
+			<%@ include file="/support/2/partner_entry_search_results.jspf" %>
 
 			<liferay-ui:search-container-row
 				className="com.liferay.osb.model.PartnerEntry"
@@ -66,7 +67,7 @@ portletURL.setParameter("mvcPath", "/support/2/select_partner_entry.jsp");
 				/>
 			</liferay-ui:search-container-row>
 
-			<liferay-ui:search-iterator />
+			<liferay-ui:search-iterator markupView="lexicon" />
 		</liferay-ui:search-container>
 	</aui:form>
 </c:if>

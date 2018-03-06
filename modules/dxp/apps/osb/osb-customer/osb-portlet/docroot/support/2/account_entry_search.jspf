@@ -37,22 +37,8 @@ Date lastEnabledDate = calendar.getTime();
 		<table class="lfr-table">
 			<tr>
 				<td>
-					<liferay-ui:message key="project-name" />
-				</td>
-				<td>
-					<liferay-ui:message key="code" />
-				</td>
-				<td>
-					<liferay-ui:message key="special-instructions" />
-				</td>
-				<td>
-					<liferay-ui:message key="notes" />
-				</td>
-			</tr>
-			<tr>
-				<td>
 					<div id="<portlet:namespace />nameContainer">
-						<aui:input name="<%= displayTerms.NAME %>" type="text" value="<%= displayTerms.getName() %>" />
+						<aui:input label="project-name" name="<%= displayTerms.NAME %>" type="text" value="<%= displayTerms.getName() %>" />
 					</div>
 				</td>
 				<td>
@@ -61,7 +47,7 @@ Date lastEnabledDate = calendar.getTime();
 					</div>
 				</td>
 				<td>
-					<aui:input name="<%= displayTerms.INSTRUCTIONS %>" type="text" value="<%= displayTerms.getInstructions() %>" />
+					<aui:input label="special-instructions" name="<%= displayTerms.INSTRUCTIONS %>" type="text" value="<%= displayTerms.getInstructions() %>" />
 				</td>
 				<td>
 					<aui:input name="<%= displayTerms.NOTES %>" type="text" value="<%= displayTerms.getNotes() %>" />
@@ -69,20 +55,10 @@ Date lastEnabledDate = calendar.getTime();
 			</tr>
 			<tr>
 				<td colspan="2">
-					<liferay-ui:message key="partner" />
-				</td>
-				<td colspan="2">
-					<c:if test="<%= liferayIncOrg %>">
-						<liferay-ui:message key="project-worker" />
-					</c:if>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<aui:input name="<%= displayTerms.PARTNER_ENTRY_CODE %>" size="20" type="text" value="<%= displayTerms.getPartnerEntryCode() %>" />
+					<aui:input label="partner" name="<%= displayTerms.PARTNER_ENTRY_CODE %>" size="20" type="text" value="<%= displayTerms.getPartnerEntryCode() %>" />
 
 					<portlet:renderURL var="selectPartnerEntryRenderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-						<portlet:param name="mvcPath" value="/support/select_partner_entry.jsp" />
+						<portlet:param name="mvcPath" value="/support/2/select_partner_entry.jsp" />
 					</portlet:renderURL>
 
 					<%
@@ -95,10 +71,10 @@ Date lastEnabledDate = calendar.getTime();
 					<c:if test="<%= liferayIncOrg %>">
 						<aui:input name="<%= displayTerms.ACCOUNT_WORKER_USER_ID %>" type="hidden" value="<%= displayTerms.getAccountWorkerUserId() %>" />
 						<aui:input name="<%= displayTerms.ACCOUNT_WORKER_ROLE %>" type="hidden" value="<%= displayTerms.getAccountWorkerRole() %>" />
-						<aui:input name="<%= displayTerms.ACCOUNT_WORKER_NAME %>" readonly="readonly" type="text" value="<%= displayTerms.getAccountWorkerName() %>" />
+						<aui:input label="project-worker" name="<%= displayTerms.ACCOUNT_WORKER_NAME %>" readonly="readonly" type="text" value="<%= displayTerms.getAccountWorkerName() %>" />
 
 						<portlet:renderURL var="selectAccountWorkerRenderURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-							<portlet:param name="mvcPath" value="/support/select_account_worker.jsp" />
+							<portlet:param name="mvcPath" value="/support/2/select_account_worker.jsp" />
 						</portlet:renderURL>
 
 						<%
@@ -111,20 +87,6 @@ Date lastEnabledDate = calendar.getTime();
 			</tr>
 			<tr>
 				<td>
-					<liferay-ui:message key="support" />
-				</td>
-				<td>
-					<liferay-ui:message key="has-expired-support" />
-				</td>
-				<td>
-					<liferay-ui:message key="has-ticket-support" />
-				</td>
-				<td>
-					<liferay-ui:message key="has-partner-first-line-support" />
-				</td>
-			</tr>
-			<tr>
-				<td>
 					<aui:select name="<%= displayTerms.SUPPORT %>" onchange='<%= renderResponse.getNamespace() + "updateSupport();" %>'>
 						<aui:option value="" />
 						<aui:option label="active" selected="<%= displayTerms.getSupport() == 1 %>" value="1" />
@@ -133,21 +95,21 @@ Date lastEnabledDate = calendar.getTime();
 					</aui:select>
 				</td>
 				<td>
-					<aui:select disabled="<%= displayTerms.getSupport() == 3 %>" name="<%= displayTerms.EXPIRED_SUPPORT %>">
+					<aui:select disabled="<%= displayTerms.getSupport() == 3 %>" label="has-expired-support" name="<%= displayTerms.EXPIRED_SUPPORT %>">
 						<aui:option selected="<%= !displayTerms.hasExpiredSupport() %>" value="" />
 						<aui:option label="yes" selected="<%= displayTerms.hasExpiredSupport() && displayTerms.isExpiredSupport() %>" value="1" />
 						<aui:option label="no" selected="<%= displayTerms.hasExpiredSupport() && !displayTerms.isExpiredSupport() %>" value="0" />
 					</aui:select>
 				</td>
 				<td>
-					<aui:select disabled="<%= displayTerms.getSupport() == 3 %>" name="<%= displayTerms.TICKET_SUPPORT %>">
+					<aui:select disabled="<%= displayTerms.getSupport() == 3 %>" label="has-ticket-support" name="<%= displayTerms.TICKET_SUPPORT %>">
 						<aui:option selected="<%= !displayTerms.hasTicketSupport() %>" value="" />
 						<aui:option label="yes" selected="<%= displayTerms.hasTicketSupport() && displayTerms.isTicketSupport() %>" value="1" />
 						<aui:option label="no" selected="<%= displayTerms.hasTicketSupport() && !displayTerms.isTicketSupport() %>" value="0" />
 					</aui:select>
 				</td>
 				<td>
-					<aui:select name="<%= displayTerms.PARTNER_MANAGED_SUPPORT %>">
+					<aui:select label="has-partner-first-line-support" name="<%= displayTerms.PARTNER_MANAGED_SUPPORT %>">
 						<aui:option selected="<%= !displayTerms.hasPartnerManagedSupport() %>" value="" />
 						<aui:option label="yes" selected="<%= displayTerms.hasPartnerManagedSupport() && displayTerms.isPartnerManagedSupport() %>" value="1" />
 						<aui:option label="no" selected="<%= displayTerms.hasPartnerManagedSupport() && !displayTerms.isPartnerManagedSupport() %>" value="0" />
@@ -156,16 +118,7 @@ Date lastEnabledDate = calendar.getTime();
 			</tr>
 			<tr>
 				<td>
-					<liferay-ui:message key="support-region" />
-				</td>
-				<td>
-					<liferay-ui:message key="tier" />
-				</td>
-				<td colspan="2"></td>
-			</tr>
-			<tr>
-				<td>
-					<aui:select name="<%= displayTerms.SUPPORT_REGION_IDS %>">
+					<aui:select label="support-region" name="<%= displayTerms.SUPPORT_REGION_IDS %>">
 						<aui:option value="" />
 
 						<%
@@ -181,7 +134,7 @@ Date lastEnabledDate = calendar.getTime();
 					</aui:select>
 				</td>
 				<td colspan="1">
-					<aui:select cssClass="multiple-select" multiple="<%= true %>" name="<%= displayTerms.TIERS %>">
+					<aui:select cssClass="multiple-select" label="tier" multiple="<%= true %>" name="<%= displayTerms.TIERS %>">
 						<aui:option label="any" value="" />
 
 						<%
@@ -204,19 +157,8 @@ Date lastEnabledDate = calendar.getTime();
 				</td>
 			</tr>
 			<tr>
-				<td>
-					<liferay-ui:message key="industry" />
-				</td>
-				<td colspan="2">
-					<liferay-ui:message key="country" />
-				</td>
-				<td>
-					<liferay-ui:message key="state-province" />
-				</td>
-			</tr>
-			<tr>
 				<td rowspan="3">
-					<aui:select cssClass="multiple-select" multiple="<%= true %>" name="<%= displayTerms.INDUSTRIES %>">
+					<aui:select cssClass="multiple-select" label="industry" multiple="<%= true %>" name="<%= displayTerms.INDUSTRIES %>">
 						<aui:option label="any" value="" />
 
 						<%
@@ -236,21 +178,10 @@ Date lastEnabledDate = calendar.getTime();
 					</aui:select>
 				</td>
 				<td colspan="2" valign="top">
-					<aui:select name="<%= displayTerms.COUNTRY_ID %>"></aui:select>
+					<aui:select label="country" name="<%= displayTerms.COUNTRY_ID %>"></aui:select>
 				</td>
 				<td colspan="2">
-					<aui:select name="<%= displayTerms.REGION_ID %>"></aui:select>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<liferay-ui:message key="city" />
-				</td>
-				<td>
-					<liferay-ui:message key="address-line" />
-				</td>
-				<td>
-					<liferay-ui:message key="postal-code" />
+					<aui:select label="state-province" name="<%= displayTerms.REGION_ID %>"></aui:select>
 				</td>
 			</tr>
 			<tr>
@@ -258,10 +189,10 @@ Date lastEnabledDate = calendar.getTime();
 					<aui:input name="<%= displayTerms.CITY %>" type="text" value="<%= displayTerms.getCity() %>" />
 				</td>
 				<td>
-					<aui:input name="<%= displayTerms.STREET %>" type="text" value="<%= displayTerms.getStreet() %>" />
+					<aui:input label="address-line" name="<%= displayTerms.STREET %>" type="text" value="<%= displayTerms.getStreet() %>" />
 				</td>
 				<td>
-					<aui:input name="<%= displayTerms.ZIP %>" type="text" value="<%= displayTerms.getZip() %>" />
+					<aui:input label="postal-code" name="<%= displayTerms.ZIP %>" type="text" value="<%= displayTerms.getZip() %>" />
 				</td>
 			</tr>
 			<tr>
@@ -273,15 +204,7 @@ Date lastEnabledDate = calendar.getTime();
 			<c:if test="<%= liferayIncOrg %>">
 				<tr>
 					<td colspan="2">
-						<liferay-ui:message key="created-by" />
-					</td>
-					<td colspan="2">
-						<liferay-ui:message key="last-edited-by" />
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<aui:select name="<%= displayTerms.CREATE_USER_ID %>">
+						<aui:select label="created-by" name="<%= displayTerms.CREATE_USER_ID %>">
 							<aui:option value="" />
 							<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getCreateUserId() %>" value="<%= user.getUserId() %>" />
 
@@ -304,7 +227,7 @@ Date lastEnabledDate = calendar.getTime();
 						<aui:button onClick="<%= taglibChooseCreateUser %>" value="choose" />
 					</td>
 					<td colspan="2">
-						<aui:select name="<%= displayTerms.MODIFIED_USER_ID %>">
+						<aui:select label="last-edited-by" name="<%= displayTerms.MODIFIED_USER_ID %>">
 							<aui:option value="" />
 							<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getModifiedUserId() %>" value="<%= user.getUserId() %>" />
 

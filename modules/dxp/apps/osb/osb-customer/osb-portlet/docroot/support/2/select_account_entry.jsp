@@ -26,6 +26,9 @@ portletURL.setParameter("mvcPath", "/support/2/select_account_entry.jsp");
 	<liferay-ui:tabs names="projects" />
 
 	<liferay-ui:search-container
+		emptyResultsMessage="no-projects-were-found"
+		id="accountEntrySearchContainer"
+		iteratorURL="<%= portletURL %>"
 		searchContainer="<%= new AccountEntrySearch(renderRequest, portletURL) %>"
 	>
 
@@ -36,9 +39,7 @@ portletURL.setParameter("mvcPath", "/support/2/select_account_entry.jsp");
 
 		<%@ include file="/support/2/account_entry_search.jspf" %>
 
-		<liferay-ui:search-container-results>
-			<%@ include file="/support/2/account_entry_search_results.jspf" %>
-		</liferay-ui:search-container-results>
+		<%@ include file="/support/2/account_entry_search_results.jspf" %>
 
 		<liferay-ui:search-container-row
 			className="com.liferay.osb.model.AccountEntry"
@@ -73,6 +74,6 @@ portletURL.setParameter("mvcPath", "/support/2/select_account_entry.jsp");
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator />
+		<liferay-ui:search-iterator markupView="lexicon" />
 	</liferay-ui:search-container>
 </aui:form>

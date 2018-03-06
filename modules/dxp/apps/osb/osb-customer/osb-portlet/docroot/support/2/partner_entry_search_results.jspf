@@ -16,14 +16,11 @@
 
 <%
 if (searchTerms.isAdvancedSearch()) {
-	results = PartnerEntryServiceUtil.search(searchTerms.getCode(), searchTerms.getStatuses(), searchTerms.getParams(), searchTerms.isAndOperator(), searchContainer.getStart(), searchContainer.getEnd());
-	total = PartnerEntryServiceUtil.searchCount(searchTerms.getCode(), searchTerms.getStatuses(), searchTerms.getParams(), searchTerms.isAndOperator());
+	searchContainer.setResults(PartnerEntryServiceUtil.search(searchTerms.getCode(), searchTerms.getStatuses(), searchTerms.getParams(), searchTerms.isAndOperator(), searchContainer.getStart(), searchContainer.getEnd()));
+	searchContainer.setTotal(PartnerEntryServiceUtil.searchCount(searchTerms.getCode(), searchTerms.getStatuses(), searchTerms.getParams(), searchTerms.isAndOperator()));
 }
 else {
-	results = PartnerEntryServiceUtil.search(searchTerms.getKeywords(), searchTerms.getParams(), searchContainer.getStart(), searchContainer.getEnd());
-	total = PartnerEntryServiceUtil.searchCount(searchTerms.getKeywords(), searchTerms.getParams());
+	searchContainer.setResults(PartnerEntryServiceUtil.search(searchTerms.getKeywords(), searchTerms.getParams(), searchContainer.getStart(), searchContainer.getEnd()));
+	searchContainer.setTotal(PartnerEntryServiceUtil.searchCount(searchTerms.getKeywords(), searchTerms.getParams()));
 }
-
-searchContainer.setResults(results);
-searchContainer.setTotal(total);
 %>

@@ -27,21 +27,13 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 		<div class="clearfix partner-entry-row">
 			<div class="content-column w33">
 				<div class="content-column-content left-column">
-					<h2 class="support-assignment support-input-heading">
-						<liferay-ui:message key="code" />
-					</h2>
-
 					<aui:input name="<%= displayTerms.CODE %>" type="text" value="<%= displayTerms.getCode() %>" />
 				</div>
 			</div>
 
 			<div class="content-column w33">
 				<div class="content-column content-column-content">
-					<h2 class="support-assignment support-input-heading">
-						<liferay-ui:message key="first-line-support" />
-					</h2>
-
-					<aui:select name="<%= displayTerms.MANAGING_SUPPORT %>">
+					<aui:select label="first-line-support" name="<%= displayTerms.MANAGING_SUPPORT %>">
 						<aui:option selected="<%= !displayTerms.hasManagingSupport() %>" value="" />
 						<aui:option label="yes" selected="<%= displayTerms.hasManagingSupport() && displayTerms.isManagingSupport() %>" value="1" />
 						<aui:option label="no" selected="<%= displayTerms.hasManagingSupport() && !displayTerms.isManagingSupport() %>" value="0" />
@@ -51,11 +43,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 
 			<div class="content-column w33">
 				<div class="content-column-content right-column">
-					<h2 class="support-assignment support-input-heading">
-						<liferay-ui:message key="has-child-partner-entries" />
-					</h2>
-
-					<aui:select name="<%= displayTerms.CHILD_PARTNER_ENTRIES %>">
+					<aui:select label="has-child-partner-entries" name="<%= displayTerms.CHILD_PARTNER_ENTRIES %>">
 						<aui:option selected="<%= !displayTerms.hasChildPartnerEntries() %>" value="" />
 						<aui:option label="yes" selected="<%= displayTerms.hasChildPartnerEntries() && displayTerms.isChildPartnerEntries() %>" value="1" />
 						<aui:option label="no" selected="<%= displayTerms.hasChildPartnerEntries() && !displayTerms.isChildPartnerEntries() %>" value="0" />
@@ -67,11 +55,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 		<div class="clearfix partner-entry-row">
 			<div class="content-column w33">
 				<div class="content-column-content left-column">
-					<h2 class="support-assignment support-input-heading">
-						<liferay-ui:message key="support-region" />
-					</h2>
-
-					<aui:select name="<%= displayTerms.SUPPORT_REGION_IDS %>">
+					<aui:select label="support-region" name="<%= displayTerms.SUPPORT_REGION_IDS %>">
 						<aui:option value="" />
 
 						<%
@@ -91,11 +75,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 			<c:if test='<%= mvcPath.equals("/support/2/view.jsp") %>'>
 				<div class="content-column w33">
 					<div class="content-column content-column-content">
-						<h2 class="support-assignment support-input-heading">
-							<liferay-ui:message key="status" />
-						</h2>
-
-						<aui:select name="<%= displayTerms.STATUSES %>">
+						<aui:select label="status" name="<%= displayTerms.STATUSES %>">
 							<aui:option label="any-status" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_ANY) %>" value="<%= WorkflowConstants.STATUS_ANY %>" />
 							<aui:option label="active" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_APPROVED) %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
 							<aui:option label="inactive" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_INACTIVE) %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
