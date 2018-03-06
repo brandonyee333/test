@@ -17,16 +17,16 @@
 <%!
 public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrapper {
 
-	WatsonRelationshipBaseModel() {
+	public WatsonRelationshipBaseModel() {
 		super(new WatsonRelationshipImpl());
 	}
 
-	WatsonRelationshipBaseModel(com.liferay.watson.model.WatsonRelationship watsonRelationship) {
+	public WatsonRelationshipBaseModel(com.liferay.watson.model.WatsonRelationship watsonRelationship) {
 		super(watsonRelationship);
 	}
 
 	public static WatsonRelationship add(HttpServletRequest request) throws Exception {
-		WatsonRelationship watsonRelationship = WatsonRelationshipBaseModel.create();
+		WatsonRelationship watsonRelationship = create();
 
 		return add(watsonRelationship, request, false);
 	}
@@ -130,7 +130,7 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 	}
 
 	public static WatsonRelationship create(HttpServletRequest request) throws Exception {
-		WatsonRelationship watsonRelationship = WatsonRelationshipBaseModel.create();
+		WatsonRelationship watsonRelationship = create();
 
 		if (request != null) {
 			BeanPropertiesUtil.setProperties(watsonRelationship, request, watsonRelationship.getLocalizedProperties());
@@ -150,7 +150,7 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 	}
 
 	public static WatsonRelationship create(long watsonRelationshipId, HttpServletRequest request) throws Exception {
-		WatsonRelationship watsonRelationship = WatsonRelationshipBaseModel.create(watsonRelationshipId);
+		WatsonRelationship watsonRelationship = create(watsonRelationshipId);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonRelationship, request);
 
@@ -159,17 +159,7 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 		return watsonRelationship;
 	}
 
-	public static void createAuditedWatsonRelationship(WatsonRelationship watsonRelationship, HttpServletRequest request) throws Exception {
-		WatsonRelationshipAudit watsonRelationshipAudit = WatsonRelationshipAuditLocalServiceUtil.createWatsonRelationshipAudit(CounterLocalServiceUtil.increment());
-
-		BeanPropertiesUtil.copyProperties(watsonRelationship, watsonRelationshipAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
-
-		WatsonRelationshipAuditLocalServiceUtil.updateWatsonRelationshipAudit(watsonRelationshipAudit);
-
-		return;
-	}
-
-	public static WatsonRelationship createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+	public static WatsonRelationship create(String jsonDataString, HttpServletRequest request) throws Exception {
 		WatsonRelationship watsonRelationship = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonRelationship.class);
 
 		watsonRelationship.setNew(true);
@@ -181,6 +171,16 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 		watsonRelationship.setWatsonRelationshipId(CounterLocalServiceUtil.increment());
 
 		return new WatsonRelationship(watsonRelationship);
+	}
+
+	public static void createAuditedWatsonRelationship(WatsonRelationship watsonRelationship, HttpServletRequest request) throws Exception {
+		WatsonRelationshipAudit watsonRelationshipAudit = WatsonRelationshipAuditLocalServiceUtil.createWatsonRelationshipAudit(CounterLocalServiceUtil.increment());
+
+		BeanPropertiesUtil.copyProperties(watsonRelationship, watsonRelationshipAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
+
+		WatsonRelationshipAuditLocalServiceUtil.updateWatsonRelationshipAudit(watsonRelationshipAudit);
+
+		return;
 	}
 
 	public static WatsonRelationship delete(long watsonRelationshipId) throws Exception {
@@ -241,10 +241,10 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
-			Map<String, Object> modelAttributes = this.getModelAttributes();
+			Map<String, Object> modelAttributes = getModelAttributes();
 
 			for (String propertyName : modelAttributes.keySet()) {
-				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+				boolean localized = ModelHintsUtil.isLocalized(getModelClassName(), propertyName);
 
 				if (localized) {
 					localizedPropertiesList.add(propertyName);

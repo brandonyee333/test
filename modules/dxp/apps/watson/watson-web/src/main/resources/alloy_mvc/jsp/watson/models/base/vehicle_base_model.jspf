@@ -17,16 +17,16 @@
 <%!
 public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 
-	WatsonVehicleBaseModel() {
+	public WatsonVehicleBaseModel() {
 		super(new WatsonVehicleImpl());
 	}
 
-	WatsonVehicleBaseModel(com.liferay.watson.model.WatsonVehicle watsonVehicle) {
+	public WatsonVehicleBaseModel(com.liferay.watson.model.WatsonVehicle watsonVehicle) {
 		super(watsonVehicle);
 	}
 
 	public static WatsonVehicle add(HttpServletRequest request) throws Exception {
-		WatsonVehicle watsonVehicle = WatsonVehicleBaseModel.create();
+		WatsonVehicle watsonVehicle = create();
 
 		return add(watsonVehicle, request, false);
 	}
@@ -130,7 +130,7 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 	}
 
 	public static WatsonVehicle create(HttpServletRequest request) throws Exception {
-		WatsonVehicle watsonVehicle = WatsonVehicleBaseModel.create();
+		WatsonVehicle watsonVehicle = create();
 
 		if (request != null) {
 			BeanPropertiesUtil.setProperties(watsonVehicle, request, watsonVehicle.getLocalizedProperties());
@@ -150,7 +150,7 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 	}
 
 	public static WatsonVehicle create(long watsonVehicleId, HttpServletRequest request) throws Exception {
-		WatsonVehicle watsonVehicle = WatsonVehicleBaseModel.create(watsonVehicleId);
+		WatsonVehicle watsonVehicle = create(watsonVehicleId);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonVehicle, request);
 
@@ -159,17 +159,7 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 		return watsonVehicle;
 	}
 
-	public static void createAuditedWatsonVehicle(WatsonVehicle watsonVehicle, HttpServletRequest request) throws Exception {
-		WatsonVehicleAudit watsonVehicleAudit = WatsonVehicleAuditLocalServiceUtil.createWatsonVehicleAudit(CounterLocalServiceUtil.increment());
-
-		BeanPropertiesUtil.copyProperties(watsonVehicle, watsonVehicleAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
-
-		WatsonVehicleAuditLocalServiceUtil.updateWatsonVehicleAudit(watsonVehicleAudit);
-
-		return;
-	}
-
-	public static WatsonVehicle createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+	public static WatsonVehicle create(String jsonDataString, HttpServletRequest request) throws Exception {
 		WatsonVehicle watsonVehicle = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonVehicle.class);
 
 		watsonVehicle.setNew(true);
@@ -181,6 +171,16 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 		watsonVehicle.setWatsonVehicleId(CounterLocalServiceUtil.increment());
 
 		return new WatsonVehicle(watsonVehicle);
+	}
+
+	public static void createAuditedWatsonVehicle(WatsonVehicle watsonVehicle, HttpServletRequest request) throws Exception {
+		WatsonVehicleAudit watsonVehicleAudit = WatsonVehicleAuditLocalServiceUtil.createWatsonVehicleAudit(CounterLocalServiceUtil.increment());
+
+		BeanPropertiesUtil.copyProperties(watsonVehicle, watsonVehicleAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
+
+		WatsonVehicleAuditLocalServiceUtil.updateWatsonVehicleAudit(watsonVehicleAudit);
+
+		return;
 	}
 
 	public static WatsonVehicle delete(long watsonVehicleId) throws Exception {
@@ -241,10 +241,10 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
-			Map<String, Object> modelAttributes = this.getModelAttributes();
+			Map<String, Object> modelAttributes = getModelAttributes();
 
 			for (String propertyName : modelAttributes.keySet()) {
-				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+				boolean localized = ModelHintsUtil.isLocalized(getModelClassName(), propertyName);
 
 				if (localized) {
 					localizedPropertiesList.add(propertyName);

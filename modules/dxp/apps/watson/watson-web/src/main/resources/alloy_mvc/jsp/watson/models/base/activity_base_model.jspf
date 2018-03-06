@@ -17,16 +17,16 @@
 <%!
 public static class WatsonActivityBaseModel extends WatsonActivityWrapper {
 
-	WatsonActivityBaseModel() {
+	public WatsonActivityBaseModel() {
 		super(new WatsonActivityImpl());
 	}
 
-	WatsonActivityBaseModel(com.liferay.watson.model.WatsonActivity watsonActivity) {
+	public WatsonActivityBaseModel(com.liferay.watson.model.WatsonActivity watsonActivity) {
 		super(watsonActivity);
 	}
 
 	public static WatsonActivity add(HttpServletRequest request) throws Exception {
-		WatsonActivity watsonActivity = WatsonActivityBaseModel.create();
+		WatsonActivity watsonActivity = create();
 
 		return add(watsonActivity, request, false);
 	}
@@ -130,7 +130,7 @@ public static class WatsonActivityBaseModel extends WatsonActivityWrapper {
 	}
 
 	public static WatsonActivity create(HttpServletRequest request) throws Exception {
-		WatsonActivity watsonActivity = WatsonActivityBaseModel.create();
+		WatsonActivity watsonActivity = create();
 
 		if (request != null) {
 			BeanPropertiesUtil.setProperties(watsonActivity, request, watsonActivity.getLocalizedProperties());
@@ -150,7 +150,7 @@ public static class WatsonActivityBaseModel extends WatsonActivityWrapper {
 	}
 
 	public static WatsonActivity create(long watsonActivityId, HttpServletRequest request) throws Exception {
-		WatsonActivity watsonActivity = WatsonActivityBaseModel.create(watsonActivityId);
+		WatsonActivity watsonActivity = create(watsonActivityId);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonActivity, request);
 
@@ -159,17 +159,7 @@ public static class WatsonActivityBaseModel extends WatsonActivityWrapper {
 		return watsonActivity;
 	}
 
-	public static void createAuditedWatsonActivity(WatsonActivity watsonActivity, HttpServletRequest request) throws Exception {
-		WatsonActivityAudit watsonActivityAudit = WatsonActivityAuditLocalServiceUtil.createWatsonActivityAudit(CounterLocalServiceUtil.increment());
-
-		BeanPropertiesUtil.copyProperties(watsonActivity, watsonActivityAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
-
-		WatsonActivityAuditLocalServiceUtil.updateWatsonActivityAudit(watsonActivityAudit);
-
-		return;
-	}
-
-	public static WatsonActivity createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+	public static WatsonActivity create(String jsonDataString, HttpServletRequest request) throws Exception {
 		WatsonActivity watsonActivity = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonActivity.class);
 
 		watsonActivity.setNew(true);
@@ -181,6 +171,16 @@ public static class WatsonActivityBaseModel extends WatsonActivityWrapper {
 		watsonActivity.setWatsonActivityId(CounterLocalServiceUtil.increment());
 
 		return new WatsonActivity(watsonActivity);
+	}
+
+	public static void createAuditedWatsonActivity(WatsonActivity watsonActivity, HttpServletRequest request) throws Exception {
+		WatsonActivityAudit watsonActivityAudit = WatsonActivityAuditLocalServiceUtil.createWatsonActivityAudit(CounterLocalServiceUtil.increment());
+
+		BeanPropertiesUtil.copyProperties(watsonActivity, watsonActivityAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
+
+		WatsonActivityAuditLocalServiceUtil.updateWatsonActivityAudit(watsonActivityAudit);
+
+		return;
 	}
 
 	public static WatsonActivity delete(long watsonActivityId) throws Exception {
@@ -241,10 +241,10 @@ public static class WatsonActivityBaseModel extends WatsonActivityWrapper {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
-			Map<String, Object> modelAttributes = this.getModelAttributes();
+			Map<String, Object> modelAttributes = getModelAttributes();
 
 			for (String propertyName : modelAttributes.keySet()) {
-				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+				boolean localized = ModelHintsUtil.isLocalized(getModelClassName(), propertyName);
 
 				if (localized) {
 					localizedPropertiesList.add(propertyName);

@@ -17,16 +17,16 @@
 <%!
 public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 
-	WatsonListTypeBaseModel() {
+	public WatsonListTypeBaseModel() {
 		super(new WatsonListTypeImpl());
 	}
 
-	WatsonListTypeBaseModel(com.liferay.watson.model.WatsonListType watsonListType) {
+	public WatsonListTypeBaseModel(com.liferay.watson.model.WatsonListType watsonListType) {
 		super(watsonListType);
 	}
 
 	public static WatsonListType add(HttpServletRequest request) throws Exception {
-		WatsonListType watsonListType = WatsonListTypeBaseModel.create();
+		WatsonListType watsonListType = create();
 
 		return add(watsonListType, request, false);
 	}
@@ -130,7 +130,7 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 	}
 
 	public static WatsonListType create(HttpServletRequest request) throws Exception {
-		WatsonListType watsonListType = WatsonListTypeBaseModel.create();
+		WatsonListType watsonListType = create();
 
 		if (request != null) {
 			BeanPropertiesUtil.setProperties(watsonListType, request, watsonListType.getLocalizedProperties());
@@ -150,7 +150,7 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 	}
 
 	public static WatsonListType create(long watsonListTypeId, HttpServletRequest request) throws Exception {
-		WatsonListType watsonListType = WatsonListTypeBaseModel.create(watsonListTypeId);
+		WatsonListType watsonListType = create(watsonListTypeId);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListType, request);
 
@@ -159,17 +159,7 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 		return watsonListType;
 	}
 
-	public static void createAuditedWatsonListType(WatsonListType watsonListType, HttpServletRequest request) throws Exception {
-		WatsonListTypeAudit watsonListTypeAudit = WatsonListTypeAuditLocalServiceUtil.createWatsonListTypeAudit(CounterLocalServiceUtil.increment());
-
-		BeanPropertiesUtil.copyProperties(watsonListType, watsonListTypeAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
-
-		WatsonListTypeAuditLocalServiceUtil.updateWatsonListTypeAudit(watsonListTypeAudit);
-
-		return;
-	}
-
-	public static WatsonListType createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+	public static WatsonListType create(String jsonDataString, HttpServletRequest request) throws Exception {
 		WatsonListType watsonListType = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonListType.class);
 
 		watsonListType.setNew(true);
@@ -181,6 +171,16 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 		watsonListType.setWatsonListTypeId(CounterLocalServiceUtil.increment());
 
 		return new WatsonListType(watsonListType);
+	}
+
+	public static void createAuditedWatsonListType(WatsonListType watsonListType, HttpServletRequest request) throws Exception {
+		WatsonListTypeAudit watsonListTypeAudit = WatsonListTypeAuditLocalServiceUtil.createWatsonListTypeAudit(CounterLocalServiceUtil.increment());
+
+		BeanPropertiesUtil.copyProperties(watsonListType, watsonListTypeAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
+
+		WatsonListTypeAuditLocalServiceUtil.updateWatsonListTypeAudit(watsonListTypeAudit);
+
+		return;
 	}
 
 	public static WatsonListType delete(long watsonListTypeId) throws Exception {
@@ -241,10 +241,10 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
-			Map<String, Object> modelAttributes = this.getModelAttributes();
+			Map<String, Object> modelAttributes = getModelAttributes();
 
 			for (String propertyName : modelAttributes.keySet()) {
-				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+				boolean localized = ModelHintsUtil.isLocalized(getModelClassName(), propertyName);
 
 				if (localized) {
 					localizedPropertiesList.add(propertyName);

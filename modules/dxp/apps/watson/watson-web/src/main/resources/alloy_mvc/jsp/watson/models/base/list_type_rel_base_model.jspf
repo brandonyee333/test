@@ -17,16 +17,16 @@
 <%!
 public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper {
 
-	WatsonListTypeRelBaseModel() {
+	public WatsonListTypeRelBaseModel() {
 		super(new WatsonListTypeRelImpl());
 	}
 
-	WatsonListTypeRelBaseModel(com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
+	public WatsonListTypeRelBaseModel(com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {
 		super(watsonListTypeRel);
 	}
 
 	public static WatsonListTypeRel add(HttpServletRequest request) throws Exception {
-		WatsonListTypeRel watsonListTypeRel = WatsonListTypeRelBaseModel.create();
+		WatsonListTypeRel watsonListTypeRel = create();
 
 		return add(watsonListTypeRel, request, false);
 	}
@@ -130,7 +130,7 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 	}
 
 	public static WatsonListTypeRel create(HttpServletRequest request) throws Exception {
-		WatsonListTypeRel watsonListTypeRel = WatsonListTypeRelBaseModel.create();
+		WatsonListTypeRel watsonListTypeRel = create();
 
 		if (request != null) {
 			BeanPropertiesUtil.setProperties(watsonListTypeRel, request, watsonListTypeRel.getLocalizedProperties());
@@ -150,7 +150,7 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 	}
 
 	public static WatsonListTypeRel create(long watsonListTypeRelId, HttpServletRequest request) throws Exception {
-		WatsonListTypeRel watsonListTypeRel = WatsonListTypeRelBaseModel.create(watsonListTypeRelId);
+		WatsonListTypeRel watsonListTypeRel = create(watsonListTypeRelId);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonListTypeRel, request);
 
@@ -159,17 +159,7 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 		return watsonListTypeRel;
 	}
 
-	public static void createAuditedWatsonListTypeRel(WatsonListTypeRel watsonListTypeRel, HttpServletRequest request) throws Exception {
-		WatsonListTypeRelAudit watsonListTypeRelAudit = WatsonListTypeRelAuditLocalServiceUtil.createWatsonListTypeRelAudit(CounterLocalServiceUtil.increment());
-
-		BeanPropertiesUtil.copyProperties(watsonListTypeRel, watsonListTypeRelAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
-
-		WatsonListTypeRelAuditLocalServiceUtil.updateWatsonListTypeRelAudit(watsonListTypeRelAudit);
-
-		return;
-	}
-
-	public static WatsonListTypeRel createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+	public static WatsonListTypeRel create(String jsonDataString, HttpServletRequest request) throws Exception {
 		WatsonListTypeRel watsonListTypeRel = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonListTypeRel.class);
 
 		watsonListTypeRel.setNew(true);
@@ -181,6 +171,16 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 		watsonListTypeRel.setWatsonListTypeRelId(CounterLocalServiceUtil.increment());
 
 		return new WatsonListTypeRel(watsonListTypeRel);
+	}
+
+	public static void createAuditedWatsonListTypeRel(WatsonListTypeRel watsonListTypeRel, HttpServletRequest request) throws Exception {
+		WatsonListTypeRelAudit watsonListTypeRelAudit = WatsonListTypeRelAuditLocalServiceUtil.createWatsonListTypeRelAudit(CounterLocalServiceUtil.increment());
+
+		BeanPropertiesUtil.copyProperties(watsonListTypeRel, watsonListTypeRelAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
+
+		WatsonListTypeRelAuditLocalServiceUtil.updateWatsonListTypeRelAudit(watsonListTypeRelAudit);
+
+		return;
 	}
 
 	public static WatsonListTypeRel delete(long watsonListTypeRelId) throws Exception {
@@ -241,10 +241,10 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
-			Map<String, Object> modelAttributes = this.getModelAttributes();
+			Map<String, Object> modelAttributes = getModelAttributes();
 
 			for (String propertyName : modelAttributes.keySet()) {
-				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+				boolean localized = ModelHintsUtil.isLocalized(getModelClassName(), propertyName);
 
 				if (localized) {
 					localizedPropertiesList.add(propertyName);

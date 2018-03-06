@@ -17,16 +17,16 @@
 <%!
 public static class WatsonChildBaseModel extends WatsonChildWrapper {
 
-	WatsonChildBaseModel() {
+	public WatsonChildBaseModel() {
 		super(new WatsonChildImpl());
 	}
 
-	WatsonChildBaseModel(com.liferay.watson.model.WatsonChild watsonChild) {
+	public WatsonChildBaseModel(com.liferay.watson.model.WatsonChild watsonChild) {
 		super(watsonChild);
 	}
 
 	public static WatsonChild add(HttpServletRequest request) throws Exception {
-		WatsonChild watsonChild = WatsonChildBaseModel.create();
+		WatsonChild watsonChild = create();
 
 		return add(watsonChild, request, false);
 	}
@@ -130,7 +130,7 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 	}
 
 	public static WatsonChild create(HttpServletRequest request) throws Exception {
-		WatsonChild watsonChild = WatsonChildBaseModel.create();
+		WatsonChild watsonChild = create();
 
 		if (request != null) {
 			BeanPropertiesUtil.setProperties(watsonChild, request, watsonChild.getLocalizedProperties());
@@ -150,7 +150,7 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 	}
 
 	public static WatsonChild create(long watsonChildId, HttpServletRequest request) throws Exception {
-		WatsonChild watsonChild = WatsonChildBaseModel.create(watsonChildId);
+		WatsonChild watsonChild = create(watsonChildId);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonChild, request);
 
@@ -159,17 +159,7 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 		return watsonChild;
 	}
 
-	public static void createAuditedWatsonChild(WatsonChild watsonChild, HttpServletRequest request) throws Exception {
-		WatsonChildAudit watsonChildAudit = WatsonChildAuditLocalServiceUtil.createWatsonChildAudit(CounterLocalServiceUtil.increment());
-
-		BeanPropertiesUtil.copyProperties(watsonChild, watsonChildAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
-
-		WatsonChildAuditLocalServiceUtil.updateWatsonChildAudit(watsonChildAudit);
-
-		return;
-	}
-
-	public static WatsonChild createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+	public static WatsonChild create(String jsonDataString, HttpServletRequest request) throws Exception {
 		WatsonChild watsonChild = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonChild.class);
 
 		watsonChild.setNew(true);
@@ -181,6 +171,16 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 		watsonChild.setWatsonChildId(CounterLocalServiceUtil.increment());
 
 		return new WatsonChild(watsonChild);
+	}
+
+	public static void createAuditedWatsonChild(WatsonChild watsonChild, HttpServletRequest request) throws Exception {
+		WatsonChildAudit watsonChildAudit = WatsonChildAuditLocalServiceUtil.createWatsonChildAudit(CounterLocalServiceUtil.increment());
+
+		BeanPropertiesUtil.copyProperties(watsonChild, watsonChildAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
+
+		WatsonChildAuditLocalServiceUtil.updateWatsonChildAudit(watsonChildAudit);
+
+		return;
 	}
 
 	public static WatsonChild delete(long watsonChildId) throws Exception {
@@ -241,10 +241,10 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
-			Map<String, Object> modelAttributes = this.getModelAttributes();
+			Map<String, Object> modelAttributes = getModelAttributes();
 
 			for (String propertyName : modelAttributes.keySet()) {
-				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+				boolean localized = ModelHintsUtil.isLocalized(getModelClassName(), propertyName);
 
 				if (localized) {
 					localizedPropertiesList.add(propertyName);

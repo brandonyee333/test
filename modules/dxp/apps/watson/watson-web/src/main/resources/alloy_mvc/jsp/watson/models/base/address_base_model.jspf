@@ -17,16 +17,16 @@
 <%!
 public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 
-	WatsonAddressBaseModel() {
+	public WatsonAddressBaseModel() {
 		super(new WatsonAddressImpl());
 	}
 
-	WatsonAddressBaseModel(com.liferay.watson.model.WatsonAddress watsonAddress) {
+	public WatsonAddressBaseModel(com.liferay.watson.model.WatsonAddress watsonAddress) {
 		super(watsonAddress);
 	}
 
 	public static WatsonAddress add(HttpServletRequest request) throws Exception {
-		WatsonAddress watsonAddress = WatsonAddressBaseModel.create();
+		WatsonAddress watsonAddress = create();
 
 		return add(watsonAddress, request, false);
 	}
@@ -130,7 +130,7 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 	}
 
 	public static WatsonAddress create(HttpServletRequest request) throws Exception {
-		WatsonAddress watsonAddress = WatsonAddressBaseModel.create();
+		WatsonAddress watsonAddress = create();
 
 		if (request != null) {
 			BeanPropertiesUtil.setProperties(watsonAddress, request, watsonAddress.getLocalizedProperties());
@@ -150,7 +150,7 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 	}
 
 	public static WatsonAddress create(long watsonAddressId, HttpServletRequest request) throws Exception {
-		WatsonAddress watsonAddress = WatsonAddressBaseModel.create(watsonAddressId);
+		WatsonAddress watsonAddress = create(watsonAddressId);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonAddress, request);
 
@@ -159,17 +159,7 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 		return watsonAddress;
 	}
 
-	public static void createAuditedWatsonAddress(WatsonAddress watsonAddress, HttpServletRequest request) throws Exception {
-		WatsonAddressAudit watsonAddressAudit = WatsonAddressAuditLocalServiceUtil.createWatsonAddressAudit(CounterLocalServiceUtil.increment());
-
-		BeanPropertiesUtil.copyProperties(watsonAddress, watsonAddressAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
-
-		WatsonAddressAuditLocalServiceUtil.updateWatsonAddressAudit(watsonAddressAudit);
-
-		return;
-	}
-
-	public static WatsonAddress createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+	public static WatsonAddress create(String jsonDataString, HttpServletRequest request) throws Exception {
 		WatsonAddress watsonAddress = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonAddress.class);
 
 		watsonAddress.setNew(true);
@@ -181,6 +171,16 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 		watsonAddress.setWatsonAddressId(CounterLocalServiceUtil.increment());
 
 		return new WatsonAddress(watsonAddress);
+	}
+
+	public static void createAuditedWatsonAddress(WatsonAddress watsonAddress, HttpServletRequest request) throws Exception {
+		WatsonAddressAudit watsonAddressAudit = WatsonAddressAuditLocalServiceUtil.createWatsonAddressAudit(CounterLocalServiceUtil.increment());
+
+		BeanPropertiesUtil.copyProperties(watsonAddress, watsonAddressAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
+
+		WatsonAddressAuditLocalServiceUtil.updateWatsonAddressAudit(watsonAddressAudit);
+
+		return;
 	}
 
 	public static WatsonAddress delete(long watsonAddressId) throws Exception {
@@ -241,10 +241,10 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
-			Map<String, Object> modelAttributes = this.getModelAttributes();
+			Map<String, Object> modelAttributes = getModelAttributes();
 
 			for (String propertyName : modelAttributes.keySet()) {
-				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+				boolean localized = ModelHintsUtil.isLocalized(getModelClassName(), propertyName);
 
 				if (localized) {
 					localizedPropertiesList.add(propertyName);

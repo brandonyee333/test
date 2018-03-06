@@ -17,16 +17,16 @@
 <%!
 public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 
-	WatsonHistoryBaseModel() {
+	public WatsonHistoryBaseModel() {
 		super(new WatsonHistoryImpl());
 	}
 
-	WatsonHistoryBaseModel(com.liferay.watson.model.WatsonHistory watsonHistory) {
+	public WatsonHistoryBaseModel(com.liferay.watson.model.WatsonHistory watsonHistory) {
 		super(watsonHistory);
 	}
 
 	public static WatsonHistory add(HttpServletRequest request) throws Exception {
-		WatsonHistory watsonHistory = WatsonHistoryBaseModel.create();
+		WatsonHistory watsonHistory = create();
 
 		return add(watsonHistory, request, false);
 	}
@@ -130,7 +130,7 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 	}
 
 	public static WatsonHistory create(HttpServletRequest request) throws Exception {
-		WatsonHistory watsonHistory = WatsonHistoryBaseModel.create();
+		WatsonHistory watsonHistory = create();
 
 		if (request != null) {
 			BeanPropertiesUtil.setProperties(watsonHistory, request, watsonHistory.getLocalizedProperties());
@@ -150,7 +150,7 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 	}
 
 	public static WatsonHistory create(long watsonHistoryId, HttpServletRequest request) throws Exception {
-		WatsonHistory watsonHistory = WatsonHistoryBaseModel.create(watsonHistoryId);
+		WatsonHistory watsonHistory = create(watsonHistoryId);
 
 		BaseAlloyControllerImpl.setAuditedModel(watsonHistory, request);
 
@@ -159,17 +159,7 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 		return watsonHistory;
 	}
 
-	public static void createAuditedWatsonHistory(WatsonHistory watsonHistory, HttpServletRequest request) throws Exception {
-		WatsonHistoryAudit watsonHistoryAudit = WatsonHistoryAuditLocalServiceUtil.createWatsonHistoryAudit(CounterLocalServiceUtil.increment());
-
-		BeanPropertiesUtil.copyProperties(watsonHistory, watsonHistoryAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
-
-		WatsonHistoryAuditLocalServiceUtil.updateWatsonHistoryAudit(watsonHistoryAudit);
-
-		return;
-	}
-
-	public static WatsonHistory createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+	public static WatsonHistory create(String jsonDataString, HttpServletRequest request) throws Exception {
 		WatsonHistory watsonHistory = JSONFactoryUtil.looseDeserialize(jsonDataString, WatsonHistory.class);
 
 		watsonHistory.setNew(true);
@@ -181,6 +171,16 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 		watsonHistory.setWatsonHistoryId(CounterLocalServiceUtil.increment());
 
 		return new WatsonHistory(watsonHistory);
+	}
+
+	public static void createAuditedWatsonHistory(WatsonHistory watsonHistory, HttpServletRequest request) throws Exception {
+		WatsonHistoryAudit watsonHistoryAudit = WatsonHistoryAuditLocalServiceUtil.createWatsonHistoryAudit(CounterLocalServiceUtil.increment());
+
+		BeanPropertiesUtil.copyProperties(watsonHistory, watsonHistoryAudit, new String[] {"new", "primaryKey", "primaryKeyObj"});
+
+		WatsonHistoryAuditLocalServiceUtil.updateWatsonHistoryAudit(watsonHistoryAudit);
+
+		return;
 	}
 
 	public static WatsonHistory delete(long watsonHistoryId) throws Exception {
@@ -241,10 +241,10 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 		if (localizedProperties.length < 1) {
 			List<String> localizedPropertiesList = new ArrayList<>();
 
-			Map<String, Object> modelAttributes = this.getModelAttributes();
+			Map<String, Object> modelAttributes = getModelAttributes();
 
 			for (String propertyName : modelAttributes.keySet()) {
-				boolean localized = ModelHintsUtil.isLocalized(this.getModelClassName(), propertyName);
+				boolean localized = ModelHintsUtil.isLocalized(getModelClassName(), propertyName);
 
 				if (localized) {
 					localizedPropertiesList.add(propertyName);
