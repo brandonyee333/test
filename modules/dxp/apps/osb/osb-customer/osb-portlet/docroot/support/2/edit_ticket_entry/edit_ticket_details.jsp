@@ -121,7 +121,7 @@ if (liferayIncOrg || partnerWorker) {
 								for (int curComponent : TicketEntryConstants.getGroupComponents(componentGroup)) {
 								%>
 
-									<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
+									<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
 
 								<%
 								}
@@ -140,7 +140,7 @@ if (liferayIncOrg || partnerWorker) {
 						for (int curComponent : TicketEntryConstants.getProductComponents(productEntry)) {
 						%>
 
-							<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
+							<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= curComponent == component %>" value="<%= curComponent %>" />
 
 						<%
 						}
@@ -172,7 +172,7 @@ if (liferayIncOrg || partnerWorker) {
 				for (int curSubcomponent : subcomponents) {
 				%>
 
-					<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSubcomponentLabel(curSubcomponent)) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
+					<aui:option label="<%= TicketEntryConstants.getSubcomponentLabel(curSubcomponent) %>" selected="<%= curSubcomponent == subcomponent %>" value="<%= curSubcomponent %>" />
 
 				<%
 				}
@@ -180,7 +180,7 @@ if (liferayIncOrg || partnerWorker) {
 
 			</aui:select>
 
-			<aui:input cssClass="no-label" inlineField="<%= true %>" label="" name="subcomponentCustom" type="text" value="<%= subcomponentCustom %>" wrapperCssClass='<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER ? "form-field-wrapper" : "hide") %>' />
+			<aui:input cssClass="no-label" inlineField="<%= true %>" label="" name="subcomponentCustom" type="text" value="<%= subcomponentCustom %>" wrapperCssClass='<%= (subcomponent == TicketEntryConstants.SUBCOMPONENT_OTHER) ? "form-field-wrapper" : "hide" %>' />
 		</div>
 	</c:if>
 
@@ -191,7 +191,7 @@ if (liferayIncOrg || partnerWorker) {
 			for (ListType escalationLevelType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL)) {
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(request, escalationLevelType.getName()) %>" selected="<%= escalationLevelType.getListTypeId() == escalationLevel %>" value="<%= escalationLevelType.getListTypeId() %>" />
+				<aui:option label="<%= escalationLevelType.getName() %>" selected="<%= escalationLevelType.getListTypeId() == escalationLevel %>" value="<%= escalationLevelType.getListTypeId() %>" />
 
 			<%
 			}
@@ -216,7 +216,7 @@ if (liferayIncOrg || partnerWorker) {
 			for (int i = 1; i <= 3; i++) {
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(i)) %>" selected="<%= i == severity %>" value="<%= i %>" />
+				<aui:option label="<%= TicketEntryConstants.getSeverityLabel(i) %>" selected="<%= i == severity %>" value="<%= i %>" />
 
 			<%
 			}
@@ -245,7 +245,7 @@ if (liferayIncOrg || partnerWorker) {
 				}
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(statusId)) %>" selected="<%= statusId == status %>" value="<%= statusId %>" />
+				<aui:option label="<%= TicketEntryConstants.getStatusLabel(statusId) %>" selected="<%= statusId == status %>" value="<%= statusId %>" />
 
 			<%
 			}
@@ -262,7 +262,7 @@ if (liferayIncOrg || partnerWorker) {
 			for (ListType resolutionType : ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_RESOLUTION)) {
 			%>
 
-				<aui:option label="<%= LanguageUtil.get(request, resolutionType.getName()) %>" selected="<%= resolutionType.getListTypeId() == resolution %>" value="<%= resolutionType.getListTypeId() %>" />
+				<aui:option label="<%= resolutionType.getName() %>" selected="<%= resolutionType.getListTypeId() == resolution %>" value="<%= resolutionType.getListTypeId() %>" />
 
 			<%
 			}
@@ -321,7 +321,7 @@ if (liferayIncOrg || partnerWorker) {
 				for (String curLanguageId : AccountEntryConstants.LANGUAGES) {
 				%>
 
-					<aui:option label="<%= LanguageUtil.get(request, AccountEntryConstants.getLanguageLabel(curLanguageId)) %>" selected="<%= languageId.equals(curLanguageId) %>" value="<%= curLanguageId %>" />
+					<aui:option label="<%= AccountEntryConstants.getLanguageLabel(curLanguageId) %>" selected="<%= languageId.equals(curLanguageId) %>" value="<%= curLanguageId %>" />
 
 				<%
 				}
