@@ -169,7 +169,7 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 		return;
 	}
 
-	public static ${classname} createFromJSON(String jsonDataString, HttpServletRequest request) throws Exception {
+	public static ${classname} create(String jsonDataString, HttpServletRequest request) throws Exception {
 		${classname} ${instancename} = JSONFactoryUtil.looseDeserialize(jsonDataString, ${classname}.class);
 
 		${instancename}.setNew(true);
