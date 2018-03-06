@@ -1405,6 +1405,25 @@ public abstract class RemoteCorpProjectLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the remote user local service.
+	 *
+	 * @return the remote user local service
+	 */
+	public com.liferay.osb.service.RemoteUserLocalService getRemoteUserLocalService() {
+		return remoteUserLocalService;
+	}
+
+	/**
+	 * Sets the remote user local service.
+	 *
+	 * @param remoteUserLocalService the remote user local service
+	 */
+	public void setRemoteUserLocalService(
+		com.liferay.osb.service.RemoteUserLocalService remoteUserLocalService) {
+		this.remoteUserLocalService = remoteUserLocalService;
+	}
+
+	/**
 	 * Returns the search filter local service.
 	 *
 	 * @return the search filter local service
@@ -2601,6 +2620,8 @@ public abstract class RemoteCorpProjectLocalServiceBaseImpl
 	protected ProductEntryFinder productEntryFinder;
 	@BeanReference(type = RemoteCorpProjectLocalService.class)
 	protected RemoteCorpProjectLocalService remoteCorpProjectLocalService;
+	@BeanReference(type = com.liferay.osb.service.RemoteUserLocalService.class)
+	protected com.liferay.osb.service.RemoteUserLocalService remoteUserLocalService;
 	@BeanReference(type = com.liferay.osb.service.SearchFilterLocalService.class)
 	protected com.liferay.osb.service.SearchFilterLocalService searchFilterLocalService;
 	@BeanReference(type = SearchFilterPersistence.class)
