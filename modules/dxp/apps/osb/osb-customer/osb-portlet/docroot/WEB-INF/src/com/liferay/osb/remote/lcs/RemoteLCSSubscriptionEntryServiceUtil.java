@@ -14,6 +14,8 @@
 
 package com.liferay.osb.remote.lcs;
 
+import com.liferay.osb.exception.RemoteServiceException;
+
 /**
  * @author Amos Fong
  */
@@ -26,7 +28,8 @@ public class RemoteLCSSubscriptionEntryServiceUtil {
 	}
 
 	public static void sendLCSSubscriptionEntries(
-		long corpProjectId, String lcsSubscriptionEntriesJSON) {
+			long corpProjectId, String lcsSubscriptionEntriesJSON)
+		throws RemoteServiceException {
 
 		getRemoteLCSSubscriptionEntryService().sendLCSSubscriptionEntries(
 			corpProjectId, lcsSubscriptionEntriesJSON);

@@ -14,35 +14,26 @@
 
 package com.liferay.osb.remote.lcs;
 
-import com.liferay.osb.util.PortletPropsKeys;
+import com.liferay.osb.exception.RemoteServiceException;
+import com.liferay.osb.remote.BaseRemoteService;
 import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientHandler;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.util.portlet.PortletProps;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.http.HttpMessage;
 
 /**
  * @author Amos Fong
  */
 public class RemoteLCSSubscriptionEntryServiceImpl
-	extends BaseJSONWebServiceClientHandler
-	implements RemoteLCSSubscriptionEntryService {
-
-	@Override
-	public JSONWebServiceClient getJSONWebServiceClient() {
-		return _jsonWebServiceClient;
-	}
+	extends BaseRemoteService implements RemoteLCSSubscriptionEntryService {
 
 	public void sendLCSSubscriptionEntries(
-		long corpProjectId, String lcsSubscriptionEntriesJSON) {
+			long corpProjectId, String lcsSubscriptionEntriesJSON)
+		throws RemoteServiceException {
 
 		Map<String, String> parameters = new HashMap<>();
 
@@ -54,46 +45,15 @@ public class RemoteLCSSubscriptionEntryServiceImpl
 			parameters);
 	}
 
-	public void setJSONWebServiceClient(
-		JSONWebServiceClient jsonWebServiceClient) {
-
-		_jsonWebServiceClient = jsonWebServiceClient;
-	}
-
-	protected void doPost(String url, Map<String, String> parameters) {
-		Map<String, String> headers = new HashMap<>();
+	@Override
+	protected void addHeaders(
+		HttpMessage httpMessage, Map<String, String> headers) {
 
 		headers.put(
 			"OSB_LCS_API_Token",
 			PortletPropsValues.REMOTE_JSON_SERVICE_API_LCS_TOKEN);
 
-		try {
-			if (_log.isDebugEnabled()) {
-				StringBundler sb = new StringBundler(6);
-
-				sb.append(
-					PortletProps.get(
-						PortletPropsKeys.REMOTE_JSON_SERVICE_API_LCS_PROTOCOL));
-				sb.append("://");
-				sb.append(
-					PortletProps.get(
-						PortletPropsKeys.REMOTE_JSON_SERVICE_API_LCS_HOST));
-				sb.append(StringPool.COLON);
-				sb.append(
-					PortletProps.get(
-						PortletPropsKeys.REMOTE_JSON_SERVICE_API_LCS_PORT));
-				sb.append(url);
-
-				_log.debug("Sending request to: " + sb.toString());
-
-				_log.debug("Parameters: " + MapUtil.toString(parameters));
-			}
-
-			doPost(url, parameters, headers);
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
+		super.addHeaders(httpMessage, headers);
 	}
 
 	private static final String _URL_API_JSONWS =
@@ -104,7 +64,5 @@ public class RemoteLCSSubscriptionEntryServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RemoteLCSSubscriptionEntryServiceImpl.class);
-
-	private JSONWebServiceClient _jsonWebServiceClient;
 
 }

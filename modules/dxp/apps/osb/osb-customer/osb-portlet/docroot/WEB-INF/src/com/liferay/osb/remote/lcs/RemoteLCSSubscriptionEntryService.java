@@ -14,12 +14,15 @@
 
 package com.liferay.osb.remote.lcs;
 
+import com.liferay.osb.exception.RemoteServiceException;
+
 /**
  * @author Amos Fong
  */
 public interface RemoteLCSSubscriptionEntryService {
 
 	public void sendLCSSubscriptionEntries(
-		long corpProjectId, String lcsSubscriptionEntriesJSON);
+			long corpProjectId, String lcsSubscriptionEntriesJSON)
+		throws RemoteServiceException;
 
 }

@@ -14,85 +14,54 @@
 
 package com.liferay.osb.remote.dossiera;
 
+import com.liferay.osb.exception.RemoteServiceException;
+import com.liferay.osb.remote.BaseRemoteService;
 import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientHandler;
-import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.http.HttpMessage;
 
 /**
  * @author Amos Fong
  */
 public class RemoteDossieraOpportunityServiceImpl
-	extends BaseJSONWebServiceClientHandler
-	implements RemoteDossieraOpportunityService {
+	extends BaseRemoteService implements RemoteDossieraOpportunityService {
 
-	@Override
-	public JSONWebServiceClient getJSONWebServiceClient() {
-		return _jsonWebServiceClient;
+	public JSONArray doGetToJSONArray(String url)
+		throws RemoteServiceException {
+
+		try {
+			String response = doGet(url);
+
+			return JSONFactoryUtil.createJSONArray(response);
+		}
+		catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
 	}
 
-	public JSONArray getOpportunitiesJSONArray(String salesforceProjectKey) {
-		return doGetJSONArray(
+	public JSONArray getOpportunitiesJSONArray(String salesforceProjectKey)
+		throws RemoteServiceException {
+
+		return doGetToJSONArray(
 			_URL_API_REST_PURCHASED_PRODUCT + "/opportunities/" +
 				salesforceProjectKey);
 	}
 
-	public void setJSONWebServiceClient(
-		JSONWebServiceClient jsonWebServiceClient) {
-
-		_jsonWebServiceClient = jsonWebServiceClient;
-	}
-
-	protected JSONArray doGetJSONArray(String url) {
-		Map<String, String> headers = new HashMap<>();
+	@Override
+	protected void addHeaders(
+		HttpMessage httpMessage, Map<String, String> headers) {
 
 		headers.put(
 			"Dossiera-API-Token",
 			PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_TOKEN);
 
-		try {
-			if (_log.isDebugEnabled()) {
-				StringBundler sb = new StringBundler(6);
-
-				sb.append(
-					PortletPropsValues.
-						REMOTE_REST_SERVICE_API_DOSSIERA_PROTOCOL);
-				sb.append("://");
-				sb.append(
-					PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_HOST);
-				sb.append(StringPool.COLON);
-				sb.append(
-					PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_PORT);
-				sb.append(url);
-
-				_log.debug("Sending GET request to: " + sb.toString());
-			}
-
-			String response = doGet(url, Collections.emptyMap(), headers);
-
-			return JSONFactoryUtil.createJSONArray(response);
-		}
-		catch (JSONWebServiceTransportException.CommunicationFailure cf) {
-			if (cf.getStatus() == 404) {
-				return null;
-			}
-
-			throw new SystemException(cf);
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
+		super.addHeaders(httpMessage, headers);
 	}
 
 	private static final String _URL_API_REST = "/osb-dossiera-portlet/rest";
@@ -102,7 +71,5 @@ public class RemoteDossieraOpportunityServiceImpl
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RemoteDossieraOpportunityServiceImpl.class);
-
-	private JSONWebServiceClient _jsonWebServiceClient;
 
 }
