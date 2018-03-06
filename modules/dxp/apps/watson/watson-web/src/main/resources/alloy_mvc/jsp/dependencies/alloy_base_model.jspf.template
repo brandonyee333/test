@@ -159,16 +159,6 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 		return ${instancename};
 	}
 
-	public static void createAudited${classname}(${classname} ${instancename}, HttpServletRequest request) throws Exception {
-		${classname}Audit ${instancename}Audit = ${classname}AuditLocalServiceUtil.create${classname}Audit(CounterLocalServiceUtil.increment());
-
-		BeanPropertiesUtil.copyProperties(${instancename}, ${instancename}Audit, new String[] {"new", "primaryKey", "primaryKeyObj"});
-
-		${classname}AuditLocalServiceUtil.update${classname}Audit(${instancename}Audit);
-
-		return;
-	}
-
 	public static ${classname} create(String jsonDataString, HttpServletRequest request) throws Exception {
 		${classname} ${instancename} = JSONFactoryUtil.looseDeserialize(jsonDataString, ${classname}.class);
 
@@ -181,6 +171,16 @@ public static class ${baseclassname} extends ${classname}Wrapper {
 		${instancename}.set${classname}Id(CounterLocalServiceUtil.increment());
 
 		return new ${classname}(${instancename});
+	}
+
+	public static void createAudited${classname}(${classname} ${instancename}, HttpServletRequest request) throws Exception {
+		${classname}Audit ${instancename}Audit = ${classname}AuditLocalServiceUtil.create${classname}Audit(CounterLocalServiceUtil.increment());
+
+		BeanPropertiesUtil.copyProperties(${instancename}, ${instancename}Audit, new String[] {"new", "primaryKey", "primaryKeyObj"});
+
+		${classname}AuditLocalServiceUtil.update${classname}Audit(${instancename}Audit);
+
+		return;
 	}
 
 	public static ${classname} delete(long ${instancename}Id) throws Exception {
