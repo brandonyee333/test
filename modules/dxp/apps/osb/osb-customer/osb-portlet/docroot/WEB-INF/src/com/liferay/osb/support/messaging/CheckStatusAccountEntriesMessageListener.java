@@ -61,13 +61,6 @@ public class CheckStatusAccountEntriesMessageListener
 			AccountEntryLocalServiceUtil.deleteAccountEntry(
 				accountEntry.getAccountEntryId());
 
-			/* TODO add in CorpProject integration
-			CorpProjectLocalServiceUtil.deleteUserCorpProjectRoles(
-				accountEntry.getUserId(), accountEntry.getCorpProjectId(),
-				new long[] {accountEntry.getUserId()},
-				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
-			*/
-
 			RemoteCorpProjectLocalServiceUtil.deleteCorpProject(
 				accountEntry.getCorpProjectId());
 		}
