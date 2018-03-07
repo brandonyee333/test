@@ -112,7 +112,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		</div>
 
 		<aui:button-row>
-			<aui:button onClick='<%= renderResponse.getNamespace() + "closeEditTicketDialog();" %>' value="cancel" />
+			<aui:button onClick='<%= renderResponse.getNamespace() + "confirmActionCancel();" %>' value="cancel" />
 
 			<aui:button cssClass="pull-right" type="submit" value="save" />
 		</aui:button-row>
@@ -121,22 +121,24 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 <aui:script>
 	function <portlet:namespace />closeEditTicketDialog() {
-		var modified = document.getElementById('<portlet:namespace />modified');
-
-		if (modified.value == 'true') {
-			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-ticket.-are-you-sure-you-want-to-cancel-editing") %>');
-
-			if (!cancelEdit) {
-				return;
-			}
-		}
-
 		Liferay.fire(
 			'closeWindow',
 			{
 				id: '<portlet:namespace />editTicketPopup'
 			}
 		);
+	}
+
+	function <portlet:namespace />confirmActionCancel() {
+		var modified = document.getElementById('<portlet:namespace />modified');
+
+		if (modified.value == 'true') {
+			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-ticket.-are-you-sure-you-want-to-cancel-editing") %>');
+
+			if (cancelEdit) {
+				<portlet:namespace />closeEditTicketDialog();
+			}
+		}
 	}
 
 	Liferay.provide(
