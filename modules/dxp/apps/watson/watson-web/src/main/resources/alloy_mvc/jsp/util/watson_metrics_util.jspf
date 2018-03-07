@@ -290,7 +290,7 @@ public static class WatsonMetricsUtil {
 
 		long incidentChildVictimCount = getIncidentPropertyLongValue(startDate, endDate, "victimChildCount", WatsonListType.INCIDENT_TYPE_INVESTIGATION);
 
-		return (personVictimCount + incidentAdultVictimCount + incidentChildVictimCount);
+		return personVictimCount + incidentAdultVictimCount + incidentChildVictimCount;
 	}
 
 	private static AlloyServiceInvoker _watsonIncidentAlloyServiceInvoker = WatsonIncident.baseModelAlloyServiceInvoker;

@@ -199,7 +199,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 
 						String upperBoundString = String.valueOf(dateRangeParts[1]);
 
-						TermRangeQuery dateTermRangeQuery = new TermRangeQueryImpl((fieldName + "_sortable"), lowerBoundString, upperBoundString, true, true);
+						TermRangeQuery dateTermRangeQuery = new TermRangeQueryImpl(fieldName + "_sortable", lowerBoundString, upperBoundString, true, true);
 
 						keywordsBooleanClause = BooleanClauseFactoryUtil.create(dateTermRangeQuery, BooleanClauseOccur.MUST.getName());
 					}

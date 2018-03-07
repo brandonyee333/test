@@ -120,7 +120,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		jsonObject.put("disabled", hasDisabled(watsonIncident.getIncidentStatus()));
 		jsonObject.put("endDate", watsonIncident.getEndDate());
 		jsonObject.put("expenses", watsonIncident.getExpenses());
-		jsonObject.put("externalCase", (Validator.isNotNull(watsonIncident.getExternalCaseId()) || Validator.isNotNull(watsonIncident.getExternalCaseWatsonListTypeId())));
+		jsonObject.put("externalCase", Validator.isNotNull(watsonIncident.getExternalCaseId()) || Validator.isNotNull(watsonIncident.getExternalCaseWatsonListTypeId()));
 		jsonObject.put("externalCaseId", watsonIncident.getExternalCaseId());
 		jsonObject.put("externalCaseWatsonListTypeId", watsonIncident.getExternalCaseWatsonListTypeId());
 		jsonObject.put("histories", JSONFactoryUtil.createJSONArray());
@@ -430,7 +430,11 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			}
 		}
 
-		return (incidentStatus == INCIDENT_STATUS_CLOSED);
+		if (incidentStatus == INCIDENT_STATUS_CLOSED) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public static boolean hasDisabled(long incidentStatus) throws Exception {

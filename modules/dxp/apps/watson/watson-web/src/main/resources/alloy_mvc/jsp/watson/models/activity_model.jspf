@@ -135,7 +135,11 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 			}
 		}
 
-		return (currentUserId == createdUserId);
+		if (currentUserId == createdUserId) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public static boolean hasEditableStatus(long createdUserId) throws Exception {

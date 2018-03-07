@@ -339,7 +339,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 
 	public static KeyValuePair validateWatsonChildActivitiesInvolved(List<WatsonListTypeRel> activitiesInvolved) throws Exception {
 		for (WatsonListTypeRel watsonListTypeRel : activitiesInvolved) {
-			if ((watsonListTypeRel.getClassPK() <= 0)) {
+			if (watsonListTypeRel.getClassPK() <= 0) {
 				return new KeyValuePair("activitiesInvolvedWatsonListTypeRels", "the-child-activities-involved-were-invalid");
 			}
 
@@ -550,7 +550,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 
 	public static KeyValuePair validateWatsonChildVocationalTrainings(List<WatsonListTypeRel> vocationalTrainings) throws Exception {
 		for (WatsonListTypeRel watsonListTypeRel : vocationalTrainings) {
-			if ((watsonListTypeRel.getClassPK() <= 0)) {
+			if (watsonListTypeRel.getClassPK() <= 0) {
 				return new KeyValuePair("vocationalTrainingWatsonListTypeRels", "the-child-vocational-trainings-were-invalid");
 			}
 
