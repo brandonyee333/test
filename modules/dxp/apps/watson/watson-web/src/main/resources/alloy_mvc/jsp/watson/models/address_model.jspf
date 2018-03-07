@@ -357,8 +357,8 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonAddressSubdistrict(long subDistrictWatsonListTypeId) throws Exception {
-		if ((subDistrictWatsonListTypeId > 0) && (WatsonListType.fetch(subDistrictWatsonListTypeId) == null)) {
+	public static KeyValuePair validateWatsonAddressSubdistrict(long subdistrictWatsonListTypeId) throws Exception {
+		if ((subdistrictWatsonListTypeId > 0) && (WatsonListType.fetch(subdistrictWatsonListTypeId) == null)) {
 			return new KeyValuePair("subDistrictWatsonListTypeId", "the-address-subdistrict-is-invalid");
 		}
 
