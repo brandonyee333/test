@@ -40,7 +40,7 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 	public static WatsonResource create(HttpServletRequest request, JSONObject jsonObject) throws Exception {
 		WatsonResource watsonResource = create();
 
-		Object[] properties = WatsonAlloyControllerImpl._getPropertiesFromJSONObject(jsonObject);
+		Object[] properties = WatsonAlloyControllerImpl._getProperties(jsonObject);
 
 		watsonResource.setFields(request, properties);
 

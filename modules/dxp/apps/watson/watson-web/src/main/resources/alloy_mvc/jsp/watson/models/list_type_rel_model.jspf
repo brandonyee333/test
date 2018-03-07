@@ -239,7 +239,7 @@ public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 				}
 			}
 
-			Object[] properties = getPropertiesFromJSONObject(watsonListTypeRelEntity);
+			Object[] properties = getProperties(watsonListTypeRelEntity);
 
 			if (matchingWatsonListTypeRel != null) {
 				setFields(matchingWatsonListTypeRel, request, ownerModel, watsonListTypeRelType, properties);
@@ -369,7 +369,7 @@ public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 		return watsonListTypeRels;
 	}
 
-	protected static Object[] getPropertiesFromJSONObject(JSONObject jsonObject) throws Exception {
+	protected static Object[] getProperties(JSONObject jsonObject) throws Exception {
 		List<Object> properties = new ArrayList<>();
 
 		Iterator<?> keys = jsonObject.keys();

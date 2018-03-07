@@ -38,7 +38,7 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 	public static WatsonDocument create(HttpServletRequest request, JSONObject jsonObject) throws Exception {
 		WatsonDocument watsonDocument = create();
 
-		Object[] properties = WatsonAlloyControllerImpl._getPropertiesFromJSONObject(jsonObject);
+		Object[] properties = WatsonAlloyControllerImpl._getProperties(jsonObject);
 
 		watsonDocument.setFields(request, properties);
 
