@@ -19,19 +19,19 @@
 <%!
 public static class WatsonIncidentRel extends WatsonIncidentRelBaseModel {
 
-	WatsonIncidentRel() {
+	public WatsonIncidentRel() {
 		super(new com.liferay.watson.model.impl.WatsonIncidentRelImpl());
 	}
 
-	WatsonIncidentRel(com.liferay.watson.model.WatsonIncidentRel watsonIncident) {
+	public WatsonIncidentRel(com.liferay.watson.model.WatsonIncidentRel watsonIncident) {
 		super(watsonIncident);
 	}
 
-	WatsonIncidentRel(WatsonIncidentRel watsonIncident) {
+	public WatsonIncidentRel(WatsonIncidentRel watsonIncident) {
 		super(watsonIncident);
 	}
 
-	WatsonIncidentRel(WatsonIncidentRelBaseModel watsonIncident) {
+	public WatsonIncidentRel(WatsonIncidentRelBaseModel watsonIncident) {
 		super(watsonIncident);
 	}
 

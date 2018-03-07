@@ -19,19 +19,19 @@
 <%!
 public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 
-	WatsonRelationship() {
+	public WatsonRelationship() {
 		super(new com.liferay.watson.model.impl.WatsonRelationshipImpl());
 	}
 
-	WatsonRelationship(com.liferay.watson.model.WatsonRelationship watsonRelationship) {
+	public WatsonRelationship(com.liferay.watson.model.WatsonRelationship watsonRelationship) {
 		super(watsonRelationship);
 	}
 
-	WatsonRelationship(WatsonRelationship watsonRelationship) {
+	public WatsonRelationship(WatsonRelationship watsonRelationship) {
 		super(watsonRelationship);
 	}
 
-	WatsonRelationship(WatsonRelationshipBaseModel watsonRelationship) {
+	public WatsonRelationship(WatsonRelationshipBaseModel watsonRelationship) {
 		super(watsonRelationship);
 	}
 

@@ -19,19 +19,19 @@
 <%!
 public static class WatsonChild extends WatsonChildBaseModel {
 
-	WatsonChild() {
+	public WatsonChild() {
 		super(new com.liferay.watson.model.impl.WatsonChildImpl());
 	}
 
-	WatsonChild(com.liferay.watson.model.WatsonChild watsonChild) {
+	public WatsonChild(com.liferay.watson.model.WatsonChild watsonChild) {
 		super(watsonChild);
 	}
 
-	WatsonChild(WatsonChild watsonChild) {
+	public WatsonChild(WatsonChild watsonChild) {
 		super(watsonChild);
 	}
 
-	WatsonChild(WatsonChildBaseModel watsonChild) {
+	public WatsonChild(WatsonChildBaseModel watsonChild) {
 		super(watsonChild);
 	}
 

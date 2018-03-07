@@ -19,19 +19,19 @@
 <%!
 public static class WatsonDocument extends WatsonDocumentBaseModel {
 
-	WatsonDocument() {
+	public WatsonDocument() {
 		super(new com.liferay.watson.model.impl.WatsonDocumentImpl());
 	}
 
-	WatsonDocument(com.liferay.watson.model.WatsonDocument watsonDocument) {
+	public WatsonDocument(com.liferay.watson.model.WatsonDocument watsonDocument) {
 		super(watsonDocument);
 	}
 
-	WatsonDocument(WatsonDocument watsonDocument) {
+	public WatsonDocument(WatsonDocument watsonDocument) {
 		super(watsonDocument);
 	}
 
-	WatsonDocument(WatsonDocumentBaseModel watsonDocument) {
+	public WatsonDocument(WatsonDocumentBaseModel watsonDocument) {
 		super(watsonDocument);
 	}
 
