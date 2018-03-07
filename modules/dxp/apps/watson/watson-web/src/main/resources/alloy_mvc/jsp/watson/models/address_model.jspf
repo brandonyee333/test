@@ -37,7 +37,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 
 	public static final int MAX_FIELD_LENGTH_TEXTAREA = 4000;
 
-	public static WatsonAddress createFromJSON(String jsonDataString, HttpServletRequest request, boolean removeEmpty) throws Exception {
+	public static WatsonAddress create(String jsonDataString, HttpServletRequest request, boolean removeEmpty) throws Exception {
 		if (removeEmpty) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(jsonDataString);
 
@@ -54,7 +54,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 			jsonDataString = jsonObject.toJSONString();
 		}
 
-		return createFromJSON(jsonDataString, request);
+		return create(jsonDataString, request);
 	}
 
 	public static JSONObject getAsJSONDataArray(List<WatsonAddress> watsonAddresses, long count) throws Exception {

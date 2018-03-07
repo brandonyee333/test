@@ -51,7 +51,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		List<WatsonListTypeRel> natureWatsonListTypeRels = (List<WatsonListTypeRel>)generatedWatsonListTypeRelChanges[0];
 
-		WatsonAddress watsonAddress = WatsonAddress.createFromJSON(ParamUtil.getString(request, "address"), request, true);
+		WatsonAddress watsonAddress = WatsonAddress.create(ParamUtil.getString(request, "address"), request, true);
 
 		if (!watsonIncident.isValid(natureWatsonListTypeRels, null) || !watsonAddress.isValidWithoutWatsonIncidentId()) {
 			if (isRespondingTo("json")) {

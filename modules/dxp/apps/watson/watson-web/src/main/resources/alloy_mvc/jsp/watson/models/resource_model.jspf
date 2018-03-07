@@ -37,7 +37,7 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 
 	public static final int MAX_FIELD_LENGTH_TEXTAREA = 4000;
 
-	public static WatsonResource createFromJSON(HttpServletRequest request, JSONObject jsonObject) throws Exception {
+	public static WatsonResource create(HttpServletRequest request, JSONObject jsonObject) throws Exception {
 		WatsonResource watsonResource = create();
 
 		Object[] properties = WatsonAlloyControllerImpl._getPropertiesFromJSONObject(jsonObject);

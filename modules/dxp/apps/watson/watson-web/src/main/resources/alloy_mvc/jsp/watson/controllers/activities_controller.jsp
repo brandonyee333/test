@@ -54,7 +54,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		JSONArray watsonResourcesJSONArray = JSONFactoryUtil.createJSONArray(ParamUtil.getString(request, "activityResource"));
 
 		for (int i = 0; i < watsonResourcesJSONArray.length(); i++) {
-			WatsonResource watsonResource = WatsonResource.createFromJSON(request, watsonResourcesJSONArray.getJSONObject(i));
+			WatsonResource watsonResource = WatsonResource.create(request, watsonResourcesJSONArray.getJSONObject(i));
 
 			if (watsonResource.isValid(null)) {
 				WatsonRelationship.create(request, watsonActivity, watsonResource, "watsonIncidentId", watsonActivity.getWatsonIncidentId());
@@ -333,7 +333,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		JSONArray watsonResourcesJSONArray = JSONFactoryUtil.createJSONArray(ParamUtil.getString(request, "activityResource"));
 
 		for (int i = 0; i < watsonResourcesJSONArray.length(); i++) {
-			WatsonResource watsonResource = WatsonResource.createFromJSON(request, watsonResourcesJSONArray.getJSONObject(i));
+			WatsonResource watsonResource = WatsonResource.create(request, watsonResourcesJSONArray.getJSONObject(i));
 
 			if (watsonResource.isValid(null)) {
 				watsonRelationships.add(WatsonRelationship.create(request, watsonActivity, watsonResource, "watsonIncidentId", watsonIncidentId));
