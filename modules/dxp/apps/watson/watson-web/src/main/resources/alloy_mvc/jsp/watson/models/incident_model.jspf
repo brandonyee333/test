@@ -179,7 +179,10 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		jsonObject.put("watsonIncidentId", watsonIncident.getWatsonIncidentId());
 
 		if (Validator.isNotNull(watsonIncidentRels)) {
-			jsonObject.put("watsonIncidentRelIds", WatsonIncidentRel.getWatsonIncidentRelClassPKs(watsonIncident.getWatsonIncidentId(), watsonIncidentRels).toArray());
+			List<Long> watsonIncidentRelClassPKs = WatsonIncidentRel.getWatsonIncidentRelClassPKs(watsonIncident.getWatsonIncidentId(), watsonIncidentRels);
+
+			jsonObject.put("watsonIncidentRelIds", watsonIncidentRelClassPKs.toArray());
+
 			jsonObject.put("watsonIncidentRels", WatsonIncidentRel.getWatsonIncidentRelsAsJSONObject(watsonIncident.getWatsonIncidentId(), watsonIncidentRels));
 		}
 		else {
