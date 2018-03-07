@@ -60,7 +60,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		if (watsonListTypeId != 0) {
 			WatsonListType watsonListType = WatsonListType.fetch(watsonListTypeId);
 
-			respondWith(WatsonListType.getAsJSONObject(watsonListType));
+			respondWith(WatsonListType._getAsJSONObject(watsonListType));
 		}
 	}
 

@@ -142,13 +142,13 @@ public static class WatsonListType extends WatsonListTypeBaseModel {
 		return query("type", type);
 	}
 
-	private static JSONObject getAsJSONDataArray(List<WatsonListType> watsonListTypes, long count) throws Exception {
+	private static JSONObject _getAsJSONDataArray(List<WatsonListType> watsonListTypes, long count) throws Exception {
 		JSONObject returnJSONObject = JSONFactoryUtil.createJSONObject();
 
 		JSONObject watsonListTypesJSONObject = JSONFactoryUtil.createJSONObject();
 
 		for (WatsonListType watsonListType : watsonListTypes) {
-			watsonListTypesJSONObject.put(String.valueOf(watsonListType.getWatsonListTypeId()), getAsJSONObject(watsonListType));
+			watsonListTypesJSONObject.put(String.valueOf(watsonListType.getWatsonListTypeId()), _getAsJSONObject(watsonListType));
 		}
 
 		returnJSONObject.put("count", count);
@@ -157,7 +157,7 @@ public static class WatsonListType extends WatsonListTypeBaseModel {
 		return returnJSONObject;
 	}
 
-	private static JSONObject getAsJSONObject(WatsonListType watsonListType) throws Exception {
+	private static JSONObject _getAsJSONObject(WatsonListType watsonListType) throws Exception {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("name", watsonListType.getName(LocaleUtil.getMostRelevantLocale()));

@@ -77,10 +77,10 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		jsonObject.put("citizenshipWatsonListTypeId", watsonPerson.getCitizenshipWatsonListTypeId());
 
 		if (countryIDWatsonListTypeRels != null) {
-			pushRelData(jsonObject, countryIDWatsonListTypeRels, "countryID", locale);
+			_pushRelData(jsonObject, countryIDWatsonListTypeRels, "countryID", locale);
 		}
 		else {
-			pushRelData(jsonObject, watsonPerson.getWatsonPersonId(), "countryID", locale);
+			_pushRelData(jsonObject, watsonPerson.getWatsonPersonId(), "countryID", locale);
 		}
 
 		jsonObject.put("createDate", watsonPerson.getCreateDate());
@@ -134,19 +134,19 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		jsonObject.put("name", watsonPerson.getPrimaryName());
 
 		if (nameWatsonListTypeRels != null) {
-			pushRelData(jsonObject, nameWatsonListTypeRels, "name", locale);
+			_pushRelData(jsonObject, nameWatsonListTypeRels, "name", locale);
 		}
 		else {
-			pushRelData(jsonObject, watsonPerson.getWatsonPersonId(), "name", locale);
+			_pushRelData(jsonObject, watsonPerson.getWatsonPersonId(), "name", locale);
 		}
 
 		jsonObject.put("occupation", watsonPerson.getOccupation(locale));
 
 		if (phoneNumberWatsonListTypeRels != null) {
-			pushRelData(jsonObject, phoneNumberWatsonListTypeRels, "phoneNumber", locale);
+			_pushRelData(jsonObject, phoneNumberWatsonListTypeRels, "phoneNumber", locale);
 		}
 		else {
-			pushRelData(jsonObject, watsonPerson.getWatsonPersonId(), "phoneNumber", locale);
+			_pushRelData(jsonObject, watsonPerson.getWatsonPersonId(), "phoneNumber", locale);
 		}
 
 		jsonObject.put("primaryNameString", watsonPerson.getPrimaryName());
@@ -163,10 +163,10 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		jsonObject.put("sexWatsonListTypeId", watsonPerson.getSexWatsonListTypeId());
 
 		if (socialMediaAccountWatsonListTypeRels != null) {
-			pushRelData(jsonObject, socialMediaAccountWatsonListTypeRels, "socialMediaAccount", locale);
+			_pushRelData(jsonObject, socialMediaAccountWatsonListTypeRels, "socialMediaAccount", locale);
 		}
 		else {
-			pushRelData(jsonObject, watsonPerson.getWatsonPersonId(), "socialMediaAccount", locale);
+			_pushRelData(jsonObject, watsonPerson.getWatsonPersonId(), "socialMediaAccount", locale);
 		}
 
 		jsonObject.put("startAge", watsonPerson.getStartAge());
@@ -242,19 +242,19 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 	}
 
 	public static List<WatsonListTypeRel> getCountryIds(long watsonPersonId) throws Exception {
-		return getRels(watsonPersonId, "countryID");
+		return _getRels(watsonPersonId, "countryID");
 	}
 
 	public static List<WatsonListTypeRel> getNames(long watsonPersonId) throws Exception {
-		return getRels(watsonPersonId, "name");
+		return _getRels(watsonPersonId, "name");
 	}
 
 	public static List<WatsonListTypeRel> getPhoneNumbers(long watsonPersonId) throws Exception {
-		return getRels(watsonPersonId, "phoneNumber");
+		return _getRels(watsonPersonId, "phoneNumber");
 	}
 
 	public static List<WatsonListTypeRel> getSocialMediaAccounts(long watsonPersonId) throws Exception {
-		return getRels(watsonPersonId, "socialMediaAccount");
+		return _getRels(watsonPersonId, "socialMediaAccount");
 	}
 
 	public static List<WatsonIncident> getAffiliatedIncidents(WatsonPerson watsonPerson) throws Exception {
@@ -441,7 +441,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 	}
 
 	public String getNamesString() throws Exception {
-		return WatsonListTypeRel.getRelValueString(getNames(getWatsonPersonId()), LocaleUtil.getMostRelevantLocale());
+		return WatsonListTypeRel._getRelValueString(getNames(getWatsonPersonId()), LocaleUtil.getMostRelevantLocale());
 	}
 
 	public JSONObject getPersonFormErrors() {
@@ -503,13 +503,13 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return update(this);
 	}
 
-	private static List<WatsonListTypeRel> getRels(long watsonPersonId, String type) throws Exception {
+	private static List<WatsonListTypeRel> _getRels(long watsonPersonId, String type) throws Exception {
 		String listTypeString = getBaseModelClass().getName() + StringPool.PERIOD + type + "Type";
 
 		return WatsonListTypeRel.query("classPK", watsonPersonId, "type", listTypeString);
 	}
 
-	private static JSONArray populateJSONArrayWithRels(List<WatsonListTypeRel> watsonListTypeRels, Locale locale) throws Exception {
+	private static JSONArray _populateJSONArrayWithRels(List<WatsonListTypeRel> watsonListTypeRels, Locale locale) throws Exception {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		for (WatsonListTypeRel watsonListTypeRel : watsonListTypeRels) {
@@ -535,16 +535,16 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return jsonArray;
 	}
 
-	private static JSONObject pushRelData(JSONObject jsonObject, long watsonPersonId, String watsonListTypeRelType, Locale locale) throws Exception {
-		List<WatsonListTypeRel> watsonListTypeRels = getRels(watsonPersonId, watsonListTypeRelType);
+	private static JSONObject _pushRelData(JSONObject jsonObject, long watsonPersonId, String watsonListTypeRelType, Locale locale) throws Exception {
+		List<WatsonListTypeRel> watsonListTypeRels = _getRels(watsonPersonId, watsonListTypeRelType);
 
-		return pushRelData(jsonObject, watsonListTypeRels, watsonListTypeRelType, locale);
+		return _pushRelData(jsonObject, watsonListTypeRels, watsonListTypeRelType, locale);
 	}
 
-	private static JSONObject pushRelData(JSONObject jsonObject, List<WatsonListTypeRel> watsonListTypeRels, String watsonListTypeRelType, Locale locale) throws Exception {
-		jsonObject.put(watsonListTypeRelType.concat("WatsonListTypeRels"), populateJSONArrayWithRels(watsonListTypeRels, locale));
+	private static JSONObject _pushRelData(JSONObject jsonObject, List<WatsonListTypeRel> watsonListTypeRels, String watsonListTypeRelType, Locale locale) throws Exception {
+		jsonObject.put(watsonListTypeRelType.concat("WatsonListTypeRels"), _populateJSONArrayWithRels(watsonListTypeRels, locale));
 
-		jsonObject.put(watsonListTypeRelType.concat("WatsonListTypeRelString"), WatsonListTypeRel.getRelValueString(watsonListTypeRels, locale));
+		jsonObject.put(watsonListTypeRelType.concat("WatsonListTypeRelString"), WatsonListTypeRel._getRelValueString(watsonListTypeRels, locale));
 
 		return jsonObject;
 	}

@@ -137,7 +137,7 @@ public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 				}
 			}
 
-			Object[] properties = WatsonAlloyControllerImpl.getPropertiesFromJSONObject(watsonRelationshipEntity);
+			Object[] properties = WatsonAlloyControllerImpl._getPropertiesFromJSONObject(watsonRelationshipEntity);
 
 			if (matchingWatsonRelationship != null) {
 				setFields(matchingWatsonRelationship, request, watsonIncidentId, properties);
@@ -176,7 +176,7 @@ public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 				}
 			}
 
-			Object[] properties = WatsonAlloyControllerImpl.getPropertiesFromJSONObject(watsonRelationshipEntity);
+			Object[] properties = WatsonAlloyControllerImpl._getPropertiesFromJSONObject(watsonRelationshipEntity);
 
 			if (matchingWatsonRelationship != null) {
 				setFields(matchingWatsonRelationship, request, ownerModel, properties);

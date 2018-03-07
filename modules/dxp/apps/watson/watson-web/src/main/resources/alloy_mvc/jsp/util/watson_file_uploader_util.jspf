@@ -141,7 +141,7 @@ public static class WatsonFileUploaderUtil {
 
 		boolean reverseDimensions = false;
 
-		int orientation = getOrientation(file);
+		int orientation = _getOrientation(file);
 
 		if (orientation == _ORIENTATION_MIRROR_HORIZONTAL) {
 			affineTransform.scale(-1.0, 1.0);
@@ -214,7 +214,7 @@ public static class WatsonFileUploaderUtil {
 		ImageIO.write(newBufferedImage, imageBag.getType(), file);
 	}
 
-	private static int getOrientation(File file) {
+	private static int _getOrientation(File file) {
 		Map<String, DDMFormValues> ddmFormValuesMap = null;
 
 		try {

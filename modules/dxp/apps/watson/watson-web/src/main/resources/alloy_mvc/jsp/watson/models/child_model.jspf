@@ -99,10 +99,10 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		jsonObject.put("counseling_reports", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_COUNSELING, watsonChild.getWatsonChildId()));
 
 		if (countryIDWatsonListTypeRels != null) {
-			pushRelData(jsonObject, countryIDWatsonListTypeRels, "countryID", locale);
+			_pushRelData(jsonObject, countryIDWatsonListTypeRels, "countryID", locale);
 		}
 		else {
-			pushRelData(jsonObject, watsonChild.getWatsonChildId(), "countryID", locale);
+			_pushRelData(jsonObject, watsonChild.getWatsonChildId(), "countryID", locale);
 		}
 
 		jsonObject.put("createDate", watsonChild.getCreateDate());
@@ -129,10 +129,10 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		jsonObject.put("ethnicityWatsonListTypeId", watsonChild.getEthnicityWatsonListTypeId());
 
 		if (guardianNameWatsonListTypeRels != null) {
-			pushRelData(jsonObject, guardianNameWatsonListTypeRels, "guardianName", locale);
+			_pushRelData(jsonObject, guardianNameWatsonListTypeRels, "guardianName", locale);
 		}
 		else {
-			pushRelData(jsonObject, watsonChild.getWatsonChildId(), "guardianName", locale);
+			_pushRelData(jsonObject, watsonChild.getWatsonChildId(), "guardianName", locale);
 		}
 
 		jsonObject.put("hasCitizenship", hasCitizenship(watsonChild.getCitizenshipWatsonListTypeId()));
@@ -149,19 +149,19 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		jsonObject.put("name", watsonChild.getPrimaryName());
 
 		if (nameWatsonListTypeRels != null) {
-			pushRelData(jsonObject, nameWatsonListTypeRels, "name", locale);
+			_pushRelData(jsonObject, nameWatsonListTypeRels, "name", locale);
 		}
 		else {
-			pushRelData(jsonObject, watsonChild.getWatsonChildId(), "name", locale);
+			_pushRelData(jsonObject, watsonChild.getWatsonChildId(), "name", locale);
 		}
 
 		jsonObject.put("originalWatsonPersonId", watsonChild.getOriginalWatsonPersonId());
 
 		if (parentNameWatsonListTypeRels != null) {
-			pushRelData(jsonObject, parentNameWatsonListTypeRels, "parentName", locale);
+			_pushRelData(jsonObject, parentNameWatsonListTypeRels, "parentName", locale);
 		}
 		else {
-			pushRelData(jsonObject, watsonChild.getWatsonChildId(), "parentName", locale);
+			_pushRelData(jsonObject, watsonChild.getWatsonChildId(), "parentName", locale);
 		}
 
 		jsonObject.put("physical_exams", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_PHYSICAL_EXAM, watsonChild.getWatsonChildId()));
@@ -223,7 +223,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 	}
 
 	public static List<WatsonListTypeRel> getNames(long watsonChildId) throws Exception {
-		return getRels(watsonChildId, "name");
+		return _getRels(watsonChildId, "name");
 	}
 
 	public static JSONArray getIdJSONArray(List<WatsonChild> watsonChildren) throws Exception {
@@ -571,7 +571,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 	}
 
 	public String getNamesString() throws Exception {
-		return WatsonListTypeRel.getRelValueString(getNames(getWatsonChildId()), LocaleUtil.getMostRelevantLocale());
+		return WatsonListTypeRel._getRelValueString(getNames(getWatsonChildId()), LocaleUtil.getMostRelevantLocale());
 	}
 
 	public JSONObject getChildFormErrors() {
@@ -645,13 +645,13 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		return update(this);
 	}
 
-	private static List<WatsonListTypeRel> getRels(long watsonChildId, String type) throws Exception {
+	private static List<WatsonListTypeRel> _getRels(long watsonChildId, String type) throws Exception {
 		String listTypeString = getBaseModelClass().getName() + StringPool.PERIOD + type + "Type";
 
 		return WatsonListTypeRel.query("classPK", watsonChildId, "type", listTypeString);
 	}
 
-	private static JSONArray populateJSONArrayWithRels(List<WatsonListTypeRel> watsonListTypeRels, Locale locale) throws Exception {
+	private static JSONArray _populateJSONArrayWithRels(List<WatsonListTypeRel> watsonListTypeRels, Locale locale) throws Exception {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		for (WatsonListTypeRel watsonListTypeRel : watsonListTypeRels) {
@@ -674,16 +674,16 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		return jsonArray;
 	}
 
-	private static JSONObject pushRelData(JSONObject jsonObject, long watsonChildId, String watsonListTypeRelType, Locale locale) throws Exception {
-		List<WatsonListTypeRel> watsonListTypeRels = getRels(watsonChildId, watsonListTypeRelType);
+	private static JSONObject _pushRelData(JSONObject jsonObject, long watsonChildId, String watsonListTypeRelType, Locale locale) throws Exception {
+		List<WatsonListTypeRel> watsonListTypeRels = _getRels(watsonChildId, watsonListTypeRelType);
 
-		return pushRelData(jsonObject, watsonListTypeRels, watsonListTypeRelType, locale);
+		return _pushRelData(jsonObject, watsonListTypeRels, watsonListTypeRelType, locale);
 	}
 
-	private static JSONObject pushRelData(JSONObject jsonObject, List<WatsonListTypeRel> watsonListTypeRels, String watsonListTypeRelType, Locale locale) throws Exception {
-		jsonObject.put(watsonListTypeRelType.concat("WatsonListTypeRels"), populateJSONArrayWithRels(watsonListTypeRels, locale));
+	private static JSONObject _pushRelData(JSONObject jsonObject, List<WatsonListTypeRel> watsonListTypeRels, String watsonListTypeRelType, Locale locale) throws Exception {
+		jsonObject.put(watsonListTypeRelType.concat("WatsonListTypeRels"), _populateJSONArrayWithRels(watsonListTypeRels, locale));
 
-		jsonObject.put(watsonListTypeRelType.concat("WatsonListTypeRelString"), WatsonListTypeRel.getRelValueString(watsonListTypeRels, locale));
+		jsonObject.put(watsonListTypeRelType.concat("WatsonListTypeRelString"), WatsonListTypeRel._getRelValueString(watsonListTypeRels, locale));
 
 		return jsonObject;
 	}

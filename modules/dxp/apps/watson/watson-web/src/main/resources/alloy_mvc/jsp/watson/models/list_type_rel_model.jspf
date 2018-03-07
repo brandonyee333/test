@@ -276,7 +276,7 @@ public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 		return watsonListTypes;
 	}
 
-	private static String getRelValueString(List<WatsonListTypeRel> watsonListTypeRels, Locale locale) throws Exception {
+	private static String _getRelValueString(List<WatsonListTypeRel> watsonListTypeRels, Locale locale) throws Exception {
 		StringBundler sb = new StringBundler(watsonListTypeRels.size() * 3);
 
 		boolean first = true;
