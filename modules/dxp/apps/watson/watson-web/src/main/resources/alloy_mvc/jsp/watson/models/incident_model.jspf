@@ -137,7 +137,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonIncident));
 		jsonObject.put("name", watsonIncident.getName());
 
-		if (Validator.isNotNull(natures) && (natures.size() > 0)) {
+		if (Validator.isNotNull(natures) && natures.isEmpty()) {
 			List<Long> natureIds = new ArrayList<>();
 
 			for (WatsonListTypeRel nature : natures) {
