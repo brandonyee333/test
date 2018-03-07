@@ -317,9 +317,9 @@ public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 
 		for (WatsonRelationship watsonRelationship : watsonRelationships) {
 			if (!watsonRelationship.isValid()) {
-					errorObject.put("watsonRelationships", watsonRelationship.getRelationshipFormErrors());
+				errorObject.put("watsonRelationships", watsonRelationship.getRelationshipFormErrors());
 
-					return errorObject;
+				return errorObject;
 			}
 		}
 

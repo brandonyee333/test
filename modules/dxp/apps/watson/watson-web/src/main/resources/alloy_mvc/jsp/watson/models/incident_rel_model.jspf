@@ -281,7 +281,7 @@ public static class WatsonIncidentRel extends WatsonIncidentRelBaseModel {
 		}
 	}
 
-protected HashMap<String, String> errors = new HashMap<>();
+	protected HashMap<String, String> errors = new HashMap<>();
 
 }
 %>
