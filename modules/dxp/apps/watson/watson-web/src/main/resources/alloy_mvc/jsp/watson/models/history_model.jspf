@@ -152,7 +152,7 @@ public static class WatsonHistory extends WatsonHistoryBaseModel {
 	}
 
 	public static WatsonHistory add(long watsonParentId, AuditedModel ownerModel, HttpServletRequest request, int type) throws Exception {
-		WatsonHistory watsonHistory = WatsonHistory.create(request);
+		WatsonHistory watsonHistory = create(request);
 
 		watsonHistory.setClassName(ownerModel.getModelClassName());
 		watsonHistory.setClassPK((long)ownerModel.getPrimaryKeyObj());

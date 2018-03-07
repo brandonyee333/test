@@ -586,7 +586,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 
 	public static String getChildName(long watsonChildId) throws Exception {
 		if (watsonChildId > 0) {
-			WatsonChild watsonChild = WatsonChild.fetch(watsonChildId);
+			WatsonChild watsonChild = fetch(watsonChildId);
 
 			return watsonChild.getPrimaryName();
 		}

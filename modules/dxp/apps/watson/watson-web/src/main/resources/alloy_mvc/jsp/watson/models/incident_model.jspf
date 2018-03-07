@@ -192,7 +192,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 	public static String getIncidentName(long watsonIncidentId) throws Exception {
 		if (watsonIncidentId > 0) {
-			WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
+			WatsonIncident watsonIncident = fetch(watsonIncidentId);
 
 			return watsonIncident.getName();
 		}
@@ -202,7 +202,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 	public static long getIncidentStatus(long watsonIncidentId) throws Exception {
 		if (watsonIncidentId > 0) {
-			WatsonIncident watsonIncident = WatsonIncident.fetch(watsonIncidentId);
+			WatsonIncident watsonIncident = fetch(watsonIncidentId);
 
 			return watsonIncident.getIncidentStatus();
 		}
@@ -588,7 +588,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 	}
 
 	public static WatsonIncident queryFirst(Object... properties) throws Exception {
-		List<WatsonIncident> watsonIncidents = WatsonIncident.query(properties);
+		List<WatsonIncident> watsonIncidents = query(properties);
 
 		if (!watsonIncidents.isEmpty()) {
 			return watsonIncidents.get(0);
@@ -627,7 +627,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		pushError(validateWatsonIncidentDescription(getDescription()));
 		pushError(validateWatsonIncidentExpenses(getExpenses()));
 		pushError(validateWatsonIncidentIncidentStatus(getIncidentStatus()));
-		pushError(validateWatsonIncidentNatures(natures, this.isNew()));
+		pushError(validateWatsonIncidentNatures(natures, isNew()));
 		pushError(validateWatsonIncidentOccurrenceDates(getStartDate(), getEndDate()));
 		pushError(validateWatsonIncidentRels(watsonIncidentRels));
 		pushError(validateWatsonIncidentReportDate(getReportDate()));

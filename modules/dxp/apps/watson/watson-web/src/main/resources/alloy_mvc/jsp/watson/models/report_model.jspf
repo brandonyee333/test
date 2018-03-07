@@ -182,7 +182,7 @@ public static class WatsonReport extends WatsonReportBaseModel {
 			return StringPool.BLANK;
 		}
 
-		WatsonReport watsonReport = WatsonReport.fetch(watsonReportId, true);
+		WatsonReport watsonReport = fetch(watsonReportId, true);
 
 		if (Validator.isNull(watsonReport)) {
 			return StringPool.BLANK;
@@ -270,7 +270,7 @@ public static class WatsonReport extends WatsonReportBaseModel {
 	}
 
 	public String getReportName(Locale locale) throws Exception {
-		int reportType = this.getKey();
+		int reportType = getKey();
 
 		if (reportType == REPORT_TYPE_CASEWORK) {
 			StringBundler reportName = new StringBundler(5);

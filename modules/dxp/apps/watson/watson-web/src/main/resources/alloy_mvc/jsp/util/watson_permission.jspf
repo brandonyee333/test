@@ -30,13 +30,13 @@ public static class WatsonPermission extends AlloyPermission {
 			return false;
 		}
 
-		if (WatsonPermission.check(user, RoleConstants.WATSON_ADMINISTRATOR)) {
+		if (check(user, RoleConstants.WATSON_ADMINISTRATOR)) {
 			return true;
 		}
-		else if (WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_MANAGER)) {
+		else if (check(user, RoleConstants.CHILDRENS_HOME_MANAGER)) {
 			return true;
 		}
-		else if (WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_STAFF)) {
+		else if (check(user, RoleConstants.CHILDRENS_HOME_STAFF)) {
 			if (!actionId.equals(Constants.VIEW)) {
 				return false;
 			}
@@ -52,13 +52,13 @@ public static class WatsonPermission extends AlloyPermission {
 			return false;
 		}
 
-		if (WatsonPermission.check(user, RoleConstants.WATSON_ADMINISTRATOR)) {
+		if (check(user, RoleConstants.WATSON_ADMINISTRATOR)) {
 			return true;
 		}
-		else if (WatsonPermission.check(user, RoleConstants.INCIDENT_MANAGER)) {
+		else if (check(user, RoleConstants.INCIDENT_MANAGER)) {
 			return true;
 		}
-		else if (WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF)) {
+		else if (check(user, RoleConstants.INCIDENT_STAFF)) {
 			if (!actionId.equals(Constants.VIEW)) {
 				return false;
 			}

@@ -434,7 +434,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 	}
 
 	public boolean isValid(List<WatsonRelationship> watsonRelationships) throws Exception {
-		this.isValidWithoutWatsonIncidentId();
+		isValidWithoutWatsonIncidentId();
 
 		pushError(validateWatsonAddressIncident(getWatsonIncidentId()));
 		pushError(validateWatsonAddressRelationships(watsonRelationships));

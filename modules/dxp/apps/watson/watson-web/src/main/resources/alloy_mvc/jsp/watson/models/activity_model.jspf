@@ -221,7 +221,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 	}
 
 	public static WatsonActivity add(long watsonIncidentId, HttpServletRequest request) throws Exception {
-		WatsonActivity watsonActivity = WatsonActivity.create(request);
+		WatsonActivity watsonActivity = create(request);
 
 		watsonActivity.setWatsonIncidentId(watsonIncidentId);
 
