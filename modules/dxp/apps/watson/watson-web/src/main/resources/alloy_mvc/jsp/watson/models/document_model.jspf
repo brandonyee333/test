@@ -147,31 +147,31 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 	}
 
 	public String getName(Locale locale) throws Exception {
-		StringBundler documentName = new StringBundler(5);
+		StringBundler documentNameSB = new StringBundler(5);
 
 		WatsonListType watsonListType = WatsonListType.fetch(getParentTypeWatsonListTypeId());
 
 		if (watsonListType != null) {
-			documentName.append(watsonListType.getName(locale));
+			documentNameSB.append(watsonListType.getName(locale));
 		}
 		else {
-			documentName.append(LanguageUtil.format(locale, "document", new Object[0]));
+			documentNameSB.append(LanguageUtil.format(locale, "document", new Object[0]));
 		}
 
-		documentName.append(StringPool.SPACE);
-		documentName.append(StringPool.DASH);
-		documentName.append(StringPool.SPACE);
+		documentNameSB.append(StringPool.SPACE);
+		documentNameSB.append(StringPool.DASH);
+		documentNameSB.append(StringPool.SPACE);
 
 		Date recievedDate = getReceivedDate();
 
 		if (recievedDate != null) {
-			documentName.append(getFormattedDate(recievedDate, locale));
+			documentNameSB.append(getFormattedDate(recievedDate, locale));
 		}
 		else {
-			documentName.append(getFormattedDate(getCreateDate(), locale));
+			documentNameSB.append(getFormattedDate(getCreateDate(), locale));
 		}
 
-		return documentName.toString();
+		return documentNameSB.toString();
 	}
 
 	public static KeyValuePair validateWatsonDocumentChild(long watsonChildId) throws Exception {

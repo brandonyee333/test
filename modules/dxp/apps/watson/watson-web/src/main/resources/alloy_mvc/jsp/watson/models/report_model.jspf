@@ -273,77 +273,77 @@ public static class WatsonReport extends WatsonReportBaseModel {
 		int reportType = getKey();
 
 		if (reportType == REPORT_TYPE_CASEWORK) {
-			StringBundler reportName = new StringBundler(5);
+			StringBundler reportNameSB = new StringBundler(5);
 
 			WatsonListType watsonListType = WatsonListType.fetch(getTypeWatsonListTypeId());
 
 			if (watsonListType != null) {
-				reportName.append(watsonListType.getName(locale));
+				reportNameSB.append(watsonListType.getName(locale));
 			}
 			else {
-				reportName.append(LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), REPORT_TYPE_LABEL_CASEWORK, new Object[0]));
+				reportNameSB.append(LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), REPORT_TYPE_LABEL_CASEWORK, new Object[0]));
 			}
 
-			reportName.append(StringPool.SPACE);
-			reportName.append(StringPool.DASH);
-			reportName.append(StringPool.SPACE);
+			reportNameSB.append(StringPool.SPACE);
+			reportNameSB.append(StringPool.DASH);
+			reportNameSB.append(StringPool.SPACE);
 
 			Date reportDate = getReportDate();
 
 			if (reportDate != null) {
-				reportName.append(getFormattedDate(reportDate, locale));
+				reportNameSB.append(getFormattedDate(reportDate, locale));
 			}
 			else {
-				reportName.append(getFormattedDate(getCreateDate(), locale));
+				reportNameSB.append(getFormattedDate(getCreateDate(), locale));
 			}
 
-			return reportName.toString();
+			return reportNameSB.toString();
 		}
 		else if (reportType == REPORT_TYPE_COUNSELING) {
-			StringBundler reportName = new StringBundler(5);
+			StringBundler reportNameSB = new StringBundler(5);
 
 			WatsonListType watsonListType = WatsonListType.fetch(getTypeWatsonListTypeId());
 
 			if (watsonListType != null) {
-				reportName.append(watsonListType.getName(locale));
+				reportNameSB.append(watsonListType.getName(locale));
 			}
 			else {
-				reportName.append(LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), REPORT_TYPE_LABEL_COUNSELING, new Object[0]));
+				reportNameSB.append(LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), REPORT_TYPE_LABEL_COUNSELING, new Object[0]));
 			}
 
-			reportName.append(StringPool.SPACE);
-			reportName.append(StringPool.DASH);
-			reportName.append(StringPool.SPACE);
+			reportNameSB.append(StringPool.SPACE);
+			reportNameSB.append(StringPool.DASH);
+			reportNameSB.append(StringPool.SPACE);
 
 			Date reportDate = getReportDate();
 
 			if (reportDate != null) {
-				reportName.append(getFormattedDate(reportDate, locale));
+				reportNameSB.append(getFormattedDate(reportDate, locale));
 			}
 			else {
-				reportName.append(getFormattedDate(getCreateDate(), locale));
+				reportNameSB.append(getFormattedDate(getCreateDate(), locale));
 			}
 
-			return reportName.toString();
+			return reportNameSB.toString();
 		}
 		else {
-			StringBundler reportName = new StringBundler(5);
+			StringBundler reportNameSB = new StringBundler(5);
 
-			reportName.append(LanguageUtil.format(locale, getReportTypeLabel(reportType), new Object[0]));
-			reportName.append(StringPool.SPACE);
-			reportName.append(StringPool.DASH);
-			reportName.append(StringPool.SPACE);
+			reportNameSB.append(LanguageUtil.format(locale, getReportTypeLabel(reportType), new Object[0]));
+			reportNameSB.append(StringPool.SPACE);
+			reportNameSB.append(StringPool.DASH);
+			reportNameSB.append(StringPool.SPACE);
 
 			Date reportDate = getReportDate();
 
 			if (reportDate != null) {
-				reportName.append(getFormattedDate(reportDate, locale));
+				reportNameSB.append(getFormattedDate(reportDate, locale));
 			}
 			else {
-				reportName.append(getFormattedDate(getCreateDate(), locale));
+				reportNameSB.append(getFormattedDate(getCreateDate(), locale));
 			}
 
-			return reportName.toString();
+			return reportNameSB.toString();
 		}
 	}
 

@@ -21,94 +21,94 @@ public static class WatsonWorkflowUtil {
 
 		String subject = LanguageUtil.format(locale, "x-has-sent-you-information-about-a-location", new String[] {fromUser.getFullName()});
 
-		StringBundler email = new StringBundler();
+		StringBundler emailSB = new StringBundler();
 
-		email.append(LanguageUtil.format(locale, "x-has-sent-you-the-following-information-about-location-x", new String[] {fromUser.getFullName(), watsonAddress.getName(locale)}));
-		email.append("<br />");
+		emailSB.append(LanguageUtil.format(locale, "x-has-sent-you-the-following-information-about-location-x", new String[] {fromUser.getFullName(), watsonAddress.getName(locale)}));
+		emailSB.append("<br />");
 
 		if (sendFullAddress) {
-			StringBundler address = new StringBundler();
+			StringBundler addressSB = new StringBundler();
 
 			Country country = CountryServiceUtil.fetchCountry(watsonAddress.getCountryId());
 
 			String countryA2 = country.getA2();
 
 			if (countryA2.equals("TH")) {
-				address.append(watsonAddress.getNumber());
-				address.append(StringPool.SPACE);
-				address.append(watsonAddress.getBuilding(locale));
-				address.append("<br />");
-				address.append(watsonAddress.getStreet());
-				address.append("<br />");
+				addressSB.append(watsonAddress.getNumber());
+				addressSB.append(StringPool.SPACE);
+				addressSB.append(watsonAddress.getBuilding(locale));
+				addressSB.append("<br />");
+				addressSB.append(watsonAddress.getStreet());
+				addressSB.append("<br />");
 
 				WatsonListType watsonListType = WatsonListType.fetch(watsonAddress.getSubDistrictWatsonListTypeId());
 
-				address.append(watsonListType.getName(locale));
+				addressSB.append(watsonListType.getName(locale));
 
-				address.append(StringPool.COMMA_AND_SPACE);
+				addressSB.append(StringPool.COMMA_AND_SPACE);
 
 				watsonListType = WatsonListType.fetch(watsonAddress.getDistrictWatsonListTypeId());
 
-				address.append(watsonListType.getName(locale));
+				addressSB.append(watsonListType.getName(locale));
 
-				address.append("<br />");
+				addressSB.append("<br />");
 
 				watsonListType = WatsonListType.fetch(watsonAddress.getProvinceWatsonListTypeId());
 
-				address.append(watsonListType.getName(locale));
+				addressSB.append(watsonListType.getName(locale));
 
-				address.append(StringPool.SPACE);
-				address.append(watsonAddress.getPostalCode());
-				address.append("<br />");
-				address.append(LanguageUtil.format(locale, country.getName(), new String[0]));
-				address.append("<br />");
+				addressSB.append(StringPool.SPACE);
+				addressSB.append(watsonAddress.getPostalCode());
+				addressSB.append("<br />");
+				addressSB.append(LanguageUtil.format(locale, country.getName(), new String[0]));
+				addressSB.append("<br />");
 			}
 			else {
-				address.append(watsonAddress.getNumber());
-				address.append(StringPool.SPACE);
-				address.append(watsonAddress.getStreet());
-				address.append(StringPool.SPACE);
-				address.append(watsonAddress.getBuilding(locale));
-				address.append("<br />");
-				address.append(watsonAddress.getRegion());
-				address.append(StringPool.COMMA);
-				address.append(watsonAddress.getPostalCode());
-				address.append("<br />");
-				address.append(LanguageUtil.format(locale, country.getName(), new String[0]));
-				address.append("<br />");
+				addressSB.append(watsonAddress.getNumber());
+				addressSB.append(StringPool.SPACE);
+				addressSB.append(watsonAddress.getStreet());
+				addressSB.append(StringPool.SPACE);
+				addressSB.append(watsonAddress.getBuilding(locale));
+				addressSB.append("<br />");
+				addressSB.append(watsonAddress.getRegion());
+				addressSB.append(StringPool.COMMA);
+				addressSB.append(watsonAddress.getPostalCode());
+				addressSB.append("<br />");
+				addressSB.append(LanguageUtil.format(locale, country.getName(), new String[0]));
+				addressSB.append("<br />");
 			}
 
-			email.append(address.toString());
-			email.append("<br />");
+			emailSB.append(addressSB.toString());
+			emailSB.append("<br />");
 		}
 
 		if (sendCoordinates) {
-			email.append(LanguageUtil.format(locale, "coordinates-x-x", new Object[] {watsonAddress.getLatitude(), watsonAddress.getLongitude()}));
-			email.append("<br />");
+			emailSB.append(LanguageUtil.format(locale, "coordinates-x-x", new Object[] {watsonAddress.getLatitude(), watsonAddress.getLongitude()}));
+			emailSB.append("<br />");
 		}
 
-		StringBundler mapsLink = new StringBundler();
+		StringBundler mapsLinkSB = new StringBundler();
 
-		mapsLink.append("https://www.google.com/maps/search/?api=1&query=");
-		mapsLink.append(watsonAddress.getLatitude());
-		mapsLink.append(StringPool.COMMA);
-		mapsLink.append(watsonAddress.getLongitude());
+		mapsLinkSB.append("https://www.google.com/maps/search/?api=1&query=");
+		mapsLinkSB.append(watsonAddress.getLatitude());
+		mapsLinkSB.append(StringPool.COMMA);
+		mapsLinkSB.append(watsonAddress.getLongitude());
 
-		String beginAddressLinkTag = "<a href=" + mapsLink.toString() + ">";
+		String beginAddressLinkTag = "<a href=" + mapsLinkSB.toString() + ">";
 
 		String endAddressLinkTag = "</a>";
 
-		email.append(LanguageUtil.format(locale, "link-to-map-x-x", new String[] {beginAddressLinkTag, endAddressLinkTag}));
+		emailSB.append(LanguageUtil.format(locale, "link-to-map-x-x", new String[] {beginAddressLinkTag, endAddressLinkTag}));
 
-		email.append("<br />");
+		emailSB.append("<br />");
 
-		email.append(LanguageUtil.format(locale, "notes", new String[0]));
-		email.append("<br />");
-		email.append(description);
+		emailSB.append(LanguageUtil.format(locale, "notes", new String[0]));
+		emailSB.append("<br />");
+		emailSB.append(description);
 
 		MailMessage mailMessage = new MailMessage();
 
-		mailMessage.setBody(email.toString());
+		mailMessage.setBody(emailSB.toString());
 
 		InternetAddress from = new InternetAddress(fromUser.getEmailAddress(), fromUser.getFullName());
 

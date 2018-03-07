@@ -264,31 +264,31 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 	}
 
 	public String getName(Locale locale) throws Exception {
-		StringBundler activityName = new StringBundler(5);
+		StringBundler activityNameSB = new StringBundler(5);
 
 		WatsonListType watsonListType = WatsonListType.fetch(getTypeWatsonListTypeId());
 
 		if (watsonListType != null) {
-			activityName.append(watsonListType.getName(locale));
+			activityNameSB.append(watsonListType.getName(locale));
 		}
 		else {
-			activityName.append(LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), "draft", new Object[0]));
+			activityNameSB.append(LanguageUtil.format(LocaleUtil.getMostRelevantLocale(), "draft", new Object[0]));
 		}
 
-		activityName.append(StringPool.SPACE);
-		activityName.append(StringPool.DASH);
-		activityName.append(StringPool.SPACE);
+		activityNameSB.append(StringPool.SPACE);
+		activityNameSB.append(StringPool.DASH);
+		activityNameSB.append(StringPool.SPACE);
 
 		Date reportDate = getReportDate();
 
 		if (reportDate != null) {
-			activityName.append(getFormattedDate(reportDate, locale));
+			activityNameSB.append(getFormattedDate(reportDate, locale));
 		}
 		else {
-			activityName.append(getFormattedDate(getCreateDate(), locale));
+			activityNameSB.append(getFormattedDate(getCreateDate(), locale));
 		}
 
-		return activityName.toString();
+		return activityNameSB.toString();
 	}
 
 	public boolean isValid(List<WatsonRelationship> watsonRelationships) throws Exception {
