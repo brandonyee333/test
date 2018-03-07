@@ -503,6 +503,46 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return update(this);
 	}
 
+	public static List<Long> getOriginalWatsonPersonIds(long watsonIncidentId) throws Exception {
+		DynamicQuery watsonPersonIdsDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"watsonIncidentId", watsonIncidentId});
+
+		Projection originalWatsonPersonIdProjection = ProjectionFactoryUtil.property("originalWatsonPersonId");
+
+		watsonPersonIdsDynamicQuery.setProjection(ProjectionFactoryUtil.distinct(originalWatsonPersonIdProjection));
+
+		return baseModelAlloyServiceInvoker.executeDynamicQuery(watsonPersonIdsDynamicQuery);
+	}
+
+	public static List<WatsonPerson> getUnrelatedWatsonPeople(long watsonIncidentId, int start, int end) throws Exception {
+		List<WatsonPerson> unrelatedWatsonPeople = new ArrayList<>();
+
+		List<Long> currentWatsonPeople = getOriginalWatsonPersonIds(watsonIncidentId);
+
+		DynamicQuery unrelatedPeopleDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery();
+
+		unrelatedPeopleDynamicQuery.add(RestrictionsFactoryUtil.ne("watsonIncidentId", watsonIncidentId));
+
+		List<WatsonPerson> otherWatsonPeople = getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(unrelatedPeopleDynamicQuery, start, end));
+
+		for (WatsonPerson watsonPerson : otherWatsonPeople) {
+			if (!ArrayUtil.contains(currentWatsonPeople.toArray(), watsonPerson.getWatsonPersonId())) {
+				unrelatedWatsonPeople.add(watsonPerson);
+			}
+		}
+
+		return unrelatedWatsonPeople;
+	}
+
+	public static List<WatsonPerson> getWatsonPeopleByWatsonIncidentIds(List<Long> watsonIncidentIds, int start, int end) throws Exception {
+		DynamicQuery watsonPeopleDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery();
+
+		Property watsonIncidentIdsProperty = PropertyFactoryUtil.forName("watsonIncidentId");
+
+		watsonPeopleDynamicQuery.add(watsonIncidentIdsProperty.in(watsonIncidentIds));
+
+		return getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(watsonPeopleDynamicQuery, start, end));
+	}
+
 	private static List<WatsonListTypeRel> _getRels(long watsonPersonId, String type) throws Exception {
 		String listTypeString = getBaseModelClass().getName() + StringPool.PERIOD + type + "Type";
 
@@ -547,46 +587,6 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		jsonObject.put(watsonListTypeRelType.concat("WatsonListTypeRelString"), WatsonListTypeRel._getRelValueString(watsonListTypeRels, locale));
 
 		return jsonObject;
-	}
-
-	public static List<Long> getOriginalWatsonPersonIds(long watsonIncidentId) throws Exception {
-		DynamicQuery watsonPersonIdsDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery(new Object[] {"watsonIncidentId", watsonIncidentId});
-
-		Projection originalWatsonPersonIdProjection = ProjectionFactoryUtil.property("originalWatsonPersonId");
-
-		watsonPersonIdsDynamicQuery.setProjection(ProjectionFactoryUtil.distinct(originalWatsonPersonIdProjection));
-
-		return baseModelAlloyServiceInvoker.executeDynamicQuery(watsonPersonIdsDynamicQuery);
-	}
-
-	public static List<WatsonPerson> getUnrelatedWatsonPeople(long watsonIncidentId, int start, int end) throws Exception {
-		List<WatsonPerson> unrelatedWatsonPeople = new ArrayList<>();
-
-		List<Long> currentWatsonPeople = getOriginalWatsonPersonIds(watsonIncidentId);
-
-		DynamicQuery unrelatedPeopleDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery();
-
-		unrelatedPeopleDynamicQuery.add(RestrictionsFactoryUtil.ne("watsonIncidentId", watsonIncidentId));
-
-		List<WatsonPerson> otherWatsonPeople = getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(unrelatedPeopleDynamicQuery, start, end));
-
-		for (WatsonPerson watsonPerson : otherWatsonPeople) {
-			if (!ArrayUtil.contains(currentWatsonPeople.toArray(), watsonPerson.getWatsonPersonId())) {
-				unrelatedWatsonPeople.add(watsonPerson);
-			}
-		}
-
-		return unrelatedWatsonPeople;
-	}
-
-	public static List<WatsonPerson> getWatsonPeopleByWatsonIncidentIds(List<Long> watsonIncidentIds, int start, int end) throws Exception {
-		DynamicQuery watsonPeopleDynamicQuery = baseModelAlloyServiceInvoker.buildDynamicQuery();
-
-		Property watsonIncidentIdsProperty = PropertyFactoryUtil.forName("watsonIncidentId");
-
-		watsonPeopleDynamicQuery.add(watsonIncidentIdsProperty.in(watsonIncidentIds));
-
-		return getAlloyModels(baseModelAlloyServiceInvoker.executeDynamicQuery(watsonPeopleDynamicQuery, start, end));
 	}
 
 	protected HashMap<String, String> errors = new HashMap<>();
