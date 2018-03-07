@@ -272,7 +272,7 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonVehicleYearValue(long year) {
-		if (Validator.isNull(year)) {
+		if (year == 0) {
 			return null;
 		}
 

@@ -18,7 +18,7 @@
 public static class WatsonPermission extends AlloyPermission {
 
 	public static boolean check(User user, long watsonIncidentId, String actionId) throws Exception {
-		if (Validator.isNotNull(watsonIncidentId)) {
+		if (watsonIncidentId != 0) {
 			return check(user, WatsonIncident.fetch(watsonIncidentId), actionId);
 		}
 
