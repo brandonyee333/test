@@ -20,7 +20,7 @@
 public static class WatsonListType extends WatsonListTypeBaseModel {
 
 	public WatsonListType() {
-		super(new com.liferay.watson.model.impl.WatsonListTypeImpl());
+		super(new WatsonListTypeImpl());
 	}
 
 	public WatsonListType(com.liferay.watson.model.WatsonListType watsonListType) {

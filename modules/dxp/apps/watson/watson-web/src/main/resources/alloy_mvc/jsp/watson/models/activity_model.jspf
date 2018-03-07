@@ -20,7 +20,7 @@
 public static class WatsonActivity extends WatsonActivityBaseModel {
 
 	public WatsonActivity() {
-		super(new com.liferay.watson.model.impl.WatsonActivityImpl());
+		super(new WatsonActivityImpl());
 	}
 
 	public WatsonActivity(com.liferay.watson.model.WatsonActivity watsonActivity) {

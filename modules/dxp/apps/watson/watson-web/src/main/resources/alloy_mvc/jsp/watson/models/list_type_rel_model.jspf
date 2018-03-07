@@ -20,7 +20,7 @@
 public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 
 	public WatsonListTypeRel() {
-		super(new com.liferay.watson.model.impl.WatsonListTypeRelImpl());
+		super(new WatsonListTypeRelImpl());
 	}
 
 	public WatsonListTypeRel(com.liferay.watson.model.WatsonListTypeRel watsonListTypeRel) {

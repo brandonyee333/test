@@ -20,7 +20,7 @@
 public static class WatsonResource extends WatsonResourceBaseModel {
 
 	public WatsonResource() {
-		super(new com.liferay.watson.model.impl.WatsonResourceImpl());
+		super(new WatsonResourceImpl());
 	}
 
 	public WatsonResource(com.liferay.watson.model.WatsonResource watsonResource) {

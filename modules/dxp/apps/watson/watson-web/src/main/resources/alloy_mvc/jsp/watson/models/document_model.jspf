@@ -20,7 +20,7 @@
 public static class WatsonDocument extends WatsonDocumentBaseModel {
 
 	public WatsonDocument() {
-		super(new com.liferay.watson.model.impl.WatsonDocumentImpl());
+		super(new WatsonDocumentImpl());
 	}
 
 	public WatsonDocument(com.liferay.watson.model.WatsonDocument watsonDocument) {

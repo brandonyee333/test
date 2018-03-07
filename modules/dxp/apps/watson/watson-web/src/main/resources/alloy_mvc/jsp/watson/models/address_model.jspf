@@ -20,7 +20,7 @@
 public static class WatsonAddress extends WatsonAddressBaseModel {
 
 	public WatsonAddress() {
-		super(new com.liferay.watson.model.impl.WatsonAddressImpl());
+		super(new WatsonAddressImpl());
 	}
 
 	public WatsonAddress(com.liferay.watson.model.WatsonAddress watsonAddress) {

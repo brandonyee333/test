@@ -20,7 +20,7 @@
 public static class WatsonHistory extends WatsonHistoryBaseModel {
 
 	public WatsonHistory() {
-		super(new com.liferay.watson.model.impl.WatsonHistoryImpl());
+		super(new WatsonHistoryImpl());
 	}
 
 	public WatsonHistory(com.liferay.watson.model.WatsonHistory watsonHistory) {

@@ -20,7 +20,7 @@
 public static class WatsonReport extends WatsonReportBaseModel {
 
 	public WatsonReport() {
-		super(new com.liferay.watson.model.impl.WatsonReportImpl());
+		super(new WatsonReportImpl());
 	}
 
 	public WatsonReport(com.liferay.watson.model.WatsonReport watsonReport) {

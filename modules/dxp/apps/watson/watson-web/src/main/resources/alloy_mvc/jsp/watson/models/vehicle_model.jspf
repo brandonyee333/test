@@ -20,7 +20,7 @@
 public static class WatsonVehicle extends WatsonVehicleBaseModel {
 
 	public WatsonVehicle() {
-		super(new com.liferay.watson.model.impl.WatsonVehicleImpl());
+		super(new WatsonVehicleImpl());
 	}
 
 	public WatsonVehicle(com.liferay.watson.model.WatsonVehicle watsonVehicle) {

@@ -20,7 +20,7 @@
 public static class WatsonRelationship extends WatsonRelationshipBaseModel {
 
 	public WatsonRelationship() {
-		super(new com.liferay.watson.model.impl.WatsonRelationshipImpl());
+		super(new WatsonRelationshipImpl());
 	}
 
 	public WatsonRelationship(com.liferay.watson.model.WatsonRelationship watsonRelationship) {

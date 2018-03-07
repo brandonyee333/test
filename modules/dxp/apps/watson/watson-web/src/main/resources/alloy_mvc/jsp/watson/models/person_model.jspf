@@ -20,7 +20,7 @@
 public static class WatsonPerson extends WatsonPersonBaseModel {
 
 	public WatsonPerson() {
-		super(new com.liferay.watson.model.impl.WatsonPersonImpl());
+		super(new WatsonPersonImpl());
 	}
 
 	public WatsonPerson(com.liferay.watson.model.WatsonPerson watsonPerson) {
