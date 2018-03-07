@@ -229,7 +229,7 @@ if (liferayIncOrg || partnerWorker) {
 		<div class="hide" id="<portlet:namespace />severityDetails">
 			<aui:select inlineField="<%= true %>" label="what-is-the-reason-for-changing-the-ticket-severity" name="severityReason" wrapperCssClass="form-field-wrapper" />
 
-			<aui:input inlineField="<%= true %>" label="please-explain-optional" name="severityReasonComments" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 150px;" type="textarea"  wrap="soft" wrapperCssClass="form-field-wrapper" />
+			<aui:input inlineField="<%= true %>" label="please-explain-optional" name="severityReasonComments" onKeyDown="Liferay.Util.checkTab(this); Liferay.Util.disableEsc();" style="height: 150px;" type="textarea" wrap="soft" wrapperCssClass="form-field-wrapper" />
 		</div>
 	</c:if>
 
@@ -497,7 +497,7 @@ if (liferayIncOrg || partnerWorker) {
 		function(severity, newSeverity) {
 			var A = AUI();
 
-			var selectOptions = ['<option value="customer-did-not-understand-the-meaning-of-critical"><liferay-ui:message key="customer-did-not-understand-the-meaning-of-critical" unicode="<%= true %>" /></option>'];
+			var selectOptions = ['<option value="customer-did-not-understand-the-meaning-of-critical"><liferay-ui:message key="customer-did-not-understand-the-meaning-of-critical" /></option>'];
 
 			var severityDetails = A.one('#<portlet:namespace />severityDetails');
 
@@ -531,7 +531,7 @@ if (liferayIncOrg || partnerWorker) {
 			var selectElement = A.one('#<portlet:namespace />severityReason');
 
 			if (selectElement) {
-				selectElement.setHTML(selectOptions.join(''));
+				selectElement.html(selectOptions.join(''));
 			}
 
 			if (severityDetails) {
@@ -579,7 +579,7 @@ if (liferayIncOrg || partnerWorker) {
 					}
 				}
 
-				selectElement.setHTML(selectOptions.join(''));
+				selectElement.html(selectOptions.join(''));
 
 				selectElement.val(0);
 
@@ -611,7 +611,7 @@ if (liferayIncOrg || partnerWorker) {
 				subcomponentOptions.push('<option value="' + value + '">' + name + '</option>');
 			}
 
-			subcomponentNode.setHTML(subcomponentOptions.join(''));
+			subcomponentNode.html(subcomponentOptions.join(''));
 		},
 		['aui-base']
 	);
