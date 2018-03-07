@@ -397,7 +397,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonChildDates(Date dateAccepted, Date dateDischarged, Date dateFollowUp, long watsonListTypeId) throws Exception{
+	public static KeyValuePair validateWatsonChildDates(Date dateAccepted, Date dateDischarged, Date dateFollowUp, long watsonListTypeId) throws Exception {
 		if ((dateAccepted != null) && (dateDischarged != null)) {
 			long dischargeDateLong = GetterUtil.getLong(dateDischarged);
 
@@ -536,7 +536,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonChildRelationships(List<WatsonRelationship> watsonRelationships) throws Exception{
+	public static KeyValuePair validateWatsonChildRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
 		if (Validator.isNotNull(watsonRelationships)) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {

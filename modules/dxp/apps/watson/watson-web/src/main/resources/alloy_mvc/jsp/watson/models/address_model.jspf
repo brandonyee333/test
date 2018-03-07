@@ -345,7 +345,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonAddressRelationships(List<WatsonRelationship> watsonRelationships) throws Exception{
+	public static KeyValuePair validateWatsonAddressRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
 		if (Validator.isNotNull(watsonRelationships)) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {

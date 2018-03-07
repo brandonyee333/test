@@ -523,7 +523,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonIncidentRels(List<WatsonIncidentRel> watsonIncidentRels) throws Exception{
+	public static KeyValuePair validateWatsonIncidentRels(List<WatsonIncidentRel> watsonIncidentRels) throws Exception {
 		if (Validator.isNotNull(watsonIncidentRels)) {
 			for (WatsonIncidentRel watsonIncidentRel : watsonIncidentRels) {
 				if (!watsonIncidentRel.isValid()) {

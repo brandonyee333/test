@@ -428,7 +428,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonPersonRelationships(List<WatsonRelationship> watsonRelationships) throws Exception{
+	public static KeyValuePair validateWatsonPersonRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
 		if (Validator.isNotNull(watsonRelationships)) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {

@@ -235,7 +235,7 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonVehicleRelationships(List<WatsonRelationship> watsonRelationships) throws Exception{
+	public static KeyValuePair validateWatsonVehicleRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
 		if (Validator.isNotNull(watsonRelationships)) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {

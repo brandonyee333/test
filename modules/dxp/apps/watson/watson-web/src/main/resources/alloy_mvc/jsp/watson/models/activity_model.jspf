@@ -164,7 +164,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonActivityRelationships(List<WatsonRelationship> watsonRelationships) throws Exception{
+	public static KeyValuePair validateWatsonActivityRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
 		if (Validator.isNotNull(watsonRelationships)) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {

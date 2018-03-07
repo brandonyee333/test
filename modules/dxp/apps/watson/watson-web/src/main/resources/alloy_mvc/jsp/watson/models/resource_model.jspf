@@ -195,7 +195,7 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 		return null;
 	}
 
-	public static KeyValuePair validateWatsonResourceRelationships(List<WatsonRelationship> watsonRelationships) throws Exception{
+	public static KeyValuePair validateWatsonResourceRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
 		if (Validator.isNotNull(watsonRelationships)) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {
