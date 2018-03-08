@@ -33,7 +33,7 @@ public class CorpProjectLocalServiceImpl
 			String name, long organizationId, ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userPersistence.fetchByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date createDate = serviceContext.getCreateDate(new Date());
 		Date modifiedDate = serviceContext.getModifiedDate(new Date());
 
