@@ -333,12 +333,12 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			</td>
 			<td>
 
-				<%-- <%
+				<%
 				CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProject(corpProjectId);
 				%>
 
 				<span id="<portlet:namespace />corpProjectName">
-					<c:if test="<%= corpProject != null %>">
+					<%-- <c:if test="<%= corpProject != null %>">
 						<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_CORP_PROJECT_ADMIN %>" var="corpProjectURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 							<portlet:param name="mvcPath" value="/corp_project_admin/view_corp_project.jsp" />
 							<portlet:param name="backURL" value="<%= currentURL %>" />
@@ -348,8 +348,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						<a href="<%= corpProjectURL.toString() %>" target="_blank">
 							<%= HtmlUtil.escape(corpProject.getName()) %>
 						</a>
-					</c:if>
-				</span> --%>
+					</c:if> --%>
+				</span>
 
 				<portlet:renderURL var="selectCorpProjectURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_corp_project.jsp" />

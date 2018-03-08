@@ -15,11 +15,18 @@
 package com.liferay.osb.remote.web;
 
 import com.liferay.osb.exception.RemoteServiceException;
+import com.liferay.portal.kernel.json.JSONObject;
 
 /**
  * @author Amos Fong
  */
 public class WebRESTWebServiceUtil {
+
+	public static void deleteCorpProjects(String corpProjectUUID)
+		throws RemoteServiceException {
+
+		getWebRESTWebService().deleteCorpProjects(corpProjectUUID);
+	}
 
 	public static void deleteOrganizationsUser(
 			String organizationUUID, String userUUID)
@@ -37,6 +44,38 @@ public class WebRESTWebServiceUtil {
 
 	public static WebRESTWebService getWebRESTWebService() {
 		return _webRESTWebService;
+	}
+
+	public static JSONObject postCorpProjects(
+			String creatorUserUUID, String ownerUserUUID,
+			String dossieraProjectKey, String salesforceProjectKey, String name)
+		throws RemoteServiceException {
+
+		return getWebRESTWebService().postCorpProjects(
+			creatorUserUUID, ownerUserUUID, dossieraProjectKey,
+			salesforceProjectKey, name);
+	}
+
+	public static JSONObject putCorpProjects(
+			String corpProjectUUID, String name)
+		throws RemoteServiceException {
+
+		return getWebRESTWebService().putCorpProjects(corpProjectUUID, name);
+	}
+
+	public static void putCorpProjectsUser(
+			String corpProjectUUID, String userUUID)
+		throws RemoteServiceException {
+
+		getWebRESTWebService().putCorpProjectsUser(corpProjectUUID, userUUID);
+	}
+
+	public static void putCorpProjectsUserRole(
+			String corpProjectUUID, String userUUID, String roleUUID)
+		throws RemoteServiceException {
+
+		getWebRESTWebService().putCorpProjectsUserRole(
+			corpProjectUUID, userUUID, roleUUID);
 	}
 
 	public static void putOrganizationsUser(

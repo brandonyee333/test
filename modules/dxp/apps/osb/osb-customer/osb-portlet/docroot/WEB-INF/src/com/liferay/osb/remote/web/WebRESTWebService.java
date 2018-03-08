@@ -15,17 +15,36 @@
 package com.liferay.osb.remote.web;
 
 import com.liferay.osb.exception.RemoteServiceException;
+import com.liferay.portal.kernel.json.JSONObject;
 
 /**
  * @author Amos Fong
  */
 public interface WebRESTWebService {
 
+	public void deleteCorpProjects(String corpProjectUUID)
+		throws RemoteServiceException;
+
 	public void deleteOrganizationsUser(
 			String organizationUUID, String userUUID)
 		throws RemoteServiceException;
 
 	public void deleteRolesUser(String roleUUID, String userUUID)
+		throws RemoteServiceException;
+
+	public JSONObject postCorpProjects(
+			String creatorUserUUID, String ownerUserUUID,
+			String dossieraProjectKey, String salesforceProjectKey, String name)
+		throws RemoteServiceException;
+
+	public JSONObject putCorpProjects(String corpProjectUUID, String name)
+		throws RemoteServiceException;
+
+	public void putCorpProjectsUser(String corpProjectUUID, String userUUID)
+		throws RemoteServiceException;
+
+	public void putCorpProjectsUserRole(
+			String corpProjectUUID, String userUUID, String roleUUID)
 		throws RemoteServiceException;
 
 	public void putOrganizationsUser(String organizationUUID, String userUUID)

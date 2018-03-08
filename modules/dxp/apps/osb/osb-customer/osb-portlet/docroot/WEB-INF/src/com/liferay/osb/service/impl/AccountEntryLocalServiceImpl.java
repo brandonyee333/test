@@ -213,7 +213,7 @@ public class AccountEntryLocalServiceImpl
 		}
 		else {
 			corpProject = remoteCorpProjectLocalService.addCorpProject(
-				corpProject.getDossieraProjectKey(),
+				corpProject.getUserId(), 0, corpProject.getDossieraProjectKey(),
 				corpProject.getSalesforceProjectKey(), corpProject.getName());
 		}
 
@@ -281,23 +281,18 @@ public class AccountEntryLocalServiceImpl
 				continue;
 			}
 
-			/* TODO corp project dependencies
-			corpProjectLocalService.addCorpProjectUsers(
+			remoteCorpProjectLocalService.addCorpProjectUsers(
 				corpProject.getCorpProjectId(), new long[] {user.getUserId()});
 
-			corpProjectLocalService.addUserCorpProjectRoles(
-				accountEntry.getUserId(), corpProject.getCorpProjectId(),
-				new long[] {user.getUserId()},
-				OSBWebConstants.ROLE_OSB_CORP_ADMIN_ID);
-			corpProjectLocalService.addUserCorpProjectRoles(
-				accountEntry.getUserId(), corpProject.getCorpProjectId(),
-				new long[] {user.getUserId()},
-				OSBWebConstants.ROLE_OSB_CORP_BUYER_ID);
-			corpProjectLocalService.addUserCorpProjectRoles(
-				accountEntry.getUserId(), corpProject.getCorpProjectId(),
-				new long[] {user.getUserId()},
-				OSBWebConstants.ROLE_OSB_CORP_LCS_USER_ID);
-			**/
+			remoteCorpProjectLocalService.addUserCorpProjectRoles(
+				corpProject.getCorpProjectId(), new long[] {user.getUserId()},
+				OSBConstants.ROLE_OSB_CORP_ADMIN_ID);
+			remoteCorpProjectLocalService.addUserCorpProjectRoles(
+				corpProject.getCorpProjectId(), new long[] {user.getUserId()},
+				OSBConstants.ROLE_OSB_CORP_BUYER_ID);
+			remoteCorpProjectLocalService.addUserCorpProjectRoles(
+				corpProject.getCorpProjectId(), new long[] {user.getUserId()},
+				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
 
 			accountCustomerLocalService.addAccountCustomers(
 				accountEntry.getUserId(), new long[] {user.getUserId()},
@@ -399,14 +394,12 @@ public class AccountEntryLocalServiceImpl
 
 		companyName = getTrialName(companyName);
 
-		/* TODO corp project dependencies
-		CorpProject corpProject = corpProjectLocalService.addCorpProject(
+		CorpProject corpProject = remoteCorpProjectLocalService.addCorpProject(
 			userId, userId, StringPool.BLANK, StringPool.BLANK, companyName);
 
-		corpProjectLocalService.addUserCorpProjectRoles(
-			userId, corpProject.getCorpProjectId(), new long[] {userId},
+		remoteCorpProjectLocalService.addUserCorpProjectRoles(
+			corpProject.getCorpProjectId(), new long[] {userId},
 			OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
-		**/
 
 		// Account entry
 
@@ -441,9 +434,6 @@ public class AccountEntryLocalServiceImpl
 			}
 		}
 
-		AccountEntry accountEntry = null;
-
-		/* TODO corp project dependencies
 		AccountEntry accountEntry = addAccountEntry(
 			userId, corpProject.getCorpProjectId(), StringPool.BLANK,
 			companyName, null, AccountEntryConstants.TYPE_TRIAL, industry, 0L,
@@ -451,7 +441,6 @@ public class AccountEntryLocalServiceImpl
 			StringPool.BLANK, new String[0], new long[0], "N/A",
 			StringPool.BLANK, StringPool.BLANK, "N/A", "N/A", 0L, countryId,
 			StringPool.BLANK);
-		**/
 
 		if (countryId != 0) {
 			accountEntry.setCountryId(countryId);
@@ -533,13 +522,10 @@ public class AccountEntryLocalServiceImpl
 				orderEntry.getOrderEntryId());
 		}
 
-		/* TODO corp project dependencies
-
 		// LCS
 
 		lcsSubscriptionEntryLocalService.syncToLCS(
 			corpProject.getCorpProjectId());
-		**/
 	}
 
 	public void auditAccountEntries() throws PortalException {

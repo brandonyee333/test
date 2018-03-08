@@ -97,6 +97,12 @@ public class BaseWebService {
 		_idleConnectionMonitorThread.shutdown();
 	}
 
+	public String doDelete(String url) throws RemoteServiceException {
+		return doDelete(
+			url, Collections.<String, String>emptyMap(),
+			new HashMap<String, String>());
+	}
+
 	public String doDelete(String url, Map<String, String> parameters)
 		throws RemoteServiceException {
 

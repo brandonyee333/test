@@ -49,6 +49,38 @@
 			<finder-column name="action" />
 		</finder>
 	</entity>
+	<entity local-service="true" name="CorpProject" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="corpProjectId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="dossieraProjectKey" type="String" />
+		<column name="salesforceProjectKey" type="String" />
+		<column name="name" type="String" />
+		<column name="organizationId" type="long" />
+
+		<!-- Finder methods -->
+
+		<finder name="DossieraProjectKey" return-type="CorpProject">
+			<finder-column name="dossieraProjectKey" />
+		</finder>
+		<finder name="Name" return-type="Collection">
+			<finder-column comparator="LIKE" name="name" />
+		</finder>
+		<finder name="OrganizationId" return-type="CorpProject">
+			<finder-column name="organizationId" />
+		</finder>
+	</entity>
 	<entity local-service="true" name="FeedbackEntry" remote-service="true">
 
 		<!-- PK fields -->
@@ -101,7 +133,14 @@
 
 		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="RemoteCorpProject" remote-service="false" />
+	<entity local-service="true" name="RemoteCorpProject" remote-service="false">
+
+		<!-- References -->
+
+		<reference entity="Organization" package-path="com.liferay.portal" />
+		<reference entity="Role" package-path="com.liferay.portal" />
+		<reference entity="User" package-path="com.liferay.portal" />
+	</entity>
 	<entity local-service="true" name="RemoteUser" remote-service="false">
 
 		<!-- References -->

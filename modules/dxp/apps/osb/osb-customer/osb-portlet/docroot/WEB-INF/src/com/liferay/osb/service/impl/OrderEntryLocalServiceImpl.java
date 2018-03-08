@@ -116,16 +116,12 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			oldAddress.getRegionId(), oldAddress.getCountryId(),
 			oldAccountEntry.getEWSADossieraProjectKey());
 
-		/* TODO implement corp project dependency
-
 		// Corp project
 
 		if (corpProject != null) {
-			corpProjectLocalService.updateCorpProject(
+			remoteCorpProjectLocalService.updateCorpProject(
 				corpProject.getCorpProjectId(), corpProject.getName());
 		}
-
-		**/
 
 		// Account worker
 

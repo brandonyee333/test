@@ -17,6 +17,8 @@ package com.liferay.osb.remote.web;
 import com.liferay.osb.exception.RemoteServiceException;
 import com.liferay.osb.remote.BaseWebService;
 import com.liferay.osb.util.PortletPropsValues;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -30,6 +32,13 @@ import org.apache.http.HttpMessage;
  */
 public class WebRESTWebServiceImpl
 	extends BaseWebService implements WebRESTWebService {
+
+	@Override
+	public void deleteCorpProjects(String corpProjectUUID)
+		throws RemoteServiceException {
+
+		doDelete(_URL_API_REST_CORP_PROJECTS + corpProjectUUID);
+	}
 
 	@Override
 	public void deleteOrganizationsUser(
@@ -54,6 +63,63 @@ public class WebRESTWebServiceImpl
 		parameters.put("userUUID", userUUID);
 
 		doDelete(_URL_API_REST_ROLES + roleUUID + "/user", parameters);
+	}
+
+	@Override
+	public JSONObject postCorpProjects(
+			String creatorUserUUID, String ownerUserUUID,
+			String dossieraProjectKey, String salesforceProjectKey, String name)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("creatorUserUUID", creatorUserUUID);
+		parameters.put("dossieraProjectKey", dossieraProjectKey);
+		parameters.put("name", name);
+		parameters.put("ownerUserUUID", ownerUserUUID);
+		parameters.put("salesforceProjectKey", salesforceProjectKey);
+
+		return doPostToJSONObject(_URL_API_REST_CORP_PROJECTS, parameters);
+	}
+
+	@Override
+	public JSONObject putCorpProjects(String corpProjectUUID, String name)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("name", name);
+
+		return doPutToJSONObject(
+			_URL_API_REST_CORP_PROJECTS + corpProjectUUID, parameters);
+	}
+
+	@Override
+	public void putCorpProjectsUser(String corpProjectUUID, String userUUID)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("userUUID", userUUID);
+
+		doPut(
+			_URL_API_REST_CORP_PROJECTS + corpProjectUUID + "/user",
+			parameters);
+	}
+
+	@Override
+	public void putCorpProjectsUserRole(
+			String corpProjectUUID, String userUUID, String roleUUID)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("roleUUID", roleUUID);
+		parameters.put("userUUID", userUUID);
+
+		doPut(
+			_URL_API_REST_CORP_PROJECTS + corpProjectUUID + "/user_role",
+			parameters);
 	}
 
 	@Override
@@ -91,7 +157,38 @@ public class WebRESTWebServiceImpl
 		super.addHeaders(httpMessage, headers);
 	}
 
+	protected JSONObject doPostToJSONObject(
+			String url, Map<String, String> parameters)
+		throws RemoteServiceException {
+
+		try {
+			String response = doPost(url, parameters);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
+	}
+
+	protected JSONObject doPutToJSONObject(
+			String url, Map<String, String> parameters)
+		throws RemoteServiceException {
+
+		try {
+			String response = doPut(url, parameters);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
+	}
+
 	private static final String _URL_API_REST = "/osb-entity-web";
+
+	private static final String _URL_API_REST_CORP_PROJECTS =
+		_URL_API_REST + "/corp_projects/";
 
 	private static final String _URL_API_REST_ORGANIZATIONS =
 		_URL_API_REST + "/organizations/";

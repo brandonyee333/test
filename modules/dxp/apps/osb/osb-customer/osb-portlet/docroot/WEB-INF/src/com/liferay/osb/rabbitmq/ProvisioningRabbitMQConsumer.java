@@ -37,6 +37,7 @@ import com.liferay.osb.model.impl.CorpProjectImpl;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
 import com.liferay.osb.model.impl.OrderEntryImpl;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
@@ -830,13 +831,8 @@ public abstract class ProvisioningRabbitMQConsumer {
 
 		name = StringUtil.shorten(name, 150);
 
-		// TODO remove CorpProject null initialization
-
-		CorpProject corpProject = null;
-		/* TODO add in CorpProject integration
 		CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProject(
-			Long.valueOf(dossieraProjectKey));
-		*/
+			dossieraProjectKey);
 
 		if (corpProject == null) {
 			if ((salesforceOpportunityType ==

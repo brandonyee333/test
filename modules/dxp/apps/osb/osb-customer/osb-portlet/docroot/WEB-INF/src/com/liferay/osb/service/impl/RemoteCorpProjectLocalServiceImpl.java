@@ -14,30 +14,23 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.exception.RemoteServiceException;
 import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.model.impl.CorpProjectImpl;
+import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.RemoteCorpProjectLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.ListTypeConstants;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.OrganizationConstants;
+import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.MapUtil;
-import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
-
-import java.io.IOException;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Amos Fong
@@ -47,124 +40,85 @@ public class RemoteCorpProjectLocalServiceImpl
 
 	@Override
 	public CorpProject addCorpProject(
-			String dossieraProjectKey, String salesforceProjectKey, String name)
+			long creatorUserId, long ownerUserId, String dossieraProjectKey,
+			String salesforceProjectKey, String name)
 		throws PortalException {
 
-		Http.Options options = new Http.Options();
+		User creatorUser = userLocalService.getUser(creatorUserId);
 
-		options.setLocation(_toURI("/add-corp-project"));
+		String ownerUserUuid = StringPool.BLANK;
 
-		Map<String, String> parts = new HashMap<>();
+		if (ownerUserId > 0) {
+			User ownerUser = userLocalService.getUser(ownerUserId);
 
-		parts.put("dossieraProjectKey", dossieraProjectKey);
-		parts.put("name", name);
-		parts.put("salesforceProjectKey", salesforceProjectKey);
+			ownerUserUuid = ownerUser.getUuid();
+		}
 
-		options.setParts(parts);
+		JSONObject jsonObject = WebRESTWebServiceUtil.postCorpProjects(
+			creatorUser.getUuid(), ownerUserUuid, dossieraProjectKey,
+			salesforceProjectKey, name);
 
-		JSONObject jsonObject = _sendRequest(options);
-
-		return _translate(jsonObject);
+		return addLocalCorpProject(jsonObject);
 	}
 
 	@Override
-	public CorpProject deleteCorpProject(long corpProjectId)
+	public void addCorpProjectUsers(long corpProjectId, long[] userIds)
 		throws PortalException {
 
-		Http.Options options = new Http.Options();
+		CorpProject corpProject = corpProjectLocalService.getCorpProject(
+			corpProjectId);
 
-		options.setLocation(_toURI("/delete-corp-project"));
+		for (long userId : userIds) {
+			User user = userLocalService.getUser(userId);
 
-		Map<String, String> parts = new HashMap<>();
+			WebRESTWebServiceUtil.putCorpProjectsUser(
+				corpProject.getUuid(), user.getUuid());
+		}
+	}
 
-		parts.put("corpProjectId", String.valueOf(corpProjectId));
+	@Override
+	public void addUserCorpProjectRoles(
+			long corpProjectId, long[] userIds, long roleId)
+		throws PortalException {
 
-		options.setParts(parts);
+		CorpProject corpProject = corpProjectLocalService.getCorpProject(
+			corpProjectId);
 
-		JSONObject jsonObject = _sendRequest(options);
+		Role role = roleLocalService.getRole(roleId);
 
-		return _translate(jsonObject);
+		for (long userId : userIds) {
+			User user = userLocalService.getUser(userId);
+
+			WebRESTWebServiceUtil.putCorpProjectsUserRole(
+				corpProject.getUuid(), user.getUuid(), role.getUuid());
+		}
+	}
+
+	@Override
+	public void deleteCorpProject(long corpProjectId) throws PortalException {
+		CorpProject corpProject = corpProjectLocalService.getCorpProject(
+			corpProjectId);
+
+		WebRESTWebServiceUtil.deleteCorpProjects(corpProject.getUuid());
 	}
 
 	@Override
 	public CorpProject updateCorpProject(long corpProjectId, String name)
 		throws PortalException {
 
-		Http.Options options = new Http.Options();
+		CorpProject corpProject = corpProjectLocalService.getCorpProject(
+			corpProjectId);
 
-		options.setLocation(_toURI("/update-corp-project"));
+		JSONObject jsonObject = WebRESTWebServiceUtil.putCorpProjects(
+			corpProject.getUuid(), name);
 
-		Map<String, String> parts = new HashMap<>();
-
-		parts.put("corpProjectId", String.valueOf(corpProjectId));
-		parts.put("name", name);
-
-		options.setParts(parts);
-
-		JSONObject jsonObject = _sendRequest(options);
-
-		return _translate(jsonObject);
+		return updateLocalCorpProject(corpProjectId, jsonObject);
 	}
 
-	private JSONObject _sendRequest(Http.Options options)
+	protected CorpProject addLocalCorpProject(JSONObject jsonObject)
 		throws PortalException {
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Sending request to: " + options.getLocation());
-			_log.debug("Parameters: " + MapUtil.toString(options.getParts()));
-		}
-
-		options.addHeader("OSB_API_Token", PortletPropsValues.WEB_API_TOKEN);
-		options.setPost(true);
-
-		String response = StringPool.BLANK;
-
-		try {
-			byte[] bytes = HttpUtil.URLtoByteArray(options);
-
-			if (bytes != null) {
-				response = new String(bytes);
-			}
-
-			if (_log.isDebugEnabled()) {
-				_log.debug("Response: " + response);
-			}
-		}
-		catch (IOException ioe) {
-			throw new RemoteServiceException(ioe);
-		}
-
-		if (Validator.isNotNull(response)) {
-			return JSONFactoryUtil.createJSONObject(response);
-		}
-		else {
-			return JSONFactoryUtil.createJSONObject();
-		}
-	}
-
-	private String _toURI(String endpoint) {
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(Http.HTTPS_WITH_SLASH);
-		sb.append(PortletPropsValues.WEB_DOMAIN_NAME);
-		sb.append(_URL_API_JSONWS_CORP_PROJECT);
-		sb.append(endpoint);
-
-		return sb.toString();
-	}
-
-	private CorpProject _translate(JSONObject jsonObject) {
-		CorpProject corpProject = new CorpProjectImpl();
-
-		corpProject.setCorpProjectId(jsonObject.getLong("corpProjectId"));
-		corpProject.setCreateDate(new Date(jsonObject.getLong("createDate")));
-		corpProject.setDossieraProjectKey(
-			jsonObject.getString("dossieraProjectKey"));
-		corpProject.setModifiedDate(
-			new Date(jsonObject.getLong("modifiedDate")));
-		corpProject.setName(jsonObject.getString("name"));
-		corpProject.setSalesforceProjectKey(
-			jsonObject.getString("salesforceProjectKey"));
+		long userId = 0;
 
 		String userUuid = jsonObject.getString("userUuid");
 
@@ -172,15 +126,69 @@ public class RemoteCorpProjectLocalServiceImpl
 			userUuid, OSBConstants.COMPANY_ID);
 
 		if (user != null) {
-			corpProject.setUserId(user.getUserId());
-			corpProject.setUserName(user.getFullName());
+			userId = user.getUserId();
 		}
 
-		return corpProject;
+		long organizationId = getOrganizationId(
+			jsonObject.getJSONObject("organization"));
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(
+			new Date(jsonObject.getLong("createDate")));
+		serviceContext.setCreateDate(
+			new Date(jsonObject.getLong("modifiedDate")));
+		serviceContext.setUuid(jsonObject.getString("uuid"));
+
+		return corpProjectLocalService.addCorpProject(
+			userId, jsonObject.getString("dossieraProjectKey"),
+			jsonObject.getString("salesforceProjectKey"),
+			jsonObject.getString("name"), organizationId, serviceContext);
 	}
 
-	private static final String _URL_API_JSONWS_CORP_PROJECT =
-		"/osb-portlet/api/jsonws/corpproject";
+	protected long getOrganizationId(JSONObject jsonObject)
+		throws PortalException {
+
+		if (jsonObject == null) {
+			return 0;
+		}
+
+		String organizationUuid = jsonObject.getString("organizationUuid");
+
+		Organization organization =
+			organizationLocalService.fetchOrganizationByUuidAndCompanyId(
+				organizationUuid, OSBConstants.COMPANY_ID);
+
+		if (organization == null) {
+			String name = jsonObject.getString("name");
+
+			ServiceContext serviceContext = new ServiceContext();
+
+			serviceContext.setUuid(organizationUuid);
+
+			organization = organizationLocalService.addOrganization(
+				OSBConstants.USER_DEFAULT_USER_ID,
+				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID, name,
+				OrganizationConstants.TYPE_ORGANIZATION, 0, 0,
+				ListTypeConstants.ORGANIZATION_STATUS_DEFAULT, StringPool.BLANK,
+				false, serviceContext);
+		}
+
+		return organization.getOrganizationId();
+	}
+
+	protected CorpProject updateLocalCorpProject(
+			long corpProjectId, JSONObject jsonObject)
+		throws PortalException {
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(
+			new Date(jsonObject.getLong("modifiedDate")));
+
+		return corpProjectLocalService.updateCorpProject(
+			corpProjectId, jsonObject.getString("name"), serviceContext);
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		RemoteCorpProjectLocalServiceImpl.class);
