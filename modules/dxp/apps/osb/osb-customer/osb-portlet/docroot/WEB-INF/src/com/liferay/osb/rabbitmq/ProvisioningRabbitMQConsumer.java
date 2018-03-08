@@ -50,6 +50,7 @@ import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -77,6 +78,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
+
 /* TODO update rabbitMQ integration
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
 */
@@ -100,7 +102,6 @@ public abstract class ProvisioningRabbitMQConsumer {
 
 	// implements RabbitMQConsumer {
 
-	/* TODO update rabbitMQ integration
 	public int parse(
 		String routingKey, String message, Map<String, Object> properties) {
 
@@ -113,16 +114,20 @@ public abstract class ProvisioningRabbitMQConsumer {
 
 			doParse(jsonObject);
 
-			return RESPONSE_ACK;
+			return 0;
+
+			// return RESPONSE_ACK;
+
 		}
 		catch (Exception e) {
 			sendErrorNotification(routingKey, message, jsonObject, e);
 
-			return RESPONSE_REJECT;
+			return 0;
+
+			// return RESPONSE_ACK;
+
 		}
 	}
-
-	*/
 
 	protected ServiceContext createServiceContext(JSONObject jsonObject) {
 		ServiceContext serviceContext = new ServiceContext();

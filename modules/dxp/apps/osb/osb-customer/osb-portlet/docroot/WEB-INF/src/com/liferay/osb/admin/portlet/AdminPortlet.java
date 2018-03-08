@@ -90,6 +90,7 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.SupportWorkerConstants;
 import com.liferay.osb.model.TicketSolutionConstants;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
+import com.liferay.osb.rabbitmq.ProvisioningCreateRabbitMQConsumer;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
@@ -341,11 +342,11 @@ public class AdminPortlet extends MVCPortlet {
 			message, CharPool.NEW_LINE, StringPool.BLANK);
 
 		Map<String, Object> propertiesMap = MapUtil.toLinkedHashMap(properties);
-		/* TODO update rabbitMQ integration
-		RabbitMQConsumer rabbitMQConsumer = new RabbitMQConsumerRouter();
+
+		ProvisioningCreateRabbitMQConsumer rabbitMQConsumer =
+			new ProvisioningCreateRabbitMQConsumer();
 
 		rabbitMQConsumer.parse(routingKey, message, propertiesMap);
-		 */
 	}
 
 	public void deleteAccountEntry(
