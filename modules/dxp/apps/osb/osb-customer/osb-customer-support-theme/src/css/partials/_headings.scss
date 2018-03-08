@@ -23,7 +23,6 @@ h4 {
 
 .field-wrapper .control-label, .section-heading {
 	color: $text-color;
-	font-size: 16px;
 }
 
 .page-title {
@@ -46,6 +45,7 @@ h4 {
 }
 
 .section-heading {
+	font-size: 16px;
 	font-weight: normal;
 	line-height: 1.5em;
 	padding-top: $standard-spacing;

@@ -306,36 +306,35 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 	var onChange = function(event) {
 		var name = event.currentTarget.getAttribute('name');
 
-		var label = 'label#' + name + 'Label';
+		label = A.one('label[for=' + name + ']');
 
-		if (name.indexOf('dueDate') > -1) {
-			label = 'label#<portlet:namespace />dueDateLabel';
-		}
-		else if (name.indexOf('toEnvLFR') > -1) {
-			label = '#<portlet:namespace />envLFRLabel';
+		if (name === '<portlet:namespace />ignoreDueDate') {
+			label = A.one('.ignore-due-date .control-label');
 		}
 
-		label = A.one(label);
+		if (name.includes('<portlet:namespace />dueDate')) {
+			label = A.one('#<portlet:namespace />dueDateLabel');
+		}
 
 		if (label) {
-			var labelAncestor = label.ancestor('.tab-content-tab');
+			label.addClass('field-modified');
 
-			if (labelAncestor) {
-				var tabId = labelAncestor.getAttribute('id');
+			var tabId = label.ancestor('.tab-content-tab').getAttribute('id');
 
-				var tab = A.one('span#' + tabId);
+			if (tabId) {
+				var tab = A.one('#' + tabId + 'Header');
 
-				label.addClass('field-modified');
-
-				var modified = '(Modified)'.bold();
-
-				if (tab && (tab.html().indexOf('Modified') == -1)) {
-					tab.append(modified);
+				if (tab && !tab.html().includes('Modified')) {
+					tab.append('(Modified)'.bold());
 
 					tab.addClass('field-modified');
 				}
+			}
 
-				document.getElementById('<portlet:namespace />modified').value = 'true';
+			var modifiedInputField = A.one('<portlet:namespace />modified');
+
+			if (modifiedInputField) {
+				modifiedInputField.val('true');
 			}
 		}
 	};

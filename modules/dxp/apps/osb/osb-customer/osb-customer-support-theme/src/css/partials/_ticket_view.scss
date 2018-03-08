@@ -62,6 +62,10 @@
 			padding-right: 1.5em;
 			text-align: right;
 			width: 20%;
+
+			&.field-modified {
+				font-weight: bold;
+			}
 		}
 
 		.help-block, .no-label {

@@ -59,7 +59,7 @@ if (liferayIncOrg || partnerWorker) {
 		</aui:input>
 
 		<aui:field-wrapper cssClass="form-field-wrapper">
-			<label class="control-label" id="<portlet:namespace />descriptionLabel"><liferay-ui:message key="description" /></label>
+			<label class="control-label" for="<portlet:namespace />description"><liferay-ui:message key="description" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= description %>" />
@@ -107,7 +107,7 @@ if (liferayIncOrg || partnerWorker) {
 
 	<c:if test="<%= hasUpdateAdvanced %>">
 		<div class="<%= productEntry.isTicketComponentRequired() ? "" : "hide" %>" id="<portlet:namespace />componentFieldGroup">
-			<aui:select id="editComponent" inlineField="<%= true %>" label="component" name="component" onChange='<%= renderResponse.getNamespace() + "selectComponent(this.value);" %>' wrapperCssClass="form-field-wrapper">
+			<aui:select inlineField="<%= true %>" label="component" name="component" onChange='<%= renderResponse.getNamespace() + "selectComponent(this.value);" %>' wrapperCssClass="form-field-wrapper">
 				<c:choose>
 					<c:when test="<%= productEntry.isDigitalEnterprise() %>">
 
@@ -234,7 +234,7 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:select inlineField="<%= true %>" name="status" onChange='<%= renderResponse.getNamespace() + "validateResolution();" %>' wrapperCssClass="form-field-wrapper">
+		<aui:select inlineField="<%= true %>" label="status" name="status" onChange='<%= renderResponse.getNamespace() + "validateResolution();" %>' wrapperCssClass="form-field-wrapper">
 
 			<%
 			for (int statusId : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
@@ -255,7 +255,7 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:select inlineField="<%= true %>" name="resolution" onChange='<%= renderResponse.getNamespace() + "validateResolution();" %>' wrapperCssClass="form-field-wrapper">
+		<aui:select inlineField="<%= true %>" label="resolution" name="resolution" onChange='<%= renderResponse.getNamespace() + "validateResolution();" %>' wrapperCssClass="form-field-wrapper">
 			<aui:option label="" value="0" />
 
 			<%
@@ -350,13 +350,13 @@ if (liferayIncOrg || partnerWorker) {
 			</div>
 		</aui:field-wrapper>
 
-		<aui:field-wrapper cssClass="form-field-wrapper" label="ignore-due-date">
+		<aui:field-wrapper cssClass="form-field-wrapper ignore-due-date" label="ignore-due-date">
 			<aui:input cssClass='<%= ticketEntry.getIgnoreDueDate() ? "checked" : "" %>' label="" name="ignoreDueDate" type="checkbox" />
 		</aui:field-wrapper>
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:field-wrapper cssClass="form-field-wrapper" label="reporter">
+		<aui:field-wrapper cssClass="form-field-wrapper reporter" label="reporter">
 
 			<%
 			User reporterUser = UserLocalServiceUtil.fetchUserById(ticketEntry.getUserId());
@@ -406,10 +406,11 @@ if (liferayIncOrg || partnerWorker) {
 	function <portlet:namespace />selectReportedBy(userId, userName) {
 		document.<portlet:namespace />updateTicketFm.<portlet:namespace />reportedByUserId.value = userId;
 
-		var reporterLabelEl = document.getElementById('<portlet:namespace />reporterLabel');
 		var userNameEl = document.getElementById('<portlet:namespace />reportedByUserName');
 
 		userNameEl.innerHTML = userName;
+
+		var reporterLabelEl = document.querySelector('.reporter .control-label');
 
 		reporterLabelEl.classList.add('field-modified');
 	}
@@ -550,7 +551,7 @@ if (liferayIncOrg || partnerWorker) {
 			var subcomponentFieldGroup = A.one('#<portlet:namespace />subcomponentFieldGroup');
 
 			if (selectData) {
-				var selectElement = A.one('#<portlet:namespace />editComponent');
+				var selectElement = A.one('#<portlet:namespace />component');
 
 				var selectOptions = ['<option value="0"></option>'];
 

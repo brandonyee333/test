@@ -75,7 +75,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 		</aui:select>
 
 		<aui:field-wrapper cssClass="form-field-wrapper">
-			<label class="control-label" id="<portlet:namespace />serverConfigurationsLabel"><liferay-ui:message key="jvm-arguments-settings-optional" /></label>
+			<label class="control-label" for="<portlet:namespace />serverConfigurations"><liferay-ui:message key="jvm-arguments-settings-optional" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= serverConfigurations %>" />
@@ -121,7 +121,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 		</aui:select>
 
 		<aui:field-wrapper cssClass="form-field-wrapper">
-			<label class="control-label" id="<portlet:namespace />serverIdsLabel"><liferay-ui:message key="server-ids-mac-addresses" /></label>
+			<label class="control-label" for="<portlet:namespace />serverIds"><liferay-ui:message key="server-ids-mac-addresses" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= serverIds %>" />
@@ -132,7 +132,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 		</aui:field-wrapper>
 
 		<aui:field-wrapper cssClass="form-field-wrapper">
-			<label class="control-label" id="<portlet:namespace />ipAddressesLabel"><liferay-ui:message key="ip-addresses" /></label>
+			<label class="control-label" for="<portlet:namespace />ipAddresses"><liferay-ui:message key="ip-addresses" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= ipAddresses %>" />
@@ -143,7 +143,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 		</aui:field-wrapper>
 
 		<aui:field-wrapper cssClass="form-field-wrapper">
-			<label class="control-label" id="<portlet:namespace />hostNamesLabel"><liferay-ui:message key="host-names" /></label>
+			<label class="control-label" for="<portlet:namespace />hostNames"><liferay-ui:message key="host-names" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= hostNames %>" />
@@ -154,7 +154,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 		</aui:field-wrapper>
 
 		<aui:field-wrapper cssClass="form-field-wrapper">
-			<label class="control-label" id="<portlet:namespace />additionalCommentsLabel"><liferay-ui:message key="additional-comments-unstable-server-details-multiple-jvms-etc" /></label>
+			<label class="control-label" for="<portlet:namespace />additionalComments"><liferay-ui:message key="additional-comments-unstable-server-details-multiple-jvms-etc" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= additionalComments %>" />
@@ -183,7 +183,7 @@ int type = ParamUtil.getInteger(request, "type", GetterUtil.getInteger(ticketInf
 		</aui:select>
 
 		<aui:field-wrapper cssClass="form-field-wrapper">
-			<label class="control-label" id="<portlet:namespace />stepsToUpgradeLabel"><liferay-ui:message key="steps-used-to-perform-the-upgrade" /></label>
+			<label class="control-label" for="<portlet:namespace />stepsToUpgrade"><liferay-ui:message key="steps-used-to-perform-the-upgrade" /></label>
 
 			<liferay-util:include page="/common/textarea.jsp" servletContext="<%= application %>">
 				<liferay-util:param name="content" value="<%= stepsToUpgrade %>" />
