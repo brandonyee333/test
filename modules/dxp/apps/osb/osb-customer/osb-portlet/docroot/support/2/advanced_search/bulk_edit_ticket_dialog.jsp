@@ -20,7 +20,7 @@
 	<portlet:param name="mvcPath" value="/support/2/advanced_search.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateTicketEntriesURL %>" enctype="multipart/form-data" method="post" name="updateTicketfm">
+<aui:form action="<%= updateTicketEntriesURL %>" enctype="multipart/form-data" method="post" name="updateTicketFm">
 	<input id="<portlet:namespace />ticketEntryIds" name="<portlet:namespace />ticketEntryIds" type="hidden" value="" />
 
 	<div class="bulk-edit-dialog">
@@ -142,7 +142,7 @@
 <aui:script>
 	function <portlet:namespace />submit() {
 		if (<portlet:namespace />validate()) {
-			submitForm(document.<portlet:namespace />updateTicketfm);
+			submitForm(document.<portlet:namespace />updateTicketFm);
 		}
 	}
 

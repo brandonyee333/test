@@ -59,7 +59,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 	<portlet:param name="redirect" value="<%= redirect %>" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateTicketEntryURL %>" enctype="multipart/form-data" method="post" name="updateTicketfm">
+<aui:form action="<%= updateTicketEntryURL %>" enctype="multipart/form-data" method="post" name="updateTicketFm">
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 	<aui:input name="modified" type="hidden" value="false" />
 	<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
@@ -135,10 +135,12 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		if (modified.value == 'true') {
 			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-ticket.-are-you-sure-you-want-to-cancel-editing") %>');
 
-			if (cancelEdit) {
-				<portlet:namespace />closeEditTicketDialog();
+			if (!cancelEdit) {
+				return;
 			}
 		}
+
+		<portlet:namespace />closeEditTicketDialog();
 	}
 
 	Liferay.provide(
@@ -280,5 +282,5 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		editTicketTabContent.delegate('keyup', onChange, 'input[type=text], textarea');
 	}
 
-	A.getDoc().on('key', <portlet:namespace />closeEditTicketDialog, 'esc');
+	A.getDoc().on('key', <portlet:namespace />confirmActionCancel, 'esc');
 </aui:script>
