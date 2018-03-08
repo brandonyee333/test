@@ -183,6 +183,7 @@ create table OSB_AuditEntry (
 );
 
 create table OSB_CorpProject (
+	uuid_ VARCHAR(75) null,
 	corpProjectId LONG not null primary key,
 	userId LONG,
 	userName VARCHAR(75) null,

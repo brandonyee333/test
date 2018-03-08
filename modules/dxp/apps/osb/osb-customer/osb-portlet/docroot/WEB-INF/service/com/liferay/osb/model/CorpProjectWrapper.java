@@ -58,6 +58,7 @@ public class CorpProjectWrapper implements CorpProject,
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("uuid", getUuid());
 		attributes.put("corpProjectId", getCorpProjectId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -73,6 +74,12 @@ public class CorpProjectWrapper implements CorpProject,
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		String uuid = (String)attributes.get("uuid");
+
+		if (uuid != null) {
+			setUuid(uuid);
+		}
+
 		Long corpProjectId = (Long)attributes.get("corpProjectId");
 
 		if (corpProjectId != null) {
@@ -259,6 +266,16 @@ public class CorpProjectWrapper implements CorpProject,
 		return _corpProject.getUserUuid();
 	}
 
+	/**
+	* Returns the uuid of this corp project.
+	*
+	* @return the uuid of this corp project
+	*/
+	@Override
+	public java.lang.String getUuid() {
+		return _corpProject.getUuid();
+	}
+
 	@Override
 	public int hashCode() {
 		return _corpProject.hashCode();
@@ -423,6 +440,16 @@ public class CorpProjectWrapper implements CorpProject,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_corpProject.setUserUuid(userUuid);
+	}
+
+	/**
+	* Sets the uuid of this corp project.
+	*
+	* @param uuid the uuid of this corp project
+	*/
+	@Override
+	public void setUuid(java.lang.String uuid) {
+		_corpProject.setUuid(uuid);
 	}
 
 	@Override

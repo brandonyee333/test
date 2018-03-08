@@ -69,6 +69,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	 */
 	public static final String TABLE_NAME = "OSB_CorpProject";
 	public static final Object[][] TABLE_COLUMNS = {
+			{ "uuid_", Types.VARCHAR },
 			{ "corpProjectId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -82,6 +83,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
 	static {
+		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("corpProjectId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -93,7 +95,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 		TABLE_COLUMNS_MAP.put("organizationId", Types.BIGINT);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_CorpProject (corpProjectId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,dossieraProjectKey VARCHAR(75) null,salesforceProjectKey VARCHAR(75) null,name VARCHAR(75) null,organizationId LONG)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_CorpProject (uuid_ VARCHAR(75) null,corpProjectId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,dossieraProjectKey VARCHAR(75) null,salesforceProjectKey VARCHAR(75) null,name VARCHAR(75) null,organizationId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_CorpProject";
 	public static final String ORDER_BY_JPQL = " ORDER BY corpProject.corpProjectId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_CorpProject.corpProjectId ASC";
@@ -106,7 +108,14 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.finder.cache.enabled.com.liferay.osb.model.CorpProject"),
 			true);
-	public static final boolean COLUMN_BITMASK_ENABLED = false;
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
+				"value.object.column.bitmask.enabled.com.liferay.osb.model.CorpProject"),
+			true);
+	public static final long DOSSIERAPROJECTKEY_COLUMN_BITMASK = 1L;
+	public static final long NAME_COLUMN_BITMASK = 2L;
+	public static final long ORGANIZATIONID_COLUMN_BITMASK = 4L;
+	public static final long UUID_COLUMN_BITMASK = 8L;
+	public static final long CORPPROJECTID_COLUMN_BITMASK = 16L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -121,6 +130,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 
 		CorpProject model = new CorpProjectImpl();
 
+		model.setUuid(soapModel.getUuid());
 		model.setCorpProjectId(soapModel.getCorpProjectId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
@@ -194,6 +204,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("uuid", getUuid());
 		attributes.put("corpProjectId", getCorpProjectId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -212,6 +223,12 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		String uuid = (String)attributes.get("uuid");
+
+		if (uuid != null) {
+			setUuid(uuid);
+		}
+
 		Long corpProjectId = (Long)attributes.get("corpProjectId");
 
 		if (corpProjectId != null) {
@@ -266,6 +283,30 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 		if (organizationId != null) {
 			setOrganizationId(organizationId);
 		}
+	}
+
+	@JSON
+	@Override
+	public String getUuid() {
+		if (_uuid == null) {
+			return "";
+		}
+		else {
+			return _uuid;
+		}
+	}
+
+	@Override
+	public void setUuid(String uuid) {
+		if (_originalUuid == null) {
+			_originalUuid = _uuid;
+		}
+
+		_uuid = uuid;
+	}
+
+	public String getOriginalUuid() {
+		return GetterUtil.getString(_originalUuid);
 	}
 
 	@JSON
@@ -363,7 +404,17 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 
 	@Override
 	public void setDossieraProjectKey(String dossieraProjectKey) {
+		_columnBitmask |= DOSSIERAPROJECTKEY_COLUMN_BITMASK;
+
+		if (_originalDossieraProjectKey == null) {
+			_originalDossieraProjectKey = _dossieraProjectKey;
+		}
+
 		_dossieraProjectKey = dossieraProjectKey;
+	}
+
+	public String getOriginalDossieraProjectKey() {
+		return GetterUtil.getString(_originalDossieraProjectKey);
 	}
 
 	@JSON
@@ -395,7 +446,17 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 
 	@Override
 	public void setName(String name) {
+		_columnBitmask |= NAME_COLUMN_BITMASK;
+
+		if (_originalName == null) {
+			_originalName = _name;
+		}
+
 		_name = name;
+	}
+
+	public String getOriginalName() {
+		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -406,7 +467,23 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 
 	@Override
 	public void setOrganizationId(long organizationId) {
+		_columnBitmask |= ORGANIZATIONID_COLUMN_BITMASK;
+
+		if (!_setOriginalOrganizationId) {
+			_setOriginalOrganizationId = true;
+
+			_originalOrganizationId = _organizationId;
+		}
+
 		_organizationId = organizationId;
+	}
+
+	public long getOriginalOrganizationId() {
+		return _originalOrganizationId;
+	}
+
+	public long getColumnBitmask() {
+		return _columnBitmask;
 	}
 
 	@Override
@@ -436,6 +513,7 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	public Object clone() {
 		CorpProjectImpl corpProjectImpl = new CorpProjectImpl();
 
+		corpProjectImpl.setUuid(getUuid());
 		corpProjectImpl.setCorpProjectId(getCorpProjectId());
 		corpProjectImpl.setUserId(getUserId());
 		corpProjectImpl.setUserName(getUserName());
@@ -507,12 +585,32 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	public void resetOriginalValues() {
 		CorpProjectModelImpl corpProjectModelImpl = this;
 
+		corpProjectModelImpl._originalUuid = corpProjectModelImpl._uuid;
+
 		corpProjectModelImpl._setModifiedDate = false;
+
+		corpProjectModelImpl._originalDossieraProjectKey = corpProjectModelImpl._dossieraProjectKey;
+
+		corpProjectModelImpl._originalName = corpProjectModelImpl._name;
+
+		corpProjectModelImpl._originalOrganizationId = corpProjectModelImpl._organizationId;
+
+		corpProjectModelImpl._setOriginalOrganizationId = false;
+
+		corpProjectModelImpl._columnBitmask = 0;
 	}
 
 	@Override
 	public CacheModel<CorpProject> toCacheModel() {
 		CorpProjectCacheModel corpProjectCacheModel = new CorpProjectCacheModel();
+
+		corpProjectCacheModel.uuid = getUuid();
+
+		String uuid = corpProjectCacheModel.uuid;
+
+		if ((uuid != null) && (uuid.length() == 0)) {
+			corpProjectCacheModel.uuid = null;
+		}
 
 		corpProjectCacheModel.corpProjectId = getCorpProjectId();
 
@@ -576,9 +674,11 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(21);
 
-		sb.append("{corpProjectId=");
+		sb.append("{uuid=");
+		sb.append(getUuid());
+		sb.append(", corpProjectId=");
 		sb.append(getCorpProjectId());
 		sb.append(", userId=");
 		sb.append(getUserId());
@@ -603,12 +703,16 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(31);
+		StringBundler sb = new StringBundler(34);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.CorpProject");
 		sb.append("</model-name>");
 
+		sb.append(
+			"<column><column-name>uuid</column-name><column-value><![CDATA[");
+		sb.append(getUuid());
+		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>corpProjectId</column-name><column-value><![CDATA[");
 		sb.append(getCorpProjectId());
@@ -655,6 +759,8 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
 			CorpProject.class
 		};
+	private String _uuid;
+	private String _originalUuid;
 	private long _corpProjectId;
 	private long _userId;
 	private String _userName;
@@ -662,8 +768,13 @@ public class CorpProjectModelImpl extends BaseModelImpl<CorpProject>
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private String _dossieraProjectKey;
+	private String _originalDossieraProjectKey;
 	private String _salesforceProjectKey;
 	private String _name;
+	private String _originalName;
 	private long _organizationId;
+	private long _originalOrganizationId;
+	private boolean _setOriginalOrganizationId;
+	private long _columnBitmask;
 	private CorpProject _escapedModel;
 }

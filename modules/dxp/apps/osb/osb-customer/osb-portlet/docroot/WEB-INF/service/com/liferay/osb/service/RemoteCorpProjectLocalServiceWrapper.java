@@ -36,18 +36,32 @@ public class RemoteCorpProjectLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.CorpProject addCorpProject(
+		long creatorUserId, long ownerUserId,
 		java.lang.String dossieraProjectKey,
 		java.lang.String salesforceProjectKey, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _remoteCorpProjectLocalService.addCorpProject(dossieraProjectKey,
-			salesforceProjectKey, name);
+		return _remoteCorpProjectLocalService.addCorpProject(creatorUserId,
+			ownerUserId, dossieraProjectKey, salesforceProjectKey, name);
 	}
 
 	@Override
-	public com.liferay.osb.model.CorpProject deleteCorpProject(
-		long corpProjectId)
+	public void addCorpProjectUsers(long corpProjectId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _remoteCorpProjectLocalService.deleteCorpProject(corpProjectId);
+		_remoteCorpProjectLocalService.addCorpProjectUsers(corpProjectId,
+			userIds);
+	}
+
+	@Override
+	public void addUserCorpProjectRoles(long corpProjectId, long[] userIds,
+		long roleId) throws com.liferay.portal.kernel.exception.PortalException {
+		_remoteCorpProjectLocalService.addUserCorpProjectRoles(corpProjectId,
+			userIds, roleId);
+	}
+
+	@Override
+	public void deleteCorpProject(long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_remoteCorpProjectLocalService.deleteCorpProject(corpProjectId);
 	}
 
 	/**

@@ -63,6 +63,21 @@ public interface CorpProjectModel extends BaseModel<CorpProject> {
 	public void setPrimaryKey(long primaryKey);
 
 	/**
+	 * Returns the uuid of this corp project.
+	 *
+	 * @return the uuid of this corp project
+	 */
+	@AutoEscape
+	public String getUuid();
+
+	/**
+	 * Sets the uuid of this corp project.
+	 *
+	 * @param uuid the uuid of this corp project
+	 */
+	public void setUuid(String uuid);
+
+	/**
 	 * Returns the corp project ID of this corp project.
 	 *
 	 * @return the corp project ID of this corp project

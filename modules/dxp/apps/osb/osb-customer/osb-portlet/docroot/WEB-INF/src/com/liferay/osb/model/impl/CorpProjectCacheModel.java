@@ -65,9 +65,11 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(21);
 
-		sb.append("{corpProjectId=");
+		sb.append("{uuid=");
+		sb.append(uuid);
+		sb.append(", corpProjectId=");
 		sb.append(corpProjectId);
 		sb.append(", userId=");
 		sb.append(userId);
@@ -93,6 +95,13 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 	@Override
 	public CorpProject toEntityModel() {
 		CorpProjectImpl corpProjectImpl = new CorpProjectImpl();
+
+		if (uuid == null) {
+			corpProjectImpl.setUuid("");
+		}
+		else {
+			corpProjectImpl.setUuid(uuid);
+		}
 
 		corpProjectImpl.setCorpProjectId(corpProjectId);
 		corpProjectImpl.setUserId(userId);
@@ -148,6 +157,8 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		uuid = objectInput.readUTF();
+
 		corpProjectId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -164,6 +175,13 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 	@Override
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
+		if (uuid == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(uuid);
+		}
+
 		objectOutput.writeLong(corpProjectId);
 
 		objectOutput.writeLong(userId);
@@ -202,6 +220,7 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 		objectOutput.writeLong(organizationId);
 	}
 
+	public String uuid;
 	public long corpProjectId;
 	public long userId;
 	public String userName;

@@ -45,6 +45,18 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 		return _corpProjectLocalService.addCorpProject(corpProject);
 	}
 
+	@Override
+	public com.liferay.osb.model.CorpProject addCorpProject(long userId,
+		java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		long organizationId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.addCorpProject(userId,
+			dossieraProjectKey, salesforceProjectKey, name, organizationId,
+			serviceContext);
+	}
+
 	/**
 	* Creates a new corp project with the primary key. Does not add the corp project to the database.
 	*
@@ -185,6 +197,12 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	}
 
 	@Override
+	public com.liferay.osb.model.CorpProject fetchCorpProject(
+		java.lang.String dossieraProjectKey) {
+		return _corpProjectLocalService.fetchCorpProject(dossieraProjectKey);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
 		return _corpProjectLocalService.getActionableDynamicQuery();
 	}
@@ -261,6 +279,15 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	public com.liferay.osb.model.CorpProject updateCorpProject(
 		com.liferay.osb.model.CorpProject corpProject) {
 		return _corpProjectLocalService.updateCorpProject(corpProject);
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProject updateCorpProject(
+		long corpProjectId, java.lang.String name,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.updateCorpProject(corpProjectId, name,
+			serviceContext);
 	}
 
 	@Override

@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -69,6 +70,12 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public CorpProject addCorpProject(CorpProject corpProject);
+
+	public CorpProject addCorpProject(long userId,
+		java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		long organizationId, ServiceContext serviceContext)
+		throws PortalException;
 
 	/**
 	* Creates a new corp project with the primary key. Does not add the corp project to the database.
@@ -168,6 +175,9 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	public CorpProject fetchCorpProject(long corpProjectId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CorpProject fetchCorpProject(java.lang.String dossieraProjectKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	/**
@@ -226,4 +236,8 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public CorpProject updateCorpProject(CorpProject corpProject);
+
+	public CorpProject updateCorpProject(long corpProjectId,
+		java.lang.String name, ServiceContext serviceContext)
+		throws PortalException;
 }

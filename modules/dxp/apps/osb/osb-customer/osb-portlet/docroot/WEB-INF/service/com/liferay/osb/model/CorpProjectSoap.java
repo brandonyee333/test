@@ -34,6 +34,7 @@ public class CorpProjectSoap implements Serializable {
 	public static CorpProjectSoap toSoapModel(CorpProject model) {
 		CorpProjectSoap soapModel = new CorpProjectSoap();
 
+		soapModel.setUuid(model.getUuid());
 		soapModel.setCorpProjectId(model.getCorpProjectId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
@@ -93,6 +94,14 @@ public class CorpProjectSoap implements Serializable {
 
 	public void setPrimaryKey(long pk) {
 		setCorpProjectId(pk);
+	}
+
+	public String getUuid() {
+		return _uuid;
+	}
+
+	public void setUuid(String uuid) {
+		_uuid = uuid;
 	}
 
 	public long getCorpProjectId() {
@@ -167,6 +176,7 @@ public class CorpProjectSoap implements Serializable {
 		_organizationId = organizationId;
 	}
 
+	private String _uuid;
 	private long _corpProjectId;
 	private long _userId;
 	private String _userName;
