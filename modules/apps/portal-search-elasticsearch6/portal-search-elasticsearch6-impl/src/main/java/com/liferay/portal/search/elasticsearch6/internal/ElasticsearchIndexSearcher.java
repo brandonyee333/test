@@ -50,7 +50,9 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.elasticsearch6.configuration.ElasticsearchConfiguration;
+import com.liferay.portal.search.elasticsearch6.configuration.ElasticsearchSearchContextAttributes;
 import com.liferay.portal.search.elasticsearch6.internal.connection.ElasticsearchConnectionManager;
 import com.liferay.portal.search.elasticsearch6.internal.facet.CompositeFacetProcessor;
 import com.liferay.portal.search.elasticsearch6.internal.facet.FacetCollectorFactory;
@@ -70,7 +72,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang.time.StopWatch;
-
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -93,7 +94,6 @@ import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Modified;
@@ -255,7 +255,8 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 	}
 
 	protected void addGroupBy(
-		SearchRequestBuilder searchRequestBuilder, SearchContext searchContext,
+		SearchRequestBuilder searchRequestBuilder, 
+		SearchContext searchContext,
 		int start, int end) {
 
 		GroupBy groupBy = searchContext.getGroupBy();
@@ -467,6 +468,18 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 			statsTranslator.translate(searchRequestBuilder, stats);
 		}
 	}
+	
+	protected void addPreference(
+		SearchRequestBuilder searchRequestBuilder,
+		SearchContext searchContext) {
+
+		String preference = (String)searchContext.getAttribute(
+				ElasticsearchSearchContextAttributes.ATTRIBUTE_KEY_SEARCH_REQUEST_PREFERENCE);
+
+		if (Validator.isNotNull(preference)) {
+			searchRequestBuilder.setPreference(preference);
+		}
+	}
 
 	protected SearchResponse doSearch(
 			SearchContext searchContext, Query query, int start, int end,
@@ -489,9 +502,10 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 			addGroupBy(searchRequestBuilder, searchContext, start, end);
 			addHighlights(searchRequestBuilder, searchContext, queryConfig);
 			addPagination(searchRequestBuilder, start, end);
+			addPreference(searchRequestBuilder, searchContext);
 			addSelectedFields(searchRequestBuilder, queryConfig);
 			addSort(searchRequestBuilder, searchContext.getSorts());
-
+			
 			searchRequestBuilder.setTrackScores(queryConfig.isScoreEnabled());
 		}
 		else {
