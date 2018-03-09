@@ -81,6 +81,43 @@
 			<finder-column name="organizationId" />
 		</finder>
 	</entity>
+	<entity local-service="true" name="CorpProjectMessage" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="corpProjectMessageId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="corpProjectId" type="long" />
+		<column name="type" type="int" />
+		<column name="severityLevel" type="int" />
+		<column name="title" type="String" />
+		<column name="content" type="String" />
+		<column name="displayCP" type="boolean" />
+		<column name="displayLCS" type="boolean" />
+		<column name="displayLESA" type="boolean" />
+
+		<!-- Finder methods -->
+
+		<finder name="CorpProjectId" return-type="Collection">
+			<finder-column name="corpProjectId" />
+		</finder>
+		<finder name="Type" return-type="Collection">
+			<finder-column name="type" />
+		</finder>
+		<finder name="C_T" return-type="CorpProjectMessage">
+			<finder-column name="corpProjectId" />
+			<finder-column name="type" />
+		</finder>
+	</entity>
 	<entity local-service="true" name="FeedbackEntry" remote-service="true">
 
 		<!-- PK fields -->
