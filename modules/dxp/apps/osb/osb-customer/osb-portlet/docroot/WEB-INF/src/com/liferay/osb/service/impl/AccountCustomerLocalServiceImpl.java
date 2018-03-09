@@ -15,7 +15,7 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
-import com.liferay.osb.exception.NoSuchAccountCustomerException;
+import com.liferay.osb.exception.DuplicateAccountCustomerException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
@@ -42,121 +42,71 @@ import javax.portlet.PortletPreferences;
 public class AccountCustomerLocalServiceImpl
 	extends AccountCustomerLocalServiceBaseImpl {
 
-	public void addAccountCustomers(
-			long userId, long[] userIds, long accountEntryId, int[] roles,
-			int[] notifications)
+	@Override
+	public AccountCustomer addAccountCustomer(
+			long userId, long customerUserId, long accountEntryId, int role,
+			int notifications)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
+		User customerUser = userLocalService.getUser(customerUserId);
 
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
+		validate(customerUserId, accountEntryId);
+
+		long accountCustomerId = counterLocalService.increment();
+
+		AccountCustomer accountCustomer = accountCustomerPersistence.create(
+			accountCustomerId);
+
+		accountCustomer.setUserId(customerUserId);
+		accountCustomer.setAccountEntryId(accountEntryId);
+		accountCustomer.setRole(role);
+		accountCustomer.setNotifications(notifications);
+
+		accountCustomerPersistence.update(accountCustomer);
+
+		try {
+			AccountEntry accountEntry =
+				accountEntryPersistence.findByPrimaryKey(accountEntryId);
+
+			if (accountEntry.getType() != AccountEntryConstants.TYPE_TRIAL) {
+				PortletPreferences portletPreferences =
+					SupportUtil.getUserPreferences(customerUserId);
+
+				portletPreferences.setValue(
+					"version2Enabled", Boolean.TRUE.toString());
+
+				portletPreferences.store();
+			}
+		}
+		catch (Exception e) {
+		}
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			AccountEntry.class.getName(), accountEntryId);
-
 		long classNameId = classNameLocalService.getClassNameId(
 			AccountEntry.class.getName());
 		long fieldClassNameId = classNameLocalService.getClassNameId(
 			AccountCustomer.class.getName());
 
-		for (int i = 0; i < userIds.length; i++) {
-			long curUserId = userIds[i];
+		auditEntryLocalService.addAuditEntry(
+			userId, user.getFullName(), now, classNameId, accountEntryId,
+			auditSetId, fieldClassNameId, accountCustomerId,
+			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_USER,
+			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
+			customerUser.getFullName(), String.valueOf(customerUserId));
 
-			User curUser = userLocalService.getUser(curUserId);
+		auditEntryLocalService.addAuditEntry(
+			userId, user.getFullName(), now, classNameId, accountEntryId,
+			auditSetId, fieldClassNameId,
+			accountCustomer.getAccountCustomerId(),
+			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_ROLE,
+			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
+			accountCustomer.getRoleLabel(),
+			String.valueOf(accountCustomer.getRole()));
 
-			AccountCustomer accountCustomer =
-				accountCustomerPersistence.fetchByU_AEI(
-					curUserId, accountEntryId);
-
-			if (accountCustomer == null) {
-				validate(accountEntryId);
-
-				long accountCustomerId = counterLocalService.increment();
-
-				accountCustomer = accountCustomerPersistence.create(
-					accountCustomerId);
-
-				accountCustomer.setUserId(curUserId);
-				accountCustomer.setAccountEntryId(accountEntryId);
-				accountCustomer.setRole(roles[i]);
-				accountCustomer.setNotifications(notifications[i]);
-
-				accountCustomerPersistence.update(accountCustomer);
-
-				try {
-					if (accountEntry.getType() !=
-							AccountEntryConstants.TYPE_TRIAL) {
-
-						PortletPreferences portletPreferences =
-							SupportUtil.getUserPreferences(curUserId);
-
-						portletPreferences.setValue(
-							"version2Enabled", Boolean.TRUE.toString());
-
-						portletPreferences.store();
-					}
-				}
-				catch (Exception e) {
-				}
-
-				auditEntryLocalService.addAuditEntry(
-					userId, user.getFullName(), now, classNameId,
-					accountEntryId, auditSetId, fieldClassNameId,
-					accountCustomerId, AuditEntryConstants.ACTION_ASSIGN,
-					AuditEntryConstants.FIELD_USER, VisibilityConstants.WORKERS,
-					StringPool.BLANK, StringPool.BLANK, curUser.getFullName(),
-					String.valueOf(curUserId));
-
-				auditEntryLocalService.addAuditEntry(
-					userId, user.getFullName(), now, classNameId,
-					accountEntryId, auditSetId, fieldClassNameId,
-					accountCustomer.getAccountCustomerId(),
-					AuditEntryConstants.ACTION_ASSIGN,
-					AuditEntryConstants.FIELD_ROLE, VisibilityConstants.WORKERS,
-					StringPool.BLANK, StringPool.BLANK,
-					accountCustomer.getRoleLabel(),
-					String.valueOf(accountCustomer.getRole()));
-			}
-			else {
-				if ((accountCustomer.getRole() == roles[i]) &&
-					(accountCustomer.getNotifications() == notifications[i])) {
-
-					continue;
-				}
-
-				int oldRole = accountCustomer.getRole();
-
-				accountCustomer.setRole(roles[i]);
-				accountCustomer.setNotifications(notifications[i]);
-
-				accountCustomerPersistence.update(accountCustomer);
-
-				if (oldRole != roles[i]) {
-					auditEntryLocalService.addAuditEntry(
-						userId, user.getFullName(), now, classNameId,
-						accountEntryId, auditSetId, fieldClassNameId,
-						accountCustomer.getAccountCustomerId(),
-						AuditEntryConstants.ACTION_UPDATE,
-						AuditEntryConstants.FIELD_ROLE,
-						VisibilityConstants.WORKERS,
-						AccountCustomerConstants.getRoleLabel(oldRole),
-						String.valueOf(oldRole), accountCustomer.getRoleLabel(),
-						String.valueOf(accountCustomer.getRole()));
-				}
-			}
-		}
-
-		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
-			assignOrganizations(userIds, OSBConstants.ORGANIZATION_TRIAL_ID);
-		}
-		else if (accountEntry.isApproved() &&
-				 (accountEntry.getType() !=
-					 AccountEntryConstants.TYPE_INTERNAL_TEST)) {
-
-			assignOrganizations(userIds, OSBConstants.ORGANIZATION_CUSTOMER_ID);
-		}
+		return accountCustomer;
 	}
 
 	@Override
@@ -171,6 +121,22 @@ public class AccountCustomerLocalServiceImpl
 		return accountCustomer;
 	}
 
+	@Override
+	public AccountCustomer deleteAccountCustomer(
+			long userId, long accountCustomerId)
+		throws PortalException {
+
+		AccountCustomer accountCustomer =
+			accountCustomerPersistence.fetchByPrimaryKey(accountCustomerId);
+
+		if (accountCustomer != null) {
+			deleteAccountCustomer(userId, accountCustomer);
+		}
+
+		return accountCustomer;
+	}
+
+	@Override
 	public void deleteAccountCustomers(long userId) throws PortalException {
 		List<AccountCustomer> accountCustomers =
 			accountCustomerPersistence.findByUserId(userId);
@@ -178,23 +144,6 @@ public class AccountCustomerLocalServiceImpl
 		for (AccountCustomer accountCustomer : accountCustomers) {
 			deleteAccountCustomer(
 				OSBConstants.USER_DEFAULT_USER_ID, accountCustomer);
-		}
-	}
-
-	public void deleteAccountCustomers(
-			long userId, long[] userIds, long accountEntryId)
-		throws PortalException {
-
-		for (long curUserId : userIds) {
-			try {
-				AccountCustomer accountCustomer =
-					accountCustomerPersistence.findByU_AEI(
-						curUserId, accountEntryId);
-
-				deleteAccountCustomer(userId, accountCustomer);
-			}
-			catch (NoSuchAccountCustomerException nsace) {
-			}
 		}
 	}
 
@@ -211,38 +160,45 @@ public class AccountCustomerLocalServiceImpl
 		}
 	}
 
+	@Override
 	public AccountCustomer fetchAccountCustomer(
 		long userId, long accountEntryId) {
 
 		return accountCustomerPersistence.fetchByU_AEI(userId, accountEntryId);
 	}
 
+	@Override
 	public AccountCustomer getAccountCustomer(long userId, long accountEntryId)
 		throws PortalException {
 
 		return accountCustomerPersistence.findByU_AEI(userId, accountEntryId);
 	}
 
+	@Override
 	public List<AccountCustomer> getAccountCustomers(long accountEntryId) {
 		return accountCustomerPersistence.findByAccountEntryId(accountEntryId);
 	}
 
+	@Override
 	public List<AccountCustomer> getAccountCustomers(
 		long accountEntryId, int role) {
 
 		return accountCustomerPersistence.findByAEI_NotR(accountEntryId, role);
 	}
 
+	@Override
 	public List<AccountCustomer> getUserAccountCustomers(long userId) {
 		return accountCustomerPersistence.findByUserId(userId);
 	}
 
+	@Override
 	public List<AccountCustomer> getUserAccountCustomers(
 		long userId, int[] roles) {
 
 		return accountCustomerPersistence.findByU_R(userId, roles);
 	}
 
+	@Override
 	public boolean hasAccountCustomer(long userId, long accountEntryId) {
 		AccountCustomer accountCustomer =
 			accountCustomerPersistence.fetchByU_AEI(userId, accountEntryId);
@@ -255,6 +211,7 @@ public class AccountCustomerLocalServiceImpl
 		}
 	}
 
+	@Override
 	public void toggleNotifications(long accountCustomerId)
 		throws PortalException {
 
@@ -275,18 +232,70 @@ public class AccountCustomerLocalServiceImpl
 		accountCustomerPersistence.update(accountCustomer);
 	}
 
-	protected void assignOrganizations(long[] userIds, long organizationId)
+	@Override
+	public AccountCustomer updateAccountCustomer(
+			long userId, long accountCustomerId, int role, int notifications)
 		throws PortalException {
 
-		for (long userId : userIds) {
-			if (!organizationLocalService.hasUserOrganization(
-					userId, organizationId) &&
-				roleLocalService.hasUserRole(
-					userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
+		User user = userLocalService.getUser(userId);
+		Date now = new Date();
 
-				userLocalService.addOrganizationUsers(
-					organizationId, new long[] {userId});
-			}
+		AccountCustomer accountCustomer =
+			accountCustomerPersistence.findByPrimaryKey(accountCustomerId);
+
+		int oldRole = accountCustomer.getRole();
+
+		accountCustomer.setRole(role);
+		accountCustomer.setNotifications(notifications);
+
+		accountCustomerPersistence.update(accountCustomer);
+
+		if (oldRole != role) {
+			long auditSetId = auditEntryLocalService.getNextAuditSetId(
+				AccountEntry.class.getName(),
+				accountCustomer.getAccountEntryId());
+			long classNameId = classNameLocalService.getClassNameId(
+				AccountEntry.class.getName());
+			long fieldClassNameId = classNameLocalService.getClassNameId(
+				AccountCustomer.class.getName());
+
+			auditEntryLocalService.addAuditEntry(
+				userId, user.getFullName(), now, classNameId,
+				accountCustomer.getAccountEntryId(), auditSetId,
+				fieldClassNameId, accountCustomer.getAccountCustomerId(),
+				AuditEntryConstants.ACTION_UPDATE,
+				AuditEntryConstants.FIELD_ROLE, VisibilityConstants.WORKERS,
+				AccountCustomerConstants.getRoleLabel(oldRole),
+				String.valueOf(oldRole), accountCustomer.getRoleLabel(),
+				String.valueOf(accountCustomer.getRole()));
+		}
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountCustomer.getAccountEntryId());
+
+		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
+			assignOrganizations(userId, OSBConstants.ORGANIZATION_TRIAL_ID);
+		}
+		else if (accountEntry.isApproved() &&
+				 (accountEntry.getType() !=
+					 AccountEntryConstants.TYPE_INTERNAL_TEST)) {
+
+			assignOrganizations(userId, OSBConstants.ORGANIZATION_CUSTOMER_ID);
+		}
+
+		return accountCustomer;
+	}
+
+	protected void assignOrganizations(long userId, long organizationId)
+		throws PortalException {
+
+		if (!organizationLocalService.hasUserOrganization(
+				userId, organizationId) &&
+			roleLocalService.hasUserRole(
+				userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
+
+			userLocalService.addOrganizationUsers(
+				organizationId, new long[] {userId});
 		}
 	}
 
@@ -325,7 +334,15 @@ public class AccountCustomerLocalServiceImpl
 			StringPool.BLANK);
 	}
 
-	protected void validate(long accountEntryId) throws PortalException {
+	protected void validate(long customerUserId, long accountEntryId)
+		throws PortalException {
+
+		if (accountCustomerPersistence.countByU_AEI(
+				customerUserId, accountEntryId) > 0) {
+
+			throw new DuplicateAccountCustomerException();
+		}
+
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 

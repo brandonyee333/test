@@ -294,11 +294,11 @@ public class AccountEntryLocalServiceImpl
 				corpProject.getCorpProjectId(), new long[] {user.getUserId()},
 				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
 
-			accountCustomerLocalService.addAccountCustomers(
-				accountEntry.getUserId(), new long[] {user.getUserId()},
+			accountCustomerLocalService.addAccountCustomer(
+				accountEntry.getUserId(), user.getUserId(),
 				accountEntry.getAccountEntryId(),
-				new int[] {AccountCustomerConstants.ROLE_WATCHER},
-				new int[] {AccountCustomerConstants.NOTIFICATIONS_ALL});
+				AccountCustomerConstants.ROLE_WATCHER,
+				AccountCustomerConstants.NOTIFICATIONS_ALL);
 
 			itr.remove();
 		}
@@ -450,10 +450,10 @@ public class AccountEntryLocalServiceImpl
 
 		// Account customer
 
-		accountCustomerLocalService.addAccountCustomers(
-			userId, new long[] {userId}, accountEntry.getAccountEntryId(),
-			new int[] {AccountCustomerConstants.ROLE_DEVELOPER},
-			new int[] {AccountCustomerConstants.NOTIFICATIONS_NONE});
+		accountCustomerLocalService.addAccountCustomer(
+			userId, userId, accountEntry.getAccountEntryId(),
+			AccountCustomerConstants.ROLE_DEVELOPER,
+			AccountCustomerConstants.NOTIFICATIONS_NONE);
 
 		// Order entry
 

@@ -16,6 +16,10 @@ $text-color: #474A4B;
 		.inactive td {
 			background-color: #FCC;
 		}
+
+		.lfr-role-column {
+			min-width: 0;
+		}
 	}
 
 	.account-environment {

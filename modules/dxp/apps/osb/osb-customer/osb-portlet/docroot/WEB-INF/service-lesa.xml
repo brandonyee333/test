@@ -1810,6 +1810,7 @@
 		<exception>AwayMessageDate</exception>
 		<exception>AwayMessageMessage</exception>
 		<exception>DuplicateAccountAttachment</exception>
+		<exception>DuplicateAccountCustomer</exception>
 		<exception>DuplicateAccountEntry</exception>
 		<exception>DuplicateAccountEnvironment</exception>
 		<exception>DuplicateAccountEnvironmentAttachment</exception>

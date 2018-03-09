@@ -33,6 +33,7 @@ import com.liferay.osb.exception.AccountEnvironmentEnvDBException;
 import com.liferay.osb.exception.AccountEnvironmentEnvLFRException;
 import com.liferay.osb.exception.AccountEnvironmentEnvOSException;
 import com.liferay.osb.exception.AccountEnvironmentNameException;
+import com.liferay.osb.exception.DuplicateAccountCustomerException;
 import com.liferay.osb.exception.DuplicateAccountEntryException;
 import com.liferay.osb.exception.DuplicateAccountEnvironmentException;
 import com.liferay.osb.exception.DuplicateHolidayEntryException;
@@ -135,6 +136,7 @@ import com.liferay.portal.kernel.exception.ContactFirstNameException;
 import com.liferay.portal.kernel.exception.ContactLastNameException;
 import com.liferay.portal.kernel.exception.DuplicateUserEmailAddressException;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.ReservedUserEmailAddressException;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
@@ -156,6 +158,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -347,6 +350,20 @@ public class AdminPortlet extends MVCPortlet {
 			new ProvisioningCreateRabbitMQConsumer();
 
 		rabbitMQConsumer.parse(routingKey, message, propertiesMap);
+	}
+
+	public void deleteAccountCustomer(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		long accountCustomerId = ParamUtil.getLong(
+			actionRequest, "accountCustomerId");
+
+		AccountCustomerLocalServiceUtil.deleteAccountCustomer(
+			themeDisplay.getUserId(), accountCustomerId);
 	}
 
 	public void deleteAccountEntry(
@@ -622,37 +639,38 @@ public class AdminPortlet extends MVCPortlet {
 		}
 	}
 
-	public void updateAccountCustomers(
+	public void updateAccountCustomer(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long[] addUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "addUserIds"), 0L);
-		long[] removeUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "removeUserIds"), 0L);
+		long accountCustomerId = ParamUtil.getLong(
+			actionRequest, "accountCustomerId");
 
+		String emailAddress = ParamUtil.getString(
+			actionRequest, "emailAddress");
 		long accountEntryId = ParamUtil.getLong(
 			actionRequest, "accountEntryId");
+		int role = ParamUtil.getInteger(
+			actionRequest, "role_" + accountCustomerId);
+		int notifications = ParamUtil.getInteger(
+			actionRequest, "notifications_" + accountCustomerId);
 
-		int[] roles = new int[addUserIds.length];
-		int[] notifications = new int[addUserIds.length];
-
-		for (int i = 0; i < addUserIds.length; i++) {
-			long userId = addUserIds[i];
-
-			roles[i] = ParamUtil.getInteger(actionRequest, "role_" + userId);
-			notifications[i] = ParamUtil.getInteger(
-				actionRequest, "notifications_" + userId);
+		if (accountCustomerId > 0) {
+			AccountCustomerLocalServiceUtil.updateAccountCustomer(
+				themeDisplay.getUserId(), accountCustomerId, role,
+				notifications);
 		}
+		else {
+			User user = UserLocalServiceUtil.getUserByEmailAddress(
+				themeDisplay.getCompanyId(), emailAddress);
 
-		AccountCustomerLocalServiceUtil.addAccountCustomers(
-			themeDisplay.getUserId(), addUserIds, accountEntryId, roles,
-			notifications);
-		AccountCustomerLocalServiceUtil.deleteAccountCustomers(
-			themeDisplay.getUserId(), removeUserIds, accountEntryId);
+			AccountCustomerLocalServiceUtil.addAccountCustomer(
+				themeDisplay.getUserId(), user.getUserId(), accountEntryId,
+				role, notifications);
+		}
 	}
 
 	public void updateAccountEntry(
@@ -1643,6 +1661,7 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof AddressZipException ||
 			cause instanceof ContactFirstNameException ||
 			cause instanceof ContactLastNameException ||
+			cause instanceof DuplicateAccountCustomerException ||
 			cause instanceof DuplicateAccountEntryException ||
 			cause instanceof DuplicateAccountEnvironmentException ||
 			cause instanceof DuplicateHolidayEntryException ||
@@ -1667,6 +1686,7 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof NoSuchOfferingDefinitionException ||
 			cause instanceof NoSuchProductEntryException ||
 			cause instanceof NoSuchSupportResponseException ||
+			cause instanceof NoSuchUserException ||
 			cause instanceof OfferingBundleNameException ||
 			cause instanceof OrderEntryActualStartDateException ||
 			cause instanceof PartnerEntryCodeException ||

@@ -43,10 +43,10 @@ public class Upgrade_20170616160207742_AccountCustomer
 	protected void addAccountCustomer(long userId, long accountEntryId)
 		throws PortalException {
 
-		AccountCustomerLocalServiceUtil.addAccountCustomers(
-			OSBConstants.USER_DEFAULT_USER_ID, new long[] {userId},
-			accountEntryId, new int[] {AccountCustomerConstants.ROLE_WATCHER},
-			new int[] {AccountCustomerConstants.NOTIFICATIONS_ALL});
+		AccountCustomerLocalServiceUtil.addAccountCustomer(
+			OSBConstants.USER_DEFAULT_USER_ID, userId, accountEntryId,
+			AccountCustomerConstants.ROLE_WATCHER,
+			AccountCustomerConstants.NOTIFICATIONS_ALL);
 	}
 
 	@Override

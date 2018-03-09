@@ -102,10 +102,9 @@ public class OSBCustomerQAInfrastructureUtil {
 		if (!AccountCustomerLocalServiceUtil.hasAccountCustomer(
 				userId, accountEntry.getAccountEntryId())) {
 
-			AccountCustomerLocalServiceUtil.addAccountCustomers(
-				OSBConstants.USER_DEFAULT_USER_ID, new long[] {userId},
-				accountEntry.getAccountEntryId(), new int[] {role},
-				new int[] {notifications});
+			AccountCustomerLocalServiceUtil.addAccountCustomer(
+				OSBConstants.USER_DEFAULT_USER_ID, userId,
+				accountEntry.getAccountEntryId(), role, notifications);
 		}
 
 		if (_log.isInfoEnabled()) {
