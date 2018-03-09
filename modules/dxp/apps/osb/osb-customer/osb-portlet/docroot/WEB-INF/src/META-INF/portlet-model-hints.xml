@@ -204,6 +204,22 @@
 		<field name="name" type="String" />
 		<field name="organizationId" type="long" />
 	</model>
+	<model name="com.liferay.osb.model.CorpProjectMessage">
+		<field name="uuid" type="String" />
+		<field name="corpProjectMessageId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="corpProjectId" type="long" />
+		<field name="type" type="int" />
+		<field name="severityLevel" type="int" />
+		<field name="title" type="String" />
+		<field name="content" type="String" />
+		<field name="displayCP" type="boolean" />
+		<field name="displayLCS" type="boolean" />
+		<field name="displayLESA" type="boolean" />
+	</model>
 	<model name="com.liferay.osb.model.ExternalIdMapper">
 		<field name="externalIdMapperId" type="long" />
 		<field name="createDate" type="Date" />

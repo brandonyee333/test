@@ -30,6 +30,7 @@ import com.liferay.osb.service.persistence.AccountProjectPersistence;
 import com.liferay.osb.service.persistence.AccountWorkerPersistence;
 import com.liferay.osb.service.persistence.AuditActionPersistence;
 import com.liferay.osb.service.persistence.AuditEntryPersistence;
+import com.liferay.osb.service.persistence.CorpProjectMessagePersistence;
 import com.liferay.osb.service.persistence.CorpProjectPersistence;
 import com.liferay.osb.service.persistence.ExternalIdMapperPersistence;
 import com.liferay.osb.service.persistence.FeedbackEntryPersistence;
@@ -930,6 +931,63 @@ public abstract class AccountAttachmentServiceBaseImpl extends BaseServiceImpl
 	public void setCorpProjectPersistence(
 		CorpProjectPersistence corpProjectPersistence) {
 		this.corpProjectPersistence = corpProjectPersistence;
+	}
+
+	/**
+	 * Returns the corp project message local service.
+	 *
+	 * @return the corp project message local service
+	 */
+	public com.liferay.osb.service.CorpProjectMessageLocalService getCorpProjectMessageLocalService() {
+		return corpProjectMessageLocalService;
+	}
+
+	/**
+	 * Sets the corp project message local service.
+	 *
+	 * @param corpProjectMessageLocalService the corp project message local service
+	 */
+	public void setCorpProjectMessageLocalService(
+		com.liferay.osb.service.CorpProjectMessageLocalService corpProjectMessageLocalService) {
+		this.corpProjectMessageLocalService = corpProjectMessageLocalService;
+	}
+
+	/**
+	 * Returns the corp project message remote service.
+	 *
+	 * @return the corp project message remote service
+	 */
+	public com.liferay.osb.service.CorpProjectMessageService getCorpProjectMessageService() {
+		return corpProjectMessageService;
+	}
+
+	/**
+	 * Sets the corp project message remote service.
+	 *
+	 * @param corpProjectMessageService the corp project message remote service
+	 */
+	public void setCorpProjectMessageService(
+		com.liferay.osb.service.CorpProjectMessageService corpProjectMessageService) {
+		this.corpProjectMessageService = corpProjectMessageService;
+	}
+
+	/**
+	 * Returns the corp project message persistence.
+	 *
+	 * @return the corp project message persistence
+	 */
+	public CorpProjectMessagePersistence getCorpProjectMessagePersistence() {
+		return corpProjectMessagePersistence;
+	}
+
+	/**
+	 * Sets the corp project message persistence.
+	 *
+	 * @param corpProjectMessagePersistence the corp project message persistence
+	 */
+	public void setCorpProjectMessagePersistence(
+		CorpProjectMessagePersistence corpProjectMessagePersistence) {
+		this.corpProjectMessagePersistence = corpProjectMessagePersistence;
 	}
 
 	/**
@@ -3601,6 +3659,12 @@ public abstract class AccountAttachmentServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.osb.service.CorpProjectService corpProjectService;
 	@BeanReference(type = CorpProjectPersistence.class)
 	protected CorpProjectPersistence corpProjectPersistence;
+	@BeanReference(type = com.liferay.osb.service.CorpProjectMessageLocalService.class)
+	protected com.liferay.osb.service.CorpProjectMessageLocalService corpProjectMessageLocalService;
+	@BeanReference(type = com.liferay.osb.service.CorpProjectMessageService.class)
+	protected com.liferay.osb.service.CorpProjectMessageService corpProjectMessageService;
+	@BeanReference(type = CorpProjectMessagePersistence.class)
+	protected CorpProjectMessagePersistence corpProjectMessagePersistence;
 	@BeanReference(type = com.liferay.osb.service.ExternalIdMapperLocalService.class)
 	protected com.liferay.osb.service.ExternalIdMapperLocalService externalIdMapperLocalService;
 	@BeanReference(type = ExternalIdMapperPersistence.class)

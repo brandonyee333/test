@@ -32,6 +32,7 @@ import com.liferay.osb.service.persistence.AccountProjectPersistence;
 import com.liferay.osb.service.persistence.AccountWorkerPersistence;
 import com.liferay.osb.service.persistence.AuditActionPersistence;
 import com.liferay.osb.service.persistence.AuditEntryPersistence;
+import com.liferay.osb.service.persistence.CorpProjectMessagePersistence;
 import com.liferay.osb.service.persistence.CorpProjectPersistence;
 import com.liferay.osb.service.persistence.ExternalIdMapperPersistence;
 import com.liferay.osb.service.persistence.FeedbackEntryPersistence;
@@ -924,6 +925,44 @@ public abstract class HolidayEntryLocalServiceBaseImpl
 	public void setCorpProjectPersistence(
 		CorpProjectPersistence corpProjectPersistence) {
 		this.corpProjectPersistence = corpProjectPersistence;
+	}
+
+	/**
+	 * Returns the corp project message local service.
+	 *
+	 * @return the corp project message local service
+	 */
+	public com.liferay.osb.service.CorpProjectMessageLocalService getCorpProjectMessageLocalService() {
+		return corpProjectMessageLocalService;
+	}
+
+	/**
+	 * Sets the corp project message local service.
+	 *
+	 * @param corpProjectMessageLocalService the corp project message local service
+	 */
+	public void setCorpProjectMessageLocalService(
+		com.liferay.osb.service.CorpProjectMessageLocalService corpProjectMessageLocalService) {
+		this.corpProjectMessageLocalService = corpProjectMessageLocalService;
+	}
+
+	/**
+	 * Returns the corp project message persistence.
+	 *
+	 * @return the corp project message persistence
+	 */
+	public CorpProjectMessagePersistence getCorpProjectMessagePersistence() {
+		return corpProjectMessagePersistence;
+	}
+
+	/**
+	 * Sets the corp project message persistence.
+	 *
+	 * @param corpProjectMessagePersistence the corp project message persistence
+	 */
+	public void setCorpProjectMessagePersistence(
+		CorpProjectMessagePersistence corpProjectMessagePersistence) {
+		this.corpProjectMessagePersistence = corpProjectMessagePersistence;
 	}
 
 	/**
@@ -2811,6 +2850,10 @@ public abstract class HolidayEntryLocalServiceBaseImpl
 	protected com.liferay.osb.service.CorpProjectLocalService corpProjectLocalService;
 	@BeanReference(type = CorpProjectPersistence.class)
 	protected CorpProjectPersistence corpProjectPersistence;
+	@BeanReference(type = com.liferay.osb.service.CorpProjectMessageLocalService.class)
+	protected com.liferay.osb.service.CorpProjectMessageLocalService corpProjectMessageLocalService;
+	@BeanReference(type = CorpProjectMessagePersistence.class)
+	protected CorpProjectMessagePersistence corpProjectMessagePersistence;
 	@BeanReference(type = com.liferay.osb.service.ExternalIdMapperLocalService.class)
 	protected com.liferay.osb.service.ExternalIdMapperLocalService externalIdMapperLocalService;
 	@BeanReference(type = ExternalIdMapperPersistence.class)

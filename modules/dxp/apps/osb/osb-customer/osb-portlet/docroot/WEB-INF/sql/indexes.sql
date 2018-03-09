@@ -55,6 +55,10 @@ create index IX_C2AF513 on OSB_CorpProject (name[$COLUMN_LENGTH:75$]);
 create index IX_14940FF6 on OSB_CorpProject (organizationId);
 create index IX_D682EE0 on OSB_CorpProject (uuid_[$COLUMN_LENGTH:75$]);
 
+create index IX_F22B253A on OSB_CorpProjectMessage (corpProjectId, type_);
+create index IX_73BC3756 on OSB_CorpProjectMessage (type_);
+create index IX_A16BF735 on OSB_CorpProjectMessage (uuid_[$COLUMN_LENGTH:75$]);
+
 create index IX_86A7752 on OSB_ExternalIdMapper (classNameId, classPK, type_);
 create index IX_8FBE42CF on OSB_ExternalIdMapper (classNameId, type_, externalId[$COLUMN_LENGTH:75$]);
 

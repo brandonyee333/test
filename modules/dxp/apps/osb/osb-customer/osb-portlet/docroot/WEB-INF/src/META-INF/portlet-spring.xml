@@ -44,6 +44,9 @@
 	<bean class="com.liferay.osb.service.impl.CorpProjectLocalServiceImpl" id="com.liferay.osb.service.CorpProjectLocalService" />
 	<bean class="com.liferay.osb.service.impl.CorpProjectServiceImpl" id="com.liferay.osb.service.CorpProjectService" />
 	<bean class="com.liferay.osb.service.persistence.impl.CorpProjectPersistenceImpl" id="com.liferay.osb.service.persistence.CorpProjectPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.service.impl.CorpProjectMessageLocalServiceImpl" id="com.liferay.osb.service.CorpProjectMessageLocalService" />
+	<bean class="com.liferay.osb.service.impl.CorpProjectMessageServiceImpl" id="com.liferay.osb.service.CorpProjectMessageService" />
+	<bean class="com.liferay.osb.service.persistence.impl.CorpProjectMessagePersistenceImpl" id="com.liferay.osb.service.persistence.CorpProjectMessagePersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.ExternalIdMapperLocalServiceImpl" id="com.liferay.osb.service.ExternalIdMapperLocalService" />
 	<bean class="com.liferay.osb.service.persistence.impl.ExternalIdMapperPersistenceImpl" id="com.liferay.osb.service.persistence.ExternalIdMapperPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.FeedbackEntryLocalServiceImpl" id="com.liferay.osb.service.FeedbackEntryLocalService" />

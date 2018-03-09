@@ -195,6 +195,23 @@ create table OSB_CorpProject (
 	organizationId LONG
 );
 
+create table OSB_CorpProjectMessage (
+	uuid_ VARCHAR(75) null,
+	corpProjectMessageId LONG not null primary key,
+	userId LONG,
+	userName VARCHAR(75) null,
+	createDate DATE null,
+	modifiedDate DATE null,
+	corpProjectId LONG,
+	type_ INTEGER,
+	severityLevel INTEGER,
+	title VARCHAR(75) null,
+	content VARCHAR(75) null,
+	displayCP BOOLEAN,
+	displayLCS BOOLEAN,
+	displayLESA BOOLEAN
+);
+
 create table OSB_ExternalIdMapper (
 	externalIdMapperId LONG not null primary key,
 	createDate DATE null,
