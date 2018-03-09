@@ -303,48 +303,87 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		</c:when>
 	</c:choose>
 
-	var onChange = function(event) {
+	function <portlet:namespace />determineModifiedFieldLabel(event) {
 		var name = event.currentTarget.getAttribute('name');
 
-		label = A.one('label[for=' + name + ']');
+		var labelNode = A.one('label[for=' + name + ']');
 
 		if (name === '<portlet:namespace />ignoreDueDate') {
-			label = A.one('.ignore-due-date .control-label');
+			labelNode = A.one('.ignore-due-date .control-label');
 		}
 
 		if (name.includes('<portlet:namespace />dueDate')) {
-			label = A.one('#<portlet:namespace />dueDateLabel');
+			labelNode = A.one('#<portlet:namespace />dueDateLabel');
 		}
 
-		if (label) {
-			label.addClass('field-modified');
-
-			var tabId = label.ancestor('.tab-content-tab').getAttribute('id');
-
-			if (tabId) {
-				var tab = A.one('#' + tabId + 'Header');
-
-				if (tab && !tab.html().includes('Modified')) {
-					tab.append('(Modified)'.bold());
-
-					tab.addClass('field-modified');
-				}
-			}
-
-			var modifiedInputField = A.one('<portlet:namespace />modified');
-
-			if (modifiedInputField) {
-				modifiedInputField.val('true');
-			}
+		if (labelNode) {
+			<portlet:namespace />displayAsModified(labelNode);
 		}
 	};
+
+	var MODIFIED_TEXT_TPL = '<bold class="field-modified">(' +
+		Liferay.Language.get('modified') +
+		')</bold>';
+
+	function <portlet:namespace />displayAsModified(node) {
+		node.addClass('field-modified');
+
+		var tabId = node.ancestor('.tab-content-tab').getAttribute('id');
+
+		if (tabId) {
+			var tab = A.one('#' + tabId + 'Header');
+
+			if (tab && !tab.one('.field-modified')) {
+				tab.append(MODIFIED_TEXT_TPL);
+			}
+		}
+
+		var modifiedInputField = A.one('<portlet:namespace />modified');
+
+		if (modifiedInputField) {
+			modifiedInputField.val('true');
+		}
+	}
 
 	var editTicketTabContent = A.one('#<portlet:namespace />editTicketTabContent');
 
 	if (editTicketTabContent) {
-		editTicketTabContent.delegate('change', onChange, 'input[type=checkbox], select');
-		editTicketTabContent.delegate('keyup', onChange, 'input[type=text], textarea');
+		editTicketTabContent.delegate('change', <portlet:namespace />determineModifiedFieldLabel, 'input[type=checkbox], select');
+
+		editTicketTabContent.delegate('keyup', <portlet:namespace />determineModifiedFieldLabel, 'input[type=text], textarea');
 	}
+
+	var dueDateDatePicker = Liferay.component('<portlet:namespace />dueDateDatePicker');
+
+	var initialDate = dueDateDatePicker.getDate().valueOf();
+
+	dueDateDatePicker.after('datepicker:selectionChange',
+		function(event) {
+			var labelNode = A.one('#<portlet:namespace />dueDateLabel');
+
+			var currentDate = dueDateDatePicker.getDate().valueOf();
+
+			if (currentDate !== initialDate) {
+				<portlet:namespace />displayAsModified(labelNode);
+			}
+		}
+	);
+
+	var dueDateTimePicker = Liferay.component('<portlet:namespace />dueDateTimeTimePicker');
+
+	var initialTime = dueDateTimePicker.getTime().toTimeString();
+
+	dueDateTimePicker.after('timepicker:selectionChange',
+		function(event) {
+			var labelNode = A.one('#<portlet:namespace />dueDateLabel');
+
+			var currentTime = dueDateTimePicker.getTime().toTimeString();
+
+			if (currentTime !== initialTime) {
+				<portlet:namespace />displayAsModified(labelNode);
+			}
+		}
+	);
 
 	A.getDoc().on('key', <portlet:namespace />confirmActionCancel, 'esc');
 </aui:script>
