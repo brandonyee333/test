@@ -47,11 +47,12 @@ public class AccountCustomerLocalServiceWrapper
 	}
 
 	@Override
-	public void addAccountCustomers(long userId, long[] userIds,
-		long accountEntryId, int[] roles, int[] notifications)
+	public com.liferay.osb.model.AccountCustomer addAccountCustomer(
+		long userId, long customerUserId, long accountEntryId, int role,
+		int notifications)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountCustomerLocalService.addAccountCustomers(userId, userIds,
-			accountEntryId, roles, notifications);
+		return _accountCustomerLocalService.addAccountCustomer(userId,
+			customerUserId, accountEntryId, role, notifications);
 	}
 
 	/**
@@ -101,17 +102,17 @@ public class AccountCustomerLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteAccountCustomers(long userId)
+	public com.liferay.osb.model.AccountCustomer deleteAccountCustomer(
+		long userId, long accountCustomerId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountCustomerLocalService.deleteAccountCustomers(userId);
+		return _accountCustomerLocalService.deleteAccountCustomer(userId,
+			accountCustomerId);
 	}
 
 	@Override
-	public void deleteAccountCustomers(long userId, long[] userIds,
-		long accountEntryId)
+	public void deleteAccountCustomers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountCustomerLocalService.deleteAccountCustomers(userId, userIds,
-			accountEntryId);
+		_accountCustomerLocalService.deleteAccountCustomers(userId);
 	}
 
 	@Override
@@ -353,6 +354,14 @@ public class AccountCustomerLocalServiceWrapper
 	public com.liferay.osb.model.AccountCustomer updateAccountCustomer(
 		com.liferay.osb.model.AccountCustomer accountCustomer) {
 		return _accountCustomerLocalService.updateAccountCustomer(accountCustomer);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountCustomer updateAccountCustomer(
+		long userId, long accountCustomerId, int role, int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountCustomerLocalService.updateAccountCustomer(userId,
+			accountCustomerId, role, notifications);
 	}
 
 	@Override

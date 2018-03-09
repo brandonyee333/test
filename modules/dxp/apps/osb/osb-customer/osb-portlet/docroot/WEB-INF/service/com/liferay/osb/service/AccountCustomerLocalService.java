@@ -70,8 +70,8 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountCustomer addAccountCustomer(AccountCustomer accountCustomer);
 
-	public void addAccountCustomers(long userId, long[] userIds,
-		long accountEntryId, int[] roles, int[] notifications)
+	public AccountCustomer addAccountCustomer(long userId, long customerUserId,
+		long accountEntryId, int role, int notifications)
 		throws PortalException;
 
 	/**
@@ -106,10 +106,10 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public AccountCustomer deleteAccountCustomer(long userId,
 		AccountCustomer accountCustomer) throws PortalException;
 
-	public void deleteAccountCustomers(long userId) throws PortalException;
+	public AccountCustomer deleteAccountCustomer(long userId,
+		long accountCustomerId) throws PortalException;
 
-	public void deleteAccountCustomers(long userId, long[] userIds,
-		long accountEntryId) throws PortalException;
+	public void deleteAccountCustomers(long userId) throws PortalException;
 
 	public void deleteAccountEntryAccountCustomers(long accountEntryId)
 		throws PortalException;
@@ -270,4 +270,8 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountCustomer updateAccountCustomer(
 		AccountCustomer accountCustomer);
+
+	public AccountCustomer updateAccountCustomer(long userId,
+		long accountCustomerId, int role, int notifications)
+		throws PortalException;
 }

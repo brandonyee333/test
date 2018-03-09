@@ -52,12 +52,13 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().addAccountCustomer(accountCustomer);
 	}
 
-	public static void addAccountCustomers(long userId, long[] userIds,
-		long accountEntryId, int[] roles, int[] notifications)
+	public static com.liferay.osb.model.AccountCustomer addAccountCustomer(
+		long userId, long customerUserId, long accountEntryId, int role,
+		int notifications)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addAccountCustomers(userId, userIds, accountEntryId, roles,
-			notifications);
+		return getService()
+				   .addAccountCustomer(userId, customerUserId, accountEntryId,
+			role, notifications);
 	}
 
 	/**
@@ -101,15 +102,15 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().deleteAccountCustomer(userId, accountCustomer);
 	}
 
+	public static com.liferay.osb.model.AccountCustomer deleteAccountCustomer(
+		long userId, long accountCustomerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteAccountCustomer(userId, accountCustomerId);
+	}
+
 	public static void deleteAccountCustomers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteAccountCustomers(userId);
-	}
-
-	public static void deleteAccountCustomers(long userId, long[] userIds,
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteAccountCustomers(userId, userIds, accountEntryId);
 	}
 
 	public static void deleteAccountEntryAccountCustomers(long accountEntryId)
@@ -319,6 +320,14 @@ public class AccountCustomerLocalServiceUtil {
 	public static com.liferay.osb.model.AccountCustomer updateAccountCustomer(
 		com.liferay.osb.model.AccountCustomer accountCustomer) {
 		return getService().updateAccountCustomer(accountCustomer);
+	}
+
+	public static com.liferay.osb.model.AccountCustomer updateAccountCustomer(
+		long userId, long accountCustomerId, int role, int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateAccountCustomer(userId, accountCustomerId, role,
+			notifications);
 	}
 
 	public static void clearService() {
