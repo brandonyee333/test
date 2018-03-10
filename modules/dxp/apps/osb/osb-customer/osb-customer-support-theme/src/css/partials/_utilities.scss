@@ -53,6 +53,16 @@
 	padding-left: 50px;
 }
 
+.element-has-error {
+	.control-label, .help-block {
+		color: $has-error-color;
+	}
+
+	.form-control {
+		border-color: $has-error-color;
+	}
+}
+
 .expired-text {
 	color: $urgent;
 	font-weight: bold;
