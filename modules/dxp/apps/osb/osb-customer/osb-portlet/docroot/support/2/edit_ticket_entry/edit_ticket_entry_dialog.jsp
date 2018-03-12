@@ -61,7 +61,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 <aui:form action="<%= updateTicketEntryURL %>" enctype="multipart/form-data" method="post" name="updateTicketFm" onSubmit='<%= renderResponse.getNamespace() + "submit();" %>'>
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
-	<aui:input name="modified" type="hidden" value="false" />
 	<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
 	<aui:input name="reportedByUserId" type="hidden" value="<%= ticketEntry.getUserId() %>" />
 	<aui:input name="ticketEntryId" type="hidden" value="<%= ticketEntry.getTicketEntryId() %>" />
@@ -129,19 +128,26 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		);
 	}
 
-	function <portlet:namespace />confirmActionCancel() {
-		var modified = document.getElementById('<portlet:namespace />modified');
+	Liferay.provide(
+		window,
+		'<portlet:namespace />confirmActionCancel',
+		function() {
+			var A = AUI();
 
-		if (modified.value == 'true') {
-			var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-ticket.-are-you-sure-you-want-to-cancel-editing") %>');
+			var updateTicketFm = A.one('#<portlet:namespace />updateTicketFm');
 
-			if (!cancelEdit) {
-				return;
+			if (updateTicketFm.getData('modified')) {
+				var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-ticket.-are-you-sure-you-want-to-cancel-editing") %>');
+
+				if (!cancelEdit) {
+					return;
+				}
 			}
-		}
 
-		<portlet:namespace />closeEditTicketDialog();
-	}
+			<portlet:namespace />closeEditTicketDialog();
+		},
+		['aui-base']
+	);
 
 	function <portlet:namespace />submit() {
 		event.preventDefault();
@@ -338,10 +344,10 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 			}
 		}
 
-		var modifiedInputField = A.one('<portlet:namespace />modified');
+		var updateTicketFm = A.one('#<portlet:namespace />updateTicketFm');
 
-		if (modifiedInputField) {
-			modifiedInputField.val('true');
+		if (updateTicketFm) {
+			updateTicketFm.setData('modified', true);
 		}
 	}
 
