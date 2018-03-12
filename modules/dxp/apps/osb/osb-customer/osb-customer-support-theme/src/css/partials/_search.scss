@@ -453,6 +453,66 @@
 	}
 }
 
+.taglib-page-iterator {
+	clear: both;
+	height: auto;
+	overflow: hidden;
+	width: auto;
+
+	.search-pages {
+		float: right;
+
+		.page-links {
+			a, span {
+				background: url() no-repeat 0 0;
+				border-left: 1px solid #CCC;
+				display: inline-block;
+				line-height: 1;
+				padding: 2px 15px;
+			}
+
+			span {
+				background-position: 0 100%;
+
+				.first, .previous {
+					background-position: 0 100%;
+				}
+
+				.next {
+					background-position: 100% 100%;
+				}
+			}
+
+			a.first, span.first {
+				background-image: url(../images/arrows/paging_first.png);
+				background-repeat: no-repeat;
+				border-left: none;
+				padding-right: 5px;
+			}
+
+			a.next, span.next {
+				background-image: url(../images/arrows/paging_next.png);
+				background-position: 100% 0;
+				background-repeat: no-repeat;
+				padding-left: 5px;
+			}
+
+			a.previous, span.previous {
+				background-image: url(../images/arrows/paging_previous.png);
+				background-repeat: no-repeat;
+				padding-right: 5px;
+			}
+		}
+	}
+
+	.search-results {
+		color: #555;
+		float: left;
+		line-height: unset;
+		margin: 0;
+	}
+}
+
 .taglib-search-iterator {
 	background: none;
 	border-width: 0;
