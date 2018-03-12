@@ -214,6 +214,39 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		return returnVal;
 	}
 
+	var MODIFIED_TEXT_TPL = '<bold class="field-modified">(' +
+		Liferay.Language.get('modified') +
+		')</bold>';
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />displayAsModified',
+		function(node) {
+			var A = AUI();
+
+			var node = A.Node.scrubVal(node);
+
+			node.addClass('field-modified');
+
+			var tabId = node.ancestor('.tab-content-tab').getAttribute('id');
+
+			if (tabId) {
+				var tab = A.one('#' + tabId + 'Header');
+
+				if (tab && !tab.one('.field-modified')) {
+					tab.append(MODIFIED_TEXT_TPL);
+				}
+			}
+
+			var updateTicketFm = A.one('#<portlet:namespace />updateTicketFm');
+
+			if (updateTicketFm) {
+				updateTicketFm.setData('modified', true);
+			}
+		},
+		['aui-base']
+	);
+
 	Liferay.provide(
 		window,
 		'<portlet:namespace />loadEnvironmentDetailsTab',
@@ -326,30 +359,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 			<portlet:namespace />displayAsModified(labelNode);
 		}
 	};
-
-	var MODIFIED_TEXT_TPL = '<bold class="field-modified">(' +
-		Liferay.Language.get('modified') +
-		')</bold>';
-
-	function <portlet:namespace />displayAsModified(node) {
-		node.addClass('field-modified');
-
-		var tabId = node.ancestor('.tab-content-tab').getAttribute('id');
-
-		if (tabId) {
-			var tab = A.one('#' + tabId + 'Header');
-
-			if (tab && !tab.one('.field-modified')) {
-				tab.append(MODIFIED_TEXT_TPL);
-			}
-		}
-
-		var updateTicketFm = A.one('#<portlet:namespace />updateTicketFm');
-
-		if (updateTicketFm) {
-			updateTicketFm.setData('modified', true);
-		}
-	}
 
 	var editTicketTabContent = A.one('#<portlet:namespace />editTicketTabContent');
 

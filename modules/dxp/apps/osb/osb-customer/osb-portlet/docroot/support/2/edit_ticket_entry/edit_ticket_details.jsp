@@ -394,11 +394,12 @@ if (liferayIncOrg || partnerWorker) {
 		document.<portlet:namespace />updateTicketFm.<portlet:namespace />offeringEntryId.value = offeringEntryId;
 
 		var productEntryNameEl = document.getElementById('<portlet:namespace />productEntryName');
-		var productLabelEl = document.getElementById('<portlet:namespace />productLabel');
 
 		productEntryNameEl.innerHTML = productEntryName;
 
-		productLabelEl.classList.add('field-modified');
+		var productLabelEl = document.getElementById('<portlet:namespace />productLabel');
+
+		<portlet:namespace />displayAsModified(productLabelEl);
 
 		<portlet:namespace />selectProductComponents(productEntryName);
 	}
@@ -412,7 +413,7 @@ if (liferayIncOrg || partnerWorker) {
 
 		var reporterLabelEl = document.querySelector('.reporter .control-label');
 
-		reporterLabelEl.classList.add('field-modified');
+		<portlet:namespace />displayAsModified(reporterLabelEl);
 	}
 
 	Liferay.provide(
