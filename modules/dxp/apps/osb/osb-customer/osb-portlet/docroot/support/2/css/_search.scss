@@ -428,12 +428,12 @@
 		border: 1px solid $border-color;
 		color: $medium-gray;
 
-		.no-response-needed {
-			background-color: $light-bg;
-		}
-
 		&.selected {
 			background-color: $dynamic-upload-bg;
+		}
+
+		.no-response-needed {
+			background-color: $light-bg;
 		}
 	}
 
