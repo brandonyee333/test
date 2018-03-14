@@ -109,8 +109,6 @@ for (String categoryKey : categoryKeys) {
 				if (event.portletId === '<%= portletDisplay.getRootPortletId() %>') {
 					Liferay.detach('showTab', updateRedirectField);
 					Liferay.detach('destroyPortlet', clearFormNavigatorHandles);
-
-					Liferay.Store('<portlet:namespace /><%= id %>', null);
 				}
 			};
 
