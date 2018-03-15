@@ -74,6 +74,10 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 		long accountEntryId, int role, int notifications)
 		throws PortalException;
 
+	public AccountCustomer addAccountCustomer(long userId,
+		java.lang.String emailAddress, long accountEntryId, int role,
+		int notifications) throws PortalException;
+
 	/**
 	* Creates a new account customer with the primary key. Does not add the account customer to the database.
 	*

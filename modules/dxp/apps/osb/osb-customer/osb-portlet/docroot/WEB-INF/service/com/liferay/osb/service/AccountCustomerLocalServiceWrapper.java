@@ -55,6 +55,15 @@ public class AccountCustomerLocalServiceWrapper
 			customerUserId, accountEntryId, role, notifications);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountCustomer addAccountCustomer(
+		long userId, java.lang.String emailAddress, long accountEntryId,
+		int role, int notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountCustomerLocalService.addAccountCustomer(userId,
+			emailAddress, accountEntryId, role, notifications);
+	}
+
 	/**
 	* Creates a new account customer with the primary key. Does not add the account customer to the database.
 	*

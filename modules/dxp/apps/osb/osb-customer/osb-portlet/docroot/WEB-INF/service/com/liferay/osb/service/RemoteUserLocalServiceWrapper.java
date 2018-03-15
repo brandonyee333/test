@@ -51,6 +51,13 @@ public class RemoteUserLocalServiceWrapper implements RemoteUserLocalService,
 		_remoteUserLocalService.deleteRoleUser(roleId, userId);
 	}
 
+	@Override
+	public com.liferay.portal.kernel.model.User fetchUserByEmailAddress(
+		java.lang.String emailAddress)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _remoteUserLocalService.fetchUserByEmailAddress(emailAddress);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
