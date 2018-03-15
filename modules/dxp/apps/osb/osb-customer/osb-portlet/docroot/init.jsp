@@ -146,6 +146,7 @@ page import="com.liferay.osb.exception.PartnerEntryCodeException" %><%@
 page import="com.liferay.osb.exception.PartnerEntryParentPartnerEntryException" %><%@
 page import="com.liferay.osb.exception.ProductEntryEnvironmentException" %><%@
 page import="com.liferay.osb.exception.ProductEntryNameException" %><%@
+page import="com.liferay.osb.exception.RemoteServiceException" %><%@
 page import="com.liferay.osb.exception.RequiredAccountEntryException" %><%@
 page import="com.liferay.osb.exception.RequiredOfferingDefinitionException" %><%@
 page import="com.liferay.osb.exception.RequiredOfferingEntryException" %><%@

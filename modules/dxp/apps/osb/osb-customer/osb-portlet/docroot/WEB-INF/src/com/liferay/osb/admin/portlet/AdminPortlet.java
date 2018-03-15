@@ -60,6 +60,7 @@ import com.liferay.osb.exception.PartnerEntryCodeException;
 import com.liferay.osb.exception.PartnerEntryParentPartnerEntryException;
 import com.liferay.osb.exception.ProductEntryEnvironmentException;
 import com.liferay.osb.exception.ProductEntryNameException;
+import com.liferay.osb.exception.RemoteServiceException;
 import com.liferay.osb.exception.RequiredAccountEntryException;
 import com.liferay.osb.exception.RequiredOfferingDefinitionException;
 import com.liferay.osb.exception.RequiredOfferingEntryException;
@@ -1709,6 +1710,11 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof SupportTeamSupportLaborException ||
 			cause instanceof SupportWorkerMaxWorkException ||
 			cause instanceof UserEmailAddressException) {
+
+			return true;
+		}
+		else if (cause instanceof RemoteServiceException) {
+			_log.error(cause, cause);
 
 			return true;
 		}

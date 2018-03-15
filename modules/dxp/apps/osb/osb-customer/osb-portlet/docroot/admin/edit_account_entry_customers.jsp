@@ -54,6 +54,7 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 	<liferay-ui:error exception="<%= AccountEntryMaximumCustomersException.class %>" message="the-number-of-contacts-has-exceeded-the-maximum-number-of-contacts" />
 	<liferay-ui:error exception="<%= DuplicateAccountCustomerException.class %>" message="the-user-is-already-a-customer" />
 	<liferay-ui:error exception="<%= NoSuchUserException.class %>" message="the-user-could-not-be-found" />
+	<liferay-ui:error exception="<%= RemoteServiceException.class %>" message="there-was-an-error-connecting-to-web.liferay.com" />
 
 	<liferay-ui:search-container>
 
