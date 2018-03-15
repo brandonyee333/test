@@ -42,6 +42,12 @@ public class WebRESTWebServiceUtil {
 		getWebRESTWebService().deleteRolesUser(roleUUID, userUUID);
 	}
 
+	public static JSONObject getUsersEmailAddress(String emailAddress)
+		throws RemoteServiceException {
+
+		return getWebRESTWebService().getUsersEmailAddress(emailAddress);
+	}
+
 	public static WebRESTWebService getWebRESTWebService() {
 		return _webRESTWebService;
 	}

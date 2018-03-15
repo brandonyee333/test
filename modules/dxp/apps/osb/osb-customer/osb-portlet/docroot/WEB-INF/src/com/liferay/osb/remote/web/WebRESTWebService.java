@@ -32,6 +32,9 @@ public interface WebRESTWebService {
 	public void deleteRolesUser(String roleUUID, String userUUID)
 		throws RemoteServiceException;
 
+	public JSONObject getUsersEmailAddress(String emailAddress)
+		throws RemoteServiceException;
+
 	public JSONObject postCorpProjects(
 			String creatorUserUUID, String ownerUserUUID,
 			String dossieraProjectKey, String salesforceProjectKey, String name)

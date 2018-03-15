@@ -158,7 +158,6 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -664,12 +663,9 @@ public class AdminPortlet extends MVCPortlet {
 				notifications);
 		}
 		else {
-			User user = UserLocalServiceUtil.getUserByEmailAddress(
-				themeDisplay.getCompanyId(), emailAddress);
-
 			AccountCustomerLocalServiceUtil.addAccountCustomer(
-				themeDisplay.getUserId(), user.getUserId(), accountEntryId,
-				role, notifications);
+				themeDisplay.getUserId(), emailAddress, accountEntryId, role,
+				notifications);
 		}
 	}
 

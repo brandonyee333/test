@@ -26,8 +26,10 @@ import com.liferay.osb.service.base.AccountCustomerLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
+import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
@@ -107,6 +109,48 @@ public class AccountCustomerLocalServiceImpl
 			String.valueOf(accountCustomer.getRole()));
 
 		return accountCustomer;
+	}
+
+	@Override
+	public AccountCustomer addAccountCustomer(
+			long userId, String emailAddress, long accountEntryId, int role,
+			int notifications)
+		throws PortalException {
+
+		User customerUser = userLocalService.fetchUserByEmailAddress(
+			OSBConstants.COMPANY_ID, emailAddress);
+
+		if (customerUser != null) {
+			return addAccountCustomer(
+				userId, customerUser.getUserId(), accountEntryId, role,
+				notifications);
+		}
+
+		customerUser = remoteUserLocalService.fetchUserByEmailAddress(
+			emailAddress);
+
+		if (customerUser == null) {
+			throw new NoSuchUserException();
+		}
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(customerUser.getCreateDate());
+		serviceContext.setUuid(customerUser.getUuid());
+
+		customerUser = userLocalService.addUser(
+			OSBConstants.USER_DEFAULT_USER_ID, OSBConstants.COMPANY_ID, true,
+			StringPool.BLANK, StringPool.BLANK, false,
+			customerUser.getScreenName(), customerUser.getEmailAddress(), 0,
+			StringPool.BLANK, customerUser.getLocale(),
+			customerUser.getFirstName(), customerUser.getMiddleName(),
+			customerUser.getLastName(), 0, 0, false, 0, 1, 1970,
+			StringPool.BLANK, new long[0], customerUser.getOrganizationIds(),
+			customerUser.getRoleIds(), new long[0], false, serviceContext);
+
+		return addAccountCustomer(
+			userId, customerUser.getUserId(), accountEntryId, role,
+			notifications);
 	}
 
 	@Override

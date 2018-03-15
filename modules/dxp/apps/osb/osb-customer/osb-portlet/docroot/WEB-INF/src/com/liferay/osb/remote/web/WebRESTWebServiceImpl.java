@@ -66,6 +66,18 @@ public class WebRESTWebServiceImpl
 	}
 
 	@Override
+	public JSONObject getUsersEmailAddress(String emailAddress)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("emailAddress", emailAddress);
+
+		return doGetToJSONObject(
+			_URL_API_REST_USERS + "email_address", parameters);
+	}
+
+	@Override
 	public JSONObject postCorpProjects(
 			String creatorUserUUID, String ownerUserUUID,
 			String dossieraProjectKey, String salesforceProjectKey, String name)
@@ -157,6 +169,24 @@ public class WebRESTWebServiceImpl
 		super.addHeaders(httpMessage, headers);
 	}
 
+	protected JSONObject doGetToJSONObject(
+			String url, Map<String, String> parameters)
+		throws RemoteServiceException {
+
+		try {
+			String response = doGet(url, parameters);
+
+			if (response == null) {
+				return null;
+			}
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception e) {
+			throw new RemoteServiceException(e);
+		}
+	}
+
 	protected JSONObject doPostToJSONObject(
 			String url, Map<String, String> parameters)
 		throws RemoteServiceException {
@@ -194,6 +224,8 @@ public class WebRESTWebServiceImpl
 		_URL_API_REST + "/organizations/";
 
 	private static final String _URL_API_REST_ROLES = _URL_API_REST + "/roles/";
+
+	private static final String _URL_API_REST_USERS = _URL_API_REST + "/users/";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		WebRESTWebServiceImpl.class);

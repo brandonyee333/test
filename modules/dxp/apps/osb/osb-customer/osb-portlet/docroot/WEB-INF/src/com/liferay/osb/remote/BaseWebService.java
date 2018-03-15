@@ -280,7 +280,12 @@ public class BaseWebService {
 			StatusLine statusLine = httpResponse.getStatusLine();
 
 			if (statusLine.getStatusCode() ==
-					HttpServletResponse.SC_UNAUTHORIZED) {
+					HttpServletResponse.SC_NOT_FOUND) {
+
+				return null;
+			}
+			else if (statusLine.getStatusCode() ==
+						HttpServletResponse.SC_UNAUTHORIZED) {
 
 				throw new RemoteServiceException(
 					"Not authorized to access JSON web service");
