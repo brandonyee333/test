@@ -44,6 +44,7 @@ var animateFixedPortletMsgsSetTimeout = function() {
 
 AUI().ready(
 	'anim',
+	'aui-base',
 	'event',
 	'transition',
 	function(A) {
@@ -340,11 +341,7 @@ AUI().ready(
 				A.throttle(displayScrollArrow(), 250);
 			}
 		);
-	}
-);
 
-AUI().ready(
-	function(A) {
 		setTimeout(
 			function() {
 				A.all('.portlet-msg-success').addClass('hide');
