@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<suppressions>
-	<suppress checks="JavaLongLinesCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/upgrade/v3_1_0/Upgrade_20140926155021193_SalesPartnershipTerritories_SalesPartnershipCountries\.java" />
-	<suppress checks="JavaLongLinesCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/upgrade/v3_4_7/Upgrade_20160419113858448_OfferingBundle\.java" />
-	<suppress checks="JavaServiceUtilCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/service/impl/OSBUserServiceImpl\.java" />
-	<suppress checks="SQLLongNamesCheck" files="docroot/WEB-INF/sql/tables\.sql" />
-	<suppress checks="XMLCustomSQLStylingCheck" files="docroot/WEB-INF/src/custom-sql/default\.xml" />
-</suppressions>
