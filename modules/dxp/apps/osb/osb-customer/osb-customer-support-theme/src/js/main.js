@@ -42,7 +42,7 @@ var animateFixedPortletMsgsSetTimeout = function() {
 	animateFixedPortletMsgsTimeout = setTimeout(animateCloseFixedPortletMsgs, 5000);
 };
 
-AUI().use(
+AUI().ready(
 	'anim',
 	'event',
 	'transition',
