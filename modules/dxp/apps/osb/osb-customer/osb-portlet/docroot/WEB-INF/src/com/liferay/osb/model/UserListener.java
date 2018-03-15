@@ -17,6 +17,7 @@ package com.liferay.osb.model;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
+import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.osb.service.SearchFilterLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
@@ -29,7 +30,6 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.List;
@@ -131,7 +131,7 @@ public class UserListener extends BaseModelListener<User> {
 				!OrganizationLocalServiceUtil.hasUserOrganization(
 					userId, OSBConstants.ORGANIZATION_CUSTOMER_ID)) {
 
-				UserLocalServiceUtil.addOrganizationUsers(
+				RemoteUserLocalServiceUtil.addOrganizationUsers(
 					OSBConstants.ORGANIZATION_CUSTOMER_ID, new long[] {userId});
 			}
 		}
@@ -143,7 +143,7 @@ public class UserListener extends BaseModelListener<User> {
 			if (!OrganizationLocalServiceUtil.hasUserOrganization(
 					userId, OSBConstants.ORGANIZATION_PARTNER_ID)) {
 
-				UserLocalServiceUtil.addOrganizationUsers(
+				RemoteUserLocalServiceUtil.addOrganizationUsers(
 					OSBConstants.ORGANIZATION_PARTNER_ID, new long[] {userId});
 			}
 		}

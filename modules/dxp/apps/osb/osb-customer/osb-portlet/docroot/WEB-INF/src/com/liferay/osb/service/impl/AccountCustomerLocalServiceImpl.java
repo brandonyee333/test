@@ -53,6 +53,8 @@ public class AccountCustomerLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 		User customerUser = userLocalService.getUser(customerUserId);
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
 
 		validate(customerUserId, accountEntryId);
 
@@ -69,9 +71,6 @@ public class AccountCustomerLocalServiceImpl
 		accountCustomerPersistence.update(accountCustomer);
 
 		try {
-			AccountEntry accountEntry =
-				accountEntryPersistence.findByPrimaryKey(accountEntryId);
-
 			if (accountEntry.getType() != AccountEntryConstants.TYPE_TRIAL) {
 				PortletPreferences portletPreferences =
 					SupportUtil.getUserPreferences(customerUserId);
@@ -107,6 +106,18 @@ public class AccountCustomerLocalServiceImpl
 			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
 			accountCustomer.getRoleLabel(),
 			String.valueOf(accountCustomer.getRole()));
+
+		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
+			assignOrganizations(
+				customerUserId, OSBConstants.ORGANIZATION_TRIAL_ID);
+		}
+		else if (accountEntry.isApproved() &&
+				 (accountEntry.getType() !=
+					 AccountEntryConstants.TYPE_INTERNAL_TEST)) {
+
+			assignOrganizations(
+				customerUserId, OSBConstants.ORGANIZATION_CUSTOMER_ID);
+		}
 
 		return accountCustomer;
 	}
@@ -318,13 +329,17 @@ public class AccountCustomerLocalServiceImpl
 			accountCustomer.getAccountEntryId());
 
 		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
-			assignOrganizations(userId, OSBConstants.ORGANIZATION_TRIAL_ID);
+			assignOrganizations(
+				accountCustomer.getUserId(),
+				OSBConstants.ORGANIZATION_TRIAL_ID);
 		}
 		else if (accountEntry.isApproved() &&
 				 (accountEntry.getType() !=
 					 AccountEntryConstants.TYPE_INTERNAL_TEST)) {
 
-			assignOrganizations(userId, OSBConstants.ORGANIZATION_CUSTOMER_ID);
+			assignOrganizations(
+				accountCustomer.getUserId(),
+				OSBConstants.ORGANIZATION_CUSTOMER_ID);
 		}
 
 		return accountCustomer;
@@ -338,7 +353,7 @@ public class AccountCustomerLocalServiceImpl
 			roleLocalService.hasUserRole(
 				userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
 
-			userLocalService.addOrganizationUsers(
+			remoteUserLocalService.addOrganizationUsers(
 				organizationId, new long[] {userId});
 		}
 	}
