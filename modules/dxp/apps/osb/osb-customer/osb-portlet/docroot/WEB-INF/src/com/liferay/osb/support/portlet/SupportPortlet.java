@@ -4035,6 +4035,12 @@ public class SupportPortlet extends MVCPortlet {
 						OSBMailActionKeys.RESOLVED);
 				}
 			}
+
+			SessionMessages.add(
+				actionRequest,
+				OSBPortletKeys.OSB_SUPPORT +
+					SessionMessages.KEY_SUFFIX_REFRESH_PORTLET,
+				OSBPortletKeys.OSB_SUPPORT);
 		}
 	}
 
