@@ -135,6 +135,11 @@ public class LCSConnectorRunnable implements Runnable {
 					}
 				}
 			}
+			catch (Throwable throwable) {
+				_log.error(throwable.getMessage(), throwable);
+
+				throw throwable;
+			}
 		}
 
 		if (_log.isDebugEnabled()) {
