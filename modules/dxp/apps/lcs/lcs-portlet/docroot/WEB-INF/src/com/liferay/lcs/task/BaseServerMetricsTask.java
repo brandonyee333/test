@@ -18,7 +18,6 @@ import com.liferay.lcs.management.MBeanServerService;
 import com.liferay.lcs.messaging.MetricsMessage;
 import com.liferay.lcs.util.KeyGenerator;
 import com.liferay.lcs.util.LCSConnectionManager;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.jdbc.pool.metrics.ConnectionPoolMetrics;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -276,21 +275,6 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 		}
 
 		return payload;
-	}
-
-	protected boolean isDataSourceTargetSourceEnabled(String name) {
-		try {
-			if (PortalBeanLocatorUtil.locate(name) != null) {
-				return true;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(e.getMessage(), e);
-			}
-		}
-
-		return false;
 	}
 
 	protected abstract void setUpCurrentThreadsObjectNames() throws Exception;
