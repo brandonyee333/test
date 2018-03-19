@@ -22,6 +22,7 @@ import com.liferay.osb.model.OfferingDefinitionConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.service.base.CorpProjectMessageLocalServiceBaseImpl;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.comparator.OfferingEntrySupportEndDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -108,7 +109,7 @@ public class CorpProjectMessageLocalServiceImpl
 			}
 
 			if (now.after(offeringEntry.getSupportEndDate())) {
-				/*addCorpProjectMessage(
+				remoteCorpProjectMessageLocalService.addCorpProjectMessage(
 					OSBConstants.USER_DEFAULT_USER_ID,
 					accountEntry.getCorpProjectId(),
 					CorpProjectMessageConstants.
@@ -116,10 +117,10 @@ public class CorpProjectMessageLocalServiceImpl
 					CorpProjectMessageConstants.SEVERITY_LEVEL_URGENT,
 					CorpProjectMessageConstants.AUTOMATED_TEMPLATE_PAST_DUE,
 					CorpProjectMessageConstants.AUTOMATED_TEMPLATE_PAST_DUE,
-					true, true, true);*/
+					true, true, true);
 			}
 			else {
-				/*addCorpProjectMessage(
+				remoteCorpProjectMessageLocalService.addCorpProjectMessage(
 					OSBConstants.USER_DEFAULT_USER_ID,
 					accountEntry.getCorpProjectId(),
 					CorpProjectMessageConstants.
@@ -127,7 +128,7 @@ public class CorpProjectMessageLocalServiceImpl
 					CorpProjectMessageConstants.SEVERITY_LEVEL_WARNING,
 					CorpProjectMessageConstants.AUTOMATED_TEMPLATE_WARNING,
 					CorpProjectMessageConstants.AUTOMATED_TEMPLATE_WARNING,
-					true, true, true);*/
+					true, true, true);
 			}
 		}
 	}
@@ -157,8 +158,8 @@ public class CorpProjectMessageLocalServiceImpl
 			}
 
 			if (offeringEntries.isEmpty()) {
-				//deleteCorpProjectMessage(
-				//	corpProjectMessage.getCorpProjectMessageId());
+				remoteCorpProjectMessageLocalService.deleteCorpProjectMessage(
+					corpProjectMessage.getCorpProjectMessageId());
 
 				continue;
 			}
@@ -188,8 +189,8 @@ public class CorpProjectMessageLocalServiceImpl
 			}
 
 			if (delete) {
-				//deleteCorpProjectMessage(
-				//	corpProjectMessage.getCorpProjectMessageId());
+				remoteCorpProjectMessageLocalService.deleteCorpProjectMessage(
+					corpProjectMessage.getCorpProjectMessageId());
 			}
 		}
 	}

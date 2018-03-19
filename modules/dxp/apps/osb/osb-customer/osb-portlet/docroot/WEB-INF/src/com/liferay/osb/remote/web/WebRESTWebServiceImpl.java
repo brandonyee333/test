@@ -34,6 +34,13 @@ public class WebRESTWebServiceImpl
 	extends BaseWebService implements WebRESTWebService {
 
 	@Override
+	public void deleteCorpProjectMessages(String corpProjectMessageUUID)
+		throws RemoteServiceException {
+
+		doDelete(_URL_API_REST_CORP_PROJECT_MESSAGES + corpProjectMessageUUID);
+	}
+
+	@Override
 	public void deleteCorpProjects(String corpProjectUUID)
 		throws RemoteServiceException {
 
@@ -75,6 +82,29 @@ public class WebRESTWebServiceImpl
 
 		return doGetToJSONObject(
 			_URL_API_REST_USERS + "email_address", parameters);
+	}
+
+	@Override
+	public JSONObject postCorpProjectMessages(
+			String userUUID, String corpProjectUUID, int type,
+			int severityLevel, String title, String content, boolean displayCP,
+			boolean displayLCS, boolean displayLESA)
+		throws RemoteServiceException {
+
+		Map<String, String> parameters = new HashMap<>();
+
+		parameters.put("content", content);
+		parameters.put("corpProjectUUID", corpProjectUUID);
+		parameters.put("displayCP", String.valueOf(displayCP));
+		parameters.put("displayLCS", String.valueOf(displayLCS));
+		parameters.put("displayLESA", String.valueOf(displayLESA));
+		parameters.put("severityLevel", String.valueOf(severityLevel));
+		parameters.put("title", title);
+		parameters.put("type", String.valueOf(type));
+		parameters.put("userUUID", userUUID);
+
+		return doPostToJSONObject(
+			_URL_API_REST_CORP_PROJECT_MESSAGES, parameters);
 	}
 
 	@Override
@@ -216,6 +246,9 @@ public class WebRESTWebServiceImpl
 	}
 
 	private static final String _URL_API_REST = "/osb-entity-web";
+
+	private static final String _URL_API_REST_CORP_PROJECT_MESSAGES =
+		_URL_API_REST + "/corp_project_messages/";
 
 	private static final String _URL_API_REST_CORP_PROJECTS =
 		_URL_API_REST + "/corp_projects/";

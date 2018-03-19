@@ -178,6 +178,12 @@
 		<reference entity="Role" package-path="com.liferay.portal" />
 		<reference entity="User" package-path="com.liferay.portal" />
 	</entity>
+	<entity local-service="true" name="RemoteCorpProjectMessage" remote-service="false">
+
+		<!-- References -->
+
+		<reference entity="User" package-path="com.liferay.portal" />
+	</entity>
 	<entity local-service="true" name="RemoteUser" remote-service="false">
 
 		<!-- References -->

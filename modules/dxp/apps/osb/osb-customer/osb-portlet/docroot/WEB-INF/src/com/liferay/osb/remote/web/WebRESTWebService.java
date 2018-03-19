@@ -22,6 +22,9 @@ import com.liferay.portal.kernel.json.JSONObject;
  */
 public interface WebRESTWebService {
 
+	public void deleteCorpProjectMessages(String corpProjectMessageUUID)
+		throws RemoteServiceException;
+
 	public void deleteCorpProjects(String corpProjectUUID)
 		throws RemoteServiceException;
 
@@ -33,6 +36,12 @@ public interface WebRESTWebService {
 		throws RemoteServiceException;
 
 	public JSONObject getUsersEmailAddress(String emailAddress)
+		throws RemoteServiceException;
+
+	public JSONObject postCorpProjectMessages(
+			String userUUID, String corpProjectUUID, int type,
+			int severityLevel, String title, String content, boolean displayCP,
+			boolean displayLCS, boolean displayLESA)
 		throws RemoteServiceException;
 
 	public JSONObject postCorpProjects(

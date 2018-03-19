@@ -14,6 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
+import com.liferay.osb.exception.NoSuchCorpProjectException;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.base.CorpProjectLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -21,6 +22,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Amos Fong
@@ -61,6 +63,20 @@ public class CorpProjectLocalServiceImpl
 	public CorpProject fetchCorpProject(String dossieraProjectKey) {
 		return corpProjectPersistence.fetchByDossieraProjectKey(
 			dossieraProjectKey);
+	}
+
+	public CorpProject getCorpProjectByUuid(String uuid)
+		throws PortalException {
+
+		List<CorpProject> corpProjects = corpProjectPersistence.findByUuid(
+			uuid);
+
+		if (corpProjects.isEmpty()) {
+			throw new NoSuchCorpProjectException("{uuid=" + uuid + "}");
+		}
+		else {
+			return corpProjects.get(0);
+		}
 	}
 
 	public CorpProject updateCorpProject(
