@@ -212,6 +212,12 @@ public class CorpProjectLocalServiceUtil {
 		return getService().getCorpProject(corpProjectId);
 	}
 
+	public static com.liferay.osb.model.CorpProject getCorpProjectByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCorpProjectByUuid(uuid);
+	}
+
 	/**
 	* Returns a range of all the corp projects.
 	*
@@ -228,6 +234,13 @@ public class CorpProjectLocalServiceUtil {
 		return getService().getCorpProjects(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.CorpProject> getCorpProjects(
+		java.lang.String name, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCorpProjects(name, start, end, obc);
+	}
+
 	/**
 	* Returns the number of corp projects.
 	*
@@ -235,6 +248,11 @@ public class CorpProjectLocalServiceUtil {
 	*/
 	public static int getCorpProjectsCount() {
 		return getService().getCorpProjectsCount();
+	}
+
+	public static int getCorpProjectsCount(java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCorpProjectsCount(name);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {

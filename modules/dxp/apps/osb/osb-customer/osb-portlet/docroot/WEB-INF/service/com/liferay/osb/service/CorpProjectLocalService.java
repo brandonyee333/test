@@ -191,6 +191,10 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	public CorpProject getCorpProject(long corpProjectId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CorpProject getCorpProjectByUuid(java.lang.String uuid)
+		throws PortalException;
+
 	/**
 	* Returns a range of all the corp projects.
 	*
@@ -205,6 +209,10 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<CorpProject> getCorpProjects(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CorpProject> getCorpProjects(java.lang.String name, int start,
+		int end, OrderByComparator obc) throws PortalException;
+
 	/**
 	* Returns the number of corp projects.
 	*
@@ -212,6 +220,10 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getCorpProjectsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getCorpProjectsCount(java.lang.String name)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();

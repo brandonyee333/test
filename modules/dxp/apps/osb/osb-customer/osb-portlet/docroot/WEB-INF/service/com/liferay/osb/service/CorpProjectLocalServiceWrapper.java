@@ -220,6 +220,13 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 		return _corpProjectLocalService.getCorpProject(corpProjectId);
 	}
 
+	@Override
+	public com.liferay.osb.model.CorpProject getCorpProjectByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.getCorpProjectByUuid(uuid);
+	}
+
 	/**
 	* Returns a range of all the corp projects.
 	*
@@ -237,6 +244,14 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 		return _corpProjectLocalService.getCorpProjects(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.CorpProject> getCorpProjects(
+		java.lang.String name, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.getCorpProjects(name, start, end, obc);
+	}
+
 	/**
 	* Returns the number of corp projects.
 	*
@@ -245,6 +260,12 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	@Override
 	public int getCorpProjectsCount() {
 		return _corpProjectLocalService.getCorpProjectsCount();
+	}
+
+	@Override
+	public int getCorpProjectsCount(java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.getCorpProjectsCount(name);
 	}
 
 	@Override

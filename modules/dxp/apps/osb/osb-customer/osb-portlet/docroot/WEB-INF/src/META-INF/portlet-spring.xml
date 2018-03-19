@@ -100,6 +100,7 @@
 	<bean class="com.liferay.osb.service.persistence.impl.ProductEntryPersistenceImpl" id="com.liferay.osb.service.persistence.ProductEntryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.persistence.impl.ProductEntryFinderImpl" id="com.liferay.osb.service.persistence.ProductEntryFinder" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpProjectLocalService" />
+	<bean class="com.liferay.osb.service.impl.RemoteCorpProjectMessageLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpProjectMessageLocalService" />
 	<bean class="com.liferay.osb.service.impl.RemoteUserLocalServiceImpl" id="com.liferay.osb.service.RemoteUserLocalService" />
 	<bean class="com.liferay.osb.service.impl.SearchFilterLocalServiceImpl" id="com.liferay.osb.service.SearchFilterLocalService" />
 	<bean class="com.liferay.osb.service.impl.SearchFilterServiceImpl" id="com.liferay.osb.service.SearchFilterService" />

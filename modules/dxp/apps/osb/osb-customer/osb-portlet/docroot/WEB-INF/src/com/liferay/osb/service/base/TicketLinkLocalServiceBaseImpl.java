@@ -1702,6 +1702,25 @@ public abstract class TicketLinkLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the remote corp project message local service.
+	 *
+	 * @return the remote corp project message local service
+	 */
+	public com.liferay.osb.service.RemoteCorpProjectMessageLocalService getRemoteCorpProjectMessageLocalService() {
+		return remoteCorpProjectMessageLocalService;
+	}
+
+	/**
+	 * Sets the remote corp project message local service.
+	 *
+	 * @param remoteCorpProjectMessageLocalService the remote corp project message local service
+	 */
+	public void setRemoteCorpProjectMessageLocalService(
+		com.liferay.osb.service.RemoteCorpProjectMessageLocalService remoteCorpProjectMessageLocalService) {
+		this.remoteCorpProjectMessageLocalService = remoteCorpProjectMessageLocalService;
+	}
+
+	/**
 	 * Returns the remote user local service.
 	 *
 	 * @return the remote user local service
@@ -2971,6 +2990,8 @@ public abstract class TicketLinkLocalServiceBaseImpl
 	protected ProductEntryFinder productEntryFinder;
 	@BeanReference(type = com.liferay.osb.service.RemoteCorpProjectLocalService.class)
 	protected com.liferay.osb.service.RemoteCorpProjectLocalService remoteCorpProjectLocalService;
+	@BeanReference(type = com.liferay.osb.service.RemoteCorpProjectMessageLocalService.class)
+	protected com.liferay.osb.service.RemoteCorpProjectMessageLocalService remoteCorpProjectMessageLocalService;
 	@BeanReference(type = com.liferay.osb.service.RemoteUserLocalService.class)
 	protected com.liferay.osb.service.RemoteUserLocalService remoteUserLocalService;
 	@BeanReference(type = com.liferay.osb.service.SearchFilterLocalService.class)
