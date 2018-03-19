@@ -20,6 +20,10 @@ import com.liferay.osb.service.base.CorpProjectLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
 import java.util.List;
@@ -77,6 +81,29 @@ public class CorpProjectLocalServiceImpl
 		else {
 			return corpProjects.get(0);
 		}
+	}
+
+	public List<CorpProject> getCorpProjects(
+			String name, int start, int end, OrderByComparator obc)
+		throws PortalException {
+
+		if (Validator.isNull(name)) {
+			return corpProjectPersistence.findAll(start, end, obc);
+		}
+
+		name = StringUtil.quote(name, StringPool.PERCENT);
+
+		return corpProjectPersistence.findByName(name, start, end, obc);
+	}
+
+	public int getCorpProjectsCount(String name) throws PortalException {
+		if (Validator.isNull(name)) {
+			return corpProjectPersistence.countAll();
+		}
+
+		name = StringUtil.quote(name, StringPool.PERCENT);
+
+		return corpProjectPersistence.countByName(name);
 	}
 
 	public CorpProject updateCorpProject(

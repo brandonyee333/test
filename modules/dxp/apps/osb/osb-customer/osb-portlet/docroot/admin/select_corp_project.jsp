@@ -28,15 +28,17 @@ portletURL.setParameter("callback", callback);
 <aui:form action="<%= portletURL.toString() %>" method="post">
 	<liferay-ui:tabs names="projects" />
 
-	<%-- <liferay-ui:search-container
+	<liferay-ui:search-container
 		headerNames="name"
 		searchContainer="<%= new CorpProjectSearch(renderRequest, portletURL) %>"
-		total="<%= CorpProjectLocalServiceUtil.getCorpProjectsCount(searchTerms.getName()) %>"
 	>
 
 		<%
 		CorpProjectDisplayTerms displayTerms = (CorpProjectDisplayTerms)searchContainer.getDisplayTerms();
 		CorpProjectSearchTerms searchTerms = (CorpProjectSearchTerms)searchContainer.getSearchTerms();
+
+		searchContainer.setResults(CorpProjectLocalServiceUtil.getCorpProjects(searchTerms.getName(), searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator()));
+		searchContainer.setTotal(CorpProjectLocalServiceUtil.getCorpProjectsCount(searchTerms.getName()));
 		%>
 
 		<div class="search-form-container">
@@ -44,10 +46,6 @@ portletURL.setParameter("callback", callback);
 
 			<aui:button type="submit" value="search" />
 		</div>
-
-		<liferay-ui:search-container-results
-			results="<%= CorpProjectLocalServiceUtil.getCorpProjects(searchTerms.getName(), searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator()) %>"
-		/>
 
 		<liferay-ui:search-container-row
 			className="com.liferay.osb.model.CorpProject"
@@ -79,5 +77,5 @@ portletURL.setParameter("callback", callback);
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator markupView="lexicon" />
-	</liferay-ui:search-container> --%>
+	</liferay-ui:search-container>
 </aui:form>
