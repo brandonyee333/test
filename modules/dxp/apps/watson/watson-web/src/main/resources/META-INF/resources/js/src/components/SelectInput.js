@@ -1,4 +1,4 @@
-import {bindAll, forEach, isEmpty, isEqual} from 'lodash';
+import {bindAll, forIn, isEmpty, isEqual} from 'lodash';
 import bridge from 'metal-react';
 import JSXComponent, {Config} from 'metal-jsx';
 import Select from 'react-select';
@@ -16,15 +16,15 @@ class SelectInput extends JSXComponent {
 
 	_formatOptions(options, renderedOptions, sortOptions) {
 		if (!isEmpty(options)) {
-			forEach(
+			forIn(
 				options,
-				entry => {
-					const {label, value} = entry;
+				(optionValue, key) => {
+					const {label, value} = options[key];
 
 					renderedOptions.push(
 						{
 							label,
-							value: value || entry
+							value: value || key
 						}
 					);
 				}
