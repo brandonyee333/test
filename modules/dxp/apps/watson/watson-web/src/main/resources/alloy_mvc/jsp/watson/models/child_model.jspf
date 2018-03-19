@@ -79,7 +79,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 	public static JSONObject getAsJSONObject(WatsonChild watsonChild, List<WatsonListTypeRel> activitiesInvolvedWatsonListTypeRels, List<WatsonListTypeRel> countryIDWatsonListTypeRels, List<WatsonListTypeRel> guardianNameWatsonListTypeRels, List<WatsonListTypeRel> nameWatsonListTypeRels, List<WatsonListTypeRel> parentNameWatsonListTypeRels, List<WatsonListTypeRel> vocationalTrainingWatsonListTypeRels, List<WatsonRelationship> watsonRelationships, Locale locale) throws Exception {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		if (Validator.isNotNull(activitiesInvolvedWatsonListTypeRels) && activitiesInvolvedWatsonListTypeRels.isEmpty()) {
+		if (Validator.isNotNull(activitiesInvolvedWatsonListTypeRels) && !activitiesInvolvedWatsonListTypeRels.isEmpty()) {
 			List<Long> activitiesInvolvedIds = new ArrayList<>();
 
 			for (WatsonListTypeRel activityInvolved : activitiesInvolvedWatsonListTypeRels) {
@@ -189,7 +189,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 
 		jsonObject.put("typeWatsonListTypeId", watsonChild.getTypeWatsonListTypeId());
 
-		if (Validator.isNotNull(vocationalTrainingWatsonListTypeRels) && vocationalTrainingWatsonListTypeRels.isEmpty()) {
+		if (Validator.isNotNull(vocationalTrainingWatsonListTypeRels) && !vocationalTrainingWatsonListTypeRels.isEmpty()) {
 			List<Long> vocationalTrainingIds = new ArrayList<>();
 
 			for (WatsonListTypeRel vocationalTrainingWatsonListTypeRel : vocationalTrainingWatsonListTypeRels) {

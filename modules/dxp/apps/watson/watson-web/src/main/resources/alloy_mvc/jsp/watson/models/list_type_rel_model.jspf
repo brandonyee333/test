@@ -161,7 +161,7 @@ public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 		if (watsonListTypeId > 0) {
 			List<WatsonListTypeRel> watsonListTypeRels = query(properties);
 
-			if (watsonListTypeRels.isEmpty()) {
+			if (!watsonListTypeRels.isEmpty()) {
 				watsonListTypeRel = watsonListTypeRels.get(0);
 			}
 		}
@@ -208,7 +208,7 @@ public static class WatsonListTypeRel extends WatsonListTypeRelBaseModel {
 			}
 		}
 
-		if (watsonListTypeIds.isEmpty()) {
+		if (!watsonListTypeIds.isEmpty()) {
 			watsonListTypeRels.addAll(generateWatsonListTypeRels(request, ownerModel, watsonListTypeRelType, watsonListTypeIds));
 		}
 

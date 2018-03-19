@@ -163,7 +163,7 @@ public static class WatsonIncidentRel extends WatsonIncidentRelBaseModel {
 		if (relatedModelId > 0) {
 			List<WatsonIncidentRel> watsonIncidentRels = query(properties);
 
-			if (watsonIncidentRels.isEmpty()) {
+			if (!watsonIncidentRels.isEmpty()) {
 				watsonIncidentRel = watsonIncidentRels.get(0);
 			}
 		}
@@ -198,7 +198,7 @@ public static class WatsonIncidentRel extends WatsonIncidentRelBaseModel {
 			}
 		}
 
-		if (relatedModelIds.isEmpty()) {
+		if (!relatedModelIds.isEmpty()) {
 			watsonIncidentRels.addAll(generateWatsonIncidentRels(request, ownerModel, relatedModelIds));
 		}
 
