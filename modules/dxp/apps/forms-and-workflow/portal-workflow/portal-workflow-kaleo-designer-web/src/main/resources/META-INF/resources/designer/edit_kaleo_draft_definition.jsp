@@ -205,8 +205,20 @@
 				</aui:fieldset>
 
 				<c:if test="<%= kaleoDraftDefinition != null %>">
-					<liferay-ui:panel-container extended="<%= false %>" id="kaleoDesignerDetailsPanelContainer" persistState="<%= true %>">
-						<liferay-ui:panel collapsible="<%= true %>" cssClass="lfr-portlet-workflowdesigner-panel" extended="<%= false %>" id="kaleoDesignerSectionPanel" markupView="lexicon" persistState="<%= true %>" title='<%= LanguageUtil.get(request, "details") %>'>
+					<liferay-ui:panel-container
+						extended="<%= false %>"
+						id="kaleoDesignerDetailsPanelContainer"
+						persistState="<%= true %>"
+					>
+						<liferay-ui:panel
+							collapsible="<%= true %>"
+							cssClass="lfr-portlet-workflowdesigner-panel"
+							extended="<%= false %>"
+							id="kaleoDesignerSectionPanel"
+							markupView="lexicon"
+							persistState="<%= true %>"
+							title='<%= LanguageUtil.get(request, "details") %>'
+						>
 							<div class="lfr-portlet-workflowdesigner-details-view">
 								<c:if test="<%= workflowDefinition != null %>">
 									<aui:field-wrapper cssClass="lfr-portlet-workflowdesigner-field-wrapper-first" helpMessage="the-definition-name-is-defined-in-the-workflow-definition-file" label="workflow-definition-name">

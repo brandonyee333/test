@@ -77,7 +77,11 @@ iteratorURL.setParameter("mvcPath", "/designer/view.jsp");
 					/>
 				</liferay-ui:search-container-row>
 
-				<liferay-ui:search-iterator displayStyle="list" markupView="lexicon" searchContainer="<%= searchContainer %>" />
+				<liferay-ui:search-iterator
+					displayStyle="list"
+					markupView="lexicon"
+					searchContainer="<%= searchContainer %>"
+				/>
 			</liferay-ui:search-container>
 		</div>
 
@@ -88,7 +92,10 @@ iteratorURL.setParameter("mvcPath", "/designer/view.jsp");
 			</portlet:renderURL>
 
 			<liferay-frontend:add-menu>
-				<liferay-frontend:add-menu-item title='<%= LanguageUtil.format(request, "add-new-x", "definition") %>' url="<%= editKaleoDraftDefinitionURL.toString() %>" />
+				<liferay-frontend:add-menu-item
+					title='<%= LanguageUtil.format(request, "add-new-x", "definition") %>'
+					url="<%= editKaleoDraftDefinitionURL.toString() %>"
+				/>
 			</liferay-frontend:add-menu>
 		</c:if>
 	</c:when>

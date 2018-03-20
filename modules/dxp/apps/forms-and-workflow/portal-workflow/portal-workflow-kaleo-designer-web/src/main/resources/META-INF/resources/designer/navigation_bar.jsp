@@ -29,7 +29,9 @@
 		<aui:form action="<%= searchURL.toString() %>" name="searchFm">
 			<liferay-portlet:renderURLParams varImpl="portletURL" />
 
-			<liferay-ui:input-search markupView="lexicon" />
+			<liferay-ui:input-search
+				markupView="lexicon"
+			/>
 		</aui:form>
 	</aui:nav-bar-search>
 </aui:nav-bar>

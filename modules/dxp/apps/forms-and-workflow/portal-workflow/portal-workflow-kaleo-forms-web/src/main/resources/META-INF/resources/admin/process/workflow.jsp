@@ -112,11 +112,7 @@ if (Validator.isNotNull(workflowDefinition)) {
 				<portlet:param name="kaleoProcessId" value="<%= String.valueOf(kaleoProcessId) %>" />
 			</liferay-portlet:renderURL>
 
-			<aui:nav-item
-				href="<%= viewPublishedURL %>"
-				label="published"
-				selected='<%= tabs1.equals("published") %>'
-			/>
+			<aui:nav-item href="<%= viewPublishedURL %>" label="published" selected='<%= tabs1.equals("published") %>' />
 
 			<liferay-portlet:renderURL var="viewUnpublishedURL">
 				<portlet:param name="mvcPath" value="/admin/edit_kaleo_process.jsp" />
@@ -126,11 +122,7 @@ if (Validator.isNotNull(workflowDefinition)) {
 				<portlet:param name="kaleoProcessId" value="<%= String.valueOf(kaleoProcessId) %>" />
 			</liferay-portlet:renderURL>
 
-			<aui:nav-item
-				href="<%= viewUnpublishedURL %>"
-				label="unpublished"
-				selected='<%= tabs1.equals("unpublished") %>'
-			/>
+			<aui:nav-item href="<%= viewUnpublishedURL %>" label="unpublished" selected='<%= tabs1.equals("unpublished") %>' />
 		</aui:nav>
 	</aui:nav-bar>
 
@@ -240,7 +232,9 @@ if (Validator.isNotNull(workflowDefinition)) {
 		</c:otherwise>
 	</c:choose>
 
-	<liferay-ui:search-iterator markupView="lexicon" />
+	<liferay-ui:search-iterator
+		markupView="lexicon"
+	/>
 </liferay-ui:search-container>
 
 <aui:script>
