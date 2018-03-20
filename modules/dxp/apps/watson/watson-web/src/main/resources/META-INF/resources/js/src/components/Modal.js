@@ -1,7 +1,9 @@
 import {bindAll} from 'lodash';
 import dom from 'metal-dom';
-import {Event_handler} from 'metal-events';
+import {EventHandler} from 'metal-events';
 import JSXComponent, {Config} from 'metal-jsx';
+
+const KEY_CODE_ESC = 27;
 
 class Modal extends JSXComponent {
 	created() {
@@ -10,27 +12,33 @@ class Modal extends JSXComponent {
 			'hide'
 		);
 
-		this.event_handler_ = new Event_handler();
+		this.eventHandler_ = new EventHandler();
 	}
 
 	attached() {
 		this.autoFocus_(this.autoFocus);
+
+		this.addListener('hide', this.defaultHideFn_, true);
 	}
 
 	autoFocus_(autoFocusSelector) {
 		if (this.inDocument && this.visible && autoFocusSelector) {
-
 			const element = this.element.querySelector(autoFocusSelector);
+
 			if (element) {
 				element.focus();
 			}
 		}
 	}
 
+	defaultHideFn_() {
+		this.visible = false;
+	}
+
 	detached() {
 		super.detached();
 
-		this.event_handler_.removeAllListeners();
+		this.eventHandler_.removeAllListeners();
 	}
 
 	disposeInternal() {
@@ -48,12 +56,14 @@ class Modal extends JSXComponent {
 	}
 
 	_handleKeyup_(event) {
-		if (event.keyCode === 27) {
+		if (event.keyCode === KEY_CODE_ESC) {
 			this.hide();
 		}
 	}
 
 	hide() {
+		this.emit('hide');
+
 		this.props.close();
 
 		if (this.element.style) {
@@ -62,8 +72,8 @@ class Modal extends JSXComponent {
 	}
 
 	restrictFocus_() {
-		if (!this.restrictFocus_handle_) {
-			this.restrictFocus_handle_ = dom.on(document, 'focus', this._handleDocumentFocus_.bind(this), true);
+		if (!this.restrictFocusHandle_) {
+			this.restrictFocusHandle_ = dom.on(document, 'focus', this.handleDocumentFocus_.bind(this), true);
 		}
 	}
 
@@ -103,24 +113,26 @@ class Modal extends JSXComponent {
 		}
 	}
 
+	show() {
+		this.visible = true;
+	}
+
 	syncHideOnEscape(hideOnEscape) {
 		if (hideOnEscape) {
-			this.event_handler_.add(dom.on(document, 'keyup', this._handleKeyup_.bind(this)));
+			this.eventHandler_.add(dom.on(document, 'keyup', this._handleKeyup_.bind(this)));
 		}
 		else {
-			this.event_handler_.removeAllListeners();
+			this.eventHandler_.removeAllListeners();
 		}
 	}
 
 	syncOverlay(overlay) {
-		const method = overlay && this.visible ? 'enter' : 'exit';
+		const willShowOverlay = overlay && this.visible;
 
-		dom[`${method}Document`](this.overlayElement);
+		dom[willShowOverlay ? 'enterDocument' : 'exitDocument'](this.overlayElement);
 	}
 
-	syncVisible(visible) {
-		this.element.style.display = visible ? 'block' : '';
-
+	syncVisible() {
 		this.syncOverlay(this.overlay);
 
 		if (this.visible) {
@@ -136,15 +148,15 @@ class Modal extends JSXComponent {
 		}
 	}
 	unrestrictFocus_() {
-		if (this.restrictFocus_handle_) {
-			this.restrictFocus_handle_.removeListener();
+		if (this.restrictFocusHandle_) {
+			this.restrictFocusHandle_.removeListener();
 
-			this.restrictFocus_handle_ = null;
+			this.restrictFocusHandle_ = null;
 		}
 	}
 
 	valueOverlayElementFn_() {
-		return dom.buildFragment('<div class="fade in modal-backdrop"></div>').firstChild;
+		return dom.buildFragment('<div class="modal-backdrop fade in"></div>').firstChild;
 	}
 }
 
@@ -158,8 +170,8 @@ Modal.PROPS = {
 	noCloseButton: Config.bool().value(false),
 	overlay: Config.bool().value(true),
 	overlayElement: {
-		initOnly: true,
-		valueFn: 'valueOverlayElementFn_'
+		valueFn: 'valueOverlayElementFn_',
+		writeOnce: true
 	},
 	role: Config.string().value('.dialog'),
 	visible: Config.bool().value(false)
