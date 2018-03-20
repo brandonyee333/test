@@ -421,9 +421,9 @@ if (liferayIncOrg || partnerWorker) {
 			var A = AUI();
 
 			var COMPONENTS = {
-				[<%= TicketEntryConstants.COMPONENT_CLUSTERING %>]: 'clusteringDetailsHeader',
-				[<%= TicketEntryConstants.COMPONENT_LICENSE %>]: 'activationKeyDetailsHeader',
-				[<%= TicketEntryConstants.COMPONENT_UPGRADE %>]: 'upgradeDetailsHeader'
+				<%= TicketEntryConstants.COMPONENT_CLUSTERING %>: 'clusteringDetailsHeader',
+				<%= TicketEntryConstants.COMPONENT_LICENSE %>: 'activationKeyDetailsHeader',
+				<%= TicketEntryConstants.COMPONENT_UPGRADE %>: 'upgradeDetailsHeader'
 			};
 
 			A.all('.component-tab').hide();
