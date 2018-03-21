@@ -1122,9 +1122,9 @@
 					typeWatsonListTypeId: {
 						controlledInputs: [],
 						filterable: ${true},
-						label: '${AlloyLanguageUtil.formatUnicode("type-of-report")}',
+						label: '${AlloyLanguageUtil.formatUnicode("type-of-case")}',
 						options: {
-							<c:set value='${WatsonListType.getWatsonListTypes(WatsonIncident.modelClassName.concat(".type"))}' var="typeWatsonListTypes" />
+							<c:set value='${WatsonListType.getWatsonListTypes(WatsonChild.modelClassName.concat(".type"))}' var="typeWatsonListTypes" />
 
 							<c:forEach items="${typeWatsonListTypes}" var="typeWatsonListType" varStatus="typeWatsonListTypesIndex">
 								<c:set value='${typeWatsonListTypesIndex.last ? "" : ","}' var="delimiter" />
@@ -1386,7 +1386,7 @@
 					},
 					parentTypeWatsonListTypeId: {
 						filterable: ${true},
-						label: '${AlloyLanguageUtil.formatUnicode("parent-type")}',
+						label: '${AlloyLanguageUtil.formatUnicode("type-of-documents")}',
 						options: {
 							<c:set value='${WatsonListType.getWatsonListTypes(WatsonDocument.modelClassName.concat(".parentType"))}' var="parentTypeWatsonListTypes" />
 
