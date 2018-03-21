@@ -48,43 +48,24 @@
 		}
 	}
 
-	.metal-dropdown-menu {
-		color: $neutralMedium;
-		font-family: $primaryFontStack;
-		font-size: 15px;
-		max-height: 55px;
-		transition: color 0.2s $transitionSoft;
+	.items {
+		min-width: 80px;
+		position: absolute;
+		margin-left: 75px;
 
-		.dropright {
-			color: $neutralMedium;
+		li {
+			background-color: $neutralSubtle;
+			border: 1px solid $neutralLighter;
+			text-align: center;
 
-			.caret {
-				margin-left: 4px;
-			}
-
-			&:focus, &:hover {
+			a {
 				color: $neutralDark;
-				text-decoration: none;
-			}
+				cursor: pointer;
+				font-size: 18px;
+				font-weight: normal;
 
-			.dropdown-menu {
-				min-width: 80px;
-				position: fixed;
-			}
-
-			li {
-				border: 1px solid $neutralLighter;
-				text-align: center;
-
-				a {
+				&:focus, &:hover {
 					color: $neutralDarker;
-					cursor: pointer;
-					font-size: 18px;
-					font-weight: normal;
-
-					&:focus, &:hover {
-						color: $neutralDark;
-					}
 				}
 			}
 		}

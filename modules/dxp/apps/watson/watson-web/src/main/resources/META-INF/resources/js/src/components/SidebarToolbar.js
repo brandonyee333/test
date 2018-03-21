@@ -1,5 +1,4 @@
 import {bindAll} from 'lodash';
-import DropDown from 'marble-dropdown';
 import JSXComponent, {Config} from 'metal-jsx';
 
 import {getURLForLanguageId} from '../lib/util';
@@ -9,18 +8,10 @@ class SidebarToolbar extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'_handleOnClick'
+			'_handleOnClick',
+			'_handleUpdateState',
+			'_languageOnClick'
 		);
-	}
-
-	formatDropDown() {
-		const formattedOptions = (
-			<ul class="items">
-				<li><a class="item" id="en_US" onClick={this.languageOnClick}>{'English'}</a></li>
-				<li><a class="item" id="th" onClick={this.languageOnClick}>{'Thai'}</a></li>
-			</ul>);
-
-		return formattedOptions;
 	}
 
 	_handleOnClick(event) {
@@ -31,18 +22,26 @@ class SidebarToolbar extends JSXComponent {
 		}
 	}
 
-	languageOnClick(event) {
+	_handleUpdateState() {
+		const {showToggle} = this.state;
+
+		this.setState({showToggle: !showToggle});
+	}
+
+	_languageOnClick(event) {
 		const {target} = event;
 
 		const languageId = target.attributes.id.value;
 
-		if (languageId) {
+		if (languageId && languageId !== WatsonConstants.currentLanguageId) {
 			window.location.href = getURLForLanguageId(languageId);
 		}
+
+		this.setState({showToggle: false});
 	}
 
 	render() {
-		const languageToggleDiv = (<button class="watson-button dropdown" data-onClick="toggle" id="language-toggle" title={Liferay.Language.get('switch-language')} />);
+		const {showToggle} = this.state;
 
 		return (
 			<div class="watson-sidebar-toolbar">
@@ -68,14 +67,14 @@ class SidebarToolbar extends JSXComponent {
 				</span>
 
 				<span class="lower">
-					<div class="metal-dropdown-menu">
-						<DropDown
-							alignElementSelector="button"
-							body={this.formatDropDown()}
-							header={languageToggleDiv}
-							position={1}
-						/>
-					</div>
+					<div id="language-toggle" onClick={this._handleUpdateState} title={Liferay.Language.get('switch-language')} />
+
+					{showToggle &&
+						<ul class="items" >
+							<li><a class="item" id="en_US" onClick={this._languageOnClick}>{'English'}</a></li>
+							<li><a class="item" id="th" onClick={this._languageOnClick}>{'ไทย'}</a></li>
+						</ul>
+					}
 
 					{WatsonConstants.currentUser.portalAdministratorRole &&
 						<a href={`${WatsonConstants.urls.baseURL}/incidents/admin`} id="admin" onClick={this._handleOnClick} title={Liferay.Language.get('administrator-console')} />
@@ -168,6 +167,7 @@ SidebarToolbar.PROPS = {};
 SidebarToolbar.STATE = {
 	lastSelected: Config.string(),
 	selected: Config.string(),
+	showToggle: Config.bool().value(false),
 	sidebarURLs: Config.object().value(
 		{
 			admin: '/incidents/admin',

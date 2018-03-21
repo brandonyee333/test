@@ -794,7 +794,7 @@ class Form extends JSXComponent {
 							let tooltipIcon;
 
 							if (tooltipLabel) {
-								tooltipIcon = <span class="tooltip-icon" data-for={inputId} data-tip={tooltipLabel} />;
+								tooltipIcon = <span class="tooltip-icon" data-for={inputId} data-tip />;
 							}
 
 							inputs.push(

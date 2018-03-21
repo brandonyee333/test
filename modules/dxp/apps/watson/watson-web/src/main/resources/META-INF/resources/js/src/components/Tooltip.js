@@ -42,9 +42,9 @@ Tooltip.PROPS = {
 	effect: Config.string().value('solid'),
 	htmlValue: Config.bool().value(false),
 	id: Config.string(),
-	key: Config.number(),
+	key: Config.any().required(),
 	multiline: Config.bool().value(false),
 	placement: Config.string().value('right'),
 	scrollHide: Config.bool().value(true),
-	tooltipLabel: Config.string().value('')
+	tooltipLabel: Config.oneOfType([Config.string(), Config.func()]).required()
 };
