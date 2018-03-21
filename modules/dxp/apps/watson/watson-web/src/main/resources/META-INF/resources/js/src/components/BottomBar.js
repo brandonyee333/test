@@ -2,7 +2,7 @@ import {noop} from 'lodash';
 
 import Button from './Button';
 
-function BottomBar({buttons, formIsValid, _handleSubmit, message, messageCssClass = '', optionalButtons}) {
+function BottomBar({buttons, formIsValid, handleSubmit, message, messageCssClass = '', optionalButtons}) {
 	const renderedButtons = buttons.map(
 		(item, index) => {
 			let {
@@ -13,7 +13,7 @@ function BottomBar({buttons, formIsValid, _handleSubmit, message, messageCssClas
 			const {label, submitButton} = item;
 
 			if (submitButton) {
-				buttonAction = _handleSubmit;
+				buttonAction = handleSubmit;
 
 				if (!formIsValid) {
 					buttonAction = noop;
