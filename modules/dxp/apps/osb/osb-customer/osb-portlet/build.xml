@@ -15,6 +15,24 @@
 		</antcall>
 	</target>
 
+	<target name="build-service">
+		<if>
+			<not>
+				<resourcecontains resource="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder/ivy.xml" substring="&lt;dependency name=&quot;com.liferay.portal.tools.service.builder&quot; org=&quot;com.liferay&quot; rev=&quot;1.0.147&quot; /&gt;" />
+			</not>
+			<then>
+				<replaceregexp
+					file="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder/ivy.xml"
+					flags="s"
+					match="&lt;dependency name=&quot;com.liferay.portal.tools.service.builder&quot; org=&quot;com.liferay&quot; rev=&quot;[0-9.]+&quot; /&gt;"
+					replace="&lt;dependency name=&quot;com.liferay.portal.tools.service.builder&quot; org=&quot;com.liferay&quot; rev=&quot;1.0.147&quot; /&gt;&lt;dependency name=&quot;qdox&quot; org=&quot;com.thoughtworks.qdox&quot; rev=&quot;1.12.1&quot; /&gt;"
+				/>
+			</then>
+		</if>
+
+		<ant antfile="${portal.base.dir}/tools/sdk/portlets/build-common-portlet.xml" target="build-service" />
+	</target>
+
 	<target name="build-upgrade">
 		<if>
 			<isset property="entity" />
