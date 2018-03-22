@@ -234,7 +234,7 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:select id="statusDropDown" inlineField="<%= true %>" name="status" onChange='<%= renderResponse.getNamespace() + "validateResolution();" %>' wrapperCssClass="form-field-wrapper">
+		<aui:select inlineField="<%= true %>" name="status" onChange='<%= renderResponse.getNamespace() + "validateResolution();" %>' wrapperCssClass="form-field-wrapper">
 
 			<%
 			for (int statusId : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
@@ -255,7 +255,7 @@ if (liferayIncOrg || partnerWorker) {
 	</c:if>
 
 	<c:if test="<%= hasUpdateAdvanced %>">
-		<aui:select id="resolutionDropDown" inlineField="<%= true %>" name="resolution" onChange='<%= renderResponse.getNamespace() + "validateResolution();" %>' wrapperCssClass="form-field-wrapper">
+		<aui:select inlineField="<%= true %>" name="resolution" onChange='<%= renderResponse.getNamespace() + "validateResolution();" %>' wrapperCssClass="form-field-wrapper">
 			<aui:option label="" value="0" />
 
 			<%
@@ -611,48 +611,6 @@ if (liferayIncOrg || partnerWorker) {
 			}
 
 			subcomponentNode.html(subcomponentOptions.join(''));
-		},
-		['aui-base']
-	);
-
-	Liferay.provide(
-		window,
-		'<portlet:namespace />validateResolution',
-		function() {
-			var A = AUI();
-
-			var displayErrorMessage = false;
-
-			var resolutionDropDown = A.one('#<portlet:namespace />resolutionDropDown');
-			var statusDropDown = A.one('#<portlet:namespace />statusDropDown');
-
-			if (resolutionDropDown && statusDropDown) {
-				if ((statusDropDown.val() == <%= TicketEntryConstants.STATUS_CLOSED %>) && (resolutionDropDown.val() == 0)) {
-					displayErrorMessage = true;
-				}
-			}
-
-			var messageDisplayName = resolutionDropDown.attr('name') + 'Message';
-
-			var messageDisplay = A.one('#' + messageDisplayName);
-
-			var parentNode = resolutionDropDown.get('parentNode');
-
-			if (messageDisplay) {
-				parentNode.toggleClass('element-has-error', displayErrorMessage);
-
-				messageDisplay.toggle(displayErrorMessage);
-			}
-			else {
-				messageDisplay = A.Node.create('<div class="form-validator-stack help-block" />');
-
-				messageDisplay.attr('id', messageDisplayName);
-				messageDisplay.setContent('<%= UnicodeLanguageUtil.get(request, "please-select-a-valid-resolution") %>');
-
-				parentNode.addClass('element-has-error');
-
-				parentNode.insertBefore(messageDisplay, resolutionDropDown.get('nextSibling'));
-			}
 		},
 		['aui-base']
 	);

@@ -59,7 +59,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 	<portlet:param name="redirect" value="<%= redirect %>" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateTicketEntryURL %>" enctype="multipart/form-data" method="post" name="updateTicketFm">
+<aui:form action="<%= updateTicketEntryURL %>" enctype="multipart/form-data" method="post" name="updateTicketFm" onSubmit='<%= renderResponse.getNamespace() + "submit();" %>'>
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 	<aui:input name="modified" type="hidden" value="false" />
 	<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
@@ -141,6 +141,71 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		}
 
 		<portlet:namespace />closeEditTicketDialog();
+	}
+
+	function <portlet:namespace />submit() {
+		event.preventDefault();
+
+		var A = AUI();
+
+		if (<portlet:namespace />validateResolution()) {
+			var form = A.one('#<portlet:namespace />updateTicketFm');
+
+			if (form) {
+				submitForm(form);
+			}
+		}
+		else {
+			var resolution = A.one('#<portlet:namespace />resolution');
+
+			if (resolution) {
+				resolution.scrollIntoView();
+			}
+		}
+	}
+
+	function <portlet:namespace />validateResolution() {
+		var A = AUI();
+
+		var returnVal = false;
+
+		var resolution = A.one('#<portlet:namespace />resolution');
+		var status = A.one('#<portlet:namespace />status');
+
+		if (resolution) {
+			if (status) {
+				var statusClosed = <%= TicketEntryConstants.STATUS_CLOSED %>;
+				var ticketStatus = status.val();
+
+				if ((ticketStatus != statusClosed) || ((ticketStatus == statusClosed) && (resolution.val() != 0))) {
+					returnVal = true;
+				}
+			}
+
+			var messageDisplayName = resolution.attr('name') + 'Message';
+
+			var messageDisplay = A.one('#' + messageDisplayName);
+
+			var parentNode = resolution.get('parentNode');
+
+			if (messageDisplay) {
+				parentNode.toggleClass('element-has-error', !returnVal);
+
+				messageDisplay.toggle(!returnVal);
+			}
+			else if (!returnVal) {
+				messageDisplay = A.Node.create('<div class="form-validator-stack help-block" />');
+
+				messageDisplay.attr('id', messageDisplayName);
+				messageDisplay.setContent('<%= UnicodeLanguageUtil.get(request, "please-select-a-valid-resolution") %>');
+
+				parentNode.addClass('element-has-error');
+
+				parentNode.insertBefore(messageDisplay, resolution.get('nextSibling'));
+			}
+		}
+
+		return returnVal;
 	}
 
 	Liferay.provide(
