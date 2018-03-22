@@ -16,6 +16,7 @@ package com.liferay.osb.util.comparator;
 
 import com.liferay.osb.model.CorpProject;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Joan Kim
