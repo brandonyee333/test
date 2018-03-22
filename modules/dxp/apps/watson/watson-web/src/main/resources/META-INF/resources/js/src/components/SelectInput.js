@@ -35,8 +35,8 @@ class SelectInput extends JSXComponent {
 			}
 			else if (sortOptions === 'numerical') {
 				renderedOptions.sort(
-					(a, b) => a.value.localeCompare(
-						b.value,
+					(a, b) => b.value.localeCompare(
+						a.value,
 						{},
 						{ignorePunctuation: true, numeric: true}
 					)
@@ -69,7 +69,7 @@ class SelectInput extends JSXComponent {
 			options,
 			optionsLoading,
 			placeHolder = Liferay.Language.get('select'),
-			sortOptions = false,
+			sortOptions,
 			value = ''
 		} = this.props;
 
