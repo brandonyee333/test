@@ -40043,7 +40043,7 @@
 		</watsonListType>
 		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10466">
 			<name locale="en_US">Tip</name>
-			<name locale="th">ปลาย</name>
+			<name locale="th">รับแจ้งเคส</name>
 		</watsonListType>
 		<watsonListType type="com.liferay.watson.model.WatsonIncident.subtype" watsonListTypeId="10467">
 			<name locale="en_US">Other</name>
@@ -40064,7 +40064,7 @@
 	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10471">
 		<name locale="en_US">Arrestee</name>
-		<name locale="th">ประชุมการเขียนรายงานสรุป</name>
+		<name locale="th">รายงานผู้จับกุม</name>
 	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10472">
 		<name locale="en_US">Victim</name>
@@ -40072,11 +40072,11 @@
 	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10473">
 		<name locale="en_US">Reporting party</name>
-		<name locale="th">ประชุมการเขียนรายงานสรุป</name>
+		<name locale="th">รายงานผู้มีส่วนเกี่ยวข้อง</name>
 	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonRelationship.personRelationshipTypes" watsonListTypeId="10474">
 		<name locale="en_US">Mentioned</name>
-		<name locale="th">กล่าวถึง</name>
+		<name locale="th">บุคคลอ้างอิง</name>
 	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonPerson.type" watsonListTypeId="10475">
 		<name locale="en_US">Mentioned</name>
@@ -40196,7 +40196,7 @@
 	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10504">
 		<name locale="en_US">Bocce Ball</name>
-		<name locale="th">เปตอง/name>
+		<name locale="th">เปตอง</name>
 	</watsonListType>
 	<watsonListType type="com.liferay.watson.model.WatsonChild.activitiesInvolved" watsonListTypeId="10505">
 		<name locale="en_US">Football</name>
@@ -40502,15 +40502,15 @@
 		<name locale="en_US">Orphan</name>
 		<name locale="th">กำพร้า</name>
 	</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.type" watsonListTypeId="10583">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.type" watsonListTypeId="10583">
 		<name locale="en_US">Human Trafficking</name>
 		<name locale="th">ค้ามนุษย์</name>
 	</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.type" watsonListTypeId="10584">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.type" watsonListTypeId="10584">
 		<name locale="en_US">Sexual Abuse</name>
 		<name locale="th">ล่วงละเมิดทางเพศ</name>
 	</watsonListType>
-		<watsonListType type="com.liferay.watson.model.WatsonChild.type" watsonListTypeId="10585">
+	<watsonListType type="com.liferay.watson.model.WatsonChild.type" watsonListTypeId="10585">
 		<name locale="en_US">Other</name>
 		<name locale="th">อื่นๆ</name>
 	</watsonListType>
