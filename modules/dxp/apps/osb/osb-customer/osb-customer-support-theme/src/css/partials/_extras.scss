@@ -2,6 +2,12 @@
 	border-radius: 2px;
 }
 
+.portlet > .portlet-topper {
+	@include media-query(sm) {
+		z-index: 5000;
+	}
+}
+
 .webkit {
 	.w33 {
 		width: 33.325%;
