@@ -126,7 +126,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 				}
 				%>
 
-				<aui:option label="<%= envLFRTypeLabel %>" value="<%= envLFRType.getListTypeId() %>" />
+				<aui:option label="<%= envLFRTypeLabel %>" selected="<%= envLFRType.getListTypeId() == envLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 
 			<%
 				previousNamePrefix = namePrefix;
