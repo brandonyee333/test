@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -59,8 +60,14 @@ import com.liferay.osb.rabbitmq.RabbitMQConsumerRouter;
 import com.liferay.rabbitmq.consumer.RabbitMQConsumer;
 import com.liferay.rabbitmq.service.ConsumerManagerLocalServiceUtil;
 */
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 
+import com.liferay.registry.RegistryUtil;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -112,6 +119,8 @@ public class AdminServletContextListener
 
 	@Override
 	protected void doPortalDestroy() {
+		_moduleServiceLifecycleServiceRegistration.unregister();
+
 		/* TODO deploy error,
 		need to fix when we figure out how to set up trial licenses
 			_registerTrialLicenseDestination.unregister(
@@ -161,6 +170,18 @@ public class AdminServletContextListener
 	@Override
 	@SuppressWarnings("unused")
 	protected void doPortalInit() throws Exception {
+
+		// OSGi
+
+		Registry registry = RegistryUtil.getRegistry();
+
+		Map<String, Object> properties = new HashMap<>();
+
+		properties.put("module.service.lifecycle", "osb.portlet.initialized");
+
+		_moduleServiceLifecycleServiceRegistration = registry.registerService(
+			ModuleServiceLifecycle.class, new ModuleServiceLifecycle() {},
+			properties);
 
 		// Messaging
 
@@ -499,6 +520,8 @@ public class AdminServletContextListener
 	private static final Log _log = LogFactoryUtil.getLog(
 		AdminServletContextListener.class);
 
+	private ServiceRegistration<ModuleServiceLifecycle>
+		_moduleServiceLifecycleServiceRegistration;
 	private String _rabbitMQConsumerKey;
 	private Destination _registerTrialLicenseDestination;
 	private MessageListener _registerTrialLicenseMessageListener;
