@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
@@ -312,7 +313,7 @@ public class SearchFilterModelImpl extends BaseModelImpl<SearchFilter>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -328,7 +329,7 @@ public class SearchFilterModelImpl extends BaseModelImpl<SearchFilter>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -371,7 +372,7 @@ public class SearchFilterModelImpl extends BaseModelImpl<SearchFilter>
 	@Override
 	public String getClassName() {
 		if (getClassNameId() <= 0) {
-			return "";
+			return StringPool.BLANK;
 		}
 
 		return PortalUtil.getClassName(getClassNameId());
@@ -415,7 +416,7 @@ public class SearchFilterModelImpl extends BaseModelImpl<SearchFilter>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _name;
@@ -433,7 +434,7 @@ public class SearchFilterModelImpl extends BaseModelImpl<SearchFilter>
 	@Override
 	public String getFilter() {
 		if (_filter == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _filter;

@@ -89,8 +89,38 @@ public class SupportWorkerAccountTierWrapper implements SupportWorkerAccountTier
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new SupportWorkerAccountTierWrapper((SupportWorkerAccountTier)_supportWorkerAccountTier.clone());
+	public SupportWorkerAccountTier toEscapedModel() {
+		return new SupportWorkerAccountTierWrapper(_supportWorkerAccountTier.toEscapedModel());
+	}
+
+	@Override
+	public SupportWorkerAccountTier toUnescapedModel() {
+		return new SupportWorkerAccountTierWrapper(_supportWorkerAccountTier.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _supportWorkerAccountTier.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _supportWorkerAccountTier.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _supportWorkerAccountTier.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _supportWorkerAccountTier.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SupportWorkerAccountTier> toCacheModel() {
+		return _supportWorkerAccountTier.toCacheModel();
 	}
 
 	@Override
@@ -109,8 +139,28 @@ public class SupportWorkerAccountTierWrapper implements SupportWorkerAccountTier
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _supportWorkerAccountTier.getExpandoBridge();
+	public int hashCode() {
+		return _supportWorkerAccountTier.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _supportWorkerAccountTier.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new SupportWorkerAccountTierWrapper((SupportWorkerAccountTier)_supportWorkerAccountTier.clone());
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _supportWorkerAccountTier.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _supportWorkerAccountTier.toXmlString();
 	}
 
 	/**
@@ -121,11 +171,6 @@ public class SupportWorkerAccountTierWrapper implements SupportWorkerAccountTier
 	@Override
 	public long getPrimaryKey() {
 		return _supportWorkerAccountTier.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _supportWorkerAccountTier.getPrimaryKeyObj();
 	}
 
 	/**
@@ -149,26 +194,6 @@ public class SupportWorkerAccountTierWrapper implements SupportWorkerAccountTier
 	}
 
 	@Override
-	public int hashCode() {
-		return _supportWorkerAccountTier.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _supportWorkerAccountTier.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _supportWorkerAccountTier.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _supportWorkerAccountTier.isNew();
-	}
-
-	@Override
 	public void persist() {
 		_supportWorkerAccountTier.persist();
 	}
@@ -189,14 +214,14 @@ public class SupportWorkerAccountTierWrapper implements SupportWorkerAccountTier
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_supportWorkerAccountTier.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_supportWorkerAccountTier.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_supportWorkerAccountTier.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_supportWorkerAccountTier.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -242,31 +267,6 @@ public class SupportWorkerAccountTierWrapper implements SupportWorkerAccountTier
 	@Override
 	public void setSupportWorkerId(long supportWorkerId) {
 		_supportWorkerAccountTier.setSupportWorkerId(supportWorkerId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SupportWorkerAccountTier> toCacheModel() {
-		return _supportWorkerAccountTier.toCacheModel();
-	}
-
-	@Override
-	public SupportWorkerAccountTier toEscapedModel() {
-		return new SupportWorkerAccountTierWrapper(_supportWorkerAccountTier.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _supportWorkerAccountTier.toString();
-	}
-
-	@Override
-	public SupportWorkerAccountTier toUnescapedModel() {
-		return new SupportWorkerAccountTierWrapper(_supportWorkerAccountTier.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _supportWorkerAccountTier.toXmlString();
 	}
 
 	@Override

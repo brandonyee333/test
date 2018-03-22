@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
@@ -45,7 +46,7 @@ import java.util.List;
 @ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
-public interface TicketSolutionService extends BaseService {
+public interface TicketSolutionService extends BaseService, InvokableService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -61,15 +62,20 @@ public interface TicketSolutionService extends BaseService {
 		List<java.lang.Integer> ticketLinkTypes,
 		List<TicketAttachment> ticketAttachments) throws java.lang.Exception;
 
+	public TicketSolution updateTicketSolution(long ticketSolutionId,
+		long ticketEntryId, int status, long statusByUserId,
+		java.lang.String statusMessage, int statusReason)
+		throws java.lang.Exception;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
-
-	public TicketSolution updateTicketSolution(long ticketSolutionId,
-		long ticketEntryId, int status, long statusByUserId,
-		java.lang.String statusMessage, int statusReason)
-		throws java.lang.Exception;
 }

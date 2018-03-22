@@ -259,7 +259,7 @@ public class SupportLaborUtil {
 
 	public static SupportLaborPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (SupportLaborPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (SupportLaborPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					SupportLaborPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(SupportLaborUtil.class,

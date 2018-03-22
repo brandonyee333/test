@@ -879,7 +879,7 @@ public class TicketLinkUtil {
 
 	public static TicketLinkPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (TicketLinkPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (TicketLinkPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					TicketLinkPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(TicketLinkUtil.class,

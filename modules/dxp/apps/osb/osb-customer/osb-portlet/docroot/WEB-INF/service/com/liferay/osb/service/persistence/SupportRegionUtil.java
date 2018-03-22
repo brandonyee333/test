@@ -923,7 +923,7 @@ public class SupportRegionUtil {
 
 	public static SupportRegionPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (SupportRegionPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (SupportRegionPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					SupportRegionPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(SupportRegionUtil.class,

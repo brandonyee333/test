@@ -1081,7 +1081,7 @@ public class AccountCustomerUtil {
 
 	public static AccountCustomerPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AccountCustomerPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (AccountCustomerPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AccountCustomerPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AccountCustomerUtil.class,

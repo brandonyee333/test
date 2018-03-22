@@ -21,6 +21,7 @@ import com.liferay.osb.model.TicketLink;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -98,7 +99,7 @@ public class TicketLinkCacheModel implements CacheModel<TicketLink>,
 		ticketLinkImpl.setUserId(userId);
 
 		if (userName == null) {
-			ticketLinkImpl.setUserName("");
+			ticketLinkImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ticketLinkImpl.setUserName(userName);
@@ -115,7 +116,7 @@ public class TicketLinkCacheModel implements CacheModel<TicketLink>,
 		ticketLinkImpl.setTicketSolutionId(ticketSolutionId);
 
 		if (url == null) {
-			ticketLinkImpl.setUrl("");
+			ticketLinkImpl.setUrl(StringPool.BLANK);
 		}
 		else {
 			ticketLinkImpl.setUrl(url);
@@ -155,7 +156,7 @@ public class TicketLinkCacheModel implements CacheModel<TicketLink>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -168,7 +169,7 @@ public class TicketLinkCacheModel implements CacheModel<TicketLink>,
 		objectOutput.writeLong(ticketSolutionId);
 
 		if (url == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(url);

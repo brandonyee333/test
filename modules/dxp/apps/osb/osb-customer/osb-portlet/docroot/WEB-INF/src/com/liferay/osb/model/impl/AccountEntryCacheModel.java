@@ -21,6 +21,7 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -139,7 +140,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		accountEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			accountEntryImpl.setUserName("");
+			accountEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			accountEntryImpl.setUserName(userName);
@@ -155,7 +156,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		accountEntryImpl.setModifiedUserId(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			accountEntryImpl.setModifiedUserName("");
+			accountEntryImpl.setModifiedUserName(StringPool.BLANK);
 		}
 		else {
 			accountEntryImpl.setModifiedUserName(modifiedUserName);
@@ -171,21 +172,21 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		accountEntryImpl.setCorpProjectId(corpProjectId);
 
 		if (corpEntryName == null) {
-			accountEntryImpl.setCorpEntryName("");
+			accountEntryImpl.setCorpEntryName(StringPool.BLANK);
 		}
 		else {
 			accountEntryImpl.setCorpEntryName(corpEntryName);
 		}
 
 		if (name == null) {
-			accountEntryImpl.setName("");
+			accountEntryImpl.setName(StringPool.BLANK);
 		}
 		else {
 			accountEntryImpl.setName(name);
 		}
 
 		if (code == null) {
-			accountEntryImpl.setCode("");
+			accountEntryImpl.setCode(StringPool.BLANK);
 		}
 		else {
 			accountEntryImpl.setCode(code);
@@ -201,14 +202,14 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		accountEntryImpl.setMaxCustomers(maxCustomers);
 
 		if (instructions == null) {
-			accountEntryImpl.setInstructions("");
+			accountEntryImpl.setInstructions(StringPool.BLANK);
 		}
 		else {
 			accountEntryImpl.setInstructions(instructions);
 		}
 
 		if (notes == null) {
-			accountEntryImpl.setNotes("");
+			accountEntryImpl.setNotes(StringPool.BLANK);
 		}
 		else {
 			accountEntryImpl.setNotes(notes);
@@ -227,7 +228,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		accountEntryImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			accountEntryImpl.setStatusByUserName("");
+			accountEntryImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			accountEntryImpl.setStatusByUserName(statusByUserName);
@@ -241,7 +242,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		}
 
 		if (statusMessage == null) {
-			accountEntryImpl.setStatusMessage("");
+			accountEntryImpl.setStatusMessage(StringPool.BLANK);
 		}
 		else {
 			accountEntryImpl.setStatusMessage(statusMessage);
@@ -310,7 +311,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -321,7 +322,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		objectOutput.writeLong(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(modifiedUserName);
@@ -332,21 +333,21 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		objectOutput.writeLong(corpProjectId);
 
 		if (corpEntryName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(corpEntryName);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (code == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(code);
@@ -369,14 +370,14 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		objectOutput.writeInt(maxCustomers);
 
 		if (instructions == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(instructions);
 		}
 
 		if (notes == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(notes);
@@ -390,7 +391,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -399,7 +400,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		objectOutput.writeLong(statusDate);
 
 		if (statusMessage == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusMessage);

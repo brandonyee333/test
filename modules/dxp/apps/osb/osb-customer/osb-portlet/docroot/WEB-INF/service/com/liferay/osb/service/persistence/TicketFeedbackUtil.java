@@ -1009,7 +1009,7 @@ public class TicketFeedbackUtil {
 
 	public static TicketFeedbackPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (TicketFeedbackPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (TicketFeedbackPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					TicketFeedbackPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(TicketFeedbackUtil.class,

@@ -21,6 +21,7 @@ import com.liferay.osb.model.TicketComment;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -104,7 +105,7 @@ public class TicketCommentCacheModel implements CacheModel<TicketComment>,
 		ticketCommentImpl.setUserId(userId);
 
 		if (userName == null) {
-			ticketCommentImpl.setUserName("");
+			ticketCommentImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ticketCommentImpl.setUserName(userName);
@@ -127,7 +128,7 @@ public class TicketCommentCacheModel implements CacheModel<TicketComment>,
 		ticketCommentImpl.setTicketEntryId(ticketEntryId);
 
 		if (body == null) {
-			ticketCommentImpl.setBody("");
+			ticketCommentImpl.setBody(StringPool.BLANK);
 		}
 		else {
 			ticketCommentImpl.setBody(body);
@@ -136,7 +137,7 @@ public class TicketCommentCacheModel implements CacheModel<TicketComment>,
 		ticketCommentImpl.setType(type);
 
 		if (format == null) {
-			ticketCommentImpl.setFormat("");
+			ticketCommentImpl.setFormat(StringPool.BLANK);
 		}
 		else {
 			ticketCommentImpl.setFormat(format);
@@ -145,7 +146,7 @@ public class TicketCommentCacheModel implements CacheModel<TicketComment>,
 		ticketCommentImpl.setVisibility(visibility);
 
 		if (settings == null) {
-			ticketCommentImpl.setSettings("");
+			ticketCommentImpl.setSettings(StringPool.BLANK);
 		}
 		else {
 			ticketCommentImpl.setSettings(settings);
@@ -187,7 +188,7 @@ public class TicketCommentCacheModel implements CacheModel<TicketComment>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -199,7 +200,7 @@ public class TicketCommentCacheModel implements CacheModel<TicketComment>,
 		objectOutput.writeLong(ticketEntryId);
 
 		if (body == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(body);
@@ -208,7 +209,7 @@ public class TicketCommentCacheModel implements CacheModel<TicketComment>,
 		objectOutput.writeInt(type);
 
 		if (format == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(format);
@@ -217,7 +218,7 @@ public class TicketCommentCacheModel implements CacheModel<TicketComment>,
 		objectOutput.writeInt(visibility);
 
 		if (settings == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(settings);

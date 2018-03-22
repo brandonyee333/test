@@ -1143,7 +1143,7 @@ public class AuditEntryUtil {
 
 	public static AuditEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AuditEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (AuditEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AuditEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AuditEntryUtil.class,

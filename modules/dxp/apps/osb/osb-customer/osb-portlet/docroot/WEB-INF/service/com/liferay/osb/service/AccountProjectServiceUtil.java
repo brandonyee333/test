@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -46,15 +47,6 @@ public class AccountProjectServiceUtil {
 		return getService().deleteAccountProject(accountProjectId);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
 	public static com.liferay.osb.model.AccountProject updateAccountProject(
 		long accountProjectId, long accountEntryId, java.lang.String name,
 		java.util.Map<java.lang.Integer, java.lang.String> data)
@@ -64,14 +56,36 @@ public class AccountProjectServiceUtil {
 			name, data);
 	}
 
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static AccountProjectService getService() {
 		if (_service == null) {
-			_service = (AccountProjectService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					AccountProjectService.class.getName());
+
+			if (invokableService instanceof AccountProjectService) {
+				_service = (AccountProjectService)invokableService;
+			}
+			else {
+				_service = new AccountProjectServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(AccountProjectServiceUtil.class,
 				"_service");

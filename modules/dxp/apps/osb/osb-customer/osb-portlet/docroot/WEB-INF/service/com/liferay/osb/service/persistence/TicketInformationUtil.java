@@ -497,7 +497,7 @@ public class TicketInformationUtil {
 
 	public static TicketInformationPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (TicketInformationPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (TicketInformationPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					TicketInformationPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(TicketInformationUtil.class,

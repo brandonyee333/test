@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -43,7 +44,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 @ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
-public interface LicenseKeySetService extends BaseService {
+public interface LicenseKeySetService extends BaseService, InvokableService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -59,13 +60,18 @@ public interface LicenseKeySetService extends BaseService {
 	public LicenseKeySet getLicenseKeySet(long licenseKeySetId)
 		throws PortalException;
 
+	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId,
+		java.lang.String name) throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
-
-	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId,
-		java.lang.String name) throws PortalException;
 }

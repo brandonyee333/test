@@ -33,7 +33,7 @@ public class SupportResponseFinderUtil {
 
 	public static SupportResponseFinder getFinder() {
 		if (_finder == null) {
-			_finder = (SupportResponseFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_finder = (SupportResponseFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					SupportResponseFinder.class.getName());
 
 			ReferenceRegistry.registerReference(SupportResponseFinderUtil.class,

@@ -42,22 +42,6 @@ public class SearchFilterServiceWrapper implements SearchFilterService,
 	}
 
 	@Override
-	public void deleteSearchFilter(long searchFilterId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_searchFilterService.deleteSearchFilter(searchFilterId);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _searchFilterService.getOSGiServiceIdentifier();
-	}
-
-	@Override
 	public com.liferay.osb.model.SearchFilter getSearchFilter(
 		long searchFilterId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -71,6 +55,29 @@ public class SearchFilterServiceWrapper implements SearchFilterService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _searchFilterService.updateSearchFilter(searchFilterId, name,
 			filter, visibility);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _searchFilterService.invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _searchFilterService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public void deleteSearchFilter(long searchFilterId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_searchFilterService.deleteSearchFilter(searchFilterId);
 	}
 
 	@Override

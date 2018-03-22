@@ -21,6 +21,7 @@ import com.liferay.osb.model.AccountLink;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -92,7 +93,7 @@ public class AccountLinkCacheModel implements CacheModel<AccountLink>,
 		accountLinkImpl.setUserId(userId);
 
 		if (userName == null) {
-			accountLinkImpl.setUserName("");
+			accountLinkImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			accountLinkImpl.setUserName(userName);
@@ -108,7 +109,7 @@ public class AccountLinkCacheModel implements CacheModel<AccountLink>,
 		accountLinkImpl.setAccountEntryId(accountEntryId);
 
 		if (url == null) {
-			accountLinkImpl.setUrl("");
+			accountLinkImpl.setUrl(StringPool.BLANK);
 		}
 		else {
 			accountLinkImpl.setUrl(url);
@@ -139,7 +140,7 @@ public class AccountLinkCacheModel implements CacheModel<AccountLink>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -150,7 +151,7 @@ public class AccountLinkCacheModel implements CacheModel<AccountLink>,
 		objectOutput.writeLong(accountEntryId);
 
 		if (url == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(url);

@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -54,12 +55,14 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface AccountCustomerLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountCustomerLocalServiceUtil} to access the account customer local service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountCustomerLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasAccountCustomer(long userId, long accountEntryId);
 
 	/**
 	* Adds the account customer to the database. Also notifies the appropriate model listeners.
@@ -70,13 +73,13 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountCustomer addAccountCustomer(AccountCustomer accountCustomer);
 
-	public AccountCustomer addAccountCustomer(long userId, long customerUserId,
-		long accountEntryId, int role, int notifications)
-		throws PortalException;
-
 	public AccountCustomer addAccountCustomer(long userId,
 		java.lang.String emailAddress, long accountEntryId, int role,
 		int notifications) throws PortalException;
+
+	public AccountCustomer addAccountCustomer(long userId, long customerUserId,
+		long accountEntryId, int role, int notifications)
+		throws PortalException;
 
 	/**
 	* Creates a new account customer with the primary key. Does not add the account customer to the database.
@@ -113,10 +116,48 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public AccountCustomer deleteAccountCustomer(long userId,
 		long accountCustomerId) throws PortalException;
 
-	public void deleteAccountCustomers(long userId) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountCustomer fetchAccountCustomer(long accountCustomerId);
 
-	public void deleteAccountEntryAccountCustomers(long accountEntryId)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountCustomer fetchAccountCustomer(long userId, long accountEntryId);
+
+	/**
+	* Returns the account customer with the primary key.
+	*
+	* @param accountCustomerId the primary key of the account customer
+	* @return the account customer
+	* @throws PortalException if a account customer with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountCustomer getAccountCustomer(long accountCustomerId)
 		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountCustomer getAccountCustomer(long userId, long accountEntryId)
+		throws PortalException;
+
+	/**
+	* Updates the account customer in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountCustomer the account customer
+	* @return the account customer that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public AccountCustomer updateAccountCustomer(
+		AccountCustomer accountCustomer);
+
+	public AccountCustomer updateAccountCustomer(long userId,
+		long accountCustomerId, int role, int notifications)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
 	* @throws PortalException
@@ -125,7 +166,30 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	public DynamicQuery dynamicQuery();
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of account customers.
+	*
+	* @return the number of account customers
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAccountCustomersCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -167,45 +231,6 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountCustomer fetchAccountCustomer(long accountCustomerId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountCustomer fetchAccountCustomer(long userId, long accountEntryId);
-
-	/**
-	* Returns the account customer with the primary key.
-	*
-	* @param accountCustomerId the primary key of the account customer
-	* @return the account customer
-	* @throws PortalException if a account customer with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountCustomer getAccountCustomer(long accountCustomerId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountCustomer getAccountCustomer(long userId, long accountEntryId)
-		throws PortalException;
-
-	/**
 	* Returns a range of all the account customers.
 	*
 	* <p>
@@ -226,32 +251,6 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public List<AccountCustomer> getAccountCustomers(long accountEntryId,
 		int role);
 
-	/**
-	* Returns the number of account customers.
-	*
-	* @return the number of account customers
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountCustomersCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountCustomer> getUserAccountCustomers(long userId);
 
@@ -259,23 +258,29 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public List<AccountCustomer> getUserAccountCustomers(long userId,
 		int[] roles);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasAccountCustomer(long userId, long accountEntryId);
-
-	public void toggleNotifications(long accountCustomerId)
-		throws PortalException;
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Updates the account customer in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @param accountCustomer the account customer
-	* @return the account customer that was updated
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public AccountCustomer updateAccountCustomer(
-		AccountCustomer accountCustomer);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
 
-	public AccountCustomer updateAccountCustomer(long userId,
-		long accountCustomerId, int role, int notifications)
+	public void deleteAccountCustomers(long userId) throws PortalException;
+
+	public void deleteAccountEntryAccountCustomers(long accountEntryId)
+		throws PortalException;
+
+	public void toggleNotifications(long accountCustomerId)
 		throws PortalException;
 }

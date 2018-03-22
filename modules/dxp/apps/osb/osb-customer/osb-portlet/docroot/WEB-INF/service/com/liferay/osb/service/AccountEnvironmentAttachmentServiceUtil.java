@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -47,6 +48,12 @@ public class AccountEnvironmentAttachmentServiceUtil {
 				   .getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
 	}
 
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -62,8 +69,15 @@ public class AccountEnvironmentAttachmentServiceUtil {
 
 	public static AccountEnvironmentAttachmentService getService() {
 		if (_service == null) {
-			_service = (AccountEnvironmentAttachmentService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					AccountEnvironmentAttachmentService.class.getName());
+
+			if (invokableService instanceof AccountEnvironmentAttachmentService) {
+				_service = (AccountEnvironmentAttachmentService)invokableService;
+			}
+			else {
+				_service = new AccountEnvironmentAttachmentServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(AccountEnvironmentAttachmentServiceUtil.class,
 				"_service");

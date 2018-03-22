@@ -25,10 +25,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class HolidayEntryFinderBaseImpl extends BasePersistenceImpl<HolidayEntry> {
-	public HolidayEntryFinderBaseImpl() {
-		setModelClass(HolidayEntry.class);
-	}
-
 	/**
 	 * Returns the holiday entry persistence.
 	 *

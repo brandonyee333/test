@@ -25,10 +25,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class SupportWorkerFinderBaseImpl extends BasePersistenceImpl<SupportWorker> {
-	public SupportWorkerFinderBaseImpl() {
-		setModelClass(SupportWorker.class);
-	}
-
 	/**
 	 * Returns the support worker persistence.
 	 *

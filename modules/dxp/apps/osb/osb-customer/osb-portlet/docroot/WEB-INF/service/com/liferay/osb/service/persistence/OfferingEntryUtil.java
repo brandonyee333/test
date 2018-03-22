@@ -805,7 +805,7 @@ public class OfferingEntryUtil {
 
 	public static OfferingEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (OfferingEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (OfferingEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					OfferingEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(OfferingEntryUtil.class,

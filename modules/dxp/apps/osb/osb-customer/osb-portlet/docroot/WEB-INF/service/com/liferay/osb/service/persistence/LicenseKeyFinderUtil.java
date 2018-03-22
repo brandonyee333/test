@@ -90,7 +90,7 @@ public class LicenseKeyFinderUtil {
 
 	public static LicenseKeyFinder getFinder() {
 		if (_finder == null) {
-			_finder = (LicenseKeyFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_finder = (LicenseKeyFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					LicenseKeyFinder.class.getName());
 
 			ReferenceRegistry.registerReference(LicenseKeyFinderUtil.class,

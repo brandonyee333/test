@@ -164,43 +164,43 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AccountEnvironmentWrapper((AccountEnvironment)_accountEnvironment.clone());
+	public AccountEnvironment toEscapedModel() {
+		return new AccountEnvironmentWrapper(_accountEnvironment.toEscapedModel());
+	}
+
+	@Override
+	public AccountEnvironment toUnescapedModel() {
+		return new AccountEnvironmentWrapper(_accountEnvironment.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _accountEnvironment.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _accountEnvironment.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _accountEnvironment.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _accountEnvironment.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountEnvironment> toCacheModel() {
+		return _accountEnvironment.toCacheModel();
 	}
 
 	@Override
 	public int compareTo(AccountEnvironment accountEnvironment) {
 		return _accountEnvironment.compareTo(accountEnvironment);
-	}
-
-	/**
-	* Returns the account entry ID of this account environment.
-	*
-	* @return the account entry ID of this account environment
-	*/
-	@Override
-	public long getAccountEntryId() {
-		return _accountEnvironment.getAccountEntryId();
-	}
-
-	/**
-	* Returns the account environment ID of this account environment.
-	*
-	* @return the account environment ID of this account environment
-	*/
-	@Override
-	public long getAccountEnvironmentId() {
-		return _accountEnvironment.getAccountEnvironmentId();
-	}
-
-	/**
-	* Returns the create date of this account environment.
-	*
-	* @return the create date of this account environment
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _accountEnvironment.getCreateDate();
 	}
 
 	/**
@@ -213,11 +213,6 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 		return _accountEnvironment.getEnvAS();
 	}
 
-	@Override
-	public java.lang.String getEnvASLabel() {
-		return _accountEnvironment.getEnvASLabel();
-	}
-
 	/**
 	* Returns the env db of this account environment.
 	*
@@ -226,11 +221,6 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public int getEnvDB() {
 		return _accountEnvironment.getEnvDB();
-	}
-
-	@Override
-	public java.lang.String getEnvDBLabel() {
-		return _accountEnvironment.getEnvDBLabel();
 	}
 
 	/**
@@ -243,11 +233,6 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 		return _accountEnvironment.getEnvJVM();
 	}
 
-	@Override
-	public java.lang.String getEnvJVMLabel() {
-		return _accountEnvironment.getEnvJVMLabel();
-	}
-
 	/**
 	* Returns the env lfr of this account environment.
 	*
@@ -258,11 +243,6 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 		return _accountEnvironment.getEnvLFR();
 	}
 
-	@Override
-	public java.lang.String getEnvLFRLabel() {
-		return _accountEnvironment.getEnvLFRLabel();
-	}
-
 	/**
 	* Returns the env os of this account environment.
 	*
@@ -271,6 +251,41 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public int getEnvOS() {
 		return _accountEnvironment.getEnvOS();
+	}
+
+	@Override
+	public int hashCode() {
+		return _accountEnvironment.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountEnvironment.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AccountEnvironmentWrapper((AccountEnvironment)_accountEnvironment.clone());
+	}
+
+	@Override
+	public java.lang.String getEnvASLabel() {
+		return _accountEnvironment.getEnvASLabel();
+	}
+
+	@Override
+	public java.lang.String getEnvDBLabel() {
+		return _accountEnvironment.getEnvDBLabel();
+	}
+
+	@Override
+	public java.lang.String getEnvJVMLabel() {
+		return _accountEnvironment.getEnvJVMLabel();
+	}
+
+	@Override
+	public java.lang.String getEnvLFRLabel() {
+		return _accountEnvironment.getEnvLFRLabel();
 	}
 
 	/**
@@ -288,21 +303,6 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 		return _accountEnvironment.getEnvOSLabel();
 	}
 
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountEnvironment.getExpandoBridge();
-	}
-
-	/**
-	* Returns the modified date of this account environment.
-	*
-	* @return the modified date of this account environment
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _accountEnvironment.getModifiedDate();
-	}
-
 	/**
 	* Returns the name of this account environment.
 	*
@@ -313,44 +313,9 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 		return _accountEnvironment.getName();
 	}
 
-	/**
-	* Returns the primary key of this account environment.
-	*
-	* @return the primary key of this account environment
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _accountEnvironment.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountEnvironment.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the product entry ID of this account environment.
-	*
-	* @return the product entry ID of this account environment
-	*/
-	@Override
-	public long getProductEntryId() {
-		return _accountEnvironment.getProductEntryId();
-	}
-
 	@Override
 	public java.lang.String getSupportPhaseLabel() {
 		return _accountEnvironment.getSupportPhaseLabel();
-	}
-
-	/**
-	* Returns the user ID of this account environment.
-	*
-	* @return the user ID of this account environment
-	*/
-	@Override
-	public long getUserId() {
-		return _accountEnvironment.getUserId();
 	}
 
 	/**
@@ -374,23 +339,83 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	}
 
 	@Override
-	public int hashCode() {
-		return _accountEnvironment.hashCode();
+	public java.lang.String toString() {
+		return _accountEnvironment.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _accountEnvironment.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _accountEnvironment.toXmlString();
 	}
 
+	/**
+	* Returns the create date of this account environment.
+	*
+	* @return the create date of this account environment
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _accountEnvironment.isEscapedModel();
+	public Date getCreateDate() {
+		return _accountEnvironment.getCreateDate();
 	}
 
+	/**
+	* Returns the modified date of this account environment.
+	*
+	* @return the modified date of this account environment
+	*/
 	@Override
-	public boolean isNew() {
-		return _accountEnvironment.isNew();
+	public Date getModifiedDate() {
+		return _accountEnvironment.getModifiedDate();
+	}
+
+	/**
+	* Returns the account entry ID of this account environment.
+	*
+	* @return the account entry ID of this account environment
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _accountEnvironment.getAccountEntryId();
+	}
+
+	/**
+	* Returns the account environment ID of this account environment.
+	*
+	* @return the account environment ID of this account environment
+	*/
+	@Override
+	public long getAccountEnvironmentId() {
+		return _accountEnvironment.getAccountEnvironmentId();
+	}
+
+	/**
+	* Returns the primary key of this account environment.
+	*
+	* @return the primary key of this account environment
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _accountEnvironment.getPrimaryKey();
+	}
+
+	/**
+	* Returns the product entry ID of this account environment.
+	*
+	* @return the product entry ID of this account environment
+	*/
+	@Override
+	public long getProductEntryId() {
+		return _accountEnvironment.getProductEntryId();
+	}
+
+	/**
+	* Returns the user ID of this account environment.
+	*
+	* @return the user ID of this account environment
+	*/
+	@Override
+	public long getUserId() {
+		return _accountEnvironment.getUserId();
 	}
 
 	@Override
@@ -494,14 +519,14 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_accountEnvironment.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountEnvironment.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountEnvironment.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_accountEnvironment.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -587,31 +612,6 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_accountEnvironment.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountEnvironment> toCacheModel() {
-		return _accountEnvironment.toCacheModel();
-	}
-
-	@Override
-	public AccountEnvironment toEscapedModel() {
-		return new AccountEnvironmentWrapper(_accountEnvironment.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _accountEnvironment.toString();
-	}
-
-	@Override
-	public AccountEnvironment toUnescapedModel() {
-		return new AccountEnvironmentWrapper(_accountEnvironment.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _accountEnvironment.toXmlString();
 	}
 
 	@Override

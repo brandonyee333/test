@@ -443,7 +443,7 @@ public class SupportWorkerAccountTierUtil {
 
 	public static SupportWorkerAccountTierPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (SupportWorkerAccountTierPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (SupportWorkerAccountTierPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					SupportWorkerAccountTierPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(SupportWorkerAccountTierUtil.class,

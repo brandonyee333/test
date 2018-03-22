@@ -87,8 +87,38 @@ public class SupportTeamLanguageWrapper implements SupportTeamLanguage,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new SupportTeamLanguageWrapper((SupportTeamLanguage)_supportTeamLanguage.clone());
+	public SupportTeamLanguage toEscapedModel() {
+		return new SupportTeamLanguageWrapper(_supportTeamLanguage.toEscapedModel());
+	}
+
+	@Override
+	public SupportTeamLanguage toUnescapedModel() {
+		return new SupportTeamLanguageWrapper(_supportTeamLanguage.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _supportTeamLanguage.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _supportTeamLanguage.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _supportTeamLanguage.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _supportTeamLanguage.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SupportTeamLanguage> toCacheModel() {
+		return _supportTeamLanguage.toCacheModel();
 	}
 
 	@Override
@@ -97,8 +127,18 @@ public class SupportTeamLanguageWrapper implements SupportTeamLanguage,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _supportTeamLanguage.getExpandoBridge();
+	public int hashCode() {
+		return _supportTeamLanguage.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _supportTeamLanguage.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new SupportTeamLanguageWrapper((SupportTeamLanguage)_supportTeamLanguage.clone());
 	}
 
 	/**
@@ -111,6 +151,16 @@ public class SupportTeamLanguageWrapper implements SupportTeamLanguage,
 		return _supportTeamLanguage.getLanguageId();
 	}
 
+	@Override
+	public java.lang.String toString() {
+		return _supportTeamLanguage.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _supportTeamLanguage.toXmlString();
+	}
+
 	/**
 	* Returns the primary key of this support team language.
 	*
@@ -119,11 +169,6 @@ public class SupportTeamLanguageWrapper implements SupportTeamLanguage,
 	@Override
 	public long getPrimaryKey() {
 		return _supportTeamLanguage.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _supportTeamLanguage.getPrimaryKeyObj();
 	}
 
 	/**
@@ -147,26 +192,6 @@ public class SupportTeamLanguageWrapper implements SupportTeamLanguage,
 	}
 
 	@Override
-	public int hashCode() {
-		return _supportTeamLanguage.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _supportTeamLanguage.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _supportTeamLanguage.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _supportTeamLanguage.isNew();
-	}
-
-	@Override
 	public void persist() {
 		_supportTeamLanguage.persist();
 	}
@@ -177,14 +202,14 @@ public class SupportTeamLanguageWrapper implements SupportTeamLanguage,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_supportTeamLanguage.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_supportTeamLanguage.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_supportTeamLanguage.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_supportTeamLanguage.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -240,31 +265,6 @@ public class SupportTeamLanguageWrapper implements SupportTeamLanguage,
 	@Override
 	public void setSupportTeamLanguageId(long supportTeamLanguageId) {
 		_supportTeamLanguage.setSupportTeamLanguageId(supportTeamLanguageId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SupportTeamLanguage> toCacheModel() {
-		return _supportTeamLanguage.toCacheModel();
-	}
-
-	@Override
-	public SupportTeamLanguage toEscapedModel() {
-		return new SupportTeamLanguageWrapper(_supportTeamLanguage.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _supportTeamLanguage.toString();
-	}
-
-	@Override
-	public SupportTeamLanguage toUnescapedModel() {
-		return new SupportTeamLanguageWrapper(_supportTeamLanguage.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _supportTeamLanguage.toXmlString();
 	}
 
 	@Override

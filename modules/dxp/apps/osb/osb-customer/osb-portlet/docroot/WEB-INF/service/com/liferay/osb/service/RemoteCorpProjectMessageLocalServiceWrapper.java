@@ -46,9 +46,11 @@ public class RemoteCorpProjectMessageLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteCorpProjectMessage(long corpProjectMessageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_remoteCorpProjectMessageLocalService.deleteCorpProjectMessage(corpProjectMessageId);
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _remoteCorpProjectMessageLocalService.invokeMethod(name,
+			parameterTypes, arguments);
 	}
 
 	/**
@@ -59,6 +61,12 @@ public class RemoteCorpProjectMessageLocalServiceWrapper
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _remoteCorpProjectMessageLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public void deleteCorpProjectMessage(long corpProjectMessageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_remoteCorpProjectMessageLocalService.deleteCorpProjectMessage(corpProjectMessageId);
 	}
 
 	@Override

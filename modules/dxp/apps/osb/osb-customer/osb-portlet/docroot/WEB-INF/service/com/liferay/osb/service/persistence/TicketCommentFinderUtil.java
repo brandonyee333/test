@@ -34,7 +34,7 @@ public class TicketCommentFinderUtil {
 
 	public static TicketCommentFinder getFinder() {
 		if (_finder == null) {
-			_finder = (TicketCommentFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_finder = (TicketCommentFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					TicketCommentFinder.class.getName());
 
 			ReferenceRegistry.registerReference(TicketCommentFinderUtil.class,

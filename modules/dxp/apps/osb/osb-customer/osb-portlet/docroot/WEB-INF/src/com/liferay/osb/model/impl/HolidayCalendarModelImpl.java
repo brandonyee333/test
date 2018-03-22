@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -219,7 +220,7 @@ public class HolidayCalendarModelImpl extends BaseModelImpl<HolidayCalendar>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _name;
@@ -235,7 +236,7 @@ public class HolidayCalendarModelImpl extends BaseModelImpl<HolidayCalendar>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _description;

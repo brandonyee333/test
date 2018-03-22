@@ -95,6 +95,74 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 		return _corpProjectLocalService.deleteCorpProject(corpProjectId);
 	}
 
+	@Override
+	public com.liferay.osb.model.CorpProject fetchCorpProject(
+		java.lang.String dossieraProjectKey) {
+		return _corpProjectLocalService.fetchCorpProject(dossieraProjectKey);
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProject fetchCorpProject(
+		long corpProjectId) {
+		return _corpProjectLocalService.fetchCorpProject(corpProjectId);
+	}
+
+	/**
+	* Returns the corp project with the primary key.
+	*
+	* @param corpProjectId the primary key of the corp project
+	* @return the corp project
+	* @throws PortalException if a corp project with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.CorpProject getCorpProject(long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.getCorpProject(corpProjectId);
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProject getCorpProjectByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.getCorpProjectByUuid(uuid);
+	}
+
+	/**
+	* Updates the corp project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param corpProject the corp project
+	* @return the corp project that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.CorpProject updateCorpProject(
+		com.liferay.osb.model.CorpProject corpProject) {
+		return _corpProjectLocalService.updateCorpProject(corpProject);
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProject updateCorpProject(
+		long corpProjectId, java.lang.String name,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.updateCorpProject(corpProjectId, name,
+			serviceContext);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _corpProjectLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _corpProjectLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _corpProjectLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -106,8 +174,44 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _corpProjectLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of corp projects.
+	*
+	* @return the number of corp projects
+	*/
+	@Override
+	public int getCorpProjectsCount() {
+		return _corpProjectLocalService.getCorpProjectsCount();
+	}
+
+	@Override
+	public int getCorpProjectsCount(java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.getCorpProjectsCount(name);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _corpProjectLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _corpProjectLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -164,70 +268,6 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _corpProjectLocalService.dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _corpProjectLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
-	}
-
-	@Override
-	public com.liferay.osb.model.CorpProject fetchCorpProject(
-		long corpProjectId) {
-		return _corpProjectLocalService.fetchCorpProject(corpProjectId);
-	}
-
-	@Override
-	public com.liferay.osb.model.CorpProject fetchCorpProject(
-		java.lang.String dossieraProjectKey) {
-		return _corpProjectLocalService.fetchCorpProject(dossieraProjectKey);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _corpProjectLocalService.getActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the corp project with the primary key.
-	*
-	* @param corpProjectId the primary key of the corp project
-	* @return the corp project
-	* @throws PortalException if a corp project with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.CorpProject getCorpProject(long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.getCorpProject(corpProjectId);
-	}
-
-	@Override
-	public com.liferay.osb.model.CorpProject getCorpProjectByUuid(
-		java.lang.String uuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.getCorpProjectByUuid(uuid);
-	}
-
-	/**
 	* Returns a range of all the corp projects.
 	*
 	* <p>
@@ -253,62 +293,30 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	}
 
 	/**
-	* Returns the number of corp projects.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of corp projects
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public int getCorpProjectsCount() {
-		return _corpProjectLocalService.getCorpProjectsCount();
-	}
-
-	@Override
-	public int getCorpProjectsCount(java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.getCorpProjectsCount(name);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _corpProjectLocalService.getIndexableActionableDynamicQuery();
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _corpProjectLocalService.dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Returns the OSGi service identifier.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the OSGi service identifier
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _corpProjectLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the corp project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param corpProject the corp project
-	* @return the corp project that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.CorpProject updateCorpProject(
-		com.liferay.osb.model.CorpProject corpProject) {
-		return _corpProjectLocalService.updateCorpProject(corpProject);
-	}
-
-	@Override
-	public com.liferay.osb.model.CorpProject updateCorpProject(
-		long corpProjectId, java.lang.String name,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.updateCorpProject(corpProjectId, name,
-			serviceContext);
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _corpProjectLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
 	}
 
 	@Override

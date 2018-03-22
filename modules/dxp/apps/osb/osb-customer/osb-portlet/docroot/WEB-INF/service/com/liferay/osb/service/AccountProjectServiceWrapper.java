@@ -40,6 +40,23 @@ public class AccountProjectServiceWrapper implements AccountProjectService,
 		return _accountProjectService.deleteAccountProject(accountProjectId);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountProject updateAccountProject(
+		long accountProjectId, long accountEntryId, java.lang.String name,
+		java.util.Map<java.lang.Integer, java.lang.String> data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountProjectService.updateAccountProject(accountProjectId,
+			accountEntryId, name, data);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountProjectService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -48,15 +65,6 @@ public class AccountProjectServiceWrapper implements AccountProjectService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _accountProjectService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountProject updateAccountProject(
-		long accountProjectId, long accountEntryId, java.lang.String name,
-		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountProjectService.updateAccountProject(accountProjectId,
-			accountEntryId, name, data);
 	}
 
 	@Override

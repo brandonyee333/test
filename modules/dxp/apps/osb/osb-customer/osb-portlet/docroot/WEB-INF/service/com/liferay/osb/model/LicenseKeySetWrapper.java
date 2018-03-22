@@ -115,8 +115,44 @@ public class LicenseKeySetWrapper implements LicenseKeySet,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new LicenseKeySetWrapper((LicenseKeySet)_licenseKeySet.clone());
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeySet.getAccountEntry();
+	}
+
+	@Override
+	public LicenseKeySet toEscapedModel() {
+		return new LicenseKeySetWrapper(_licenseKeySet.toEscapedModel());
+	}
+
+	@Override
+	public LicenseKeySet toUnescapedModel() {
+		return new LicenseKeySetWrapper(_licenseKeySet.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _licenseKeySet.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _licenseKeySet.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _licenseKeySet.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _licenseKeySet.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<LicenseKeySet> toCacheModel() {
+		return _licenseKeySet.toCacheModel();
 	}
 
 	@Override
@@ -125,54 +161,18 @@ public class LicenseKeySetWrapper implements LicenseKeySet,
 	}
 
 	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeySet.getAccountEntry();
-	}
-
-	/**
-	* Returns the account entry ID of this license key set.
-	*
-	* @return the account entry ID of this license key set
-	*/
-	@Override
-	public long getAccountEntryId() {
-		return _licenseKeySet.getAccountEntryId();
-	}
-
-	/**
-	* Returns the create date of this license key set.
-	*
-	* @return the create date of this license key set
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _licenseKeySet.getCreateDate();
+	public int hashCode() {
+		return _licenseKeySet.hashCode();
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _licenseKeySet.getExpandoBridge();
+	public Serializable getPrimaryKeyObj() {
+		return _licenseKeySet.getPrimaryKeyObj();
 	}
 
-	/**
-	* Returns the license key set ID of this license key set.
-	*
-	* @return the license key set ID of this license key set
-	*/
 	@Override
-	public long getLicenseKeySetId() {
-		return _licenseKeySet.getLicenseKeySetId();
-	}
-
-	/**
-	* Returns the modified date of this license key set.
-	*
-	* @return the modified date of this license key set
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _licenseKeySet.getModifiedDate();
+	public java.lang.Object clone() {
+		return new LicenseKeySetWrapper((LicenseKeySet)_licenseKeySet.clone());
 	}
 
 	/**
@@ -183,31 +183,6 @@ public class LicenseKeySetWrapper implements LicenseKeySet,
 	@Override
 	public java.lang.String getName() {
 		return _licenseKeySet.getName();
-	}
-
-	/**
-	* Returns the primary key of this license key set.
-	*
-	* @return the primary key of this license key set
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _licenseKeySet.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _licenseKeySet.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the user ID of this license key set.
-	*
-	* @return the user ID of this license key set
-	*/
-	@Override
-	public long getUserId() {
-		return _licenseKeySet.getUserId();
 	}
 
 	/**
@@ -231,23 +206,73 @@ public class LicenseKeySetWrapper implements LicenseKeySet,
 	}
 
 	@Override
-	public int hashCode() {
-		return _licenseKeySet.hashCode();
+	public java.lang.String toString() {
+		return _licenseKeySet.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _licenseKeySet.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _licenseKeySet.toXmlString();
 	}
 
+	/**
+	* Returns the create date of this license key set.
+	*
+	* @return the create date of this license key set
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _licenseKeySet.isEscapedModel();
+	public Date getCreateDate() {
+		return _licenseKeySet.getCreateDate();
 	}
 
+	/**
+	* Returns the modified date of this license key set.
+	*
+	* @return the modified date of this license key set
+	*/
 	@Override
-	public boolean isNew() {
-		return _licenseKeySet.isNew();
+	public Date getModifiedDate() {
+		return _licenseKeySet.getModifiedDate();
+	}
+
+	/**
+	* Returns the account entry ID of this license key set.
+	*
+	* @return the account entry ID of this license key set
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _licenseKeySet.getAccountEntryId();
+	}
+
+	/**
+	* Returns the license key set ID of this license key set.
+	*
+	* @return the license key set ID of this license key set
+	*/
+	@Override
+	public long getLicenseKeySetId() {
+		return _licenseKeySet.getLicenseKeySetId();
+	}
+
+	/**
+	* Returns the primary key of this license key set.
+	*
+	* @return the primary key of this license key set
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _licenseKeySet.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this license key set.
+	*
+	* @return the user ID of this license key set
+	*/
+	@Override
+	public long getUserId() {
+		return _licenseKeySet.getUserId();
 	}
 
 	@Override
@@ -281,14 +306,14 @@ public class LicenseKeySetWrapper implements LicenseKeySet,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_licenseKeySet.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_licenseKeySet.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_licenseKeySet.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_licenseKeySet.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -374,31 +399,6 @@ public class LicenseKeySetWrapper implements LicenseKeySet,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_licenseKeySet.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LicenseKeySet> toCacheModel() {
-		return _licenseKeySet.toCacheModel();
-	}
-
-	@Override
-	public LicenseKeySet toEscapedModel() {
-		return new LicenseKeySetWrapper(_licenseKeySet.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _licenseKeySet.toString();
-	}
-
-	@Override
-	public LicenseKeySet toUnescapedModel() {
-		return new LicenseKeySetWrapper(_licenseKeySet.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _licenseKeySet.toXmlString();
 	}
 
 	@Override

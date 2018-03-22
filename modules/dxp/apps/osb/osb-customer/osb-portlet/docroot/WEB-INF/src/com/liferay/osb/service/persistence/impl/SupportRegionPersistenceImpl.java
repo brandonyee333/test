@@ -49,6 +49,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -128,7 +129,7 @@ public class SupportRegionPersistenceImpl extends BasePersistenceImpl<SupportReg
 			msg.append("name=");
 			msg.append(name);
 
-			msg.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -187,7 +188,7 @@ public class SupportRegionPersistenceImpl extends BasePersistenceImpl<SupportReg
 			if (name == null) {
 				query.append(_FINDER_COLUMN_NAME_NAME_1);
 			}
-			else if (name.equals("")) {
+			else if (name.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_NAME_NAME_3);
 			}
 			else {
@@ -287,7 +288,7 @@ public class SupportRegionPersistenceImpl extends BasePersistenceImpl<SupportReg
 			if (name == null) {
 				query.append(_FINDER_COLUMN_NAME_NAME_1);
 			}
-			else if (name.equals("")) {
+			else if (name.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_NAME_NAME_3);
 			}
 			else {
@@ -809,12 +810,12 @@ public class SupportRegionPersistenceImpl extends BasePersistenceImpl<SupportReg
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(",");
+			query.append(StringPool.COMMA);
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
 		String sql = query.toString();
 

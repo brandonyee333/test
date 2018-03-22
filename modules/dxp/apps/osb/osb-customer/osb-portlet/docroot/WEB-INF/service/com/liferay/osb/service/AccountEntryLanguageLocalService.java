@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -54,7 +55,7 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface AccountEntryLanguageLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -101,6 +102,39 @@ public interface AccountEntryLanguageLocalService extends BaseLocalService,
 	public AccountEntryLanguage deleteAccountEntryLanguage(
 		long accountEntryLanguageId) throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntryLanguage fetchAccountEntryLanguage(
+		long accountEntryLanguageId);
+
+	/**
+	* Returns the account entry language with the primary key.
+	*
+	* @param accountEntryLanguageId the primary key of the account entry language
+	* @return the account entry language
+	* @throws PortalException if a account entry language with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntryLanguage getAccountEntryLanguage(
+		long accountEntryLanguageId) throws PortalException;
+
+	/**
+	* Updates the account entry language in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountEntryLanguage the account entry language
+	* @return the account entry language that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public AccountEntryLanguage updateAccountEntryLanguage(
+		AccountEntryLanguage accountEntryLanguage);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
 	/**
 	* @throws PortalException
 	*/
@@ -108,7 +142,30 @@ public interface AccountEntryLanguageLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	public DynamicQuery dynamicQuery();
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of account entry languages.
+	*
+	* @return the number of account entry languages
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAccountEntryLanguagesCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -150,39 +207,6 @@ public interface AccountEntryLanguageLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEntryLanguage fetchAccountEntryLanguage(
-		long accountEntryLanguageId);
-
-	/**
-	* Returns the account entry language with the primary key.
-	*
-	* @param accountEntryLanguageId the primary key of the account entry language
-	* @return the account entry language
-	* @throws PortalException if a account entry language with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEntryLanguage getAccountEntryLanguage(
-		long accountEntryLanguageId) throws PortalException;
-
-	/**
 	* Returns a range of all the account entry languages.
 	*
 	* <p>
@@ -202,41 +226,23 @@ public interface AccountEntryLanguageLocalService extends BaseLocalService,
 		long accountEntryId);
 
 	/**
-	* Returns the number of account entry languages.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of account entry languages
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountEntryLanguagesCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Returns the OSGi service identifier.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the OSGi service identifier
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
 
 	public void setAccountEntryLanguageIds(long accountEntryId,
 		java.lang.String[] languageIds);
-
-	/**
-	* Updates the account entry language in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountEntryLanguage the account entry language
-	* @return the account entry language that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public AccountEntryLanguage updateAccountEntryLanguage(
-		AccountEntryLanguage accountEntryLanguage);
 }

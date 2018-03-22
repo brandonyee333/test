@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -55,7 +56,7 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface CorpProjectLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -105,6 +106,48 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	public CorpProject deleteCorpProject(long corpProjectId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CorpProject fetchCorpProject(java.lang.String dossieraProjectKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CorpProject fetchCorpProject(long corpProjectId);
+
+	/**
+	* Returns the corp project with the primary key.
+	*
+	* @param corpProjectId the primary key of the corp project
+	* @return the corp project
+	* @throws PortalException if a corp project with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CorpProject getCorpProject(long corpProjectId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CorpProject getCorpProjectByUuid(java.lang.String uuid)
+		throws PortalException;
+
+	/**
+	* Updates the corp project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param corpProject the corp project
+	* @return the corp project that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public CorpProject updateCorpProject(CorpProject corpProject);
+
+	public CorpProject updateCorpProject(long corpProjectId,
+		java.lang.String name, ServiceContext serviceContext)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
 	/**
 	* @throws PortalException
 	*/
@@ -112,7 +155,34 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	public DynamicQuery dynamicQuery();
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of corp projects.
+	*
+	* @return the number of corp projects
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getCorpProjectsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getCorpProjectsCount(java.lang.String name)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -154,48 +224,6 @@ public interface CorpProjectLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public CorpProject fetchCorpProject(long corpProjectId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public CorpProject fetchCorpProject(java.lang.String dossieraProjectKey);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	/**
-	* Returns the corp project with the primary key.
-	*
-	* @param corpProjectId the primary key of the corp project
-	* @return the corp project
-	* @throws PortalException if a corp project with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public CorpProject getCorpProject(long corpProjectId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public CorpProject getCorpProjectByUuid(java.lang.String uuid)
-		throws PortalException;
-
-	/**
 	* Returns a range of all the corp projects.
 	*
 	* <p>
@@ -214,42 +242,20 @@ public interface CorpProjectLocalService extends BaseLocalService,
 		int end, OrderByComparator obc) throws PortalException;
 
 	/**
-	* Returns the number of corp projects.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of corp projects
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getCorpProjectsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getCorpProjectsCount(java.lang.String name)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Returns the OSGi service identifier.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the OSGi service identifier
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Updates the corp project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param corpProject the corp project
-	* @return the corp project that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public CorpProject updateCorpProject(CorpProject corpProject);
-
-	public CorpProject updateCorpProject(long corpProjectId,
-		java.lang.String name, ServiceContext serviceContext)
-		throws PortalException;
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
 }

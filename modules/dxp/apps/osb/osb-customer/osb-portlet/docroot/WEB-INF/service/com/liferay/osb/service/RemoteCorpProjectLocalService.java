@@ -21,6 +21,7 @@ import com.liferay.osb.model.CorpProject;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
@@ -39,7 +40,8 @@ import com.liferay.portal.kernel.transaction.Transactional;
 @ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
-public interface RemoteCorpProjectLocalService extends BaseLocalService {
+public interface RemoteCorpProjectLocalService extends BaseLocalService,
+	InvokableLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -50,13 +52,13 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService {
 		java.lang.String salesforceProjectKey, java.lang.String name)
 		throws PortalException;
 
-	public void addCorpProjectUsers(long corpProjectId, long[] userIds)
-		throws PortalException;
+	public CorpProject updateCorpProject(long corpProjectId,
+		java.lang.String name) throws PortalException;
 
-	public void addUserCorpProjectRoles(long corpProjectId, long[] userIds,
-		long roleId) throws PortalException;
-
-	public void deleteCorpProject(long corpProjectId) throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -65,6 +67,11 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	public CorpProject updateCorpProject(long corpProjectId,
-		java.lang.String name) throws PortalException;
+	public void addCorpProjectUsers(long corpProjectId, long[] userIds)
+		throws PortalException;
+
+	public void addUserCorpProjectRoles(long corpProjectId, long[] userIds,
+		long roleId) throws PortalException;
+
+	public void deleteCorpProject(long corpProjectId) throws PortalException;
 }

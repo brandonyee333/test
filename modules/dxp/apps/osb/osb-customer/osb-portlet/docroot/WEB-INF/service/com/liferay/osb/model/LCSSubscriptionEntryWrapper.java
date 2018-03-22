@@ -187,13 +187,13 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new LCSSubscriptionEntryWrapper((LCSSubscriptionEntry)_lcsSubscriptionEntry.clone());
+	public LCSSubscriptionEntry toEscapedModel() {
+		return new LCSSubscriptionEntryWrapper(_lcsSubscriptionEntry.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(LCSSubscriptionEntry lcsSubscriptionEntry) {
-		return _lcsSubscriptionEntry.compareTo(lcsSubscriptionEntry);
+	public LCSSubscriptionEntry toUnescapedModel() {
+		return new LCSSubscriptionEntryWrapper(_lcsSubscriptionEntry.toUnescapedModel());
 	}
 
 	/**
@@ -207,6 +207,41 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 	}
 
 	/**
+	* Returns <code>true</code> if this lcs subscription entry is active.
+	*
+	* @return <code>true</code> if this lcs subscription entry is active; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isActive() {
+		return _lcsSubscriptionEntry.isActive();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _lcsSubscriptionEntry.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _lcsSubscriptionEntry.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _lcsSubscriptionEntry.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _lcsSubscriptionEntry.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<LCSSubscriptionEntry> toCacheModel() {
+		return _lcsSubscriptionEntry.toCacheModel();
+	}
+
+	/**
 	* Returns the actual price of this lcs subscription entry.
 	*
 	* @return the actual price of this lcs subscription entry
@@ -216,29 +251,9 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 		return _lcsSubscriptionEntry.getActualPrice();
 	}
 
-	/**
-	* Returns the currency code of this lcs subscription entry.
-	*
-	* @return the currency code of this lcs subscription entry
-	*/
 	@Override
-	public java.lang.String getCurrencyCode() {
-		return _lcsSubscriptionEntry.getCurrencyCode();
-	}
-
-	/**
-	* Returns the end date of this lcs subscription entry.
-	*
-	* @return the end date of this lcs subscription entry
-	*/
-	@Override
-	public Date getEndDate() {
-		return _lcsSubscriptionEntry.getEndDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _lcsSubscriptionEntry.getExpandoBridge();
+	public int compareTo(LCSSubscriptionEntry lcsSubscriptionEntry) {
+		return _lcsSubscriptionEntry.compareTo(lcsSubscriptionEntry);
 	}
 
 	/**
@@ -249,71 +264,6 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 	@Override
 	public int getInstanceSize() {
 		return _lcsSubscriptionEntry.getInstanceSize();
-	}
-
-	/**
-	* Returns the lcs project ID of this lcs subscription entry.
-	*
-	* @return the lcs project ID of this lcs subscription entry
-	*/
-	@Override
-	public long getLcsProjectId() {
-		return _lcsSubscriptionEntry.getLcsProjectId();
-	}
-
-	/**
-	* Returns the lcs subscription entry ID of this lcs subscription entry.
-	*
-	* @return the lcs subscription entry ID of this lcs subscription entry
-	*/
-	@Override
-	public long getLcsSubscriptionEntryId() {
-		return _lcsSubscriptionEntry.getLcsSubscriptionEntryId();
-	}
-
-	/**
-	* Returns the platform of this lcs subscription entry.
-	*
-	* @return the platform of this lcs subscription entry
-	*/
-	@Override
-	public java.lang.String getPlatform() {
-		return _lcsSubscriptionEntry.getPlatform();
-	}
-
-	/**
-	* Returns the platform version of this lcs subscription entry.
-	*
-	* @return the platform version of this lcs subscription entry
-	*/
-	@Override
-	public java.lang.String getPlatformVersion() {
-		return _lcsSubscriptionEntry.getPlatformVersion();
-	}
-
-	/**
-	* Returns the primary key of this lcs subscription entry.
-	*
-	* @return the primary key of this lcs subscription entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _lcsSubscriptionEntry.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _lcsSubscriptionEntry.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the product of this lcs subscription entry.
-	*
-	* @return the product of this lcs subscription entry
-	*/
-	@Override
-	public java.lang.String getProduct() {
-		return _lcsSubscriptionEntry.getProduct();
 	}
 
 	/**
@@ -344,6 +294,91 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 	@Override
 	public int getServersUsed() {
 		return _lcsSubscriptionEntry.getServersUsed();
+	}
+
+	@Override
+	public int hashCode() {
+		return _lcsSubscriptionEntry.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _lcsSubscriptionEntry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new LCSSubscriptionEntryWrapper((LCSSubscriptionEntry)_lcsSubscriptionEntry.clone());
+	}
+
+	/**
+	* Returns the currency code of this lcs subscription entry.
+	*
+	* @return the currency code of this lcs subscription entry
+	*/
+	@Override
+	public java.lang.String getCurrencyCode() {
+		return _lcsSubscriptionEntry.getCurrencyCode();
+	}
+
+	/**
+	* Returns the platform of this lcs subscription entry.
+	*
+	* @return the platform of this lcs subscription entry
+	*/
+	@Override
+	public java.lang.String getPlatform() {
+		return _lcsSubscriptionEntry.getPlatform();
+	}
+
+	/**
+	* Returns the platform version of this lcs subscription entry.
+	*
+	* @return the platform version of this lcs subscription entry
+	*/
+	@Override
+	public java.lang.String getPlatformVersion() {
+		return _lcsSubscriptionEntry.getPlatformVersion();
+	}
+
+	/**
+	* Returns the product of this lcs subscription entry.
+	*
+	* @return the product of this lcs subscription entry
+	*/
+	@Override
+	public java.lang.String getProduct() {
+		return _lcsSubscriptionEntry.getProduct();
+	}
+
+	/**
+	* Returns the type of this lcs subscription entry.
+	*
+	* @return the type of this lcs subscription entry
+	*/
+	@Override
+	public java.lang.String getType() {
+		return _lcsSubscriptionEntry.getType();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _lcsSubscriptionEntry.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _lcsSubscriptionEntry.toXmlString();
+	}
+
+	/**
+	* Returns the end date of this lcs subscription entry.
+	*
+	* @return the end date of this lcs subscription entry
+	*/
+	@Override
+	public Date getEndDate() {
+		return _lcsSubscriptionEntry.getEndDate();
 	}
 
 	/**
@@ -377,43 +412,33 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 	}
 
 	/**
-	* Returns the type of this lcs subscription entry.
+	* Returns the lcs project ID of this lcs subscription entry.
 	*
-	* @return the type of this lcs subscription entry
+	* @return the lcs project ID of this lcs subscription entry
 	*/
 	@Override
-	public java.lang.String getType() {
-		return _lcsSubscriptionEntry.getType();
-	}
-
-	@Override
-	public int hashCode() {
-		return _lcsSubscriptionEntry.hashCode();
+	public long getLcsProjectId() {
+		return _lcsSubscriptionEntry.getLcsProjectId();
 	}
 
 	/**
-	* Returns <code>true</code> if this lcs subscription entry is active.
+	* Returns the lcs subscription entry ID of this lcs subscription entry.
 	*
-	* @return <code>true</code> if this lcs subscription entry is active; <code>false</code> otherwise
+	* @return the lcs subscription entry ID of this lcs subscription entry
 	*/
 	@Override
-	public boolean isActive() {
-		return _lcsSubscriptionEntry.isActive();
+	public long getLcsSubscriptionEntryId() {
+		return _lcsSubscriptionEntry.getLcsSubscriptionEntryId();
 	}
 
+	/**
+	* Returns the primary key of this lcs subscription entry.
+	*
+	* @return the primary key of this lcs subscription entry
+	*/
 	@Override
-	public boolean isCachedModel() {
-		return _lcsSubscriptionEntry.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _lcsSubscriptionEntry.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _lcsSubscriptionEntry.isNew();
+	public long getPrimaryKey() {
+		return _lcsSubscriptionEntry.getPrimaryKey();
 	}
 
 	@Override
@@ -467,14 +492,14 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_lcsSubscriptionEntry.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_lcsSubscriptionEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_lcsSubscriptionEntry.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_lcsSubscriptionEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -630,31 +655,6 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 	@Override
 	public void setType(java.lang.String type) {
 		_lcsSubscriptionEntry.setType(type);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LCSSubscriptionEntry> toCacheModel() {
-		return _lcsSubscriptionEntry.toCacheModel();
-	}
-
-	@Override
-	public LCSSubscriptionEntry toEscapedModel() {
-		return new LCSSubscriptionEntryWrapper(_lcsSubscriptionEntry.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _lcsSubscriptionEntry.toString();
-	}
-
-	@Override
-	public LCSSubscriptionEntry toUnescapedModel() {
-		return new LCSSubscriptionEntryWrapper(_lcsSubscriptionEntry.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _lcsSubscriptionEntry.toXmlString();
 	}
 
 	@Override

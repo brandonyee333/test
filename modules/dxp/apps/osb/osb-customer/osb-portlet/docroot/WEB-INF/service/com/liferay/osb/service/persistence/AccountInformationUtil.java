@@ -717,7 +717,7 @@ public class AccountInformationUtil {
 
 	public static AccountInformationPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AccountInformationPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (AccountInformationPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AccountInformationPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AccountInformationUtil.class,

@@ -191,39 +191,43 @@ public class SupportLaborWrapper implements SupportLabor,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new SupportLaborWrapper((SupportLabor)_supportLabor.clone());
+	public SupportLabor toEscapedModel() {
+		return new SupportLaborWrapper(_supportLabor.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(SupportLabor supportLabor) {
-		return _supportLabor.compareTo(supportLabor);
+	public SupportLabor toUnescapedModel() {
+		return new SupportLaborWrapper(_supportLabor.toUnescapedModel());
 	}
 
 	@Override
-	public java.lang.String formatDayHours(java.util.Locale locale, int day) {
-		return _supportLabor.formatDayHours(locale, day);
+	public boolean isCachedModel() {
+		return _supportLabor.isCachedModel();
 	}
 
 	@Override
-	public java.lang.String formatTime(java.util.Locale locale, int day,
-		int type) {
-		return _supportLabor.formatTime(locale, day, type);
+	public boolean isEscapedModel() {
+		return _supportLabor.isEscapedModel();
 	}
 
-	/**
-	* Returns the description of this support labor.
-	*
-	* @return the description of this support labor
-	*/
 	@Override
-	public java.lang.String getDescription() {
-		return _supportLabor.getDescription();
+	public boolean isNew() {
+		return _supportLabor.isNew();
 	}
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _supportLabor.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SupportLabor> toCacheModel() {
+		return _supportLabor.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(SupportLabor supportLabor) {
+		return _supportLabor.compareTo(supportLabor);
 	}
 
 	/**
@@ -267,31 +271,6 @@ public class SupportLaborWrapper implements SupportLabor,
 	}
 
 	/**
-	* Returns the name of this support labor.
-	*
-	* @return the name of this support labor
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _supportLabor.getName();
-	}
-
-	/**
-	* Returns the primary key of this support labor.
-	*
-	* @return the primary key of this support labor
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _supportLabor.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _supportLabor.getPrimaryKeyObj();
-	}
-
-	/**
 	* Returns the sat close of this support labor.
 	*
 	* @return the sat close of this support labor
@@ -332,22 +311,6 @@ public class SupportLaborWrapper implements SupportLabor,
 	}
 
 	/**
-	* Returns the support labor ID of this support labor.
-	*
-	* @return the support labor ID of this support labor
-	*/
-	@Override
-	public long getSupportLaborId() {
-		return _supportLabor.getSupportLaborId();
-	}
-
-	@Override
-	public java.util.List<SupportTeam> getSupportTeams()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportLabor.getSupportTeams();
-	}
-
-	/**
 	* Returns the thu close of this support labor.
 	*
 	* @return the thu close of this support labor
@@ -370,16 +333,6 @@ public class SupportLaborWrapper implements SupportLabor,
 	@Override
 	public int getTime(int day, int type) {
 		return _supportLabor.getTime(day, type);
-	}
-
-	/**
-	* Returns the time zone ID of this support labor.
-	*
-	* @return the time zone ID of this support labor
-	*/
-	@Override
-	public java.lang.String getTimeZoneId() {
-		return _supportLabor.getTimeZoneId();
 	}
 
 	/**
@@ -428,18 +381,90 @@ public class SupportLaborWrapper implements SupportLabor,
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _supportLabor.isCachedModel();
+	public Serializable getPrimaryKeyObj() {
+		return _supportLabor.getPrimaryKeyObj();
 	}
 
 	@Override
-	public boolean isEscapedModel() {
-		return _supportLabor.isEscapedModel();
+	public java.lang.Object clone() {
+		return new SupportLaborWrapper((SupportLabor)_supportLabor.clone());
 	}
 
 	@Override
-	public boolean isNew() {
-		return _supportLabor.isNew();
+	public java.lang.String formatDayHours(java.util.Locale locale, int day) {
+		return _supportLabor.formatDayHours(locale, day);
+	}
+
+	@Override
+	public java.lang.String formatTime(java.util.Locale locale, int day,
+		int type) {
+		return _supportLabor.formatTime(locale, day, type);
+	}
+
+	/**
+	* Returns the description of this support labor.
+	*
+	* @return the description of this support labor
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _supportLabor.getDescription();
+	}
+
+	/**
+	* Returns the name of this support labor.
+	*
+	* @return the name of this support labor
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _supportLabor.getName();
+	}
+
+	/**
+	* Returns the time zone ID of this support labor.
+	*
+	* @return the time zone ID of this support labor
+	*/
+	@Override
+	public java.lang.String getTimeZoneId() {
+		return _supportLabor.getTimeZoneId();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _supportLabor.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _supportLabor.toXmlString();
+	}
+
+	@Override
+	public java.util.List<SupportTeam> getSupportTeams()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportLabor.getSupportTeams();
+	}
+
+	/**
+	* Returns the primary key of this support labor.
+	*
+	* @return the primary key of this support labor
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _supportLabor.getPrimaryKey();
+	}
+
+	/**
+	* Returns the support labor ID of this support labor.
+	*
+	* @return the support labor ID of this support labor
+	*/
+	@Override
+	public long getSupportLaborId() {
+		return _supportLabor.getSupportLaborId();
 	}
 
 	@Override
@@ -463,14 +488,14 @@ public class SupportLaborWrapper implements SupportLabor,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_supportLabor.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_supportLabor.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_supportLabor.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_supportLabor.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -666,31 +691,6 @@ public class SupportLaborWrapper implements SupportLabor,
 	@Override
 	public void setWedOpen(int wedOpen) {
 		_supportLabor.setWedOpen(wedOpen);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SupportLabor> toCacheModel() {
-		return _supportLabor.toCacheModel();
-	}
-
-	@Override
-	public SupportLabor toEscapedModel() {
-		return new SupportLaborWrapper(_supportLabor.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _supportLabor.toString();
-	}
-
-	@Override
-	public SupportLabor toUnescapedModel() {
-		return new SupportLaborWrapper(_supportLabor.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _supportLabor.toXmlString();
 	}
 
 	@Override

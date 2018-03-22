@@ -21,6 +21,7 @@ import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -114,7 +115,7 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 		lcsSubscriptionEntryImpl.setLcsProjectId(lcsProjectId);
 
 		if (product == null) {
-			lcsSubscriptionEntryImpl.setProduct("");
+			lcsSubscriptionEntryImpl.setProduct(StringPool.BLANK);
 		}
 		else {
 			lcsSubscriptionEntryImpl.setProduct(product);
@@ -123,21 +124,21 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 		lcsSubscriptionEntryImpl.setProductVersion(productVersion);
 
 		if (type == null) {
-			lcsSubscriptionEntryImpl.setType("");
+			lcsSubscriptionEntryImpl.setType(StringPool.BLANK);
 		}
 		else {
 			lcsSubscriptionEntryImpl.setType(type);
 		}
 
 		if (platform == null) {
-			lcsSubscriptionEntryImpl.setPlatform("");
+			lcsSubscriptionEntryImpl.setPlatform(StringPool.BLANK);
 		}
 		else {
 			lcsSubscriptionEntryImpl.setPlatform(platform);
 		}
 
 		if (platformVersion == null) {
-			lcsSubscriptionEntryImpl.setPlatformVersion("");
+			lcsSubscriptionEntryImpl.setPlatformVersion(StringPool.BLANK);
 		}
 		else {
 			lcsSubscriptionEntryImpl.setPlatformVersion(platformVersion);
@@ -179,7 +180,7 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 		lcsSubscriptionEntryImpl.setActualPrice(actualPrice);
 
 		if (currencyCode == null) {
-			lcsSubscriptionEntryImpl.setCurrencyCode("");
+			lcsSubscriptionEntryImpl.setCurrencyCode(StringPool.BLANK);
 		}
 		else {
 			lcsSubscriptionEntryImpl.setCurrencyCode(currencyCode);
@@ -228,7 +229,7 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 		objectOutput.writeLong(lcsProjectId);
 
 		if (product == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(product);
@@ -237,21 +238,21 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 		objectOutput.writeInt(productVersion);
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);
 		}
 
 		if (platform == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(platform);
 		}
 
 		if (platformVersion == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(platformVersion);
@@ -270,7 +271,7 @@ public class LCSSubscriptionEntryCacheModel implements CacheModel<LCSSubscriptio
 		objectOutput.writeDouble(actualPrice);
 
 		if (currencyCode == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(currencyCode);

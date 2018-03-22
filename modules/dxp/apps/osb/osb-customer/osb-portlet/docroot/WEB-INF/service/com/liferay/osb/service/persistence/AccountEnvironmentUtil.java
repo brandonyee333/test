@@ -692,7 +692,7 @@ public class AccountEnvironmentUtil {
 
 	public static AccountEnvironmentPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AccountEnvironmentPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (AccountEnvironmentPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AccountEnvironmentPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AccountEnvironmentUtil.class,

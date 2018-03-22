@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -55,12 +56,22 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface TicketSolutionLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketSolutionLocalServiceUtil} to access the ticket solution local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketSolutionLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+
+	/**
+	* Adds the ticket solution to the database. Also notifies the appropriate model listeners.
+	*
+	* @param ticketSolution the ticket solution
+	* @return the ticket solution that was added
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public TicketSolution addTicketSolution(TicketSolution ticketSolution);
+
 	public TicketSolution addTicketSolution(long userId, long ticketEntryId,
 		java.lang.String summary, boolean useCustomerSummary, int issueType,
 		java.lang.String solution, int type, boolean customerSpecific,
@@ -72,15 +83,6 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 		List<TicketAttachment> ticketAttachments) throws PortalException;
 
 	/**
-	* Adds the ticket solution to the database. Also notifies the appropriate model listeners.
-	*
-	* @param ticketSolution the ticket solution
-	* @return the ticket solution that was added
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public TicketSolution addTicketSolution(TicketSolution ticketSolution);
-
-	/**
 	* Creates a new ticket solution with the primary key. Does not add the ticket solution to the database.
 	*
 	* @param ticketSolutionId the primary key for the new ticket solution
@@ -89,11 +91,13 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	public TicketSolution createTicketSolution(long ticketSolutionId);
 
 	/**
-	* @throws PortalException
+	* Deletes the ticket solution from the database. Also notifies the appropriate model listeners.
+	*
+	* @param ticketSolution the ticket solution
+	* @return the ticket solution that was removed
 	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
+	@Indexable(type = IndexableType.DELETE)
+	public TicketSolution deleteTicketSolution(TicketSolution ticketSolution);
 
 	/**
 	* Deletes the ticket solution with the primary key from the database. Also notifies the appropriate model listeners.
@@ -106,16 +110,76 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	public TicketSolution deleteTicketSolution(long ticketSolutionId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketSolution fetchTicketSolution(long ticketSolutionId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketSolution getActiveTicketSolution(long ticketEntryId);
+
 	/**
-	* Deletes the ticket solution from the database. Also notifies the appropriate model listeners.
+	* Returns the ticket solution with the primary key.
+	*
+	* @param ticketSolutionId the primary key of the ticket solution
+	* @return the ticket solution
+	* @throws PortalException if a ticket solution with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketSolution getTicketSolution(long ticketSolutionId)
+		throws PortalException;
+
+	/**
+	* Updates the ticket solution in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param ticketSolution the ticket solution
-	* @return the ticket solution that was removed
+	* @return the ticket solution that was updated
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public TicketSolution deleteTicketSolution(TicketSolution ticketSolution);
+	@Indexable(type = IndexableType.REINDEX)
+	public TicketSolution updateTicketSolution(TicketSolution ticketSolution);
+
+	public TicketSolution updateTicketSolution(long ticketSolutionId,
+		long ticketEntryId, int status, long statusByUserId,
+		java.lang.String statusMessage, int statusReason)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of ticket solutions.
+	*
+	* @return the number of ticket solutions
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketSolutionsCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -157,59 +221,6 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketSolution fetchTicketSolution(long ticketSolutionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketSolution getActiveTicketSolution(long ticketEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the ticket solution with the primary key.
-	*
-	* @param ticketSolutionId the primary key of the ticket solution
-	* @return the ticket solution
-	* @throws PortalException if a ticket solution with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketSolution getTicketSolution(long ticketSolutionId)
-		throws PortalException;
-
-	/**
 	* Returns a range of all the ticket solutions.
 	*
 	* <p>
@@ -227,27 +238,23 @@ public interface TicketSolutionLocalService extends BaseLocalService,
 	public List<TicketSolution> getTicketSolutions(long ticketEntryId);
 
 	/**
-	* Returns the number of ticket solutions.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of ticket solutions
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketSolutionsCount();
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
 
 	public void updateStatus(long ticketEntryId, int ticketEntryStatus,
 		int resolution);
-
-	public TicketSolution updateTicketSolution(long ticketSolutionId,
-		long ticketEntryId, int status, long statusByUserId,
-		java.lang.String statusMessage, int statusReason)
-		throws PortalException;
-
-	/**
-	* Updates the ticket solution in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param ticketSolution the ticket solution
-	* @return the ticket solution that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public TicketSolution updateTicketSolution(TicketSolution ticketSolution);
 }

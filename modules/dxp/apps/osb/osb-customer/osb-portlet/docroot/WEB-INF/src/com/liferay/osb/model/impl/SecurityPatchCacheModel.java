@@ -21,6 +21,7 @@ import com.liferay.osb.model.SecurityPatch;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -100,7 +101,7 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 		securityPatchImpl.setUserId(userId);
 
 		if (userName == null) {
-			securityPatchImpl.setUserName("");
+			securityPatchImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			securityPatchImpl.setUserName(userName);
@@ -117,7 +118,7 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 		securityPatchImpl.setTicketAttachmentId(ticketAttachmentId);
 
 		if (portletId == null) {
-			securityPatchImpl.setPortletId("");
+			securityPatchImpl.setPortletId(StringPool.BLANK);
 		}
 		else {
 			securityPatchImpl.setPortletId(portletId);
@@ -126,14 +127,14 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 		securityPatchImpl.setEnvLFR(envLFR);
 
 		if (name == null) {
-			securityPatchImpl.setName("");
+			securityPatchImpl.setName(StringPool.BLANK);
 		}
 		else {
 			securityPatchImpl.setName(name);
 		}
 
 		if (fileName == null) {
-			securityPatchImpl.setFileName("");
+			securityPatchImpl.setFileName(StringPool.BLANK);
 		}
 		else {
 			securityPatchImpl.setFileName(fileName);
@@ -170,7 +171,7 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -183,7 +184,7 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 		objectOutput.writeLong(ticketAttachmentId);
 
 		if (portletId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(portletId);
@@ -192,14 +193,14 @@ public class SecurityPatchCacheModel implements CacheModel<SecurityPatch>,
 		objectOutput.writeInt(envLFR);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (fileName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(fileName);

@@ -68,6 +68,22 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 
 	@Override
 	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
+		long assetReceiptLicenseId, java.lang.String licenseEntryType,
+		java.lang.String productEntryName, java.lang.String productId,
+		int productVersion, java.lang.String owner, long maxUsers,
+		java.lang.String description, java.lang.String[] hostNames,
+		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
+		java.lang.String[] serverIds, java.util.Date startDate,
+		java.util.Date expirationDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyLocalService.addLicenseKey(userId,
+			assetReceiptLicenseId, licenseEntryType, productEntryName,
+			productId, productVersion, owner, maxUsers, description, hostNames,
+			ipAddresses, macAddresses, serverIds, startDate, expirationDate);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
 		long licenseKeySetId, java.lang.String name, long offeringEntryId,
 		long licenseEntryId, long productEntryId, int productVersion,
 		long clusterId, java.lang.String owner, int maxServers,
@@ -85,34 +101,12 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 	}
 
 	@Override
-	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
-		long assetReceiptLicenseId, java.lang.String licenseEntryType,
-		java.lang.String productEntryName, java.lang.String productId,
-		int productVersion, java.lang.String owner, long maxUsers,
-		java.lang.String description, java.lang.String[] hostNames,
-		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
-		java.lang.String[] serverIds, java.util.Date startDate,
-		java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyLocalService.addLicenseKey(userId,
-			assetReceiptLicenseId, licenseEntryType, productEntryName,
-			productId, productVersion, owner, maxUsers, description, hostNames,
-			ipAddresses, macAddresses, serverIds, startDate, expirationDate);
-	}
-
-	@Override
 	public com.liferay.osb.model.LicenseKey addSingleUseLicenseKey(
 		java.lang.String orderUuid, int productVersion,
 		java.lang.String emailAddress, java.lang.String fullName,
 		java.lang.String additionalInfo) throws java.lang.Exception {
 		return _licenseKeyLocalService.addSingleUseLicenseKey(orderUuid,
 			productVersion, emailAddress, fullName, additionalInfo);
-	}
-
-	@Override
-	public void buyLicenseKey(long companyId, long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_licenseKeyLocalService.buyLicenseKey(companyId, userId);
 	}
 
 	/**
@@ -151,6 +145,82 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 		return _licenseKeyLocalService.deleteLicenseKey(licenseKeyId);
 	}
 
+	@Override
+	public com.liferay.osb.model.LicenseKey fetchLicenseKey(long licenseKeyId) {
+		return _licenseKeyLocalService.fetchLicenseKey(licenseKeyId);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKey getFirstLicenseKey(
+		long accountEntryId,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyLocalService.getFirstLicenseKey(accountEntryId, obc);
+	}
+
+	/**
+	* Returns the license key with the primary key.
+	*
+	* @param licenseKeyId the primary key of the license key
+	* @return the license key
+	* @throws PortalException if a license key with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.LicenseKey getLicenseKey(long licenseKeyId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyLocalService.getLicenseKey(licenseKeyId);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKey renewLicenseKey(long userId,
+		long licenseKeyId, java.util.Date startDate, int renewTime)
+		throws java.lang.Exception {
+		return _licenseKeyLocalService.renewLicenseKey(userId, licenseKeyId,
+			startDate, renewTime);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKey renewLicenseKey(long userId,
+		long licenseKeyId, java.util.Date startDate,
+		java.util.Date expirationDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyLocalService.renewLicenseKey(userId, licenseKeyId,
+			startDate, expirationDate);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKey renewTrialLicenseKey(long userId)
+		throws java.lang.Exception {
+		return _licenseKeyLocalService.renewTrialLicenseKey(userId);
+	}
+
+	/**
+	* Updates the license key in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param licenseKey the license key
+	* @return the license key that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.LicenseKey updateLicenseKey(
+		com.liferay.osb.model.LicenseKey licenseKey) {
+		return _licenseKeyLocalService.updateLicenseKey(licenseKey);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _licenseKeyLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _licenseKeyLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _licenseKeyLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -162,8 +232,126 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _licenseKeyLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public int getAssetReceiptLicenseLicenseKeysCount(
+		long assetReceiptLicenseId, boolean complimentary, boolean active) {
+		return _licenseKeyLocalService.getAssetReceiptLicenseLicenseKeysCount(assetReceiptLicenseId,
+			complimentary, active);
+	}
+
+	/**
+	* Returns the number of license keies.
+	*
+	* @return the number of license keies
+	*/
+	@Override
+	public int getLicenseKeiesCount() {
+		return _licenseKeyLocalService.getLicenseKeiesCount();
+	}
+
+	@Override
+	public int getOfferingEntryGroupLicenseKeysCount(long[] offeringEntryIds,
+		boolean complimentary, boolean active) {
+		return _licenseKeyLocalService.getOfferingEntryGroupLicenseKeysCount(offeringEntryIds,
+			complimentary, active);
+	}
+
+	@Override
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId) {
+		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(offeringEntryId);
+	}
+
+	@Override
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
+		boolean complimentary, boolean active) {
+		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(offeringEntryId,
+			complimentary, active);
+	}
+
+	@Override
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
+		long clusterId) {
+		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(offeringEntryId,
+			clusterId);
+	}
+
+	@Override
+	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
+		long clusterId, boolean active) {
+		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(offeringEntryId,
+			clusterId, active);
+	}
+
+	@Override
+	public int getUserLicenseKeysCount(long userId, long accountEntryId) {
+		return _licenseKeyLocalService.getUserLicenseKeysCount(userId,
+			accountEntryId);
+	}
+
+	@Override
+	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
+		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
+		int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.String accountEntryName, java.lang.String licenseKeySetName,
+		int startDateGTDay, int startDateGTMonth, int startDateGTYear,
+		int startDateLTDay, int startDateLTMonth, int startDateLTYear,
+		long[] licenseEntryIds, long[] productEntryIds,
+		java.lang.String productEntryName, java.lang.String productId,
+		int[] productVersions, java.lang.String owner,
+		java.lang.String description, java.lang.String hostName,
+		java.lang.String ipAddress, java.lang.String macAddress,
+		java.lang.String serverId, java.lang.String key,
+		int expirationDateGTDay, int expirationDateGTMonth,
+		int expirationDateGTYear, int expirationDateLTDay,
+		int expirationDateLTMonth, int expirationDateLTYear,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch) {
+		return _licenseKeyLocalService.searchCount(createUserId,
+			createDateGTDay, createDateGTMonth, createDateGTYear,
+			createDateLTDay, createDateLTMonth, createDateLTYear,
+			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
+			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
+			modifiedDateLTYear, accountEntryName, licenseKeySetName,
+			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
+			startDateLTMonth, startDateLTYear, licenseEntryIds,
+			productEntryIds, productEntryName, productId, productVersions,
+			owner, description, hostName, ipAddress, macAddress, serverId, key,
+			expirationDateGTDay, expirationDateGTMonth, expirationDateGTYear,
+			expirationDateLTDay, expirationDateLTMonth, expirationDateLTYear,
+			params, andSearch);
+	}
+
+	@Override
+	public int searchCount(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
+		return _licenseKeyLocalService.searchCount(keywords, params);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _licenseKeyLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _licenseKeyLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -219,47 +407,10 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 			orderByComparator);
 	}
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _licenseKeyLocalService.dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _licenseKeyLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseKey fetchLicenseKey(long licenseKeyId) {
-		return _licenseKeyLocalService.fetchLicenseKey(licenseKeyId);
-	}
-
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getAccountEntryLicenseKeys(
 		long accountEntryId) {
 		return _licenseKeyLocalService.getAccountEntryLicenseKeys(accountEntryId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _licenseKeyLocalService.getActionableDynamicQuery();
 	}
 
 	@Override
@@ -274,26 +425,6 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 		long assetReceiptLicenseId, boolean complimentary, boolean active) {
 		return _licenseKeyLocalService.getAssetReceiptLicenseLicenseKeys(assetReceiptLicenseId,
 			complimentary, active);
-	}
-
-	@Override
-	public int getAssetReceiptLicenseLicenseKeysCount(
-		long assetReceiptLicenseId, boolean complimentary, boolean active) {
-		return _licenseKeyLocalService.getAssetReceiptLicenseLicenseKeysCount(assetReceiptLicenseId,
-			complimentary, active);
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseKey getFirstLicenseKey(
-		long accountEntryId,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyLocalService.getFirstLicenseKey(accountEntryId, obc);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _licenseKeyLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	/**
@@ -313,39 +444,16 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 		return _licenseKeyLocalService.getLicenseKeies(start, end);
 	}
 
-	/**
-	* Returns the number of license keies.
-	*
-	* @return the number of license keies
-	*/
 	@Override
-	public int getLicenseKeiesCount() {
-		return _licenseKeyLocalService.getLicenseKeiesCount();
-	}
-
-	/**
-	* Returns the license key with the primary key.
-	*
-	* @param licenseKeyId the primary key of the license key
-	* @return the license key
-	* @throws PortalException if a license key with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.LicenseKey getLicenseKey(long licenseKeyId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyLocalService.getLicenseKey(licenseKeyId);
+	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeySetLicenseKeys(
+		long licenseKeySetId) {
+		return _licenseKeyLocalService.getLicenseKeySetLicenseKeys(licenseKeySetId);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
-		long userId, long accountEntryId) {
-		return _licenseKeyLocalService.getLicenseKeys(userId, accountEntryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
-		long userId, java.lang.String productId) {
-		return _licenseKeyLocalService.getLicenseKeys(userId, productId);
+		java.lang.String productId, java.lang.String serverId) {
+		return _licenseKeyLocalService.getLicenseKeys(productId, serverId);
 	}
 
 	@Override
@@ -359,8 +467,14 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
-		java.lang.String productId, java.lang.String serverId) {
-		return _licenseKeyLocalService.getLicenseKeys(productId, serverId);
+		long userId, java.lang.String productId) {
+		return _licenseKeyLocalService.getLicenseKeys(userId, productId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
+		long userId, long accountEntryId) {
+		return _licenseKeyLocalService.getLicenseKeys(userId, accountEntryId);
 	}
 
 	@Override
@@ -373,24 +487,11 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeySetLicenseKeys(
-		long licenseKeySetId) {
-		return _licenseKeyLocalService.getLicenseKeySetLicenseKeys(licenseKeySetId);
-	}
-
-	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getOfferingEntryGroupLicenseKeys(
 		long[] offeringEntryIds, boolean complimentary, boolean active,
 		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc) {
 		return _licenseKeyLocalService.getOfferingEntryGroupLicenseKeys(offeringEntryIds,
 			complimentary, active, start, end, obc);
-	}
-
-	@Override
-	public int getOfferingEntryGroupLicenseKeysCount(long[] offeringEntryIds,
-		boolean complimentary, boolean active) {
-		return _licenseKeyLocalService.getOfferingEntryGroupLicenseKeysCount(offeringEntryIds,
-			complimentary, active);
 	}
 
 	@Override
@@ -418,78 +519,6 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 		long offeringEntryId, long clusterId, boolean active) {
 		return _licenseKeyLocalService.getOfferingEntryLicenseKeys(offeringEntryId,
 			clusterId, active);
-	}
-
-	@Override
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId) {
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(offeringEntryId);
-	}
-
-	@Override
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		boolean complimentary, boolean active) {
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(offeringEntryId,
-			complimentary, active);
-	}
-
-	@Override
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		long clusterId) {
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(offeringEntryId,
-			clusterId);
-	}
-
-	@Override
-	public int getOfferingEntryLicenseKeysCount(long offeringEntryId,
-		long clusterId, boolean active) {
-		return _licenseKeyLocalService.getOfferingEntryLicenseKeysCount(offeringEntryId,
-			clusterId, active);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _licenseKeyLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	@Override
-	public int getUserLicenseKeysCount(long userId, long accountEntryId) {
-		return _licenseKeyLocalService.getUserLicenseKeysCount(userId,
-			accountEntryId);
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseKey renewLicenseKey(long userId,
-		long licenseKeyId, java.util.Date startDate,
-		java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyLocalService.renewLicenseKey(userId, licenseKeyId,
-			startDate, expirationDate);
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseKey renewLicenseKey(long userId,
-		long licenseKeyId, java.util.Date startDate, int renewTime)
-		throws java.lang.Exception {
-		return _licenseKeyLocalService.renewLicenseKey(userId, licenseKeyId,
-			startDate, renewTime);
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseKey renewTrialLicenseKey(long userId)
-		throws java.lang.Exception {
-		return _licenseKeyLocalService.renewTrialLicenseKey(userId);
 	}
 
 	@Override
@@ -538,46 +567,37 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 		return _licenseKeyLocalService.search(keywords, params, start, end, obc);
 	}
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
 	@Override
-	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
-		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
-		int createDateLTMonth, int createDateLTYear,
-		java.lang.Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear,
-		java.lang.String accountEntryName, java.lang.String licenseKeySetName,
-		int startDateGTDay, int startDateGTMonth, int startDateGTYear,
-		int startDateLTDay, int startDateLTMonth, int startDateLTYear,
-		long[] licenseEntryIds, long[] productEntryIds,
-		java.lang.String productEntryName, java.lang.String productId,
-		int[] productVersions, java.lang.String owner,
-		java.lang.String description, java.lang.String hostName,
-		java.lang.String ipAddress, java.lang.String macAddress,
-		java.lang.String serverId, java.lang.String key,
-		int expirationDateGTDay, int expirationDateGTMonth,
-		int expirationDateGTYear, int expirationDateLTDay,
-		int expirationDateLTMonth, int expirationDateLTYear,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch) {
-		return _licenseKeyLocalService.searchCount(createUserId,
-			createDateGTDay, createDateGTMonth, createDateGTYear,
-			createDateLTDay, createDateLTMonth, createDateLTYear,
-			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
-			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
-			modifiedDateLTYear, accountEntryName, licenseKeySetName,
-			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds,
-			productEntryIds, productEntryName, productId, productVersions,
-			owner, description, hostName, ipAddress, macAddress, serverId, key,
-			expirationDateGTDay, expirationDateGTMonth, expirationDateGTYear,
-			expirationDateLTDay, expirationDateLTMonth, expirationDateLTYear,
-			params, andSearch);
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _licenseKeyLocalService.dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _licenseKeyLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
 	}
 
 	@Override
-	public int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
-		return _licenseKeyLocalService.searchCount(keywords, params);
+	public void buyLicenseKey(long companyId, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_licenseKeyLocalService.buyLicenseKey(companyId, userId);
 	}
 
 	@Override
@@ -594,16 +614,12 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 			accountEntryId);
 	}
 
-	/**
-	* Updates the license key in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param licenseKey the license key
-	* @return the license key that was updated
-	*/
 	@Override
-	public com.liferay.osb.model.LicenseKey updateLicenseKey(
-		com.liferay.osb.model.LicenseKey licenseKey) {
-		return _licenseKeyLocalService.updateLicenseKey(licenseKey);
+	public void updateLicenseKey(long licenseKeyId, long accountEntryId,
+		long offeringEntryId, long orderEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_licenseKeyLocalService.updateLicenseKey(licenseKeyId, accountEntryId,
+			offeringEntryId, orderEntryId);
 	}
 
 	@Override
@@ -612,14 +628,6 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_licenseKeyLocalService.updateLicenseKey(userId, licenseKeyId,
 			assetReceiptLicenseId, active);
-	}
-
-	@Override
-	public void updateLicenseKey(long licenseKeyId, long accountEntryId,
-		long offeringEntryId, long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_licenseKeyLocalService.updateLicenseKey(licenseKeyId, accountEntryId,
-			offeringEntryId, orderEntryId);
 	}
 
 	@Override

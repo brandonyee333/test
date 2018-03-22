@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -50,6 +51,27 @@ public class RemoteCorpProjectLocalServiceUtil {
 			dossieraProjectKey, salesforceProjectKey, name);
 	}
 
+	public static com.liferay.osb.model.CorpProject updateCorpProject(
+		long corpProjectId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateCorpProject(corpProjectId, name);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
 	public static void addCorpProjectUsers(long corpProjectId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addCorpProjectUsers(corpProjectId, userIds);
@@ -66,29 +88,21 @@ public class RemoteCorpProjectLocalServiceUtil {
 		getService().deleteCorpProject(corpProjectId);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.osb.model.CorpProject updateCorpProject(
-		long corpProjectId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateCorpProject(corpProjectId, name);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static RemoteCorpProjectLocalService getService() {
 		if (_service == null) {
-			_service = (RemoteCorpProjectLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					RemoteCorpProjectLocalService.class.getName());
+
+			if (invokableLocalService instanceof RemoteCorpProjectLocalService) {
+				_service = (RemoteCorpProjectLocalService)invokableLocalService;
+			}
+			else {
+				_service = new RemoteCorpProjectLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(RemoteCorpProjectLocalServiceUtil.class,
 				"_service");

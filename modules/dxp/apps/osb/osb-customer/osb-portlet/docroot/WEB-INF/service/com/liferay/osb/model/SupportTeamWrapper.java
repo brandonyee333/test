@@ -165,18 +165,44 @@ public class SupportTeamWrapper implements SupportTeam,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new SupportTeamWrapper((SupportTeam)_supportTeam.clone());
+	public SupportTeam toEscapedModel() {
+		return new SupportTeamWrapper(_supportTeam.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(SupportTeam supportTeam) {
-		return _supportTeam.compareTo(supportTeam);
+	public SupportTeam toUnescapedModel() {
+		return new SupportTeamWrapper(_supportTeam.toUnescapedModel());
 	}
 
 	@Override
-	public java.util.List<AccountEntry> getAccountEntries() {
-		return _supportTeam.getAccountEntries();
+	public boolean isCachedModel() {
+		return _supportTeam.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _supportTeam.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _supportTeam.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _supportTeam.getExpandoBridge();
+	}
+
+	@Override
+	public SupportTeam getParentSupportTeam()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportTeam.getParentSupportTeam();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SupportTeam> toCacheModel() {
+		return _supportTeam.toCacheModel();
 	}
 
 	/**
@@ -189,66 +215,6 @@ public class SupportTeamWrapper implements SupportTeam,
 		return _supportTeam.getAssignedWork();
 	}
 
-	@Override
-	public java.util.List<SupportTeam> getChildSupportTeams() {
-		return _supportTeam.getChildSupportTeams();
-	}
-
-	@Override
-	public java.util.List<SupportTeam> getChildSupportTeams(boolean recursive) {
-		return _supportTeam.getChildSupportTeams(recursive);
-	}
-
-	/**
-	* Returns the company ID of this support team.
-	*
-	* @return the company ID of this support team
-	*/
-	@Override
-	public long getCompanyId() {
-		return _supportTeam.getCompanyId();
-	}
-
-	/**
-	* Returns the create date of this support team.
-	*
-	* @return the create date of this support team
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _supportTeam.getCreateDate();
-	}
-
-	/**
-	* Returns the description of this support team.
-	*
-	* @return the description of this support team
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _supportTeam.getDescription();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _supportTeam.getExpandoBridge();
-	}
-
-	@Override
-	public java.util.List<java.lang.String> getLanguageIds() {
-		return _supportTeam.getLanguageIds();
-	}
-
-	/**
-	* Returns the location support region ID of this support team.
-	*
-	* @return the location support region ID of this support team
-	*/
-	@Override
-	public long getLocationSupportRegionId() {
-		return _supportTeam.getLocationSupportRegionId();
-	}
-
 	/**
 	* Returns the max work of this support team.
 	*
@@ -259,80 +225,9 @@ public class SupportTeamWrapper implements SupportTeam,
 		return _supportTeam.getMaxWork();
 	}
 
-	/**
-	* Returns the modified date of this support team.
-	*
-	* @return the modified date of this support team
-	*/
 	@Override
-	public Date getModifiedDate() {
-		return _supportTeam.getModifiedDate();
-	}
-
-	/**
-	* Returns the name of this support team.
-	*
-	* @return the name of this support team
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _supportTeam.getName();
-	}
-
-	@Override
-	public SupportTeam getParentSupportTeam()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportTeam.getParentSupportTeam();
-	}
-
-	/**
-	* Returns the parent support team ID of this support team.
-	*
-	* @return the parent support team ID of this support team
-	*/
-	@Override
-	public long getParentSupportTeamId() {
-		return _supportTeam.getParentSupportTeamId();
-	}
-
-	/**
-	* Returns the primary key of this support team.
-	*
-	* @return the primary key of this support team
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _supportTeam.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _supportTeam.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the support labor ID of this support team.
-	*
-	* @return the support labor ID of this support team
-	*/
-	@Override
-	public long getSupportLaborId() {
-		return _supportTeam.getSupportLaborId();
-	}
-
-	@Override
-	public java.util.List<SupportRegion> getSupportRegions() {
-		return _supportTeam.getSupportRegions();
-	}
-
-	/**
-	* Returns the support team ID of this support team.
-	*
-	* @return the support team ID of this support team
-	*/
-	@Override
-	public long getSupportTeamId() {
-		return _supportTeam.getSupportTeamId();
+	public int compareTo(SupportTeam supportTeam) {
+		return _supportTeam.compareTo(supportTeam);
 	}
 
 	/**
@@ -345,14 +240,39 @@ public class SupportTeamWrapper implements SupportTeam,
 		return _supportTeam.getType();
 	}
 
+	@Override
+	public int hashCode() {
+		return _supportTeam.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _supportTeam.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new SupportTeamWrapper((SupportTeam)_supportTeam.clone());
+	}
+
 	/**
-	* Returns the user ID of this support team.
+	* Returns the description of this support team.
 	*
-	* @return the user ID of this support team
+	* @return the description of this support team
 	*/
 	@Override
-	public long getUserId() {
-		return _supportTeam.getUserId();
+	public java.lang.String getDescription() {
+		return _supportTeam.getDescription();
+	}
+
+	/**
+	* Returns the name of this support team.
+	*
+	* @return the name of this support team
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _supportTeam.getName();
 	}
 
 	/**
@@ -376,23 +296,128 @@ public class SupportTeamWrapper implements SupportTeam,
 	}
 
 	@Override
-	public int hashCode() {
-		return _supportTeam.hashCode();
+	public java.lang.String toString() {
+		return _supportTeam.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _supportTeam.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _supportTeam.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this support team.
+	*
+	* @return the create date of this support team
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _supportTeam.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this support team.
+	*
+	* @return the modified date of this support team
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _supportTeam.getModifiedDate();
 	}
 
 	@Override
-	public boolean isEscapedModel() {
-		return _supportTeam.isEscapedModel();
+	public java.util.List<AccountEntry> getAccountEntries() {
+		return _supportTeam.getAccountEntries();
 	}
 
 	@Override
-	public boolean isNew() {
-		return _supportTeam.isNew();
+	public java.util.List<SupportTeam> getChildSupportTeams() {
+		return _supportTeam.getChildSupportTeams();
+	}
+
+	@Override
+	public java.util.List<SupportTeam> getChildSupportTeams(boolean recursive) {
+		return _supportTeam.getChildSupportTeams(recursive);
+	}
+
+	@Override
+	public java.util.List<java.lang.String> getLanguageIds() {
+		return _supportTeam.getLanguageIds();
+	}
+
+	@Override
+	public java.util.List<SupportRegion> getSupportRegions() {
+		return _supportTeam.getSupportRegions();
+	}
+
+	/**
+	* Returns the company ID of this support team.
+	*
+	* @return the company ID of this support team
+	*/
+	@Override
+	public long getCompanyId() {
+		return _supportTeam.getCompanyId();
+	}
+
+	/**
+	* Returns the location support region ID of this support team.
+	*
+	* @return the location support region ID of this support team
+	*/
+	@Override
+	public long getLocationSupportRegionId() {
+		return _supportTeam.getLocationSupportRegionId();
+	}
+
+	/**
+	* Returns the parent support team ID of this support team.
+	*
+	* @return the parent support team ID of this support team
+	*/
+	@Override
+	public long getParentSupportTeamId() {
+		return _supportTeam.getParentSupportTeamId();
+	}
+
+	/**
+	* Returns the primary key of this support team.
+	*
+	* @return the primary key of this support team
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _supportTeam.getPrimaryKey();
+	}
+
+	/**
+	* Returns the support labor ID of this support team.
+	*
+	* @return the support labor ID of this support team
+	*/
+	@Override
+	public long getSupportLaborId() {
+		return _supportTeam.getSupportLaborId();
+	}
+
+	/**
+	* Returns the support team ID of this support team.
+	*
+	* @return the support team ID of this support team
+	*/
+	@Override
+	public long getSupportTeamId() {
+		return _supportTeam.getSupportTeamId();
+	}
+
+	/**
+	* Returns the user ID of this support team.
+	*
+	* @return the user ID of this support team
+	*/
+	@Override
+	public long getUserId() {
+		return _supportTeam.getUserId();
 	}
 
 	@Override
@@ -446,14 +471,14 @@ public class SupportTeamWrapper implements SupportTeam,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_supportTeam.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_supportTeam.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_supportTeam.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_supportTeam.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -589,31 +614,6 @@ public class SupportTeamWrapper implements SupportTeam,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_supportTeam.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SupportTeam> toCacheModel() {
-		return _supportTeam.toCacheModel();
-	}
-
-	@Override
-	public SupportTeam toEscapedModel() {
-		return new SupportTeamWrapper(_supportTeam.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _supportTeam.toString();
-	}
-
-	@Override
-	public SupportTeam toUnescapedModel() {
-		return new SupportTeamWrapper(_supportTeam.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _supportTeam.toXmlString();
 	}
 
 	@Override

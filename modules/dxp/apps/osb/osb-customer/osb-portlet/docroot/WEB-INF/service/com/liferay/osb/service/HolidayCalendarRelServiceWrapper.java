@@ -34,6 +34,14 @@ public class HolidayCalendarRelServiceWrapper
 		_holidayCalendarRelService = holidayCalendarRelService;
 	}
 
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _holidayCalendarRelService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*

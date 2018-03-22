@@ -21,6 +21,7 @@ import com.liferay.osb.model.SupportTeam;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -109,7 +110,7 @@ public class SupportTeamCacheModel implements CacheModel<SupportTeam>,
 		supportTeamImpl.setUserId(userId);
 
 		if (userName == null) {
-			supportTeamImpl.setUserName("");
+			supportTeamImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			supportTeamImpl.setUserName(userName);
@@ -134,14 +135,14 @@ public class SupportTeamCacheModel implements CacheModel<SupportTeam>,
 		supportTeamImpl.setLocationSupportRegionId(locationSupportRegionId);
 
 		if (name == null) {
-			supportTeamImpl.setName("");
+			supportTeamImpl.setName(StringPool.BLANK);
 		}
 		else {
 			supportTeamImpl.setName(name);
 		}
 
 		if (description == null) {
-			supportTeamImpl.setDescription("");
+			supportTeamImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			supportTeamImpl.setDescription(description);
@@ -192,7 +193,7 @@ public class SupportTeamCacheModel implements CacheModel<SupportTeam>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -208,14 +209,14 @@ public class SupportTeamCacheModel implements CacheModel<SupportTeam>,
 		objectOutput.writeLong(locationSupportRegionId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);

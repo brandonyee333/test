@@ -136,8 +136,43 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new SupportRegionWrapper((SupportRegion)_supportRegion.clone());
+	public SupportRegion toEscapedModel() {
+		return new SupportRegionWrapper(_supportRegion.toEscapedModel());
+	}
+
+	@Override
+	public SupportRegion toUnescapedModel() {
+		return new SupportRegionWrapper(_supportRegion.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _supportRegion.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _supportRegion.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _supportRegion.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _supportRegion.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SupportRegion> toCacheModel() {
+		return _supportRegion.toCacheModel();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.User getManagerUser() {
+		return _supportRegion.getManagerUser();
 	}
 
 	@Override
@@ -145,24 +180,19 @@ public class SupportRegionWrapper implements SupportRegion,
 		return _supportRegion.compareTo(supportRegion);
 	}
 
-	/**
-	* Returns the company ID of this support region.
-	*
-	* @return the company ID of this support region
-	*/
 	@Override
-	public long getCompanyId() {
-		return _supportRegion.getCompanyId();
+	public int hashCode() {
+		return _supportRegion.hashCode();
 	}
 
-	/**
-	* Returns the create date of this support region.
-	*
-	* @return the create date of this support region
-	*/
 	@Override
-	public Date getCreateDate() {
-		return _supportRegion.getCreateDate();
+	public Serializable getPrimaryKeyObj() {
+		return _supportRegion.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new SupportRegionWrapper((SupportRegion)_supportRegion.clone());
 	}
 
 	/**
@@ -173,26 +203,6 @@ public class SupportRegionWrapper implements SupportRegion,
 	@Override
 	public java.lang.String getDescription() {
 		return _supportRegion.getDescription();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _supportRegion.getExpandoBridge();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.User getManagerUser() {
-		return _supportRegion.getManagerUser();
-	}
-
-	/**
-	* Returns the manager user ID of this support region.
-	*
-	* @return the manager user ID of this support region
-	*/
-	@Override
-	public long getManagerUserId() {
-		return _supportRegion.getManagerUserId();
 	}
 
 	/**
@@ -206,16 +216,6 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	/**
-	* Returns the modified date of this support region.
-	*
-	* @return the modified date of this support region
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _supportRegion.getModifiedDate();
-	}
-
-	/**
 	* Returns the name of this support region.
 	*
 	* @return the name of this support region
@@ -226,41 +226,6 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	/**
-	* Returns the primary key of this support region.
-	*
-	* @return the primary key of this support region
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _supportRegion.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _supportRegion.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the support region ID of this support region.
-	*
-	* @return the support region ID of this support region
-	*/
-	@Override
-	public long getSupportRegionId() {
-		return _supportRegion.getSupportRegionId();
-	}
-
-	@Override
-	public java.util.List<SupportTeam> getSupportTeams() {
-		return _supportRegion.getSupportTeams();
-	}
-
-	@Override
-	public java.util.TimeZone getTimeZone() {
-		return _supportRegion.getTimeZone();
-	}
-
-	/**
 	* Returns the time zone ID of this support region.
 	*
 	* @return the time zone ID of this support region
@@ -268,16 +233,6 @@ public class SupportRegionWrapper implements SupportRegion,
 	@Override
 	public java.lang.String getTimeZoneId() {
 		return _supportRegion.getTimeZoneId();
-	}
-
-	/**
-	* Returns the user ID of this support region.
-	*
-	* @return the user ID of this support region
-	*/
-	@Override
-	public long getUserId() {
-		return _supportRegion.getUserId();
 	}
 
 	/**
@@ -301,23 +256,93 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	@Override
-	public int hashCode() {
-		return _supportRegion.hashCode();
+	public java.lang.String toString() {
+		return _supportRegion.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _supportRegion.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _supportRegion.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this support region.
+	*
+	* @return the create date of this support region
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _supportRegion.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this support region.
+	*
+	* @return the modified date of this support region
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _supportRegion.getModifiedDate();
 	}
 
 	@Override
-	public boolean isEscapedModel() {
-		return _supportRegion.isEscapedModel();
+	public java.util.List<SupportTeam> getSupportTeams() {
+		return _supportRegion.getSupportTeams();
 	}
 
 	@Override
-	public boolean isNew() {
-		return _supportRegion.isNew();
+	public java.util.TimeZone getTimeZone() {
+		return _supportRegion.getTimeZone();
+	}
+
+	/**
+	* Returns the company ID of this support region.
+	*
+	* @return the company ID of this support region
+	*/
+	@Override
+	public long getCompanyId() {
+		return _supportRegion.getCompanyId();
+	}
+
+	/**
+	* Returns the manager user ID of this support region.
+	*
+	* @return the manager user ID of this support region
+	*/
+	@Override
+	public long getManagerUserId() {
+		return _supportRegion.getManagerUserId();
+	}
+
+	/**
+	* Returns the primary key of this support region.
+	*
+	* @return the primary key of this support region
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _supportRegion.getPrimaryKey();
+	}
+
+	/**
+	* Returns the support region ID of this support region.
+	*
+	* @return the support region ID of this support region
+	*/
+	@Override
+	public long getSupportRegionId() {
+		return _supportRegion.getSupportRegionId();
+	}
+
+	/**
+	* Returns the user ID of this support region.
+	*
+	* @return the user ID of this support region
+	*/
+	@Override
+	public long getUserId() {
+		return _supportRegion.getUserId();
 	}
 
 	@Override
@@ -361,14 +386,14 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_supportRegion.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_supportRegion.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_supportRegion.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_supportRegion.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -484,31 +509,6 @@ public class SupportRegionWrapper implements SupportRegion,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_supportRegion.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SupportRegion> toCacheModel() {
-		return _supportRegion.toCacheModel();
-	}
-
-	@Override
-	public SupportRegion toEscapedModel() {
-		return new SupportRegionWrapper(_supportRegion.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _supportRegion.toString();
-	}
-
-	@Override
-	public SupportRegion toUnescapedModel() {
-		return new SupportRegionWrapper(_supportRegion.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _supportRegion.toXmlString();
 	}
 
 	@Override

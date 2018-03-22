@@ -33,6 +33,14 @@ public class OfferingBundleServiceWrapper implements OfferingBundleService,
 		_offeringBundleService = offeringBundleService;
 	}
 
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _offeringBundleService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*

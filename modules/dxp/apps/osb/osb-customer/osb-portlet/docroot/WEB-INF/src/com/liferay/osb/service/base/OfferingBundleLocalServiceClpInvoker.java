@@ -1,0 +1,540 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.osb.service.base;
+
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
+
+import java.util.Arrays;
+
+/**
+ * @author Brian Wing Shun Chan
+ * @generated
+ */
+@ProviderType
+public class OfferingBundleLocalServiceClpInvoker {
+	public OfferingBundleLocalServiceClpInvoker() {
+		_methodName0 = "addOfferingBundle";
+
+		_methodParameterTypes0 = new String[] {
+				"com.liferay.osb.model.OfferingBundle"
+			};
+
+		_methodName1 = "createOfferingBundle";
+
+		_methodParameterTypes1 = new String[] { "long" };
+
+		_methodName2 = "deleteOfferingBundle";
+
+		_methodParameterTypes2 = new String[] { "long" };
+
+		_methodName3 = "deleteOfferingBundle";
+
+		_methodParameterTypes3 = new String[] {
+				"com.liferay.osb.model.OfferingBundle"
+			};
+
+		_methodName4 = "dynamicQuery";
+
+		_methodParameterTypes4 = new String[] {  };
+
+		_methodName5 = "dynamicQuery";
+
+		_methodParameterTypes5 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName6 = "dynamicQuery";
+
+		_methodParameterTypes6 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+			};
+
+		_methodName7 = "dynamicQuery";
+
+		_methodParameterTypes7 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName8 = "dynamicQueryCount";
+
+		_methodParameterTypes8 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName9 = "dynamicQueryCount";
+
+		_methodParameterTypes9 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
+				"com.liferay.portal.kernel.dao.orm.Projection"
+			};
+
+		_methodName10 = "fetchOfferingBundle";
+
+		_methodParameterTypes10 = new String[] { "long" };
+
+		_methodName11 = "getOfferingBundle";
+
+		_methodParameterTypes11 = new String[] { "long" };
+
+		_methodName12 = "getActionableDynamicQuery";
+
+		_methodParameterTypes12 = new String[] {  };
+
+		_methodName13 = "getIndexableActionableDynamicQuery";
+
+		_methodParameterTypes13 = new String[] {  };
+
+		_methodName15 = "deletePersistedModel";
+
+		_methodParameterTypes15 = new String[] {
+				"com.liferay.portal.kernel.model.PersistedModel"
+			};
+
+		_methodName16 = "getPersistedModel";
+
+		_methodParameterTypes16 = new String[] { "java.io.Serializable" };
+
+		_methodName17 = "getOfferingBundles";
+
+		_methodParameterTypes17 = new String[] { "int", "int" };
+
+		_methodName18 = "getOfferingBundlesCount";
+
+		_methodParameterTypes18 = new String[] {  };
+
+		_methodName19 = "updateOfferingBundle";
+
+		_methodParameterTypes19 = new String[] {
+				"com.liferay.osb.model.OfferingBundle"
+			};
+
+		_methodName20 = "addOfferingDefinitionOfferingBundle";
+
+		_methodParameterTypes20 = new String[] { "long", "long" };
+
+		_methodName21 = "addOfferingDefinitionOfferingBundle";
+
+		_methodParameterTypes21 = new String[] {
+				"long", "com.liferay.osb.model.OfferingBundle"
+			};
+
+		_methodName22 = "addOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes22 = new String[] { "long", "long[][]" };
+
+		_methodName23 = "addOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes23 = new String[] { "long", "java.util.List" };
+
+		_methodName24 = "clearOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes24 = new String[] { "long" };
+
+		_methodName25 = "deleteOfferingDefinitionOfferingBundle";
+
+		_methodParameterTypes25 = new String[] { "long", "long" };
+
+		_methodName26 = "deleteOfferingDefinitionOfferingBundle";
+
+		_methodParameterTypes26 = new String[] {
+				"long", "com.liferay.osb.model.OfferingBundle"
+			};
+
+		_methodName27 = "deleteOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes27 = new String[] { "long", "long[][]" };
+
+		_methodName28 = "deleteOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes28 = new String[] { "long", "java.util.List" };
+
+		_methodName29 = "getOfferingDefinitionPrimaryKeys";
+
+		_methodParameterTypes29 = new String[] { "long" };
+
+		_methodName30 = "getOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes30 = new String[] { "long" };
+
+		_methodName31 = "getOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes31 = new String[] { "long", "int", "int" };
+
+		_methodName32 = "getOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes32 = new String[] {
+				"long", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName33 = "getOfferingDefinitionOfferingBundlesCount";
+
+		_methodParameterTypes33 = new String[] { "long" };
+
+		_methodName34 = "hasOfferingDefinitionOfferingBundle";
+
+		_methodParameterTypes34 = new String[] { "long", "long" };
+
+		_methodName35 = "hasOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes35 = new String[] { "long" };
+
+		_methodName36 = "setOfferingDefinitionOfferingBundles";
+
+		_methodParameterTypes36 = new String[] { "long", "long[][]" };
+
+		_methodName291 = "getOSGiServiceIdentifier";
+
+		_methodParameterTypes291 = new String[] {  };
+
+		_methodName296 = "addOfferingBundle";
+
+		_methodParameterTypes296 = new String[] {
+				"long", "java.lang.String", "long[][]"
+			};
+
+		_methodName297 = "updateOfferingBundle";
+
+		_methodParameterTypes297 = new String[] {
+				"long", "java.lang.String", "long[][]"
+			};
+	}
+
+	public Object invokeMethod(String name, String[] parameterTypes,
+		Object[] arguments) throws Throwable {
+		if (_methodName0.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes0, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.addOfferingBundle((com.liferay.osb.model.OfferingBundle)arguments[0]);
+		}
+
+		if (_methodName1.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes1, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.createOfferingBundle(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName2.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes2, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.deleteOfferingBundle(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName3.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes3, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.deleteOfferingBundle((com.liferay.osb.model.OfferingBundle)arguments[0]);
+		}
+
+		if (_methodName4.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes4, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.dynamicQuery();
+		}
+
+		if (_methodName5.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes5, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0]);
+		}
+
+		if (_methodName6.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes6, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue());
+		}
+
+		if (_methodName7.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes7, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.dynamicQuery((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue(),
+				(com.liferay.portal.kernel.util.OrderByComparator<?>)arguments[3]);
+		}
+
+		if (_methodName8.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes8, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.dynamicQueryCount((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0]);
+		}
+
+		if (_methodName9.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes9, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.dynamicQueryCount((com.liferay.portal.kernel.dao.orm.DynamicQuery)arguments[0],
+				(com.liferay.portal.kernel.dao.orm.Projection)arguments[1]);
+		}
+
+		if (_methodName10.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes10, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.fetchOfferingBundle(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName11.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes11, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getOfferingBundle(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName12.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes12, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getActionableDynamicQuery();
+		}
+
+		if (_methodName13.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes13, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getIndexableActionableDynamicQuery();
+		}
+
+		if (_methodName15.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes15, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.deletePersistedModel((com.liferay.portal.kernel.model.PersistedModel)arguments[0]);
+		}
+
+		if (_methodName16.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes16, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getPersistedModel((java.io.Serializable)arguments[0]);
+		}
+
+		if (_methodName17.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes17, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getOfferingBundles(((Integer)arguments[0]).intValue(),
+				((Integer)arguments[1]).intValue());
+		}
+
+		if (_methodName18.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes18, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getOfferingBundlesCount();
+		}
+
+		if (_methodName19.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes19, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.updateOfferingBundle((com.liferay.osb.model.OfferingBundle)arguments[0]);
+		}
+
+		if (_methodName20.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes20, parameterTypes)) {
+			OfferingBundleLocalServiceUtil.addOfferingDefinitionOfferingBundle(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+
+			return null;
+		}
+
+		if (_methodName21.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes21, parameterTypes)) {
+			OfferingBundleLocalServiceUtil.addOfferingDefinitionOfferingBundle(((Long)arguments[0]).longValue(),
+				(com.liferay.osb.model.OfferingBundle)arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName22.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes22, parameterTypes)) {
+			OfferingBundleLocalServiceUtil.addOfferingDefinitionOfferingBundles(((Long)arguments[0]).longValue(),
+				(long[])arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName23.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes23, parameterTypes)) {
+			OfferingBundleLocalServiceUtil.addOfferingDefinitionOfferingBundles(((Long)arguments[0]).longValue(),
+				(java.util.List<com.liferay.osb.model.OfferingBundle>)arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName24.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes24, parameterTypes)) {
+			OfferingBundleLocalServiceUtil.clearOfferingDefinitionOfferingBundles(((Long)arguments[0]).longValue());
+
+			return null;
+		}
+
+		if (_methodName25.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes25, parameterTypes)) {
+			OfferingBundleLocalServiceUtil.deleteOfferingDefinitionOfferingBundle(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+
+			return null;
+		}
+
+		if (_methodName26.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes26, parameterTypes)) {
+			OfferingBundleLocalServiceUtil.deleteOfferingDefinitionOfferingBundle(((Long)arguments[0]).longValue(),
+				(com.liferay.osb.model.OfferingBundle)arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName27.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes27, parameterTypes)) {
+			OfferingBundleLocalServiceUtil.deleteOfferingDefinitionOfferingBundles(((Long)arguments[0]).longValue(),
+				(long[])arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName28.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes28, parameterTypes)) {
+			OfferingBundleLocalServiceUtil.deleteOfferingDefinitionOfferingBundles(((Long)arguments[0]).longValue(),
+				(java.util.List<com.liferay.osb.model.OfferingBundle>)arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName29.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes29, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getOfferingDefinitionPrimaryKeys(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName30.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes30, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getOfferingDefinitionOfferingBundles(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName31.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes31, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getOfferingDefinitionOfferingBundles(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue());
+		}
+
+		if (_methodName32.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes32, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getOfferingDefinitionOfferingBundles(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue(),
+				(com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.OfferingBundle>)arguments[3]);
+		}
+
+		if (_methodName33.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes33, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getOfferingDefinitionOfferingBundlesCount(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName34.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes34, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.hasOfferingDefinitionOfferingBundle(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName35.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes35, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.hasOfferingDefinitionOfferingBundles(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName36.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes36, parameterTypes)) {
+			OfferingBundleLocalServiceUtil.setOfferingDefinitionOfferingBundles(((Long)arguments[0]).longValue(),
+				(long[])arguments[1]);
+
+			return null;
+		}
+
+		if (_methodName291.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.getOSGiServiceIdentifier();
+		}
+
+		if (_methodName296.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.addOfferingBundle(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (long[])arguments[2]);
+		}
+
+		if (_methodName297.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
+			return OfferingBundleLocalServiceUtil.updateOfferingBundle(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (long[])arguments[2]);
+		}
+
+		throw new UnsupportedOperationException();
+	}
+
+	private String _methodName0;
+	private String[] _methodParameterTypes0;
+	private String _methodName1;
+	private String[] _methodParameterTypes1;
+	private String _methodName2;
+	private String[] _methodParameterTypes2;
+	private String _methodName3;
+	private String[] _methodParameterTypes3;
+	private String _methodName4;
+	private String[] _methodParameterTypes4;
+	private String _methodName5;
+	private String[] _methodParameterTypes5;
+	private String _methodName6;
+	private String[] _methodParameterTypes6;
+	private String _methodName7;
+	private String[] _methodParameterTypes7;
+	private String _methodName8;
+	private String[] _methodParameterTypes8;
+	private String _methodName9;
+	private String[] _methodParameterTypes9;
+	private String _methodName10;
+	private String[] _methodParameterTypes10;
+	private String _methodName11;
+	private String[] _methodParameterTypes11;
+	private String _methodName12;
+	private String[] _methodParameterTypes12;
+	private String _methodName13;
+	private String[] _methodParameterTypes13;
+	private String _methodName15;
+	private String[] _methodParameterTypes15;
+	private String _methodName16;
+	private String[] _methodParameterTypes16;
+	private String _methodName17;
+	private String[] _methodParameterTypes17;
+	private String _methodName18;
+	private String[] _methodParameterTypes18;
+	private String _methodName19;
+	private String[] _methodParameterTypes19;
+	private String _methodName20;
+	private String[] _methodParameterTypes20;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
+	private String _methodName23;
+	private String[] _methodParameterTypes23;
+	private String _methodName24;
+	private String[] _methodParameterTypes24;
+	private String _methodName25;
+	private String[] _methodParameterTypes25;
+	private String _methodName26;
+	private String[] _methodParameterTypes26;
+	private String _methodName27;
+	private String[] _methodParameterTypes27;
+	private String _methodName28;
+	private String[] _methodParameterTypes28;
+	private String _methodName29;
+	private String[] _methodParameterTypes29;
+	private String _methodName30;
+	private String[] _methodParameterTypes30;
+	private String _methodName31;
+	private String[] _methodParameterTypes31;
+	private String _methodName32;
+	private String[] _methodParameterTypes32;
+	private String _methodName33;
+	private String[] _methodParameterTypes33;
+	private String _methodName34;
+	private String[] _methodParameterTypes34;
+	private String _methodName35;
+	private String[] _methodParameterTypes35;
+	private String _methodName36;
+	private String[] _methodParameterTypes36;
+	private String _methodName291;
+	private String[] _methodParameterTypes291;
+	private String _methodName296;
+	private String[] _methodParameterTypes296;
+	private String _methodName297;
+	private String[] _methodParameterTypes297;
+}

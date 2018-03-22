@@ -671,7 +671,7 @@ public class LicenseEntryUtil {
 
 	public static LicenseEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (LicenseEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (LicenseEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					LicenseEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(LicenseEntryUtil.class,

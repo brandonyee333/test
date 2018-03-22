@@ -587,7 +587,7 @@ public class SearchFilterUtil {
 
 	public static SearchFilterPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (SearchFilterPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (SearchFilterPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					SearchFilterPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(SearchFilterUtil.class,

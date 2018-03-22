@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -367,7 +368,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -379,7 +380,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -421,7 +422,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -433,7 +434,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 	@Override
 	public String getModifiedUserName() {
 		if (_modifiedUserName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _modifiedUserName;
@@ -489,7 +490,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 	@Override
 	public String getDossieraAccountKey() {
 		if (_dossieraAccountKey == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _dossieraAccountKey;
@@ -515,7 +516,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 	@Override
 	public String getCode() {
 		if (_code == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _code;
@@ -541,7 +542,7 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 	@Override
 	public String getNotes() {
 		if (_notes == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _notes;

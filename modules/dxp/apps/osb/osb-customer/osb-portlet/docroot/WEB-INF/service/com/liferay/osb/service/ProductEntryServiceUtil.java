@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,11 @@ public class ProductEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.ProductEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
 
 	/**
 	* Returns the OSGi service identifier.
@@ -56,8 +62,15 @@ public class ProductEntryServiceUtil {
 
 	public static ProductEntryService getService() {
 		if (_service == null) {
-			_service = (ProductEntryService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					ProductEntryService.class.getName());
+
+			if (invokableService instanceof ProductEntryService) {
+				_service = (ProductEntryService)invokableService;
+			}
+			else {
+				_service = new ProductEntryServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(ProductEntryServiceUtil.class,
 				"_service");

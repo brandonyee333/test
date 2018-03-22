@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,23 @@ public class SupportLaborLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SupportLaborLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean hasSupportWorker(long supportWorkerId,
+		long supportLaborId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().hasSupportWorker(supportWorkerId, supportLaborId);
+	}
+
+	/**
+	* Adds the support labor to the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportLabor the support labor
+	* @return the support labor that was added
+	*/
+	public static com.liferay.osb.model.SupportLabor addSupportLabor(
+		com.liferay.osb.model.SupportLabor supportLabor) {
+		return getService().addSupportLabor(supportLabor);
+	}
+
 	public static com.liferay.osb.model.SupportLabor addSupportLabor(
 		java.lang.String name, java.lang.String description,
 		java.lang.String timeZoneId, int sunOpen, int sunClose, int monOpen,
@@ -54,23 +72,6 @@ public class SupportLaborLocalServiceUtil {
 	}
 
 	/**
-	* Adds the support labor to the database. Also notifies the appropriate model listeners.
-	*
-	* @param supportLabor the support labor
-	* @return the support labor that was added
-	*/
-	public static com.liferay.osb.model.SupportLabor addSupportLabor(
-		com.liferay.osb.model.SupportLabor supportLabor) {
-		return getService().addSupportLabor(supportLabor);
-	}
-
-	public static void addSupportWorkers(long[] supportWorkerIds,
-		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().addSupportWorkers(supportWorkerIds, supportLaborId);
-	}
-
-	/**
 	* Creates a new support labor with the primary key. Does not add the support labor to the database.
 	*
 	* @param supportLaborId the primary key for the new support labor
@@ -82,12 +83,14 @@ public class SupportLaborLocalServiceUtil {
 	}
 
 	/**
-	* @throws PortalException
+	* Deletes the support labor from the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportLabor the support labor
+	* @return the support labor that was removed
 	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
+	public static com.liferay.osb.model.SupportLabor deleteSupportLabor(
+		com.liferay.osb.model.SupportLabor supportLabor) {
+		return getService().deleteSupportLabor(supportLabor);
 	}
 
 	/**
@@ -103,19 +106,98 @@ public class SupportLaborLocalServiceUtil {
 		return getService().deleteSupportLabor(supportLaborId);
 	}
 
+	public static com.liferay.osb.model.SupportLabor fetchSupportLabor(
+		long supportLaborId) {
+		return getService().fetchSupportLabor(supportLaborId);
+	}
+
 	/**
-	* Deletes the support labor from the database. Also notifies the appropriate model listeners.
+	* Returns the support labor with the primary key.
+	*
+	* @param supportLaborId the primary key of the support labor
+	* @return the support labor
+	* @throws PortalException if a support labor with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.SupportLabor getSupportLabor(
+		long supportLaborId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getSupportLabor(supportLaborId);
+	}
+
+	/**
+	* Updates the support labor in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param supportLabor the support labor
-	* @return the support labor that was removed
+	* @return the support labor that was updated
 	*/
-	public static com.liferay.osb.model.SupportLabor deleteSupportLabor(
+	public static com.liferay.osb.model.SupportLabor updateSupportLabor(
 		com.liferay.osb.model.SupportLabor supportLabor) {
-		return getService().deleteSupportLabor(supportLabor);
+		return getService().updateSupportLabor(supportLabor);
+	}
+
+	public static com.liferay.osb.model.SupportLabor updateSupportLabor(
+		long supportLaborId, java.lang.String name,
+		java.lang.String description, java.lang.String timeZoneId, int sunOpen,
+		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
+		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
+		int friClose, int satOpen, int satClose)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateSupportLabor(supportLaborId, name, description,
+			timeZoneId, sunOpen, sunClose, monOpen, monClose, tueOpen,
+			tueClose, wedOpen, wedClose, thuOpen, thuClose, friOpen, friClose,
+			satOpen, satClose);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of support labors.
+	*
+	* @return the number of support labors
+	*/
+	public static int getSupportLaborsCount() {
+		return getService().getSupportLaborsCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -169,6 +251,22 @@ public class SupportLaborLocalServiceUtil {
 	}
 
 	/**
+	* Returns a range of all the support labors.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportLaborModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of support labors
+	* @param end the upper bound of the range of support labors (not inclusive)
+	* @return the range of support labors
+	*/
+	public static java.util.List<com.liferay.osb.model.SupportLabor> getSupportLabors(
+		int start, int end) {
+		return getService().getSupportLabors(start, end);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -192,106 +290,15 @@ public class SupportLaborLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.model.SupportLabor fetchSupportLabor(
-		long supportLaborId) {
-		return getService().fetchSupportLabor(supportLaborId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the support labor with the primary key.
-	*
-	* @param supportLaborId the primary key of the support labor
-	* @return the support labor
-	* @throws PortalException if a support labor with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.SupportLabor getSupportLabor(
+	public static void addSupportWorkers(long[] supportWorkerIds,
 		long supportLaborId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSupportLabor(supportLaborId);
-	}
-
-	/**
-	* Returns a range of all the support labors.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportLaborModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of support labors
-	* @param end the upper bound of the range of support labors (not inclusive)
-	* @return the range of support labors
-	*/
-	public static java.util.List<com.liferay.osb.model.SupportLabor> getSupportLabors(
-		int start, int end) {
-		return getService().getSupportLabors(start, end);
-	}
-
-	/**
-	* Returns the number of support labors.
-	*
-	* @return the number of support labors
-	*/
-	public static int getSupportLaborsCount() {
-		return getService().getSupportLaborsCount();
-	}
-
-	public static boolean hasSupportWorker(long supportWorkerId,
-		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().hasSupportWorker(supportWorkerId, supportLaborId);
+		getService().addSupportWorkers(supportWorkerIds, supportLaborId);
 	}
 
 	public static void removeSupportWorkers(long[] supportWorkerIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().removeSupportWorkers(supportWorkerIds);
-	}
-
-	public static com.liferay.osb.model.SupportLabor updateSupportLabor(
-		long supportLaborId, java.lang.String name,
-		java.lang.String description, java.lang.String timeZoneId, int sunOpen,
-		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
-		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
-		int friClose, int satOpen, int satClose)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateSupportLabor(supportLaborId, name, description,
-			timeZoneId, sunOpen, sunClose, monOpen, monClose, tueOpen,
-			tueClose, wedOpen, wedClose, thuOpen, thuClose, friOpen, friClose,
-			satOpen, satClose);
-	}
-
-	/**
-	* Updates the support labor in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param supportLabor the support labor
-	* @return the support labor that was updated
-	*/
-	public static com.liferay.osb.model.SupportLabor updateSupportLabor(
-		com.liferay.osb.model.SupportLabor supportLabor) {
-		return getService().updateSupportLabor(supportLabor);
 	}
 
 	public static void clearService() {
@@ -300,8 +307,15 @@ public class SupportLaborLocalServiceUtil {
 
 	public static SupportLaborLocalService getService() {
 		if (_service == null) {
-			_service = (SupportLaborLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					SupportLaborLocalService.class.getName());
+
+			if (invokableLocalService instanceof SupportLaborLocalService) {
+				_service = (SupportLaborLocalService)invokableLocalService;
+			}
+			else {
+				_service = new SupportLaborLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(SupportLaborLocalServiceUtil.class,
 				"_service");

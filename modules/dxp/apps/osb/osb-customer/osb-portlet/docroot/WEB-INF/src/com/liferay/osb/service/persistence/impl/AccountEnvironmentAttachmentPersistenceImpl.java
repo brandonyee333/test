@@ -39,11 +39,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.Date;
@@ -319,7 +318,7 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 		msg.append("accountEnvironmentId=");
 		msg.append(accountEnvironmentId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountEnvironmentAttachmentException(msg.toString());
 	}
@@ -372,7 +371,7 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 		msg.append("accountEnvironmentId=");
 		msg.append(accountEnvironmentId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountEnvironmentAttachmentException(msg.toString());
 	}
@@ -661,7 +660,7 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 			msg.append(", fileName=");
 			msg.append(fileName);
 
-			msg.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -728,7 +727,7 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 			if (fileName == null) {
 				query.append(_FINDER_COLUMN_AEI_FN_FILENAME_1);
 			}
-			else if (fileName.equals("")) {
+			else if (fileName.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_AEI_FN_FILENAME_3);
 			}
 			else {
@@ -849,7 +848,7 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 			if (fileName == null) {
 				query.append(_FINDER_COLUMN_AEI_FN_FILENAME_1);
 			}
-			else if (fileName.equals("")) {
+			else if (fileName.equals(StringPool.BLANK)) {
 				query.append(_FINDER_COLUMN_AEI_FN_FILENAME_3);
 			}
 			else {
@@ -934,7 +933,7 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 			msg.append(", type=");
 			msg.append(type);
 
-			msg.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -1139,24 +1138,6 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 
 	public AccountEnvironmentAttachmentPersistenceImpl() {
 		setModelClass(AccountEnvironmentAttachment.class);
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-			dbColumnNames.put("type", "type_");
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception e) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
-			}
-		}
 	}
 
 	/**
@@ -1727,12 +1708,12 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(",");
+			query.append(StringPool.COMMA);
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
 		String sql = query.toString();
 

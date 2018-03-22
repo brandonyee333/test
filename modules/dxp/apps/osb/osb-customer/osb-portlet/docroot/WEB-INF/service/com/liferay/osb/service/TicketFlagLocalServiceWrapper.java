@@ -33,6 +33,18 @@ public class TicketFlagLocalServiceWrapper implements TicketFlagLocalService,
 		_ticketFlagLocalService = ticketFlagLocalService;
 	}
 
+	@Override
+	public boolean hasTicketFlag(long ticketEntryId, int type, int flag) {
+		return _ticketFlagLocalService.hasTicketFlag(ticketEntryId, type, flag);
+	}
+
+	@Override
+	public boolean hasTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type, int flag) {
+		return _ticketFlagLocalService.hasTicketFlag(userId, accountEntryId,
+			ticketEntryId, type, flag);
+	}
+
 	/**
 	* Adds the ticket flag to the database. Also notifies the appropriate model listeners.
 	*
@@ -57,13 +69,15 @@ public class TicketFlagLocalServiceWrapper implements TicketFlagLocalService,
 	}
 
 	/**
-	* @throws PortalException
+	* Deletes the ticket flag from the database. Also notifies the appropriate model listeners.
+	*
+	* @param ticketFlag the ticket flag
+	* @return the ticket flag that was removed
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketFlagLocalService.deletePersistedModel(persistedModel);
+	public com.liferay.osb.model.TicketFlag deleteTicketFlag(
+		com.liferay.osb.model.TicketFlag ticketFlag) {
+		return _ticketFlagLocalService.deleteTicketFlag(ticketFlag);
 	}
 
 	/**
@@ -80,33 +94,113 @@ public class TicketFlagLocalServiceWrapper implements TicketFlagLocalService,
 	}
 
 	@Override
-	public void deleteTicketFlag(long userId, long accountEntryId,
-		long ticketEntryId, int type)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_ticketFlagLocalService.deleteTicketFlag(userId, accountEntryId,
-			ticketEntryId, type);
+	public com.liferay.osb.model.TicketFlag fetchTicketFlag(long ticketFlagId) {
+		return _ticketFlagLocalService.fetchTicketFlag(ticketFlagId);
 	}
 
 	/**
-	* Deletes the ticket flag from the database. Also notifies the appropriate model listeners.
+	* Returns the ticket flag with the primary key.
 	*
-	* @param ticketFlag the ticket flag
-	* @return the ticket flag that was removed
+	* @param ticketFlagId the primary key of the ticket flag
+	* @return the ticket flag
+	* @throws PortalException if a ticket flag with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.osb.model.TicketFlag deleteTicketFlag(
+	public com.liferay.osb.model.TicketFlag getTicketFlag(long ticketFlagId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketFlagLocalService.getTicketFlag(ticketFlagId);
+	}
+
+	/**
+	* Updates the ticket flag in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param ticketFlag the ticket flag
+	* @return the ticket flag that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.TicketFlag updateTicketFlag(
 		com.liferay.osb.model.TicketFlag ticketFlag) {
-		return _ticketFlagLocalService.deleteTicketFlag(ticketFlag);
+		return _ticketFlagLocalService.updateTicketFlag(ticketFlag);
 	}
 
 	@Override
-	public void deleteTicketFlags(long ticketEntryId, int type, int flag) {
-		_ticketFlagLocalService.deleteTicketFlags(ticketEntryId, type, flag);
+	public com.liferay.osb.model.TicketFlag updateTicketFlag(long userId,
+		long accountEntryId, long ticketEntryId, int type, int flag)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketFlagLocalService.updateTicketFlag(userId, accountEntryId,
+			ticketEntryId, type, flag);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _ticketFlagLocalService.getActionableDynamicQuery();
 	}
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _ticketFlagLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _ticketFlagLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketFlagLocalService.deletePersistedModel(persistedModel);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketFlagLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of ticket flags.
+	*
+	* @return the number of ticket flags
+	*/
+	@Override
+	public int getTicketFlagsCount() {
+		return _ticketFlagLocalService.getTicketFlagsCount();
+	}
+
+	@Override
+	public int getTicketFlagsCount(long ticketEntryId, int type, int flag) {
+		return _ticketFlagLocalService.getTicketFlagsCount(ticketEntryId, type,
+			flag);
+	}
+
+	@Override
+	public int[] getTicketFlagTypes(long ticketEntryId, int[] types, int flag) {
+		return _ticketFlagLocalService.getTicketFlagTypes(ticketEntryId, types,
+			flag);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _ticketFlagLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _ticketFlagLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -163,78 +257,6 @@ public class TicketFlagLocalServiceWrapper implements TicketFlagLocalService,
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _ticketFlagLocalService.dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _ticketFlagLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
-	}
-
-	@Override
-	public com.liferay.osb.model.TicketFlag fetchTicketFlag(long ticketFlagId) {
-		return _ticketFlagLocalService.fetchTicketFlag(ticketFlagId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _ticketFlagLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _ticketFlagLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _ticketFlagLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketFlagLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the ticket flag with the primary key.
-	*
-	* @param ticketFlagId the primary key of the ticket flag
-	* @return the ticket flag
-	* @throws PortalException if a ticket flag with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.TicketFlag getTicketFlag(long ticketFlagId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketFlagLocalService.getTicketFlag(ticketFlagId);
-	}
-
-	/**
 	* Returns a range of all the ticket flags.
 	*
 	* <p>
@@ -264,57 +286,43 @@ public class TicketFlagLocalServiceWrapper implements TicketFlagLocalService,
 	}
 
 	/**
-	* Returns the number of ticket flags.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of ticket flags
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public int getTicketFlagsCount() {
-		return _ticketFlagLocalService.getTicketFlagsCount();
-	}
-
-	@Override
-	public int getTicketFlagsCount(long ticketEntryId, int type, int flag) {
-		return _ticketFlagLocalService.getTicketFlagsCount(ticketEntryId, type,
-			flag);
-	}
-
-	@Override
-	public int[] getTicketFlagTypes(long ticketEntryId, int[] types, int flag) {
-		return _ticketFlagLocalService.getTicketFlagTypes(ticketEntryId, types,
-			flag);
-	}
-
-	@Override
-	public boolean hasTicketFlag(long ticketEntryId, int type, int flag) {
-		return _ticketFlagLocalService.hasTicketFlag(ticketEntryId, type, flag);
-	}
-
-	@Override
-	public boolean hasTicketFlag(long userId, long accountEntryId,
-		long ticketEntryId, int type, int flag) {
-		return _ticketFlagLocalService.hasTicketFlag(userId, accountEntryId,
-			ticketEntryId, type, flag);
-	}
-
-	@Override
-	public com.liferay.osb.model.TicketFlag updateTicketFlag(long userId,
-		long accountEntryId, long ticketEntryId, int type, int flag)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketFlagLocalService.updateTicketFlag(userId, accountEntryId,
-			ticketEntryId, type, flag);
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _ticketFlagLocalService.dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Updates the ticket flag in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @param ticketFlag the ticket flag
-	* @return the ticket flag that was updated
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public com.liferay.osb.model.TicketFlag updateTicketFlag(
-		com.liferay.osb.model.TicketFlag ticketFlag) {
-		return _ticketFlagLocalService.updateTicketFlag(ticketFlag);
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _ticketFlagLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
+	}
+
+	@Override
+	public void deleteTicketFlag(long userId, long accountEntryId,
+		long ticketEntryId, int type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_ticketFlagLocalService.deleteTicketFlag(userId, accountEntryId,
+			ticketEntryId, type);
+	}
+
+	@Override
+	public void deleteTicketFlags(long ticketEntryId, int type, int flag) {
+		_ticketFlagLocalService.deleteTicketFlags(ticketEntryId, type, flag);
 	}
 
 	@Override

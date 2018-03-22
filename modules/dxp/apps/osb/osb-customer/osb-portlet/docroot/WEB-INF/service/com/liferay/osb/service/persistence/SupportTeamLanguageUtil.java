@@ -433,7 +433,7 @@ public class SupportTeamLanguageUtil {
 
 	public static SupportTeamLanguagePersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (SupportTeamLanguagePersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (SupportTeamLanguagePersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					SupportTeamLanguagePersistence.class.getName());
 
 			ReferenceRegistry.registerReference(SupportTeamLanguageUtil.class,

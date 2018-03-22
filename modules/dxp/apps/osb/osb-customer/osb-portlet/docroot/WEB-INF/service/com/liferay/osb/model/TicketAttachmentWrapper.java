@@ -180,134 +180,25 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new TicketAttachmentWrapper((TicketAttachment)_ticketAttachment.clone());
+	public TicketAttachment toEscapedModel() {
+		return new TicketAttachmentWrapper(_ticketAttachment.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(TicketAttachment ticketAttachment) {
-		return _ticketAttachment.compareTo(ticketAttachment);
+	public TicketAttachment toUnescapedModel() {
+		return new TicketAttachmentWrapper(_ticketAttachment.toUnescapedModel());
+	}
+
+	@Override
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketAttachment.getTicketEntry();
 	}
 
 	@Override
 	public boolean fileExists()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketAttachment.fileExists();
-	}
-
-	/**
-	* Returns the available file repository IDs of this ticket attachment.
-	*
-	* @return the available file repository IDs of this ticket attachment
-	*/
-	@Override
-	public java.lang.String getAvailableFileRepositoryIds() {
-		return _ticketAttachment.getAvailableFileRepositoryIds();
-	}
-
-	@Override
-	public java.util.Set<java.lang.String> getAvailableFileRepositoryIdsSet() {
-		return _ticketAttachment.getAvailableFileRepositoryIdsSet();
-	}
-
-	@Override
-	public int getContentLength() {
-		return _ticketAttachment.getContentLength();
-	}
-
-	/**
-	* Returns the create date of this ticket attachment.
-	*
-	* @return the create date of this ticket attachment
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _ticketAttachment.getCreateDate();
-	}
-
-	/**
-	* Returns the delete date of this ticket attachment.
-	*
-	* @return the delete date of this ticket attachment
-	*/
-	@Override
-	public Date getDeleteDate() {
-		return _ticketAttachment.getDeleteDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ticketAttachment.getExpandoBridge();
-	}
-
-	/**
-	* Returns the extracted text of this ticket attachment.
-	*
-	* @return the extracted text of this ticket attachment
-	*/
-	@Override
-	public java.lang.String getExtractedText() {
-		return _ticketAttachment.getExtractedText();
-	}
-
-	@Override
-	public java.io.File getFile() {
-		return _ticketAttachment.getFile();
-	}
-
-	/**
-	* Returns the file name of this ticket attachment.
-	*
-	* @return the file name of this ticket attachment
-	*/
-	@Override
-	public java.lang.String getFileName() {
-		return _ticketAttachment.getFileName();
-	}
-
-	@Override
-	public java.lang.String getFilePath() {
-		return _ticketAttachment.getFilePath();
-	}
-
-	/**
-	* Returns the file size of this ticket attachment.
-	*
-	* @return the file size of this ticket attachment
-	*/
-	@Override
-	public long getFileSize() {
-		return _ticketAttachment.getFileSize();
-	}
-
-	@Override
-	public java.lang.String getKey() {
-		return _ticketAttachment.getKey();
-	}
-
-	/**
-	* Returns the primary key of this ticket attachment.
-	*
-	* @return the primary key of this ticket attachment
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _ticketAttachment.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ticketAttachment.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the release notes ID of this ticket attachment.
-	*
-	* @return the release notes ID of this ticket attachment
-	*/
-	@Override
-	public long getReleaseNotesId() {
-		return _ticketAttachment.getReleaseNotesId();
 	}
 
 	/**
@@ -318,117 +209,6 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	@Override
 	public boolean getReplicate() {
 		return _ticketAttachment.getReplicate();
-	}
-
-	/**
-	* Returns the status of this ticket attachment.
-	*
-	* @return the status of this ticket attachment
-	*/
-	@Override
-	public int getStatus() {
-		return _ticketAttachment.getStatus();
-	}
-
-	/**
-	* Returns the ticket attachment ID of this ticket attachment.
-	*
-	* @return the ticket attachment ID of this ticket attachment
-	*/
-	@Override
-	public long getTicketAttachmentId() {
-		return _ticketAttachment.getTicketAttachmentId();
-	}
-
-	@Override
-	public TicketEntry getTicketEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketAttachment.getTicketEntry();
-	}
-
-	/**
-	* Returns the ticket entry ID of this ticket attachment.
-	*
-	* @return the ticket entry ID of this ticket attachment
-	*/
-	@Override
-	public long getTicketEntryId() {
-		return _ticketAttachment.getTicketEntryId();
-	}
-
-	/**
-	* Returns the ticket solution ID of this ticket attachment.
-	*
-	* @return the ticket solution ID of this ticket attachment
-	*/
-	@Override
-	public long getTicketSolutionId() {
-		return _ticketAttachment.getTicketSolutionId();
-	}
-
-	/**
-	* Returns the type of this ticket attachment.
-	*
-	* @return the type of this ticket attachment
-	*/
-	@Override
-	public int getType() {
-		return _ticketAttachment.getType();
-	}
-
-	@Override
-	public java.lang.String getTypeLabel() {
-		return _ticketAttachment.getTypeLabel();
-	}
-
-	/**
-	* Returns the user ID of this ticket attachment.
-	*
-	* @return the user ID of this ticket attachment
-	*/
-	@Override
-	public long getUserId() {
-		return _ticketAttachment.getUserId();
-	}
-
-	/**
-	* Returns the user name of this ticket attachment.
-	*
-	* @return the user name of this ticket attachment
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _ticketAttachment.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this ticket attachment.
-	*
-	* @return the user uuid of this ticket attachment
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _ticketAttachment.getUserUuid();
-	}
-
-	/**
-	* Returns the visibility of this ticket attachment.
-	*
-	* @return the visibility of this ticket attachment
-	*/
-	@Override
-	public int getVisibility() {
-		return _ticketAttachment.getVisibility();
-	}
-
-	@Override
-	public java.lang.String getVisibilityLabel() {
-		return _ticketAttachment.getVisibilityLabel();
-	}
-
-	@Override
-	public int hashCode() {
-		return _ticketAttachment.hashCode();
 	}
 
 	@Override
@@ -454,6 +234,251 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	@Override
 	public boolean isReplicate() {
 		return _ticketAttachment.isReplicate();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ticketAttachment.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TicketAttachment> toCacheModel() {
+		return _ticketAttachment.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(TicketAttachment ticketAttachment) {
+		return _ticketAttachment.compareTo(ticketAttachment);
+	}
+
+	@Override
+	public int getContentLength() {
+		return _ticketAttachment.getContentLength();
+	}
+
+	/**
+	* Returns the status of this ticket attachment.
+	*
+	* @return the status of this ticket attachment
+	*/
+	@Override
+	public int getStatus() {
+		return _ticketAttachment.getStatus();
+	}
+
+	/**
+	* Returns the type of this ticket attachment.
+	*
+	* @return the type of this ticket attachment
+	*/
+	@Override
+	public int getType() {
+		return _ticketAttachment.getType();
+	}
+
+	/**
+	* Returns the visibility of this ticket attachment.
+	*
+	* @return the visibility of this ticket attachment
+	*/
+	@Override
+	public int getVisibility() {
+		return _ticketAttachment.getVisibility();
+	}
+
+	@Override
+	public int hashCode() {
+		return _ticketAttachment.hashCode();
+	}
+
+	@Override
+	public java.io.File getFile() {
+		return _ticketAttachment.getFile();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ticketAttachment.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new TicketAttachmentWrapper((TicketAttachment)_ticketAttachment.clone());
+	}
+
+	/**
+	* Returns the available file repository IDs of this ticket attachment.
+	*
+	* @return the available file repository IDs of this ticket attachment
+	*/
+	@Override
+	public java.lang.String getAvailableFileRepositoryIds() {
+		return _ticketAttachment.getAvailableFileRepositoryIds();
+	}
+
+	/**
+	* Returns the extracted text of this ticket attachment.
+	*
+	* @return the extracted text of this ticket attachment
+	*/
+	@Override
+	public java.lang.String getExtractedText() {
+		return _ticketAttachment.getExtractedText();
+	}
+
+	/**
+	* Returns the file name of this ticket attachment.
+	*
+	* @return the file name of this ticket attachment
+	*/
+	@Override
+	public java.lang.String getFileName() {
+		return _ticketAttachment.getFileName();
+	}
+
+	@Override
+	public java.lang.String getFilePath() {
+		return _ticketAttachment.getFilePath();
+	}
+
+	@Override
+	public java.lang.String getKey() {
+		return _ticketAttachment.getKey();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _ticketAttachment.getTypeLabel();
+	}
+
+	/**
+	* Returns the user name of this ticket attachment.
+	*
+	* @return the user name of this ticket attachment
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _ticketAttachment.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this ticket attachment.
+	*
+	* @return the user uuid of this ticket attachment
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _ticketAttachment.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String getVisibilityLabel() {
+		return _ticketAttachment.getVisibilityLabel();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _ticketAttachment.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ticketAttachment.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this ticket attachment.
+	*
+	* @return the create date of this ticket attachment
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _ticketAttachment.getCreateDate();
+	}
+
+	/**
+	* Returns the delete date of this ticket attachment.
+	*
+	* @return the delete date of this ticket attachment
+	*/
+	@Override
+	public Date getDeleteDate() {
+		return _ticketAttachment.getDeleteDate();
+	}
+
+	@Override
+	public java.util.Set<java.lang.String> getAvailableFileRepositoryIdsSet() {
+		return _ticketAttachment.getAvailableFileRepositoryIdsSet();
+	}
+
+	/**
+	* Returns the file size of this ticket attachment.
+	*
+	* @return the file size of this ticket attachment
+	*/
+	@Override
+	public long getFileSize() {
+		return _ticketAttachment.getFileSize();
+	}
+
+	/**
+	* Returns the primary key of this ticket attachment.
+	*
+	* @return the primary key of this ticket attachment
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _ticketAttachment.getPrimaryKey();
+	}
+
+	/**
+	* Returns the release notes ID of this ticket attachment.
+	*
+	* @return the release notes ID of this ticket attachment
+	*/
+	@Override
+	public long getReleaseNotesId() {
+		return _ticketAttachment.getReleaseNotesId();
+	}
+
+	/**
+	* Returns the ticket attachment ID of this ticket attachment.
+	*
+	* @return the ticket attachment ID of this ticket attachment
+	*/
+	@Override
+	public long getTicketAttachmentId() {
+		return _ticketAttachment.getTicketAttachmentId();
+	}
+
+	/**
+	* Returns the ticket entry ID of this ticket attachment.
+	*
+	* @return the ticket entry ID of this ticket attachment
+	*/
+	@Override
+	public long getTicketEntryId() {
+		return _ticketAttachment.getTicketEntryId();
+	}
+
+	/**
+	* Returns the ticket solution ID of this ticket attachment.
+	*
+	* @return the ticket solution ID of this ticket attachment
+	*/
+	@Override
+	public long getTicketSolutionId() {
+		return _ticketAttachment.getTicketSolutionId();
+	}
+
+	/**
+	* Returns the user ID of this ticket attachment.
+	*
+	* @return the user ID of this ticket attachment
+	*/
+	@Override
+	public long getUserId() {
+		return _ticketAttachment.getUserId();
 	}
 
 	@Override
@@ -504,14 +529,14 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_ticketAttachment.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ticketAttachment.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ticketAttachment.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_ticketAttachment.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -682,31 +707,6 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	@Override
 	public void setVisibility(int visibility) {
 		_ticketAttachment.setVisibility(visibility);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketAttachment> toCacheModel() {
-		return _ticketAttachment.toCacheModel();
-	}
-
-	@Override
-	public TicketAttachment toEscapedModel() {
-		return new TicketAttachmentWrapper(_ticketAttachment.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ticketAttachment.toString();
-	}
-
-	@Override
-	public TicketAttachment toUnescapedModel() {
-		return new TicketAttachmentWrapper(_ticketAttachment.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ticketAttachment.toXmlString();
 	}
 
 	@Override

@@ -33,15 +33,6 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 		_productEntryLocalService = productEntryLocalService;
 	}
 
-	@Override
-	public com.liferay.osb.model.ProductEntry addProductEntry(long userId,
-		java.lang.String name, int type, int environment,
-		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _productEntryLocalService.addProductEntry(userId, name, type,
-			environment, versionsListType, dossieraIdMappings);
-	}
-
 	/**
 	* Adds the product entry to the database. Also notifies the appropriate model listeners.
 	*
@@ -52,6 +43,15 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	public com.liferay.osb.model.ProductEntry addProductEntry(
 		com.liferay.osb.model.ProductEntry productEntry) {
 		return _productEntryLocalService.addProductEntry(productEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.ProductEntry addProductEntry(long userId,
+		java.lang.String name, int type, int environment,
+		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _productEntryLocalService.addProductEntry(userId, name, type,
+			environment, versionsListType, dossieraIdMappings);
 	}
 
 	/**
@@ -67,13 +67,15 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	}
 
 	/**
-	* @throws PortalException
+	* Deletes the product entry from the database. Also notifies the appropriate model listeners.
+	*
+	* @param productEntry the product entry
+	* @return the product entry that was removed
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _productEntryLocalService.deletePersistedModel(persistedModel);
+	public com.liferay.osb.model.ProductEntry deleteProductEntry(
+		com.liferay.osb.model.ProductEntry productEntry) {
+		return _productEntryLocalService.deleteProductEntry(productEntry);
 	}
 
 	/**
@@ -90,21 +92,124 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 		return _productEntryLocalService.deleteProductEntry(productEntryId);
 	}
 
+	@Override
+	public com.liferay.osb.model.ProductEntry fetchProductEntry(
+		long productEntryId) {
+		return _productEntryLocalService.fetchProductEntry(productEntryId);
+	}
+
+	@Override
+	public com.liferay.osb.model.ProductEntry fetchProductEntryByName(
+		java.lang.String name) {
+		return _productEntryLocalService.fetchProductEntryByName(name);
+	}
+
 	/**
-	* Deletes the product entry from the database. Also notifies the appropriate model listeners.
+	* Returns the product entry with the primary key.
 	*
-	* @param productEntry the product entry
-	* @return the product entry that was removed
+	* @param productEntryId the primary key of the product entry
+	* @return the product entry
+	* @throws PortalException if a product entry with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.osb.model.ProductEntry deleteProductEntry(
+	public com.liferay.osb.model.ProductEntry getProductEntry(
+		long productEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _productEntryLocalService.getProductEntry(productEntryId);
+	}
+
+	@Override
+	public com.liferay.osb.model.ProductEntry getProductEntryByName(
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _productEntryLocalService.getProductEntryByName(name);
+	}
+
+	/**
+	* Updates the product entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param productEntry the product entry
+	* @return the product entry that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.ProductEntry updateProductEntry(
 		com.liferay.osb.model.ProductEntry productEntry) {
-		return _productEntryLocalService.deleteProductEntry(productEntry);
+		return _productEntryLocalService.updateProductEntry(productEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.ProductEntry updateProductEntry(
+		long productEntryId, java.lang.String name, int type, int environment,
+		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _productEntryLocalService.updateProductEntry(productEntryId,
+			name, type, environment, versionsListType, dossieraIdMappings);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _productEntryLocalService.getActionableDynamicQuery();
 	}
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _productEntryLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _productEntryLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _productEntryLocalService.deletePersistedModel(persistedModel);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _productEntryLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of product entries.
+	*
+	* @return the number of product entries
+	*/
+	@Override
+	public int getProductEntriesCount() {
+		return _productEntryLocalService.getProductEntriesCount();
+	}
+
+	@Override
+	public int searchCount(java.lang.String name,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
+		return _productEntryLocalService.searchCount(name, params);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _productEntryLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _productEntryLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -161,6 +266,37 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	}
 
 	/**
+	* Returns a range of all the product entries.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.ProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of product entries
+	* @param end the upper bound of the range of product entries (not inclusive)
+	* @return the range of product entries
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
+		int start, int end) {
+		return _productEntryLocalService.getProductEntries(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
+		long accountEntryId) {
+		return _productEntryLocalService.getProductEntries(accountEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.ProductEntry> search(
+		java.lang.String name,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end) {
+		return _productEntryLocalService.search(name, params, start, end);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -185,134 +321,6 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _productEntryLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
-	}
-
-	@Override
-	public com.liferay.osb.model.ProductEntry fetchProductEntry(
-		long productEntryId) {
-		return _productEntryLocalService.fetchProductEntry(productEntryId);
-	}
-
-	@Override
-	public com.liferay.osb.model.ProductEntry fetchProductEntryByName(
-		java.lang.String name) {
-		return _productEntryLocalService.fetchProductEntryByName(name);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _productEntryLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _productEntryLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _productEntryLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _productEntryLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns a range of all the product entries.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.ProductEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of product entries
-	* @param end the upper bound of the range of product entries (not inclusive)
-	* @return the range of product entries
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
-		int start, int end) {
-		return _productEntryLocalService.getProductEntries(start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
-		long accountEntryId) {
-		return _productEntryLocalService.getProductEntries(accountEntryId);
-	}
-
-	/**
-	* Returns the number of product entries.
-	*
-	* @return the number of product entries
-	*/
-	@Override
-	public int getProductEntriesCount() {
-		return _productEntryLocalService.getProductEntriesCount();
-	}
-
-	/**
-	* Returns the product entry with the primary key.
-	*
-	* @param productEntryId the primary key of the product entry
-	* @return the product entry
-	* @throws PortalException if a product entry with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.ProductEntry getProductEntry(
-		long productEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _productEntryLocalService.getProductEntry(productEntryId);
-	}
-
-	@Override
-	public com.liferay.osb.model.ProductEntry getProductEntryByName(
-		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _productEntryLocalService.getProductEntryByName(name);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.ProductEntry> search(
-		java.lang.String name,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end) {
-		return _productEntryLocalService.search(name, params, start, end);
-	}
-
-	@Override
-	public int searchCount(java.lang.String name,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
-		return _productEntryLocalService.searchCount(name, params);
-	}
-
-	@Override
-	public com.liferay.osb.model.ProductEntry updateProductEntry(
-		long productEntryId, java.lang.String name, int type, int environment,
-		java.lang.String versionsListType, java.lang.String[] dossieraIdMappings)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _productEntryLocalService.updateProductEntry(productEntryId,
-			name, type, environment, versionsListType, dossieraIdMappings);
-	}
-
-	/**
-	* Updates the product entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param productEntry the product entry
-	* @return the product entry that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.ProductEntry updateProductEntry(
-		com.liferay.osb.model.ProductEntry productEntry) {
-		return _productEntryLocalService.updateProductEntry(productEntry);
 	}
 
 	@Override

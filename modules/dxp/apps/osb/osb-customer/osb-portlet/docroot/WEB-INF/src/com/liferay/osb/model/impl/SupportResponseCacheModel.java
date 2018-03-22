@@ -21,6 +21,7 @@ import com.liferay.osb.model.SupportResponse;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -106,7 +107,7 @@ public class SupportResponseCacheModel implements CacheModel<SupportResponse>,
 		supportResponseImpl.setUserId(userId);
 
 		if (userName == null) {
-			supportResponseImpl.setUserName("");
+			supportResponseImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			supportResponseImpl.setUserName(userName);
@@ -127,7 +128,7 @@ public class SupportResponseCacheModel implements CacheModel<SupportResponse>,
 		}
 
 		if (name == null) {
-			supportResponseImpl.setName("");
+			supportResponseImpl.setName(StringPool.BLANK);
 		}
 		else {
 			supportResponseImpl.setName(name);
@@ -179,7 +180,7 @@ public class SupportResponseCacheModel implements CacheModel<SupportResponse>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -189,7 +190,7 @@ public class SupportResponseCacheModel implements CacheModel<SupportResponse>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);

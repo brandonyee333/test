@@ -834,7 +834,7 @@ public class ExternalIdMapperUtil {
 
 	public static ExternalIdMapperPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (ExternalIdMapperPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (ExternalIdMapperPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					ExternalIdMapperPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(ExternalIdMapperUtil.class,

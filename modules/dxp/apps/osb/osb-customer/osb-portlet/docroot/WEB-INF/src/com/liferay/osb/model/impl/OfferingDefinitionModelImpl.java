@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -381,7 +382,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -393,7 +394,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -483,7 +484,7 @@ public class OfferingDefinitionModelImpl extends BaseModelImpl<OfferingDefinitio
 	@Override
 	public String getProductDescription() {
 		if (_productDescription == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _productDescription;

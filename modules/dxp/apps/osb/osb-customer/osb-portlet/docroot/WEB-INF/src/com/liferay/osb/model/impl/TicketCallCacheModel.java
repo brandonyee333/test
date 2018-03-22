@@ -21,6 +21,7 @@ import com.liferay.osb.model.TicketCall;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -104,7 +105,7 @@ public class TicketCallCacheModel implements CacheModel<TicketCall>,
 		ticketCallImpl.setUserId(userId);
 
 		if (userName == null) {
-			ticketCallImpl.setUserName("");
+			ticketCallImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ticketCallImpl.setUserName(userName);
@@ -130,28 +131,28 @@ public class TicketCallCacheModel implements CacheModel<TicketCall>,
 		ticketCallImpl.setCallLength(callLength);
 
 		if (customerName == null) {
-			ticketCallImpl.setCustomerName("");
+			ticketCallImpl.setCustomerName(StringPool.BLANK);
 		}
 		else {
 			ticketCallImpl.setCustomerName(customerName);
 		}
 
 		if (customerContact == null) {
-			ticketCallImpl.setCustomerContact("");
+			ticketCallImpl.setCustomerContact(StringPool.BLANK);
 		}
 		else {
 			ticketCallImpl.setCustomerContact(customerContact);
 		}
 
 		if (confirmation == null) {
-			ticketCallImpl.setConfirmation("");
+			ticketCallImpl.setConfirmation(StringPool.BLANK);
 		}
 		else {
 			ticketCallImpl.setConfirmation(confirmation);
 		}
 
 		if (instructions == null) {
-			ticketCallImpl.setInstructions("");
+			ticketCallImpl.setInstructions(StringPool.BLANK);
 		}
 		else {
 			ticketCallImpl.setInstructions(instructions);
@@ -190,7 +191,7 @@ public class TicketCallCacheModel implements CacheModel<TicketCall>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -206,28 +207,28 @@ public class TicketCallCacheModel implements CacheModel<TicketCall>,
 		objectOutput.writeLong(callLength);
 
 		if (customerName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(customerName);
 		}
 
 		if (customerContact == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(customerContact);
 		}
 
 		if (confirmation == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(confirmation);
 		}
 
 		if (instructions == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(instructions);

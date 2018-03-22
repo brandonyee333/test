@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -46,15 +47,6 @@ public class AccountCallServiceUtil {
 		return getService().deleteAccountCall(accountCallId);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
 	public static com.liferay.osb.model.AccountCall updateAccountCall(
 		long accountCallId, long accountEntryId, int type, int callDateMonth,
 		int callDateDay, int callDateYear, int callDateHour,
@@ -69,14 +61,36 @@ public class AccountCallServiceUtil {
 			actionItems);
 	}
 
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static AccountCallService getService() {
 		if (_service == null) {
-			_service = (AccountCallService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					AccountCallService.class.getName());
+
+			if (invokableService instanceof AccountCallService) {
+				_service = (AccountCallService)invokableService;
+			}
+			else {
+				_service = new AccountCallServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(AccountCallServiceUtil.class,
 				"_service");

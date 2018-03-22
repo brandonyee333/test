@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -54,7 +55,7 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface SupportWorkerComponentLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -81,11 +82,14 @@ public interface SupportWorkerComponentLocalService extends BaseLocalService,
 		long supportWorkerComponentId);
 
 	/**
-	* @throws PortalException
+	* Deletes the support worker component from the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportWorkerComponent the support worker component
+	* @return the support worker component that was removed
 	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
+	@Indexable(type = IndexableType.DELETE)
+	public SupportWorkerComponent deleteSupportWorkerComponent(
+		SupportWorkerComponent supportWorkerComponent);
 
 	/**
 	* Deletes the support worker component with the primary key from the database. Also notifies the appropriate model listeners.
@@ -98,17 +102,70 @@ public interface SupportWorkerComponentLocalService extends BaseLocalService,
 	public SupportWorkerComponent deleteSupportWorkerComponent(
 		long supportWorkerComponentId) throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportWorkerComponent fetchSupportWorkerComponent(
+		long supportWorkerComponentId);
+
 	/**
-	* Deletes the support worker component from the database. Also notifies the appropriate model listeners.
+	* Returns the support worker component with the primary key.
+	*
+	* @param supportWorkerComponentId the primary key of the support worker component
+	* @return the support worker component
+	* @throws PortalException if a support worker component with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportWorkerComponent getSupportWorkerComponent(
+		long supportWorkerComponentId) throws PortalException;
+
+	/**
+	* Updates the support worker component in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param supportWorkerComponent the support worker component
-	* @return the support worker component that was removed
+	* @return the support worker component that was updated
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public SupportWorkerComponent deleteSupportWorkerComponent(
+	@Indexable(type = IndexableType.REINDEX)
+	public SupportWorkerComponent updateSupportWorkerComponent(
 		SupportWorkerComponent supportWorkerComponent);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
 	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of support worker components.
+	*
+	* @return the number of support worker components
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSupportWorkerComponentsCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -150,57 +207,6 @@ public interface SupportWorkerComponentLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportWorkerComponent fetchSupportWorkerComponent(
-		long supportWorkerComponentId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the support worker component with the primary key.
-	*
-	* @param supportWorkerComponentId the primary key of the support worker component
-	* @return the support worker component
-	* @throws PortalException if a support worker component with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportWorkerComponent getSupportWorkerComponent(
-		long supportWorkerComponentId) throws PortalException;
-
-	/**
 	* Returns a range of all the support worker components.
 	*
 	* <p>
@@ -220,23 +226,23 @@ public interface SupportWorkerComponentLocalService extends BaseLocalService,
 		long supportWorkerId);
 
 	/**
-	* Returns the number of support worker components.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of support worker components
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportWorkerComponentsCount();
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
 
 	public void setSupportWorkerComponents(long supportWorkerId,
 		int[] components);
-
-	/**
-	* Updates the support worker component in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param supportWorkerComponent the support worker component
-	* @return the support worker component that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public SupportWorkerComponent updateSupportWorkerComponent(
-		SupportWorkerComponent supportWorkerComponent);
 }

@@ -422,7 +422,7 @@ public class AccountLinkUtil {
 
 	public static AccountLinkPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AccountLinkPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (AccountLinkPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AccountLinkPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AccountLinkUtil.class,

@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -50,9 +51,10 @@ public class RemoteCorpProjectMessageLocalServiceUtil {
 			severityLevel, title, content, displayCP, displayLCS, displayLESA);
 	}
 
-	public static void deleteCorpProjectMessage(long corpProjectMessageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteCorpProjectMessage(corpProjectMessageId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -64,14 +66,26 @@ public class RemoteCorpProjectMessageLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static void deleteCorpProjectMessage(long corpProjectMessageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteCorpProjectMessage(corpProjectMessageId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static RemoteCorpProjectMessageLocalService getService() {
 		if (_service == null) {
-			_service = (RemoteCorpProjectMessageLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					RemoteCorpProjectMessageLocalService.class.getName());
+
+			if (invokableLocalService instanceof RemoteCorpProjectMessageLocalService) {
+				_service = (RemoteCorpProjectMessageLocalService)invokableLocalService;
+			}
+			else {
+				_service = new RemoteCorpProjectMessageLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(RemoteCorpProjectMessageLocalServiceUtil.class,
 				"_service");

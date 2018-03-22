@@ -39,10 +39,9 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.Date;
@@ -308,7 +307,7 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchOfferingEntryException(msg.toString());
 	}
@@ -359,7 +358,7 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchOfferingEntryException(msg.toString());
 	}
@@ -821,7 +820,7 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 		msg.append("orderEntryId=");
 		msg.append(orderEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchOfferingEntryException(msg.toString());
 	}
@@ -872,7 +871,7 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 		msg.append("orderEntryId=");
 		msg.append(orderEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchOfferingEntryException(msg.toString());
 	}
@@ -1389,7 +1388,7 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 		msg.append(", type=");
 		msg.append(type);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchOfferingEntryException(msg.toString());
 	}
@@ -1457,7 +1456,7 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 		msg.append(", type=");
 		msg.append(type);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchOfferingEntryException(msg.toString());
 	}
@@ -1752,24 +1751,6 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 
 	public OfferingEntryPersistenceImpl() {
 		setModelClass(OfferingEntry.class);
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-			dbColumnNames.put("type", "type_");
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception e) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
-			}
-		}
 	}
 
 	/**
@@ -2299,12 +2280,12 @@ public class OfferingEntryPersistenceImpl extends BasePersistenceImpl<OfferingEn
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(",");
+			query.append(StringPool.COMMA);
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
 		String sql = query.toString();
 

@@ -55,16 +55,6 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 			accountEnvironmentId, fileOVP, type);
 	}
 
-	@Override
-	public void addAccountEnvironmentAttachments(long userId,
-		long accountEnvironmentId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEnvironmentAttachmentLocalService.addAccountEnvironmentAttachments(userId,
-			accountEnvironmentId, files, types);
-	}
-
 	/**
 	* Creates a new account environment attachment with the primary key. Does not add the account environment attachment to the database.
 	*
@@ -105,6 +95,69 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 		return _accountEnvironmentAttachmentLocalService.deleteAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
+		long accountEnvironmentAttachmentId) {
+		return _accountEnvironmentAttachmentLocalService.fetchAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
+		long accountEnvironmentId, int type) {
+		return _accountEnvironmentAttachmentLocalService.fetchAccountEnvironmentAttachment(accountEnvironmentId,
+			type);
+	}
+
+	/**
+	* Returns the account environment attachment with the primary key.
+	*
+	* @param accountEnvironmentAttachmentId the primary key of the account environment attachment
+	* @return the account environment attachment
+	* @throws PortalException if a account environment attachment with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.AccountEnvironmentAttachment getAccountEnvironmentAttachment(
+		long accountEnvironmentAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEnvironmentAttachmentLocalService.getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
+	}
+
+	/**
+	* Updates the account environment attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountEnvironmentAttachment the account environment attachment
+	* @return the account environment attachment that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
+		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment) {
+		return _accountEnvironmentAttachmentLocalService.updateAccountEnvironmentAttachment(accountEnvironmentAttachment);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
+		long accountEnvironmentAttachmentId, long accountEnvironmentId,
+		com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File> fileOVP,
+		int type) throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEnvironmentAttachmentLocalService.updateAccountEnvironmentAttachment(accountEnvironmentAttachmentId,
+			accountEnvironmentId, fileOVP, type);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _accountEnvironmentAttachmentLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _accountEnvironmentAttachmentLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _accountEnvironmentAttachmentLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -116,8 +169,52 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _accountEnvironmentAttachmentLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEnvironmentAttachmentLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of account environment attachments.
+	*
+	* @return the number of account environment attachments
+	*/
+	@Override
+	public int getAccountEnvironmentAttachmentsCount() {
+		return _accountEnvironmentAttachmentLocalService.getAccountEnvironmentAttachmentsCount();
+	}
+
+	@Override
+	public java.io.File getFile(
+		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEnvironmentAttachmentLocalService.getFile(accountEnvironmentAttachment);
+	}
+
+	@Override
+	public java.io.InputStream getFileAsStream(
+		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEnvironmentAttachmentLocalService.getFileAsStream(accountEnvironmentAttachment);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountEnvironmentAttachmentLocalService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _accountEnvironmentAttachmentLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -175,6 +272,30 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 	}
 
 	/**
+	* Returns a range of all the account environment attachments.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AccountEnvironmentAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of account environment attachments
+	* @param end the upper bound of the range of account environment attachments (not inclusive)
+	* @return the range of account environment attachments
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
+		int start, int end) {
+		return _accountEnvironmentAttachmentLocalService.getAccountEnvironmentAttachments(start,
+			end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
+		long accountEnvironmentId) {
+		return _accountEnvironmentAttachmentLocalService.getAccountEnvironmentAttachments(accountEnvironmentId);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -202,126 +323,13 @@ public class AccountEnvironmentAttachmentLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.model.AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
-		long accountEnvironmentAttachmentId) {
-		return _accountEnvironmentAttachmentLocalService.fetchAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountEnvironmentAttachment fetchAccountEnvironmentAttachment(
-		long accountEnvironmentId, int type) {
-		return _accountEnvironmentAttachmentLocalService.fetchAccountEnvironmentAttachment(accountEnvironmentId,
-			type);
-	}
-
-	/**
-	* Returns the account environment attachment with the primary key.
-	*
-	* @param accountEnvironmentAttachmentId the primary key of the account environment attachment
-	* @return the account environment attachment
-	* @throws PortalException if a account environment attachment with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.AccountEnvironmentAttachment getAccountEnvironmentAttachment(
-		long accountEnvironmentAttachmentId)
+	public void addAccountEnvironmentAttachments(long userId,
+		long accountEnvironmentId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEnvironmentAttachmentLocalService.getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
-	}
-
-	/**
-	* Returns a range of all the account environment attachments.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AccountEnvironmentAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of account environment attachments
-	* @param end the upper bound of the range of account environment attachments (not inclusive)
-	* @return the range of account environment attachments
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
-		int start, int end) {
-		return _accountEnvironmentAttachmentLocalService.getAccountEnvironmentAttachments(start,
-			end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountEnvironmentAttachment> getAccountEnvironmentAttachments(
-		long accountEnvironmentId) {
-		return _accountEnvironmentAttachmentLocalService.getAccountEnvironmentAttachments(accountEnvironmentId);
-	}
-
-	/**
-	* Returns the number of account environment attachments.
-	*
-	* @return the number of account environment attachments
-	*/
-	@Override
-	public int getAccountEnvironmentAttachmentsCount() {
-		return _accountEnvironmentAttachmentLocalService.getAccountEnvironmentAttachmentsCount();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _accountEnvironmentAttachmentLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public java.io.File getFile(
-		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEnvironmentAttachmentLocalService.getFile(accountEnvironmentAttachment);
-	}
-
-	@Override
-	public java.io.InputStream getFileAsStream(
-		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEnvironmentAttachmentLocalService.getFileAsStream(accountEnvironmentAttachment);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _accountEnvironmentAttachmentLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _accountEnvironmentAttachmentLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEnvironmentAttachmentLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the account environment attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountEnvironmentAttachment the account environment attachment
-	* @return the account environment attachment that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
-		com.liferay.osb.model.AccountEnvironmentAttachment accountEnvironmentAttachment) {
-		return _accountEnvironmentAttachmentLocalService.updateAccountEnvironmentAttachment(accountEnvironmentAttachment);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountEnvironmentAttachment updateAccountEnvironmentAttachment(
-		long accountEnvironmentAttachmentId, long accountEnvironmentId,
-		com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File> fileOVP,
-		int type) throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEnvironmentAttachmentLocalService.updateAccountEnvironmentAttachment(accountEnvironmentAttachmentId,
-			accountEnvironmentId, fileOVP, type);
+		_accountEnvironmentAttachmentLocalService.addAccountEnvironmentAttachments(userId,
+			accountEnvironmentId, files, types);
 	}
 
 	@Override

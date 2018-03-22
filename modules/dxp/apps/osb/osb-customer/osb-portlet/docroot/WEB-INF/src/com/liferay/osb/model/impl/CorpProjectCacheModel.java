@@ -21,6 +21,7 @@ import com.liferay.osb.model.CorpProject;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -97,7 +98,7 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 		CorpProjectImpl corpProjectImpl = new CorpProjectImpl();
 
 		if (uuid == null) {
-			corpProjectImpl.setUuid("");
+			corpProjectImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			corpProjectImpl.setUuid(uuid);
@@ -107,7 +108,7 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 		corpProjectImpl.setUserId(userId);
 
 		if (userName == null) {
-			corpProjectImpl.setUserName("");
+			corpProjectImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			corpProjectImpl.setUserName(userName);
@@ -128,21 +129,21 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 		}
 
 		if (dossieraProjectKey == null) {
-			corpProjectImpl.setDossieraProjectKey("");
+			corpProjectImpl.setDossieraProjectKey(StringPool.BLANK);
 		}
 		else {
 			corpProjectImpl.setDossieraProjectKey(dossieraProjectKey);
 		}
 
 		if (salesforceProjectKey == null) {
-			corpProjectImpl.setSalesforceProjectKey("");
+			corpProjectImpl.setSalesforceProjectKey(StringPool.BLANK);
 		}
 		else {
 			corpProjectImpl.setSalesforceProjectKey(salesforceProjectKey);
 		}
 
 		if (name == null) {
-			corpProjectImpl.setName("");
+			corpProjectImpl.setName(StringPool.BLANK);
 		}
 		else {
 			corpProjectImpl.setName(name);
@@ -176,7 +177,7 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -187,7 +188,7 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -197,21 +198,21 @@ public class CorpProjectCacheModel implements CacheModel<CorpProject>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (dossieraProjectKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(dossieraProjectKey);
 		}
 
 		if (salesforceProjectKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(salesforceProjectKey);
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);

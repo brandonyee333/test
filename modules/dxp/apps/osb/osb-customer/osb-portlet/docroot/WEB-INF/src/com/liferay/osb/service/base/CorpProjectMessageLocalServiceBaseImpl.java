@@ -2764,6 +2764,10 @@ public abstract class CorpProjectMessageLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		Class<?> clazz = getClass();
+
+		_classLoader = clazz.getClassLoader();
+
 		PersistedModelLocalServiceRegistryUtil.register("com.liferay.osb.model.CorpProjectMessage",
 			corpProjectMessageLocalService);
 	}
@@ -2781,6 +2785,27 @@ public abstract class CorpProjectMessageLocalServiceBaseImpl
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return CorpProjectMessageLocalService.class.getName();
+	}
+
+	@Override
+	public Object invokeMethod(String name, String[] parameterTypes,
+		Object[] arguments) throws Throwable {
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		if (contextClassLoader != _classLoader) {
+			currentThread.setContextClassLoader(_classLoader);
+		}
+
+		try {
+			return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
+		}
+		finally {
+			if (contextClassLoader != _classLoader) {
+				currentThread.setContextClassLoader(contextClassLoader);
+			}
+		}
 	}
 
 	protected Class<?> getModelClass() {
@@ -3067,4 +3092,6 @@ public abstract class CorpProjectMessageLocalServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+	private ClassLoader _classLoader;
+	private CorpProjectMessageLocalServiceClpInvoker _clpInvoker = new CorpProjectMessageLocalServiceClpInvoker();
 }

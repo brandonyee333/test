@@ -434,7 +434,7 @@ public class AccountEntryLanguageUtil {
 
 	public static AccountEntryLanguagePersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AccountEntryLanguagePersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (AccountEntryLanguagePersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AccountEntryLanguagePersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AccountEntryLanguageUtil.class,

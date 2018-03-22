@@ -581,7 +581,7 @@ public class AccountEnvironmentAttachmentUtil {
 
 	public static AccountEnvironmentAttachmentPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AccountEnvironmentAttachmentPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (AccountEnvironmentAttachmentPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AccountEnvironmentAttachmentPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AccountEnvironmentAttachmentUtil.class,

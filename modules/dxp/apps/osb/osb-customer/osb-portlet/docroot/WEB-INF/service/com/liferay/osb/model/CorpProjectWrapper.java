@@ -137,8 +137,38 @@ public class CorpProjectWrapper implements CorpProject,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new CorpProjectWrapper((CorpProject)_corpProject.clone());
+	public CorpProject toEscapedModel() {
+		return new CorpProjectWrapper(_corpProject.toEscapedModel());
+	}
+
+	@Override
+	public CorpProject toUnescapedModel() {
+		return new CorpProjectWrapper(_corpProject.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _corpProject.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _corpProject.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _corpProject.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _corpProject.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<CorpProject> toCacheModel() {
+		return _corpProject.toCacheModel();
 	}
 
 	@Override
@@ -146,24 +176,19 @@ public class CorpProjectWrapper implements CorpProject,
 		return _corpProject.compareTo(corpProject);
 	}
 
-	/**
-	* Returns the corp project ID of this corp project.
-	*
-	* @return the corp project ID of this corp project
-	*/
 	@Override
-	public long getCorpProjectId() {
-		return _corpProject.getCorpProjectId();
+	public int hashCode() {
+		return _corpProject.hashCode();
 	}
 
-	/**
-	* Returns the create date of this corp project.
-	*
-	* @return the create date of this corp project
-	*/
 	@Override
-	public Date getCreateDate() {
-		return _corpProject.getCreateDate();
+	public Serializable getPrimaryKeyObj() {
+		return _corpProject.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new CorpProjectWrapper((CorpProject)_corpProject.clone());
 	}
 
 	/**
@@ -174,21 +199,6 @@ public class CorpProjectWrapper implements CorpProject,
 	@Override
 	public java.lang.String getDossieraProjectKey() {
 		return _corpProject.getDossieraProjectKey();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _corpProject.getExpandoBridge();
-	}
-
-	/**
-	* Returns the modified date of this corp project.
-	*
-	* @return the modified date of this corp project
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _corpProject.getModifiedDate();
 	}
 
 	/**
@@ -202,31 +212,6 @@ public class CorpProjectWrapper implements CorpProject,
 	}
 
 	/**
-	* Returns the organization ID of this corp project.
-	*
-	* @return the organization ID of this corp project
-	*/
-	@Override
-	public long getOrganizationId() {
-		return _corpProject.getOrganizationId();
-	}
-
-	/**
-	* Returns the primary key of this corp project.
-	*
-	* @return the primary key of this corp project
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _corpProject.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _corpProject.getPrimaryKeyObj();
-	}
-
-	/**
 	* Returns the salesforce project key of this corp project.
 	*
 	* @return the salesforce project key of this corp project
@@ -234,16 +219,6 @@ public class CorpProjectWrapper implements CorpProject,
 	@Override
 	public java.lang.String getSalesforceProjectKey() {
 		return _corpProject.getSalesforceProjectKey();
-	}
-
-	/**
-	* Returns the user ID of this corp project.
-	*
-	* @return the user ID of this corp project
-	*/
-	@Override
-	public long getUserId() {
-		return _corpProject.getUserId();
 	}
 
 	/**
@@ -277,23 +252,73 @@ public class CorpProjectWrapper implements CorpProject,
 	}
 
 	@Override
-	public int hashCode() {
-		return _corpProject.hashCode();
+	public java.lang.String toString() {
+		return _corpProject.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _corpProject.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _corpProject.toXmlString();
 	}
 
+	/**
+	* Returns the create date of this corp project.
+	*
+	* @return the create date of this corp project
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _corpProject.isEscapedModel();
+	public Date getCreateDate() {
+		return _corpProject.getCreateDate();
 	}
 
+	/**
+	* Returns the modified date of this corp project.
+	*
+	* @return the modified date of this corp project
+	*/
 	@Override
-	public boolean isNew() {
-		return _corpProject.isNew();
+	public Date getModifiedDate() {
+		return _corpProject.getModifiedDate();
+	}
+
+	/**
+	* Returns the corp project ID of this corp project.
+	*
+	* @return the corp project ID of this corp project
+	*/
+	@Override
+	public long getCorpProjectId() {
+		return _corpProject.getCorpProjectId();
+	}
+
+	/**
+	* Returns the organization ID of this corp project.
+	*
+	* @return the organization ID of this corp project
+	*/
+	@Override
+	public long getOrganizationId() {
+		return _corpProject.getOrganizationId();
+	}
+
+	/**
+	* Returns the primary key of this corp project.
+	*
+	* @return the primary key of this corp project
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _corpProject.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this corp project.
+	*
+	* @return the user ID of this corp project
+	*/
+	@Override
+	public long getUserId() {
+		return _corpProject.getUserId();
 	}
 
 	@Override
@@ -337,14 +362,14 @@ public class CorpProjectWrapper implements CorpProject,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_corpProject.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_corpProject.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_corpProject.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_corpProject.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -450,31 +475,6 @@ public class CorpProjectWrapper implements CorpProject,
 	@Override
 	public void setUuid(java.lang.String uuid) {
 		_corpProject.setUuid(uuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<CorpProject> toCacheModel() {
-		return _corpProject.toCacheModel();
-	}
-
-	@Override
-	public CorpProject toEscapedModel() {
-		return new CorpProjectWrapper(_corpProject.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _corpProject.toString();
-	}
-
-	@Override
-	public CorpProject toUnescapedModel() {
-		return new CorpProjectWrapper(_corpProject.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _corpProject.toXmlString();
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -54,17 +55,15 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface SupportLaborLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SupportLaborLocalServiceUtil} to access the support labor local service. Add custom service methods to {@link com.liferay.osb.service.impl.SupportLaborLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public SupportLabor addSupportLabor(java.lang.String name,
-		java.lang.String description, java.lang.String timeZoneId, int sunOpen,
-		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
-		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
-		int friClose, int satOpen, int satClose) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasSupportWorker(long supportWorkerId, long supportLaborId)
+		throws PortalException;
 
 	/**
 	* Adds the support labor to the database. Also notifies the appropriate model listeners.
@@ -75,8 +74,11 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportLabor addSupportLabor(SupportLabor supportLabor);
 
-	public void addSupportWorkers(long[] supportWorkerIds, long supportLaborId)
-		throws PortalException;
+	public SupportLabor addSupportLabor(java.lang.String name,
+		java.lang.String description, java.lang.String timeZoneId, int sunOpen,
+		int sunClose, int monOpen, int monClose, int tueOpen, int tueClose,
+		int wedOpen, int wedClose, int thuOpen, int thuClose, int friOpen,
+		int friClose, int satOpen, int satClose) throws PortalException;
 
 	/**
 	* Creates a new support labor with the primary key. Does not add the support labor to the database.
@@ -87,11 +89,13 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	public SupportLabor createSupportLabor(long supportLaborId);
 
 	/**
-	* @throws PortalException
+	* Deletes the support labor from the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportLabor the support labor
+	* @return the support labor that was removed
 	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
+	@Indexable(type = IndexableType.DELETE)
+	public SupportLabor deleteSupportLabor(SupportLabor supportLabor);
 
 	/**
 	* Deletes the support labor with the primary key from the database. Also notifies the appropriate model listeners.
@@ -104,16 +108,75 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	public SupportLabor deleteSupportLabor(long supportLaborId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportLabor fetchSupportLabor(long supportLaborId);
+
 	/**
-	* Deletes the support labor from the database. Also notifies the appropriate model listeners.
+	* Returns the support labor with the primary key.
+	*
+	* @param supportLaborId the primary key of the support labor
+	* @return the support labor
+	* @throws PortalException if a support labor with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportLabor getSupportLabor(long supportLaborId)
+		throws PortalException;
+
+	/**
+	* Updates the support labor in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param supportLabor the support labor
-	* @return the support labor that was removed
+	* @return the support labor that was updated
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public SupportLabor deleteSupportLabor(SupportLabor supportLabor);
+	@Indexable(type = IndexableType.REINDEX)
+	public SupportLabor updateSupportLabor(SupportLabor supportLabor);
+
+	public SupportLabor updateSupportLabor(long supportLaborId,
+		java.lang.String name, java.lang.String description,
+		java.lang.String timeZoneId, int sunOpen, int sunClose, int monOpen,
+		int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
+		int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,
+		int satClose) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of support labors.
+	*
+	* @return the number of support labors
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSupportLaborsCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -155,6 +218,20 @@ public interface SupportLaborLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns a range of all the support labors.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportLaborModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of support labors
+	* @param end the upper bound of the range of support labors (not inclusive)
+	* @return the range of support labors
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SupportLabor> getSupportLabors(int start, int end);
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -172,80 +249,9 @@ public interface SupportLaborLocalService extends BaseLocalService,
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportLabor fetchSupportLabor(long supportLaborId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the support labor with the primary key.
-	*
-	* @param supportLaborId the primary key of the support labor
-	* @return the support labor
-	* @throws PortalException if a support labor with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportLabor getSupportLabor(long supportLaborId)
-		throws PortalException;
-
-	/**
-	* Returns a range of all the support labors.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportLaborModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of support labors
-	* @param end the upper bound of the range of support labors (not inclusive)
-	* @return the range of support labors
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SupportLabor> getSupportLabors(int start, int end);
-
-	/**
-	* Returns the number of support labors.
-	*
-	* @return the number of support labors
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportLaborsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportWorker(long supportWorkerId, long supportLaborId)
+	public void addSupportWorkers(long[] supportWorkerIds, long supportLaborId)
 		throws PortalException;
 
 	public void removeSupportWorkers(long[] supportWorkerIds)
 		throws PortalException;
-
-	public SupportLabor updateSupportLabor(long supportLaborId,
-		java.lang.String name, java.lang.String description,
-		java.lang.String timeZoneId, int sunOpen, int sunClose, int monOpen,
-		int monClose, int tueOpen, int tueClose, int wedOpen, int wedClose,
-		int thuOpen, int thuClose, int friOpen, int friClose, int satOpen,
-		int satClose) throws PortalException;
-
-	/**
-	* Updates the support labor in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param supportLabor the support labor
-	* @return the support labor that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public SupportLabor updateSupportLabor(SupportLabor supportLabor);
 }

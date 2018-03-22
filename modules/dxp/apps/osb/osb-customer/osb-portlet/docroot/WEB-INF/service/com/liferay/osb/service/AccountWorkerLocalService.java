@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -54,12 +55,17 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface AccountWorkerLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountWorkerLocalServiceUtil} to access the account worker local service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountWorkerLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasAccountWorker(long userId, long accountEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasAccountWorkerRole(long userId, int role);
 
 	/**
 	* Adds the account worker to the database. Also notifies the appropriate model listeners.
@@ -70,10 +76,6 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountWorker addAccountWorker(AccountWorker accountWorker);
 
-	public void addAccountWorkers(long userId, long[] userIds,
-		long accountEntryId, int[] roles, int[] notifications)
-		throws PortalException;
-
 	/**
 	* Creates a new account worker with the primary key. Does not add the account worker to the database.
 	*
@@ -81,9 +83,6 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	* @return the new account worker
 	*/
 	public AccountWorker createAccountWorker(long accountWorkerId);
-
-	public void deleteAccountEntryAccountWorkers(long accountEntryId)
-		throws PortalException;
 
 	/**
 	* Deletes the account worker from the database. Also notifies the appropriate model listeners.
@@ -105,10 +104,40 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	public AccountWorker deleteAccountWorker(long accountWorkerId)
 		throws PortalException;
 
-	public void deleteAccountWorkers(long userId) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountWorker fetchAccountWorker(long accountWorkerId);
 
-	public void deleteAccountWorkers(long userId, long[] userIds,
-		long accountEntryId) throws PortalException;
+	/**
+	* Returns the account worker with the primary key.
+	*
+	* @param accountWorkerId the primary key of the account worker
+	* @return the account worker
+	* @throws PortalException if a account worker with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountWorker getAccountWorker(long accountWorkerId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountWorker getAccountWorker(long userId, long accountEntryId)
+		throws PortalException;
+
+	/**
+	* Updates the account worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountWorker the account worker
+	* @return the account worker that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public AccountWorker updateAccountWorker(AccountWorker accountWorker);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
 	* @throws PortalException
@@ -117,7 +146,30 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	public DynamicQuery dynamicQuery();
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of account workers.
+	*
+	* @return the number of account workers
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAccountWorkersCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -159,42 +211,6 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountWorker fetchAccountWorker(long accountWorkerId);
-
-	/**
-	* Returns the account worker with the primary key.
-	*
-	* @param accountWorkerId the primary key of the account worker
-	* @return the account worker
-	* @throws PortalException if a account worker with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountWorker getAccountWorker(long accountWorkerId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountWorker getAccountWorker(long userId, long accountEntryId)
-		throws PortalException;
-
-	/**
 	* Returns a range of all the account workers.
 	*
 	* <p>
@@ -214,47 +230,36 @@ public interface AccountWorkerLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountWorker> getAccountWorkers(long accountEntryId, int role);
 
-	/**
-	* Returns the number of account workers.
-	*
-	* @return the number of account workers
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountWorkersCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountWorker> getUserAccountWorkers(long userId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasAccountWorker(long userId, long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasAccountWorkerRole(long userId, int role);
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Updates the account worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @param accountWorker the account worker
-	* @return the account worker that was updated
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public AccountWorker updateAccountWorker(AccountWorker accountWorker);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	public void addAccountWorkers(long userId, long[] userIds,
+		long accountEntryId, int[] roles, int[] notifications)
+		throws PortalException;
+
+	public void deleteAccountEntryAccountWorkers(long accountEntryId)
+		throws PortalException;
+
+	public void deleteAccountWorkers(long userId) throws PortalException;
+
+	public void deleteAccountWorkers(long userId, long[] userIds,
+		long accountEntryId) throws PortalException;
 }

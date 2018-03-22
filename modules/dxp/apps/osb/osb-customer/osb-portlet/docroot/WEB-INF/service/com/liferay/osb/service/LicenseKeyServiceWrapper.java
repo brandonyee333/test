@@ -34,6 +34,22 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 
 	@Override
 	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
+		long assetReceiptLicenseId, java.lang.String licenseEntryType,
+		java.lang.String productEntryName, java.lang.String productId,
+		int productVersion, java.lang.String owner, long maxUsers,
+		java.lang.String description, java.lang.String[] hostNames,
+		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
+		java.lang.String[] serverIds, java.util.Date startDate,
+		java.util.Date expirationDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.addLicenseKey(userId, assetReceiptLicenseId,
+			licenseEntryType, productEntryName, productId, productVersion,
+			owner, maxUsers, description, hostNames, ipAddresses, macAddresses,
+			serverIds, startDate, expirationDate);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
 		long licenseKeySetId, java.lang.String name, long offeringEntryId,
 		long licenseEntryId, long productEntryId, int productVersion,
 		long clusterId, java.lang.String owner, int maxServers,
@@ -51,48 +67,24 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
-	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
-		long assetReceiptLicenseId, java.lang.String licenseEntryType,
-		java.lang.String productEntryName, java.lang.String productId,
-		int productVersion, java.lang.String owner, long maxUsers,
-		java.lang.String description, java.lang.String[] hostNames,
-		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
-		java.lang.String[] serverIds, java.util.Date startDate,
-		java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyService.addLicenseKey(userId, assetReceiptLicenseId,
-			licenseEntryType, productEntryName, productId, productVersion,
-			owner, maxUsers, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate);
-	}
-
-	@Override
 	public com.liferay.osb.model.LicenseKey getLicenseKey(long licenseKeyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeyService.getLicenseKey(licenseKeyId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
-		long userId, java.lang.String productId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyService.getLicenseKeys(userId, productId);
+	public com.liferay.osb.model.LicenseKey renewLicenseKey(long licenseKeyId,
+		java.util.Date startDate, int renewTime) throws java.lang.Exception {
+		return _licenseKeyService.renewLicenseKey(licenseKeyId, startDate,
+			renewTime);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeySetLicenseKeys(
-		long licenseKeySetId)
+	public com.liferay.osb.model.LicenseKey renewLicenseKey(long licenseKeyId,
+		java.util.Date startDate, java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyService.getLicenseKeySetLicenseKeys(licenseKeySetId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.LicenseKey> getOfferingEntryGroupLicenseKeys(
-		long[] offeringEntryIds, boolean complimentary, boolean active,
-		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyService.getOfferingEntryGroupLicenseKeys(offeringEntryIds,
-			complimentary, active, start, end, obc);
+		return _licenseKeyService.renewLicenseKey(licenseKeyId, startDate,
+			expirationDate);
 	}
 
 	@Override
@@ -101,6 +93,57 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeyService.getOfferingEntryGroupLicenseKeysCount(offeringEntryIds,
 			complimentary, active);
+	}
+
+	@Override
+	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
+		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
+		int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.String accountEntryName, java.lang.String licenseKeySetName,
+		int startDateGTDay, int startDateGTMonth, int startDateGTYear,
+		int startDateLTDay, int startDateLTMonth, int startDateLTYear,
+		long[] licenseEntryIds, long[] productEntryIds,
+		java.lang.String productEntryName, java.lang.String productId,
+		int[] productVersions, java.lang.String owner,
+		java.lang.String description, java.lang.String hostName,
+		java.lang.String ipAddress, java.lang.String macAddress,
+		java.lang.String serverId, java.lang.String key,
+		int expirationDateGTDay, int expirationDateGTMonth,
+		int expirationDateGTYear, int expirationDateLTDay,
+		int expirationDateLTMonth, int expirationDateLTYear,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.searchCount(createUserId, createDateGTDay,
+			createDateGTMonth, createDateGTYear, createDateLTDay,
+			createDateLTMonth, createDateLTYear, modifiedUserId,
+			modifiedDateGTDay, modifiedDateGTMonth, modifiedDateGTYear,
+			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear,
+			accountEntryName, licenseKeySetName, startDateGTDay,
+			startDateGTMonth, startDateGTYear, startDateLTDay,
+			startDateLTMonth, startDateLTYear, licenseEntryIds,
+			productEntryIds, productEntryName, productId, productVersions,
+			owner, description, hostName, ipAddress, macAddress, serverId, key,
+			expirationDateGTDay, expirationDateGTMonth, expirationDateGTYear,
+			expirationDateLTDay, expirationDateLTMonth, expirationDateLTYear,
+			params, andSearch);
+	}
+
+	@Override
+	public int searchCount(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.searchCount(keywords, params);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _licenseKeyService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -114,18 +157,26 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
-	public com.liferay.osb.model.LicenseKey renewLicenseKey(long licenseKeyId,
-		java.util.Date startDate, java.util.Date expirationDate)
+	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeySetLicenseKeys(
+		long licenseKeySetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyService.renewLicenseKey(licenseKeyId, startDate,
-			expirationDate);
+		return _licenseKeyService.getLicenseKeySetLicenseKeys(licenseKeySetId);
 	}
 
 	@Override
-	public com.liferay.osb.model.LicenseKey renewLicenseKey(long licenseKeyId,
-		java.util.Date startDate, int renewTime) throws java.lang.Exception {
-		return _licenseKeyService.renewLicenseKey(licenseKeyId, startDate,
-			renewTime);
+	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
+		long userId, java.lang.String productId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.getLicenseKeys(userId, productId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.LicenseKey> getOfferingEntryGroupLicenseKeys(
+		long[] offeringEntryIds, boolean complimentary, boolean active,
+		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.getOfferingEntryGroupLicenseKeys(offeringEntryIds,
+			complimentary, active, start, end, obc);
 	}
 
 	@Override
@@ -174,50 +225,6 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeyService.search(keywords, params, start, end, obc);
-	}
-
-	@Override
-	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
-		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
-		int createDateLTMonth, int createDateLTYear,
-		java.lang.Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear,
-		java.lang.String accountEntryName, java.lang.String licenseKeySetName,
-		int startDateGTDay, int startDateGTMonth, int startDateGTYear,
-		int startDateLTDay, int startDateLTMonth, int startDateLTYear,
-		long[] licenseEntryIds, long[] productEntryIds,
-		java.lang.String productEntryName, java.lang.String productId,
-		int[] productVersions, java.lang.String owner,
-		java.lang.String description, java.lang.String hostName,
-		java.lang.String ipAddress, java.lang.String macAddress,
-		java.lang.String serverId, java.lang.String key,
-		int expirationDateGTDay, int expirationDateGTMonth,
-		int expirationDateGTYear, int expirationDateLTDay,
-		int expirationDateLTMonth, int expirationDateLTYear,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyService.searchCount(createUserId, createDateGTDay,
-			createDateGTMonth, createDateGTYear, createDateLTDay,
-			createDateLTMonth, createDateLTYear, modifiedUserId,
-			modifiedDateGTDay, modifiedDateGTMonth, modifiedDateGTYear,
-			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear,
-			accountEntryName, licenseKeySetName, startDateGTDay,
-			startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, licenseEntryIds,
-			productEntryIds, productEntryName, productId, productVersions,
-			owner, description, hostName, ipAddress, macAddress, serverId, key,
-			expirationDateGTDay, expirationDateGTMonth, expirationDateGTYear,
-			expirationDateLTDay, expirationDateLTMonth, expirationDateLTYear,
-			params, andSearch);
-	}
-
-	@Override
-	public int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyService.searchCount(keywords, params);
 	}
 
 	@Override

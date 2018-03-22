@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -59,15 +60,6 @@ public class TicketSolutionServiceUtil {
 			ticketLinkURLs, ticketLinkTypes, ticketAttachments);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
 	public static com.liferay.osb.model.TicketSolution updateTicketSolution(
 		long ticketSolutionId, long ticketEntryId, int status,
 		long statusByUserId, java.lang.String statusMessage, int statusReason)
@@ -77,14 +69,36 @@ public class TicketSolutionServiceUtil {
 			status, statusByUserId, statusMessage, statusReason);
 	}
 
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static TicketSolutionService getService() {
 		if (_service == null) {
-			_service = (TicketSolutionService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					TicketSolutionService.class.getName());
+
+			if (invokableService instanceof TicketSolutionService) {
+				_service = (TicketSolutionService)invokableService;
+			}
+			else {
+				_service = new TicketSolutionServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(TicketSolutionServiceUtil.class,
 				"_service");

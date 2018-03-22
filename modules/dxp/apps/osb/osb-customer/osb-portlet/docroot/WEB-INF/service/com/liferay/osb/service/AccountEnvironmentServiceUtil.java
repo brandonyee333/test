@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -64,27 +65,6 @@ public class AccountEnvironmentServiceUtil {
 		return getService().getAccountEnvironment(accountEnvironmentId);
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountEnvironments(accountEntryId);
-	}
-
-	public static java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountEnvironmentsMap(accountEntryId);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
 	public static com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
 		long accountEnvironmentId, long productEntryId, java.lang.String name,
 		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
@@ -98,14 +78,48 @@ public class AccountEnvironmentServiceUtil {
 			envLFR, files, types);
 	}
 
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountEnvironment> getAccountEnvironments(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getAccountEnvironments(accountEntryId);
+	}
+
+	public static java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getAccountEnvironmentsMap(accountEntryId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static AccountEnvironmentService getService() {
 		if (_service == null) {
-			_service = (AccountEnvironmentService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					AccountEnvironmentService.class.getName());
+
+			if (invokableService instanceof AccountEnvironmentService) {
+				_service = (AccountEnvironmentService)invokableService;
+			}
+			else {
+				_service = new AccountEnvironmentServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(AccountEnvironmentServiceUtil.class,
 				"_service");

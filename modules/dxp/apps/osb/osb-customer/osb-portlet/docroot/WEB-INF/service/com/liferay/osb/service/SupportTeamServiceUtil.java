@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,11 @@ public class SupportTeamServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SupportTeamServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
 
 	/**
 	* Returns the OSGi service identifier.
@@ -56,8 +62,15 @@ public class SupportTeamServiceUtil {
 
 	public static SupportTeamService getService() {
 		if (_service == null) {
-			_service = (SupportTeamService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					SupportTeamService.class.getName());
+
+			if (invokableService instanceof SupportTeamService) {
+				_service = (SupportTeamService)invokableService;
+			}
+			else {
+				_service = new SupportTeamServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(SupportTeamServiceUtil.class,
 				"_service");

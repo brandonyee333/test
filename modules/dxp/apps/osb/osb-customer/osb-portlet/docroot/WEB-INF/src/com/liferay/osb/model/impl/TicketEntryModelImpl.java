@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -659,7 +660,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -671,7 +672,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -815,7 +816,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public String getLanguageId() {
 		if (_languageId == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _languageId;
@@ -854,7 +855,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public String getSubject() {
 		if (_subject == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _subject;
@@ -870,7 +871,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _description;
@@ -886,7 +887,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public String getReproductionSteps() {
 		if (_reproductionSteps == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _reproductionSteps;
@@ -946,7 +947,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public String getEnvName() {
 		if (_envName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _envName;
@@ -973,7 +974,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public String getEnvOSCustom() {
 		if (_envOSCustom == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _envOSCustom;
@@ -1044,7 +1045,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public String getEnvBrowserCustom() {
 		if (_envBrowserCustom == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _envBrowserCustom;
@@ -1071,7 +1072,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public String getEnvSearch() {
 		if (_envSearch == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _envSearch;
@@ -1109,7 +1110,7 @@ public class TicketEntryModelImpl extends BaseModelImpl<TicketEntry>
 	@Override
 	public String getSubcomponentCustom() {
 		if (_subcomponentCustom == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _subcomponentCustom;

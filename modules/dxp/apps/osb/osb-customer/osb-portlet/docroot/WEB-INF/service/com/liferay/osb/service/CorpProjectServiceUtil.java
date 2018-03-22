@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,11 @@ public class CorpProjectServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.CorpProjectServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
 
 	/**
 	* Returns the OSGi service identifier.
@@ -56,8 +62,15 @@ public class CorpProjectServiceUtil {
 
 	public static CorpProjectService getService() {
 		if (_service == null) {
-			_service = (CorpProjectService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					CorpProjectService.class.getName());
+
+			if (invokableService instanceof CorpProjectService) {
+				_service = (CorpProjectService)invokableService;
+			}
+			else {
+				_service = new CorpProjectServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(CorpProjectServiceUtil.class,
 				"_service");

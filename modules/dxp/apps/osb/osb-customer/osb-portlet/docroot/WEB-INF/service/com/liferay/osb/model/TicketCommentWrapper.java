@@ -150,13 +150,93 @@ public class TicketCommentWrapper implements TicketComment,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new TicketCommentWrapper((TicketComment)_ticketComment.clone());
+	public TicketComment toEscapedModel() {
+		return new TicketCommentWrapper(_ticketComment.toEscapedModel());
+	}
+
+	@Override
+	public TicketComment toUnescapedModel() {
+		return new TicketCommentWrapper(_ticketComment.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _ticketComment.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _ticketComment.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _ticketComment.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ticketComment.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TicketComment> toCacheModel() {
+		return _ticketComment.toCacheModel();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.util.UnicodeProperties getSettingsProperties() {
+		return _ticketComment.getSettingsProperties();
 	}
 
 	@Override
 	public int compareTo(TicketComment ticketComment) {
 		return _ticketComment.compareTo(ticketComment);
+	}
+
+	/**
+	* Returns the status of this ticket comment.
+	*
+	* @return the status of this ticket comment
+	*/
+	@Override
+	public int getStatus() {
+		return _ticketComment.getStatus();
+	}
+
+	/**
+	* Returns the type of this ticket comment.
+	*
+	* @return the type of this ticket comment
+	*/
+	@Override
+	public int getType() {
+		return _ticketComment.getType();
+	}
+
+	/**
+	* Returns the visibility of this ticket comment.
+	*
+	* @return the visibility of this ticket comment
+	*/
+	@Override
+	public int getVisibility() {
+		return _ticketComment.getVisibility();
+	}
+
+	@Override
+	public int hashCode() {
+		return _ticketComment.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ticketComment.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new TicketCommentWrapper((TicketComment)_ticketComment.clone());
 	}
 
 	/**
@@ -167,21 +247,6 @@ public class TicketCommentWrapper implements TicketComment,
 	@Override
 	public java.lang.String getBody() {
 		return _ticketComment.getBody();
-	}
-
-	/**
-	* Returns the create date of this ticket comment.
-	*
-	* @return the create date of this ticket comment
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _ticketComment.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ticketComment.getExpandoBridge();
 	}
 
 	/**
@@ -197,6 +262,66 @@ public class TicketCommentWrapper implements TicketComment,
 	@Override
 	public java.lang.String getKey() {
 		return _ticketComment.getKey();
+	}
+
+	/**
+	* Returns the settings of this ticket comment.
+	*
+	* @return the settings of this ticket comment
+	*/
+	@Override
+	public java.lang.String getSettings() {
+		return _ticketComment.getSettings();
+	}
+
+	@Override
+	public java.lang.String getSettingsProperty(java.lang.String key) {
+		return _ticketComment.getSettingsProperty(key);
+	}
+
+	/**
+	* Returns the user name of this ticket comment.
+	*
+	* @return the user name of this ticket comment
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _ticketComment.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this ticket comment.
+	*
+	* @return the user uuid of this ticket comment
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _ticketComment.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String getVisibilityLabel() {
+		return _ticketComment.getVisibilityLabel();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _ticketComment.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ticketComment.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this ticket comment.
+	*
+	* @return the create date of this ticket comment
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _ticketComment.getCreateDate();
 	}
 
 	/**
@@ -217,41 +342,6 @@ public class TicketCommentWrapper implements TicketComment,
 	@Override
 	public long getPrimaryKey() {
 		return _ticketComment.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ticketComment.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the settings of this ticket comment.
-	*
-	* @return the settings of this ticket comment
-	*/
-	@Override
-	public java.lang.String getSettings() {
-		return _ticketComment.getSettings();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.util.UnicodeProperties getSettingsProperties() {
-		return _ticketComment.getSettingsProperties();
-	}
-
-	@Override
-	public java.lang.String getSettingsProperty(java.lang.String key) {
-		return _ticketComment.getSettingsProperty(key);
-	}
-
-	/**
-	* Returns the status of this ticket comment.
-	*
-	* @return the status of this ticket comment
-	*/
-	@Override
-	public int getStatus() {
-		return _ticketComment.getStatus();
 	}
 
 	/**
@@ -275,16 +365,6 @@ public class TicketCommentWrapper implements TicketComment,
 	}
 
 	/**
-	* Returns the type of this ticket comment.
-	*
-	* @return the type of this ticket comment
-	*/
-	@Override
-	public int getType() {
-		return _ticketComment.getType();
-	}
-
-	/**
 	* Returns the user ID of this ticket comment.
 	*
 	* @return the user ID of this ticket comment
@@ -292,61 +372,6 @@ public class TicketCommentWrapper implements TicketComment,
 	@Override
 	public long getUserId() {
 		return _ticketComment.getUserId();
-	}
-
-	/**
-	* Returns the user name of this ticket comment.
-	*
-	* @return the user name of this ticket comment
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _ticketComment.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this ticket comment.
-	*
-	* @return the user uuid of this ticket comment
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _ticketComment.getUserUuid();
-	}
-
-	/**
-	* Returns the visibility of this ticket comment.
-	*
-	* @return the visibility of this ticket comment
-	*/
-	@Override
-	public int getVisibility() {
-		return _ticketComment.getVisibility();
-	}
-
-	@Override
-	public java.lang.String getVisibilityLabel() {
-		return _ticketComment.getVisibilityLabel();
-	}
-
-	@Override
-	public int hashCode() {
-		return _ticketComment.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _ticketComment.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _ticketComment.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _ticketComment.isNew();
 	}
 
 	@Override
@@ -380,14 +405,14 @@ public class TicketCommentWrapper implements TicketComment,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_ticketComment.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ticketComment.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ticketComment.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_ticketComment.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -534,31 +559,6 @@ public class TicketCommentWrapper implements TicketComment,
 	@Override
 	public void setVisibility(int visibility) {
 		_ticketComment.setVisibility(visibility);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketComment> toCacheModel() {
-		return _ticketComment.toCacheModel();
-	}
-
-	@Override
-	public TicketComment toEscapedModel() {
-		return new TicketCommentWrapper(_ticketComment.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ticketComment.toString();
-	}
-
-	@Override
-	public TicketComment toUnescapedModel() {
-		return new TicketCommentWrapper(_ticketComment.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ticketComment.toXmlString();
 	}
 
 	@Override

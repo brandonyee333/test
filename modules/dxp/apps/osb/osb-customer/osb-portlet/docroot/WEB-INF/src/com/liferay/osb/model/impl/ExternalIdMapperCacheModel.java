@@ -21,6 +21,7 @@ import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -111,7 +112,7 @@ public class ExternalIdMapperCacheModel implements CacheModel<ExternalIdMapper>,
 		externalIdMapperImpl.setType(type);
 
 		if (externalId == null) {
-			externalIdMapperImpl.setExternalId("");
+			externalIdMapperImpl.setExternalId(StringPool.BLANK);
 		}
 		else {
 			externalIdMapperImpl.setExternalId(externalId);
@@ -150,7 +151,7 @@ public class ExternalIdMapperCacheModel implements CacheModel<ExternalIdMapper>,
 		objectOutput.writeInt(type);
 
 		if (externalId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(externalId);

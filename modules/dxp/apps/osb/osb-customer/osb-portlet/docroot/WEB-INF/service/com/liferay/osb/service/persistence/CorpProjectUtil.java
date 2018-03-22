@@ -690,7 +690,7 @@ public class CorpProjectUtil {
 
 	public static CorpProjectPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (CorpProjectPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (CorpProjectPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					CorpProjectPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(CorpProjectUtil.class,

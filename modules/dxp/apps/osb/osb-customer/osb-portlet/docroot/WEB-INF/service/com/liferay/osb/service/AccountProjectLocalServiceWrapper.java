@@ -84,6 +84,63 @@ public class AccountProjectLocalServiceWrapper
 		return _accountProjectLocalService.deleteAccountProject(accountProjectId);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountProject fetchAccountProject(
+		long accountProjectId) {
+		return _accountProjectLocalService.fetchAccountProject(accountProjectId);
+	}
+
+	/**
+	* Returns the account project with the primary key.
+	*
+	* @param accountProjectId the primary key of the account project
+	* @return the account project
+	* @throws PortalException if a account project with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.AccountProject getAccountProject(
+		long accountProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountProjectLocalService.getAccountProject(accountProjectId);
+	}
+
+	/**
+	* Updates the account project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountProject the account project
+	* @return the account project that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.AccountProject updateAccountProject(
+		com.liferay.osb.model.AccountProject accountProject) {
+		return _accountProjectLocalService.updateAccountProject(accountProject);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountProject updateAccountProject(
+		long userId, long accountProjectId, long accountEntryId,
+		java.lang.String name,
+		java.util.Map<java.lang.Integer, java.lang.String> data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountProjectLocalService.updateAccountProject(userId,
+			accountProjectId, accountEntryId, name, data);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _accountProjectLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _accountProjectLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _accountProjectLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -95,8 +152,38 @@ public class AccountProjectLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _accountProjectLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountProjectLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of account projects.
+	*
+	* @return the number of account projects
+	*/
+	@Override
+	public int getAccountProjectsCount() {
+		return _accountProjectLocalService.getAccountProjectsCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountProjectLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _accountProjectLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -153,6 +240,29 @@ public class AccountProjectLocalServiceWrapper
 	}
 
 	/**
+	* Returns a range of all the account projects.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AccountProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of account projects
+	* @param end the upper bound of the range of account projects (not inclusive)
+	* @return the range of account projects
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountProject> getAccountProjects(
+		int start, int end) {
+		return _accountProjectLocalService.getAccountProjects(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountProject> getAccountProjects(
+		long accountEntryId) {
+		return _accountProjectLocalService.getAccountProjects(accountEntryId);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -177,108 +287,6 @@ public class AccountProjectLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _accountProjectLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountProject fetchAccountProject(
-		long accountProjectId) {
-		return _accountProjectLocalService.fetchAccountProject(accountProjectId);
-	}
-
-	/**
-	* Returns the account project with the primary key.
-	*
-	* @param accountProjectId the primary key of the account project
-	* @return the account project
-	* @throws PortalException if a account project with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.AccountProject getAccountProject(
-		long accountProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountProjectLocalService.getAccountProject(accountProjectId);
-	}
-
-	/**
-	* Returns a range of all the account projects.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AccountProjectModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of account projects
-	* @param end the upper bound of the range of account projects (not inclusive)
-	* @return the range of account projects
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountProject> getAccountProjects(
-		int start, int end) {
-		return _accountProjectLocalService.getAccountProjects(start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountProject> getAccountProjects(
-		long accountEntryId) {
-		return _accountProjectLocalService.getAccountProjects(accountEntryId);
-	}
-
-	/**
-	* Returns the number of account projects.
-	*
-	* @return the number of account projects
-	*/
-	@Override
-	public int getAccountProjectsCount() {
-		return _accountProjectLocalService.getAccountProjectsCount();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _accountProjectLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _accountProjectLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _accountProjectLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountProjectLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the account project in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountProject the account project
-	* @return the account project that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.AccountProject updateAccountProject(
-		com.liferay.osb.model.AccountProject accountProject) {
-		return _accountProjectLocalService.updateAccountProject(accountProject);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountProject updateAccountProject(
-		long userId, long accountProjectId, long accountEntryId,
-		java.lang.String name,
-		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountProjectLocalService.updateAccountProject(userId,
-			accountProjectId, accountEntryId, name, data);
 	}
 
 	@Override

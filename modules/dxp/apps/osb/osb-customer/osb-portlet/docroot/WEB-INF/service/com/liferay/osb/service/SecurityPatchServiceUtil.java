@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,17 @@ public class SecurityPatchServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SecurityPatchServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.SecurityPatch getSecurityPatch(
+		long securityPatchId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getSecurityPatch(securityPatchId);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
 
 	/**
 	* Returns the OSGi service identifier.
@@ -50,20 +62,21 @@ public class SecurityPatchServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static com.liferay.osb.model.SecurityPatch getSecurityPatch(
-		long securityPatchId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSecurityPatch(securityPatchId);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static SecurityPatchService getService() {
 		if (_service == null) {
-			_service = (SecurityPatchService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					SecurityPatchService.class.getName());
+
+			if (invokableService instanceof SecurityPatchService) {
+				_service = (SecurityPatchService)invokableService;
+			}
+			else {
+				_service = new SecurityPatchServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(SecurityPatchServiceUtil.class,
 				"_service");

@@ -523,7 +523,7 @@ public class OfferingBundleUtil {
 
 	public static OfferingBundlePersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (OfferingBundlePersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (OfferingBundlePersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					OfferingBundlePersistence.class.getName());
 
 			ReferenceRegistry.registerReference(OfferingBundleUtil.class,

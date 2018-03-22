@@ -33,6 +33,14 @@ public class AccountWorkerServiceWrapper implements AccountWorkerService,
 		_accountWorkerService = accountWorkerService;
 	}
 
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountWorkerService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*

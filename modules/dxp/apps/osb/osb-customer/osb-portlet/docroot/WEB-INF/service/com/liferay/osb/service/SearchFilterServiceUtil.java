@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -49,20 +50,6 @@ public class SearchFilterServiceUtil {
 			visibility);
 	}
 
-	public static void deleteSearchFilter(long searchFilterId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteSearchFilter(searchFilterId);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
 	public static com.liferay.osb.model.SearchFilter getSearchFilter(
 		long searchFilterId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -77,14 +64,41 @@ public class SearchFilterServiceUtil {
 				   .updateSearchFilter(searchFilterId, name, filter, visibility);
 	}
 
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static void deleteSearchFilter(long searchFilterId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteSearchFilter(searchFilterId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static SearchFilterService getService() {
 		if (_service == null) {
-			_service = (SearchFilterService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					SearchFilterService.class.getName());
+
+			if (invokableService instanceof SearchFilterService) {
+				_service = (SearchFilterService)invokableService;
+			}
+			else {
+				_service = new SearchFilterServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(SearchFilterServiceUtil.class,
 				"_service");

@@ -136,33 +136,43 @@ public class SecurityPatchWrapper implements SecurityPatch,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new SecurityPatchWrapper((SecurityPatch)_securityPatch.clone());
+	public SecurityPatch toEscapedModel() {
+		return new SecurityPatchWrapper(_securityPatch.toEscapedModel());
+	}
+
+	@Override
+	public SecurityPatch toUnescapedModel() {
+		return new SecurityPatchWrapper(_securityPatch.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _securityPatch.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _securityPatch.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _securityPatch.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _securityPatch.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SecurityPatch> toCacheModel() {
+		return _securityPatch.toCacheModel();
 	}
 
 	@Override
 	public int compareTo(SecurityPatch securityPatch) {
 		return _securityPatch.compareTo(securityPatch);
-	}
-
-	/**
-	* Returns the account entry ID of this security patch.
-	*
-	* @return the account entry ID of this security patch
-	*/
-	@Override
-	public long getAccountEntryId() {
-		return _securityPatch.getAccountEntryId();
-	}
-
-	/**
-	* Returns the create date of this security patch.
-	*
-	* @return the create date of this security patch
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _securityPatch.getCreateDate();
 	}
 
 	/**
@@ -176,8 +186,18 @@ public class SecurityPatchWrapper implements SecurityPatch,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _securityPatch.getExpandoBridge();
+	public int hashCode() {
+		return _securityPatch.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _securityPatch.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new SecurityPatchWrapper((SecurityPatch)_securityPatch.clone());
 	}
 
 	/**
@@ -211,6 +231,56 @@ public class SecurityPatchWrapper implements SecurityPatch,
 	}
 
 	/**
+	* Returns the user name of this security patch.
+	*
+	* @return the user name of this security patch
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _securityPatch.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this security patch.
+	*
+	* @return the user uuid of this security patch
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _securityPatch.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _securityPatch.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _securityPatch.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this security patch.
+	*
+	* @return the create date of this security patch
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _securityPatch.getCreateDate();
+	}
+
+	/**
+	* Returns the account entry ID of this security patch.
+	*
+	* @return the account entry ID of this security patch
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _securityPatch.getAccountEntryId();
+	}
+
+	/**
 	* Returns the primary key of this security patch.
 	*
 	* @return the primary key of this security patch
@@ -218,11 +288,6 @@ public class SecurityPatchWrapper implements SecurityPatch,
 	@Override
 	public long getPrimaryKey() {
 		return _securityPatch.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _securityPatch.getPrimaryKeyObj();
 	}
 
 	/**
@@ -253,46 +318,6 @@ public class SecurityPatchWrapper implements SecurityPatch,
 	@Override
 	public long getUserId() {
 		return _securityPatch.getUserId();
-	}
-
-	/**
-	* Returns the user name of this security patch.
-	*
-	* @return the user name of this security patch
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _securityPatch.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this security patch.
-	*
-	* @return the user uuid of this security patch
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _securityPatch.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _securityPatch.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _securityPatch.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _securityPatch.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _securityPatch.isNew();
 	}
 
 	@Override
@@ -336,14 +361,14 @@ public class SecurityPatchWrapper implements SecurityPatch,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_securityPatch.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_securityPatch.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_securityPatch.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_securityPatch.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -449,31 +474,6 @@ public class SecurityPatchWrapper implements SecurityPatch,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_securityPatch.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SecurityPatch> toCacheModel() {
-		return _securityPatch.toCacheModel();
-	}
-
-	@Override
-	public SecurityPatch toEscapedModel() {
-		return new SecurityPatchWrapper(_securityPatch.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _securityPatch.toString();
-	}
-
-	@Override
-	public SecurityPatch toUnescapedModel() {
-		return new SecurityPatchWrapper(_securityPatch.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _securityPatch.toXmlString();
 	}
 
 	@Override

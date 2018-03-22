@@ -208,23 +208,13 @@ public class TicketSolutionWrapper implements TicketSolution,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new TicketSolutionWrapper((TicketSolution)_ticketSolution.clone());
+	public TicketSolution toEscapedModel() {
+		return new TicketSolutionWrapper(_ticketSolution.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(TicketSolution ticketSolution) {
-		return _ticketSolution.compareTo(ticketSolution);
-	}
-
-	/**
-	* Returns the create date of this ticket solution.
-	*
-	* @return the create date of this ticket solution
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _ticketSolution.getCreateDate();
+	public TicketSolution toUnescapedModel() {
+		return new TicketSolutionWrapper(_ticketSolution.toUnescapedModel());
 	}
 
 	/**
@@ -247,36 +237,6 @@ public class TicketSolutionWrapper implements TicketSolution,
 		return _ticketSolution.getEnvironmentSpecific();
 	}
 
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ticketSolution.getExpandoBridge();
-	}
-
-	/**
-	* Returns the issue type of this ticket solution.
-	*
-	* @return the issue type of this ticket solution
-	*/
-	@Override
-	public int getIssueType() {
-		return _ticketSolution.getIssueType();
-	}
-
-	/**
-	* Returns the primary key of this ticket solution.
-	*
-	* @return the primary key of this ticket solution
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _ticketSolution.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ticketSolution.getPrimaryKeyObj();
-	}
-
 	/**
 	* Returns the review for kb of this ticket solution.
 	*
@@ -285,126 +245,6 @@ public class TicketSolutionWrapper implements TicketSolution,
 	@Override
 	public boolean getReviewForKB() {
 		return _ticketSolution.getReviewForKB();
-	}
-
-	/**
-	* Returns the solution of this ticket solution.
-	*
-	* @return the solution of this ticket solution
-	*/
-	@Override
-	public java.lang.String getSolution() {
-		return _ticketSolution.getSolution();
-	}
-
-	/**
-	* Returns the status of this ticket solution.
-	*
-	* @return the status of this ticket solution
-	*/
-	@Override
-	public int getStatus() {
-		return _ticketSolution.getStatus();
-	}
-
-	/**
-	* Returns the status by user ID of this ticket solution.
-	*
-	* @return the status by user ID of this ticket solution
-	*/
-	@Override
-	public long getStatusByUserId() {
-		return _ticketSolution.getStatusByUserId();
-	}
-
-	/**
-	* Returns the status by user name of this ticket solution.
-	*
-	* @return the status by user name of this ticket solution
-	*/
-	@Override
-	public java.lang.String getStatusByUserName() {
-		return _ticketSolution.getStatusByUserName();
-	}
-
-	/**
-	* Returns the status by user uuid of this ticket solution.
-	*
-	* @return the status by user uuid of this ticket solution
-	*/
-	@Override
-	public java.lang.String getStatusByUserUuid() {
-		return _ticketSolution.getStatusByUserUuid();
-	}
-
-	/**
-	* Returns the status date of this ticket solution.
-	*
-	* @return the status date of this ticket solution
-	*/
-	@Override
-	public Date getStatusDate() {
-		return _ticketSolution.getStatusDate();
-	}
-
-	/**
-	* Returns the status message of this ticket solution.
-	*
-	* @return the status message of this ticket solution
-	*/
-	@Override
-	public java.lang.String getStatusMessage() {
-		return _ticketSolution.getStatusMessage();
-	}
-
-	/**
-	* Returns the status reason of this ticket solution.
-	*
-	* @return the status reason of this ticket solution
-	*/
-	@Override
-	public int getStatusReason() {
-		return _ticketSolution.getStatusReason();
-	}
-
-	/**
-	* Returns the summary of this ticket solution.
-	*
-	* @return the summary of this ticket solution
-	*/
-	@Override
-	public java.lang.String getSummary() {
-		return _ticketSolution.getSummary();
-	}
-
-	/**
-	* Returns the ticket entry ID of this ticket solution.
-	*
-	* @return the ticket entry ID of this ticket solution
-	*/
-	@Override
-	public long getTicketEntryId() {
-		return _ticketSolution.getTicketEntryId();
-	}
-
-	/**
-	* Returns the ticket solution ID of this ticket solution.
-	*
-	* @return the ticket solution ID of this ticket solution
-	*/
-	@Override
-	public long getTicketSolutionId() {
-		return _ticketSolution.getTicketSolutionId();
-	}
-
-	/**
-	* Returns the type of this ticket solution.
-	*
-	* @return the type of this ticket solution
-	*/
-	@Override
-	public int getType() {
-		return _ticketSolution.getType();
 	}
 
 	/**
@@ -418,36 +258,6 @@ public class TicketSolutionWrapper implements TicketSolution,
 	}
 
 	/**
-	* Returns the user ID of this ticket solution.
-	*
-	* @return the user ID of this ticket solution
-	*/
-	@Override
-	public long getUserId() {
-		return _ticketSolution.getUserId();
-	}
-
-	/**
-	* Returns the user name of this ticket solution.
-	*
-	* @return the user name of this ticket solution
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _ticketSolution.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this ticket solution.
-	*
-	* @return the user uuid of this ticket solution
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _ticketSolution.getUserUuid();
-	}
-
-	/**
 	* Returns the version specific of this ticket solution.
 	*
 	* @return the version specific of this ticket solution
@@ -455,11 +265,6 @@ public class TicketSolutionWrapper implements TicketSolution,
 	@Override
 	public boolean getVersionSpecific() {
 		return _ticketSolution.getVersionSpecific();
-	}
-
-	@Override
-	public int hashCode() {
-		return _ticketSolution.hashCode();
 	}
 
 	/**
@@ -608,6 +413,226 @@ public class TicketSolutionWrapper implements TicketSolution,
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ticketSolution.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TicketSolution> toCacheModel() {
+		return _ticketSolution.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(TicketSolution ticketSolution) {
+		return _ticketSolution.compareTo(ticketSolution);
+	}
+
+	/**
+	* Returns the issue type of this ticket solution.
+	*
+	* @return the issue type of this ticket solution
+	*/
+	@Override
+	public int getIssueType() {
+		return _ticketSolution.getIssueType();
+	}
+
+	/**
+	* Returns the status of this ticket solution.
+	*
+	* @return the status of this ticket solution
+	*/
+	@Override
+	public int getStatus() {
+		return _ticketSolution.getStatus();
+	}
+
+	/**
+	* Returns the status reason of this ticket solution.
+	*
+	* @return the status reason of this ticket solution
+	*/
+	@Override
+	public int getStatusReason() {
+		return _ticketSolution.getStatusReason();
+	}
+
+	/**
+	* Returns the type of this ticket solution.
+	*
+	* @return the type of this ticket solution
+	*/
+	@Override
+	public int getType() {
+		return _ticketSolution.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _ticketSolution.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ticketSolution.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new TicketSolutionWrapper((TicketSolution)_ticketSolution.clone());
+	}
+
+	/**
+	* Returns the solution of this ticket solution.
+	*
+	* @return the solution of this ticket solution
+	*/
+	@Override
+	public java.lang.String getSolution() {
+		return _ticketSolution.getSolution();
+	}
+
+	/**
+	* Returns the status by user name of this ticket solution.
+	*
+	* @return the status by user name of this ticket solution
+	*/
+	@Override
+	public java.lang.String getStatusByUserName() {
+		return _ticketSolution.getStatusByUserName();
+	}
+
+	/**
+	* Returns the status by user uuid of this ticket solution.
+	*
+	* @return the status by user uuid of this ticket solution
+	*/
+	@Override
+	public java.lang.String getStatusByUserUuid() {
+		return _ticketSolution.getStatusByUserUuid();
+	}
+
+	/**
+	* Returns the status message of this ticket solution.
+	*
+	* @return the status message of this ticket solution
+	*/
+	@Override
+	public java.lang.String getStatusMessage() {
+		return _ticketSolution.getStatusMessage();
+	}
+
+	/**
+	* Returns the summary of this ticket solution.
+	*
+	* @return the summary of this ticket solution
+	*/
+	@Override
+	public java.lang.String getSummary() {
+		return _ticketSolution.getSummary();
+	}
+
+	/**
+	* Returns the user name of this ticket solution.
+	*
+	* @return the user name of this ticket solution
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _ticketSolution.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this ticket solution.
+	*
+	* @return the user uuid of this ticket solution
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _ticketSolution.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _ticketSolution.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ticketSolution.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this ticket solution.
+	*
+	* @return the create date of this ticket solution
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _ticketSolution.getCreateDate();
+	}
+
+	/**
+	* Returns the status date of this ticket solution.
+	*
+	* @return the status date of this ticket solution
+	*/
+	@Override
+	public Date getStatusDate() {
+		return _ticketSolution.getStatusDate();
+	}
+
+	/**
+	* Returns the primary key of this ticket solution.
+	*
+	* @return the primary key of this ticket solution
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _ticketSolution.getPrimaryKey();
+	}
+
+	/**
+	* Returns the status by user ID of this ticket solution.
+	*
+	* @return the status by user ID of this ticket solution
+	*/
+	@Override
+	public long getStatusByUserId() {
+		return _ticketSolution.getStatusByUserId();
+	}
+
+	/**
+	* Returns the ticket entry ID of this ticket solution.
+	*
+	* @return the ticket entry ID of this ticket solution
+	*/
+	@Override
+	public long getTicketEntryId() {
+		return _ticketSolution.getTicketEntryId();
+	}
+
+	/**
+	* Returns the ticket solution ID of this ticket solution.
+	*
+	* @return the ticket solution ID of this ticket solution
+	*/
+	@Override
+	public long getTicketSolutionId() {
+		return _ticketSolution.getTicketSolutionId();
+	}
+
+	/**
+	* Returns the user ID of this ticket solution.
+	*
+	* @return the user ID of this ticket solution
+	*/
+	@Override
+	public long getUserId() {
+		return _ticketSolution.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_ticketSolution.persist();
 	}
@@ -648,14 +673,14 @@ public class TicketSolutionWrapper implements TicketSolution,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_ticketSolution.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ticketSolution.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ticketSolution.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_ticketSolution.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -871,31 +896,6 @@ public class TicketSolutionWrapper implements TicketSolution,
 	@Override
 	public void setVersionSpecific(boolean versionSpecific) {
 		_ticketSolution.setVersionSpecific(versionSpecific);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketSolution> toCacheModel() {
-		return _ticketSolution.toCacheModel();
-	}
-
-	@Override
-	public TicketSolution toEscapedModel() {
-		return new TicketSolutionWrapper(_ticketSolution.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ticketSolution.toString();
-	}
-
-	@Override
-	public TicketSolution toUnescapedModel() {
-		return new TicketSolutionWrapper(_ticketSolution.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ticketSolution.toXmlString();
 	}
 
 	@Override

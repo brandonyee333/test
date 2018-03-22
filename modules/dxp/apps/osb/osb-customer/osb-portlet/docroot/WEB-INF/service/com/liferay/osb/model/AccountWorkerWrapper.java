@@ -100,8 +100,44 @@ public class AccountWorkerWrapper implements AccountWorker,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AccountWorkerWrapper((AccountWorker)_accountWorker.clone());
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountWorker.getAccountEntry();
+	}
+
+	@Override
+	public AccountWorker toEscapedModel() {
+		return new AccountWorkerWrapper(_accountWorker.toEscapedModel());
+	}
+
+	@Override
+	public AccountWorker toUnescapedModel() {
+		return new AccountWorkerWrapper(_accountWorker.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _accountWorker.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _accountWorker.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _accountWorker.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _accountWorker.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountWorker> toCacheModel() {
+		return _accountWorker.toCacheModel();
 	}
 
 	@Override
@@ -109,10 +145,74 @@ public class AccountWorkerWrapper implements AccountWorker,
 		return _accountWorker.compareTo(accountWorker);
 	}
 
+	/**
+	* Returns the notifications of this account worker.
+	*
+	* @return the notifications of this account worker
+	*/
 	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountWorker.getAccountEntry();
+	public int getNotifications() {
+		return _accountWorker.getNotifications();
+	}
+
+	/**
+	* Returns the role of this account worker.
+	*
+	* @return the role of this account worker
+	*/
+	@Override
+	public int getRole() {
+		return _accountWorker.getRole();
+	}
+
+	@Override
+	public int hashCode() {
+		return _accountWorker.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountWorker.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AccountWorkerWrapper((AccountWorker)_accountWorker.clone());
+	}
+
+	@Override
+	public java.lang.String getKey() {
+		return _accountWorker.getKey();
+	}
+
+	@Override
+	public java.lang.String getNotificationsLabel() {
+		return _accountWorker.getNotificationsLabel();
+	}
+
+	@Override
+	public java.lang.String getRoleLabel() {
+		return _accountWorker.getRoleLabel();
+	}
+
+	/**
+	* Returns the user uuid of this account worker.
+	*
+	* @return the user uuid of this account worker
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _accountWorker.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _accountWorker.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _accountWorker.toXmlString();
 	}
 
 	/**
@@ -135,31 +235,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 		return _accountWorker.getAccountWorkerId();
 	}
 
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountWorker.getExpandoBridge();
-	}
-
-	@Override
-	public java.lang.String getKey() {
-		return _accountWorker.getKey();
-	}
-
-	/**
-	* Returns the notifications of this account worker.
-	*
-	* @return the notifications of this account worker
-	*/
-	@Override
-	public int getNotifications() {
-		return _accountWorker.getNotifications();
-	}
-
-	@Override
-	public java.lang.String getNotificationsLabel() {
-		return _accountWorker.getNotificationsLabel();
-	}
-
 	/**
 	* Returns the primary key of this account worker.
 	*
@@ -170,26 +245,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 		return _accountWorker.getPrimaryKey();
 	}
 
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountWorker.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the role of this account worker.
-	*
-	* @return the role of this account worker
-	*/
-	@Override
-	public int getRole() {
-		return _accountWorker.getRole();
-	}
-
-	@Override
-	public java.lang.String getRoleLabel() {
-		return _accountWorker.getRoleLabel();
-	}
-
 	/**
 	* Returns the user ID of this account worker.
 	*
@@ -198,36 +253,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 	@Override
 	public long getUserId() {
 		return _accountWorker.getUserId();
-	}
-
-	/**
-	* Returns the user uuid of this account worker.
-	*
-	* @return the user uuid of this account worker
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _accountWorker.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _accountWorker.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _accountWorker.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _accountWorker.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _accountWorker.isNew();
 	}
 
 	@Override
@@ -261,14 +286,14 @@ public class AccountWorkerWrapper implements AccountWorker,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_accountWorker.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountWorker.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountWorker.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_accountWorker.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -334,31 +359,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_accountWorker.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountWorker> toCacheModel() {
-		return _accountWorker.toCacheModel();
-	}
-
-	@Override
-	public AccountWorker toEscapedModel() {
-		return new AccountWorkerWrapper(_accountWorker.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _accountWorker.toString();
-	}
-
-	@Override
-	public AccountWorker toUnescapedModel() {
-		return new AccountWorkerWrapper(_accountWorker.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _accountWorker.toXmlString();
 	}
 
 	@Override

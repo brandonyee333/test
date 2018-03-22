@@ -34,30 +34,6 @@ public class OfferingEntryServiceWrapper implements OfferingEntryService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.OfferingEntry> getAccountEntryOfferingEntries(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntryService.getAccountEntryOfferingEntries(accountEntryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.OfferingEntry> getOrderEntryOfferingEntries(
-		long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntryService.getOrderEntryOfferingEntries(orderEntryId);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _offeringEntryService.getOSGiServiceIdentifier();
-	}
-
-	@Override
 	public com.liferay.osb.model.OfferingEntry updateOfferingEntry(
 		long offeringEntryId, long accountEntryId, long orderEntryId,
 		long productEntryId, long supportResponseId,
@@ -78,6 +54,38 @@ public class OfferingEntryServiceWrapper implements OfferingEntryService,
 		long offeringEntryId, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntryService.updateStatus(offeringEntryId, status);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _offeringEntryService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _offeringEntryService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.OfferingEntry> getAccountEntryOfferingEntries(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntryService.getAccountEntryOfferingEntries(accountEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.OfferingEntry> getOrderEntryOfferingEntries(
+		long orderEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntryService.getOrderEntryOfferingEntries(orderEntryId);
 	}
 
 	@Override

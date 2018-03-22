@@ -100,114 +100,19 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AccountCustomerWrapper((AccountCustomer)_accountCustomer.clone());
+	public AccountCustomer toEscapedModel() {
+		return new AccountCustomerWrapper(_accountCustomer.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(AccountCustomer accountCustomer) {
-		return _accountCustomer.compareTo(accountCustomer);
-	}
-
-	/**
-	* Returns the account customer ID of this account customer.
-	*
-	* @return the account customer ID of this account customer
-	*/
-	@Override
-	public long getAccountCustomerId() {
-		return _accountCustomer.getAccountCustomerId();
+	public AccountCustomer toUnescapedModel() {
+		return new AccountCustomerWrapper(_accountCustomer.toUnescapedModel());
 	}
 
 	@Override
 	public AccountEntry getAccountEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountCustomer.getAccountEntry();
-	}
-
-	/**
-	* Returns the account entry ID of this account customer.
-	*
-	* @return the account entry ID of this account customer
-	*/
-	@Override
-	public long getAccountEntryId() {
-		return _accountCustomer.getAccountEntryId();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountCustomer.getExpandoBridge();
-	}
-
-	/**
-	* Returns the notifications of this account customer.
-	*
-	* @return the notifications of this account customer
-	*/
-	@Override
-	public int getNotifications() {
-		return _accountCustomer.getNotifications();
-	}
-
-	@Override
-	public java.lang.String getNotificationsLabel() {
-		return _accountCustomer.getNotificationsLabel();
-	}
-
-	/**
-	* Returns the primary key of this account customer.
-	*
-	* @return the primary key of this account customer
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _accountCustomer.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountCustomer.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the role of this account customer.
-	*
-	* @return the role of this account customer
-	*/
-	@Override
-	public int getRole() {
-		return _accountCustomer.getRole();
-	}
-
-	@Override
-	public java.lang.String getRoleLabel() {
-		return _accountCustomer.getRoleLabel();
-	}
-
-	/**
-	* Returns the user ID of this account customer.
-	*
-	* @return the user ID of this account customer
-	*/
-	@Override
-	public long getUserId() {
-		return _accountCustomer.getUserId();
-	}
-
-	/**
-	* Returns the user uuid of this account customer.
-	*
-	* @return the user uuid of this account customer
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _accountCustomer.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _accountCustomer.hashCode();
 	}
 
 	@Override
@@ -228,6 +133,126 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	@Override
 	public boolean isNew() {
 		return _accountCustomer.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _accountCustomer.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountCustomer> toCacheModel() {
+		return _accountCustomer.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(AccountCustomer accountCustomer) {
+		return _accountCustomer.compareTo(accountCustomer);
+	}
+
+	/**
+	* Returns the notifications of this account customer.
+	*
+	* @return the notifications of this account customer
+	*/
+	@Override
+	public int getNotifications() {
+		return _accountCustomer.getNotifications();
+	}
+
+	/**
+	* Returns the role of this account customer.
+	*
+	* @return the role of this account customer
+	*/
+	@Override
+	public int getRole() {
+		return _accountCustomer.getRole();
+	}
+
+	@Override
+	public int hashCode() {
+		return _accountCustomer.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountCustomer.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AccountCustomerWrapper((AccountCustomer)_accountCustomer.clone());
+	}
+
+	@Override
+	public java.lang.String getNotificationsLabel() {
+		return _accountCustomer.getNotificationsLabel();
+	}
+
+	@Override
+	public java.lang.String getRoleLabel() {
+		return _accountCustomer.getRoleLabel();
+	}
+
+	/**
+	* Returns the user uuid of this account customer.
+	*
+	* @return the user uuid of this account customer
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _accountCustomer.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _accountCustomer.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _accountCustomer.toXmlString();
+	}
+
+	/**
+	* Returns the account customer ID of this account customer.
+	*
+	* @return the account customer ID of this account customer
+	*/
+	@Override
+	public long getAccountCustomerId() {
+		return _accountCustomer.getAccountCustomerId();
+	}
+
+	/**
+	* Returns the account entry ID of this account customer.
+	*
+	* @return the account entry ID of this account customer
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _accountCustomer.getAccountEntryId();
+	}
+
+	/**
+	* Returns the primary key of this account customer.
+	*
+	* @return the primary key of this account customer
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _accountCustomer.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this account customer.
+	*
+	* @return the user ID of this account customer
+	*/
+	@Override
+	public long getUserId() {
+		return _accountCustomer.getUserId();
 	}
 
 	@Override
@@ -261,14 +286,14 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_accountCustomer.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountCustomer.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountCustomer.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_accountCustomer.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -334,31 +359,6 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_accountCustomer.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountCustomer> toCacheModel() {
-		return _accountCustomer.toCacheModel();
-	}
-
-	@Override
-	public AccountCustomer toEscapedModel() {
-		return new AccountCustomerWrapper(_accountCustomer.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _accountCustomer.toString();
-	}
-
-	@Override
-	public AccountCustomer toUnescapedModel() {
-		return new AccountCustomerWrapper(_accountCustomer.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _accountCustomer.toXmlString();
 	}
 
 	@Override

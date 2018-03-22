@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -56,6 +57,75 @@ public class AccountEntryServiceUtil {
 		java.lang.String code)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAccountEntryByCode(code);
+	}
+
+	public static com.liferay.osb.model.AccountEntry updateAccountEntry(
+		long accountEntryId, long corpProjectId,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		long addressId, java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateAccountEntry(accountEntryId, corpProjectId,
+			corpEntryName, name, code, type, industry, partnerEntryId,
+			partnerManagedSupport, tier, maxCustomers, instructions, notes,
+			languageIds, supportRegionIds, addressId, street1, street2,
+			street3, city, zip, regionId, countryId, ewsaDossieraProjectKey);
+	}
+
+	public static com.liferay.osb.model.AccountEntry updateInstructions(
+		long accountEntryId, java.lang.String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateInstructions(accountEntryId, instructions);
+	}
+
+	public static com.liferay.osb.model.AccountEntry updateTier(
+		long accountEntryId, int tier)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateTier(accountEntryId, tier);
+	}
+
+	public static int searchCount(java.lang.Long createUserId,
+		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
+		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
+		java.lang.String code, int[] industries,
+		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String partnerEntryCode, java.lang.String street,
+		java.lang.Long countryId, java.lang.Long regionId,
+		java.lang.String city, java.lang.String zip,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .searchCount(createUserId, createDateGTDay,
+			createDateGTMonth, createDateGTYear, createDateLTDay,
+			createDateLTMonth, createDateLTYear, modifiedUserId,
+			modifiedDateGTDay, modifiedDateGTMonth, modifiedDateGTYear,
+			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear, name,
+			code, industries, partnerManagedSupport, tiers, statuses,
+			instructions, notes, partnerEntryCode, street, countryId, regionId,
+			city, zip, params, andOperator);
+	}
+
+	public static int searchCount(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().searchCount(keywords, params);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -115,77 +185,21 @@ public class AccountEntryServiceUtil {
 		return getService().search(name, code);
 	}
 
-	public static int searchCount(java.lang.Long createUserId,
-		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
-		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
-		java.lang.Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear, java.lang.String name,
-		java.lang.String code, int[] industries,
-		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String partnerEntryCode, java.lang.String street,
-		java.lang.Long countryId, java.lang.Long regionId,
-		java.lang.String city, java.lang.String zip,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .searchCount(createUserId, createDateGTDay,
-			createDateGTMonth, createDateGTYear, createDateLTDay,
-			createDateLTMonth, createDateLTYear, modifiedUserId,
-			modifiedDateGTDay, modifiedDateGTMonth, modifiedDateGTYear,
-			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear, name,
-			code, industries, partnerManagedSupport, tiers, statuses,
-			instructions, notes, partnerEntryCode, street, countryId, regionId,
-			city, zip, params, andOperator);
-	}
-
-	public static int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().searchCount(keywords, params);
-	}
-
-	public static com.liferay.osb.model.AccountEntry updateAccountEntry(
-		long accountEntryId, long corpProjectId,
-		java.lang.String corpEntryName, java.lang.String name,
-		java.lang.String code, int type, int industry, long partnerEntryId,
-		boolean partnerManagedSupport, int tier, int maxCustomers,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String[] languageIds, long[] supportRegionIds,
-		long addressId, java.lang.String street1, java.lang.String street2,
-		java.lang.String street3, java.lang.String city, java.lang.String zip,
-		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateAccountEntry(accountEntryId, corpProjectId,
-			corpEntryName, name, code, type, industry, partnerEntryId,
-			partnerManagedSupport, tier, maxCustomers, instructions, notes,
-			languageIds, supportRegionIds, addressId, street1, street2,
-			street3, city, zip, regionId, countryId, ewsaDossieraProjectKey);
-	}
-
-	public static com.liferay.osb.model.AccountEntry updateInstructions(
-		long accountEntryId, java.lang.String instructions)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateInstructions(accountEntryId, instructions);
-	}
-
-	public static com.liferay.osb.model.AccountEntry updateTier(
-		long accountEntryId, int tier)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateTier(accountEntryId, tier);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static AccountEntryService getService() {
 		if (_service == null) {
-			_service = (AccountEntryService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					AccountEntryService.class.getName());
+
+			if (invokableService instanceof AccountEntryService) {
+				_service = (AccountEntryService)invokableService;
+			}
+			else {
+				_service = new AccountEntryServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(AccountEntryServiceUtil.class,
 				"_service");

@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -271,7 +272,7 @@ public class AccountProjectModelImpl extends BaseModelImpl<AccountProject>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -283,7 +284,7 @@ public class AccountProjectModelImpl extends BaseModelImpl<AccountProject>
 	@Override
 	public String getModifiedUserName() {
 		if (_modifiedUserName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _modifiedUserName;
@@ -333,7 +334,7 @@ public class AccountProjectModelImpl extends BaseModelImpl<AccountProject>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _name;

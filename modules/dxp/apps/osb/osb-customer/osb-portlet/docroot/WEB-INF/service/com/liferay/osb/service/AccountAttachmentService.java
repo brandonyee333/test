@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -48,17 +49,12 @@ import java.util.List;
 @ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
-public interface AccountAttachmentService extends BaseService {
+public interface AccountAttachmentService extends BaseService, InvokableService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountAttachmentServiceUtil} to access the account attachment remote service. Add custom service methods to {@link com.liferay.osb.service.impl.AccountAttachmentServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public List<AccountAttachment> addAccountAttachments(long accountEntryId,
-		long accountProjectId,
-		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException;
-
 	public AccountAttachment deleteAccountAttachment(long accountAttachmentId)
 		throws PortalException;
 
@@ -66,9 +62,10 @@ public interface AccountAttachmentService extends BaseService {
 	public AccountAttachment getAccountAttachment(long accountAttachmentId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountAttachment> getAccountAttachments(long accountEntryId,
-		long accountProjectId, int type) throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -76,4 +73,13 @@ public interface AccountAttachmentService extends BaseService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
+
+	public List<AccountAttachment> addAccountAttachments(long accountEntryId,
+		long accountProjectId,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountAttachment> getAccountAttachments(long accountEntryId,
+		long accountProjectId, int type) throws PortalException;
 }

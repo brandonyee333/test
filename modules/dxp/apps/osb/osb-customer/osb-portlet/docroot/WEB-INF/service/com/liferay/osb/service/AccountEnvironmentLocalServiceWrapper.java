@@ -97,6 +97,73 @@ public class AccountEnvironmentLocalServiceWrapper
 		return _accountEnvironmentLocalService.deleteAccountEnvironment(accountEnvironmentId);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountEnvironment fetchAccountEnvironment(
+		long accountEntryId, long productEntryId, java.lang.String name) {
+		return _accountEnvironmentLocalService.fetchAccountEnvironment(accountEntryId,
+			productEntryId, name);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEnvironment fetchAccountEnvironment(
+		long accountEnvironmentId) {
+		return _accountEnvironmentLocalService.fetchAccountEnvironment(accountEnvironmentId);
+	}
+
+	/**
+	* Returns the account environment with the primary key.
+	*
+	* @param accountEnvironmentId the primary key of the account environment
+	* @return the account environment
+	* @throws PortalException if a account environment with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.AccountEnvironment getAccountEnvironment(
+		long accountEnvironmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEnvironmentLocalService.getAccountEnvironment(accountEnvironmentId);
+	}
+
+	/**
+	* Updates the account environment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountEnvironment the account environment
+	* @return the account environment that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
+		com.liferay.osb.model.AccountEnvironment accountEnvironment) {
+		return _accountEnvironmentLocalService.updateAccountEnvironment(accountEnvironment);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
+		long userId, long accountEnvironmentId, long productEntryId,
+		java.lang.String name, int envOS, java.lang.String envOSCustom,
+		int envDB, int envJVM, int envAS, int envLFR,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEnvironmentLocalService.updateAccountEnvironment(userId,
+			accountEnvironmentId, productEntryId, name, envOS, envOSCustom,
+			envDB, envJVM, envAS, envLFR, files, types);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _accountEnvironmentLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _accountEnvironmentLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _accountEnvironmentLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -108,8 +175,38 @@ public class AccountEnvironmentLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _accountEnvironmentLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEnvironmentLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of account environments.
+	*
+	* @return the number of account environments
+	*/
+	@Override
+	public int getAccountEnvironmentsCount() {
+		return _accountEnvironmentLocalService.getAccountEnvironmentsCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountEnvironmentLocalService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _accountEnvironmentLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -167,60 +264,6 @@ public class AccountEnvironmentLocalServiceWrapper
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _accountEnvironmentLocalService.dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _accountEnvironmentLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountEnvironment fetchAccountEnvironment(
-		long accountEnvironmentId) {
-		return _accountEnvironmentLocalService.fetchAccountEnvironment(accountEnvironmentId);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountEnvironment fetchAccountEnvironment(
-		long accountEntryId, long productEntryId, java.lang.String name) {
-		return _accountEnvironmentLocalService.fetchAccountEnvironment(accountEntryId,
-			productEntryId, name);
-	}
-
-	/**
-	* Returns the account environment with the primary key.
-	*
-	* @param accountEnvironmentId the primary key of the account environment
-	* @return the account environment
-	* @throws PortalException if a account environment with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.AccountEnvironment getAccountEnvironment(
-		long accountEnvironmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEnvironmentLocalService.getAccountEnvironment(accountEnvironmentId);
-	}
-
-	/**
 	* Returns a range of all the account environments.
 	*
 	* <p>
@@ -251,16 +294,6 @@ public class AccountEnvironmentLocalServiceWrapper
 			productEntryId);
 	}
 
-	/**
-	* Returns the number of account environments.
-	*
-	* @return the number of account environments
-	*/
-	@Override
-	public int getAccountEnvironmentsCount() {
-		return _accountEnvironmentLocalService.getAccountEnvironmentsCount();
-	}
-
 	@Override
 	public java.util.Map<java.lang.String, java.util.List<com.liferay.osb.model.AccountEnvironment>> getAccountEnvironmentsMap(
 		long accountEntryId)
@@ -268,56 +301,31 @@ public class AccountEnvironmentLocalServiceWrapper
 		return _accountEnvironmentLocalService.getAccountEnvironmentsMap(accountEntryId);
 	}
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
 	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _accountEnvironmentLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _accountEnvironmentLocalService.getIndexableActionableDynamicQuery();
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _accountEnvironmentLocalService.dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Returns the OSGi service identifier.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the OSGi service identifier
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _accountEnvironmentLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEnvironmentLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the account environment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountEnvironment the account environment
-	* @return the account environment that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
-		com.liferay.osb.model.AccountEnvironment accountEnvironment) {
-		return _accountEnvironmentLocalService.updateAccountEnvironment(accountEnvironment);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountEnvironment updateAccountEnvironment(
-		long userId, long accountEnvironmentId, long productEntryId,
-		java.lang.String name, int envOS, java.lang.String envOSCustom,
-		int envDB, int envJVM, int envAS, int envLFR,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEnvironmentLocalService.updateAccountEnvironment(userId,
-			accountEnvironmentId, productEntryId, name, envOS, envOSCustom,
-			envDB, envJVM, envAS, envLFR, files, types);
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _accountEnvironmentLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
 	}
 
 	@Override

@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -96,6 +97,53 @@ public class FeedbackEntryLocalServiceUtil {
 		return getService().deleteFeedbackEntry(feedbackEntryId);
 	}
 
+	public static com.liferay.osb.model.FeedbackEntry fetchFeedbackEntry(
+		long feedbackEntryId) {
+		return getService().fetchFeedbackEntry(feedbackEntryId);
+	}
+
+	/**
+	* Returns the feedback entry with the primary key.
+	*
+	* @param feedbackEntryId the primary key of the feedback entry
+	* @return the feedback entry
+	* @throws PortalException if a feedback entry with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.FeedbackEntry getFeedbackEntry(
+		long feedbackEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getFeedbackEntry(feedbackEntryId);
+	}
+
+	/**
+	* Updates the feedback entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param feedbackEntry the feedback entry
+	* @return the feedback entry that was updated
+	*/
+	public static com.liferay.osb.model.FeedbackEntry updateFeedbackEntry(
+		com.liferay.osb.model.FeedbackEntry feedbackEntry) {
+		return getService().updateFeedbackEntry(feedbackEntry);
+	}
+
+	public static com.liferay.osb.model.FeedbackEntry updateFeedbackEntry(
+		long feedbackEntryId, java.lang.String comments)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateFeedbackEntry(feedbackEntryId, comments);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -105,8 +153,34 @@ public class FeedbackEntryLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of feedback entries.
+	*
+	* @return the number of feedback entries
+	*/
+	public static int getFeedbackEntriesCount() {
+		return getService().getFeedbackEntriesCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -160,6 +234,22 @@ public class FeedbackEntryLocalServiceUtil {
 	}
 
 	/**
+	* Returns a range of all the feedback entries.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.FeedbackEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of feedback entries
+	* @param end the upper bound of the range of feedback entries (not inclusive)
+	* @return the range of feedback entries
+	*/
+	public static java.util.List<com.liferay.osb.model.FeedbackEntry> getFeedbackEntries(
+		int start, int end) {
+		return getService().getFeedbackEntries(start, end);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -183,97 +273,21 @@ public class FeedbackEntryLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.model.FeedbackEntry fetchFeedbackEntry(
-		long feedbackEntryId) {
-		return getService().fetchFeedbackEntry(feedbackEntryId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	/**
-	* Returns a range of all the feedback entries.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.FeedbackEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of feedback entries
-	* @param end the upper bound of the range of feedback entries (not inclusive)
-	* @return the range of feedback entries
-	*/
-	public static java.util.List<com.liferay.osb.model.FeedbackEntry> getFeedbackEntries(
-		int start, int end) {
-		return getService().getFeedbackEntries(start, end);
-	}
-
-	/**
-	* Returns the number of feedback entries.
-	*
-	* @return the number of feedback entries
-	*/
-	public static int getFeedbackEntriesCount() {
-		return getService().getFeedbackEntriesCount();
-	}
-
-	/**
-	* Returns the feedback entry with the primary key.
-	*
-	* @param feedbackEntryId the primary key of the feedback entry
-	* @return the feedback entry
-	* @throws PortalException if a feedback entry with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.FeedbackEntry getFeedbackEntry(
-		long feedbackEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getFeedbackEntry(feedbackEntryId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the feedback entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param feedbackEntry the feedback entry
-	* @return the feedback entry that was updated
-	*/
-	public static com.liferay.osb.model.FeedbackEntry updateFeedbackEntry(
-		com.liferay.osb.model.FeedbackEntry feedbackEntry) {
-		return getService().updateFeedbackEntry(feedbackEntry);
-	}
-
-	public static com.liferay.osb.model.FeedbackEntry updateFeedbackEntry(
-		long feedbackEntryId, java.lang.String comments)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateFeedbackEntry(feedbackEntryId, comments);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static FeedbackEntryLocalService getService() {
 		if (_service == null) {
-			_service = (FeedbackEntryLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					FeedbackEntryLocalService.class.getName());
+
+			if (invokableLocalService instanceof FeedbackEntryLocalService) {
+				_service = (FeedbackEntryLocalService)invokableLocalService;
+			}
+			else {
+				_service = new FeedbackEntryLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(FeedbackEntryLocalServiceUtil.class,
 				"_service");

@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
@@ -315,7 +316,7 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 		msg.append(", classNameId=");
 		msg.append(classNameId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAuditEntryException(msg.toString());
 	}
@@ -371,7 +372,7 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 		msg.append(", classNameId=");
 		msg.append(classNameId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAuditEntryException(msg.toString());
 	}
@@ -912,7 +913,7 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 		msg.append(", visibility=");
 		msg.append(visibility);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAuditEntryException(msg.toString());
 	}
@@ -973,7 +974,7 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 		msg.append(", visibility=");
 		msg.append(visibility);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAuditEntryException(msg.toString());
 	}
@@ -1308,15 +1309,15 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 			query.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
 
 			if (visibilities.length > 0) {
-				query.append("(");
+				query.append(StringPool.OPEN_PARENTHESIS);
 
 				query.append(_FINDER_COLUMN_C_C_V_VISIBILITY_7);
 
 				query.append(StringUtil.merge(visibilities));
 
-				query.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 
-				query.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 			}
 
 			query.setStringAt(removeConjunction(query.stringAt(query.index() -
@@ -1490,15 +1491,15 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 			query.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
 
 			if (visibilities.length > 0) {
-				query.append("(");
+				query.append(StringPool.OPEN_PARENTHESIS);
 
 				query.append(_FINDER_COLUMN_C_C_V_VISIBILITY_7);
 
 				query.append(StringUtil.merge(visibilities));
 
-				query.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 
-				query.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 			}
 
 			query.setStringAt(removeConjunction(query.stringAt(query.index() -
@@ -1800,7 +1801,7 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 		msg.append(", field=");
 		msg.append(field);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAuditEntryException(msg.toString());
 	}
@@ -1863,7 +1864,7 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 		msg.append(", field=");
 		msg.append(field);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAuditEntryException(msg.toString());
 	}
@@ -2409,7 +2410,7 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 		msg.append(", action=");
 		msg.append(action);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAuditEntryException(msg.toString());
 	}
@@ -2475,7 +2476,7 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 		msg.append(", action=");
 		msg.append(action);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAuditEntryException(msg.toString());
 	}
@@ -3278,12 +3279,12 @@ public class AuditEntryPersistenceImpl extends BasePersistenceImpl<AuditEntry>
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(",");
+			query.append(StringPool.COMMA);
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
 		String sql = query.toString();
 

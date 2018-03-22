@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
@@ -62,25 +63,12 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface OrderEntryLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OrderEntryLocalServiceUtil} to access the order entry local service. Add custom service methods to {@link com.liferay.osb.service.impl.OrderEntryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public List<OrderEntry> addOrderEntriesWithWorkflow(
-		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
-		CorpProject corpProject, PartnerEntry partnerEntry, Address address,
-		AccountWorker accountWorker, List<OrderEntry> orderEntries,
-		ServiceContext serviceContext) throws PortalException;
-
-	public OrderEntry addOrderEntry(long userId, long accountEntryId,
-		java.lang.String purchaseOrderKey, int startDateMonth,
-		int startDateDay, int startDateYear, boolean prorated,
-		int actualStartDateMonth, int actualStartDateDay,
-		int actualStartDateYear, int status,
-		java.lang.String salesforceOpportunityKey,
-		List<OfferingEntry> offeringEntries) throws PortalException;
 
 	/**
 	* Adds the order entry to the database. Also notifies the appropriate model listeners.
@@ -91,6 +79,14 @@ public interface OrderEntryLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public OrderEntry addOrderEntry(OrderEntry orderEntry);
 
+	public OrderEntry addOrderEntry(long userId, long accountEntryId,
+		java.lang.String purchaseOrderKey, int startDateMonth,
+		int startDateDay, int startDateYear, boolean prorated,
+		int actualStartDateMonth, int actualStartDateDay,
+		int actualStartDateYear, int status,
+		java.lang.String salesforceOpportunityKey,
+		List<OfferingEntry> offeringEntries) throws PortalException;
+
 	/**
 	* Creates a new order entry with the primary key. Does not add the order entry to the database.
 	*
@@ -98,17 +94,6 @@ public interface OrderEntryLocalService extends BaseLocalService,
 	* @return the new order entry
 	*/
 	public OrderEntry createOrderEntry(long orderEntryId);
-
-	/**
-	* Deletes the order entry with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param orderEntryId the primary key of the order entry
-	* @return the order entry that was removed
-	* @throws PortalException if a order entry with the primary key could not be found
-	*/
-	@Indexable(type = IndexableType.DELETE)
-	public OrderEntry deleteOrderEntry(long orderEntryId)
-		throws PortalException;
 
 	/**
 	* Deletes the order entry from the database. Also notifies the appropriate model listeners.
@@ -122,13 +107,122 @@ public interface OrderEntryLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
+	* Deletes the order entry with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param orderEntryId the primary key of the order entry
+	* @return the order entry that was removed
+	* @throws PortalException if a order entry with the primary key could not be found
+	*/
+	@Indexable(type = IndexableType.DELETE)
+	public OrderEntry deleteOrderEntry(long orderEntryId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public OrderEntry fetchOrderEntry(long orderEntryId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public OrderEntry getOrderEntry(java.lang.String uuid)
+		throws PortalException;
+
+	/**
+	* Returns the order entry with the primary key.
+	*
+	* @param orderEntryId the primary key of the order entry
+	* @return the order entry
+	* @throws PortalException if a order entry with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public OrderEntry getOrderEntry(long orderEntryId)
+		throws PortalException;
+
+	public OrderEntry renewOrderEntry(long userId, long orderEntryId,
+		int renewCount) throws PortalException;
+
+	/**
+	* Updates the order entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param orderEntry the order entry
+	* @return the order entry that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public OrderEntry updateOrderEntry(OrderEntry orderEntry);
+
+	public OrderEntry updateOrderEntry(long userId, long orderEntryId,
+		long accountEntryId, java.lang.String purchaseOrderKey,
+		int startDateMonth, int startDateDay, int startDateYear,
+		boolean prorated, int actualStartDateMonth, int actualStartDateDay,
+		int actualStartDateYear, java.lang.String salesforceOpportunityKey,
+		List<OfferingEntry> offeringEntries) throws PortalException;
+
+	public OrderEntry updateStatus(long userId, long orderEntryId, int status,
+		ServiceContext serviceContext) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
 	* @throws PortalException
 	*/
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	public DynamicQuery dynamicQuery();
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of order entries.
+	*
+	* @return the number of order entries
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOrderEntriesCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
+		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
+		int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.Long accountEntryId, java.lang.String purchaseOrderKey,
+		int[] statuses, int startDateGTDay, int startDateGTMonth,
+		int startDateGTYear, int startDateLTDay, int startDateLTMonth,
+		int startDateLTYear, java.lang.Boolean prorated,
+		int actualStartDateGTDay, int actualStartDateGTMonth,
+		int actualStartDateGTYear, int actualStartDateLTDay,
+		int actualStartDateLTMonth, int actualStartDateLTYear,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	public List<OrderEntry> addOrderEntriesWithWorkflow(
+		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
+		CorpProject corpProject, PartnerEntry partnerEntry, Address address,
+		AccountWorker accountWorker, List<OrderEntry> orderEntries,
+		ServiceContext serviceContext) throws PortalException;
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -169,35 +263,8 @@ public interface OrderEntryLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public OrderEntry fetchOrderEntry(long orderEntryId);
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OrderEntry> getAccountEntryOrderEntries(long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
 	* Returns a range of all the order entries.
@@ -212,44 +279,6 @@ public interface OrderEntryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OrderEntry> getOrderEntries(int start, int end);
-
-	/**
-	* Returns the number of order entries.
-	*
-	* @return the number of order entries
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOrderEntriesCount();
-
-	/**
-	* Returns the order entry with the primary key.
-	*
-	* @param orderEntryId the primary key of the order entry
-	* @return the order entry
-	* @throws PortalException if a order entry with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public OrderEntry getOrderEntry(long orderEntryId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public OrderEntry getOrderEntry(java.lang.String uuid)
-		throws PortalException;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	public OrderEntry renewOrderEntry(long userId, long orderEntryId,
-		int renewCount) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OrderEntry> search(java.lang.Long createUserId,
@@ -273,43 +302,21 @@ public interface OrderEntryLocalService extends BaseLocalService,
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
 		int end, OrderByComparator obc);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.Long createUserId, int createDateGTDay,
-		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
-		int createDateLTMonth, int createDateLTYear,
-		java.lang.Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear,
-		java.lang.Long accountEntryId, java.lang.String purchaseOrderKey,
-		int[] statuses, int startDateGTDay, int startDateGTMonth,
-		int startDateGTYear, int startDateLTDay, int startDateLTMonth,
-		int startDateLTYear, java.lang.Boolean prorated,
-		int actualStartDateGTDay, int actualStartDateGTMonth,
-		int actualStartDateGTYear, int actualStartDateLTDay,
-		int actualStartDateLTMonth, int actualStartDateLTYear,
-		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params);
-
-	public OrderEntry updateOrderEntry(long userId, long orderEntryId,
-		long accountEntryId, java.lang.String purchaseOrderKey,
-		int startDateMonth, int startDateDay, int startDateYear,
-		boolean prorated, int actualStartDateMonth, int actualStartDateDay,
-		int actualStartDateYear, java.lang.String salesforceOpportunityKey,
-		List<OfferingEntry> offeringEntries) throws PortalException;
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Updates the order entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @param orderEntry the order entry
-	* @return the order entry that was updated
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public OrderEntry updateOrderEntry(OrderEntry orderEntry);
-
-	public OrderEntry updateStatus(long userId, long orderEntryId, int status,
-		ServiceContext serviceContext) throws PortalException;
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
 }

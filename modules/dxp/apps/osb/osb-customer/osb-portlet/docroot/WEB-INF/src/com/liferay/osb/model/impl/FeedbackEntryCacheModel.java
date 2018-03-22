@@ -21,6 +21,7 @@ import com.liferay.osb.model.FeedbackEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -98,7 +99,7 @@ public class FeedbackEntryCacheModel implements CacheModel<FeedbackEntry>,
 		feedbackEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			feedbackEntryImpl.setUserName("");
+			feedbackEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			feedbackEntryImpl.setUserName(userName);
@@ -116,14 +117,14 @@ public class FeedbackEntryCacheModel implements CacheModel<FeedbackEntry>,
 		feedbackEntryImpl.setSatisfied(satisfied);
 
 		if (comments == null) {
-			feedbackEntryImpl.setComments("");
+			feedbackEntryImpl.setComments(StringPool.BLANK);
 		}
 		else {
 			feedbackEntryImpl.setComments(comments);
 		}
 
 		if (pageURL == null) {
-			feedbackEntryImpl.setPageURL("");
+			feedbackEntryImpl.setPageURL(StringPool.BLANK);
 		}
 		else {
 			feedbackEntryImpl.setPageURL(pageURL);
@@ -159,7 +160,7 @@ public class FeedbackEntryCacheModel implements CacheModel<FeedbackEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -174,14 +175,14 @@ public class FeedbackEntryCacheModel implements CacheModel<FeedbackEntry>,
 		objectOutput.writeInt(satisfied);
 
 		if (comments == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(comments);
 		}
 
 		if (pageURL == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(pageURL);

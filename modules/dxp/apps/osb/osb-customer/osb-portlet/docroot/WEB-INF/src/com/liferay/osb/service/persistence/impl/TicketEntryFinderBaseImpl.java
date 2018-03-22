@@ -25,10 +25,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class TicketEntryFinderBaseImpl extends BasePersistenceImpl<TicketEntry> {
-	public TicketEntryFinderBaseImpl() {
-		setModelClass(TicketEntry.class);
-	}
-
 	/**
 	 * Returns the ticket entry persistence.
 	 *

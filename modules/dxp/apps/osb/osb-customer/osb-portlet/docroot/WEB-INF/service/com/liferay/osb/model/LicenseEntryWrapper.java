@@ -136,23 +136,34 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new LicenseEntryWrapper((LicenseEntry)_licenseEntry.clone());
+	public LicenseEntry toEscapedModel() {
+		return new LicenseEntryWrapper(_licenseEntry.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(LicenseEntry licenseEntry) {
-		return _licenseEntry.compareTo(licenseEntry);
+	public LicenseEntry toUnescapedModel() {
+		return new LicenseEntryWrapper(_licenseEntry.toUnescapedModel());
 	}
 
-	/**
-	* Returns the create date of this license entry.
-	*
-	* @return the create date of this license entry
-	*/
 	@Override
-	public Date getCreateDate() {
-		return _licenseEntry.getCreateDate();
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseEntry.getProductEntry();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _licenseEntry.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _licenseEntry.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _licenseEntry.isNew();
 	}
 
 	@Override
@@ -160,39 +171,14 @@ public class LicenseEntryWrapper implements LicenseEntry,
 		return _licenseEntry.getExpandoBridge();
 	}
 
-	/**
-	* Returns the license entry ID of this license entry.
-	*
-	* @return the license entry ID of this license entry
-	*/
 	@Override
-	public long getLicenseEntryId() {
-		return _licenseEntry.getLicenseEntryId();
-	}
-
-	/**
-	* Returns the modified date of this license entry.
-	*
-	* @return the modified date of this license entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _licenseEntry.getModifiedDate();
-	}
-
-	/**
-	* Returns the name of this license entry.
-	*
-	* @return the name of this license entry
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _licenseEntry.getName();
+	public com.liferay.portal.kernel.model.CacheModel<LicenseEntry> toCacheModel() {
+		return _licenseEntry.toCacheModel();
 	}
 
 	@Override
-	public java.lang.String getPortalVersionLabel() {
-		return _licenseEntry.getPortalVersionLabel();
+	public int compareTo(LicenseEntry licenseEntry) {
+		return _licenseEntry.compareTo(licenseEntry);
 	}
 
 	/**
@@ -215,14 +201,9 @@ public class LicenseEntryWrapper implements LicenseEntry,
 		return _licenseEntry.getPortalVersionMin();
 	}
 
-	/**
-	* Returns the primary key of this license entry.
-	*
-	* @return the primary key of this license entry
-	*/
 	@Override
-	public long getPrimaryKey() {
-		return _licenseEntry.getPrimaryKey();
+	public int hashCode() {
+		return _licenseEntry.hashCode();
 	}
 
 	@Override
@@ -231,19 +212,23 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	}
 
 	@Override
-	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseEntry.getProductEntry();
+	public java.lang.Object clone() {
+		return new LicenseEntryWrapper((LicenseEntry)_licenseEntry.clone());
 	}
 
 	/**
-	* Returns the product entry ID of this license entry.
+	* Returns the name of this license entry.
 	*
-	* @return the product entry ID of this license entry
+	* @return the name of this license entry
 	*/
 	@Override
-	public long getProductEntryId() {
-		return _licenseEntry.getProductEntryId();
+	public java.lang.String getName() {
+		return _licenseEntry.getName();
+	}
+
+	@Override
+	public java.lang.String getPortalVersionLabel() {
+		return _licenseEntry.getPortalVersionLabel();
 	}
 
 	/**
@@ -254,16 +239,6 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	@Override
 	public java.lang.String getType() {
 		return _licenseEntry.getType();
-	}
-
-	/**
-	* Returns the user ID of this license entry.
-	*
-	* @return the user ID of this license entry
-	*/
-	@Override
-	public long getUserId() {
-		return _licenseEntry.getUserId();
 	}
 
 	/**
@@ -287,23 +262,73 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	}
 
 	@Override
-	public int hashCode() {
-		return _licenseEntry.hashCode();
+	public java.lang.String toString() {
+		return _licenseEntry.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _licenseEntry.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _licenseEntry.toXmlString();
 	}
 
+	/**
+	* Returns the create date of this license entry.
+	*
+	* @return the create date of this license entry
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _licenseEntry.isEscapedModel();
+	public Date getCreateDate() {
+		return _licenseEntry.getCreateDate();
 	}
 
+	/**
+	* Returns the modified date of this license entry.
+	*
+	* @return the modified date of this license entry
+	*/
 	@Override
-	public boolean isNew() {
-		return _licenseEntry.isNew();
+	public Date getModifiedDate() {
+		return _licenseEntry.getModifiedDate();
+	}
+
+	/**
+	* Returns the license entry ID of this license entry.
+	*
+	* @return the license entry ID of this license entry
+	*/
+	@Override
+	public long getLicenseEntryId() {
+		return _licenseEntry.getLicenseEntryId();
+	}
+
+	/**
+	* Returns the primary key of this license entry.
+	*
+	* @return the primary key of this license entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _licenseEntry.getPrimaryKey();
+	}
+
+	/**
+	* Returns the product entry ID of this license entry.
+	*
+	* @return the product entry ID of this license entry
+	*/
+	@Override
+	public long getProductEntryId() {
+		return _licenseEntry.getProductEntryId();
+	}
+
+	/**
+	* Returns the user ID of this license entry.
+	*
+	* @return the user ID of this license entry
+	*/
+	@Override
+	public long getUserId() {
+		return _licenseEntry.getUserId();
 	}
 
 	@Override
@@ -327,14 +352,14 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_licenseEntry.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_licenseEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_licenseEntry.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_licenseEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -460,31 +485,6 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_licenseEntry.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LicenseEntry> toCacheModel() {
-		return _licenseEntry.toCacheModel();
-	}
-
-	@Override
-	public LicenseEntry toEscapedModel() {
-		return new LicenseEntryWrapper(_licenseEntry.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _licenseEntry.toString();
-	}
-
-	@Override
-	public LicenseEntry toUnescapedModel() {
-		return new LicenseEntryWrapper(_licenseEntry.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _licenseEntry.toXmlString();
 	}
 
 	@Override

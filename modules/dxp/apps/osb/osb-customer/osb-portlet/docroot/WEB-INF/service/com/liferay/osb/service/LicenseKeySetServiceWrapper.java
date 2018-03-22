@@ -55,6 +55,21 @@ public class LicenseKeySetServiceWrapper implements LicenseKeySetService,
 		return _licenseKeySetService.getLicenseKeySet(licenseKeySetId);
 	}
 
+	@Override
+	public com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
+		long licenseKeySetId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeySetService.updateLicenseKeySet(licenseKeySetId, name);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _licenseKeySetService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -63,13 +78,6 @@ public class LicenseKeySetServiceWrapper implements LicenseKeySetService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _licenseKeySetService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
-		long licenseKeySetId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeySetService.updateLicenseKeySet(licenseKeySetId, name);
 	}
 
 	@Override

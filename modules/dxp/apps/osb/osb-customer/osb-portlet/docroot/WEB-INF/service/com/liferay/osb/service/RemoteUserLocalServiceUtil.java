@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,27 @@ public class RemoteUserLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.RemoteUserLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.portal.kernel.model.User fetchUserByEmailAddress(
+		java.lang.String emailAddress)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().fetchUserByEmailAddress(emailAddress);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
 	public static void addOrganizationUsers(long organizationId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addOrganizationUsers(organizationId, userIds);
@@ -55,21 +77,6 @@ public class RemoteUserLocalServiceUtil {
 		getService().deleteRoleUser(roleId, userId);
 	}
 
-	public static com.liferay.portal.kernel.model.User fetchUserByEmailAddress(
-		java.lang.String emailAddress)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().fetchUserByEmailAddress(emailAddress);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
 	public static void unsetOrganizationUsers(long organizationId,
 		long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -82,8 +89,15 @@ public class RemoteUserLocalServiceUtil {
 
 	public static RemoteUserLocalService getService() {
 		if (_service == null) {
-			_service = (RemoteUserLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					RemoteUserLocalService.class.getName());
+
+			if (invokableLocalService instanceof RemoteUserLocalService) {
+				_service = (RemoteUserLocalService)invokableLocalService;
+			}
+			else {
+				_service = new RemoteUserLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(RemoteUserLocalServiceUtil.class,
 				"_service");

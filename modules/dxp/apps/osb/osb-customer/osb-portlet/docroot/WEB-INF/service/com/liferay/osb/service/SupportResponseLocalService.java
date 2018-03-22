@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -54,17 +55,12 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface SupportResponseLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SupportResponseLocalServiceUtil} to access the support response local service. Add custom service methods to {@link com.liferay.osb.service.impl.SupportResponseLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public SupportResponse addSupportResponse(long userId,
-		java.lang.String name, int supportLevel, int severity1Response,
-		int severity1Resolution, int severity2Response,
-		int severity2Resolution, int severity3Response, int severity3Resolution)
-		throws PortalException;
 
 	/**
 	* Adds the support response to the database. Also notifies the appropriate model listeners.
@@ -75,6 +71,12 @@ public interface SupportResponseLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public SupportResponse addSupportResponse(SupportResponse supportResponse);
 
+	public SupportResponse addSupportResponse(long userId,
+		java.lang.String name, int supportLevel, int severity1Response,
+		int severity1Resolution, int severity2Response,
+		int severity2Resolution, int severity3Response, int severity3Resolution)
+		throws PortalException;
+
 	/**
 	* Creates a new support response with the primary key. Does not add the support response to the database.
 	*
@@ -84,11 +86,14 @@ public interface SupportResponseLocalService extends BaseLocalService,
 	public SupportResponse createSupportResponse(long supportResponseId);
 
 	/**
-	* @throws PortalException
+	* Deletes the support response from the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportResponse the support response
+	* @return the support response that was removed
 	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
+	@Indexable(type = IndexableType.DELETE)
+	public SupportResponse deleteSupportResponse(
+		SupportResponse supportResponse);
 
 	/**
 	* Deletes the support response with the primary key from the database. Also notifies the appropriate model listeners.
@@ -101,17 +106,78 @@ public interface SupportResponseLocalService extends BaseLocalService,
 	public SupportResponse deleteSupportResponse(long supportResponseId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportResponse fetchSupportResponse(long supportResponseId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportResponse fetchSupportResponseByName(java.lang.String name);
+
 	/**
-	* Deletes the support response from the database. Also notifies the appropriate model listeners.
+	* Returns the support response with the primary key.
+	*
+	* @param supportResponseId the primary key of the support response
+	* @return the support response
+	* @throws PortalException if a support response with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportResponse getSupportResponse(long supportResponseId)
+		throws PortalException;
+
+	/**
+	* Updates the support response in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param supportResponse the support response
-	* @return the support response that was removed
+	* @return the support response that was updated
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public SupportResponse deleteSupportResponse(
+	@Indexable(type = IndexableType.REINDEX)
+	public SupportResponse updateSupportResponse(
 		SupportResponse supportResponse);
 
+	public SupportResponse updateSupportResponse(long supportResponseId,
+		java.lang.String name, int supportLevel, int severity1Response,
+		int severity1Resolution, int severity2Response,
+		int severity2Resolution, int severity3Response, int severity3Resolution)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
 	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of support responses.
+	*
+	* @return the number of support responses
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSupportResponsesCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -153,6 +219,20 @@ public interface SupportResponseLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
+	* Returns a range of all the support responses.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportResponseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of support responses
+	* @param end the upper bound of the range of support responses (not inclusive)
+	* @return the range of support responses
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<SupportResponse> getSupportResponses(int start, int end);
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -169,77 +249,4 @@ public interface SupportResponseLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportResponse fetchSupportResponse(long supportResponseId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportResponse fetchSupportResponseByName(java.lang.String name);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the support response with the primary key.
-	*
-	* @param supportResponseId the primary key of the support response
-	* @return the support response
-	* @throws PortalException if a support response with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportResponse getSupportResponse(long supportResponseId)
-		throws PortalException;
-
-	/**
-	* Returns a range of all the support responses.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportResponseModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of support responses
-	* @param end the upper bound of the range of support responses (not inclusive)
-	* @return the range of support responses
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<SupportResponse> getSupportResponses(int start, int end);
-
-	/**
-	* Returns the number of support responses.
-	*
-	* @return the number of support responses
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportResponsesCount();
-
-	public SupportResponse updateSupportResponse(long supportResponseId,
-		java.lang.String name, int supportLevel, int severity1Response,
-		int severity1Resolution, int severity2Response,
-		int severity2Resolution, int severity3Response, int severity3Resolution)
-		throws PortalException;
-
-	/**
-	* Updates the support response in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param supportResponse the support response
-	* @return the support response that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public SupportResponse updateSupportResponse(
-		SupportResponse supportResponse);
 }

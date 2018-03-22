@@ -59,13 +59,15 @@ public class SupportWorkerAccountTierLocalServiceWrapper
 	}
 
 	/**
-	* @throws PortalException
+	* Deletes the support worker account tier from the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportWorkerAccountTier the support worker account tier
+	* @return the support worker account tier that was removed
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportWorkerAccountTierLocalService.deletePersistedModel(persistedModel);
+	public com.liferay.osb.model.SupportWorkerAccountTier deleteSupportWorkerAccountTier(
+		com.liferay.osb.model.SupportWorkerAccountTier supportWorkerAccountTier) {
+		return _supportWorkerAccountTierLocalService.deleteSupportWorkerAccountTier(supportWorkerAccountTier);
 	}
 
 	/**
@@ -82,21 +84,96 @@ public class SupportWorkerAccountTierLocalServiceWrapper
 		return _supportWorkerAccountTierLocalService.deleteSupportWorkerAccountTier(supportWorkerAccountTierId);
 	}
 
+	@Override
+	public com.liferay.osb.model.SupportWorkerAccountTier fetchSupportWorkerAccountTier(
+		long supportWorkerAccountTierId) {
+		return _supportWorkerAccountTierLocalService.fetchSupportWorkerAccountTier(supportWorkerAccountTierId);
+	}
+
 	/**
-	* Deletes the support worker account tier from the database. Also notifies the appropriate model listeners.
+	* Returns the support worker account tier with the primary key.
 	*
-	* @param supportWorkerAccountTier the support worker account tier
-	* @return the support worker account tier that was removed
+	* @param supportWorkerAccountTierId the primary key of the support worker account tier
+	* @return the support worker account tier
+	* @throws PortalException if a support worker account tier with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.osb.model.SupportWorkerAccountTier deleteSupportWorkerAccountTier(
+	public com.liferay.osb.model.SupportWorkerAccountTier getSupportWorkerAccountTier(
+		long supportWorkerAccountTierId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportWorkerAccountTierLocalService.getSupportWorkerAccountTier(supportWorkerAccountTierId);
+	}
+
+	/**
+	* Updates the support worker account tier in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param supportWorkerAccountTier the support worker account tier
+	* @return the support worker account tier that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.SupportWorkerAccountTier updateSupportWorkerAccountTier(
 		com.liferay.osb.model.SupportWorkerAccountTier supportWorkerAccountTier) {
-		return _supportWorkerAccountTierLocalService.deleteSupportWorkerAccountTier(supportWorkerAccountTier);
+		return _supportWorkerAccountTierLocalService.updateSupportWorkerAccountTier(supportWorkerAccountTier);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _supportWorkerAccountTierLocalService.getActionableDynamicQuery();
 	}
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _supportWorkerAccountTierLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _supportWorkerAccountTierLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportWorkerAccountTierLocalService.deletePersistedModel(persistedModel);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportWorkerAccountTierLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of support worker account tiers.
+	*
+	* @return the number of support worker account tiers
+	*/
+	@Override
+	public int getSupportWorkerAccountTiersCount() {
+		return _supportWorkerAccountTierLocalService.getSupportWorkerAccountTiersCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _supportWorkerAccountTierLocalService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _supportWorkerAccountTierLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -154,6 +231,30 @@ public class SupportWorkerAccountTierLocalServiceWrapper
 	}
 
 	/**
+	* Returns a range of all the support worker account tiers.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportWorkerAccountTierModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of support worker account tiers
+	* @param end the upper bound of the range of support worker account tiers (not inclusive)
+	* @return the range of support worker account tiers
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorkerAccountTier> getSupportWorkerAccountTiers(
+		int start, int end) {
+		return _supportWorkerAccountTierLocalService.getSupportWorkerAccountTiers(start,
+			end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorkerAccountTier> getSupportWorkerAccountTiers(
+		long supportWorkerId) {
+		return _supportWorkerAccountTierLocalService.getSupportWorkerAccountTiers(supportWorkerId);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -181,103 +282,10 @@ public class SupportWorkerAccountTierLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.model.SupportWorkerAccountTier fetchSupportWorkerAccountTier(
-		long supportWorkerAccountTierId) {
-		return _supportWorkerAccountTierLocalService.fetchSupportWorkerAccountTier(supportWorkerAccountTierId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _supportWorkerAccountTierLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _supportWorkerAccountTierLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _supportWorkerAccountTierLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportWorkerAccountTierLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the support worker account tier with the primary key.
-	*
-	* @param supportWorkerAccountTierId the primary key of the support worker account tier
-	* @return the support worker account tier
-	* @throws PortalException if a support worker account tier with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.SupportWorkerAccountTier getSupportWorkerAccountTier(
-		long supportWorkerAccountTierId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportWorkerAccountTierLocalService.getSupportWorkerAccountTier(supportWorkerAccountTierId);
-	}
-
-	/**
-	* Returns a range of all the support worker account tiers.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportWorkerAccountTierModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of support worker account tiers
-	* @param end the upper bound of the range of support worker account tiers (not inclusive)
-	* @return the range of support worker account tiers
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportWorkerAccountTier> getSupportWorkerAccountTiers(
-		int start, int end) {
-		return _supportWorkerAccountTierLocalService.getSupportWorkerAccountTiers(start,
-			end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportWorkerAccountTier> getSupportWorkerAccountTiers(
-		long supportWorkerId) {
-		return _supportWorkerAccountTierLocalService.getSupportWorkerAccountTiers(supportWorkerId);
-	}
-
-	/**
-	* Returns the number of support worker account tiers.
-	*
-	* @return the number of support worker account tiers
-	*/
-	@Override
-	public int getSupportWorkerAccountTiersCount() {
-		return _supportWorkerAccountTierLocalService.getSupportWorkerAccountTiersCount();
-	}
-
-	@Override
 	public void setSupportWorkerAccountTiers(long supportWorkerId,
 		int[] accountTiers) {
 		_supportWorkerAccountTierLocalService.setSupportWorkerAccountTiers(supportWorkerId,
 			accountTiers);
-	}
-
-	/**
-	* Updates the support worker account tier in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param supportWorkerAccountTier the support worker account tier
-	* @return the support worker account tier that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.SupportWorkerAccountTier updateSupportWorkerAccountTier(
-		com.liferay.osb.model.SupportWorkerAccountTier supportWorkerAccountTier) {
-		return _supportWorkerAccountTierLocalService.updateSupportWorkerAccountTier(supportWorkerAccountTier);
 	}
 
 	@Override

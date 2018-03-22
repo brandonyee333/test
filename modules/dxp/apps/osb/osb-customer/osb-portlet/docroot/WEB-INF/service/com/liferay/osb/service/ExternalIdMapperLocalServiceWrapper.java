@@ -92,9 +92,59 @@ public class ExternalIdMapperLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteExternalIdMapper(long classNameId, long classPK, int type) {
-		_externalIdMapperLocalService.deleteExternalIdMapper(classNameId,
-			classPK, type);
+	public com.liferay.osb.model.ExternalIdMapper fetchExternalIdMapper(
+		long externalIdMapperId) {
+		return _externalIdMapperLocalService.fetchExternalIdMapper(externalIdMapperId);
+	}
+
+	/**
+	* Returns the external ID mapper with the primary key.
+	*
+	* @param externalIdMapperId the primary key of the external ID mapper
+	* @return the external ID mapper
+	* @throws PortalException if a external ID mapper with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.ExternalIdMapper getExternalIdMapper(
+		long externalIdMapperId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _externalIdMapperLocalService.getExternalIdMapper(externalIdMapperId);
+	}
+
+	/**
+	* Updates the external ID mapper in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param externalIdMapper the external ID mapper
+	* @return the external ID mapper that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.ExternalIdMapper updateExternalIdMapper(
+		com.liferay.osb.model.ExternalIdMapper externalIdMapper) {
+		return _externalIdMapperLocalService.updateExternalIdMapper(externalIdMapper);
+	}
+
+	@Override
+	public com.liferay.osb.model.ExternalIdMapper updateExternalIdMapper(
+		long externalIdMapperId, long classNameId, long classPK, int type,
+		java.lang.String externalId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _externalIdMapperLocalService.updateExternalIdMapper(externalIdMapperId,
+			classNameId, classPK, type, externalId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _externalIdMapperLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _externalIdMapperLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _externalIdMapperLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	/**
@@ -108,8 +158,38 @@ public class ExternalIdMapperLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _externalIdMapperLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _externalIdMapperLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of external ID mappers.
+	*
+	* @return the number of external ID mappers
+	*/
+	@Override
+	public int getExternalIdMappersCount() {
+		return _externalIdMapperLocalService.getExternalIdMappersCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _externalIdMapperLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _externalIdMapperLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -167,58 +247,6 @@ public class ExternalIdMapperLocalServiceWrapper
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _externalIdMapperLocalService.dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _externalIdMapperLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
-	}
-
-	@Override
-	public com.liferay.osb.model.ExternalIdMapper fetchExternalIdMapper(
-		long externalIdMapperId) {
-		return _externalIdMapperLocalService.fetchExternalIdMapper(externalIdMapperId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _externalIdMapperLocalService.getActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the external ID mapper with the primary key.
-	*
-	* @param externalIdMapperId the primary key of the external ID mapper
-	* @return the external ID mapper
-	* @throws PortalException if a external ID mapper with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.ExternalIdMapper getExternalIdMapper(
-		long externalIdMapperId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _externalIdMapperLocalService.getExternalIdMapper(externalIdMapperId);
-	}
-
-	/**
 	* Returns a range of all the external ID mappers.
 	*
 	* <p>
@@ -250,56 +278,36 @@ public class ExternalIdMapperLocalServiceWrapper
 	}
 
 	/**
-	* Returns the number of external ID mappers.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of external ID mappers
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public int getExternalIdMappersCount() {
-		return _externalIdMapperLocalService.getExternalIdMappersCount();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _externalIdMapperLocalService.getIndexableActionableDynamicQuery();
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _externalIdMapperLocalService.dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Returns the OSGi service identifier.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the OSGi service identifier
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _externalIdMapperLocalService.getOSGiServiceIdentifier();
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _externalIdMapperLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _externalIdMapperLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the external ID mapper in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param externalIdMapper the external ID mapper
-	* @return the external ID mapper that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.ExternalIdMapper updateExternalIdMapper(
-		com.liferay.osb.model.ExternalIdMapper externalIdMapper) {
-		return _externalIdMapperLocalService.updateExternalIdMapper(externalIdMapper);
-	}
-
-	@Override
-	public com.liferay.osb.model.ExternalIdMapper updateExternalIdMapper(
-		long externalIdMapperId, long classNameId, long classPK, int type,
-		java.lang.String externalId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _externalIdMapperLocalService.updateExternalIdMapper(externalIdMapperId,
-			classNameId, classPK, type, externalId);
+	public void deleteExternalIdMapper(long classNameId, long classPK, int type) {
+		_externalIdMapperLocalService.deleteExternalIdMapper(classNameId,
+			classPK, type);
 	}
 
 	@Override

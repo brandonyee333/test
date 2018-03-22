@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -636,7 +637,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -652,7 +653,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -694,7 +695,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -706,7 +707,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getModifiedUserName() {
 		if (_modifiedUserName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _modifiedUserName;
@@ -887,7 +888,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getAccountEntryName() {
 		if (_accountEntryName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _accountEntryName;
@@ -903,7 +904,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getLicenseEntryName() {
 		if (_licenseEntryName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _licenseEntryName;
@@ -919,7 +920,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getLicenseEntryType() {
 		if (_licenseEntryType == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _licenseEntryType;
@@ -956,7 +957,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getProductEntryName() {
 		if (_productEntryName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _productEntryName;
@@ -982,7 +983,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getProductId() {
 		if (_productId == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _productId;
@@ -1019,7 +1020,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getProductVersionLabel() {
 		if (_productVersionLabel == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _productVersionLabel;
@@ -1058,7 +1059,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getOwner() {
 		if (_owner == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _owner;
@@ -1128,7 +1129,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getDescription() {
 		if (_description == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _description;
@@ -1144,7 +1145,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getHostName() {
 		if (_hostName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _hostName;
@@ -1160,7 +1161,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getIpAddresses() {
 		if (_ipAddresses == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _ipAddresses;
@@ -1176,7 +1177,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getMacAddresses() {
 		if (_macAddresses == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _macAddresses;
@@ -1192,7 +1193,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getServerId() {
 		if (_serverId == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _serverId;
@@ -1218,7 +1219,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getKey() {
 		if (_key == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _key;
@@ -1256,7 +1257,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public String getAdditionalInfo() {
 		if (_additionalInfo == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _additionalInfo;

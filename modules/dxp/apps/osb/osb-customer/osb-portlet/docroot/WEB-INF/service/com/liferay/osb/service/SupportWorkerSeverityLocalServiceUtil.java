@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -64,12 +65,14 @@ public class SupportWorkerSeverityLocalServiceUtil {
 	}
 
 	/**
-	* @throws PortalException
+	* Deletes the support worker severity from the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportWorkerSeverity the support worker severity
+	* @return the support worker severity that was removed
 	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
+	public static com.liferay.osb.model.SupportWorkerSeverity deleteSupportWorkerSeverity(
+		com.liferay.osb.model.SupportWorkerSeverity supportWorkerSeverity) {
+		return getService().deleteSupportWorkerSeverity(supportWorkerSeverity);
 	}
 
 	/**
@@ -85,19 +88,84 @@ public class SupportWorkerSeverityLocalServiceUtil {
 		return getService().deleteSupportWorkerSeverity(supportWorkerSeverityId);
 	}
 
+	public static com.liferay.osb.model.SupportWorkerSeverity fetchSupportWorkerSeverity(
+		long supportWorkerSeverityId) {
+		return getService().fetchSupportWorkerSeverity(supportWorkerSeverityId);
+	}
+
 	/**
-	* Deletes the support worker severity from the database. Also notifies the appropriate model listeners.
+	* Returns the support worker severity with the primary key.
+	*
+	* @param supportWorkerSeverityId the primary key of the support worker severity
+	* @return the support worker severity
+	* @throws PortalException if a support worker severity with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.SupportWorkerSeverity getSupportWorkerSeverity(
+		long supportWorkerSeverityId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getSupportWorkerSeverity(supportWorkerSeverityId);
+	}
+
+	/**
+	* Updates the support worker severity in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param supportWorkerSeverity the support worker severity
-	* @return the support worker severity that was removed
+	* @return the support worker severity that was updated
 	*/
-	public static com.liferay.osb.model.SupportWorkerSeverity deleteSupportWorkerSeverity(
+	public static com.liferay.osb.model.SupportWorkerSeverity updateSupportWorkerSeverity(
 		com.liferay.osb.model.SupportWorkerSeverity supportWorkerSeverity) {
-		return getService().deleteSupportWorkerSeverity(supportWorkerSeverity);
+		return getService().updateSupportWorkerSeverity(supportWorkerSeverity);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of support worker severities.
+	*
+	* @return the number of support worker severities
+	*/
+	public static int getSupportWorkerSeveritiesCount() {
+		return getService().getSupportWorkerSeveritiesCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -151,6 +219,27 @@ public class SupportWorkerSeverityLocalServiceUtil {
 	}
 
 	/**
+	* Returns a range of all the support worker severities.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportWorkerSeverityModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of support worker severities
+	* @param end the upper bound of the range of support worker severities (not inclusive)
+	* @return the range of support worker severities
+	*/
+	public static java.util.List<com.liferay.osb.model.SupportWorkerSeverity> getSupportWorkerSeverities(
+		int start, int end) {
+		return getService().getSupportWorkerSeverities(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.SupportWorkerSeverity> getSupportWorkerSeverities(
+		long supportWorkerId) {
+		return getService().getSupportWorkerSeverities(supportWorkerId);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -174,91 +263,9 @@ public class SupportWorkerSeverityLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.model.SupportWorkerSeverity fetchSupportWorkerSeverity(
-		long supportWorkerSeverityId) {
-		return getService().fetchSupportWorkerSeverity(supportWorkerSeverityId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns a range of all the support worker severities.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportWorkerSeverityModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of support worker severities
-	* @param end the upper bound of the range of support worker severities (not inclusive)
-	* @return the range of support worker severities
-	*/
-	public static java.util.List<com.liferay.osb.model.SupportWorkerSeverity> getSupportWorkerSeverities(
-		int start, int end) {
-		return getService().getSupportWorkerSeverities(start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.SupportWorkerSeverity> getSupportWorkerSeverities(
-		long supportWorkerId) {
-		return getService().getSupportWorkerSeverities(supportWorkerId);
-	}
-
-	/**
-	* Returns the number of support worker severities.
-	*
-	* @return the number of support worker severities
-	*/
-	public static int getSupportWorkerSeveritiesCount() {
-		return getService().getSupportWorkerSeveritiesCount();
-	}
-
-	/**
-	* Returns the support worker severity with the primary key.
-	*
-	* @param supportWorkerSeverityId the primary key of the support worker severity
-	* @return the support worker severity
-	* @throws PortalException if a support worker severity with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.SupportWorkerSeverity getSupportWorkerSeverity(
-		long supportWorkerSeverityId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSupportWorkerSeverity(supportWorkerSeverityId);
-	}
-
 	public static void setSupportWorkerSeverities(long supportWorkerId,
 		int[] severities) {
 		getService().setSupportWorkerSeverities(supportWorkerId, severities);
-	}
-
-	/**
-	* Updates the support worker severity in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param supportWorkerSeverity the support worker severity
-	* @return the support worker severity that was updated
-	*/
-	public static com.liferay.osb.model.SupportWorkerSeverity updateSupportWorkerSeverity(
-		com.liferay.osb.model.SupportWorkerSeverity supportWorkerSeverity) {
-		return getService().updateSupportWorkerSeverity(supportWorkerSeverity);
 	}
 
 	public static void clearService() {
@@ -267,8 +274,15 @@ public class SupportWorkerSeverityLocalServiceUtil {
 
 	public static SupportWorkerSeverityLocalService getService() {
 		if (_service == null) {
-			_service = (SupportWorkerSeverityLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					SupportWorkerSeverityLocalService.class.getName());
+
+			if (invokableLocalService instanceof SupportWorkerSeverityLocalService) {
+				_service = (SupportWorkerSeverityLocalService)invokableLocalService;
+			}
+			else {
+				_service = new SupportWorkerSeverityLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(SupportWorkerSeverityLocalServiceUtil.class,
 				"_service");

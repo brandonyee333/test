@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
@@ -298,7 +299,7 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 		msg.append("userId=");
 		msg.append(userId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountCustomerException(msg.toString());
 	}
@@ -349,7 +350,7 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 		msg.append("userId=");
 		msg.append(userId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountCustomerException(msg.toString());
 	}
@@ -812,7 +813,7 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountCustomerException(msg.toString());
 	}
@@ -863,7 +864,7 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountCustomerException(msg.toString());
 	}
@@ -1142,7 +1143,7 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 			msg.append(", accountEntryId=");
 			msg.append(accountEntryId);
 
-			msg.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -1576,7 +1577,7 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 		msg.append(", role=");
 		msg.append(role);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountCustomerException(msg.toString());
 	}
@@ -1632,7 +1633,7 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 		msg.append(", role=");
 		msg.append(role);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountCustomerException(msg.toString());
 	}
@@ -1946,15 +1947,15 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 			query.append(_FINDER_COLUMN_U_R_USERID_2);
 
 			if (roles.length > 0) {
-				query.append("(");
+				query.append(StringPool.OPEN_PARENTHESIS);
 
 				query.append(_FINDER_COLUMN_U_R_ROLE_7);
 
 				query.append(StringUtil.merge(roles));
 
-				query.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 
-				query.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 			}
 
 			query.setStringAt(removeConjunction(query.stringAt(query.index() -
@@ -2115,15 +2116,15 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 			query.append(_FINDER_COLUMN_U_R_USERID_2);
 
 			if (roles.length > 0) {
-				query.append("(");
+				query.append(StringPool.OPEN_PARENTHESIS);
 
 				query.append(_FINDER_COLUMN_U_R_ROLE_7);
 
 				query.append(StringUtil.merge(roles));
 
-				query.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 
-				query.append(")");
+				query.append(StringPool.CLOSE_PARENTHESIS);
 			}
 
 			query.setStringAt(removeConjunction(query.stringAt(query.index() -
@@ -2383,7 +2384,7 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 		msg.append(", role=");
 		msg.append(role);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountCustomerException(msg.toString());
 	}
@@ -2439,7 +2440,7 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 		msg.append(", role=");
 		msg.append(role);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountCustomerException(msg.toString());
 	}
@@ -3228,12 +3229,12 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(",");
+			query.append(StringPool.COMMA);
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
 		String sql = query.toString();
 

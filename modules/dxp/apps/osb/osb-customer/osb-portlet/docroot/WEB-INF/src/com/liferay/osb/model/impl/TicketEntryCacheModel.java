@@ -21,6 +21,7 @@ import com.liferay.osb.model.TicketEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -165,7 +166,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		ticketEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			ticketEntryImpl.setUserName("");
+			ticketEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ticketEntryImpl.setUserName(userName);
@@ -193,7 +194,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		ticketEntryImpl.setSupportRegionId(supportRegionId);
 
 		if (languageId == null) {
-			ticketEntryImpl.setLanguageId("");
+			ticketEntryImpl.setLanguageId(StringPool.BLANK);
 		}
 		else {
 			ticketEntryImpl.setLanguageId(languageId);
@@ -202,21 +203,21 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		ticketEntryImpl.setTicketId(ticketId);
 
 		if (subject == null) {
-			ticketEntryImpl.setSubject("");
+			ticketEntryImpl.setSubject(StringPool.BLANK);
 		}
 		else {
 			ticketEntryImpl.setSubject(subject);
 		}
 
 		if (description == null) {
-			ticketEntryImpl.setDescription("");
+			ticketEntryImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			ticketEntryImpl.setDescription(description);
 		}
 
 		if (reproductionSteps == null) {
-			ticketEntryImpl.setReproductionSteps("");
+			ticketEntryImpl.setReproductionSteps(StringPool.BLANK);
 		}
 		else {
 			ticketEntryImpl.setReproductionSteps(reproductionSteps);
@@ -228,7 +229,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		ticketEntryImpl.setEscalationLevel(escalationLevel);
 
 		if (envName == null) {
-			ticketEntryImpl.setEnvName("");
+			ticketEntryImpl.setEnvName(StringPool.BLANK);
 		}
 		else {
 			ticketEntryImpl.setEnvName(envName);
@@ -237,7 +238,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		ticketEntryImpl.setEnvOS(envOS);
 
 		if (envOSCustom == null) {
-			ticketEntryImpl.setEnvOSCustom("");
+			ticketEntryImpl.setEnvOSCustom(StringPool.BLANK);
 		}
 		else {
 			ticketEntryImpl.setEnvOSCustom(envOSCustom);
@@ -250,7 +251,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		ticketEntryImpl.setEnvBrowser(envBrowser);
 
 		if (envBrowserCustom == null) {
-			ticketEntryImpl.setEnvBrowserCustom("");
+			ticketEntryImpl.setEnvBrowserCustom(StringPool.BLANK);
 		}
 		else {
 			ticketEntryImpl.setEnvBrowserCustom(envBrowserCustom);
@@ -259,7 +260,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		ticketEntryImpl.setEnvCS(envCS);
 
 		if (envSearch == null) {
-			ticketEntryImpl.setEnvSearch("");
+			ticketEntryImpl.setEnvSearch(StringPool.BLANK);
 		}
 		else {
 			ticketEntryImpl.setEnvSearch(envSearch);
@@ -269,7 +270,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		ticketEntryImpl.setSubcomponent(subcomponent);
 
 		if (subcomponentCustom == null) {
-			ticketEntryImpl.setSubcomponentCustom("");
+			ticketEntryImpl.setSubcomponentCustom(StringPool.BLANK);
 		}
 		else {
 			ticketEntryImpl.setSubcomponentCustom(subcomponentCustom);
@@ -400,7 +401,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -422,7 +423,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		objectOutput.writeLong(supportRegionId);
 
 		if (languageId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(languageId);
@@ -431,21 +432,21 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		objectOutput.writeLong(ticketId);
 
 		if (subject == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(subject);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (reproductionSteps == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(reproductionSteps);
@@ -460,7 +461,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		objectOutput.writeInt(escalationLevel);
 
 		if (envName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(envName);
@@ -469,7 +470,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		objectOutput.writeInt(envOS);
 
 		if (envOSCustom == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(envOSCustom);
@@ -486,7 +487,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		objectOutput.writeInt(envBrowser);
 
 		if (envBrowserCustom == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(envBrowserCustom);
@@ -495,7 +496,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		objectOutput.writeInt(envCS);
 
 		if (envSearch == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(envSearch);
@@ -506,7 +507,7 @@ public class TicketEntryCacheModel implements CacheModel<TicketEntry>,
 		objectOutput.writeInt(subcomponent);
 
 		if (subcomponentCustom == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(subcomponentCustom);

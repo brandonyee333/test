@@ -39,16 +39,6 @@ public class AccountCallServiceWrapper implements AccountCallService,
 		return _accountCallService.deleteAccountCall(accountCallId);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _accountCallService.getOSGiServiceIdentifier();
-	}
-
 	@Override
 	public com.liferay.osb.model.AccountCall updateAccountCall(
 		long accountCallId, long accountEntryId, int type, int callDateMonth,
@@ -61,6 +51,23 @@ public class AccountCallServiceWrapper implements AccountCallService,
 			accountEntryId, type, callDateMonth, callDateDay, callDateYear,
 			callDateHour, callDateMinute, callLength, summary, clientsPresent,
 			notes, actionItems);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountCallService.invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _accountCallService.getOSGiServiceIdentifier();
 	}
 
 	@Override

@@ -192,23 +192,59 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new TicketFeedbackWrapper((TicketFeedback)_ticketFeedback.clone());
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketFeedback.getTicketEntry();
+	}
+
+	@Override
+	public TicketFeedback toEscapedModel() {
+		return new TicketFeedbackWrapper(_ticketFeedback.toEscapedModel());
+	}
+
+	@Override
+	public TicketFeedback toUnescapedModel() {
+		return new TicketFeedbackWrapper(_ticketFeedback.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _ticketFeedback.isCachedModel();
+	}
+
+	@Override
+	public boolean isClosed() {
+		return _ticketFeedback.isClosed();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _ticketFeedback.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _ticketFeedback.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ticketFeedback.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TicketFeedback> toCacheModel() {
+		return _ticketFeedback.toCacheModel();
+	}
+
+	@Override
+	public double getAverageRating() {
+		return _ticketFeedback.getAverageRating();
 	}
 
 	@Override
 	public int compareTo(TicketFeedback ticketFeedback) {
 		return _ticketFeedback.compareTo(ticketFeedback);
-	}
-
-	/**
-	* Returns the account entry ID of this ticket feedback.
-	*
-	* @return the account entry ID of this ticket feedback
-	*/
-	@Override
-	public long getAccountEntryId() {
-		return _ticketFeedback.getAccountEntryId();
 	}
 
 	/**
@@ -221,11 +257,6 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 		return _ticketFeedback.getAnswer1();
 	}
 
-	@Override
-	public java.lang.String getAnswer1Label() {
-		return _ticketFeedback.getAnswer1Label();
-	}
-
 	/**
 	* Returns the answer2 of this ticket feedback.
 	*
@@ -234,11 +265,6 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	@Override
 	public int getAnswer2() {
 		return _ticketFeedback.getAnswer2();
-	}
-
-	@Override
-	public java.lang.String getAnswer2Label() {
-		return _ticketFeedback.getAnswer2Label();
 	}
 
 	/**
@@ -251,71 +277,6 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 		return _ticketFeedback.getAnswer3();
 	}
 
-	@Override
-	public java.lang.String getAnswer3Label() {
-		return _ticketFeedback.getAnswer3Label();
-	}
-
-	@Override
-	public double getAverageRating() {
-		return _ticketFeedback.getAverageRating();
-	}
-
-	@Override
-	public java.lang.String getAverageRatingDisplay() {
-		return _ticketFeedback.getAverageRatingDisplay();
-	}
-
-	/**
-	* Returns the comments of this ticket feedback.
-	*
-	* @return the comments of this ticket feedback
-	*/
-	@Override
-	public java.lang.String getComments() {
-		return _ticketFeedback.getComments();
-	}
-
-	/**
-	* Returns the create date of this ticket feedback.
-	*
-	* @return the create date of this ticket feedback
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _ticketFeedback.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ticketFeedback.getExpandoBridge();
-	}
-
-	/**
-	* Returns the modified date of this ticket feedback.
-	*
-	* @return the modified date of this ticket feedback
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _ticketFeedback.getModifiedDate();
-	}
-
-	/**
-	* Returns the primary key of this ticket feedback.
-	*
-	* @return the primary key of this ticket feedback
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _ticketFeedback.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ticketFeedback.getPrimaryKeyObj();
-	}
-
 	/**
 	* Returns the rating1 of this ticket feedback.
 	*
@@ -324,11 +285,6 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	@Override
 	public int getRating1() {
 		return _ticketFeedback.getRating1();
-	}
-
-	@Override
-	public java.lang.String getRating1Label() {
-		return _ticketFeedback.getRating1Label();
 	}
 
 	/**
@@ -341,11 +297,6 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 		return _ticketFeedback.getRating2();
 	}
 
-	@Override
-	public java.lang.String getRating2Label() {
-		return _ticketFeedback.getRating2Label();
-	}
-
 	/**
 	* Returns the rating3 of this ticket feedback.
 	*
@@ -354,11 +305,6 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	@Override
 	public int getRating3() {
 		return _ticketFeedback.getRating3();
-	}
-
-	@Override
-	public java.lang.String getRating3Label() {
-		return _ticketFeedback.getRating3Label();
 	}
 
 	/**
@@ -371,11 +317,6 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 		return _ticketFeedback.getRating4();
 	}
 
-	@Override
-	public java.lang.String getRating4Label() {
-		return _ticketFeedback.getRating4Label();
-	}
-
 	/**
 	* Returns the satisfied of this ticket feedback.
 	*
@@ -384,11 +325,6 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	@Override
 	public int getSatisfied() {
 		return _ticketFeedback.getSatisfied();
-	}
-
-	@Override
-	public java.lang.String getSatisfiedLabel() {
-		return _ticketFeedback.getSatisfiedLabel();
 	}
 
 	/**
@@ -412,9 +348,143 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	}
 
 	@Override
-	public TicketEntry getTicketEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketFeedback.getTicketEntry();
+	public int hashCode() {
+		return _ticketFeedback.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ticketFeedback.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new TicketFeedbackWrapper((TicketFeedback)_ticketFeedback.clone());
+	}
+
+	@Override
+	public java.lang.String getAnswer1Label() {
+		return _ticketFeedback.getAnswer1Label();
+	}
+
+	@Override
+	public java.lang.String getAnswer2Label() {
+		return _ticketFeedback.getAnswer2Label();
+	}
+
+	@Override
+	public java.lang.String getAnswer3Label() {
+		return _ticketFeedback.getAnswer3Label();
+	}
+
+	@Override
+	public java.lang.String getAverageRatingDisplay() {
+		return _ticketFeedback.getAverageRatingDisplay();
+	}
+
+	/**
+	* Returns the comments of this ticket feedback.
+	*
+	* @return the comments of this ticket feedback
+	*/
+	@Override
+	public java.lang.String getComments() {
+		return _ticketFeedback.getComments();
+	}
+
+	@Override
+	public java.lang.String getRating1Label() {
+		return _ticketFeedback.getRating1Label();
+	}
+
+	@Override
+	public java.lang.String getRating2Label() {
+		return _ticketFeedback.getRating2Label();
+	}
+
+	@Override
+	public java.lang.String getRating3Label() {
+		return _ticketFeedback.getRating3Label();
+	}
+
+	@Override
+	public java.lang.String getRating4Label() {
+		return _ticketFeedback.getRating4Label();
+	}
+
+	@Override
+	public java.lang.String getSatisfiedLabel() {
+		return _ticketFeedback.getSatisfiedLabel();
+	}
+
+	/**
+	* Returns the user name of this ticket feedback.
+	*
+	* @return the user name of this ticket feedback
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _ticketFeedback.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this ticket feedback.
+	*
+	* @return the user uuid of this ticket feedback
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _ticketFeedback.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _ticketFeedback.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ticketFeedback.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this ticket feedback.
+	*
+	* @return the create date of this ticket feedback
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _ticketFeedback.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this ticket feedback.
+	*
+	* @return the modified date of this ticket feedback
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _ticketFeedback.getModifiedDate();
+	}
+
+	/**
+	* Returns the account entry ID of this ticket feedback.
+	*
+	* @return the account entry ID of this ticket feedback
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _ticketFeedback.getAccountEntryId();
+	}
+
+	/**
+	* Returns the primary key of this ticket feedback.
+	*
+	* @return the primary key of this ticket feedback
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _ticketFeedback.getPrimaryKey();
 	}
 
 	/**
@@ -445,51 +515,6 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	@Override
 	public long getUserId() {
 		return _ticketFeedback.getUserId();
-	}
-
-	/**
-	* Returns the user name of this ticket feedback.
-	*
-	* @return the user name of this ticket feedback
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _ticketFeedback.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this ticket feedback.
-	*
-	* @return the user uuid of this ticket feedback
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _ticketFeedback.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _ticketFeedback.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _ticketFeedback.isCachedModel();
-	}
-
-	@Override
-	public boolean isClosed() {
-		return _ticketFeedback.isClosed();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _ticketFeedback.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _ticketFeedback.isNew();
 	}
 
 	@Override
@@ -563,14 +588,14 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_ticketFeedback.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ticketFeedback.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ticketFeedback.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_ticketFeedback.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -726,31 +751,6 @@ public class TicketFeedbackWrapper implements TicketFeedback,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_ticketFeedback.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketFeedback> toCacheModel() {
-		return _ticketFeedback.toCacheModel();
-	}
-
-	@Override
-	public TicketFeedback toEscapedModel() {
-		return new TicketFeedbackWrapper(_ticketFeedback.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ticketFeedback.toString();
-	}
-
-	@Override
-	public TicketFeedback toUnescapedModel() {
-		return new TicketFeedbackWrapper(_ticketFeedback.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ticketFeedback.toXmlString();
 	}
 
 	@Override

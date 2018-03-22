@@ -108,8 +108,38 @@ public class TicketInformationWrapper implements TicketInformation,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new TicketInformationWrapper((TicketInformation)_ticketInformation.clone());
+	public TicketInformation toEscapedModel() {
+		return new TicketInformationWrapper(_ticketInformation.toEscapedModel());
+	}
+
+	@Override
+	public TicketInformation toUnescapedModel() {
+		return new TicketInformationWrapper(_ticketInformation.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _ticketInformation.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _ticketInformation.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _ticketInformation.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ticketInformation.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TicketInformation> toCacheModel() {
+		return _ticketInformation.toCacheModel();
 	}
 
 	@Override
@@ -117,14 +147,19 @@ public class TicketInformationWrapper implements TicketInformation,
 		return _ticketInformation.compareTo(ticketInformation);
 	}
 
-	/**
-	* Returns the create date of this ticket information.
-	*
-	* @return the create date of this ticket information
-	*/
 	@Override
-	public Date getCreateDate() {
-		return _ticketInformation.getCreateDate();
+	public int hashCode() {
+		return _ticketInformation.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ticketInformation.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new TicketInformationWrapper((TicketInformation)_ticketInformation.clone());
 	}
 
 	/**
@@ -138,18 +173,23 @@ public class TicketInformationWrapper implements TicketInformation,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ticketInformation.getExpandoBridge();
+	public java.lang.String toString() {
+		return _ticketInformation.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ticketInformation.toXmlString();
 	}
 
 	/**
-	* Returns the field ID of this ticket information.
+	* Returns the create date of this ticket information.
 	*
-	* @return the field ID of this ticket information
+	* @return the create date of this ticket information
 	*/
 	@Override
-	public long getFieldId() {
-		return _ticketInformation.getFieldId();
+	public Date getCreateDate() {
+		return _ticketInformation.getCreateDate();
 	}
 
 	/**
@@ -163,6 +203,16 @@ public class TicketInformationWrapper implements TicketInformation,
 	}
 
 	/**
+	* Returns the field ID of this ticket information.
+	*
+	* @return the field ID of this ticket information
+	*/
+	@Override
+	public long getFieldId() {
+		return _ticketInformation.getFieldId();
+	}
+
+	/**
 	* Returns the primary key of this ticket information.
 	*
 	* @return the primary key of this ticket information
@@ -170,11 +220,6 @@ public class TicketInformationWrapper implements TicketInformation,
 	@Override
 	public long getPrimaryKey() {
 		return _ticketInformation.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ticketInformation.getPrimaryKeyObj();
 	}
 
 	/**
@@ -195,26 +240,6 @@ public class TicketInformationWrapper implements TicketInformation,
 	@Override
 	public long getTicketInformationId() {
 		return _ticketInformation.getTicketInformationId();
-	}
-
-	@Override
-	public int hashCode() {
-		return _ticketInformation.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _ticketInformation.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _ticketInformation.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _ticketInformation.isNew();
 	}
 
 	@Override
@@ -248,14 +273,14 @@ public class TicketInformationWrapper implements TicketInformation,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_ticketInformation.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ticketInformation.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ticketInformation.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_ticketInformation.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -321,31 +346,6 @@ public class TicketInformationWrapper implements TicketInformation,
 	@Override
 	public void setTicketInformationId(long ticketInformationId) {
 		_ticketInformation.setTicketInformationId(ticketInformationId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketInformation> toCacheModel() {
-		return _ticketInformation.toCacheModel();
-	}
-
-	@Override
-	public TicketInformation toEscapedModel() {
-		return new TicketInformationWrapper(_ticketInformation.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ticketInformation.toString();
-	}
-
-	@Override
-	public TicketInformation toUnescapedModel() {
-		return new TicketInformationWrapper(_ticketInformation.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ticketInformation.toXmlString();
 	}
 
 	@Override

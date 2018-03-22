@@ -21,6 +21,7 @@ import com.liferay.osb.model.AccountCall;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -114,7 +115,7 @@ public class AccountCallCacheModel implements CacheModel<AccountCall>,
 		accountCallImpl.setModifiedUserId(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			accountCallImpl.setModifiedUserName("");
+			accountCallImpl.setModifiedUserName(StringPool.BLANK);
 		}
 		else {
 			accountCallImpl.setModifiedUserName(modifiedUserName);
@@ -140,28 +141,28 @@ public class AccountCallCacheModel implements CacheModel<AccountCall>,
 		accountCallImpl.setCallLength(callLength);
 
 		if (summary == null) {
-			accountCallImpl.setSummary("");
+			accountCallImpl.setSummary(StringPool.BLANK);
 		}
 		else {
 			accountCallImpl.setSummary(summary);
 		}
 
 		if (clientsPresent == null) {
-			accountCallImpl.setClientsPresent("");
+			accountCallImpl.setClientsPresent(StringPool.BLANK);
 		}
 		else {
 			accountCallImpl.setClientsPresent(clientsPresent);
 		}
 
 		if (notes == null) {
-			accountCallImpl.setNotes("");
+			accountCallImpl.setNotes(StringPool.BLANK);
 		}
 		else {
 			accountCallImpl.setNotes(notes);
 		}
 
 		if (actionItems == null) {
-			accountCallImpl.setActionItems("");
+			accountCallImpl.setActionItems(StringPool.BLANK);
 		}
 		else {
 			accountCallImpl.setActionItems(actionItems);
@@ -202,7 +203,7 @@ public class AccountCallCacheModel implements CacheModel<AccountCall>,
 		objectOutput.writeLong(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(modifiedUserName);
@@ -218,28 +219,28 @@ public class AccountCallCacheModel implements CacheModel<AccountCall>,
 		objectOutput.writeLong(callLength);
 
 		if (summary == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(summary);
 		}
 
 		if (clientsPresent == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(clientsPresent);
 		}
 
 		if (notes == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(notes);
 		}
 
 		if (actionItems == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(actionItems);

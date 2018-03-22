@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,15 +41,11 @@ public class TicketAttachmentLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketAttachmentLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.model.TicketAttachment addTicketAttachment(
-		long userId, long ticketEntryId, long ticketSolutionId,
-		java.lang.String fileName, long fileSize, int type, int visibility,
-		java.lang.String fileRepositoryId, int status)
+	public static boolean checkAvailability(long ticketAttachmentId,
+		java.lang.String fileRepositoryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addTicketAttachment(userId, ticketEntryId,
-			ticketSolutionId, fileName, fileSize, type, visibility,
-			fileRepositoryId, status);
+				   .checkAvailability(ticketAttachmentId, fileRepositoryId);
 	}
 
 	/**
@@ -62,27 +59,15 @@ public class TicketAttachmentLocalServiceUtil {
 		return getService().addTicketAttachment(ticketAttachment);
 	}
 
-	public static java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
+	public static com.liferay.osb.model.TicketAttachment addTicketAttachment(
 		long userId, long ticketEntryId, long ticketSolutionId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types, int visibility, int status,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		java.lang.String fileName, long fileSize, int type, int visibility,
+		java.lang.String fileRepositoryId, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addTicketAttachments(userId, ticketEntryId,
-			ticketSolutionId, files, types, visibility, status, serviceContext);
-	}
-
-	public static boolean checkAvailability(long ticketAttachmentId,
-		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .checkAvailability(ticketAttachmentId, fileRepositoryId);
-	}
-
-	public static void cleanTicketAttachments()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().cleanTicketAttachments();
+				   .addTicketAttachment(userId, ticketEntryId,
+			ticketSolutionId, fileName, fileSize, type, visibility,
+			fileRepositoryId, status);
 	}
 
 	/**
@@ -97,12 +82,14 @@ public class TicketAttachmentLocalServiceUtil {
 	}
 
 	/**
-	* @throws PortalException
+	* Deletes the ticket attachment from the database. Also notifies the appropriate model listeners.
+	*
+	* @param ticketAttachment the ticket attachment
+	* @return the ticket attachment that was removed
 	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
+	public static com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
+		com.liferay.osb.model.TicketAttachment ticketAttachment) {
+		return getService().deleteTicketAttachment(ticketAttachment);
 	}
 
 	/**
@@ -119,35 +106,168 @@ public class TicketAttachmentLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
-		long userId, long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deleteTicketAttachment(userId, ticketAttachmentId);
-	}
-
-	public static void deleteTicketAttachment(long userId, long ticketEntryId,
-		int type) throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteTicketAttachment(userId, ticketEntryId, type);
-	}
-
-	public static com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
 		long userId, com.liferay.osb.model.TicketAttachment ticketAttachment)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteTicketAttachment(userId, ticketAttachment);
 	}
 
+	public static com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
+		long userId, long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteTicketAttachment(userId, ticketAttachmentId);
+	}
+
+	public static com.liferay.osb.model.TicketAttachment fetchTicketAttachment(
+		long ticketAttachmentId) {
+		return getService().fetchTicketAttachment(ticketAttachmentId);
+	}
+
+	public static com.liferay.osb.model.TicketAttachment fetchTicketAttachment(
+		long ticketEntryId, int type) {
+		return getService().fetchTicketAttachment(ticketEntryId, type);
+	}
+
+	public static com.liferay.osb.model.TicketAttachment fetchTicketAttachment(
+		long ticketEntryId, java.lang.String fileName, int visibility,
+		int status) {
+		return getService()
+				   .fetchTicketAttachment(ticketEntryId, fileName, visibility,
+			status);
+	}
+
 	/**
-	* Deletes the ticket attachment from the database. Also notifies the appropriate model listeners.
+	* Returns the ticket attachment with the primary key.
+	*
+	* @param ticketAttachmentId the primary key of the ticket attachment
+	* @return the ticket attachment
+	* @throws PortalException if a ticket attachment with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.TicketAttachment getTicketAttachment(
+		long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getTicketAttachment(ticketAttachmentId);
+	}
+
+	public static com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
+		long userId, long ticketAttachmentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().replicateTicketAttachment(userId, ticketAttachmentId);
+	}
+
+	public static com.liferay.osb.model.TicketAttachment updateDeleteDate(
+		long userId, long ticketAttachmentId, java.util.Date deleteDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateDeleteDate(userId, ticketAttachmentId, deleteDate);
+	}
+
+	/**
+	* Updates the ticket attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param ticketAttachment the ticket attachment
-	* @return the ticket attachment that was removed
+	* @return the ticket attachment that was updated
 	*/
-	public static com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
+	public static com.liferay.osb.model.TicketAttachment updateTicketAttachment(
 		com.liferay.osb.model.TicketAttachment ticketAttachment) {
-		return getService().deleteTicketAttachment(ticketAttachment);
+		return getService().updateTicketAttachment(ticketAttachment);
+	}
+
+	public static com.liferay.osb.model.TicketAttachment updateTicketAttachment(
+		long ticketAttachmentId, long ticketEntryId, int type, int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateTicketAttachment(ticketAttachmentId, ticketEntryId,
+			type, visibility);
+	}
+
+	public static com.liferay.osb.model.TicketAttachment updateTicketAttachment(
+		long ticketAttachmentId, long ticketEntryId, long ticketSolutionId,
+		int type, int visibility)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateTicketAttachment(ticketAttachmentId, ticketEntryId,
+			ticketSolutionId, type, visibility);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of ticket attachments.
+	*
+	* @return the number of ticket attachments
+	*/
+	public static int getTicketAttachmentsCount() {
+		return getService().getTicketAttachmentsCount();
+	}
+
+	public static int getTicketAttachmentsCount(long ticketEntryId,
+		int[] types, int[] visibilities) {
+		return getService()
+				   .getTicketAttachmentsCount(ticketEntryId, types, visibilities);
+	}
+
+	public static java.io.File getTicketAttachmentsZipFile(long ticketEntryId,
+		int[] visibilities)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getTicketAttachmentsZipFile(ticketEntryId, visibilities);
+	}
+
+	public static java.io.InputStream getFileAsStream(
+		com.liferay.osb.model.TicketAttachment ticketAttachment)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getFileAsStream(ticketAttachment);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types, int visibility, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addTicketAttachments(userId, ticketEntryId,
+			ticketSolutionId, files, types, visibility, status, serviceContext);
 	}
 
 	/**
@@ -201,90 +321,6 @@ public class TicketAttachmentLocalServiceUtil {
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static com.liferay.osb.model.TicketAttachment fetchTicketAttachment(
-		long ticketAttachmentId) {
-		return getService().fetchTicketAttachment(ticketAttachmentId);
-	}
-
-	public static com.liferay.osb.model.TicketAttachment fetchTicketAttachment(
-		long ticketEntryId, int type) {
-		return getService().fetchTicketAttachment(ticketEntryId, type);
-	}
-
-	public static com.liferay.osb.model.TicketAttachment fetchTicketAttachment(
-		long ticketEntryId, java.lang.String fileName, int visibility,
-		int status) {
-		return getService()
-				   .fetchTicketAttachment(ticketEntryId, fileName, visibility,
-			status);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static java.io.InputStream getFileAsStream(
-		com.liferay.osb.model.TicketAttachment ticketAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getFileAsStream(ticketAttachment);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the ticket attachment with the primary key.
-	*
-	* @param ticketAttachmentId the primary key of the ticket attachment
-	* @return the ticket attachment
-	* @throws PortalException if a ticket attachment with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.TicketAttachment getTicketAttachment(
-		long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getTicketAttachment(ticketAttachmentId);
-	}
-
-	/**
 	* Returns a range of all the ticket attachments.
 	*
 	* <p>
@@ -324,39 +360,48 @@ public class TicketAttachmentLocalServiceUtil {
 			status);
 	}
 
+	public static java.util.List<com.liferay.osb.model.TicketAttachment> updateTicketAttachments(
+		java.util.List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
+		java.util.List<java.lang.Integer> types,
+		java.util.List<java.lang.Integer> visibilities)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateTicketAttachments(ticketAttachmentIds, ticketEntryId,
+			types, visibilities);
+	}
+
 	/**
-	* Returns the number of ticket attachments.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of ticket attachments
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
-	public static int getTicketAttachmentsCount() {
-		return getService().getTicketAttachmentsCount();
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
-	public static int getTicketAttachmentsCount(long ticketEntryId,
-		int[] types, int[] visibilities) {
-		return getService()
-				   .getTicketAttachmentsCount(ticketEntryId, types, visibilities);
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static java.io.File getTicketAttachmentsZipFile(long ticketEntryId,
-		int[] visibilities)
+	public static void cleanTicketAttachments()
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getTicketAttachmentsZipFile(ticketEntryId, visibilities);
+		getService().cleanTicketAttachments();
 	}
 
-	public static com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
-		long userId, long ticketAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().replicateTicketAttachment(userId, ticketAttachmentId);
-	}
-
-	public static com.liferay.osb.model.TicketAttachment updateDeleteDate(
-		long userId, long ticketAttachmentId, java.util.Date deleteDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateDeleteDate(userId, ticketAttachmentId, deleteDate);
+	public static void deleteTicketAttachment(long userId, long ticketEntryId,
+		int type) throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteTicketAttachment(userId, ticketEntryId, type);
 	}
 
 	public static void updateExtractedText(
@@ -374,52 +419,21 @@ public class TicketAttachmentLocalServiceUtil {
 			serviceContext);
 	}
 
-	public static com.liferay.osb.model.TicketAttachment updateTicketAttachment(
-		long ticketAttachmentId, long ticketEntryId, int type, int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateTicketAttachment(ticketAttachmentId, ticketEntryId,
-			type, visibility);
-	}
-
-	public static com.liferay.osb.model.TicketAttachment updateTicketAttachment(
-		long ticketAttachmentId, long ticketEntryId, long ticketSolutionId,
-		int type, int visibility)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateTicketAttachment(ticketAttachmentId, ticketEntryId,
-			ticketSolutionId, type, visibility);
-	}
-
-	/**
-	* Updates the ticket attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param ticketAttachment the ticket attachment
-	* @return the ticket attachment that was updated
-	*/
-	public static com.liferay.osb.model.TicketAttachment updateTicketAttachment(
-		com.liferay.osb.model.TicketAttachment ticketAttachment) {
-		return getService().updateTicketAttachment(ticketAttachment);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketAttachment> updateTicketAttachments(
-		java.util.List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
-		java.util.List<java.lang.Integer> types,
-		java.util.List<java.lang.Integer> visibilities)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateTicketAttachments(ticketAttachmentIds, ticketEntryId,
-			types, visibilities);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static TicketAttachmentLocalService getService() {
 		if (_service == null) {
-			_service = (TicketAttachmentLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					TicketAttachmentLocalService.class.getName());
+
+			if (invokableLocalService instanceof TicketAttachmentLocalService) {
+				_service = (TicketAttachmentLocalService)invokableLocalService;
+			}
+			else {
+				_service = new TicketAttachmentLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(TicketAttachmentLocalServiceUtil.class,
 				"_service");

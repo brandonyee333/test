@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,17 @@ public class PartnerWorkerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.PartnerWorkerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean hasPartnerWorker(long userId) {
+		return getService().hasPartnerWorker(userId);
+	}
+
+	public static boolean hasPartnerWorker(long userId, long partnerEntryId) {
+		return getService().hasPartnerWorker(userId, partnerEntryId);
+	}
+
+	public static boolean hasPartnerWorkerRole(long userId, int role) {
+		return getService().hasPartnerWorkerRole(userId, role);
+	}
 
 	/**
 	* Adds the partner worker to the database. Also notifies the appropriate model listeners.
@@ -52,13 +64,6 @@ public class PartnerWorkerLocalServiceUtil {
 		return getService().addPartnerWorker(partnerWorker);
 	}
 
-	public static void addPartnerWorkers(long[] userIds, long partnerEntryId,
-		int[] roles, int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addPartnerWorkers(userIds, partnerEntryId, roles, notifications);
-	}
-
 	/**
 	* Creates a new partner worker with the primary key. Does not add the partner worker to the database.
 	*
@@ -68,6 +73,17 @@ public class PartnerWorkerLocalServiceUtil {
 	public static com.liferay.osb.model.PartnerWorker createPartnerWorker(
 		long partnerWorkerId) {
 		return getService().createPartnerWorker(partnerWorkerId);
+	}
+
+	/**
+	* Deletes the partner worker from the database. Also notifies the appropriate model listeners.
+	*
+	* @param partnerWorker the partner worker
+	* @return the partner worker that was removed
+	*/
+	public static com.liferay.osb.model.PartnerWorker deletePartnerWorker(
+		com.liferay.osb.model.PartnerWorker partnerWorker) {
+		return getService().deletePartnerWorker(partnerWorker);
 	}
 
 	/**
@@ -83,25 +99,56 @@ public class PartnerWorkerLocalServiceUtil {
 		return getService().deletePartnerWorker(partnerWorkerId);
 	}
 
+	public static com.liferay.osb.model.PartnerWorker fetchPartnerWorker(
+		long partnerWorkerId) {
+		return getService().fetchPartnerWorker(partnerWorkerId);
+	}
+
+	public static com.liferay.osb.model.PartnerWorker fetchPartnerWorker(
+		long userId, long partnerEntryId) {
+		return getService().fetchPartnerWorker(userId, partnerEntryId);
+	}
+
 	/**
-	* Deletes the partner worker from the database. Also notifies the appropriate model listeners.
+	* Returns the partner worker with the primary key.
+	*
+	* @param partnerWorkerId the primary key of the partner worker
+	* @return the partner worker
+	* @throws PortalException if a partner worker with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.PartnerWorker getPartnerWorker(
+		long partnerWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPartnerWorker(partnerWorkerId);
+	}
+
+	public static com.liferay.osb.model.PartnerWorker getPartnerWorker(
+		long userId, long partnerEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPartnerWorker(userId, partnerEntryId);
+	}
+
+	/**
+	* Updates the partner worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param partnerWorker the partner worker
-	* @return the partner worker that was removed
+	* @return the partner worker that was updated
 	*/
-	public static com.liferay.osb.model.PartnerWorker deletePartnerWorker(
+	public static com.liferay.osb.model.PartnerWorker updatePartnerWorker(
 		com.liferay.osb.model.PartnerWorker partnerWorker) {
-		return getService().deletePartnerWorker(partnerWorker);
+		return getService().updatePartnerWorker(partnerWorker);
 	}
 
-	public static void deletePartnerWorkers(long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deletePartnerWorkers(userId);
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
 	}
 
-	public static void deletePartnerWorkers(long[] userIds, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deletePartnerWorkers(userIds, partnerEntryId);
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
 	}
 
 	/**
@@ -113,8 +160,34 @@ public class PartnerWorkerLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of partner workers.
+	*
+	* @return the number of partner workers
+	*/
+	public static int getPartnerWorkersCount() {
+		return getService().getPartnerWorkersCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -168,76 +241,6 @@ public class PartnerWorkerLocalServiceUtil {
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static com.liferay.osb.model.PartnerWorker fetchPartnerWorker(
-		long partnerWorkerId) {
-		return getService().fetchPartnerWorker(partnerWorkerId);
-	}
-
-	public static com.liferay.osb.model.PartnerWorker fetchPartnerWorker(
-		long userId, long partnerEntryId) {
-		return getService().fetchPartnerWorker(userId, partnerEntryId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	/**
-	* Returns the partner worker with the primary key.
-	*
-	* @param partnerWorkerId the primary key of the partner worker
-	* @return the partner worker
-	* @throws PortalException if a partner worker with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.PartnerWorker getPartnerWorker(
-		long partnerWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPartnerWorker(partnerWorkerId);
-	}
-
-	public static com.liferay.osb.model.PartnerWorker getPartnerWorker(
-		long userId, long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPartnerWorker(userId, partnerEntryId);
-	}
-
-	/**
 	* Returns a range of all the partner workers.
 	*
 	* <p>
@@ -263,47 +266,50 @@ public class PartnerWorkerLocalServiceUtil {
 		return getService().getPartnerWorkers(partnerEntryId, role);
 	}
 
-	/**
-	* Returns the number of partner workers.
-	*
-	* @return the number of partner workers
-	*/
-	public static int getPartnerWorkersCount() {
-		return getService().getPartnerWorkersCount();
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
 	public static java.util.List<com.liferay.osb.model.PartnerWorker> getUserPartnerWorkers(
 		long userId) {
 		return getService().getUserPartnerWorkers(userId);
 	}
 
-	public static boolean hasPartnerWorker(long userId) {
-		return getService().hasPartnerWorker(userId);
-	}
-
-	public static boolean hasPartnerWorker(long userId, long partnerEntryId) {
-		return getService().hasPartnerWorker(userId, partnerEntryId);
-	}
-
-	public static boolean hasPartnerWorkerRole(long userId, int role) {
-		return getService().hasPartnerWorkerRole(userId, role);
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Updates the partner worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @param partnerWorker the partner worker
-	* @return the partner worker that was updated
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
-	public static com.liferay.osb.model.PartnerWorker updatePartnerWorker(
-		com.liferay.osb.model.PartnerWorker partnerWorker) {
-		return getService().updatePartnerWorker(partnerWorker);
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void addPartnerWorkers(long[] userIds, long partnerEntryId,
+		int[] roles, int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.addPartnerWorkers(userIds, partnerEntryId, roles, notifications);
+	}
+
+	public static void deletePartnerWorkers(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deletePartnerWorkers(userId);
+	}
+
+	public static void deletePartnerWorkers(long[] userIds, long partnerEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deletePartnerWorkers(userIds, partnerEntryId);
 	}
 
 	public static void clearService() {
@@ -312,8 +318,15 @@ public class PartnerWorkerLocalServiceUtil {
 
 	public static PartnerWorkerLocalService getService() {
 		if (_service == null) {
-			_service = (PartnerWorkerLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					PartnerWorkerLocalService.class.getName());
+
+			if (invokableLocalService instanceof PartnerWorkerLocalService) {
+				_service = (PartnerWorkerLocalService)invokableLocalService;
+			}
+			else {
+				_service = new PartnerWorkerLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(PartnerWorkerLocalServiceUtil.class,
 				"_service");

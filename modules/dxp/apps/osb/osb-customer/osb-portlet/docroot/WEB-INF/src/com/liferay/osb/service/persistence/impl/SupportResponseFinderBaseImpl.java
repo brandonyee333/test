@@ -25,10 +25,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class SupportResponseFinderBaseImpl extends BasePersistenceImpl<SupportResponse> {
-	public SupportResponseFinderBaseImpl() {
-		setModelClass(SupportResponse.class);
-	}
-
 	/**
 	 * Returns the support response persistence.
 	 *

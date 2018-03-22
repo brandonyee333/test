@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -45,27 +46,12 @@ import java.util.List;
 @ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
-public interface OfferingEntryService extends BaseService {
+public interface OfferingEntryService extends BaseService, InvokableService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OfferingEntryServiceUtil} to access the offering entry remote service. Add custom service methods to {@link com.liferay.osb.service.impl.OfferingEntryServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<OfferingEntry> getAccountEntryOfferingEntries(
-		long accountEntryId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<OfferingEntry> getOrderEntryOfferingEntries(long orderEntryId)
-		throws PortalException;
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
 	public OfferingEntry updateOfferingEntry(long offeringEntryId,
 		long accountEntryId, long orderEntryId, long productEntryId,
 		long supportResponseId, java.lang.String productDescription, int type,
@@ -75,5 +61,25 @@ public interface OfferingEntryService extends BaseService {
 		throws PortalException;
 
 	public OfferingEntry updateStatus(long offeringEntryId, int status)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<OfferingEntry> getAccountEntryOfferingEntries(
+		long accountEntryId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<OfferingEntry> getOrderEntryOfferingEntries(long orderEntryId)
 		throws PortalException;
 }

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -49,7 +50,7 @@ import java.util.Map;
 @ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
-public interface AccountEnvironmentService extends BaseService {
+public interface AccountEnvironmentService extends BaseService, InvokableService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -68,13 +69,17 @@ public interface AccountEnvironmentService extends BaseService {
 	public AccountEnvironment getAccountEnvironment(long accountEnvironmentId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AccountEnvironment> getAccountEnvironments(long accountEntryId)
-		throws PortalException;
+	public AccountEnvironment updateAccountEnvironment(
+		long accountEnvironmentId, long productEntryId, java.lang.String name,
+		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
+		int envAS, int envLFR,
+		List<ObjectValuePair<java.lang.String, File>> files,
+		List<java.lang.Integer> types) throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public Map<java.lang.String, List<AccountEnvironment>> getAccountEnvironmentsMap(
-		long accountEntryId) throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -83,10 +88,11 @@ public interface AccountEnvironmentService extends BaseService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	public AccountEnvironment updateAccountEnvironment(
-		long accountEnvironmentId, long productEntryId, java.lang.String name,
-		int envOS, java.lang.String envOSCustom, int envDB, int envJVM,
-		int envAS, int envLFR,
-		List<ObjectValuePair<java.lang.String, File>> files,
-		List<java.lang.Integer> types) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<AccountEnvironment> getAccountEnvironments(long accountEntryId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public Map<java.lang.String, List<AccountEnvironment>> getAccountEnvironmentsMap(
+		long accountEntryId) throws PortalException;
 }

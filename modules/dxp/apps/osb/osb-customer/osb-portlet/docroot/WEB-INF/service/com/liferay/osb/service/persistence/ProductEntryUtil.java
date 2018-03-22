@@ -318,7 +318,7 @@ public class ProductEntryUtil {
 
 	public static ProductEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (ProductEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (ProductEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					ProductEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(ProductEntryUtil.class,

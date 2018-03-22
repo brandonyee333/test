@@ -21,6 +21,7 @@ import com.liferay.osb.model.CorpProjectMessage;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -105,7 +106,7 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 		CorpProjectMessageImpl corpProjectMessageImpl = new CorpProjectMessageImpl();
 
 		if (uuid == null) {
-			corpProjectMessageImpl.setUuid("");
+			corpProjectMessageImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			corpProjectMessageImpl.setUuid(uuid);
@@ -115,7 +116,7 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 		corpProjectMessageImpl.setUserId(userId);
 
 		if (userName == null) {
-			corpProjectMessageImpl.setUserName("");
+			corpProjectMessageImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			corpProjectMessageImpl.setUserName(userName);
@@ -140,14 +141,14 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 		corpProjectMessageImpl.setSeverityLevel(severityLevel);
 
 		if (title == null) {
-			corpProjectMessageImpl.setTitle("");
+			corpProjectMessageImpl.setTitle(StringPool.BLANK);
 		}
 		else {
 			corpProjectMessageImpl.setTitle(title);
 		}
 
 		if (content == null) {
-			corpProjectMessageImpl.setContent("");
+			corpProjectMessageImpl.setContent(StringPool.BLANK);
 		}
 		else {
 			corpProjectMessageImpl.setContent(content);
@@ -192,7 +193,7 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -203,7 +204,7 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -219,14 +220,14 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 		objectOutput.writeInt(severityLevel);
 
 		if (title == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(title);
 		}
 
 		if (content == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(content);

@@ -21,6 +21,7 @@ import com.liferay.osb.model.AuditEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -116,7 +117,7 @@ public class AuditEntryCacheModel implements CacheModel<AuditEntry>,
 		auditEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			auditEntryImpl.setUserName("");
+			auditEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			auditEntryImpl.setUserName(userName);
@@ -140,28 +141,28 @@ public class AuditEntryCacheModel implements CacheModel<AuditEntry>,
 		auditEntryImpl.setVisibility(visibility);
 
 		if (oldLabel == null) {
-			auditEntryImpl.setOldLabel("");
+			auditEntryImpl.setOldLabel(StringPool.BLANK);
 		}
 		else {
 			auditEntryImpl.setOldLabel(oldLabel);
 		}
 
 		if (oldValue == null) {
-			auditEntryImpl.setOldValue("");
+			auditEntryImpl.setOldValue(StringPool.BLANK);
 		}
 		else {
 			auditEntryImpl.setOldValue(oldValue);
 		}
 
 		if (newLabel == null) {
-			auditEntryImpl.setNewLabel("");
+			auditEntryImpl.setNewLabel(StringPool.BLANK);
 		}
 		else {
 			auditEntryImpl.setNewLabel(newLabel);
 		}
 
 		if (newValue == null) {
-			auditEntryImpl.setNewValue("");
+			auditEntryImpl.setNewValue(StringPool.BLANK);
 		}
 		else {
 			auditEntryImpl.setNewValue(newValue);
@@ -215,7 +216,7 @@ public class AuditEntryCacheModel implements CacheModel<AuditEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -242,28 +243,28 @@ public class AuditEntryCacheModel implements CacheModel<AuditEntry>,
 		objectOutput.writeInt(visibility);
 
 		if (oldLabel == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(oldLabel);
 		}
 
 		if (oldValue == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(oldValue);
 		}
 
 		if (newLabel == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(newLabel);
 		}
 
 		if (newValue == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(newValue);

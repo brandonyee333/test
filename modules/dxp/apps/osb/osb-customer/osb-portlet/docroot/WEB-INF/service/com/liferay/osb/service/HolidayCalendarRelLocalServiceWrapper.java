@@ -34,6 +34,12 @@ public class HolidayCalendarRelLocalServiceWrapper
 		_holidayCalendarRelLocalService = holidayCalendarRelLocalService;
 	}
 
+	@Override
+	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId) {
+		return _holidayCalendarRelLocalService.hasHolidayCalendarRel(holidayCalendarId,
+			userId);
+	}
+
 	/**
 	* Adds the holiday calendar rel to the database. Also notifies the appropriate model listeners.
 	*
@@ -44,12 +50,6 @@ public class HolidayCalendarRelLocalServiceWrapper
 	public com.liferay.osb.model.HolidayCalendarRel addHolidayCalendarRel(
 		com.liferay.osb.model.HolidayCalendarRel holidayCalendarRel) {
 		return _holidayCalendarRelLocalService.addHolidayCalendarRel(holidayCalendarRel);
-	}
-
-	@Override
-	public void addUsers(long holidayCalendarId, long[] userIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_holidayCalendarRelLocalService.addUsers(holidayCalendarId, userIds);
 	}
 
 	/**
@@ -91,14 +91,58 @@ public class HolidayCalendarRelLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteHolidayCalendarRels(long holidayCalendarId) {
-		_holidayCalendarRelLocalService.deleteHolidayCalendarRels(holidayCalendarId);
+	public com.liferay.osb.model.HolidayCalendarRel fetchHolidayCalendarRel(
+		long holidayCalendarRelId) {
+		return _holidayCalendarRelLocalService.fetchHolidayCalendarRel(holidayCalendarRelId);
 	}
 
 	@Override
-	public void deleteHolidayCalendarRels(long holidayCalendarId, long[] userIds) {
-		_holidayCalendarRelLocalService.deleteHolidayCalendarRels(holidayCalendarId,
-			userIds);
+	public com.liferay.osb.model.HolidayCalendarRel getHolidayCalendarRel(
+		long holidayCalendarId, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _holidayCalendarRelLocalService.getHolidayCalendarRel(holidayCalendarId,
+			userId);
+	}
+
+	/**
+	* Returns the holiday calendar rel with the primary key.
+	*
+	* @param holidayCalendarRelId the primary key of the holiday calendar rel
+	* @return the holiday calendar rel
+	* @throws PortalException if a holiday calendar rel with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.HolidayCalendarRel getHolidayCalendarRel(
+		long holidayCalendarRelId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _holidayCalendarRelLocalService.getHolidayCalendarRel(holidayCalendarRelId);
+	}
+
+	/**
+	* Updates the holiday calendar rel in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param holidayCalendarRel the holiday calendar rel
+	* @return the holiday calendar rel that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.HolidayCalendarRel updateHolidayCalendarRel(
+		com.liferay.osb.model.HolidayCalendarRel holidayCalendarRel) {
+		return _holidayCalendarRelLocalService.updateHolidayCalendarRel(holidayCalendarRel);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _holidayCalendarRelLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _holidayCalendarRelLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _holidayCalendarRelLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	/**
@@ -112,8 +156,38 @@ public class HolidayCalendarRelLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _holidayCalendarRelLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _holidayCalendarRelLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of holiday calendar rels.
+	*
+	* @return the number of holiday calendar rels
+	*/
+	@Override
+	public int getHolidayCalendarRelsCount() {
+		return _holidayCalendarRelLocalService.getHolidayCalendarRelsCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _holidayCalendarRelLocalService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _holidayCalendarRelLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -171,6 +245,29 @@ public class HolidayCalendarRelLocalServiceWrapper
 	}
 
 	/**
+	* Returns a range of all the holiday calendar rels.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.HolidayCalendarRelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of holiday calendar rels
+	* @param end the upper bound of the range of holiday calendar rels (not inclusive)
+	* @return the range of holiday calendar rels
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.HolidayCalendarRel> getHolidayCalendarRels(
+		int start, int end) {
+		return _holidayCalendarRelLocalService.getHolidayCalendarRels(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.HolidayCalendarRel> getHolidayCalendarRels(
+		long holidayCalendarId) {
+		return _holidayCalendarRelLocalService.getHolidayCalendarRels(holidayCalendarId);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -198,109 +295,20 @@ public class HolidayCalendarRelLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.model.HolidayCalendarRel fetchHolidayCalendarRel(
-		long holidayCalendarRelId) {
-		return _holidayCalendarRelLocalService.fetchHolidayCalendarRel(holidayCalendarRelId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _holidayCalendarRelLocalService.getActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the holiday calendar rel with the primary key.
-	*
-	* @param holidayCalendarRelId the primary key of the holiday calendar rel
-	* @return the holiday calendar rel
-	* @throws PortalException if a holiday calendar rel with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.HolidayCalendarRel getHolidayCalendarRel(
-		long holidayCalendarRelId)
+	public void addUsers(long holidayCalendarId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _holidayCalendarRelLocalService.getHolidayCalendarRel(holidayCalendarRelId);
+		_holidayCalendarRelLocalService.addUsers(holidayCalendarId, userIds);
 	}
 
 	@Override
-	public com.liferay.osb.model.HolidayCalendarRel getHolidayCalendarRel(
-		long holidayCalendarId, long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _holidayCalendarRelLocalService.getHolidayCalendarRel(holidayCalendarId,
-			userId);
-	}
-
-	/**
-	* Returns a range of all the holiday calendar rels.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.HolidayCalendarRelModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of holiday calendar rels
-	* @param end the upper bound of the range of holiday calendar rels (not inclusive)
-	* @return the range of holiday calendar rels
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.HolidayCalendarRel> getHolidayCalendarRels(
-		int start, int end) {
-		return _holidayCalendarRelLocalService.getHolidayCalendarRels(start, end);
+	public void deleteHolidayCalendarRels(long holidayCalendarId) {
+		_holidayCalendarRelLocalService.deleteHolidayCalendarRels(holidayCalendarId);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.HolidayCalendarRel> getHolidayCalendarRels(
-		long holidayCalendarId) {
-		return _holidayCalendarRelLocalService.getHolidayCalendarRels(holidayCalendarId);
-	}
-
-	/**
-	* Returns the number of holiday calendar rels.
-	*
-	* @return the number of holiday calendar rels
-	*/
-	@Override
-	public int getHolidayCalendarRelsCount() {
-		return _holidayCalendarRelLocalService.getHolidayCalendarRelsCount();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _holidayCalendarRelLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _holidayCalendarRelLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _holidayCalendarRelLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	@Override
-	public boolean hasHolidayCalendarRel(long holidayCalendarId, long userId) {
-		return _holidayCalendarRelLocalService.hasHolidayCalendarRel(holidayCalendarId,
-			userId);
-	}
-
-	/**
-	* Updates the holiday calendar rel in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param holidayCalendarRel the holiday calendar rel
-	* @return the holiday calendar rel that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.HolidayCalendarRel updateHolidayCalendarRel(
-		com.liferay.osb.model.HolidayCalendarRel holidayCalendarRel) {
-		return _holidayCalendarRelLocalService.updateHolidayCalendarRel(holidayCalendarRel);
+	public void deleteHolidayCalendarRels(long holidayCalendarId, long[] userIds) {
+		_holidayCalendarRelLocalService.deleteHolidayCalendarRels(holidayCalendarId,
+			userIds);
 	}
 
 	@Override

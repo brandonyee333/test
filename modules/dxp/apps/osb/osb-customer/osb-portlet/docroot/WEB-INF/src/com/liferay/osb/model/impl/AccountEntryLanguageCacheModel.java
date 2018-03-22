@@ -21,6 +21,7 @@ import com.liferay.osb.model.AccountEntryLanguage;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -84,7 +85,7 @@ public class AccountEntryLanguageCacheModel implements CacheModel<AccountEntryLa
 		accountEntryLanguageImpl.setAccountEntryId(accountEntryId);
 
 		if (languageId == null) {
-			accountEntryLanguageImpl.setLanguageId("");
+			accountEntryLanguageImpl.setLanguageId(StringPool.BLANK);
 		}
 		else {
 			accountEntryLanguageImpl.setLanguageId(languageId);
@@ -111,7 +112,7 @@ public class AccountEntryLanguageCacheModel implements CacheModel<AccountEntryLa
 		objectOutput.writeLong(accountEntryId);
 
 		if (languageId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(languageId);

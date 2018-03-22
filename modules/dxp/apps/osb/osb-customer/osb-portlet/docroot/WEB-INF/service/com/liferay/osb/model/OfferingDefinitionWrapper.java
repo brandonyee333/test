@@ -164,38 +164,25 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new OfferingDefinitionWrapper((OfferingDefinition)_offeringDefinition.clone());
+	public OfferingDefinition toEscapedModel() {
+		return new OfferingDefinitionWrapper(_offeringDefinition.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(OfferingDefinition offeringDefinition) {
-		return _offeringDefinition.compareTo(offeringDefinition);
-	}
-
-	/**
-	* Returns the company ID of this offering definition.
-	*
-	* @return the company ID of this offering definition
-	*/
-	@Override
-	public long getCompanyId() {
-		return _offeringDefinition.getCompanyId();
-	}
-
-	/**
-	* Returns the create date of this offering definition.
-	*
-	* @return the create date of this offering definition
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _offeringDefinition.getCreateDate();
+	public OfferingDefinition toUnescapedModel() {
+		return new OfferingDefinitionWrapper(_offeringDefinition.toUnescapedModel());
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _offeringDefinition.getExpandoBridge();
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringDefinition.getProductEntry();
+	}
+
+	@Override
+	public SupportResponse getSupportResponse()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringDefinition.getSupportResponse();
 	}
 
 	/**
@@ -208,123 +195,6 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 		return _offeringDefinition.getLicenses();
 	}
 
-	@Override
-	public java.lang.String getLicensesLabel() {
-		return _offeringDefinition.getLicensesLabel();
-	}
-
-	/**
-	* Returns the max concurrent users of this offering definition.
-	*
-	* @return the max concurrent users of this offering definition
-	*/
-	@Override
-	public long getMaxConcurrentUsers() {
-		return _offeringDefinition.getMaxConcurrentUsers();
-	}
-
-	@Override
-	public java.lang.String getMaxConcurrentUsersLabel() {
-		return _offeringDefinition.getMaxConcurrentUsersLabel();
-	}
-
-	/**
-	* Returns the max users of this offering definition.
-	*
-	* @return the max users of this offering definition
-	*/
-	@Override
-	public long getMaxUsers() {
-		return _offeringDefinition.getMaxUsers();
-	}
-
-	@Override
-	public java.lang.String getMaxUsersLabel() {
-		return _offeringDefinition.getMaxUsersLabel();
-	}
-
-	/**
-	* Returns the modified date of this offering definition.
-	*
-	* @return the modified date of this offering definition
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _offeringDefinition.getModifiedDate();
-	}
-
-	/**
-	* Returns the offering definition ID of this offering definition.
-	*
-	* @return the offering definition ID of this offering definition
-	*/
-	@Override
-	public long getOfferingDefinitionId() {
-		return _offeringDefinition.getOfferingDefinitionId();
-	}
-
-	/**
-	* Returns the primary key of this offering definition.
-	*
-	* @return the primary key of this offering definition
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _offeringDefinition.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _offeringDefinition.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the product description of this offering definition.
-	*
-	* @return the product description of this offering definition
-	*/
-	@Override
-	public java.lang.String getProductDescription() {
-		return _offeringDefinition.getProductDescription();
-	}
-
-	@Override
-	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringDefinition.getProductEntry();
-	}
-
-	/**
-	* Returns the product entry ID of this offering definition.
-	*
-	* @return the product entry ID of this offering definition
-	*/
-	@Override
-	public long getProductEntryId() {
-		return _offeringDefinition.getProductEntryId();
-	}
-
-	@Override
-	public int getQuantity() {
-		return _offeringDefinition.getQuantity();
-	}
-
-	@Override
-	public SupportResponse getSupportResponse()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringDefinition.getSupportResponse();
-	}
-
-	/**
-	* Returns the support response ID of this offering definition.
-	*
-	* @return the support response ID of this offering definition
-	*/
-	@Override
-	public long getSupportResponseId() {
-		return _offeringDefinition.getSupportResponseId();
-	}
-
 	/**
 	* Returns the support tickets of this offering definition.
 	*
@@ -335,11 +205,6 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 		return _offeringDefinition.getSupportTickets();
 	}
 
-	@Override
-	public java.lang.String getSupportTicketsLabel() {
-		return _offeringDefinition.getSupportTicketsLabel();
-	}
-
 	/**
 	* Returns the unlimited licenses of this offering definition.
 	*
@@ -348,41 +213,6 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 	@Override
 	public boolean getUnlimitedLicenses() {
 		return _offeringDefinition.getUnlimitedLicenses();
-	}
-
-	/**
-	* Returns the user ID of this offering definition.
-	*
-	* @return the user ID of this offering definition
-	*/
-	@Override
-	public long getUserId() {
-		return _offeringDefinition.getUserId();
-	}
-
-	/**
-	* Returns the user name of this offering definition.
-	*
-	* @return the user name of this offering definition
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _offeringDefinition.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this offering definition.
-	*
-	* @return the user uuid of this offering definition
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _offeringDefinition.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _offeringDefinition.hashCode();
 	}
 
 	@Override
@@ -431,6 +261,201 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _offeringDefinition.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<OfferingDefinition> toCacheModel() {
+		return _offeringDefinition.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(OfferingDefinition offeringDefinition) {
+		return _offeringDefinition.compareTo(offeringDefinition);
+	}
+
+	@Override
+	public int getQuantity() {
+		return _offeringDefinition.getQuantity();
+	}
+
+	@Override
+	public int hashCode() {
+		return _offeringDefinition.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _offeringDefinition.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new OfferingDefinitionWrapper((OfferingDefinition)_offeringDefinition.clone());
+	}
+
+	@Override
+	public java.lang.String getLicensesLabel() {
+		return _offeringDefinition.getLicensesLabel();
+	}
+
+	@Override
+	public java.lang.String getMaxConcurrentUsersLabel() {
+		return _offeringDefinition.getMaxConcurrentUsersLabel();
+	}
+
+	@Override
+	public java.lang.String getMaxUsersLabel() {
+		return _offeringDefinition.getMaxUsersLabel();
+	}
+
+	/**
+	* Returns the product description of this offering definition.
+	*
+	* @return the product description of this offering definition
+	*/
+	@Override
+	public java.lang.String getProductDescription() {
+		return _offeringDefinition.getProductDescription();
+	}
+
+	@Override
+	public java.lang.String getSupportTicketsLabel() {
+		return _offeringDefinition.getSupportTicketsLabel();
+	}
+
+	/**
+	* Returns the user name of this offering definition.
+	*
+	* @return the user name of this offering definition
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _offeringDefinition.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this offering definition.
+	*
+	* @return the user uuid of this offering definition
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _offeringDefinition.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _offeringDefinition.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _offeringDefinition.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this offering definition.
+	*
+	* @return the create date of this offering definition
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _offeringDefinition.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this offering definition.
+	*
+	* @return the modified date of this offering definition
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _offeringDefinition.getModifiedDate();
+	}
+
+	/**
+	* Returns the company ID of this offering definition.
+	*
+	* @return the company ID of this offering definition
+	*/
+	@Override
+	public long getCompanyId() {
+		return _offeringDefinition.getCompanyId();
+	}
+
+	/**
+	* Returns the max concurrent users of this offering definition.
+	*
+	* @return the max concurrent users of this offering definition
+	*/
+	@Override
+	public long getMaxConcurrentUsers() {
+		return _offeringDefinition.getMaxConcurrentUsers();
+	}
+
+	/**
+	* Returns the max users of this offering definition.
+	*
+	* @return the max users of this offering definition
+	*/
+	@Override
+	public long getMaxUsers() {
+		return _offeringDefinition.getMaxUsers();
+	}
+
+	/**
+	* Returns the offering definition ID of this offering definition.
+	*
+	* @return the offering definition ID of this offering definition
+	*/
+	@Override
+	public long getOfferingDefinitionId() {
+		return _offeringDefinition.getOfferingDefinitionId();
+	}
+
+	/**
+	* Returns the primary key of this offering definition.
+	*
+	* @return the primary key of this offering definition
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _offeringDefinition.getPrimaryKey();
+	}
+
+	/**
+	* Returns the product entry ID of this offering definition.
+	*
+	* @return the product entry ID of this offering definition
+	*/
+	@Override
+	public long getProductEntryId() {
+		return _offeringDefinition.getProductEntryId();
+	}
+
+	/**
+	* Returns the support response ID of this offering definition.
+	*
+	* @return the support response ID of this offering definition
+	*/
+	@Override
+	public long getSupportResponseId() {
+		return _offeringDefinition.getSupportResponseId();
+	}
+
+	/**
+	* Returns the user ID of this offering definition.
+	*
+	* @return the user ID of this offering definition
+	*/
+	@Override
+	public long getUserId() {
+		return _offeringDefinition.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_offeringDefinition.persist();
 	}
@@ -461,14 +486,14 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_offeringDefinition.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_offeringDefinition.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_offeringDefinition.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_offeringDefinition.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -624,31 +649,6 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_offeringDefinition.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<OfferingDefinition> toCacheModel() {
-		return _offeringDefinition.toCacheModel();
-	}
-
-	@Override
-	public OfferingDefinition toEscapedModel() {
-		return new OfferingDefinitionWrapper(_offeringDefinition.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _offeringDefinition.toString();
-	}
-
-	@Override
-	public OfferingDefinition toUnescapedModel() {
-		return new OfferingDefinitionWrapper(_offeringDefinition.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _offeringDefinition.toXmlString();
 	}
 
 	@Override

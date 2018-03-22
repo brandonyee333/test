@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,10 +41,10 @@ public class AccountCustomerServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountCustomerServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getCorpProjectAccountCustomerUUIDs(corpProjectId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -53,6 +54,12 @@ public class AccountCustomerServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCorpProjectAccountCustomerUUIDs(corpProjectId);
 	}
 
 	public static void toggleNotifications(long accountCustomerId)
@@ -66,8 +73,15 @@ public class AccountCustomerServiceUtil {
 
 	public static AccountCustomerService getService() {
 		if (_service == null) {
-			_service = (AccountCustomerService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					AccountCustomerService.class.getName());
+
+			if (invokableService instanceof AccountCustomerService) {
+				_service = (AccountCustomerService)invokableService;
+			}
+			else {
+				_service = new AccountCustomerServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(AccountCustomerServiceUtil.class,
 				"_service");

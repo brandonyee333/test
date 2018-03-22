@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,35 @@ public class PartnerEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.PartnerEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.PartnerEntry getPartnerEntry(
+		long partnerEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPartnerEntry(partnerEntryId);
+	}
+
+	public static int searchCount(java.lang.String code, int[] statuses,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().searchCount(code, statuses, params, andOperator);
+	}
+
+	public static int searchCount(java.lang.String keywords)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().searchCount(keywords);
+	}
+
+	public static int searchCount(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().searchCount(keywords, params);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
 
 	/**
 	* Returns the OSGi service identifier.
@@ -48,12 +78,6 @@ public class PartnerEntryServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.osb.model.PartnerEntry getPartnerEntry(
-		long partnerEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPartnerEntry(partnerEntryId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.PartnerEntry> search(
@@ -73,32 +97,21 @@ public class PartnerEntryServiceUtil {
 		return getService().search(keywords, params, start, end);
 	}
 
-	public static int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().searchCount(keywords);
-	}
-
-	public static int searchCount(java.lang.String code, int[] statuses,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().searchCount(code, statuses, params, andOperator);
-	}
-
-	public static int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().searchCount(keywords, params);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static PartnerEntryService getService() {
 		if (_service == null) {
-			_service = (PartnerEntryService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					PartnerEntryService.class.getName());
+
+			if (invokableService instanceof PartnerEntryService) {
+				_service = (PartnerEntryService)invokableService;
+			}
+			else {
+				_service = new PartnerEntryServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(PartnerEntryServiceUtil.class,
 				"_service");

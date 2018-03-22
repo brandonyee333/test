@@ -21,6 +21,7 @@ import com.liferay.osb.model.TicketAttachment;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -112,7 +113,7 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 		ticketAttachmentImpl.setUserId(userId);
 
 		if (userName == null) {
-			ticketAttachmentImpl.setUserName("");
+			ticketAttachmentImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			ticketAttachmentImpl.setUserName(userName);
@@ -130,7 +131,7 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 		ticketAttachmentImpl.setReleaseNotesId(releaseNotesId);
 
 		if (fileName == null) {
-			ticketAttachmentImpl.setFileName("");
+			ticketAttachmentImpl.setFileName(StringPool.BLANK);
 		}
 		else {
 			ticketAttachmentImpl.setFileName(fileName);
@@ -141,14 +142,14 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 		ticketAttachmentImpl.setVisibility(visibility);
 
 		if (extractedText == null) {
-			ticketAttachmentImpl.setExtractedText("");
+			ticketAttachmentImpl.setExtractedText(StringPool.BLANK);
 		}
 		else {
 			ticketAttachmentImpl.setExtractedText(extractedText);
 		}
 
 		if (availableFileRepositoryIds == null) {
-			ticketAttachmentImpl.setAvailableFileRepositoryIds("");
+			ticketAttachmentImpl.setAvailableFileRepositoryIds(StringPool.BLANK);
 		}
 		else {
 			ticketAttachmentImpl.setAvailableFileRepositoryIds(availableFileRepositoryIds);
@@ -207,7 +208,7 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -222,7 +223,7 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 		objectOutput.writeLong(releaseNotesId);
 
 		if (fileName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(fileName);
@@ -235,14 +236,14 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 		objectOutput.writeInt(visibility);
 
 		if (extractedText == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(extractedText);
 		}
 
 		if (availableFileRepositoryIds == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(availableFileRepositoryIds);

@@ -51,7 +51,7 @@ public class OfferingEntryFinderUtil {
 
 	public static OfferingEntryFinder getFinder() {
 		if (_finder == null) {
-			_finder = (OfferingEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_finder = (OfferingEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					OfferingEntryFinder.class.getName());
 
 			ReferenceRegistry.registerReference(OfferingEntryFinderUtil.class,

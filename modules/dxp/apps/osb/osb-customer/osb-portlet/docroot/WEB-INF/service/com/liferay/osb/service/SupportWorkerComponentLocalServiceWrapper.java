@@ -59,13 +59,15 @@ public class SupportWorkerComponentLocalServiceWrapper
 	}
 
 	/**
-	* @throws PortalException
+	* Deletes the support worker component from the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportWorkerComponent the support worker component
+	* @return the support worker component that was removed
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportWorkerComponentLocalService.deletePersistedModel(persistedModel);
+	public com.liferay.osb.model.SupportWorkerComponent deleteSupportWorkerComponent(
+		com.liferay.osb.model.SupportWorkerComponent supportWorkerComponent) {
+		return _supportWorkerComponentLocalService.deleteSupportWorkerComponent(supportWorkerComponent);
 	}
 
 	/**
@@ -82,21 +84,96 @@ public class SupportWorkerComponentLocalServiceWrapper
 		return _supportWorkerComponentLocalService.deleteSupportWorkerComponent(supportWorkerComponentId);
 	}
 
+	@Override
+	public com.liferay.osb.model.SupportWorkerComponent fetchSupportWorkerComponent(
+		long supportWorkerComponentId) {
+		return _supportWorkerComponentLocalService.fetchSupportWorkerComponent(supportWorkerComponentId);
+	}
+
 	/**
-	* Deletes the support worker component from the database. Also notifies the appropriate model listeners.
+	* Returns the support worker component with the primary key.
 	*
-	* @param supportWorkerComponent the support worker component
-	* @return the support worker component that was removed
+	* @param supportWorkerComponentId the primary key of the support worker component
+	* @return the support worker component
+	* @throws PortalException if a support worker component with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.osb.model.SupportWorkerComponent deleteSupportWorkerComponent(
+	public com.liferay.osb.model.SupportWorkerComponent getSupportWorkerComponent(
+		long supportWorkerComponentId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportWorkerComponentLocalService.getSupportWorkerComponent(supportWorkerComponentId);
+	}
+
+	/**
+	* Updates the support worker component in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param supportWorkerComponent the support worker component
+	* @return the support worker component that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.SupportWorkerComponent updateSupportWorkerComponent(
 		com.liferay.osb.model.SupportWorkerComponent supportWorkerComponent) {
-		return _supportWorkerComponentLocalService.deleteSupportWorkerComponent(supportWorkerComponent);
+		return _supportWorkerComponentLocalService.updateSupportWorkerComponent(supportWorkerComponent);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _supportWorkerComponentLocalService.getActionableDynamicQuery();
 	}
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _supportWorkerComponentLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _supportWorkerComponentLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportWorkerComponentLocalService.deletePersistedModel(persistedModel);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportWorkerComponentLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of support worker components.
+	*
+	* @return the number of support worker components
+	*/
+	@Override
+	public int getSupportWorkerComponentsCount() {
+		return _supportWorkerComponentLocalService.getSupportWorkerComponentsCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _supportWorkerComponentLocalService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _supportWorkerComponentLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -154,6 +231,30 @@ public class SupportWorkerComponentLocalServiceWrapper
 	}
 
 	/**
+	* Returns a range of all the support worker components.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportWorkerComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of support worker components
+	* @param end the upper bound of the range of support worker components (not inclusive)
+	* @return the range of support worker components
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorkerComponent> getSupportWorkerComponents(
+		int start, int end) {
+		return _supportWorkerComponentLocalService.getSupportWorkerComponents(start,
+			end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportWorkerComponent> getSupportWorkerComponents(
+		long supportWorkerId) {
+		return _supportWorkerComponentLocalService.getSupportWorkerComponents(supportWorkerId);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -181,103 +282,10 @@ public class SupportWorkerComponentLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.model.SupportWorkerComponent fetchSupportWorkerComponent(
-		long supportWorkerComponentId) {
-		return _supportWorkerComponentLocalService.fetchSupportWorkerComponent(supportWorkerComponentId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _supportWorkerComponentLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _supportWorkerComponentLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _supportWorkerComponentLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportWorkerComponentLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the support worker component with the primary key.
-	*
-	* @param supportWorkerComponentId the primary key of the support worker component
-	* @return the support worker component
-	* @throws PortalException if a support worker component with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.SupportWorkerComponent getSupportWorkerComponent(
-		long supportWorkerComponentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportWorkerComponentLocalService.getSupportWorkerComponent(supportWorkerComponentId);
-	}
-
-	/**
-	* Returns a range of all the support worker components.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportWorkerComponentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of support worker components
-	* @param end the upper bound of the range of support worker components (not inclusive)
-	* @return the range of support worker components
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportWorkerComponent> getSupportWorkerComponents(
-		int start, int end) {
-		return _supportWorkerComponentLocalService.getSupportWorkerComponents(start,
-			end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportWorkerComponent> getSupportWorkerComponents(
-		long supportWorkerId) {
-		return _supportWorkerComponentLocalService.getSupportWorkerComponents(supportWorkerId);
-	}
-
-	/**
-	* Returns the number of support worker components.
-	*
-	* @return the number of support worker components
-	*/
-	@Override
-	public int getSupportWorkerComponentsCount() {
-		return _supportWorkerComponentLocalService.getSupportWorkerComponentsCount();
-	}
-
-	@Override
 	public void setSupportWorkerComponents(long supportWorkerId,
 		int[] components) {
 		_supportWorkerComponentLocalService.setSupportWorkerComponents(supportWorkerId,
 			components);
-	}
-
-	/**
-	* Updates the support worker component in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param supportWorkerComponent the support worker component
-	* @return the support worker component that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.SupportWorkerComponent updateSupportWorkerComponent(
-		com.liferay.osb.model.SupportWorkerComponent supportWorkerComponent) {
-		return _supportWorkerComponentLocalService.updateSupportWorkerComponent(supportWorkerComponent);
 	}
 
 	@Override

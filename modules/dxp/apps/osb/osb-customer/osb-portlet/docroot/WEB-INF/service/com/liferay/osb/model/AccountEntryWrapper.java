@@ -272,260 +272,19 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AccountEntryWrapper((AccountEntry)_accountEntry.clone());
+	public AccountEntry toEscapedModel() {
+		return new AccountEntryWrapper(_accountEntry.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(AccountEntry accountEntry) {
-		return _accountEntry.compareTo(accountEntry);
-	}
-
-	@Override
-	public java.util.List<AccountAttachment> getAccountAttachments(
-		long accountProjectId) {
-		return _accountEntry.getAccountAttachments(accountProjectId);
-	}
-
-	@Override
-	public java.util.List<AccountCustomer> getAccountCustomers() {
-		return _accountEntry.getAccountCustomers();
-	}
-
-	/**
-	* Returns the account entry ID of this account entry.
-	*
-	* @return the account entry ID of this account entry
-	*/
-	@Override
-	public long getAccountEntryId() {
-		return _accountEntry.getAccountEntryId();
-	}
-
-	@Override
-	public java.util.List<AccountWorker> getAccountWorkers() {
-		return _accountEntry.getAccountWorkers();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.Address getAddress() {
-		return _accountEntry.getAddress();
-	}
-
-	/**
-	* Returns the code of this account entry.
-	*
-	* @return the code of this account entry
-	*/
-	@Override
-	public java.lang.String getCode() {
-		return _accountEntry.getCode();
-	}
-
-	/**
-	* Returns the company ID of this account entry.
-	*
-	* @return the company ID of this account entry
-	*/
-	@Override
-	public long getCompanyId() {
-		return _accountEntry.getCompanyId();
-	}
-
-	/**
-	* Returns the corp entry name of this account entry.
-	*
-	* @return the corp entry name of this account entry
-	*/
-	@Override
-	public java.lang.String getCorpEntryName() {
-		return _accountEntry.getCorpEntryName();
-	}
-
-	/**
-	* Returns the corp project ID of this account entry.
-	*
-	* @return the corp project ID of this account entry
-	*/
-	@Override
-	public long getCorpProjectId() {
-		return _accountEntry.getCorpProjectId();
-	}
-
-	/**
-	* Returns the country ID of this account entry.
-	*
-	* @return the country ID of this account entry
-	*/
-	@Override
-	public long getCountryId() {
-		return _accountEntry.getCountryId();
-	}
-
-	/**
-	* Returns the create date of this account entry.
-	*
-	* @return the create date of this account entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _accountEntry.getCreateDate();
-	}
-
-	@Override
-	public java.lang.String getEWSADossieraProjectKey() {
-		return _accountEntry.getEWSADossieraProjectKey();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountEntry.getExpandoBridge();
-	}
-
-	/**
-	* Returns the highest support response ID of this account entry.
-	*
-	* @return the highest support response ID of this account entry
-	*/
-	@Override
-	public long getHighestSupportResponseId() {
-		return _accountEntry.getHighestSupportResponseId();
-	}
-
-	/**
-	* Returns the industry of this account entry.
-	*
-	* @return the industry of this account entry
-	*/
-	@Override
-	public int getIndustry() {
-		return _accountEntry.getIndustry();
-	}
-
-	@Override
-	public java.lang.String getIndustryLabel() {
-		return _accountEntry.getIndustryLabel();
-	}
-
-	/**
-	* Returns the instructions of this account entry.
-	*
-	* @return the instructions of this account entry
-	*/
-	@Override
-	public java.lang.String getInstructions() {
-		return _accountEntry.getInstructions();
-	}
-
-	@Override
-	public java.lang.String[] getLanguageIds() {
-		return _accountEntry.getLanguageIds();
-	}
-
-	/**
-	* Returns the last audit date of this account entry.
-	*
-	* @return the last audit date of this account entry
-	*/
-	@Override
-	public Date getLastAuditDate() {
-		return _accountEntry.getLastAuditDate();
-	}
-
-	/**
-	* Returns the max customers of this account entry.
-	*
-	* @return the max customers of this account entry
-	*/
-	@Override
-	public int getMaxCustomers() {
-		return _accountEntry.getMaxCustomers();
-	}
-
-	/**
-	* Returns the modified date of this account entry.
-	*
-	* @return the modified date of this account entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _accountEntry.getModifiedDate();
-	}
-
-	/**
-	* Returns the modified user ID of this account entry.
-	*
-	* @return the modified user ID of this account entry
-	*/
-	@Override
-	public long getModifiedUserId() {
-		return _accountEntry.getModifiedUserId();
-	}
-
-	/**
-	* Returns the modified user name of this account entry.
-	*
-	* @return the modified user name of this account entry
-	*/
-	@Override
-	public java.lang.String getModifiedUserName() {
-		return _accountEntry.getModifiedUserName();
-	}
-
-	/**
-	* Returns the modified user uuid of this account entry.
-	*
-	* @return the modified user uuid of this account entry
-	*/
-	@Override
-	public java.lang.String getModifiedUserUuid() {
-		return _accountEntry.getModifiedUserUuid();
-	}
-
-	/**
-	* Returns the name of this account entry.
-	*
-	* @return the name of this account entry
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _accountEntry.getName();
-	}
-
-	/**
-	* Returns the notes of this account entry.
-	*
-	* @return the notes of this account entry
-	*/
-	@Override
-	public java.lang.String getNotes() {
-		return _accountEntry.getNotes();
-	}
-
-	@Override
-	public java.util.List<OfferingEntry> getOfferingEntries() {
-		return _accountEntry.getOfferingEntries();
-	}
-
-	@Override
-	public java.util.List<OrderEntry> getOrderEntries() {
-		return _accountEntry.getOrderEntries();
+	public AccountEntry toUnescapedModel() {
+		return new AccountEntryWrapper(_accountEntry.toUnescapedModel());
 	}
 
 	@Override
 	public PartnerEntry getPartnerEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEntry.getPartnerEntry();
-	}
-
-	/**
-	* Returns the partner entry ID of this account entry.
-	*
-	* @return the partner entry ID of this account entry
-	*/
-	@Override
-	public long getPartnerEntryId() {
-		return _accountEntry.getPartnerEntryId();
 	}
 
 	/**
@@ -536,166 +295,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public boolean getPartnerManagedSupport() {
 		return _accountEntry.getPartnerManagedSupport();
-	}
-
-	/**
-	* Returns the primary key of this account entry.
-	*
-	* @return the primary key of this account entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _accountEntry.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountEntry.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the redirect account entry ID of this account entry.
-	*
-	* @return the redirect account entry ID of this account entry
-	*/
-	@Override
-	public long getRedirectAccountEntryId() {
-		return _accountEntry.getRedirectAccountEntryId();
-	}
-
-	/**
-	* Returns the status of this account entry.
-	*
-	* @return the status of this account entry
-	*/
-	@Override
-	public int getStatus() {
-		return _accountEntry.getStatus();
-	}
-
-	/**
-	* Returns the status by user ID of this account entry.
-	*
-	* @return the status by user ID of this account entry
-	*/
-	@Override
-	public long getStatusByUserId() {
-		return _accountEntry.getStatusByUserId();
-	}
-
-	/**
-	* Returns the status by user name of this account entry.
-	*
-	* @return the status by user name of this account entry
-	*/
-	@Override
-	public java.lang.String getStatusByUserName() {
-		return _accountEntry.getStatusByUserName();
-	}
-
-	/**
-	* Returns the status by user uuid of this account entry.
-	*
-	* @return the status by user uuid of this account entry
-	*/
-	@Override
-	public java.lang.String getStatusByUserUuid() {
-		return _accountEntry.getStatusByUserUuid();
-	}
-
-	/**
-	* Returns the status date of this account entry.
-	*
-	* @return the status date of this account entry
-	*/
-	@Override
-	public Date getStatusDate() {
-		return _accountEntry.getStatusDate();
-	}
-
-	@Override
-	public java.lang.String getStatusLabel() {
-		return _accountEntry.getStatusLabel();
-	}
-
-	/**
-	* Returns the status message of this account entry.
-	*
-	* @return the status message of this account entry
-	*/
-	@Override
-	public java.lang.String getStatusMessage() {
-		return _accountEntry.getStatusMessage();
-	}
-
-	@Override
-	public long[] getSupportRegionIds() {
-		return _accountEntry.getSupportRegionIds();
-	}
-
-	@Override
-	public java.util.List<SupportRegion> getSupportRegions() {
-		return _accountEntry.getSupportRegions();
-	}
-
-	/**
-	* Returns the tier of this account entry.
-	*
-	* @return the tier of this account entry
-	*/
-	@Override
-	public int getTier() {
-		return _accountEntry.getTier();
-	}
-
-	/**
-	* Returns the type of this account entry.
-	*
-	* @return the type of this account entry
-	*/
-	@Override
-	public int getType() {
-		return _accountEntry.getType();
-	}
-
-	@Override
-	public java.lang.String getTypeLabel() {
-		return _accountEntry.getTypeLabel();
-	}
-
-	/**
-	* Returns the user ID of this account entry.
-	*
-	* @return the user ID of this account entry
-	*/
-	@Override
-	public long getUserId() {
-		return _accountEntry.getUserId();
-	}
-
-	/**
-	* Returns the user name of this account entry.
-	*
-	* @return the user name of this account entry
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _accountEntry.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this account entry.
-	*
-	* @return the user uuid of this account entry
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _accountEntry.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _accountEntry.hashCode();
 	}
 
 	/**
@@ -804,6 +403,432 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _accountEntry.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.Address getAddress() {
+		return _accountEntry.getAddress();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountEntry> toCacheModel() {
+		return _accountEntry.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(AccountEntry accountEntry) {
+		return _accountEntry.compareTo(accountEntry);
+	}
+
+	/**
+	* Returns the industry of this account entry.
+	*
+	* @return the industry of this account entry
+	*/
+	@Override
+	public int getIndustry() {
+		return _accountEntry.getIndustry();
+	}
+
+	/**
+	* Returns the max customers of this account entry.
+	*
+	* @return the max customers of this account entry
+	*/
+	@Override
+	public int getMaxCustomers() {
+		return _accountEntry.getMaxCustomers();
+	}
+
+	/**
+	* Returns the status of this account entry.
+	*
+	* @return the status of this account entry
+	*/
+	@Override
+	public int getStatus() {
+		return _accountEntry.getStatus();
+	}
+
+	/**
+	* Returns the tier of this account entry.
+	*
+	* @return the tier of this account entry
+	*/
+	@Override
+	public int getTier() {
+		return _accountEntry.getTier();
+	}
+
+	/**
+	* Returns the type of this account entry.
+	*
+	* @return the type of this account entry
+	*/
+	@Override
+	public int getType() {
+		return _accountEntry.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _accountEntry.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountEntry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AccountEntryWrapper((AccountEntry)_accountEntry.clone());
+	}
+
+	/**
+	* Returns the code of this account entry.
+	*
+	* @return the code of this account entry
+	*/
+	@Override
+	public java.lang.String getCode() {
+		return _accountEntry.getCode();
+	}
+
+	/**
+	* Returns the corp entry name of this account entry.
+	*
+	* @return the corp entry name of this account entry
+	*/
+	@Override
+	public java.lang.String getCorpEntryName() {
+		return _accountEntry.getCorpEntryName();
+	}
+
+	@Override
+	public java.lang.String getEWSADossieraProjectKey() {
+		return _accountEntry.getEWSADossieraProjectKey();
+	}
+
+	@Override
+	public java.lang.String getIndustryLabel() {
+		return _accountEntry.getIndustryLabel();
+	}
+
+	/**
+	* Returns the instructions of this account entry.
+	*
+	* @return the instructions of this account entry
+	*/
+	@Override
+	public java.lang.String getInstructions() {
+		return _accountEntry.getInstructions();
+	}
+
+	/**
+	* Returns the modified user name of this account entry.
+	*
+	* @return the modified user name of this account entry
+	*/
+	@Override
+	public java.lang.String getModifiedUserName() {
+		return _accountEntry.getModifiedUserName();
+	}
+
+	/**
+	* Returns the modified user uuid of this account entry.
+	*
+	* @return the modified user uuid of this account entry
+	*/
+	@Override
+	public java.lang.String getModifiedUserUuid() {
+		return _accountEntry.getModifiedUserUuid();
+	}
+
+	/**
+	* Returns the name of this account entry.
+	*
+	* @return the name of this account entry
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _accountEntry.getName();
+	}
+
+	/**
+	* Returns the notes of this account entry.
+	*
+	* @return the notes of this account entry
+	*/
+	@Override
+	public java.lang.String getNotes() {
+		return _accountEntry.getNotes();
+	}
+
+	/**
+	* Returns the status by user name of this account entry.
+	*
+	* @return the status by user name of this account entry
+	*/
+	@Override
+	public java.lang.String getStatusByUserName() {
+		return _accountEntry.getStatusByUserName();
+	}
+
+	/**
+	* Returns the status by user uuid of this account entry.
+	*
+	* @return the status by user uuid of this account entry
+	*/
+	@Override
+	public java.lang.String getStatusByUserUuid() {
+		return _accountEntry.getStatusByUserUuid();
+	}
+
+	@Override
+	public java.lang.String getStatusLabel() {
+		return _accountEntry.getStatusLabel();
+	}
+
+	/**
+	* Returns the status message of this account entry.
+	*
+	* @return the status message of this account entry
+	*/
+	@Override
+	public java.lang.String getStatusMessage() {
+		return _accountEntry.getStatusMessage();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _accountEntry.getTypeLabel();
+	}
+
+	/**
+	* Returns the user name of this account entry.
+	*
+	* @return the user name of this account entry
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _accountEntry.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this account entry.
+	*
+	* @return the user uuid of this account entry
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _accountEntry.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _accountEntry.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _accountEntry.toXmlString();
+	}
+
+	@Override
+	public java.lang.String[] getLanguageIds() {
+		return _accountEntry.getLanguageIds();
+	}
+
+	/**
+	* Returns the create date of this account entry.
+	*
+	* @return the create date of this account entry
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _accountEntry.getCreateDate();
+	}
+
+	/**
+	* Returns the last audit date of this account entry.
+	*
+	* @return the last audit date of this account entry
+	*/
+	@Override
+	public Date getLastAuditDate() {
+		return _accountEntry.getLastAuditDate();
+	}
+
+	/**
+	* Returns the modified date of this account entry.
+	*
+	* @return the modified date of this account entry
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _accountEntry.getModifiedDate();
+	}
+
+	/**
+	* Returns the status date of this account entry.
+	*
+	* @return the status date of this account entry
+	*/
+	@Override
+	public Date getStatusDate() {
+		return _accountEntry.getStatusDate();
+	}
+
+	@Override
+	public java.util.List<AccountAttachment> getAccountAttachments(
+		long accountProjectId) {
+		return _accountEntry.getAccountAttachments(accountProjectId);
+	}
+
+	@Override
+	public java.util.List<AccountCustomer> getAccountCustomers() {
+		return _accountEntry.getAccountCustomers();
+	}
+
+	@Override
+	public java.util.List<AccountWorker> getAccountWorkers() {
+		return _accountEntry.getAccountWorkers();
+	}
+
+	@Override
+	public java.util.List<OfferingEntry> getOfferingEntries() {
+		return _accountEntry.getOfferingEntries();
+	}
+
+	@Override
+	public java.util.List<OrderEntry> getOrderEntries() {
+		return _accountEntry.getOrderEntries();
+	}
+
+	@Override
+	public java.util.List<SupportRegion> getSupportRegions() {
+		return _accountEntry.getSupportRegions();
+	}
+
+	/**
+	* Returns the account entry ID of this account entry.
+	*
+	* @return the account entry ID of this account entry
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _accountEntry.getAccountEntryId();
+	}
+
+	/**
+	* Returns the company ID of this account entry.
+	*
+	* @return the company ID of this account entry
+	*/
+	@Override
+	public long getCompanyId() {
+		return _accountEntry.getCompanyId();
+	}
+
+	/**
+	* Returns the corp project ID of this account entry.
+	*
+	* @return the corp project ID of this account entry
+	*/
+	@Override
+	public long getCorpProjectId() {
+		return _accountEntry.getCorpProjectId();
+	}
+
+	/**
+	* Returns the country ID of this account entry.
+	*
+	* @return the country ID of this account entry
+	*/
+	@Override
+	public long getCountryId() {
+		return _accountEntry.getCountryId();
+	}
+
+	/**
+	* Returns the highest support response ID of this account entry.
+	*
+	* @return the highest support response ID of this account entry
+	*/
+	@Override
+	public long getHighestSupportResponseId() {
+		return _accountEntry.getHighestSupportResponseId();
+	}
+
+	/**
+	* Returns the modified user ID of this account entry.
+	*
+	* @return the modified user ID of this account entry
+	*/
+	@Override
+	public long getModifiedUserId() {
+		return _accountEntry.getModifiedUserId();
+	}
+
+	/**
+	* Returns the partner entry ID of this account entry.
+	*
+	* @return the partner entry ID of this account entry
+	*/
+	@Override
+	public long getPartnerEntryId() {
+		return _accountEntry.getPartnerEntryId();
+	}
+
+	/**
+	* Returns the primary key of this account entry.
+	*
+	* @return the primary key of this account entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _accountEntry.getPrimaryKey();
+	}
+
+	/**
+	* Returns the redirect account entry ID of this account entry.
+	*
+	* @return the redirect account entry ID of this account entry
+	*/
+	@Override
+	public long getRedirectAccountEntryId() {
+		return _accountEntry.getRedirectAccountEntryId();
+	}
+
+	/**
+	* Returns the status by user ID of this account entry.
+	*
+	* @return the status by user ID of this account entry
+	*/
+	@Override
+	public long getStatusByUserId() {
+		return _accountEntry.getStatusByUserId();
+	}
+
+	/**
+	* Returns the user ID of this account entry.
+	*
+	* @return the user ID of this account entry
+	*/
+	@Override
+	public long getUserId() {
+		return _accountEntry.getUserId();
+	}
+
+	@Override
+	public long[] getSupportRegionIds() {
+		return _accountEntry.getSupportRegionIds();
+	}
+
+	@Override
 	public void persist() {
 		_accountEntry.persist();
 	}
@@ -889,14 +914,14 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_accountEntry.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountEntry.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_accountEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -1182,31 +1207,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_accountEntry.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountEntry> toCacheModel() {
-		return _accountEntry.toCacheModel();
-	}
-
-	@Override
-	public AccountEntry toEscapedModel() {
-		return new AccountEntryWrapper(_accountEntry.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _accountEntry.toString();
-	}
-
-	@Override
-	public AccountEntry toUnescapedModel() {
-		return new AccountEntryWrapper(_accountEntry.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _accountEntry.toXmlString();
 	}
 
 	@Override

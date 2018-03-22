@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,11 @@ public class FeedbackEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.FeedbackEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
 
 	/**
 	* Returns the OSGi service identifier.
@@ -56,8 +62,15 @@ public class FeedbackEntryServiceUtil {
 
 	public static FeedbackEntryService getService() {
 		if (_service == null) {
-			_service = (FeedbackEntryService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					FeedbackEntryService.class.getName());
+
+			if (invokableService instanceof FeedbackEntryService) {
+				_service = (FeedbackEntryService)invokableService;
+			}
+			else {
+				_service = new FeedbackEntryServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(FeedbackEntryServiceUtil.class,
 				"_service");

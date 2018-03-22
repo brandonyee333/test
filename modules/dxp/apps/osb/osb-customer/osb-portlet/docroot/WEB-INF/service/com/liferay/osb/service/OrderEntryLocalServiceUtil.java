@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,20 +41,16 @@ public class OrderEntryLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.OrderEntryLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static java.util.List<com.liferay.osb.model.OrderEntry> addOrderEntriesWithWorkflow(
-		java.lang.String salesforceOpportunityKey,
-		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.osb.model.CorpProject corpProject,
-		com.liferay.osb.model.PartnerEntry partnerEntry,
-		com.liferay.portal.kernel.model.Address address,
-		com.liferay.osb.model.AccountWorker accountWorker,
-		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addOrderEntriesWithWorkflow(salesforceOpportunityKey,
-			accountEntry, corpProject, partnerEntry, address, accountWorker,
-			orderEntries, serviceContext);
+
+	/**
+	* Adds the order entry to the database. Also notifies the appropriate model listeners.
+	*
+	* @param orderEntry the order entry
+	* @return the order entry that was added
+	*/
+	public static com.liferay.osb.model.OrderEntry addOrderEntry(
+		com.liferay.osb.model.OrderEntry orderEntry) {
+		return getService().addOrderEntry(orderEntry);
 	}
 
 	public static com.liferay.osb.model.OrderEntry addOrderEntry(long userId,
@@ -72,17 +69,6 @@ public class OrderEntryLocalServiceUtil {
 	}
 
 	/**
-	* Adds the order entry to the database. Also notifies the appropriate model listeners.
-	*
-	* @param orderEntry the order entry
-	* @return the order entry that was added
-	*/
-	public static com.liferay.osb.model.OrderEntry addOrderEntry(
-		com.liferay.osb.model.OrderEntry orderEntry) {
-		return getService().addOrderEntry(orderEntry);
-	}
-
-	/**
 	* Creates a new order entry with the primary key. Does not add the order entry to the database.
 	*
 	* @param orderEntryId the primary key for the new order entry
@@ -91,19 +77,6 @@ public class OrderEntryLocalServiceUtil {
 	public static com.liferay.osb.model.OrderEntry createOrderEntry(
 		long orderEntryId) {
 		return getService().createOrderEntry(orderEntryId);
-	}
-
-	/**
-	* Deletes the order entry with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param orderEntryId the primary key of the order entry
-	* @return the order entry that was removed
-	* @throws PortalException if a order entry with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.OrderEntry deleteOrderEntry(
-		long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deleteOrderEntry(orderEntryId);
 	}
 
 	/**
@@ -120,6 +93,95 @@ public class OrderEntryLocalServiceUtil {
 	}
 
 	/**
+	* Deletes the order entry with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param orderEntryId the primary key of the order entry
+	* @return the order entry that was removed
+	* @throws PortalException if a order entry with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.OrderEntry deleteOrderEntry(
+		long orderEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteOrderEntry(orderEntryId);
+	}
+
+	public static com.liferay.osb.model.OrderEntry fetchOrderEntry(
+		long orderEntryId) {
+		return getService().fetchOrderEntry(orderEntryId);
+	}
+
+	public static com.liferay.osb.model.OrderEntry getOrderEntry(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getOrderEntry(uuid);
+	}
+
+	/**
+	* Returns the order entry with the primary key.
+	*
+	* @param orderEntryId the primary key of the order entry
+	* @return the order entry
+	* @throws PortalException if a order entry with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.OrderEntry getOrderEntry(
+		long orderEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getOrderEntry(orderEntryId);
+	}
+
+	public static com.liferay.osb.model.OrderEntry renewOrderEntry(
+		long userId, long orderEntryId, int renewCount)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().renewOrderEntry(userId, orderEntryId, renewCount);
+	}
+
+	/**
+	* Updates the order entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param orderEntry the order entry
+	* @return the order entry that was updated
+	*/
+	public static com.liferay.osb.model.OrderEntry updateOrderEntry(
+		com.liferay.osb.model.OrderEntry orderEntry) {
+		return getService().updateOrderEntry(orderEntry);
+	}
+
+	public static com.liferay.osb.model.OrderEntry updateOrderEntry(
+		long userId, long orderEntryId, long accountEntryId,
+		java.lang.String purchaseOrderKey, int startDateMonth,
+		int startDateDay, int startDateYear, boolean prorated,
+		int actualStartDateMonth, int actualStartDateDay,
+		int actualStartDateYear, java.lang.String salesforceOpportunityKey,
+		java.util.List<com.liferay.osb.model.OfferingEntry> offeringEntries)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateOrderEntry(userId, orderEntryId, accountEntryId,
+			purchaseOrderKey, startDateMonth, startDateDay, startDateYear,
+			prorated, actualStartDateMonth, actualStartDateDay,
+			actualStartDateYear, salesforceOpportunityKey, offeringEntries);
+	}
+
+	public static com.liferay.osb.model.OrderEntry updateStatus(long userId,
+		long orderEntryId, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .updateStatus(userId, orderEntryId, status, serviceContext);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
 	* @throws PortalException
 	*/
 	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
@@ -128,8 +190,84 @@ public class OrderEntryLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of order entries.
+	*
+	* @return the number of order entries
+	*/
+	public static int getOrderEntriesCount() {
+		return getService().getOrderEntriesCount();
+	}
+
+	public static int searchCount(java.lang.Long createUserId,
+		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
+		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
+		java.lang.Long modifiedUserId, int modifiedDateGTDay,
+		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
+		int modifiedDateLTMonth, int modifiedDateLTYear,
+		java.lang.Long accountEntryId, java.lang.String purchaseOrderKey,
+		int[] statuses, int startDateGTDay, int startDateGTMonth,
+		int startDateGTYear, int startDateLTDay, int startDateLTMonth,
+		int startDateLTYear, java.lang.Boolean prorated,
+		int actualStartDateGTDay, int actualStartDateGTMonth,
+		int actualStartDateGTYear, int actualStartDateLTDay,
+		int actualStartDateLTMonth, int actualStartDateLTYear,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andOperator) {
+		return getService()
+				   .searchCount(createUserId, createDateGTDay,
+			createDateGTMonth, createDateGTYear, createDateLTDay,
+			createDateLTMonth, createDateLTYear, modifiedUserId,
+			modifiedDateGTDay, modifiedDateGTMonth, modifiedDateGTYear,
+			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear,
+			accountEntryId, purchaseOrderKey, statuses, startDateGTDay,
+			startDateGTMonth, startDateGTYear, startDateLTDay,
+			startDateLTMonth, startDateLTYear, prorated, actualStartDateGTDay,
+			actualStartDateGTMonth, actualStartDateGTYear,
+			actualStartDateLTDay, actualStartDateLTMonth,
+			actualStartDateLTYear, params, andOperator);
+	}
+
+	public static int searchCount(java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
+		return getService().searchCount(keywords, params);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.osb.model.OrderEntry> addOrderEntriesWithWorkflow(
+		java.lang.String salesforceOpportunityKey,
+		com.liferay.osb.model.AccountEntry accountEntry,
+		com.liferay.osb.model.CorpProject corpProject,
+		com.liferay.osb.model.PartnerEntry partnerEntry,
+		com.liferay.portal.kernel.model.Address address,
+		com.liferay.osb.model.AccountWorker accountWorker,
+		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addOrderEntriesWithWorkflow(salesforceOpportunityKey,
+			accountEntry, corpProject, partnerEntry, address, accountWorker,
+			orderEntries, serviceContext);
 	}
 
 	/**
@@ -182,46 +320,9 @@ public class OrderEntryLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static com.liferay.osb.model.OrderEntry fetchOrderEntry(
-		long orderEntryId) {
-		return getService().fetchOrderEntry(orderEntryId);
-	}
-
 	public static java.util.List<com.liferay.osb.model.OrderEntry> getAccountEntryOrderEntries(
 		long accountEntryId) {
 		return getService().getAccountEntryOrderEntries(accountEntryId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
 	}
 
 	/**
@@ -238,55 +339,6 @@ public class OrderEntryLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.OrderEntry> getOrderEntries(
 		int start, int end) {
 		return getService().getOrderEntries(start, end);
-	}
-
-	/**
-	* Returns the number of order entries.
-	*
-	* @return the number of order entries
-	*/
-	public static int getOrderEntriesCount() {
-		return getService().getOrderEntriesCount();
-	}
-
-	/**
-	* Returns the order entry with the primary key.
-	*
-	* @param orderEntryId the primary key of the order entry
-	* @return the order entry
-	* @throws PortalException if a order entry with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.OrderEntry getOrderEntry(
-		long orderEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getOrderEntry(orderEntryId);
-	}
-
-	public static com.liferay.osb.model.OrderEntry getOrderEntry(
-		java.lang.String uuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getOrderEntry(uuid);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	public static com.liferay.osb.model.OrderEntry renewOrderEntry(
-		long userId, long orderEntryId, int renewCount)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().renewOrderEntry(userId, orderEntryId, renewCount);
 	}
 
 	public static java.util.List<com.liferay.osb.model.OrderEntry> search(
@@ -327,72 +379,28 @@ public class OrderEntryLocalServiceUtil {
 		return getService().search(keywords, params, start, end, obc);
 	}
 
-	public static int searchCount(java.lang.Long createUserId,
-		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
-		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
-		java.lang.Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear,
-		java.lang.Long accountEntryId, java.lang.String purchaseOrderKey,
-		int[] statuses, int startDateGTDay, int startDateGTMonth,
-		int startDateGTYear, int startDateLTDay, int startDateLTMonth,
-		int startDateLTYear, java.lang.Boolean prorated,
-		int actualStartDateGTDay, int actualStartDateGTMonth,
-		int actualStartDateGTYear, int actualStartDateLTDay,
-		int actualStartDateLTMonth, int actualStartDateLTYear,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator) {
-		return getService()
-				   .searchCount(createUserId, createDateGTDay,
-			createDateGTMonth, createDateGTYear, createDateLTDay,
-			createDateLTMonth, createDateLTYear, modifiedUserId,
-			modifiedDateGTDay, modifiedDateGTMonth, modifiedDateGTYear,
-			modifiedDateLTDay, modifiedDateLTMonth, modifiedDateLTYear,
-			accountEntryId, purchaseOrderKey, statuses, startDateGTDay,
-			startDateGTMonth, startDateGTYear, startDateLTDay,
-			startDateLTMonth, startDateLTYear, prorated, actualStartDateGTDay,
-			actualStartDateGTMonth, actualStartDateGTYear,
-			actualStartDateLTDay, actualStartDateLTMonth,
-			actualStartDateLTYear, params, andOperator);
-	}
-
-	public static int searchCount(java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
-		return getService().searchCount(keywords, params);
-	}
-
-	public static com.liferay.osb.model.OrderEntry updateOrderEntry(
-		long userId, long orderEntryId, long accountEntryId,
-		java.lang.String purchaseOrderKey, int startDateMonth,
-		int startDateDay, int startDateYear, boolean prorated,
-		int actualStartDateMonth, int actualStartDateDay,
-		int actualStartDateYear, java.lang.String salesforceOpportunityKey,
-		java.util.List<com.liferay.osb.model.OfferingEntry> offeringEntries)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateOrderEntry(userId, orderEntryId, accountEntryId,
-			purchaseOrderKey, startDateMonth, startDateDay, startDateYear,
-			prorated, actualStartDateMonth, actualStartDateDay,
-			actualStartDateYear, salesforceOpportunityKey, offeringEntries);
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Updates the order entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @param orderEntry the order entry
-	* @return the order entry that was updated
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
-	public static com.liferay.osb.model.OrderEntry updateOrderEntry(
-		com.liferay.osb.model.OrderEntry orderEntry) {
-		return getService().updateOrderEntry(orderEntry);
-	}
-
-	public static com.liferay.osb.model.OrderEntry updateStatus(long userId,
-		long orderEntryId, int status,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateStatus(userId, orderEntryId, status, serviceContext);
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
 	public static void clearService() {
@@ -401,8 +409,15 @@ public class OrderEntryLocalServiceUtil {
 
 	public static OrderEntryLocalService getService() {
 		if (_service == null) {
-			_service = (OrderEntryLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					OrderEntryLocalService.class.getName());
+
+			if (invokableLocalService instanceof OrderEntryLocalService) {
+				_service = (OrderEntryLocalService)invokableLocalService;
+			}
+			else {
+				_service = new OrderEntryLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(OrderEntryLocalServiceUtil.class,
 				"_service");

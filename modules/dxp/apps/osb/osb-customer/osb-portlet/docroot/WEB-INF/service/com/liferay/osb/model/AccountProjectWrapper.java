@@ -108,8 +108,53 @@ public class AccountProjectWrapper implements AccountProject,
 	}
 
 	@Override
-	public void addData(AccountInformation accountInformation) {
-		_accountProject.addData(accountInformation);
+	public AccountProject toEscapedModel() {
+		return new AccountProjectWrapper(_accountProject.toEscapedModel());
+	}
+
+	@Override
+	public AccountProject toUnescapedModel() {
+		return new AccountProjectWrapper(_accountProject.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _accountProject.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _accountProject.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _accountProject.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _accountProject.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountProject> toCacheModel() {
+		return _accountProject.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(AccountProject accountProject) {
+		return _accountProject.compareTo(accountProject);
+	}
+
+	@Override
+	public int hashCode() {
+		return _accountProject.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountProject.getPrimaryKeyObj();
 	}
 
 	@Override
@@ -118,58 +163,8 @@ public class AccountProjectWrapper implements AccountProject,
 	}
 
 	@Override
-	public int compareTo(AccountProject accountProject) {
-		return _accountProject.compareTo(accountProject);
-	}
-
-	/**
-	* Returns the account entry ID of this account project.
-	*
-	* @return the account entry ID of this account project
-	*/
-	@Override
-	public long getAccountEntryId() {
-		return _accountProject.getAccountEntryId();
-	}
-
-	/**
-	* Returns the account project ID of this account project.
-	*
-	* @return the account project ID of this account project
-	*/
-	@Override
-	public long getAccountProjectId() {
-		return _accountProject.getAccountProjectId();
-	}
-
-	@Override
 	public java.lang.String getData(int fieldId) {
 		return _accountProject.getData(fieldId);
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountProject.getExpandoBridge();
-	}
-
-	/**
-	* Returns the modified date of this account project.
-	*
-	* @return the modified date of this account project
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _accountProject.getModifiedDate();
-	}
-
-	/**
-	* Returns the modified user ID of this account project.
-	*
-	* @return the modified user ID of this account project
-	*/
-	@Override
-	public long getModifiedUserId() {
-		return _accountProject.getModifiedUserId();
 	}
 
 	/**
@@ -202,6 +197,56 @@ public class AccountProjectWrapper implements AccountProject,
 		return _accountProject.getName();
 	}
 
+	@Override
+	public java.lang.String toString() {
+		return _accountProject.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _accountProject.toXmlString();
+	}
+
+	/**
+	* Returns the modified date of this account project.
+	*
+	* @return the modified date of this account project
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _accountProject.getModifiedDate();
+	}
+
+	/**
+	* Returns the account entry ID of this account project.
+	*
+	* @return the account entry ID of this account project
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _accountProject.getAccountEntryId();
+	}
+
+	/**
+	* Returns the account project ID of this account project.
+	*
+	* @return the account project ID of this account project
+	*/
+	@Override
+	public long getAccountProjectId() {
+		return _accountProject.getAccountProjectId();
+	}
+
+	/**
+	* Returns the modified user ID of this account project.
+	*
+	* @return the modified user ID of this account project
+	*/
+	@Override
+	public long getModifiedUserId() {
+		return _accountProject.getModifiedUserId();
+	}
+
 	/**
 	* Returns the primary key of this account project.
 	*
@@ -213,28 +258,8 @@ public class AccountProjectWrapper implements AccountProject,
 	}
 
 	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountProject.getPrimaryKeyObj();
-	}
-
-	@Override
-	public int hashCode() {
-		return _accountProject.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _accountProject.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _accountProject.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _accountProject.isNew();
+	public void addData(AccountInformation accountInformation) {
+		_accountProject.addData(accountInformation);
 	}
 
 	@Override
@@ -274,14 +299,14 @@ public class AccountProjectWrapper implements AccountProject,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_accountProject.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountProject.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountProject.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_accountProject.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -357,31 +382,6 @@ public class AccountProjectWrapper implements AccountProject,
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_accountProject.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountProject> toCacheModel() {
-		return _accountProject.toCacheModel();
-	}
-
-	@Override
-	public AccountProject toEscapedModel() {
-		return new AccountProjectWrapper(_accountProject.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _accountProject.toString();
-	}
-
-	@Override
-	public AccountProject toUnescapedModel() {
-		return new AccountProjectWrapper(_accountProject.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _accountProject.toXmlString();
 	}
 
 	@Override

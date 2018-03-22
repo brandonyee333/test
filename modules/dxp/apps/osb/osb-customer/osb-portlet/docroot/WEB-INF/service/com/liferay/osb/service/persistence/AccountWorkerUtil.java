@@ -1166,7 +1166,7 @@ public class AccountWorkerUtil {
 
 	public static AccountWorkerPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AccountWorkerPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (AccountWorkerPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AccountWorkerPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AccountWorkerUtil.class,

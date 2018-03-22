@@ -48,39 +48,10 @@ public class TicketEntryServiceWrapper implements TicketEntryService,
 	}
 
 	@Override
-	public void closeTicketEntry(long ticketEntryId, int resolution,
-		java.lang.String body)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_ticketEntryService.closeTicketEntry(ticketEntryId, resolution, body);
-	}
-
-	@Override
-	public void escalateTicketEntry(long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_ticketEntryService.escalateTicketEntry(ticketEntryId);
-	}
-
-	@Override
 	public com.liferay.osb.model.TicketEntry forwardTicketEntry(
 		long ticketEntryId, java.lang.String commentBody)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketEntryService.forwardTicketEntry(ticketEntryId, commentBody);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _ticketEntryService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.osb.model.TicketEntry getTicketEntry(long ticketEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryService.getTicketEntry(ticketEntryId);
 	}
 
 	@Override
@@ -91,107 +62,9 @@ public class TicketEntryServiceWrapper implements TicketEntryService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.search.Hits search(long reportedByUserId,
-		long accountEntryId, java.lang.String name, int[] accountEntryTier,
-		java.lang.Boolean satisfiedDueDate, java.util.Date createDateGT,
-		java.util.Date createDateLT, java.lang.String content, int[] status,
-		int[] severity, int[] escalationLevel, long[] envOS, long[] envDB,
-		long[] envJVM, long[] envAS, long[] envLFR, int[] components,
-		int[] resolution, java.util.Date closedDateGT,
-		java.util.Date closedDateLT, java.util.Date dueDateGT,
-		java.util.Date dueDateLT,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.search.Sort[] sorts)
+	public com.liferay.osb.model.TicketEntry getTicketEntry(long ticketEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryService.search(reportedByUserId, accountEntryId,
-			name, accountEntryTier, satisfiedDueDate, createDateGT,
-			createDateLT, content, status, severity, escalationLevel, envOS,
-			envDB, envJVM, envAS, envLFR, components, resolution, closedDateGT,
-			closedDateLT, dueDateGT, dueDateLT, params, andSearch, start, end,
-			sorts);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.search.Hits search(long reportedByUserId,
-		long accountEntryId, java.lang.String keywords,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end, com.liferay.portal.kernel.search.Sort[] sorts)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryService.search(reportedByUserId, accountEntryId,
-			keywords, params, start, end, sorts);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketEntry> search(
-		long reportedByUserId, java.lang.String name, int[] accountEntryTier,
-		java.lang.Boolean satisfiedDueDate, int createDateGTDay,
-		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
-		int createDateLTMonth, int createDateLTYear, java.lang.String subject,
-		java.lang.String description, java.lang.String body, int[] status,
-		int[] severity, int[] weights, int[] escalationLevel, long[] envOS,
-		long[] envDB, long[] envJVM, long[] envAS, long[] envLFR,
-		int[] components, int[] resolution, int closedDateGTDay,
-		int closedDateGTMonth, int closedDateGTYear, int closedDateLTDay,
-		int closedDateLTMonth, int closedDateLTYear, int dueDateGTDay,
-		int dueDateGTMonth, int dueDateGTYear, int dueDateLTDay,
-		int dueDateLTMonth, int dueDateLTYear,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryService.search(reportedByUserId, name,
-			accountEntryTier, satisfiedDueDate, createDateGTDay,
-			createDateGTMonth, createDateGTYear, createDateLTDay,
-			createDateLTMonth, createDateLTYear, subject, description, body,
-			status, severity, weights, escalationLevel, envOS, envDB, envJVM,
-			envAS, envLFR, components, resolution, closedDateGTDay,
-			closedDateGTMonth, closedDateGTYear, closedDateLTDay,
-			closedDateLTMonth, closedDateLTYear, dueDateGTDay, dueDateGTMonth,
-			dueDateGTYear, dueDateLTDay, dueDateLTMonth, dueDateLTYear, params,
-			andSearch, start, end, obc);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.TicketEntry> search(
-		java.lang.String keywords, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryService.search(keywords, start, end, obc);
-	}
-
-	@Override
-	public int searchCount(long reportedByUserId, java.lang.String name,
-		int[] accountEntryTier, java.lang.Boolean satisfiedDueDate,
-		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
-		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
-		java.lang.String subject, java.lang.String description,
-		java.lang.String body, int[] status, int[] severity, int[] weights,
-		int[] escalationLevel, long[] envOS, long[] envDB, long[] envJVM,
-		long[] envAS, long[] envLFR, int[] components, int[] resolution,
-		int closedDateGTDay, int closedDateGTMonth, int closedDateGTYear,
-		int closedDateLTDay, int closedDateLTMonth, int closedDateLTYear,
-		int dueDateGTDay, int dueDateGTMonth, int dueDateGTYear,
-		int dueDateLTDay, int dueDateLTMonth, int dueDateLTYear,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryService.searchCount(reportedByUserId, name,
-			accountEntryTier, satisfiedDueDate, createDateGTDay,
-			createDateGTMonth, createDateGTYear, createDateLTDay,
-			createDateLTMonth, createDateLTYear, subject, description, body,
-			status, severity, weights, escalationLevel, envOS, envDB, envJVM,
-			envAS, envLFR, components, resolution, closedDateGTDay,
-			closedDateGTMonth, closedDateGTYear, closedDateLTDay,
-			closedDateLTMonth, closedDateLTYear, dueDateGTDay, dueDateGTMonth,
-			dueDateGTYear, dueDateLTDay, dueDateLTMonth, dueDateLTYear, params,
-			andSearch);
-	}
-
-	@Override
-	public int searchCount(java.lang.String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketEntryService.searchCount(keywords);
+		return _ticketEntryService.getTicketEntry(ticketEntryId);
 	}
 
 	@Override
@@ -235,6 +108,140 @@ public class TicketEntryServiceWrapper implements TicketEntryService,
 			resolution, dueDateMonth, dueDateDay, dueDateYear, dueDateHour,
 			dueDateMinute, ignoreDueDate, ticketInformationFieldsMap,
 			pendingTypes, ticketAttachments, serviceContext);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.search.Hits search(long reportedByUserId,
+		long accountEntryId, java.lang.String keywords,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		int start, int end, com.liferay.portal.kernel.search.Sort[] sorts)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketEntryService.search(reportedByUserId, accountEntryId,
+			keywords, params, start, end, sorts);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.search.Hits search(long reportedByUserId,
+		long accountEntryId, java.lang.String name, int[] accountEntryTier,
+		java.lang.Boolean satisfiedDueDate, java.util.Date createDateGT,
+		java.util.Date createDateLT, java.lang.String content, int[] status,
+		int[] severity, int[] escalationLevel, long[] envOS, long[] envDB,
+		long[] envJVM, long[] envAS, long[] envLFR, int[] components,
+		int[] resolution, java.util.Date closedDateGT,
+		java.util.Date closedDateLT, java.util.Date dueDateGT,
+		java.util.Date dueDateLT,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch, int start, int end,
+		com.liferay.portal.kernel.search.Sort[] sorts)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketEntryService.search(reportedByUserId, accountEntryId,
+			name, accountEntryTier, satisfiedDueDate, createDateGT,
+			createDateLT, content, status, severity, escalationLevel, envOS,
+			envDB, envJVM, envAS, envLFR, components, resolution, closedDateGT,
+			closedDateLT, dueDateGT, dueDateLT, params, andSearch, start, end,
+			sorts);
+	}
+
+	@Override
+	public int searchCount(java.lang.String keywords)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketEntryService.searchCount(keywords);
+	}
+
+	@Override
+	public int searchCount(long reportedByUserId, java.lang.String name,
+		int[] accountEntryTier, java.lang.Boolean satisfiedDueDate,
+		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
+		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
+		java.lang.String subject, java.lang.String description,
+		java.lang.String body, int[] status, int[] severity, int[] weights,
+		int[] escalationLevel, long[] envOS, long[] envDB, long[] envJVM,
+		long[] envAS, long[] envLFR, int[] components, int[] resolution,
+		int closedDateGTDay, int closedDateGTMonth, int closedDateGTYear,
+		int closedDateLTDay, int closedDateLTMonth, int closedDateLTYear,
+		int dueDateGTDay, int dueDateGTMonth, int dueDateGTYear,
+		int dueDateLTDay, int dueDateLTMonth, int dueDateLTYear,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketEntryService.searchCount(reportedByUserId, name,
+			accountEntryTier, satisfiedDueDate, createDateGTDay,
+			createDateGTMonth, createDateGTYear, createDateLTDay,
+			createDateLTMonth, createDateLTYear, subject, description, body,
+			status, severity, weights, escalationLevel, envOS, envDB, envJVM,
+			envAS, envLFR, components, resolution, closedDateGTDay,
+			closedDateGTMonth, closedDateGTYear, closedDateLTDay,
+			closedDateLTMonth, closedDateLTYear, dueDateGTDay, dueDateGTMonth,
+			dueDateGTYear, dueDateLTDay, dueDateLTMonth, dueDateLTYear, params,
+			andSearch);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _ticketEntryService.invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _ticketEntryService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketEntry> search(
+		java.lang.String keywords, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketEntryService.search(keywords, start, end, obc);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.TicketEntry> search(
+		long reportedByUserId, java.lang.String name, int[] accountEntryTier,
+		java.lang.Boolean satisfiedDueDate, int createDateGTDay,
+		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
+		int createDateLTMonth, int createDateLTYear, java.lang.String subject,
+		java.lang.String description, java.lang.String body, int[] status,
+		int[] severity, int[] weights, int[] escalationLevel, long[] envOS,
+		long[] envDB, long[] envJVM, long[] envAS, long[] envLFR,
+		int[] components, int[] resolution, int closedDateGTDay,
+		int closedDateGTMonth, int closedDateGTYear, int closedDateLTDay,
+		int closedDateLTMonth, int closedDateLTYear, int dueDateGTDay,
+		int dueDateGTMonth, int dueDateGTYear, int dueDateLTDay,
+		int dueDateLTMonth, int dueDateLTYear,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketEntryService.search(reportedByUserId, name,
+			accountEntryTier, satisfiedDueDate, createDateGTDay,
+			createDateGTMonth, createDateGTYear, createDateLTDay,
+			createDateLTMonth, createDateLTYear, subject, description, body,
+			status, severity, weights, escalationLevel, envOS, envDB, envJVM,
+			envAS, envLFR, components, resolution, closedDateGTDay,
+			closedDateGTMonth, closedDateGTYear, closedDateLTDay,
+			closedDateLTMonth, closedDateLTYear, dueDateGTDay, dueDateGTMonth,
+			dueDateGTYear, dueDateLTDay, dueDateLTMonth, dueDateLTYear, params,
+			andSearch, start, end, obc);
+	}
+
+	@Override
+	public void closeTicketEntry(long ticketEntryId, int resolution,
+		java.lang.String body)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_ticketEntryService.closeTicketEntry(ticketEntryId, resolution, body);
+	}
+
+	@Override
+	public void escalateTicketEntry(long ticketEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_ticketEntryService.escalateTicketEntry(ticketEntryId);
 	}
 
 	@Override

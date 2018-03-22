@@ -164,53 +164,13 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new CorpProjectMessageWrapper((CorpProjectMessage)_corpProjectMessage.clone());
+	public CorpProjectMessage toEscapedModel() {
+		return new CorpProjectMessageWrapper(_corpProjectMessage.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(CorpProjectMessage corpProjectMessage) {
-		return _corpProjectMessage.compareTo(corpProjectMessage);
-	}
-
-	/**
-	* Returns the content of this corp project message.
-	*
-	* @return the content of this corp project message
-	*/
-	@Override
-	public java.lang.String getContent() {
-		return _corpProjectMessage.getContent();
-	}
-
-	/**
-	* Returns the corp project ID of this corp project message.
-	*
-	* @return the corp project ID of this corp project message
-	*/
-	@Override
-	public long getCorpProjectId() {
-		return _corpProjectMessage.getCorpProjectId();
-	}
-
-	/**
-	* Returns the corp project message ID of this corp project message.
-	*
-	* @return the corp project message ID of this corp project message
-	*/
-	@Override
-	public long getCorpProjectMessageId() {
-		return _corpProjectMessage.getCorpProjectMessageId();
-	}
-
-	/**
-	* Returns the create date of this corp project message.
-	*
-	* @return the create date of this corp project message
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _corpProjectMessage.getCreateDate();
+	public CorpProjectMessage toUnescapedModel() {
+		return new CorpProjectMessageWrapper(_corpProjectMessage.toUnescapedModel());
 	}
 
 	/**
@@ -241,111 +201,6 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 	@Override
 	public boolean getDisplayLESA() {
 		return _corpProjectMessage.getDisplayLESA();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _corpProjectMessage.getExpandoBridge();
-	}
-
-	/**
-	* Returns the modified date of this corp project message.
-	*
-	* @return the modified date of this corp project message
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _corpProjectMessage.getModifiedDate();
-	}
-
-	/**
-	* Returns the primary key of this corp project message.
-	*
-	* @return the primary key of this corp project message
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _corpProjectMessage.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _corpProjectMessage.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the severity level of this corp project message.
-	*
-	* @return the severity level of this corp project message
-	*/
-	@Override
-	public int getSeverityLevel() {
-		return _corpProjectMessage.getSeverityLevel();
-	}
-
-	/**
-	* Returns the title of this corp project message.
-	*
-	* @return the title of this corp project message
-	*/
-	@Override
-	public java.lang.String getTitle() {
-		return _corpProjectMessage.getTitle();
-	}
-
-	/**
-	* Returns the type of this corp project message.
-	*
-	* @return the type of this corp project message
-	*/
-	@Override
-	public int getType() {
-		return _corpProjectMessage.getType();
-	}
-
-	/**
-	* Returns the user ID of this corp project message.
-	*
-	* @return the user ID of this corp project message
-	*/
-	@Override
-	public long getUserId() {
-		return _corpProjectMessage.getUserId();
-	}
-
-	/**
-	* Returns the user name of this corp project message.
-	*
-	* @return the user name of this corp project message
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _corpProjectMessage.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this corp project message.
-	*
-	* @return the user uuid of this corp project message
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _corpProjectMessage.getUserUuid();
-	}
-
-	/**
-	* Returns the uuid of this corp project message.
-	*
-	* @return the uuid of this corp project message
-	*/
-	@Override
-	public java.lang.String getUuid() {
-		return _corpProjectMessage.getUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _corpProjectMessage.hashCode();
 	}
 
 	@Override
@@ -391,6 +246,176 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 	@Override
 	public boolean isNew() {
 		return _corpProjectMessage.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _corpProjectMessage.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<CorpProjectMessage> toCacheModel() {
+		return _corpProjectMessage.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(CorpProjectMessage corpProjectMessage) {
+		return _corpProjectMessage.compareTo(corpProjectMessage);
+	}
+
+	/**
+	* Returns the severity level of this corp project message.
+	*
+	* @return the severity level of this corp project message
+	*/
+	@Override
+	public int getSeverityLevel() {
+		return _corpProjectMessage.getSeverityLevel();
+	}
+
+	/**
+	* Returns the type of this corp project message.
+	*
+	* @return the type of this corp project message
+	*/
+	@Override
+	public int getType() {
+		return _corpProjectMessage.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _corpProjectMessage.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _corpProjectMessage.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new CorpProjectMessageWrapper((CorpProjectMessage)_corpProjectMessage.clone());
+	}
+
+	/**
+	* Returns the content of this corp project message.
+	*
+	* @return the content of this corp project message
+	*/
+	@Override
+	public java.lang.String getContent() {
+		return _corpProjectMessage.getContent();
+	}
+
+	/**
+	* Returns the title of this corp project message.
+	*
+	* @return the title of this corp project message
+	*/
+	@Override
+	public java.lang.String getTitle() {
+		return _corpProjectMessage.getTitle();
+	}
+
+	/**
+	* Returns the user name of this corp project message.
+	*
+	* @return the user name of this corp project message
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _corpProjectMessage.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this corp project message.
+	*
+	* @return the user uuid of this corp project message
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _corpProjectMessage.getUserUuid();
+	}
+
+	/**
+	* Returns the uuid of this corp project message.
+	*
+	* @return the uuid of this corp project message
+	*/
+	@Override
+	public java.lang.String getUuid() {
+		return _corpProjectMessage.getUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _corpProjectMessage.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _corpProjectMessage.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this corp project message.
+	*
+	* @return the create date of this corp project message
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _corpProjectMessage.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this corp project message.
+	*
+	* @return the modified date of this corp project message
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _corpProjectMessage.getModifiedDate();
+	}
+
+	/**
+	* Returns the corp project ID of this corp project message.
+	*
+	* @return the corp project ID of this corp project message
+	*/
+	@Override
+	public long getCorpProjectId() {
+		return _corpProjectMessage.getCorpProjectId();
+	}
+
+	/**
+	* Returns the corp project message ID of this corp project message.
+	*
+	* @return the corp project message ID of this corp project message
+	*/
+	@Override
+	public long getCorpProjectMessageId() {
+		return _corpProjectMessage.getCorpProjectMessageId();
+	}
+
+	/**
+	* Returns the primary key of this corp project message.
+	*
+	* @return the primary key of this corp project message
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _corpProjectMessage.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this corp project message.
+	*
+	* @return the user ID of this corp project message
+	*/
+	@Override
+	public long getUserId() {
+		return _corpProjectMessage.getUserId();
 	}
 
 	@Override
@@ -474,14 +499,14 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_corpProjectMessage.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_corpProjectMessage.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_corpProjectMessage.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_corpProjectMessage.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -587,31 +612,6 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 	@Override
 	public void setUuid(java.lang.String uuid) {
 		_corpProjectMessage.setUuid(uuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<CorpProjectMessage> toCacheModel() {
-		return _corpProjectMessage.toCacheModel();
-	}
-
-	@Override
-	public CorpProjectMessage toEscapedModel() {
-		return new CorpProjectMessageWrapper(_corpProjectMessage.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _corpProjectMessage.toString();
-	}
-
-	@Override
-	public CorpProjectMessage toUnescapedModel() {
-		return new CorpProjectMessageWrapper(_corpProjectMessage.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _corpProjectMessage.toXmlString();
 	}
 
 	@Override

@@ -53,7 +53,7 @@ public class SupportTeamFinderUtil {
 
 	public static SupportTeamFinder getFinder() {
 		if (_finder == null) {
-			_finder = (SupportTeamFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_finder = (SupportTeamFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					SupportTeamFinder.class.getName());
 
 			ReferenceRegistry.registerReference(SupportTeamFinderUtil.class,

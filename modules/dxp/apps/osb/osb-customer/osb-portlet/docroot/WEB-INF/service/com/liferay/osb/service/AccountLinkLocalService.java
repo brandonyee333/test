@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -54,7 +55,7 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface AccountLinkLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -69,9 +70,6 @@ public interface AccountLinkLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountLink addAccountLink(AccountLink accountLink);
-
-	public void addAccountLinks(long userId, long accountEntryId,
-		java.lang.String[] urls) throws PortalException;
 
 	/**
 	* Creates a new account link with the primary key. Does not add the account link to the database.
@@ -101,6 +99,37 @@ public interface AccountLinkLocalService extends BaseLocalService,
 	public AccountLink deleteAccountLink(long accountLinkId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountLink fetchAccountLink(long accountLinkId);
+
+	/**
+	* Returns the account link with the primary key.
+	*
+	* @param accountLinkId the primary key of the account link
+	* @return the account link
+	* @throws PortalException if a account link with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountLink getAccountLink(long accountLinkId)
+		throws PortalException;
+
+	/**
+	* Updates the account link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountLink the account link
+	* @return the account link that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public AccountLink updateAccountLink(AccountLink accountLink);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
 	/**
 	* @throws PortalException
 	*/
@@ -108,7 +137,30 @@ public interface AccountLinkLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	public DynamicQuery dynamicQuery();
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of account links.
+	*
+	* @return the number of account links
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAccountLinksCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -150,38 +202,6 @@ public interface AccountLinkLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountLink fetchAccountLink(long accountLinkId);
-
-	/**
-	* Returns the account link with the primary key.
-	*
-	* @param accountLinkId the primary key of the account link
-	* @return the account link
-	* @throws PortalException if a account link with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountLink getAccountLink(long accountLinkId)
-		throws PortalException;
-
-	/**
 	* Returns a range of all the account links.
 	*
 	* <p>
@@ -199,37 +219,23 @@ public interface AccountLinkLocalService extends BaseLocalService,
 	public List<AccountLink> getAccountLinks(long accountEntryId);
 
 	/**
-	* Returns the number of account links.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of account links
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAccountLinksCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Returns the OSGi service identifier.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the OSGi service identifier
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
-	public java.lang.String getOSGiServiceIdentifier();
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
 
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Updates the account link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountLink the account link
-	* @return the account link that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public AccountLink updateAccountLink(AccountLink accountLink);
+	public void addAccountLinks(long userId, long accountEntryId,
+		java.lang.String[] urls) throws PortalException;
 }

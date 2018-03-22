@@ -268,7 +268,7 @@ public class LCSSubscriptionEntryUtil {
 
 	public static LCSSubscriptionEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (LCSSubscriptionEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (LCSSubscriptionEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					LCSSubscriptionEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(LCSSubscriptionEntryUtil.class,

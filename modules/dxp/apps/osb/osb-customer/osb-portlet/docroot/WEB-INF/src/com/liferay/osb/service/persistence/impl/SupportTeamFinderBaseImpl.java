@@ -18,14 +18,8 @@ import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.service.persistence.SupportTeamPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 
-import java.lang.reflect.Field;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,28 +27,6 @@ import java.util.Set;
  * @generated
  */
 public class SupportTeamFinderBaseImpl extends BasePersistenceImpl<SupportTeam> {
-	public SupportTeamFinderBaseImpl() {
-		setModelClass(SupportTeam.class);
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-			dbColumnNames.put("type", "type_");
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception e) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
-			}
-		}
-	}
-
 	@Override
 	public Set<String> getBadColumnNames() {
 		return getSupportTeamPersistence().getBadColumnNames();
@@ -81,5 +53,4 @@ public class SupportTeamFinderBaseImpl extends BasePersistenceImpl<SupportTeam> 
 
 	@BeanReference(type = SupportTeamPersistence.class)
 	protected SupportTeamPersistence supportTeamPersistence;
-	private static final Log _log = LogFactoryUtil.getLog(SupportTeamFinderBaseImpl.class);
 }

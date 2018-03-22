@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -54,7 +55,7 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface SupportTeamLanguageLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -81,11 +82,14 @@ public interface SupportTeamLanguageLocalService extends BaseLocalService,
 		long supportTeamLanguageId);
 
 	/**
-	* @throws PortalException
+	* Deletes the support team language from the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportTeamLanguage the support team language
+	* @return the support team language that was removed
 	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
+	@Indexable(type = IndexableType.DELETE)
+	public SupportTeamLanguage deleteSupportTeamLanguage(
+		SupportTeamLanguage supportTeamLanguage);
 
 	/**
 	* Deletes the support team language with the primary key from the database. Also notifies the appropriate model listeners.
@@ -98,17 +102,70 @@ public interface SupportTeamLanguageLocalService extends BaseLocalService,
 	public SupportTeamLanguage deleteSupportTeamLanguage(
 		long supportTeamLanguageId) throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportTeamLanguage fetchSupportTeamLanguage(
+		long supportTeamLanguageId);
+
 	/**
-	* Deletes the support team language from the database. Also notifies the appropriate model listeners.
+	* Returns the support team language with the primary key.
+	*
+	* @param supportTeamLanguageId the primary key of the support team language
+	* @return the support team language
+	* @throws PortalException if a support team language with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SupportTeamLanguage getSupportTeamLanguage(
+		long supportTeamLanguageId) throws PortalException;
+
+	/**
+	* Updates the support team language in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param supportTeamLanguage the support team language
-	* @return the support team language that was removed
+	* @return the support team language that was updated
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public SupportTeamLanguage deleteSupportTeamLanguage(
+	@Indexable(type = IndexableType.REINDEX)
+	public SupportTeamLanguage updateSupportTeamLanguage(
 		SupportTeamLanguage supportTeamLanguage);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
 	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of support team languages.
+	*
+	* @return the number of support team languages
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getSupportTeamLanguagesCount();
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -150,57 +207,6 @@ public interface SupportTeamLanguageLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportTeamLanguage fetchSupportTeamLanguage(
-		long supportTeamLanguageId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the support team language with the primary key.
-	*
-	* @param supportTeamLanguageId the primary key of the support team language
-	* @return the support team language
-	* @throws PortalException if a support team language with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SupportTeamLanguage getSupportTeamLanguage(
-		long supportTeamLanguageId) throws PortalException;
-
-	/**
 	* Returns a range of all the support team languages.
 	*
 	* <p>
@@ -218,23 +224,23 @@ public interface SupportTeamLanguageLocalService extends BaseLocalService,
 	public List<SupportTeamLanguage> getSupportTeamLanguages(long supportTeamId);
 
 	/**
-	* Returns the number of support team languages.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of support team languages
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportTeamLanguagesCount();
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
 
 	public void setSupportTeamLanguageIds(long supportTeamId,
 		java.lang.String[] languageIds);
-
-	/**
-	* Updates the support team language in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param supportTeamLanguage the support team language
-	* @return the support team language that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public SupportTeamLanguage updateSupportTeamLanguage(
-		SupportTeamLanguage supportTeamLanguage);
 }

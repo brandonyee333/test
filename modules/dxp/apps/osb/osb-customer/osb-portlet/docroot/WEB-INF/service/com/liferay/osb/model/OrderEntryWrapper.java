@@ -198,124 +198,19 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new OrderEntryWrapper((OrderEntry)_orderEntry.clone());
-	}
-
-	@Override
-	public int compareTo(OrderEntry orderEntry) {
-		return _orderEntry.compareTo(orderEntry);
-	}
-
-	@Override
 	public AccountEntry getAccountEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _orderEntry.getAccountEntry();
 	}
 
-	/**
-	* Returns the account entry ID of this order entry.
-	*
-	* @return the account entry ID of this order entry
-	*/
 	@Override
-	public long getAccountEntryId() {
-		return _orderEntry.getAccountEntryId();
-	}
-
-	/**
-	* Returns the actual start date of this order entry.
-	*
-	* @return the actual start date of this order entry
-	*/
-	@Override
-	public Date getActualStartDate() {
-		return _orderEntry.getActualStartDate();
-	}
-
-	/**
-	* Returns the create date of this order entry.
-	*
-	* @return the create date of this order entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _orderEntry.getCreateDate();
+	public OrderEntry toEscapedModel() {
+		return new OrderEntryWrapper(_orderEntry.toEscapedModel());
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _orderEntry.getExpandoBridge();
-	}
-
-	/**
-	* Returns the modified date of this order entry.
-	*
-	* @return the modified date of this order entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _orderEntry.getModifiedDate();
-	}
-
-	/**
-	* Returns the modified user ID of this order entry.
-	*
-	* @return the modified user ID of this order entry
-	*/
-	@Override
-	public long getModifiedUserId() {
-		return _orderEntry.getModifiedUserId();
-	}
-
-	/**
-	* Returns the modified user name of this order entry.
-	*
-	* @return the modified user name of this order entry
-	*/
-	@Override
-	public java.lang.String getModifiedUserName() {
-		return _orderEntry.getModifiedUserName();
-	}
-
-	/**
-	* Returns the modified user uuid of this order entry.
-	*
-	* @return the modified user uuid of this order entry
-	*/
-	@Override
-	public java.lang.String getModifiedUserUuid() {
-		return _orderEntry.getModifiedUserUuid();
-	}
-
-	@Override
-	public java.util.List<OfferingEntry> getOfferingEntries() {
-		return _orderEntry.getOfferingEntries();
-	}
-
-	/**
-	* Returns the order entry ID of this order entry.
-	*
-	* @return the order entry ID of this order entry
-	*/
-	@Override
-	public long getOrderEntryId() {
-		return _orderEntry.getOrderEntryId();
-	}
-
-	/**
-	* Returns the primary key of this order entry.
-	*
-	* @return the primary key of this order entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _orderEntry.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _orderEntry.getPrimaryKeyObj();
+	public OrderEntry toUnescapedModel() {
+		return new OrderEntryWrapper(_orderEntry.toUnescapedModel());
 	}
 
 	/**
@@ -326,151 +221,6 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	@Override
 	public boolean getProrated() {
 		return _orderEntry.getProrated();
-	}
-
-	/**
-	* Returns the purchase order key of this order entry.
-	*
-	* @return the purchase order key of this order entry
-	*/
-	@Override
-	public java.lang.String getPurchaseOrderKey() {
-		return _orderEntry.getPurchaseOrderKey();
-	}
-
-	/**
-	* Returns the renew count of this order entry.
-	*
-	* @return the renew count of this order entry
-	*/
-	@Override
-	public int getRenewCount() {
-		return _orderEntry.getRenewCount();
-	}
-
-	@Override
-	public java.lang.String getSalesforceOpportunityKey() {
-		return _orderEntry.getSalesforceOpportunityKey();
-	}
-
-	/**
-	* Returns the start date of this order entry.
-	*
-	* @return the start date of this order entry
-	*/
-	@Override
-	public Date getStartDate() {
-		return _orderEntry.getStartDate();
-	}
-
-	/**
-	* Returns the status of this order entry.
-	*
-	* @return the status of this order entry
-	*/
-	@Override
-	public int getStatus() {
-		return _orderEntry.getStatus();
-	}
-
-	/**
-	* Returns the status by user ID of this order entry.
-	*
-	* @return the status by user ID of this order entry
-	*/
-	@Override
-	public long getStatusByUserId() {
-		return _orderEntry.getStatusByUserId();
-	}
-
-	/**
-	* Returns the status by user name of this order entry.
-	*
-	* @return the status by user name of this order entry
-	*/
-	@Override
-	public java.lang.String getStatusByUserName() {
-		return _orderEntry.getStatusByUserName();
-	}
-
-	/**
-	* Returns the status by user uuid of this order entry.
-	*
-	* @return the status by user uuid of this order entry
-	*/
-	@Override
-	public java.lang.String getStatusByUserUuid() {
-		return _orderEntry.getStatusByUserUuid();
-	}
-
-	/**
-	* Returns the status date of this order entry.
-	*
-	* @return the status date of this order entry
-	*/
-	@Override
-	public Date getStatusDate() {
-		return _orderEntry.getStatusDate();
-	}
-
-	@Override
-	public java.lang.String getStatusLabel() {
-		return _orderEntry.getStatusLabel();
-	}
-
-	/**
-	* Returns the status message of this order entry.
-	*
-	* @return the status message of this order entry
-	*/
-	@Override
-	public java.lang.String getStatusMessage() {
-		return _orderEntry.getStatusMessage();
-	}
-
-	/**
-	* Returns the user ID of this order entry.
-	*
-	* @return the user ID of this order entry
-	*/
-	@Override
-	public long getUserId() {
-		return _orderEntry.getUserId();
-	}
-
-	/**
-	* Returns the user name of this order entry.
-	*
-	* @return the user name of this order entry
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _orderEntry.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this order entry.
-	*
-	* @return the user uuid of this order entry
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _orderEntry.getUserUuid();
-	}
-
-	/**
-	* Returns the uuid of this order entry.
-	*
-	* @return the uuid of this order entry
-	*/
-	@Override
-	public java.lang.String getUuid() {
-		return _orderEntry.getUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _orderEntry.hashCode();
 	}
 
 	/**
@@ -579,6 +329,281 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _orderEntry.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<OrderEntry> toCacheModel() {
+		return _orderEntry.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(OrderEntry orderEntry) {
+		return _orderEntry.compareTo(orderEntry);
+	}
+
+	/**
+	* Returns the renew count of this order entry.
+	*
+	* @return the renew count of this order entry
+	*/
+	@Override
+	public int getRenewCount() {
+		return _orderEntry.getRenewCount();
+	}
+
+	/**
+	* Returns the status of this order entry.
+	*
+	* @return the status of this order entry
+	*/
+	@Override
+	public int getStatus() {
+		return _orderEntry.getStatus();
+	}
+
+	@Override
+	public int hashCode() {
+		return _orderEntry.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _orderEntry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new OrderEntryWrapper((OrderEntry)_orderEntry.clone());
+	}
+
+	/**
+	* Returns the modified user name of this order entry.
+	*
+	* @return the modified user name of this order entry
+	*/
+	@Override
+	public java.lang.String getModifiedUserName() {
+		return _orderEntry.getModifiedUserName();
+	}
+
+	/**
+	* Returns the modified user uuid of this order entry.
+	*
+	* @return the modified user uuid of this order entry
+	*/
+	@Override
+	public java.lang.String getModifiedUserUuid() {
+		return _orderEntry.getModifiedUserUuid();
+	}
+
+	/**
+	* Returns the purchase order key of this order entry.
+	*
+	* @return the purchase order key of this order entry
+	*/
+	@Override
+	public java.lang.String getPurchaseOrderKey() {
+		return _orderEntry.getPurchaseOrderKey();
+	}
+
+	@Override
+	public java.lang.String getSalesforceOpportunityKey() {
+		return _orderEntry.getSalesforceOpportunityKey();
+	}
+
+	/**
+	* Returns the status by user name of this order entry.
+	*
+	* @return the status by user name of this order entry
+	*/
+	@Override
+	public java.lang.String getStatusByUserName() {
+		return _orderEntry.getStatusByUserName();
+	}
+
+	/**
+	* Returns the status by user uuid of this order entry.
+	*
+	* @return the status by user uuid of this order entry
+	*/
+	@Override
+	public java.lang.String getStatusByUserUuid() {
+		return _orderEntry.getStatusByUserUuid();
+	}
+
+	@Override
+	public java.lang.String getStatusLabel() {
+		return _orderEntry.getStatusLabel();
+	}
+
+	/**
+	* Returns the status message of this order entry.
+	*
+	* @return the status message of this order entry
+	*/
+	@Override
+	public java.lang.String getStatusMessage() {
+		return _orderEntry.getStatusMessage();
+	}
+
+	/**
+	* Returns the user name of this order entry.
+	*
+	* @return the user name of this order entry
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _orderEntry.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this order entry.
+	*
+	* @return the user uuid of this order entry
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _orderEntry.getUserUuid();
+	}
+
+	/**
+	* Returns the uuid of this order entry.
+	*
+	* @return the uuid of this order entry
+	*/
+	@Override
+	public java.lang.String getUuid() {
+		return _orderEntry.getUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _orderEntry.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _orderEntry.toXmlString();
+	}
+
+	/**
+	* Returns the actual start date of this order entry.
+	*
+	* @return the actual start date of this order entry
+	*/
+	@Override
+	public Date getActualStartDate() {
+		return _orderEntry.getActualStartDate();
+	}
+
+	/**
+	* Returns the create date of this order entry.
+	*
+	* @return the create date of this order entry
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _orderEntry.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this order entry.
+	*
+	* @return the modified date of this order entry
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _orderEntry.getModifiedDate();
+	}
+
+	/**
+	* Returns the start date of this order entry.
+	*
+	* @return the start date of this order entry
+	*/
+	@Override
+	public Date getStartDate() {
+		return _orderEntry.getStartDate();
+	}
+
+	/**
+	* Returns the status date of this order entry.
+	*
+	* @return the status date of this order entry
+	*/
+	@Override
+	public Date getStatusDate() {
+		return _orderEntry.getStatusDate();
+	}
+
+	@Override
+	public java.util.List<OfferingEntry> getOfferingEntries() {
+		return _orderEntry.getOfferingEntries();
+	}
+
+	/**
+	* Returns the account entry ID of this order entry.
+	*
+	* @return the account entry ID of this order entry
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _orderEntry.getAccountEntryId();
+	}
+
+	/**
+	* Returns the modified user ID of this order entry.
+	*
+	* @return the modified user ID of this order entry
+	*/
+	@Override
+	public long getModifiedUserId() {
+		return _orderEntry.getModifiedUserId();
+	}
+
+	/**
+	* Returns the order entry ID of this order entry.
+	*
+	* @return the order entry ID of this order entry
+	*/
+	@Override
+	public long getOrderEntryId() {
+		return _orderEntry.getOrderEntryId();
+	}
+
+	/**
+	* Returns the primary key of this order entry.
+	*
+	* @return the primary key of this order entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _orderEntry.getPrimaryKey();
+	}
+
+	/**
+	* Returns the status by user ID of this order entry.
+	*
+	* @return the status by user ID of this order entry
+	*/
+	@Override
+	public long getStatusByUserId() {
+		return _orderEntry.getStatusByUserId();
+	}
+
+	/**
+	* Returns the user ID of this order entry.
+	*
+	* @return the user ID of this order entry
+	*/
+	@Override
+	public long getUserId() {
+		return _orderEntry.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_orderEntry.persist();
 	}
@@ -619,14 +644,14 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_orderEntry.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_orderEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_orderEntry.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_orderEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -848,31 +873,6 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	@Override
 	public void setUuid(java.lang.String uuid) {
 		_orderEntry.setUuid(uuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<OrderEntry> toCacheModel() {
-		return _orderEntry.toCacheModel();
-	}
-
-	@Override
-	public OrderEntry toEscapedModel() {
-		return new OrderEntryWrapper(_orderEntry.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _orderEntry.toString();
-	}
-
-	@Override
-	public OrderEntry toUnescapedModel() {
-		return new OrderEntryWrapper(_orderEntry.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _orderEntry.toXmlString();
 	}
 
 	@Override

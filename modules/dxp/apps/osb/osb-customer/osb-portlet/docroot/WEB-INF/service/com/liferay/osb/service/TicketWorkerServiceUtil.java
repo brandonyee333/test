@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,19 +41,10 @@ public class TicketWorkerServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketWorkerServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static java.util.List<com.liferay.osb.model.TicketWorker> addTicketWorkers(
-		long[] userIds, long ticketEntryId, long[] sourceClassNameIds,
-		long[] sourceClassPKs, int[] roles, long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addTicketWorkers(userIds, ticketEntryId,
-			sourceClassNameIds, sourceClassPKs, roles, primaryUserId);
-	}
-
-	public static void deleteTicketWorkers(long[] userIds, long ticketEntryId,
-		long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteTicketWorkers(userIds, ticketEntryId, primaryUserId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -62,6 +54,15 @@ public class TicketWorkerServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketWorker> addTicketWorkers(
+		long[] userIds, long ticketEntryId, long[] sourceClassNameIds,
+		long[] sourceClassPKs, int[] roles, long primaryUserId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addTicketWorkers(userIds, ticketEntryId,
+			sourceClassNameIds, sourceClassPKs, roles, primaryUserId);
 	}
 
 	public static java.util.List<com.liferay.osb.model.TicketWorker> updateTicketWorkers(
@@ -74,14 +75,27 @@ public class TicketWorkerServiceUtil {
 			ticketEntryId, sourceClassNameIds, sourceClassPKs, primaryUserId);
 	}
 
+	public static void deleteTicketWorkers(long[] userIds, long ticketEntryId,
+		long primaryUserId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteTicketWorkers(userIds, ticketEntryId, primaryUserId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static TicketWorkerService getService() {
 		if (_service == null) {
-			_service = (TicketWorkerService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					TicketWorkerService.class.getName());
+
+			if (invokableService instanceof TicketWorkerService) {
+				_service = (TicketWorkerService)invokableService;
+			}
+			else {
+				_service = new TicketWorkerServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(TicketWorkerServiceUtil.class,
 				"_service");

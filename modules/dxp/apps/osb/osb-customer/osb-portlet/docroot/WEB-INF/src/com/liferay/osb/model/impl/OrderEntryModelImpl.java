@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
@@ -377,7 +378,7 @@ public class OrderEntryModelImpl extends BaseModelImpl<OrderEntry>
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _uuid;
@@ -427,7 +428,7 @@ public class OrderEntryModelImpl extends BaseModelImpl<OrderEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -439,7 +440,7 @@ public class OrderEntryModelImpl extends BaseModelImpl<OrderEntry>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -481,7 +482,7 @@ public class OrderEntryModelImpl extends BaseModelImpl<OrderEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -493,7 +494,7 @@ public class OrderEntryModelImpl extends BaseModelImpl<OrderEntry>
 	@Override
 	public String getModifiedUserName() {
 		if (_modifiedUserName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _modifiedUserName;
@@ -549,7 +550,7 @@ public class OrderEntryModelImpl extends BaseModelImpl<OrderEntry>
 	@Override
 	public String getPurchaseOrderKey() {
 		if (_purchaseOrderKey == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _purchaseOrderKey;
@@ -641,7 +642,7 @@ public class OrderEntryModelImpl extends BaseModelImpl<OrderEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -653,7 +654,7 @@ public class OrderEntryModelImpl extends BaseModelImpl<OrderEntry>
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _statusByUserName;
@@ -680,7 +681,7 @@ public class OrderEntryModelImpl extends BaseModelImpl<OrderEntry>
 	@Override
 	public String getStatusMessage() {
 		if (_statusMessage == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _statusMessage;

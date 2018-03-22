@@ -34,10 +34,11 @@ public class AccountCustomerServiceWrapper implements AccountCustomerService,
 	}
 
 	@Override
-	public java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountCustomerService.getCorpProjectAccountCustomerUUIDs(corpProjectId);
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountCustomerService.invokeMethod(name, parameterTypes,
+			arguments);
 	}
 
 	/**
@@ -48,6 +49,13 @@ public class AccountCustomerServiceWrapper implements AccountCustomerService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _accountCustomerService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<java.lang.String> getCorpProjectAccountCustomerUUIDs(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountCustomerService.getCorpProjectAccountCustomerUUIDs(corpProjectId);
 	}
 
 	@Override

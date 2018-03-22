@@ -887,7 +887,7 @@ public class TicketWorkerUtil {
 
 	public static TicketWorkerPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (TicketWorkerPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (TicketWorkerPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					TicketWorkerPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(TicketWorkerUtil.class,

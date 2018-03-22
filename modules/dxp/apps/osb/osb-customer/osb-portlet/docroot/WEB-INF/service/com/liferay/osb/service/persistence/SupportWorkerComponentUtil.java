@@ -440,7 +440,7 @@ public class SupportWorkerComponentUtil {
 
 	public static SupportWorkerComponentPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (SupportWorkerComponentPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (SupportWorkerComponentPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					SupportWorkerComponentPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(SupportWorkerComponentUtil.class,

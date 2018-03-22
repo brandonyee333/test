@@ -115,13 +115,68 @@ public class ExternalIdMapperWrapper implements ExternalIdMapper,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new ExternalIdMapperWrapper((ExternalIdMapper)_externalIdMapper.clone());
+	public ExternalIdMapper toEscapedModel() {
+		return new ExternalIdMapperWrapper(_externalIdMapper.toEscapedModel());
+	}
+
+	@Override
+	public ExternalIdMapper toUnescapedModel() {
+		return new ExternalIdMapperWrapper(_externalIdMapper.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _externalIdMapper.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _externalIdMapper.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _externalIdMapper.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _externalIdMapper.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<ExternalIdMapper> toCacheModel() {
+		return _externalIdMapper.toCacheModel();
 	}
 
 	@Override
 	public int compareTo(ExternalIdMapper externalIdMapper) {
 		return _externalIdMapper.compareTo(externalIdMapper);
+	}
+
+	/**
+	* Returns the type of this external ID mapper.
+	*
+	* @return the type of this external ID mapper
+	*/
+	@Override
+	public int getType() {
+		return _externalIdMapper.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _externalIdMapper.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _externalIdMapper.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new ExternalIdMapperWrapper((ExternalIdMapper)_externalIdMapper.clone());
 	}
 
 	/**
@@ -132,6 +187,46 @@ public class ExternalIdMapperWrapper implements ExternalIdMapper,
 	@Override
 	public java.lang.String getClassName() {
 		return _externalIdMapper.getClassName();
+	}
+
+	/**
+	* Returns the external ID of this external ID mapper.
+	*
+	* @return the external ID of this external ID mapper
+	*/
+	@Override
+	public java.lang.String getExternalId() {
+		return _externalIdMapper.getExternalId();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _externalIdMapper.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _externalIdMapper.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this external ID mapper.
+	*
+	* @return the create date of this external ID mapper
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _externalIdMapper.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this external ID mapper.
+	*
+	* @return the modified date of this external ID mapper
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _externalIdMapper.getModifiedDate();
 	}
 
 	/**
@@ -155,31 +250,6 @@ public class ExternalIdMapperWrapper implements ExternalIdMapper,
 	}
 
 	/**
-	* Returns the create date of this external ID mapper.
-	*
-	* @return the create date of this external ID mapper
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _externalIdMapper.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _externalIdMapper.getExpandoBridge();
-	}
-
-	/**
-	* Returns the external ID of this external ID mapper.
-	*
-	* @return the external ID of this external ID mapper
-	*/
-	@Override
-	public java.lang.String getExternalId() {
-		return _externalIdMapper.getExternalId();
-	}
-
-	/**
 	* Returns the external ID mapper ID of this external ID mapper.
 	*
 	* @return the external ID mapper ID of this external ID mapper
@@ -190,16 +260,6 @@ public class ExternalIdMapperWrapper implements ExternalIdMapper,
 	}
 
 	/**
-	* Returns the modified date of this external ID mapper.
-	*
-	* @return the modified date of this external ID mapper
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _externalIdMapper.getModifiedDate();
-	}
-
-	/**
 	* Returns the primary key of this external ID mapper.
 	*
 	* @return the primary key of this external ID mapper
@@ -207,41 +267,6 @@ public class ExternalIdMapperWrapper implements ExternalIdMapper,
 	@Override
 	public long getPrimaryKey() {
 		return _externalIdMapper.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _externalIdMapper.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the type of this external ID mapper.
-	*
-	* @return the type of this external ID mapper
-	*/
-	@Override
-	public int getType() {
-		return _externalIdMapper.getType();
-	}
-
-	@Override
-	public int hashCode() {
-		return _externalIdMapper.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _externalIdMapper.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _externalIdMapper.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _externalIdMapper.isNew();
 	}
 
 	@Override
@@ -290,14 +315,14 @@ public class ExternalIdMapperWrapper implements ExternalIdMapper,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_externalIdMapper.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_externalIdMapper.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_externalIdMapper.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_externalIdMapper.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -363,31 +388,6 @@ public class ExternalIdMapperWrapper implements ExternalIdMapper,
 	@Override
 	public void setType(int type) {
 		_externalIdMapper.setType(type);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ExternalIdMapper> toCacheModel() {
-		return _externalIdMapper.toCacheModel();
-	}
-
-	@Override
-	public ExternalIdMapper toEscapedModel() {
-		return new ExternalIdMapperWrapper(_externalIdMapper.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _externalIdMapper.toString();
-	}
-
-	@Override
-	public ExternalIdMapper toUnescapedModel() {
-		return new ExternalIdMapperWrapper(_externalIdMapper.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _externalIdMapper.toXmlString();
 	}
 
 	@Override

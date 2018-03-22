@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -302,7 +303,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		msg.append("companyId=");
 		msg.append(companyId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketEntryException(msg.toString());
 	}
@@ -353,7 +354,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		msg.append("companyId=");
 		msg.append(companyId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketEntryException(msg.toString());
 	}
@@ -808,7 +809,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		msg.append("modifiedDate=");
 		msg.append(modifiedDate);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketEntryException(msg.toString());
 	}
@@ -859,7 +860,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		msg.append("modifiedDate=");
 		msg.append(modifiedDate);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketEntryException(msg.toString());
 	}
@@ -1343,7 +1344,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketEntryException(msg.toString());
 	}
@@ -1394,7 +1395,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketEntryException(msg.toString());
 	}
@@ -1855,7 +1856,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		msg.append("offeringEntryId=");
 		msg.append(offeringEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketEntryException(msg.toString());
 	}
@@ -1906,7 +1907,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		msg.append("offeringEntryId=");
 		msg.append(offeringEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketEntryException(msg.toString());
 	}
@@ -2184,7 +2185,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 			msg.append(", ticketId=");
 			msg.append(ticketId);
 
-			msg.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -2591,7 +2592,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		msg.append(", resolution=");
 		msg.append(resolution);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketEntryException(msg.toString());
 	}
@@ -2647,7 +2648,7 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		msg.append(", resolution=");
 		msg.append(resolution);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketEntryException(msg.toString());
 	}
@@ -3489,12 +3490,12 @@ public class TicketEntryPersistenceImpl extends BasePersistenceImpl<TicketEntry>
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(",");
+			query.append(StringPool.COMMA);
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
 		String sql = query.toString();
 

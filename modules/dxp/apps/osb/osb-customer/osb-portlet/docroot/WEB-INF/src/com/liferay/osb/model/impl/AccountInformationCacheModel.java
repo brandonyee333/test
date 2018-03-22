@@ -21,6 +21,7 @@ import com.liferay.osb.model.AccountInformation;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -96,7 +97,7 @@ public class AccountInformationCacheModel implements CacheModel<AccountInformati
 		accountInformationImpl.setModifiedUserId(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			accountInformationImpl.setModifiedUserName("");
+			accountInformationImpl.setModifiedUserName(StringPool.BLANK);
 		}
 		else {
 			accountInformationImpl.setModifiedUserName(modifiedUserName);
@@ -114,7 +115,7 @@ public class AccountInformationCacheModel implements CacheModel<AccountInformati
 		accountInformationImpl.setFieldId(fieldId);
 
 		if (data == null) {
-			accountInformationImpl.setData("");
+			accountInformationImpl.setData(StringPool.BLANK);
 		}
 		else {
 			accountInformationImpl.setData(data);
@@ -149,7 +150,7 @@ public class AccountInformationCacheModel implements CacheModel<AccountInformati
 		objectOutput.writeLong(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(modifiedUserName);
@@ -164,7 +165,7 @@ public class AccountInformationCacheModel implements CacheModel<AccountInformati
 		objectOutput.writeInt(fieldId);
 
 		if (data == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(data);

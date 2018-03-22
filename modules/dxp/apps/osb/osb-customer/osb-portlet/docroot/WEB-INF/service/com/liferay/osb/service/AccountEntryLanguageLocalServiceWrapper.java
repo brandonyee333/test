@@ -84,6 +84,53 @@ public class AccountEntryLanguageLocalServiceWrapper
 		return _accountEntryLanguageLocalService.deleteAccountEntryLanguage(accountEntryLanguageId);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountEntryLanguage fetchAccountEntryLanguage(
+		long accountEntryLanguageId) {
+		return _accountEntryLanguageLocalService.fetchAccountEntryLanguage(accountEntryLanguageId);
+	}
+
+	/**
+	* Returns the account entry language with the primary key.
+	*
+	* @param accountEntryLanguageId the primary key of the account entry language
+	* @return the account entry language
+	* @throws PortalException if a account entry language with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.AccountEntryLanguage getAccountEntryLanguage(
+		long accountEntryLanguageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntryLanguageLocalService.getAccountEntryLanguage(accountEntryLanguageId);
+	}
+
+	/**
+	* Updates the account entry language in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountEntryLanguage the account entry language
+	* @return the account entry language that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.AccountEntryLanguage updateAccountEntryLanguage(
+		com.liferay.osb.model.AccountEntryLanguage accountEntryLanguage) {
+		return _accountEntryLanguageLocalService.updateAccountEntryLanguage(accountEntryLanguage);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _accountEntryLanguageLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _accountEntryLanguageLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _accountEntryLanguageLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -95,8 +142,38 @@ public class AccountEntryLanguageLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _accountEntryLanguageLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntryLanguageLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of account entry languages.
+	*
+	* @return the number of account entry languages
+	*/
+	@Override
+	public int getAccountEntryLanguagesCount() {
+		return _accountEntryLanguageLocalService.getAccountEntryLanguagesCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountEntryLanguageLocalService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _accountEntryLanguageLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -154,6 +231,30 @@ public class AccountEntryLanguageLocalServiceWrapper
 	}
 
 	/**
+	* Returns a range of all the account entry languages.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AccountEntryLanguageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of account entry languages
+	* @param end the upper bound of the range of account entry languages (not inclusive)
+	* @return the range of account entry languages
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntryLanguage> getAccountEntryLanguages(
+		int start, int end) {
+		return _accountEntryLanguageLocalService.getAccountEntryLanguages(start,
+			end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountEntryLanguage> getAccountEntryLanguages(
+		long accountEntryId) {
+		return _accountEntryLanguageLocalService.getAccountEntryLanguages(accountEntryId);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -181,103 +282,10 @@ public class AccountEntryLanguageLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.model.AccountEntryLanguage fetchAccountEntryLanguage(
-		long accountEntryLanguageId) {
-		return _accountEntryLanguageLocalService.fetchAccountEntryLanguage(accountEntryLanguageId);
-	}
-
-	/**
-	* Returns the account entry language with the primary key.
-	*
-	* @param accountEntryLanguageId the primary key of the account entry language
-	* @return the account entry language
-	* @throws PortalException if a account entry language with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.AccountEntryLanguage getAccountEntryLanguage(
-		long accountEntryLanguageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntryLanguageLocalService.getAccountEntryLanguage(accountEntryLanguageId);
-	}
-
-	/**
-	* Returns a range of all the account entry languages.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AccountEntryLanguageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of account entry languages
-	* @param end the upper bound of the range of account entry languages (not inclusive)
-	* @return the range of account entry languages
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountEntryLanguage> getAccountEntryLanguages(
-		int start, int end) {
-		return _accountEntryLanguageLocalService.getAccountEntryLanguages(start,
-			end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountEntryLanguage> getAccountEntryLanguages(
-		long accountEntryId) {
-		return _accountEntryLanguageLocalService.getAccountEntryLanguages(accountEntryId);
-	}
-
-	/**
-	* Returns the number of account entry languages.
-	*
-	* @return the number of account entry languages
-	*/
-	@Override
-	public int getAccountEntryLanguagesCount() {
-		return _accountEntryLanguageLocalService.getAccountEntryLanguagesCount();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _accountEntryLanguageLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _accountEntryLanguageLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _accountEntryLanguageLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntryLanguageLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	@Override
 	public void setAccountEntryLanguageIds(long accountEntryId,
 		java.lang.String[] languageIds) {
 		_accountEntryLanguageLocalService.setAccountEntryLanguageIds(accountEntryId,
 			languageIds);
-	}
-
-	/**
-	* Updates the account entry language in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountEntryLanguage the account entry language
-	* @return the account entry language that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.AccountEntryLanguage updateAccountEntryLanguage(
-		com.liferay.osb.model.AccountEntryLanguage accountEntryLanguage) {
-		return _accountEntryLanguageLocalService.updateAccountEntryLanguage(accountEntryLanguage);
 	}
 
 	@Override

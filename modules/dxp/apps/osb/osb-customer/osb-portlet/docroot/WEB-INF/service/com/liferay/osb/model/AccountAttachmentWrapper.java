@@ -129,8 +129,44 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AccountAttachmentWrapper((AccountAttachment)_accountAttachment.clone());
+	public AccountAttachment toEscapedModel() {
+		return new AccountAttachmentWrapper(_accountAttachment.toEscapedModel());
+	}
+
+	@Override
+	public AccountAttachment toUnescapedModel() {
+		return new AccountAttachmentWrapper(_accountAttachment.toUnescapedModel());
+	}
+
+	@Override
+	public boolean fileExists()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountAttachment.fileExists();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _accountAttachment.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _accountAttachment.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _accountAttachment.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _accountAttachment.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountAttachment> toCacheModel() {
+		return _accountAttachment.toCacheModel();
 	}
 
 	@Override
@@ -139,9 +175,93 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 	}
 
 	@Override
-	public boolean fileExists()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountAttachment.fileExists();
+	public int getContentLength() {
+		return _accountAttachment.getContentLength();
+	}
+
+	/**
+	* Returns the type of this account attachment.
+	*
+	* @return the type of this account attachment
+	*/
+	@Override
+	public int getType() {
+		return _accountAttachment.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _accountAttachment.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountAttachment.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AccountAttachmentWrapper((AccountAttachment)_accountAttachment.clone());
+	}
+
+	@Override
+	public java.lang.String getFileDir() {
+		return _accountAttachment.getFileDir();
+	}
+
+	/**
+	* Returns the file name of this account attachment.
+	*
+	* @return the file name of this account attachment
+	*/
+	@Override
+	public java.lang.String getFileName() {
+		return _accountAttachment.getFileName();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _accountAttachment.getTypeLabel();
+	}
+
+	/**
+	* Returns the user name of this account attachment.
+	*
+	* @return the user name of this account attachment
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _accountAttachment.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this account attachment.
+	*
+	* @return the user uuid of this account attachment
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _accountAttachment.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _accountAttachment.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _accountAttachment.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this account attachment.
+	*
+	* @return the create date of this account attachment
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _accountAttachment.getCreateDate();
 	}
 
 	/**
@@ -174,41 +294,6 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 		return _accountAttachment.getAccountProjectId();
 	}
 
-	@Override
-	public int getContentLength() {
-		return _accountAttachment.getContentLength();
-	}
-
-	/**
-	* Returns the create date of this account attachment.
-	*
-	* @return the create date of this account attachment
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _accountAttachment.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountAttachment.getExpandoBridge();
-	}
-
-	@Override
-	public java.lang.String getFileDir() {
-		return _accountAttachment.getFileDir();
-	}
-
-	/**
-	* Returns the file name of this account attachment.
-	*
-	* @return the file name of this account attachment
-	*/
-	@Override
-	public java.lang.String getFileName() {
-		return _accountAttachment.getFileName();
-	}
-
 	/**
 	* Returns the file size of this account attachment.
 	*
@@ -229,26 +314,6 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 		return _accountAttachment.getPrimaryKey();
 	}
 
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountAttachment.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the type of this account attachment.
-	*
-	* @return the type of this account attachment
-	*/
-	@Override
-	public int getType() {
-		return _accountAttachment.getType();
-	}
-
-	@Override
-	public java.lang.String getTypeLabel() {
-		return _accountAttachment.getTypeLabel();
-	}
-
 	/**
 	* Returns the user ID of this account attachment.
 	*
@@ -257,46 +322,6 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 	@Override
 	public long getUserId() {
 		return _accountAttachment.getUserId();
-	}
-
-	/**
-	* Returns the user name of this account attachment.
-	*
-	* @return the user name of this account attachment
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _accountAttachment.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this account attachment.
-	*
-	* @return the user uuid of this account attachment
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _accountAttachment.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _accountAttachment.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _accountAttachment.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _accountAttachment.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _accountAttachment.isNew();
 	}
 
 	@Override
@@ -350,14 +375,14 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_accountAttachment.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountAttachment.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountAttachment.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_accountAttachment.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -443,31 +468,6 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_accountAttachment.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountAttachment> toCacheModel() {
-		return _accountAttachment.toCacheModel();
-	}
-
-	@Override
-	public AccountAttachment toEscapedModel() {
-		return new AccountAttachmentWrapper(_accountAttachment.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _accountAttachment.toString();
-	}
-
-	@Override
-	public AccountAttachment toUnescapedModel() {
-		return new AccountAttachmentWrapper(_accountAttachment.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _accountAttachment.toXmlString();
 	}
 
 	@Override

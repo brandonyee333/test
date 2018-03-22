@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
@@ -44,7 +45,7 @@ import java.util.Map;
 @ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
-public interface AccountProjectService extends BaseService {
+public interface AccountProjectService extends BaseService, InvokableService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -53,15 +54,20 @@ public interface AccountProjectService extends BaseService {
 	public AccountProject deleteAccountProject(long accountProjectId)
 		throws PortalException;
 
+	public AccountProject updateAccountProject(long accountProjectId,
+		long accountEntryId, java.lang.String name,
+		Map<java.lang.Integer, java.lang.String> data)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
 	/**
 	* Returns the OSGi service identifier.
 	*
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
-
-	public AccountProject updateAccountProject(long accountProjectId,
-		long accountEntryId, java.lang.String name,
-		Map<java.lang.Integer, java.lang.String> data)
-		throws PortalException;
 }

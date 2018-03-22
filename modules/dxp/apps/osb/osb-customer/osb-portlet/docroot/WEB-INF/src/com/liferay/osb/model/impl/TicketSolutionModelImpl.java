@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
@@ -415,7 +416,7 @@ public class TicketSolutionModelImpl extends BaseModelImpl<TicketSolution>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -427,7 +428,7 @@ public class TicketSolutionModelImpl extends BaseModelImpl<TicketSolution>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -479,7 +480,7 @@ public class TicketSolutionModelImpl extends BaseModelImpl<TicketSolution>
 	@Override
 	public String getSummary() {
 		if (_summary == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _summary;
@@ -523,7 +524,7 @@ public class TicketSolutionModelImpl extends BaseModelImpl<TicketSolution>
 	@Override
 	public String getSolution() {
 		if (_solution == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _solution;
@@ -644,7 +645,7 @@ public class TicketSolutionModelImpl extends BaseModelImpl<TicketSolution>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -656,7 +657,7 @@ public class TicketSolutionModelImpl extends BaseModelImpl<TicketSolution>
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _statusByUserName;
@@ -683,7 +684,7 @@ public class TicketSolutionModelImpl extends BaseModelImpl<TicketSolution>
 	@Override
 	public String getStatusMessage() {
 		if (_statusMessage == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _statusMessage;

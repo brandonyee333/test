@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
@@ -400,7 +401,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -412,7 +413,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -448,7 +449,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 	@Override
 	public String getClassName() {
 		if (getClassNameId() <= 0) {
-			return "";
+			return StringPool.BLANK;
 		}
 
 		return PortalUtil.getClassName(getClassNameId());
@@ -652,7 +653,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 	@Override
 	public String getOldLabel() {
 		if (_oldLabel == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _oldLabel;
@@ -668,7 +669,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 	@Override
 	public String getOldValue() {
 		if (_oldValue == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _oldValue;
@@ -684,7 +685,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 	@Override
 	public String getNewLabel() {
 		if (_newLabel == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _newLabel;
@@ -700,7 +701,7 @@ public class AuditEntryModelImpl extends BaseModelImpl<AuditEntry>
 	@Override
 	public String getNewValue() {
 		if (_newValue == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _newValue;

@@ -21,6 +21,7 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -107,7 +108,7 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 		partnerEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			partnerEntryImpl.setUserName("");
+			partnerEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			partnerEntryImpl.setUserName(userName);
@@ -123,7 +124,7 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 		partnerEntryImpl.setModifiedUserId(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			partnerEntryImpl.setModifiedUserName("");
+			partnerEntryImpl.setModifiedUserName(StringPool.BLANK);
 		}
 		else {
 			partnerEntryImpl.setModifiedUserName(modifiedUserName);
@@ -139,21 +140,21 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 		partnerEntryImpl.setParentPartnerEntryId(parentPartnerEntryId);
 
 		if (dossieraAccountKey == null) {
-			partnerEntryImpl.setDossieraAccountKey("");
+			partnerEntryImpl.setDossieraAccountKey(StringPool.BLANK);
 		}
 		else {
 			partnerEntryImpl.setDossieraAccountKey(dossieraAccountKey);
 		}
 
 		if (code == null) {
-			partnerEntryImpl.setCode("");
+			partnerEntryImpl.setCode(StringPool.BLANK);
 		}
 		else {
 			partnerEntryImpl.setCode(code);
 		}
 
 		if (notes == null) {
-			partnerEntryImpl.setNotes("");
+			partnerEntryImpl.setNotes(StringPool.BLANK);
 		}
 		else {
 			partnerEntryImpl.setNotes(notes);
@@ -198,7 +199,7 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -209,7 +210,7 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 		objectOutput.writeLong(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(modifiedUserName);
@@ -220,21 +221,21 @@ public class PartnerEntryCacheModel implements CacheModel<PartnerEntry>,
 		objectOutput.writeLong(parentPartnerEntryId);
 
 		if (dossieraAccountKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(dossieraAccountKey);
 		}
 
 		if (code == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(code);
 		}
 
 		if (notes == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(notes);

@@ -108,8 +108,38 @@ public class AuditActionWrapper implements AuditAction,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AuditActionWrapper((AuditAction)_auditAction.clone());
+	public AuditAction toEscapedModel() {
+		return new AuditActionWrapper(_auditAction.toEscapedModel());
+	}
+
+	@Override
+	public AuditAction toUnescapedModel() {
+		return new AuditActionWrapper(_auditAction.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _auditAction.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _auditAction.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _auditAction.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _auditAction.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AuditAction> toCacheModel() {
+		return _auditAction.toCacheModel();
 	}
 
 	@Override
@@ -127,14 +157,19 @@ public class AuditActionWrapper implements AuditAction,
 		return _auditAction.getAction();
 	}
 
-	/**
-	* Returns the audit action ID of this audit action.
-	*
-	* @return the audit action ID of this audit action
-	*/
 	@Override
-	public long getAuditActionId() {
-		return _auditAction.getAuditActionId();
+	public int hashCode() {
+		return _auditAction.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _auditAction.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AuditActionWrapper((AuditAction)_auditAction.clone());
 	}
 
 	/**
@@ -145,6 +180,36 @@ public class AuditActionWrapper implements AuditAction,
 	@Override
 	public java.lang.String getClassName() {
 		return _auditAction.getClassName();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _auditAction.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _auditAction.toXmlString();
+	}
+
+	/**
+	* Returns the modified date of this audit action.
+	*
+	* @return the modified date of this audit action
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _auditAction.getModifiedDate();
+	}
+
+	/**
+	* Returns the audit action ID of this audit action.
+	*
+	* @return the audit action ID of this audit action
+	*/
+	@Override
+	public long getAuditActionId() {
+		return _auditAction.getAuditActionId();
 	}
 
 	/**
@@ -167,11 +232,6 @@ public class AuditActionWrapper implements AuditAction,
 		return _auditAction.getClassPK();
 	}
 
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _auditAction.getExpandoBridge();
-	}
-
 	/**
 	* Returns the mapping class pk of this audit action.
 	*
@@ -183,16 +243,6 @@ public class AuditActionWrapper implements AuditAction,
 	}
 
 	/**
-	* Returns the modified date of this audit action.
-	*
-	* @return the modified date of this audit action
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _auditAction.getModifiedDate();
-	}
-
-	/**
 	* Returns the primary key of this audit action.
 	*
 	* @return the primary key of this audit action
@@ -200,31 +250,6 @@ public class AuditActionWrapper implements AuditAction,
 	@Override
 	public long getPrimaryKey() {
 		return _auditAction.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _auditAction.getPrimaryKeyObj();
-	}
-
-	@Override
-	public int hashCode() {
-		return _auditAction.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _auditAction.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _auditAction.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _auditAction.isNew();
 	}
 
 	@Override
@@ -283,14 +308,14 @@ public class AuditActionWrapper implements AuditAction,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_auditAction.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_auditAction.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_auditAction.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_auditAction.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -336,31 +361,6 @@ public class AuditActionWrapper implements AuditAction,
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_auditAction.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AuditAction> toCacheModel() {
-		return _auditAction.toCacheModel();
-	}
-
-	@Override
-	public AuditAction toEscapedModel() {
-		return new AuditActionWrapper(_auditAction.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _auditAction.toString();
-	}
-
-	@Override
-	public AuditAction toUnescapedModel() {
-		return new AuditActionWrapper(_auditAction.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _auditAction.toXmlString();
 	}
 
 	@Override

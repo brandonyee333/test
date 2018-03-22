@@ -25,10 +25,6 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
  * @generated
  */
 public class TicketFeedbackFinderBaseImpl extends BasePersistenceImpl<TicketFeedback> {
-	public TicketFeedbackFinderBaseImpl() {
-		setModelClass(TicketFeedback.class);
-	}
-
 	/**
 	 * Returns the ticket feedback persistence.
 	 *

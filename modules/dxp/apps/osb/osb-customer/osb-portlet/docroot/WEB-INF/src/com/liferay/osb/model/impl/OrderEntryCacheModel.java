@@ -21,6 +21,7 @@ import com.liferay.osb.model.OrderEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -115,7 +116,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		OrderEntryImpl orderEntryImpl = new OrderEntryImpl();
 
 		if (uuid == null) {
-			orderEntryImpl.setUuid("");
+			orderEntryImpl.setUuid(StringPool.BLANK);
 		}
 		else {
 			orderEntryImpl.setUuid(uuid);
@@ -125,7 +126,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		orderEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			orderEntryImpl.setUserName("");
+			orderEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			orderEntryImpl.setUserName(userName);
@@ -141,7 +142,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		orderEntryImpl.setModifiedUserId(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			orderEntryImpl.setModifiedUserName("");
+			orderEntryImpl.setModifiedUserName(StringPool.BLANK);
 		}
 		else {
 			orderEntryImpl.setModifiedUserName(modifiedUserName);
@@ -157,7 +158,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		orderEntryImpl.setAccountEntryId(accountEntryId);
 
 		if (purchaseOrderKey == null) {
-			orderEntryImpl.setPurchaseOrderKey("");
+			orderEntryImpl.setPurchaseOrderKey(StringPool.BLANK);
 		}
 		else {
 			orderEntryImpl.setPurchaseOrderKey(purchaseOrderKey);
@@ -184,7 +185,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		orderEntryImpl.setStatusByUserId(statusByUserId);
 
 		if (statusByUserName == null) {
-			orderEntryImpl.setStatusByUserName("");
+			orderEntryImpl.setStatusByUserName(StringPool.BLANK);
 		}
 		else {
 			orderEntryImpl.setStatusByUserName(statusByUserName);
@@ -198,7 +199,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		}
 
 		if (statusMessage == null) {
-			orderEntryImpl.setStatusMessage("");
+			orderEntryImpl.setStatusMessage(StringPool.BLANK);
 		}
 		else {
 			orderEntryImpl.setStatusMessage(statusMessage);
@@ -244,7 +245,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -255,7 +256,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -266,7 +267,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		objectOutput.writeLong(modifiedUserId);
 
 		if (modifiedUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(modifiedUserName);
@@ -277,7 +278,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		objectOutput.writeLong(accountEntryId);
 
 		if (purchaseOrderKey == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(purchaseOrderKey);
@@ -295,7 +296,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		objectOutput.writeLong(statusByUserId);
 
 		if (statusByUserName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusByUserName);
@@ -304,7 +305,7 @@ public class OrderEntryCacheModel implements CacheModel<OrderEntry>,
 		objectOutput.writeLong(statusDate);
 
 		if (statusMessage == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(statusMessage);

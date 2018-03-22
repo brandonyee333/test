@@ -39,7 +39,7 @@ public class HolidayEntryFinderUtil {
 
 	public static HolidayEntryFinder getFinder() {
 		if (_finder == null) {
-			_finder = (HolidayEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_finder = (HolidayEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					HolidayEntryFinder.class.getName());
 
 			ReferenceRegistry.registerReference(HolidayEntryFinderUtil.class,

@@ -259,7 +259,7 @@ public class HolidayCalendarUtil {
 
 	public static HolidayCalendarPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (HolidayCalendarPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (HolidayCalendarPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					HolidayCalendarPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(HolidayCalendarUtil.class,

@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
@@ -558,7 +559,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -574,7 +575,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -616,7 +617,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -628,7 +629,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public String getModifiedUserName() {
 		if (_modifiedUserName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _modifiedUserName;
@@ -684,7 +685,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public String getCorpEntryName() {
 		if (_corpEntryName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _corpEntryName;
@@ -700,7 +701,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public String getName() {
 		if (_name == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _name;
@@ -726,7 +727,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public String getCode() {
 		if (_code == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _code;
@@ -882,7 +883,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public String getInstructions() {
 		if (_instructions == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _instructions;
@@ -898,7 +899,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public String getNotes() {
 		if (_notes == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _notes;
@@ -974,7 +975,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -986,7 +987,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public String getStatusByUserName() {
 		if (_statusByUserName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _statusByUserName;
@@ -1013,7 +1014,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public String getStatusMessage() {
 		if (_statusMessage == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _statusMessage;

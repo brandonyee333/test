@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -307,7 +308,7 @@ public class AccountEntryLanguagePersistenceImpl extends BasePersistenceImpl<Acc
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountEntryLanguageException(msg.toString());
 	}
@@ -359,7 +360,7 @@ public class AccountEntryLanguagePersistenceImpl extends BasePersistenceImpl<Acc
 		msg.append("accountEntryId=");
 		msg.append(accountEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchAccountEntryLanguageException(msg.toString());
 	}
@@ -1043,12 +1044,12 @@ public class AccountEntryLanguagePersistenceImpl extends BasePersistenceImpl<Acc
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(",");
+			query.append(StringPool.COMMA);
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
 		String sql = query.toString();
 

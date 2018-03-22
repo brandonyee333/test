@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -328,7 +329,7 @@ public class TicketCallModelImpl extends BaseModelImpl<TicketCall>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -340,7 +341,7 @@ public class TicketCallModelImpl extends BaseModelImpl<TicketCall>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -411,7 +412,7 @@ public class TicketCallModelImpl extends BaseModelImpl<TicketCall>
 	@Override
 	public String getCustomerName() {
 		if (_customerName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _customerName;
@@ -427,7 +428,7 @@ public class TicketCallModelImpl extends BaseModelImpl<TicketCall>
 	@Override
 	public String getCustomerContact() {
 		if (_customerContact == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _customerContact;
@@ -443,7 +444,7 @@ public class TicketCallModelImpl extends BaseModelImpl<TicketCall>
 	@Override
 	public String getConfirmation() {
 		if (_confirmation == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _confirmation;
@@ -459,7 +460,7 @@ public class TicketCallModelImpl extends BaseModelImpl<TicketCall>
 	@Override
 	public String getInstructions() {
 		if (_instructions == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _instructions;

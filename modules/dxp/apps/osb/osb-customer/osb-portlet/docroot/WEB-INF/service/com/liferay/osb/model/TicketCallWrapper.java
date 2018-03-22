@@ -149,8 +149,38 @@ public class TicketCallWrapper implements TicketCall, ModelWrapper<TicketCall> {
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new TicketCallWrapper((TicketCall)_ticketCall.clone());
+	public TicketCall toEscapedModel() {
+		return new TicketCallWrapper(_ticketCall.toEscapedModel());
+	}
+
+	@Override
+	public TicketCall toUnescapedModel() {
+		return new TicketCallWrapper(_ticketCall.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _ticketCall.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _ticketCall.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _ticketCall.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ticketCall.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TicketCall> toCacheModel() {
+		return _ticketCall.toCacheModel();
 	}
 
 	@Override
@@ -159,23 +189,28 @@ public class TicketCallWrapper implements TicketCall, ModelWrapper<TicketCall> {
 	}
 
 	/**
-	* Returns the call date of this ticket call.
+	* Returns the type of this ticket call.
 	*
-	* @return the call date of this ticket call
+	* @return the type of this ticket call
 	*/
 	@Override
-	public Date getCallDate() {
-		return _ticketCall.getCallDate();
+	public int getType() {
+		return _ticketCall.getType();
 	}
 
-	/**
-	* Returns the call length of this ticket call.
-	*
-	* @return the call length of this ticket call
-	*/
 	@Override
-	public long getCallLength() {
-		return _ticketCall.getCallLength();
+	public int hashCode() {
+		return _ticketCall.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ticketCall.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new TicketCallWrapper((TicketCall)_ticketCall.clone());
 	}
 
 	@Override
@@ -191,16 +226,6 @@ public class TicketCallWrapper implements TicketCall, ModelWrapper<TicketCall> {
 	@Override
 	public java.lang.String getConfirmation() {
 		return _ticketCall.getConfirmation();
-	}
-
-	/**
-	* Returns the create date of this ticket call.
-	*
-	* @return the create date of this ticket call
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _ticketCall.getCreateDate();
 	}
 
 	/**
@@ -223,11 +248,6 @@ public class TicketCallWrapper implements TicketCall, ModelWrapper<TicketCall> {
 		return _ticketCall.getCustomerName();
 	}
 
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ticketCall.getExpandoBridge();
-	}
-
 	/**
 	* Returns the instructions of this ticket call.
 	*
@@ -238,64 +258,9 @@ public class TicketCallWrapper implements TicketCall, ModelWrapper<TicketCall> {
 		return _ticketCall.getInstructions();
 	}
 
-	/**
-	* Returns the primary key of this ticket call.
-	*
-	* @return the primary key of this ticket call
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _ticketCall.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ticketCall.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the ticket call ID of this ticket call.
-	*
-	* @return the ticket call ID of this ticket call
-	*/
-	@Override
-	public long getTicketCallId() {
-		return _ticketCall.getTicketCallId();
-	}
-
-	/**
-	* Returns the ticket entry ID of this ticket call.
-	*
-	* @return the ticket entry ID of this ticket call
-	*/
-	@Override
-	public long getTicketEntryId() {
-		return _ticketCall.getTicketEntryId();
-	}
-
-	/**
-	* Returns the type of this ticket call.
-	*
-	* @return the type of this ticket call
-	*/
-	@Override
-	public int getType() {
-		return _ticketCall.getType();
-	}
-
 	@Override
 	public java.lang.String getTypeLabel() {
 		return _ticketCall.getTypeLabel();
-	}
-
-	/**
-	* Returns the user ID of this ticket call.
-	*
-	* @return the user ID of this ticket call
-	*/
-	@Override
-	public long getUserId() {
-		return _ticketCall.getUserId();
 	}
 
 	/**
@@ -319,23 +284,83 @@ public class TicketCallWrapper implements TicketCall, ModelWrapper<TicketCall> {
 	}
 
 	@Override
-	public int hashCode() {
-		return _ticketCall.hashCode();
+	public java.lang.String toString() {
+		return _ticketCall.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _ticketCall.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _ticketCall.toXmlString();
 	}
 
+	/**
+	* Returns the call date of this ticket call.
+	*
+	* @return the call date of this ticket call
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _ticketCall.isEscapedModel();
+	public Date getCallDate() {
+		return _ticketCall.getCallDate();
 	}
 
+	/**
+	* Returns the create date of this ticket call.
+	*
+	* @return the create date of this ticket call
+	*/
 	@Override
-	public boolean isNew() {
-		return _ticketCall.isNew();
+	public Date getCreateDate() {
+		return _ticketCall.getCreateDate();
+	}
+
+	/**
+	* Returns the call length of this ticket call.
+	*
+	* @return the call length of this ticket call
+	*/
+	@Override
+	public long getCallLength() {
+		return _ticketCall.getCallLength();
+	}
+
+	/**
+	* Returns the primary key of this ticket call.
+	*
+	* @return the primary key of this ticket call
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _ticketCall.getPrimaryKey();
+	}
+
+	/**
+	* Returns the ticket call ID of this ticket call.
+	*
+	* @return the ticket call ID of this ticket call
+	*/
+	@Override
+	public long getTicketCallId() {
+		return _ticketCall.getTicketCallId();
+	}
+
+	/**
+	* Returns the ticket entry ID of this ticket call.
+	*
+	* @return the ticket entry ID of this ticket call
+	*/
+	@Override
+	public long getTicketEntryId() {
+		return _ticketCall.getTicketEntryId();
+	}
+
+	/**
+	* Returns the user ID of this ticket call.
+	*
+	* @return the user ID of this ticket call
+	*/
+	@Override
+	public long getUserId() {
+		return _ticketCall.getUserId();
 	}
 
 	@Override
@@ -409,14 +434,14 @@ public class TicketCallWrapper implements TicketCall, ModelWrapper<TicketCall> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_ticketCall.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ticketCall.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ticketCall.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_ticketCall.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -512,31 +537,6 @@ public class TicketCallWrapper implements TicketCall, ModelWrapper<TicketCall> {
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_ticketCall.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketCall> toCacheModel() {
-		return _ticketCall.toCacheModel();
-	}
-
-	@Override
-	public TicketCall toEscapedModel() {
-		return new TicketCallWrapper(_ticketCall.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ticketCall.toString();
-	}
-
-	@Override
-	public TicketCall toUnescapedModel() {
-		return new TicketCallWrapper(_ticketCall.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ticketCall.toXmlString();
 	}
 
 	@Override

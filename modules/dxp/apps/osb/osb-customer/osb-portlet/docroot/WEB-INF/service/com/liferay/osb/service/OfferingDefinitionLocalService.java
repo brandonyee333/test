@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -54,29 +55,18 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface OfferingDefinitionLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link OfferingDefinitionLocalServiceUtil} to access the offering definition local service. Add custom service methods to {@link com.liferay.osb.service.impl.OfferingDefinitionLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public void addOfferingBundleOfferingDefinition(long offeringBundleId,
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasOfferingBundleOfferingDefinition(long offeringBundleId,
 		long offeringDefinitionId);
 
-	public void addOfferingBundleOfferingDefinition(long offeringBundleId,
-		OfferingDefinition offeringDefinition);
-
-	public void addOfferingBundleOfferingDefinitions(long offeringBundleId,
-		List<OfferingDefinition> offeringDefinitions);
-
-	public void addOfferingBundleOfferingDefinitions(long offeringBundleId,
-		long[] offeringDefinitionIds);
-
-	public OfferingDefinition addOfferingDefinition(long userId,
-		long productEntryId, long supportResponseId,
-		java.lang.String productDescription, boolean licenses,
-		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
-		boolean supportTickets) throws PortalException;
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public boolean hasOfferingBundleOfferingDefinitions(long offeringBundleId);
 
 	/**
 	* Adds the offering definition to the database. Also notifies the appropriate model listeners.
@@ -88,7 +78,11 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	public OfferingDefinition addOfferingDefinition(
 		OfferingDefinition offeringDefinition);
 
-	public void clearOfferingBundleOfferingDefinitions(long offeringBundleId);
+	public OfferingDefinition addOfferingDefinition(long userId,
+		long productEntryId, long supportResponseId,
+		java.lang.String productDescription, boolean licenses,
+		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
+		boolean supportTickets) throws PortalException;
 
 	/**
 	* Creates a new offering definition with the primary key. Does not add the offering definition to the database.
@@ -98,29 +92,6 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	*/
 	public OfferingDefinition createOfferingDefinition(
 		long offeringDefinitionId);
-
-	public void deleteOfferingBundleOfferingDefinition(long offeringBundleId,
-		long offeringDefinitionId);
-
-	public void deleteOfferingBundleOfferingDefinition(long offeringBundleId,
-		OfferingDefinition offeringDefinition);
-
-	public void deleteOfferingBundleOfferingDefinitions(long offeringBundleId,
-		List<OfferingDefinition> offeringDefinitions);
-
-	public void deleteOfferingBundleOfferingDefinitions(long offeringBundleId,
-		long[] offeringDefinitionIds);
-
-	/**
-	* Deletes the offering definition with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param offeringDefinitionId the primary key of the offering definition
-	* @return the offering definition that was removed
-	* @throws PortalException if a offering definition with the primary key could not be found
-	*/
-	@Indexable(type = IndexableType.DELETE)
-	public OfferingDefinition deleteOfferingDefinition(
-		long offeringDefinitionId) throws PortalException;
 
 	/**
 	* Deletes the offering definition from the database. Also notifies the appropriate model listeners.
@@ -133,13 +104,92 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 		OfferingDefinition offeringDefinition);
 
 	/**
+	* Deletes the offering definition with the primary key from the database. Also notifies the appropriate model listeners.
+	*
+	* @param offeringDefinitionId the primary key of the offering definition
+	* @return the offering definition that was removed
+	* @throws PortalException if a offering definition with the primary key could not be found
+	*/
+	@Indexable(type = IndexableType.DELETE)
+	public OfferingDefinition deleteOfferingDefinition(
+		long offeringDefinitionId) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public OfferingDefinition fetchOfferingDefinition(long offeringDefinitionId);
+
+	/**
+	* Returns the offering definition with the primary key.
+	*
+	* @param offeringDefinitionId the primary key of the offering definition
+	* @return the offering definition
+	* @throws PortalException if a offering definition with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public OfferingDefinition getOfferingDefinition(long offeringDefinitionId)
+		throws PortalException;
+
+	/**
+	* Updates the offering definition in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param offeringDefinition the offering definition
+	* @return the offering definition that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public OfferingDefinition updateOfferingDefinition(
+		OfferingDefinition offeringDefinition);
+
+	public OfferingDefinition updateOfferingDefinition(
+		long offeringDefinitionId, long productEntryId, long supportResponseId,
+		java.lang.String productDescription, boolean licenses,
+		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
+		boolean supportTickets) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
 	* @throws PortalException
 	*/
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	public DynamicQuery dynamicQuery();
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOfferingBundleOfferingDefinitionsCount(long offeringBundleId);
+
+	/**
+	* Returns the number of offering definitions.
+	*
+	* @return the number of offering definitions
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOfferingDefinitionsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getOfferingDefinitionsCount(long[] productEntryIds,
+		long[] supportResponseIds);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -180,33 +230,6 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
 
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public OfferingDefinition fetchOfferingDefinition(long offeringDefinitionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OfferingDefinition> getOfferingBundleOfferingDefinitions(
 		long offeringBundleId);
@@ -219,29 +242,6 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	public List<OfferingDefinition> getOfferingBundleOfferingDefinitions(
 		long offeringBundleId, int start, int end,
 		OrderByComparator<OfferingDefinition> orderByComparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingBundleOfferingDefinitionsCount(long offeringBundleId);
-
-	/**
-	* Returns the offeringBundleIds of the offering bundles associated with the offering definition.
-	*
-	* @param offeringDefinitionId the offeringDefinitionId of the offering definition
-	* @return long[] the offeringBundleIds of offering bundles associated with the offering definition
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getOfferingBundlePrimaryKeys(long offeringDefinitionId);
-
-	/**
-	* Returns the offering definition with the primary key.
-	*
-	* @param offeringDefinitionId the primary key of the offering definition
-	* @return the offering definition
-	* @throws PortalException if a offering definition with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public OfferingDefinition getOfferingDefinition(long offeringDefinitionId)
-		throws PortalException;
 
 	/**
 	* Returns a range of all the offering definitions.
@@ -261,57 +261,63 @@ public interface OfferingDefinitionLocalService extends BaseLocalService,
 	public List<OfferingDefinition> getOfferingDefinitions(
 		long[] productEntryIds, long[] supportResponseIds, int start, int end);
 
-	/**
-	* Returns the number of offering definitions.
-	*
-	* @return the number of offering definitions
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingDefinitionsCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getOfferingDefinitionsCount(long[] productEntryIds,
-		long[] supportResponseIds);
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OfferingDefinition> getProductEntryOfferingDefinitions(
 		long productEntryId);
 
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
+
+	/**
+	* Returns the offeringBundleIds of the offering bundles associated with the offering definition.
+	*
+	* @param offeringDefinitionId the offeringDefinitionId of the offering definition
+	* @return long[] the offeringBundleIds of offering bundles associated with the offering definition
+	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasOfferingBundleOfferingDefinition(long offeringBundleId,
+	public long[] getOfferingBundlePrimaryKeys(long offeringDefinitionId);
+
+	public void addOfferingBundleOfferingDefinition(long offeringBundleId,
+		OfferingDefinition offeringDefinition);
+
+	public void addOfferingBundleOfferingDefinition(long offeringBundleId,
 		long offeringDefinitionId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasOfferingBundleOfferingDefinitions(long offeringBundleId);
+	public void addOfferingBundleOfferingDefinitions(long offeringBundleId,
+		List<OfferingDefinition> offeringDefinitions);
+
+	public void addOfferingBundleOfferingDefinitions(long offeringBundleId,
+		long[] offeringDefinitionIds);
+
+	public void clearOfferingBundleOfferingDefinitions(long offeringBundleId);
+
+	public void deleteOfferingBundleOfferingDefinition(long offeringBundleId,
+		OfferingDefinition offeringDefinition);
+
+	public void deleteOfferingBundleOfferingDefinition(long offeringBundleId,
+		long offeringDefinitionId);
+
+	public void deleteOfferingBundleOfferingDefinitions(long offeringBundleId,
+		List<OfferingDefinition> offeringDefinitions);
+
+	public void deleteOfferingBundleOfferingDefinitions(long offeringBundleId,
+		long[] offeringDefinitionIds);
 
 	public void setOfferingBundleOfferingDefinitions(long offeringBundleId,
 		long[] offeringDefinitionIds);
-
-	public OfferingDefinition updateOfferingDefinition(
-		long offeringDefinitionId, long productEntryId, long supportResponseId,
-		java.lang.String productDescription, boolean licenses,
-		boolean unlimitedLicenses, long maxConcurrentUsers, long maxUsers,
-		boolean supportTickets) throws PortalException;
-
-	/**
-	* Updates the offering definition in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param offeringDefinition the offering definition
-	* @return the offering definition that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public OfferingDefinition updateOfferingDefinition(
-		OfferingDefinition offeringDefinition);
 }

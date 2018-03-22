@@ -34,6 +34,31 @@ public class RemoteUserLocalServiceWrapper implements RemoteUserLocalService,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.User fetchUserByEmailAddress(
+		java.lang.String emailAddress)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _remoteUserLocalService.fetchUserByEmailAddress(emailAddress);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _remoteUserLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _remoteUserLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
 	public void addOrganizationUsers(long organizationId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_remoteUserLocalService.addOrganizationUsers(organizationId, userIds);
@@ -49,23 +74,6 @@ public class RemoteUserLocalServiceWrapper implements RemoteUserLocalService,
 	public void deleteRoleUser(long roleId, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_remoteUserLocalService.deleteRoleUser(roleId, userId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.User fetchUserByEmailAddress(
-		java.lang.String emailAddress)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _remoteUserLocalService.fetchUserByEmailAddress(emailAddress);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _remoteUserLocalService.getOSGiServiceIdentifier();
 	}
 
 	@Override

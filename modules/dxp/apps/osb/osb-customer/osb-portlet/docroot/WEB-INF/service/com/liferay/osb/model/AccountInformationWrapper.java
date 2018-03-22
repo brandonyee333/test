@@ -122,13 +122,118 @@ public class AccountInformationWrapper implements AccountInformation,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AccountInformationWrapper((AccountInformation)_accountInformation.clone());
+	public AccountInformation toEscapedModel() {
+		return new AccountInformationWrapper(_accountInformation.toEscapedModel());
+	}
+
+	@Override
+	public AccountInformation toUnescapedModel() {
+		return new AccountInformationWrapper(_accountInformation.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _accountInformation.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _accountInformation.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _accountInformation.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _accountInformation.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountInformation> toCacheModel() {
+		return _accountInformation.toCacheModel();
 	}
 
 	@Override
 	public int compareTo(AccountInformation accountInformation) {
 		return _accountInformation.compareTo(accountInformation);
+	}
+
+	/**
+	* Returns the field ID of this account information.
+	*
+	* @return the field ID of this account information
+	*/
+	@Override
+	public int getFieldId() {
+		return _accountInformation.getFieldId();
+	}
+
+	@Override
+	public int hashCode() {
+		return _accountInformation.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountInformation.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AccountInformationWrapper((AccountInformation)_accountInformation.clone());
+	}
+
+	/**
+	* Returns the data of this account information.
+	*
+	* @return the data of this account information
+	*/
+	@Override
+	public java.lang.String getData() {
+		return _accountInformation.getData();
+	}
+
+	/**
+	* Returns the modified user name of this account information.
+	*
+	* @return the modified user name of this account information
+	*/
+	@Override
+	public java.lang.String getModifiedUserName() {
+		return _accountInformation.getModifiedUserName();
+	}
+
+	/**
+	* Returns the modified user uuid of this account information.
+	*
+	* @return the modified user uuid of this account information
+	*/
+	@Override
+	public java.lang.String getModifiedUserUuid() {
+		return _accountInformation.getModifiedUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _accountInformation.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _accountInformation.toXmlString();
+	}
+
+	/**
+	* Returns the modified date of this account information.
+	*
+	* @return the modified date of this account information
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _accountInformation.getModifiedDate();
 	}
 
 	/**
@@ -162,41 +267,6 @@ public class AccountInformationWrapper implements AccountInformation,
 	}
 
 	/**
-	* Returns the data of this account information.
-	*
-	* @return the data of this account information
-	*/
-	@Override
-	public java.lang.String getData() {
-		return _accountInformation.getData();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountInformation.getExpandoBridge();
-	}
-
-	/**
-	* Returns the field ID of this account information.
-	*
-	* @return the field ID of this account information
-	*/
-	@Override
-	public int getFieldId() {
-		return _accountInformation.getFieldId();
-	}
-
-	/**
-	* Returns the modified date of this account information.
-	*
-	* @return the modified date of this account information
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _accountInformation.getModifiedDate();
-	}
-
-	/**
 	* Returns the modified user ID of this account information.
 	*
 	* @return the modified user ID of this account information
@@ -207,26 +277,6 @@ public class AccountInformationWrapper implements AccountInformation,
 	}
 
 	/**
-	* Returns the modified user name of this account information.
-	*
-	* @return the modified user name of this account information
-	*/
-	@Override
-	public java.lang.String getModifiedUserName() {
-		return _accountInformation.getModifiedUserName();
-	}
-
-	/**
-	* Returns the modified user uuid of this account information.
-	*
-	* @return the modified user uuid of this account information
-	*/
-	@Override
-	public java.lang.String getModifiedUserUuid() {
-		return _accountInformation.getModifiedUserUuid();
-	}
-
-	/**
 	* Returns the primary key of this account information.
 	*
 	* @return the primary key of this account information
@@ -234,31 +284,6 @@ public class AccountInformationWrapper implements AccountInformation,
 	@Override
 	public long getPrimaryKey() {
 		return _accountInformation.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountInformation.getPrimaryKeyObj();
-	}
-
-	@Override
-	public int hashCode() {
-		return _accountInformation.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _accountInformation.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _accountInformation.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _accountInformation.isNew();
 	}
 
 	@Override
@@ -312,14 +337,14 @@ public class AccountInformationWrapper implements AccountInformation,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_accountInformation.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountInformation.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountInformation.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_accountInformation.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -395,31 +420,6 @@ public class AccountInformationWrapper implements AccountInformation,
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_accountInformation.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountInformation> toCacheModel() {
-		return _accountInformation.toCacheModel();
-	}
-
-	@Override
-	public AccountInformation toEscapedModel() {
-		return new AccountInformationWrapper(_accountInformation.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _accountInformation.toString();
-	}
-
-	@Override
-	public AccountInformation toUnescapedModel() {
-		return new AccountInformationWrapper(_accountInformation.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _accountInformation.toXmlString();
 	}
 
 	@Override

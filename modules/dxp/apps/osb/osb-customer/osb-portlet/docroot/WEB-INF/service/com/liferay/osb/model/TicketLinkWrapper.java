@@ -128,13 +128,134 @@ public class TicketLinkWrapper implements TicketLink, ModelWrapper<TicketLink> {
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new TicketLinkWrapper((TicketLink)_ticketLink.clone());
+	public TicketEntry getTicketEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketLink.getTicketEntry();
+	}
+
+	@Override
+	public TicketLink toEscapedModel() {
+		return new TicketLinkWrapper(_ticketLink.toEscapedModel());
+	}
+
+	@Override
+	public TicketLink toUnescapedModel() {
+		return new TicketLinkWrapper(_ticketLink.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _ticketLink.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _ticketLink.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _ticketLink.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _ticketLink.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TicketLink> toCacheModel() {
+		return _ticketLink.toCacheModel();
 	}
 
 	@Override
 	public int compareTo(TicketLink ticketLink) {
 		return _ticketLink.compareTo(ticketLink);
+	}
+
+	/**
+	* Returns the type of this ticket link.
+	*
+	* @return the type of this ticket link
+	*/
+	@Override
+	public int getType() {
+		return _ticketLink.getType();
+	}
+
+	/**
+	* Returns the visibility of this ticket link.
+	*
+	* @return the visibility of this ticket link
+	*/
+	@Override
+	public int getVisibility() {
+		return _ticketLink.getVisibility();
+	}
+
+	@Override
+	public int hashCode() {
+		return _ticketLink.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ticketLink.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new TicketLinkWrapper((TicketLink)_ticketLink.clone());
+	}
+
+	@Override
+	public java.lang.String getKey() {
+		return _ticketLink.getKey();
+	}
+
+	/**
+	* Returns the url of this ticket link.
+	*
+	* @return the url of this ticket link
+	*/
+	@Override
+	public java.lang.String getUrl() {
+		return _ticketLink.getUrl();
+	}
+
+	/**
+	* Returns the user name of this ticket link.
+	*
+	* @return the user name of this ticket link
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _ticketLink.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this ticket link.
+	*
+	* @return the user uuid of this ticket link
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _ticketLink.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String getVisibilityLabel() {
+		return _ticketLink.getVisibilityLabel();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _ticketLink.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ticketLink.toXmlString();
 	}
 
 	/**
@@ -147,16 +268,6 @@ public class TicketLinkWrapper implements TicketLink, ModelWrapper<TicketLink> {
 		return _ticketLink.getCreateDate();
 	}
 
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _ticketLink.getExpandoBridge();
-	}
-
-	@Override
-	public java.lang.String getKey() {
-		return _ticketLink.getKey();
-	}
-
 	/**
 	* Returns the primary key of this ticket link.
 	*
@@ -165,17 +276,6 @@ public class TicketLinkWrapper implements TicketLink, ModelWrapper<TicketLink> {
 	@Override
 	public long getPrimaryKey() {
 		return _ticketLink.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ticketLink.getPrimaryKeyObj();
-	}
-
-	@Override
-	public TicketEntry getTicketEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketLink.getTicketEntry();
 	}
 
 	/**
@@ -209,26 +309,6 @@ public class TicketLinkWrapper implements TicketLink, ModelWrapper<TicketLink> {
 	}
 
 	/**
-	* Returns the type of this ticket link.
-	*
-	* @return the type of this ticket link
-	*/
-	@Override
-	public int getType() {
-		return _ticketLink.getType();
-	}
-
-	/**
-	* Returns the url of this ticket link.
-	*
-	* @return the url of this ticket link
-	*/
-	@Override
-	public java.lang.String getUrl() {
-		return _ticketLink.getUrl();
-	}
-
-	/**
 	* Returns the user ID of this ticket link.
 	*
 	* @return the user ID of this ticket link
@@ -236,61 +316,6 @@ public class TicketLinkWrapper implements TicketLink, ModelWrapper<TicketLink> {
 	@Override
 	public long getUserId() {
 		return _ticketLink.getUserId();
-	}
-
-	/**
-	* Returns the user name of this ticket link.
-	*
-	* @return the user name of this ticket link
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _ticketLink.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this ticket link.
-	*
-	* @return the user uuid of this ticket link
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _ticketLink.getUserUuid();
-	}
-
-	/**
-	* Returns the visibility of this ticket link.
-	*
-	* @return the visibility of this ticket link
-	*/
-	@Override
-	public int getVisibility() {
-		return _ticketLink.getVisibility();
-	}
-
-	@Override
-	public java.lang.String getVisibilityLabel() {
-		return _ticketLink.getVisibilityLabel();
-	}
-
-	@Override
-	public int hashCode() {
-		return _ticketLink.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _ticketLink.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _ticketLink.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _ticketLink.isNew();
 	}
 
 	@Override
@@ -314,14 +339,14 @@ public class TicketLinkWrapper implements TicketLink, ModelWrapper<TicketLink> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_ticketLink.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ticketLink.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ticketLink.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_ticketLink.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -437,31 +462,6 @@ public class TicketLinkWrapper implements TicketLink, ModelWrapper<TicketLink> {
 	@Override
 	public void setVisibility(int visibility) {
 		_ticketLink.setVisibility(visibility);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketLink> toCacheModel() {
-		return _ticketLink.toCacheModel();
-	}
-
-	@Override
-	public TicketLink toEscapedModel() {
-		return new TicketLinkWrapper(_ticketLink.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ticketLink.toString();
-	}
-
-	@Override
-	public TicketLink toUnescapedModel() {
-		return new TicketLinkWrapper(_ticketLink.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ticketLink.toXmlString();
 	}
 
 	@Override

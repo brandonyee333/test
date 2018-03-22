@@ -84,8 +84,56 @@ public class AuditActionLocalServiceWrapper implements AuditActionLocalService,
 	}
 
 	@Override
-	public void deleteAuditActions(java.util.Date modifiedDate) {
-		_auditActionLocalService.deleteAuditActions(modifiedDate);
+	public com.liferay.osb.model.AuditAction fetchAuditAction(
+		long auditActionId) {
+		return _auditActionLocalService.fetchAuditAction(auditActionId);
+	}
+
+	/**
+	* Returns the audit action with the primary key.
+	*
+	* @param auditActionId the primary key of the audit action
+	* @return the audit action
+	* @throws PortalException if a audit action with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.AuditAction getAuditAction(long auditActionId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _auditActionLocalService.getAuditAction(auditActionId);
+	}
+
+	/**
+	* Updates the audit action in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param auditAction the audit action
+	* @return the audit action that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.AuditAction updateAuditAction(
+		com.liferay.osb.model.AuditAction auditAction) {
+		return _auditActionLocalService.updateAuditAction(auditAction);
+	}
+
+	@Override
+	public com.liferay.osb.model.AuditAction updateAuditAction(
+		long classNameId, long classPK, long mappingClassPK, int action) {
+		return _auditActionLocalService.updateAuditAction(classNameId, classPK,
+			mappingClassPK, action);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _auditActionLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _auditActionLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _auditActionLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	/**
@@ -99,8 +147,38 @@ public class AuditActionLocalServiceWrapper implements AuditActionLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _auditActionLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _auditActionLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of audit actions.
+	*
+	* @return the number of audit actions
+	*/
+	@Override
+	public int getAuditActionsCount() {
+		return _auditActionLocalService.getAuditActionsCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _auditActionLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _auditActionLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -157,6 +235,31 @@ public class AuditActionLocalServiceWrapper implements AuditActionLocalService,
 	}
 
 	/**
+	* Returns a range of all the audit actions.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AuditActionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of audit actions
+	* @param end the upper bound of the range of audit actions (not inclusive)
+	* @return the range of audit actions
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.AuditAction> getAuditActions(
+		int start, int end) {
+		return _auditActionLocalService.getAuditActions(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AuditAction> getAuditActions(
+		java.util.Date modifiedDate, long classNameId, boolean mapping,
+		int action) {
+		return _auditActionLocalService.getAuditActions(modifiedDate,
+			classNameId, mapping, action);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -184,103 +287,8 @@ public class AuditActionLocalServiceWrapper implements AuditActionLocalService,
 	}
 
 	@Override
-	public com.liferay.osb.model.AuditAction fetchAuditAction(
-		long auditActionId) {
-		return _auditActionLocalService.fetchAuditAction(auditActionId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _auditActionLocalService.getActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the audit action with the primary key.
-	*
-	* @param auditActionId the primary key of the audit action
-	* @return the audit action
-	* @throws PortalException if a audit action with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.AuditAction getAuditAction(long auditActionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _auditActionLocalService.getAuditAction(auditActionId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AuditAction> getAuditActions(
-		java.util.Date modifiedDate, long classNameId, boolean mapping,
-		int action) {
-		return _auditActionLocalService.getAuditActions(modifiedDate,
-			classNameId, mapping, action);
-	}
-
-	/**
-	* Returns a range of all the audit actions.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AuditActionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of audit actions
-	* @param end the upper bound of the range of audit actions (not inclusive)
-	* @return the range of audit actions
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.AuditAction> getAuditActions(
-		int start, int end) {
-		return _auditActionLocalService.getAuditActions(start, end);
-	}
-
-	/**
-	* Returns the number of audit actions.
-	*
-	* @return the number of audit actions
-	*/
-	@Override
-	public int getAuditActionsCount() {
-		return _auditActionLocalService.getAuditActionsCount();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _auditActionLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _auditActionLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _auditActionLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the audit action in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param auditAction the audit action
-	* @return the audit action that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.AuditAction updateAuditAction(
-		com.liferay.osb.model.AuditAction auditAction) {
-		return _auditActionLocalService.updateAuditAction(auditAction);
-	}
-
-	@Override
-	public com.liferay.osb.model.AuditAction updateAuditAction(
-		long classNameId, long classPK, long mappingClassPK, int action) {
-		return _auditActionLocalService.updateAuditAction(classNameId, classPK,
-			mappingClassPK, action);
+	public void deleteAuditActions(java.util.Date modifiedDate) {
+		_auditActionLocalService.deleteAuditActions(modifiedDate);
 	}
 
 	@Override

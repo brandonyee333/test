@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -93,6 +94,53 @@ public class LicenseKeySetLocalServiceUtil {
 		return getService().deleteLicenseKeySet(licenseKeySetId);
 	}
 
+	public static com.liferay.osb.model.LicenseKeySet fetchLicenseKeySet(
+		long licenseKeySetId) {
+		return getService().fetchLicenseKeySet(licenseKeySetId);
+	}
+
+	/**
+	* Returns the license key set with the primary key.
+	*
+	* @param licenseKeySetId the primary key of the license key set
+	* @return the license key set
+	* @throws PortalException if a license key set with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.LicenseKeySet getLicenseKeySet(
+		long licenseKeySetId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getLicenseKeySet(licenseKeySetId);
+	}
+
+	/**
+	* Updates the license key set in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param licenseKeySet the license key set
+	* @return the license key set that was updated
+	*/
+	public static com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
+		com.liferay.osb.model.LicenseKeySet licenseKeySet) {
+		return getService().updateLicenseKeySet(licenseKeySet);
+	}
+
+	public static com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
+		long licenseKeySetId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateLicenseKeySet(licenseKeySetId, name);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -102,8 +150,38 @@ public class LicenseKeySetLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static int getAccountEntryLicenseKeySetsCount(long accountEntryId) {
+		return getService().getAccountEntryLicenseKeySetsCount(accountEntryId);
+	}
+
+	/**
+	* Returns the number of license key sets.
+	*
+	* @return the number of license key sets
+	*/
+	public static int getLicenseKeySetsCount() {
+		return getService().getLicenseKeySetsCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -156,6 +234,28 @@ public class LicenseKeySetLocalServiceUtil {
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
 	}
 
+	public static java.util.List<com.liferay.osb.model.LicenseKeySet> getAccountEntryLicenseKeySets(
+		long accountEntryId, int start, int end) {
+		return getService()
+				   .getAccountEntryLicenseKeySets(accountEntryId, start, end);
+	}
+
+	/**
+	* Returns a range of all the license key sets.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.LicenseKeySetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of license key sets
+	* @param end the upper bound of the range of license key sets (not inclusive)
+	* @return the range of license key sets
+	*/
+	public static java.util.List<com.liferay.osb.model.LicenseKeySet> getLicenseKeySets(
+		int start, int end) {
+		return getService().getLicenseKeySets(start, end);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -180,107 +280,21 @@ public class LicenseKeySetLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.model.LicenseKeySet fetchLicenseKeySet(
-		long licenseKeySetId) {
-		return getService().fetchLicenseKeySet(licenseKeySetId);
-	}
-
-	public static java.util.List<com.liferay.osb.model.LicenseKeySet> getAccountEntryLicenseKeySets(
-		long accountEntryId, int start, int end) {
-		return getService()
-				   .getAccountEntryLicenseKeySets(accountEntryId, start, end);
-	}
-
-	public static int getAccountEntryLicenseKeySetsCount(long accountEntryId) {
-		return getService().getAccountEntryLicenseKeySetsCount(accountEntryId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the license key set with the primary key.
-	*
-	* @param licenseKeySetId the primary key of the license key set
-	* @return the license key set
-	* @throws PortalException if a license key set with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.LicenseKeySet getLicenseKeySet(
-		long licenseKeySetId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getLicenseKeySet(licenseKeySetId);
-	}
-
-	/**
-	* Returns a range of all the license key sets.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.LicenseKeySetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of license key sets
-	* @param end the upper bound of the range of license key sets (not inclusive)
-	* @return the range of license key sets
-	*/
-	public static java.util.List<com.liferay.osb.model.LicenseKeySet> getLicenseKeySets(
-		int start, int end) {
-		return getService().getLicenseKeySets(start, end);
-	}
-
-	/**
-	* Returns the number of license key sets.
-	*
-	* @return the number of license key sets
-	*/
-	public static int getLicenseKeySetsCount() {
-		return getService().getLicenseKeySetsCount();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the license key set in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param licenseKeySet the license key set
-	* @return the license key set that was updated
-	*/
-	public static com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
-		com.liferay.osb.model.LicenseKeySet licenseKeySet) {
-		return getService().updateLicenseKeySet(licenseKeySet);
-	}
-
-	public static com.liferay.osb.model.LicenseKeySet updateLicenseKeySet(
-		long licenseKeySetId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateLicenseKeySet(licenseKeySetId, name);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static LicenseKeySetLocalService getService() {
 		if (_service == null) {
-			_service = (LicenseKeySetLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					LicenseKeySetLocalService.class.getName());
+
+			if (invokableLocalService instanceof LicenseKeySetLocalService) {
+				_service = (LicenseKeySetLocalService)invokableLocalService;
+			}
+			else {
+				_service = new LicenseKeySetLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(LicenseKeySetLocalServiceUtil.class,
 				"_service");

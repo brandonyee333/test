@@ -3438,7 +3438,7 @@ public class LicenseKeyUtil {
 
 	public static LicenseKeyPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (LicenseKeyPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (LicenseKeyPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					LicenseKeyPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(LicenseKeyUtil.class,

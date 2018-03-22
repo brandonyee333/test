@@ -93,6 +93,64 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 		return _holidayEntryLocalService.deleteHolidayEntry(holidayEntryId);
 	}
 
+	@Override
+	public com.liferay.osb.model.HolidayEntry fetchHolidayEntry(
+		long holidayEntryId) {
+		return _holidayEntryLocalService.fetchHolidayEntry(holidayEntryId);
+	}
+
+	/**
+	* Returns the holiday entry with the primary key.
+	*
+	* @param holidayEntryId the primary key of the holiday entry
+	* @return the holiday entry
+	* @throws PortalException if a holiday entry with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.HolidayEntry getHolidayEntry(
+		long holidayEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _holidayEntryLocalService.getHolidayEntry(holidayEntryId);
+	}
+
+	/**
+	* Updates the holiday entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param holidayEntry the holiday entry
+	* @return the holiday entry that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.HolidayEntry updateHolidayEntry(
+		com.liferay.osb.model.HolidayEntry holidayEntry) {
+		return _holidayEntryLocalService.updateHolidayEntry(holidayEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.HolidayEntry updateHolidayEntry(
+		long holidayEntryId, long holidayCalendarId, java.lang.String name,
+		java.lang.String description, java.util.Date startDate,
+		java.util.Date endDate, boolean repeatYearly)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _holidayEntryLocalService.updateHolidayEntry(holidayEntryId,
+			holidayCalendarId, name, description, startDate, endDate,
+			repeatYearly);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _holidayEntryLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _holidayEntryLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _holidayEntryLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -104,8 +162,43 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _holidayEntryLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _holidayEntryLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of holiday entries.
+	*
+	* @return the number of holiday entries
+	*/
+	@Override
+	public int getHolidayEntriesCount() {
+		return _holidayEntryLocalService.getHolidayEntriesCount();
+	}
+
+	@Override
+	public int getHolidayEntriesCount(long userId, java.util.Date date) {
+		return _holidayEntryLocalService.getHolidayEntriesCount(userId, date);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _holidayEntryLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _holidayEntryLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -162,44 +255,6 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _holidayEntryLocalService.dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _holidayEntryLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
-	}
-
-	@Override
-	public com.liferay.osb.model.HolidayEntry fetchHolidayEntry(
-		long holidayEntryId) {
-		return _holidayEntryLocalService.fetchHolidayEntry(holidayEntryId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _holidayEntryLocalService.getActionableDynamicQuery();
-	}
-
-	/**
 	* Returns a range of all the holiday entries.
 	*
 	* <p>
@@ -231,77 +286,30 @@ public class HolidayEntryLocalServiceWrapper implements HolidayEntryLocalService
 	}
 
 	/**
-	* Returns the number of holiday entries.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of holiday entries
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public int getHolidayEntriesCount() {
-		return _holidayEntryLocalService.getHolidayEntriesCount();
-	}
-
-	@Override
-	public int getHolidayEntriesCount(long userId, java.util.Date date) {
-		return _holidayEntryLocalService.getHolidayEntriesCount(userId, date);
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _holidayEntryLocalService.dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Returns the holiday entry with the primary key.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @param holidayEntryId the primary key of the holiday entry
-	* @return the holiday entry
-	* @throws PortalException if a holiday entry with the primary key could not be found
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public com.liferay.osb.model.HolidayEntry getHolidayEntry(
-		long holidayEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _holidayEntryLocalService.getHolidayEntry(holidayEntryId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _holidayEntryLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _holidayEntryLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _holidayEntryLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the holiday entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param holidayEntry the holiday entry
-	* @return the holiday entry that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.HolidayEntry updateHolidayEntry(
-		com.liferay.osb.model.HolidayEntry holidayEntry) {
-		return _holidayEntryLocalService.updateHolidayEntry(holidayEntry);
-	}
-
-	@Override
-	public com.liferay.osb.model.HolidayEntry updateHolidayEntry(
-		long holidayEntryId, long holidayCalendarId, java.lang.String name,
-		java.lang.String description, java.util.Date startDate,
-		java.util.Date endDate, boolean repeatYearly)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _holidayEntryLocalService.updateHolidayEntry(holidayEntryId,
-			holidayCalendarId, name, description, startDate, endDate,
-			repeatYearly);
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _holidayEntryLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
 	}
 
 	@Override

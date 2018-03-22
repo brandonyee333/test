@@ -74,7 +74,7 @@ public class TicketFeedbackFinderUtil {
 
 	public static TicketFeedbackFinder getFinder() {
 		if (_finder == null) {
-			_finder = (TicketFeedbackFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_finder = (TicketFeedbackFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					TicketFeedbackFinder.class.getName());
 
 			ReferenceRegistry.registerReference(TicketFeedbackFinderUtil.class,

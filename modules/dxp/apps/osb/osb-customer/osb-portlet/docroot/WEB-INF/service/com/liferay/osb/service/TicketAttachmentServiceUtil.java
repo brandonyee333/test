@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,13 @@ public class TicketAttachmentServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.TicketAttachmentServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean checkAvailability(long ticketAttachmentId,
+		java.lang.String fileRepositoryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .checkAvailability(ticketAttachmentId, fileRepositoryId);
+	}
+
 	public static com.liferay.osb.model.TicketAttachment addTicketAttachment(
 		long userId, long ticketEntryId, long ticketSolutionId,
 		java.lang.String fileName, long fileSize, int type, int visibility,
@@ -51,62 +59,16 @@ public class TicketAttachmentServiceUtil {
 			fileRepositoryId, status);
 	}
 
-	public static java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
-		long userId, long ticketEntryId, long ticketSolutionId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types, int visibility, int status,
-		int[] pendingTypes,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addTicketAttachments(userId, ticketEntryId,
-			ticketSolutionId, files, types, visibility, status, pendingTypes,
-			serviceContext);
-	}
-
-	public static java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
-		long userId, long ticketEntryId, long ticketSolutionId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types, int visibility, int status,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addTicketAttachments(userId, ticketEntryId,
-			ticketSolutionId, files, types, visibility, status, serviceContext);
-	}
-
-	public static boolean checkAvailability(long ticketAttachmentId,
-		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .checkAvailability(ticketAttachmentId, fileRepositoryId);
-	}
-
 	public static com.liferay.osb.model.TicketAttachment deleteTicketAttachment(
 		long ticketAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteTicketAttachment(ticketAttachmentId);
 	}
 
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
 	public static com.liferay.osb.model.TicketAttachment getTicketAttachment(
 		long ticketAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getTicketAttachment(ticketAttachmentId);
-	}
-
-	public static java.lang.String getUploadToken(long ticketEntryId,
-		java.lang.String fileRepositoryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getUploadToken(ticketEntryId, fileRepositoryId);
 	}
 
 	public static com.liferay.osb.model.TicketAttachment replicateTicketAttachment(
@@ -130,6 +92,51 @@ public class TicketAttachmentServiceUtil {
 			type, visibility, pendingTypes);
 	}
 
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.lang.String getUploadToken(long ticketEntryId,
+		java.lang.String fileRepositoryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getUploadToken(ticketEntryId, fileRepositoryId);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types, int visibility, int status,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addTicketAttachments(userId, ticketEntryId,
+			ticketSolutionId, files, types, visibility, status, serviceContext);
+	}
+
+	public static java.util.List<com.liferay.osb.model.TicketAttachment> addTicketAttachments(
+		long userId, long ticketEntryId, long ticketSolutionId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types, int visibility, int status,
+		int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addTicketAttachments(userId, ticketEntryId,
+			ticketSolutionId, files, types, visibility, status, pendingTypes,
+			serviceContext);
+	}
+
 	public static java.util.List<com.liferay.osb.model.TicketAttachment> updateTicketAttachments(
 		java.util.List<java.lang.Long> ticketAttachmentIds, long ticketEntryId,
 		java.util.List<java.lang.Integer> types,
@@ -146,8 +153,15 @@ public class TicketAttachmentServiceUtil {
 
 	public static TicketAttachmentService getService() {
 		if (_service == null) {
-			_service = (TicketAttachmentService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					TicketAttachmentService.class.getName());
+
+			if (invokableService instanceof TicketAttachmentService) {
+				_service = (TicketAttachmentService)invokableService;
+			}
+			else {
+				_service = new TicketAttachmentServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(TicketAttachmentServiceUtil.class,
 				"_service");

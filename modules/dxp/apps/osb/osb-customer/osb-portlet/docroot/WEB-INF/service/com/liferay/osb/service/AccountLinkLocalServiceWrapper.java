@@ -45,13 +45,6 @@ public class AccountLinkLocalServiceWrapper implements AccountLinkLocalService,
 		return _accountLinkLocalService.addAccountLink(accountLink);
 	}
 
-	@Override
-	public void addAccountLinks(long userId, long accountEntryId,
-		java.lang.String[] urls)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountLinkLocalService.addAccountLinks(userId, accountEntryId, urls);
-	}
-
 	/**
 	* Creates a new account link with the primary key. Does not add the account link to the database.
 	*
@@ -90,6 +83,52 @@ public class AccountLinkLocalServiceWrapper implements AccountLinkLocalService,
 		return _accountLinkLocalService.deleteAccountLink(accountLinkId);
 	}
 
+	@Override
+	public com.liferay.osb.model.AccountLink fetchAccountLink(
+		long accountLinkId) {
+		return _accountLinkLocalService.fetchAccountLink(accountLinkId);
+	}
+
+	/**
+	* Returns the account link with the primary key.
+	*
+	* @param accountLinkId the primary key of the account link
+	* @return the account link
+	* @throws PortalException if a account link with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.AccountLink getAccountLink(long accountLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountLinkLocalService.getAccountLink(accountLinkId);
+	}
+
+	/**
+	* Updates the account link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountLink the account link
+	* @return the account link that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.AccountLink updateAccountLink(
+		com.liferay.osb.model.AccountLink accountLink) {
+		return _accountLinkLocalService.updateAccountLink(accountLink);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _accountLinkLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _accountLinkLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _accountLinkLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -101,8 +140,38 @@ public class AccountLinkLocalServiceWrapper implements AccountLinkLocalService,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _accountLinkLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountLinkLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of account links.
+	*
+	* @return the number of account links
+	*/
+	@Override
+	public int getAccountLinksCount() {
+		return _accountLinkLocalService.getAccountLinksCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountLinkLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _accountLinkLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -159,6 +228,29 @@ public class AccountLinkLocalServiceWrapper implements AccountLinkLocalService,
 	}
 
 	/**
+	* Returns a range of all the account links.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AccountLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of account links
+	* @param end the upper bound of the range of account links (not inclusive)
+	* @return the range of account links
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountLink> getAccountLinks(
+		int start, int end) {
+		return _accountLinkLocalService.getAccountLinks(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountLink> getAccountLinks(
+		long accountEntryId) {
+		return _accountLinkLocalService.getAccountLinks(accountEntryId);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -186,94 +278,10 @@ public class AccountLinkLocalServiceWrapper implements AccountLinkLocalService,
 	}
 
 	@Override
-	public com.liferay.osb.model.AccountLink fetchAccountLink(
-		long accountLinkId) {
-		return _accountLinkLocalService.fetchAccountLink(accountLinkId);
-	}
-
-	/**
-	* Returns the account link with the primary key.
-	*
-	* @param accountLinkId the primary key of the account link
-	* @return the account link
-	* @throws PortalException if a account link with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.AccountLink getAccountLink(long accountLinkId)
+	public void addAccountLinks(long userId, long accountEntryId,
+		java.lang.String[] urls)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountLinkLocalService.getAccountLink(accountLinkId);
-	}
-
-	/**
-	* Returns a range of all the account links.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AccountLinkModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of account links
-	* @param end the upper bound of the range of account links (not inclusive)
-	* @return the range of account links
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountLink> getAccountLinks(
-		int start, int end) {
-		return _accountLinkLocalService.getAccountLinks(start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountLink> getAccountLinks(
-		long accountEntryId) {
-		return _accountLinkLocalService.getAccountLinks(accountEntryId);
-	}
-
-	/**
-	* Returns the number of account links.
-	*
-	* @return the number of account links
-	*/
-	@Override
-	public int getAccountLinksCount() {
-		return _accountLinkLocalService.getAccountLinksCount();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _accountLinkLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _accountLinkLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _accountLinkLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountLinkLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the account link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountLink the account link
-	* @return the account link that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.AccountLink updateAccountLink(
-		com.liferay.osb.model.AccountLink accountLink) {
-		return _accountLinkLocalService.updateAccountLink(accountLink);
+		_accountLinkLocalService.addAccountLinks(userId, accountEntryId, urls);
 	}
 
 	@Override

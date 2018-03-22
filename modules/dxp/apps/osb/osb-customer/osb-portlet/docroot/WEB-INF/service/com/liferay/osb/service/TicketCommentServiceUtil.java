@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -43,6 +44,16 @@ public class TicketCommentServiceUtil {
 	public static com.liferay.osb.model.TicketComment addTicketComment(
 		long userId, long ticketEntryId, java.lang.String body, int type,
 		int visibility, int status, int[] pendingTypes,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addTicketComment(userId, ticketEntryId, body, type,
+			visibility, status, pendingTypes, serviceContext);
+	}
+
+	public static com.liferay.osb.model.TicketComment addTicketComment(
+		long userId, long ticketEntryId, java.lang.String body, int type,
+		int visibility, int status, int[] pendingTypes,
 		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
 		java.util.List<java.lang.Integer> types,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
@@ -52,29 +63,10 @@ public class TicketCommentServiceUtil {
 			visibility, status, pendingTypes, files, types, serviceContext);
 	}
 
-	public static com.liferay.osb.model.TicketComment addTicketComment(
-		long userId, long ticketEntryId, java.lang.String body, int type,
-		int visibility, int status, int[] pendingTypes,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addTicketComment(userId, ticketEntryId, body, type,
-			visibility, status, pendingTypes, serviceContext);
-	}
-
 	public static com.liferay.osb.model.TicketComment deleteTicketComment(
 		long ticketCommentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteTicketComment(ticketCommentId);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
 	}
 
 	public static com.liferay.osb.model.TicketComment updateTicketComment(
@@ -94,14 +86,36 @@ public class TicketCommentServiceUtil {
 		return getService().updateTicketCommentType(ticketCommentId, type);
 	}
 
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static TicketCommentService getService() {
 		if (_service == null) {
-			_service = (TicketCommentService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					TicketCommentService.class.getName());
+
+			if (invokableService instanceof TicketCommentService) {
+				_service = (TicketCommentService)invokableService;
+			}
+			else {
+				_service = new TicketCommentServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(TicketCommentServiceUtil.class,
 				"_service");

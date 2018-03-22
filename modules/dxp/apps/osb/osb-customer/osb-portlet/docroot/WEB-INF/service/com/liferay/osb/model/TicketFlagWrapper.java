@@ -114,28 +114,43 @@ public class TicketFlagWrapper implements TicketFlag, ModelWrapper<TicketFlag> {
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new TicketFlagWrapper((TicketFlag)_ticketFlag.clone());
+	public TicketFlag toEscapedModel() {
+		return new TicketFlagWrapper(_ticketFlag.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(TicketFlag ticketFlag) {
-		return _ticketFlag.compareTo(ticketFlag);
+	public TicketFlag toUnescapedModel() {
+		return new TicketFlagWrapper(_ticketFlag.toUnescapedModel());
 	}
 
-	/**
-	* Returns the account entry ID of this ticket flag.
-	*
-	* @return the account entry ID of this ticket flag
-	*/
 	@Override
-	public long getAccountEntryId() {
-		return _ticketFlag.getAccountEntryId();
+	public boolean isCachedModel() {
+		return _ticketFlag.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _ticketFlag.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _ticketFlag.isNew();
 	}
 
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _ticketFlag.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<TicketFlag> toCacheModel() {
+		return _ticketFlag.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(TicketFlag ticketFlag) {
+		return _ticketFlag.compareTo(ticketFlag);
 	}
 
 	/**
@@ -149,6 +164,51 @@ public class TicketFlagWrapper implements TicketFlag, ModelWrapper<TicketFlag> {
 	}
 
 	/**
+	* Returns the type of this ticket flag.
+	*
+	* @return the type of this ticket flag
+	*/
+	@Override
+	public int getType() {
+		return _ticketFlag.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _ticketFlag.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _ticketFlag.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new TicketFlagWrapper((TicketFlag)_ticketFlag.clone());
+	}
+
+	/**
+	* Returns the user uuid of this ticket flag.
+	*
+	* @return the user uuid of this ticket flag
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _ticketFlag.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _ticketFlag.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _ticketFlag.toXmlString();
+	}
+
+	/**
 	* Returns the modified date of this ticket flag.
 	*
 	* @return the modified date of this ticket flag
@@ -159,6 +219,16 @@ public class TicketFlagWrapper implements TicketFlag, ModelWrapper<TicketFlag> {
 	}
 
 	/**
+	* Returns the account entry ID of this ticket flag.
+	*
+	* @return the account entry ID of this ticket flag
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _ticketFlag.getAccountEntryId();
+	}
+
+	/**
 	* Returns the primary key of this ticket flag.
 	*
 	* @return the primary key of this ticket flag
@@ -166,11 +236,6 @@ public class TicketFlagWrapper implements TicketFlag, ModelWrapper<TicketFlag> {
 	@Override
 	public long getPrimaryKey() {
 		return _ticketFlag.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _ticketFlag.getPrimaryKeyObj();
 	}
 
 	/**
@@ -194,16 +259,6 @@ public class TicketFlagWrapper implements TicketFlag, ModelWrapper<TicketFlag> {
 	}
 
 	/**
-	* Returns the type of this ticket flag.
-	*
-	* @return the type of this ticket flag
-	*/
-	@Override
-	public int getType() {
-		return _ticketFlag.getType();
-	}
-
-	/**
 	* Returns the user ID of this ticket flag.
 	*
 	* @return the user ID of this ticket flag
@@ -211,36 +266,6 @@ public class TicketFlagWrapper implements TicketFlag, ModelWrapper<TicketFlag> {
 	@Override
 	public long getUserId() {
 		return _ticketFlag.getUserId();
-	}
-
-	/**
-	* Returns the user uuid of this ticket flag.
-	*
-	* @return the user uuid of this ticket flag
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _ticketFlag.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _ticketFlag.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _ticketFlag.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _ticketFlag.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _ticketFlag.isNew();
 	}
 
 	@Override
@@ -264,14 +289,14 @@ public class TicketFlagWrapper implements TicketFlag, ModelWrapper<TicketFlag> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_ticketFlag.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_ticketFlag.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_ticketFlag.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_ticketFlag.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -367,31 +392,6 @@ public class TicketFlagWrapper implements TicketFlag, ModelWrapper<TicketFlag> {
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_ticketFlag.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketFlag> toCacheModel() {
-		return _ticketFlag.toCacheModel();
-	}
-
-	@Override
-	public TicketFlag toEscapedModel() {
-		return new TicketFlagWrapper(_ticketFlag.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _ticketFlag.toString();
-	}
-
-	@Override
-	public TicketFlag toUnescapedModel() {
-		return new TicketFlagWrapper(_ticketFlag.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _ticketFlag.toXmlString();
 	}
 
 	@Override

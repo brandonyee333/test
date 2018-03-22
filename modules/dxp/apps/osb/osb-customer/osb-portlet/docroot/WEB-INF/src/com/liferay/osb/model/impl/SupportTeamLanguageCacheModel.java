@@ -21,6 +21,7 @@ import com.liferay.osb.model.SupportTeamLanguage;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -84,7 +85,7 @@ public class SupportTeamLanguageCacheModel implements CacheModel<SupportTeamLang
 		supportTeamLanguageImpl.setSupportTeamId(supportTeamId);
 
 		if (languageId == null) {
-			supportTeamLanguageImpl.setLanguageId("");
+			supportTeamLanguageImpl.setLanguageId(StringPool.BLANK);
 		}
 		else {
 			supportTeamLanguageImpl.setLanguageId(languageId);
@@ -111,7 +112,7 @@ public class SupportTeamLanguageCacheModel implements CacheModel<SupportTeamLang
 		objectOutput.writeLong(supportTeamId);
 
 		if (languageId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(languageId);

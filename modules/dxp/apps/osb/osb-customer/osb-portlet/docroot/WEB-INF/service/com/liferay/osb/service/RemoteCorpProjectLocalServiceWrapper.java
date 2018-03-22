@@ -45,6 +45,32 @@ public class RemoteCorpProjectLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.model.CorpProject updateCorpProject(
+		long corpProjectId, java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _remoteCorpProjectLocalService.updateCorpProject(corpProjectId,
+			name);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _remoteCorpProjectLocalService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _remoteCorpProjectLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
 	public void addCorpProjectUsers(long corpProjectId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_remoteCorpProjectLocalService.addCorpProjectUsers(corpProjectId,
@@ -62,24 +88,6 @@ public class RemoteCorpProjectLocalServiceWrapper
 	public void deleteCorpProject(long corpProjectId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_remoteCorpProjectLocalService.deleteCorpProject(corpProjectId);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _remoteCorpProjectLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.osb.model.CorpProject updateCorpProject(
-		long corpProjectId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _remoteCorpProjectLocalService.updateCorpProject(corpProjectId,
-			name);
 	}
 
 	@Override

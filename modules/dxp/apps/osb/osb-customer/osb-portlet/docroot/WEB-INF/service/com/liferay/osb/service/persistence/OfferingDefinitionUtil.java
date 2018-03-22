@@ -1199,7 +1199,7 @@ public class OfferingDefinitionUtil {
 
 	public static OfferingDefinitionPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (OfferingDefinitionPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (OfferingDefinitionPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					OfferingDefinitionPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(OfferingDefinitionUtil.class,

@@ -157,8 +157,38 @@ public class AccountCallWrapper implements AccountCall,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AccountCallWrapper((AccountCall)_accountCall.clone());
+	public AccountCall toEscapedModel() {
+		return new AccountCallWrapper(_accountCall.toEscapedModel());
+	}
+
+	@Override
+	public AccountCall toUnescapedModel() {
+		return new AccountCallWrapper(_accountCall.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _accountCall.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _accountCall.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _accountCall.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _accountCall.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountCall> toCacheModel() {
+		return _accountCall.toCacheModel();
 	}
 
 	@Override
@@ -166,64 +196,9 @@ public class AccountCallWrapper implements AccountCall,
 		return _accountCall.compareTo(accountCall);
 	}
 
-	/**
-	* Returns the account call ID of this account call.
-	*
-	* @return the account call ID of this account call
-	*/
-	@Override
-	public long getAccountCallId() {
-		return _accountCall.getAccountCallId();
-	}
-
-	/**
-	* Returns the account entry ID of this account call.
-	*
-	* @return the account entry ID of this account call
-	*/
-	@Override
-	public long getAccountEntryId() {
-		return _accountCall.getAccountEntryId();
-	}
-
-	/**
-	* Returns the action items of this account call.
-	*
-	* @return the action items of this account call
-	*/
-	@Override
-	public java.lang.String getActionItems() {
-		return _accountCall.getActionItems();
-	}
-
-	/**
-	* Returns the call date of this account call.
-	*
-	* @return the call date of this account call
-	*/
-	@Override
-	public Date getCallDate() {
-		return _accountCall.getCallDate();
-	}
-
-	/**
-	* Returns the call length of this account call.
-	*
-	* @return the call length of this account call
-	*/
-	@Override
-	public long getCallLength() {
-		return _accountCall.getCallLength();
-	}
-
 	@Override
 	public int getCallLengthHours() {
 		return _accountCall.getCallLengthHours();
-	}
-
-	@Override
-	public java.lang.String getCallLengthLabel() {
-		return _accountCall.getCallLengthLabel();
 	}
 
 	@Override
@@ -237,6 +212,46 @@ public class AccountCallWrapper implements AccountCall,
 	}
 
 	/**
+	* Returns the type of this account call.
+	*
+	* @return the type of this account call
+	*/
+	@Override
+	public int getType() {
+		return _accountCall.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _accountCall.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountCall.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AccountCallWrapper((AccountCall)_accountCall.clone());
+	}
+
+	/**
+	* Returns the action items of this account call.
+	*
+	* @return the action items of this account call
+	*/
+	@Override
+	public java.lang.String getActionItems() {
+		return _accountCall.getActionItems();
+	}
+
+	@Override
+	public java.lang.String getCallLengthLabel() {
+		return _accountCall.getCallLengthLabel();
+	}
+
+	/**
 	* Returns the clients present of this account call.
 	*
 	* @return the clients present of this account call
@@ -244,41 +259,6 @@ public class AccountCallWrapper implements AccountCall,
 	@Override
 	public java.lang.String getClientsPresent() {
 		return _accountCall.getClientsPresent();
-	}
-
-	/**
-	* Returns the create date of this account call.
-	*
-	* @return the create date of this account call
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _accountCall.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountCall.getExpandoBridge();
-	}
-
-	/**
-	* Returns the modified date of this account call.
-	*
-	* @return the modified date of this account call
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _accountCall.getModifiedDate();
-	}
-
-	/**
-	* Returns the modified user ID of this account call.
-	*
-	* @return the modified user ID of this account call
-	*/
-	@Override
-	public long getModifiedUserId() {
-		return _accountCall.getModifiedUserId();
 	}
 
 	/**
@@ -312,21 +292,6 @@ public class AccountCallWrapper implements AccountCall,
 	}
 
 	/**
-	* Returns the primary key of this account call.
-	*
-	* @return the primary key of this account call
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _accountCall.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountCall.getPrimaryKeyObj();
-	}
-
-	/**
 	* Returns the summary of this account call.
 	*
 	* @return the summary of this account call
@@ -336,39 +301,99 @@ public class AccountCallWrapper implements AccountCall,
 		return _accountCall.getSummary();
 	}
 
-	/**
-	* Returns the type of this account call.
-	*
-	* @return the type of this account call
-	*/
-	@Override
-	public int getType() {
-		return _accountCall.getType();
-	}
-
 	@Override
 	public java.lang.String getTypeLabel() {
 		return _accountCall.getTypeLabel();
 	}
 
 	@Override
-	public int hashCode() {
-		return _accountCall.hashCode();
+	public java.lang.String toString() {
+		return _accountCall.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _accountCall.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _accountCall.toXmlString();
 	}
 
+	/**
+	* Returns the call date of this account call.
+	*
+	* @return the call date of this account call
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _accountCall.isEscapedModel();
+	public Date getCallDate() {
+		return _accountCall.getCallDate();
 	}
 
+	/**
+	* Returns the create date of this account call.
+	*
+	* @return the create date of this account call
+	*/
 	@Override
-	public boolean isNew() {
-		return _accountCall.isNew();
+	public Date getCreateDate() {
+		return _accountCall.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this account call.
+	*
+	* @return the modified date of this account call
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _accountCall.getModifiedDate();
+	}
+
+	/**
+	* Returns the account call ID of this account call.
+	*
+	* @return the account call ID of this account call
+	*/
+	@Override
+	public long getAccountCallId() {
+		return _accountCall.getAccountCallId();
+	}
+
+	/**
+	* Returns the account entry ID of this account call.
+	*
+	* @return the account entry ID of this account call
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _accountCall.getAccountEntryId();
+	}
+
+	/**
+	* Returns the call length of this account call.
+	*
+	* @return the call length of this account call
+	*/
+	@Override
+	public long getCallLength() {
+		return _accountCall.getCallLength();
+	}
+
+	/**
+	* Returns the modified user ID of this account call.
+	*
+	* @return the modified user ID of this account call
+	*/
+	@Override
+	public long getModifiedUserId() {
+		return _accountCall.getModifiedUserId();
+	}
+
+	/**
+	* Returns the primary key of this account call.
+	*
+	* @return the primary key of this account call
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _accountCall.getPrimaryKey();
 	}
 
 	@Override
@@ -452,14 +477,14 @@ public class AccountCallWrapper implements AccountCall,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_accountCall.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountCall.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountCall.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_accountCall.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -555,31 +580,6 @@ public class AccountCallWrapper implements AccountCall,
 	@Override
 	public void setType(int type) {
 		_accountCall.setType(type);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountCall> toCacheModel() {
-		return _accountCall.toCacheModel();
-	}
-
-	@Override
-	public AccountCall toEscapedModel() {
-		return new AccountCallWrapper(_accountCall.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _accountCall.toString();
-	}
-
-	@Override
-	public AccountCall toUnescapedModel() {
-		return new AccountCallWrapper(_accountCall.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _accountCall.toXmlString();
 	}
 
 	@Override

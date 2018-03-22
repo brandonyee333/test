@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
@@ -44,18 +45,16 @@ import java.util.List;
 @ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
-public interface TicketWorkerService extends BaseService {
+public interface TicketWorkerService extends BaseService, InvokableService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketWorkerServiceUtil} to access the ticket worker remote service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketWorkerServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public List<TicketWorker> addTicketWorkers(long[] userIds,
-		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
-		int[] roles, long primaryUserId) throws PortalException;
-
-	public void deleteTicketWorkers(long[] userIds, long ticketEntryId,
-		long primaryUserId) throws PortalException;
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -64,8 +63,15 @@ public interface TicketWorkerService extends BaseService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
+	public List<TicketWorker> addTicketWorkers(long[] userIds,
+		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
+		int[] roles, long primaryUserId) throws PortalException;
+
 	public List<TicketWorker> updateTicketWorkers(long[] addUserIds,
 		int[] addRoles, long[] removeUserIds, long ticketEntryId,
 		long[] sourceClassNameIds, long[] sourceClassPKs, long primaryUserId)
 		throws PortalException;
+
+	public void deleteTicketWorkers(long[] userIds, long ticketEntryId,
+		long primaryUserId) throws PortalException;
 }

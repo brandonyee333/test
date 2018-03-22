@@ -580,7 +580,7 @@ public class OrderEntryUtil {
 
 	public static OrderEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (OrderEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (OrderEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					OrderEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(OrderEntryUtil.class,

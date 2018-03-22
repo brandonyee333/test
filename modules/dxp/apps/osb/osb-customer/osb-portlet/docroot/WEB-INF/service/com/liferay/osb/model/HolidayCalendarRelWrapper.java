@@ -86,8 +86,38 @@ public class HolidayCalendarRelWrapper implements HolidayCalendarRel,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new HolidayCalendarRelWrapper((HolidayCalendarRel)_holidayCalendarRel.clone());
+	public HolidayCalendarRel toEscapedModel() {
+		return new HolidayCalendarRelWrapper(_holidayCalendarRel.toEscapedModel());
+	}
+
+	@Override
+	public HolidayCalendarRel toUnescapedModel() {
+		return new HolidayCalendarRelWrapper(_holidayCalendarRel.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _holidayCalendarRel.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _holidayCalendarRel.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _holidayCalendarRel.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _holidayCalendarRel.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<HolidayCalendarRel> toCacheModel() {
+		return _holidayCalendarRel.toCacheModel();
 	}
 
 	@Override
@@ -96,8 +126,38 @@ public class HolidayCalendarRelWrapper implements HolidayCalendarRel,
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _holidayCalendarRel.getExpandoBridge();
+	public int hashCode() {
+		return _holidayCalendarRel.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _holidayCalendarRel.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new HolidayCalendarRelWrapper((HolidayCalendarRel)_holidayCalendarRel.clone());
+	}
+
+	/**
+	* Returns the user uuid of this holiday calendar rel.
+	*
+	* @return the user uuid of this holiday calendar rel
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _holidayCalendarRel.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _holidayCalendarRel.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _holidayCalendarRel.toXmlString();
 	}
 
 	/**
@@ -130,11 +190,6 @@ public class HolidayCalendarRelWrapper implements HolidayCalendarRel,
 		return _holidayCalendarRel.getPrimaryKey();
 	}
 
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _holidayCalendarRel.getPrimaryKeyObj();
-	}
-
 	/**
 	* Returns the user ID of this holiday calendar rel.
 	*
@@ -143,36 +198,6 @@ public class HolidayCalendarRelWrapper implements HolidayCalendarRel,
 	@Override
 	public long getUserId() {
 		return _holidayCalendarRel.getUserId();
-	}
-
-	/**
-	* Returns the user uuid of this holiday calendar rel.
-	*
-	* @return the user uuid of this holiday calendar rel
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _holidayCalendarRel.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _holidayCalendarRel.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _holidayCalendarRel.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _holidayCalendarRel.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _holidayCalendarRel.isNew();
 	}
 
 	@Override
@@ -186,14 +211,14 @@ public class HolidayCalendarRelWrapper implements HolidayCalendarRel,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_holidayCalendarRel.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_holidayCalendarRel.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_holidayCalendarRel.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_holidayCalendarRel.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -259,31 +284,6 @@ public class HolidayCalendarRelWrapper implements HolidayCalendarRel,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_holidayCalendarRel.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<HolidayCalendarRel> toCacheModel() {
-		return _holidayCalendarRel.toCacheModel();
-	}
-
-	@Override
-	public HolidayCalendarRel toEscapedModel() {
-		return new HolidayCalendarRelWrapper(_holidayCalendarRel.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _holidayCalendarRel.toString();
-	}
-
-	@Override
-	public HolidayCalendarRel toUnescapedModel() {
-		return new HolidayCalendarRelWrapper(_holidayCalendarRel.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _holidayCalendarRel.toXmlString();
 	}
 
 	@Override

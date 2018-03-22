@@ -500,7 +500,7 @@ public class HolidayCalendarRelUtil {
 
 	public static HolidayCalendarRelPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (HolidayCalendarRelPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (HolidayCalendarRelPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					HolidayCalendarRelPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(HolidayCalendarRelUtil.class,

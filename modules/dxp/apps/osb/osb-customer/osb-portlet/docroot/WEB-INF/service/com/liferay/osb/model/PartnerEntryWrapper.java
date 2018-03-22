@@ -157,8 +157,49 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new PartnerEntryWrapper((PartnerEntry)_partnerEntry.clone());
+	public PartnerEntry toEscapedModel() {
+		return new PartnerEntryWrapper(_partnerEntry.toEscapedModel());
+	}
+
+	@Override
+	public PartnerEntry toUnescapedModel() {
+		return new PartnerEntryWrapper(_partnerEntry.toUnescapedModel());
+	}
+
+	@Override
+	public SupportRegion getSupportRegion() {
+		return _partnerEntry.getSupportRegion();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _partnerEntry.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _partnerEntry.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _partnerEntry.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _partnerEntry.getExpandoBridge();
+	}
+
+	@Override
+	public PartnerEntry getParentPartnerEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _partnerEntry.getParentPartnerEntry();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<PartnerEntry> toCacheModel() {
+		return _partnerEntry.toCacheModel();
 	}
 
 	@Override
@@ -166,15 +207,29 @@ public class PartnerEntryWrapper implements PartnerEntry,
 		return _partnerEntry.compareTo(partnerEntry);
 	}
 
+	/**
+	* Returns the status of this partner entry.
+	*
+	* @return the status of this partner entry
+	*/
 	@Override
-	public java.util.List<AccountEntry> getAccountEntries() {
-		return _partnerEntry.getAccountEntries();
+	public int getStatus() {
+		return _partnerEntry.getStatus();
 	}
 
 	@Override
-	public java.util.List<PartnerEntry> getChildPartnerEntries(
-		boolean recursive) {
-		return _partnerEntry.getChildPartnerEntries(recursive);
+	public int hashCode() {
+		return _partnerEntry.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _partnerEntry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new PartnerEntryWrapper((PartnerEntry)_partnerEntry.clone());
 	}
 
 	/**
@@ -188,26 +243,6 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	/**
-	* Returns the company ID of this partner entry.
-	*
-	* @return the company ID of this partner entry
-	*/
-	@Override
-	public long getCompanyId() {
-		return _partnerEntry.getCompanyId();
-	}
-
-	/**
-	* Returns the create date of this partner entry.
-	*
-	* @return the create date of this partner entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _partnerEntry.getCreateDate();
-	}
-
-	/**
 	* Returns the dossiera account key of this partner entry.
 	*
 	* @return the dossiera account key of this partner entry
@@ -215,31 +250,6 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	@Override
 	public java.lang.String getDossieraAccountKey() {
 		return _partnerEntry.getDossieraAccountKey();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _partnerEntry.getExpandoBridge();
-	}
-
-	/**
-	* Returns the modified date of this partner entry.
-	*
-	* @return the modified date of this partner entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _partnerEntry.getModifiedDate();
-	}
-
-	/**
-	* Returns the modified user ID of this partner entry.
-	*
-	* @return the modified user ID of this partner entry
-	*/
-	@Override
-	public long getModifiedUserId() {
-		return _partnerEntry.getModifiedUserId();
 	}
 
 	/**
@@ -273,84 +283,8 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
-	public PartnerEntry getParentPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _partnerEntry.getParentPartnerEntry();
-	}
-
-	/**
-	* Returns the parent partner entry ID of this partner entry.
-	*
-	* @return the parent partner entry ID of this partner entry
-	*/
-	@Override
-	public long getParentPartnerEntryId() {
-		return _partnerEntry.getParentPartnerEntryId();
-	}
-
-	/**
-	* Returns the partner entry ID of this partner entry.
-	*
-	* @return the partner entry ID of this partner entry
-	*/
-	@Override
-	public long getPartnerEntryId() {
-		return _partnerEntry.getPartnerEntryId();
-	}
-
-	@Override
-	public java.util.List<PartnerWorker> getPartnerWorkers() {
-		return _partnerEntry.getPartnerWorkers();
-	}
-
-	/**
-	* Returns the primary key of this partner entry.
-	*
-	* @return the primary key of this partner entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _partnerEntry.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _partnerEntry.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the status of this partner entry.
-	*
-	* @return the status of this partner entry
-	*/
-	@Override
-	public int getStatus() {
-		return _partnerEntry.getStatus();
-	}
-
-	@Override
 	public java.lang.String getStatusLabel() {
 		return _partnerEntry.getStatusLabel();
-	}
-
-	@Override
-	public SupportRegion getSupportRegion() {
-		return _partnerEntry.getSupportRegion();
-	}
-
-	@Override
-	public long[] getSupportRegionIds() {
-		return _partnerEntry.getSupportRegionIds();
-	}
-
-	/**
-	* Returns the user ID of this partner entry.
-	*
-	* @return the user ID of this partner entry
-	*/
-	@Override
-	public long getUserId() {
-		return _partnerEntry.getUserId();
 	}
 
 	/**
@@ -374,23 +308,114 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
-	public int hashCode() {
-		return _partnerEntry.hashCode();
+	public java.lang.String toString() {
+		return _partnerEntry.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _partnerEntry.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _partnerEntry.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this partner entry.
+	*
+	* @return the create date of this partner entry
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _partnerEntry.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this partner entry.
+	*
+	* @return the modified date of this partner entry
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _partnerEntry.getModifiedDate();
 	}
 
 	@Override
-	public boolean isEscapedModel() {
-		return _partnerEntry.isEscapedModel();
+	public java.util.List<AccountEntry> getAccountEntries() {
+		return _partnerEntry.getAccountEntries();
 	}
 
 	@Override
-	public boolean isNew() {
-		return _partnerEntry.isNew();
+	public java.util.List<PartnerEntry> getChildPartnerEntries(
+		boolean recursive) {
+		return _partnerEntry.getChildPartnerEntries(recursive);
+	}
+
+	@Override
+	public java.util.List<PartnerWorker> getPartnerWorkers() {
+		return _partnerEntry.getPartnerWorkers();
+	}
+
+	/**
+	* Returns the company ID of this partner entry.
+	*
+	* @return the company ID of this partner entry
+	*/
+	@Override
+	public long getCompanyId() {
+		return _partnerEntry.getCompanyId();
+	}
+
+	/**
+	* Returns the modified user ID of this partner entry.
+	*
+	* @return the modified user ID of this partner entry
+	*/
+	@Override
+	public long getModifiedUserId() {
+		return _partnerEntry.getModifiedUserId();
+	}
+
+	/**
+	* Returns the parent partner entry ID of this partner entry.
+	*
+	* @return the parent partner entry ID of this partner entry
+	*/
+	@Override
+	public long getParentPartnerEntryId() {
+		return _partnerEntry.getParentPartnerEntryId();
+	}
+
+	/**
+	* Returns the partner entry ID of this partner entry.
+	*
+	* @return the partner entry ID of this partner entry
+	*/
+	@Override
+	public long getPartnerEntryId() {
+		return _partnerEntry.getPartnerEntryId();
+	}
+
+	/**
+	* Returns the primary key of this partner entry.
+	*
+	* @return the primary key of this partner entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _partnerEntry.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this partner entry.
+	*
+	* @return the user ID of this partner entry
+	*/
+	@Override
+	public long getUserId() {
+		return _partnerEntry.getUserId();
+	}
+
+	@Override
+	public long[] getSupportRegionIds() {
+		return _partnerEntry.getSupportRegionIds();
 	}
 
 	@Override
@@ -444,14 +469,14 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_partnerEntry.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_partnerEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_partnerEntry.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_partnerEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -587,31 +612,6 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_partnerEntry.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<PartnerEntry> toCacheModel() {
-		return _partnerEntry.toCacheModel();
-	}
-
-	@Override
-	public PartnerEntry toEscapedModel() {
-		return new PartnerEntryWrapper(_partnerEntry.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _partnerEntry.toString();
-	}
-
-	@Override
-	public PartnerEntry toUnescapedModel() {
-		return new PartnerEntryWrapper(_partnerEntry.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _partnerEntry.toXmlString();
 	}
 
 	@Override

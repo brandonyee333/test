@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,33 @@ public class SupportWorkerLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SupportWorkerLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean hasSupportWorker(long userId, int notRole) {
+		return getService().hasSupportWorker(userId, notRole);
+	}
+
+	public static boolean hasSupportWorker(long userId, int role,
+		long locationSupportRegionId, java.lang.Integer supportTeamType) {
+		return getService()
+				   .hasSupportWorker(userId, role, locationSupportRegionId,
+			supportTeamType);
+	}
+
+	public static boolean hasSupportWorker(long userId, long supportTeamId) {
+		return getService().hasSupportWorker(userId, supportTeamId);
+	}
+
+	public static boolean hasSupportWorkerRole(long userId, int role) {
+		return getService().hasSupportWorkerRole(userId, role);
+	}
+
+	public static boolean isClockedIn(long userId) {
+		return getService().isClockedIn(userId);
+	}
+
+	public static boolean isManagerOfWorker(long userId, long workerUserId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().isManagerOfWorker(userId, workerUserId);
+	}
 
 	/**
 	* Adds the support worker to the database. Also notifies the appropriate model listeners.
@@ -50,20 +78,6 @@ public class SupportWorkerLocalServiceUtil {
 	public static com.liferay.osb.model.SupportWorker addSupportWorker(
 		com.liferay.osb.model.SupportWorker supportWorker) {
 		return getService().addSupportWorker(supportWorker);
-	}
-
-	public static void addSupportWorkers(long[] userIds, long supportTeamId,
-		double[] maxWork, int[] escalationLevels, int[] roles,
-		int[] notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addSupportWorkers(userIds, supportTeamId, maxWork,
-			escalationLevels, roles, notifications);
-	}
-
-	public static void clockInOut(long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().clockInOut(supportWorkerId);
 	}
 
 	/**
@@ -77,22 +91,15 @@ public class SupportWorkerLocalServiceUtil {
 		return getService().createSupportWorker(supportWorkerId);
 	}
 
-	public static void decreaseAssignedWork(long userId, double work) {
-		getService().decreaseAssignedWork(userId, work);
-	}
-
-	public static void decreaseTicketEntryAssignedWork(long ticketEntryId,
-		double work) {
-		getService().decreaseTicketEntryAssignedWork(ticketEntryId, work);
-	}
-
 	/**
-	* @throws PortalException
+	* Deletes the support worker from the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportWorker the support worker
+	* @return the support worker that was removed
 	*/
-	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deletePersistedModel(persistedModel);
+	public static com.liferay.osb.model.SupportWorker deleteSupportWorker(
+		com.liferay.osb.model.SupportWorker supportWorker) {
+		return getService().deleteSupportWorker(supportWorker);
 	}
 
 	/**
@@ -108,29 +115,154 @@ public class SupportWorkerLocalServiceUtil {
 		return getService().deleteSupportWorker(supportWorkerId);
 	}
 
+	public static com.liferay.osb.model.SupportWorker fetchSupportWorker(
+		long supportWorkerId) {
+		return getService().fetchSupportWorker(supportWorkerId);
+	}
+
+	public static com.liferay.osb.model.SupportWorker getAvailableSupportWorker(
+		com.liferay.osb.model.TicketEntry ticketEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getAvailableSupportWorker(ticketEntry);
+	}
+
+	public static com.liferay.osb.model.SupportWorker getLongestOpenSupportWorker(
+		java.util.List<com.liferay.osb.model.SupportWorker> supportWorkers,
+		com.liferay.osb.model.TicketEntry ticketEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getLongestOpenSupportWorker(supportWorkers, ticketEntry);
+	}
+
+	public static com.liferay.osb.model.SupportWorker getMostAvailableSupportWorker(
+		com.liferay.osb.model.TicketEntry ticketEntry,
+		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getMostAvailableSupportWorker(ticketEntry, params);
+	}
+
+	public static com.liferay.osb.model.SupportWorker getNextOpenSupportWorker(
+		java.util.List<com.liferay.osb.model.SupportWorker> supportWorkers,
+		com.liferay.osb.model.TicketEntry ticketEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getNextOpenSupportWorker(supportWorkers, ticketEntry);
+	}
+
 	/**
-	* Deletes the support worker from the database. Also notifies the appropriate model listeners.
+	* Returns the support worker with the primary key.
+	*
+	* @param supportWorkerId the primary key of the support worker
+	* @return the support worker
+	* @throws PortalException if a support worker with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.SupportWorker getSupportWorker(
+		long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getSupportWorker(supportWorkerId);
+	}
+
+	public static com.liferay.osb.model.SupportWorker getSupportWorker(
+		long userId, long supportTeamId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getSupportWorker(userId, supportTeamId);
+	}
+
+	/**
+	* Updates the support worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param supportWorker the support worker
-	* @return the support worker that was removed
+	* @return the support worker that was updated
 	*/
-	public static com.liferay.osb.model.SupportWorker deleteSupportWorker(
+	public static com.liferay.osb.model.SupportWorker updateSupportWorker(
 		com.liferay.osb.model.SupportWorker supportWorker) {
-		return getService().deleteSupportWorker(supportWorker);
+		return getService().updateSupportWorker(supportWorker);
 	}
 
-	public static void deleteSupportWorkers(long userId)
+	public static com.liferay.osb.model.SupportWorker updateSupportWorker(
+		long supportWorkerId, long supportTeamId, boolean autoAssign,
+		double maxWork, int escalationlevel, int escalationLevel2Role,
+		int notifications)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteSupportWorkers(userId);
+		return getService()
+				   .updateSupportWorker(supportWorkerId, supportTeamId,
+			autoAssign, maxWork, escalationlevel, escalationLevel2Role,
+			notifications);
 	}
 
-	public static void deleteSupportWorkers(long[] userIds, long supportTeamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteSupportWorkers(userIds, supportTeamId);
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return getService().dynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	public static com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deletePersistedModel(persistedModel);
+	}
+
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	public static double getAssignedWork(long userId) {
+		return getService().getAssignedWork(userId);
+	}
+
+	/**
+	* Returns the number of support workers.
+	*
+	* @return the number of support workers
+	*/
+	public static int getSupportWorkersCount() {
+		return getService().getSupportWorkersCount();
+	}
+
+	public static int getSupportWorkersCountBySupportLaborId(
+		long supportLaborId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getSupportWorkersCountBySupportLaborId(supportLaborId);
+	}
+
+	public static int searchCount(long supportLaborId,
+		java.lang.String firstName, java.lang.String middleName,
+		java.lang.String lastName, java.lang.String screenName,
+		java.lang.String emailAddress, java.lang.String supportTeamName,
+		boolean andSearch) {
+		return getService()
+				   .searchCount(supportLaborId, firstName, middleName,
+			lastName, screenName, emailAddress, supportTeamName, andSearch);
+	}
+
+	public static int searchCount(long supportLaborId, java.lang.String keywords) {
+		return getService().searchCount(supportLaborId, keywords);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -184,109 +316,6 @@ public class SupportWorkerLocalServiceUtil {
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static com.liferay.osb.model.SupportWorker fetchSupportWorker(
-		long supportWorkerId) {
-		return getService().fetchSupportWorker(supportWorkerId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static double getAssignedWork(long userId) {
-		return getService().getAssignedWork(userId);
-	}
-
-	public static com.liferay.osb.model.SupportWorker getAvailableSupportWorker(
-		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAvailableSupportWorker(ticketEntry);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	public static com.liferay.osb.model.SupportWorker getLongestOpenSupportWorker(
-		java.util.List<com.liferay.osb.model.SupportWorker> supportWorkers,
-		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getLongestOpenSupportWorker(supportWorkers, ticketEntry);
-	}
-
-	public static com.liferay.osb.model.SupportWorker getMostAvailableSupportWorker(
-		com.liferay.osb.model.TicketEntry ticketEntry,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getMostAvailableSupportWorker(ticketEntry, params);
-	}
-
-	public static com.liferay.osb.model.SupportWorker getNextOpenSupportWorker(
-		java.util.List<com.liferay.osb.model.SupportWorker> supportWorkers,
-		com.liferay.osb.model.TicketEntry ticketEntry)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getNextOpenSupportWorker(supportWorkers, ticketEntry);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the support worker with the primary key.
-	*
-	* @param supportWorkerId the primary key of the support worker
-	* @return the support worker
-	* @throws PortalException if a support worker with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.SupportWorker getSupportWorker(
-		long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSupportWorker(supportWorkerId);
-	}
-
-	public static com.liferay.osb.model.SupportWorker getSupportWorker(
-		long userId, long supportTeamId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getSupportWorker(userId, supportTeamId);
-	}
-
-	/**
 	* Returns a range of all the support workers.
 	*
 	* <p>
@@ -314,22 +343,6 @@ public class SupportWorkerLocalServiceUtil {
 		return getService().getSupportWorkersBySupportRegionId(supportRegionId);
 	}
 
-	/**
-	* Returns the number of support workers.
-	*
-	* @return the number of support workers
-	*/
-	public static int getSupportWorkersCount() {
-		return getService().getSupportWorkersCount();
-	}
-
-	public static int getSupportWorkersCountBySupportLaborId(
-		long supportLaborId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .getSupportWorkersCountBySupportLaborId(supportLaborId);
-	}
-
 	public static java.util.List<com.liferay.osb.model.SupportWorker> getTeamSupportWorkers(
 		long supportTeamId) {
 		return getService().getTeamSupportWorkers(supportTeamId);
@@ -346,57 +359,10 @@ public class SupportWorkerLocalServiceUtil {
 		return getService().getUserSupportWorkers(userId);
 	}
 
-	public static boolean hasSupportWorker(long userId, int notRole) {
-		return getService().hasSupportWorker(userId, notRole);
-	}
-
-	public static boolean hasSupportWorker(long userId, int role,
-		long locationSupportRegionId, java.lang.Integer supportTeamType) {
-		return getService()
-				   .hasSupportWorker(userId, role, locationSupportRegionId,
-			supportTeamType);
-	}
-
-	public static boolean hasSupportWorker(long userId, long supportTeamId) {
-		return getService().hasSupportWorker(userId, supportTeamId);
-	}
-
-	public static boolean hasSupportWorkerRole(long userId, int role) {
-		return getService().hasSupportWorkerRole(userId, role);
-	}
-
-	public static void increaseAssignedWork(long userId, double work) {
-		getService().increaseAssignedWork(userId, work);
-	}
-
-	public static void increaseTicketEntryAssignedWork(long ticketEntryId,
-		double work) {
-		getService().increaseTicketEntryAssignedWork(ticketEntryId, work);
-	}
-
-	public static boolean isClockedIn(long userId) {
-		return getService().isClockedIn(userId);
-	}
-
-	public static boolean isManagerOfWorker(long userId, long workerUserId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().isManagerOfWorker(userId, workerUserId);
-	}
-
-	public static void recalculateUtilization() {
-		getService().recalculateUtilization();
-	}
-
 	public static java.util.List<com.liferay.osb.model.SupportWorker> search(
 		java.lang.Boolean overUtilization, int escalationLevel,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
 		return getService().search(overUtilization, escalationLevel, params);
-	}
-
-	public static java.util.List<com.liferay.osb.model.SupportWorker> search(
-		long supportLaborId, java.lang.String keywords, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc) {
-		return getService().search(supportLaborId, keywords, start, end, obc);
 	}
 
 	public static java.util.List<com.liferay.osb.model.SupportWorker> search(
@@ -411,40 +377,80 @@ public class SupportWorkerLocalServiceUtil {
 			obc);
 	}
 
-	public static int searchCount(long supportLaborId, java.lang.String keywords) {
-		return getService().searchCount(supportLaborId, keywords);
-	}
-
-	public static int searchCount(long supportLaborId,
-		java.lang.String firstName, java.lang.String middleName,
-		java.lang.String lastName, java.lang.String screenName,
-		java.lang.String emailAddress, java.lang.String supportTeamName,
-		boolean andSearch) {
-		return getService()
-				   .searchCount(supportLaborId, firstName, middleName,
-			lastName, screenName, emailAddress, supportTeamName, andSearch);
-	}
-
-	public static com.liferay.osb.model.SupportWorker updateSupportWorker(
-		long supportWorkerId, long supportTeamId, boolean autoAssign,
-		double maxWork, int escalationlevel, int escalationLevel2Role,
-		int notifications)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateSupportWorker(supportWorkerId, supportTeamId,
-			autoAssign, maxWork, escalationlevel, escalationLevel2Role,
-			notifications);
+	public static java.util.List<com.liferay.osb.model.SupportWorker> search(
+		long supportLaborId, java.lang.String keywords, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
+		return getService().search(supportLaborId, keywords, start, end, obc);
 	}
 
 	/**
-	* Updates the support worker in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @param supportWorker the support worker
-	* @return the support worker that was updated
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
-	public static com.liferay.osb.model.SupportWorker updateSupportWorker(
-		com.liferay.osb.model.SupportWorker supportWorker) {
-		return getService().updateSupportWorker(supportWorker);
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
+	}
+
+	public static void addSupportWorkers(long[] userIds, long supportTeamId,
+		double[] maxWork, int[] escalationLevels, int[] roles,
+		int[] notifications)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.addSupportWorkers(userIds, supportTeamId, maxWork,
+			escalationLevels, roles, notifications);
+	}
+
+	public static void clockInOut(long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().clockInOut(supportWorkerId);
+	}
+
+	public static void decreaseAssignedWork(long userId, double work) {
+		getService().decreaseAssignedWork(userId, work);
+	}
+
+	public static void decreaseTicketEntryAssignedWork(long ticketEntryId,
+		double work) {
+		getService().decreaseTicketEntryAssignedWork(ticketEntryId, work);
+	}
+
+	public static void deleteSupportWorkers(long userId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteSupportWorkers(userId);
+	}
+
+	public static void deleteSupportWorkers(long[] userIds, long supportTeamId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteSupportWorkers(userIds, supportTeamId);
+	}
+
+	public static void increaseAssignedWork(long userId, double work) {
+		getService().increaseAssignedWork(userId, work);
+	}
+
+	public static void increaseTicketEntryAssignedWork(long ticketEntryId,
+		double work) {
+		getService().increaseTicketEntryAssignedWork(ticketEntryId, work);
+	}
+
+	public static void recalculateUtilization() {
+		getService().recalculateUtilization();
 	}
 
 	public static void clearService() {
@@ -453,8 +459,15 @@ public class SupportWorkerLocalServiceUtil {
 
 	public static SupportWorkerLocalService getService() {
 		if (_service == null) {
-			_service = (SupportWorkerLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					SupportWorkerLocalService.class.getName());
+
+			if (invokableLocalService instanceof SupportWorkerLocalService) {
+				_service = (SupportWorkerLocalService)invokableLocalService;
+			}
+			else {
+				_service = new SupportWorkerLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(SupportWorkerLocalServiceUtil.class,
 				"_service");

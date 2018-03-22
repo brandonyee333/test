@@ -35,68 +35,39 @@ public class SupportRegionLocalServiceWrapper
 	}
 
 	@Override
-	public void addAccountEntrySupportRegion(long accountEntryId,
+	public boolean hasAccountEntrySupportRegion(long accountEntryId,
 		long supportRegionId) {
-		_supportRegionLocalService.addAccountEntrySupportRegion(accountEntryId,
+		return _supportRegionLocalService.hasAccountEntrySupportRegion(accountEntryId,
 			supportRegionId);
 	}
 
 	@Override
-	public void addAccountEntrySupportRegion(long accountEntryId,
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		_supportRegionLocalService.addAccountEntrySupportRegion(accountEntryId,
-			supportRegion);
+	public boolean hasAccountEntrySupportRegions(long accountEntryId) {
+		return _supportRegionLocalService.hasAccountEntrySupportRegions(accountEntryId);
 	}
 
 	@Override
-	public void addAccountEntrySupportRegions(long accountEntryId,
-		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		_supportRegionLocalService.addAccountEntrySupportRegions(accountEntryId,
-			supportRegions);
-	}
-
-	@Override
-	public void addAccountEntrySupportRegions(long accountEntryId,
-		long[] supportRegionIds) {
-		_supportRegionLocalService.addAccountEntrySupportRegions(accountEntryId,
-			supportRegionIds);
-	}
-
-	@Override
-	public void addPartnerEntrySupportRegion(long partnerEntryId,
+	public boolean hasPartnerEntrySupportRegion(long partnerEntryId,
 		long supportRegionId) {
-		_supportRegionLocalService.addPartnerEntrySupportRegion(partnerEntryId,
+		return _supportRegionLocalService.hasPartnerEntrySupportRegion(partnerEntryId,
 			supportRegionId);
 	}
 
 	@Override
-	public void addPartnerEntrySupportRegion(long partnerEntryId,
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		_supportRegionLocalService.addPartnerEntrySupportRegion(partnerEntryId,
-			supportRegion);
+	public boolean hasPartnerEntrySupportRegions(long partnerEntryId) {
+		return _supportRegionLocalService.hasPartnerEntrySupportRegions(partnerEntryId);
 	}
 
 	@Override
-	public void addPartnerEntrySupportRegions(long partnerEntryId,
-		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		_supportRegionLocalService.addPartnerEntrySupportRegions(partnerEntryId,
-			supportRegions);
+	public boolean hasSupportTeamSupportRegion(long supportTeamId,
+		long supportRegionId) {
+		return _supportRegionLocalService.hasSupportTeamSupportRegion(supportTeamId,
+			supportRegionId);
 	}
 
 	@Override
-	public void addPartnerEntrySupportRegions(long partnerEntryId,
-		long[] supportRegionIds) {
-		_supportRegionLocalService.addPartnerEntrySupportRegions(partnerEntryId,
-			supportRegionIds);
-	}
-
-	@Override
-	public com.liferay.osb.model.SupportRegion addSupportRegion(long userId,
-		java.lang.String name, java.lang.String description,
-		java.lang.String timeZoneId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportRegionLocalService.addSupportRegion(userId, name,
-			description, timeZoneId);
+	public boolean hasSupportTeamSupportRegions(long supportTeamId) {
+		return _supportRegionLocalService.hasSupportTeamSupportRegions(supportTeamId);
 	}
 
 	/**
@@ -112,46 +83,12 @@ public class SupportRegionLocalServiceWrapper
 	}
 
 	@Override
-	public void addSupportTeamSupportRegion(long supportTeamId,
-		long supportRegionId) {
-		_supportRegionLocalService.addSupportTeamSupportRegion(supportTeamId,
-			supportRegionId);
-	}
-
-	@Override
-	public void addSupportTeamSupportRegion(long supportTeamId,
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		_supportRegionLocalService.addSupportTeamSupportRegion(supportTeamId,
-			supportRegion);
-	}
-
-	@Override
-	public void addSupportTeamSupportRegions(long supportTeamId,
-		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		_supportRegionLocalService.addSupportTeamSupportRegions(supportTeamId,
-			supportRegions);
-	}
-
-	@Override
-	public void addSupportTeamSupportRegions(long supportTeamId,
-		long[] supportRegionIds) {
-		_supportRegionLocalService.addSupportTeamSupportRegions(supportTeamId,
-			supportRegionIds);
-	}
-
-	@Override
-	public void clearAccountEntrySupportRegions(long accountEntryId) {
-		_supportRegionLocalService.clearAccountEntrySupportRegions(accountEntryId);
-	}
-
-	@Override
-	public void clearPartnerEntrySupportRegions(long partnerEntryId) {
-		_supportRegionLocalService.clearPartnerEntrySupportRegions(partnerEntryId);
-	}
-
-	@Override
-	public void clearSupportTeamSupportRegions(long supportTeamId) {
-		_supportRegionLocalService.clearSupportTeamSupportRegions(supportTeamId);
+	public com.liferay.osb.model.SupportRegion addSupportRegion(long userId,
+		java.lang.String name, java.lang.String description,
+		java.lang.String timeZoneId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportRegionLocalService.addSupportRegion(userId, name,
+			description, timeZoneId);
 	}
 
 	/**
@@ -166,70 +103,16 @@ public class SupportRegionLocalServiceWrapper
 		return _supportRegionLocalService.createSupportRegion(supportRegionId);
 	}
 
-	@Override
-	public void deleteAccountEntrySupportRegion(long accountEntryId,
-		long supportRegionId) {
-		_supportRegionLocalService.deleteAccountEntrySupportRegion(accountEntryId,
-			supportRegionId);
-	}
-
-	@Override
-	public void deleteAccountEntrySupportRegion(long accountEntryId,
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		_supportRegionLocalService.deleteAccountEntrySupportRegion(accountEntryId,
-			supportRegion);
-	}
-
-	@Override
-	public void deleteAccountEntrySupportRegions(long accountEntryId,
-		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		_supportRegionLocalService.deleteAccountEntrySupportRegions(accountEntryId,
-			supportRegions);
-	}
-
-	@Override
-	public void deleteAccountEntrySupportRegions(long accountEntryId,
-		long[] supportRegionIds) {
-		_supportRegionLocalService.deleteAccountEntrySupportRegions(accountEntryId,
-			supportRegionIds);
-	}
-
-	@Override
-	public void deletePartnerEntrySupportRegion(long partnerEntryId,
-		long supportRegionId) {
-		_supportRegionLocalService.deletePartnerEntrySupportRegion(partnerEntryId,
-			supportRegionId);
-	}
-
-	@Override
-	public void deletePartnerEntrySupportRegion(long partnerEntryId,
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		_supportRegionLocalService.deletePartnerEntrySupportRegion(partnerEntryId,
-			supportRegion);
-	}
-
-	@Override
-	public void deletePartnerEntrySupportRegions(long partnerEntryId,
-		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		_supportRegionLocalService.deletePartnerEntrySupportRegions(partnerEntryId,
-			supportRegions);
-	}
-
-	@Override
-	public void deletePartnerEntrySupportRegions(long partnerEntryId,
-		long[] supportRegionIds) {
-		_supportRegionLocalService.deletePartnerEntrySupportRegions(partnerEntryId,
-			supportRegionIds);
-	}
-
 	/**
-	* @throws PortalException
+	* Deletes the support region from the database. Also notifies the appropriate model listeners.
+	*
+	* @param supportRegion the support region
+	* @return the support region that was removed
 	*/
 	@Override
-	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportRegionLocalService.deletePersistedModel(persistedModel);
+	public com.liferay.osb.model.SupportRegion deleteSupportRegion(
+		com.liferay.osb.model.SupportRegion supportRegion) {
+		return _supportRegionLocalService.deleteSupportRegion(supportRegion);
 	}
 
 	/**
@@ -246,49 +129,127 @@ public class SupportRegionLocalServiceWrapper
 		return _supportRegionLocalService.deleteSupportRegion(supportRegionId);
 	}
 
+	@Override
+	public com.liferay.osb.model.SupportRegion fetchSupportRegion(
+		long supportRegionId) {
+		return _supportRegionLocalService.fetchSupportRegion(supportRegionId);
+	}
+
+	@Override
+	public com.liferay.osb.model.SupportRegion fetchSupportRegionByName(
+		java.lang.String name) {
+		return _supportRegionLocalService.fetchSupportRegionByName(name);
+	}
+
 	/**
-	* Deletes the support region from the database. Also notifies the appropriate model listeners.
+	* Returns the support region with the primary key.
 	*
-	* @param supportRegion the support region
-	* @return the support region that was removed
+	* @param supportRegionId the primary key of the support region
+	* @return the support region
+	* @throws PortalException if a support region with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.osb.model.SupportRegion deleteSupportRegion(
+	public com.liferay.osb.model.SupportRegion getSupportRegion(
+		long supportRegionId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportRegionLocalService.getSupportRegion(supportRegionId);
+	}
+
+	/**
+	* Updates the support region in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param supportRegion the support region
+	* @return the support region that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.SupportRegion updateSupportRegion(
 		com.liferay.osb.model.SupportRegion supportRegion) {
-		return _supportRegionLocalService.deleteSupportRegion(supportRegion);
+		return _supportRegionLocalService.updateSupportRegion(supportRegion);
 	}
 
 	@Override
-	public void deleteSupportTeamSupportRegion(long supportTeamId,
-		long supportRegionId) {
-		_supportRegionLocalService.deleteSupportTeamSupportRegion(supportTeamId,
-			supportRegionId);
+	public com.liferay.osb.model.SupportRegion updateSupportRegion(
+		long supportRegionId, java.lang.String name,
+		java.lang.String description, java.lang.String timeZoneId,
+		long[] supportTeamIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportRegionLocalService.updateSupportRegion(supportRegionId,
+			name, description, timeZoneId, supportTeamIds);
 	}
 
 	@Override
-	public void deleteSupportTeamSupportRegion(long supportTeamId,
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		_supportRegionLocalService.deleteSupportTeamSupportRegion(supportTeamId,
-			supportRegion);
-	}
-
-	@Override
-	public void deleteSupportTeamSupportRegions(long supportTeamId,
-		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		_supportRegionLocalService.deleteSupportTeamSupportRegions(supportTeamId,
-			supportRegions);
-	}
-
-	@Override
-	public void deleteSupportTeamSupportRegions(long supportTeamId,
-		long[] supportRegionIds) {
-		_supportRegionLocalService.deleteSupportTeamSupportRegions(supportTeamId,
-			supportRegionIds);
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _supportRegionLocalService.getActionableDynamicQuery();
 	}
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
 		return _supportRegionLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _supportRegionLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportRegionLocalService.deletePersistedModel(persistedModel);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportRegionLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public int getAccountEntrySupportRegionsCount(long accountEntryId) {
+		return _supportRegionLocalService.getAccountEntrySupportRegionsCount(accountEntryId);
+	}
+
+	@Override
+	public int getPartnerEntrySupportRegionsCount(long partnerEntryId) {
+		return _supportRegionLocalService.getPartnerEntrySupportRegionsCount(partnerEntryId);
+	}
+
+	/**
+	* Returns the number of support regions.
+	*
+	* @return the number of support regions
+	*/
+	@Override
+	public int getSupportRegionsCount() {
+		return _supportRegionLocalService.getSupportRegionsCount();
+	}
+
+	@Override
+	public int getSupportTeamSupportRegionsCount(long supportTeamId) {
+		return _supportRegionLocalService.getSupportTeamSupportRegionsCount(supportTeamId);
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _supportRegionLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _supportRegionLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -344,6 +305,86 @@ public class SupportRegionLocalServiceWrapper
 			end, orderByComparator);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
+		long accountEntryId) {
+		return _supportRegionLocalService.getAccountEntrySupportRegions(accountEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
+		long accountEntryId, int start, int end) {
+		return _supportRegionLocalService.getAccountEntrySupportRegions(accountEntryId,
+			start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
+		long accountEntryId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.SupportRegion> orderByComparator) {
+		return _supportRegionLocalService.getAccountEntrySupportRegions(accountEntryId,
+			start, end, orderByComparator);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportRegion> getPartnerEntrySupportRegions(
+		long partnerEntryId) {
+		return _supportRegionLocalService.getPartnerEntrySupportRegions(partnerEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportRegion> getPartnerEntrySupportRegions(
+		long partnerEntryId, int start, int end) {
+		return _supportRegionLocalService.getPartnerEntrySupportRegions(partnerEntryId,
+			start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportRegion> getPartnerEntrySupportRegions(
+		long partnerEntryId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.SupportRegion> orderByComparator) {
+		return _supportRegionLocalService.getPartnerEntrySupportRegions(partnerEntryId,
+			start, end, orderByComparator);
+	}
+
+	/**
+	* Returns a range of all the support regions.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportRegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of support regions
+	* @param end the upper bound of the range of support regions (not inclusive)
+	* @return the range of support regions
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportRegion> getSupportRegions(
+		int start, int end) {
+		return _supportRegionLocalService.getSupportRegions(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportRegion> getSupportTeamSupportRegions(
+		long supportTeamId) {
+		return _supportRegionLocalService.getSupportTeamSupportRegions(supportTeamId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportRegion> getSupportTeamSupportRegions(
+		long supportTeamId, int start, int end) {
+		return _supportRegionLocalService.getSupportTeamSupportRegions(supportTeamId,
+			start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.SupportRegion> getSupportTeamSupportRegions(
+		long supportTeamId, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.SupportRegion> orderByComparator) {
+		return _supportRegionLocalService.getSupportTeamSupportRegions(supportTeamId,
+			start, end, orderByComparator);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -371,18 +412,6 @@ public class SupportRegionLocalServiceWrapper
 			projection);
 	}
 
-	@Override
-	public com.liferay.osb.model.SupportRegion fetchSupportRegion(
-		long supportRegionId) {
-		return _supportRegionLocalService.fetchSupportRegion(supportRegionId);
-	}
-
-	@Override
-	public com.liferay.osb.model.SupportRegion fetchSupportRegionByName(
-		java.lang.String name) {
-		return _supportRegionLocalService.fetchSupportRegionByName(name);
-	}
-
 	/**
 	* Returns the accountEntryIds of the account entries associated with the support region.
 	*
@@ -394,52 +423,6 @@ public class SupportRegionLocalServiceWrapper
 		return _supportRegionLocalService.getAccountEntryPrimaryKeys(supportRegionId);
 	}
 
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId) {
-		return _supportRegionLocalService.getAccountEntrySupportRegions(accountEntryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId, int start, int end) {
-		return _supportRegionLocalService.getAccountEntrySupportRegions(accountEntryId,
-			start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportRegion> getAccountEntrySupportRegions(
-		long accountEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.SupportRegion> orderByComparator) {
-		return _supportRegionLocalService.getAccountEntrySupportRegions(accountEntryId,
-			start, end, orderByComparator);
-	}
-
-	@Override
-	public int getAccountEntrySupportRegionsCount(long accountEntryId) {
-		return _supportRegionLocalService.getAccountEntrySupportRegionsCount(accountEntryId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _supportRegionLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _supportRegionLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _supportRegionLocalService.getOSGiServiceIdentifier();
-	}
-
 	/**
 	* Returns the partnerEntryIds of the partner entries associated with the support region.
 	*
@@ -449,80 +432,6 @@ public class SupportRegionLocalServiceWrapper
 	@Override
 	public long[] getPartnerEntryPrimaryKeys(long supportRegionId) {
 		return _supportRegionLocalService.getPartnerEntryPrimaryKeys(supportRegionId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportRegion> getPartnerEntrySupportRegions(
-		long partnerEntryId) {
-		return _supportRegionLocalService.getPartnerEntrySupportRegions(partnerEntryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportRegion> getPartnerEntrySupportRegions(
-		long partnerEntryId, int start, int end) {
-		return _supportRegionLocalService.getPartnerEntrySupportRegions(partnerEntryId,
-			start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportRegion> getPartnerEntrySupportRegions(
-		long partnerEntryId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.SupportRegion> orderByComparator) {
-		return _supportRegionLocalService.getPartnerEntrySupportRegions(partnerEntryId,
-			start, end, orderByComparator);
-	}
-
-	@Override
-	public int getPartnerEntrySupportRegionsCount(long partnerEntryId) {
-		return _supportRegionLocalService.getPartnerEntrySupportRegionsCount(partnerEntryId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportRegionLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Returns the support region with the primary key.
-	*
-	* @param supportRegionId the primary key of the support region
-	* @return the support region
-	* @throws PortalException if a support region with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.SupportRegion getSupportRegion(
-		long supportRegionId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportRegionLocalService.getSupportRegion(supportRegionId);
-	}
-
-	/**
-	* Returns a range of all the support regions.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.SupportRegionModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of support regions
-	* @param end the upper bound of the range of support regions (not inclusive)
-	* @return the range of support regions
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportRegion> getSupportRegions(
-		int start, int end) {
-		return _supportRegionLocalService.getSupportRegions(start, end);
-	}
-
-	/**
-	* Returns the number of support regions.
-	*
-	* @return the number of support regions
-	*/
-	@Override
-	public int getSupportRegionsCount() {
-		return _supportRegionLocalService.getSupportRegionsCount();
 	}
 
 	/**
@@ -537,65 +446,186 @@ public class SupportRegionLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.SupportRegion> getSupportTeamSupportRegions(
-		long supportTeamId) {
-		return _supportRegionLocalService.getSupportTeamSupportRegions(supportTeamId);
+	public void addAccountEntrySupportRegion(long accountEntryId,
+		com.liferay.osb.model.SupportRegion supportRegion) {
+		_supportRegionLocalService.addAccountEntrySupportRegion(accountEntryId,
+			supportRegion);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.SupportRegion> getSupportTeamSupportRegions(
-		long supportTeamId, int start, int end) {
-		return _supportRegionLocalService.getSupportTeamSupportRegions(supportTeamId,
-			start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.SupportRegion> getSupportTeamSupportRegions(
-		long supportTeamId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.SupportRegion> orderByComparator) {
-		return _supportRegionLocalService.getSupportTeamSupportRegions(supportTeamId,
-			start, end, orderByComparator);
-	}
-
-	@Override
-	public int getSupportTeamSupportRegionsCount(long supportTeamId) {
-		return _supportRegionLocalService.getSupportTeamSupportRegionsCount(supportTeamId);
-	}
-
-	@Override
-	public boolean hasAccountEntrySupportRegion(long accountEntryId,
+	public void addAccountEntrySupportRegion(long accountEntryId,
 		long supportRegionId) {
-		return _supportRegionLocalService.hasAccountEntrySupportRegion(accountEntryId,
+		_supportRegionLocalService.addAccountEntrySupportRegion(accountEntryId,
 			supportRegionId);
 	}
 
 	@Override
-	public boolean hasAccountEntrySupportRegions(long accountEntryId) {
-		return _supportRegionLocalService.hasAccountEntrySupportRegions(accountEntryId);
+	public void addAccountEntrySupportRegions(long accountEntryId,
+		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
+		_supportRegionLocalService.addAccountEntrySupportRegions(accountEntryId,
+			supportRegions);
 	}
 
 	@Override
-	public boolean hasPartnerEntrySupportRegion(long partnerEntryId,
+	public void addAccountEntrySupportRegions(long accountEntryId,
+		long[] supportRegionIds) {
+		_supportRegionLocalService.addAccountEntrySupportRegions(accountEntryId,
+			supportRegionIds);
+	}
+
+	@Override
+	public void addPartnerEntrySupportRegion(long partnerEntryId,
+		com.liferay.osb.model.SupportRegion supportRegion) {
+		_supportRegionLocalService.addPartnerEntrySupportRegion(partnerEntryId,
+			supportRegion);
+	}
+
+	@Override
+	public void addPartnerEntrySupportRegion(long partnerEntryId,
 		long supportRegionId) {
-		return _supportRegionLocalService.hasPartnerEntrySupportRegion(partnerEntryId,
+		_supportRegionLocalService.addPartnerEntrySupportRegion(partnerEntryId,
 			supportRegionId);
 	}
 
 	@Override
-	public boolean hasPartnerEntrySupportRegions(long partnerEntryId) {
-		return _supportRegionLocalService.hasPartnerEntrySupportRegions(partnerEntryId);
+	public void addPartnerEntrySupportRegions(long partnerEntryId,
+		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
+		_supportRegionLocalService.addPartnerEntrySupportRegions(partnerEntryId,
+			supportRegions);
 	}
 
 	@Override
-	public boolean hasSupportTeamSupportRegion(long supportTeamId,
+	public void addPartnerEntrySupportRegions(long partnerEntryId,
+		long[] supportRegionIds) {
+		_supportRegionLocalService.addPartnerEntrySupportRegions(partnerEntryId,
+			supportRegionIds);
+	}
+
+	@Override
+	public void addSupportTeamSupportRegion(long supportTeamId,
+		com.liferay.osb.model.SupportRegion supportRegion) {
+		_supportRegionLocalService.addSupportTeamSupportRegion(supportTeamId,
+			supportRegion);
+	}
+
+	@Override
+	public void addSupportTeamSupportRegion(long supportTeamId,
 		long supportRegionId) {
-		return _supportRegionLocalService.hasSupportTeamSupportRegion(supportTeamId,
+		_supportRegionLocalService.addSupportTeamSupportRegion(supportTeamId,
 			supportRegionId);
 	}
 
 	@Override
-	public boolean hasSupportTeamSupportRegions(long supportTeamId) {
-		return _supportRegionLocalService.hasSupportTeamSupportRegions(supportTeamId);
+	public void addSupportTeamSupportRegions(long supportTeamId,
+		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
+		_supportRegionLocalService.addSupportTeamSupportRegions(supportTeamId,
+			supportRegions);
+	}
+
+	@Override
+	public void addSupportTeamSupportRegions(long supportTeamId,
+		long[] supportRegionIds) {
+		_supportRegionLocalService.addSupportTeamSupportRegions(supportTeamId,
+			supportRegionIds);
+	}
+
+	@Override
+	public void clearAccountEntrySupportRegions(long accountEntryId) {
+		_supportRegionLocalService.clearAccountEntrySupportRegions(accountEntryId);
+	}
+
+	@Override
+	public void clearPartnerEntrySupportRegions(long partnerEntryId) {
+		_supportRegionLocalService.clearPartnerEntrySupportRegions(partnerEntryId);
+	}
+
+	@Override
+	public void clearSupportTeamSupportRegions(long supportTeamId) {
+		_supportRegionLocalService.clearSupportTeamSupportRegions(supportTeamId);
+	}
+
+	@Override
+	public void deleteAccountEntrySupportRegion(long accountEntryId,
+		com.liferay.osb.model.SupportRegion supportRegion) {
+		_supportRegionLocalService.deleteAccountEntrySupportRegion(accountEntryId,
+			supportRegion);
+	}
+
+	@Override
+	public void deleteAccountEntrySupportRegion(long accountEntryId,
+		long supportRegionId) {
+		_supportRegionLocalService.deleteAccountEntrySupportRegion(accountEntryId,
+			supportRegionId);
+	}
+
+	@Override
+	public void deleteAccountEntrySupportRegions(long accountEntryId,
+		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
+		_supportRegionLocalService.deleteAccountEntrySupportRegions(accountEntryId,
+			supportRegions);
+	}
+
+	@Override
+	public void deleteAccountEntrySupportRegions(long accountEntryId,
+		long[] supportRegionIds) {
+		_supportRegionLocalService.deleteAccountEntrySupportRegions(accountEntryId,
+			supportRegionIds);
+	}
+
+	@Override
+	public void deletePartnerEntrySupportRegion(long partnerEntryId,
+		com.liferay.osb.model.SupportRegion supportRegion) {
+		_supportRegionLocalService.deletePartnerEntrySupportRegion(partnerEntryId,
+			supportRegion);
+	}
+
+	@Override
+	public void deletePartnerEntrySupportRegion(long partnerEntryId,
+		long supportRegionId) {
+		_supportRegionLocalService.deletePartnerEntrySupportRegion(partnerEntryId,
+			supportRegionId);
+	}
+
+	@Override
+	public void deletePartnerEntrySupportRegions(long partnerEntryId,
+		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
+		_supportRegionLocalService.deletePartnerEntrySupportRegions(partnerEntryId,
+			supportRegions);
+	}
+
+	@Override
+	public void deletePartnerEntrySupportRegions(long partnerEntryId,
+		long[] supportRegionIds) {
+		_supportRegionLocalService.deletePartnerEntrySupportRegions(partnerEntryId,
+			supportRegionIds);
+	}
+
+	@Override
+	public void deleteSupportTeamSupportRegion(long supportTeamId,
+		com.liferay.osb.model.SupportRegion supportRegion) {
+		_supportRegionLocalService.deleteSupportTeamSupportRegion(supportTeamId,
+			supportRegion);
+	}
+
+	@Override
+	public void deleteSupportTeamSupportRegion(long supportTeamId,
+		long supportRegionId) {
+		_supportRegionLocalService.deleteSupportTeamSupportRegion(supportTeamId,
+			supportRegionId);
+	}
+
+	@Override
+	public void deleteSupportTeamSupportRegions(long supportTeamId,
+		java.util.List<com.liferay.osb.model.SupportRegion> supportRegions) {
+		_supportRegionLocalService.deleteSupportTeamSupportRegions(supportTeamId,
+			supportRegions);
+	}
+
+	@Override
+	public void deleteSupportTeamSupportRegions(long supportTeamId,
+		long[] supportRegionIds) {
+		_supportRegionLocalService.deleteSupportTeamSupportRegions(supportTeamId,
+			supportRegionIds);
 	}
 
 	@Override
@@ -617,28 +647,6 @@ public class SupportRegionLocalServiceWrapper
 		long[] supportRegionIds) {
 		_supportRegionLocalService.setSupportTeamSupportRegions(supportTeamId,
 			supportRegionIds);
-	}
-
-	@Override
-	public com.liferay.osb.model.SupportRegion updateSupportRegion(
-		long supportRegionId, java.lang.String name,
-		java.lang.String description, java.lang.String timeZoneId,
-		long[] supportTeamIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportRegionLocalService.updateSupportRegion(supportRegionId,
-			name, description, timeZoneId, supportTeamIds);
-	}
-
-	/**
-	* Updates the support region in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param supportRegion the support region
-	* @return the support region that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.SupportRegion updateSupportRegion(
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		return _supportRegionLocalService.updateSupportRegion(supportRegion);
 	}
 
 	@Override

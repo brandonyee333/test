@@ -33,20 +33,10 @@ public class TicketWorkerServiceWrapper implements TicketWorkerService,
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.TicketWorker> addTicketWorkers(
-		long[] userIds, long ticketEntryId, long[] sourceClassNameIds,
-		long[] sourceClassPKs, int[] roles, long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketWorkerService.addTicketWorkers(userIds, ticketEntryId,
-			sourceClassNameIds, sourceClassPKs, roles, primaryUserId);
-	}
-
-	@Override
-	public void deleteTicketWorkers(long[] userIds, long ticketEntryId,
-		long primaryUserId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_ticketWorkerService.deleteTicketWorkers(userIds, ticketEntryId,
-			primaryUserId);
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _ticketWorkerService.invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -60,6 +50,15 @@ public class TicketWorkerServiceWrapper implements TicketWorkerService,
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.TicketWorker> addTicketWorkers(
+		long[] userIds, long ticketEntryId, long[] sourceClassNameIds,
+		long[] sourceClassPKs, int[] roles, long primaryUserId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _ticketWorkerService.addTicketWorkers(userIds, ticketEntryId,
+			sourceClassNameIds, sourceClassPKs, roles, primaryUserId);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.model.TicketWorker> updateTicketWorkers(
 		long[] addUserIds, int[] addRoles, long[] removeUserIds,
 		long ticketEntryId, long[] sourceClassNameIds, long[] sourceClassPKs,
@@ -67,6 +66,14 @@ public class TicketWorkerServiceWrapper implements TicketWorkerService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _ticketWorkerService.updateTicketWorkers(addUserIds, addRoles,
 			removeUserIds, ticketEntryId, sourceClassNameIds, sourceClassPKs,
+			primaryUserId);
+	}
+
+	@Override
+	public void deleteTicketWorkers(long[] userIds, long ticketEntryId,
+		long primaryUserId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_ticketWorkerService.deleteTicketWorkers(userIds, ticketEntryId,
 			primaryUserId);
 	}
 

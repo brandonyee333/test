@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -61,16 +62,6 @@ public class AccountAttachmentLocalServiceUtil {
 			accountProjectId, fileOVP, type);
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountAttachment> addAccountAttachments(
-		long userId, long accountEntryId, long accountProjectId,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
-		java.util.List<java.lang.Integer> types)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addAccountAttachments(userId, accountEntryId,
-			accountProjectId, files, types);
-	}
-
 	/**
 	* Creates a new account attachment with the primary key. Does not add the account attachment to the database.
 	*
@@ -108,10 +99,45 @@ public class AccountAttachmentLocalServiceUtil {
 		return getService().deleteAccountAttachment(accountAttachmentId);
 	}
 
-	public static void deleteAccountAttachments(long accountEntryId,
-		long accountProjectId)
+	public static com.liferay.osb.model.AccountAttachment fetchAccountAttachment(
+		long accountAttachmentId) {
+		return getService().fetchAccountAttachment(accountAttachmentId);
+	}
+
+	/**
+	* Returns the account attachment with the primary key.
+	*
+	* @param accountAttachmentId the primary key of the account attachment
+	* @return the account attachment
+	* @throws PortalException if a account attachment with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.AccountAttachment getAccountAttachment(
+		long accountAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteAccountAttachments(accountEntryId, accountProjectId);
+		return getService().getAccountAttachment(accountAttachmentId);
+	}
+
+	/**
+	* Updates the account attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountAttachment the account attachment
+	* @return the account attachment that was updated
+	*/
+	public static com.liferay.osb.model.AccountAttachment updateAccountAttachment(
+		com.liferay.osb.model.AccountAttachment accountAttachment) {
+		return getService().updateAccountAttachment(accountAttachment);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
 	}
 
 	/**
@@ -123,8 +149,50 @@ public class AccountAttachmentLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of account attachments.
+	*
+	* @return the number of account attachments
+	*/
+	public static int getAccountAttachmentsCount() {
+		return getService().getAccountAttachmentsCount();
+	}
+
+	public static java.io.InputStream getFileAsStream(
+		com.liferay.osb.model.AccountAttachment accountAttachment)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getFileAsStream(accountAttachment);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static java.util.List<com.liferay.osb.model.AccountAttachment> addAccountAttachments(
+		long userId, long accountEntryId, long accountProjectId,
+		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.File>> files,
+		java.util.List<java.lang.Integer> types)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addAccountAttachments(userId, accountEntryId,
+			accountProjectId, files, types);
 	}
 
 	/**
@@ -178,48 +246,6 @@ public class AccountAttachmentLocalServiceUtil {
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return getService().dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public static long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static com.liferay.osb.model.AccountAttachment fetchAccountAttachment(
-		long accountAttachmentId) {
-		return getService().fetchAccountAttachment(accountAttachmentId);
-	}
-
-	/**
-	* Returns the account attachment with the primary key.
-	*
-	* @param accountAttachmentId the primary key of the account attachment
-	* @return the account attachment
-	* @throws PortalException if a account attachment with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.AccountAttachment getAccountAttachment(
-		long accountAttachmentId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getAccountAttachment(accountAttachmentId);
-	}
-
-	/**
 	* Returns a range of all the account attachments.
 	*
 	* <p>
@@ -253,52 +279,33 @@ public class AccountAttachmentLocalServiceUtil {
 	}
 
 	/**
-	* Returns the number of account attachments.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of account attachments
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
-	public static int getAccountAttachmentsCount() {
-		return getService().getAccountAttachmentsCount();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static java.io.InputStream getFileAsStream(
-		com.liferay.osb.model.AccountAttachment accountAttachment)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getFileAsStream(accountAttachment);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return getService().dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Returns the OSGi service identifier.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the OSGi service identifier
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
+	public static long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
+	public static void deleteAccountAttachments(long accountEntryId,
+		long accountProjectId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the account attachment in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountAttachment the account attachment
-	* @return the account attachment that was updated
-	*/
-	public static com.liferay.osb.model.AccountAttachment updateAccountAttachment(
-		com.liferay.osb.model.AccountAttachment accountAttachment) {
-		return getService().updateAccountAttachment(accountAttachment);
+		getService().deleteAccountAttachments(accountEntryId, accountProjectId);
 	}
 
 	public static void clearService() {
@@ -307,8 +314,15 @@ public class AccountAttachmentLocalServiceUtil {
 
 	public static AccountAttachmentLocalService getService() {
 		if (_service == null) {
-			_service = (AccountAttachmentLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					AccountAttachmentLocalService.class.getName());
+
+			if (invokableLocalService instanceof AccountAttachmentLocalService) {
+				_service = (AccountAttachmentLocalService)invokableLocalService;
+			}
+			else {
+				_service = new AccountAttachmentLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(AccountAttachmentLocalServiceUtil.class,
 				"_service");

@@ -160,23 +160,33 @@ public class SupportResponseWrapper implements SupportResponse,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new SupportResponseWrapper((SupportResponse)_supportResponse.clone());
+	public SupportResponse toEscapedModel() {
+		return new SupportResponseWrapper(_supportResponse.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(SupportResponse supportResponse) {
-		return _supportResponse.compareTo(supportResponse);
+	public SupportResponse toUnescapedModel() {
+		return new SupportResponseWrapper(_supportResponse.toUnescapedModel());
 	}
 
-	/**
-	* Returns the create date of this support response.
-	*
-	* @return the create date of this support response
-	*/
 	@Override
-	public Date getCreateDate() {
-		return _supportResponse.getCreateDate();
+	public boolean isCachedModel() {
+		return _supportResponse.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _supportResponse.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _supportResponse.isNew();
+	}
+
+	@Override
+	public boolean isPlatinumLevel() {
+		return _supportResponse.isPlatinumLevel();
 	}
 
 	@Override
@@ -184,39 +194,14 @@ public class SupportResponseWrapper implements SupportResponse,
 		return _supportResponse.getExpandoBridge();
 	}
 
-	/**
-	* Returns the modified date of this support response.
-	*
-	* @return the modified date of this support response
-	*/
 	@Override
-	public Date getModifiedDate() {
-		return _supportResponse.getModifiedDate();
-	}
-
-	/**
-	* Returns the name of this support response.
-	*
-	* @return the name of this support response
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _supportResponse.getName();
-	}
-
-	/**
-	* Returns the primary key of this support response.
-	*
-	* @return the primary key of this support response
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _supportResponse.getPrimaryKey();
+	public com.liferay.portal.kernel.model.CacheModel<SupportResponse> toCacheModel() {
+		return _supportResponse.toCacheModel();
 	}
 
 	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _supportResponse.getPrimaryKeyObj();
+	public int compareTo(SupportResponse supportResponse) {
+		return _supportResponse.compareTo(supportResponse);
 	}
 
 	/**
@@ -300,28 +285,33 @@ public class SupportResponseWrapper implements SupportResponse,
 	}
 
 	@Override
+	public int hashCode() {
+		return _supportResponse.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _supportResponse.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new SupportResponseWrapper((SupportResponse)_supportResponse.clone());
+	}
+
+	/**
+	* Returns the name of this support response.
+	*
+	* @return the name of this support response
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _supportResponse.getName();
+	}
+
+	@Override
 	public java.lang.String getSupportLevelLabel() {
 		return _supportResponse.getSupportLevelLabel();
-	}
-
-	/**
-	* Returns the support response ID of this support response.
-	*
-	* @return the support response ID of this support response
-	*/
-	@Override
-	public long getSupportResponseId() {
-		return _supportResponse.getSupportResponseId();
-	}
-
-	/**
-	* Returns the user ID of this support response.
-	*
-	* @return the user ID of this support response
-	*/
-	@Override
-	public long getUserId() {
-		return _supportResponse.getUserId();
 	}
 
 	/**
@@ -345,28 +335,63 @@ public class SupportResponseWrapper implements SupportResponse,
 	}
 
 	@Override
-	public int hashCode() {
-		return _supportResponse.hashCode();
+	public java.lang.String toString() {
+		return _supportResponse.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _supportResponse.isCachedModel();
+	public java.lang.String toXmlString() {
+		return _supportResponse.toXmlString();
 	}
 
+	/**
+	* Returns the create date of this support response.
+	*
+	* @return the create date of this support response
+	*/
 	@Override
-	public boolean isEscapedModel() {
-		return _supportResponse.isEscapedModel();
+	public Date getCreateDate() {
+		return _supportResponse.getCreateDate();
 	}
 
+	/**
+	* Returns the modified date of this support response.
+	*
+	* @return the modified date of this support response
+	*/
 	@Override
-	public boolean isNew() {
-		return _supportResponse.isNew();
+	public Date getModifiedDate() {
+		return _supportResponse.getModifiedDate();
 	}
 
+	/**
+	* Returns the primary key of this support response.
+	*
+	* @return the primary key of this support response
+	*/
 	@Override
-	public boolean isPlatinumLevel() {
-		return _supportResponse.isPlatinumLevel();
+	public long getPrimaryKey() {
+		return _supportResponse.getPrimaryKey();
+	}
+
+	/**
+	* Returns the support response ID of this support response.
+	*
+	* @return the support response ID of this support response
+	*/
+	@Override
+	public long getSupportResponseId() {
+		return _supportResponse.getSupportResponseId();
+	}
+
+	/**
+	* Returns the user ID of this support response.
+	*
+	* @return the user ID of this support response
+	*/
+	@Override
+	public long getUserId() {
+		return _supportResponse.getUserId();
 	}
 
 	@Override
@@ -390,14 +415,14 @@ public class SupportResponseWrapper implements SupportResponse,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_supportResponse.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_supportResponse.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_supportResponse.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_supportResponse.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -553,31 +578,6 @@ public class SupportResponseWrapper implements SupportResponse,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_supportResponse.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SupportResponse> toCacheModel() {
-		return _supportResponse.toCacheModel();
-	}
-
-	@Override
-	public SupportResponse toEscapedModel() {
-		return new SupportResponseWrapper(_supportResponse.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _supportResponse.toString();
-	}
-
-	@Override
-	public SupportResponse toUnescapedModel() {
-		return new SupportResponseWrapper(_supportResponse.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _supportResponse.toXmlString();
 	}
 
 	@Override

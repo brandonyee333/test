@@ -3220,6 +3220,10 @@ public abstract class AccountEntryLocalServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
+		Class<?> clazz = getClass();
+
+		_classLoader = clazz.getClassLoader();
+
 		PersistedModelLocalServiceRegistryUtil.register("com.liferay.osb.model.AccountEntry",
 			accountEntryLocalService);
 	}
@@ -3237,6 +3241,27 @@ public abstract class AccountEntryLocalServiceBaseImpl
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return AccountEntryLocalService.class.getName();
+	}
+
+	@Override
+	public Object invokeMethod(String name, String[] parameterTypes,
+		Object[] arguments) throws Throwable {
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		if (contextClassLoader != _classLoader) {
+			currentThread.setContextClassLoader(_classLoader);
+		}
+
+		try {
+			return _clpInvoker.invokeMethod(name, parameterTypes, arguments);
+		}
+		finally {
+			if (contextClassLoader != _classLoader) {
+				currentThread.setContextClassLoader(contextClassLoader);
+			}
+		}
 	}
 
 	protected Class<?> getModelClass() {
@@ -3541,4 +3566,6 @@ public abstract class AccountEntryLocalServiceBaseImpl
 	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService;
 	@BeanReference(type = WorkflowInstanceLinkPersistence.class)
 	protected WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence;
+	private ClassLoader _classLoader;
+	private AccountEntryLocalServiceClpInvoker _clpInvoker = new AccountEntryLocalServiceClpInvoker();
 }

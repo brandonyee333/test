@@ -85,10 +85,57 @@ public class AccountInformationLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteAccountInformation(long accountEntryId,
-		long accountProjectId) {
-		_accountInformationLocalService.deleteAccountInformation(accountEntryId,
-			accountProjectId);
+	public com.liferay.osb.model.AccountInformation fetchAccountInformation(
+		long accountInformationId) {
+		return _accountInformationLocalService.fetchAccountInformation(accountInformationId);
+	}
+
+	/**
+	* Returns the account information with the primary key.
+	*
+	* @param accountInformationId the primary key of the account information
+	* @return the account information
+	* @throws PortalException if a account information with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.AccountInformation getAccountInformation(
+		long accountInformationId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountInformationLocalService.getAccountInformation(accountInformationId);
+	}
+
+	/**
+	* Updates the account information in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param accountInformation the account information
+	* @return the account information that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.AccountInformation updateAccountInformation(
+		com.liferay.osb.model.AccountInformation accountInformation) {
+		return _accountInformationLocalService.updateAccountInformation(accountInformation);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountInformationDisplay getAccountInformationDisplay(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountInformationLocalService.getAccountInformationDisplay(accountEntryId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _accountInformationLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _accountInformationLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _accountInformationLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	/**
@@ -102,8 +149,38 @@ public class AccountInformationLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _accountInformationLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountInformationLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of account informations.
+	*
+	* @return the number of account informations
+	*/
+	@Override
+	public int getAccountInformationsCount() {
+		return _accountInformationLocalService.getAccountInformationsCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountInformationLocalService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _accountInformationLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -160,6 +237,45 @@ public class AccountInformationLocalServiceWrapper
 			start, end, orderByComparator);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountInformation> getAccountEntryAccountInformation(
+		long accountEntryId) {
+		return _accountInformationLocalService.getAccountEntryAccountInformation(accountEntryId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountInformation> getAccountInformation(
+		long accountEntryId, long accountProjectId) {
+		return _accountInformationLocalService.getAccountInformation(accountEntryId,
+			accountProjectId);
+	}
+
+	/**
+	* Returns a range of all the account informations.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AccountInformationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of account informations
+	* @param end the upper bound of the range of account informations (not inclusive)
+	* @return the range of account informations
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountInformation> getAccountInformations(
+		int start, int end) {
+		return _accountInformationLocalService.getAccountInformations(start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.AccountInformation> updateAccountInformation(
+		long userId, long accountEntryId, long accountProjectId,
+		java.util.Map<java.lang.Integer, java.lang.String> data)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountInformationLocalService.updateAccountInformation(userId,
+			accountEntryId, accountProjectId, data);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -188,118 +304,10 @@ public class AccountInformationLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.model.AccountInformation fetchAccountInformation(
-		long accountInformationId) {
-		return _accountInformationLocalService.fetchAccountInformation(accountInformationId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountInformation> getAccountEntryAccountInformation(
-		long accountEntryId) {
-		return _accountInformationLocalService.getAccountEntryAccountInformation(accountEntryId);
-	}
-
-	/**
-	* Returns the account information with the primary key.
-	*
-	* @param accountInformationId the primary key of the account information
-	* @return the account information
-	* @throws PortalException if a account information with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.AccountInformation getAccountInformation(
-		long accountInformationId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountInformationLocalService.getAccountInformation(accountInformationId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountInformation> getAccountInformation(
-		long accountEntryId, long accountProjectId) {
-		return _accountInformationLocalService.getAccountInformation(accountEntryId,
+	public void deleteAccountInformation(long accountEntryId,
+		long accountProjectId) {
+		_accountInformationLocalService.deleteAccountInformation(accountEntryId,
 			accountProjectId);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountInformationDisplay getAccountInformationDisplay(
-		long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountInformationLocalService.getAccountInformationDisplay(accountEntryId);
-	}
-
-	/**
-	* Returns a range of all the account informations.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.AccountInformationModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of account informations
-	* @param end the upper bound of the range of account informations (not inclusive)
-	* @return the range of account informations
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountInformation> getAccountInformations(
-		int start, int end) {
-		return _accountInformationLocalService.getAccountInformations(start, end);
-	}
-
-	/**
-	* Returns the number of account informations.
-	*
-	* @return the number of account informations
-	*/
-	@Override
-	public int getAccountInformationsCount() {
-		return _accountInformationLocalService.getAccountInformationsCount();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _accountInformationLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _accountInformationLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _accountInformationLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountInformationLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the account information in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param accountInformation the account information
-	* @return the account information that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.AccountInformation updateAccountInformation(
-		com.liferay.osb.model.AccountInformation accountInformation) {
-		return _accountInformationLocalService.updateAccountInformation(accountInformation);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.AccountInformation> updateAccountInformation(
-		long userId, long accountEntryId, long accountProjectId,
-		java.util.Map<java.lang.Integer, java.lang.String> data)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountInformationLocalService.updateAccountInformation(userId,
-			accountEntryId, accountProjectId, data);
 	}
 
 	@Override

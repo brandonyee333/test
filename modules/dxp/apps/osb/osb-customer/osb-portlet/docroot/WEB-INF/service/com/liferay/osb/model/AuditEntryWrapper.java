@@ -191,8 +191,58 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AuditEntryWrapper((AuditEntry)_auditEntry.clone());
+	public AuditEntry toEscapedModel() {
+		return new AuditEntryWrapper(_auditEntry.toEscapedModel());
+	}
+
+	@Override
+	public AuditEntry toUnescapedModel() {
+		return new AuditEntryWrapper(_auditEntry.toUnescapedModel());
+	}
+
+	/**
+	* Returns the i18n of this audit entry.
+	*
+	* @return the i18n of this audit entry
+	*/
+	@Override
+	public boolean getI18n() {
+		return _auditEntry.getI18n();
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _auditEntry.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _auditEntry.isEscapedModel();
+	}
+
+	/**
+	* Returns <code>true</code> if this audit entry is i18n.
+	*
+	* @return <code>true</code> if this audit entry is i18n; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isI18n() {
+		return _auditEntry.isI18n();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _auditEntry.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _auditEntry.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AuditEntry> toCacheModel() {
+		return _auditEntry.toCacheModel();
 	}
 
 	@Override
@@ -210,29 +260,44 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 		return _auditEntry.getAction();
 	}
 
+	/**
+	* Returns the field of this audit entry.
+	*
+	* @return the field of this audit entry
+	*/
+	@Override
+	public int getField() {
+		return _auditEntry.getField();
+	}
+
+	/**
+	* Returns the visibility of this audit entry.
+	*
+	* @return the visibility of this audit entry
+	*/
+	@Override
+	public int getVisibility() {
+		return _auditEntry.getVisibility();
+	}
+
+	@Override
+	public int hashCode() {
+		return _auditEntry.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _auditEntry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AuditEntryWrapper((AuditEntry)_auditEntry.clone());
+	}
+
 	@Override
 	public java.lang.String getActionLabel() {
 		return _auditEntry.getActionLabel();
-	}
-
-	/**
-	* Returns the audit entry ID of this audit entry.
-	*
-	* @return the audit entry ID of this audit entry
-	*/
-	@Override
-	public long getAuditEntryId() {
-		return _auditEntry.getAuditEntryId();
-	}
-
-	/**
-	* Returns the audit set ID of this audit entry.
-	*
-	* @return the audit set ID of this audit entry
-	*/
-	@Override
-	public long getAuditSetId() {
-		return _auditEntry.getAuditSetId();
 	}
 
 	/**
@@ -245,89 +310,14 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 		return _auditEntry.getClassName();
 	}
 
-	/**
-	* Returns the class name ID of this audit entry.
-	*
-	* @return the class name ID of this audit entry
-	*/
-	@Override
-	public long getClassNameId() {
-		return _auditEntry.getClassNameId();
-	}
-
-	/**
-	* Returns the class pk of this audit entry.
-	*
-	* @return the class pk of this audit entry
-	*/
-	@Override
-	public long getClassPK() {
-		return _auditEntry.getClassPK();
-	}
-
-	/**
-	* Returns the create date of this audit entry.
-	*
-	* @return the create date of this audit entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _auditEntry.getCreateDate();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _auditEntry.getExpandoBridge();
-	}
-
-	/**
-	* Returns the field of this audit entry.
-	*
-	* @return the field of this audit entry
-	*/
-	@Override
-	public int getField() {
-		return _auditEntry.getField();
-	}
-
-	/**
-	* Returns the field class name ID of this audit entry.
-	*
-	* @return the field class name ID of this audit entry
-	*/
-	@Override
-	public long getFieldClassNameId() {
-		return _auditEntry.getFieldClassNameId();
-	}
-
 	@Override
 	public java.lang.String getFieldClassNameIdLabel() {
 		return _auditEntry.getFieldClassNameIdLabel();
 	}
 
-	/**
-	* Returns the field class pk of this audit entry.
-	*
-	* @return the field class pk of this audit entry
-	*/
-	@Override
-	public long getFieldClassPK() {
-		return _auditEntry.getFieldClassPK();
-	}
-
 	@Override
 	public java.lang.String getFieldLabel() {
 		return _auditEntry.getFieldLabel();
-	}
-
-	/**
-	* Returns the i18n of this audit entry.
-	*
-	* @return the i18n of this audit entry
-	*/
-	@Override
-	public boolean getI18n() {
-		return _auditEntry.getI18n();
 	}
 
 	/**
@@ -371,41 +361,6 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 	}
 
 	/**
-	* Returns the previous audit entry ID of this audit entry.
-	*
-	* @return the previous audit entry ID of this audit entry
-	*/
-	@Override
-	public long getPreviousAuditEntryId() {
-		return _auditEntry.getPreviousAuditEntryId();
-	}
-
-	/**
-	* Returns the primary key of this audit entry.
-	*
-	* @return the primary key of this audit entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _auditEntry.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _auditEntry.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the user ID of this audit entry.
-	*
-	* @return the user ID of this audit entry
-	*/
-	@Override
-	public long getUserId() {
-		return _auditEntry.getUserId();
-	}
-
-	/**
 	* Returns the user name of this audit entry.
 	*
 	* @return the user name of this audit entry
@@ -425,49 +380,119 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 		return _auditEntry.getUserUuid();
 	}
 
-	/**
-	* Returns the visibility of this audit entry.
-	*
-	* @return the visibility of this audit entry
-	*/
-	@Override
-	public int getVisibility() {
-		return _auditEntry.getVisibility();
-	}
-
 	@Override
 	public java.lang.String getVisibilityLabel() {
 		return _auditEntry.getVisibilityLabel();
 	}
 
 	@Override
-	public int hashCode() {
-		return _auditEntry.hashCode();
+	public java.lang.String toString() {
+		return _auditEntry.toString();
 	}
 
 	@Override
-	public boolean isCachedModel() {
-		return _auditEntry.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _auditEntry.isEscapedModel();
+	public java.lang.String toXmlString() {
+		return _auditEntry.toXmlString();
 	}
 
 	/**
-	* Returns <code>true</code> if this audit entry is i18n.
+	* Returns the create date of this audit entry.
 	*
-	* @return <code>true</code> if this audit entry is i18n; <code>false</code> otherwise
+	* @return the create date of this audit entry
 	*/
 	@Override
-	public boolean isI18n() {
-		return _auditEntry.isI18n();
+	public Date getCreateDate() {
+		return _auditEntry.getCreateDate();
 	}
 
+	/**
+	* Returns the audit entry ID of this audit entry.
+	*
+	* @return the audit entry ID of this audit entry
+	*/
 	@Override
-	public boolean isNew() {
-		return _auditEntry.isNew();
+	public long getAuditEntryId() {
+		return _auditEntry.getAuditEntryId();
+	}
+
+	/**
+	* Returns the audit set ID of this audit entry.
+	*
+	* @return the audit set ID of this audit entry
+	*/
+	@Override
+	public long getAuditSetId() {
+		return _auditEntry.getAuditSetId();
+	}
+
+	/**
+	* Returns the class name ID of this audit entry.
+	*
+	* @return the class name ID of this audit entry
+	*/
+	@Override
+	public long getClassNameId() {
+		return _auditEntry.getClassNameId();
+	}
+
+	/**
+	* Returns the class pk of this audit entry.
+	*
+	* @return the class pk of this audit entry
+	*/
+	@Override
+	public long getClassPK() {
+		return _auditEntry.getClassPK();
+	}
+
+	/**
+	* Returns the field class name ID of this audit entry.
+	*
+	* @return the field class name ID of this audit entry
+	*/
+	@Override
+	public long getFieldClassNameId() {
+		return _auditEntry.getFieldClassNameId();
+	}
+
+	/**
+	* Returns the field class pk of this audit entry.
+	*
+	* @return the field class pk of this audit entry
+	*/
+	@Override
+	public long getFieldClassPK() {
+		return _auditEntry.getFieldClassPK();
+	}
+
+	/**
+	* Returns the previous audit entry ID of this audit entry.
+	*
+	* @return the previous audit entry ID of this audit entry
+	*/
+	@Override
+	public long getPreviousAuditEntryId() {
+		return _auditEntry.getPreviousAuditEntryId();
+	}
+
+	/**
+	* Returns the primary key of this audit entry.
+	*
+	* @return the primary key of this audit entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _auditEntry.getPrimaryKey();
+	}
+
+	/**
+	* Returns the user ID of this audit entry.
+	*
+	* @return the user ID of this audit entry
+	*/
+	@Override
+	public long getUserId() {
+		return _auditEntry.getUserId();
 	}
 
 	@Override
@@ -546,14 +571,14 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_auditEntry.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_auditEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_auditEntry.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_auditEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -709,31 +734,6 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 	@Override
 	public void setVisibility(int visibility) {
 		_auditEntry.setVisibility(visibility);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AuditEntry> toCacheModel() {
-		return _auditEntry.toCacheModel();
-	}
-
-	@Override
-	public AuditEntry toEscapedModel() {
-		return new AuditEntryWrapper(_auditEntry.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _auditEntry.toString();
-	}
-
-	@Override
-	public AuditEntry toUnescapedModel() {
-		return new AuditEntryWrapper(_auditEntry.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _auditEntry.toXmlString();
 	}
 
 	@Override

@@ -2223,7 +2223,7 @@ public class AccountEntryUtil {
 
 	public static AccountEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AccountEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (AccountEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AccountEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AccountEntryUtil.class,

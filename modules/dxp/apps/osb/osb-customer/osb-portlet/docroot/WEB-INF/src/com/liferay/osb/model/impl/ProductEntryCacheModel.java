@@ -21,6 +21,7 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -98,7 +99,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		productEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			productEntryImpl.setUserName("");
+			productEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			productEntryImpl.setUserName(userName);
@@ -119,7 +120,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		}
 
 		if (name == null) {
-			productEntryImpl.setName("");
+			productEntryImpl.setName(StringPool.BLANK);
 		}
 		else {
 			productEntryImpl.setName(name);
@@ -129,7 +130,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		productEntryImpl.setEnvironment(environment);
 
 		if (versionsListType == null) {
-			productEntryImpl.setVersionsListType("");
+			productEntryImpl.setVersionsListType(StringPool.BLANK);
 		}
 		else {
 			productEntryImpl.setVersionsListType(versionsListType);
@@ -164,7 +165,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -174,7 +175,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
@@ -185,7 +186,7 @@ public class ProductEntryCacheModel implements CacheModel<ProductEntry>,
 		objectOutput.writeInt(environment);
 
 		if (versionsListType == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(versionsListType);

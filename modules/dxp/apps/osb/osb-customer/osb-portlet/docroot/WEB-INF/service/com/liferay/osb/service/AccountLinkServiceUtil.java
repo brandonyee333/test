@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,16 +41,16 @@ public class AccountLinkServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountLinkServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static void addAccountLinks(long accountEntryId,
-		java.lang.String[] urls)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().addAccountLinks(accountEntryId, urls);
-	}
-
 	public static com.liferay.osb.model.AccountLink deleteAccountLink(
 		long accountLinkId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteAccountLink(accountLinkId);
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -61,14 +62,27 @@ public class AccountLinkServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static void addAccountLinks(long accountEntryId,
+		java.lang.String[] urls)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().addAccountLinks(accountEntryId, urls);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static AccountLinkService getService() {
 		if (_service == null) {
-			_service = (AccountLinkService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					AccountLinkService.class.getName());
+
+			if (invokableService instanceof AccountLinkService) {
+				_service = (AccountLinkService)invokableService;
+			}
+			else {
+				_service = new AccountLinkServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(AccountLinkServiceUtil.class,
 				"_service");

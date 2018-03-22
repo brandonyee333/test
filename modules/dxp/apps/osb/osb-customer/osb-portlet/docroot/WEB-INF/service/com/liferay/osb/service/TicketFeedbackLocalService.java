@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -55,14 +56,12 @@ import java.util.List;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface TicketFeedbackLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link TicketFeedbackLocalServiceUtil} to access the ticket feedback local service. Add custom service methods to {@link com.liferay.osb.service.impl.TicketFeedbackLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public TicketFeedback addTicketFeedback(long userId, long ticketEntryId,
-		int subject, int satisfied) throws PortalException;
 
 	/**
 	* Adds the ticket feedback to the database. Also notifies the appropriate model listeners.
@@ -73,6 +72,9 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public TicketFeedback addTicketFeedback(TicketFeedback ticketFeedback);
 
+	public TicketFeedback addTicketFeedback(long userId, long ticketEntryId,
+		int subject, int satisfied) throws PortalException;
+
 	/**
 	* Creates a new ticket feedback with the primary key. Does not add the ticket feedback to the database.
 	*
@@ -82,11 +84,13 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 	public TicketFeedback createTicketFeedback(long ticketFeedbackId);
 
 	/**
-	* @throws PortalException
+	* Deletes the ticket feedback from the database. Also notifies the appropriate model listeners.
+	*
+	* @param ticketFeedback the ticket feedback
+	* @return the ticket feedback that was removed
 	*/
-	@Override
-	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
-		throws PortalException;
+	@Indexable(type = IndexableType.DELETE)
+	public TicketFeedback deleteTicketFeedback(TicketFeedback ticketFeedback);
 
 	/**
 	* Deletes the ticket feedback with the primary key from the database. Also notifies the appropriate model listeners.
@@ -99,16 +103,93 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 	public TicketFeedback deleteTicketFeedback(long ticketFeedbackId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketFeedback fetchFirstOpenTicketFeedback(long userId,
+		long ticketEntryId, int subject);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketFeedback fetchTicketFeedback(long ticketFeedbackId);
+
 	/**
-	* Deletes the ticket feedback from the database. Also notifies the appropriate model listeners.
+	* Returns the ticket feedback with the primary key.
+	*
+	* @param ticketFeedbackId the primary key of the ticket feedback
+	* @return the ticket feedback
+	* @throws PortalException if a ticket feedback with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public TicketFeedback getTicketFeedback(long ticketFeedbackId)
+		throws PortalException;
+
+	/**
+	* Updates the ticket feedback in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
 	* @param ticketFeedback the ticket feedback
-	* @return the ticket feedback that was removed
+	* @return the ticket feedback that was updated
 	*/
-	@Indexable(type = IndexableType.DELETE)
-	public TicketFeedback deleteTicketFeedback(TicketFeedback ticketFeedback);
+	@Indexable(type = IndexableType.REINDEX)
+	public TicketFeedback updateTicketFeedback(TicketFeedback ticketFeedback);
+
+	public TicketFeedback updateTicketFeedback(long userId,
+		long ticketFeedbackId, int satisfied, int answer1, int answer2,
+		int answer3, int rating1, int rating2, int rating3, int rating4,
+		java.lang.String comments) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
+	/**
+	* @throws PortalException
+	*/
+	@Override
+	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
+		throws PortalException;
+
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of ticket feedbacks.
+	*
+	* @return the number of ticket feedbacks
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getTicketFeedbacksCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchCount(java.lang.String name, int createdGTDay,
+		int createdGTMonth, int createdGTYear, int createdLTDay,
+		int createdLTMonth, int createdLTYear, int modifiedGTDay,
+		int modifiedGTMonth, int modifiedGTYear, int modifiedLTDay,
+		int modifiedLTMonth, int modifiedLTYear, java.lang.Integer satisfied,
+		java.lang.String comments, java.lang.Integer status,
+		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
+		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
+		LinkedHashMap<java.lang.String, java.lang.Object> params,
+		boolean andSearch);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -150,60 +231,6 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketFeedback fetchFirstOpenTicketFeedback(long userId,
-		long ticketEntryId, int subject);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketFeedback fetchTicketFeedback(long ticketFeedbackId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Returns the ticket feedback with the primary key.
-	*
-	* @param ticketFeedbackId the primary key of the ticket feedback
-	* @return the ticket feedback
-	* @throws PortalException if a ticket feedback with the primary key could not be found
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public TicketFeedback getTicketFeedback(long ticketFeedbackId)
-		throws PortalException;
-
-	/**
 	* Returns a range of all the ticket feedbacks.
 	*
 	* <p>
@@ -221,13 +248,10 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 	public List<TicketFeedback> getTicketFeedbacks(long ticketEntryId,
 		int subject);
 
-	/**
-	* Returns the number of ticket feedbacks.
-	*
-	* @return the number of ticket feedbacks
-	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getTicketFeedbacksCount();
+	public List<TicketFeedback> search(java.lang.String keywords,
+		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
+		int end, OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<TicketFeedback> search(java.lang.String name, int createdGTDay,
@@ -241,44 +265,27 @@ public interface TicketFeedbackLocalService extends BaseLocalService,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andSearch, int start, int end, OrderByComparator obc);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<TicketFeedback> search(java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end, OrderByComparator obc);
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String name, int createdGTDay,
-		int createdGTMonth, int createdGTYear, int createdLTDay,
-		int createdLTMonth, int createdLTYear, int modifiedGTDay,
-		int modifiedGTMonth, int modifiedGTYear, int modifiedLTDay,
-		int modifiedLTMonth, int modifiedLTYear, java.lang.Integer satisfied,
-		java.lang.String comments, java.lang.Integer status,
-		java.lang.Integer[] ratings1, java.lang.Integer[] ratings2,
-		java.lang.Integer[] ratings3, java.lang.Integer[] ratings4,
-		LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andSearch);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String keywords,
-		LinkedHashMap<java.lang.String, java.lang.Object> params);
+	/**
+	* Returns the number of rows matching the dynamic query.
+	*
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
+	*/
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
 
 	public void sendCustomerNotifications() throws java.lang.Exception;
 
 	public void sendLiferayWorkerNotifications() throws java.lang.Exception;
 
 	public void sendSupportTeamNotifications() throws java.lang.Exception;
-
-	public TicketFeedback updateTicketFeedback(long userId,
-		long ticketFeedbackId, int satisfied, int answer1, int answer2,
-		int answer3, int rating1, int rating2, int rating3, int rating4,
-		java.lang.String comments) throws PortalException;
-
-	/**
-	* Updates the ticket feedback in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param ticketFeedback the ticket feedback
-	* @return the ticket feedback that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public TicketFeedback updateTicketFeedback(TicketFeedback ticketFeedback);
 }

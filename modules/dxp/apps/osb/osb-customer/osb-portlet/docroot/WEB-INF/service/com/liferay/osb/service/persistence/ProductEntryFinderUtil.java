@@ -44,7 +44,7 @@ public class ProductEntryFinderUtil {
 
 	public static ProductEntryFinder getFinder() {
 		if (_finder == null) {
-			_finder = (ProductEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_finder = (ProductEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					ProductEntryFinder.class.getName());
 
 			ReferenceRegistry.registerReference(ProductEntryFinderUtil.class,

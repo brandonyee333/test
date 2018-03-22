@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,6 +41,11 @@ public class OfferingDefinitionServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.OfferingDefinitionServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
 
 	/**
 	* Returns the OSGi service identifier.
@@ -56,8 +62,15 @@ public class OfferingDefinitionServiceUtil {
 
 	public static OfferingDefinitionService getService() {
 		if (_service == null) {
-			_service = (OfferingDefinitionService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					OfferingDefinitionService.class.getName());
+
+			if (invokableService instanceof OfferingDefinitionService) {
+				_service = (OfferingDefinitionService)invokableService;
+			}
+			else {
+				_service = new OfferingDefinitionServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(OfferingDefinitionServiceUtil.class,
 				"_service");

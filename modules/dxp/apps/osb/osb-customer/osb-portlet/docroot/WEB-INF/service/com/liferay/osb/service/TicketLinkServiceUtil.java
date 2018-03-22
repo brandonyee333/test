@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -50,9 +51,10 @@ public class TicketLinkServiceUtil {
 			urls, types, visibility, serviceContext);
 	}
 
-	public static void deleteTicketLink(long ticketLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteTicketLink(ticketLinkId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -64,14 +66,26 @@ public class TicketLinkServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static void deleteTicketLink(long ticketLinkId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteTicketLink(ticketLinkId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static TicketLinkService getService() {
 		if (_service == null) {
-			_service = (TicketLinkService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					TicketLinkService.class.getName());
+
+			if (invokableService instanceof TicketLinkService) {
+				_service = (TicketLinkService)invokableService;
+			}
+			else {
+				_service = new TicketLinkServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(TicketLinkServiceUtil.class,
 				"_service");

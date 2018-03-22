@@ -41,6 +41,14 @@ public class AccountEnvironmentAttachmentServiceWrapper
 		return _accountEnvironmentAttachmentService.getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
 	}
 
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _accountEnvironmentAttachmentService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*

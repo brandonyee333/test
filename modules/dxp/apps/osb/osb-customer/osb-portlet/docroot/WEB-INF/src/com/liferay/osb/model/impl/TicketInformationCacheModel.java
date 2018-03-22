@@ -21,6 +21,7 @@ import com.liferay.osb.model.TicketInformation;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -108,7 +109,7 @@ public class TicketInformationCacheModel implements CacheModel<TicketInformation
 		ticketInformationImpl.setFieldId(fieldId);
 
 		if (data == null) {
-			ticketInformationImpl.setData("");
+			ticketInformationImpl.setData(StringPool.BLANK);
 		}
 		else {
 			ticketInformationImpl.setData(data);
@@ -143,7 +144,7 @@ public class TicketInformationCacheModel implements CacheModel<TicketInformation
 		objectOutput.writeLong(fieldId);
 
 		if (data == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(data);

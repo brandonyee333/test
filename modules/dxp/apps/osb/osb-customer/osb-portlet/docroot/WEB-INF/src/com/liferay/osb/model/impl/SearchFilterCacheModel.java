@@ -21,6 +21,7 @@ import com.liferay.osb.model.SearchFilter;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -98,7 +99,7 @@ public class SearchFilterCacheModel implements CacheModel<SearchFilter>,
 		searchFilterImpl.setUserId(userId);
 
 		if (userName == null) {
-			searchFilterImpl.setUserName("");
+			searchFilterImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			searchFilterImpl.setUserName(userName);
@@ -121,14 +122,14 @@ public class SearchFilterCacheModel implements CacheModel<SearchFilter>,
 		searchFilterImpl.setClassNameId(classNameId);
 
 		if (name == null) {
-			searchFilterImpl.setName("");
+			searchFilterImpl.setName(StringPool.BLANK);
 		}
 		else {
 			searchFilterImpl.setName(name);
 		}
 
 		if (filter == null) {
-			searchFilterImpl.setFilter("");
+			searchFilterImpl.setFilter(StringPool.BLANK);
 		}
 		else {
 			searchFilterImpl.setFilter(filter);
@@ -165,7 +166,7 @@ public class SearchFilterCacheModel implements CacheModel<SearchFilter>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -177,14 +178,14 @@ public class SearchFilterCacheModel implements CacheModel<SearchFilter>,
 		objectOutput.writeLong(classNameId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (filter == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(filter);

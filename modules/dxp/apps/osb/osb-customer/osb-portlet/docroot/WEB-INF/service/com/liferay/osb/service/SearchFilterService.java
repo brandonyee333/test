@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.access.control.AccessControlled;
 import com.liferay.portal.kernel.service.BaseService;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -43,7 +44,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 @ProviderType
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
-public interface SearchFilterService extends BaseService {
+public interface SearchFilterService extends BaseService, InvokableService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -53,8 +54,18 @@ public interface SearchFilterService extends BaseService {
 		java.lang.String name, java.lang.String filter, int visibility)
 		throws PortalException;
 
-	public void deleteSearchFilter(long searchFilterId)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public SearchFilter getSearchFilter(long searchFilterId)
 		throws PortalException;
+
+	public SearchFilter updateSearchFilter(long searchFilterId,
+		java.lang.String name, java.lang.String filter, int visibility)
+		throws PortalException;
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
 
 	/**
 	* Returns the OSGi service identifier.
@@ -63,11 +74,6 @@ public interface SearchFilterService extends BaseService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public SearchFilter getSearchFilter(long searchFilterId)
-		throws PortalException;
-
-	public SearchFilter updateSearchFilter(long searchFilterId,
-		java.lang.String name, java.lang.String filter, int visibility)
+	public void deleteSearchFilter(long searchFilterId)
 		throws PortalException;
 }

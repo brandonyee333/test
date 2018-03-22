@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -40,9 +41,10 @@ public class SupportWorkerServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.SupportWorkerServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static void clockInOut(long supportWorkerId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().clockInOut(supportWorkerId);
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
 	/**
@@ -54,14 +56,26 @@ public class SupportWorkerServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static void clockInOut(long supportWorkerId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().clockInOut(supportWorkerId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
 
 	public static SupportWorkerService getService() {
 		if (_service == null) {
-			_service = (SupportWorkerService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableService invokableService = (InvokableService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					SupportWorkerService.class.getName());
+
+			if (invokableService instanceof SupportWorkerService) {
+				_service = (SupportWorkerService)invokableService;
+			}
+			else {
+				_service = new SupportWorkerServiceClp(invokableService);
+			}
 
 			ReferenceRegistry.registerReference(SupportWorkerServiceUtil.class,
 				"_service");

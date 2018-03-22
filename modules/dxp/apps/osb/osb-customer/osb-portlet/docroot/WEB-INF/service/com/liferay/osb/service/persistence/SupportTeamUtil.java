@@ -1061,7 +1061,7 @@ public class SupportTeamUtil {
 
 	public static SupportTeamPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (SupportTeamPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (SupportTeamPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					SupportTeamPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(SupportTeamUtil.class,

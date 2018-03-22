@@ -347,45 +347,55 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	}
 
 	@Override
-	public boolean canRenew()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKey.canRenew();
-	}
-
-	@Override
-	public java.lang.Object clone() {
-		return new LicenseKeyWrapper((LicenseKey)_licenseKey.clone());
-	}
-
-	@Override
-	public int compareTo(LicenseKey licenseKey) {
-		return _licenseKey.compareTo(licenseKey);
-	}
-
-	@Override
 	public AccountEntry getAccountEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKey.getAccountEntry();
 	}
 
-	/**
-	* Returns the account entry ID of this license key.
-	*
-	* @return the account entry ID of this license key
-	*/
 	@Override
-	public long getAccountEntryId() {
-		return _licenseKey.getAccountEntryId();
+	public LicenseEntry getLicenseEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKey.getLicenseEntry();
 	}
 
-	/**
-	* Returns the account entry name of this license key.
-	*
-	* @return the account entry name of this license key
-	*/
 	@Override
-	public java.lang.String getAccountEntryName() {
-		return _licenseKey.getAccountEntryName();
+	public LicenseKey toEscapedModel() {
+		return new LicenseKeyWrapper(_licenseKey.toEscapedModel());
+	}
+
+	@Override
+	public LicenseKey toUnescapedModel() {
+		return new LicenseKeyWrapper(_licenseKey.toUnescapedModel());
+	}
+
+	@Override
+	public LicenseKeySet getLicenseKeySet()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKey.getLicenseKeySet();
+	}
+
+	@Override
+	public OfferingEntry getOfferingEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKey.getOfferingEntry();
+	}
+
+	@Override
+	public OrderEntry getOrderEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKey.getOrderEntry();
+	}
+
+	@Override
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKey.getProductEntry();
+	}
+
+	@Override
+	public boolean canRenew()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKey.canRenew();
 	}
 
 	/**
@@ -399,36 +409,6 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	}
 
 	/**
-	* Returns the additional info of this license key.
-	*
-	* @return the additional info of this license key
-	*/
-	@Override
-	public java.lang.String getAdditionalInfo() {
-		return _licenseKey.getAdditionalInfo();
-	}
-
-	/**
-	* Returns the asset receipt license ID of this license key.
-	*
-	* @return the asset receipt license ID of this license key
-	*/
-	@Override
-	public long getAssetReceiptLicenseId() {
-		return _licenseKey.getAssetReceiptLicenseId();
-	}
-
-	/**
-	* Returns the cluster ID of this license key.
-	*
-	* @return the cluster ID of this license key
-	*/
-	@Override
-	public long getClusterId() {
-		return _licenseKey.getClusterId();
-	}
-
-	/**
 	* Returns the complimentary of this license key.
 	*
 	* @return the complimentary of this license key
@@ -436,411 +416,6 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public boolean getComplimentary() {
 		return _licenseKey.getComplimentary();
-	}
-
-	/**
-	* Returns the create date of this license key.
-	*
-	* @return the create date of this license key
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _licenseKey.getCreateDate();
-	}
-
-	/**
-	* Returns the description of this license key.
-	*
-	* @return the description of this license key
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _licenseKey.getDescription();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _licenseKey.getExpandoBridge();
-	}
-
-	/**
-	* Returns the expiration date of this license key.
-	*
-	* @return the expiration date of this license key
-	*/
-	@Override
-	public Date getExpirationDate() {
-		return _licenseKey.getExpirationDate();
-	}
-
-	/**
-	* Returns the host name of this license key.
-	*
-	* @return the host name of this license key
-	*/
-	@Override
-	public java.lang.String getHostName() {
-		return _licenseKey.getHostName();
-	}
-
-	/**
-	* Returns the ip addresses of this license key.
-	*
-	* @return the ip addresses of this license key
-	*/
-	@Override
-	public java.lang.String getIpAddresses() {
-		return _licenseKey.getIpAddresses();
-	}
-
-	/**
-	* Returns the key of this license key.
-	*
-	* @return the key of this license key
-	*/
-	@Override
-	public java.lang.String getKey() {
-		return _licenseKey.getKey();
-	}
-
-	@Override
-	public LicenseEntry getLicenseEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKey.getLicenseEntry();
-	}
-
-	/**
-	* Returns the license entry ID of this license key.
-	*
-	* @return the license entry ID of this license key
-	*/
-	@Override
-	public long getLicenseEntryId() {
-		return _licenseKey.getLicenseEntryId();
-	}
-
-	/**
-	* Returns the license entry name of this license key.
-	*
-	* @return the license entry name of this license key
-	*/
-	@Override
-	public java.lang.String getLicenseEntryName() {
-		return _licenseKey.getLicenseEntryName();
-	}
-
-	/**
-	* Returns the license entry type of this license key.
-	*
-	* @return the license entry type of this license key
-	*/
-	@Override
-	public java.lang.String getLicenseEntryType() {
-		return _licenseKey.getLicenseEntryType();
-	}
-
-	/**
-	* Returns the license key ID of this license key.
-	*
-	* @return the license key ID of this license key
-	*/
-	@Override
-	public long getLicenseKeyId() {
-		return _licenseKey.getLicenseKeyId();
-	}
-
-	@Override
-	public LicenseKeySet getLicenseKeySet()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKey.getLicenseKeySet();
-	}
-
-	/**
-	* Returns the license key set ID of this license key.
-	*
-	* @return the license key set ID of this license key
-	*/
-	@Override
-	public long getLicenseKeySetId() {
-		return _licenseKey.getLicenseKeySetId();
-	}
-
-	/**
-	* Returns the license version of this license key.
-	*
-	* @return the license version of this license key
-	*/
-	@Override
-	public int getLicenseVersion() {
-		return _licenseKey.getLicenseVersion();
-	}
-
-	/**
-	* Returns the mac addresses of this license key.
-	*
-	* @return the mac addresses of this license key
-	*/
-	@Override
-	public java.lang.String getMacAddresses() {
-		return _licenseKey.getMacAddresses();
-	}
-
-	/**
-	* Returns the max concurrent users of this license key.
-	*
-	* @return the max concurrent users of this license key
-	*/
-	@Override
-	public long getMaxConcurrentUsers() {
-		return _licenseKey.getMaxConcurrentUsers();
-	}
-
-	/**
-	* Returns the max http sessions of this license key.
-	*
-	* @return the max http sessions of this license key
-	*/
-	@Override
-	public int getMaxHttpSessions() {
-		return _licenseKey.getMaxHttpSessions();
-	}
-
-	/**
-	* Returns the max servers of this license key.
-	*
-	* @return the max servers of this license key
-	*/
-	@Override
-	public int getMaxServers() {
-		return _licenseKey.getMaxServers();
-	}
-
-	/**
-	* Returns the max users of this license key.
-	*
-	* @return the max users of this license key
-	*/
-	@Override
-	public long getMaxUsers() {
-		return _licenseKey.getMaxUsers();
-	}
-
-	/**
-	* Returns the modified date of this license key.
-	*
-	* @return the modified date of this license key
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _licenseKey.getModifiedDate();
-	}
-
-	/**
-	* Returns the modified user ID of this license key.
-	*
-	* @return the modified user ID of this license key
-	*/
-	@Override
-	public long getModifiedUserId() {
-		return _licenseKey.getModifiedUserId();
-	}
-
-	/**
-	* Returns the modified user name of this license key.
-	*
-	* @return the modified user name of this license key
-	*/
-	@Override
-	public java.lang.String getModifiedUserName() {
-		return _licenseKey.getModifiedUserName();
-	}
-
-	/**
-	* Returns the modified user uuid of this license key.
-	*
-	* @return the modified user uuid of this license key
-	*/
-	@Override
-	public java.lang.String getModifiedUserUuid() {
-		return _licenseKey.getModifiedUserUuid();
-	}
-
-	@Override
-	public OfferingEntry getOfferingEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKey.getOfferingEntry();
-	}
-
-	/**
-	* Returns the offering entry ID of this license key.
-	*
-	* @return the offering entry ID of this license key
-	*/
-	@Override
-	public long getOfferingEntryId() {
-		return _licenseKey.getOfferingEntryId();
-	}
-
-	@Override
-	public OrderEntry getOrderEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKey.getOrderEntry();
-	}
-
-	/**
-	* Returns the order entry ID of this license key.
-	*
-	* @return the order entry ID of this license key
-	*/
-	@Override
-	public long getOrderEntryId() {
-		return _licenseKey.getOrderEntryId();
-	}
-
-	/**
-	* Returns the owner of this license key.
-	*
-	* @return the owner of this license key
-	*/
-	@Override
-	public java.lang.String getOwner() {
-		return _licenseKey.getOwner();
-	}
-
-	/**
-	* Returns the primary key of this license key.
-	*
-	* @return the primary key of this license key
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _licenseKey.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _licenseKey.getPrimaryKeyObj();
-	}
-
-	@Override
-	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKey.getProductEntry();
-	}
-
-	/**
-	* Returns the product entry ID of this license key.
-	*
-	* @return the product entry ID of this license key
-	*/
-	@Override
-	public long getProductEntryId() {
-		return _licenseKey.getProductEntryId();
-	}
-
-	/**
-	* Returns the product entry name of this license key.
-	*
-	* @return the product entry name of this license key
-	*/
-	@Override
-	public java.lang.String getProductEntryName() {
-		return _licenseKey.getProductEntryName();
-	}
-
-	/**
-	* Returns the product ID of this license key.
-	*
-	* @return the product ID of this license key
-	*/
-	@Override
-	public java.lang.String getProductId() {
-		return _licenseKey.getProductId();
-	}
-
-	/**
-	* Returns the product version of this license key.
-	*
-	* @return the product version of this license key
-	*/
-	@Override
-	public int getProductVersion() {
-		return _licenseKey.getProductVersion();
-	}
-
-	/**
-	* Returns the product version label of this license key.
-	*
-	* @return the product version label of this license key
-	*/
-	@Override
-	public java.lang.String getProductVersionLabel() {
-		return _licenseKey.getProductVersionLabel();
-	}
-
-	/**
-	* Returns the server ID of this license key.
-	*
-	* @return the server ID of this license key
-	*/
-	@Override
-	public java.lang.String getServerId() {
-		return _licenseKey.getServerId();
-	}
-
-	/**
-	* Returns the start date of this license key.
-	*
-	* @return the start date of this license key
-	*/
-	@Override
-	public Date getStartDate() {
-		return _licenseKey.getStartDate();
-	}
-
-	/**
-	* Returns the support response ID of this license key.
-	*
-	* @return the support response ID of this license key
-	*/
-	@Override
-	public long getSupportResponseId() {
-		return _licenseKey.getSupportResponseId();
-	}
-
-	/**
-	* Returns the user ID of this license key.
-	*
-	* @return the user ID of this license key
-	*/
-	@Override
-	public long getUserId() {
-		return _licenseKey.getUserId();
-	}
-
-	/**
-	* Returns the user name of this license key.
-	*
-	* @return the user name of this license key
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _licenseKey.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this license key.
-	*
-	* @return the user uuid of this license key
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _licenseKey.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _licenseKey.hashCode();
 	}
 
 	/**
@@ -881,6 +456,456 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public boolean isNew() {
 		return _licenseKey.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _licenseKey.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<LicenseKey> toCacheModel() {
+		return _licenseKey.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(LicenseKey licenseKey) {
+		return _licenseKey.compareTo(licenseKey);
+	}
+
+	/**
+	* Returns the license version of this license key.
+	*
+	* @return the license version of this license key
+	*/
+	@Override
+	public int getLicenseVersion() {
+		return _licenseKey.getLicenseVersion();
+	}
+
+	/**
+	* Returns the max http sessions of this license key.
+	*
+	* @return the max http sessions of this license key
+	*/
+	@Override
+	public int getMaxHttpSessions() {
+		return _licenseKey.getMaxHttpSessions();
+	}
+
+	/**
+	* Returns the max servers of this license key.
+	*
+	* @return the max servers of this license key
+	*/
+	@Override
+	public int getMaxServers() {
+		return _licenseKey.getMaxServers();
+	}
+
+	/**
+	* Returns the product version of this license key.
+	*
+	* @return the product version of this license key
+	*/
+	@Override
+	public int getProductVersion() {
+		return _licenseKey.getProductVersion();
+	}
+
+	@Override
+	public int hashCode() {
+		return _licenseKey.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _licenseKey.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new LicenseKeyWrapper((LicenseKey)_licenseKey.clone());
+	}
+
+	/**
+	* Returns the account entry name of this license key.
+	*
+	* @return the account entry name of this license key
+	*/
+	@Override
+	public java.lang.String getAccountEntryName() {
+		return _licenseKey.getAccountEntryName();
+	}
+
+	/**
+	* Returns the additional info of this license key.
+	*
+	* @return the additional info of this license key
+	*/
+	@Override
+	public java.lang.String getAdditionalInfo() {
+		return _licenseKey.getAdditionalInfo();
+	}
+
+	/**
+	* Returns the description of this license key.
+	*
+	* @return the description of this license key
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _licenseKey.getDescription();
+	}
+
+	/**
+	* Returns the host name of this license key.
+	*
+	* @return the host name of this license key
+	*/
+	@Override
+	public java.lang.String getHostName() {
+		return _licenseKey.getHostName();
+	}
+
+	/**
+	* Returns the ip addresses of this license key.
+	*
+	* @return the ip addresses of this license key
+	*/
+	@Override
+	public java.lang.String getIpAddresses() {
+		return _licenseKey.getIpAddresses();
+	}
+
+	/**
+	* Returns the key of this license key.
+	*
+	* @return the key of this license key
+	*/
+	@Override
+	public java.lang.String getKey() {
+		return _licenseKey.getKey();
+	}
+
+	/**
+	* Returns the license entry name of this license key.
+	*
+	* @return the license entry name of this license key
+	*/
+	@Override
+	public java.lang.String getLicenseEntryName() {
+		return _licenseKey.getLicenseEntryName();
+	}
+
+	/**
+	* Returns the license entry type of this license key.
+	*
+	* @return the license entry type of this license key
+	*/
+	@Override
+	public java.lang.String getLicenseEntryType() {
+		return _licenseKey.getLicenseEntryType();
+	}
+
+	/**
+	* Returns the mac addresses of this license key.
+	*
+	* @return the mac addresses of this license key
+	*/
+	@Override
+	public java.lang.String getMacAddresses() {
+		return _licenseKey.getMacAddresses();
+	}
+
+	/**
+	* Returns the modified user name of this license key.
+	*
+	* @return the modified user name of this license key
+	*/
+	@Override
+	public java.lang.String getModifiedUserName() {
+		return _licenseKey.getModifiedUserName();
+	}
+
+	/**
+	* Returns the modified user uuid of this license key.
+	*
+	* @return the modified user uuid of this license key
+	*/
+	@Override
+	public java.lang.String getModifiedUserUuid() {
+		return _licenseKey.getModifiedUserUuid();
+	}
+
+	/**
+	* Returns the owner of this license key.
+	*
+	* @return the owner of this license key
+	*/
+	@Override
+	public java.lang.String getOwner() {
+		return _licenseKey.getOwner();
+	}
+
+	/**
+	* Returns the product entry name of this license key.
+	*
+	* @return the product entry name of this license key
+	*/
+	@Override
+	public java.lang.String getProductEntryName() {
+		return _licenseKey.getProductEntryName();
+	}
+
+	/**
+	* Returns the product ID of this license key.
+	*
+	* @return the product ID of this license key
+	*/
+	@Override
+	public java.lang.String getProductId() {
+		return _licenseKey.getProductId();
+	}
+
+	/**
+	* Returns the product version label of this license key.
+	*
+	* @return the product version label of this license key
+	*/
+	@Override
+	public java.lang.String getProductVersionLabel() {
+		return _licenseKey.getProductVersionLabel();
+	}
+
+	/**
+	* Returns the server ID of this license key.
+	*
+	* @return the server ID of this license key
+	*/
+	@Override
+	public java.lang.String getServerId() {
+		return _licenseKey.getServerId();
+	}
+
+	/**
+	* Returns the user name of this license key.
+	*
+	* @return the user name of this license key
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _licenseKey.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this license key.
+	*
+	* @return the user uuid of this license key
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _licenseKey.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _licenseKey.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _licenseKey.toXmlString();
+	}
+
+	/**
+	* Returns the create date of this license key.
+	*
+	* @return the create date of this license key
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _licenseKey.getCreateDate();
+	}
+
+	/**
+	* Returns the expiration date of this license key.
+	*
+	* @return the expiration date of this license key
+	*/
+	@Override
+	public Date getExpirationDate() {
+		return _licenseKey.getExpirationDate();
+	}
+
+	/**
+	* Returns the modified date of this license key.
+	*
+	* @return the modified date of this license key
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _licenseKey.getModifiedDate();
+	}
+
+	/**
+	* Returns the start date of this license key.
+	*
+	* @return the start date of this license key
+	*/
+	@Override
+	public Date getStartDate() {
+		return _licenseKey.getStartDate();
+	}
+
+	/**
+	* Returns the account entry ID of this license key.
+	*
+	* @return the account entry ID of this license key
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _licenseKey.getAccountEntryId();
+	}
+
+	/**
+	* Returns the asset receipt license ID of this license key.
+	*
+	* @return the asset receipt license ID of this license key
+	*/
+	@Override
+	public long getAssetReceiptLicenseId() {
+		return _licenseKey.getAssetReceiptLicenseId();
+	}
+
+	/**
+	* Returns the cluster ID of this license key.
+	*
+	* @return the cluster ID of this license key
+	*/
+	@Override
+	public long getClusterId() {
+		return _licenseKey.getClusterId();
+	}
+
+	/**
+	* Returns the license entry ID of this license key.
+	*
+	* @return the license entry ID of this license key
+	*/
+	@Override
+	public long getLicenseEntryId() {
+		return _licenseKey.getLicenseEntryId();
+	}
+
+	/**
+	* Returns the license key ID of this license key.
+	*
+	* @return the license key ID of this license key
+	*/
+	@Override
+	public long getLicenseKeyId() {
+		return _licenseKey.getLicenseKeyId();
+	}
+
+	/**
+	* Returns the license key set ID of this license key.
+	*
+	* @return the license key set ID of this license key
+	*/
+	@Override
+	public long getLicenseKeySetId() {
+		return _licenseKey.getLicenseKeySetId();
+	}
+
+	/**
+	* Returns the max concurrent users of this license key.
+	*
+	* @return the max concurrent users of this license key
+	*/
+	@Override
+	public long getMaxConcurrentUsers() {
+		return _licenseKey.getMaxConcurrentUsers();
+	}
+
+	/**
+	* Returns the max users of this license key.
+	*
+	* @return the max users of this license key
+	*/
+	@Override
+	public long getMaxUsers() {
+		return _licenseKey.getMaxUsers();
+	}
+
+	/**
+	* Returns the modified user ID of this license key.
+	*
+	* @return the modified user ID of this license key
+	*/
+	@Override
+	public long getModifiedUserId() {
+		return _licenseKey.getModifiedUserId();
+	}
+
+	/**
+	* Returns the offering entry ID of this license key.
+	*
+	* @return the offering entry ID of this license key
+	*/
+	@Override
+	public long getOfferingEntryId() {
+		return _licenseKey.getOfferingEntryId();
+	}
+
+	/**
+	* Returns the order entry ID of this license key.
+	*
+	* @return the order entry ID of this license key
+	*/
+	@Override
+	public long getOrderEntryId() {
+		return _licenseKey.getOrderEntryId();
+	}
+
+	/**
+	* Returns the primary key of this license key.
+	*
+	* @return the primary key of this license key
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _licenseKey.getPrimaryKey();
+	}
+
+	/**
+	* Returns the product entry ID of this license key.
+	*
+	* @return the product entry ID of this license key
+	*/
+	@Override
+	public long getProductEntryId() {
+		return _licenseKey.getProductEntryId();
+	}
+
+	/**
+	* Returns the support response ID of this license key.
+	*
+	* @return the support response ID of this license key
+	*/
+	@Override
+	public long getSupportResponseId() {
+		return _licenseKey.getSupportResponseId();
+	}
+
+	/**
+	* Returns the user ID of this license key.
+	*
+	* @return the user ID of this license key
+	*/
+	@Override
+	public long getUserId() {
+		return _licenseKey.getUserId();
 	}
 
 	@Override
@@ -984,14 +1009,14 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_licenseKey.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_licenseKey.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_licenseKey.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_licenseKey.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -1347,31 +1372,6 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_licenseKey.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LicenseKey> toCacheModel() {
-		return _licenseKey.toCacheModel();
-	}
-
-	@Override
-	public LicenseKey toEscapedModel() {
-		return new LicenseKeyWrapper(_licenseKey.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _licenseKey.toString();
-	}
-
-	@Override
-	public LicenseKey toUnescapedModel() {
-		return new LicenseKeyWrapper(_licenseKey.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _licenseKey.toXmlString();
 	}
 
 	@Override

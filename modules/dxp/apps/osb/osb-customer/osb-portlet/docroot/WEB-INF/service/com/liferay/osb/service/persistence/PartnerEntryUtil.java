@@ -756,7 +756,7 @@ public class PartnerEntryUtil {
 
 	public static PartnerEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (PartnerEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (PartnerEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					PartnerEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(PartnerEntryUtil.class,

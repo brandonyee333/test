@@ -92,6 +92,69 @@ public class LicenseEntryLocalServiceWrapper implements LicenseEntryLocalService
 		return _licenseEntryLocalService.deleteLicenseEntry(licenseEntryId);
 	}
 
+	@Override
+	public com.liferay.osb.model.LicenseEntry fetchLicenseEntry(
+		long licenseEntryId) {
+		return _licenseEntryLocalService.fetchLicenseEntry(licenseEntryId);
+	}
+
+	/**
+	* Returns the license entry with the primary key.
+	*
+	* @param licenseEntryId the primary key of the license entry
+	* @return the license entry
+	* @throws PortalException if a license entry with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.LicenseEntry getLicenseEntry(
+		long licenseEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseEntryLocalService.getLicenseEntry(licenseEntryId);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseEntry getLicenseEntry(
+		long productEntryId, java.lang.String type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseEntryLocalService.getLicenseEntry(productEntryId, type);
+	}
+
+	/**
+	* Updates the license entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param licenseEntry the license entry
+	* @return the license entry that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.LicenseEntry updateLicenseEntry(
+		com.liferay.osb.model.LicenseEntry licenseEntry) {
+		return _licenseEntryLocalService.updateLicenseEntry(licenseEntry);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseEntry updateLicenseEntry(
+		long licenseEntryId, long productEntryId, java.lang.String name,
+		java.lang.String type, int portalVersionMin, int portalVersionMax)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseEntryLocalService.updateLicenseEntry(licenseEntryId,
+			productEntryId, name, type, portalVersionMin, portalVersionMax);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _licenseEntryLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _licenseEntryLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _licenseEntryLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -103,8 +166,38 @@ public class LicenseEntryLocalServiceWrapper implements LicenseEntryLocalService
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _licenseEntryLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseEntryLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of license entries.
+	*
+	* @return the number of license entries
+	*/
+	@Override
+	public int getLicenseEntriesCount() {
+		return _licenseEntryLocalService.getLicenseEntriesCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _licenseEntryLocalService.invokeMethod(name, parameterTypes,
+			arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _licenseEntryLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -161,49 +254,6 @@ public class LicenseEntryLocalServiceWrapper implements LicenseEntryLocalService
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
-		return _licenseEntryLocalService.dynamicQueryCount(dynamicQuery);
-	}
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	@Override
-	public long dynamicQueryCount(
-		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
-		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _licenseEntryLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseEntry fetchLicenseEntry(
-		long licenseEntryId) {
-		return _licenseEntryLocalService.fetchLicenseEntry(licenseEntryId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _licenseEntryLocalService.getActionableDynamicQuery();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _licenseEntryLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
 	* Returns a range of all the license entries.
 	*
 	* <p>
@@ -234,72 +284,30 @@ public class LicenseEntryLocalServiceWrapper implements LicenseEntryLocalService
 	}
 
 	/**
-	* Returns the number of license entries.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of license entries
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public int getLicenseEntriesCount() {
-		return _licenseEntryLocalService.getLicenseEntriesCount();
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+		return _licenseEntryLocalService.dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Returns the license entry with the primary key.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @param licenseEntryId the primary key of the license entry
-	* @return the license entry
-	* @throws PortalException if a license entry with the primary key could not be found
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
 	@Override
-	public com.liferay.osb.model.LicenseEntry getLicenseEntry(
-		long licenseEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseEntryLocalService.getLicenseEntry(licenseEntryId);
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseEntry getLicenseEntry(
-		long productEntryId, java.lang.String type)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseEntryLocalService.getLicenseEntry(productEntryId, type);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _licenseEntryLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseEntryLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the license entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param licenseEntry the license entry
-	* @return the license entry that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.LicenseEntry updateLicenseEntry(
-		com.liferay.osb.model.LicenseEntry licenseEntry) {
-		return _licenseEntryLocalService.updateLicenseEntry(licenseEntry);
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseEntry updateLicenseEntry(
-		long licenseEntryId, long productEntryId, java.lang.String name,
-		java.lang.String type, int portalVersionMin, int portalVersionMax)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseEntryLocalService.updateLicenseEntry(licenseEntryId,
-			productEntryId, name, type, portalVersionMin, portalVersionMax);
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+		return _licenseEntryLocalService.dynamicQueryCount(dynamicQuery,
+			projection);
 	}
 
 	@Override

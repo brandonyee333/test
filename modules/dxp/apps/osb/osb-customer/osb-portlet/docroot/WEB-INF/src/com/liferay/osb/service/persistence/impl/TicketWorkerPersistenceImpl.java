@@ -37,11 +37,10 @@ import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.Serializable;
-
-import java.lang.reflect.Field;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -295,7 +294,7 @@ public class TicketWorkerPersistenceImpl extends BasePersistenceImpl<TicketWorke
 		msg.append("userId=");
 		msg.append(userId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketWorkerException(msg.toString());
 	}
@@ -344,7 +343,7 @@ public class TicketWorkerPersistenceImpl extends BasePersistenceImpl<TicketWorke
 		msg.append("userId=");
 		msg.append(userId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketWorkerException(msg.toString());
 	}
@@ -804,7 +803,7 @@ public class TicketWorkerPersistenceImpl extends BasePersistenceImpl<TicketWorke
 		msg.append("ticketEntryId=");
 		msg.append(ticketEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketWorkerException(msg.toString());
 	}
@@ -855,7 +854,7 @@ public class TicketWorkerPersistenceImpl extends BasePersistenceImpl<TicketWorke
 		msg.append("ticketEntryId=");
 		msg.append(ticketEntryId);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketWorkerException(msg.toString());
 	}
@@ -1132,7 +1131,7 @@ public class TicketWorkerPersistenceImpl extends BasePersistenceImpl<TicketWorke
 			msg.append(", ticketEntryId=");
 			msg.append(ticketEntryId);
 
-			msg.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -1366,7 +1365,7 @@ public class TicketWorkerPersistenceImpl extends BasePersistenceImpl<TicketWorke
 			msg.append(", primary=");
 			msg.append(primary);
 
-			msg.append("}");
+			msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 			if (_log.isDebugEnabled()) {
 				_log.debug(msg.toString());
@@ -1801,7 +1800,7 @@ public class TicketWorkerPersistenceImpl extends BasePersistenceImpl<TicketWorke
 		msg.append(", sourceClassPK=");
 		msg.append(sourceClassPK);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketWorkerException(msg.toString());
 	}
@@ -1857,7 +1856,7 @@ public class TicketWorkerPersistenceImpl extends BasePersistenceImpl<TicketWorke
 		msg.append(", sourceClassPK=");
 		msg.append(sourceClassPK);
 
-		msg.append("}");
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
 		throw new NoSuchTicketWorkerException(msg.toString());
 	}
@@ -2116,24 +2115,6 @@ public class TicketWorkerPersistenceImpl extends BasePersistenceImpl<TicketWorke
 
 	public TicketWorkerPersistenceImpl() {
 		setModelClass(TicketWorker.class);
-
-		try {
-			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
-
-			field.setAccessible(true);
-
-			Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-			dbColumnNames.put("primary", "primary_");
-
-			field.set(this, dbColumnNames);
-		}
-		catch (Exception e) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
-			}
-		}
 	}
 
 	/**
@@ -2699,12 +2680,12 @@ public class TicketWorkerPersistenceImpl extends BasePersistenceImpl<TicketWorke
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
 			query.append((long)primaryKey);
 
-			query.append(",");
+			query.append(StringPool.COMMA);
 		}
 
 		query.setIndex(query.index() - 1);
 
-		query.append(")");
+		query.append(StringPool.CLOSE_PARENTHESIS);
 
 		String sql = query.toString();
 

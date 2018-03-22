@@ -34,6 +34,14 @@ public class SupportWorkerComponentServiceWrapper
 		_supportWorkerComponentService = supportWorkerComponentService;
 	}
 
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _supportWorkerComponentService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*

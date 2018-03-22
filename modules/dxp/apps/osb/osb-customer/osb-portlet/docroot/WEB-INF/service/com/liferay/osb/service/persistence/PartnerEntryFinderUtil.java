@@ -53,7 +53,7 @@ public class PartnerEntryFinderUtil {
 
 	public static PartnerEntryFinder getFinder() {
 		if (_finder == null) {
-			_finder = (PartnerEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_finder = (PartnerEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					PartnerEntryFinder.class.getName());
 
 			ReferenceRegistry.registerReference(PartnerEntryFinderUtil.class,

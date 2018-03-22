@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -306,7 +307,7 @@ public class AccountAttachmentModelImpl extends BaseModelImpl<AccountAttachment>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -318,7 +319,7 @@ public class AccountAttachmentModelImpl extends BaseModelImpl<AccountAttachment>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -393,7 +394,7 @@ public class AccountAttachmentModelImpl extends BaseModelImpl<AccountAttachment>
 	@Override
 	public String getFileName() {
 		if (_fileName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _fileName;

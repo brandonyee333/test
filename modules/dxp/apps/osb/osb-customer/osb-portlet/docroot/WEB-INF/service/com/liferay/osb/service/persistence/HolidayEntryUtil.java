@@ -433,7 +433,7 @@ public class HolidayEntryUtil {
 
 	public static HolidayEntryPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (HolidayEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (HolidayEntryPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					HolidayEntryPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(HolidayEntryUtil.class,

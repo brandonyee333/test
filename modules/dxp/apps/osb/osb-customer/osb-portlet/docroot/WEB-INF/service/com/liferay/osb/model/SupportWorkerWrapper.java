@@ -150,28 +150,25 @@ public class SupportWorkerWrapper implements SupportWorker,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new SupportWorkerWrapper((SupportWorker)_supportWorker.clone());
+	public SupportLabor getSupportLabor()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportWorker.getSupportLabor();
 	}
 
 	@Override
-	public int compareTo(SupportWorker supportWorker) {
-		return _supportWorker.compareTo(supportWorker);
+	public SupportTeam getSupportTeam()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportWorker.getSupportTeam();
 	}
 
 	@Override
-	public java.util.List<java.lang.Integer> getAccountTiers() {
-		return _supportWorker.getAccountTiers();
+	public SupportWorker toEscapedModel() {
+		return new SupportWorkerWrapper(_supportWorker.toEscapedModel());
 	}
 
-	/**
-	* Returns the assigned work of this support worker.
-	*
-	* @return the assigned work of this support worker
-	*/
 	@Override
-	public double getAssignedWork() {
-		return _supportWorker.getAssignedWork();
+	public SupportWorker toUnescapedModel() {
+		return new SupportWorkerWrapper(_supportWorker.toUnescapedModel());
 	}
 
 	/**
@@ -192,175 +189,6 @@ public class SupportWorkerWrapper implements SupportWorker,
 	@Override
 	public boolean getClockedIn() {
 		return _supportWorker.getClockedIn();
-	}
-
-	@Override
-	public java.util.List<java.lang.Integer> getComponents() {
-		return _supportWorker.getComponents();
-	}
-
-	/**
-	* Returns the escalation level of this support worker.
-	*
-	* @return the escalation level of this support worker
-	*/
-	@Override
-	public int getEscalationLevel() {
-		return _supportWorker.getEscalationLevel();
-	}
-
-	/**
-	* Returns the escalation level2 role of this support worker.
-	*
-	* @return the escalation level2 role of this support worker
-	*/
-	@Override
-	public int getEscalationLevel2Role() {
-		return _supportWorker.getEscalationLevel2Role();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _supportWorker.getExpandoBridge();
-	}
-
-	/**
-	* Returns the max work of this support worker.
-	*
-	* @return the max work of this support worker
-	*/
-	@Override
-	public double getMaxWork() {
-		return _supportWorker.getMaxWork();
-	}
-
-	/**
-	* Returns the notifications of this support worker.
-	*
-	* @return the notifications of this support worker
-	*/
-	@Override
-	public int getNotifications() {
-		return _supportWorker.getNotifications();
-	}
-
-	@Override
-	public java.lang.String getNotificationsLabel() {
-		return _supportWorker.getNotificationsLabel();
-	}
-
-	/**
-	* Returns the primary key of this support worker.
-	*
-	* @return the primary key of this support worker
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _supportWorker.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _supportWorker.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the role of this support worker.
-	*
-	* @return the role of this support worker
-	*/
-	@Override
-	public int getRole() {
-		return _supportWorker.getRole();
-	}
-
-	@Override
-	public java.lang.String getRoleLabel() {
-		return _supportWorker.getRoleLabel();
-	}
-
-	@Override
-	public java.util.List<java.lang.Integer> getSeverities() {
-		return _supportWorker.getSeverities();
-	}
-
-	@Override
-	public SupportLabor getSupportLabor()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportWorker.getSupportLabor();
-	}
-
-	/**
-	* Returns the support labor ID of this support worker.
-	*
-	* @return the support labor ID of this support worker
-	*/
-	@Override
-	public long getSupportLaborId() {
-		return _supportWorker.getSupportLaborId();
-	}
-
-	@Override
-	public SupportTeam getSupportTeam()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportWorker.getSupportTeam();
-	}
-
-	/**
-	* Returns the support team ID of this support worker.
-	*
-	* @return the support team ID of this support worker
-	*/
-	@Override
-	public long getSupportTeamId() {
-		return _supportWorker.getSupportTeamId();
-	}
-
-	/**
-	* Returns the support worker ID of this support worker.
-	*
-	* @return the support worker ID of this support worker
-	*/
-	@Override
-	public long getSupportWorkerId() {
-		return _supportWorker.getSupportWorkerId();
-	}
-
-	@Override
-	public java.lang.Long getTimeUntilClose()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportWorker.getTimeUntilClose();
-	}
-
-	@Override
-	public java.lang.Long getTimeUntilOpen()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _supportWorker.getTimeUntilOpen();
-	}
-
-	/**
-	* Returns the user ID of this support worker.
-	*
-	* @return the user ID of this support worker
-	*/
-	@Override
-	public long getUserId() {
-		return _supportWorker.getUserId();
-	}
-
-	/**
-	* Returns the user uuid of this support worker.
-	*
-	* @return the user uuid of this support worker
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _supportWorker.getUserUuid();
-	}
-
-	@Override
-	public int hashCode() {
-		return _supportWorker.hashCode();
 	}
 
 	@Override
@@ -408,6 +236,203 @@ public class SupportWorkerWrapper implements SupportWorker,
 	@Override
 	public boolean isNew() {
 		return _supportWorker.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _supportWorker.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<SupportWorker> toCacheModel() {
+		return _supportWorker.toCacheModel();
+	}
+
+	/**
+	* Returns the assigned work of this support worker.
+	*
+	* @return the assigned work of this support worker
+	*/
+	@Override
+	public double getAssignedWork() {
+		return _supportWorker.getAssignedWork();
+	}
+
+	/**
+	* Returns the max work of this support worker.
+	*
+	* @return the max work of this support worker
+	*/
+	@Override
+	public double getMaxWork() {
+		return _supportWorker.getMaxWork();
+	}
+
+	@Override
+	public int compareTo(SupportWorker supportWorker) {
+		return _supportWorker.compareTo(supportWorker);
+	}
+
+	/**
+	* Returns the escalation level of this support worker.
+	*
+	* @return the escalation level of this support worker
+	*/
+	@Override
+	public int getEscalationLevel() {
+		return _supportWorker.getEscalationLevel();
+	}
+
+	/**
+	* Returns the escalation level2 role of this support worker.
+	*
+	* @return the escalation level2 role of this support worker
+	*/
+	@Override
+	public int getEscalationLevel2Role() {
+		return _supportWorker.getEscalationLevel2Role();
+	}
+
+	/**
+	* Returns the notifications of this support worker.
+	*
+	* @return the notifications of this support worker
+	*/
+	@Override
+	public int getNotifications() {
+		return _supportWorker.getNotifications();
+	}
+
+	/**
+	* Returns the role of this support worker.
+	*
+	* @return the role of this support worker
+	*/
+	@Override
+	public int getRole() {
+		return _supportWorker.getRole();
+	}
+
+	@Override
+	public int hashCode() {
+		return _supportWorker.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _supportWorker.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Long getTimeUntilClose()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportWorker.getTimeUntilClose();
+	}
+
+	@Override
+	public java.lang.Long getTimeUntilOpen()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _supportWorker.getTimeUntilOpen();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new SupportWorkerWrapper((SupportWorker)_supportWorker.clone());
+	}
+
+	@Override
+	public java.lang.String getNotificationsLabel() {
+		return _supportWorker.getNotificationsLabel();
+	}
+
+	@Override
+	public java.lang.String getRoleLabel() {
+		return _supportWorker.getRoleLabel();
+	}
+
+	/**
+	* Returns the user uuid of this support worker.
+	*
+	* @return the user uuid of this support worker
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _supportWorker.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _supportWorker.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _supportWorker.toXmlString();
+	}
+
+	@Override
+	public java.util.List<java.lang.Integer> getAccountTiers() {
+		return _supportWorker.getAccountTiers();
+	}
+
+	@Override
+	public java.util.List<java.lang.Integer> getComponents() {
+		return _supportWorker.getComponents();
+	}
+
+	@Override
+	public java.util.List<java.lang.Integer> getSeverities() {
+		return _supportWorker.getSeverities();
+	}
+
+	/**
+	* Returns the primary key of this support worker.
+	*
+	* @return the primary key of this support worker
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _supportWorker.getPrimaryKey();
+	}
+
+	/**
+	* Returns the support labor ID of this support worker.
+	*
+	* @return the support labor ID of this support worker
+	*/
+	@Override
+	public long getSupportLaborId() {
+		return _supportWorker.getSupportLaborId();
+	}
+
+	/**
+	* Returns the support team ID of this support worker.
+	*
+	* @return the support team ID of this support worker
+	*/
+	@Override
+	public long getSupportTeamId() {
+		return _supportWorker.getSupportTeamId();
+	}
+
+	/**
+	* Returns the support worker ID of this support worker.
+	*
+	* @return the support worker ID of this support worker
+	*/
+	@Override
+	public long getSupportWorkerId() {
+		return _supportWorker.getSupportWorkerId();
+	}
+
+	/**
+	* Returns the user ID of this support worker.
+	*
+	* @return the user ID of this support worker
+	*/
+	@Override
+	public long getUserId() {
+		return _supportWorker.getUserId();
 	}
 
 	@Override
@@ -471,14 +496,14 @@ public class SupportWorkerWrapper implements SupportWorker,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_supportWorker.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_supportWorker.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_supportWorker.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_supportWorker.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -584,31 +609,6 @@ public class SupportWorkerWrapper implements SupportWorker,
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_supportWorker.setUserUuid(userUuid);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SupportWorker> toCacheModel() {
-		return _supportWorker.toCacheModel();
-	}
-
-	@Override
-	public SupportWorker toEscapedModel() {
-		return new SupportWorkerWrapper(_supportWorker.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _supportWorker.toString();
-	}
-
-	@Override
-	public SupportWorker toUnescapedModel() {
-		return new SupportWorkerWrapper(_supportWorker.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _supportWorker.toXmlString();
 	}
 
 	@Override

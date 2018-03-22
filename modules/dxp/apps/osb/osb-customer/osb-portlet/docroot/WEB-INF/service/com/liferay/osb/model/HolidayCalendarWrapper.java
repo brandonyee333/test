@@ -86,68 +86,13 @@ public class HolidayCalendarWrapper implements HolidayCalendar,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new HolidayCalendarWrapper((HolidayCalendar)_holidayCalendar.clone());
+	public HolidayCalendar toEscapedModel() {
+		return new HolidayCalendarWrapper(_holidayCalendar.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(HolidayCalendar holidayCalendar) {
-		return _holidayCalendar.compareTo(holidayCalendar);
-	}
-
-	/**
-	* Returns the description of this holiday calendar.
-	*
-	* @return the description of this holiday calendar
-	*/
-	@Override
-	public java.lang.String getDescription() {
-		return _holidayCalendar.getDescription();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _holidayCalendar.getExpandoBridge();
-	}
-
-	/**
-	* Returns the holiday calendar ID of this holiday calendar.
-	*
-	* @return the holiday calendar ID of this holiday calendar
-	*/
-	@Override
-	public long getHolidayCalendarId() {
-		return _holidayCalendar.getHolidayCalendarId();
-	}
-
-	/**
-	* Returns the name of this holiday calendar.
-	*
-	* @return the name of this holiday calendar
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _holidayCalendar.getName();
-	}
-
-	/**
-	* Returns the primary key of this holiday calendar.
-	*
-	* @return the primary key of this holiday calendar
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _holidayCalendar.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _holidayCalendar.getPrimaryKeyObj();
-	}
-
-	@Override
-	public int hashCode() {
-		return _holidayCalendar.hashCode();
+	public HolidayCalendar toUnescapedModel() {
+		return new HolidayCalendarWrapper(_holidayCalendar.toUnescapedModel());
 	}
 
 	@Override
@@ -163,6 +108,86 @@ public class HolidayCalendarWrapper implements HolidayCalendar,
 	@Override
 	public boolean isNew() {
 		return _holidayCalendar.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _holidayCalendar.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<HolidayCalendar> toCacheModel() {
+		return _holidayCalendar.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(HolidayCalendar holidayCalendar) {
+		return _holidayCalendar.compareTo(holidayCalendar);
+	}
+
+	@Override
+	public int hashCode() {
+		return _holidayCalendar.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _holidayCalendar.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new HolidayCalendarWrapper((HolidayCalendar)_holidayCalendar.clone());
+	}
+
+	/**
+	* Returns the description of this holiday calendar.
+	*
+	* @return the description of this holiday calendar
+	*/
+	@Override
+	public java.lang.String getDescription() {
+		return _holidayCalendar.getDescription();
+	}
+
+	/**
+	* Returns the name of this holiday calendar.
+	*
+	* @return the name of this holiday calendar
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _holidayCalendar.getName();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _holidayCalendar.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _holidayCalendar.toXmlString();
+	}
+
+	/**
+	* Returns the holiday calendar ID of this holiday calendar.
+	*
+	* @return the holiday calendar ID of this holiday calendar
+	*/
+	@Override
+	public long getHolidayCalendarId() {
+		return _holidayCalendar.getHolidayCalendarId();
+	}
+
+	/**
+	* Returns the primary key of this holiday calendar.
+	*
+	* @return the primary key of this holiday calendar
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _holidayCalendar.getPrimaryKey();
 	}
 
 	@Override
@@ -186,14 +211,14 @@ public class HolidayCalendarWrapper implements HolidayCalendar,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_holidayCalendar.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_holidayCalendar.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_holidayCalendar.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_holidayCalendar.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -239,31 +264,6 @@ public class HolidayCalendarWrapper implements HolidayCalendar,
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_holidayCalendar.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<HolidayCalendar> toCacheModel() {
-		return _holidayCalendar.toCacheModel();
-	}
-
-	@Override
-	public HolidayCalendar toEscapedModel() {
-		return new HolidayCalendarWrapper(_holidayCalendar.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _holidayCalendar.toString();
-	}
-
-	@Override
-	public HolidayCalendar toUnescapedModel() {
-		return new HolidayCalendarWrapper(_holidayCalendar.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _holidayCalendar.toXmlString();
 	}
 
 	@Override

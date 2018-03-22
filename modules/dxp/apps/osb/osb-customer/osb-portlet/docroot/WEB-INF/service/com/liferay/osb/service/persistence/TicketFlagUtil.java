@@ -983,7 +983,7 @@ public class TicketFlagUtil {
 
 	public static TicketFlagPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (TicketFlagPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (TicketFlagPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					TicketFlagPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(TicketFlagUtil.class,

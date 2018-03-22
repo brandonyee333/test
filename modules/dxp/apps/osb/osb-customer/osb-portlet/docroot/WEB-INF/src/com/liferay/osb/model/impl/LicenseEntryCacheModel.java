@@ -21,6 +21,7 @@ import com.liferay.osb.model.LicenseEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -100,7 +101,7 @@ public class LicenseEntryCacheModel implements CacheModel<LicenseEntry>,
 		licenseEntryImpl.setUserId(userId);
 
 		if (userName == null) {
-			licenseEntryImpl.setUserName("");
+			licenseEntryImpl.setUserName(StringPool.BLANK);
 		}
 		else {
 			licenseEntryImpl.setUserName(userName);
@@ -123,14 +124,14 @@ public class LicenseEntryCacheModel implements CacheModel<LicenseEntry>,
 		licenseEntryImpl.setProductEntryId(productEntryId);
 
 		if (name == null) {
-			licenseEntryImpl.setName("");
+			licenseEntryImpl.setName(StringPool.BLANK);
 		}
 		else {
 			licenseEntryImpl.setName(name);
 		}
 
 		if (type == null) {
-			licenseEntryImpl.setType("");
+			licenseEntryImpl.setType(StringPool.BLANK);
 		}
 		else {
 			licenseEntryImpl.setType(type);
@@ -170,7 +171,7 @@ public class LicenseEntryCacheModel implements CacheModel<LicenseEntry>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -182,14 +183,14 @@ public class LicenseEntryCacheModel implements CacheModel<LicenseEntry>,
 		objectOutput.writeLong(productEntryId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (type == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(type);

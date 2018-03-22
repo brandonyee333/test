@@ -46,11 +46,6 @@ public class CorpProjectMessageLocalServiceWrapper
 		return _corpProjectMessageLocalService.addCorpProjectMessage(corpProjectMessage);
 	}
 
-	@Override
-	public void checkCorpProjects() throws java.lang.Exception {
-		_corpProjectMessageLocalService.checkCorpProjects();
-	}
-
 	/**
 	* Creates a new corp project message with the primary key. Does not add the corp project message to the database.
 	*
@@ -89,6 +84,53 @@ public class CorpProjectMessageLocalServiceWrapper
 		return _corpProjectMessageLocalService.deleteCorpProjectMessage(corpProjectMessageId);
 	}
 
+	@Override
+	public com.liferay.osb.model.CorpProjectMessage fetchCorpProjectMessage(
+		long corpProjectMessageId) {
+		return _corpProjectMessageLocalService.fetchCorpProjectMessage(corpProjectMessageId);
+	}
+
+	/**
+	* Returns the corp project message with the primary key.
+	*
+	* @param corpProjectMessageId the primary key of the corp project message
+	* @return the corp project message
+	* @throws PortalException if a corp project message with the primary key could not be found
+	*/
+	@Override
+	public com.liferay.osb.model.CorpProjectMessage getCorpProjectMessage(
+		long corpProjectMessageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectMessageLocalService.getCorpProjectMessage(corpProjectMessageId);
+	}
+
+	/**
+	* Updates the corp project message in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param corpProjectMessage the corp project message
+	* @return the corp project message that was updated
+	*/
+	@Override
+	public com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
+		com.liferay.osb.model.CorpProjectMessage corpProjectMessage) {
+		return _corpProjectMessageLocalService.updateCorpProjectMessage(corpProjectMessage);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return _corpProjectMessageLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _corpProjectMessageLocalService.dynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return _corpProjectMessageLocalService.getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -100,8 +142,38 @@ public class CorpProjectMessageLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _corpProjectMessageLocalService.dynamicQuery();
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectMessageLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of corp project messages.
+	*
+	* @return the number of corp project messages
+	*/
+	@Override
+	public int getCorpProjectMessagesCount() {
+		return _corpProjectMessageLocalService.getCorpProjectMessagesCount();
+	}
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return _corpProjectMessageLocalService.invokeMethod(name,
+			parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		return _corpProjectMessageLocalService.getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -159,6 +231,23 @@ public class CorpProjectMessageLocalServiceWrapper
 	}
 
 	/**
+	* Returns a range of all the corp project messages.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.CorpProjectMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of corp project messages
+	* @param end the upper bound of the range of corp project messages (not inclusive)
+	* @return the range of corp project messages
+	*/
+	@Override
+	public java.util.List<com.liferay.osb.model.CorpProjectMessage> getCorpProjectMessages(
+		int start, int end) {
+		return _corpProjectMessageLocalService.getCorpProjectMessages(start, end);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -186,89 +275,8 @@ public class CorpProjectMessageLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.model.CorpProjectMessage fetchCorpProjectMessage(
-		long corpProjectMessageId) {
-		return _corpProjectMessageLocalService.fetchCorpProjectMessage(corpProjectMessageId);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return _corpProjectMessageLocalService.getActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the corp project message with the primary key.
-	*
-	* @param corpProjectMessageId the primary key of the corp project message
-	* @return the corp project message
-	* @throws PortalException if a corp project message with the primary key could not be found
-	*/
-	@Override
-	public com.liferay.osb.model.CorpProjectMessage getCorpProjectMessage(
-		long corpProjectMessageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectMessageLocalService.getCorpProjectMessage(corpProjectMessageId);
-	}
-
-	/**
-	* Returns a range of all the corp project messages.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.CorpProjectMessageModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of corp project messages
-	* @param end the upper bound of the range of corp project messages (not inclusive)
-	* @return the range of corp project messages
-	*/
-	@Override
-	public java.util.List<com.liferay.osb.model.CorpProjectMessage> getCorpProjectMessages(
-		int start, int end) {
-		return _corpProjectMessageLocalService.getCorpProjectMessages(start, end);
-	}
-
-	/**
-	* Returns the number of corp project messages.
-	*
-	* @return the number of corp project messages
-	*/
-	@Override
-	public int getCorpProjectMessagesCount() {
-		return _corpProjectMessageLocalService.getCorpProjectMessagesCount();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return _corpProjectMessageLocalService.getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		return _corpProjectMessageLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectMessageLocalService.getPersistedModel(primaryKeyObj);
-	}
-
-	/**
-	* Updates the corp project message in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param corpProjectMessage the corp project message
-	* @return the corp project message that was updated
-	*/
-	@Override
-	public com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
-		com.liferay.osb.model.CorpProjectMessage corpProjectMessage) {
-		return _corpProjectMessageLocalService.updateCorpProjectMessage(corpProjectMessage);
+	public void checkCorpProjects() throws java.lang.Exception {
+		_corpProjectMessageLocalService.checkCorpProjects();
 	}
 
 	@Override

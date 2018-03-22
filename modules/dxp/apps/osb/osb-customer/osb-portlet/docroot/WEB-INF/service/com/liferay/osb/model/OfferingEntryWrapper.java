@@ -234,82 +234,37 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new OfferingEntryWrapper((OfferingEntry)_offeringEntry.clone());
-	}
-
-	@Override
-	public int compareTo(OfferingEntry offeringEntry) {
-		return _offeringEntry.compareTo(offeringEntry);
-	}
-
-	@Override
 	public AccountEntry getAccountEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getAccountEntry();
 	}
 
-	/**
-	* Returns the account entry ID of this offering entry.
-	*
-	* @return the account entry ID of this offering entry
-	*/
 	@Override
-	public long getAccountEntryId() {
-		return _offeringEntry.getAccountEntryId();
+	public OfferingEntry toEscapedModel() {
+		return new OfferingEntryWrapper(_offeringEntry.toEscapedModel());
 	}
 
 	@Override
-	public Date getActualStartDate()
+	public OfferingEntry toUnescapedModel() {
+		return new OfferingEntryWrapper(_offeringEntry.toUnescapedModel());
+	}
+
+	@Override
+	public OrderEntry getOrderEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getActualStartDate();
+		return _offeringEntry.getOrderEntry();
 	}
 
 	@Override
-	public int getAvailableServers()
+	public ProductEntry getProductEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getAvailableServers();
-	}
-
-	/**
-	* Returns the create date of this offering entry.
-	*
-	* @return the create date of this offering entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _offeringEntry.getCreateDate();
+		return _offeringEntry.getProductEntry();
 	}
 
 	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _offeringEntry.getExpandoBridge();
-	}
-
-	@Override
-	public java.lang.String getKey()
+	public SupportResponse getSupportResponse()
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getKey();
-	}
-
-	@Override
-	public java.util.List<LicenseKey> getLicenseKeys() {
-		return _offeringEntry.getLicenseKeys();
-	}
-
-	@Override
-	public int getLicenseKeysCount() {
-		return _offeringEntry.getLicenseKeysCount();
-	}
-
-	/**
-	* Returns the license lifetime of this offering entry.
-	*
-	* @return the license lifetime of this offering entry
-	*/
-	@Override
-	public long getLicenseLifetime() {
-		return _offeringEntry.getLicenseLifetime();
+		return _offeringEntry.getSupportResponse();
 	}
 
 	/**
@@ -323,211 +278,6 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	/**
-	* Returns the max concurrent users of this offering entry.
-	*
-	* @return the max concurrent users of this offering entry
-	*/
-	@Override
-	public long getMaxConcurrentUsers() {
-		return _offeringEntry.getMaxConcurrentUsers();
-	}
-
-	/**
-	* Returns the max users of this offering entry.
-	*
-	* @return the max users of this offering entry
-	*/
-	@Override
-	public long getMaxUsers() {
-		return _offeringEntry.getMaxUsers();
-	}
-
-	/**
-	* Returns the modified date of this offering entry.
-	*
-	* @return the modified date of this offering entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _offeringEntry.getModifiedDate();
-	}
-
-	@Override
-	public OfferingEntryGroup getOfferingEntryGroup()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getOfferingEntryGroup();
-	}
-
-	/**
-	* Returns the offering entry ID of this offering entry.
-	*
-	* @return the offering entry ID of this offering entry
-	*/
-	@Override
-	public long getOfferingEntryId() {
-		return _offeringEntry.getOfferingEntryId();
-	}
-
-	@Override
-	public OrderEntry getOrderEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getOrderEntry();
-	}
-
-	/**
-	* Returns the order entry ID of this offering entry.
-	*
-	* @return the order entry ID of this offering entry
-	*/
-	@Override
-	public long getOrderEntryId() {
-		return _offeringEntry.getOrderEntryId();
-	}
-
-	/**
-	* Returns the platform of this offering entry.
-	*
-	* @return the platform of this offering entry
-	*/
-	@Override
-	public java.lang.String getPlatform() {
-		return _offeringEntry.getPlatform();
-	}
-
-	/**
-	* Returns the platform version of this offering entry.
-	*
-	* @return the platform version of this offering entry
-	*/
-	@Override
-	public java.lang.String getPlatformVersion() {
-		return _offeringEntry.getPlatformVersion();
-	}
-
-	/**
-	* Returns the primary key of this offering entry.
-	*
-	* @return the primary key of this offering entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _offeringEntry.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _offeringEntry.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the product description of this offering entry.
-	*
-	* @return the product description of this offering entry
-	*/
-	@Override
-	public java.lang.String getProductDescription() {
-		return _offeringEntry.getProductDescription();
-	}
-
-	@Override
-	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getProductEntry();
-	}
-
-	/**
-	* Returns the product entry ID of this offering entry.
-	*
-	* @return the product entry ID of this offering entry
-	*/
-	@Override
-	public long getProductEntryId() {
-		return _offeringEntry.getProductEntryId();
-	}
-
-	/**
-	* Returns the quantity of this offering entry.
-	*
-	* @return the quantity of this offering entry
-	*/
-	@Override
-	public int getQuantity() {
-		return _offeringEntry.getQuantity();
-	}
-
-	/**
-	* Returns the sizing of this offering entry.
-	*
-	* @return the sizing of this offering entry
-	*/
-	@Override
-	public int getSizing() {
-		return _offeringEntry.getSizing();
-	}
-
-	@Override
-	public java.lang.String getSizingLabel() {
-		return _offeringEntry.getSizingLabel();
-	}
-
-	@Override
-	public Date getStartDate()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getStartDate();
-	}
-
-	/**
-	* Returns the status of this offering entry.
-	*
-	* @return the status of this offering entry
-	*/
-	@Override
-	public int getStatus() {
-		return _offeringEntry.getStatus();
-	}
-
-	@Override
-	public java.lang.String getStatusLabel() {
-		return _offeringEntry.getStatusLabel();
-	}
-
-	/**
-	* Returns the support end date of this offering entry.
-	*
-	* @return the support end date of this offering entry
-	*/
-	@Override
-	public Date getSupportEndDate() {
-		return _offeringEntry.getSupportEndDate();
-	}
-
-	/**
-	* Returns the support lifetime of this offering entry.
-	*
-	* @return the support lifetime of this offering entry
-	*/
-	@Override
-	public long getSupportLifetime() {
-		return _offeringEntry.getSupportLifetime();
-	}
-
-	@Override
-	public SupportResponse getSupportResponse()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getSupportResponse();
-	}
-
-	/**
-	* Returns the support response ID of this offering entry.
-	*
-	* @return the support response ID of this offering entry
-	*/
-	@Override
-	public long getSupportResponseId() {
-		return _offeringEntry.getSupportResponseId();
-	}
-
-	/**
 	* Returns the support tickets of this offering entry.
 	*
 	* @return the support tickets of this offering entry
@@ -535,71 +285,6 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	@Override
 	public boolean getSupportTickets() {
 		return _offeringEntry.getSupportTickets();
-	}
-
-	@Override
-	public int getTicketEntriesCount() {
-		return _offeringEntry.getTicketEntriesCount();
-	}
-
-	/**
-	* Returns the type of this offering entry.
-	*
-	* @return the type of this offering entry
-	*/
-	@Override
-	public int getType() {
-		return _offeringEntry.getType();
-	}
-
-	@Override
-	public java.lang.String getTypeLabel() {
-		return _offeringEntry.getTypeLabel();
-	}
-
-	/**
-	* Returns the user ID of this offering entry.
-	*
-	* @return the user ID of this offering entry
-	*/
-	@Override
-	public long getUserId() {
-		return _offeringEntry.getUserId();
-	}
-
-	/**
-	* Returns the user name of this offering entry.
-	*
-	* @return the user name of this offering entry
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _offeringEntry.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this offering entry.
-	*
-	* @return the user uuid of this offering entry
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _offeringEntry.getUserUuid();
-	}
-
-	/**
-	* Returns the version of this offering entry.
-	*
-	* @return the version of this offering entry
-	*/
-	@Override
-	public int getVersion() {
-		return _offeringEntry.getVersion();
-	}
-
-	@Override
-	public int hashCode() {
-		return _offeringEntry.hashCode();
 	}
 
 	@Override
@@ -638,6 +323,346 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _offeringEntry.getExpandoBridge();
+	}
+
+	@Override
+	public OfferingEntryGroup getOfferingEntryGroup()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntry.getOfferingEntryGroup();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<OfferingEntry> toCacheModel() {
+		return _offeringEntry.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(OfferingEntry offeringEntry) {
+		return _offeringEntry.compareTo(offeringEntry);
+	}
+
+	@Override
+	public int getAvailableServers()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntry.getAvailableServers();
+	}
+
+	@Override
+	public int getLicenseKeysCount() {
+		return _offeringEntry.getLicenseKeysCount();
+	}
+
+	/**
+	* Returns the quantity of this offering entry.
+	*
+	* @return the quantity of this offering entry
+	*/
+	@Override
+	public int getQuantity() {
+		return _offeringEntry.getQuantity();
+	}
+
+	/**
+	* Returns the sizing of this offering entry.
+	*
+	* @return the sizing of this offering entry
+	*/
+	@Override
+	public int getSizing() {
+		return _offeringEntry.getSizing();
+	}
+
+	/**
+	* Returns the status of this offering entry.
+	*
+	* @return the status of this offering entry
+	*/
+	@Override
+	public int getStatus() {
+		return _offeringEntry.getStatus();
+	}
+
+	@Override
+	public int getTicketEntriesCount() {
+		return _offeringEntry.getTicketEntriesCount();
+	}
+
+	/**
+	* Returns the type of this offering entry.
+	*
+	* @return the type of this offering entry
+	*/
+	@Override
+	public int getType() {
+		return _offeringEntry.getType();
+	}
+
+	/**
+	* Returns the version of this offering entry.
+	*
+	* @return the version of this offering entry
+	*/
+	@Override
+	public int getVersion() {
+		return _offeringEntry.getVersion();
+	}
+
+	@Override
+	public int hashCode() {
+		return _offeringEntry.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _offeringEntry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new OfferingEntryWrapper((OfferingEntry)_offeringEntry.clone());
+	}
+
+	@Override
+	public java.lang.String getKey()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntry.getKey();
+	}
+
+	/**
+	* Returns the platform of this offering entry.
+	*
+	* @return the platform of this offering entry
+	*/
+	@Override
+	public java.lang.String getPlatform() {
+		return _offeringEntry.getPlatform();
+	}
+
+	/**
+	* Returns the platform version of this offering entry.
+	*
+	* @return the platform version of this offering entry
+	*/
+	@Override
+	public java.lang.String getPlatformVersion() {
+		return _offeringEntry.getPlatformVersion();
+	}
+
+	/**
+	* Returns the product description of this offering entry.
+	*
+	* @return the product description of this offering entry
+	*/
+	@Override
+	public java.lang.String getProductDescription() {
+		return _offeringEntry.getProductDescription();
+	}
+
+	@Override
+	public java.lang.String getSizingLabel() {
+		return _offeringEntry.getSizingLabel();
+	}
+
+	@Override
+	public java.lang.String getStatusLabel() {
+		return _offeringEntry.getStatusLabel();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _offeringEntry.getTypeLabel();
+	}
+
+	/**
+	* Returns the user name of this offering entry.
+	*
+	* @return the user name of this offering entry
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _offeringEntry.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this offering entry.
+	*
+	* @return the user uuid of this offering entry
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _offeringEntry.getUserUuid();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _offeringEntry.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _offeringEntry.toXmlString();
+	}
+
+	@Override
+	public Date getActualStartDate()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntry.getActualStartDate();
+	}
+
+	/**
+	* Returns the create date of this offering entry.
+	*
+	* @return the create date of this offering entry
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _offeringEntry.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this offering entry.
+	*
+	* @return the modified date of this offering entry
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _offeringEntry.getModifiedDate();
+	}
+
+	@Override
+	public Date getStartDate()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntry.getStartDate();
+	}
+
+	/**
+	* Returns the support end date of this offering entry.
+	*
+	* @return the support end date of this offering entry
+	*/
+	@Override
+	public Date getSupportEndDate() {
+		return _offeringEntry.getSupportEndDate();
+	}
+
+	@Override
+	public java.util.List<LicenseKey> getLicenseKeys() {
+		return _offeringEntry.getLicenseKeys();
+	}
+
+	/**
+	* Returns the account entry ID of this offering entry.
+	*
+	* @return the account entry ID of this offering entry
+	*/
+	@Override
+	public long getAccountEntryId() {
+		return _offeringEntry.getAccountEntryId();
+	}
+
+	/**
+	* Returns the license lifetime of this offering entry.
+	*
+	* @return the license lifetime of this offering entry
+	*/
+	@Override
+	public long getLicenseLifetime() {
+		return _offeringEntry.getLicenseLifetime();
+	}
+
+	/**
+	* Returns the max concurrent users of this offering entry.
+	*
+	* @return the max concurrent users of this offering entry
+	*/
+	@Override
+	public long getMaxConcurrentUsers() {
+		return _offeringEntry.getMaxConcurrentUsers();
+	}
+
+	/**
+	* Returns the max users of this offering entry.
+	*
+	* @return the max users of this offering entry
+	*/
+	@Override
+	public long getMaxUsers() {
+		return _offeringEntry.getMaxUsers();
+	}
+
+	/**
+	* Returns the offering entry ID of this offering entry.
+	*
+	* @return the offering entry ID of this offering entry
+	*/
+	@Override
+	public long getOfferingEntryId() {
+		return _offeringEntry.getOfferingEntryId();
+	}
+
+	/**
+	* Returns the order entry ID of this offering entry.
+	*
+	* @return the order entry ID of this offering entry
+	*/
+	@Override
+	public long getOrderEntryId() {
+		return _offeringEntry.getOrderEntryId();
+	}
+
+	/**
+	* Returns the primary key of this offering entry.
+	*
+	* @return the primary key of this offering entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _offeringEntry.getPrimaryKey();
+	}
+
+	/**
+	* Returns the product entry ID of this offering entry.
+	*
+	* @return the product entry ID of this offering entry
+	*/
+	@Override
+	public long getProductEntryId() {
+		return _offeringEntry.getProductEntryId();
+	}
+
+	/**
+	* Returns the support lifetime of this offering entry.
+	*
+	* @return the support lifetime of this offering entry
+	*/
+	@Override
+	public long getSupportLifetime() {
+		return _offeringEntry.getSupportLifetime();
+	}
+
+	/**
+	* Returns the support response ID of this offering entry.
+	*
+	* @return the support response ID of this offering entry
+	*/
+	@Override
+	public long getSupportResponseId() {
+		return _offeringEntry.getSupportResponseId();
+	}
+
+	/**
+	* Returns the user ID of this offering entry.
+	*
+	* @return the user ID of this offering entry
+	*/
+	@Override
+	public long getUserId() {
+		return _offeringEntry.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_offeringEntry.persist();
 	}
@@ -668,14 +693,14 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_offeringEntry.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_offeringEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_offeringEntry.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_offeringEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -931,31 +956,6 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	@Override
 	public void setVersion(int version) {
 		_offeringEntry.setVersion(version);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<OfferingEntry> toCacheModel() {
-		return _offeringEntry.toCacheModel();
-	}
-
-	@Override
-	public OfferingEntry toEscapedModel() {
-		return new OfferingEntryWrapper(_offeringEntry.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _offeringEntry.toString();
-	}
-
-	@Override
-	public OfferingEntry toUnescapedModel() {
-		return new OfferingEntryWrapper(_offeringEntry.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _offeringEntry.toXmlString();
 	}
 
 	@Override

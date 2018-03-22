@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Serializable;
 
@@ -390,7 +391,7 @@ public class TicketAttachmentModelImpl extends BaseModelImpl<TicketAttachment>
 			return user.getUuid();
 		}
 		catch (PortalException pe) {
-			return "";
+			return StringPool.BLANK;
 		}
 	}
 
@@ -406,7 +407,7 @@ public class TicketAttachmentModelImpl extends BaseModelImpl<TicketAttachment>
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _userName;
@@ -500,7 +501,7 @@ public class TicketAttachmentModelImpl extends BaseModelImpl<TicketAttachment>
 	@Override
 	public String getFileName() {
 		if (_fileName == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _fileName;
@@ -583,7 +584,7 @@ public class TicketAttachmentModelImpl extends BaseModelImpl<TicketAttachment>
 	@Override
 	public String getExtractedText() {
 		if (_extractedText == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _extractedText;
@@ -599,7 +600,7 @@ public class TicketAttachmentModelImpl extends BaseModelImpl<TicketAttachment>
 	@Override
 	public String getAvailableFileRepositoryIds() {
 		if (_availableFileRepositoryIds == null) {
-			return "";
+			return StringPool.BLANK;
 		}
 		else {
 			return _availableFileRepositoryIds;

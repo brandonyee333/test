@@ -424,7 +424,7 @@ public class AccountProjectUtil {
 
 	public static AccountProjectPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (AccountProjectPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (AccountProjectPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AccountProjectPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(AccountProjectUtil.class,

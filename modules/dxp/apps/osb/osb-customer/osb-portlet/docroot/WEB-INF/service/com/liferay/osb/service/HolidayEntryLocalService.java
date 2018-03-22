@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -56,7 +57,7 @@ import java.util.TimeZone;
 @Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
 	PortalException.class, SystemException.class})
 public interface HolidayEntryLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+	InvokableLocalService, PersistedModelLocalService {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -104,6 +105,42 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 	public HolidayEntry deleteHolidayEntry(long holidayEntryId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public HolidayEntry fetchHolidayEntry(long holidayEntryId);
+
+	/**
+	* Returns the holiday entry with the primary key.
+	*
+	* @param holidayEntryId the primary key of the holiday entry
+	* @return the holiday entry
+	* @throws PortalException if a holiday entry with the primary key could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public HolidayEntry getHolidayEntry(long holidayEntryId)
+		throws PortalException;
+
+	/**
+	* Updates the holiday entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param holidayEntry the holiday entry
+	* @return the holiday entry that was updated
+	*/
+	@Indexable(type = IndexableType.REINDEX)
+	public HolidayEntry updateHolidayEntry(HolidayEntry holidayEntry);
+
+	public HolidayEntry updateHolidayEntry(long holidayEntryId,
+		long holidayCalendarId, java.lang.String name,
+		java.lang.String description, Date startDate, Date endDate,
+		boolean repeatYearly) throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ActionableDynamicQuery getActionableDynamicQuery();
+
+	public DynamicQuery dynamicQuery();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
+
 	/**
 	* @throws PortalException
 	*/
@@ -111,7 +148,33 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
-	public DynamicQuery dynamicQuery();
+	@Override
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
+		throws PortalException;
+
+	/**
+	* Returns the number of holiday entries.
+	*
+	* @return the number of holiday entries
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getHolidayEntriesCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getHolidayEntriesCount(long userId, Date date);
+
+	@Override
+	public java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable;
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public java.lang.String getOSGiServiceIdentifier();
 
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
@@ -153,30 +216,6 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 		int end, OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery);
-
-	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public HolidayEntry fetchHolidayEntry(long holidayEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ActionableDynamicQuery getActionableDynamicQuery();
-
-	/**
 	* Returns a range of all the holiday entries.
 	*
 	* <p>
@@ -198,53 +237,20 @@ public interface HolidayEntryLocalService extends BaseLocalService,
 		Date startDate, Date endDate, TimeZone timeZone);
 
 	/**
-	* Returns the number of holiday entries.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @return the number of holiday entries
+	* @param dynamicQuery the dynamic query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getHolidayEntriesCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getHolidayEntriesCount(long userId, Date date);
+	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Returns the holiday entry with the primary key.
+	* Returns the number of rows matching the dynamic query.
 	*
-	* @param holidayEntryId the primary key of the holiday entry
-	* @return the holiday entry
-	* @throws PortalException if a holiday entry with the primary key could not be found
+	* @param dynamicQuery the dynamic query
+	* @param projection the projection to apply to the query
+	* @return the number of rows matching the dynamic query
 	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public HolidayEntry getHolidayEntry(long holidayEntryId)
-		throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public java.lang.String getOSGiServiceIdentifier();
-
-	@Override
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
-		throws PortalException;
-
-	/**
-	* Updates the holiday entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param holidayEntry the holiday entry
-	* @return the holiday entry that was updated
-	*/
-	@Indexable(type = IndexableType.REINDEX)
-	public HolidayEntry updateHolidayEntry(HolidayEntry holidayEntry);
-
-	public HolidayEntry updateHolidayEntry(long holidayEntryId,
-		long holidayCalendarId, java.lang.String name,
-		java.lang.String description, Date startDate, Date endDate,
-		boolean repeatYearly) throws PortalException;
+	public long dynamicQueryCount(DynamicQuery dynamicQuery,
+		Projection projection);
 }

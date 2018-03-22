@@ -129,173 +129,13 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new ProductEntryWrapper((ProductEntry)_productEntry.clone());
+	public ProductEntry toEscapedModel() {
+		return new ProductEntryWrapper(_productEntry.toEscapedModel());
 	}
 
 	@Override
-	public int compareTo(ProductEntry productEntry) {
-		return _productEntry.compareTo(productEntry);
-	}
-
-	@Override
-	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllVersionsListTypes() {
-		return _productEntry.getAllVersionsListTypes();
-	}
-
-	/**
-	* Returns the create date of this product entry.
-	*
-	* @return the create date of this product entry
-	*/
-	@Override
-	public Date getCreateDate() {
-		return _productEntry.getCreateDate();
-	}
-
-	@Override
-	public java.lang.String[] getDossieraIdMappings() {
-		return _productEntry.getDossieraIdMappings();
-	}
-
-	/**
-	* Returns the environment of this product entry.
-	*
-	* @return the environment of this product entry
-	*/
-	@Override
-	public int getEnvironment() {
-		return _productEntry.getEnvironment();
-	}
-
-	@Override
-	public java.lang.String getEnvironmentLabel() {
-		return _productEntry.getEnvironmentLabel();
-	}
-
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _productEntry.getExpandoBridge();
-	}
-
-	@Override
-	public java.lang.String getLESADisplayName() {
-		return _productEntry.getLESADisplayName();
-	}
-
-	@Override
-	public java.util.List<LicenseEntry> getLicenseEntries() {
-		return _productEntry.getLicenseEntries();
-	}
-
-	/**
-	* Returns the modified date of this product entry.
-	*
-	* @return the modified date of this product entry
-	*/
-	@Override
-	public Date getModifiedDate() {
-		return _productEntry.getModifiedDate();
-	}
-
-	/**
-	* Returns the name of this product entry.
-	*
-	* @return the name of this product entry
-	*/
-	@Override
-	public java.lang.String getName() {
-		return _productEntry.getName();
-	}
-
-	/**
-	* Returns the primary key of this product entry.
-	*
-	* @return the primary key of this product entry
-	*/
-	@Override
-	public long getPrimaryKey() {
-		return _productEntry.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _productEntry.getPrimaryKeyObj();
-	}
-
-	/**
-	* Returns the product entry ID of this product entry.
-	*
-	* @return the product entry ID of this product entry
-	*/
-	@Override
-	public long getProductEntryId() {
-		return _productEntry.getProductEntryId();
-	}
-
-	/**
-	* Returns the type of this product entry.
-	*
-	* @return the type of this product entry
-	*/
-	@Override
-	public int getType() {
-		return _productEntry.getType();
-	}
-
-	@Override
-	public java.lang.String getTypeLabel() {
-		return _productEntry.getTypeLabel();
-	}
-
-	/**
-	* Returns the user ID of this product entry.
-	*
-	* @return the user ID of this product entry
-	*/
-	@Override
-	public long getUserId() {
-		return _productEntry.getUserId();
-	}
-
-	/**
-	* Returns the user name of this product entry.
-	*
-	* @return the user name of this product entry
-	*/
-	@Override
-	public java.lang.String getUserName() {
-		return _productEntry.getUserName();
-	}
-
-	/**
-	* Returns the user uuid of this product entry.
-	*
-	* @return the user uuid of this product entry
-	*/
-	@Override
-	public java.lang.String getUserUuid() {
-		return _productEntry.getUserUuid();
-	}
-
-	/**
-	* Returns the versions list type of this product entry.
-	*
-	* @return the versions list type of this product entry
-	*/
-	@Override
-	public java.lang.String getVersionsListType() {
-		return _productEntry.getVersionsListType();
-	}
-
-	@Override
-	public java.util.List<com.liferay.portal.kernel.model.ListType> getVersionsListTypes() {
-		return _productEntry.getVersionsListTypes();
-	}
-
-	@Override
-	public int hashCode() {
-		return _productEntry.hashCode();
+	public ProductEntry toUnescapedModel() {
+		return new ProductEntryWrapper(_productEntry.toUnescapedModel());
 	}
 
 	@Override
@@ -374,6 +214,191 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _productEntry.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<ProductEntry> toCacheModel() {
+		return _productEntry.toCacheModel();
+	}
+
+	@Override
+	public int compareTo(ProductEntry productEntry) {
+		return _productEntry.compareTo(productEntry);
+	}
+
+	/**
+	* Returns the environment of this product entry.
+	*
+	* @return the environment of this product entry
+	*/
+	@Override
+	public int getEnvironment() {
+		return _productEntry.getEnvironment();
+	}
+
+	/**
+	* Returns the type of this product entry.
+	*
+	* @return the type of this product entry
+	*/
+	@Override
+	public int getType() {
+		return _productEntry.getType();
+	}
+
+	@Override
+	public int hashCode() {
+		return _productEntry.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _productEntry.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new ProductEntryWrapper((ProductEntry)_productEntry.clone());
+	}
+
+	@Override
+	public java.lang.String getEnvironmentLabel() {
+		return _productEntry.getEnvironmentLabel();
+	}
+
+	@Override
+	public java.lang.String getLESADisplayName() {
+		return _productEntry.getLESADisplayName();
+	}
+
+	/**
+	* Returns the name of this product entry.
+	*
+	* @return the name of this product entry
+	*/
+	@Override
+	public java.lang.String getName() {
+		return _productEntry.getName();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _productEntry.getTypeLabel();
+	}
+
+	/**
+	* Returns the user name of this product entry.
+	*
+	* @return the user name of this product entry
+	*/
+	@Override
+	public java.lang.String getUserName() {
+		return _productEntry.getUserName();
+	}
+
+	/**
+	* Returns the user uuid of this product entry.
+	*
+	* @return the user uuid of this product entry
+	*/
+	@Override
+	public java.lang.String getUserUuid() {
+		return _productEntry.getUserUuid();
+	}
+
+	/**
+	* Returns the versions list type of this product entry.
+	*
+	* @return the versions list type of this product entry
+	*/
+	@Override
+	public java.lang.String getVersionsListType() {
+		return _productEntry.getVersionsListType();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _productEntry.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _productEntry.toXmlString();
+	}
+
+	@Override
+	public java.lang.String[] getDossieraIdMappings() {
+		return _productEntry.getDossieraIdMappings();
+	}
+
+	/**
+	* Returns the create date of this product entry.
+	*
+	* @return the create date of this product entry
+	*/
+	@Override
+	public Date getCreateDate() {
+		return _productEntry.getCreateDate();
+	}
+
+	/**
+	* Returns the modified date of this product entry.
+	*
+	* @return the modified date of this product entry
+	*/
+	@Override
+	public Date getModifiedDate() {
+		return _productEntry.getModifiedDate();
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getAllVersionsListTypes() {
+		return _productEntry.getAllVersionsListTypes();
+	}
+
+	@Override
+	public java.util.List<LicenseEntry> getLicenseEntries() {
+		return _productEntry.getLicenseEntries();
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.ListType> getVersionsListTypes() {
+		return _productEntry.getVersionsListTypes();
+	}
+
+	/**
+	* Returns the primary key of this product entry.
+	*
+	* @return the primary key of this product entry
+	*/
+	@Override
+	public long getPrimaryKey() {
+		return _productEntry.getPrimaryKey();
+	}
+
+	/**
+	* Returns the product entry ID of this product entry.
+	*
+	* @return the product entry ID of this product entry
+	*/
+	@Override
+	public long getProductEntryId() {
+		return _productEntry.getProductEntryId();
+	}
+
+	/**
+	* Returns the user ID of this product entry.
+	*
+	* @return the user ID of this product entry
+	*/
+	@Override
+	public long getUserId() {
+		return _productEntry.getUserId();
+	}
+
+	@Override
 	public void persist() {
 		_productEntry.persist();
 	}
@@ -404,14 +429,14 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_productEntry.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_productEntry.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_productEntry.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_productEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -517,31 +542,6 @@ public class ProductEntryWrapper implements ProductEntry,
 	@Override
 	public void setVersionsListType(java.lang.String versionsListType) {
 		_productEntry.setVersionsListType(versionsListType);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ProductEntry> toCacheModel() {
-		return _productEntry.toCacheModel();
-	}
-
-	@Override
-	public ProductEntry toEscapedModel() {
-		return new ProductEntryWrapper(_productEntry.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _productEntry.toString();
-	}
-
-	@Override
-	public ProductEntry toUnescapedModel() {
-		return new ProductEntryWrapper(_productEntry.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _productEntry.toXmlString();
 	}
 
 	@Override

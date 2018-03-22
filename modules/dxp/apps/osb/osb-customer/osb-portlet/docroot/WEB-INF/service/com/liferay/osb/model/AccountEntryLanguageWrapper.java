@@ -88,13 +88,78 @@ public class AccountEntryLanguageWrapper implements AccountEntryLanguage,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AccountEntryLanguageWrapper((AccountEntryLanguage)_accountEntryLanguage.clone());
+	public AccountEntryLanguage toEscapedModel() {
+		return new AccountEntryLanguageWrapper(_accountEntryLanguage.toEscapedModel());
+	}
+
+	@Override
+	public AccountEntryLanguage toUnescapedModel() {
+		return new AccountEntryLanguageWrapper(_accountEntryLanguage.toUnescapedModel());
+	}
+
+	@Override
+	public boolean isCachedModel() {
+		return _accountEntryLanguage.isCachedModel();
+	}
+
+	@Override
+	public boolean isEscapedModel() {
+		return _accountEntryLanguage.isEscapedModel();
+	}
+
+	@Override
+	public boolean isNew() {
+		return _accountEntryLanguage.isNew();
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _accountEntryLanguage.getExpandoBridge();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.CacheModel<AccountEntryLanguage> toCacheModel() {
+		return _accountEntryLanguage.toCacheModel();
 	}
 
 	@Override
 	public int compareTo(AccountEntryLanguage accountEntryLanguage) {
 		return _accountEntryLanguage.compareTo(accountEntryLanguage);
+	}
+
+	@Override
+	public int hashCode() {
+		return _accountEntryLanguage.hashCode();
+	}
+
+	@Override
+	public Serializable getPrimaryKeyObj() {
+		return _accountEntryLanguage.getPrimaryKeyObj();
+	}
+
+	@Override
+	public java.lang.Object clone() {
+		return new AccountEntryLanguageWrapper((AccountEntryLanguage)_accountEntryLanguage.clone());
+	}
+
+	/**
+	* Returns the language ID of this account entry language.
+	*
+	* @return the language ID of this account entry language
+	*/
+	@Override
+	public java.lang.String getLanguageId() {
+		return _accountEntryLanguage.getLanguageId();
+	}
+
+	@Override
+	public java.lang.String toString() {
+		return _accountEntryLanguage.toString();
+	}
+
+	@Override
+	public java.lang.String toXmlString() {
+		return _accountEntryLanguage.toXmlString();
 	}
 
 	/**
@@ -117,21 +182,6 @@ public class AccountEntryLanguageWrapper implements AccountEntryLanguage,
 		return _accountEntryLanguage.getAccountEntryLanguageId();
 	}
 
-	@Override
-	public ExpandoBridge getExpandoBridge() {
-		return _accountEntryLanguage.getExpandoBridge();
-	}
-
-	/**
-	* Returns the language ID of this account entry language.
-	*
-	* @return the language ID of this account entry language
-	*/
-	@Override
-	public java.lang.String getLanguageId() {
-		return _accountEntryLanguage.getLanguageId();
-	}
-
 	/**
 	* Returns the primary key of this account entry language.
 	*
@@ -140,31 +190,6 @@ public class AccountEntryLanguageWrapper implements AccountEntryLanguage,
 	@Override
 	public long getPrimaryKey() {
 		return _accountEntryLanguage.getPrimaryKey();
-	}
-
-	@Override
-	public Serializable getPrimaryKeyObj() {
-		return _accountEntryLanguage.getPrimaryKeyObj();
-	}
-
-	@Override
-	public int hashCode() {
-		return _accountEntryLanguage.hashCode();
-	}
-
-	@Override
-	public boolean isCachedModel() {
-		return _accountEntryLanguage.isCachedModel();
-	}
-
-	@Override
-	public boolean isEscapedModel() {
-		return _accountEntryLanguage.isEscapedModel();
-	}
-
-	@Override
-	public boolean isNew() {
-		return _accountEntryLanguage.isNew();
 	}
 
 	@Override
@@ -198,14 +223,14 @@ public class AccountEntryLanguageWrapper implements AccountEntryLanguage,
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(
-		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
-		_accountEntryLanguage.setExpandoBridgeAttributes(baseModel);
+	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
+		_accountEntryLanguage.setExpandoBridgeAttributes(expandoBridge);
 	}
 
 	@Override
-	public void setExpandoBridgeAttributes(ExpandoBridge expandoBridge) {
-		_accountEntryLanguage.setExpandoBridgeAttributes(expandoBridge);
+	public void setExpandoBridgeAttributes(
+		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+		_accountEntryLanguage.setExpandoBridgeAttributes(baseModel);
 	}
 
 	@Override
@@ -241,31 +266,6 @@ public class AccountEntryLanguageWrapper implements AccountEntryLanguage,
 	@Override
 	public void setPrimaryKeyObj(Serializable primaryKeyObj) {
 		_accountEntryLanguage.setPrimaryKeyObj(primaryKeyObj);
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AccountEntryLanguage> toCacheModel() {
-		return _accountEntryLanguage.toCacheModel();
-	}
-
-	@Override
-	public AccountEntryLanguage toEscapedModel() {
-		return new AccountEntryLanguageWrapper(_accountEntryLanguage.toEscapedModel());
-	}
-
-	@Override
-	public java.lang.String toString() {
-		return _accountEntryLanguage.toString();
-	}
-
-	@Override
-	public AccountEntryLanguage toUnescapedModel() {
-		return new AccountEntryLanguageWrapper(_accountEntryLanguage.toUnescapedModel());
-	}
-
-	@Override
-	public java.lang.String toXmlString() {
-		return _accountEntryLanguage.toXmlString();
 	}
 
 	@Override

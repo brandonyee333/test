@@ -91,7 +91,7 @@ public class AccountEntryFinderUtil {
 
 	public static AccountEntryFinder getFinder() {
 		if (_finder == null) {
-			_finder = (AccountEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_finder = (AccountEntryFinder)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					AccountEntryFinder.class.getName());
 
 			ReferenceRegistry.registerReference(AccountEntryFinderUtil.class,

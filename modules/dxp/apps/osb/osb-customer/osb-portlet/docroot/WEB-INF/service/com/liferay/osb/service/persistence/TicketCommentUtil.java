@@ -1446,7 +1446,7 @@ public class TicketCommentUtil {
 
 	public static TicketCommentPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (TicketCommentPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (TicketCommentPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					TicketCommentPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(TicketCommentUtil.class,

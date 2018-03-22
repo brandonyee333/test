@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
+import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 
 /**
@@ -87,6 +88,47 @@ public class LCSSubscriptionEntryLocalServiceUtil {
 		return getService().deleteLCSSubscriptionEntry(lcsSubscriptionEntryId);
 	}
 
+	public static com.liferay.osb.model.LCSSubscriptionEntry fetchLCSSubscriptionEntry(
+		long lcsSubscriptionEntryId) {
+		return getService().fetchLCSSubscriptionEntry(lcsSubscriptionEntryId);
+	}
+
+	/**
+	* Returns the lcs subscription entry with the primary key.
+	*
+	* @param lcsSubscriptionEntryId the primary key of the lcs subscription entry
+	* @return the lcs subscription entry
+	* @throws PortalException if a lcs subscription entry with the primary key could not be found
+	*/
+	public static com.liferay.osb.model.LCSSubscriptionEntry getLCSSubscriptionEntry(
+		long lcsSubscriptionEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getLCSSubscriptionEntry(lcsSubscriptionEntryId);
+	}
+
+	/**
+	* Updates the lcs subscription entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	*
+	* @param lcsSubscriptionEntry the lcs subscription entry
+	* @return the lcs subscription entry that was updated
+	*/
+	public static com.liferay.osb.model.LCSSubscriptionEntry updateLCSSubscriptionEntry(
+		com.liferay.osb.model.LCSSubscriptionEntry lcsSubscriptionEntry) {
+		return getService().updateLCSSubscriptionEntry(lcsSubscriptionEntry);
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+		return getService().getActionableDynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return getService().dynamicQuery();
+	}
+
+	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+		return getService().getIndexableActionableDynamicQuery();
+	}
+
 	/**
 	* @throws PortalException
 	*/
@@ -96,8 +138,34 @@ public class LCSSubscriptionEntryLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
-	public static com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return getService().dynamicQuery();
+	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+		java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	* Returns the number of lcs subscription entries.
+	*
+	* @return the number of lcs subscription entries
+	*/
+	public static int getLCSSubscriptionEntriesCount() {
+		return getService().getLCSSubscriptionEntriesCount();
+	}
+
+	public static java.lang.Object invokeMethod(java.lang.String name,
+		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
+		throws java.lang.Throwable {
+		return getService().invokeMethod(name, parameterTypes, arguments);
+	}
+
+	/**
+	* Returns the OSGi service identifier.
+	*
+	* @return the OSGi service identifier
+	*/
+	public static java.lang.String getOSGiServiceIdentifier() {
+		return getService().getOSGiServiceIdentifier();
 	}
 
 	/**
@@ -151,6 +219,28 @@ public class LCSSubscriptionEntryLocalServiceUtil {
 	}
 
 	/**
+	* Returns a range of all the lcs subscription entries.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.LCSSubscriptionEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param start the lower bound of the range of lcs subscription entries
+	* @param end the upper bound of the range of lcs subscription entries (not inclusive)
+	* @return the range of lcs subscription entries
+	*/
+	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
+		int start, int end) {
+		return getService().getLCSSubscriptionEntries(start, end);
+	}
+
+	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getLCSSubscriptionEntries(corpProjectId);
+	}
+
+	/**
 	* Returns the number of rows matching the dynamic query.
 	*
 	* @param dynamicQuery the dynamic query
@@ -174,92 +264,9 @@ public class LCSSubscriptionEntryLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.osb.model.LCSSubscriptionEntry fetchLCSSubscriptionEntry(
-		long lcsSubscriptionEntryId) {
-		return getService().fetchLCSSubscriptionEntry(lcsSubscriptionEntryId);
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
-		return getService().getActionableDynamicQuery();
-	}
-
-	public static com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
-		return getService().getIndexableActionableDynamicQuery();
-	}
-
-	/**
-	* Returns a range of all the lcs subscription entries.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.model.impl.LCSSubscriptionEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of lcs subscription entries
-	* @param end the upper bound of the range of lcs subscription entries (not inclusive)
-	* @return the range of lcs subscription entries
-	*/
-	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
-		int start, int end) {
-		return getService().getLCSSubscriptionEntries(start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getLCSSubscriptionEntries(corpProjectId);
-	}
-
-	/**
-	* Returns the number of lcs subscription entries.
-	*
-	* @return the number of lcs subscription entries
-	*/
-	public static int getLCSSubscriptionEntriesCount() {
-		return getService().getLCSSubscriptionEntriesCount();
-	}
-
-	/**
-	* Returns the lcs subscription entry with the primary key.
-	*
-	* @param lcsSubscriptionEntryId the primary key of the lcs subscription entry
-	* @return the lcs subscription entry
-	* @throws PortalException if a lcs subscription entry with the primary key could not be found
-	*/
-	public static com.liferay.osb.model.LCSSubscriptionEntry getLCSSubscriptionEntry(
-		long lcsSubscriptionEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getLCSSubscriptionEntry(lcsSubscriptionEntryId);
-	}
-
-	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
-	public static java.lang.String getOSGiServiceIdentifier() {
-		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getPersistedModel(primaryKeyObj);
-	}
-
 	public static void syncToLCS(long corpProjectId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().syncToLCS(corpProjectId);
-	}
-
-	/**
-	* Updates the lcs subscription entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param lcsSubscriptionEntry the lcs subscription entry
-	* @return the lcs subscription entry that was updated
-	*/
-	public static com.liferay.osb.model.LCSSubscriptionEntry updateLCSSubscriptionEntry(
-		com.liferay.osb.model.LCSSubscriptionEntry lcsSubscriptionEntry) {
-		return getService().updateLCSSubscriptionEntry(lcsSubscriptionEntry);
 	}
 
 	public static void clearService() {
@@ -268,8 +275,15 @@ public class LCSSubscriptionEntryLocalServiceUtil {
 
 	public static LCSSubscriptionEntryLocalService getService() {
 		if (_service == null) {
-			_service = (LCSSubscriptionEntryLocalService)PortletBeanLocatorUtil.locate(ServletContextUtil.getServletContextName(),
+			InvokableLocalService invokableLocalService = (InvokableLocalService)PortletBeanLocatorUtil.locate(ClpSerializer.getServletContextName(),
 					LCSSubscriptionEntryLocalService.class.getName());
+
+			if (invokableLocalService instanceof LCSSubscriptionEntryLocalService) {
+				_service = (LCSSubscriptionEntryLocalService)invokableLocalService;
+			}
+			else {
+				_service = new LCSSubscriptionEntryLocalServiceClp(invokableLocalService);
+			}
 
 			ReferenceRegistry.registerReference(LCSSubscriptionEntryLocalServiceUtil.class,
 				"_service");

@@ -614,7 +614,7 @@ public class SecurityPatchUtil {
 
 	public static SecurityPatchPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (SecurityPatchPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (SecurityPatchPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					SecurityPatchPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(SecurityPatchUtil.class,

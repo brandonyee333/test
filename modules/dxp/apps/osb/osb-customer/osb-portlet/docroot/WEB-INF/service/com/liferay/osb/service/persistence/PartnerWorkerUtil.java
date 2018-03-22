@@ -1253,7 +1253,7 @@ public class PartnerWorkerUtil {
 
 	public static PartnerWorkerPersistence getPersistence() {
 		if (_persistence == null) {
-			_persistence = (PartnerWorkerPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ServletContextUtil.getServletContextName(),
+			_persistence = (PartnerWorkerPersistence)PortletBeanLocatorUtil.locate(com.liferay.osb.service.ClpSerializer.getServletContextName(),
 					PartnerWorkerPersistence.class.getName());
 
 			ReferenceRegistry.registerReference(PartnerWorkerUtil.class,

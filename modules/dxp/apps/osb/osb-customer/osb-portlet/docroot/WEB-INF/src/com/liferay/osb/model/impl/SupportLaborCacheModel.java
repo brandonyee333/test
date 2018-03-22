@@ -21,6 +21,7 @@ import com.liferay.osb.model.SupportLabor;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -113,21 +114,21 @@ public class SupportLaborCacheModel implements CacheModel<SupportLabor>,
 		supportLaborImpl.setSupportLaborId(supportLaborId);
 
 		if (name == null) {
-			supportLaborImpl.setName("");
+			supportLaborImpl.setName(StringPool.BLANK);
 		}
 		else {
 			supportLaborImpl.setName(name);
 		}
 
 		if (description == null) {
-			supportLaborImpl.setDescription("");
+			supportLaborImpl.setDescription(StringPool.BLANK);
 		}
 		else {
 			supportLaborImpl.setDescription(description);
 		}
 
 		if (timeZoneId == null) {
-			supportLaborImpl.setTimeZoneId("");
+			supportLaborImpl.setTimeZoneId(StringPool.BLANK);
 		}
 		else {
 			supportLaborImpl.setTimeZoneId(timeZoneId);
@@ -195,21 +196,21 @@ public class SupportLaborCacheModel implements CacheModel<SupportLabor>,
 		objectOutput.writeLong(supportLaborId);
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(description);
 		}
 
 		if (timeZoneId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(timeZoneId);
