@@ -48,7 +48,7 @@
 					"label": {
 						"en_US": "No Longer Maintained"
 					},
-					"value": "This article is a \"legacy article\". It applies to previous versions of the Liferay product. While the article is no longer maintained, the information may still be applicable."
+					"value": "This article is a <i>legacy article</i>. It applies to previous versions of the Liferay product. While the article is no longer maintained, the information may still be applicable."
 				},
 				{
 					"label": {
