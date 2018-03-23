@@ -16,6 +16,9 @@ package com.liferay.osb.customer.rabbitmq.router;
 
 import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
+import com.liferay.osb.customer.rabbitmq.processors.CorpProjectAddMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.CorpProjectDeleteMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.CorpProjectUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationAssignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationUnassignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationUpdateMessageProcessor;
@@ -40,6 +43,30 @@ import org.osgi.service.component.annotations.Reference;
 	service = MessageRouter.class
 )
 public class CustomerMessageRouter extends BaseMessageRouter {
+
+	@Reference(unbind = "-")
+	protected void setCorpProjectAddMessageProcessor(
+		CorpProjectAddMessageProcessor corpProjectAddMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(corpProjectAddMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setCorpProjectDeleteMessageProcessor(
+		CorpProjectDeleteMessageProcessor corpProjectDeleteMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(corpProjectDeleteMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setCorpProjectUpdateMessageProcessor(
+		CorpProjectUpdateMessageProcessor corpProjectUpdateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(corpProjectUpdateMessageProcessor, properties);
+	}
 
 	@Reference(unbind = "-")
 	protected void setOrganizationAssignmentMessageProcessor(
