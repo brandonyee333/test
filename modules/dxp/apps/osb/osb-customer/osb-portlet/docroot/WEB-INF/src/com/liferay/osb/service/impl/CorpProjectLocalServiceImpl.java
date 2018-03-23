@@ -15,9 +15,15 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.NoSuchCorpProjectException;
+import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.base.CorpProjectLocalServiceBaseImpl;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.ListTypeConstants;
+import com.liferay.portal.kernel.model.Organization;
+import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -34,34 +40,61 @@ import java.util.List;
 public class CorpProjectLocalServiceImpl
 	extends CorpProjectLocalServiceBaseImpl {
 
-	public CorpProject addCorpProject(
-			long userId, String dossieraProjectKey, String salesforceProjectKey,
-			String name, long organizationId, ServiceContext serviceContext)
+	public CorpProject addCorpProject(JSONObject jsonObject)
 		throws PortalException {
 
-		User user = userLocalService.getUser(userId);
-		Date createDate = serviceContext.getCreateDate(new Date());
-		Date modifiedDate = serviceContext.getModifiedDate(new Date());
+		long userId = 0;
 
-		long corpProjectId = counterLocalService.increment();
+		String userUuid = jsonObject.getString("userUuid");
 
-		CorpProject corpProject = corpProjectPersistence.create(corpProjectId);
-
-		corpProject.setUuid(serviceContext.getUuid());
-		corpProject.setUserId(userId);
+		User user = userLocalService.fetchUserByUuidAndCompanyId(
+			userUuid, OSBConstants.COMPANY_ID);
 
 		if (user != null) {
-			corpProject.setUserName(user.getFullName());
+			userId = user.getUserId();
 		}
 
-		corpProject.setCreateDate(createDate);
-		corpProject.setModifiedDate(modifiedDate);
-		corpProject.setDossieraProjectKey(dossieraProjectKey);
-		corpProject.setSalesforceProjectKey(salesforceProjectKey);
-		corpProject.setName(name);
-		corpProject.setOrganizationId(organizationId);
+		long organizationId = getOrganizationId(
+			jsonObject.getJSONObject("organization"));
 
-		return corpProjectPersistence.update(corpProject);
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(
+			new Date(jsonObject.getLong("createDate")));
+		serviceContext.setCreateDate(
+			new Date(jsonObject.getLong("modifiedDate")));
+		serviceContext.setUuid(jsonObject.getString("uuid"));
+
+		return addCorpProject(
+			userId, jsonObject.getString("dossieraProjectKey"),
+			jsonObject.getString("salesforceProjectKey"),
+			jsonObject.getString("name"), organizationId, serviceContext);
+	}
+
+	@Override
+	public CorpProject deleteCorpProject(CorpProject corpProject)
+		throws PortalException {
+
+		AccountEntry accountEntry =
+			accountEntryPersistence.fetchByCorpProjectId(
+				corpProject.getCorpProjectId());
+
+		if (accountEntry != null) {
+			accountEntry.setCorpProjectId(0);
+
+			accountEntryPersistence.update(accountEntry);
+		}
+
+		return corpProjectPersistence.remove(corpProject);
+	}
+
+	public CorpProject deleteCorpProject(JSONObject jsonObject)
+		throws PortalException {
+
+		CorpProject corpProject = getCorpProjectByUuid(
+			jsonObject.getString("uuid"));
+
+		return deleteCorpProject(corpProject);
 	}
 
 	public CorpProject fetchCorpProject(String dossieraProjectKey) {
@@ -106,7 +139,84 @@ public class CorpProjectLocalServiceImpl
 		return corpProjectPersistence.countByName(name);
 	}
 
-	public CorpProject updateCorpProject(
+	public CorpProject updateCorpProject(JSONObject jsonObject)
+		throws PortalException {
+
+		CorpProject corpProject = getCorpProjectByUuid(
+			jsonObject.getString("uuid"));
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(
+			new Date(jsonObject.getLong("modifiedDate")));
+
+		return updateCorpProject(
+			corpProject.getCorpProjectId(), jsonObject.getString("name"),
+			serviceContext);
+	}
+
+	protected CorpProject addCorpProject(
+			long userId, String dossieraProjectKey, String salesforceProjectKey,
+			String name, long organizationId, ServiceContext serviceContext)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+		Date createDate = serviceContext.getCreateDate(new Date());
+		Date modifiedDate = serviceContext.getModifiedDate(new Date());
+
+		long corpProjectId = counterLocalService.increment();
+
+		CorpProject corpProject = corpProjectPersistence.create(corpProjectId);
+
+		corpProject.setUuid(serviceContext.getUuid());
+		corpProject.setUserId(userId);
+
+		if (user != null) {
+			corpProject.setUserName(user.getFullName());
+		}
+
+		corpProject.setCreateDate(createDate);
+		corpProject.setModifiedDate(modifiedDate);
+		corpProject.setDossieraProjectKey(dossieraProjectKey);
+		corpProject.setSalesforceProjectKey(salesforceProjectKey);
+		corpProject.setName(name);
+		corpProject.setOrganizationId(organizationId);
+
+		return corpProjectPersistence.update(corpProject);
+	}
+
+	protected long getOrganizationId(JSONObject jsonObject)
+		throws PortalException {
+
+		if (jsonObject == null) {
+			return 0;
+		}
+
+		String organizationUuid = jsonObject.getString("organizationUuid");
+
+		Organization organization =
+			organizationLocalService.fetchOrganizationByUuidAndCompanyId(
+				organizationUuid, OSBConstants.COMPANY_ID);
+
+		if (organization == null) {
+			String name = jsonObject.getString("name");
+
+			ServiceContext serviceContext = new ServiceContext();
+
+			serviceContext.setUuid(organizationUuid);
+
+			organization = organizationLocalService.addOrganization(
+				OSBConstants.USER_DEFAULT_USER_ID,
+				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID, name,
+				OrganizationConstants.TYPE_ORGANIZATION, 0, 0,
+				ListTypeConstants.ORGANIZATION_STATUS_DEFAULT, StringPool.BLANK,
+				false, serviceContext);
+		}
+
+		return organization.getOrganizationId();
+	}
+
+	protected CorpProject updateCorpProject(
 			long corpProjectId, String name, ServiceContext serviceContext)
 		throws PortalException {
 

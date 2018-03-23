@@ -17,20 +17,13 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.RemoteCorpProjectLocalServiceBaseImpl;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.ListTypeConstants;
-import com.liferay.portal.kernel.model.Organization;
-import com.liferay.portal.kernel.model.OrganizationConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringPool;
-
-import java.util.Date;
 
 /**
  * @author Amos Fong
@@ -58,7 +51,7 @@ public class RemoteCorpProjectLocalServiceImpl
 			creatorUser.getUuid(), ownerUserUuid, dossieraProjectKey,
 			salesforceProjectKey, name);
 
-		return addLocalCorpProject(jsonObject);
+		return corpProjectLocalService.addCorpProject(jsonObject);
 	}
 
 	@Override
@@ -103,7 +96,7 @@ public class RemoteCorpProjectLocalServiceImpl
 	}
 
 	@Override
-	public CorpProject updateCorpProject(long corpProjectId, String name)
+	public void updateCorpProject(long corpProjectId, String name)
 		throws PortalException {
 
 		CorpProject corpProject = corpProjectLocalService.getCorpProject(
@@ -112,82 +105,7 @@ public class RemoteCorpProjectLocalServiceImpl
 		JSONObject jsonObject = WebRESTWebServiceUtil.putCorpProjects(
 			corpProject.getUuid(), name);
 
-		return updateLocalCorpProject(corpProjectId, jsonObject);
-	}
-
-	protected CorpProject addLocalCorpProject(JSONObject jsonObject)
-		throws PortalException {
-
-		long userId = 0;
-
-		String userUuid = jsonObject.getString("userUuid");
-
-		User user = userLocalService.fetchUserByUuidAndCompanyId(
-			userUuid, OSBConstants.COMPANY_ID);
-
-		if (user != null) {
-			userId = user.getUserId();
-		}
-
-		long organizationId = getOrganizationId(
-			jsonObject.getJSONObject("organization"));
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setCreateDate(
-			new Date(jsonObject.getLong("createDate")));
-		serviceContext.setCreateDate(
-			new Date(jsonObject.getLong("modifiedDate")));
-		serviceContext.setUuid(jsonObject.getString("uuid"));
-
-		return corpProjectLocalService.addCorpProject(
-			userId, jsonObject.getString("dossieraProjectKey"),
-			jsonObject.getString("salesforceProjectKey"),
-			jsonObject.getString("name"), organizationId, serviceContext);
-	}
-
-	protected long getOrganizationId(JSONObject jsonObject)
-		throws PortalException {
-
-		if (jsonObject == null) {
-			return 0;
-		}
-
-		String organizationUuid = jsonObject.getString("organizationUuid");
-
-		Organization organization =
-			organizationLocalService.fetchOrganizationByUuidAndCompanyId(
-				organizationUuid, OSBConstants.COMPANY_ID);
-
-		if (organization == null) {
-			String name = jsonObject.getString("name");
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			serviceContext.setUuid(organizationUuid);
-
-			organization = organizationLocalService.addOrganization(
-				OSBConstants.USER_DEFAULT_USER_ID,
-				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID, name,
-				OrganizationConstants.TYPE_ORGANIZATION, 0, 0,
-				ListTypeConstants.ORGANIZATION_STATUS_DEFAULT, StringPool.BLANK,
-				false, serviceContext);
-		}
-
-		return organization.getOrganizationId();
-	}
-
-	protected CorpProject updateLocalCorpProject(
-			long corpProjectId, JSONObject jsonObject)
-		throws PortalException {
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setCreateDate(
-			new Date(jsonObject.getLong("modifiedDate")));
-
-		return corpProjectLocalService.updateCorpProject(
-			corpProjectId, jsonObject.getString("name"), serviceContext);
+		corpProjectLocalService.updateCorpProject(jsonObject);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

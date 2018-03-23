@@ -208,7 +208,7 @@ public class AccountEntryLocalServiceImpl
 		// Corp project
 
 		if (corpProject.getCorpProjectId() > 0) {
-			corpProject = remoteCorpProjectLocalService.updateCorpProject(
+			remoteCorpProjectLocalService.updateCorpProject(
 				corpProject.getCorpProjectId(), corpProject.getName());
 		}
 		else {

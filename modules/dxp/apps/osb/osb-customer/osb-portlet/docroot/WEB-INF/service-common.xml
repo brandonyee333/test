@@ -80,6 +80,10 @@
 		<finder name="OrganizationId" return-type="CorpProject">
 			<finder-column name="organizationId" />
 		</finder>
+
+		<!-- References -->
+
+		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="CorpProjectMessage" remote-service="true" uuid="true">
 
