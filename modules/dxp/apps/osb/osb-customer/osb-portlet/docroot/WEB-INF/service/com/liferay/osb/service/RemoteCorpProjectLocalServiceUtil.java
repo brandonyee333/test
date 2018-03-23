@@ -51,12 +51,6 @@ public class RemoteCorpProjectLocalServiceUtil {
 			dossieraProjectKey, salesforceProjectKey, name);
 	}
 
-	public static com.liferay.osb.model.CorpProject updateCorpProject(
-		long corpProjectId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateCorpProject(corpProjectId, name);
-	}
-
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -86,6 +80,12 @@ public class RemoteCorpProjectLocalServiceUtil {
 	public static void deleteCorpProject(long corpProjectId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().deleteCorpProject(corpProjectId);
+	}
+
+	public static void updateCorpProject(long corpProjectId,
+		java.lang.String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().updateCorpProject(corpProjectId, name);
 	}
 
 	public static void clearService() {

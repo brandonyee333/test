@@ -95,8 +95,10 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 
 		if (_methodName269.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes269, parameterTypes)) {
-			return RemoteCorpProjectLocalServiceUtil.updateCorpProject(((Long)arguments[0]).longValue(),
+			RemoteCorpProjectLocalServiceUtil.updateCorpProject(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
+
+			return null;
 		}
 
 		throw new UnsupportedOperationException();

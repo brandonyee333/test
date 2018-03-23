@@ -37,9 +37,7 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		_methodName1 = "addCorpProject";
 
 		_methodParameterTypes1 = new String[] {
-				"long", "java.lang.String", "java.lang.String",
-				"java.lang.String", "long",
-				"com.liferay.portal.kernel.service.ServiceContext"
+				"com.liferay.portal.kernel.json.JSONObject"
 			};
 
 		_methodName2 = "createCorpProject";
@@ -54,110 +52,115 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 
 		_methodName4 = "deleteCorpProject";
 
-		_methodParameterTypes4 = new String[] { "long" };
+		_methodParameterTypes4 = new String[] {
+				"com.liferay.portal.kernel.json.JSONObject"
+			};
 
-		_methodName5 = "fetchCorpProject";
+		_methodName5 = "deleteCorpProject";
 
-		_methodParameterTypes5 = new String[] { "java.lang.String" };
+		_methodParameterTypes5 = new String[] { "long" };
 
 		_methodName6 = "fetchCorpProject";
 
-		_methodParameterTypes6 = new String[] { "long" };
+		_methodParameterTypes6 = new String[] { "java.lang.String" };
 
-		_methodName7 = "getCorpProject";
+		_methodName7 = "fetchCorpProject";
 
 		_methodParameterTypes7 = new String[] { "long" };
 
-		_methodName8 = "getCorpProjectByUuid";
+		_methodName8 = "getCorpProject";
 
-		_methodParameterTypes8 = new String[] { "java.lang.String" };
+		_methodParameterTypes8 = new String[] { "long" };
 
-		_methodName9 = "updateCorpProject";
+		_methodName9 = "getCorpProjectByUuid";
 
-		_methodParameterTypes9 = new String[] {
-				"com.liferay.osb.model.CorpProject"
-			};
+		_methodParameterTypes9 = new String[] { "java.lang.String" };
 
 		_methodName10 = "updateCorpProject";
 
 		_methodParameterTypes10 = new String[] {
-				"long", "java.lang.String",
-				"com.liferay.portal.kernel.service.ServiceContext"
+				"com.liferay.osb.model.CorpProject"
 			};
 
-		_methodName11 = "getActionableDynamicQuery";
+		_methodName11 = "updateCorpProject";
 
-		_methodParameterTypes11 = new String[] {  };
+		_methodParameterTypes11 = new String[] {
+				"com.liferay.portal.kernel.json.JSONObject"
+			};
 
-		_methodName12 = "dynamicQuery";
+		_methodName12 = "getActionableDynamicQuery";
 
 		_methodParameterTypes12 = new String[] {  };
 
-		_methodName13 = "getIndexableActionableDynamicQuery";
+		_methodName13 = "dynamicQuery";
 
 		_methodParameterTypes13 = new String[] {  };
 
-		_methodName14 = "deletePersistedModel";
+		_methodName14 = "getIndexableActionableDynamicQuery";
 
-		_methodParameterTypes14 = new String[] {
+		_methodParameterTypes14 = new String[] {  };
+
+		_methodName15 = "deletePersistedModel";
+
+		_methodParameterTypes15 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName15 = "getPersistedModel";
+		_methodName16 = "getPersistedModel";
 
-		_methodParameterTypes15 = new String[] { "java.io.Serializable" };
-
-		_methodName16 = "getCorpProjectsCount";
-
-		_methodParameterTypes16 = new String[] {  };
+		_methodParameterTypes16 = new String[] { "java.io.Serializable" };
 
 		_methodName17 = "getCorpProjectsCount";
 
-		_methodParameterTypes17 = new String[] { "java.lang.String" };
+		_methodParameterTypes17 = new String[] {  };
 
-		_methodName19 = "getOSGiServiceIdentifier";
+		_methodName18 = "getCorpProjectsCount";
 
-		_methodParameterTypes19 = new String[] {  };
+		_methodParameterTypes18 = new String[] { "java.lang.String" };
 
-		_methodName20 = "dynamicQuery";
+		_methodName20 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes20 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
+		_methodParameterTypes20 = new String[] {  };
 
 		_methodName21 = "dynamicQuery";
 
 		_methodParameterTypes21 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
 		_methodName22 = "dynamicQuery";
 
 		_methodParameterTypes22 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+			};
+
+		_methodName23 = "dynamicQuery";
+
+		_methodParameterTypes23 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName23 = "getCorpProjects";
-
-		_methodParameterTypes23 = new String[] { "int", "int" };
-
 		_methodName24 = "getCorpProjects";
 
-		_methodParameterTypes24 = new String[] {
-				"java.lang.String", "int", "int",
-				"com.liferay.portal.kernel.util.OrderByComparator"
-			};
+		_methodParameterTypes24 = new String[] { "int", "int" };
 
-		_methodName25 = "dynamicQueryCount";
+		_methodName25 = "getCorpProjects";
 
 		_methodParameterTypes25 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+				"java.lang.String", "int", "int",
+				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
 		_methodName26 = "dynamicQueryCount";
 
 		_methodParameterTypes26 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName27 = "dynamicQueryCount";
+
+		_methodParameterTypes27 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
@@ -189,30 +192,15 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 	}
 
 	@Override
-	public com.liferay.osb.model.CorpProject addCorpProject(long userId,
-		java.lang.String dossieraProjectKey,
-		java.lang.String salesforceProjectKey, java.lang.String name,
-		long organizationId,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public com.liferay.osb.model.CorpProject addCorpProject(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName1,
 					_methodParameterTypes1,
-					new Object[] {
-						userId,
-						
-					ClpSerializer.translateInput(dossieraProjectKey),
-						
-					ClpSerializer.translateInput(salesforceProjectKey),
-						
-					ClpSerializer.translateInput(name),
-						
-					organizationId,
-						
-					ClpSerializer.translateInput(serviceContext)
-					});
+					new Object[] { ClpSerializer.translateInput(jsonObject) });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -259,7 +247,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 
 	@Override
 	public com.liferay.osb.model.CorpProject deleteCorpProject(
-		com.liferay.osb.model.CorpProject corpProject) {
+		com.liferay.osb.model.CorpProject corpProject)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -269,6 +258,40 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.CorpProject)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProject deleteCorpProject(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4,
+					new Object[] { ClpSerializer.translateInput(jsonObject) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -289,8 +312,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { corpProjectId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5, new Object[] { corpProjectId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -317,8 +340,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5,
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6,
 					new Object[] {
 						ClpSerializer.translateInput(dossieraProjectKey)
 					});
@@ -344,8 +367,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6, new Object[] { corpProjectId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7, new Object[] { corpProjectId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -368,8 +391,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7, new Object[] { corpProjectId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8, new Object[] { corpProjectId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -397,8 +420,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8,
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
 					new Object[] { ClpSerializer.translateInput(uuid) });
 		}
 		catch (Throwable t) {
@@ -426,8 +449,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9,
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
 					new Object[] { ClpSerializer.translateInput(corpProject) });
 		}
 		catch (Throwable t) {
@@ -447,21 +470,14 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 
 	@Override
 	public com.liferay.osb.model.CorpProject updateCorpProject(
-		long corpProjectId, java.lang.String name,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
-					new Object[] {
-						corpProjectId,
-						
-					ClpSerializer.translateInput(name),
-						
-					ClpSerializer.translateInput(serviceContext)
-					});
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11,
+					new Object[] { ClpSerializer.translateInput(jsonObject) });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -487,8 +503,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -510,8 +526,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -533,8 +549,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -558,8 +574,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14,
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -588,8 +604,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -616,8 +632,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -640,8 +656,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18,
 					new Object[] { ClpSerializer.translateInput(name) });
 		}
 		catch (Throwable t) {
@@ -675,8 +691,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -699,8 +715,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -725,8 +741,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -758,8 +774,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -791,8 +807,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -817,8 +833,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] {
 						ClpSerializer.translateInput(name),
 						
@@ -854,8 +870,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -880,8 +896,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -940,8 +956,8 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 	private String[] _methodParameterTypes16;
 	private String _methodName17;
 	private String[] _methodParameterTypes17;
-	private String _methodName19;
-	private String[] _methodParameterTypes19;
+	private String _methodName18;
+	private String[] _methodParameterTypes18;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
 	private String _methodName21;
@@ -956,4 +972,6 @@ public class CorpProjectLocalServiceClp implements CorpProjectLocalService {
 	private String[] _methodParameterTypes25;
 	private String _methodName26;
 	private String[] _methodParameterTypes26;
+	private String _methodName27;
+	private String[] _methodParameterTypes27;
 }

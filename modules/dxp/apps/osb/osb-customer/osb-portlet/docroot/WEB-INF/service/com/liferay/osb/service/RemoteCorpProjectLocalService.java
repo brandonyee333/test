@@ -52,9 +52,6 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService,
 		java.lang.String salesforceProjectKey, java.lang.String name)
 		throws PortalException;
 
-	public CorpProject updateCorpProject(long corpProjectId,
-		java.lang.String name) throws PortalException;
-
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -74,4 +71,7 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService,
 		long roleId) throws PortalException;
 
 	public void deleteCorpProject(long corpProjectId) throws PortalException;
+
+	public void updateCorpProject(long corpProjectId, java.lang.String name)
+		throws PortalException;
 }

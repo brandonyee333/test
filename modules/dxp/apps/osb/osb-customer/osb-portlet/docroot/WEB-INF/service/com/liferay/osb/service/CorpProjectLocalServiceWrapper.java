@@ -46,15 +46,10 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	}
 
 	@Override
-	public com.liferay.osb.model.CorpProject addCorpProject(long userId,
-		java.lang.String dossieraProjectKey,
-		java.lang.String salesforceProjectKey, java.lang.String name,
-		long organizationId,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public com.liferay.osb.model.CorpProject addCorpProject(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.addCorpProject(userId,
-			dossieraProjectKey, salesforceProjectKey, name, organizationId,
-			serviceContext);
+		return _corpProjectLocalService.addCorpProject(jsonObject);
 	}
 
 	/**
@@ -74,11 +69,20 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	*
 	* @param corpProject the corp project
 	* @return the corp project that was removed
+	* @throws PortalException
 	*/
 	@Override
 	public com.liferay.osb.model.CorpProject deleteCorpProject(
-		com.liferay.osb.model.CorpProject corpProject) {
+		com.liferay.osb.model.CorpProject corpProject)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _corpProjectLocalService.deleteCorpProject(corpProject);
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProject deleteCorpProject(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.deleteCorpProject(jsonObject);
 	}
 
 	/**
@@ -141,11 +145,9 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 
 	@Override
 	public com.liferay.osb.model.CorpProject updateCorpProject(
-		long corpProjectId, java.lang.String name,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.updateCorpProject(corpProjectId, name,
-			serviceContext);
+		return _corpProjectLocalService.updateCorpProject(jsonObject);
 	}
 
 	@Override

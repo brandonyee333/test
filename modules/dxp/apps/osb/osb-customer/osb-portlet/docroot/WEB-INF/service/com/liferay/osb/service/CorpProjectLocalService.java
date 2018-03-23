@@ -24,13 +24,13 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -72,10 +72,7 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public CorpProject addCorpProject(CorpProject corpProject);
 
-	public CorpProject addCorpProject(long userId,
-		java.lang.String dossieraProjectKey,
-		java.lang.String salesforceProjectKey, java.lang.String name,
-		long organizationId, ServiceContext serviceContext)
+	public CorpProject addCorpProject(JSONObject jsonObject)
 		throws PortalException;
 
 	/**
@@ -91,9 +88,14 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	*
 	* @param corpProject the corp project
 	* @return the corp project that was removed
+	* @throws PortalException
 	*/
 	@Indexable(type = IndexableType.DELETE)
-	public CorpProject deleteCorpProject(CorpProject corpProject);
+	public CorpProject deleteCorpProject(CorpProject corpProject)
+		throws PortalException;
+
+	public CorpProject deleteCorpProject(JSONObject jsonObject)
+		throws PortalException;
 
 	/**
 	* Deletes the corp project with the primary key from the database. Also notifies the appropriate model listeners.
@@ -136,8 +138,7 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public CorpProject updateCorpProject(CorpProject corpProject);
 
-	public CorpProject updateCorpProject(long corpProjectId,
-		java.lang.String name, ServiceContext serviceContext)
+	public CorpProject updateCorpProject(JSONObject jsonObject)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
