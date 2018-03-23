@@ -239,17 +239,20 @@ AssetCategory assetCategory = assetCategories.get(0);
 
 	function <portlet:namespace />toggleFilter(id) {
 		var element = document.getElementById('<portlet:namespace />' + id);
-		var elementParent = element.parentElement;
 
-		if (element.style.display == 'none') {
-			element.style.display = '';
+		if (element) {
+			var elementParent = element.parentElement;
 
-			<portlet:namespace />toggleIcon(elementParent, true);
-		}
-		else {
-			element.style.display = 'none';
+			if (element.style.display == 'none') {
+				element.style.display = '';
 
-			<portlet:namespace />toggleIcon(elementParent, true);
+				<portlet:namespace />toggleIcon(elementParent, true);
+			}
+			else {
+				element.style.display = 'none';
+
+				<portlet:namespace />toggleIcon(elementParent, true);
+			}
 		}
 	}
 
