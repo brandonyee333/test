@@ -214,10 +214,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		return returnVal;
 	}
 
-	var MODIFIED_TEXT_TPL = '<bold class="field-modified">(' +
-		Liferay.Language.get('modified') +
-		')</bold>';
-
 	Liferay.provide(
 		window,
 		'<portlet:namespace />displayAsModified',
@@ -228,13 +224,19 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 			node.addClass('field-modified');
 
-			var tabId = node.ancestor('.tab-content-tab').getAttribute('id');
+			var tabContent = node.ancestor('.tab-content-tab');
 
-			if (tabId) {
-				var tab = A.one('#' + tabId + 'Header');
+			if (tabContent) {
+				var tabId = tabContent.getAttribute('id');
 
-				if (tab && !tab.one('.field-modified')) {
-					tab.append(MODIFIED_TEXT_TPL);
+				if (tabId) {
+					var tab = A.one('#' + tabId + 'Header');
+
+					if (tab && !tab.one('.field-modified')) {
+						var modifiedLabel = '<span class="field-modified">(' + Liferay.Language.get('modified') + ')</span>';
+
+						tab.append(modifiedLabel);
+					}
 				}
 			}
 
@@ -343,20 +345,24 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 	</c:choose>
 
 	function <portlet:namespace />determineModifiedFieldLabel(event) {
-		var name = event.currentTarget.getAttribute('name');
+		var node = A.one(event.currentTarget);
 
-		var labelNode = A.one('label[for=' + name + ']');
+		if (node) {
+			var name = node.attr('name');
 
-		if (name === '<portlet:namespace />ignoreDueDate') {
-			labelNode = A.one('.ignore-due-date .control-label');
-		}
+			var labelNode = A.one('label[for=' + name + ']');
 
-		if (name.includes('<portlet:namespace />dueDate')) {
-			labelNode = A.one('#<portlet:namespace />dueDateLabel');
-		}
+			if (name == '<portlet:namespace />ignoreDueDate') {
+				labelNode = A.one('.ignore-due-date .control-label');
+			}
 
-		if (labelNode) {
-			<portlet:namespace />displayAsModified(labelNode);
+			if (name.includes('<portlet:namespace />dueDate')) {
+				labelNode = A.one('#<portlet:namespace />dueDateLabel');
+			}
+
+			if (labelNode) {
+				<portlet:namespace />displayAsModified(labelNode);
+			}
 		}
 	};
 
@@ -372,14 +378,15 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 	var initialDate = dueDateDatePicker.getDate().valueOf();
 
-	dueDateDatePicker.after('datepicker:selectionChange',
+	dueDateDatePicker.after(
+		'datepicker:selectionChange',
 		function(event) {
-			var labelNode = A.one('#<portlet:namespace />dueDateLabel');
+			var datePickerDueDateLabel = A.one('#<portlet:namespace />dueDateLabel');
 
 			var currentDate = dueDateDatePicker.getDate().valueOf();
 
-			if (currentDate !== initialDate) {
-				<portlet:namespace />displayAsModified(labelNode);
+			if (datePickerDueDateLabel && currentDate !== initialDate) {
+				<portlet:namespace />displayAsModified(datePickerDueDateLabel);
 			}
 		}
 	);
@@ -388,14 +395,15 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 	var initialTime = dueDateTimePicker.getTime().toTimeString();
 
-	dueDateTimePicker.after('timepicker:selectionChange',
+	dueDateTimePicker.after(
+		'timepicker:selectionChange',
 		function(event) {
-			var labelNode = A.one('#<portlet:namespace />dueDateLabel');
+			var dueDateTimeDueDateLabel = A.one('#<portlet:namespace />dueDateLabel');
 
 			var currentTime = dueDateTimePicker.getTime().toTimeString();
 
-			if (currentTime !== initialTime) {
-				<portlet:namespace />displayAsModified(labelNode);
+			if (dueDateTimeDueDateLabel && currentTime !== initialTime) {
+				<portlet:namespace />displayAsModified(dueDateTimeDueDateLabel);
 			}
 		}
 	);
