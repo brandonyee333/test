@@ -227,10 +227,10 @@ class Form extends JSXComponent {
 			}
 		} = this;
 
-		if (watsonPrimaryKey && watsonPrimaryKey > 0) {
+		if (!loading && watsonPrimaryKey && watsonPrimaryKey > 0) {
 			const reset = compareObjectsData(originalFormData, formData);
 
-			if (!loading && (Object.is(formData, {}) && !deepCompareIsEqual(formData, originalFormData)) || (!loading && reset)) {
+			if (Object.is(formData, {}) && !deepCompareIsEqual(formData, originalFormData) || reset) {
 				const unfrozenFormData = JSON.parse(JSON.stringify(originalFormData));
 
 				this.props.updateFormData(unfrozenFormData);
