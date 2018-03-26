@@ -26,7 +26,7 @@
 		"immutable": "^3.8.2",
 		"lodash": "4.17.4",
 		"marble-alert": "^2.1.0",
-		"metal": "2.16.0",
+		"metal": "^2.16.5",
 		"metal-css-transitions": "^2.3.5",
 		"metal-react": "^2.0.0",
 		"metal-redux": "^2.0.1",
