@@ -233,7 +233,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 					var tab = A.one('#' + tabId + 'Header');
 
 					if (tab && !tab.one('.field-modified')) {
-						var modifiedLabel = '<span class="field-modified">(' + Liferay.Language.get('modified') + ')</span>';
+						var modifiedLabel = '<strong class="field-modified">(' + Liferay.Language.get('modified') + ')</strong>';
 
 						tab.append(modifiedLabel);
 					}
@@ -385,7 +385,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 			var currentDate = dueDateDatePicker.getDate().valueOf();
 
-			if (datePickerDueDateLabel && currentDate !== initialDate) {
+			if (datePickerDueDateLabel && (currentDate !== initialDate)) {
 				<portlet:namespace />displayAsModified(datePickerDueDateLabel);
 			}
 		}
@@ -402,7 +402,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 			var currentTime = dueDateTimePicker.getTime().toTimeString();
 
-			if (dueDateTimeDueDateLabel && currentTime !== initialTime) {
+			if (dueDateTimeDueDateLabel && (currentTime !== initialTime)) {
 				<portlet:namespace />displayAsModified(dueDateTimeDueDateLabel);
 			}
 		}
