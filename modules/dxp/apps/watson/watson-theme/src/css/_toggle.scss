@@ -9,60 +9,8 @@
 		margin-bottom: 0;
 	}
 
-	input[type=checkbox] {
-		display: none;
-
-		+ div.fancy-toggle {
-			border-radius: 15px;
-			box-shadow: inset 0 0 0 1px #D5D5D5;
-			display: inline-block;
-			height: 25px;
-			position: relative;
-			text-indent: 75px;
-			width: 50px;
-
-			&:before {
-				background: $neutralMedium;
-				border-radius: 15px;
-				content: "";
-				display: block;
-				height: 25px;
-				left: 0;
-				position: absolute;
-				top: 0;
-				transition: 0.18s ease-in-out;
-				width: 25px;
-			}
-
-			&:after {
-				background: #FFF;
-				border: 1px solid $neutralMedium;
-				border-radius: 15px;
-				content: "";
-				display: block;
-				height: 25px;
-				left: 0;
-				position: absolute;
-				top: 0;
-				transition: 0.18s ease-in-out;
-				width: 25px;
-			}
-		}
-
-		&:checked + div.fancy-toggle {
-			&:before {
-				background: $neutralMedium;
-				width: 50px;
-			}
-
-			&:after {
-				left: 25px;
-			}
-		}
-	}
-
 	span {
 		font-weight: normal;
-		margin: 0 15px;
+		margin: 0 15px 5px;
 	}
 }

@@ -1,11 +1,16 @@
 import {bindAll} from 'lodash';
+import bridge from 'metal-react';
 import JSXComponent, {Config} from 'metal-jsx';
+import ReactToggle from 'react-switch';
+
+const MetalToggle = bridge(ReactToggle);
 
 class Toggle extends JSXComponent {
 	created() {
 		bindAll(
 			this,
-			'onChange'
+			'_handleOnChange',
+			'onFocusChange'
 		);
 
 		let checkedValue = false;
@@ -19,6 +24,10 @@ class Toggle extends JSXComponent {
 		this.setState({checked: checkedValue});
 	}
 
+	onFocusChange({focused}) {
+		this.setState({focused});
+	}
+
 	render() {
 		const {checked} = this.state;
 		const {cssClass = '', disabled, label = ['', '']} = this.props;
@@ -30,15 +39,16 @@ class Toggle extends JSXComponent {
 				<label>
 					<span>{label[0]}</span>
 
-					<input
+					<MetalToggle
 						checked={checked}
-						class="toggle"
+						checkedIcon={false}
 						disabled={disabled}
-						onChange={this.onChange}
-						type="checkbox"
+						icons={false}
+						offColor="#93A8AC"
+						onChange={this._handleOnChange}
+						onColor="#3FE49F"
+						uncheckedIcon={false}
 					/>
-
-					<div class="fancy-toggle" />
 
 					<span>{label[1]}</span>
 				</label>
@@ -46,7 +56,7 @@ class Toggle extends JSXComponent {
 		);
 	}
 
-	onChange() {
+	_handleOnChange() {
 		const {checked} = this.state;
 		const {onChange} = this.props;
 
@@ -59,7 +69,6 @@ class Toggle extends JSXComponent {
 
 	syncChecked(newState) {
 		if (newState !== undefined) {
-
 			let checkedValue = false;
 
 			if ((newState === 'true' && newState !== 'false') || newState === true) {
@@ -76,7 +85,8 @@ Toggle.PROPS = {
 };
 
 Toggle.STATE = {
-	checked: Config.bool().value(false)
+	checked: Config.bool().value(false),
+	focused: Config.bool()
 };
 
 export default Toggle;
