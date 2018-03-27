@@ -128,27 +128,6 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		);
 	}
 
-	Liferay.provide(
-		window,
-		'<portlet:namespace />confirmActionCancel',
-		function() {
-			var A = AUI();
-
-			var updateTicketFm = A.one('#<portlet:namespace />updateTicketFm');
-
-			if (updateTicketFm.getData('modified')) {
-				var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-ticket.-are-you-sure-you-want-to-cancel-editing") %>');
-
-				if (!cancelEdit) {
-					return;
-				}
-			}
-
-			<portlet:namespace />closeEditTicketDialog();
-		},
-		['aui-base']
-	);
-
 	function <portlet:namespace />submit() {
 		event.preventDefault();
 
@@ -213,6 +192,27 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 
 		return returnVal;
 	}
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />confirmActionCancel',
+		function() {
+			var A = AUI();
+
+			var updateTicketFm = A.one('#<portlet:namespace />updateTicketFm');
+
+			if (updateTicketFm.getData('modified')) {
+				var cancelEdit = confirm('<%= UnicodeLanguageUtil.get(request, "you-have-unsaved-changes-on-this-ticket.-are-you-sure-you-want-to-cancel-editing") %>');
+
+				if (!cancelEdit) {
+					return;
+				}
+			}
+
+			<portlet:namespace />closeEditTicketDialog();
+		},
+		['aui-base']
+	);
 
 	Liferay.provide(
 		window,
