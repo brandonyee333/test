@@ -323,7 +323,8 @@ long[] fileAttachmentIds = {ticketAttachmentId1, ticketAttachmentId2, ticketAtta
 </aui:script>
 
 <aui:script use="aui-base">
-	<c:if test="<%= (ticketEntry != null) && (ticketEntry.getStatus() == TicketEntryConstants.STATUS_SOLUTION_PROPOSED) %>">
+	<c:if test="<%= SessionMessages.contains(renderRequest, PortalUtil.getPortletId(renderRequest) + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET) %>">
+		window.opener.location.reload();
 		window.close();
 	</c:if>
 
