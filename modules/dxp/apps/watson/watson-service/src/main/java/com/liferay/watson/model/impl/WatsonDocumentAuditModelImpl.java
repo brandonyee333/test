@@ -78,7 +78,7 @@ public class WatsonDocumentAuditModelImpl extends BaseModelImpl<WatsonDocumentAu
 			{ "watsonDocumentId", Types.BIGINT },
 			{ "originalDocument", Types.BOOLEAN },
 			{ "receivedDate", Types.TIMESTAMP },
-			{ "imagePayload", Types.VARCHAR },
+			{ "imagePayload", Types.CLOB },
 			{ "status", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
@@ -98,11 +98,11 @@ public class WatsonDocumentAuditModelImpl extends BaseModelImpl<WatsonDocumentAu
 		TABLE_COLUMNS_MAP.put("watsonDocumentId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("originalDocument", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("receivedDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("imagePayload", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonDocumentAudit (watsonDocumentAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentTypeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,watsonDocumentId LONG,originalDocument BOOLEAN,receivedDate DATE null,imagePayload VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonDocumentAudit (watsonDocumentAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentTypeWatsonListTypeId LONG,subtypeWatsonListTypeId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,watsonDocumentId LONG,originalDocument BOOLEAN,receivedDate DATE null,imagePayload TEXT null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonDocumentAudit";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonDocumentAudit.watsonDocumentAuditId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonDocumentAudit.watsonDocumentAuditId ASC";

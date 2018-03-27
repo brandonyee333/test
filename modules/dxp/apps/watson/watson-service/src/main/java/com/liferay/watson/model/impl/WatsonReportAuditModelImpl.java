@@ -86,7 +86,7 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 			{ "name", Types.VARCHAR },
 			{ "description", Types.VARCHAR },
 			{ "fullReport", Types.VARCHAR },
-			{ "imagePayload", Types.VARCHAR },
+			{ "imagePayload", Types.CLOB },
 			{ "timeSpent", Types.VARCHAR },
 			{ "reportedUser", Types.VARCHAR },
 			{ "reportDate", Types.TIMESTAMP },
@@ -110,7 +110,7 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("fullReport", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("imagePayload", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("timeSpent", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("reportedUser", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("reportDate", Types.TIMESTAMP);
@@ -118,7 +118,7 @@ public class WatsonReportAuditModelImpl extends BaseModelImpl<WatsonReportAudit>
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonReportAudit (watsonReportAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonReportId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,watsonReportId LONG,name STRING null,description STRING null,fullReport STRING null,imagePayload VARCHAR(75) null,timeSpent VARCHAR(75) null,reportedUser STRING null,reportDate DATE null,key_ INTEGER,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonReportAudit (watsonReportAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,originalWatsonReportId LONG,typeWatsonListTypeId LONG,watsonChildId LONG,watsonReportId LONG,name STRING null,description STRING null,fullReport STRING null,imagePayload TEXT null,timeSpent VARCHAR(75) null,reportedUser STRING null,reportDate DATE null,key_ INTEGER,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonReportAudit";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonReportAudit.watsonReportAuditId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonReportAudit.watsonReportAuditId ASC";

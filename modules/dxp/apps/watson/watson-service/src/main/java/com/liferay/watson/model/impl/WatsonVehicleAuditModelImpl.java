@@ -89,7 +89,7 @@ public class WatsonVehicleAuditModelImpl extends BaseModelImpl<WatsonVehicleAudi
 			{ "watsonVehicleId", Types.BIGINT },
 			{ "year", Types.INTEGER },
 			{ "description", Types.VARCHAR },
-			{ "imagePayload", Types.VARCHAR },
+			{ "imagePayload", Types.CLOB },
 			{ "licensePlate", Types.VARCHAR },
 			{ "status", Types.INTEGER }
 		};
@@ -113,12 +113,12 @@ public class WatsonVehicleAuditModelImpl extends BaseModelImpl<WatsonVehicleAudi
 		TABLE_COLUMNS_MAP.put("watsonVehicleId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("year", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("description", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("imagePayload", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("imagePayload", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("licensePlate", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonVehicleAudit (watsonVehicleAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,colorWatsonListTypeId LONG,makeWatsonListTypeId LONG,modelWatsonListTypeId LONG,originalWatsonVehicleId LONG,typeWatsonListTypeId LONG,yearWatsonListTypeId LONG,watsonIncidentId LONG,watsonVehicleId LONG,year INTEGER,description STRING null,imagePayload VARCHAR(75) null,licensePlate VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonVehicleAudit (watsonVehicleAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,colorWatsonListTypeId LONG,makeWatsonListTypeId LONG,modelWatsonListTypeId LONG,originalWatsonVehicleId LONG,typeWatsonListTypeId LONG,yearWatsonListTypeId LONG,watsonIncidentId LONG,watsonVehicleId LONG,year INTEGER,description STRING null,imagePayload TEXT null,licensePlate VARCHAR(75) null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonVehicleAudit";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonVehicleAudit.watsonVehicleAuditId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonVehicleAudit.watsonVehicleAuditId ASC";

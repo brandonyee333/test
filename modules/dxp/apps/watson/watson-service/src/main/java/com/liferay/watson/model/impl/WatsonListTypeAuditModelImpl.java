@@ -102,7 +102,7 @@ public class WatsonListTypeAuditModelImpl extends BaseModelImpl<WatsonListTypeAu
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonListTypeAudit (watsonListTypeAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentWatsonListTypeId LONG,watsonListTypeId LONG,name STRING null,type_ VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonListTypeAudit (watsonListTypeAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,parentWatsonListTypeId LONG,watsonListTypeId LONG,name STRING null,type_ VARCHAR(100) null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonListTypeAudit";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonListTypeAudit.watsonListTypeAuditId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonListTypeAudit.watsonListTypeAuditId ASC";

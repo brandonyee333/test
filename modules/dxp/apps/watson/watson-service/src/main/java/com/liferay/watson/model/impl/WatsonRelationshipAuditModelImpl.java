@@ -102,7 +102,7 @@ public class WatsonRelationshipAuditModelImpl extends BaseModelImpl<WatsonRelati
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonRelationshipAudit (watsonRelationshipAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,watsonRelationshipId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description VARCHAR(75) null,status INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonRelationshipAudit (watsonRelationshipAuditId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,watsonIncidentId LONG,watsonRelationshipId LONG,typeWatsonListTypeId LONG,classNameId1 LONG,classPK1 LONG,classNameId2 LONG,classPK2 LONG,description STRING null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonRelationshipAudit";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonRelationshipAudit.watsonRelationshipAuditId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonRelationshipAudit.watsonRelationshipAuditId ASC";

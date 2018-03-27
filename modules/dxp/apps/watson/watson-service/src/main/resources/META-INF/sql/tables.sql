@@ -90,7 +90,7 @@ create table WatsonAddressAudit (
 	floor VARCHAR(75) null,
 	room VARCHAR(75) null,
 	description STRING null,
-	imagePayload VARCHAR(75) null,
+	imagePayload TEXT null,
 	otherType VARCHAR(75) null,
 	lastSeenDate DATE null,
 	latitude DOUBLE,
@@ -182,7 +182,7 @@ create table WatsonDocumentAudit (
 	watsonDocumentId LONG,
 	originalDocument BOOLEAN,
 	receivedDate DATE null,
-	imagePayload VARCHAR(75) null,
+	imagePayload TEXT null,
 	status INTEGER
 );
 
@@ -326,7 +326,7 @@ create table WatsonListTypeAudit (
 	parentWatsonListTypeId LONG,
 	watsonListTypeId LONG,
 	name STRING null,
-	type_ VARCHAR(75) null,
+	type_ VARCHAR(100) null,
 	status INTEGER
 );
 
@@ -418,7 +418,7 @@ create table WatsonPersonAudit (
 	watsonIncidentId LONG,
 	watsonPersonId LONG,
 	description STRING null,
-	imagePayload VARCHAR(75) null,
+	imagePayload TEXT null,
 	birthDate DATE null,
 	dateAccepted DATE null,
 	dateRescued DATE null,
@@ -465,7 +465,7 @@ create table WatsonRelationshipAudit (
 	classPK1 LONG,
 	classNameId2 LONG,
 	classPK2 LONG,
-	description VARCHAR(75) null,
+	description STRING null,
 	status INTEGER
 );
 
@@ -506,7 +506,7 @@ create table WatsonReportAudit (
 	name STRING null,
 	description STRING null,
 	fullReport STRING null,
-	imagePayload VARCHAR(75) null,
+	imagePayload TEXT null,
 	timeSpent VARCHAR(75) null,
 	reportedUser STRING null,
 	reportDate DATE null,
@@ -545,7 +545,7 @@ create table WatsonResourceAudit (
 	watsonResourceId LONG,
 	name STRING null,
 	description STRING null,
-	imagePayload VARCHAR(75) null,
+	imagePayload TEXT null,
 	status INTEGER
 );
 
@@ -589,7 +589,7 @@ create table WatsonVehicleAudit (
 	watsonVehicleId LONG,
 	year INTEGER,
 	description STRING null,
-	imagePayload VARCHAR(75) null,
+	imagePayload TEXT null,
 	licensePlate VARCHAR(75) null,
 	status INTEGER
 );
