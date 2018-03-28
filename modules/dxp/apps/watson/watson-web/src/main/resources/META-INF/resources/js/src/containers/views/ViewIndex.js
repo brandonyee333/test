@@ -146,14 +146,21 @@ class ViewIndex extends JSXComponent {
 	_handleIndexRequest() {
 		const {props, state} = this;
 
-		const {action, disableDataFetch, model, sortBy, watsonParentPrimaryKey} = props;
+		const {
+			action,
+			disableDataFetch,
+			loading,
+			model,
+			sortBy,
+			watsonParentPrimaryKey
+		} = props;
 
 		if (!disableDataFetch) {
 			const {batchCount, itemsLoaded} = state;
 
 			const indexModelMethod = props[`index${formatModelName(model, true)}`];
 
-			if (indexModelMethod) {
+			if (!loading && indexModelMethod) {
 				indexModelMethod(
 					{
 						actionType: action,

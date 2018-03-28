@@ -84,7 +84,7 @@ class Index extends JSXComponent {
 	_handleIndexRequest(end = 0) {
 		const {props, state} = this;
 
-		const {model, sortBy} = props;
+		const {loading, model, sortBy} = props;
 
 		const {batchCount, itemsLoaded} = state;
 
@@ -92,7 +92,7 @@ class Index extends JSXComponent {
 
 		end = (end < 1) ? itemsLoaded + batchCount : end;
 
-		if (indexModelMethod) {
+		if (!loading && indexModelMethod) {
 			indexModelMethod(
 				{
 					end,
