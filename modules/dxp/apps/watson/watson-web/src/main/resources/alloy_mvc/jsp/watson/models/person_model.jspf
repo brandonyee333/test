@@ -282,7 +282,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonPersonAgeRange(String startAge, String endAge) {
-		if (!Validator.isNull(startAge) && !Validator.isNull(endAge)) {
+		if (Validator.isNotNull(startAge) && Validator.isNotNull(endAge)) {
 			long endAgeLong = GetterUtil.getLong(endAge);
 
 			if ((endAgeLong > 0) && (GetterUtil.getLong(startAge) > endAgeLong)) {
