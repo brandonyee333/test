@@ -16,12 +16,13 @@ package com.liferay.portal.workflow.kaleo.designer.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -707,6 +708,17 @@ public class KaleoDraftDefinitionUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<KaleoDraftDefinitionPersistence, KaleoDraftDefinitionPersistence> _serviceTracker =
-		ServiceTrackerFactory.open(KaleoDraftDefinitionPersistence.class);
+	private static ServiceTracker<KaleoDraftDefinitionPersistence, KaleoDraftDefinitionPersistence> _serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(KaleoDraftDefinitionPersistence.class);
+
+		ServiceTracker<KaleoDraftDefinitionPersistence, KaleoDraftDefinitionPersistence> serviceTracker =
+			new ServiceTracker<KaleoDraftDefinitionPersistence, KaleoDraftDefinitionPersistence>(bundle.getBundleContext(),
+				KaleoDraftDefinitionPersistence.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
 }

@@ -201,7 +201,7 @@ public class SharepointOAuth2TokenEntryPersistenceTest {
 		return OrderByComparatorFactoryUtil.create("SharepointOAuth2TokenEntry",
 			"sharepointOAuth2TokenEntryId", true, "userId", true, "userName",
 			true, "createDate", true, "configurationPid", true,
-			"expirationDate", true, "refreshToken", true);
+			"expirationDate", true);
 	}
 
 	@Test

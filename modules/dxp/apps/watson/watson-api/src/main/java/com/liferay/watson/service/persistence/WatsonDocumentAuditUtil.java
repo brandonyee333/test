@@ -16,13 +16,14 @@ package com.liferay.watson.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.liferay.watson.model.WatsonDocumentAudit;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -268,6 +269,17 @@ public class WatsonDocumentAuditUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonDocumentAuditPersistence, WatsonDocumentAuditPersistence> _serviceTracker =
-		ServiceTrackerFactory.open(WatsonDocumentAuditPersistence.class);
+	private static ServiceTracker<WatsonDocumentAuditPersistence, WatsonDocumentAuditPersistence> _serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(WatsonDocumentAuditPersistence.class);
+
+		ServiceTracker<WatsonDocumentAuditPersistence, WatsonDocumentAuditPersistence> serviceTracker =
+			new ServiceTracker<WatsonDocumentAuditPersistence, WatsonDocumentAuditPersistence>(bundle.getBundleContext(),
+				WatsonDocumentAuditPersistence.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
 }

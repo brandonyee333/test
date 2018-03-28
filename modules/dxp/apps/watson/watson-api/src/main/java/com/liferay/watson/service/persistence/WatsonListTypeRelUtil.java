@@ -16,13 +16,14 @@ package com.liferay.watson.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.liferay.watson.model.WatsonListTypeRel;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -268,6 +269,17 @@ public class WatsonListTypeRelUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonListTypeRelPersistence, WatsonListTypeRelPersistence> _serviceTracker =
-		ServiceTrackerFactory.open(WatsonListTypeRelPersistence.class);
+	private static ServiceTracker<WatsonListTypeRelPersistence, WatsonListTypeRelPersistence> _serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(WatsonListTypeRelPersistence.class);
+
+		ServiceTracker<WatsonListTypeRelPersistence, WatsonListTypeRelPersistence> serviceTracker =
+			new ServiceTracker<WatsonListTypeRelPersistence, WatsonListTypeRelPersistence>(bundle.getBundleContext(),
+				WatsonListTypeRelPersistence.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
 }

@@ -16,7 +16,8 @@ package com.liferay.portal.workflow.kaleo.designer.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -272,6 +273,17 @@ public class KaleoDraftDefinitionServiceUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<KaleoDraftDefinitionService, KaleoDraftDefinitionService> _serviceTracker =
-		ServiceTrackerFactory.open(KaleoDraftDefinitionService.class);
+	private static ServiceTracker<KaleoDraftDefinitionService, KaleoDraftDefinitionService> _serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(KaleoDraftDefinitionService.class);
+
+		ServiceTracker<KaleoDraftDefinitionService, KaleoDraftDefinitionService> serviceTracker =
+			new ServiceTracker<KaleoDraftDefinitionService, KaleoDraftDefinitionService>(bundle.getBundleContext(),
+				KaleoDraftDefinitionService.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
 }

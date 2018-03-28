@@ -16,7 +16,8 @@ package com.liferay.watson.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -256,6 +257,17 @@ public class WatsonListTypeLocalServiceUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonListTypeLocalService, WatsonListTypeLocalService> _serviceTracker =
-		ServiceTrackerFactory.open(WatsonListTypeLocalService.class);
+	private static ServiceTracker<WatsonListTypeLocalService, WatsonListTypeLocalService> _serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(WatsonListTypeLocalService.class);
+
+		ServiceTracker<WatsonListTypeLocalService, WatsonListTypeLocalService> serviceTracker =
+			new ServiceTracker<WatsonListTypeLocalService, WatsonListTypeLocalService>(bundle.getBundleContext(),
+				WatsonListTypeLocalService.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
 }
