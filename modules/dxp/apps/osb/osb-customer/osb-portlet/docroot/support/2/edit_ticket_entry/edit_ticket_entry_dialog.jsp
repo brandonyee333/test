@@ -59,7 +59,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 	<portlet:param name="redirect" value="<%= redirect %>" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateTicketEntryURL %>" enctype="multipart/form-data" method="post" name="updateTicketFm" onSubmit='<%= renderResponse.getNamespace() + "submit();" %>'>
+<aui:form action="<%= updateTicketEntryURL %>" enctype="multipart/form-data" method="post" name="updateTicketFm" onSubmit='<%= renderResponse.getNamespace() + "submit(event);" %>'>
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 	<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
 	<aui:input name="reportedByUserId" type="hidden" value="<%= ticketEntry.getUserId() %>" />
@@ -128,7 +128,7 @@ boolean hasUpdateAdvanced = hasUpdateAdmin || OSBTicketEntryPermission.contains(
 		);
 	}
 
-	function <portlet:namespace />submit() {
+	function <portlet:namespace />submit(event) {
 		event.preventDefault();
 
 		var A = AUI();
