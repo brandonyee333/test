@@ -71,3 +71,18 @@ app.artifacts-4.1.2=\
 app.change.log-4.1.2=LPS-64031 LPS-67810 LPS-68062 LPS-69271 LPS-69730 LPS-73935 LPS-73967 LPS-74155 LPS-74172 LPS-74544 LPS-74849 LPS-74897 LPS-75010 LPS-75859 LPS-76221 LPS-76649 LPS-77025 LPS-78772 SYNC-1569 SYNC-1607 SYNC-1622 SYNC-1643 SYNC-1750 SYNC-1758 
 
 app.git.id-4.1.2=e045b097ceb1d8bdb553e42a77de84c21c8d9d4c
+
+#
+# Liferay App Version 4.1.3
+#
+
+app.artifacts-4.1.3=\
+	com.liferay.sync.api-3.0.3.jar,\
+	com.liferay.sync.oauth-1.0.2.jar,\
+	com.liferay.sync.security-2.0.8.jar,\
+	com.liferay.sync.service-1.6.3.jar,\
+	com.liferay.sync.web-1.0.18.jar
+
+app.change.log-4.1.3=LPS-78901 SYNC-1762 
+
+app.git.id-4.1.3=43518c6d86eb6694e4b604bbd089878a5042b31a
