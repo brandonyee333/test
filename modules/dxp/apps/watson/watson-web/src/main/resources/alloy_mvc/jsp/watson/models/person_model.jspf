@@ -73,7 +73,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		jsonObject.put("affiliatedIncidents", affiliatedIncidents.size());
 
 		jsonObject.put("birthCountryId", watsonPerson.getBirthCountryId());
-		jsonObject.put("birthDate", watsonPerson.getBirthDate());
+		jsonObject.put("birthDate", getFormattedDate(watsonPerson.getBirthDate(), locale));
 		jsonObject.put("citizenshipWatsonListTypeId", watsonPerson.getCitizenshipWatsonListTypeId());
 
 		if (countryIDWatsonListTypeRels != null) {
@@ -83,7 +83,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 			_pushRelData(jsonObject, watsonPerson.getWatsonPersonId(), "countryID", locale);
 		}
 
-		jsonObject.put("createDate", watsonPerson.getCreateDate());
+		jsonObject.put("createDate", getFormattedDate(watsonPerson.getCreateDate(), locale));
 
 		WatsonListType watsonListType = WatsonListType.fetch(watsonPerson.getCountryWatsonListTypeId());
 
@@ -92,8 +92,8 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		}
 
 		jsonObject.put("countryWatsonListTypeId", watsonPerson.getCountryWatsonListTypeId());
-		jsonObject.put("dateAccepted", watsonPerson.getDateAccepted());
-		jsonObject.put("dateRescued", watsonPerson.getDateRescued());
+		jsonObject.put("dateAccepted", getFormattedDate(watsonPerson.getDateAccepted(), locale));
+		jsonObject.put("dateRescued", getFormattedDate(watsonPerson.getDateRescued(), locale));
 		jsonObject.put("description", watsonPerson.getDescription(locale));
 		jsonObject.put("endAge", watsonPerson.getEndAge());
 
@@ -127,7 +127,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 
 		Date modifiedDate = watsonPerson.getModifiedDate();
 
-		jsonObject.put("modifiedDate", modifiedDate);
+		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonPerson));
@@ -150,7 +150,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		}
 
 		jsonObject.put("primaryNameString", watsonPerson.getPrimaryName());
-		jsonObject.put("reportDate", watsonPerson.getCreateDate());
+		jsonObject.put("reportDate", getFormattedDate(watsonPerson.getCreateDate(), locale));
 		jsonObject.put("reportedBy", watsonPerson.getUserName());
 		jsonObject.put("rescued", watsonPerson.getRescued());
 
@@ -191,6 +191,14 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		jsonObject.put("weight", watsonPerson.getWeight());
 
 		return jsonObject;
+	}
+
+	public static String getFormattedDate(Date date, Locale locale) {
+		if (date != null) {
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
+		}
+
+		return StringPool.BLANK;
 	}
 
 	public static JSONArray getIdJSONArray(long watsonIncidentId) throws Exception {

@@ -72,7 +72,7 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 		jsonObject.put("affiliatedIncidents", affiliatedIncidents.size());
 
 		jsonObject.put("colorWatsonListTypeId", watsonVehicle.getColorWatsonListTypeId());
-		jsonObject.put("createDate", watsonVehicle.getCreateDate());
+		jsonObject.put("createDate", getFormattedDate(watsonVehicle.getCreateDate(), locale));
 		jsonObject.put("description", watsonVehicle.getDescription(locale));
 		jsonObject.put("id", watsonVehicle.getPrimaryKey());
 		jsonObject.put("imagePayload", JSONFactoryUtil.createJSONObject(watsonVehicle.getImagePayload()));
@@ -103,7 +103,7 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 
 		Date modifiedDate = watsonVehicle.getModifiedDate();
 
-		jsonObject.put("modifiedDate", modifiedDate);
+		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonVehicle));
@@ -134,6 +134,15 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 		jsonObject.put("yearWatsonListTypeId", watsonVehicle.getYearWatsonListTypeId());
 
 		return jsonObject;
+	}
+
+	public static String getFormattedDate(Date date, Locale locale) {
+		if (date != null) {
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
+		}
+		else {
+			return StringPool.BLANK;
+		}
 	}
 
 	public static JSONArray getIdJSONArray(long watsonIncidentId) throws Exception {

@@ -115,10 +115,10 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		jsonObject.put("addresses", WatsonAddress.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
 		jsonObject.put("audienceAdultCount", watsonIncident.getAudienceAdultCount());
 		jsonObject.put("audienceChildCount", watsonIncident.getAudienceChildCount());
-		jsonObject.put("createDate", watsonIncident.getCreateDate());
+		jsonObject.put("createDate", getFormattedDate(watsonIncident.getCreateDate(), locale));
 		jsonObject.put("description", watsonIncident.getDescription(locale));
 		jsonObject.put("disabled", hasDisabled(watsonIncident.getIncidentStatus()));
-		jsonObject.put("endDate", watsonIncident.getEndDate());
+		jsonObject.put("endDate", getFormattedDate(watsonIncident.getEndDate(), locale));
 		jsonObject.put("expenses", watsonIncident.getExpenses());
 		jsonObject.put("externalCase", Validator.isNotNull(watsonIncident.getExternalCaseId()) || Validator.isNotNull(watsonIncident.getExternalCaseWatsonListTypeId()));
 		jsonObject.put("externalCaseId", watsonIncident.getExternalCaseId());
@@ -131,7 +131,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 		Date modifiedDate = watsonIncident.getModifiedDate();
 
-		jsonObject.put("modifiedDate", modifiedDate);
+		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonIncident));
@@ -152,11 +152,11 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 
 		jsonObject.put("people", WatsonPerson.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
 		jsonObject.put("relationships", JSONFactoryUtil.createJSONArray());
-		jsonObject.put("reportDate", watsonIncident.getReportDate());
+		jsonObject.put("reportDate", getFormattedDate(watsonIncident.getReportDate(), locale));
 		jsonObject.put("reportedBy", watsonIncident.getUserName());
 		jsonObject.put("resources", WatsonResource.getIdJSONArray(watsonIncident.getWatsonIncidentId()));
 		jsonObject.put("sourceWatsonListTypeId", watsonIncident.getSourceWatsonListTypeId());
-		jsonObject.put("startDate", watsonIncident.getStartDate());
+		jsonObject.put("startDate", getFormattedDate(watsonIncident.getStartDate(), locale));
 
 		WatsonListType watsonListType = WatsonListType.fetch(watsonIncident.getSubtypeWatsonListTypeId());
 
@@ -191,6 +191,14 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		}
 
 		return jsonObject;
+	}
+
+	public static String getFormattedDate(Date date, Locale locale) {
+		if (date != null) {
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
+		}
+
+		return StringPool.BLANK;
 	}
 
 	public static String getIncidentName(long watsonIncidentId) throws Exception {

@@ -105,7 +105,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			_pushRelData(jsonObject, watsonChild.getWatsonChildId(), "countryID", locale);
 		}
 
-		jsonObject.put("createDate", watsonChild.getCreateDate());
+		jsonObject.put("createDate", getFormattedDate(watsonChild.getCreateDate(), locale));
 
 		WatsonListType watsonListType = WatsonListType.fetch(watsonChild.getCountryWatsonListTypeId());
 
@@ -114,8 +114,8 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 
 		jsonObject.put("countryWatsonListTypeId", watsonChild.getCountryWatsonListTypeId());
-		jsonObject.put("dateAccepted", watsonChild.getDateAccepted());
-		jsonObject.put("dateDischarged", watsonChild.getDateDischarged());
+		jsonObject.put("dateAccepted", getFormattedDate(watsonChild.getDateAccepted(), locale));
+		jsonObject.put("dateDischarged", getFormattedDate(watsonChild.getDateDischarged(), locale));
 		jsonObject.put("dateFollowUp", watsonChild.getDateFollowUp());
 		jsonObject.put("dischargeWatsonListTypeId", watsonChild.getDischargeWatsonListTypeId());
 		jsonObject.put("documents", WatsonDocument.getIdJSONArray(watsonChild.getWatsonChildId()));
@@ -142,7 +142,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 
 		Date modifiedDate = watsonChild.getModifiedDate();
 
-		jsonObject.put("modifiedDate", modifiedDate);
+		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonChild));
@@ -167,7 +167,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		jsonObject.put("physical_exams", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_PHYSICAL_EXAM, watsonChild.getWatsonChildId()));
 		jsonObject.put("primaryNameString", watsonChild.getPrimaryName());
 		jsonObject.put("progress_reports", WatsonReport.getIdJSONArray(WatsonReport.REPORT_TYPE_PROGRESS_REPORT, watsonChild.getWatsonChildId()));
-		jsonObject.put("reportDate", watsonChild.getCreateDate());
+		jsonObject.put("reportDate", getFormattedDate(watsonChild.getCreateDate(), locale));
 		jsonObject.put("reportedBy", watsonChild.getUserName());
 
 		watsonListType = WatsonListType.fetch(watsonChild.getSexWatsonListTypeId());
@@ -212,6 +212,15 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 
 		return jsonObject;
+	}
+
+	public static String getFormattedDate(Date date, Locale locale) {
+		if (date != null) {
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
+		}
+		else {
+			return StringPool.BLANK;
+		}
 	}
 
 	public static List<Long> getActivitiesInvolvedIds(long watsonChildId) throws Exception {

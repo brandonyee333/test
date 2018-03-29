@@ -65,14 +65,14 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 	public static JSONObject getAsJSONObject(WatsonActivity watsonActivity, List<WatsonRelationship> watsonRelationships, Locale locale) throws Exception {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		jsonObject.put("createDate", watsonActivity.getCreateDate());
+		jsonObject.put("createDate", getFormattedDate(watsonActivity.getCreateDate(), locale));
 		jsonObject.put("editable", hasEditableStatus(watsonActivity.getUserId()));
 		jsonObject.put("id", watsonActivity.getPrimaryKey());
 		jsonObject.put("incidentName", WatsonIncident.getIncidentName(watsonActivity.getWatsonIncidentId()));
 
 		Date modifiedDate = watsonActivity.getModifiedDate();
 
-		jsonObject.put("modifiedDate", watsonActivity.getModifiedDate());
+		jsonObject.put("modifiedDate", getFormattedDate(watsonActivity.getModifiedDate(), locale));
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonActivity));
@@ -80,7 +80,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 		jsonObject.put("narrative", watsonActivity.getNarrative(locale));
 		jsonObject.put("reportDate", watsonActivity.getReportDate());
 		jsonObject.put("reportedBy", watsonActivity.getUserName());
-		jsonObject.put("startDate", watsonActivity.getStartDate());
+		jsonObject.put("startDate", getFormattedDate(watsonActivity.getStartDate(), locale));
 		jsonObject.put("subtypeWatsonListTypeId", watsonActivity.getSubtypeWatsonListTypeId());
 		jsonObject.put("typeWatsonListTypeId", watsonActivity.getTypeWatsonListTypeId());
 		jsonObject.put("watsonActivityId", watsonActivity.getWatsonActivityId());

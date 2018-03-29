@@ -85,7 +85,7 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 
 		jsonObject.put("affiliatedIncidents", affiliatedIncidents.size());
 
-		jsonObject.put("createDate", watsonResource.getCreateDate());
+		jsonObject.put("createDate", getFormattedDate(watsonResource.getCreateDate(), locale));
 		jsonObject.put("description", watsonResource.getDescription(locale));
 		jsonObject.put("id", watsonResource.getPrimaryKey());
 		jsonObject.put("imagePayload", JSONFactoryUtil.createJSONObject(watsonResource.getImagePayload()));
@@ -93,12 +93,12 @@ public static class WatsonResource extends WatsonResourceBaseModel {
 
 		Date modifiedDate = watsonResource.getModifiedDate();
 
-		jsonObject.put("modifiedDate", modifiedDate);
+		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonResource));
 		jsonObject.put("name", watsonResource.getName(locale));
-		jsonObject.put("reportDate", watsonResource.getCreateDate());
+		jsonObject.put("reportDate", getFormattedDate(watsonResource.getCreateDate(), locale));
 		jsonObject.put("reportedBy", watsonResource.getUserName());
 		jsonObject.put("typeWatsonListTypeId", watsonResource.getTypeWatsonListTypeId());
 		jsonObject.put("watsonIncidentId", watsonResource.getWatsonIncidentId());

@@ -93,7 +93,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 
 		jsonObject.put("building", watsonAddress.getBuilding(locale));
 		jsonObject.put("countryId", watsonAddress.getCountryId());
-		jsonObject.put("createDate", watsonAddress.getCreateDate());
+		jsonObject.put("createDate", getFormattedDate(watsonAddress.getCreateDate(), locale));
 		jsonObject.put("description", watsonAddress.getDescription(locale));
 
 		WatsonListType watsonListType = WatsonListType.fetch(watsonAddress.getDistrictWatsonListTypeId());
@@ -107,13 +107,13 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		jsonObject.put("id", watsonAddress.getPrimaryKey());
 		jsonObject.put("imagePayload", JSONFactoryUtil.createJSONObject(watsonAddress.getImagePayload()));
 		jsonObject.put("incidentName", WatsonIncident.getIncidentName(watsonAddress.getWatsonIncidentId()));
-		jsonObject.put("lastSeenDate", watsonAddress.getLastSeenDate());
+		jsonObject.put("lastSeenDate", getFormattedDate(watsonAddress.getLastSeenDate(), locale));
 		jsonObject.put("latitude", watsonAddress.getLatitude());
 		jsonObject.put("longitude", watsonAddress.getLongitude());
 
 		Date modifiedDate = watsonAddress.getModifiedDate();
 
-		jsonObject.put("modifiedDate", modifiedDate);
+		jsonObject.put("modifiedDate", getFormattedDate(modifiedDate, locale));
 		jsonObject.put("modifiedDateTimeStamp", modifiedDate.getTime());
 
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonAddress));
@@ -153,6 +153,15 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		}
 
 		return jsonObject;
+	}
+
+	public static String getFormattedDate(Date date, Locale locale) {
+		if (date != null) {
+			return DateUtil.getDate(date, "yyyy-MM-dd", locale);
+		}
+		else {
+			return StringPool.BLANK;
+		}
 	}
 
 	public static JSONArray getIdJSONArray(long watsonIncidentId) throws Exception {
