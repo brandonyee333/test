@@ -1,4 +1,4 @@
-import {bindAll, forIn, isEmpty, isEqual} from 'lodash';
+import {bindAll, forIn, isEmpty, isEqual, reverse, tail} from 'lodash';
 import bridge from 'metal-react';
 import JSXComponent, {Config} from 'metal-jsx';
 import Select from 'react-select';
@@ -34,12 +34,13 @@ class SelectInput extends JSXComponent {
 				renderedOptions.sort((a, b) => a.label.localeCompare(b.label));
 			}
 			else if (sortOptions === 'numerical') {
-				renderedOptions.sort(
-					(a, b) => b.value.localeCompare(
-						a.value,
-						{},
-						{ignorePunctuation: true, numeric: true}
-					)
+				renderedOptions = reverse(tail(renderedOptions));
+
+				renderedOptions.unshift(
+					{
+						label: '',
+						value: ''
+					}
 				);
 			}
 		}
