@@ -167,6 +167,9 @@ public class HandshakeTask implements Task {
 			Message.KEY_LCS_PORTLET_BUILD_NUMBER,
 			LCSUtil.getLCSPortletBuildNumber());
 
+		handshakeMessage.put(
+			Message.KEY_MONITORING_STATUS, LCSConstants.MONITORING_UNAVAILABLE);
+
 		Bundle bundle = FrameworkUtil.getBundle(getClass());
 
 		BundleContext bundleContext = bundle.getBundleContext();
@@ -174,18 +177,15 @@ public class HandshakeTask implements Task {
 		ServiceReference<PortalMonitoringControl> serviceReference =
 			bundleContext.getServiceReference(PortalMonitoringControl.class);
 
-		LiferayFilter liferayFilter = (LiferayFilter)bundleContext.getService(
-			serviceReference);
+		if (serviceReference != null) {
+			LiferayFilter liferayFilter =
+				(LiferayFilter)bundleContext.getService(serviceReference);
 
-		if (liferayFilter.isFilterEnabled()) {
-			handshakeMessage.put(
-				Message.KEY_MONITORING_STATUS,
-				LCSConstants.MONITORING_AVAILABLE);
-		}
-		else {
-			handshakeMessage.put(
-				Message.KEY_MONITORING_STATUS,
-				LCSConstants.MONITORING_UNAVAILABLE);
+			if (liferayFilter.isFilterEnabled()) {
+				handshakeMessage.put(
+					Message.KEY_MONITORING_STATUS,
+					LCSConstants.MONITORING_AVAILABLE);
+			}
 		}
 
 		PortletPreferences jxPortletPreferences =
