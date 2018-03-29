@@ -22,6 +22,26 @@ import com.liferay.portal.kernel.util.Validator;
  */
 public class ProxyHostUtil {
 
+	public static String getProxyAuthType() {
+		String proxyAuthType = PortletPropsValues.PROXY_AUTH_TYPE;
+
+		if (Validator.isNull(proxyAuthType)) {
+			proxyAuthType = System.getProperty("http.proxyAuthType");
+		}
+
+		return proxyAuthType;
+	}
+
+	public static String getProxyDomain() {
+		String proxyDomain = PortletPropsValues.PROXY_DOMAIN;
+
+		if (Validator.isNull(proxyDomain)) {
+			proxyDomain = System.getProperty("http.proxyDomain");
+		}
+
+		return proxyDomain;
+	}
+
 	public static String getProxyHostLogin() {
 		String proxyHostLogin = PortletPropsValues.PROXY_HOST_LOGIN;
 
@@ -61,6 +81,16 @@ public class ProxyHostUtil {
 		}
 
 		return proxyHostPort;
+	}
+
+	public static String getProxyWorkstation() {
+		String proxyWorkstation = PortletPropsValues.PROXY_WORKSTATION;
+
+		if (Validator.isNull(proxyWorkstation)) {
+			proxyWorkstation = System.getProperty("http.proxyWorkstation");
+		}
+
+		return proxyWorkstation;
 	}
 
 }
