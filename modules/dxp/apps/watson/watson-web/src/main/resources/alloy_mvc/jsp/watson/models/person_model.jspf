@@ -237,13 +237,15 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 	public static JSONObject getAffiliatedChild(WatsonPerson watsonPerson) throws Exception {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		List<WatsonChild> watsonChildren = WatsonChild.query("originalWatsonPersonId", watsonPerson.getWatsonPersonId());
+		List<WatsonChild> watsonChildren = WatsonChild.queryAll("originalWatsonPersonId", watsonPerson.getWatsonPersonId());
 
 		if (!watsonChildren.isEmpty()) {
 			WatsonChild watsonChild = watsonChildren.get(0);
 
-			jsonObject.put("name", watsonChild.getPrimaryName());
-			jsonObject.put("watsonChildId", watsonChild.getWatsonChildId());
+			if (watsonChild.getStatus() == WorkflowConstants.STATUS_APPROVED) {
+				jsonObject.put("name", watsonChild.getPrimaryName());
+				jsonObject.put("watsonChildId", watsonChild.getWatsonChildId());
+			}
 		}
 
 		return jsonObject;

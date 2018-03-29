@@ -256,11 +256,11 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		long originalWatsonPersonId = watsonChild.getOriginalWatsonPersonId();
 
 		if (originalWatsonPersonId > 0) {
-			WatsonPerson watsonPerson = WatsonPerson.fetch(originalWatsonPersonId);
+			WatsonPerson watsonPerson = WatsonPerson.fetch(originalWatsonPersonId, true);
 
 			long watsonIncidentId = watsonPerson.getWatsonIncidentId();
 
-			if (watsonIncidentId > 0) {
+			if ((watsonIncidentId > 0) && (watsonPerson.getStatus() == WorkflowConstants.STATUS_APPROVED)) {
 				jsonObject.put("name", watsonPerson.getPrimaryName());
 				jsonObject.put("watsonIncidentId", watsonIncidentId);
 				jsonObject.put("watsonPersonId", originalWatsonPersonId);
