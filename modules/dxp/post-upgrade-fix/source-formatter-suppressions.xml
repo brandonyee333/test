@@ -2,6 +2,6 @@
 
 <suppressions>
 	<checkstyle>
-		<suppress checks="MethodName" files="modules/private/post-upgrade-fix/post-upgrade-fix-LPS_[0-9]*/src/main/java/com/liferay/post/upgrade/fix/LPS_[0-9]*/osgi/commands/PostUpgradeFixOSGiCommands.java"/>
+		<suppress checks="MethodName" files="modules/private/post-upgrade-fix/post-upgrade-fix-LPS_[0-9]*/src/main/java/com/liferay/post/upgrade/fix/LPS_[0-9]*/osgi/commands/PostUpgradeFixOSGiCommands.java" />
 	</checkstyle>
 </suppressions>
