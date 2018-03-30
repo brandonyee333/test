@@ -261,7 +261,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			}
 		}
 		else {
-			returnWatsonActivities = WatsonActivity.get(start, end);
+			returnWatsonActivities = WatsonActivity.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
 		}
 
 		return returnWatsonActivities;
@@ -279,7 +279,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			}
 		}
 		else {
-			returnWatsonAddresses = WatsonAddress.get(start, end);
+			returnWatsonAddresses = WatsonAddress.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
 		}
 
 		return returnWatsonAddresses;
@@ -311,7 +311,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			}
 		}
 		else {
-			returnWatsonPeople = WatsonPerson.get(start, end);
+			returnWatsonPeople = WatsonPerson.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
 		}
 
 		return returnWatsonPeople;
@@ -343,7 +343,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			}
 		}
 		else {
-			returnWatsonResources = WatsonResource.get(start, end);
+			returnWatsonResources = WatsonResource.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
 		}
 
 		return returnWatsonResources;
@@ -361,7 +361,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 			}
 		}
 		else {
-			returnWatsonVehicles = WatsonVehicle.get(start, end);
+			returnWatsonVehicles = WatsonVehicle.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
 		}
 
 		return returnWatsonVehicles;

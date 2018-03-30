@@ -5,22 +5,13 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 
 	if (sortBy === 'startDate') {
 		sorted = data.sort(
-			(a, b) => b.get('startDate').localeCompare(a.get('startDate'))
+			(a, b) => b.get(sortBy).localeCompare(a.get(sortBy))
 		);
 	}
-	else if (sortBy === 'watsonIncidentId') {
+	else if (sortBy === 'typeWatsonListTypeId' || sortBy === 'watsonChildId' || sortBy === 'watsonIncidentId') {
 		sorted = data.sort(
-			(a, b) => b.get('watsonIncidentId').localeCompare(
-				a.get('watsonIncidentId'),
-				{},
-				{ignorePunctuation: true, numeric: true}
-			)
-		);
-	}
-	else if (sortBy === 'watsonChildId') {
-		sorted = data.sort(
-			(a, b) => b.get('watsonChildId').localeCompare(
-				a.get('watsonChildId'),
+			(a, b) => b.get(sortBy).localeCompare(
+				a.get(sortBy),
 				{},
 				{ignorePunctuation: true, numeric: true}
 			)
@@ -37,13 +28,13 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 	}
 	else if (sortBy === 'makeWatsonListTypeId') {
 		sorted = data.sort(
-			(a, b) => a.get('makeWatsonListTypeId').localeCompare(b.get('makeWatsonListTypeId'))
+			(a, b) => a.get(sortBy).localeCompare(b.get(sortBy))
 		);
 	}
 	else if (sortBy === 'name') {
 		sorted = data.sort(
-			(a, b) => (b.get('name') || '').localeCompare(
-				a.get('name'),
+			(a, b) => (b.get(sortBy) || '').localeCompare(
+				a.get(sortBy),
 				{},
 				{ignorePunctuation: true, numeric: true}
 			)
@@ -51,13 +42,13 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 	}
 	else if (sortBy === 'reportDate') {
 		sorted = data.sort(
-			(a, b) => new Date(b.get('reportDate')) - new Date((a.get('reportDate')))
+			(a, b) => new Date(b.get(sortBy)) - new Date((a.get(sortBy)))
 		);
 	}
 	else if (sortBy === 'incidentStatus') {
 		sorted = data.sort(
 			(a, b) => {
-				let sortVal = b.get('incidentStatus').localeCompare(a.get('incidentStatus'));
+				let sortVal = b.get(sortBy).localeCompare(a.get(sortBy));
 
 				if (sortVal === 0) {
 					sortVal = b.get('name').localeCompare(
@@ -69,15 +60,6 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 
 				return sortVal;
 			}
-		);
-	}
-	else if (sortBy === 'typeWatsonListTypeId') {
-		sorted = data.sort(
-			(a, b) => b.get('typeWatsonListTypeId').localeCompare(
-				a.get('typeWatsonListTypeId'),
-				{},
-				{ignorePunctuation: true, numeric: true}
-			)
 		);
 	}
 	else {

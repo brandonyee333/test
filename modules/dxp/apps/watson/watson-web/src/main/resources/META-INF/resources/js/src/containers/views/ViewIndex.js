@@ -327,7 +327,7 @@ class ViewIndex extends JSXComponent {
 						omitBlankOption={true}
 						onChange={this._handleUpdateSortBy}
 						options={WatsonConstants.inputConfig[model].sortByOptions}
-						value={sortBy || 'watsonIncidentId'}
+						value={sortBy}
 					/>
 				</div>
 
