@@ -1680,6 +1680,93 @@ AUI.add(
 			}
 		);
 
+		NotificationsEditorFormConfig.prototype.addNotificationView = function(num) {
+			var instance = this;
+
+			num = num || 1;
+
+			var strings = instance.getStrings();
+
+			var notificationsViewTpl = instance.get('viewTemplate');
+
+			var inputTpl = Template.get('input');
+			var selectTpl = Template.get('select');
+			var textareaTpl = Template.get('textarea');
+
+			var buffer = [];
+
+			for (var i = 0; i < num; i++) {
+				var notificationContent = [
+					inputTpl.parse(
+						{
+							auiCssClass: 'form-control input-sm notifications-cell-editor-input',
+							auiLabelCssClass: 'celleditor-label',
+							id: A.guid(),
+							label: strings.name,
+							name: 'name',
+							size: 35,
+							type: 'text'
+						}
+					),
+
+					textareaTpl.parse(
+						{
+							auiCssClass: 'celleditor-textarea-small form-control input-sm',
+							auiLabelCssClass: 'celleditor-label',
+							id: A.guid(),
+							label: strings.description,
+							name: 'description'
+						}
+					),
+
+					selectTpl.parse(
+						{
+							auiCssClass: 'form-control input-sm',
+							auiLabelCssClass: 'celleditor-label',
+							id: A.guid(),
+							label: strings.templateLanguage,
+							name: 'templateLanguage',
+							options: instance.get('templateLanguages')
+						}
+					),
+
+					textareaTpl.parse(
+						{
+							auiCssClass: 'celleditor-textarea-small form-control input-sm',
+							auiLabelCssClass: 'celleditor-label',
+							id: A.guid(),
+							label: strings.template,
+							name: 'template'
+						}
+					),
+
+					selectTpl.parse(
+						{
+							auiCssClass: 'form-control input-sm',
+							auiLabelCssClass: 'celleditor-label',
+							id: A.guid(),
+							label: strings.notificationType,
+							name: 'notificationType',
+							options: instance.get('notificationTypes')
+						}
+					)
+				].join(STR_BLANK);
+
+				buffer.push(
+					notificationsViewTpl.parse(
+						{
+							content: notificationContent,
+							viewId: 'notification'
+						}
+					)
+				);
+			}
+
+			instance.appendToDynamicView(buffer.join(STR_BLANK));
+		};
+
+		var TimerNotificationsEditorForm = A.Component.create(NotificationsEditorFormConfig);
+
 		var ActionsEditorFormConfig = {
 			ATTRS: {
 				scriptLanguages: {
@@ -1902,6 +1989,94 @@ AUI.add(
 			}
 		);
 
+		ActionsEditorFormConfig.prototype.addActionView = function(num) {
+			var instance = this;
+
+			num = num || 1;
+
+			var strings = instance.getStrings();
+
+			var actionsViewTpl = instance.get('viewTemplate');
+
+			var inputTpl = Template.get('input');
+			var selectTpl = Template.get('select');
+			var textareaTpl = Template.get('textarea');
+
+			var buffer = [];
+
+			for (var i = 0; i < num; i++) {
+				var actionContent = [
+					inputTpl.parse(
+						{
+							auiCssClass: 'actions-cell-editor-input form-control input-sm',
+							auiLabelCssClass: 'celleditor-label',
+							id: A.guid(),
+							label: strings.name,
+							name: 'name',
+							size: 35,
+							type: 'text'
+						}
+					),
+
+					textareaTpl.parse(
+						{
+							auiCssClass: 'celleditor-textarea-small form-control input-sm',
+							auiLabelCssClass: 'celleditor-label',
+							id: A.guid(),
+							label: strings.description,
+							name: 'description'
+						}
+					),
+
+					textareaTpl.parse(
+						{
+							auiCssClass: 'celleditor-textarea-small form-control input-sm',
+							auiLabelCssClass: 'celleditor-label',
+							id: A.guid(),
+							label: strings.script,
+							name: 'script'
+						}
+					),
+
+					selectTpl.parse(
+						{
+							auiCssClass: 'form-control input-sm',
+							auiLabelCssClass: 'celleditor-label',
+							id: A.guid(),
+							label: strings.scriptLanguage,
+							name: 'scriptLanguage',
+							options: instance.get('scriptLanguages')
+						}
+					),
+
+					inputTpl.parse(
+						{
+							auiCssClass: 'actions-cell-editor-input form-control input-sm',
+							auiLabelCssClass: 'celleditor-label',
+							id: A.guid(),
+							label: strings.priority,
+							name: 'priority',
+							size: 35,
+							type: 'text'
+						}
+					)
+				].join(STR_BLANK);
+
+				buffer.push(
+					actionsViewTpl.parse(
+						{
+							content: actionContent,
+							viewId: 'action'
+						}
+					)
+				);
+			}
+
+			instance.appendToDynamicView(buffer.join(STR_BLANK));
+		};
+
+		var TimerActionsEditorForm = A.Component.create(ActionsEditorFormConfig);
+
 		var TaskTimerActionsEditorForm = A.Component.create(
 			{
 				ATTRS: {
@@ -1932,8 +2107,8 @@ AUI.add(
 
 					editorFormClasses: {
 						value: {
-							action: ActionsEditorForm,
-							notification: NotificationsEditorForm,
+							action: TimerActionsEditorForm,
+							notification: TimerNotificationsEditorForm,
 							reassignment: AssignmentsEditorForm
 						}
 					},
