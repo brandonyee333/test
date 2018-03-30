@@ -1,0 +1,12 @@
+#
+# Liferay App Version 1.0.0
+#
+
+app.artifacts-1.0.0=\
+	com.liferay.sharepoint.rest.oauth2.api-1.0.2.jar,\
+	com.liferay.sharepoint.rest.oauth2.service-1.0.2.jar,\
+	com.liferay.sharepoint.rest.repository-1.0.1.jar
+
+app.change.log-1.0.0=LPS-77559 LPS-77849 LPS-78033 LPS-78772 LPS-78901
+
+app.git.id-1.0.0=d0e84fac02850192195bec2b00cf9e44dad340ff
