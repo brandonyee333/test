@@ -34,21 +34,7 @@ Date lastEnabledDate = calendar.getTime();
 	<table class="lfr-table">
 		<tr>
 			<td>
-				<liferay-ui:message key="project" />
-			</td>
-			<td>
-				<liferay-ui:message key="product" />
-			</td>
-			<td>
-				<liferay-ui:message key="purchase-order" />
-			</td>
-			<td>
-				<liferay-ui:message key="status" />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<aui:select label="" name="<%= displayTerms.ACCOUNT_ENTRY_ID %>">
+				<aui:select label="project" name="<%= displayTerms.ACCOUNT_ENTRY_ID %>">
 					<option value=""></option>
 
 					<c:if test="<%= displayTerms.getAccountEntryId() > 0 %>">
@@ -70,7 +56,7 @@ Date lastEnabledDate = calendar.getTime();
 				<aui:button onClick="<%= taglibSelectAccountEntry %>" value="choose" />
 			</td>
 			<td>
-				<aui:select label="" name="<%= displayTerms.PRODUCT_ENTRY_ID %>">
+				<aui:select label="product" name="<%= displayTerms.PRODUCT_ENTRY_ID %>">
 					<option value=""></option>
 
 					<%
@@ -88,10 +74,10 @@ Date lastEnabledDate = calendar.getTime();
 				</aui:select>
 			</td>
 			<td>
-				<aui:input label="" name="<%= displayTerms.PURCHASE_ORDER_KEY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getPurchaseOrderKey()) %>" />
+				<aui:input label="purchase-order" name="<%= displayTerms.PURCHASE_ORDER_KEY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getPurchaseOrderKey()) %>" />
 			</td>
 			<td>
-				<aui:select label="" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
+				<aui:select label="status" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
 					<option value="-1"><liferay-ui:message key="any" /></option>
 
 					<%
@@ -114,15 +100,7 @@ Date lastEnabledDate = calendar.getTime();
 		</tr>
 		<tr>
 			<td>
-				<liferay-ui:message key="created-by" />
-			</td>
-			<td colspan="3">
-				<liferay-ui:message key="last-edited-by" />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<aui:select label="" name="<%= displayTerms.CREATE_USER_ID %>">
+				<aui:select label="created-by" name="<%= displayTerms.CREATE_USER_ID %>">
 					<option value=""></option>
 					<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
 
@@ -146,7 +124,7 @@ Date lastEnabledDate = calendar.getTime();
 				<aui:button onClick="<%= taglibSelectCreateUser %>" value="choose" />
 			</td>
 			<td colspan="3">
-				<aui:select label="" name="<%= displayTerms.MODIFIED_USER_ID %>">
+				<aui:select label="last-edited-by" name="<%= displayTerms.MODIFIED_USER_ID %>">
 					<option value=""></option>
 					<option <%= (user.getUserId() == displayTerms.getModifiedUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
 
@@ -172,14 +150,8 @@ Date lastEnabledDate = calendar.getTime();
 		</tr>
 		<tr>
 			<td>
-				<liferay-ui:message key="created-after" />
-			</td>
-			<td colspan="3">
-				<liferay-ui:message key="created-before" />
-			</td>
-		</tr>
-		<tr>
-			<td>
+				<label><liferay-ui:message key="created-after" /></label>
+
 				<liferay-ui:input-date
 					dayParam="<%= displayTerms.CREATE_DATE_GT_DAY %>"
 					dayValue="<%= displayTerms.getCreateDateGTDay() %>"
@@ -193,6 +165,8 @@ Date lastEnabledDate = calendar.getTime();
 				/>
 			</td>
 			<td colspan="3">
+				<label><liferay-ui:message key="created-before" /></label>
+
 				<liferay-ui:input-date
 					dayParam="<%= displayTerms.CREATE_DATE_LT_DAY %>"
 					dayValue="<%= displayTerms.getCreateDateLTDay() %>"
@@ -208,14 +182,8 @@ Date lastEnabledDate = calendar.getTime();
 		</tr>
 		<tr>
 			<td>
-				<liferay-ui:message key="modified-after" />
-			</td>
-			<td colspan="3">
-				<liferay-ui:message key="modified-before" />
-			</td>
-		</tr>
-		<tr>
-			<td>
+				<label><liferay-ui:message key="modified-after" /></label>
+
 				<liferay-ui:input-date
 					dayParam="<%= displayTerms.MODIFIED_DATE_GT_DAY %>"
 					dayValue="<%= displayTerms.getModifiedDateGTDay() %>"
@@ -229,6 +197,8 @@ Date lastEnabledDate = calendar.getTime();
 				/>
 			</td>
 			<td colspan="3">
+				<label><liferay-ui:message key="modified-before" /></label>
+
 				<liferay-ui:input-date
 					dayParam="<%= displayTerms.MODIFIED_DATE_LT_DAY %>"
 					dayValue="<%= displayTerms.getModifiedDateLTDay() %>"
@@ -254,14 +224,8 @@ Date lastEnabledDate = calendar.getTime();
 		</tr>
 		<tr>
 			<td>
-				<liferay-ui:message key="started-after" />
-			</td>
-			<td colspan="3">
-				<liferay-ui:message key="started-before" />
-			</td>
-		</tr>
-		<tr>
-			<td>
+				<label><liferay-ui:message key="started-after" /></label>
+
 				<liferay-ui:input-date
 					dayParam="<%= displayTerms.START_DATE_GT_DAY %>"
 					dayValue="<%= displayTerms.getStartDateGTDay() %>"
@@ -275,6 +239,8 @@ Date lastEnabledDate = calendar.getTime();
 				/>
 			</td>
 			<td colspan="3">
+				<label><liferay-ui:message key="started-before" /></label>
+
 				<liferay-ui:input-date
 					dayParam="<%= displayTerms.START_DATE_LT_DAY %>"
 					dayValue="<%= displayTerms.getStartDateLTDay() %>"
@@ -288,16 +254,10 @@ Date lastEnabledDate = calendar.getTime();
 				/>
 			</td>
 		</tr>
-		<tr id="<portlet:namespace />actualStartDateLabel" style="<%= displayTerms.isProrated() ? "" : "display: none;" %>">
-			<td>
-				<liferay-ui:message key="actual-started-after" />
-			</td>
-			<td colspan="3">
-				<liferay-ui:message key="actual-started-before" />
-			</td>
-		</tr>
 		<tr id="<portlet:namespace />actualStartDate" style="<%= displayTerms.isProrated() ? "" : "display: none;" %>">
 			<td>
+				<label><liferay-ui:message key="actual-started-after" /></label>
+
 				<liferay-ui:input-date
 					dayParam="<%= displayTerms.ACTUAL_START_DATE_GT_DAY %>"
 					dayValue="<%= displayTerms.getActualStartDateGTDay() %>"
@@ -311,6 +271,8 @@ Date lastEnabledDate = calendar.getTime();
 				/>
 			</td>
 			<td colspan="3">
+				<label><liferay-ui:message key="actual-started-before" /></label>
+
 				<liferay-ui:input-date
 					dayParam="<%= displayTerms.ACTUAL_START_DATE_LT_DAY %>"
 					dayValue="<%= displayTerms.getActualStartDateLTDay() %>"
