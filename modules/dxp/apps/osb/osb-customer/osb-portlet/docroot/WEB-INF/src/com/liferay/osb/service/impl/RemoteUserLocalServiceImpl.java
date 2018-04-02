@@ -83,6 +83,11 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 			return null;
 		}
 
+		return translate(jsonObject);
+	}
+
+	@Override
+	public User translate(JSONObject jsonObject) {
 		User user = userLocalService.createUser(0);
 
 		RemoteUserImpl remoteUser = new RemoteUserImpl(user);
@@ -94,43 +99,48 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 		remoteUser.setLastName(jsonObject.getString("lastName"));
 		remoteUser.setMiddleName(jsonObject.getString("middleName"));
 
-		List<Organization> organizations = new ArrayList<>();
-
 		JSONArray organizationsJSONArray = jsonObject.getJSONArray(
 			"organizations");
 
-		for (int i = 0; i < organizationsJSONArray.length(); i++) {
-			JSONObject organizationJSONObject =
-				organizationsJSONArray.getJSONObject(i);
+		if (organizationsJSONArray != null) {
+			List<Organization> organizations = new ArrayList<>();
 
-			Organization organization =
-				organizationLocalService.fetchOrganizationByUuidAndCompanyId(
-					organizationJSONObject.getString("uuid"),
-					OSBConstants.COMPANY_ID);
+			for (int i = 0; i < organizationsJSONArray.length(); i++) {
+				JSONObject organizationJSONObject =
+					organizationsJSONArray.getJSONObject(i);
 
-			if (organization != null) {
-				organizations.add(organization);
+				Organization organization =
+					organizationLocalService.
+						fetchOrganizationByUuidAndCompanyId(
+							organizationJSONObject.getString("uuid"),
+							OSBConstants.COMPANY_ID);
+
+				if (organization != null) {
+					organizations.add(organization);
+				}
 			}
+
+			remoteUser.setOrganizations(organizations);
 		}
-
-		remoteUser.setOrganizations(organizations);
-
-		List<Role> roles = new ArrayList<>();
 
 		JSONArray rolesJSONArray = jsonObject.getJSONArray("roles");
 
-		for (int i = 0; i < rolesJSONArray.length(); i++) {
-			JSONObject roleJSONObject = rolesJSONArray.getJSONObject(i);
+		if (rolesJSONArray != null) {
+			List<Role> roles = new ArrayList<>();
 
-			Role role = roleLocalService.fetchRoleByUuidAndCompanyId(
-				roleJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
+			for (int i = 0; i < rolesJSONArray.length(); i++) {
+				JSONObject roleJSONObject = rolesJSONArray.getJSONObject(i);
 
-			if (role != null) {
-				roles.add(role);
+				Role role = roleLocalService.fetchRoleByUuidAndCompanyId(
+					roleJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
+
+				if (role != null) {
+					roles.add(role);
+				}
 			}
-		}
 
-		remoteUser.setRoles(roles);
+			remoteUser.setRoles(roles);
+		}
 
 		remoteUser.setScreenName(jsonObject.getString("screenName"));
 		remoteUser.setUuid(jsonObject.getString("uuid"));

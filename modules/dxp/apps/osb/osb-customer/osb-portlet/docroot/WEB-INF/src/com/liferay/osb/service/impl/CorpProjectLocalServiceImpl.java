@@ -50,8 +50,24 @@ public class CorpProjectLocalServiceImpl
 		User user = userLocalService.fetchUserByUuidAndCompanyId(
 			userUuid, OSBConstants.COMPANY_ID);
 
-		if (user != null) {
-			userId = user.getUserId();
+		if (user == null) {
+			User remoteUser = remoteUserLocalService.translate(
+				jsonObject.getJSONObject("user"));
+
+			ServiceContext serviceContext = new ServiceContext();
+
+			serviceContext.setCreateDate(remoteUser.getCreateDate());
+			serviceContext.setUuid(remoteUser.getUuid());
+
+			user = userLocalService.addUser(
+				OSBConstants.USER_DEFAULT_USER_ID, OSBConstants.COMPANY_ID,
+				true, StringPool.BLANK, StringPool.BLANK, false,
+				remoteUser.getScreenName(), remoteUser.getEmailAddress(), 0,
+				StringPool.BLANK, remoteUser.getLocale(),
+				remoteUser.getFirstName(), remoteUser.getMiddleName(),
+				remoteUser.getLastName(), 0, 0, false, 0, 1, 1970,
+				StringPool.BLANK, new long[0], remoteUser.getOrganizationIds(),
+				remoteUser.getRoleIds(), new long[0], false, serviceContext);
 		}
 
 		long organizationId = getOrganizationId(
@@ -61,12 +77,12 @@ public class CorpProjectLocalServiceImpl
 
 		serviceContext.setCreateDate(
 			new Date(jsonObject.getLong("createDate")));
-		serviceContext.setCreateDate(
+		serviceContext.setModifiedDate(
 			new Date(jsonObject.getLong("modifiedDate")));
 		serviceContext.setUuid(jsonObject.getString("uuid"));
 
 		return addCorpProject(
-			userId, jsonObject.getString("dossieraProjectKey"),
+			user.getUserId(), jsonObject.getString("dossieraProjectKey"),
 			jsonObject.getString("salesforceProjectKey"),
 			jsonObject.getString("name"), organizationId, serviceContext);
 	}
