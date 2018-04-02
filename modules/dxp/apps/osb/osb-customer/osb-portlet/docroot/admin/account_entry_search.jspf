@@ -68,14 +68,14 @@ Date lastEnabledDate = calendar.getTime();
 							<aui:button onClick="<%= taglibSelectPartnerEntry %>" value="choose" />
 						</td>
 						<td colspan="2">
-							<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLE %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_ROLE %>" type="hidden" value="<%= displayTerms.getAccountWorkerRole() %>" />
-							<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_NAME %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_WORKER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getAccountWorkerName()) %>" />
+							<aui:input name="<%= renderResponse.getNamespace() + displayTerms.ACCOUNT_WORKER_ROLE %>" type="hidden" value="<%= displayTerms.getAccountWorkerRole() %>" />
+							<aui:input name="<%= renderResponse.getNamespace() + displayTerms.ACCOUNT_WORKER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getAccountWorkerName()) %>" />
 
 							<aui:select label="project-worker" name="<%= displayTerms.ACCOUNT_WORKER_USER_ID %>">
-								<option value=""></option>
+								<aui:option label="" value="" />
 
 								<c:if test="<%= Validator.isNotNull(displayTerms.getAccountWorkerUserId()) %>">
-									<option selected value="<%= displayTerms.getAccountWorkerUserId() %>"><%= HtmlUtil.escape(displayTerms.getAccountWorkerName()) %></option>
+									<aui:option label="<%= displayTerms.getAccountWorkerName() %>" selected="true" value="<%= displayTerms.getAccountWorkerUserId() %>" />
 								</c:if>
 							</aui:select>
 
@@ -101,37 +101,36 @@ Date lastEnabledDate = calendar.getTime();
 						</td>
 						<td>
 							<aui:select disabled="<%= displayTerms.getSupport() == 3 %>" label="has-expired-support" name="<%= displayTerms.EXPIRED_SUPPORT %>">
-								<option <%= !displayTerms.hasExpiredSupport() ? "selected" : "" %> value=""></option>
-								<option <%= (displayTerms.hasExpiredSupport() && displayTerms.isExpiredSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
-								<option <%= (displayTerms.hasExpiredSupport() && !displayTerms.isExpiredSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+								<aui:option label="" selected="<%= !displayTerms.hasExpiredSupport() %>" value="" />
+								<aui:option label="yes" selected="<%= displayTerms.hasExpiredSupport() && displayTerms.isExpiredSupport() %>" value="1" />
+								<aui:option label="no" selected="<%= displayTerms.hasExpiredSupport() && !displayTerms.isExpiredSupport() %>" value="0" />
 							</aui:select>
 						</td>
 						<td>
 							<aui:select disabled="<%= displayTerms.getSupport() == 3 %>" label="has-ticket-support" name="<%= displayTerms.TICKET_SUPPORT %>">
-								<option <%= !displayTerms.hasTicketSupport() ? "selected" : "" %> value=""></option>
-								<option <%= (displayTerms.hasTicketSupport() && displayTerms.isTicketSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
-								<option <%= (displayTerms.hasTicketSupport() && !displayTerms.isTicketSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+								<aui:option label="" selected="<%= !displayTerms.hasTicketSupport() %>" value="" />
+								<aui:option label="yes" selected="<%= displayTerms.hasTicketSupport() && displayTerms.isTicketSupport() %>" value="1" />
+								<aui:option label="no" selected="<%= displayTerms.hasTicketSupport() && !displayTerms.isTicketSupport() %>" value="0" />
 							</aui:select>
 						</td>
 						<td>
 							<aui:select label="has-partner-first-line-support" name="<%= displayTerms.PARTNER_MANAGED_SUPPORT %>">
-								<option <%= !displayTerms.hasPartnerManagedSupport() ? "selected" : "" %> value=""></option>
-								<option <%= (displayTerms.hasPartnerManagedSupport() && displayTerms.isPartnerManagedSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
-								<option <%= (displayTerms.hasPartnerManagedSupport() && !displayTerms.isPartnerManagedSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+								<aui:option label="" selected="<%= !displayTerms.hasPartnerManagedSupport() %>" value="" />
+								<aui:option label="yes" selected="<%= displayTerms.hasPartnerManagedSupport() && displayTerms.isPartnerManagedSupport() %>" value="1" />
+								<aui:option label="no" selected="<%= displayTerms.hasPartnerManagedSupport() && !displayTerms.isPartnerManagedSupport() %>" value="0" />
 							</aui:select>
 						</td>
 					</tr>
 					<tr>
 						<td>
 							<aui:select label="support-region" name="<%= displayTerms.SUPPORT_REGION_IDS %>">
-								<option value=""></option>
+								<aui:option label="" value="" />
 
 								<%
 								for (SupportRegion supportRegion : SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
 								%>
 
-									<option <%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) ? "selected" : "" %> value="<%= supportRegion.getSupportRegionId() %>"><%= HtmlUtil.escape(supportRegion.getName()) %></option>
-
+									<aui:option label="<%= supportRegion.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) %>" value="<%= supportRegion.getSupportRegionId() %>" />
 								<%
 								}
 								%>
@@ -165,7 +164,7 @@ Date lastEnabledDate = calendar.getTime();
 					<tr>
 						<td colspan="2">
 							<aui:select label="industry" multiple="<%= true %>" name="<%= displayTerms.INDUSTRIES %>">
-								<option value=""><liferay-ui:message key="any" /></option>
+								<aui:option label="any" value="" />
 
 								<%
 								List<ListType> industryTypes = ListTypeServiceUtil.getListTypes(AccountEntryConstants.LIST_TYPE_INDUSTRY);
@@ -174,7 +173,7 @@ Date lastEnabledDate = calendar.getTime();
 									long[] industries = Arrays.stream(displayTerms.getIndustries()).asLongStream().toArray();
 								%>
 
-									<option <%= ArrayUtil.contains(industries, industryType.getListTypeId()) ? "selected" : "" %> value="<%= industryType.getListTypeId() %>"><%= LanguageUtil.get(request, industryType.getName()) %></option>
+									<aui:option label="<%= industryType.getName() %>" selected="<%= ArrayUtil.contains(industries, industryType.getListTypeId()) %>" value="<%= industryType.getListTypeId() %>" />
 
 								<%
 								}
@@ -184,7 +183,7 @@ Date lastEnabledDate = calendar.getTime();
 						</td>
 						<td>
 							<aui:select label="sla" multiple="<%= true %>" name="<%= displayTerms.SUPPORT_RESPONSE_IDS %>">
-								<option value=""><liferay-ui:message key="any" /></option>
+								<aui:option label="any" value="" />
 
 								<%
 								List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -192,8 +191,7 @@ Date lastEnabledDate = calendar.getTime();
 								for (SupportResponse supportResponse : supportResponses) {
 								%>
 
-									<option <%= ArrayUtil.contains(displayTerms.getSupportResponseIds(), supportResponse.getSupportResponseId()) ? "selected" : "" %> value="<%= supportResponse.getSupportResponseId() %>"><%= HtmlUtil.escape(supportResponse.getName()) %></option>
-
+									<aui:option label="<%= supportResponse.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportResponseIds(), supportResponse.getSupportResponseId()) %>" value="<%= supportResponse.getSupportResponseId() %>" />
 								<%
 								}
 								%>
@@ -202,13 +200,13 @@ Date lastEnabledDate = calendar.getTime();
 						</td>
 						<td>
 							<aui:select label="tier" multiple="<%= true %>" name="<%= displayTerms.TIERS %>">
-								<option value=""><liferay-ui:message key="any" /></option>
+								<aui:option label="any" value="" />
 
 								<%
 								for (int tier : AccountEntryConstants.TIERS) {
 								%>
 
-									<option <%= ArrayUtil.contains(displayTerms.getTiers(), tier) ? "selected" : "" %> value="<%= tier %>"><%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(tier)) %></option>
+									<aui:option label="<%= AccountEntryConstants.getTierLabel(tier) %>" selected="<%= ArrayUtil.contains(displayTerms.getTiers(), tier) %>" value="<%= tier %>" />
 
 								<%
 								}
@@ -220,13 +218,13 @@ Date lastEnabledDate = calendar.getTime();
 					<tr>
 						<td colspan="4">
 							<aui:select label="status" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
-								<option value="-1"><liferay-ui:message key="any" /></option>
+								<aui:option labe="any" value="-1" />
 
 								<%
 								for (int status : AccountEntryConstants.STATUSES) {
 								%>
 
-									<option <%= ArrayUtil.contains(displayTerms.getStatuses(), status) ? "selected" : "" %> value="<%= status %>"><%= LanguageUtil.get(request, WorkflowConstants.getStatusLabel(status)) %></option>
+									<aui:option label="<%= WorkflowConstants.getStatusLabel(status) %>" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), status) %>" value="<%= status %>" />
 
 								<%
 								}
@@ -243,15 +241,15 @@ Date lastEnabledDate = calendar.getTime();
 					<tr>
 						<td colspan="2">
 							<aui:select label="created-by" name="<%= displayTerms.CREATE_USER_ID %>">
-								<option value=""></option>
-								<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+								<aui:option label="" value="" />
+								<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getCreateUserId() %>" value="<%= user.getUserId() %>" />
 
 								<c:if test="<%= (displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId()) %>">
-									<option selected value="<%= displayTerms.getCreateUserId() %>"><%= HtmlUtil.escape(displayTerms.getCreateUserName()) %></option>
+									<aui:option label="<%= displayTerms.getCreateUserName() %>" selected="true" value="<%= displayTerms.getCreateUserId() %>" />
 								</c:if>
 							</aui:select>
 
-							<input id="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" name="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
+							<aui:input name="<%= renderResponse.getNamespace() + displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
 
 							<portlet:renderURL var="selectCreateUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 								<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
@@ -267,15 +265,15 @@ Date lastEnabledDate = calendar.getTime();
 						</td>
 						<td colspan="2">
 							<aui:select label="last-edited-by" name="<%= displayTerms.MODIFIED_USER_ID %>">
-								<option value=""></option>
-								<option <%= (user.getUserId() == displayTerms.getModifiedUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+								<aui:option label="" value="" />
+								<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getModifiedUserId() %>" value="<%= user.getUserId() %>" />
 
 								<c:if test="<%= (displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId()) %>">
-									<option selected value="<%= displayTerms.getModifiedUserId() %>"><%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %></option>
+									<aui:option label="<%= displayTerms.getModifiedUserName() %>" selected="true" value="<%= displayTerms.getModifiedUserId() %>" />
 								</c:if>
 							</aui:select>
 
-							<input id="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
+							<aui:input name="<%= renderResponse.getNamespace() + displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
 
 							<portlet:renderURL var="selectModifiedUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 								<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
@@ -366,7 +364,7 @@ Date lastEnabledDate = calendar.getTime();
 					<tr>
 						<td colspan="2">
 							<aui:select label="product" multiple="<%= true %>" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>">
-								<option value=""><liferay-ui:message key="any" /></option>
+								<aui:option label="any" value="" />
 
 								<%
 								List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -374,8 +372,7 @@ Date lastEnabledDate = calendar.getTime();
 								for (ProductEntry productEntry : productEntries) {
 								%>
 
-									<option <%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
-
+									<aui:option label="<%= productEntry.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" value="<%= productEntry.getProductEntryId() %>" />
 								<%
 								}
 								%>
@@ -386,7 +383,7 @@ Date lastEnabledDate = calendar.getTime();
 					<tr>
 						<td>
 							<aui:select label="liferay-version" multiple="<%= true %>" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_LFR_IDS %>">
-								<option value=""><liferay-ui:message key="any" /></option>
+								<aui:option label="any" value="" />
 
 								<%
 								List<ListType> envLFRTypes = ListUtil.copy(ListTypeServiceUtil.getListTypes(ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS));
@@ -396,7 +393,7 @@ Date lastEnabledDate = calendar.getTime();
 								for (ListType envLFRType : envLFRTypes) {
 								%>
 
-									<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvLFRIds(), envLFRType.getListTypeId()) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %></option>
+									<aui:option label="<%= envLFRType.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvLFRIds(), envLFRType.getListTypeId()) %>" value="<%= envLFRType.getListTypeId() %>" />
 
 								<%
 								}
@@ -406,7 +403,7 @@ Date lastEnabledDate = calendar.getTime();
 						</td>
 						<td>
 							<aui:select label="operating-system" multiple="<%= true %>" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_OS_IDS %>">
-								<option value=""><liferay-ui:message key="any" /></option>
+								<aui:option label="any" value="" />
 
 								<%
 								List<ListType> envOSTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_OS);
@@ -414,7 +411,7 @@ Date lastEnabledDate = calendar.getTime();
 								for (ListType envOSType : envOSTypes) {
 								%>
 
-									<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvOSIds(), envOSType.getListTypeId()) ? "selected" : "" %> value="<%= envOSType.getListTypeId() %>"><%= LanguageUtil.get(request, envOSType.getName()) %></option>
+									<aui:option label="<%= envOSType.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvOSIds(), envOSType.getListTypeId()) %>" value="<%= envOSType.getListTypeId() %>" />
 
 								<%
 								}
@@ -426,7 +423,7 @@ Date lastEnabledDate = calendar.getTime();
 					<tr>
 						<td>
 							<aui:select label="java-virtual-machine" multiple="<%= true %>" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_JVM_IDS %>">
-								<option value=""><liferay-ui:message key="any" /></option>
+								<aui:option label="any" value="" />
 
 								<%
 								List<ListType> envJVMTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_JVM);
@@ -434,7 +431,7 @@ Date lastEnabledDate = calendar.getTime();
 								for (ListType envJVMType : envJVMTypes) {
 								%>
 
-									<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvJVMIds(), envJVMType.getListTypeId()) ? "selected" : "" %> value="<%= envJVMType.getListTypeId() %>"><%= LanguageUtil.get(request, envJVMType.getName()) %></option>
+									<aui:option label="<%= envJVMType.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvJVMIds(), envJVMType.getListTypeId()) %>" value="<%= envJVMType.getListTypeId() %>" />
 
 								<%
 								}
@@ -444,7 +441,7 @@ Date lastEnabledDate = calendar.getTime();
 						</td>
 						<td>
 							<aui:select label="database" multiple="<%= true %>" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_DB_IDS %>">
-								<option value=""><liferay-ui:message key="any" /></option>
+								<aui:option label="any" value="" />
 
 								<%
 								List<ListType> envDBTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_DB);
@@ -452,7 +449,7 @@ Date lastEnabledDate = calendar.getTime();
 								for (ListType envDBType : envDBTypes) {
 								%>
 
-									<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvDBIds(), envDBType.getListTypeId()) ? "selected" : "" %> value="<%= envDBType.getListTypeId() %>"><%= LanguageUtil.get(request, envDBType.getName()) %></option>
+									<aui:option label="<%= envDBType.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvDBIds(), envDBType.getListTypeId()) %>" value="<%= envDBType.getListTypeId() %>" />
 
 								<%
 								}
@@ -464,7 +461,7 @@ Date lastEnabledDate = calendar.getTime();
 					<tr>
 						<td colspan="2">
 							<aui:select label="application-server" multiple="<%= true %>" name="<%= displayTerms.ACCOUNT_ENVIRONMENT_ENV_AS_IDS %>">
-								<option value=""><liferay-ui:message key="any" /></option>
+								<aui:option label="any" value="" />
 
 								<%
 								List<ListType> envASTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_AS);
@@ -472,7 +469,7 @@ Date lastEnabledDate = calendar.getTime();
 								for (ListType envASType : envASTypes) {
 								%>
 
-									<option <%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvASIds(), envASType.getListTypeId()) ? "selected" : "" %> value="<%= envASType.getListTypeId() %>"><%= LanguageUtil.get(request, envASType.getName()) %></option>
+									<aui:option label="<%= envASType.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getAccountEnvironmentEnvASIds(), envASType.getListTypeId()) %>" value="<%= envASType.getListTypeId() %>" />
 
 								<%
 								}

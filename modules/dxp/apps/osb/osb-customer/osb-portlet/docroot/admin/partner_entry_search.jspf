@@ -30,27 +30,27 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 			</td>
 			<td>
 				<aui:select label="first-line-support" name="<%= displayTerms.MANAGING_SUPPORT %>">
-					<option <%= !displayTerms.hasManagingSupport() ? "selected" : "" %> value=""></option>
-					<option <%= (displayTerms.hasManagingSupport() && displayTerms.isManagingSupport()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
-					<option <%= (displayTerms.hasManagingSupport() && !displayTerms.isManagingSupport()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+					<aui:option label="" selected="<%= !displayTerms.hasManagingSupport() %>" value="" />
+					<aui:option label="yes" selected="<%= displayTerms.hasManagingSupport() && displayTerms.isManagingSupport() %>" value="1" />
+					<aui:option label="no" selected="<%= displayTerms.hasManagingSupport() && !displayTerms.isManagingSupport() %>" value="0" />
 				</aui:select>
 			</td>
 			<td>
 				<aui:select label="has-child-partner-entries" name="<%= displayTerms.CHILD_PARTNER_ENTRIES %>">
-					<option <%= !displayTerms.hasChildPartnerEntries() ? "selected" : "" %> value=""></option>
-					<option <%= (displayTerms.hasChildPartnerEntries() && displayTerms.isChildPartnerEntries()) ? "selected" : "" %> value="1"><liferay-ui:message key="yes" /></option>
-					<option <%= (displayTerms.hasChildPartnerEntries() && !displayTerms.isChildPartnerEntries()) ? "selected" : "" %> value="0"><liferay-ui:message key="no" /></option>
+					<aui:option label="" selected="<%= !displayTerms.hasChildPartnerEntries() %>" value="" />
+					<aui:option label="yes" selected="<%= displayTerms.hasChildPartnerEntries() && displayTerms.isChildPartnerEntries() %>" value="1" />
+					<aui:option label="no" selected="<%= displayTerms.hasChildPartnerEntries() && !displayTerms.isChildPartnerEntries() %>" value="0" />
 				</aui:select>
 			</td>
 			<td>
 				<aui:select label="support-region" name="<%= displayTerms.SUPPORT_REGION_IDS %>">
-					<option value=""></option>
+					<aui:option label="" value="" />
 
 					<%
 					for (SupportRegion supportRegion : SupportRegionLocalServiceUtil.getSupportRegions(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
 					%>
 
-						<option <%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) ? "selected" : "" %> value="<%= supportRegion.getSupportRegionId() %>"><%= HtmlUtil.escape(supportRegion.getName()) %></option>
+						<aui:option label="<%= supportRegion.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) %>" value="<%= supportRegion.getSupportRegionId() %>" />
 
 					<%
 					}
@@ -62,9 +62,9 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 			<c:if test='<%= mvcPath.equals("/admin/view.jsp") %>'>
 				<td>
 					<aui:select label="status" name="<%= displayTerms.STATUSES %>">
-						<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_ANY) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_ANY %>"><liferay-ui:message key="any-status" /></option>
-						<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_APPROVED) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_APPROVED %>"><liferay-ui:message key="active" /></option>
-						<option <%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_INACTIVE) ? "selected" : "" %> value="<%= WorkflowConstants.STATUS_INACTIVE %>"><liferay-ui:message key="inactive" /></option>
+						<aui:option label="any-status" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_ANY) %>" value="<%= WorkflowConstants.STATUS_ANY %>" />
+						<aui:option label="active" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_APPROVED) %>" value="<%= WorkflowConstants.STATUS_APPROVED %>" />
+						<aui:option label="inactive" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), WorkflowConstants.STATUS_INACTIVE) %>" value="<%= WorkflowConstants.STATUS_INACTIVE %>" />
 					</aui:select>
 				</td>
 			</c:if>

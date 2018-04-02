@@ -35,14 +35,14 @@ Date lastEnabledDate = calendar.getTime();
 		<tr>
 			<td>
 				<aui:select label="project" name="<%= displayTerms.ACCOUNT_ENTRY_ID %>">
-					<option value=""></option>
+					<aui:option label="" value="" />
 
 					<c:if test="<%= displayTerms.getAccountEntryId() > 0 %>">
-						<option selected value="<%= displayTerms.getAccountEntryId() %>"><%= HtmlUtil.escape(displayTerms.getAccountEntryName()) %></option>
+						<aui:option label="<%= displayTerms.getAccountEntryName() %>" selected="true" value="<%= displayTerms.getAccountEntryId() %>" />
 					</c:if>
 				</aui:select>
 
-				<input name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getAccountEntryName()) %>" />
+				<aui:input name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getAccountEntryName()) %>" />
 
 				<portlet:renderURL var="selectAccountEntryURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_account_entry.jsp" />
@@ -57,7 +57,7 @@ Date lastEnabledDate = calendar.getTime();
 			</td>
 			<td>
 				<aui:select label="product" name="<%= displayTerms.PRODUCT_ENTRY_ID %>">
-					<option value=""></option>
+					<aui:option label="" value="" />
 
 					<%
 					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -65,7 +65,7 @@ Date lastEnabledDate = calendar.getTime();
 					for (ProductEntry productEntry : productEntries) {
 					%>
 
-						<option <%= (displayTerms.getProductEntryId() == productEntry.getProductEntryId()) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
+						<aui:option label="<%= productEntry.getName() %>" selected="<%= (displayTerms.getProductEntryId() == productEntry.getProductEntryId()) %>" value="<%= productEntry.getProductEntryId() %>" />
 
 					<%
 					}
@@ -78,13 +78,13 @@ Date lastEnabledDate = calendar.getTime();
 			</td>
 			<td>
 				<aui:select label="status" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
-					<option value="-1"><liferay-ui:message key="any" /></option>
+					<aui:option label="any" value="-1" />
 
 					<%
 					for (int status : OrderEntryConstants.STATUSES) {
 					%>
 
-						<option <%= ArrayUtil.contains(displayTerms.getStatuses(), status) ? "selected" : "" %> value="<%= status %>"><%= LanguageUtil.get(request, WorkflowConstants.getStatusLabel(status)) %></option>
+						<aui:option label="<%= WorkflowConstants.getStatusLabel(status) %>" selected="<%= ArrayUtil.contains(displayTerms.getStatuses(), status) %>" value="<%= status %>" />
 
 					<%
 					}
@@ -101,15 +101,15 @@ Date lastEnabledDate = calendar.getTime();
 		<tr>
 			<td>
 				<aui:select label="created-by" name="<%= displayTerms.CREATE_USER_ID %>">
-					<option value=""></option>
-					<option <%= (user.getUserId() == displayTerms.getCreateUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+					<aui:option label="" value="" />
+					<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getCreateUserId() %>" value="<%= user.getUserId() %>" />
 
 					<c:if test="<%= ((displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId())) %>">
-						<option selected value="<%= displayTerms.getCreateUserId() %>"><%= HtmlUtil.escape(displayTerms.getCreateUserName()) %></option>
+						<aui:option label="<%= displayTerms.getCreateUserName() %>" selected="true" value="<%= displayTerms.getCreateUserId() %>" />
 					</c:if>
 				</aui:select>
 
-				<input name="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
+				<aui:input name="<%= renderResponse.getNamespace() + displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
 
 				<portlet:renderURL var="selectCreateUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
@@ -123,17 +123,17 @@ Date lastEnabledDate = calendar.getTime();
 
 				<aui:button onClick="<%= taglibSelectCreateUser %>" value="choose" />
 			</td>
-			<td colspan="3">
+			<td>
 				<aui:select label="last-edited-by" name="<%= displayTerms.MODIFIED_USER_ID %>">
-					<option value=""></option>
-					<option <%= (user.getUserId() == displayTerms.getModifiedUserId()) ? "selected" : "" %> value="<%= user.getUserId() %>"><liferay-ui:message key="me" /></option>
+					<aui:option label="" value=""/>>
+					<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getModifiedUserId() %>" value="<%= user.getUserId() %>" />
 
 					<c:if test="<%= ((displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId())) %>">
-						<option selected value="<%= displayTerms.getModifiedUserId() %>"><%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %></option>
+						<aui:option label="<%= displayTerms.getModifiedUserName() %>" selected="true" value="<%= displayTerms.getModifiedUserId() %>" />
 					</c:if>
 				</aui:select>
 
-				<input name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
+				<aui:input name="<%= renderResponse.getNamespace() +  displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
 
 				<portlet:renderURL var="selectModifiedUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
@@ -164,7 +164,7 @@ Date lastEnabledDate = calendar.getTime();
 					yearValue="<%= displayTerms.getCreateDateGTYear() %>"
 				/>
 			</td>
-			<td colspan="3">
+			<td>
 				<label><liferay-ui:message key="created-before" /></label>
 
 				<liferay-ui:input-date
@@ -196,7 +196,7 @@ Date lastEnabledDate = calendar.getTime();
 					yearValue="<%= displayTerms.getModifiedDateGTYear() %>"
 				/>
 			</td>
-			<td colspan="3">
+			<td>
 				<label><liferay-ui:message key="modified-before" /></label>
 
 				<liferay-ui:input-date
@@ -219,7 +219,7 @@ Date lastEnabledDate = calendar.getTime();
 		</tr>
 		<tr>
 			<td colspan="4">
-				<liferay-ui:message key="prorated" /> <input <%= displayTerms.isProrated() ? "checked" : "" %> name="<portlet:namespace /><%= displayTerms.PRORATED %>" onClick="<portlet:namespace />toggleProrated(this)" type="checkbox" />
+				<aui:input label="prorated" checked="<%= displayTerms.isProrated() %>" name="<%= renderResponse.getNamespace() + displayTerms.PRORATED %>" onClick='<%= renderResponse.getNamespace() + "toggleProrated(this);" %>' type="checkbox" />
 			</td>
 		</tr>
 		<tr>
@@ -238,7 +238,7 @@ Date lastEnabledDate = calendar.getTime();
 					yearValue="<%= displayTerms.getStartDateGTYear() %>"
 				/>
 			</td>
-			<td colspan="3">
+			<td>
 				<label><liferay-ui:message key="started-before" /></label>
 
 				<liferay-ui:input-date
@@ -270,7 +270,7 @@ Date lastEnabledDate = calendar.getTime();
 					yearValue="<%= displayTerms.getActualStartDateGTYear() %>"
 				/>
 			</td>
-			<td colspan="3">
+			<td>
 				<label><liferay-ui:message key="actual-started-before" /></label>
 
 				<liferay-ui:input-date
