@@ -32,25 +32,31 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 
 		_methodParameterTypes0 = new String[] { "java.lang.String" };
 
-		_methodName2 = "getOSGiServiceIdentifier";
+		_methodName1 = "translate";
 
-		_methodParameterTypes2 = new String[] {  };
+		_methodParameterTypes1 = new String[] {
+				"com.liferay.portal.kernel.json.JSONObject"
+			};
 
-		_methodName3 = "addOrganizationUsers";
+		_methodName3 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes3 = new String[] { "long", "long[][]" };
+		_methodParameterTypes3 = new String[] {  };
 
-		_methodName4 = "addRoleUsers";
+		_methodName4 = "addOrganizationUsers";
 
 		_methodParameterTypes4 = new String[] { "long", "long[][]" };
 
-		_methodName5 = "deleteRoleUser";
+		_methodName5 = "addRoleUsers";
 
-		_methodParameterTypes5 = new String[] { "long", "long" };
+		_methodParameterTypes5 = new String[] { "long", "long[][]" };
 
-		_methodName6 = "unsetOrganizationUsers";
+		_methodName6 = "deleteRoleUser";
 
-		_methodParameterTypes6 = new String[] { "long", "long[][]" };
+		_methodParameterTypes6 = new String[] { "long", "long" };
+
+		_methodName7 = "unsetOrganizationUsers";
+
+		_methodParameterTypes7 = new String[] { "long", "long[][]" };
 	}
 
 	@Override
@@ -84,6 +90,31 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.User translate(
+		com.liferay.portal.kernel.json.JSONObject jsonObject) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
+					new Object[] { ClpSerializer.translateInput(jsonObject) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.portal.kernel.model.User)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -95,8 +126,8 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -117,8 +148,8 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 	public void addOrganizationUsers(long organizationId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName3,
-				_methodParameterTypes3,
+			_invokableLocalService.invokeMethod(_methodName4,
+				_methodParameterTypes4,
 				new Object[] {
 					organizationId,
 					
@@ -146,8 +177,8 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 	public void addRoleUsers(long roleId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName4,
-				_methodParameterTypes4,
+			_invokableLocalService.invokeMethod(_methodName5,
+				_methodParameterTypes5,
 				new Object[] { roleId, ClpSerializer.translateInput(userIds) });
 		}
 		catch (Throwable t) {
@@ -171,8 +202,8 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 	public void deleteRoleUser(long roleId, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName5,
-				_methodParameterTypes5, new Object[] { roleId, userId });
+			_invokableLocalService.invokeMethod(_methodName6,
+				_methodParameterTypes6, new Object[] { roleId, userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -195,8 +226,8 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 	public void unsetOrganizationUsers(long organizationId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName6,
-				_methodParameterTypes6,
+			_invokableLocalService.invokeMethod(_methodName7,
+				_methodParameterTypes7,
 				new Object[] {
 					organizationId,
 					
@@ -223,8 +254,8 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
-	private String _methodName2;
-	private String[] _methodParameterTypes2;
+	private String _methodName1;
+	private String[] _methodParameterTypes1;
 	private String _methodName3;
 	private String[] _methodParameterTypes3;
 	private String _methodName4;
@@ -233,4 +264,6 @@ public class RemoteUserLocalServiceClp implements RemoteUserLocalService {
 	private String[] _methodParameterTypes5;
 	private String _methodName6;
 	private String[] _methodParameterTypes6;
+	private String _methodName7;
+	private String[] _methodParameterTypes7;
 }

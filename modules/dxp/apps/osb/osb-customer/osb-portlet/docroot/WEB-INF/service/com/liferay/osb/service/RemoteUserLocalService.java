@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
@@ -50,6 +51,8 @@ public interface RemoteUserLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public User fetchUserByEmailAddress(java.lang.String emailAddress)
 		throws PortalException;
+
+	public User translate(JSONObject jsonObject);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,

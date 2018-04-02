@@ -41,6 +41,12 @@ public class RemoteUserLocalServiceWrapper implements RemoteUserLocalService,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.User translate(
+		com.liferay.portal.kernel.json.JSONObject jsonObject) {
+		return _remoteUserLocalService.translate(jsonObject);
+	}
+
+	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {

@@ -47,9 +47,15 @@ public class RemoteUserLocalServiceClpInvoker {
 
 		_methodParameterTypes268 = new String[] { "java.lang.String" };
 
-		_methodName269 = "unsetOrganizationUsers";
+		_methodName269 = "translate";
 
-		_methodParameterTypes269 = new String[] { "long", "long[][]" };
+		_methodParameterTypes269 = new String[] {
+				"com.liferay.portal.kernel.json.JSONObject"
+			};
+
+		_methodName270 = "unsetOrganizationUsers";
+
+		_methodParameterTypes270 = new String[] { "long", "long[][]" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -90,6 +96,11 @@ public class RemoteUserLocalServiceClpInvoker {
 
 		if (_methodName269.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes269, parameterTypes)) {
+			return RemoteUserLocalServiceUtil.translate((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+		}
+
+		if (_methodName270.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes270, parameterTypes)) {
 			RemoteUserLocalServiceUtil.unsetOrganizationUsers(((Long)arguments[0]).longValue(),
 				(long[])arguments[1]);
 
@@ -111,4 +122,6 @@ public class RemoteUserLocalServiceClpInvoker {
 	private String[] _methodParameterTypes268;
 	private String _methodName269;
 	private String[] _methodParameterTypes269;
+	private String _methodName270;
+	private String[] _methodParameterTypes270;
 }
