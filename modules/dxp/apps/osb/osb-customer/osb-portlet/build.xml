@@ -30,6 +30,8 @@
 			</then>
 		</if>
 
+		<delete file="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder/ivy.xml.MD5" />
+
 		<ant antfile="${portal.base.dir}/tools/sdk/portlets/build-common-portlet.xml" target="build-service" />
 	</target>
 
