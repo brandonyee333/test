@@ -194,15 +194,15 @@ $text-color: #474A4B;
 			padding: 12px 12px 24px !important;
 			width: 100%;
 
-			* {
-				vertical-align: middle;
+			.role-icon, .switch {
+				vertical-align: top;
 			}
 
 			.role-icon {
 				margin: 0 5px;
 				padding: auto 7px;
 
-				* {
+				.d, .m, .w {
 					border-radius: 50%;
 					color: #FFF;
 					font-size: 9px;
@@ -271,16 +271,16 @@ $text-color: #474A4B;
 			color: $medium-gray;
 			margin: 0 10px;
 
-			.txt-sb {
-				color: $text-color;
-			}
-
 			&.first {
 				margin-left: 0;
 			}
 
 			&.last {
 				margin-right: 0;
+			}
+
+			.txt-sb {
+				color: $text-color;
 			}
 		}
 
@@ -311,28 +311,28 @@ $text-color: #474A4B;
 			overflow: hidden;
 			transition: border 0.3s ease-in 0s;
 
-			&.on {
+			&:hover.off.unlock {
 				border: 1px solid #1BADF2;
 			}
 
-			&.off {
-				border: 1px solid #1B3A6A;
+			&:hover.off.unlock .toggle-on-off-switch-inner {
+				margin-left: 0;
 			}
 
 			&:hover.on.unlock {
 				border: 1px solid #1B3A6A;
 			}
 
-			&:hover.off.unlock {
-				border: 1px solid #1BADF2;
-			}
-
 			&:hover.on.unlock .toggle-on-off-switch-inner {
 				margin-left: -100%;
 			}
 
-			&:hover.off.unlock .toggle-on-off-switch-inner {
-				margin-left: 0;
+			&.off {
+				border: 1px solid #1B3A6A;
+			}
+
+			&.on {
+				border: 1px solid #1BADF2;
 			}
 
 			&.on .toggle-on-off-switch-inner {
@@ -351,31 +351,30 @@ $text-color: #474A4B;
 			transition: margin 0.3s ease-in 0s;
 			width: 200%;
 
-			& * {
+			.toggle-on-off-switch-off, .toggle-on-off-switch-on {
 				-moz-box-sizing: border-box;
 				-webkit-box-sizing: border-box;
 				box-sizing: border-box;
-				display: block;
 				float: left;
 				padding: 3px 6px;
 				text-align: center;
 				width: 50%;
 			}
 
-			& .toggle-on-off-switch-on {
-				background-color: #1BADF2;
-				border-right: 8px solid #FFF;
-				color: #FFF;
-				text-transform: uppercase;
-			}
-
-			& .toggle-on-off-switch-off {
+			.toggle-on-off-switch-off {
 				background-color: #FFF;
 				border-left: 8px solid #1B3A6A;
 				color: #1B3A6A;
 				font-size: 9px;
 				padding-left: 2px;
 				padding-right: 2px;
+				text-transform: uppercase;
+			}
+
+			.toggle-on-off-switch-on {
+				background-color: #1BADF2;
+				border-right: 8px solid #FFF;
+				color: #FFF;
 				text-transform: uppercase;
 			}
 		}
