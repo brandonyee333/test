@@ -53,6 +53,12 @@ public class CorpProjectMessageLocalServiceUtil {
 		return getService().addCorpProjectMessage(corpProjectMessage);
 	}
 
+	public static com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().addCorpProjectMessage(jsonObject);
+	}
+
 	/**
 	* Creates a new corp project message with the primary key. Does not add the corp project message to the database.
 	*
@@ -73,6 +79,12 @@ public class CorpProjectMessageLocalServiceUtil {
 	public static com.liferay.osb.model.CorpProjectMessage deleteCorpProjectMessage(
 		com.liferay.osb.model.CorpProjectMessage corpProjectMessage) {
 		return getService().deleteCorpProjectMessage(corpProjectMessage);
+	}
+
+	public static com.liferay.osb.model.CorpProjectMessage deleteCorpProjectMessage(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteCorpProjectMessage(jsonObject);
 	}
 
 	/**
@@ -106,6 +118,12 @@ public class CorpProjectMessageLocalServiceUtil {
 		return getService().getCorpProjectMessage(corpProjectMessageId);
 	}
 
+	public static com.liferay.osb.model.CorpProjectMessage getCorpProjectMessageByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getCorpProjectMessageByUuid(uuid);
+	}
+
 	/**
 	* Updates the corp project message in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -115,6 +133,12 @@ public class CorpProjectMessageLocalServiceUtil {
 	public static com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
 		com.liferay.osb.model.CorpProjectMessage corpProjectMessage) {
 		return getService().updateCorpProjectMessage(corpProjectMessage);
+	}
+
+	public static com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().updateCorpProjectMessage(jsonObject);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

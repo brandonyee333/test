@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
@@ -72,6 +73,9 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	public CorpProjectMessage addCorpProjectMessage(
 		CorpProjectMessage corpProjectMessage);
 
+	public CorpProjectMessage addCorpProjectMessage(JSONObject jsonObject)
+		throws PortalException;
+
 	/**
 	* Creates a new corp project message with the primary key. Does not add the corp project message to the database.
 	*
@@ -90,6 +94,9 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.DELETE)
 	public CorpProjectMessage deleteCorpProjectMessage(
 		CorpProjectMessage corpProjectMessage);
+
+	public CorpProjectMessage deleteCorpProjectMessage(JSONObject jsonObject)
+		throws PortalException;
 
 	/**
 	* Deletes the corp project message with the primary key from the database. Also notifies the appropriate model listeners.
@@ -116,6 +123,10 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	public CorpProjectMessage getCorpProjectMessage(long corpProjectMessageId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CorpProjectMessage getCorpProjectMessageByUuid(java.lang.String uuid)
+		throws PortalException;
+
 	/**
 	* Updates the corp project message in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -125,6 +136,9 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public CorpProjectMessage updateCorpProjectMessage(
 		CorpProjectMessage corpProjectMessage);
+
+	public CorpProjectMessage updateCorpProjectMessage(JSONObject jsonObject)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
