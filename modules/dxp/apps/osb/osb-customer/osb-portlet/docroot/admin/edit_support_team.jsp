@@ -503,11 +503,11 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 	}
 
 	function <portlet:namespace />removeRow(inputName, value, tableId, row) {
-		eval('var values = document.<portlet:namespace />fm.<portlet:namespace />' + inputName + '.value');
+		var values = document.<portlet:namespace />fm['<portlet:namespace />' + inputName].value;
 
 		values = values.replace(value + ',', '');
 
-		eval('document.<portlet:namespace />fm.<portlet:namespace />' + inputName + '.value = values;');
+		document.<portlet:namespace />fm['<portlet:namespace />' + inputName].value = values;
 
 		var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
 
@@ -527,12 +527,12 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 	}
 
 	function <portlet:namespace />selectRow(inputName, value, tableId, columnValues) {
-		eval('var values = document.<portlet:namespace />fm.<portlet:namespace />' + inputName + '.value');
+		var values = document.<portlet:namespace />fm['<portlet:namespace />' + inputName].value;
 
 		if (values.indexOf(value + ',') == -1) {
 			values += value + ',';
 
-			eval('document.<portlet:namespace />fm.<portlet:namespace />' + inputName + '.value = values;');
+			document.<portlet:namespace />fm['<portlet:namespace />' + inputName].value = values;
 
 			var table = document.getElementById(tableId);
 
