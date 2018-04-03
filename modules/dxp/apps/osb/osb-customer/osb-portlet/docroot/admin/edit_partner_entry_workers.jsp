@@ -192,9 +192,9 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 		'<portlet:namespace />updatePartnerWorkers',
 		function(assignmentsRedirect) {
 			document.<portlet:namespace />fm.<portlet:namespace />assignmentsRedirect.value = assignmentsRedirect;
-			document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, "<portlet:namespace />allRowIds");
-			document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, "<portlet:namespace />allRowIds");
-			submitForm(document.<portlet:namespace />fm, "<portlet:actionURL name="updatePartnerWorkers"><portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" /></portlet:actionURL>");
+			document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
+			document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
+			submitForm(document.<portlet:namespace />fm, '<portlet:actionURL name="updatePartnerWorkers"><portlet:param name="mvcPath" value="/admin/edit_partner_entry_workers.jsp" /></portlet:actionURL>');
 		},
 		['liferay-util-list-fields']
 	);

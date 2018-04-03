@@ -520,9 +520,9 @@ Date lastEnabledDate = calendar.getTime();
 		}
 		else {
 			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').disabled = true;
-			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').value = "";
+			document.getElementById('<portlet:namespace /><%= displayTerms.EXPIRED_SUPPORT %>').value = '';
 			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').disabled = true;
-			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').value = "";
+			document.getElementById('<portlet:namespace /><%= displayTerms.TICKET_SUPPORT %>').value = '';
 		}
 	}
 </aui:script>

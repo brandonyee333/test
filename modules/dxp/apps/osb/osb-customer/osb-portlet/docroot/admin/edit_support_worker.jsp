@@ -709,7 +709,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 
 		var nameEl = document.getElementById('<portlet:namespace />supportTeamName');
 
-		nameEl.href = "<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_support_team.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>&<portlet:namespace />supportTeamId=" + supportTeamId;
+		nameEl.href = '<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_support_team.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>&<portlet:namespace />supportTeamId=' + supportTeamId;
 		nameEl.innerHTML = supportTeamName + '&nbsp;';
 	}
 </aui:script>

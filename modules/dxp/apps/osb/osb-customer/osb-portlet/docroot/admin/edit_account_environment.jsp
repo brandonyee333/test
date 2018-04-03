@@ -267,8 +267,8 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		if (selectData) {
 			for (var i = 0; i < selectData.length; i++) {
-				var value = selectData[i].value;
 				var name = selectData[i].name;
+				var value = selectData[i].value;
 
 				selectOptions.push('<option value="' + value + '">' + name + '</option>');
 

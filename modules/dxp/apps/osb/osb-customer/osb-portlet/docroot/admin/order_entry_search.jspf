@@ -219,7 +219,7 @@ Date lastEnabledDate = calendar.getTime();
 		</tr>
 		<tr>
 			<td colspan="4">
-				<aui:input label="prorated" checked="<%= displayTerms.isProrated() %>" name="<%= renderResponse.getNamespace() + displayTerms.PRORATED %>" onClick='<%= renderResponse.getNamespace() + "toggleProrated(this);" %>' type="checkbox" />
+				<aui:input checked="<%= displayTerms.isProrated() %>" label="prorated" name="<%= renderResponse.getNamespace() + displayTerms.PRORATED %>" onClick='<%= renderResponse.getNamespace() + "toggleProrated(this);" %>' type="checkbox" />
 			</td>
 		</tr>
 		<tr>

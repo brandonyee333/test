@@ -35,7 +35,7 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 
 <script type="text/javascript">
 	function <portlet:namespace />disableInput(field, checked) {
-		eval("document.<portlet:namespace />fm.<portlet:namespace />" + field + ".disabled = " + checked + ";");
+		eval('document.<portlet:namespace />fm.<portlet:namespace />' + field + '.disabled = ' + checked + ';');
 	}
 </script>
 

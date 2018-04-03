@@ -191,9 +191,9 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		'<portlet:namespace />updateAccountWorkers',
 		function(assignmentsRedirect) {
 			document.<portlet:namespace />fm.<portlet:namespace />assignmentsRedirect.value = assignmentsRedirect;
-			document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, "<portlet:namespace />allRowIds");
-			document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, "<portlet:namespace />allRowIds");
-			submitForm(document.<portlet:namespace />fm, "<portlet:actionURL name="updateAccountWorkers"><portlet:param name="mvcPath" value="/admin/edit_account_entry_workers.jsp" /><portlet:param name="tabs2" value="<%= tabs2 %>" /></portlet:actionURL>");
+			document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
+			document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
+			submitForm(document.<portlet:namespace />fm, '<portlet:actionURL name="updateAccountWorkers"><portlet:param name="mvcPath" value="/admin/edit_account_entry_workers.jsp" /><portlet:param name="tabs2" value="<%= tabs2 %>" /></portlet:actionURL>');
 		},
 		['liferay-util-list-fields']
 	);

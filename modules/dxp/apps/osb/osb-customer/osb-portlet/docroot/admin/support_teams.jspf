@@ -389,14 +389,14 @@
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />accountEntries_" + supportTeamId).show();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_accountEntries").show();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_accountEntries").hide();
+			A.one('#<portlet:namespace />accountEntries_' + supportTeamId).show();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_accountEntries').show();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_accountEntries').hide();
 		}
 		else {
-			A.one("#<portlet:namespace />accountEntries_" + supportTeamId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_accountEntries").hide();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_accountEntries").show();
+			A.one('#<portlet:namespace />accountEntries_' + supportTeamId).hide();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_accountEntries').hide();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_accountEntries').show();
 		}
 	}
 
@@ -404,14 +404,14 @@
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />supportLabors_" + supportTeamId).show();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_supportLabors").show();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_supportLabors").hide();
+			A.one('#<portlet:namespace />supportLabors_' + supportTeamId).show();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportLabors').show();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportLabors').hide();
 		}
 		else {
-			A.one("#<portlet:namespace />supportLabors_" + supportTeamId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_supportLabors").hide();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_supportLabors").show();
+			A.one('#<portlet:namespace />supportLabors_' + supportTeamId).hide();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportLabors').hide();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportLabors').show();
 		}
 	}
 
@@ -419,14 +419,14 @@
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />supportRegions_" + supportTeamId).show();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_supportRegions").show();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_supportRegions").hide();
+			A.one('#<portlet:namespace />supportRegions_' + supportTeamId).show();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportRegions').show();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportRegions').hide();
 		}
 		else {
-			A.one("#<portlet:namespace />supportRegions_" + supportTeamId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_supportRegions").hide();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_supportRegions").show();
+			A.one('#<portlet:namespace />supportRegions_' + supportTeamId).hide();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportRegions').hide();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportRegions').show();
 		}
 	}
 
@@ -434,14 +434,14 @@
 		var A = AUI();
 
 		if (expand) {
-			A.one("#<portlet:namespace />supportWorkers_" + supportTeamId).show();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_supportWorkers").show();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_supportWorkers").hide();
+			A.one('#<portlet:namespace />supportWorkers_' + supportTeamId).show();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportWorkers').show();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportWorkers').hide();
 		}
 		else {
-			A.one("#<portlet:namespace />supportWorkers_" + supportTeamId).hide();
-			A.one("#<portlet:namespace />collapse_" + supportTeamId + "_supportWorkers").hide();
-			A.one("#<portlet:namespace />expand_" + supportTeamId + "_supportWorkers").show();
+			A.one('#<portlet:namespace />supportWorkers_' + supportTeamId).hide();
+			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportWorkers').hide();
+			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportWorkers').show();
 		}
 	}
 </aui:script>

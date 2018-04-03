@@ -377,9 +377,9 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 		'<portlet:namespace />updateSupportWorkers',
 		function(assignmentsRedirect) {
 			document.<portlet:namespace />fm.<portlet:namespace />assignmentsRedirect.value = assignmentsRedirect;
-			document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, "<portlet:namespace />allRowIds");
-			document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, "<portlet:namespace />allRowIds");
-			submitForm(document.<portlet:namespace />fm, "<portlet:actionURL name="updateSupportWorkers"><portlet:param name="mvcPath" value="/admin/edit_support_team_workers.jsp" /><portlet:param name="tabs3" value="<%= tabs3 %>" /></portlet:actionURL>");
+			document.<portlet:namespace />fm.<portlet:namespace />addUserIds.value = Liferay.Util.listCheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
+			document.<portlet:namespace />fm.<portlet:namespace />removeUserIds.value = Liferay.Util.listUncheckedExcept(document.<portlet:namespace />fm, '<portlet:namespace />allRowIds');
+			submitForm(document.<portlet:namespace />fm, '<portlet:actionURL name="updateSupportWorkers"><portlet:param name="mvcPath" value="/admin/edit_support_team_workers.jsp" /><portlet:param name="tabs3" value="<%= tabs3 %>" /></portlet:actionURL>');
 		},
 		['liferay-util-list-fields']
 	);

@@ -129,7 +129,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 
 <script type="text/javascript">
 	function <portlet:namespace />addInput(name, value) {
-		var input = document.createElement("input");
+		var input = document.createElement('input');
 
 		input.setAttribute('name', '<portlet:namespace />' + name);
 		input.setAttribute('type', 'hidden');
