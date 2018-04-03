@@ -7750,7 +7750,42 @@ public class PortalImpl implements Portal {
 
 				plid = layout.getPlid();
 
-				break;
+				return plid;
+			}
+		}
+
+		List<Layout> layouts_full = LayoutLocalServiceUtil.getLayouts(
+				groupId, privateLayout,
+				LayoutConstants.TYPE_FULL_PAGE_APPLICATION);
+
+		for (Layout layout : layouts_full) {
+			LayoutType layoutType = (LayoutType)layout.getLayoutType();
+
+			if (portletId.equals(layout.getTypeSettingsProperty(
+					LayoutTypePortletConstants.
+						FULL_PAGE_APPLICATION_PORTLET))) {
+
+				if (getScopeGroupId(layout, portletId) == scopeGroupId) {
+					plid = layout.getPlid();
+
+					return plid;
+				}
+			}
+		}
+
+		List<Layout> layouts_panel = LayoutLocalServiceUtil.getLayouts(
+			groupId, privateLayout, LayoutConstants.TYPE_PANEL);
+
+		for (Layout layout : layouts_panel) {
+			LayoutTypePortlet layoutTypePortlet =
+				(LayoutTypePortlet)layout.getLayoutType();
+
+			if (layoutTypePortlet.hasPortletId(portletId, true)) {
+				if (getScopeGroupId(layout, portletId) == scopeGroupId) {
+					plid = layout.getPlid();
+
+					return plid;
+				}
 			}
 		}
 
