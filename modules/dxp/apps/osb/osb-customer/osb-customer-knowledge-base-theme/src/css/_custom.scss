@@ -107,7 +107,7 @@ $has-control-menu-top-mobile: 48px;
 	.banner {
 		background: $white;
 		border-bottom: 1px solid $border-color;
-		height: 56px;
+		height: 141px;
 		position: fixed;
 		top: 0;
 		width: 100%;
@@ -487,6 +487,47 @@ $has-control-menu-top-mobile: 48px;
 		}
 	}
 
+	.documentation-search {
+		align-items: center;
+		background-color: #F2F5F7;
+		border-top: 1px solid $border-color;
+		display: flex;
+		justify-content: center;
+		height: 84px;
+		width: 100%;
+
+		.doc-search-form {
+			position: relative;
+		}
+
+		.doc-search-icon {
+			position: absolute;
+			right: 1em;
+			top: 10px;
+		}
+
+		.doc-search-input {
+			border: 1px solid $border-color;
+			border-radius: 4px;
+			height: 2.5em;
+			padding: 1em;
+			min-width: 500px;
+
+			&::placeholder {
+				color: $font-color;
+				text-overflow: ellipsis;
+			}
+		}
+
+		.results {
+			color: $light-blue;
+			font-weight: bold;
+			padding: 1em;
+			position: absolute;
+			left: 10%;
+		}
+	}
+
 	.nav-menu .root-item.nav-item {
 		display: inline-block;
 		vertical-align: top;
@@ -510,7 +551,7 @@ $has-control-menu-top-mobile: 48px;
 	/* ---------- Main content ---------- */
 
 	#main-content {
-		margin: 56px auto 0 auto;
+		margin: 140px auto 0 auto;
 		padding: 0 15px;
 
 		&.columns-2 {
@@ -960,6 +1001,16 @@ $has-control-menu-top-mobile: 48px;
 				}
 			}
 		}
+
+		.documentation-search {
+			.doc-search-input {
+				min-width: 320px;
+			}
+
+			.results {
+				left: 0;
+			}
+		}
 	}
 
 	@include media-query(null, $screen-xs-max) {
@@ -969,6 +1020,12 @@ $has-control-menu-top-mobile: 48px;
 
 		.responsive-only {
 			display: block;
+		}
+
+		.documentation-search {
+			.doc-search-input {
+				min-width: auto;
+			}
 		}
 
 		/* ---------- Knowledge base side navigation ---------- */
