@@ -18,6 +18,9 @@ import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.osb.customer.rabbitmq.processors.CorpProjectAddMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.CorpProjectDeleteMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.CorpProjectMessageAddMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.CorpProjectMessageDeleteMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.CorpProjectMessageUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.CorpProjectUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationAssignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationUnassignmentMessageProcessor;
@@ -58,6 +61,33 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(corpProjectDeleteMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setCorpProjectMessageAddMessageProcessor(
+		CorpProjectMessageAddMessageProcessor
+			corpProjectMessageAddMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(corpProjectMessageAddMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setCorpProjectMessageDeleteMessageProcessor(
+		CorpProjectMessageDeleteMessageProcessor
+			corpProjectMessageDeleteMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(corpProjectMessageDeleteMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setCorpProjectMessageUpdateMessageProcessor(
+		CorpProjectMessageUpdateMessageProcessor
+			corpProjectMessageUpdateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(corpProjectMessageUpdateMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")

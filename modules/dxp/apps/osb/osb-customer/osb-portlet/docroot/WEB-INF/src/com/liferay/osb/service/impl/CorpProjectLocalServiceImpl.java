@@ -43,12 +43,8 @@ public class CorpProjectLocalServiceImpl
 	public CorpProject addCorpProject(JSONObject jsonObject)
 		throws PortalException {
 
-		long userId = 0;
-
-		String userUuid = jsonObject.getString("userUuid");
-
 		User user = userLocalService.fetchUserByUuidAndCompanyId(
-			userUuid, OSBConstants.COMPANY_ID);
+			jsonObject.getString("userUuid"), OSBConstants.COMPANY_ID);
 
 		if (user == null) {
 			User remoteUser = remoteUserLocalService.translate(
