@@ -18,20 +18,10 @@
 
 <%
 String queryString = (String)request.getAttribute("queryString");
-
-String redirect = ParamUtil.getString(request, "redirect");
 %>
 
 <liferay-ui:error exception="<%= NoSuchArticleException.class %>" message="the-article-could-not-be-found" />
 <liferay-ui:error exception="<%= PrincipalException.MustHavePermission.class %>" message="the-article-could-not-be-found" />
-
-<c:if test="<%= Validator.isNotNull(redirect) %>">
-	<div>
-		<a class="back-btn" href="<%= HtmlUtil.escapeAttribute(redirect) %>">
-			<liferay-ui:message key="back-to-search-results" />
-		</a>
-	</div>
-</c:if>
 
 <c:if test="<%= Validator.isNotNull(queryString) %>">
 	<liferay-portlet:runtime
