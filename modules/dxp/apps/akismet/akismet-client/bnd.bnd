@@ -1,6 +1,6 @@
-Bundle-Name: Liferay OSB Community Akismet Client
-Bundle-SymbolicName: com.liferay.osb.community.akismet.client
+Bundle-Name: Liferay Akismet Client
+Bundle-SymbolicName: com.liferay.akismet.client
 Bundle-Version: 1.0.0
 Export-Package: \
-	com.liferay.osb.community.akismet.client.util,\
-	com.liferay.osb.community.akismet.client
+	com.liferay.akismet.client.util,\
+	com.liferay.akismet.client

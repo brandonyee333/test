@@ -1,5 +1,5 @@
-Bundle-Name: Liferay OSB Community Akismet Service
-Bundle-SymbolicName: com.liferay.osb.community.akismet.service
+Bundle-Name: Liferay Akismet Service
+Bundle-SymbolicName: com.liferay.akismet.service
 Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Description:
 Liferay-Releng-Module-Group-Title:
