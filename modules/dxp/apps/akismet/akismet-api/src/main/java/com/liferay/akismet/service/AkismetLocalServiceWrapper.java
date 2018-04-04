@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.service;
+package com.liferay.akismet.service;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -39,8 +39,8 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* @return the akismet that was added
 	*/
 	@Override
-	public com.liferay.osb.community.akismet.model.Akismet addAkismet(
-		com.liferay.osb.community.akismet.model.Akismet akismet) {
+	public com.liferay.akismet.model.Akismet addAkismet(
+		com.liferay.akismet.model.Akismet akismet) {
 		return _akismetLocalService.addAkismet(akismet);
 	}
 
@@ -51,7 +51,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* @return the new akismet
 	*/
 	@Override
-	public com.liferay.osb.community.akismet.model.Akismet createAkismet(
+	public com.liferay.akismet.model.Akismet createAkismet(
 		long akismetId) {
 		return _akismetLocalService.createAkismet(akismetId);
 	}
@@ -63,8 +63,8 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* @return the akismet that was removed
 	*/
 	@Override
-	public com.liferay.osb.community.akismet.model.Akismet deleteAkismet(
-		com.liferay.osb.community.akismet.model.Akismet akismet) {
+	public com.liferay.akismet.model.Akismet deleteAkismet(
+		com.liferay.akismet.model.Akismet akismet) {
 		return _akismetLocalService.deleteAkismet(akismet);
 	}
 
@@ -76,7 +76,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* @throws PortalException if a akismet with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.osb.community.akismet.model.Akismet deleteAkismet(
+	public com.liferay.akismet.model.Akismet deleteAkismet(
 		long akismetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _akismetLocalService.deleteAkismet(akismetId);
@@ -124,7 +124,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* Performs a dynamic query on the database and returns a range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.community.akismet.model.impl.AkismetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.akismet.model.impl.AkismetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -143,7 +143,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.community.akismet.model.impl.AkismetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.akismet.model.impl.AkismetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param dynamicQuery the dynamic query
@@ -188,13 +188,13 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	}
 
 	@Override
-	public com.liferay.osb.community.akismet.model.Akismet fetchAkismet(
+	public com.liferay.akismet.model.Akismet fetchAkismet(
 		long akismetId) {
 		return _akismetLocalService.fetchAkismet(akismetId);
 	}
 
 	@Override
-	public com.liferay.osb.community.akismet.model.Akismet fetchAkismetData(
+	public com.liferay.akismet.model.Akismet fetchAkismetData(
 		java.lang.String className, long classPK) {
 		return _akismetLocalService.fetchAkismetData(className, classPK);
 	}
@@ -212,7 +212,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* @throws PortalException if a akismet with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.osb.community.akismet.model.Akismet getAkismet(
+	public com.liferay.akismet.model.Akismet getAkismet(
 		long akismetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _akismetLocalService.getAkismet(akismetId);
@@ -222,7 +222,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* Returns a range of all the akismets.
 	*
 	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.community.akismet.model.impl.AkismetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.akismet.model.impl.AkismetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
 	* @param start the lower bound of the range of akismets
@@ -230,7 +230,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* @return the range of akismets
 	*/
 	@Override
-	public java.util.List<com.liferay.osb.community.akismet.model.Akismet> getAkismets(
+	public java.util.List<com.liferay.akismet.model.Akismet> getAkismets(
 		int start, int end) {
 		return _akismetLocalService.getAkismets(start, end);
 	}
@@ -274,13 +274,13 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* @return the akismet that was updated
 	*/
 	@Override
-	public com.liferay.osb.community.akismet.model.Akismet updateAkismet(
-		com.liferay.osb.community.akismet.model.Akismet akismet) {
+	public com.liferay.akismet.model.Akismet updateAkismet(
+		com.liferay.akismet.model.Akismet akismet) {
 		return _akismetLocalService.updateAkismet(akismet);
 	}
 
 	@Override
-	public com.liferay.osb.community.akismet.model.Akismet updateAkismetData(
+	public com.liferay.akismet.model.Akismet updateAkismetData(
 		java.lang.String className, long classPK, java.lang.String type,
 		java.lang.String permalink, java.lang.String referrer,
 		java.lang.String userAgent, java.lang.String userIP,

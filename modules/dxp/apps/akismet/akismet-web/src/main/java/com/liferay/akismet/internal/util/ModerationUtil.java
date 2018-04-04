@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.internal.util;
+package com.liferay.akismet.internal.util;
 
 import com.liferay.message.boards.kernel.model.MBCategoryConstants;
 import com.liferay.message.boards.kernel.model.MBMessage;

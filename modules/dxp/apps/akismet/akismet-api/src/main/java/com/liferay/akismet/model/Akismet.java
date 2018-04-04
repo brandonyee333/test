@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.model;
+package com.liferay.akismet.model;
 
 import aQute.bnd.annotation.ProviderType;
 
@@ -25,17 +25,17 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Jamie Sammons
  * @see AkismetModel
- * @see com.liferay.osb.community.akismet.model.impl.AkismetImpl
- * @see com.liferay.osb.community.akismet.model.impl.AkismetModelImpl
+ * @see com.liferay.akismet.model.impl.AkismetImpl
+ * @see com.liferay.akismet.model.impl.AkismetModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.community.akismet.model.impl.AkismetImpl")
+@ImplementationClassName("com.liferay.akismet.model.impl.AkismetImpl")
 @ProviderType
 public interface Akismet extends AkismetModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.community.akismet.model.impl.AkismetImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.akismet.model.impl.AkismetImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<Akismet, Long> AKISMET_ID_ACCESSOR = new Accessor<Akismet, Long>() {
 			@Override

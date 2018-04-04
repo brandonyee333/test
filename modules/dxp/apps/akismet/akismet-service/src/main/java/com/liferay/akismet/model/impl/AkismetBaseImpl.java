@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.model.impl;
+package com.liferay.akismet.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.community.akismet.model.Akismet;
-import com.liferay.osb.community.akismet.service.AkismetLocalServiceUtil;
+import com.liferay.akismet.model.Akismet;
+import com.liferay.akismet.service.AkismetLocalServiceUtil;
 
 /**
  * The extended model base implementation for the Akismet service. Represents a row in the &quot;OSBCommunity_Akismet&quot; database table, with each column mapped to a property of this class.

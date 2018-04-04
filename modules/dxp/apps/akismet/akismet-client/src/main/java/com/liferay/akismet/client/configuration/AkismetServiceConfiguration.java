@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.client.configuration;
+package com.liferay.akismet.client.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -23,7 +23,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  */
 @ExtendedObjectClassDefinition(category = "other")
 @Meta.OCD(
-	id = "com.liferay.osb.community.akismet.client.configuration.AkismetServiceConfiguration",
+	id = "com.liferay.akismet.client.configuration.AkismetServiceConfiguration",
 	localization = "content/Language",
 	name = "osb-community-akismet-configuration-name"
 )

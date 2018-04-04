@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.internal.listener;
+package com.liferay.akismet.internal.listener;
 
 import com.liferay.message.boards.kernel.model.MBMessage;
-import com.liferay.osb.community.akismet.service.AkismetLocalService;
+import com.liferay.akismet.service.AkismetLocalService;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 

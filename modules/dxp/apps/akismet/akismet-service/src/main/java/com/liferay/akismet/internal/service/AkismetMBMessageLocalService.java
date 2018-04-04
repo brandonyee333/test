@@ -12,15 +12,15 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.internal.service;
+package com.liferay.akismet.internal.service;
 
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceWrapper;
-import com.liferay.osb.community.akismet.client.AkismetClient;
-import com.liferay.osb.community.akismet.client.constants.AkismetConstants;
-import com.liferay.osb.community.akismet.client.util.AkismetServiceConfigurationUtil;
-import com.liferay.osb.community.akismet.model.Akismet;
-import com.liferay.osb.community.akismet.service.AkismetLocalService;
+import com.liferay.akismet.client.AkismetClient;
+import com.liferay.akismet.client.constants.AkismetConstants;
+import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
+import com.liferay.akismet.model.Akismet;
+import com.liferay.akismet.service.AkismetLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceWrapper;

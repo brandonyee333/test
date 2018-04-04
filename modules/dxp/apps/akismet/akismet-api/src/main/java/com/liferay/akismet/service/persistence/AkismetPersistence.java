@@ -12,12 +12,12 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.service.persistence;
+package com.liferay.akismet.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.community.akismet.exception.NoSuchAkismetException;
-import com.liferay.osb.community.akismet.model.Akismet;
+import com.liferay.akismet.exception.NoSuchAkismetException;
+import com.liferay.akismet.model.Akismet;
 
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
@@ -31,7 +31,7 @@ import java.util.Date;
  * </p>
  *
  * @author Jamie Sammons
- * @see com.liferay.osb.community.akismet.service.persistence.impl.AkismetPersistenceImpl
+ * @see com.liferay.akismet.service.persistence.impl.AkismetPersistenceImpl
  * @see AkismetUtil
  * @generated
  */

@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.service.impl;
+package com.liferay.akismet.service.impl;
 
-import com.liferay.osb.community.akismet.model.Akismet;
-import com.liferay.osb.community.akismet.service.base.AkismetLocalServiceBaseImpl;
+import com.liferay.akismet.model.Akismet;
+import com.liferay.akismet.service.base.AkismetLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.Date;

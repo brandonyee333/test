@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.service.util;
+package com.liferay.akismet.service.util;
 
 import aQute.bnd.annotation.ProviderType;
 

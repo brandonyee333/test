@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.service.persistence;
+package com.liferay.akismet.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.community.akismet.model.Akismet;
+import com.liferay.akismet.model.Akismet;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 
@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The persistence utility for the akismet service. This utility wraps {@link com.liferay.osb.community.akismet.service.persistence.impl.AkismetPersistenceImpl} and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
+ * The persistence utility for the akismet service. This utility wraps {@link com.liferay.akismet.service.persistence.impl.AkismetPersistenceImpl} and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
  * <p>
  * Caching information and settings can be found in <code>portal.properties</code>
@@ -38,7 +38,7 @@ import java.util.List;
  *
  * @author Jamie Sammons
  * @see AkismetPersistence
- * @see com.liferay.osb.community.akismet.service.persistence.impl.AkismetPersistenceImpl
+ * @see com.liferay.akismet.service.persistence.impl.AkismetPersistenceImpl
  * @generated
  */
 @ProviderType
@@ -189,7 +189,7 @@ public class AkismetUtil {
 	*/
 	public static Akismet findByLtModifiedDate_First(Date modifiedDate,
 		OrderByComparator<Akismet> orderByComparator)
-		throws com.liferay.osb.community.akismet.exception.NoSuchAkismetException {
+		throws com.liferay.akismet.exception.NoSuchAkismetException {
 		return getPersistence()
 				   .findByLtModifiedDate_First(modifiedDate, orderByComparator);
 	}
@@ -217,7 +217,7 @@ public class AkismetUtil {
 	*/
 	public static Akismet findByLtModifiedDate_Last(Date modifiedDate,
 		OrderByComparator<Akismet> orderByComparator)
-		throws com.liferay.osb.community.akismet.exception.NoSuchAkismetException {
+		throws com.liferay.akismet.exception.NoSuchAkismetException {
 		return getPersistence()
 				   .findByLtModifiedDate_Last(modifiedDate, orderByComparator);
 	}
@@ -246,7 +246,7 @@ public class AkismetUtil {
 	*/
 	public static Akismet[] findByLtModifiedDate_PrevAndNext(long akismetId,
 		Date modifiedDate, OrderByComparator<Akismet> orderByComparator)
-		throws com.liferay.osb.community.akismet.exception.NoSuchAkismetException {
+		throws com.liferay.akismet.exception.NoSuchAkismetException {
 		return getPersistence()
 				   .findByLtModifiedDate_PrevAndNext(akismetId, modifiedDate,
 			orderByComparator);
@@ -280,7 +280,7 @@ public class AkismetUtil {
 	* @throws NoSuchAkismetException if a matching akismet could not be found
 	*/
 	public static Akismet findByC_C(long classNameId, long classPK)
-		throws com.liferay.osb.community.akismet.exception.NoSuchAkismetException {
+		throws com.liferay.akismet.exception.NoSuchAkismetException {
 		return getPersistence().findByC_C(classNameId, classPK);
 	}
 
@@ -317,7 +317,7 @@ public class AkismetUtil {
 	* @return the akismet that was removed
 	*/
 	public static Akismet removeByC_C(long classNameId, long classPK)
-		throws com.liferay.osb.community.akismet.exception.NoSuchAkismetException {
+		throws com.liferay.akismet.exception.NoSuchAkismetException {
 		return getPersistence().removeByC_C(classNameId, classPK);
 	}
 
@@ -368,7 +368,7 @@ public class AkismetUtil {
 	* @throws NoSuchAkismetException if a akismet with the primary key could not be found
 	*/
 	public static Akismet remove(long akismetId)
-		throws com.liferay.osb.community.akismet.exception.NoSuchAkismetException {
+		throws com.liferay.akismet.exception.NoSuchAkismetException {
 		return getPersistence().remove(akismetId);
 	}
 
@@ -384,7 +384,7 @@ public class AkismetUtil {
 	* @throws NoSuchAkismetException if a akismet with the primary key could not be found
 	*/
 	public static Akismet findByPrimaryKey(long akismetId)
-		throws com.liferay.osb.community.akismet.exception.NoSuchAkismetException {
+		throws com.liferay.akismet.exception.NoSuchAkismetException {
 		return getPersistence().findByPrimaryKey(akismetId);
 	}
 

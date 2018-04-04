@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.internal.portlet;
+package com.liferay.akismet.internal.portlet;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -29,9 +29,9 @@ import com.liferay.message.boards.kernel.exception.RequiredMessageException;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.MBMessageLocalService;
 import com.liferay.message.boards.kernel.service.MBMessageService;
-import com.liferay.osb.community.akismet.client.AkismetClient;
-import com.liferay.osb.community.akismet.client.util.AkismetServiceConfigurationUtil;
-import com.liferay.osb.community.akismet.internal.constants.ModerationPortletKeys;
+import com.liferay.akismet.client.AkismetClient;
+import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
+import com.liferay.akismet.internal.constants.ModerationPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;

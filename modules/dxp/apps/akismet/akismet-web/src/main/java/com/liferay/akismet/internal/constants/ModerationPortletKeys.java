@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.internal.constants;
+package com.liferay.akismet.internal.constants;
 
 /**
  * @author Jamie

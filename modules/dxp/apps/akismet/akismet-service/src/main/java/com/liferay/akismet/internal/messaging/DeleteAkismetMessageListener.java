@@ -12,10 +12,10 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.internal.messaging;
+package com.liferay.akismet.internal.messaging;
 
-import com.liferay.osb.community.akismet.client.util.AkismetServiceConfigurationUtil;
-import com.liferay.osb.community.akismet.service.AkismetLocalService;
+import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
+import com.liferay.akismet.service.AkismetLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;

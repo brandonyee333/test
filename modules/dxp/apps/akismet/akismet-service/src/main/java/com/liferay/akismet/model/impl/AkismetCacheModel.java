@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.model.impl;
+package com.liferay.akismet.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.community.akismet.model.Akismet;
+import com.liferay.akismet.model.Akismet;
 
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;

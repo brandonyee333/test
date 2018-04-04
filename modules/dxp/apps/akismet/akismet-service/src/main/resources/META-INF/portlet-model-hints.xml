@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <model-hints>
-	<model name="com.liferay.osb.community.akismet.model.Akismet">
+	<model name="com.liferay.akismet.model.Akismet">
 		<field name="akismetId" type="long" />
 		<field name="modifiedDate" type="Date" />
 		<field name="classNameId" type="long" />

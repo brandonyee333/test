@@ -11,7 +11,7 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
-package com.liferay.osb.community.akismet.exception;
+package com.liferay.akismet.exception;
 
 import aQute.bnd.annotation.ProviderType;
 

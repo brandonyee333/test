@@ -12,15 +12,15 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.model.impl;
+package com.liferay.akismet.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
-import com.liferay.osb.community.akismet.model.Akismet;
-import com.liferay.osb.community.akismet.model.AkismetModel;
+import com.liferay.akismet.model.Akismet;
+import com.liferay.akismet.model.AkismetModel;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -96,21 +96,21 @@ public class AkismetModelImpl extends BaseModelImpl<Akismet>
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
-	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.osb.community.akismet.service.util.ServiceProps.get(
-				"value.object.entity.cache.enabled.com.liferay.osb.community.akismet.model.Akismet"),
+	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.akismet.service.util.ServiceProps.get(
+				"value.object.entity.cache.enabled.com.liferay.akismet.model.Akismet"),
 			true);
-	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.osb.community.akismet.service.util.ServiceProps.get(
-				"value.object.finder.cache.enabled.com.liferay.osb.community.akismet.model.Akismet"),
+	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.akismet.service.util.ServiceProps.get(
+				"value.object.finder.cache.enabled.com.liferay.akismet.model.Akismet"),
 			true);
-	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.osb.community.akismet.service.util.ServiceProps.get(
-				"value.object.column.bitmask.enabled.com.liferay.osb.community.akismet.model.Akismet"),
+	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.akismet.service.util.ServiceProps.get(
+				"value.object.column.bitmask.enabled.com.liferay.akismet.model.Akismet"),
 			true);
 	public static final long CLASSNAMEID_COLUMN_BITMASK = 1L;
 	public static final long CLASSPK_COLUMN_BITMASK = 2L;
 	public static final long MODIFIEDDATE_COLUMN_BITMASK = 4L;
 	public static final long AKISMETID_COLUMN_BITMASK = 8L;
-	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.osb.community.akismet.service.util.ServiceProps.get(
-				"lock.expiration.time.com.liferay.osb.community.akismet.model.Akismet"));
+	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.akismet.service.util.ServiceProps.get(
+				"lock.expiration.time.com.liferay.akismet.model.Akismet"));
 
 	public AkismetModelImpl() {
 	}
@@ -633,7 +633,7 @@ public class AkismetModelImpl extends BaseModelImpl<Akismet>
 		StringBundler sb = new StringBundler(34);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.osb.community.akismet.model.Akismet");
+		sb.append("com.liferay.akismet.model.Akismet");
 		sb.append("</model-name>");
 
 		sb.append(

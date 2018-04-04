@@ -12,15 +12,15 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.service.persistence.impl;
+package com.liferay.akismet.service.persistence.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.community.akismet.exception.NoSuchAkismetException;
-import com.liferay.osb.community.akismet.model.Akismet;
-import com.liferay.osb.community.akismet.model.impl.AkismetImpl;
-import com.liferay.osb.community.akismet.model.impl.AkismetModelImpl;
-import com.liferay.osb.community.akismet.service.persistence.AkismetPersistence;
+import com.liferay.akismet.exception.NoSuchAkismetException;
+import com.liferay.akismet.model.Akismet;
+import com.liferay.akismet.model.impl.AkismetImpl;
+import com.liferay.akismet.model.impl.AkismetModelImpl;
+import com.liferay.akismet.service.persistence.AkismetPersistence;
 
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -62,7 +62,7 @@ import java.util.Set;
  *
  * @author Jamie Sammons
  * @see AkismetPersistence
- * @see com.liferay.osb.community.akismet.service.persistence.AkismetUtil
+ * @see com.liferay.akismet.service.persistence.AkismetUtil
  * @generated
  */
 @ProviderType
@@ -93,7 +93,7 @@ public class AkismetPersistenceImpl extends BasePersistenceImpl<Akismet>
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLtModifiedDate",
 			new String[] {
 				Date.class.getName(),
-				
+
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});

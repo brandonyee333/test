@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.osb.community.akismet.client.util;
+package com.liferay.akismet.client.util;
 
-import com.liferay.osb.community.akismet.client.configuration.AkismetServiceConfiguration;
+import com.liferay.akismet.client.configuration.AkismetServiceConfiguration;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Modified;
  * @author Jamie Sammons
  */
 @Component(
-	configurationPid = "com.liferay.osb.community.akismet.client.configuration.AkismetConfiguration",
+	configurationPid = "com.liferay.akismet.client.configuration.AkismetConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true
 )
 public class AkismetServiceConfigurationUtil {
