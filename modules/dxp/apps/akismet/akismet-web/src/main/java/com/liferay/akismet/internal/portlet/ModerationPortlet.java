@@ -14,24 +14,14 @@
 
 package com.liferay.akismet.internal.portlet;
 
-import java.io.Serializable;
-import java.util.HashMap;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.Portlet;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
+import com.liferay.akismet.client.AkismetClient;
+import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
+import com.liferay.akismet.internal.constants.ModerationPortletKeys;
 import com.liferay.message.boards.kernel.exception.NoSuchMessageException;
 import com.liferay.message.boards.kernel.exception.RequiredMessageException;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.MBMessageLocalService;
 import com.liferay.message.boards.kernel.service.MBMessageService;
-import com.liferay.akismet.client.AkismetClient;
-import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
-import com.liferay.akismet.internal.constants.ModerationPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -40,6 +30,17 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+
+import java.io.Serializable;
+
+import java.util.HashMap;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.Portlet;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jamie

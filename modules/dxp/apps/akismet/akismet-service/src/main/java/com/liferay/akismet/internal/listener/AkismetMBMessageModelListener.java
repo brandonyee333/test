@@ -14,8 +14,8 @@
 
 package com.liferay.akismet.internal.listener;
 
-import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.akismet.service.AkismetLocalService;
+import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 

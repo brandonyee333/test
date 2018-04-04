@@ -14,10 +14,10 @@
 
 package com.liferay.akismet.internal.list.application;
 
+import com.liferay.akismet.internal.constants.ModerationPortletKeys;
 import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.constants.PanelCategoryKeys;
-import com.liferay.akismet.internal.constants.ModerationPortletKeys;
 import com.liferay.portal.kernel.model.Portlet;
 
 import org.osgi.service.component.annotations.Component;

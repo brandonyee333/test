@@ -14,11 +14,11 @@
 
 package com.liferay.akismet.client;
 
-import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.akismet.client.constants.AkismetConstants;
 import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
 import com.liferay.akismet.model.Akismet;
 import com.liferay.akismet.service.AkismetLocalService;
+import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

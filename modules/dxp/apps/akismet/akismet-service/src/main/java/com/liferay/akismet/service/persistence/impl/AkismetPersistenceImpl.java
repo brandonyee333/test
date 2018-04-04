@@ -93,7 +93,7 @@ public class AkismetPersistenceImpl extends BasePersistenceImpl<Akismet>
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByLtModifiedDate",
 			new String[] {
 				Date.class.getName(),
-
+				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});

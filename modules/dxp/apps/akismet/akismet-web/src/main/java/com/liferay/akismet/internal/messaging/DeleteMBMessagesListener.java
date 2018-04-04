@@ -14,10 +14,10 @@
 
 package com.liferay.akismet.internal.messaging;
 
+import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
 import com.liferay.message.boards.kernel.exception.NoSuchMessageException;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.MBMessageLocalService;
-import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Property;

@@ -16,7 +16,8 @@ package com.liferay.akismet.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -185,8 +186,7 @@ public class AkismetLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static com.liferay.akismet.model.Akismet fetchAkismet(
-		long akismetId) {
+	public static com.liferay.akismet.model.Akismet fetchAkismet(long akismetId) {
 		return getService().fetchAkismet(akismetId);
 	}
 
@@ -206,8 +206,7 @@ public class AkismetLocalServiceUtil {
 	* @return the akismet
 	* @throws PortalException if a akismet with the primary key could not be found
 	*/
-	public static com.liferay.akismet.model.Akismet getAkismet(
-		long akismetId)
+	public static com.liferay.akismet.model.Akismet getAkismet(long akismetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().getAkismet(akismetId);
 	}
@@ -281,6 +280,16 @@ public class AkismetLocalServiceUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<AkismetLocalService, AkismetLocalService> _serviceTracker =
-		ServiceTrackerFactory.open(AkismetLocalService.class);
+	private static ServiceTracker<AkismetLocalService, AkismetLocalService> _serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(AkismetLocalService.class);
+
+		ServiceTracker<AkismetLocalService, AkismetLocalService> serviceTracker = new ServiceTracker<AkismetLocalService, AkismetLocalService>(bundle.getBundleContext(),
+				AkismetLocalService.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
 }

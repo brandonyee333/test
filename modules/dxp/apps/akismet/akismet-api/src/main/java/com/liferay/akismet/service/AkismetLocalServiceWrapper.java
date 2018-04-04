@@ -51,8 +51,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* @return the new akismet
 	*/
 	@Override
-	public com.liferay.akismet.model.Akismet createAkismet(
-		long akismetId) {
+	public com.liferay.akismet.model.Akismet createAkismet(long akismetId) {
 		return _akismetLocalService.createAkismet(akismetId);
 	}
 
@@ -76,8 +75,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* @throws PortalException if a akismet with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.akismet.model.Akismet deleteAkismet(
-		long akismetId)
+	public com.liferay.akismet.model.Akismet deleteAkismet(long akismetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _akismetLocalService.deleteAkismet(akismetId);
 	}
@@ -188,8 +186,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	}
 
 	@Override
-	public com.liferay.akismet.model.Akismet fetchAkismet(
-		long akismetId) {
+	public com.liferay.akismet.model.Akismet fetchAkismet(long akismetId) {
 		return _akismetLocalService.fetchAkismet(akismetId);
 	}
 
@@ -212,8 +209,7 @@ public class AkismetLocalServiceWrapper implements AkismetLocalService,
 	* @throws PortalException if a akismet with the primary key could not be found
 	*/
 	@Override
-	public com.liferay.akismet.model.Akismet getAkismet(
-		long akismetId)
+	public com.liferay.akismet.model.Akismet getAkismet(long akismetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _akismetLocalService.getAkismet(akismetId);
 	}
