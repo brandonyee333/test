@@ -75,7 +75,6 @@ public class AkismetClient {
 	public boolean isSpam(long userId, String content, Akismet akismetData)
 		throws PortalException {
 
-		User user = _userLocalService.getUser(userId);
 		StringBundler sb = new StringBundler(5);
 
 		sb.append(Http.HTTP_WITH_SLASH);
@@ -83,7 +82,10 @@ public class AkismetClient {
 		sb.append(StringPool.PERIOD);
 		sb.append(AkismetConstants.URL_REST);
 		sb.append(AkismetConstants.PATH_CHECK_SPAM);
+
 		String location = sb.toString();
+
+		User user = _userLocalService.getUser(userId);
 
 		String response = _sendRequest(
 			location, user.getCompanyId(), akismetData.getUserIP(),

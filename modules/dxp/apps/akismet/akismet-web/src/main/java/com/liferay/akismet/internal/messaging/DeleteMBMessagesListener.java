@@ -81,6 +81,7 @@ public class DeleteMBMessagesListener extends BaseMessageListener {
 
 		_schedulerEngineHelper.register(
 			this, _schedulerEntryImpl, DestinationNames.SCHEDULER_DISPATCH);
+
 		_initialized = true;
 	}
 

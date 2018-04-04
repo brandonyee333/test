@@ -45,12 +45,12 @@ public class AkismetServiceConfigurationUtil {
 	}
 
 	public static String getAPIKey() {
-		String apiKey;
+		String apiKey = null;
+
 		try {
 			apiKey = _akismetServiceConfiguration.akismetApiKey();
 		}
 		catch (NullPointerException npe) {
-			return null;
 		}
 
 		return apiKey;
