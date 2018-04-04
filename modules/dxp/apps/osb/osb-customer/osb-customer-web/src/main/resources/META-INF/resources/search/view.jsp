@@ -40,46 +40,6 @@ if (searchTerms.hasSearchTerms()) {
 
 <div class="search-container">
 	<aui:row>
-		<aui:col cssClass="search-header">
-			<h1 class="header">
-				<liferay-ui:message key="search" />
-			</h1>
-
-			<aui:form action="<%= portletURL.toString() %>" cssClass="search-form" onSubmit="submitForm(this); return false;">
-				<aui:input cssClass="lfr-search-keywords" id="keywords" label="" name="keywords" placeholder="search-liferays-documentation" value="<%= HtmlUtil.escapeAttribute(keywords) %>" />
-
-				<%
-				String iconCss = "toggle-off-click";
-				String onclick = renderResponse.getNamespace() + "updateSearchResults(false, false);";
-
-				if (Validator.isNotNull(keywords)) {
-					iconCss = iconCss.concat(" toggle-off-click-active");
-					onclick = renderResponse.getNamespace() + "updateSearchResults(true, false);";
-				}
-				%>
-
-				<div class="<%= iconCss %>" onclick="<%= onclick %>"></div>
-
-				<c:if test="<%= articleSearch.getTotal() > 0 %>">
-					<div class="showing-results">
-
-						<%
-						int start = (articleSearch.getCur() - 1) * articleSearch.getDelta();
-						int end = articleSearch.getCur() * articleSearch.getDelta();
-
-						if (end > articleSearch.getTotal()) {
-							end = articleSearch.getTotal();
-						}
-						%>
-
-						<%= LanguageUtil.format(request, "showing-x-x-of-x-results", new Object[] {numberFormat.format(start + 1), numberFormat.format(end), numberFormat.format(articleSearch.getTotal())}) %>
-					</div>
-				</c:if>
-			</aui:form>
-		</aui:col>
-	</aui:row>
-
-	<aui:row>
 		<aui:col cssClass="navigation-pane" width="<%= 25 %>">
 			<%@ include file="/search/search_navigation.jspf" %>
 		</aui:col>

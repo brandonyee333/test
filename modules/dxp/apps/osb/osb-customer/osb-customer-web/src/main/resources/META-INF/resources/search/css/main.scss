@@ -48,40 +48,6 @@ $white: #FFF;
 	.search-container {
 		padding-left: 15px;
 		padding-right: 15px;
-
-		.search-header {
-			background-color: $dark-blue;
-			color: $white;
-			padding-top: 3em;
-			text-align: center;
-
-			.header {
-				font-weight: normal;
-			}
-
-			.lfr-search-keywords {
-				display: inline-block;
-
-				@include placeholder {
-					text-overflow: ellipsis;
-				}
-			}
-
-			.search-form {
-				margin: 0 auto;
-				padding-bottom: 20px;
-				padding-top: 1em;
-
-				.lfr-search-keywords {
-					box-sizing: border-box;
-					font-size: 1.5em;
-					height: 50px;
-					margin: 0;
-					padding-right: 45px;
-					width: 50%;
-				}
-			}
-		}
 	}
 
 	.search-filters {
