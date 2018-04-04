@@ -5,5 +5,5 @@ dependencies {
 	provided group: "com.liferay", name: "com.liferay.osgi.util", version: "3.0.0"
 	provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
 	provided group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
-	provided project(":private:apps:osb-community:osb-community-akismet:osb-community-akismet-api")
+	provided project(":private:apps:akismet:akismet-api")
 }

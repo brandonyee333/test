@@ -25,7 +25,7 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 @Meta.OCD(
 	id = "com.liferay.akismet.client.configuration.AkismetServiceConfiguration",
 	localization = "content/Language",
-	name = "osb-community-akismet-configuration-name"
+	name = "akismet-configuration-name"
 )
 public interface AkismetServiceConfiguration {
 
