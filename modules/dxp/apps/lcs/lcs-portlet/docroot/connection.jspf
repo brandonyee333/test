@@ -203,7 +203,7 @@ catch (Exception e) {
 			<c:if test="<%= lcsServicesPreferences.get(LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED) %>">
 
 				<%
-				String properties = String.valueOf(lcsServicesPreferences.get(LCSConstants.PORTAL_PROPERTIES_BLACKLIST));
+				String properties = String.valueOf(LCSUtil.getPortalPropertiesBlacklist());
 				%>
 
 				<li class="list-group-item">
