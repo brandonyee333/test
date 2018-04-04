@@ -1,0 +1,10 @@
+Bundle-Name: Liferay OSB Community Akismet API
+Bundle-SymbolicName: com.liferay.osb.community.akismet.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.community.akismet.exception,\
+	com.liferay.osb.community.akismet.model,\
+	com.liferay.osb.community.akismet.service,\
+	com.liferay.osb.community.akismet.service.persistence
+Liferay-Require-SchemaVersion: 1.0.0
+Liferay-Service: true
