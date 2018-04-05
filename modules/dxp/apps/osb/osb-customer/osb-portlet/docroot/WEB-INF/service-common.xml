@@ -84,6 +84,8 @@
 		<!-- References -->
 
 		<reference entity="Organization" package-path="com.liferay.portal" />
+		<reference entity="Role" package-path="com.liferay.portal" />
+		<reference entity="UserGroupRole" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="CorpProjectMessage" remote-service="true" uuid="true">
 

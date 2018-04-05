@@ -21,9 +21,11 @@ import com.liferay.osb.service.base.CorpProjectLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ListTypeConstants;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationConstants;
+import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -83,6 +85,58 @@ public class CorpProjectLocalServiceImpl
 			jsonObject.getString("name"), organizationId, serviceContext);
 	}
 
+	public void addCorpProjectUser(JSONObject jsonObject)
+		throws PortalException {
+
+		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
+			"corpProject");
+
+		CorpProject corpProject = getCorpProjectByUuid(
+			corpProjectJSONObject.getString("uuid"));
+
+		JSONObject userJSONObject = jsonObject.getJSONObject("user");
+
+		User user = userLocalService.fetchUserByUuidAndCompanyId(
+			userJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
+
+		if (user == null) {
+			return;
+		}
+
+		userLocalService.addOrganizationUser(
+			corpProject.getOrganizationId(), user.getUserId());
+	}
+
+	public void addUserCorpProjectRoles(JSONObject jsonObject)
+		throws PortalException {
+
+		JSONObject userJSONObject = jsonObject.getJSONObject("user");
+
+		User user = userLocalService.fetchUserByUuidAndCompanyId(
+			userJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
+
+		if (user == null) {
+			return;
+		}
+
+		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
+			"corpProject");
+
+		CorpProject corpProject = getCorpProjectByUuid(
+			corpProjectJSONObject.getString("uuid"));
+
+		Group group = corpProject.getGroup();
+
+		JSONObject roleJSONObject = jsonObject.getJSONObject("role");
+
+		Role role = roleLocalService.fetchRoleByUuidAndCompanyId(
+			roleJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
+
+		userGroupRoleLocalService.addUserGroupRoles(
+			user.getUserId(), group.getGroupId(),
+			new long[] {role.getRoleId()});
+	}
+
 	@Override
 	public CorpProject deleteCorpProject(CorpProject corpProject)
 		throws PortalException {
@@ -107,6 +161,36 @@ public class CorpProjectLocalServiceImpl
 			jsonObject.getString("uuid"));
 
 		return deleteCorpProject(corpProject);
+	}
+
+	public void deleteUserCorpProjectRoles(JSONObject jsonObject)
+		throws PortalException {
+
+		JSONObject userJSONObject = jsonObject.getJSONObject("user");
+
+		User user = userLocalService.fetchUserByUuidAndCompanyId(
+			userJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
+
+		if (user == null) {
+			return;
+		}
+
+		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
+			"corpProject");
+
+		CorpProject corpProject = getCorpProjectByUuid(
+			corpProjectJSONObject.getString("uuid"));
+
+		Group group = corpProject.getGroup();
+
+		JSONObject roleJSONObject = jsonObject.getJSONObject("role");
+
+		Role role = roleLocalService.fetchRoleByUuidAndCompanyId(
+			roleJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
+
+		userGroupRoleLocalService.deleteUserGroupRoles(
+			user.getUserId(), group.getGroupId(),
+			new long[] {role.getRoleId()});
 	}
 
 	public CorpProject fetchCorpProject(String dossieraProjectKey) {
@@ -149,6 +233,28 @@ public class CorpProjectLocalServiceImpl
 		name = StringUtil.quote(name, StringPool.PERCENT);
 
 		return corpProjectPersistence.countByName(name);
+	}
+
+	public void unsetCorpProjectUser(JSONObject jsonObject)
+		throws PortalException {
+
+		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
+			"corpProject");
+
+		CorpProject corpProject = getCorpProjectByUuid(
+			corpProjectJSONObject.getString("uuid"));
+
+		JSONObject userJSONObject = jsonObject.getJSONObject("user");
+
+		User user = userLocalService.fetchUserByUuidAndCompanyId(
+			userJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
+
+		if (user == null) {
+			return;
+		}
+
+		userLocalService.unsetOrganizationUsers(
+			corpProject.getOrganizationId(), new long[] {user.getUserId()});
 	}
 
 	public CorpProject updateCorpProject(JSONObject jsonObject)

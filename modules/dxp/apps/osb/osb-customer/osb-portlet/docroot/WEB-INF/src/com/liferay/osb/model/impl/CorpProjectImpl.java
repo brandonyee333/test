@@ -16,6 +16,11 @@ package com.liferay.osb.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+
 /**
  * @author Brian Wing Shun Chan
  */
@@ -23,6 +28,11 @@ import aQute.bnd.annotation.ProviderType;
 public class CorpProjectImpl extends CorpProjectBaseImpl {
 
 	public CorpProjectImpl() {
+	}
+
+	public Group getGroup() throws PortalException {
+		return GroupLocalServiceUtil.getOrganizationGroup(
+			OSBConstants.COMPANY_ID, getOrganizationId());
 	}
 
 }
