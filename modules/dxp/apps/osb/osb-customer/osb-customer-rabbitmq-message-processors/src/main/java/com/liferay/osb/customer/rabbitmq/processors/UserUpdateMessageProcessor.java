@@ -14,13 +14,22 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.model.ExpandoColumn;
+import com.liferay.expando.kernel.model.ExpandoTableConstants;
+import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
+import com.liferay.expando.kernel.util.ExpandoConverterUtil;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.User;
 
+import java.io.Serializable;
+
 import java.util.Calendar;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -53,7 +62,7 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 
 		calendar.setTime(contact.getBirthday());
 
-		userLocalService.updateUser(
+		user = userLocalService.updateUser(
 			user.getUserId(), null, null, null, false, null, null, screenName,
 			emailAddress, user.getFacebookId(), user.getOpenId(), false, null,
 			languageId, timeZoneId, user.getGreeting(), user.getComments(),
@@ -64,6 +73,45 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 			contact.getFacebookSn(), contact.getJabberSn(),
 			contact.getSkypeSn(), contact.getTwitterSn(), jobTitle, null, null,
 			null, null, null, null);
+
+		ExpandoBridge expandoBridge = user.getExpandoBridge();
+
+		JSONArray expandosJSONArray = jsonObject.getJSONArray("expandos");
+
+		if (expandosJSONArray != null) {
+			for (int i = 0; i < expandosJSONArray.length(); ++i) {
+				JSONObject expandoAttributeJSONObject =
+					expandosJSONArray.getJSONObject(i);
+
+				String name = expandoAttributeJSONObject.getString("name");
+
+				ExpandoColumn expandoColumn =
+					expandoColumnLocalService.getColumn(
+						user.getCompanyId(), User.class.getName(),
+						ExpandoTableConstants.DEFAULT_TABLE_NAME, name);
+
+				if (expandoColumn == null) {
+					continue;
+				}
+
+				String value = expandoAttributeJSONObject.getString("value");
+
+				Serializable serializable =
+					ExpandoConverterUtil.getAttributeFromString(
+						expandoColumn.getType(), value);
+
+				expandoBridge.setAttribute(name, serializable, false);
+			}
+		}
 	}
+
+	@Reference(unbind = "-")
+	protected void setExpandoColumnLocalService(
+		ExpandoColumnLocalService expandoColumnLocalService) {
+
+		this.expandoColumnLocalService = expandoColumnLocalService;
+	}
+
+	protected ExpandoColumnLocalService expandoColumnLocalService;
 
 }
