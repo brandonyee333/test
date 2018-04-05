@@ -331,7 +331,7 @@ $has-control-menu-top-mobile: 48px;
 				background: $white;
 				border-color: $border-color;
 				border-style: solid;
-				border-width: 0 1px 1px 1px;
+				border-width: 0 1px 1px;
 				left: -1px;
 				padding: 5px 10px;
 				position: absolute;
@@ -387,9 +387,7 @@ $has-control-menu-top-mobile: 48px;
 			}
 
 			.nav-search-content, .nav-user {
-				border-left-color: $border-color;
-				border-left-style: solid;
-				border-left-width: 1px;
+				border-left: 1px solid $border-color;
 			}
 
 			.nav-search, .nav-search-toggle {
@@ -492,8 +490,8 @@ $has-control-menu-top-mobile: 48px;
 		background-color: #F2F5F7;
 		border-top: 1px solid $border-color;
 		display: flex;
-		justify-content: center;
 		height: 84px;
+		justify-content: center;
 		width: 100%;
 
 		.doc-search-form {
@@ -510,8 +508,8 @@ $has-control-menu-top-mobile: 48px;
 			border: 1px solid $border-color;
 			border-radius: 4px;
 			height: 2.5em;
-			padding: 1em;
 			min-width: 500px;
+			padding: 1em;
 
 			&::placeholder {
 				color: $font-color;
@@ -522,9 +520,9 @@ $has-control-menu-top-mobile: 48px;
 		.results {
 			color: $light-blue;
 			font-weight: bold;
+			left: 10%;
 			padding: 1em;
 			position: absolute;
-			left: 10%;
 		}
 	}
 
@@ -551,7 +549,7 @@ $has-control-menu-top-mobile: 48px;
 	/* ---------- Main content ---------- */
 
 	#main-content {
-		margin: 140px auto 0 auto;
+		margin: 140px auto 0;
 		padding: 0 15px;
 
 		&.columns-2 {
@@ -889,7 +887,7 @@ $has-control-menu-top-mobile: 48px;
 				background: #EFEFEF;
 				border-color: $border-color;
 				border-style: solid;
-				border-width: 0 1px 1px 1px;
+				border-width: 0 1px 1px;
 				display: none;
 				float: none;
 				max-width: 100%;
@@ -1219,11 +1217,11 @@ $has-control-menu-top-mobile: 48px;
 		@include transition-property(width);
 
 		.lfr-search-input {
-			-webkit-appearance: textfield;
-			-webkit-box-sizing: content-box;
+			appearance: textfield;
+			box-sizing: content-box;
 
 			&::-webkit-search-cancel-button, &::-webkit-search-decoration, &::-webkit-search-results-button, &::-webkit-search-results-decoration {
-				-webkit-appearance: none;
+				appearance: none;
 			}
 		}
 	}
