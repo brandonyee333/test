@@ -31,6 +31,7 @@
 		"metal-react": "^3.0.0",
 		"metal-redux": "^2.0.1",
 		"metal-router": "^3.6.3",
+		"metal-soy": "^2.16.5",
 		"moment": "^2.21.0",
 		"node-js-marker-clusterer": "^1.0.0",
 		"react": "^16.2.0",
@@ -63,6 +64,7 @@
 		"babel-preset-stage-2": "^6.24.1",
 		"check-source-formatting": "^2.0.5",
 		"cross-env": "^5.1.3",
+		"metal-tools-soy": "^4.2.6",
 		"webpack": "^3.10.0"
 	},
 	"homepage": "https://github.com/liferay/liferay-plugins-ee",
@@ -74,9 +76,9 @@
 		"url": "git+https://github.com/liferay/liferay-portal-ee.git"
 	},
 	"scripts": {
-		"webpack": "cross-env NODE_ENV=production webpack --progress",
-		"webpack:dev": "cross-env NODE_ENV=developement webpack --progress",
-		"webpack:watch": "cross-env NODE_ENV=development webpack --watch"
+		"webpack": "cross-env NODE_ENV=production && webpack --progress",
+		"webpack:dev": "cross-env NODE_ENV=developement && webpack --progress",
+		"webpack:watch": "cross-env NODE_ENV=development && webpack --watch"
 	},
 	"version": "1.0.0"
 }
