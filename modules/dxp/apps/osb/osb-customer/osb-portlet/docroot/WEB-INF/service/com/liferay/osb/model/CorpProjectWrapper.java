@@ -172,6 +172,12 @@ public class CorpProjectWrapper implements CorpProject,
 	}
 
 	@Override
+	public com.liferay.portal.kernel.model.Group getGroup()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProject.getGroup();
+	}
+
+	@Override
 	public int compareTo(CorpProject corpProject) {
 		return _corpProject.compareTo(corpProject);
 	}

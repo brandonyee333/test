@@ -413,6 +413,25 @@ public class CorpProjectClp extends BaseModelImpl<CorpProject>
 		}
 	}
 
+	@Override
+	public com.liferay.portal.kernel.model.Group getGroup() {
+		try {
+			String methodName = "getGroup";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			com.liferay.portal.kernel.model.Group returnObj = (com.liferay.portal.kernel.model.Group)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getCorpProjectRemoteModel() {
 		return _corpProjectRemoteModel;
 	}

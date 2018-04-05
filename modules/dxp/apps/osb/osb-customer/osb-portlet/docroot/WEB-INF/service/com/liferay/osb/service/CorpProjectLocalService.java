@@ -259,4 +259,16 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
+
+	public void addCorpProjectUser(JSONObject jsonObject)
+		throws PortalException;
+
+	public void addUserCorpProjectRoles(JSONObject jsonObject)
+		throws PortalException;
+
+	public void deleteUserCorpProjectRoles(JSONObject jsonObject)
+		throws PortalException;
+
+	public void unsetCorpProjectUser(JSONObject jsonObject)
+		throws PortalException;
 }

@@ -301,6 +301,30 @@ public class CorpProjectLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
+	public static void addCorpProjectUser(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().addCorpProjectUser(jsonObject);
+	}
+
+	public static void addUserCorpProjectRoles(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().addUserCorpProjectRoles(jsonObject);
+	}
+
+	public static void deleteUserCorpProjectRoles(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().deleteUserCorpProjectRoles(jsonObject);
+	}
+
+	public static void unsetCorpProjectUser(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().unsetCorpProjectUser(jsonObject);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

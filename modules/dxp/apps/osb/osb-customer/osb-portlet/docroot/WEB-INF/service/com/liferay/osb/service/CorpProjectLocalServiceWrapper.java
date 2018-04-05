@@ -322,6 +322,34 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	}
 
 	@Override
+	public void addCorpProjectUser(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_corpProjectLocalService.addCorpProjectUser(jsonObject);
+	}
+
+	@Override
+	public void addUserCorpProjectRoles(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_corpProjectLocalService.addUserCorpProjectRoles(jsonObject);
+	}
+
+	@Override
+	public void deleteUserCorpProjectRoles(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_corpProjectLocalService.deleteUserCorpProjectRoles(jsonObject);
+	}
+
+	@Override
+	public void unsetCorpProjectUser(
+		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_corpProjectLocalService.unsetCorpProjectUser(jsonObject);
+	}
+
+	@Override
 	public CorpProjectLocalService getWrappedService() {
 		return _corpProjectLocalService;
 	}

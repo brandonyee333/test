@@ -53,4 +53,7 @@ public interface CorpProject extends CorpProjectModel, PersistedModel {
 				return CorpProject.class;
 			}
 		};
+
+	public com.liferay.portal.kernel.model.Group getGroup()
+		throws com.liferay.portal.kernel.exception.PortalException;
 }
