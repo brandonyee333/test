@@ -67,13 +67,13 @@ public class DeleteMBMessagesListener extends BaseMessageListener {
 		String cronExpression = GetterUtil.getString(
 			properties.get("cron.expression"), _DEFAULT_CRON_EXPRESSION);
 
-		String className = getClass().getName();
+		Class<?> clazz = getClass();
 
 		Trigger trigger = _triggerFactory.createTrigger(
-			className, className, new Date(), null, cronExpression);
+			clazz.getName(), clazz.getName(), new Date(), null, cronExpression);
 
 		_schedulerEntryImpl = new SchedulerEntryImpl(
-			getClass().getName(), trigger);
+			clazz.getName(), trigger);
 
 		if (_initialized) {
 			deactivate();
