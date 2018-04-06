@@ -56,15 +56,18 @@ import java.util.concurrent.TimeUnit;
 public class ClusterNodeUtil {
 
 	public static Map<String, Object> getClusterNodeInfo() {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Get cluster node information");
-		}
-
 		Map<String, Object> clusterNodeInfo = new HashMap<>();
 
 		try {
 			ClusterNode localClusterNode =
 				ClusterExecutorUtil.getLocalClusterNode();
+
+			if (_log.isTraceEnabled()) {
+				_log.trace(
+					"Executing cluster request for getClusterInfo method for " +
+						"cluster node ID " +
+							localClusterNode.getClusterNodeId());
+			}
 
 			InetAddress inetAddress = localClusterNode.getBindInetAddress();
 
@@ -88,8 +91,8 @@ public class ClusterNodeUtil {
 			_log.error(e, e);
 		}
 
-		if (_log.isDebugEnabled()) {
-			_log.debug("Cluster node " + MapUtil.toString(clusterNodeInfo));
+		if (_log.isTraceEnabled()) {
+			_log.trace("Cluster node " + MapUtil.toString(clusterNodeInfo));
 		}
 
 		return clusterNodeInfo;
@@ -191,6 +194,12 @@ public class ClusterNodeUtil {
 	private static Map<String, Object> _getClusterNodeInfo(String clusterNodeId)
 		throws Exception {
 
+		if (_log.isTraceEnabled()) {
+			_log.trace(
+				"Invoking cluster request for getClusterInfo method for " +
+					"cluster node ID " + clusterNodeId);
+		}
+
 		ClusterRequest clusterRequest = ClusterRequest.createUnicastRequest(
 			_getClusterNodeInfoMethodHandler, clusterNodeId);
 
@@ -203,12 +212,27 @@ public class ClusterNodeUtil {
 		ClusterNodeResponse clusterNodeResponse =
 			clusterNodeResponses.getClusterResponse(clusterNodeId);
 
-		return (Map<String, Object>)clusterNodeResponse.getResult();
+		Map<String, Object> result =
+			(Map<String, Object>)clusterNodeResponse.getResult();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace(
+				"getClusterInfo method handler invocation returned " +
+					MapUtil.toString(result));
+		}
+
+		return result;
 	}
 
 	private static boolean _hasClusterNodeLCSPortletServletContext(
 			String clusterNodeId)
 		throws Exception {
+
+		if (_log.isTraceEnabled()) {
+			_log.trace(
+				"Invoking cluster request for containsKey method handler for " +
+					"cluster node ID " + clusterNodeId);
+		}
 
 		ClusterRequest clusterRequest = ClusterRequest.createUnicastRequest(
 			_containsKeyMethodHandler, clusterNodeId);
@@ -222,7 +246,14 @@ public class ClusterNodeUtil {
 		ClusterNodeResponse clusterNodeResponse =
 			clusterNodeResponses.getClusterResponse(clusterNodeId);
 
-		return (Boolean)clusterNodeResponse.getResult();
+		boolean result = (Boolean)clusterNodeResponse.getResult();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace(
+				"containsKey method handler invocation returned " + result);
+		}
+
+		return result;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
