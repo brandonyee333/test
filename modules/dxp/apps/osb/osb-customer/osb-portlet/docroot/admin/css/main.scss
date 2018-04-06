@@ -315,20 +315,22 @@ $text-color: #474A4B;
 			overflow: hidden;
 			transition: border 0.3s ease-in 0s;
 
-			&:hover.off.unlock {
-				border: 1px solid #1BADF2;
-			}
+			&:hover {
+				&.off.unlock {
+					border: 1px solid #1BADF2;
 
-			&:hover.off.unlock .toggle-on-off-switch-inner {
-				margin-left: 0;
-			}
+					.toggle-on-off-switch-inner {
+						margin-left: 0;
+					}
+				}
 
-			&:hover.on.unlock {
-				border: 1px solid #1B3A6A;
-			}
+				&.on.unlock {
+					border: 1px solid #1B3A6A;
 
-			&:hover.on.unlock .toggle-on-off-switch-inner {
-				margin-left: -100%;
+					.toggle-on-off-switch-inner {
+						margin-left: -100%;
+					}
+				}
 			}
 
 			&.off {
@@ -337,10 +339,10 @@ $text-color: #474A4B;
 
 			&.on {
 				border: 1px solid #1BADF2;
-			}
 
-			&.on .toggle-on-off-switch-inner {
-				margin-left: 0;
+				.toggle-on-off-switch-inner {
+					margin-left: 0;
+				}
 			}
 		}
 

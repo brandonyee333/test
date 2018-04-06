@@ -249,7 +249,7 @@ Date lastEnabledDate = calendar.getTime();
 								</c:if>
 							</aui:select>
 
-							<aui:input name="<%= renderResponse.getNamespace() + displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
+							<aui:input name="<%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
 
 							<portlet:renderURL var="selectCreateUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 								<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
@@ -273,7 +273,7 @@ Date lastEnabledDate = calendar.getTime();
 								</c:if>
 							</aui:select>
 
-							<aui:input name="<%= renderResponse.getNamespace() + displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
+							<aui:input name="<%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
 
 							<portlet:renderURL var="selectModifiedUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 								<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
