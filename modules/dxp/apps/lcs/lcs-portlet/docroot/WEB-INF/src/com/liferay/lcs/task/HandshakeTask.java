@@ -168,25 +168,7 @@ public class HandshakeTask implements Task {
 			LCSUtil.getLCSPortletBuildNumber());
 
 		handshakeMessage.put(
-			Message.KEY_MONITORING_STATUS, LCSConstants.MONITORING_UNAVAILABLE);
-
-		Bundle bundle = FrameworkUtil.getBundle(getClass());
-
-		BundleContext bundleContext = bundle.getBundleContext();
-
-		ServiceReference<PortalMonitoringControl> serviceReference =
-			bundleContext.getServiceReference(PortalMonitoringControl.class);
-
-		if (serviceReference != null) {
-			LiferayFilter liferayFilter =
-				(LiferayFilter)bundleContext.getService(serviceReference);
-
-			if (liferayFilter.isFilterEnabled()) {
-				handshakeMessage.put(
-					Message.KEY_MONITORING_STATUS,
-					LCSConstants.MONITORING_AVAILABLE);
-			}
-		}
+			Message.KEY_MONITORING_STATUS, _getMonitoringStatus());
 
 		PortletPreferences jxPortletPreferences =
 			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
@@ -399,6 +381,28 @@ public class HandshakeTask implements Task {
 		}
 
 		return receivedHandshakeResponse;
+	}
+
+	private int _getMonitoringStatus() {
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ServiceReference<PortalMonitoringControl> serviceReference =
+			bundleContext.getServiceReference(PortalMonitoringControl.class);
+
+		if (serviceReference == null) {
+			return LCSConstants.MONITORING_UNAVAILABLE;
+		}
+
+		LiferayFilter liferayFilter = (LiferayFilter)bundleContext.getService(
+			serviceReference);
+
+		if (liferayFilter.isFilterEnabled()) {
+			return LCSConstants.MONITORING_AVAILABLE;
+		}
+
+		return LCSConstants.MONITORING_UNAVAILABLE;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(HandshakeTask.class);
