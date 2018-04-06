@@ -77,18 +77,25 @@
 							value="<%= StringUtil.shorten(accountLink.getUrl(), 115) %>"
 						/>
 
-						<liferay-ui:search-container-column-text align="right">
+						<liferay-ui:search-container-column-text
+							align="right"
+						>
 							<portlet:actionURL name="deleteAccountLink" var="deleteURL">
 								<portlet:param name="mvcPath" value="/support/2/edit_account_links.jsp" />
 								<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" />
 								<portlet:param name="accountLinkId" value="<%= String.valueOf(accountLink.getAccountLinkId()) %>" />
 							</portlet:actionURL>
 
-							<liferay-ui:icon-delete label="<%= true %>" url="<%= deleteURL %>" />
+							<liferay-ui:icon-delete
+								label="<%= true %>"
+								url="<%= deleteURL %>"
+							/>
 						</liferay-ui:search-container-column-text>
 					</liferay-ui:search-container-row>
 
-					<liferay-ui:search-iterator paginate="<%= false %>" />
+					<liferay-ui:search-iterator
+						paginate="<%= false %>"
+					/>
 				</liferay-ui:search-container>
 
 				<legend><liferay-ui:message key="add-link" /></legend>

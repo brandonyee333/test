@@ -39,7 +39,10 @@
 				String severityLevelLabel = firstCorpProjectMessage.getSeverityLevelLabel();
 			%>
 
-				<liferay-ui:panel-container id="<%= severityLevelLabel %>" persistState="<%= true %>">
+				<liferay-ui:panel-container
+					id="<%= severityLevelLabel %>"
+					persistState="<%= true %>"
+				>
 					<h2 class="section-title">
 						<liferay-ui:message arguments="<%= corpProjectMessages.size() %>" key='<%= severityLevelLabel + "-messages-x" %>' />
 					</h2>
@@ -59,7 +62,14 @@
 						String panelTitle = HtmlUtil.escape(accountEntry.getName() + ": " + title);
 					%>
 
-						<liferay-ui:panel collapsible="<%= true %>" cssClass="<%= severityLevelLabel %>" defaultState="closed" id="<%= severityLevelLabel + corpProjectMessage.getCorpProjectMessageId() %>" persistState="<%= true %>" title="<%= panelTitle %>">
+						<liferay-ui:panel
+							collapsible="<%= true %>"
+							cssClass="<%= severityLevelLabel %>"
+							defaultState="closed"
+							id="<%= severityLevelLabel + corpProjectMessage.getCorpProjectMessageId() %>"
+							persistState="<%= true %>"
+							title="<%= panelTitle %>"
+						>
 							<div class="inline">
 								<%= HtmlUtil.escape(corpProjectMessage.getContent()) %>
 							</div>

@@ -132,10 +132,20 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 
 				<c:if test="<%= !supportRegions.isEmpty() %>">
 					<span class="expand" id="<portlet:namespace />expand_<%= accountEntry.getAccountEntryId() %>_supportRegions">
-						<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + accountEntry.getAccountEntryId() + ", true);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_plus"
+							label="<%= true %>"
+							message="expand"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + accountEntry.getAccountEntryId() + ", true);" %>'
+						/>
 					</span>
 					<span class="collapse hide" id="<portlet:namespace />collapse_<%= accountEntry.getAccountEntryId() %>_supportRegions">
-						<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + accountEntry.getAccountEntryId() + ", false);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_minus"
+							label="<%= true %>"
+							message="collapse"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + accountEntry.getAccountEntryId() + ", false);" %>'
+						/>
 					</span>
 
 					<div class="hide" id="<portlet:namespace />supportRegions_<%= accountEntry.getAccountEntryId() %>">
@@ -176,7 +186,9 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 
 		<br />
 
-		<liferay-ui:search-iterator markupView="lexicon" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+		/>
 	</liferay-ui:search-container>
 </aui:form>
 

@@ -59,10 +59,20 @@
 			name="hours"
 		>
 			<span class="expand" id="<portlet:namespace />expand_<%= supportLabor.getSupportLaborId() %>_hours">
-				<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHours(" + supportLabor.getSupportLaborId() + ", true);" %>' />
+				<liferay-ui:icon
+					image="../arrows/01_plus"
+					label="<%= true %>"
+					message="expand"
+					url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHours(" + supportLabor.getSupportLaborId() + ", true);" %>'
+				/>
 			</span>
 			<span class="collapse hide" id="<portlet:namespace />collapse_<%= supportLabor.getSupportLaborId() %>_hours">
-				<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHours(" + supportLabor.getSupportLaborId() + ", false);" %>' />
+				<liferay-ui:icon
+					image="../arrows/01_minus"
+					label="<%= true %>"
+					message="collapse"
+					url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHours(" + supportLabor.getSupportLaborId() + ", false);" %>'
+				/>
 			</span>
 
 			<div class="hide" id="<portlet:namespace />hours_<%= supportLabor.getSupportLaborId() %>">
@@ -92,10 +102,20 @@
 
 			<c:if test="<%= !supportTeams.isEmpty() %>">
 				<span class="expand" id="<portlet:namespace />expand_<%= supportLabor.getSupportLaborId() %>_teams">
-					<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleTeams(" + supportLabor.getSupportLaborId() + ", true);" %>' />
+					<liferay-ui:icon
+						image="../arrows/01_plus"
+						label="<%= true %>"
+						message="expand"
+						url='<%= "javascript:" + renderResponse.getNamespace() + "toggleTeams(" + supportLabor.getSupportLaborId() + ", true);" %>'
+					/>
 				</span>
 				<span class="collapse hide" id="<portlet:namespace />collapse_<%= supportLabor.getSupportLaborId() %>_teams">
-					<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleTeams(" + supportLabor.getSupportLaborId() + ", false);" %>' />
+					<liferay-ui:icon
+						image="../arrows/01_minus"
+						label="<%= true %>"
+						message="collapse"
+						url='<%= "javascript:" + renderResponse.getNamespace() + "toggleTeams(" + supportLabor.getSupportLaborId() + ", false);" %>'
+					/>
 				</span>
 
 				<div class="hide" id="<portlet:namespace />teams_<%= supportLabor.getSupportLaborId() %>">
@@ -129,7 +149,9 @@
 
 	<br />
 
-	<liferay-ui:search-iterator markupView="lexicon" />
+	<liferay-ui:search-iterator
+		markupView="lexicon"
+	/>
 </liferay-ui:search-container>
 
 <aui:script>

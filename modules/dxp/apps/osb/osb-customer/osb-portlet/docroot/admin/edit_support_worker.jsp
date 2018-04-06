@@ -159,7 +159,11 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 				<liferay-ui:message key="allow-lesa-to-auto-assign-tickets-to-this-user" />
 			</td>
 			<td>
-				<liferay-ui:input-field bean="<%= supportWorker %>" field="autoAssign" model="<%= SupportWorker.class %>" />
+				<liferay-ui:input-field
+					bean="<%= supportWorker %>"
+					field="autoAssign"
+					model="<%= SupportWorker.class %>"
+				/>
 			</td>
 		</tr>
 		<tr>
@@ -501,7 +505,10 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+			paginate="<%= false %>"
+		/>
 	</liferay-ui:search-container>
 
 	<br />
@@ -547,7 +554,10 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+			paginate="<%= false %>"
+		/>
 	</liferay-ui:search-container>
 
 	<br />
@@ -593,7 +603,10 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+			paginate="<%= false %>"
+		/>
 	</liferay-ui:search-container>
 
 	<br />
@@ -639,7 +652,10 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+			paginate="<%= false %>"
+		/>
 	</liferay-ui:search-container>
 </aui:form>
 

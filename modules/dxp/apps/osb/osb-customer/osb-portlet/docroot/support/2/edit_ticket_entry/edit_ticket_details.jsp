@@ -346,7 +346,14 @@ if (liferayIncOrg || partnerWorker) {
 			%>
 
 			<div class="inline-block">
-				<liferay-ui:input-field bean="<%= ticketEntry %>" defaultValue="<%= dueDate %>" field="dueDate" fieldParam="dueDate" formName="updateTicketFm" model="<%= TicketEntry.class %>" />
+				<liferay-ui:input-field
+					bean="<%= ticketEntry %>"
+					defaultValue="<%= dueDate %>"
+					field="dueDate"
+					fieldParam="dueDate"
+					formName="updateTicketFm"
+					model="<%= TicketEntry.class %>"
+				/>
 			</div>
 		</aui:field-wrapper>
 

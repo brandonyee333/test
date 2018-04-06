@@ -18,7 +18,10 @@
 	<target name="build-service">
 		<if>
 			<not>
-				<resourcecontains resource="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder/ivy.xml" substring="&lt;dependency name=&quot;com.liferay.portal.tools.service.builder&quot; org=&quot;com.liferay&quot; rev=&quot;1.0.147&quot; /&gt;" />
+				<resourcecontains
+					resource="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder/ivy.xml"
+					substring="&lt;dependency name=&quot;com.liferay.portal.tools.service.builder&quot; org=&quot;com.liferay&quot; rev=&quot;1.0.147&quot; /&gt;"
+				/>
 			</not>
 			<then>
 				<replaceregexp

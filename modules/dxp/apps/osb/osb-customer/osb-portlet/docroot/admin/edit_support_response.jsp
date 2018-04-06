@@ -65,7 +65,11 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 				<liferay-ui:message key="name" />
 			</td>
 			<td>
-				<liferay-ui:input-field bean="<%= supportResponse %>" field="name" model="<%= SupportResponse.class %>" />
+				<liferay-ui:input-field
+					bean="<%= supportResponse %>"
+					field="name"
+					model="<%= SupportResponse.class %>"
+				/>
 			</td>
 		</tr>
 		<tr>

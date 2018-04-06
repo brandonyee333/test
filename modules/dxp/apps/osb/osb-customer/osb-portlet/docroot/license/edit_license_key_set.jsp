@@ -107,7 +107,11 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 		</div>
 
 		<div id="<portlet:namespace />name" style="display: none;">
-			<liferay-ui:input-field bean="<%= licenseKeySet %>" field="name" model="<%= LicenseKeySet.class %>" />
+			<liferay-ui:input-field
+				bean="<%= licenseKeySet %>"
+				field="name"
+				model="<%= LicenseKeySet.class %>"
+			/>
 
 			<%
 			String saveOnClick = "javascript:" + renderResponse.getNamespace() + "quickSave();";
@@ -385,7 +389,9 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 
 								<span class="txt-b txt-up"><liferay-ui:message key="key" />:</span>
 
-								<liferay-ui:input-resource url="<%= licenseKey.getKey() %>" />
+								<liferay-ui:input-resource
+									url="<%= licenseKey.getKey() %>"
+								/>
 							</div>
 
 							<br />

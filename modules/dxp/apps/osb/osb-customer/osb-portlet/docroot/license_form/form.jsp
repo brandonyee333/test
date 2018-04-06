@@ -56,15 +56,17 @@ String redirect = ParamUtil.getString(request, "redirect");
 						<label class="field-label" for="<portlet:namespace />emailAddress" id="<portlet:namespace />emailAddressLabel">
 							<liferay-ui:message key="email-address" /><span class="field-required-label">*</span>
 
-							<liferay-ui:icon-help
-								message="please-enter-a-valid-email-so-we-can-send-you-the-30-day-trial-license-key"
-							/>
+							<liferay-ui:icon-help message="please-enter-a-valid-email-so-we-can-send-you-the-30-day-trial-license-key" />
 						</label>
 					</span>
 				</span>
 				<span class="unit">
 					<span class="unit-content">
-						<liferay-ui:input-field cssClass="field-input field-input-text pull-left" field="emailAddress" model="<%= User.class %>" />
+						<liferay-ui:input-field
+							cssClass="field-input field-input-text pull-left"
+							field="emailAddress"
+							model="<%= User.class %>"
+						/>
 					</span>
 				</span>
 			</span>
@@ -79,7 +81,11 @@ String redirect = ParamUtil.getString(request, "redirect");
 				</span>
 				<span class="unit">
 					<span class="unit-content">
-						<liferay-ui:input-field cssClass="field-input field-input-text" field="firstName" model="<%= Contact.class %>" />
+						<liferay-ui:input-field
+							cssClass="field-input field-input-text"
+							field="firstName"
+							model="<%= Contact.class %>"
+						/>
 					</span>
 				</span>
 			</span>
@@ -94,7 +100,11 @@ String redirect = ParamUtil.getString(request, "redirect");
 				</span>
 				<span class="unit">
 					<span class="unit-content">
-						<liferay-ui:input-field cssClass="field-input field-input-text" field="lastName" model="<%= Contact.class %>" />
+						<liferay-ui:input-field
+							cssClass="field-input field-input-text"
+							field="lastName"
+							model="<%= Contact.class %>"
+						/>
 					</span>
 				</span>
 			</span>
@@ -214,7 +224,11 @@ String redirect = ParamUtil.getString(request, "redirect");
 				</span>
 				<span class="unit">
 					<span class="unit-content">
-						<liferay-ui:input-field cssClass="field-input field-input-text" field="number" model="<%= Phone.class %>" />
+						<liferay-ui:input-field
+							cssClass="field-input field-input-text"
+							field="number"
+							model="<%= Phone.class %>"
+						/>
 					</span>
 				</span>
 			</span>
@@ -226,7 +240,11 @@ String redirect = ParamUtil.getString(request, "redirect");
 				</span>
 				<span class="unit">
 					<span class="unit-content">
-						<liferay-ui:input-field cssClass="field-input field-input-text" field="extension" model="<%= Phone.class %>" />
+						<liferay-ui:input-field
+							cssClass="field-input field-input-text"
+							field="extension"
+							model="<%= Phone.class %>"
+						/>
 					</span>
 				</span>
 			</span>
@@ -304,7 +322,10 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 		<div class="field-group-grid">
 			<div class="unit">
-				<liferay-ui:input-field field="agreedToTermsOfUse" model="<%= User.class %>" />
+				<liferay-ui:input-field
+					field="agreedToTermsOfUse"
+					model="<%= User.class %>"
+				/>
 
 				<label id="<portlet:namespace />termsOfUseLabel"><liferay-ui:message key="i-understand-and-accept-the-terms-and-conditions-of-the-following-agreements" /></label>:
 
@@ -336,7 +357,9 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 		<div class="field-group-grid">
 			<div class="unit">
-				<liferay-ui:input-checkbox param="agreedToContactTrialLicenses" />
+				<liferay-ui:input-checkbox
+					param="agreedToContactTrialLicenses"
+				/>
 
 				<label id="<portlet:namespace />contactTrialLicensesLabel">
 					<liferay-ui:message key="i-agree-to-allow-liferay-and-its-affiliates-to-contact-me-via-email-and-send-me-a-trial-license-key-to-my-email-address" />

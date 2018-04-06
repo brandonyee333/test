@@ -26,7 +26,9 @@ portletURL.setParameter("callback", callback);
 %>
 
 <aui:form action="<%= portletURL.toString() %>" method="post">
-	<liferay-ui:tabs names="projects" />
+	<liferay-ui:tabs
+		names="projects"
+	/>
 
 	<liferay-ui:search-container
 		headerNames="name"
@@ -76,6 +78,8 @@ portletURL.setParameter("callback", callback);
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+		/>
 	</liferay-ui:search-container>
 </aui:form>

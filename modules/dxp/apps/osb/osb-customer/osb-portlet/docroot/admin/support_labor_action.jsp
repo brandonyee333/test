@@ -29,7 +29,10 @@ SupportLabor supportLabor = (SupportLabor)row.getObject();
 		<portlet:param name="supportLaborId" value="<%= String.valueOf(supportLabor.getSupportLaborId()) %>" />
 	</portlet:renderURL>
 
-	<liferay-ui:icon message="edit" url="<%= editURL %>" />
+	<liferay-ui:icon
+		message="edit"
+		url="<%= editURL %>"
+	/>
 
 	<portlet:renderURL var="assignWorkersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="mvcPath" value="/admin/edit_support_labor_workers.jsp" />
@@ -37,7 +40,10 @@ SupportLabor supportLabor = (SupportLabor)row.getObject();
 		<portlet:param name="supportLaborId" value="<%= String.valueOf(supportLabor.getSupportLaborId()) %>" />
 	</portlet:renderURL>
 
-	<liferay-ui:icon message="assign-workers" url="<%= assignWorkersURL %>" />
+	<liferay-ui:icon
+		message="assign-workers"
+		url="<%= assignWorkersURL %>"
+	/>
 
 	<portlet:actionURL name="deleteSupportLabor" var="deleteURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="tabs1" value="support" />
@@ -46,5 +52,7 @@ SupportLabor supportLabor = (SupportLabor)row.getObject();
 		<portlet:param name="supportLaborId" value="<%= String.valueOf(supportLabor.getSupportLaborId()) %>" />
 	</portlet:actionURL>
 
-	<liferay-ui:icon-delete url="<%= deleteURL %>" />
+	<liferay-ui:icon-delete
+		url="<%= deleteURL %>"
+	/>
 </liferay-ui:icon-menu>

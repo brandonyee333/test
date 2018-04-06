@@ -60,7 +60,11 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 				<liferay-ui:message key="name" />
 			</td>
 			<td>
-				<liferay-ui:input-field bean="<%= licenseEntry %>" field="name" model="<%= LicenseEntry.class %>" />
+				<liferay-ui:input-field
+					bean="<%= licenseEntry %>"
+					field="name"
+					model="<%= LicenseEntry.class %>"
+				/>
 			</td>
 		</tr>
 		<tr>

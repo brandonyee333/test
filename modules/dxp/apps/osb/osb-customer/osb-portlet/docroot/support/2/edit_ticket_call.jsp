@@ -81,7 +81,11 @@ Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(Str
 		<div class="content-column w33">
 			<span class="txt-b"><liferay-ui:message key="call-date" />: </span>
 
-			<liferay-ui:input-field defaultValue="<%= calendar %>" field="callDate" model="<%= TicketCall.class %>" />
+			<liferay-ui:input-field
+				defaultValue="<%= calendar %>"
+				field="callDate"
+				model="<%= TicketCall.class %>"
+			/>
 		</div>
 
 		<div class="content-column w33">

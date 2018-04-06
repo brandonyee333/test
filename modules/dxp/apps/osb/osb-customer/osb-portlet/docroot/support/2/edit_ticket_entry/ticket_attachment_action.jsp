@@ -72,7 +72,10 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 							/>
 						</c:when>
 						<c:otherwise>
-							<liferay-ui:icon-delete label="<%= true %>" url="<%= deleteURL %>" />
+							<liferay-ui:icon-delete
+								label="<%= true %>"
+								url="<%= deleteURL %>"
+							/>
 						</c:otherwise>
 					</c:choose>
 				</c:if>
@@ -148,7 +151,10 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 						<portlet:param name="ticketAttachmentId" value="<%= String.valueOf(ticketAttachment.getTicketAttachmentId()) %>" />
 					</portlet:actionURL>
 
-					<liferay-ui:icon-delete label="<%= true %>" url="<%= deleteURL %>" />
+					<liferay-ui:icon-delete
+						label="<%= true %>"
+						url="<%= deleteURL %>"
+					/>
 				</c:if>
 
 				<liferay-ui:icon

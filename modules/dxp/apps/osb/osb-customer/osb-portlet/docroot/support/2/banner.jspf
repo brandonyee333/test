@@ -24,7 +24,9 @@ long now = System.currentTimeMillis();
 %>
 
 <c:if test="<%= !clockedIn || ((now >= announcementDisplayDate) && (now <= announcementExpirationDate)) %>">
-	<liferay-util:html-top outputKey="osb_portlet_support_banner">
+	<liferay-util:html-top
+		outputKey="osb_portlet_support_banner"
+	>
 		<div id="lesaBanner">
 			<c:if test="<%= !clockedIn %>">
 				<div class="announcement info">

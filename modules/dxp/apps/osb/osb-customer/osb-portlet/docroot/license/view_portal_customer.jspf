@@ -208,7 +208,9 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
-				<liferay-ui:search-iterator paginate="<%= false %>" />
+				<liferay-ui:search-iterator
+					paginate="<%= false %>"
+				/>
 			</liferay-ui:search-container>
 		</div>
 	</div>

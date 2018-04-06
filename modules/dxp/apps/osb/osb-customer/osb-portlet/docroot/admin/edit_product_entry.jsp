@@ -59,7 +59,11 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 				<liferay-ui:message key="name" />
 			</td>
 			<td>
-				<liferay-ui:input-field bean="<%= productEntry %>" field="name" model="<%= ProductEntry.class %>" />
+				<liferay-ui:input-field
+					bean="<%= productEntry %>"
+					field="name"
+					model="<%= ProductEntry.class %>"
+				/>
 			</td>
 		</tr>
 		<tr>

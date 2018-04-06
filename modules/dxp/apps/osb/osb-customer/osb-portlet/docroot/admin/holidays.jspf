@@ -54,10 +54,20 @@
 
 			<c:if test="<%= !holidayEntries.isEmpty() %>">
 				<span class="expand" id="<portlet:namespace />expand_<%= holidayCalendar.getHolidayCalendarId() %>">
-					<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHolidayEntries(" + holidayCalendar.getHolidayCalendarId() + ", true);" %>' />
+					<liferay-ui:icon
+						image="../arrows/01_plus"
+						label="<%= true %>"
+						message="expand"
+						url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHolidayEntries(" + holidayCalendar.getHolidayCalendarId() + ", true);" %>'
+					/>
 				</span>
 				<span class="collapse hide" id="<portlet:namespace />collapse_<%= holidayCalendar.getHolidayCalendarId() %>">
-					<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHolidayEntries(" + holidayCalendar.getHolidayCalendarId() + ", false);" %>' />
+					<liferay-ui:icon
+						image="../arrows/01_minus"
+						label="<%= true %>"
+						message="collapse"
+						url='<%= "javascript:" + renderResponse.getNamespace() + "toggleHolidayEntries(" + holidayCalendar.getHolidayCalendarId() + ", false);" %>'
+					/>
 				</span>
 
 				<div class="hide" id="<portlet:namespace />holidayEntries_<%= holidayCalendar.getHolidayCalendarId() %>">
@@ -89,10 +99,20 @@
 
 			<c:if test="<%= !holidayCalendarRels.isEmpty() %>">
 				<span class="expand" id="<portlet:namespace />expand_<%= holidayCalendar.getHolidayCalendarId() %>_users">
-					<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleUsers(" + holidayCalendar.getHolidayCalendarId() + ", true);" %>' />
+					<liferay-ui:icon
+						image="../arrows/01_plus"
+						label="<%= true %>"
+						message="expand"
+						url='<%= "javascript:" + renderResponse.getNamespace() + "toggleUsers(" + holidayCalendar.getHolidayCalendarId() + ", true);" %>'
+					/>
 				</span>
 				<span class="collapse hide" id="<portlet:namespace />collapse_<%= holidayCalendar.getHolidayCalendarId() %>_users">
-					<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleUsers(" + holidayCalendar.getHolidayCalendarId() + ", false);" %>' />
+					<liferay-ui:icon
+						image="../arrows/01_minus"
+						label="<%= true %>"
+						message="collapse"
+						url='<%= "javascript:" + renderResponse.getNamespace() + "toggleUsers(" + holidayCalendar.getHolidayCalendarId() + ", false);" %>'
+					/>
 				</span>
 
 				<div class="hide" id="<portlet:namespace />users_<%= holidayCalendar.getHolidayCalendarId() %>">
@@ -128,7 +148,9 @@
 
 	<br />
 
-	<liferay-ui:search-iterator markupView="lexicon" />
+	<liferay-ui:search-iterator
+		markupView="lexicon"
+	/>
 </liferay-ui:search-container>
 
 <aui:script>

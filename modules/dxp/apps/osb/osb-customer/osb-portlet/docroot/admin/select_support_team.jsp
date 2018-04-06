@@ -137,10 +137,20 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 
 				<c:if test="<%= !supportRegions.isEmpty() %>">
 					<span class="expand" id="<portlet:namespace />expand_<%= supportTeam.getSupportTeamId() %>_supportRegions">
-						<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", true);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_plus"
+							label="<%= true %>"
+							message="expand"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", true);" %>'
+						/>
 					</span>
 					<span class="collapse hide" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>_supportRegions">
-						<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", false);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_minus"
+							label="<%= true %>"
+							message="collapse"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", false);" %>'
+						/>
 					</span>
 
 					<div class="hide" id="<portlet:namespace />supportRegions_<%= supportTeam.getSupportTeamId() %>">
@@ -181,10 +191,20 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 
 				<c:if test="<%= !accountEntries.isEmpty() %>">
 					<span class="expand" id="<portlet:namespace />expand_<%= supportTeam.getSupportTeamId() %>_accountEntries">
-						<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleAccountEntries(" + supportTeam.getSupportTeamId() + ", true);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_plus"
+							label="<%= true %>"
+							message="expand"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleAccountEntries(" + supportTeam.getSupportTeamId() + ", true);" %>'
+						/>
 					</span>
 					<span class="collapse hide" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>_accountEntries">
-						<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleAccountEntries(" + supportTeam.getSupportTeamId() + ", false);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_minus"
+							label="<%= true %>"
+							message="collapse"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleAccountEntries(" + supportTeam.getSupportTeamId() + ", false);" %>'
+						/>
 					</span>
 
 					<div class="hide" id="<portlet:namespace />accountEntries_<%= supportTeam.getSupportTeamId() %>">
@@ -227,7 +247,9 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+		/>
 	</liferay-ui:search-container>
 </aui:form>
 

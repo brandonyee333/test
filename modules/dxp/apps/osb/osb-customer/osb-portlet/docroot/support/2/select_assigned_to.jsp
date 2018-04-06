@@ -92,7 +92,9 @@ if (liferayIncOrg) {
 							/>
 						</liferay-ui:search-container-row>
 
-						<liferay-ui:search-iterator markupView="lexicon" />
+						<liferay-ui:search-iterator
+							markupView="lexicon"
+						/>
 					</liferay-ui:search-container>
 				</c:when>
 				<c:when test='<%= tabs1.equals("support-teams") && liferayIncOrg %>'>
@@ -201,7 +203,9 @@ if (liferayIncOrg) {
 							</liferay-ui:search-container-column-text>
 						</liferay-ui:search-container-row>
 
-						<liferay-ui:search-iterator markupView="lexicon" />
+						<liferay-ui:search-iterator
+							markupView="lexicon"
+						/>
 					</liferay-ui:search-container>
 				</c:when>
 				<c:otherwise>
@@ -278,7 +282,9 @@ if (liferayIncOrg) {
 							/>
 						</liferay-ui:search-container-row>
 
-						<liferay-ui:search-iterator markupView="lexicon" />
+						<liferay-ui:search-iterator
+							markupView="lexicon"
+						/>
 					</liferay-ui:search-container>
 				</c:otherwise>
 			</c:choose>

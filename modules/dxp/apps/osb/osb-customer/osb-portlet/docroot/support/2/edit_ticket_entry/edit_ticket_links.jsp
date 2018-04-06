@@ -73,7 +73,9 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator paginate="<%= false %>" />
+		<liferay-ui:search-iterator
+			paginate="<%= false %>"
+		/>
 	</liferay-ui:search-container>
 
 	<br />

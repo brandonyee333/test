@@ -30,5 +30,8 @@ PortletURL portletURL = (PortletURL)request.getAttribute("edit_ticket_entry.jsp-
 		<portlet:param name="ticketLinkId" value="<%= String.valueOf(ticketLink.getTicketLinkId()) %>" />
 	</portlet:actionURL>
 
-	<liferay-ui:icon-delete label="<%= true %>" url="<%= deleteURL %>" />
+	<liferay-ui:icon-delete
+		label="<%= true %>"
+		url="<%= deleteURL %>"
+	/>
 </c:if>

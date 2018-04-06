@@ -73,10 +73,20 @@
 					<br />
 
 					<span class="expand" id="<portlet:namespace />expand_<%= supportTeam.getSupportTeamId() %>_supportLabors">
-						<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportLabors(" + supportTeam.getSupportTeamId() + ", true);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_plus"
+							label="<%= true %>"
+							message="expand"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportLabors(" + supportTeam.getSupportTeamId() + ", true);" %>'
+						/>
 					</span>
 					<span class="collapse hide" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>_supportLabors">
-						<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportLabors(" + supportTeam.getSupportTeamId() + ", false);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_minus"
+							label="<%= true %>"
+							message="collapse"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportLabors(" + supportTeam.getSupportTeamId() + ", false);" %>'
+						/>
 					</span>
 
 					<div class="hide" id="<portlet:namespace />supportLabors_<%= supportTeam.getSupportTeamId() %>">
@@ -96,7 +106,12 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<liferay-ui:icon cssClass="labor-hours-warning txt-c" id='<%= renderResponse.getNamespace() + "laborHoursWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" message="" />
+					<liferay-ui:icon
+						cssClass="labor-hours-warning txt-c"
+						id='<%= renderResponse.getNamespace() + "laborHoursWarning_" + supportTeam.getSupportTeamId() %>'
+						image="../messages/alert"
+						message=""
+					/>
 				</c:otherwise>
 			</c:choose>
 		</liferay-ui:search-container-column-text>
@@ -112,10 +127,20 @@
 			<c:choose>
 				<c:when test="<%= !supportRegions.isEmpty() %>">
 					<span class="expand" id="<portlet:namespace />expand_<%= supportTeam.getSupportTeamId() %>_supportRegions">
-						<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", true);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_plus"
+							label="<%= true %>"
+							message="expand"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", true);" %>'
+						/>
 					</span>
 					<span class="collapse hide" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>_supportRegions">
-						<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", false);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_minus"
+							label="<%= true %>"
+							message="collapse"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + supportTeam.getSupportTeamId() + ", false);" %>'
+						/>
 					</span>
 
 					<div class="hide" id="<portlet:namespace />supportRegions_<%= supportTeam.getSupportTeamId() %>">
@@ -136,7 +161,12 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<liferay-ui:icon cssClass="assigned-support-regions-warning txt-c" id='<%= renderResponse.getNamespace() + "supportRegionsWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" message="" />
+					<liferay-ui:icon
+						cssClass="assigned-support-regions-warning txt-c"
+						id='<%= renderResponse.getNamespace() + "supportRegionsWarning_" + supportTeam.getSupportTeamId() %>'
+						image="../messages/alert"
+						message=""
+					/>
 				</c:otherwise>
 			</c:choose>
 		</liferay-ui:search-container-column-text>
@@ -214,7 +244,12 @@
 			%>
 
 			<c:if test="<%= languageIds.isEmpty() %>">
-				<liferay-ui:icon cssClass="languages-warning txt-c" id='<%= renderResponse.getNamespace() + "languagesWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" message="" />
+				<liferay-ui:icon
+					cssClass="languages-warning txt-c"
+					id='<%= renderResponse.getNamespace() + "languagesWarning_" + supportTeam.getSupportTeamId() %>'
+					image="../messages/alert"
+					message=""
+				/>
 			</c:if>
 		</liferay-ui:search-container-column-text>
 
@@ -245,10 +280,20 @@
 			<c:choose>
 				<c:when test="<%= !supportWorkers.isEmpty() %>">
 					<span class="expand" id="<portlet:namespace />expand_<%= supportTeam.getSupportTeamId() %>_supportWorkers">
-						<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportWorkers(" + supportTeam.getSupportTeamId() + ", true);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_plus"
+							label="<%= true %>"
+							message="expand"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportWorkers(" + supportTeam.getSupportTeamId() + ", true);" %>'
+						/>
 					</span>
 					<span class="collapse hide" id="<portlet:namespace />collapse_<%= supportTeam.getSupportTeamId() %>_supportWorkers">
-						<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportWorkers(" + supportTeam.getSupportTeamId() + ", false);" %>' />
+						<liferay-ui:icon
+							image="../arrows/01_minus"
+							label="<%= true %>"
+							message="collapse"
+							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportWorkers(" + supportTeam.getSupportTeamId() + ", false);" %>'
+						/>
 					</span>
 
 					<div class="hide" id="<portlet:namespace />supportWorkers_<%= supportTeam.getSupportTeamId() %>">
@@ -275,7 +320,12 @@
 					</div>
 				</c:when>
 				<c:otherwise>
-					<liferay-ui:icon cssClass="support-workers-warning txt-c" id='<%= renderResponse.getNamespace() + "supportWorkersWarning_" + supportTeam.getSupportTeamId() %>' image="../messages/alert" message="" />
+					<liferay-ui:icon
+						cssClass="support-workers-warning txt-c"
+						id='<%= renderResponse.getNamespace() + "supportWorkersWarning_" + supportTeam.getSupportTeamId() %>'
+						image="../messages/alert"
+						message=""
+					/>
 				</c:otherwise>
 			</c:choose>
 		</liferay-ui:search-container-column-text>
@@ -298,7 +348,9 @@
 
 	<br />
 
-	<liferay-ui:search-iterator markupView="lexicon" />
+	<liferay-ui:search-iterator
+		markupView="lexicon"
+	/>
 </liferay-ui:search-container>
 
 <aui:script use="aui-tooltip">

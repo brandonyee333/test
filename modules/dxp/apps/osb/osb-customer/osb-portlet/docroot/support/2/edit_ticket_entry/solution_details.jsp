@@ -118,7 +118,13 @@
 						</liferay-util:include>
 					</div>
 
-					<liferay-ui:panel collapsible="<%= true %>" extended="<%= true %>" id="attachmentsAndLinksPanel" persistState="<%= true %>" title="attachments-links">
+					<liferay-ui:panel
+						collapsible="<%= true %>"
+						extended="<%= true %>"
+						id="attachmentsAndLinksPanel"
+						persistState="<%= true %>"
+						title="attachments-links"
+					>
 						<div>
 							<span class="txt-b"><liferay-ui:message key="add-attachments" /></span>
 

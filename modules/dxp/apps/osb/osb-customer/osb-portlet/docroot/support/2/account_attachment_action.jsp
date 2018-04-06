@@ -30,7 +30,10 @@ AccountAttachment accountAttachment = (AccountAttachment)row.getObject();
 			<portlet:param name="accountAttachmentId" value="<%= String.valueOf(accountAttachment.getAccountAttachmentId()) %>" />
 		</portlet:actionURL>
 
-		<liferay-ui:icon-delete label="<%= true %>" url="<%= deleteURL %>" />
+		<liferay-ui:icon-delete
+			label="<%= true %>"
+			url="<%= deleteURL %>"
+		/>
 	</c:if>
 
 	<%

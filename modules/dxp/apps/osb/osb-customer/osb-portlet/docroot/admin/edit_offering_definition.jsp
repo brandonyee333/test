@@ -103,7 +103,11 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 				<liferay-ui:message key="product-description" />
 			</td>
 			<td>
-				<liferay-ui:input-field bean="<%= offeringDefinition %>" field="productDescription" model="<%= OfferingDefinition.class %>" />
+				<liferay-ui:input-field
+					bean="<%= offeringDefinition %>"
+					field="productDescription"
+					model="<%= OfferingDefinition.class %>"
+				/>
 			</td>
 		</tr>
 		<tr>
@@ -116,7 +120,11 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 				String taglibLicensesOnClick = renderResponse.getNamespace() + "disableInput('unlimitedLicenses', !this.checked);";
 				%>
 
-				<liferay-ui:input-checkbox defaultValue="<%= licenses %>" onClick="<%= taglibLicensesOnClick %>" param="licenses" />
+				<liferay-ui:input-checkbox
+					defaultValue="<%= licenses %>"
+					onClick="<%= taglibLicensesOnClick %>"
+					param="licenses"
+				/>
 			</td>
 		</tr>
 		<tr>
@@ -124,7 +132,11 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 				<liferay-ui:message key="unlimited-licenses" />
 			</td>
 			<td>
-				<liferay-ui:input-checkbox defaultValue="<%= unlimitedLicenses %>" disabled="<%= !licenses %>" param="unlimitedLicenses" />
+				<liferay-ui:input-checkbox
+					defaultValue="<%= unlimitedLicenses %>"
+					disabled="<%= !licenses %>"
+					param="unlimitedLicenses"
+				/>
 			</td>
 		</tr>
 		<tr>
@@ -159,7 +171,11 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 				<liferay-ui:message key="support-tickets" />
 			</td>
 			<td>
-				<liferay-ui:input-field bean="<%= offeringDefinition %>" field="supportTickets" model="<%= OfferingDefinition.class %>" />
+				<liferay-ui:input-field
+					bean="<%= offeringDefinition %>"
+					field="supportTickets"
+					model="<%= OfferingDefinition.class %>"
+				/>
 			</td>
 		</tr>
 	</table>

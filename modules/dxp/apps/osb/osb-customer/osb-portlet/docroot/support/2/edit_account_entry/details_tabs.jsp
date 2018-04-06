@@ -115,7 +115,9 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 							</liferay-ui:search-container-column-text>
 						</liferay-ui:search-container-row>
 
-						<liferay-ui:search-iterator paginate="<%= false %>" />
+						<liferay-ui:search-iterator
+							paginate="<%= false %>"
+						/>
 					</liferay-ui:search-container>
 				</div>
 			</c:if>
@@ -298,7 +300,9 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 						</liferay-ui:search-container-column-text>
 					</liferay-ui:search-container-row>
 
-					<liferay-ui:search-iterator paginate="<%= false %>" />
+					<liferay-ui:search-iterator
+						paginate="<%= false %>"
+					/>
 				</liferay-ui:search-container>
 			</div>
 
@@ -453,7 +457,9 @@ List<AccountCustomer> accountCustomers = accountEntry.getAccountCustomers();
 					}
 					%>
 
-					<liferay-ui:search-iterator paginate="<%= false %>" />
+					<liferay-ui:search-iterator
+						paginate="<%= false %>"
+					/>
 				</liferay-ui:search-container>
 			</div>
 

@@ -56,7 +56,11 @@ String productEntryName = licenseKey.getProductEntryName();
 
 	<div class="callout-a">
 		<div class="callout-content">
-			<liferay-ui:input-field bean="<%= licenseKeySet %>" field="name" model="<%= LicenseKeySet.class %>" />
+			<liferay-ui:input-field
+				bean="<%= licenseKeySet %>"
+				field="name"
+				model="<%= LicenseKeySet.class %>"
+			/>
 		</div>
 	</div>
 

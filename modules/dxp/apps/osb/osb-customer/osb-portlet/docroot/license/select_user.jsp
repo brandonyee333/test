@@ -32,7 +32,9 @@ portletURL.setParameter("callback", callback);
 	<aui:form action="<%= portletURL.toString() %>" method="post" onSubmit="submitForm(this); return false;">
 		<div class="unit">
 			<div class="unit-content">
-				<liferay-ui:tabs names="users" />
+				<liferay-ui:tabs
+					names="users"
+				/>
 
 				<%
 				LinkedHashMap userParams = new LinkedHashMap();

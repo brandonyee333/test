@@ -114,7 +114,9 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 						/>
 					</liferay-ui:search-container-row>
 
-					<liferay-ui:search-iterator paginate="<%= false %>" />
+					<liferay-ui:search-iterator
+						paginate="<%= false %>"
+					/>
 				</liferay-ui:search-container>
 			</div>
 
@@ -175,7 +177,9 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 						/>
 					</liferay-ui:search-container-row>
 
-					<liferay-ui:search-iterator paginate="<%= false %>" />
+					<liferay-ui:search-iterator
+						paginate="<%= false %>"
+					/>
 				</liferay-ui:search-container>
 			</div>
 
@@ -241,7 +245,9 @@ List<AccountEntry> accountEntries = partnerEntry.getAccountEntries();
 								/>
 							</liferay-ui:search-container-row>
 
-							<liferay-ui:search-iterator paginate="<%= false %>" />
+							<liferay-ui:search-iterator
+								paginate="<%= false %>"
+							/>
 						</liferay-ui:search-container>
 					</div>
 

@@ -572,7 +572,11 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 
 						<div class="callout-a">
 							<div class="callout-content">
-								<liferay-ui:input-field defaultValue="<%= user.getFullName() %>" field="owner" model="<%= LicenseKey.class %>" />
+								<liferay-ui:input-field
+									defaultValue="<%= user.getFullName() %>"
+									field="owner"
+									model="<%= LicenseKey.class %>"
+								/>
 							</div>
 						</div>
 					</div>
@@ -586,7 +590,11 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 
 						<div class="callout-a">
 							<div class="callout-content">
-								<liferay-ui:input-field defaultValue="<%= appEntry.getTitle() %>" field="description" model="<%= LicenseKey.class %>" />
+								<liferay-ui:input-field
+									defaultValue="<%= appEntry.getTitle() %>"
+									field="description"
+									model="<%= LicenseKey.class %>"
+								/>
 							</div>
 						</div>
 					</div>

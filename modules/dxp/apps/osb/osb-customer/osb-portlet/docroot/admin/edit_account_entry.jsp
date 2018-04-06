@@ -313,7 +313,10 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 											<portlet:param name="accountEntryId" value="<%= String.valueOf(redirectAccountEntry.getAccountEntryId()) %>" />
 										</portlet:actionURL>
 
-										<liferay-ui:icon-delete label="<%= true %>" url="<%= deleteURL %>" />
+										<liferay-ui:icon-delete
+											label="<%= true %>"
+											url="<%= deleteURL %>"
+										/>
 									</td>
 								</tr>
 
@@ -465,7 +468,13 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="partner-first-line-support" />
 			</td>
 			<td>
-				<liferay-ui:input-field bean="<%= accountEntry %>" disabled="<%= partnerEntryId <= 0 %>" field="partnerManagedSupport" id="partnerManagedSupportCheckbox" model="<%= AccountEntry.class %>" />
+				<liferay-ui:input-field
+					bean="<%= accountEntry %>"
+					disabled="<%= partnerEntryId <= 0 %>"
+					field="partnerManagedSupport"
+					id="partnerManagedSupportCheckbox"
+					model="<%= AccountEntry.class %>"
+				/>
 			</td>
 		</tr>
 		<tr>

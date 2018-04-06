@@ -645,7 +645,10 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									</liferay-ui:search-container-column-text>
 								</liferay-ui:search-container-row>
 
-								<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+								<liferay-ui:search-iterator
+									markupView="lexicon"
+									paginate="<%= false %>"
+								/>
 							</liferay-ui:search-container>
 
 							<liferay-portlet:renderURL copyCurrentRenderParameters="<%= false %>" portletConfiguration="<%= true %>" var="updateServerURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">

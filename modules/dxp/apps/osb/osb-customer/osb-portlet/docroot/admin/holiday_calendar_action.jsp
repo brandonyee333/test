@@ -29,7 +29,10 @@ HolidayCalendar holidayCalendar = (HolidayCalendar)row.getObject();
 		<portlet:param name="holidayCalendarId" value="<%= String.valueOf(holidayCalendar.getHolidayCalendarId()) %>" />
 	</portlet:renderURL>
 
-	<liferay-ui:icon message="edit" url="<%= editURL %>" />
+	<liferay-ui:icon
+		message="edit"
+		url="<%= editURL %>"
+	/>
 
 	<portlet:renderURL var="assignUsersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="mvcPath" value="/admin/edit_holiday_calendar_users.jsp" />
@@ -49,5 +52,7 @@ HolidayCalendar holidayCalendar = (HolidayCalendar)row.getObject();
 		<portlet:param name="holidayCalendarId" value="<%= String.valueOf(holidayCalendar.getHolidayCalendarId()) %>" />
 	</portlet:actionURL>
 
-	<liferay-ui:icon-delete url="<%= deleteURL %>" />
+	<liferay-ui:icon-delete
+		url="<%= deleteURL %>"
+	/>
 </liferay-ui:icon-menu>

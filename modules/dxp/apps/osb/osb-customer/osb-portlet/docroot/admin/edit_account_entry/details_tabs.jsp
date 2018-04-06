@@ -221,7 +221,9 @@ for (SupportRegion supportRegion : supportRegions) {
 					</liferay-ui:search-container-row>
 
 					<div class="table-report">
-						<liferay-ui:search-iterator markupView="lexicon" />
+						<liferay-ui:search-iterator
+							markupView="lexicon"
+						/>
 					</div>
 				</liferay-ui:search-container>
 			</div>
@@ -286,7 +288,9 @@ for (SupportRegion supportRegion : supportRegions) {
 									name="display-cp"
 								>
 									<c:if test="<%= corpProjectMessage.isDisplayCP() %>">
-										<liferay-ui:icon image="checked" />
+										<liferay-ui:icon
+											image="checked"
+										/>
 									</c:if>
 								</liferay-ui:search-container-column-text>
 
@@ -294,7 +298,9 @@ for (SupportRegion supportRegion : supportRegions) {
 									name="display-lcs"
 								>
 									<c:if test="<%= corpProjectMessage.isDisplayLCS() %>">
-										<liferay-ui:icon image="checked" />
+										<liferay-ui:icon
+											image="checked"
+										/>
 									</c:if>
 								</liferay-ui:search-container-column-text>
 
@@ -302,12 +308,17 @@ for (SupportRegion supportRegion : supportRegions) {
 									name="display-lesa"
 								>
 									<c:if test="<%= corpProjectMessage.isDisplayLESA() %>">
-										<liferay-ui:icon image="checked" />
+										<liferay-ui:icon
+											image="checked"
+										/>
 									</c:if>
 								</liferay-ui:search-container-column-text>
 							</liferay-ui:search-container-row>
 
-							<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+							<liferay-ui:search-iterator
+								markupView="lexicon"
+								paginate="<%= false %>"
+							/>
 						</liferay-ui:search-container>
 					</c:when>
 					<c:otherwise>
@@ -503,7 +514,10 @@ for (SupportRegion supportRegion : supportRegions) {
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
-				<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+				<liferay-ui:search-iterator
+					markupView="lexicon"
+					paginate="<%= false %>"
+				/>
 			</liferay-ui:search-container>
 		</div>
 
@@ -543,7 +557,10 @@ for (SupportRegion supportRegion : supportRegions) {
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
-				<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+				<liferay-ui:search-iterator
+					markupView="lexicon"
+					paginate="<%= false %>"
+				/>
 			</liferay-ui:search-container>
 		</div>
 

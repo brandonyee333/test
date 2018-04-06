@@ -179,7 +179,9 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 		<br /><br />
 
-		<liferay-ui:search-iterator markupView="lexicon" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+		/>
 	</liferay-ui:search-container>
 </aui:form>
 

@@ -64,7 +64,11 @@ if (offeringBundle != null) {
 				<liferay-ui:message key="name" />
 			</td>
 			<td>
-				<liferay-ui:input-field bean="<%= offeringBundle %>" field="name" model="<%= OfferingBundle.class %>" />
+				<liferay-ui:input-field
+					bean="<%= offeringBundle %>"
+					field="name"
+					model="<%= OfferingBundle.class %>"
+				/>
 			</td>
 		</tr>
 	</table>
@@ -146,7 +150,10 @@ if (offeringBundle != null) {
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+			paginate="<%= false %>"
+		/>
 	</liferay-ui:search-container>
 
 	<br />

@@ -26,7 +26,9 @@ String gamePlan = GetterUtil.get(gamePlanMap.get(locale), gamePlanMap.get(Locale
 
 <div class="unit" style="width: 100%;">
 	<div>
-		<liferay-ui:tabs names="game-plan" />
+		<liferay-ui:tabs
+			names="game-plan"
+		/>
 
 		<aui:select inlineField="<%= true %>" label="language" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateLanguage(this.value);" %>'>
 

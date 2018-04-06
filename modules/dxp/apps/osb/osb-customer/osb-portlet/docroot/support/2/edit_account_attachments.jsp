@@ -130,7 +130,10 @@
 					}
 					%>
 
-					<liferay-ui:search-iterator paginate="<%= false %>" searchContainer="<%= searchContainer %>" />
+					<liferay-ui:search-iterator
+						paginate="<%= false %>"
+						searchContainer="<%= searchContainer %>"
+					/>
 
 					<div>
 						<table class="lfr-table">

@@ -47,7 +47,9 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 	<aui:input name="accountEnvironmentId" type="hidden" value="<%= accountEnvironmentId %>" />
 	<aui:input name="productEntryId" type="hidden" value="<%= productEntryId %>" />
 
-	<liferay-ui:tabs names="environment-details" />
+	<liferay-ui:tabs
+		names="environment-details"
+	/>
 
 	<liferay-ui:error exception="<%= AccountEnvironmentEnvASException.class %>" message="please-select-a-valid-application-server" />
 	<liferay-ui:error exception="<%= AccountEnvironmentEnvDBException.class %>" message="please-select-a-valid-database" />

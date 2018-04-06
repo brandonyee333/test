@@ -330,7 +330,11 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 				<liferay-ui:message key="purchase-order" />
 			</td>
 			<td>
-				<liferay-ui:input-field bean="<%= orderEntry %>" field="purchaseOrderKey" model="<%= OrderEntry.class %>" />
+				<liferay-ui:input-field
+					bean="<%= orderEntry %>"
+					field="purchaseOrderKey"
+					model="<%= OrderEntry.class %>"
+				/>
 			</td>
 		</tr>
 		<tr>
@@ -346,7 +350,12 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 				<table class="lfr-table">
 					<tr>
 						<td>
-							<liferay-ui:input-field bean="<%= orderEntry %>" defaultValue="<%= startCal %>" field="startDate" model="<%= OrderEntry.class %>" />
+							<liferay-ui:input-field
+								bean="<%= orderEntry %>"
+								defaultValue="<%= startCal %>"
+								field="startDate"
+								model="<%= OrderEntry.class %>"
+							/>
 						</td>
 						<td>
 							<liferay-ui:message key="prorated" />
@@ -363,7 +372,12 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 				<liferay-ui:message key="actual-start-date" />
 			</td>
 			<td>
-				<liferay-ui:input-field bean="<%= orderEntry %>" defaultValue="<%= actualStartCal %>" field="actualStartDate" model="<%= OrderEntry.class %>" />
+				<liferay-ui:input-field
+					bean="<%= orderEntry %>"
+					defaultValue="<%= actualStartCal %>"
+					field="actualStartDate"
+					model="<%= OrderEntry.class %>"
+				/>
 			</td>
 		</tr>
 		<tr>
@@ -609,6 +623,9 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+			paginate="<%= false %>"
+		/>
 	</liferay-ui:search-container>
 </aui:form>

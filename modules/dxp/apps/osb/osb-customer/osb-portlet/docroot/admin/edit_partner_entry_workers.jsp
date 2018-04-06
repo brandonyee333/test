@@ -180,7 +180,9 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 
 		<br /><br />
 
-		<liferay-ui:search-iterator markupView="lexicon" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+		/>
 	</liferay-ui:search-container>
 </aui:form>
 

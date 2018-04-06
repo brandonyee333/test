@@ -23,7 +23,9 @@ portletURL.setParameter("mvcPath", "/support/2/select_account_entry.jsp");
 %>
 
 <aui:form method="post" name="fm">
-	<liferay-ui:tabs names="projects" />
+	<liferay-ui:tabs
+		names="projects"
+	/>
 
 	<liferay-ui:search-container
 		emptyResultsMessage="no-projects-were-found"
@@ -74,6 +76,8 @@ portletURL.setParameter("mvcPath", "/support/2/select_account_entry.jsp");
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+		/>
 	</liferay-ui:search-container>
 </aui:form>

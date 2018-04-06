@@ -181,7 +181,10 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+			paginate="<%= false %>"
+		/>
 	</liferay-ui:search-container>
 </aui:form>
 

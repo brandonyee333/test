@@ -67,10 +67,20 @@
 
 			<c:if test="<%= !supportTeams.isEmpty() %>">
 				<span class="expand" id="<portlet:namespace />expand_<%= supportRegion.getSupportRegionId() %>">
-					<liferay-ui:icon image="../arrows/01_plus" label="<%= true %>" message="expand" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportTeams(" + supportRegion.getSupportRegionId() + ", true);" %>' />
+					<liferay-ui:icon
+						image="../arrows/01_plus"
+						label="<%= true %>"
+						message="expand"
+						url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportTeams(" + supportRegion.getSupportRegionId() + ", true);" %>'
+					/>
 				</span>
 				<span class="collapse hide" id="<portlet:namespace />collapse_<%= supportRegion.getSupportRegionId() %>">
-					<liferay-ui:icon image="../arrows/01_minus" label="<%= true %>" message="collapse" url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportTeams(" + supportRegion.getSupportRegionId() + ", false);" %>' />
+					<liferay-ui:icon
+						image="../arrows/01_minus"
+						label="<%= true %>"
+						message="collapse"
+						url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportTeams(" + supportRegion.getSupportRegionId() + ", false);" %>'
+					/>
 				</span>
 
 				<div class="hide" id="<portlet:namespace />supportTeams_<%= supportRegion.getSupportRegionId() %>">
@@ -122,7 +132,9 @@
 
 	<br />
 
-	<liferay-ui:search-iterator markupView="lexicon" />
+	<liferay-ui:search-iterator
+		markupView="lexicon"
+	/>
 </liferay-ui:search-container>
 
 <aui:script>

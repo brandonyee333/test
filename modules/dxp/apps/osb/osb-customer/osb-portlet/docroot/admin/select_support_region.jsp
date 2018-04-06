@@ -68,6 +68,8 @@ portletURL.setParameter("mvcPath", "/admin/select_support_region.jsp");
 			/>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator markupView="lexicon" />
+		<liferay-ui:search-iterator
+			markupView="lexicon"
+		/>
 	</liferay-ui:search-container>
 </aui:form>

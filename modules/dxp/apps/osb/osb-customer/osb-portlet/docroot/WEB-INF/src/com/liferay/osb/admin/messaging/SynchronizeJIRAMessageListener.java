@@ -67,6 +67,7 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 			/* TODO update JIRA integration
 			JSONObject jsonObject = JIRATicketLocalServiceUtil.getJIRATicket(
 				jiraTicketKey);
+
 			*/
 			String summary = _getSummary(jsonObject, status);
 			status = _getStatus(jsonObject, status);
@@ -80,6 +81,7 @@ public class SynchronizeJIRAMessageListener extends BaseMessageListener {
 		else {
 			String issueType = _getIssueType(message);
 			String summary = message.getString("displayId");
+
 			/* TODO update JIRA integration
 			JSONObject jsonObject = JIRATicketLocalServiceUtil.createJIRATicket(
 				issueType, summary, description, assigneeName, customFields,

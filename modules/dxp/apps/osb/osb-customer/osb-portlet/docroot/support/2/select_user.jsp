@@ -31,7 +31,9 @@ portletURL.setParameter("callback", callback);
 <c:if test="<%= (ticketEntryId > 0) || liferayIncOrg %>">
 	<aui:form action="<%= portletURL.toString() %>" method="post" name="fm" onSubmit="submitForm(this); return false;">
 		<div class="unit">
-			<liferay-ui:tabs names="users" />
+			<liferay-ui:tabs
+				names="users"
+			/>
 
 			<%@ include file="/common/user_search_inputs.jspf" %>
 
@@ -115,7 +117,9 @@ portletURL.setParameter("callback", callback);
 					/>
 				</liferay-ui:search-container-row>
 
-				<liferay-ui:search-iterator markupView="lexicon" />
+				<liferay-ui:search-iterator
+					markupView="lexicon"
+				/>
 			</liferay-ui:search-container>
 		</div>
 	</aui:form>
