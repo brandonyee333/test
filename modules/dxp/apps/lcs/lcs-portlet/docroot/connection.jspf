@@ -163,7 +163,7 @@ catch (Exception e) {
 			</li>
 
 			<%
-			Map<String, Boolean> lcsServicesPreferences = LCSPortletPreferencesUtil.getLCSServicesPreferences();
+			Map<String, String> lcsServicesPreferences = LCSPortletPreferencesUtil.getLCSServicesPreferences();
 			%>
 
 			<li class="list-group-item">
@@ -173,7 +173,7 @@ catch (Exception e) {
 					</aui:col>
 
 					<aui:col width="<%= 50 %>">
-						<liferay-ui:message key='<%= lcsServicesPreferences.get(LCSConstants.METRICS_LCS_SERVICE_ENABLED) ? "enabled" : "disabled" %>' />
+						<liferay-ui:message key="<%= lcsServicesPreferences.get(LCSConstants.METRICS_LCS_SERVICE_ENABLED) %>" />
 					</aui:col>
 				</aui:row>
 			</li>
@@ -184,7 +184,7 @@ catch (Exception e) {
 					</aui:col>
 
 					<aui:col width="<%= 50 %>">
-						<liferay-ui:message key='<%= lcsServicesPreferences.get(LCSConstants.PATCHES_LCS_SERVICE_ENABLED) ? "enabled" : "disabled" %>' />
+						<liferay-ui:message key="<%= lcsServicesPreferences.get(LCSConstants.PATCHES_LCS_SERVICE_ENABLED) %>" />
 					</aui:col>
 				</aui:row>
 			</li>
@@ -195,15 +195,15 @@ catch (Exception e) {
 					</aui:col>
 
 					<aui:col width="<%= 50 %>">
-						<liferay-ui:message key='<%= lcsServicesPreferences.get(LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED) ? "enabled" : "disabled" %>' />
+						<liferay-ui:message key="<%= lcsServicesPreferences.get(LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED) %>" />
 					</aui:col>
 				</aui:row>
 			</li>
 
-			<c:if test="<%= lcsServicesPreferences.get(LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED) %>">
+			<c:if test="<%= lcsServicesPreferences.containsKey(LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED) && lcsServicesPreferences.containsKey(LCSConstants.PORTAL_PROPERTIES_BLACKLIST) %>">
 
 				<%
-				String properties = String.valueOf(LCSUtil.getPortalPropertiesBlacklist());
+				String portalPropertiesBlacklist = lcsServicesPreferences.get(LCSConstants.PORTAL_PROPERTIES_BLACKLIST);
 				%>
 
 				<li class="list-group-item">
@@ -213,7 +213,7 @@ catch (Exception e) {
 						</aui:col>
 
 						<aui:col width="<%= 50 %>">
-							<%= Validator.isNull(properties) ? StringPool.BLANK : properties.replaceAll(StringPool.COMMA, "<br />") %>
+							<%= portalPropertiesBlacklist.replaceAll(StringPool.COMMA, "<br />") %>
 						</aui:col>
 					</aui:row>
 				</li>
