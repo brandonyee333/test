@@ -110,9 +110,7 @@ public class LCSPortletPreferencesUtil {
 		return _CREDENTIALS_STATUS_SET;
 	}
 
-	public static synchronized Map<String, Boolean>
-		getLCSServicesPreferences() {
-
+	public static synchronized Map<String, String> getLCSServicesPreferences() {
 		javax.portlet.PortletPreferences jxPortletPreferences =
 			fetchReadOnlyJxPortletPreferences();
 
@@ -131,23 +129,30 @@ public class LCSPortletPreferencesUtil {
 				LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED,
 				Boolean.FALSE.toString()));
 
-		Boolean enableAllLCSServices =
-			metricsServiceEnabled && portalPropertiesServiceEnabled &&
-			patchesServiceEnabled;
-
-		Map<String, Boolean> preferences = new HashMap<>();
+		Map<String, String> preferences = new HashMap<>();
 
 		preferences.put(
-			LCSConstants.METRICS_LCS_SERVICE_ENABLED, metricsServiceEnabled);
+			LCSConstants.METRICS_LCS_SERVICE_ENABLED,
+			metricsServiceEnabled ? "enabled" : "disabled");
 
 		preferences.put(
 			LCSConstants.PORTAL_PROPERTIES_LCS_SERVICE_ENABLED,
-			portalPropertiesServiceEnabled);
+			portalPropertiesServiceEnabled ? "enabled" : "disabled");
+
+		if (portalPropertiesServiceEnabled) {
+			String portalPropertiesBlacklist = jxPortletPreferences.getValue(
+				LCSConstants.PORTAL_PROPERTIES_BLACKLIST, null);
+
+			if (Validator.isNotNull(portalPropertiesBlacklist)) {
+				preferences.put(
+					LCSConstants.PORTAL_PROPERTIES_BLACKLIST,
+					portalPropertiesBlacklist);
+			}
+		}
 
 		preferences.put(
-			LCSConstants.PATCHES_LCS_SERVICE_ENABLED, patchesServiceEnabled);
-
-		preferences.put("enableAllLCSServices", enableAllLCSServices);
+			LCSConstants.PATCHES_LCS_SERVICE_ENABLED,
+			patchesServiceEnabled ? "enabled" : "disabled");
 
 		return preferences;
 	}
