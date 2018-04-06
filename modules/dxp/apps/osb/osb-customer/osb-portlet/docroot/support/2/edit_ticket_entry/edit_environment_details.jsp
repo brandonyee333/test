@@ -99,7 +99,7 @@ int toEnvLFR = ParamUtil.getInteger(request, "toEnvLFR", GetterUtil.getInteger(t
 			long[] listTypesDeprecated = Arrays.stream(ProductEntryConstants.LIST_TYPES_DEPRECATED).asLongStream().toArray();
 
 			for (ListType envLFRType : envLFRTypes) {
-				if ((envLFRType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) && (envLFR != ProductEntryConstants.PORTAL_VERSION_OTHER) || ArrayUtil.contains(listTypesDeprecated, envLFRType.getListTypeId())) {
+				if ((envLFRType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) && ((envLFR != ProductEntryConstants.PORTAL_VERSION_OTHER) || ArrayUtil.contains(listTypesDeprecated, envLFRType.getListTypeId()))) {
 					continue;
 				}
 

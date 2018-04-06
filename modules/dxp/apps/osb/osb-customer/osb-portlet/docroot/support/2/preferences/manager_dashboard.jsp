@@ -46,7 +46,7 @@ List<SupportTeam> supportTeams = SupportTeamLocalServiceUtil.getUserRoleSupportT
 
 								String cssClass = StringPool.BLANK;
 
-								if ((j == (rows - 1)) || (teamIterator == (supportTeams.size() - 1)) || (i == 1) && (j == (rows - 2)) && (((supportTeams.size() - teamIterator) - 1) < rows)) {
+								if (((j == (rows - 1)) || (teamIterator == (supportTeams.size() - 1)) || (i == 1)) && (j == (rows - 2)) && (((supportTeams.size() - teamIterator) - 1) < rows)) {
 									cssClass = "last";
 								}
 						%>

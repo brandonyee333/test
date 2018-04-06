@@ -137,8 +137,9 @@ public class TicketCommentLocalServiceImpl
 		Date awayMessageEndDate = PortalUtil.getDate(
 			awayMessageEndMonth, awayMessageEndDay, awayMessageEndYear);
 
-		if (!awayMessageEnabled || awayMessageStartDate.after(now) ||
-			(awayMessageEndDate != null) && awayMessageEndDate.before(now)) {
+		if ((!awayMessageEnabled || awayMessageStartDate.after(now) ||
+			 (awayMessageEndDate != null)) &&
+			awayMessageEndDate.before(now)) {
 
 			return null;
 		}
