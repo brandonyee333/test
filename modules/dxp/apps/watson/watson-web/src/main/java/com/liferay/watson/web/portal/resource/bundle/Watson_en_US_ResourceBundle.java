@@ -26,7 +26,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Steven Smith
  */
 @Component(
-	immediate = true, property = {"language.id=en_US"},
+	immediate = true, property = "language.id=en_US",
 	service = ResourceBundle.class
 )
 public class Watson_en_US_ResourceBundle extends ResourceBundle {

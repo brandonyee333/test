@@ -28,9 +28,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = {
-		"panel.category.key=" + PanelCategoryKeys.SITE_ADMINISTRATION_CONTENT
-	},
+	property = "panel.category.key=" + PanelCategoryKeys.SITE_ADMINISTRATION_CONTENT,
 	service = PanelApp.class
 )
 public class ModerationPanelApp extends BasePanelApp {

@@ -54,7 +54,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jamie Sammons
  */
 @Component(
-	immediate = true, property = {"cron.expression=0 0 0 * * ?"},
+	immediate = true, property = "cron.expression=0 0 0 * * ?",
 	service = DeleteMBMessagesListener.class
 )
 public class DeleteMBMessagesListener extends BaseMessageListener {

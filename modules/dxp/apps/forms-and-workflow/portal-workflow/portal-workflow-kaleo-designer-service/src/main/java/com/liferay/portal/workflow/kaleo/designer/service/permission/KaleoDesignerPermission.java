@@ -26,7 +26,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Marcellus Tavares
  */
 @Component(
-	property = {"resource.name=" + KaleoDesignerPermission.RESOURCE_NAME},
+	property = "resource.name=" + KaleoDesignerPermission.RESOURCE_NAME,
 	service = ResourcePermissionChecker.class
 )
 public class KaleoDesignerPermission extends BaseResourcePermissionChecker {
