@@ -16,10 +16,8 @@ package com.liferay.osb.customer.rabbitmq.processors;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.model.ExpandoColumn;
-import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
 import com.liferay.expando.kernel.util.ExpandoConverterUtil;
-import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.User;
@@ -27,6 +25,7 @@ import com.liferay.portal.kernel.model.User;
 import java.io.Serializable;
 
 import java.util.Calendar;
+import java.util.Iterator;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -74,33 +73,44 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 			contact.getSkypeSn(), contact.getTwitterSn(), jobTitle, null, null,
 			null, null, null, null);
 
-		ExpandoBridge expandoBridge = user.getExpandoBridge();
+		JSONObject expandosJSONObject = jsonObject.getJSONObject("expandos");
 
-		JSONArray expandosJSONArray = jsonObject.getJSONArray("expandos");
+		if (expandosJSONObject != null) {
+			ExpandoBridge expandoBridge = user.getExpandoBridge();
 
-		if (expandosJSONArray != null) {
-			for (int i = 0; i < expandosJSONArray.length(); ++i) {
-				JSONObject expandoAttributeJSONObject =
-					expandosJSONArray.getJSONObject(i);
+			Iterator<String> iterator = expandosJSONObject.keys();
 
-				String name = expandoAttributeJSONObject.getString("name");
+			while (iterator.hasNext()) {
+				String expandoTableName = iterator.next();
 
-				ExpandoColumn expandoColumn =
-					expandoColumnLocalService.getColumn(
-						user.getCompanyId(), User.class.getName(),
-						ExpandoTableConstants.DEFAULT_TABLE_NAME, name);
+				JSONObject expandoTableJSONObject =
+					expandosJSONObject.getJSONObject(expandoTableName);
 
-				if (expandoColumn == null) {
-					continue;
+				Iterator<String> expandoTableIterator =
+					expandoTableJSONObject.keys();
+
+				while (expandoTableIterator.hasNext()) {
+					String expandoColumnName = expandoTableIterator.next();
+
+					ExpandoColumn expandoColumn =
+						expandoColumnLocalService.getColumn(
+							user.getCompanyId(), User.class.getName(),
+							expandoTableName, expandoColumnName);
+
+					if (expandoColumn == null) {
+						continue;
+					}
+
+					String expandoValueData = expandoTableJSONObject.getString(
+						expandoColumnName);
+
+					Serializable serializable =
+						ExpandoConverterUtil.getAttributeFromString(
+							expandoColumn.getType(), expandoValueData);
+
+					expandoBridge.setAttribute(
+						expandoColumnName, serializable, false);
 				}
-
-				String value = expandoAttributeJSONObject.getString("value");
-
-				Serializable serializable =
-					ExpandoConverterUtil.getAttributeFromString(
-						expandoColumn.getType(), value);
-
-				expandoBridge.setAttribute(name, serializable, false);
 			}
 		}
 	}
