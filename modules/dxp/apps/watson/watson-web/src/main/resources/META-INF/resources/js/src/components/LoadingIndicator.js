@@ -72,6 +72,7 @@ LoadingIndicator.PROPS = {
 function mapStateToProps(state) {
 	const activitiesLoading = state.getIn(['activities', 'loading']);
 	const addressesLoading = state.getIn(['addresses', 'loading']);
+	const authenticationLoading = state.getIn(['authentication', 'loading']);
 	const caseworkActivitiesLoading = state.getIn(['casework_activities', 'loading']);
 	const childrenLoading = state.getIn(['children', 'loading']);
 	const counselingReportsLoading = state.getIn(['counseling_reports', 'loading']);
@@ -87,10 +88,11 @@ function mapStateToProps(state) {
 	const resourcesLoading = state.getIn(['resources', 'loading']);
 	const vehiclesLoading = state.getIn(['vehicles', 'loading']);
 
-	const loading = activitiesLoading || addressesLoading || caseworkActivitiesLoading || childrenLoading || counselingReportsLoading || documentsLoading || historiesLoading || illnessesLoading || incidentsLoading || legalsLoading || peopleLoading || physicalExamsLoading || progressReportsLoading || relationshipsLoading || resourcesLoading || vehiclesLoading;
+	const loading = activitiesLoading || addressesLoading || authenticationLoading || caseworkActivitiesLoading || childrenLoading || counselingReportsLoading || documentsLoading || historiesLoading || illnessesLoading || incidentsLoading || legalsLoading || peopleLoading || physicalExamsLoading || progressReportsLoading || relationshipsLoading || resourcesLoading || vehiclesLoading;
 
 	const activitiesRequestFailure = state.getIn(['activities', 'response', 'failure']);
 	const addressesRequestFailure = state.getIn(['addresses', 'response', 'failure']);
+	const authenticationRequestFailure = state.getIn(['authentication', 'response', 'failure']);
 	const caseworkActivitiesFailure = state.getIn(['casework_activities', 'response', 'failure']);
 	const childrenRequestFailure = state.getIn(['children', 'response', 'failure']);
 	const counselingReportsFailure = state.getIn(['counseling_reports', 'response', 'failure']);
@@ -107,7 +109,7 @@ function mapStateToProps(state) {
 	const resourcesRequestFailure = state.getIn(['resources', 'response', 'failure']);
 	const vehiclesRequestFailure = state.getIn(['vehicles', 'response', 'failure']);
 
-	const requestFailure = activitiesRequestFailure || addressesRequestFailure || caseworkActivitiesFailure || childrenRequestFailure || counselingReportsFailure || documentsRequestFailure || historiesRequestFailure || illnessesRequestFailure || incidentsRequestFailure || legalsRequestFailure || listTypesRequestFailure || peopleRequestFailure || physicalExamsRequestFailure || progressReportsRequestFailure || relationshipsRequestFailure || resourcesRequestFailure || vehiclesRequestFailure;
+	const requestFailure = activitiesRequestFailure || addressesRequestFailure || authenticationRequestFailure || caseworkActivitiesFailure || childrenRequestFailure || counselingReportsFailure || documentsRequestFailure || historiesRequestFailure || illnessesRequestFailure || incidentsRequestFailure || legalsRequestFailure || listTypesRequestFailure || peopleRequestFailure || physicalExamsRequestFailure || progressReportsRequestFailure || relationshipsRequestFailure || resourcesRequestFailure || vehiclesRequestFailure;
 
 	const activitiesRequestForbidden = state.getIn(['activities', 'response', 'forbidden']);
 	const addressesRequestForbidden = state.getIn(['addresses', 'response', 'forbidden']);

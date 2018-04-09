@@ -66,7 +66,7 @@ class Modal extends JSXComponent {
 
 		this.props.close();
 
-		if (this.element.style) {
+		if (this.element && this.element.style) {
 			this.element.style.display = '';
 		}
 	}
