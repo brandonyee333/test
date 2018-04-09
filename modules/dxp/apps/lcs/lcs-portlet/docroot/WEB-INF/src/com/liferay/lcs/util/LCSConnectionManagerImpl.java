@@ -198,7 +198,7 @@ public class LCSConnectionManagerImpl implements LCSConnectionManager {
 
 		_scheduledFutures.add(
 			_scheduledExecutorService.scheduleAtFixedRate(
-				_heartbeatTask, _heartbeatInterval, _heartbeatInterval,
+				_heartbeatTask, 10000L, _heartbeatInterval,
 				TimeUnit.MILLISECONDS));
 
 		if (_log.isTraceEnabled()) {
