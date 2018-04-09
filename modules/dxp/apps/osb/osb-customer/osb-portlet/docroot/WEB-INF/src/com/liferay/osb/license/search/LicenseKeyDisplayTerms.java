@@ -128,13 +128,13 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		createDateGTDay = ParamUtil.getInteger(
 			portletRequest, CREATE_DATE_GT_DAY);
 		createDateGTMonth = ParamUtil.getInteger(
-			portletRequest, CREATE_DATE_GT_MONTH);
+			portletRequest, CREATE_DATE_GT_MONTH, -1);
 		createDateGTYear = ParamUtil.getInteger(
 			portletRequest, CREATE_DATE_GT_YEAR);
 		createDateLTDay = ParamUtil.getInteger(
 			portletRequest, CREATE_DATE_LT_DAY);
 		createDateLTMonth = ParamUtil.getInteger(
-			portletRequest, CREATE_DATE_LT_MONTH);
+			portletRequest, CREATE_DATE_LT_MONTH, -1);
 		createDateLTYear = ParamUtil.getInteger(
 			portletRequest, CREATE_DATE_LT_YEAR);
 		createUserId = ParamUtil.getLong(portletRequest, CREATE_USER_ID);
@@ -143,25 +143,25 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		expirationDateGTDay = ParamUtil.getInteger(
 			portletRequest, EXPIRATION_DATE_GT_DAY);
 		expirationDateGTMonth = ParamUtil.getInteger(
-			portletRequest, EXPIRATION_DATE_GT_MONTH);
+			portletRequest, EXPIRATION_DATE_GT_MONTH, -1);
 		expirationDateGTYear = ParamUtil.getInteger(
 			portletRequest, EXPIRATION_DATE_GT_YEAR);
 		expirationDateLTDay = ParamUtil.getInteger(
 			portletRequest, EXPIRATION_DATE_LT_DAY);
 		expirationDateLTMonth = ParamUtil.getInteger(
-			portletRequest, EXPIRATION_DATE_LT_MONTH);
+			portletRequest, EXPIRATION_DATE_LT_MONTH, -1);
 		expirationDateLTYear = ParamUtil.getInteger(
 			portletRequest, EXPIRATION_DATE_LT_YEAR);
 		modifiedDateGTDay = ParamUtil.getInteger(
 			portletRequest, MODIFIED_DATE_GT_DAY);
 		modifiedDateGTMonth = ParamUtil.getInteger(
-			portletRequest, MODIFIED_DATE_GT_MONTH);
+			portletRequest, MODIFIED_DATE_GT_MONTH, -1);
 		modifiedDateGTYear = ParamUtil.getInteger(
 			portletRequest, MODIFIED_DATE_GT_YEAR);
 		modifiedDateLTDay = ParamUtil.getInteger(
 			portletRequest, MODIFIED_DATE_LT_DAY);
 		modifiedDateLTMonth = ParamUtil.getInteger(
-			portletRequest, MODIFIED_DATE_LT_MONTH);
+			portletRequest, MODIFIED_DATE_LT_MONTH, -1);
 		modifiedDateLTYear = ParamUtil.getInteger(
 			portletRequest, MODIFIED_DATE_LT_YEAR);
 		modifiedUserId = ParamUtil.getLong(portletRequest, MODIFIED_USER_ID);
@@ -186,13 +186,13 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		startDateGTDay = ParamUtil.getInteger(
 			portletRequest, START_DATE_GT_DAY);
 		startDateGTMonth = ParamUtil.getInteger(
-			portletRequest, START_DATE_GT_MONTH);
+			portletRequest, START_DATE_GT_MONTH, -1);
 		startDateGTYear = ParamUtil.getInteger(
 			portletRequest, START_DATE_GT_YEAR);
 		startDateLTDay = ParamUtil.getInteger(
 			portletRequest, START_DATE_LT_DAY);
 		startDateLTMonth = ParamUtil.getInteger(
-			portletRequest, START_DATE_LT_MONTH);
+			portletRequest, START_DATE_LT_MONTH, -1);
 		startDateLTYear = ParamUtil.getInteger(
 			portletRequest, START_DATE_LT_YEAR);
 	}

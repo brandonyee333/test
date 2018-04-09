@@ -150,7 +150,9 @@ Date lastEnabledDate = calendar.getTime();
 						lastEnabledDate="<%= lastEnabledDate %>"
 						monthParam="<%= displayTerms.CREATE_DATE_GT_MONTH %>"
 						monthValue="<%= displayTerms.getCreateDateGTMonth() %>"
+						name="createDateGT"
 						nullable="<%= true %>"
+						showDisableCheckbox="<%= true %>"
 						yearParam="<%= displayTerms.CREATE_DATE_GT_YEAR %>"
 						yearValue="<%= displayTerms.getCreateDateGTYear() %>"
 					/>
@@ -163,7 +165,9 @@ Date lastEnabledDate = calendar.getTime();
 						lastEnabledDate="<%= lastEnabledDate %>"
 						monthParam="<%= displayTerms.CREATE_DATE_LT_MONTH %>"
 						monthValue="<%= displayTerms.getCreateDateLTMonth() %>"
+						name="createDateLT"
 						nullable="<%= true %>"
+						showDisableCheckbox="<%= true %>"
 						yearParam="<%= displayTerms.CREATE_DATE_LT_YEAR %>"
 						yearValue="<%= displayTerms.getCreateDateLTYear() %>"
 					/>
@@ -186,7 +190,9 @@ Date lastEnabledDate = calendar.getTime();
 						lastEnabledDate="<%= lastEnabledDate %>"
 						monthParam="<%= displayTerms.MODIFIED_DATE_GT_MONTH %>"
 						monthValue="<%= displayTerms.getModifiedDateGTMonth() %>"
+						name="modifiedDateGT"
 						nullable="<%= true %>"
+						showDisableCheckbox="<%= true %>"
 						yearParam="<%= displayTerms.MODIFIED_DATE_GT_YEAR %>"
 						yearValue="<%= displayTerms.getModifiedDateGTYear() %>"
 					/>
@@ -199,7 +205,9 @@ Date lastEnabledDate = calendar.getTime();
 						lastEnabledDate="<%= lastEnabledDate %>"
 						monthParam="<%= displayTerms.MODIFIED_DATE_LT_MONTH %>"
 						monthValue="<%= displayTerms.getModifiedDateLTMonth() %>"
+						name="modifiedDateLT"
 						nullable="<%= true %>"
+						showDisableCheckbox="<%= true %>"
 						yearParam="<%= displayTerms.MODIFIED_DATE_LT_YEAR %>"
 						yearValue="<%= displayTerms.getModifiedDateLTYear() %>"
 					/>
@@ -222,7 +230,9 @@ Date lastEnabledDate = calendar.getTime();
 						lastEnabledDate="<%= lastEnabledDate %>"
 						monthParam="<%= displayTerms.START_DATE_GT_MONTH %>"
 						monthValue="<%= displayTerms.getStartDateGTMonth() %>"
+						name="startDateGT"
 						nullable="<%= true %>"
+						showDisableCheckbox="<%= true %>"
 						yearParam="<%= displayTerms.START_DATE_GT_YEAR %>"
 						yearValue="<%= displayTerms.getStartDateGTYear() %>"
 					/>
@@ -235,7 +245,9 @@ Date lastEnabledDate = calendar.getTime();
 						lastEnabledDate="<%= lastEnabledDate %>"
 						monthParam="<%= displayTerms.START_DATE_LT_MONTH %>"
 						monthValue="<%= displayTerms.getStartDateLTMonth() %>"
+						name="startDateLT"
 						nullable="<%= true %>"
+						showDisableCheckbox="<%= true %>"
 						yearParam="<%= displayTerms.START_DATE_LT_YEAR %>"
 						yearValue="<%= displayTerms.getStartDateLTYear() %>"
 					/>
@@ -258,7 +270,9 @@ Date lastEnabledDate = calendar.getTime();
 						lastEnabledDate="<%= lastEnabledDate %>"
 						monthParam="<%= displayTerms.EXPIRATION_DATE_GT_MONTH %>"
 						monthValue="<%= displayTerms.getExpirationDateGTMonth() %>"
+						name="expirationDateGT"
 						nullable="<%= true %>"
+						showDisableCheckbox="<%= true %>"
 						yearParam="<%= displayTerms.EXPIRATION_DATE_GT_YEAR %>"
 						yearValue="<%= displayTerms.getExpirationDateGTYear() %>"
 					/>
@@ -271,7 +285,9 @@ Date lastEnabledDate = calendar.getTime();
 						lastEnabledDate="<%= lastEnabledDate %>"
 						monthParam="<%= displayTerms.EXPIRATION_DATE_LT_MONTH %>"
 						monthValue="<%= displayTerms.getExpirationDateLTMonth() %>"
+						name="expirateionDateLT"
 						nullable="<%= true %>"
+						showDisableCheckbox="<%= true %>"
 						yearParam="<%= displayTerms.EXPIRATION_DATE_LT_YEAR %>"
 						yearValue="<%= displayTerms.getExpirationDateLTYear() %>"
 					/>
