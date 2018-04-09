@@ -123,6 +123,38 @@ public static class WatsonWorkflowUtil {
 		MailServiceUtil.sendEmail(mailMessage);
 	}
 
+	public static void sendAuthenticationEmail(User user, WatsonTokenAuthEntry watsonTokenAuthEntry) throws Exception {
+		MailMessage mailMessage = new MailMessage();
+
+		StringBundler sb = new StringBundler(3);
+
+		String tokenInBold = "<b>" + watsonTokenAuthEntry.getToken() + "</b>";
+
+		sb.append(LanguageUtil.format(user.getLocale(), "here-is-the-one-time-authorization-code-x", new String[] {tokenInBold}));
+
+		sb.append("<br /><br />");
+
+		sb.append(LanguageUtil.format(user.getLocale(), "this-code-will-expire-in-30-minutes", new String[0]));
+
+		mailMessage.setBody(sb.toString());
+
+		InternetAddress from = new InternetAddress(user.getEmailAddress(), user.getFullName());
+
+		mailMessage.setFrom(from);
+
+		mailMessage.setHTMLFormat(true);
+
+		String subject = LanguageUtil.format(user.getLocale(), "authorization-code", new Object[0]);
+
+		mailMessage.setSubject(subject);
+
+		InternetAddress to = new InternetAddress(user.getEmailAddress(), user.getFullName());
+
+		mailMessage.setTo(to);
+
+		MailServiceUtil.sendEmail(mailMessage);
+	}
+
 	public static void sendCitizenshipRequestEmail(User fromUser, String childURL) throws Exception {
 		UserGroup userGroup = UserGroupLocalServiceUtil.getUserGroup(fromUser.getCompanyId(), _CITIZENSHIP_USER_GROUP);
 
@@ -131,7 +163,7 @@ public static class WatsonWorkflowUtil {
 		for (User citizenshipGroupUser : citizenshipGroupUsers) {
 			MailMessage mailMessage = new MailMessage();
 
-			StringBundler sb = new StringBundler(7);
+			StringBundler sb = new StringBundler(5);
 
 			sb.append(LanguageUtil.format(citizenshipGroupUser.getLocale(), "dear-x", new String[] {citizenshipGroupUser.getFullName()}));
 			sb.append("<br /><br />");

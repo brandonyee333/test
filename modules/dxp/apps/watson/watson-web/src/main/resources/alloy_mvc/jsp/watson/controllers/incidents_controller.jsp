@@ -408,6 +408,42 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		respondWith(WatsonIncident.getAsJSONDataArray(_doSearch(searchContext), getTotalHits(searchContext)));
 	}
 
+	public void checkUserAuthorizationStatus() throws Exception {
+		if (!isRespondingTo("json")) {
+			return;
+		}
+
+		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
+
+		if (WatsonTokenAuthUtil.hasAuthenticatedSession(user)) {
+			respondWith(WatsonTokenAuthUtil.AUTHORIZATION_STATUS_LABEL_APPROVED);
+
+			return;
+		}
+		else if (forceIssueNewToken || !WatsonTokenAuthUtil.hasPendingToken(user)) {
+			WatsonUtil.sendTwoFactorAuthEmail(user);
+		}
+
+		respondWith(WatsonTokenAuthUtil.AUTHORIZATION_STATUS_LABEL_PENDING);
+	}
+
+	public void submitAuthenticationToken() throws Exception {
+		if (!isRespondingTo("json")) {
+			return;
+		}
+
+		String authToken = ParamUtil.getString(request, "token");
+
+		String authTokenResult = WatsonTokenAuthUtil.verifyWatsonTokenAuthEntry(user, authToken);
+
+		if (authTokenResult.equals(WatsonTokenAuthUtil.AUTHORIZATION_STATUS_LABEL_APPROVED)) {
+			respondWith(authTokenResult);
+		}
+		else {
+			respondWith(HttpServletResponse.SC_FORBIDDEN, authTokenResult, null);
+		}
+	}
+
 	public void update() throws Exception {
 		if (!isRespondingTo("json")) {
 			return;

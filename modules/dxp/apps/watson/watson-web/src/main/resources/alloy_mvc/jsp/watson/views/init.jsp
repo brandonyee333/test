@@ -101,7 +101,7 @@ public class AlloyLanguageUtil extends LanguageUtil {
 PortletURL expiredSessionPortletURL = PortletURLFactoryUtil.create(request, "com_liferay_login_web_portlet_LoginPortlet", themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
 expiredSessionPortletURL.setParameter("mvcRenderCommandName", "/login/login");
-expiredSessionPortletURL.setParameter("saveLastPath", Boolean.FALSE.toString());
+expiredSessionPortletURL.setParameter("saveLastPath", Boolean.TRUE.toString());
 expiredSessionPortletURL.setParameter("sessionExpired", Boolean.TRUE.toString());
 expiredSessionPortletURL.setWindowState(LiferayWindowState.MAXIMIZED);
 %>

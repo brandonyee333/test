@@ -151,6 +151,8 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		super.executeResource(method);
 
 		clazz = tempClass;
+
+		WatsonTokenAuthUtil.extendWatsonTokenAuth(user);
 	}
 
 	protected Document[] getDocuments(SearchContext searchContext) throws Exception {
@@ -284,7 +286,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		}
 	}
 
-	private static Object[] _getProperties(JSONObject jsonObject) throws Exception {
+	private static Object[] _getProperties(JSONObject jsonObject) {
 		Iterator<?> keys = jsonObject.keys();
 
 		List<Object> properties = new ArrayList<>();
