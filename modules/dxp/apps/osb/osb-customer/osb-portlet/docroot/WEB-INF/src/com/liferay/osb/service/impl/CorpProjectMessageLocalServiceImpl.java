@@ -243,7 +243,7 @@ public class CorpProjectMessageLocalServiceImpl
 			boolean displayLESA, ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userPersistence.findByPrimaryKey(userId);
+		User user = userLocalService.getUser(userId);
 		Date createDate = serviceContext.getCreateDate(new Date());
 		Date modifiedDate = serviceContext.getModifiedDate(new Date());
 
@@ -344,7 +344,7 @@ public class CorpProjectMessageLocalServiceImpl
 				corpProjectMessageId);
 
 		if (userId > 0) {
-			User user = userPersistence.findByPrimaryKey(userId);
+			User user = userLocalService.getUser(userId);
 
 			corpProjectMessage.setUserId(userId);
 			corpProjectMessage.setUserName(user.getFullName());
