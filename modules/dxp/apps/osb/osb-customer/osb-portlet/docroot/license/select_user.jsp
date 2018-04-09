@@ -29,7 +29,7 @@ portletURL.setParameter("callback", callback);
 %>
 
 <c:if test="<%= OrganizationLocalServiceUtil.hasUserOrganization(user.getUserId(), OSBConstants.ORGANIZATION_LIFERAY_INC_ID) %>">
-	<aui:form action="<%= portletURL.toString() %>" method="post" name="selectUserfm">
+	<aui:form action="<%= portletURL.toString() %>" method="post" name="selectUserFm">
 		<div class="unit">
 			<div class="unit-content">
 				<liferay-ui:tabs
