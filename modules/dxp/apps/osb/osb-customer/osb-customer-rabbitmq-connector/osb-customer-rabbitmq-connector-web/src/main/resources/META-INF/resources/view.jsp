@@ -33,11 +33,7 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 	</portlet:renderURL>
 
 	<aui:nav cssClass="navbar-nav">
-		<aui:nav-item
-			href="<%= adminURL %>"
-			label="admin"
-			selected='<%= tabs1.equals("admin") %>'
-		/>
+		<aui:nav-item href="<%= adminURL %>" label="admin" selected='<%= tabs1.equals("admin") %>' />
 	</aui:nav>
 
 	<c:if test="<%= RabbitMQConnectorConfigurationValues.RABBITMQ_DEBUG_MODE_ENABLED %>">
@@ -47,11 +43,7 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 		</portlet:renderURL>
 
 		<aui:nav cssClass="navbar-nav">
-			<aui:nav-item
-				href="<%= debugURL %>"
-				label="debug"
-				selected='<%= tabs1.equals("debug") %>'
-			/>
+			<aui:nav-item href="<%= debugURL %>" label="debug" selected='<%= tabs1.equals("debug") %>' />
 		</aui:nav>
 	</c:if>
 </aui:nav-bar>
@@ -193,7 +185,10 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
-				<liferay-ui:search-iterator markupView="lexicon" paginate="<%= false %>" />
+				<liferay-ui:search-iterator
+					markupView="lexicon"
+					paginate="<%= false %>"
+				/>
 			</liferay-ui:search-container>
 		</c:otherwise>
 	</c:choose>
