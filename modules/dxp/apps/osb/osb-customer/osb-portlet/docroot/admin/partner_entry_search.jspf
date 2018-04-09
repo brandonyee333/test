@@ -26,7 +26,7 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 	<table class="lfr-table">
 		<tr>
 			<td>
-				<aui:input label="code" name="<%= displayTerms.CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCode()) %>" />
+				<aui:input label="code" name="<%= displayTerms.CODE %>" size="20" type="text" value="<%= displayTerms.getCode() %>" />
 			</td>
 			<td>
 				<aui:select label="first-line-support" name="<%= displayTerms.MANAGING_SUPPORT %>">

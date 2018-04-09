@@ -38,11 +38,11 @@ Date lastEnabledDate = calendar.getTime();
 					<aui:option label="" value="" />
 
 					<c:if test="<%= displayTerms.getAccountEntryId() > 0 %>">
-						<aui:option label="<%= displayTerms.getAccountEntryName() %>" selected="true" value="<%= displayTerms.getAccountEntryId() %>" />
+						<aui:option label="<%= displayTerms.getAccountEntryName() %>" selected="<%= true %>" value="<%= displayTerms.getAccountEntryId() %>" />
 					</c:if>
 				</aui:select>
 
-				<aui:input name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getAccountEntryName()) %>" />
+				<aui:input name="<%= displayTerms.ACCOUNT_ENTRY_NAME %>" type="hidden" value="<%= displayTerms.getAccountEntryName() %>" />
 
 				<portlet:renderURL var="selectAccountEntryURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_account_entry.jsp" />
@@ -65,7 +65,7 @@ Date lastEnabledDate = calendar.getTime();
 					for (ProductEntry productEntry : productEntries) {
 					%>
 
-						<aui:option label="<%= productEntry.getName() %>" selected="<%= (displayTerms.getProductEntryId() == productEntry.getProductEntryId()) %>" value="<%= productEntry.getProductEntryId() %>" />
+						<aui:option label="<%= productEntry.getName() %>" selected="<%= displayTerms.getProductEntryId() == productEntry.getProductEntryId() %>" value="<%= productEntry.getProductEntryId() %>" />
 
 					<%
 					}
@@ -74,7 +74,7 @@ Date lastEnabledDate = calendar.getTime();
 				</aui:select>
 			</td>
 			<td>
-				<aui:input label="purchase-order" name="<%= displayTerms.PURCHASE_ORDER_KEY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getPurchaseOrderKey()) %>" />
+				<aui:input label="purchase-order" name="<%= displayTerms.PURCHASE_ORDER_KEY %>" size="20" type="text" value="<%= displayTerms.getPurchaseOrderKey() %>" />
 			</td>
 			<td>
 				<aui:select label="status" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
@@ -105,11 +105,11 @@ Date lastEnabledDate = calendar.getTime();
 					<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getCreateUserId() %>" value="<%= user.getUserId() %>" />
 
 					<c:if test="<%= ((displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId())) %>">
-						<aui:option label="<%= displayTerms.getCreateUserName() %>" selected="true" value="<%= displayTerms.getCreateUserId() %>" />
+						<aui:option label="<%= displayTerms.getCreateUserName() %>" selected="<%= true %>" value="<%= displayTerms.getCreateUserId() %>" />
 					</c:if>
 				</aui:select>
 
-				<aui:input name="<%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
+				<aui:input name="<%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= displayTerms.getCreateUserName() %>" />
 
 				<portlet:renderURL var="selectCreateUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
@@ -129,11 +129,11 @@ Date lastEnabledDate = calendar.getTime();
 					<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getModifiedUserId() %>" value="<%= user.getUserId() %>" />
 
 					<c:if test="<%= ((displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId())) %>">
-						<aui:option label="<%= displayTerms.getModifiedUserName() %>" selected="true" value="<%= displayTerms.getModifiedUserId() %>" />
+						<aui:option label="<%= displayTerms.getModifiedUserName() %>" selected="<%= true %>" value="<%= displayTerms.getModifiedUserId() %>" />
 					</c:if>
 				</aui:select>
 
-				<aui:input name="<%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
+				<aui:input name="<%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= displayTerms.getModifiedUserName() %>" />
 
 				<portlet:renderURL var="selectModifiedUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_user.jsp" />

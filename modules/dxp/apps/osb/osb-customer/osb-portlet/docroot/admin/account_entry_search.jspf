@@ -38,24 +38,24 @@ Date lastEnabledDate = calendar.getTime();
 					<tr>
 						<td>
 							<div id="<portlet:namespace />nameContainer">
-								<aui:input label="project-name" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getName()) %>" />
+								<aui:input label="project-name" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= displayTerms.getName() %>" />
 							</div>
 						</td>
 						<td>
 							<div id="<portlet:namespace />codeContainer">
-								<aui:input label="code" name="<%= displayTerms.CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCode()) %>" />
+								<aui:input label="code" name="<%= displayTerms.CODE %>" size="20" type="text" value="<%= displayTerms.getCode() %>" />
 							</div>
 						</td>
 						<td>
-							<aui:input label="special-instructions" name="<%= displayTerms.INSTRUCTIONS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getInstructions()) %>" />
+							<aui:input label="special-instructions" name="<%= displayTerms.INSTRUCTIONS %>" size="20" type="text" value="<%= displayTerms.getInstructions() %>" />
 						</td>
 						<td>
-							<aui:input label="notes" name="<%= displayTerms.NOTES %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getNotes()) %>" />
+							<aui:input label="notes" name="<%= displayTerms.NOTES %>" size="20" type="text" value="<%= displayTerms.getNotes() %>" />
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2">
-							<aui:input label="partner" name="<%= displayTerms.PARTNER_ENTRY_CODE %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getPartnerEntryCode()) %>" />
+							<aui:input label="partner" name="<%= displayTerms.PARTNER_ENTRY_CODE %>" size="20" type="text" value="<%= displayTerms.getPartnerEntryCode() %>" />
 
 							<portlet:renderURL var="selectPartnerEntryURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 								<portlet:param name="mvcPath" value="/admin/select_partner_entry.jsp" />
@@ -68,14 +68,14 @@ Date lastEnabledDate = calendar.getTime();
 							<aui:button onClick="<%= taglibSelectPartnerEntry %>" value="choose" />
 						</td>
 						<td colspan="2">
-							<aui:input name="<%= renderResponse.getNamespace() + displayTerms.ACCOUNT_WORKER_ROLE %>" type="hidden" value="<%= displayTerms.getAccountWorkerRole() %>" />
-							<aui:input name="<%= renderResponse.getNamespace() + displayTerms.ACCOUNT_WORKER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getAccountWorkerName()) %>" />
+							<aui:input name="<%= displayTerms.ACCOUNT_WORKER_ROLE %>" type="hidden" value="<%= displayTerms.getAccountWorkerRole() %>" />
+							<aui:input name="<%= displayTerms.ACCOUNT_WORKER_NAME %>" type="hidden" value="<%= displayTerms.getAccountWorkerName() %>" />
 
 							<aui:select label="project-worker" name="<%= displayTerms.ACCOUNT_WORKER_USER_ID %>">
 								<aui:option label="" value="" />
 
 								<c:if test="<%= Validator.isNotNull(displayTerms.getAccountWorkerUserId()) %>">
-									<aui:option label="<%= displayTerms.getAccountWorkerName() %>" selected="true" value="<%= displayTerms.getAccountWorkerUserId() %>" />
+									<aui:option label="<%= displayTerms.getAccountWorkerName() %>" selected="<%= true %>" value="<%= displayTerms.getAccountWorkerUserId() %>" />
 								</c:if>
 							</aui:select>
 
@@ -131,6 +131,7 @@ Date lastEnabledDate = calendar.getTime();
 								%>
 
 									<aui:option label="<%= supportRegion.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportRegionIds(), supportRegion.getSupportRegionId()) %>" value="<%= supportRegion.getSupportRegionId() %>" />
+
 								<%
 								}
 								%>
@@ -146,13 +147,13 @@ Date lastEnabledDate = calendar.getTime();
 					</tr>
 					<tr>
 						<td>
-							<aui:input label="city" name="<%= displayTerms.CITY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getCity()) %>" />
+							<aui:input label="city" name="<%= displayTerms.CITY %>" size="20" type="text" value="<%= displayTerms.getCity() %>" />
 						</td>
 						<td>
-							<aui:input label="address-line" name="<%= displayTerms.STREET %>" size="30" type="text" value="<%= HtmlUtil.escape(displayTerms.getStreet()) %>" />
+							<aui:input label="address-line" name="<%= displayTerms.STREET %>" size="30" type="text" value="<%= displayTerms.getStreet() %>" />
 						</td>
 						<td>
-							<aui:input label="postal-code" name="<%= displayTerms.ZIP %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getZip()) %>" />
+							<aui:input label="postal-code" name="<%= displayTerms.ZIP %>" size="20" type="text" value="<%= displayTerms.getZip() %>" />
 						</td>
 						<td></td>
 					</tr>
@@ -192,6 +193,7 @@ Date lastEnabledDate = calendar.getTime();
 								%>
 
 									<aui:option label="<%= supportResponse.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportResponseIds(), supportResponse.getSupportResponseId()) %>" value="<%= supportResponse.getSupportResponseId() %>" />
+
 								<%
 								}
 								%>
@@ -218,7 +220,7 @@ Date lastEnabledDate = calendar.getTime();
 					<tr>
 						<td colspan="4">
 							<aui:select label="status" multiple="<%= true %>" name="<%= displayTerms.STATUSES %>">
-								<aui:option labe="any" value="-1" />
+								<aui:option label="any" value="-1" />
 
 								<%
 								for (int status : AccountEntryConstants.STATUSES) {
@@ -245,11 +247,11 @@ Date lastEnabledDate = calendar.getTime();
 								<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getCreateUserId() %>" value="<%= user.getUserId() %>" />
 
 								<c:if test="<%= (displayTerms.getCreateUserId() > 0) && (user.getUserId() != displayTerms.getCreateUserId()) %>">
-									<aui:option label="<%= displayTerms.getCreateUserName() %>" selected="true" value="<%= displayTerms.getCreateUserId() %>" />
+									<aui:option label="<%= displayTerms.getCreateUserName() %>" selected="<%= true %>" value="<%= displayTerms.getCreateUserId() %>" />
 								</c:if>
 							</aui:select>
 
-							<aui:input name="<%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
+							<aui:input name="<%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= displayTerms.getCreateUserName() %>" />
 
 							<portlet:renderURL var="selectCreateUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 								<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
@@ -269,11 +271,11 @@ Date lastEnabledDate = calendar.getTime();
 								<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getModifiedUserId() %>" value="<%= user.getUserId() %>" />
 
 								<c:if test="<%= (displayTerms.getModifiedUserId() > 0) && (user.getUserId() != displayTerms.getModifiedUserId()) %>">
-									<aui:option label="<%= displayTerms.getModifiedUserName() %>" selected="true" value="<%= displayTerms.getModifiedUserId() %>" />
+									<aui:option label="<%= displayTerms.getModifiedUserName() %>" selected="<%= true %>" value="<%= displayTerms.getModifiedUserId() %>" />
 								</c:if>
 							</aui:select>
 
-							<aui:input name="<%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
+							<aui:input name="<%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= displayTerms.getModifiedUserName() %>" />
 
 							<portlet:renderURL var="selectModifiedUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 								<portlet:param name="mvcPath" value="/admin/select_user.jsp" />
@@ -373,6 +375,7 @@ Date lastEnabledDate = calendar.getTime();
 								%>
 
 									<aui:option label="<%= productEntry.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" value="<%= productEntry.getProductEntryId() %>" />
+
 								<%
 								}
 								%>
