@@ -25,7 +25,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = {"routing.key=entity.corpproject.add"},
+	immediate = true, property = "routing.key=entity.corpproject.add",
 	service = CorpProjectAddMessageProcessor.class
 )
 public class CorpProjectAddMessageProcessor extends BaseMessageProcessor {
