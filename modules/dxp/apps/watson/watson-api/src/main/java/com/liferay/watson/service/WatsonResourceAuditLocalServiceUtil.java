@@ -16,8 +16,7 @@ package com.liferay.watson.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
+import com.liferay.osgi.util.ServiceTrackerFactory;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -257,17 +256,6 @@ public class WatsonResourceAuditLocalServiceUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonResourceAuditLocalService, WatsonResourceAuditLocalService> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(WatsonResourceAuditLocalService.class);
-
-		ServiceTracker<WatsonResourceAuditLocalService, WatsonResourceAuditLocalService> serviceTracker =
-			new ServiceTracker<WatsonResourceAuditLocalService, WatsonResourceAuditLocalService>(bundle.getBundleContext(),
-				WatsonResourceAuditLocalService.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static ServiceTracker<WatsonResourceAuditLocalService, WatsonResourceAuditLocalService> _serviceTracker =
+		ServiceTrackerFactory.open(WatsonResourceAuditLocalService.class);
 }

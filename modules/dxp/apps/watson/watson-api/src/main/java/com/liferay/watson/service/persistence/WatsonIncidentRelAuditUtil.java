@@ -16,14 +16,13 @@ package com.liferay.watson.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osgi.util.ServiceTrackerFactory;
+
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import com.liferay.watson.model.WatsonIncidentRelAudit;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -275,17 +274,6 @@ public class WatsonIncidentRelAuditUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonIncidentRelAuditPersistence, WatsonIncidentRelAuditPersistence> _serviceTracker;
-
-	static {
-		Bundle bundle = FrameworkUtil.getBundle(WatsonIncidentRelAuditPersistence.class);
-
-		ServiceTracker<WatsonIncidentRelAuditPersistence, WatsonIncidentRelAuditPersistence> serviceTracker =
-			new ServiceTracker<WatsonIncidentRelAuditPersistence, WatsonIncidentRelAuditPersistence>(bundle.getBundleContext(),
-				WatsonIncidentRelAuditPersistence.class, null);
-
-		serviceTracker.open();
-
-		_serviceTracker = serviceTracker;
-	}
+	private static ServiceTracker<WatsonIncidentRelAuditPersistence, WatsonIncidentRelAuditPersistence> _serviceTracker =
+		ServiceTrackerFactory.open(WatsonIncidentRelAuditPersistence.class);
 }
