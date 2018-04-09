@@ -34,5 +34,9 @@ String redirect = ParamUtil.getString(request, "redirect");
 </c:if>
 
 <c:if test="<%= Validator.isNotNull(queryString) %>">
-	<liferay-portlet:runtime persistSettings="<%= false %>" portletName="<%= JournalContentPortletKeys.JOURNAL_CONTENT %>" queryString="<%= queryString %>" />
+	<liferay-portlet:runtime
+		persistSettings="<%= false %>"
+		portletName="<%= JournalContentPortletKeys.JOURNAL_CONTENT %>"
+		queryString="<%= queryString %>"
+	/>
 </c:if>

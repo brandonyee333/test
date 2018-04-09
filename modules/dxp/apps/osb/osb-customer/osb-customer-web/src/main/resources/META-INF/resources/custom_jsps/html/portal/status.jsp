@@ -153,6 +153,7 @@ if (Validator.isNotNull(exception)) {
 
 						<%
 						String portletId = "1_WAR_osbknowledgebaseportlet";
+
 						String portletNamespace = "_" + portletId + "_";
 
 						String keywords = ParamUtil.getString(request, portletNamespace + "keywords");

@@ -44,7 +44,9 @@ request.setAttribute(WebKeys.SEARCH_CONTAINER, userSearch);
 
 	<aui:nav-bar-search>
 		<aui:form action="<%= portletURL.toString() %>" name="searchFm">
-			<liferay-ui:input-search markupView="lexicon" />
+			<liferay-ui:input-search
+				markupView="lexicon"
+			/>
 		</aui:form>
 	</aui:nav-bar-search>
 </aui:nav-bar>
@@ -86,7 +88,9 @@ request.setAttribute(WebKeys.SEARCH_CONTAINER, userSearch);
 		userParams.put("usersRoles", OSBCustomerConstants.ROLE_LIFERAY_EMPLOYEE_ID);
 		%>
 
-		<liferay-ui:user-search-container-results userParams="<%= userParams %>" />
+		<liferay-ui:user-search-container-results
+			userParams="<%= userParams %>"
+		/>
 
 		<liferay-ui:search-container-row
 			className="com.liferay.portal.kernel.model.User"
@@ -116,15 +120,14 @@ request.setAttribute(WebKeys.SEARCH_CONTAINER, userSearch);
 				data.put("userName", user.getFullName());
 				%>
 
-				<aui:button
-					cssClass="selector-button"
-					data="<%= data %>"
-					value="choose"
-				/>
+				<aui:button cssClass="selector-button" data="<%= data %>" value="choose" />
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
-		<liferay-ui:search-iterator displayStyle="<%= displayStyle %>" markupView="lexicon" />
+		<liferay-ui:search-iterator
+			displayStyle="<%= displayStyle %>"
+			markupView="lexicon"
+		/>
 	</liferay-ui:search-container>
 </aui:form>
 

@@ -25,7 +25,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Jenny Chen
  */
 @Component(
-	immediate = true, property = {"language.id=zh_CN"},
+	immediate = true, property = "language.id=zh_CN",
 	service = ResourceBundle.class
 )
 public class OSBCustomer_zh_CN_ResourceBundle extends ResourceBundle {

@@ -32,7 +32,9 @@
 		}
 		%>
 
-		<liferay-ui:search-paginator searchContainer="<%= articleSearch %>" />
+		<liferay-ui:search-paginator
+			searchContainer="<%= articleSearch %>"
+		/>
 	</c:when>
 	<c:otherwise>
 		<div class="alert alert-info">

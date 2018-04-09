@@ -32,7 +32,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(
-	immediate = true, property = {"form.navigator.entry.order:Integer=89"},
+	immediate = true, property = "form.navigator.entry.order:Integer=89",
 	service = FormNavigatorEntry.class
 )
 public class OSBCustomerJournalCustomFormNavigatorEntry

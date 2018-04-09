@@ -51,8 +51,14 @@ KBArticle kbArticle = (KBArticle)request.getAttribute(OSBCustomerWebKeys.KNOWLED
 HttpServletRequest originalRequest = liferayPortletRequest.getOriginalHttpServletRequest();
 %>
 
-<liferay-util:buffer var="html">
-	<liferay-portlet:runtime persistSettings="<%= false %>" portletName="<%= KBPortletKeys.KNOWLEDGE_BASE_DISPLAY %>" queryString="<%= originalRequest.getQueryString() %>" />
+<liferay-util:buffer
+	var="html"
+>
+	<liferay-portlet:runtime
+		persistSettings="<%= false %>"
+		portletName="<%= KBPortletKeys.KNOWLEDGE_BASE_DISPLAY %>"
+		queryString="<%= originalRequest.getQueryString() %>"
+	/>
 </liferay-util:buffer>
 
 <%
