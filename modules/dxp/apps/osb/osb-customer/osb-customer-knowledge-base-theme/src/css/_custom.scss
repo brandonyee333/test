@@ -692,55 +692,6 @@ $has-control-menu-top-mobile: 48px;
 
 	/* ---------- Knowledge base articles ---------- */
 
-	.article-sidebar {
-		background-color: #E3F2FD;
-		float: right !important;
-		padding: 10px 15px !important;
-
-		a {
-			color: $light-blue;
-
-			&:hover {
-				color: $dark-orange;
-			}
-		}
-
-		ul {
-			font-weight: bold;
-			list-style: none;
-			margin-bottom: 0;
-			margin-left: 25px;
-			padding: 0;
-
-			li {
-				color: inherit;
-				font: inherit;
-
-				ul li:before {
-					content: "- ";
-				}
-			}
-		}
-
-		.asset-category {
-			cursor: pointer;
-			display: inline-block;
-
-			&:hover {
-				@include transform(scale(0.9));
-			}
-		}
-
-		.txt-sb {
-			color: #333;
-			font-weight: bold;
-		}
-
-		.user-profile-image {
-			margin: 5px 0;
-		}
-	}
-
 	.article-wrapper {
 		margin: 5px 0 5px 30px;
 		word-wrap: break-word;
