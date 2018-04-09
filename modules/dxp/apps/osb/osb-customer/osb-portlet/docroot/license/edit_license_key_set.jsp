@@ -236,7 +236,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 				<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 			</portlet:renderURL>
 
-			<a class="btn btn-default" href="<%= mergeLicenseKeySetURL %>">liferay-ui:message key="merge-licenses" /></a>
+			<a class="btn btn-default" href="<%= mergeLicenseKeySetURL %>"><liferay-ui:message key="merge-licenses" /></a>
 		</c:if>
 
 		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
