@@ -28,13 +28,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alan Zhang
@@ -187,7 +186,7 @@ public class ReleaseNotesLocalServiceImpl
 		}
 	}
 
-	@Reference
+	@ServiceReference(type = JIRAIssueLocalService.class)
 	protected JIRAIssueLocalService jiraIssueLocalService;
 
 }
