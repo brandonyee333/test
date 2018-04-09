@@ -62,7 +62,7 @@ import javax.mail.internet.InternetAddress;
 public class OSBCustomerKnowledgeBaseLocalServiceImpl
 	extends OSBCustomerKnowledgeBaseLocalServiceBaseImpl {
 
-	@Transactional(rollbackFor = {Exception.class})
+	@Transactional(rollbackFor = Exception.class)
 	public void updateOSBKnowledgeBase(
 			long kbFolderId, File file, List<String> urlTitles)
 		throws Exception {
