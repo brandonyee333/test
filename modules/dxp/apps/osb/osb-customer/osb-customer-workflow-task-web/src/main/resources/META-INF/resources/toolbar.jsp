@@ -47,33 +47,21 @@ portletURL.setParameter("tabs1", tabs1);
 			<portlet:param name="tabs1" value="assigned-to-me" />
 		</portlet:renderURL>
 
-		<aui:nav-item
-			href="<%= viewAssignedToMeURL %>"
-			label="assigned-to-me"
-			selected='<%= tabs1.equals("assigned-to-me") %>'
-		/>
+		<aui:nav-item href="<%= viewAssignedToMeURL %>" label="assigned-to-me" selected='<%= tabs1.equals("assigned-to-me") %>' />
 
 		<portlet:renderURL var="viewAssignedToMyRolesURL">
 			<portlet:param name="mvcPath" value="/view.jsp" />
 			<portlet:param name="tabs1" value="assigned-to-my-roles" />
 		</portlet:renderURL>
 
-		<aui:nav-item
-			href="<%= viewAssignedToMyRolesURL %>"
-			label="assigned-to-my-roles"
-			selected='<%= tabs1.equals("assigned-to-my-roles") %>'
-		/>
+		<aui:nav-item href="<%= viewAssignedToMyRolesURL %>" label="assigned-to-my-roles" selected='<%= tabs1.equals("assigned-to-my-roles") %>' />
 
 		<portlet:renderURL var="viewOtherAssigneesURL">
 			<portlet:param name="mvcPath" value="/other_assignees.jsp" />
 			<portlet:param name="tabs1" value="other-assignees" />
 		</portlet:renderURL>
 
-		<aui:nav-item
-			href="<%= viewOtherAssigneesURL %>"
-			label="other-assignees"
-			selected='<%= tabs1.equals("other-assignees") %>'
-		/>
+		<aui:nav-item href="<%= viewOtherAssigneesURL %>" label="other-assignees" selected='<%= tabs1.equals("other-assignees") %>' />
 	</aui:nav>
 </aui:nav-bar>
 
