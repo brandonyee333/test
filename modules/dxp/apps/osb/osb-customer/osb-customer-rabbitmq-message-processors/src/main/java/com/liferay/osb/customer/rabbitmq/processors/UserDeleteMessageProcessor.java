@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = {"routing.key=entity.user.delete"},
+	immediate = true, property = "routing.key=entity.user.delete",
 	service = UserDeleteMessageProcessor.class
 )
 public class UserDeleteMessageProcessor extends BaseMessageProcessor {

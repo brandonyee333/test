@@ -23,7 +23,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = {"routing.key=entity.role.update"},
+	immediate = true, property = "routing.key=entity.role.update",
 	service = RoleUpdateMessageProcessor.class
 )
 public class RoleUpdateMessageProcessor extends BaseMessageProcessor {

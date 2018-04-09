@@ -24,7 +24,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = {"routing.key=entity.organization.unassigned"},
+	immediate = true, property = "routing.key=entity.organization.unassigned",
 	service = OrganizationUnassignmentMessageProcessor.class
 )
 public class OrganizationUnassignmentMessageProcessor

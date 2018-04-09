@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = {"queue=is_customer_queue"},
+	immediate = true, property = "queue=is_customer_queue",
 	service = MessageRouter.class
 )
 public class CustomerMessageRouter extends BaseMessageRouter {

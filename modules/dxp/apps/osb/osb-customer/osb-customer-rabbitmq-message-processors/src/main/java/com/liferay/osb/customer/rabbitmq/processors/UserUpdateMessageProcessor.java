@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = {"routing.key=entity.user.update"},
+	immediate = true, property = "routing.key=entity.user.update",
 	service = UserUpdateMessageProcessor.class
 )
 public class UserUpdateMessageProcessor extends BaseMessageProcessor {
