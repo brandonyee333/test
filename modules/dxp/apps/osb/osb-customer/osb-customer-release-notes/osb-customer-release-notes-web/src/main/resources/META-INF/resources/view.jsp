@@ -32,11 +32,7 @@ portletURL.setParameter("tabs1", tabs1);
 	</portlet:renderURL>
 
 	<aui:nav cssClass="navbar-nav">
-		<aui:nav-item
-			href="<%= projectURL %>"
-			label="based-on-project"
-			selected='<%= tabs1.equals("based-on-project") %>'
-		/>
+		<aui:nav-item href="<%= projectURL %>" label="based-on-project" selected='<%= tabs1.equals("based-on-project") %>' />
 	</aui:nav>
 
 	<portlet:renderURL var="issueURL">
@@ -45,11 +41,7 @@ portletURL.setParameter("tabs1", tabs1);
 	</portlet:renderURL>
 
 	<aui:nav cssClass="navbar-nav">
-		<aui:nav-item
-			href="<%= issueURL %>"
-			label="based-on-issue"
-			selected='<%= tabs1.equals("based-on-issue") %>'
-		/>
+		<aui:nav-item href="<%= issueURL %>" label="based-on-issue" selected='<%= tabs1.equals("based-on-issue") %>' />
 	</aui:nav>
 </aui:nav-bar>
 

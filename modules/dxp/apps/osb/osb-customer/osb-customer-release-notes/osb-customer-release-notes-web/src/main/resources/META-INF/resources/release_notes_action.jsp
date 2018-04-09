@@ -29,7 +29,10 @@ ReleaseNotes releaseNotes = (ReleaseNotes)row.getObject();
 		<portlet:param name="releaseNotesId" value="<%= String.valueOf(releaseNotes.getReleaseNotesId()) %>" />
 	</portlet:renderURL>
 
-	<liferay-ui:icon image="edit" url="<%= editURL %>" />
+	<liferay-ui:icon
+		image="edit"
+		url="<%= editURL %>"
+	/>
 
 	<portlet:actionURL name="deleteReleaseNotes" var="deleteURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="tabs1" value="based-on-issue" />
@@ -37,5 +40,7 @@ ReleaseNotes releaseNotes = (ReleaseNotes)row.getObject();
 		<portlet:param name="releaseNotesId" value="<%= String.valueOf(releaseNotes.getReleaseNotesId()) %>" />
 	</portlet:actionURL>
 
-	<liferay-ui:icon-delete url="<%= deleteURL %>" />
+	<liferay-ui:icon-delete
+		url="<%= deleteURL %>"
+	/>
 </liferay-ui:icon-menu>
