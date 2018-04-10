@@ -505,12 +505,12 @@ public class HttpImpl implements Http {
 			return url;
 		}
 
-		if (!hasProtocol(url)) {
-			url = Http.HTTPS_WITH_SLASH + url;
-		}
-
 		try {
 			URI uri = new URI(url);
+
+			if (!uri.isAbsolute()) {
+				uri = new URI(Http.HTTPS_WITH_SLASH + url);
+			}
 
 			String host = uri.getHost();
 
