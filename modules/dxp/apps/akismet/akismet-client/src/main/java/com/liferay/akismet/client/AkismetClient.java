@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.CompanyLocalService;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.Http;
@@ -49,9 +48,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = AkismetClient.class)
 public class AkismetClient {
 
-	public boolean hasRequiredInfo(ServiceContext serviceContext) {
-		Map<String, String> headers = serviceContext.getHeaders();
-
+	public boolean hasRequiredInfo(String userIP, Map<String, String> headers) {
 		if (headers == null) {
 			return false;
 		}
@@ -62,8 +59,6 @@ public class AkismetClient {
 		if (Validator.isNull(userAgent)) {
 			return false;
 		}
-
-		String userIP = serviceContext.getRemoteAddr();
 
 		if (Validator.isNull(userIP)) {
 			return false;

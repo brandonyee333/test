@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.akismet.internal.list.application;
+package com.liferay.akismet.internal.application.list;
 
 import com.liferay.akismet.internal.constants.ModerationPortletKeys;
 import com.liferay.application.list.BasePanelApp;

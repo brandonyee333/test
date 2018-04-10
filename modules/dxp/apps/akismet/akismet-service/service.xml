@@ -4,11 +4,11 @@
 <service-builder auto-namespace-tables="true" package-path="com.liferay.akismet">
 	<author>Jamie Sammons</author>
 	<namespace>OSBCommunity</namespace>
-	<entity cache-enabled="true" local-service="true" name="Akismet" remote-service="false">
+	<entity cache-enabled="true" local-service="true" name="AkismetEntry" remote-service="false">
 
 		<!-- PK fields -->
 
-		<column name="akismetId" primary="true" type="long" />
+		<column name="akismetEntryId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -30,7 +30,7 @@
 		<finder name="LtModifiedDate" return-type="Collection">
 			<finder-column comparator="&lt;" name="modifiedDate" />
 		</finder>
-		<finder name="C_C" return-type="AkismetData">
+		<finder name="C_C" return-type="AkismetEntry">
 			<finder-column name="classNameId" />
 			<finder-column name="classPK" />
 		</finder>

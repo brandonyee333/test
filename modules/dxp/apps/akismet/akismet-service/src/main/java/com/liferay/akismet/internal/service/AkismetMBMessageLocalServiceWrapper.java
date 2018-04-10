@@ -17,8 +17,7 @@ package com.liferay.akismet.internal.service;
 import com.liferay.akismet.client.AkismetClient;
 import com.liferay.akismet.client.constants.AkismetConstants;
 import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
-import com.liferay.akismet.model.Akismet;
-import com.liferay.akismet.service.AkismetLocalService;
+import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -46,9 +45,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jamie Sammons
  */
 @Component(immediate = true, property = {}, service = ServiceWrapper.class)
-public class AkismetMBMessageLocalService extends MBMessageLocalServiceWrapper {
+public class AkismetMBMessageLocalServiceWrapper
+	extends MBMessageLocalServiceWrapper {
 
-	public AkismetMBMessageLocalService() {
+	public AkismetMBMessageLocalServiceWrapper() {
 		super(null);
 	}
 
@@ -75,7 +75,7 @@ public class AkismetMBMessageLocalService extends MBMessageLocalServiceWrapper {
 			subject, body, format, inputStreamOVPs, anonymous, priority,
 			allowPingbacks, serviceContext);
 
-		Akismet akismetData = updateAkismetData(message, serviceContext);
+		AkismetEntry akismetData = updateAkismetData(message, serviceContext);
 
 		if (!enabled) {
 			return message;
@@ -205,7 +205,9 @@ public class AkismetMBMessageLocalService extends MBMessageLocalServiceWrapper {
 			return false;
 		}
 
-		if (!_akismetClient.hasRequiredInfo(serviceContext)) {
+		if (!_akismetClient.hasRequiredInfo(
+				serviceContext.getRemoteAddr(), serviceContext.getHeaders())) {
+
 			return false;
 		}
 

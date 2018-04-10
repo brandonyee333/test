@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.akismet.internal.action;
+package com.liferay.akismet.internal.portlet.action;
 
 import com.liferay.akismet.client.AkismetClient;
 import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;

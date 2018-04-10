@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.akismet.internal.listener;
+package com.liferay.akismet.internal.model.listener;
 
 import com.liferay.akismet.service.AkismetLocalService;
 import com.liferay.message.boards.kernel.model.MBMessage;

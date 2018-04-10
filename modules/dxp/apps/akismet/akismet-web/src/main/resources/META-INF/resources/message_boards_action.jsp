@@ -30,19 +30,30 @@ long messageBoardsPlid = PortalUtil.getPlidFromPortletId(message.getGroupId(), M
 		<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
 	</liferay-portlet:renderURL>
 
-	<liferay-ui:icon image="page" message="view-in-context" target="_blank" url="<%= viewURL %>" />
+	<liferay-ui:icon
+		image="page"
+		message="view-in-context"
+		target="_blank"
+		url="<%= viewURL %>"
+	/>
 
 	<portlet:actionURL name="markNotSpamMBMessages" var="markAsHamURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 		<portlet:param name="notSpamMBMessageIds" value="<%= String.valueOf(message.getMessageId()) %>" />
 	</portlet:actionURL>
 
-	<liferay-ui:icon image="../mail/compose" message="not-spam" url="<%= markAsHamURL %>" />
+	<liferay-ui:icon
+		image="../mail/compose"
+		message="not-spam"
+		url="<%= markAsHamURL %>"
+	/>
 
 	<portlet:actionURL name="deleteMBMessages" var="deleteURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 		<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 		<portlet:param name="deleteMBMessageIds" value="<%= String.valueOf(message.getMessageId()) %>" />
 	</portlet:actionURL>
 
-	<liferay-ui:icon-delete url="<%= deleteURL %>" />
+	<liferay-ui:icon-delete
+		url="<%= deleteURL %>"
+	/>
 </liferay-ui:icon-menu>
