@@ -1,31 +1,44 @@
-#set ($assetCategoryLocalService = $serviceLocator.findService("com.liferay.asset.kernel.service.AssetCategoryLocalService"))
-#set ($assetVocabularyLocalService = $serviceLocator.findService("com.liferay.asset.kernel.service.AssetVocabularyLocalService"))
 #set ($journalArticleLocalService = $serviceLocator.findService("com.liferay.journal.service.JournalArticleLocalService"))
 #set ($subscriptionLocalService = $serviceLocator.findService("com.liferay.portal.kernel.service.SubscriptionLocalService"))
 
 #set ($osbTemplateUtil = $serviceLocator.findService("com.liferay.osb.customer.web.internal.util.OSBTemplateUtil"))
 
-#set ($dateFormat = "MMMMM d, yyyy")
 #set ($journalArticleClassName = "com.liferay.journal.model.JournalArticle")
-
-#set ($actionBaseURL = $request.attributes.get("_3_WAR_osbknowledgebaseportlet_actionURL"))
-#set ($editJournalArticleURL = $request.attributes.get("_3_WAR_osbknowledgebaseportlet_editJournalArticleURL"))
-#set ($renderBaseURL = $request.attributes.get("_3_WAR_osbknowledgebaseportlet_renderURL"))
-
-#set ($namespace = $randomNamespace)
 
 #set ($journalArticle = $journalArticleLocalService.getArticle($groupId, $reserved-article-id.getData()))
 #set ($oldestArticle = $journalArticleLocalService.getArticle($groupId, $reserved-article-id.getData(), 1.0))
 
 #set ($isSubscribed = $subscriptionLocalService.isSubscribed($journalArticle.getCompanyId(), $permissionChecker.getUserId(), $journalArticleClassName, $journalArticle.getResourcePrimKey()))
 
+#set ($actionBaseURL = $request.attributes.get("_3_WAR_osbknowledgebaseportlet_actionURL"))
+#set ($editJournalArticleURL = $request.attributes.get("_3_WAR_osbknowledgebaseportlet_editJournalArticleURL"))
+#set ($renderBaseURL = $request.attributes.get("_3_WAR_osbknowledgebaseportlet_renderURL"))
+
+#set ($dateFormat = "MMMMM d, yyyy")
+
 <div class="side-nav-push-content">
 	<div class="article-wrapper">
-		<div class="header">
-			<h1 class="header-title">$reserved-article-title.getData()</h1>
-		</div>
+		<div class="article-content col-md-12">
+			<div class="header">
+				<h1 class="header-title">$reserved-article-title.getData()</h1>
 
-		<div class="article-content col-md-8">
+				#set ($portraitURL = $osbTemplateUtil.getPortraitURL("@image_path@", $oldestArticle.getUserId()))
+
+				#if ($validator.isNotNull($portraitURL))
+					<div class="user-profile-image">
+						<img alt="$htmlUtil.escape($oldestArticle.getUserName())" class="avatar" src="$portraitURL" />
+					</div>
+				#end
+
+				<div class="author">
+					$htmlUtil.escape($oldestArticle.getUserName())
+				</div>
+
+				<div class="modified-date">
+					$dateTool.format($dateFormat, $journalArticle.getModifiedDate(), $locale, $dateTool.getTimeZone())
+				</div>
+			</div>
+
 			<div class="separator"><!-- --></div>
 
 			<div class="disclaimer">
@@ -47,107 +60,43 @@
 			</div>
 
 			#if ($validator.isNotNull($description.getData().trim()))
-				<div>
+				<section class="description">
 					$description.getData()
-				</div>
+				</section>
 			#end
 
 			#if ($validator.isNotNull($resolution.getData().trim()))
-				<div>
+				<section class="resolution">
 					<h2>$languageUtil.get($locale, "resolution")</h2>
 
 					<div>
 						$resolution.getData()
 					</div>
-				</div>
+				</section>
 			#end
 
 			#if ($validator.isNotNull($additionalInformation.getData().trim()))
-				<div>
+				<section class="additional-info">
 					<h2>$languageUtil.get($locale, "additional-information")</h2>
 
 					<div>
 						$additionalInformation.getData()
 					</div>
-				</div>
+				</section>
 			#end
-		</div>
-
-		<div class="article-sidebar col-md-4">
-			<div class="section">
-				<span>$languageUtil.get($locale, "created"):</span>
-
-				<span class="txt-sb">$dateTool.format($dateFormat, $journalArticle.getCreateDate(), $locale, $dateTool.getTimeZone())</span>
-			</div>
-
-			<div class="section">
-				<span>$languageUtil.get($locale, "last-edited"):</span>
-
-				<span class="txt-sb">$dateTool.format($dateFormat, $journalArticle.getModifiedDate(), $locale, $dateTool.getTimeZone())</span>
-			</div>
-
-			<div class="section">
-				<span>$languageUtil.get($locale, "author"):</span>
-
-				<span class="txt-sb">$htmlUtil.escape($oldestArticle.getUserName())</span>
-			</div>
-
-			#set ($portraitURL = $osbTemplateUtil.getPortraitURL("@image_path@", $oldestArticle.getUserId()))
-
-			#if ($validator.isNotNull($portraitURL))
-				<div class="user-profile-image">
-					<img alt="$htmlUtil.escape($oldestArticle.getUserName())" class="avatar" src="$portraitURL" width="65" />
-				</div>
-			#end
-
-			<br />
-
-			$osbTemplateUtil.renderAssetCategories($locale, $journalArticleClassName, $journalArticle.getResourcePrimKey())
-
-			#if ($osbTemplateUtil.hasPermission($permissionChecker, "VIEW_JOURNAL_ARTICLE_ADVANCED"))
-				<div>
-					<div>
-						<u>$languageUtil.get($locale, "permissions"):</u>
-					</div>
-
-					<ul>
-						#if ($permissions.getData() == 1)
-							<li>
-								<span class="asset-category" data-permission-type="1">$languageUtil.get($locale, "internal")</span>
-							</li>
-						#else
-							<li>
-								<span class="asset-category" data-permission-type="2">$languageUtil.get($locale, "external")</span>
-							</li>
-						#end
-					</ul>
-				</div>
-			#end
-
-			<br />
 
 			#if ($permissionChecker.isSignedIn() && $validator.equals($request.window-state.toString(), "normal"))
-				<div class="section">
+				<div class="notification">
 					#if (!$isSubscribed)
-						<div>
-							$languageUtil.format($locale, "notify-me-when-this-article-is-updated", "javascript:${namespace}updateSubscribeURL('true');")
-						</div>
+						<i class="icon-bell"></i> $languageUtil.format($locale, "notify-me-when-this-article-is-updated", "javascript:${randomNamespace}updateSubscribeURL('true');")
 					#else
-						<div>
-							$languageUtil.format($locale, "do-not-notify-me-when-this-article-is-updated", "javascript:${namespace}updateSubscribeURL('false');")
-						</div>
+						<i class="icon-bell"></i> $languageUtil.format($locale, "do-not-notify-me-when-this-article-is-updated", "javascript:${randomNamespace}updateSubscribeURL('false');")
 					#end
 				</div>
-
-				#if ($permissionChecker.hasPermission($groupId, $journalArticleClassName, $journalArticle.getResourcePrimKey(), "UPDATE"))
-					<div>
-						<a href="$editJournalArticleURL">$languageUtil.get($locale, "suggest-an-edit")</a>
-					</div>
-				#end
 			#end
 		</div>
 
-		<form action="#" id="${namespace}hrefFm" method="post" name="${namespace}hrefFm"></form>
+		<form action="#" id="${randomNamespace}hrefFm" method="post" name="${randomNamespace}hrefFm"></form>
 	</div>
 </div>
 
@@ -184,51 +133,15 @@
 		}
 	);
 
-	#if ($validator.equals($request.window-state.toString(), "normal"))
-		AUI().ready(
-			'liferay-portlet-url',
-			function(A) {
-				A.one('.article-sidebar').delegate(
-					'click',
-					function(event) {
-						event.stopPropagation();
-
-						var assetCategoryId = event.currentTarget.getAttribute("data-asset-category-id");
-						var permissionType = event.currentTarget.getAttribute("data-permission-type");
-
-						if (!assetCategoryId && !permissionType) {
-							return;
-						}
-
-						var renderURL = Liferay.PortletURL.createURL('$renderBaseURL');
-
-						renderURL.setParameter('mvcPath', '/search/view.jsp');
-
-						if (assetCategoryId) {
-							renderURL.setParameter('assetCategoryIds', assetCategoryId);
-						}
-
-						if (permissionType) {
-							renderURL.setParameter('permissionTypes', permissionType);
-						}
-
-						window.location = renderURL.toString();
-					},
-					'.asset-category'
-				);
-			}
-		);
-	#end
-
 	#if ($permissionChecker.isSignedIn())
-		function ${namespace}submitForm(url) {
-			var fm = document.getElementById('${namespace}hrefFm');
+		function ${randomNamespace}submitForm(url) {
+			var fm = document.getElementById('${randomNamespace}hrefFm');
 
 			fm.action = url;
 			fm.submit();
 		}
 
-		function ${namespace}updateSubscribeURL(subscribe) {
+		function ${randomNamespace}updateSubscribeURL(subscribe) {
 			AUI().ready(
 				'liferay-portlet-url',
 				function(A) {
@@ -239,7 +152,7 @@
 					actionURL.setParameter('resourcePrimKey', $journalArticle.getResourcePrimKey());
 					actionURL.setParameter('subscribe', subscribe);
 
-					${namespace}submitForm(actionURL.toString());
+					${randomNamespace}submitForm(actionURL.toString());
 				}
 			);
 		}
