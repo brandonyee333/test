@@ -1,5 +1,5 @@
-create table OSBCommunity_Akismet (
-	akismetId LONG not null primary key,
+create table OSBCommunity_AkismetEntry (
+	akismetEntryId LONG not null primary key,
 	modifiedDate DATE null,
 	classNameId LONG,
 	classPK LONG,

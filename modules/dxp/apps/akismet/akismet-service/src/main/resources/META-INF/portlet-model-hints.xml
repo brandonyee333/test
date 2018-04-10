@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <model-hints>
-	<model name="com.liferay.akismet.model.Akismet">
-		<field name="akismetId" type="long" />
+	<model name="com.liferay.akismet.model.AkismetEntry">
+		<field name="akismetEntryId" type="long" />
 		<field name="modifiedDate" type="Date" />
 		<field name="classNameId" type="long" />
 		<field name="classPK" type="long" />

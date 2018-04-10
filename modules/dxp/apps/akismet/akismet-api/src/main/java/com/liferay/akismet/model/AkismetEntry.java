@@ -21,26 +21,26 @@ import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.util.Accessor;
 
 /**
- * The extended model interface for the Akismet service. Represents a row in the &quot;OSBCommunity_Akismet&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the AkismetEntry service. Represents a row in the &quot;OSBCommunity_AkismetEntry&quot; database table, with each column mapped to a property of this class.
  *
  * @author Jamie Sammons
- * @see AkismetModel
- * @see com.liferay.akismet.model.impl.AkismetImpl
- * @see com.liferay.akismet.model.impl.AkismetModelImpl
+ * @see AkismetEntryModel
+ * @see com.liferay.akismet.model.impl.AkismetEntryImpl
+ * @see com.liferay.akismet.model.impl.AkismetEntryModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.akismet.model.impl.AkismetImpl")
+@ImplementationClassName("com.liferay.akismet.model.impl.AkismetEntryImpl")
 @ProviderType
-public interface Akismet extends AkismetModel, PersistedModel {
+public interface AkismetEntry extends AkismetEntryModel, PersistedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.akismet.model.impl.AkismetImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to {@link com.liferay.akismet.model.impl.AkismetEntryImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<Akismet, Long> AKISMET_ID_ACCESSOR = new Accessor<Akismet, Long>() {
+	public static final Accessor<AkismetEntry, Long> AKISMET_ENTRY_ID_ACCESSOR = new Accessor<AkismetEntry, Long>() {
 			@Override
-			public Long get(Akismet akismet) {
-				return akismet.getAkismetId();
+			public Long get(AkismetEntry akismetEntry) {
+				return akismetEntry.getAkismetEntryId();
 			}
 
 			@Override
@@ -49,8 +49,8 @@ public interface Akismet extends AkismetModel, PersistedModel {
 			}
 
 			@Override
-			public Class<Akismet> getTypeClass() {
-				return Akismet.class;
+			public Class<AkismetEntry> getTypeClass() {
+				return AkismetEntry.class;
 			}
 		};
 }

@@ -1,2 +1,2 @@
-create index IX_40FEA6F on OSBCommunity_Akismet (classNameId, classPK);
-create index IX_FA194C65 on OSBCommunity_Akismet (modifiedDate);
+create index IX_F7613799 on OSBCommunity_AkismetEntry (classNameId, classPK);
+create index IX_7237638F on OSBCommunity_AkismetEntry (modifiedDate);

@@ -29,11 +29,11 @@ import java.util.List;
  * @generated
  */
 @ProviderType
-public class AkismetSoap implements Serializable {
-	public static AkismetSoap toSoapModel(Akismet model) {
-		AkismetSoap soapModel = new AkismetSoap();
+public class AkismetEntrySoap implements Serializable {
+	public static AkismetEntrySoap toSoapModel(AkismetEntry model) {
+		AkismetEntrySoap soapModel = new AkismetEntrySoap();
 
-		soapModel.setAkismetId(model.getAkismetId());
+		soapModel.setAkismetEntryId(model.getAkismetEntryId());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setClassNameId(model.getClassNameId());
 		soapModel.setClassPK(model.getClassPK());
@@ -47,8 +47,8 @@ public class AkismetSoap implements Serializable {
 		return soapModel;
 	}
 
-	public static AkismetSoap[] toSoapModels(Akismet[] models) {
-		AkismetSoap[] soapModels = new AkismetSoap[models.length];
+	public static AkismetEntrySoap[] toSoapModels(AkismetEntry[] models) {
+		AkismetEntrySoap[] soapModels = new AkismetEntrySoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -57,14 +57,14 @@ public class AkismetSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static AkismetSoap[][] toSoapModels(Akismet[][] models) {
-		AkismetSoap[][] soapModels = null;
+	public static AkismetEntrySoap[][] toSoapModels(AkismetEntry[][] models) {
+		AkismetEntrySoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new AkismetSoap[models.length][models[0].length];
+			soapModels = new AkismetEntrySoap[models.length][models[0].length];
 		}
 		else {
-			soapModels = new AkismetSoap[0][0];
+			soapModels = new AkismetEntrySoap[0][0];
 		}
 
 		for (int i = 0; i < models.length; i++) {
@@ -74,33 +74,33 @@ public class AkismetSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static AkismetSoap[] toSoapModels(List<Akismet> models) {
-		List<AkismetSoap> soapModels = new ArrayList<AkismetSoap>(models.size());
+	public static AkismetEntrySoap[] toSoapModels(List<AkismetEntry> models) {
+		List<AkismetEntrySoap> soapModels = new ArrayList<AkismetEntrySoap>(models.size());
 
-		for (Akismet model : models) {
+		for (AkismetEntry model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new AkismetSoap[soapModels.size()]);
+		return soapModels.toArray(new AkismetEntrySoap[soapModels.size()]);
 	}
 
-	public AkismetSoap() {
+	public AkismetEntrySoap() {
 	}
 
 	public long getPrimaryKey() {
-		return _akismetId;
+		return _akismetEntryId;
 	}
 
 	public void setPrimaryKey(long pk) {
-		setAkismetId(pk);
+		setAkismetEntryId(pk);
 	}
 
-	public long getAkismetId() {
-		return _akismetId;
+	public long getAkismetEntryId() {
+		return _akismetEntryId;
 	}
 
-	public void setAkismetId(long akismetId) {
-		_akismetId = akismetId;
+	public void setAkismetEntryId(long akismetEntryId) {
+		_akismetEntryId = akismetEntryId;
 	}
 
 	public Date getModifiedDate() {
@@ -175,7 +175,7 @@ public class AkismetSoap implements Serializable {
 		_userURL = userURL;
 	}
 
-	private long _akismetId;
+	private long _akismetEntryId;
 	private Date _modifiedDate;
 	private long _classNameId;
 	private long _classPK;

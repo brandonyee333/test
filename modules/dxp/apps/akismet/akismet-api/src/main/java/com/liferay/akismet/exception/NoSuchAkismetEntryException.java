@@ -12,17 +12,31 @@
  * details.
  */
 
-package com.liferay.akismet.model.impl;
+package com.liferay.akismet.exception;
 
 import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Jamie Sammons
  */
 @ProviderType
-public class AkismetImpl extends AkismetBaseImpl {
+public class NoSuchAkismetEntryException extends NoSuchModelException {
 
-	public AkismetImpl() {
+	public NoSuchAkismetEntryException() {
+	}
+
+	public NoSuchAkismetEntryException(String msg) {
+		super(msg);
+	}
+
+	public NoSuchAkismetEntryException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public NoSuchAkismetEntryException(Throwable cause) {
+		super(cause);
 	}
 
 }

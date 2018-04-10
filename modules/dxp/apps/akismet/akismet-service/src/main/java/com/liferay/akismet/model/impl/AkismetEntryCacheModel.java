@@ -16,7 +16,7 @@ package com.liferay.akismet.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.akismet.model.Akismet;
+import com.liferay.akismet.model.AkismetEntry;
 
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
@@ -30,27 +30,28 @@ import java.io.ObjectOutput;
 import java.util.Date;
 
 /**
- * The cache model class for representing Akismet in entity cache.
+ * The cache model class for representing AkismetEntry in entity cache.
  *
  * @author Jamie Sammons
- * @see Akismet
+ * @see AkismetEntry
  * @generated
  */
 @ProviderType
-public class AkismetCacheModel implements CacheModel<Akismet>, Externalizable {
+public class AkismetEntryCacheModel implements CacheModel<AkismetEntry>,
+	Externalizable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
 
-		if (!(obj instanceof AkismetCacheModel)) {
+		if (!(obj instanceof AkismetEntryCacheModel)) {
 			return false;
 		}
 
-		AkismetCacheModel akismetCacheModel = (AkismetCacheModel)obj;
+		AkismetEntryCacheModel akismetEntryCacheModel = (AkismetEntryCacheModel)obj;
 
-		if (akismetId == akismetCacheModel.akismetId) {
+		if (akismetEntryId == akismetEntryCacheModel.akismetEntryId) {
 			return true;
 		}
 
@@ -59,15 +60,15 @@ public class AkismetCacheModel implements CacheModel<Akismet>, Externalizable {
 
 	@Override
 	public int hashCode() {
-		return HashUtil.hash(0, akismetId);
+		return HashUtil.hash(0, akismetEntryId);
 	}
 
 	@Override
 	public String toString() {
 		StringBundler sb = new StringBundler(21);
 
-		sb.append("{akismetId=");
-		sb.append(akismetId);
+		sb.append("{akismetEntryId=");
+		sb.append(akismetEntryId);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
 		sb.append(", classNameId=");
@@ -92,71 +93,71 @@ public class AkismetCacheModel implements CacheModel<Akismet>, Externalizable {
 	}
 
 	@Override
-	public Akismet toEntityModel() {
-		AkismetImpl akismetImpl = new AkismetImpl();
+	public AkismetEntry toEntityModel() {
+		AkismetEntryImpl akismetEntryImpl = new AkismetEntryImpl();
 
-		akismetImpl.setAkismetId(akismetId);
+		akismetEntryImpl.setAkismetEntryId(akismetEntryId);
 
 		if (modifiedDate == Long.MIN_VALUE) {
-			akismetImpl.setModifiedDate(null);
+			akismetEntryImpl.setModifiedDate(null);
 		}
 		else {
-			akismetImpl.setModifiedDate(new Date(modifiedDate));
+			akismetEntryImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		akismetImpl.setClassNameId(classNameId);
-		akismetImpl.setClassPK(classPK);
+		akismetEntryImpl.setClassNameId(classNameId);
+		akismetEntryImpl.setClassPK(classPK);
 
 		if (type == null) {
-			akismetImpl.setType("");
+			akismetEntryImpl.setType("");
 		}
 		else {
-			akismetImpl.setType(type);
+			akismetEntryImpl.setType(type);
 		}
 
 		if (permalink == null) {
-			akismetImpl.setPermalink("");
+			akismetEntryImpl.setPermalink("");
 		}
 		else {
-			akismetImpl.setPermalink(permalink);
+			akismetEntryImpl.setPermalink(permalink);
 		}
 
 		if (referrer == null) {
-			akismetImpl.setReferrer("");
+			akismetEntryImpl.setReferrer("");
 		}
 		else {
-			akismetImpl.setReferrer(referrer);
+			akismetEntryImpl.setReferrer(referrer);
 		}
 
 		if (userAgent == null) {
-			akismetImpl.setUserAgent("");
+			akismetEntryImpl.setUserAgent("");
 		}
 		else {
-			akismetImpl.setUserAgent(userAgent);
+			akismetEntryImpl.setUserAgent(userAgent);
 		}
 
 		if (userIP == null) {
-			akismetImpl.setUserIP("");
+			akismetEntryImpl.setUserIP("");
 		}
 		else {
-			akismetImpl.setUserIP(userIP);
+			akismetEntryImpl.setUserIP(userIP);
 		}
 
 		if (userURL == null) {
-			akismetImpl.setUserURL("");
+			akismetEntryImpl.setUserURL("");
 		}
 		else {
-			akismetImpl.setUserURL(userURL);
+			akismetEntryImpl.setUserURL(userURL);
 		}
 
-		akismetImpl.resetOriginalValues();
+		akismetEntryImpl.resetOriginalValues();
 
-		return akismetImpl;
+		return akismetEntryImpl;
 	}
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
-		akismetId = objectInput.readLong();
+		akismetEntryId = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 
 		classNameId = objectInput.readLong();
@@ -173,7 +174,7 @@ public class AkismetCacheModel implements CacheModel<Akismet>, Externalizable {
 	@Override
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
-		objectOutput.writeLong(akismetId);
+		objectOutput.writeLong(akismetEntryId);
 		objectOutput.writeLong(modifiedDate);
 
 		objectOutput.writeLong(classNameId);
@@ -223,7 +224,7 @@ public class AkismetCacheModel implements CacheModel<Akismet>, Externalizable {
 		}
 	}
 
-	public long akismetId;
+	public long akismetEntryId;
 	public long modifiedDate;
 	public long classNameId;
 	public long classPK;
