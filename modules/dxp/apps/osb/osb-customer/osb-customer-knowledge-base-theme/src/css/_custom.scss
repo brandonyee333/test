@@ -686,6 +686,10 @@ $has-control-menu-top-mobile: 48px;
 			padding-left: 0;
 		}
 
+		.author {
+			font-weight: bold;
+		}
+
 		.article-content {
 			code {
 				color: inherit;
@@ -702,8 +706,26 @@ $has-control-menu-top-mobile: 48px;
 			}
 		}
 
+		.icon-bell {
+			color: $light-blue;
+		}
+
+		.modified-date {
+			font-size: 14px;
+		}
+
 		.separator {
 			margin-top: 0;
+		}
+
+		.user-profile-image {
+			float: left;
+			padding: 0 1em 1em;
+
+			img {
+				border-radius: 50%;
+				width: 45px;
+			}
 		}
 	}
 
