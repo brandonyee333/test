@@ -17,10 +17,14 @@ package com.liferay.osb.customer.rabbitmq.router;
 import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
 import com.liferay.osb.customer.rabbitmq.processors.CorpProjectAddMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.CorpProjectAssignedMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.CorpProjectDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.CorpProjectMessageAddMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.CorpProjectMessageDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.CorpProjectMessageUpdateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.CorpProjectRoleAssignedMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.CorpProjectRoleUnassignedMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processors.CorpProjectUnassignedMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.CorpProjectUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationAssignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processors.OrganizationUnassignmentMessageProcessor;
@@ -56,6 +60,14 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 	}
 
 	@Reference(unbind = "-")
+	protected void setCorpProjectAssignedMessageProcessor(
+		CorpProjectAssignedMessageProcessor corpProjectAssignedMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(corpProjectAssignedMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
 	protected void setCorpProjectDeleteMessageProcessor(
 		CorpProjectDeleteMessageProcessor corpProjectDeleteMessageProcessor,
 		Map<String, Object> properties) {
@@ -88,6 +100,33 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(corpProjectMessageUpdateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setCorpProjectRoleAssignedMessageProcessor(
+		CorpProjectRoleAssignedMessageProcessor
+			corpProjectRoleAssignedMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(corpProjectRoleAssignedMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setCorpProjectRoleUnassignedMessageProcessor(
+		CorpProjectRoleUnassignedMessageProcessor
+			corpProjectRoleUnassignedMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(corpProjectRoleUnassignedMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setCorpProjectUnassignedMessageProcessor(
+		CorpProjectUnassignedMessageProcessor
+			corpProjectUnassignedMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(corpProjectUnassignedMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")
