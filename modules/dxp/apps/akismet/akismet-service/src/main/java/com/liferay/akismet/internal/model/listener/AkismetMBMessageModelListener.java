@@ -14,7 +14,7 @@
 
 package com.liferay.akismet.internal.model.listener;
 
-import com.liferay.akismet.service.AkismetLocalService;
+import com.liferay.akismet.service.AkismetEntryLocalService;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
@@ -32,7 +32,7 @@ public class AkismetMBMessageModelListener
 	@Override
 	public void onAfterRemove(MBMessage message) {
 		try {
-			_akismetLocalService.deleteAkismetData(
+			_akismetEntryLocalService.deleteAkismetEntry(
 				MBMessage.class.getName(), message.getMessageId());
 		}
 		catch (Exception e) {
@@ -40,6 +40,6 @@ public class AkismetMBMessageModelListener
 	}
 
 	@Reference
-	private AkismetLocalService _akismetLocalService;
+	private AkismetEntryLocalService _akismetEntryLocalService;
 
 }

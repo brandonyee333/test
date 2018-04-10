@@ -16,8 +16,8 @@ package com.liferay.akismet.client;
 
 import com.liferay.akismet.client.constants.AkismetConstants;
 import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
-import com.liferay.akismet.model.Akismet;
-import com.liferay.akismet.service.AkismetLocalService;
+import com.liferay.akismet.model.AkismetEntry;
+import com.liferay.akismet.service.AkismetEntryLocalService;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -67,7 +67,8 @@ public class AkismetClient {
 		return true;
 	}
 
-	public boolean isSpam(long userId, String content, Akismet akismetData)
+	public boolean isSpam(
+			long userId, String content, AkismetEntry akismetEntry)
 		throws PortalException {
 
 		StringBundler sb = new StringBundler(5);
@@ -83,9 +84,9 @@ public class AkismetClient {
 		User user = _userLocalService.getUser(userId);
 
 		String response = _sendRequest(
-			location, user.getCompanyId(), akismetData.getUserIP(),
-			akismetData.getUserAgent(), akismetData.getReferrer(),
-			akismetData.getPermalink(), akismetData.getType(),
+			location, user.getCompanyId(), akismetEntry.getUserIP(),
+			akismetEntry.getUserAgent(), akismetEntry.getReferrer(),
+			akismetEntry.getPermalink(), akismetEntry.getType(),
 			user.getFullName(), user.getEmailAddress(), content);
 
 		if (Validator.isNull(response) || response.equals("invalid")) {
@@ -95,14 +96,14 @@ public class AkismetClient {
 		}
 		else if (response.equals("true")) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Spam detected: " + akismetData.getPermalink());
+				_log.debug("Spam detected: " + akismetEntry.getPermalink());
 			}
 
 			return true;
 		}
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Passed: " + akismetData.getPermalink());
+			_log.debug("Passed: " + akismetEntry.getPermalink());
 		}
 
 		return false;
@@ -138,10 +139,10 @@ public class AkismetClient {
 	}
 
 	public void submitHam(MBMessage mbMessage) throws PortalException {
-		Akismet akismetData = _akismetLocalService.fetchAkismetData(
+		AkismetEntry akismetEntry = _akismetEntryLocalService.fetchAkismetEntry(
 			MBMessage.class.getName(), mbMessage.getMessageId());
 
-		if (akismetData == null) {
+		if (akismetEntry == null) {
 			return;
 		}
 
@@ -150,9 +151,9 @@ public class AkismetClient {
 		String content = mbMessage.getSubject() + "\n\n" + mbMessage.getBody();
 
 		submitHam(
-			mbMessage.getCompanyId(), akismetData.getUserIP(),
-			akismetData.getUserAgent(), akismetData.getReferrer(),
-			akismetData.getPermalink(), akismetData.getType(),
+			mbMessage.getCompanyId(), akismetEntry.getUserIP(),
+			akismetEntry.getUserAgent(), akismetEntry.getReferrer(),
+			akismetEntry.getPermalink(), akismetEntry.getType(),
 			user.getFullName(), user.getEmailAddress(), content);
 	}
 
@@ -189,7 +190,7 @@ public class AkismetClient {
 	}
 
 	public void submitSpam(MBMessage mbMessage) throws PortalException {
-		Akismet akismetData = _akismetLocalService.fetchAkismetData(
+		AkismetEntry akismetData = _akismetEntryLocalService.fetchAkismetEntry(
 			MBMessage.class.getName(), mbMessage.getMessageId());
 
 		if (akismetData == null) {
@@ -279,7 +280,7 @@ public class AkismetClient {
 	private static final Log _log = LogFactoryUtil.getLog(AkismetClient.class);
 
 	@Reference
-	private AkismetLocalService _akismetLocalService;
+	private AkismetEntryLocalService _akismetEntryLocalService;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

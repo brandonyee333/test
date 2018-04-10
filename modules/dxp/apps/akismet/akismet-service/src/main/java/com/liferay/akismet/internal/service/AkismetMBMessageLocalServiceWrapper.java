@@ -18,6 +18,7 @@ import com.liferay.akismet.client.AkismetClient;
 import com.liferay.akismet.client.constants.AkismetConstants;
 import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
 import com.liferay.akismet.model.AkismetEntry;
+import com.liferay.akismet.service.AkismetEntryLocalService;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceWrapper;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -75,7 +76,7 @@ public class AkismetMBMessageLocalServiceWrapper
 			subject, body, format, inputStreamOVPs, anonymous, priority,
 			allowPingbacks, serviceContext);
 
-		AkismetEntry akismetData = updateAkismetData(message, serviceContext);
+		AkismetEntry akismetEntry = updateAkismetEntry(message, serviceContext);
 
 		if (!enabled) {
 			return message;
@@ -85,7 +86,7 @@ public class AkismetMBMessageLocalServiceWrapper
 
 		int status = WorkflowConstants.STATUS_APPROVED;
 
-		if (_akismetClient.isSpam(userId, content, akismetData)) {
+		if (_akismetClient.isSpam(userId, content, akismetEntry)) {
 			status = WorkflowConstants.STATUS_DENIED;
 		}
 
@@ -116,7 +117,7 @@ public class AkismetMBMessageLocalServiceWrapper
 			inputStreamOVPs, anonymous, priority, allowPingbacks,
 			serviceContext);
 
-		Akismet akismetData = updateAkismetData(message, serviceContext);
+		AkismetEntry akismetEntry = updateAkismetEntry(message, serviceContext);
 
 		if (!enabled) {
 			return message;
@@ -126,7 +127,7 @@ public class AkismetMBMessageLocalServiceWrapper
 
 		int status = WorkflowConstants.STATUS_APPROVED;
 
-		if (_akismetClient.isSpam(userId, content, akismetData)) {
+		if (_akismetClient.isSpam(userId, content, akismetEntry)) {
 			status = WorkflowConstants.STATUS_DENIED;
 		}
 
@@ -157,7 +158,7 @@ public class AkismetMBMessageLocalServiceWrapper
 			userId, messageId, subject, body, inputStreamOVPs, existingFiles,
 			priority, allowPingbacks, serviceContext);
 
-		Akismet akismetData = updateAkismetData(message, serviceContext);
+		AkismetEntry akismetEntry = updateAkismetEntry(message, serviceContext);
 
 		if (!enabled) {
 			return message;
@@ -167,7 +168,7 @@ public class AkismetMBMessageLocalServiceWrapper
 
 		int status = WorkflowConstants.STATUS_APPROVED;
 
-		if (_akismetClient.isSpam(userId, content, akismetData)) {
+		if (_akismetClient.isSpam(userId, content, akismetEntry)) {
 			status = WorkflowConstants.STATUS_DENIED;
 		}
 
@@ -230,10 +231,12 @@ public class AkismetMBMessageLocalServiceWrapper
 		return true;
 	}
 
-	protected Akismet updateAkismetData(
+	protected AkismetEntry updateAkismetEntry(
 		MBMessage message, ServiceContext serviceContext) {
 
-		if (!_akismetClient.hasRequiredInfo(serviceContext)) {
+		if (!_akismetClient.hasRequiredInfo(
+				serviceContext.getRemoteAddr(), serviceContext.getHeaders())) {
+
 			return null;
 		}
 
@@ -247,7 +250,7 @@ public class AkismetMBMessageLocalServiceWrapper
 
 		String userIP = serviceContext.getRemoteAddr();
 
-		return _akismetLocalService.updateAkismetData(
+		return _akismetEntryLocalService.updateAkismetEntry(
 			MBMessage.class.getName(), message.getMessageId(),
 			AkismetConstants.TYPE_COMMENT, permalink, referrer, userAgent,
 			userIP, StringPool.BLANK);
@@ -257,6 +260,6 @@ public class AkismetMBMessageLocalServiceWrapper
 	private AkismetClient _akismetClient;
 
 	@Reference
-	private AkismetLocalService _akismetLocalService;
+	private AkismetEntryLocalService _akismetEntryLocalService;
 
 }

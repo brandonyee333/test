@@ -15,7 +15,7 @@
 package com.liferay.akismet.internal.messaging;
 
 import com.liferay.akismet.client.util.AkismetServiceConfigurationUtil;
-import com.liferay.akismet.service.AkismetLocalService;
+import com.liferay.akismet.service.AkismetEntryLocalService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
@@ -98,7 +98,7 @@ public class DeleteAkismetMessageListener extends BaseMessageListener {
 	}
 
 	protected void deleteAkismetData(long companyId) {
-		_akismetLocalService.deleteAkismetData(
+		_akismetEntryLocalService.deleteAkismetEntry(
 			AkismetServiceConfigurationUtil.getReportableTime(companyId));
 	}
 
@@ -134,7 +134,7 @@ public class DeleteAkismetMessageListener extends BaseMessageListener {
 		DeleteAkismetMessageListener.class);
 
 	@Reference
-	private AkismetLocalService _akismetLocalService;
+	private AkismetEntryLocalService _akismetEntryLocalService;
 
 	private volatile boolean _initialized;
 
