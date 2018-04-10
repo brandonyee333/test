@@ -15,6 +15,6 @@ compileJava {
 }
 
 dependencies {
-	provided fileTree(dir: thirdPartyDir, include: "*.jar")
-	provided project(":util:portal-tools-data-partitioning-sql-builder")
+	compileOnly fileTree(dir: thirdPartyDir, include: "*.jar")
+	compileOnly project(":util:portal-tools-data-partitioning-sql-builder")
 }
