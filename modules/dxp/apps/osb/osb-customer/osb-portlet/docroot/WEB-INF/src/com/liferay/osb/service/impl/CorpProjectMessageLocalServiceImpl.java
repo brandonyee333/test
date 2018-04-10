@@ -208,6 +208,10 @@ public class CorpProjectMessageLocalServiceImpl
 		}
 	}
 
+	public List<CorpProjectMessage> getCorpProjectMessages(long corpProjectId) {
+		return corpProjectMessagePersistence.findByCorpProjectId(corpProjectId);
+	}
+
 	public CorpProjectMessage updateCorpProjectMessage(JSONObject jsonObject)
 		throws PortalException {
 

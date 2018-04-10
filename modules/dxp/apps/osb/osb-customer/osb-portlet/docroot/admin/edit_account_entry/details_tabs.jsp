@@ -229,20 +229,8 @@ for (SupportRegion supportRegion : supportRegions) {
 			</div>
 
 			<div class="hide tab-content-tab" id="<portlet:namespace />projectMessagesContent">
-				<%-- <c:choose>
+				<c:choose>
 					<c:when test="<%= corpProjectId > 0 %>">
-						<liferay-portlet:renderURL portletName="<%= OSBPortletKeys.OSB_CORP_PROJECT_ADMIN %>" var="corpProjectURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-							<portlet:param name="mvcPath" value="/corp_project_admin/view_corp_project.jsp" />
-							<portlet:param name="tabs1" value="messages" />
-							<portlet:param name="backURL" value="<%= currentURL %>" />
-							<portlet:param name="corpProjectId" value="<%= String.valueOf(corpProjectId) %>" />
-						</liferay-portlet:renderURL>
-
-						<div>
-							<a class="btn btn-default" href="<%= HtmlUtil.escape(corpProjectURL.toString()) %>"><liferay-ui:message key="manage-messages" /></a>
-						</div>
-
-						<br />
 
 						<%
 						List<CorpProjectMessage> corpProjectMessages = CorpProjectMessageLocalServiceUtil.getCorpProjectMessages(corpProjectId);
@@ -326,7 +314,7 @@ for (SupportRegion supportRegion : supportRegions) {
 							<liferay-ui:message key="this-support-project-is-not-linked-to-a-corp-project" />
 						</div>
 					</c:otherwise>
-				</c:choose> --%>
+				</c:choose>
 			</div>
 
 			<div class="hide tab-content-tab" id="<portlet:namespace />environmentDetailsContent">

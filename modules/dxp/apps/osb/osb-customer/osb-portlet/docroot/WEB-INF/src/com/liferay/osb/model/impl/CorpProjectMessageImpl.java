@@ -16,13 +16,24 @@ package com.liferay.osb.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.osb.model.CorpProjectMessageConstants;
+
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
 @ProviderType
 public class CorpProjectMessageImpl extends CorpProjectMessageBaseImpl {
 
 	public CorpProjectMessageImpl() {
+	}
+
+	public String getSeverityLevelLabel() {
+		return CorpProjectMessageConstants.getSeverityLevelLabel(
+			getSeverityLevel());
+	}
+
+	public String getTypeLabel() {
+		return CorpProjectMessageConstants.getTypeLabel(getType());
 	}
 
 }
