@@ -24,8 +24,8 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Jamie Sammons
  */
-@Component(property = {"language.id=en_US"}, service = ResourceBundle.class)
-public class ResourceBundleEnUs extends ResourceBundle {
+@Component(property = "language.id=en_US", service = ResourceBundle.class)
+public class EnUsResourceBundle extends ResourceBundle {
 
 	@Override
 	public Enumeration<String> getKeys() {

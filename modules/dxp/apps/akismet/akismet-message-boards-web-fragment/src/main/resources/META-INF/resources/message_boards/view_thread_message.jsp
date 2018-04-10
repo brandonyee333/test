@@ -27,7 +27,6 @@ Boolean showPermanentLink = (Boolean)request.getAttribute("edit-message.jsp-show
 Boolean showRecentPosts = (Boolean)request.getAttribute("edit-message.jsp-showRecentPosts");
 MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 
-long messageId = message.getMessageId();
 boolean spam = false;
 
 if (message.getStatus() == WorkflowConstants.STATUS_DENIED) {
@@ -142,10 +141,8 @@ if (spam) {
 					<%
 					boolean displayMessage = false;
 
-					if (!message.isApproved()) {
-						if (message.getUserId() == themeDisplay.getUserId()) {
-								displayMessage = true;
-						}
+					if (!message.isApproved() && (message.getUserId() == themeDisplay.getUserId())) {
+						displayMessage = true;
 					}
 					%>
 
@@ -153,8 +150,9 @@ if (spam) {
 						<span class="h5 text-default">
 							<c:if test="<%= displayMessage %>">
 								<div class="alert alert-danger" role="alert">
-									<strong class="lead">Status: <aui:workflow-status markupView="lexicon" showIcon="<%= true %>" showLabel="<%= false %>" status="<%= message.getStatus() %>" /></strong>
-									<p> <%= LanguageUtil.get(request, "your-message-has-been-flagged-as-spam") %></p>
+									<strong class="lead"><liferay-ui:message key="status" />: <aui:workflow-status markupView="lexicon" showIcon="<%= true %>" showLabel="<%= false %>" status="<%= message.getStatus() %>" /></strong>
+
+									<p><liferay-ui:message key="your-message-has-been-flagged-as-spam" /></p>
 								</div>
 							</c:if>
 						</span>
@@ -198,13 +196,13 @@ if (spam) {
 
 				<c:if test="<%= enableFlags || enableRatings %>">
 					<div class="social-interaction">
-						<div class="spam" style="float:right;">
+						<div class="spam" style="float: right;">
 							<c:choose>
 								<c:when test="<%= spam %>">
 									<portlet:actionURL name="/message_boards/edit_message" var="notSpamURL">
 										<portlet:param name="<%= Constants.CMD %>" value="updateStatus" />
 										<portlet:param name="redirect" value="<%= currentURL %>" />
-										<portlet:param name="messageId" value="<%= String.valueOf(messageId) %>" />
+										<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
 										<portlet:param name="spam" value="<%= String.valueOf(Boolean.FALSE) %>" />
 									</portlet:actionURL>
 
@@ -219,7 +217,7 @@ if (spam) {
 									<portlet:actionURL name="/message_boards/edit_message" var="markAsSpamURL">
 										<portlet:param name="<%= Constants.CMD %>" value="updateStatus" />
 										<portlet:param name="redirect" value="<%= currentURL %>" />
-										<portlet:param name="messageId" value="<%= String.valueOf(messageId) %>" />
+										<portlet:param name="messageId" value="<%= String.valueOf(message.getMessageId()) %>" />
 										<portlet:param name="spam" value="<%= String.valueOf(Boolean.TRUE) %>" />
 									</portlet:actionURL>
 
