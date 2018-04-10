@@ -55,4 +55,8 @@ public interface CorpProjectMessage extends CorpProjectMessageModel,
 				return CorpProjectMessage.class;
 			}
 		};
+
+	public java.lang.String getSeverityLevelLabel();
+
+	public java.lang.String getTypeLabel();
 }

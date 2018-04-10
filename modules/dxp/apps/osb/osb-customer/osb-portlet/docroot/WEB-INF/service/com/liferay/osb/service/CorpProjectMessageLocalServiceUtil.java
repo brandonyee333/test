@@ -258,6 +258,11 @@ public class CorpProjectMessageLocalServiceUtil {
 		return getService().getCorpProjectMessages(start, end);
 	}
 
+	public static java.util.List<com.liferay.osb.model.CorpProjectMessage> getCorpProjectMessages(
+		long corpProjectId) {
+		return getService().getCorpProjectMessages(corpProjectId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

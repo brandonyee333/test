@@ -547,6 +547,44 @@ public class CorpProjectMessageClp extends BaseModelImpl<CorpProjectMessage>
 		}
 	}
 
+	@Override
+	public java.lang.String getSeverityLevelLabel() {
+		try {
+			String methodName = "getSeverityLevelLabel";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		try {
+			String methodName = "getTypeLabel";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getCorpProjectMessageRemoteModel() {
 		return _corpProjectMessageRemoteModel;
 	}

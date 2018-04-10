@@ -233,6 +233,9 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<CorpProjectMessage> getCorpProjectMessages(int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<CorpProjectMessage> getCorpProjectMessages(long corpProjectId);
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

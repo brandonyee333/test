@@ -308,6 +308,11 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 		return _corpProjectMessage.getContent();
 	}
 
+	@Override
+	public java.lang.String getSeverityLevelLabel() {
+		return _corpProjectMessage.getSeverityLevelLabel();
+	}
+
 	/**
 	* Returns the title of this corp project message.
 	*
@@ -316,6 +321,11 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 	@Override
 	public java.lang.String getTitle() {
 		return _corpProjectMessage.getTitle();
+	}
+
+	@Override
+	public java.lang.String getTypeLabel() {
+		return _corpProjectMessage.getTypeLabel();
 	}
 
 	/**

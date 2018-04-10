@@ -275,6 +275,12 @@ public class CorpProjectMessageLocalServiceWrapper
 		return _corpProjectMessageLocalService.getCorpProjectMessages(start, end);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.model.CorpProjectMessage> getCorpProjectMessages(
+		long corpProjectId) {
+		return _corpProjectMessageLocalService.getCorpProjectMessages(corpProjectId);
+	}
+
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

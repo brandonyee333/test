@@ -147,9 +147,13 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 
 		_methodParameterTypes282 = new String[] { "java.lang.String" };
 
-		_methodName283 = "updateCorpProjectMessage";
+		_methodName283 = "getCorpProjectMessages";
 
-		_methodParameterTypes283 = new String[] {
+		_methodParameterTypes283 = new String[] { "long" };
+
+		_methodName284 = "updateCorpProjectMessage";
+
+		_methodParameterTypes284 = new String[] {
 				"com.liferay.portal.kernel.json.JSONObject"
 			};
 	}
@@ -287,6 +291,11 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 
 		if (_methodName283.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes283, parameterTypes)) {
+			return CorpProjectMessageLocalServiceUtil.getCorpProjectMessages(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName284.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
 			return CorpProjectMessageLocalServiceUtil.updateCorpProjectMessage((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
 		}
 
@@ -343,4 +352,6 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 	private String[] _methodParameterTypes282;
 	private String _methodName283;
 	private String[] _methodParameterTypes283;
+	private String _methodName284;
+	private String[] _methodParameterTypes284;
 }

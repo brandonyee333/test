@@ -138,22 +138,26 @@ public class CorpProjectMessageLocalServiceClp
 
 		_methodParameterTypes22 = new String[] { "int", "int" };
 
-		_methodName23 = "dynamicQueryCount";
+		_methodName23 = "getCorpProjectMessages";
 
-		_methodParameterTypes23 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
+		_methodParameterTypes23 = new String[] { "long" };
 
 		_methodName24 = "dynamicQueryCount";
 
 		_methodParameterTypes24 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName25 = "dynamicQueryCount";
+
+		_methodParameterTypes25 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName25 = "checkCorpProjects";
+		_methodName26 = "checkCorpProjects";
 
-		_methodParameterTypes25 = new String[] {  };
+		_methodParameterTypes26 = new String[] {  };
 	}
 
 	@Override
@@ -766,13 +770,37 @@ public class CorpProjectMessageLocalServiceClp
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.CorpProjectMessage> getCorpProjectMessages(
+		long corpProjectId) {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23, new Object[] { corpProjectId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.util.List<com.liferay.osb.model.CorpProjectMessage>)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -797,8 +825,8 @@ public class CorpProjectMessageLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -823,8 +851,8 @@ public class CorpProjectMessageLocalServiceClp
 	@Override
 	public void checkCorpProjects() throws java.lang.Exception {
 		try {
-			_invokableLocalService.invokeMethod(_methodName25,
-				_methodParameterTypes25, new Object[] {  });
+			_invokableLocalService.invokeMethod(_methodName26,
+				_methodParameterTypes26, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -894,4 +922,6 @@ public class CorpProjectMessageLocalServiceClp
 	private String[] _methodParameterTypes24;
 	private String _methodName25;
 	private String[] _methodParameterTypes25;
+	private String _methodName26;
+	private String[] _methodParameterTypes26;
 }
