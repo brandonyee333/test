@@ -158,7 +158,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 
 	<liferay-ui:panel
 		collapsible="<%= true %>"
-		extended="<%= (inactiveLicenseKeys.size() > 3) ? false : true %>"
+		extended="<%= inactiveLicenseKeys.size() > 3 %>"
 		id="inactiveLicenses"
 		persistState="<%= false %>"
 		title="deactivated-licenses"
