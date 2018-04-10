@@ -564,28 +564,6 @@ $has-control-menu-top-mobile: 48px;
 
 	/* ---------- Homepage ---------- */
 
-	/* ---------- Knowledge base banner ---------- */
-
-	.kb-banner {
-		background-color: $dark-blue;
-		background-position: 100% 0;
-		background-size: cover;
-
-		.kb-banner-overlay {
-			background: linear-gradient(rgba(14, 70, 129, 0.8), $dark-blue);
-			color: $white;
-			text-align: center;
-
-			.content {
-				padding-top: 3em;
-
-				.header {
-					font-weight: normal;
-				}
-			}
-		}
-	}
-
 	/* ---------- Knowledge base search bar ---------- */
 
 	.search-home {
