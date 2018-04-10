@@ -8,7 +8,7 @@
 
 		<!-- PK fields -->
 
-		<column name="akismetId" type="long" primary="true" />
+		<column name="akismetId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 
@@ -28,12 +28,12 @@
 		<!-- Finder methods -->
 
 		<finder name="LtModifiedDate" return-type="Collection">
-			<finder-column name="modifiedDate" comparator="&lt;" />
+			<finder-column comparator="&lt;" name="modifiedDate" />
 		</finder>
 		<finder name="C_C" return-type="AkismetData">
 			<finder-column name="classNameId" />
 			<finder-column name="classPK" />
 		</finder>
-		<reference package-path="com.liferay.portal" entity="ClassName" />
+		<reference entity="ClassName" package-path="com.liferay.portal" />
 	</entity>
 </service-builder>
