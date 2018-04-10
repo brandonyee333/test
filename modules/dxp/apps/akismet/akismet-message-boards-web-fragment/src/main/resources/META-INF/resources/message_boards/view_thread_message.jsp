@@ -26,11 +26,24 @@ Boolean showDeletedAttachmentsFileEntries = (Boolean)request.getAttribute("edit-
 Boolean showPermanentLink = (Boolean)request.getAttribute("edit-message.jsp-showPermanentLink");
 Boolean showRecentPosts = (Boolean)request.getAttribute("edit-message.jsp-showRecentPosts");
 MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
+
+long messageId = message.getMessageId();
+boolean spam = false;
+
+if (message.getStatus() == WorkflowConstants.STATUS_DENIED) {
+	spam = true;
+}
+
+String spamCss = StringPool.BLANK;
+
+if (spam) {
+	spamCss ="background-color: #FDD; border: 1px solid red;";
+}
 %>
 
 <a id="<portlet:namespace />message_<%= message.getMessageId() %>"></a>
 
-<div class="card list-group-card panel">
+<div class="card list-group-card panel" style="<%= spamCss %>">
 	<div class="panel-heading">
 		<div class="card-row card-row-padded">
 			<div class="card-col-field">
@@ -126,9 +139,24 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 						</span>
 					</c:if>
 
+					<%
+					boolean displayMessage = false;
+
+					if (!message.isApproved()) {
+						if (message.getUserId() == themeDisplay.getUserId()) {
+								displayMessage = true;
+						}
+					}
+					%>
+
 					<c:if test="<%= !message.isApproved() %>">
 						<span class="h5 text-default">
-							<aui:workflow-status markupView="lexicon" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= message.getStatus() %>" />
+							<c:if test="<%= displayMessage %>">
+								<div class="alert alert-danger" role="alert">
+									<strong class="lead">Status: <aui:workflow-status markupView="lexicon" showIcon="<%= true %>" showLabel="<%= false %>" status="<%= message.getStatus() %>" /></strong>
+									<p> <%= LanguageUtil.get(request, "your-message-has-been-flagged-as-spam") %></p>
+								</div>
+							</c:if>
 						</span>
 					</c:if>
 
@@ -170,6 +198,41 @@ MBThread thread = (MBThread)request.getAttribute("edit_message.jsp-thread");
 
 				<c:if test="<%= enableFlags || enableRatings %>">
 					<div class="social-interaction">
+						<div class="spam" style="float:right;">
+							<c:choose>
+								<c:when test="<%= spam %>">
+									<portlet:actionURL name="/message_boards/edit_message" var="notSpamURL">
+										<portlet:param name="<%= Constants.CMD %>" value="updateStatus" />
+										<portlet:param name="redirect" value="<%= currentURL %>" />
+										<portlet:param name="messageId" value="<%= String.valueOf(messageId) %>" />
+										<portlet:param name="spam" value="<%= String.valueOf(Boolean.FALSE) %>" />
+									</portlet:actionURL>
+
+									<liferay-ui:icon
+										image="../mail/compose"
+										label="<%= true %>"
+										message="not-spam"
+										url="<%= notSpamURL %>"
+									/>
+								</c:when>
+								<c:otherwise>
+									<portlet:actionURL name="/message_boards/edit_message" var="markAsSpamURL">
+										<portlet:param name="<%= Constants.CMD %>" value="updateStatus" />
+										<portlet:param name="redirect" value="<%= currentURL %>" />
+										<portlet:param name="messageId" value="<%= String.valueOf(messageId) %>" />
+										<portlet:param name="spam" value="<%= String.valueOf(Boolean.TRUE) %>" />
+									</portlet:actionURL>
+
+									<liferay-ui:icon
+										image="../mail/delete"
+										label="<%= true %>"
+										message="mark-as-spam"
+										url="<%= markAsSpamURL %>"
+									/>
+								</c:otherwise>
+							</c:choose>
+						</div>
+
 						<c:if test="<%= enableRatings %>">
 							<div>
 								<liferay-ui:ratings
