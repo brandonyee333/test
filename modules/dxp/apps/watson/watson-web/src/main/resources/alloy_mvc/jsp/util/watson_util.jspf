@@ -34,11 +34,9 @@ public static class WatsonUtil {
 	}
 
 	protected static void sendTwoFactorAuthEmail(User user) throws Exception {
-		Date expirationDate = WatsonTokenAuthUtil.getNewExpirationDate();
-
 		String authToken = StringUtil.shorten(String.valueOf(Math.abs(SecureRandomUtil.nextInt())), 6, StringPool.BLANK);
 
-		WatsonTokenAuthEntry watsonTokenAuthEntry = WatsonTokenAuthUtil.addDistinctWatsonTokenAuthEntry(user, authToken, expirationDate);
+		WatsonTokenAuthEntry watsonTokenAuthEntry = WatsonTokenAuthEntryLocalServiceUtil.addDistinctWatsonTokenAuthEntry(user, authToken);
 
 		WatsonWorkflowUtil.sendAuthenticationEmail(user, watsonTokenAuthEntry);
 	}

@@ -5,7 +5,6 @@ import {Provider} from 'metal-redux';
 
 import configureStore from './store/configure-store.js';
 
-import LoadingIndicator from './components/LoadingIndicator';
 import UserAuthentication from './containers/UserAuthentication';
 import Watson from './App';
 
@@ -46,8 +45,6 @@ class Main extends JSXComponent {
 			retVal = (
 				<Provider store={store}>
 					<div class="watson-app">
-
-						<LoadingIndicator />
 
 						<div class="print-helper-message" id="print-helper-message">{Liferay.Language.get('this-page-is-not-printable')} </div>
 

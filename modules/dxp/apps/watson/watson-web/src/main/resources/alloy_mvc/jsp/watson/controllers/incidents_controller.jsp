@@ -415,16 +415,16 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
 
-		if (WatsonTokenAuthUtil.hasAuthenticatedSession(user)) {
-			respondWith(WatsonTokenAuthUtil.AUTHORIZATION_STATUS_LABEL_APPROVED);
+		if (WatsonTokenAuthEntryLocalServiceUtil.hasAuthenticatedSession(user)) {
+			respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED);
 
 			return;
 		}
-		else if (forceIssueNewToken || !WatsonTokenAuthUtil.hasPendingToken(user)) {
+		else if (forceIssueNewToken || !WatsonTokenAuthEntryLocalServiceUtil.hasPendingToken(user)) {
 			WatsonUtil.sendTwoFactorAuthEmail(user);
 		}
 
-		respondWith(WatsonTokenAuthUtil.AUTHORIZATION_STATUS_LABEL_PENDING);
+		respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_PENDING);
 	}
 
 	public void submitAuthenticationToken() throws Exception {
@@ -434,9 +434,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		String authToken = ParamUtil.getString(request, "token");
 
-		String authTokenResult = WatsonTokenAuthUtil.verifyWatsonTokenAuthEntry(user, authToken);
+		String authTokenResult = WatsonTokenAuthEntryLocalServiceUtil.verifyWatsonTokenAuthEntry(user, authToken);
 
-		if (authTokenResult.equals(WatsonTokenAuthUtil.AUTHORIZATION_STATUS_LABEL_APPROVED)) {
+		if (authTokenResult.equals(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED)) {
 			respondWith(authTokenResult);
 		}
 		else {

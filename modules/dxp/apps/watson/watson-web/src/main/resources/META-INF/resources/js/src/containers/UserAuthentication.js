@@ -8,6 +8,7 @@ import sub from 'string-sub';
 import Button from '../components/Button';
 import ButtonModal from '../components/ButtonModal';
 import Input from '../components/Input';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 import {checkUserAuthorizationStatus, submitAuthenticationToken} from '../actions/authentication';
 
@@ -96,6 +97,8 @@ class UserAuthentication extends JSXComponent {
 				<div class="welcome-landing-text">
 					{sub(Liferay.Language.get('welcome-to-watson-x'), Liferay.ThemeDisplay.getUserName())}
 				</div>
+
+				<LoadingIndicator />
 
 				<div class="authentication-content">
 					<Alert

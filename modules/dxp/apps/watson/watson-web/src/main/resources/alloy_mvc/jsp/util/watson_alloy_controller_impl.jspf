@@ -152,7 +152,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 
 		clazz = tempClass;
 
-		WatsonTokenAuthUtil.extendWatsonTokenAuth(user);
+		WatsonTokenAuthEntryLocalServiceUtil.extendWatsonTokenAuthEntry(user);
 	}
 
 	protected Document[] getDocuments(SearchContext searchContext) throws Exception {

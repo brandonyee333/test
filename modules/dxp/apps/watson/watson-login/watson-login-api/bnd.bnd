@@ -6,5 +6,4 @@ Export-Package:\
 	com.liferay.watson.login.exception,\
 	com.liferay.watson.login.model,\
 	com.liferay.watson.login.service,\
-	com.liferay.watson.login.service.persistence,\
-	com.liferay.watson.login.util
+	com.liferay.watson.login.service.persistence
