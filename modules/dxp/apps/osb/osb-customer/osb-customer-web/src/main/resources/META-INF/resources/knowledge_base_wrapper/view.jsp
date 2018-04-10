@@ -17,11 +17,20 @@
 <%@ include file="/init.jsp" %>
 
 <%
+String redirect = (String)request.getAttribute(OSBCustomerWebKeys.REDIRECT);
 KBArticle kbArticle = (KBArticle)request.getAttribute(OSBCustomerWebKeys.KNOWLEDGE_BASE_KB_ARTICLE);
 %>
 
 <c:if test="<%= kbArticle != null %>">
 	<div class="kb-entity-header">
+		<c:if test="<%= Validator.isNotNull(redirect) %>">
+			<div>
+				<a class="back-btn" href="<%= HtmlUtil.escapeAttribute(redirect) %>">
+					<liferay-ui:message key="back-to-search-results" />
+				</a>
+			</div>
+		</c:if>
+
 		<h1 class="float-container kb-title">
 			<%= HtmlUtil.escape(kbArticle.getTitle()) %>
 		</h1>
