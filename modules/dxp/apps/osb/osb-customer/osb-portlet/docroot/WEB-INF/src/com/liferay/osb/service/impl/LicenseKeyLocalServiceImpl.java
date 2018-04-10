@@ -1477,15 +1477,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		ListType listType = listTypeLocalService.fetchListType(productVersion);
 
-		if (listType == null) {
-			throw new LicenseKeyProductVersionException();
-		}
-
 		String listTypeType = ProductEntryConstants.getAllListType(
 			ProductEntry.class.getName() + StringPool.PERIOD +
 				productEntry.getVersionsListType());
 
-		if (listTypeType.equals(listType.getType())) {
+		if ((listType == null) || !listTypeType.equals(listType.getType())) {
 			throw new LicenseKeyProductVersionException();
 		}
 
