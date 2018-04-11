@@ -20,7 +20,6 @@
 page import="com.liferay.osb.customer.web.internal.constants.OSBJournalArticleConstants" %><%@
 page import="com.liferay.osb.customer.web.internal.search.ArticleSearch" %><%@
 page import="com.liferay.osb.customer.web.internal.search.ArticleSearchTerms" %><%@
-page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.service.RoleLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.util.HttpUtil" %><%@
 page import="com.liferay.portal.kernel.util.LocaleUtil" %>
@@ -29,6 +28,4 @@ page import="com.liferay.portal.kernel.util.LocaleUtil" %>
 String[] searchStructureIds = portletPreferences.getValues("searchStructureIds", new String[0]);
 
 boolean liferayOrg = RoleLocalServiceUtil.hasUserRole(user.getUserId(), user.getCompanyId(), "liferay employee", true);
-
-NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
 %>

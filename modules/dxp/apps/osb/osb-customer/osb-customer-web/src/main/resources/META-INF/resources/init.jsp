@@ -84,8 +84,6 @@ page import="com.liferay.users.admin.kernel.util.UsersAdminUtil" %>
 
 <%@ page import="java.lang.String" %>
 
-<%@ page import="java.text.NumberFormat" %>
-
 <%@ page import="java.util.ArrayList" %><%@
 page import="java.util.HashMap" %><%@
 page import="java.util.HashSet" %><%@
