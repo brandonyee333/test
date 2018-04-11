@@ -413,14 +413,15 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
-
 		if (WatsonTokenAuthEntryLocalServiceUtil.hasAuthenticatedSession(user)) {
 			respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED);
 
 			return;
 		}
-		else if (forceIssueNewToken || !WatsonTokenAuthEntryLocalServiceUtil.hasPendingToken(user)) {
+
+		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
+
+		if (forceIssueNewToken || !WatsonTokenAuthEntryLocalServiceUtil.hasPendingToken(user)) {
 			WatsonUtil.sendTwoFactorAuthEmail(user);
 		}
 

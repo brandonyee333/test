@@ -19,8 +19,6 @@ public static class WatsonWorkflowUtil {
 	public static void sendAddressEmail(User fromUser, WatsonAddress watsonAddress, boolean sendFullAddress, boolean sendCoordinates, String description, String toEmailAddress) throws Exception {
 		Locale locale = LocaleUtil.getMostRelevantLocale();
 
-		String subject = LanguageUtil.format(locale, "x-has-sent-you-information-about-a-location", new String[] {fromUser.getFullName()});
-
 		StringBundler emailSB = new StringBundler();
 
 		emailSB.append(LanguageUtil.format(locale, "x-has-sent-you-the-following-information-about-location-x", new String[] {fromUser.getFullName(), watsonAddress.getName(locale)}));
@@ -113,7 +111,11 @@ public static class WatsonWorkflowUtil {
 		InternetAddress from = new InternetAddress(fromUser.getEmailAddress(), fromUser.getFullName());
 
 		mailMessage.setFrom(from);
+
 		mailMessage.setHTMLFormat(true);
+
+		String subject = LanguageUtil.format(locale, "x-has-sent-you-information-about-a-location", new String[] {fromUser.getFullName()});
+
 		mailMessage.setSubject(subject);
 
 		InternetAddress to = new InternetAddress(toEmailAddress, StringPool.BLANK);
@@ -133,7 +135,6 @@ public static class WatsonWorkflowUtil {
 		sb.append(LanguageUtil.format(user.getLocale(), "here-is-the-one-time-authorization-code-x", new String[] {tokenInBold}));
 
 		sb.append("<br /><br />");
-
 		sb.append(LanguageUtil.format(user.getLocale(), "this-code-will-expire-in-30-minutes", new String[0]));
 
 		mailMessage.setBody(sb.toString());
@@ -202,8 +203,6 @@ public static class WatsonWorkflowUtil {
 		List<User> translationUsers = UserLocalServiceUtil.getRoleUsers(role.getRoleId());
 
 		for (User translationUser : translationUsers) {
-			String subject = LanguageUtil.format(translationUser.getLocale(), "a-translation-has-been-requested", new Object[0]);
-
 			StringBundler sb = new StringBundler(7);
 
 			sb.append(LanguageUtil.format(translationUser.getLocale(), "dear-x", new String[] {translationUser.getFullName()}));
@@ -226,7 +225,11 @@ public static class WatsonWorkflowUtil {
 			InternetAddress from = new InternetAddress(fromUser.getEmailAddress(), fromUser.getFullName());
 
 			mailMessage.setFrom(from);
+
 			mailMessage.setHTMLFormat(true);
+
+			String subject = LanguageUtil.format(translationUser.getLocale(), "a-translation-has-been-requested", new Object[0]);
+
 			mailMessage.setSubject(subject);
 
 			InternetAddress to = new InternetAddress(translationUser.getEmailAddress(), translationUser.getFullName());
