@@ -276,7 +276,11 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		SearchContext searchContext = getPopulatedSearchContext(WatsonActivity.baseModelClass);
+		String[] fields = ParamUtil.getStringValues(request, "fields");
+
+		String[] keywords = ParamUtil.getStringValues(request, "keywords");
+
+		SearchContext searchContext = getPopulatedSearchContext(WatsonActivity.baseModelClass, fields, keywords);
 
 		respondWith(WatsonActivity.getAsJSONDataArray(_doSearch(searchContext), getTotalHits(searchContext)));
 	}

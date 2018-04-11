@@ -165,14 +165,10 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		return hits.getDocs();
 	}
 
-	protected SearchContext getPopulatedSearchContext(Class modelClass) throws Exception {
+	protected SearchContext getPopulatedSearchContext(Class modelClass, String[] fields, String[] keywords) throws Exception {
 		SearchContext searchContext = getSearchContext(modelClass);
 
 		BooleanClause<Query>[] booleanClauseArray = searchContext.getBooleanClauses();
-
-		String[] fields = ParamUtil.getStringValues(request, "fields");
-
-		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 
 		for (int i = 0; i < fields.length; i++) {
 			String fieldName = fields[i];
@@ -229,7 +225,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		return searchContext;
 	}
 
-	protected SearchContext getSearchContext(Class modelClass) throws Exception {
+	protected SearchContext getSearchContext(Class modelClass) {
 		SearchContext searchContext = new SearchContext();
 
 		BooleanClause<Query> statusApprovedClause = BooleanClauseFactoryUtil.create("status", String.valueOf(WorkflowConstants.STATUS_APPROVED), BooleanClauseOccur.MUST.getName());

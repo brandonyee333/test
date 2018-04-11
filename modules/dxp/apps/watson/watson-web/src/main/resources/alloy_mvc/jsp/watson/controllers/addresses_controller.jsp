@@ -230,7 +230,11 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		SearchContext searchContext = getPopulatedSearchContext(WatsonAddress.baseModelClass);
+		String[] fields = ParamUtil.getStringValues(request, "fields");
+
+		String[] keywords = ParamUtil.getStringValues(request, "keywords");
+
+		SearchContext searchContext = getPopulatedSearchContext(WatsonAddress.baseModelClass, fields, keywords);
 
 		List<WatsonAddress> searchResultWatsonAddresses = _doSearch(searchContext);
 
