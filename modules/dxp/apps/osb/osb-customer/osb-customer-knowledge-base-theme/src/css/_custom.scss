@@ -504,7 +504,7 @@ $has-control-menu-top-mobile: 48px;
 			top: 10px;
 		}
 
-		.doc-search-input {
+		.keyword-search-input {
 			border: 1px solid $border-color;
 			border-radius: 4px;
 			height: 2.5em;
@@ -963,7 +963,7 @@ $has-control-menu-top-mobile: 48px;
 		}
 
 		.documentation-search {
-			.doc-search-input {
+			.keyword-search-input {
 				min-width: 320px;
 			}
 
@@ -983,7 +983,7 @@ $has-control-menu-top-mobile: 48px;
 		}
 
 		.documentation-search {
-			.doc-search-input {
+			.keyword-search-input {
 				min-width: auto;
 			}
 		}

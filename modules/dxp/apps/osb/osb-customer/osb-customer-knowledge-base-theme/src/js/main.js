@@ -79,6 +79,6 @@ AUI().use(
 			A.on('resize', setResponsiveContentHeight);
 		}
 
-		Liferay.Util.focusFormField('.lfr-search-keywords');
+		Liferay.Util.focusFormField('#_1_WAR_osbknowledgebaseportlet_keyword_search');
 	}
 );
