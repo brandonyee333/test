@@ -130,6 +130,9 @@ public class DeleteMBMessagesListener extends BaseMessageListener {
 					mbMessage.getMessageId());
 			}
 			catch (NoSuchMessageException nsme) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(nsme, nsme);
+				}
 			}
 		}
 	}
