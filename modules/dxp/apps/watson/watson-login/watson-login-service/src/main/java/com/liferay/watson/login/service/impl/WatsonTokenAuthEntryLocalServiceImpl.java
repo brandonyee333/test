@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.watson.login.constants.WatsonTokenAuthEntryConstants;
 import com.liferay.watson.login.model.WatsonTokenAuthEntry;
-import com.liferay.watson.login.service.WatsonTokenAuthEntryLocalServiceUtil;
 import com.liferay.watson.login.service.base.WatsonTokenAuthEntryLocalServiceBaseImpl;
 
 import java.util.Calendar;
@@ -27,13 +26,11 @@ import java.util.Date;
 
 /**
  * @author Steven Smith
- * @see WatsonTokenAuthEntryLocalServiceBaseImpl
- * @see WatsonTokenAuthEntryLocalServiceUtil
  */
 public class WatsonTokenAuthEntryLocalServiceImpl
 	extends WatsonTokenAuthEntryLocalServiceBaseImpl {
 
-	public WatsonTokenAuthEntry addDistinctWatsonTokenAuthEntry(
+	public WatsonTokenAuthEntry addWatsonTokenAuthEntry(
 		User user, String authToken) {
 
 		removeWatsonTokenAuthEntry(user);
@@ -45,13 +42,9 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		watsonTokenAuthEntry.setCompanyId(user.getCompanyId());
 		watsonTokenAuthEntry.setUserId(user.getUserId());
 		watsonTokenAuthEntry.setUserName(user.getFullName());
-
 		watsonTokenAuthEntry.setCreateDate(new Date());
-
-		watsonTokenAuthEntry.setExpirationDate(getNewExpirationDate());
-
 		watsonTokenAuthEntry.setToken(authToken);
-
+		watsonTokenAuthEntry.setExpirationDate(getNewExpirationDate());
 		watsonTokenAuthEntry.setLoginDate(watsonTokenAuthEntry.getCreateDate());
 
 		return watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
@@ -122,8 +115,7 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 			else if (authToken.equals(watsonTokenAuthEntry.getToken())) {
 				watsonTokenAuthEntry.setActive(true);
 
-				WatsonTokenAuthEntryLocalServiceUtil.updateWatsonTokenAuthEntry(
-					watsonTokenAuthEntry);
+				watsonTokenAuthEntryPersistence.update(watsonTokenAuthEntry);
 
 				return WatsonTokenAuthEntryConstants.
 					AUTHORIZATION_STATUS_LABEL_APPROVED;
@@ -134,11 +126,9 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 	}
 
 	protected Date getNewExpirationDate() {
-		Date now = new Date();
-
 		Calendar expirationDate = CalendarFactoryUtil.getCalendar();
 
-		expirationDate.setTime(now);
+		expirationDate.setTime(new Date());
 
 		expirationDate.add(Calendar.MINUTE, 30);
 

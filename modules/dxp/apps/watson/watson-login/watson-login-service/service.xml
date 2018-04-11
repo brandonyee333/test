@@ -16,12 +16,12 @@
 		<column name="userId" type="long" />
 		<column name="userName" type="String" />
 		<column name="createDate" type="Date" />
-		<column name="expirationDate" type="Date" />
 
 		<!-- Other fields -->
 
 		<column name="active" type="boolean" />
 		<column name="token" type="String" />
+		<column name="expirationDate" type="Date" />
 		<column name="loginDate" type="Date" />
 
 		<!-- Finder methods -->

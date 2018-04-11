@@ -17,26 +17,8 @@ package com.liferay.watson.login.service.impl;
 import com.liferay.watson.login.service.base.WatsonTokenAuthEntryServiceBaseImpl;
 
 /**
- * The implementation of the watson token auth entry remote service.
- *
- * <p>
- * All custom service methods should be put in this class. Whenever methods are added, rerun ServiceBuilder to copy their definitions into the {@link com.liferay.watson.login.service.WatsonTokenAuthEntryService} interface.
- *
- * <p>
- * This is a remote service. Methods of this service are expected to have security checks based on the propagated JAAS credentials because this service can be accessed remotely.
- * </p>
- *
  * @author Steven Smith
- * @see WatsonTokenAuthEntryServiceBaseImpl
- * @see com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil
  */
 public class WatsonTokenAuthEntryServiceImpl
 	extends WatsonTokenAuthEntryServiceBaseImpl {
-
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never reference this class directly. Always use {@link com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil} to access the watson token auth entry remote service.
-	 */
-
 }
