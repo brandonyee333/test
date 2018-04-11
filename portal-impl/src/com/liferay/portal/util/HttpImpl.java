@@ -1943,6 +1943,10 @@ public class HttpImpl implements Http {
 				response.addHeader(header.getName(), header.getValue());
 			}
 
+			if (httpEntity == null) {
+				return null;
+			}
+
 			InputStream inputStream = httpEntity.getContent();
 
 			final CloseableHttpResponse referenceCloseableHttpResponse =
