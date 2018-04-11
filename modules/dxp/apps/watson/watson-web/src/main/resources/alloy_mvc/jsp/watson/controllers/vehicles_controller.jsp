@@ -175,32 +175,35 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		List<WatsonVehicle> watsonVehicles = null;
-		long watsonVehiclesCount = 0;
+		String[] fields = new String[0];
+		String[] keywords = new String[0];
 
-		long watsonIncidentId = ParamUtil.getLong(request, "id", 0);
-		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
-		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
+		long watsonIncidentId = ParamUtil.getLong(request, "id");
+
+		if (watsonIncidentId > 0) {
+			fields = new String[] {"watsonIncidentId"};
+			keywords = new String[] {String.valueOf(watsonIncidentId)};
+		}
+
+		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
+
+		SearchContext searchContext = getPopulatedSearchContext(WatsonVehicle.baseModelClass, fields, keywords, includeInactive);
+
+		List<WatsonVehicle> searchResultWatsonVehicles = _doSearch(searchContext);
 
 		String actionType = ParamUtil.getString(request, "actionType");
 
 		if (actionType.equals("import")) {
-			watsonVehicles = WatsonVehicle.getUnrelatedWatsonVehicles(watsonIncidentId, start, end);
+			List<WatsonVehicle> unrelatedWatsonVehicles = WatsonVehicle.getUnrelatedWatsonVehicles(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			List<WatsonVehicle> tempWatsonVehicles = WatsonVehicle.getUnrelatedWatsonVehicles(watsonIncidentId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-
-			watsonVehiclesCount = tempWatsonVehicles.size();
-		}
-		else {
-			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
-			String sort = ParamUtil.getString(request, "sortBy", null);
-
-			watsonVehicles = WatsonIncident.getWatsonVehicles(watsonIncidentId, includeInactive, sort, start, end);
-
-			watsonVehiclesCount = WatsonIncident.getWatsonVehiclesCount(watsonIncidentId);
+			for (WatsonVehicle watsonVehicle : searchResultWatsonVehicles) {
+				if (!unrelatedWatsonVehicles.contains(watsonVehicle)) {
+					searchResultWatsonVehicles.remove(watsonVehicle);
+				}
+			}
 		}
 
-		respondWith(WatsonVehicle.getAsJSONDataArray(watsonVehicles, watsonVehiclesCount));
+		respondWith(WatsonVehicle.getAsJSONDataArray(searchResultWatsonVehicles, getTotalHits(searchContext)));
 	}
 
 	public void requestTranslation() throws Exception {
@@ -231,10 +234,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		String[] fields = ParamUtil.getStringValues(request, "fields");
-
 		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 
-		SearchContext searchContext = getPopulatedSearchContext(WatsonVehicle.baseModelClass, fields, keywords);
+		SearchContext searchContext = getPopulatedSearchContext(WatsonVehicle.baseModelClass, fields, keywords, false);
 
 		List<WatsonVehicle> searchResultWatsonVehicles = _doSearch(searchContext);
 
@@ -247,7 +249,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			for (WatsonVehicle watsonVehicle : searchResultWatsonVehicles) {
 				if (!unrelatedWatsonVehicles.contains(watsonVehicle)) {
-					unrelatedWatsonVehicles.remove(watsonVehicle);
+					searchResultWatsonVehicles.remove(watsonVehicle);
 				}
 			}
 		}

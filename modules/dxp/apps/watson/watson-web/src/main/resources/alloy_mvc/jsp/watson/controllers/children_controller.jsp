@@ -246,13 +246,11 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		String sort = ParamUtil.getString(request, "sortBy", null);
-		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
-		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
+		SearchContext searchContext = getPopulatedSearchContext(WatsonChild.baseModelClass, new String[0], new String[0], false);
 
-		List<WatsonChild> watsonChildren = WatsonChild.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
+		List<WatsonChild> searchResultWatsonChildren = _doSearch(searchContext);
 
-		respondWith(WatsonChild.getAsJSONDataArray(watsonChildren, WatsonChild.count("status", WorkflowConstants.STATUS_APPROVED)));
+		respondWith(WatsonChild.getAsJSONDataArray(searchResultWatsonChildren, getTotalHits(searchContext)));
 	}
 
 	public void refreshSubModel() throws Exception {
@@ -330,10 +328,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		String[] fields = ParamUtil.getStringValues(request, "fields");
-
 		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 
-		SearchContext searchContext = getPopulatedSearchContext(WatsonChild.baseModelClass, fields, keywords);
+		SearchContext searchContext = getPopulatedSearchContext(WatsonChild.baseModelClass, fields, keywords, false);
 
 		List<WatsonChild> searchResultWatsonChildren = _doSearch(searchContext);
 

@@ -25,7 +25,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		return getControllerName(classNameString);
 	}
 
-	public static String getControllerName(String classNameString) throws Exception {
+	public static String getControllerName(String classNameString) {
 		String controllerName = StringPool.BLANK;
 
 		if (Validator.isNotNull(classNameString)) {
@@ -71,7 +71,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		return getModelProperName(getControllerName(clazz.getSimpleName()), locale);
 	}
 
-	public static String getModelProperName(String controllerName, Locale locale) throws Exception {
+	public static String getModelProperName(String controllerName, Locale locale) {
 		String properName = StringPool.BLANK;
 
 		if (Validator.isNotNull(controllerName)) {
@@ -113,7 +113,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		return LanguageUtil.format(locale, properName, new Object[0]);
 	}
 
-	public static void setBaseModelProperties(BaseModel<?> baseModel, Object... properties) throws Exception {
+	public static void setBaseModelProperties(BaseModel<?> baseModel, Object... properties) throws IllegalArgumentException {
 		if ((properties.length % 2) != 0) {
 			throw new IllegalArgumentException("Properties length is not an even number");
 		}
@@ -130,7 +130,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		}
 	}
 
-	public static void setGroupedModel(BaseModel<?> baseModel, HttpServletRequest request) throws Exception {
+	public static void setGroupedModel(BaseModel<?> baseModel, HttpServletRequest request) {
 		if (!(baseModel instanceof GroupedModel) || !baseModel.isNew() || (request == null)) {
 			return;
 		}
@@ -165,8 +165,8 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		return hits.getDocs();
 	}
 
-	protected SearchContext getPopulatedSearchContext(Class modelClass, String[] fields, String[] keywords) throws Exception {
-		SearchContext searchContext = getSearchContext(modelClass);
+	protected SearchContext getPopulatedSearchContext(Class modelClass, String[] fields, String[] keywords, boolean includeInactive) throws Exception {
+		SearchContext searchContext = getSearchContext(modelClass, includeInactive);
 
 		BooleanClause<Query>[] booleanClauseArray = searchContext.getBooleanClauses();
 
@@ -225,18 +225,25 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		return searchContext;
 	}
 
-	protected SearchContext getSearchContext(Class modelClass) {
+	protected SearchContext getSearchContext(Class modelClass, boolean includeInactive) {
 		SearchContext searchContext = new SearchContext();
 
-		BooleanClause<Query> statusApprovedClause = BooleanClauseFactoryUtil.create("status", String.valueOf(WorkflowConstants.STATUS_APPROVED), BooleanClauseOccur.MUST.getName());
+		int workflowStatus = WorkflowConstants.STATUS_APPROVED;
+
+		if (includeInactive) {
+			workflowStatus = WorkflowConstants.STATUS_ANY;
+		}
+
+		BooleanClause<Query> statusApprovedClause = BooleanClauseFactoryUtil.create("status", String.valueOf(workflowStatus), BooleanClauseOccur.MUST.getName());
 		BooleanClause<Query> watsonClassNameClause = BooleanClauseFactoryUtil.create("entryClassName", modelClass.getName(), BooleanClauseOccur.MUST.getName());
 
 		BooleanClause<Query>[] booleanClauseArray = new BooleanClause[] {statusApprovedClause, watsonClassNameClause};
 
 		searchContext.setBooleanClauses(booleanClauseArray);
+
 		searchContext.setCompanyId(themeDisplay.getCompanyId());
 
-		int end = ParamUtil.getInteger(request, "end", 15);
+		int end = ParamUtil.getInteger(request, "end", 30);
 
 		searchContext.setEnd(end);
 		searchContext.setEntryClassNames(new String[] {modelClass.getName()});
@@ -245,7 +252,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 
 		String sort = ParamUtil.getString(request, "sortBy", null);
 
-		if (Validator.isNotNull(sort)) {
+		if (sort != null) {
 			searchContext.setSorts(new Sort(sort, true));
 		}
 		else {
@@ -260,8 +267,8 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 	}
 
 	protected long getTotalHits(SearchContext searchContext) throws Exception {
-		searchContext.setStart(-1);
-		searchContext.setEnd(-1);
+		searchContext.setStart(QueryUtil.ALL_POS);
+		searchContext.setEnd(QueryUtil.ALL_POS);
 
 		Hits hits = indexer.search(searchContext);
 

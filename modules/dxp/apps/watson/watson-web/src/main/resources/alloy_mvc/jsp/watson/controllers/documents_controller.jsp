@@ -139,20 +139,23 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		List<WatsonDocument> watsonDocuments = null;
-		long watsonDocumentsCount = 0;
+		String[] fields = new String[0];
+		String[] keywords = new String[0];
 
-		long watsonChildId = ParamUtil.getLong(request, "id", 0);
+		long watsonChildId = ParamUtil.getLong(request, "id");
+
+		if (watsonChildId > 0) {
+			fields = new String[] {"watsonChildId"};
+			keywords = new String[] {String.valueOf(watsonChildId)};
+		}
+
 		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
-		String sort = ParamUtil.getString(request, "sortBy", null);
-		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
-		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
 
-		watsonDocuments = WatsonChild.getWatsonDocuments(watsonChildId, includeInactive, sort, start, end);
+		SearchContext searchContext = getPopulatedSearchContext(WatsonDocument.baseModelClass, fields, keywords, includeInactive);
 
-		watsonDocumentsCount = WatsonChild.getWatsonDocumentsCount(watsonChildId);
+		List<WatsonDocument> searchResultWatsonDocuments = _doSearch(searchContext);
 
-		respondWith(WatsonDocument.getAsJSONDataArray(watsonDocuments, watsonDocumentsCount));
+		respondWith(WatsonDocument.getAsJSONDataArray(searchResultWatsonDocuments, getTotalHits(searchContext)));
 	}
 
 	public void requestTranslation() throws Exception {
@@ -183,10 +186,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		String[] fields = ParamUtil.getStringValues(request, "fields");
-
 		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 
-		SearchContext searchContext = getPopulatedSearchContext(WatsonDocument.baseModelClass, fields, keywords);
+		SearchContext searchContext = getPopulatedSearchContext(WatsonDocument.baseModelClass, fields, keywords, false);
 
 		List<WatsonDocument> searchResultWatsonDocuments = _doSearch(searchContext);
 

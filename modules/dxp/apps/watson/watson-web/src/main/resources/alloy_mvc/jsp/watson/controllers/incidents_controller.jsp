@@ -187,7 +187,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 
 		if ((fields.length > 0) && (keywords.length > 0)) {
-			SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass);
+			SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass, fields, keywords, false);
 
 			List<Long> watsonIncidentIds = _doSearchForClassPKs(searchContext);
 
@@ -230,7 +230,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 				long typeWatsonListTypeId = ParamUtil.getLong(request, "type");
 
 				if ((fields.length > 0) && (keywords.length > 0)) {
-					SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass);
+					SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass, fields, keywords, false);
 
 					List<Long> watsonIncidentIds = _doSearchForClassPKs(searchContext);
 
@@ -316,14 +316,11 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		String sort = ParamUtil.getString(request, "sortBy", null);
+		SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass, new String[0], new String[0], false);
+
+		List<WatsonIncident> watsonIncidents = _doSearch(searchContext);
+
 		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
-		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
-
-		List<WatsonIncident> watsonIncidents = null;
-
-		watsonIncidents = WatsonIncident.queryRange(sort, start, end, "status", WorkflowConstants.STATUS_APPROVED);
-
 		String actionType = ParamUtil.getString(request, "actionType");
 
 		if ((start == 0) && actionType.equals("relate")) {
@@ -332,7 +329,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			watsonIncidents.add(WatsonIncident.fetch(watsonIncidentId));
 		}
 
-		respondWith(WatsonIncident.getAsJSONDataArray(watsonIncidents, WatsonIncident.count("status", WorkflowConstants.STATUS_APPROVED)));
+		respondWith(WatsonIncident.getAsJSONDataArray(watsonIncidents, getTotalHits(searchContext)));
 	}
 
 	public void refreshSubModel() throws Exception {
@@ -404,10 +401,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		String[] fields = ParamUtil.getStringValues(request, "fields");
-
 		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 
-		SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass, fields, keywords);
+		SearchContext searchContext = getPopulatedSearchContext(WatsonIncident.baseModelClass, fields, keywords, false);
 
 		respondWith(WatsonIncident.getAsJSONDataArray(_doSearch(searchContext), getTotalHits(searchContext)));
 	}

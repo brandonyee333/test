@@ -40,6 +40,15 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 			)
 		);
 	}
+	else if (sortBy === 'incidentName_String_sortable') {
+		sorted = data.sort(
+			(a, b) => (b.get('incidentName') || '').localeCompare(
+				a.get('incidentName'),
+				{},
+				{ignorePunctuation: true, numeric: true}
+			)
+		);
+	}
 	else if (sortBy === 'reportDate') {
 		sorted = data.sort(
 			(a, b) => new Date(b.get(sortBy)) - new Date((a.get(sortBy)))

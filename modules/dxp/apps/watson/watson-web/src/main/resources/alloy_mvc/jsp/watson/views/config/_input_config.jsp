@@ -191,7 +191,7 @@
 				},
 				pluralLabel: '${AlloyLanguageUtil.formatUnicode("activities")}',
 				singularLabel: '${AlloyLanguageUtil.formatUnicode("activity")}',
-				sortByDefault: 'watsonIncidentId',
+				sortByDefault: 'incidentName_String_sortable',
 				sortByOptions: {
 					CREATED: {
 						label: '${AlloyLanguageUtil.formatUnicode("created")}',
@@ -203,7 +203,7 @@
 					},
 					INCIDENT_ID: {
 						label: '${AlloyLanguageUtil.formatUnicode("incident-id")}',
-						value: 'watsonIncidentId'
+						value: 'incidentName_String_sortable'
 					},
 					DATE_OCCURRED: {
 						label: '${AlloyLanguageUtil.formatUnicode("date-occurred")}',
@@ -600,11 +600,11 @@
 				},
 				pluralLabel: '${AlloyLanguageUtil.formatUnicode("addresses")}',
 				singularLabel: '${AlloyLanguageUtil.formatUnicode("address")}',
-				sortByDefault: 'watsonIncidentId',
+				sortByDefault: 'incidentName_String_sortable',
 				sortByOptions: {
 					INCIDENT_ID: {
 						label: '${AlloyLanguageUtil.formatUnicode("incident-id")}',
-						value: 'watsonIncidentId'
+						value: 'incidentName_String_sortable'
 					},
 					LAST_MODIFIED: {
 						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
@@ -1538,11 +1538,11 @@
 				},
 				pluralLabel: '${AlloyLanguageUtil.formatUnicode("histories")}',
 				singularLabel: '${AlloyLanguageUtil.formatUnicode("history")}',
-				sortByDefault: 'watsonIncidentId',
+				sortByDefault: 'incidentName_String_sortable',
 				sortByOptions: {
 					INCIDENT_ID: {
 						label: '${AlloyLanguageUtil.formatUnicode("incident-id")}',
-						value: 'watsonIncidentId'
+						value: 'incidentName_String_sortable'
 					},
 					LAST_MODIFIED: {
 						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
@@ -2831,7 +2831,7 @@
 				},
 				pluralLabel: '${AlloyLanguageUtil.formatUnicode("people")}',
 				singularLabel: '${AlloyLanguageUtil.formatUnicode("person")}',
-				sortByDefault: 'watsonIncidentId',
+				sortByDefault: 'incidentName_String_sortable',
 				sortByOptions: {
 					CREATED: {
 						label: '${AlloyLanguageUtil.formatUnicode("created")}',
@@ -2839,7 +2839,7 @@
 					},
 					INCIDENT_ID: {
 						label: '${AlloyLanguageUtil.formatUnicode("incident-id")}',
-						value: 'watsonIncidentId'
+						value: 'incidentName_String_sortable'
 					},
 					LAST_MODIFIED: {
 						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
@@ -3057,7 +3057,7 @@
 				},
 				pluralLabel: '${AlloyLanguageUtil.formatUnicode("relationships")}',
 				singularLabel: '${AlloyLanguageUtil.formatUnicode("relationship")}',
-				sortByDefault: 'watsonIncidentId',
+				sortByDefault: 'incidentName_String_sortable',
 				sortByOptions: {
 					CREATED: {
 						label: '${AlloyLanguageUtil.formatUnicode("created")}',
@@ -3065,7 +3065,7 @@
 					},
 					INCIDENT_ID: {
 						label: '${AlloyLanguageUtil.formatUnicode("incident-id")}',
-						value: 'watsonIncidentId'
+						value: 'incidentName_String_sortable'
 					},
 					LAST_MODIFIED: {
 						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
@@ -3235,7 +3235,7 @@
 				},
 				pluralLabel: '${AlloyLanguageUtil.formatUnicode("resources")}',
 				singularLabel: '${AlloyLanguageUtil.formatUnicode("resource")}',
-				sortByDefault: 'watsonIncidentId',
+				sortByDefault: 'incidentName_String_sortable',
 				sortByOptions: {
 					CREATED: {
 						label: '${AlloyLanguageUtil.formatUnicode("created")}',
@@ -3243,7 +3243,7 @@
 					},
 					INCIDENT_ID: {
 						label: '${AlloyLanguageUtil.formatUnicode("incident-id")}',
-						value: 'watsonIncidentId'
+						value: 'incidentName_String_sortable'
 					},
 					LAST_MODIFIED: {
 						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',
@@ -3476,7 +3476,7 @@
 				},
 				pluralLabel: '${AlloyLanguageUtil.formatUnicode("vehicles")}',
 				singularLabel: '${AlloyLanguageUtil.formatUnicode("vehicle")}',
-				sortByDefault: 'watsonIncidentId',
+				sortByDefault: 'incidentName_String_sortable',
 				sortByOptions: {
 					CREATED: {
 						label: '${AlloyLanguageUtil.formatUnicode("created")}',
@@ -3484,7 +3484,7 @@
 					},
 					INCIDENT_ID: {
 						label: '${AlloyLanguageUtil.formatUnicode("incident-id")}',
-						value: 'watsonIncidentId'
+						value: 'incidentName_String_sortable'
 					},
 					LAST_MODIFIED: {
 						label: '${AlloyLanguageUtil.formatUnicode("last-modified")}',

@@ -233,20 +233,21 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		long watsonIncidentId = ParamUtil.getLong(request, "id", 0);
+		String[] fields = new String[0];
+		String[] keywords = new String[0];
+
+		long watsonIncidentId = ParamUtil.getLong(request, "id");
+
+		if (watsonIncidentId > 0) {
+			fields = new String[] {"watsonIncidentId"};
+			keywords = new String[] {String.valueOf(watsonIncidentId)};
+		}
+
 		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
-		String sort = ParamUtil.getString(request, "sortBy", null);
-		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
-		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
 
-		List<WatsonActivity> watsonActivities = null;
-		long watsonActivityCount = 0;
+		SearchContext searchContext = getPopulatedSearchContext(WatsonActivity.baseModelClass, fields, keywords, includeInactive);
 
-		watsonActivities = WatsonIncident.getWatsonActivities(watsonIncidentId, includeInactive, sort, start, end);
-
-		watsonActivityCount = WatsonIncident.getWatsonActivitiesCount(watsonIncidentId);
-
-		respondWith(WatsonActivity.getAsJSONDataArray(watsonActivities, watsonActivityCount));
+		respondWith(WatsonActivity.getAsJSONDataArray(_doSearch(searchContext), getTotalHits(searchContext)));
 	}
 
 	public void requestTranslation() throws Exception {
@@ -277,10 +278,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		String[] fields = ParamUtil.getStringValues(request, "fields");
-
 		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 
-		SearchContext searchContext = getPopulatedSearchContext(WatsonActivity.baseModelClass, fields, keywords);
+		SearchContext searchContext = getPopulatedSearchContext(WatsonActivity.baseModelClass, fields, keywords, false);
 
 		respondWith(WatsonActivity.getAsJSONDataArray(_doSearch(searchContext), getTotalHits(searchContext)));
 	}

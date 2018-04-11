@@ -71,7 +71,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		SearchContext searchContext = getSearchContext(WatsonListType.baseModelClass);
+		SearchContext searchContext = getSearchContext(WatsonListType.baseModelClass, true);
 
 		String language = ParamUtil.getString(request, "language", StringPool.BLANK);
 

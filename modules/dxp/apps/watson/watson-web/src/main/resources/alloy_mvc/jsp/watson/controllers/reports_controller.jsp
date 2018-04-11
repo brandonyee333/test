@@ -138,21 +138,25 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		List<WatsonReport> watsonReports = null;
-		long watsonReportsCount = 0;
-
 		int key = ParamUtil.getInteger(request, "key");
+
+		String[] fields = {"key"};
+		String[] keywords = {String.valueOf(key)};
+
 		long watsonChildId = ParamUtil.getLong(request, "id");
+
+		if (watsonChildId > 0) {
+			fields = new String[] {"watsonChildId", "key"};
+			keywords = new String[] {String.valueOf(watsonChildId), String.valueOf(key)};
+		}
+
 		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
-		String sort = ParamUtil.getString(request, "sortBy", null);
-		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
-		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
 
-		watsonReports = WatsonChild.getWatsonReports(key, watsonChildId, includeInactive, sort, start, end);
+		SearchContext searchContext = getPopulatedSearchContext(WatsonReport.baseModelClass, fields, keywords, includeInactive);
 
-		watsonReportsCount = WatsonChild.getWatsonReportsCount(key, watsonChildId);
+		List<WatsonReport> searchResultWatsonReports = _doSearch(searchContext);
 
-		respondWith(WatsonReport.getAsJSONDataArray(watsonReports, watsonReportsCount));
+		respondWith(WatsonReport.getAsJSONDataArray(searchResultWatsonReports, getTotalHits(searchContext)));
 	}
 
 	public void requestTranslation() throws Exception {
@@ -183,10 +187,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		String[] fields = ParamUtil.getStringValues(request, "fields");
-
 		String[] keywords = ParamUtil.getStringValues(request, "keywords");
 
-		SearchContext searchContext = getPopulatedSearchContext(WatsonReport.baseModelClass, fields, keywords);
+		SearchContext searchContext = getPopulatedSearchContext(WatsonReport.baseModelClass, fields, keywords, false);
 
 		List<WatsonReport> searchResultWatsonReports = _doSearch(searchContext);
 
