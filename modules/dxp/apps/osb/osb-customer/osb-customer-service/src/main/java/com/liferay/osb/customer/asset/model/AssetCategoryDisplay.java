@@ -120,23 +120,6 @@ public class AssetCategoryDisplay {
 		return sb.toString();
 	}
 
-	public String renderFull() throws PortalException {
-		StringBundler sb = new StringBundler();
-
-		for (AssetVocabulary assetVocabulary : _assetVocabularies) {
-			if (assetVocabulary.getVocabularyId() ==
-					OSBCustomerConstants.ASSET_VOCABULARY_LIFERAY_PRODUCT_ID) {
-
-				renderTree(sb, assetVocabulary);
-			}
-			else {
-				renderFull(sb, assetVocabulary);
-			}
-		}
-
-		return sb.toString();
-	}
-
 	public String renderVocabularyCategories(long vocabularyId) {
 		List<AssetCategory> headAssetCategories = _headAssetCategoriesMap.get(
 			vocabularyId);
@@ -236,18 +219,6 @@ public class AssetCategoryDisplay {
 		return assetCategories;
 	}
 
-	protected boolean isLeafNode(List<AssetCategory> assetCategories) {
-		for (AssetCategory assetCategory : assetCategories) {
-			if ((assetCategory.getRightCategoryId() -
-					assetCategory.getLeftCategoryId()) > 1) {
-
-				return false;
-			}
-		}
-
-		return true;
-	}
-
 	protected boolean isSubassetCategory(
 		AssetCategory assetCategory, AssetCategory subassetCategory) {
 
@@ -325,94 +296,6 @@ public class AssetCategoryDisplay {
 		else {
 			return assetCategory.getTitle(_locale);
 		}
-	}
-
-	protected void renderFull(
-		StringBundler sb, AssetVocabulary assetVocabulary) {
-
-		List<AssetCategory> headAssetCategories = _headAssetCategoriesMap.get(
-			assetVocabulary.getVocabularyId());
-
-		if ((headAssetCategories == null) || headAssetCategories.isEmpty()) {
-			return;
-		}
-
-		sb.append("<div><div><u>");
-		sb.append(assetVocabulary.getTitle(_locale));
-		sb.append("</u></div><ul>");
-
-		for (AssetCategory headAssetCategory : headAssetCategories) {
-			sb.append("<li>");
-
-			renderAbstract(sb, headAssetCategory, true);
-
-			sb.append("</li>");
-		}
-
-		sb.append("</ul></div>");
-	}
-
-	protected void renderTree(
-		StringBundler sb, AssetVocabulary assetVocabulary) {
-
-		List<AssetCategory> headAssetCategories = _headAssetCategoriesMap.get(
-			assetVocabulary.getVocabularyId());
-
-		if ((headAssetCategories == null) || headAssetCategories.isEmpty()) {
-			return;
-		}
-
-		sb.append("<div><div><u>");
-		sb.append(assetVocabulary.getTitle(_locale));
-		sb.append("</u></div>");
-
-		renderTree(sb, headAssetCategories);
-
-		sb.append("</div>");
-	}
-
-	protected void renderTree(
-		StringBundler sb, List<AssetCategory> assetCategories) {
-
-		if ((assetCategories == null) || assetCategories.isEmpty()) {
-			return;
-		}
-
-		Collections.sort(
-			assetCategories, new AssetCategoryNameComparator(true));
-
-		sb.append("<ul>");
-
-		if (isLeafNode(assetCategories)) {
-			sb.append("<li>");
-
-			for (int i = 0; i < assetCategories.size(); i++) {
-				AssetCategory assetCategory = assetCategories.get(i);
-
-				sb.append(renderAssetCategory(assetCategory, true));
-
-				if ((i + 1) < assetCategories.size()) {
-					sb.append(", ");
-				}
-			}
-
-			sb.append("</li>");
-		}
-		else {
-			for (AssetCategory assetCategory : assetCategories) {
-				sb.append("<li>");
-				sb.append(renderAssetCategory(assetCategory, true));
-
-				List<AssetCategory> childAssetCategories =
-					_subassetCategoriesMap.get(assetCategory.getCategoryId());
-
-				renderTree(sb, childAssetCategories);
-
-				sb.append("</li>");
-			}
-		}
-
-		sb.append("</ul>");
 	}
 
 	private final List<AssetVocabulary> _assetVocabularies = new ArrayList<>();

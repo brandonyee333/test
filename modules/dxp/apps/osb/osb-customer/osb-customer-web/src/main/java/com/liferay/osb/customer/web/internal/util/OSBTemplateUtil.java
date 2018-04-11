@@ -71,7 +71,7 @@ public class OSBTemplateUtil {
 		AssetCategoryDisplay assetCategoryDisplay = new AssetCategoryDisplay(
 			locale, assetCategories);
 
-		return assetCategoryDisplay.renderFull();
+		return assetCategoryDisplay.renderAbstract();
 	}
 
 	@Reference(unbind = "-")
