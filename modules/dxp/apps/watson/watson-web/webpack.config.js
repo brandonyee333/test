@@ -9,9 +9,11 @@ var plugins = [
 				NODE_ENV: `"${process.env.NODE_ENV || 'development'}"`
 			}
 		},
-		new webpack.optimize.CommonsChunkPlugin({
-			name: 'commons'
-		})
+		new webpack.optimize.CommonsChunkPlugin(
+			{
+				name: 'commons'
+			}
+		)
 	)
 ];
 
