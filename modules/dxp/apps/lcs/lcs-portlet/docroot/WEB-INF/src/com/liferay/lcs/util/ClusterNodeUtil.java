@@ -64,9 +64,8 @@ public class ClusterNodeUtil {
 
 			if (_log.isTraceEnabled()) {
 				_log.trace(
-					"Executing cluster request for getClusterInfo method for " +
-						"cluster node ID " +
-							localClusterNode.getClusterNodeId());
+					"Executing getClusterInfo method for cluster node ID " +
+						localClusterNode.getClusterNodeId());
 			}
 
 			InetAddress inetAddress = localClusterNode.getBindInetAddress();
@@ -262,8 +261,7 @@ public class ClusterNodeUtil {
 	private static final MethodHandler _containsKeyMethodHandler =
 		new MethodHandler(
 			new MethodKey(
-				ServletContextPool.class.getName(), "containsKey",
-				String.class),
+				ServletContextPool.class, "containsKey", String.class),
 			"lcs-portlet");
 	private static final MethodHandler _getClusterNodeInfoMethodHandler =
 		new MethodHandler(
