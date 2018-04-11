@@ -686,10 +686,6 @@ $has-control-menu-top-mobile: 48px;
 			padding-left: 0;
 		}
 
-		.author {
-			font-weight: bold;
-		}
-
 		.article-content {
 			code {
 				color: inherit;
@@ -704,6 +700,10 @@ $has-control-menu-top-mobile: 48px;
 			ul li {
 				list-style: disc;
 			}
+		}
+
+		.author {
+			font-weight: bold;
 		}
 
 		.icon-bell {
