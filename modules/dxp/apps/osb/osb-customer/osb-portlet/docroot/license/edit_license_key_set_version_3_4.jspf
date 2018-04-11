@@ -559,7 +559,7 @@
 									</aui:select>
 								</c:when>
 								<c:otherwise>
-									<input name="<%= "renewTime_" + licenseKey.getLicenseKeyId() %>" type="hidden" value="30" />
+									<aui:input name='<%= "renewTime_" + licenseKey.getLicenseKeyId() %>' type="hidden" value="30" />
 								</c:otherwise>
 							</c:choose>
 

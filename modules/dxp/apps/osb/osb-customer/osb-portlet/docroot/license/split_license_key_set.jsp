@@ -36,11 +36,11 @@ String productEntryName = licenseKey.getProductEntryName();
 </portlet:actionURL>
 
 <aui:form action="<%= updateLicenseKeyURL %>" class="uni-form" method="post">
-	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
-	<input name="<portlet:namespace />licenseKeyId" type="hidden" value="<%= licenseKeyId %>" />
-	<input name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= licenseKey.getOfferingEntryId() %>" />
-	<input name="<portlet:namespace />active" type="hidden" value="<%= licenseKey.getActive() %>" />
+	<aui:input name="redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
+	<aui:input name="backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
+	<aui:input name="licenseKeyId" type="hidden" value="<%= licenseKeyId %>" />
+	<aui:input name="offeringEntryId" type="hidden" value="<%= licenseKey.getOfferingEntryId() %>" />
+	<aui:input name="active" type="hidden" value="<%= licenseKey.getActive() %>" />
 
 	<div class="clearfix section">
 		<div class="pull-right">
@@ -255,7 +255,7 @@ String productEntryName = licenseKey.getProductEntryName();
 	</div>
 
 	<div>
-		<input class="aui-button-input" type="submit" value="<liferay-ui:message key="save" />" />
+		<aui:button type="submit" value="save" />
 
 		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 	</div>

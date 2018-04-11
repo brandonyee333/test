@@ -19,5 +19,5 @@
 <liferay-ui:message key="thank-you-for-your-interest-in-liferay-dxp-a-request-to-renew-your-trial-has-been-sent-to-our-sales-team-who-will-contact-you-shortly" />
 
 <div align="right">
-	<input class="aui-button-input" onClick="<portlet:namespace />closeDialog(0);" type="button" value="<liferay-ui:message key="close" />" />
+	<aui:button onClick='<%= renderResponse.getNamespace() + "closeDialog(0);" %>' value="close" />
 </div>

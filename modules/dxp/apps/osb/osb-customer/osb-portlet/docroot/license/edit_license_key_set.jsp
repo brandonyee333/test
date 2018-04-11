@@ -76,12 +76,12 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 </portlet:actionURL>
 
 <aui:form action="<%= updateLicenseKeySetURL %>" class="uni-form" method="post" onSubmit="submitForm(this); return false;">
-	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
-	<input name="<portlet:namespace />licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
-	<input name="<portlet:namespace />licenseKeyId" type="hidden" />
-	<input name="<portlet:namespace />offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
-	<input name="<portlet:namespace />clusterId" type="hidden" value="<%= clusterId %>" />
+	<aui:input name="redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
+	<aui:input name="backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
+	<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
+	<aui:input name="licenseKeyId" type="hidden" />
+	<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
+	<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 
 	<div class="clearfix section">
 		<div class="pull-right">

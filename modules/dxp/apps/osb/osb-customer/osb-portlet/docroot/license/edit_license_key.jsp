@@ -521,7 +521,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								href="<%= rowHREF %>"
 							>
 								<c:if test="<%= addLicensePermission && (offeringEntryGroup.getStatus() == OfferingEntryConstants.STATUS_ACTIVE) && offeringEntryGroup.hasAvailableServers() %>">
-									<input class="aui-button-input" onClick="<%= rowHREF %>" type="button" value="<liferay-ui:message key="choose" />" />
+									<aui:button onClick="<%= rowHREF %>" value="choose" />
 								</c:if>
 							</liferay-ui:search-container-column-text>
 						</liferay-ui:search-container-row>
@@ -680,7 +680,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 									<c:otherwise>
 										5
 
-										<input name="<portlet:namespace />maxHttpSessions" type="hidden" value="5" />
+										<aui:input name="maxHttpSessions" type="hidden" value="5" />
 									</c:otherwise>
 								</c:choose>
 							</div>
@@ -869,7 +869,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 							<div class="callout-a">
 								<div class="callout-content">
-									<input class="lfr-input-text" name="<portlet:namespace />serverIds" type="text" value="<%= HtmlUtil.escapeAttribute(serverIds) %>" />
+									<aui:input class="lfr-input-text" label="" name="serverIds" type="text" value="<%= HtmlUtil.escapeAttribute(serverIds) %>" />
 								</div>
 							</div>
 						</c:when>
@@ -881,7 +881,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			</c:choose>
 
 			<div>
-				<input class="aui-button-input" type="submit" value="<liferay-ui:message key="generate" />" />
+				<aui:button type="submit" value="generate" />
 
 				<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 			</div>

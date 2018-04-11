@@ -41,7 +41,7 @@ Date lastEnabledDate = calendar.getTime();
 						<liferay-ui:message key="project" />
 					</h2>
 
-					<input id="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" name="<portlet:namespace /><%= displayTerms.ACCOUNT_ENTRY_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getAccountEntryName()) %>" />
+					<aui:input label="" name="<%= displayTerms.ACCOUNT_ENTRY_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getAccountEntryName()) %>" />
 				</div>
 			</div>
 
@@ -51,7 +51,7 @@ Date lastEnabledDate = calendar.getTime();
 						<liferay-ui:message key="name" />
 					</h2>
 
-					<input id="<portlet:namespace /><%= displayTerms.LICENSE_KEY_SET_NAME %>" name="<portlet:namespace /><%= displayTerms.LICENSE_KEY_SET_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getLicenseKeySetName()) %>" />
+					<aui:input label="" name="<%= displayTerms.LICENSE_KEY_SET_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getLicenseKeySetName()) %>" />
 				</div>
 			</div>
 
@@ -61,7 +61,7 @@ Date lastEnabledDate = calendar.getTime();
 						<liferay-ui:message key="owner" />
 					</h2>
 
-					<input id="<portlet:namespace /><%= displayTerms.OWNER %>" name="<portlet:namespace /><%= displayTerms.OWNER %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getOwner()) %>" />
+					<aui:input label="" name="<%= displayTerms.OWNER %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getOwner()) %>" />
 				</div>
 			</div>
 		</div>
@@ -73,7 +73,7 @@ Date lastEnabledDate = calendar.getTime();
 						<liferay-ui:message key="description" />
 					</h2>
 
-					<input id="<portlet:namespace /><%= displayTerms.DESCRIPTION %>" name="<portlet:namespace /><%= displayTerms.DESCRIPTION %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getDescription()) %>" />
+					<aui:input label="" name="<%= displayTerms.DESCRIPTION %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getDescription()) %>" />
 				</div>
 			</div>
 
@@ -83,7 +83,7 @@ Date lastEnabledDate = calendar.getTime();
 						<liferay-ui:message key="host-name" />
 					</h2>
 
-					<input id="<portlet:namespace /><%= displayTerms.HOST_NAME %>" name="<portlet:namespace /><%= displayTerms.HOST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getHostName()) %>" />
+					<aui:input label="" name="<%= displayTerms.HOST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getHostName()) %>" />
 				</div>
 			</div>
 
@@ -93,7 +93,7 @@ Date lastEnabledDate = calendar.getTime();
 						<liferay-ui:message key="ip-address" />
 					</h2>
 
-					<input id="<portlet:namespace /><%= displayTerms.IP_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.IP_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getIpAddress()) %>" />
+					<aui:input label="" name="<%= displayTerms.IP_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getIpAddress()) %>" />
 				</div>
 			</div>
 		</div>
@@ -105,7 +105,7 @@ Date lastEnabledDate = calendar.getTime();
 						<liferay-ui:message key="mac-address" />
 					</h2>
 
-					<input id="<portlet:namespace /><%= displayTerms.MAC_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.MAC_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getMacAddress()) %>" />
+					<aui:input label="" name="<%= displayTerms.MAC_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getMacAddress()) %>" />
 				</div>
 			</div>
 
@@ -115,7 +115,7 @@ Date lastEnabledDate = calendar.getTime();
 						<liferay-ui:message key="server-id" />
 					</h2>
 
-					<input id="<portlet:namespace /><%= displayTerms.SERVER_ID %>" name="<portlet:namespace /><%= displayTerms.SERVER_ID %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getServerId()) %>" />
+					<aui:input label="" name="<%= displayTerms.SERVER_ID %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getServerId()) %>" />
 				</div>
 			</div>
 
@@ -125,7 +125,7 @@ Date lastEnabledDate = calendar.getTime();
 						<liferay-ui:message key="key" />
 					</h2>
 
-					<input id="<portlet:namespace /><%= displayTerms.KEY %>" name="<portlet:namespace /><%= displayTerms.KEY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getKey()) %>" />
+					<aui:input label="" name="<%= displayTerms.KEY %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getKey()) %>" />
 				</div>
 			</div>
 		</div>
@@ -146,9 +146,19 @@ Date lastEnabledDate = calendar.getTime();
 						</c:if>
 					</select>
 
-					<input name="<portlet:namespace /><%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
+					<aui:input name="<%= displayTerms.CREATE_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getCreateUserName()) %>" />
 
-					<input class="aui-button-input" onClick="var createUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_user.jsp" /><portlet:param name="userParam" value="licenseKeyCreateUsers" /><portlet:param name="callback" value="selectCreateUser" /></portlet:renderURL>', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+					<portlet:renderURL var="selectCreateUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+						<portlet:param name="mvcPath" value="/license/select_user.jsp" />
+						<portlet:param name="userParam" value="licenseKeyCreateUsers" />
+						<portlet:param name="callback" value="selectCreateUser" />
+					</portlet:renderURL>
+
+					<%
+					String taglibSelectCreateUser = "var createUserWindow = window.open('" + selectCreateUserURL + "', 'create_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); createUserWindow.focus();";
+					%>
+
+					<aui:button onClick="<%= taglibSelectCreateUser %>" value="choose" />
 				</div>
 			</div>
 
@@ -167,9 +177,19 @@ Date lastEnabledDate = calendar.getTime();
 						</c:if>
 					</select>
 
-					<input name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
+					<aui:input name="<%= displayTerms.MODIFIED_USER_NAME %>" type="hidden" value="<%= HtmlUtil.escape(displayTerms.getModifiedUserName()) %>" />
 
-					<input class="aui-button-input" onClick="var modifiedUserWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_user.jsp" /><portlet:param name="userParam" value="licenseKeyModifiedUsers" /><portlet:param name="callback" value="selectModifiedUser" /></portlet:renderURL>', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();" type="button" value="<liferay-ui:message key="choose" />" />
+					<portlet:renderURL var="selectModifiedUserURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+						<portlet:param name="mvcPath" value="/license/select_user.jsp" />
+						<portlet:param name="userParam" value="licenseKeyModifiedUsers" />
+						<portlet:param name="callback" value="selectModifiedUser" />
+					</portlet:renderURL>
+
+					<%
+					String taglibSelectModifiedUser = "var modifiedUserWindow = window.open('" + selectModifiedUserURL + "', 'modified_user', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); modifiedUserWindow.focus();";
+					%>
+
+					<aui:button onClick="<%= taglibSelectModifiedUser %>" value="choose" />
 				</div>
 			</div>
 

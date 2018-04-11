@@ -47,12 +47,12 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 </portlet:actionURL>
 
 <aui:form action="<%= updateLicenseKeyURL %>" class="uni-form" method="post">
-	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
-	<input name="<portlet:namespace />licenseKeyId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
-	<input name="<portlet:namespace />licenseKeySetId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeySetId()) %>" />
-	<input name="<portlet:namespace />active" type="hidden" value="<%= String.valueOf(licenseKey.getActive()) %>" />
-	<input name="<portlet:namespace />offeringEntryId" type="hidden" value="" />
+	<aui:input name="redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
+	<aui:input name="backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
+	<aui:input name="licenseKeyId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
+	<aui:input name="licenseKeySetId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeySetId()) %>" />
+	<aui:input name="active" type="hidden" value="<%= String.valueOf(licenseKey.getActive()) %>" />
+	<aui:input name="offeringEntryId" type="hidden" value="" />
 
 	<div class="clearfix section">
 		<div class="pull-right">
@@ -152,7 +152,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 								/>
 							</c:when>
 							<c:when test="<%= offeringEntryGroup.hasAvailableServers() && ((productEntry == null) || (productEntry.getEnvironment() == curProductEntry.getEnvironment())) %>">
-								<input class="aui-button-input" onClick="<%= rowHREF %>" type="button" value="<liferay-ui:message key="choose" />" />
+								<aui:button onClick="<%= rowHREF %>" value="choose" />
 							</c:when>
 						</c:choose>
 					</liferay-ui:search-container-column-text>

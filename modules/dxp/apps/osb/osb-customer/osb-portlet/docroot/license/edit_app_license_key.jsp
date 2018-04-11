@@ -552,7 +552,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 								href="<%= rowHREF %>"
 							>
 								<c:if test="<%= curAssetReceiptLicense.hasAvailableLicenseKeys() %>">
-									<input class="aui-button-input" onClick="<%= rowHREF %>" type="button" value="<liferay-ui:message key="choose" />" />
+									<aui:button onClick="<%= rowHREF %>" value="choose" />
 								</c:if>
 							</liferay-ui:search-container-column-text>
 						</liferay-ui:search-container-row>
@@ -695,7 +695,7 @@ portletURL.setParameter("appEntryId", String.valueOf(appEntryId));
 			</div>
 
 			<div>
-				<input class="aui-button-input" type="submit" value="<liferay-ui:message key="generate" />" />
+				<aui:button type="submit" value="generate" />
 
 				<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
 			</div>
