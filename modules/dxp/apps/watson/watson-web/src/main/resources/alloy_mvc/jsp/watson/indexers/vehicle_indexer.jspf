@@ -36,6 +36,7 @@ public static class WatsonVehicleIndexer extends BaseAlloyIndexer {
 		document.addKeyword(Field.STATUS, watsonVehicle.getStatus());
 		document.addKeyword("colorWatsonListTypeId", watsonVehicle.getColorWatsonListTypeId());
 		document.addKeyword("id", watsonVehicle.getPrimaryKey());
+		document.addKeywordSortable("incidentName", WatsonIndexerUtil.normalizeIncidentName(WatsonIncident.getIncidentName(watsonVehicle.getWatsonIncidentId())));
 		document.addKeyword("licensePlate", watsonVehicle.getLicensePlate());
 
 		WatsonListType watsonListType = WatsonListType.fetch(watsonVehicle.getMakeWatsonListTypeId());

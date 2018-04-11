@@ -69,6 +69,7 @@ public static class WatsonPeopleIndexer extends BaseAlloyIndexer {
 		document.addKeyword("hairWatsonListTypeId", watsonPerson.getHairWatsonListTypeId());
 		document.addKeyword("height", watsonPerson.getHeight());
 		document.addKeyword("id", watsonPerson.getPrimaryKey());
+		document.addKeywordSortable("incidentName", WatsonIndexerUtil.normalizeIncidentName(WatsonIncident.getIncidentName(watsonPerson.getWatsonIncidentId())));
 		document.addKeyword("nameWatsonListTypeRelString", watsonPerson.getNamesString());
 		document.addLocalizedKeyword("occupation", watsonPerson.getOccupationMap());
 		document.addKeyword("primaryNameString", watsonPerson.getPrimaryName());

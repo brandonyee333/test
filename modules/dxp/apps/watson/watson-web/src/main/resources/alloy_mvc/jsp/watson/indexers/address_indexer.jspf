@@ -42,6 +42,7 @@ public static class WatsonAddressIndexer extends BaseAlloyIndexer {
 		document.addKeyword("districtWatsonListTypeId", watsonAddress.getDistrictWatsonListTypeId());
 		document.addKeyword("floor", watsonAddress.getFloor());
 		document.addKeyword("id", watsonAddress.getPrimaryKey());
+		document.addKeywordSortable("incidentName", WatsonIndexerUtil.normalizeIncidentName(WatsonIncident.getIncidentName(watsonAddress.getWatsonIncidentId())));
 		document.addDate("lastSeenDate", watsonAddress.getLastSeenDate());
 		document.addKeyword("latitude", watsonAddress.getLatitude());
 		document.addKeyword("longitude", watsonAddress.getLongitude());

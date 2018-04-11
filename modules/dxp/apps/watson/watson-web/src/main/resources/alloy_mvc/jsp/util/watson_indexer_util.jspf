@@ -1,0 +1,41 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
+<%!
+public static class WatsonIndexerUtil {
+
+	public static String normalizeIncidentName(String name) {
+		String[] incidentNameParts = StringUtil.split(name, StringPool.DASH);
+
+		String incidentYear = incidentNameParts[0];
+
+		String incidentNameId = incidentNameParts[1];
+
+		if (incidentNameId.length() == 1) {
+			incidentNameId = "000" + incidentNameId;
+		}
+		else if (incidentNameId.length() == 2) {
+			incidentNameId = "00" + incidentNameId;
+		}
+		else if (incidentNameId.length() == 3) {
+			incidentNameId = "0" + incidentNameId;
+		}
+
+		return incidentYear + incidentNameId;
+	}
+
+}
+%>
