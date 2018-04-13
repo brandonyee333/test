@@ -96,6 +96,12 @@
 					#else
 						<i class="icon-bell"></i> $languageUtil.format($locale, "do-not-notify-me-when-this-article-is-updated", "javascript:${randomNamespace}updateSubscribeURL('false');")
 					#end
+
+					#if ($permissionChecker.hasPermission($groupId, $journalArticleClassName, $journalArticle.getResourcePrimKey(), "UPDATE"))
+						<div>
+							<a href="$editJournalArticleURL">$languageUtil.get($locale, "suggest-an-edit")</a>
+						</div>
+					#end
 				</div>
 			#end
 		</div>
