@@ -16,98 +16,97 @@
 
 #set ($dateFormat = "MMMMM d, yyyy")
 
-<div class="side-nav-push-content">
-	<div class="article-wrapper">
-		<div class="article-content col-md-12">
-			<div class="header">
-				<h1 class="header-title">$reserved-article-title.getData()</h1>
+<div class="article-wrapper">
+	<div class="article-content col-md-6">
+		<div class="header">
+			<h1 class="header-title">$reserved-article-title.getData()</h1>
 
-				<div class="metadata">
-					$osbTemplateUtil.renderAssetCategories($locale, $journalArticleClassName, $journalArticle.getResourcePrimKey())
-				</div>
-
-				#set ($portraitURL = $osbTemplateUtil.getPortraitURL("@image_path@", $oldestArticle.getUserId()))
-
-				#if ($validator.isNotNull($portraitURL))
-					<div class="user-profile-image">
-						<img alt="$htmlUtil.escape($oldestArticle.getUserName())" class="avatar" src="$portraitURL" />
-					</div>
-				#end
-
-				<div class="author">
-					$htmlUtil.escape($oldestArticle.getUserName())
-				</div>
-
-				<div class="modified-date">
-					$dateTool.format($dateFormat, $journalArticle.getModifiedDate(), $locale, $dateTool.getTimeZone())
-				</div>
+			<div class="metadata">
+				$osbTemplateUtil.renderAssetCategories($locale, $journalArticleClassName, $journalArticle.getResourcePrimKey())
 			</div>
 
-			<div class="separator"><!-- --></div>
+			#set ($portraitURL = $osbTemplateUtil.getPortraitURL("@image_path@", $oldestArticle.getUserId()))
 
-			<div class="disclaimer">
-				#if ($validator.isNotNull($disclaimers.getData().trim()))
-					<div class="portlet-msg-alert">
-						$disclaimers.getData()
-					</div>
-				#else
-					#foreach ($options in ${disclaimers.getOptions()})
-						#if ($validator.isNotNull($options.trim()))
-							<div class="portlet-msg-alert">
-								$options
+			#if ($validator.isNotNull($portraitURL))
+				<div class="user-profile-image">
+					<img alt="$htmlUtil.escape($oldestArticle.getUserName())" class="avatar" src="$portraitURL" />
+				</div>
+			#end
 
-								<br />
-							</div>
-						#end
-					#end
-				#end
+			<div class="author">
+				$htmlUtil.escape($oldestArticle.getUserName())
 			</div>
 
-			#if ($validator.isNotNull($description.getData().trim()))
-				<section class="description">
-					$description.getData()
-				</section>
-			#end
+			<div class="modified-date">
+				$dateTool.format($dateFormat, $journalArticle.getModifiedDate(), $locale, $dateTool.getTimeZone())
+			</div>
+		</div>
 
-			#if ($validator.isNotNull($resolution.getData().trim()))
-				<section class="resolution">
-					<h2>$languageUtil.get($locale, "resolution")</h2>
+		<div class="separator"><!-- --></div>
 
-					<div>
-						$resolution.getData()
-					</div>
-				</section>
-			#end
+		<div class="disclaimer">
+			#if ($validator.isNotNull($disclaimers.getData().trim()))
+				<div class="portlet-msg-alert">
+					$disclaimers.getData()
+				</div>
+			#else
+				#foreach ($options in ${disclaimers.getOptions()})
+					#if ($validator.isNotNull($options.trim()))
+						<div class="portlet-msg-alert">
+							$options
 
-			#if ($validator.isNotNull($additionalInformation.getData().trim()))
-				<section class="additional-info">
-					<h2>$languageUtil.get($locale, "additional-information")</h2>
-
-					<div>
-						$additionalInformation.getData()
-					</div>
-				</section>
-			#end
-
-			#if ($permissionChecker.isSignedIn() && $validator.equals($request.window-state.toString(), "normal"))
-				<div class="notification">
-					#if (!$isSubscribed)
-						<i class="icon-bell"></i> $languageUtil.format($locale, "notify-me-when-this-article-is-updated", "javascript:${randomNamespace}updateSubscribeURL('true');")
-					#else
-						<i class="icon-bell"></i> $languageUtil.format($locale, "do-not-notify-me-when-this-article-is-updated", "javascript:${randomNamespace}updateSubscribeURL('false');")
-					#end
-
-					#if ($permissionChecker.hasPermission($groupId, $journalArticleClassName, $journalArticle.getResourcePrimKey(), "UPDATE"))
-						<div>
-							<a href="$editJournalArticleURL">$languageUtil.get($locale, "suggest-an-edit")</a>
+							<br />
 						</div>
 					#end
-				</div>
+				#end
 			#end
 		</div>
 
-		<form action="#" id="${randomNamespace}hrefFm" method="post" name="${randomNamespace}hrefFm"></form>
-	</div>
+		#if ($validator.isNotNull($description.getData().trim()))
+			<section class="description">
+				$description.getData()
+			</section>
+		#end
+
+		#if ($validator.isNotNull($resolution.getData().trim()))
+			<section class="resolution">
+				<h2>$languageUtil.get($locale, "resolution")</h2>
+
+				<div>
+					$resolution.getData()
+				</div>
+			</section>
+		#end
+
+		#if ($validator.isNotNull($additionalInformation.getData().trim()))
+			<section class="additional-info">
+				<h2>$languageUtil.get($locale, "additional-information")</h2>
+
+				<div>
+					$additionalInformation.getData()
+				</div>
+			</section>
+		#end
+
+
+		#if ($permissionChecker.isSignedIn() && $validator.equals($request.window-state.toString(), "normal"))
+			<h4 class="notification">
+				#if (!$isSubscribed)
+					<i class="icon-bell"></i> $languageUtil.format($locale, "notify-me-when-this-article-is-updated", "javascript:${randomNamespace}updateSubscribeURL('true');")
+				#else
+					<i class="icon-bell"></i> $languageUtil.format($locale, "do-not-notify-me-when-this-article-is-updated", "javascript:${randomNamespace}updateSubscribeURL('false');")
+				#end
+
+				#if ($permissionChecker.hasPermission($groupId, $journalArticleClassName, $journalArticle.getResourcePrimKey(), "UPDATE"))
+					<a class="suggest-edit" href="$editJournalArticleURL">
+						<i class="icon-lightbulb"></i>
+						$languageUtil.get($locale, "suggest-an-edit")
+					</a>
+				#end
+			</h4>
+		#end
+
+	<form action="#" id="${randomNamespace}hrefFm" method="post" name="${randomNamespace}hrefFm"></form>
 </div>
 
 <script type="text/javascript">

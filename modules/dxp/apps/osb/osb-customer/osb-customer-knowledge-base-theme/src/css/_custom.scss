@@ -682,11 +682,10 @@ $has-control-menu-top-mobile: 48px;
 			}
 		}
 
-		[class*="col-md"] {
-			padding-left: 0;
-		}
-
 		.article-content {
+			float: none;
+			margin: 0 auto;
+
 			code {
 				color: inherit;
 				display: inline-block;
@@ -702,7 +701,7 @@ $has-control-menu-top-mobile: 48px;
 			}
 		}
 
-		.author {
+		.author, .metadata, .notification {
 			font-weight: bold;
 		}
 
@@ -712,7 +711,6 @@ $has-control-menu-top-mobile: 48px;
 
 		.metadata {
 			color: $gray;
-			font-weight: bold;
 			margin-bottom: 1em;
 		}
 
@@ -726,7 +724,12 @@ $has-control-menu-top-mobile: 48px;
 		}
 
 		.separator {
-			margin-top: 0;
+			margin: 1.5em auto;
+		}
+
+		.suggest-edit {
+			display: block;
+			margin: 1em 0;
 		}
 
 		.user-profile-image {
