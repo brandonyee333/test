@@ -683,9 +683,6 @@ $has-control-menu-top-mobile: 48px;
 		}
 
 		.article-content {
-			float: none;
-			margin: 0 auto;
-
 			code {
 				color: inherit;
 				display: inline-block;
@@ -721,6 +718,21 @@ $has-control-menu-top-mobile: 48px;
 
 		.notification {
 			margin-top: 2em;
+		}
+
+		.related-articles {
+			margin-top: 4em;
+
+			a {
+				display: block;
+				font-size: 14px;
+				font-weight: bold;
+				max-width: 250px;
+				overflow: hidden;
+				padding: 0.75em 0;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
 		}
 
 		.separator {
