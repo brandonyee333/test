@@ -238,8 +238,19 @@ public class LCSUtil {
 			return true;
 		}
 
-		((OAuthJSONWebServiceClientImpl)_jsonWebServiceClient).
-			testOAuthRequest();
+		try {
+			((OAuthJSONWebServiceClientImpl)_jsonWebServiceClient).
+				testOAuthRequest();
+		}
+		catch (
+			JSONWebServiceTransportException.AuthenticationFailure jsonwsteaf) {
+
+			if (_log.isWarnEnabled()) {
+				_log.warn(jsonwsteaf.getMessage());
+			}
+
+			return false;
+		}
 
 		long lcsAccessTokenNextValidityCheckMillis =
 			System.currentTimeMillis() + 300000;
