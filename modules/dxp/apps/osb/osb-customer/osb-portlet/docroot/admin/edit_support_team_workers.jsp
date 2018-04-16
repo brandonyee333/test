@@ -47,8 +47,8 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 %>
 
 <aui:form action="<%= portletURL.toString() %>" method="post">
-	<input name="<portlet:namespace />assignmentsRedirect" type="hidden" value="" />
-	<input name="<portlet:namespace />supportTeamId" type="hidden" value="<%= supportTeamId %>" />
+	<aui:input name="assignmentsRedirect" type="hidden" value="" />
+	<aui:input name="supportTeamId" type="hidden" value="<%= supportTeamId %>" />
 
 	<liferay-ui:message arguments="<%= HtmlUtil.escape(supportTeam.getName()) %>" key="edit-workers-for-support-team-x" />
 
@@ -62,8 +62,8 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 	<liferay-ui:error exception="<%= PrincipalException.class %>" message="you-do-not-have-the-required-permissions" />
 	<liferay-ui:error exception="<%= SupportWorkerMaxWorkException.class %>" message="max-work-cannot-equal-0" />
 
-	<input name="<portlet:namespace />addUserIds" type="hidden" value="" />
-	<input name="<portlet:namespace />removeUserIds" type="hidden" value="" />
+	<aui:input name="addUserIds" type="hidden" value="" />
+	<aui:input name="removeUserIds" type="hidden" value="" />
 
 	<liferay-ui:tabs
 		names="current,available"
@@ -266,8 +266,8 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 
 					</liferay-ui:search-container-column-text>
 
-					<input name="<portlet:namespace />maxWork_<%= curUser.getUserId() %>" type="hidden" value="<%= maxWork %>" />
-					<input name="<portlet:namespace />notifications_<%= curUser.getUserId() %>" type="hidden" value="<%= notifications %>" />
+					<aui:input name="maxWork_<%= curUser.getUserId() %>" type="hidden" value="<%= maxWork %>" />
+					<aui:input name="notifications_<%= curUser.getUserId() %>" type="hidden" value="<%= notifications %>" />
 				</c:when>
 				<c:otherwise>
 					<liferay-ui:search-container-column-text
@@ -293,7 +293,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					for (int i = 1; i <= 3; i++) {
 					%>
 
-						<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, SupportWorkerConstants.getNotificationsLabel(i)) %></option>
+						<aui:option label="<%= SupportWorkerConstants.getNotificationsLabel(i) %>" selected="<%= notifications == i %>" value="<%= i %>" />
 
 					<%
 					}
@@ -313,7 +313,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					for (ListType escalationLevelType : escalationLevelTypes) {
 					%>
 
-						<option <%= (escalationLevelType.getListTypeId() == escalationLevel) ? "selected" : "" %> value="<%= escalationLevelType.getListTypeId() %>"><%= LanguageUtil.get(request, escalationLevelType.getName()) %></option>
+						<aui:option label="<%= escalationLevelType.getName() %>" selected="<%= escalationLevelType.getListTypeId() == escalationLevel %>" value="<%= escalationLevelType.getListTypeId() %>" />
 
 					<%
 					}
@@ -326,13 +326,13 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				name="role"
 			>
 				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "role_" + curUser.getUserId() %>'>
-					<option></option>
+					<aui:option />
 
 					<%
 					for (int i = 1; i <= 4; i++) {
 					%>
 
-						<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, SupportWorkerConstants.getRoleLabel(i)) %></option>
+						<aui:option label="<%= SupportWorkerConstants.getRoleLabel(i) %>" selected="<%= role == i %>" value="<%= i %>" />
 
 					<%
 					}

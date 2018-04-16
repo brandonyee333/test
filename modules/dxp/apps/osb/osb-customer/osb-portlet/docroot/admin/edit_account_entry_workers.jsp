@@ -36,8 +36,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 %>
 
 <aui:form action="<%= portletURL.toString() %>" method="post">
-	<input name="<portlet:namespace />assignmentsRedirect" type="hidden" value="" />
-	<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+	<aui:input name="assignmentsRedirect" type="hidden" value="" />
+	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 	<liferay-ui:message arguments="<%= HtmlUtil.escape(accountEntry.getName()) %>" key="edit-workers-for-project-x" />
 
@@ -50,8 +50,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 	<liferay-ui:error exception="<%= RequiredPartnerEntryException.class %>" message="this-project-must-be-assigned-a-partner-before-assigning-workers" />
 
-	<input name="<portlet:namespace />addUserIds" type="hidden" value="" />
-	<input name="<portlet:namespace />removeUserIds" type="hidden" value="" />
+	<aui:input name="addUserIds" type="hidden" value="" />
+	<aui:input name="removeUserIds" type="hidden" value="" />
 
 	<liferay-ui:tabs
 		names="current,available"
@@ -141,7 +141,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					for (int i = 1; i <= 4; i++) {
 					%>
 
-						<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, AccountWorkerConstants.getNotificationsLabel(i)) %></option>
+						<aui:option label="<%= AccountWorkerConstants.getNotificationsLabel(i) %>" selected="<%= notifications == i %>" value="<%= i %>" />
 
 					<%
 					}
@@ -154,7 +154,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				name="role"
 			>
 				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "role_" + curUser.getUserId() %>'>
-					<option></option>
+					<aui:option />
 
 					<%
 					for (int i = 1; i <= 5; i++) {
@@ -163,7 +163,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						}
 					%>
 
-						<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, AccountWorkerConstants.getRoleLabel(i)) %></option>
+						<aui:option label="<%= AccountWorkerConstants.getRoleLabel(i) %>" selected="<%= role == i %>" value="<%= i %>" />
 
 					<%
 					}

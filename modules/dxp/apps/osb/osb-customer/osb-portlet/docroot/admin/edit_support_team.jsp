@@ -153,7 +153,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 						}
 					%>
 
-						<aui:option selected="<%= parentSupportTeamId == curSupportTeam.getSupportTeamId() %>" value="<%= curSupportTeam.getSupportTeamId() %>"><%= HtmlUtil.escape(curSupportTeam.getName()) %></aui:option>
+						<aui:option label="<%= curSupportTeam.getName() %>" selected="<%= parentSupportTeamId == curSupportTeam.getSupportTeamId() %>" value="<%= curSupportTeam.getSupportTeamId() %>" />
 
 					<%
 					}
@@ -258,7 +258,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<portlet:param name="supportTeamId" value="<%= String.valueOf(supportTeam.getSupportTeamId()) %>" />
 			</portlet:renderURL>
 
-			<a class="btn btn-default" href="<%= HtmlUtil.escape(assignWorkersURL) %>"><liferay-ui:message key="assign-workers" /></a>
+			<aui:a cssClass="btn btn-default" href="<%= assignWorkersURL %>" label="assign-workers" />
 
 			<portlet:renderURL var="createChildTeamURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="mvcPath" value="/admin/edit_support_team.jsp" />
@@ -266,10 +266,10 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				<portlet:param name="parentSupportTeamId" value="<%= String.valueOf(supportTeam.getSupportTeamId()) %>" />
 			</portlet:renderURL>
 
-			<a class="btn btn-default" href="<%= HtmlUtil.escape(createChildTeamURL) %>"><liferay-ui:message key="create-child-team" /></a>
+			<aui:a cssClass="btn btn-default" href="<%= createChildTeamURL %>" label="create-child-team" />
 		</c:if>
 
-		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 	</div>
 
 	<c:if test="<%= supportTeam != null %>">

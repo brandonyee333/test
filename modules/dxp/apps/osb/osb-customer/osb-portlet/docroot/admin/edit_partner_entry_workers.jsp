@@ -36,8 +36,8 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 %>
 
 <aui:form action="<%= portletURL.toString() %>" method="post">
-	<input name="<portlet:namespace />assignmentsRedirect" type="hidden" value="" />
-	<input name="<portlet:namespace />partnerEntryId" type="hidden" value="<%= partnerEntryId %>" />
+	<aui:input name="assignmentsRedirect" type="hidden" value="" />
+	<aui:input name="partnerEntryId" type="hidden" value="<%= partnerEntryId %>" />
 
 	<liferay-ui:message arguments="<%= partnerEntry.getCode() %>" key="edit-workers-for-partner-x" />
 
@@ -48,8 +48,8 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 		names="users"
 	/>
 
-	<input name="<portlet:namespace />addUserIds" type="hidden" value="" />
-	<input name="<portlet:namespace />removeUserIds" type="hidden" value="" />
+	<aui:input name="addUserIds" type="hidden" value="" />
+	<aui:input name="removeUserIds" type="hidden" value="" />
 
 	<liferay-ui:tabs
 		names="current,available"
@@ -139,7 +139,7 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 					for (int i = 1; i <= 2; i++) {
 					%>
 
-						<option <%= (notifications == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, PartnerWorkerConstants.getNotificationsLabel(i)) %></option>
+						<aui:option label="<%= PartnerWorkerConstants.getNotificationsLabel(i) %>" selected="<%= notifications == i %>" value="<%= i %>" />
 
 					<%
 					}
@@ -152,13 +152,13 @@ portletURL.setParameter("partnerEntryId", String.valueOf(partnerEntryId));
 				name="role"
 			>
 				<aui:select disabled="<%= !curUser.isActive() %>" label="" name='<%= "role_" + curUser.getUserId() %>'>
-					<option></option>
+					<aui:option />
 
 					<%
 					for (int i = 1; i <= 3; i++) {
 					%>
 
-						<option <%= (role == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, PartnerWorkerConstants.getRoleLabel(i)) %></option>
+						<aui:option label="<%= PartnerWorkerConstants.getRoleLabel(i) %>" selected="<%= role == i %>" value="<%= i %>" />
 
 					<%
 					}

@@ -46,9 +46,9 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 </portlet:actionURL>
 
 <aui:form action="<%= updateSupportResponseURL %>" method="post">
-	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
-	<input name="<portlet:namespace />supportResponseId" type="hidden" value="<%= supportResponseId %>" />
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
+	<aui:input name="supportResponseId" type="hidden" value="<%= supportResponseId %>" />
 
 	<liferay-ui:tabs
 		backURL="<%= backURL %>"
@@ -83,7 +83,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 					for (int curSupportLevel : SupportResponseConstants.SUPPORT_LEVELS) {
 					%>
 
-						<option <%= (curSupportLevel == supportLevel) ? "selected" : "" %> value="<%= curSupportLevel %>"><liferay-ui:message key="<%= SupportResponseConstants.getSupportLevelLabel(curSupportLevel) %>" /></option>
+						<aui:option label="<%= SupportResponseConstants.getSupportLevelLabel(curSupportLevel) %>" selected="<%= curSupportLevel == supportLevel %>" value="<%= curSupportLevel %>" />
 
 					<%
 					}
@@ -109,13 +109,13 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 						</td>
 						<td>
 							<aui:select label="" name="severity1Response">
-								<option></option>
+								<aui:option />
 
 								<%
 								for (int severityResponse : _SEVERITY_RESPONSES) {
 								%>
 
-									<option <%= (severity1Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(request, "x-hours", severityResponse) %></option>
+									<aui:option label='<%= LanguageUtil.format(request, "x-hours", severityResponse) %>' selected="<%= severity1Response == severityResponse %>" value="<%= severityResponse %>" />
 
 								<%
 								}
@@ -128,13 +128,13 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 						</td>
 						<td>
 							<aui:select label="" name="severity1Resolution">
-								<option></option>
+								<aui:option />
 
 								<%
 								for (int severityResolution : _SEVERITY_RESOLUTIONS) {
 								%>
 
-									<option <%= (severity1Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(request, "x-days", severityResolution) %></option>
+									<aui:option label='<%= LanguageUtil.format(request, "x-days", severityResolution) %>' selected="<%= severity1Resolution == severityResolution %>" value="<%= severityResolution %>" />
 
 								<%
 								}
@@ -158,13 +158,13 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 						</td>
 						<td>
 							<aui:select label="" name="severity2Response">
-								<option></option>
+								<aui:option />
 
 								<%
 								for (int severityResponse : _SEVERITY_RESPONSES) {
 								%>
 
-									<option <%= (severity2Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(request, "x-hours", severityResponse) %></option>
+									<aui:option label='<%= LanguageUtil.format(request, "x-hours", severityResponse) %>' selected="<%= severity2Response == severityResponse %>" value="<%= severityResponse %>" />
 
 								<%
 								}
@@ -177,13 +177,13 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 						</td>
 						<td>
 							<aui:select label="" name="severity2Resolution">
-								<option></option>
+								<aui:option />
 
 								<%
 								for (int severityResolution : _SEVERITY_RESOLUTIONS) {
 								%>
 
-									<option <%= (severity2Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(request, "x-days", severityResolution) %></option>
+									<aui:option label='<%= LanguageUtil.format(request, "x-days", severityResolution) %>' selected="<%= severity2Resolution == severityResolution %>" value="<%= severityResolution %>" />
 
 								<%
 								}
@@ -207,13 +207,13 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 						</td>
 						<td>
 							<aui:select label="" name="severity3Response">
-								<option></option>
+								<aui:option />
 
 								<%
 								for (int severityResponse : _SEVERITY_RESPONSES) {
 								%>
 
-									<option <%= (severity3Response == severityResponse) ? "selected" : "" %> value="<%= severityResponse %>"><%= LanguageUtil.format(request, "x-hours", severityResponse) %></option>
+									<aui:option label='<%= LanguageUtil.format(request, "x-hours", severityResponse) %>' selected="<%= severity3Response == severityResponse %>" value="<%= severityResponse %>" />
 
 								<%
 								}
@@ -226,13 +226,13 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 						</td>
 						<td>
 							<aui:select label="" name="severity3Resolution">
-								<option></option>
+								<aui:option />
 
 								<%
 								for (int severityResolution : _SEVERITY_RESOLUTIONS) {
 								%>
 
-									<option <%= (severity3Resolution == severityResolution) ? "selected" : "" %> value="<%= severityResolution %>"><%= LanguageUtil.format(request, "x-days", severityResolution) %></option>
+									<aui:option label='<%= LanguageUtil.format(request, "x-days", severityResolution) %>' selected="<%= severity3Resolution == severityResolution %>" value="<%= severityResolution %>" />
 
 								<%
 								}
@@ -250,7 +250,7 @@ String languageId = BeanParamUtil.getString(supportResponse, request, "languageI
 
 	<aui:button type="submit" value="save" />
 
-	<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+	<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 </aui:form>
 
 <c:if test="<%= windowState.equals(WindowState.MAXIMIZED) %>">

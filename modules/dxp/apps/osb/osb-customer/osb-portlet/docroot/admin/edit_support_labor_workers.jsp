@@ -36,15 +36,15 @@ portletURL.setParameter("supportLaborId", String.valueOf(supportLaborId));
 %>
 
 <aui:form action="<%= portletURL.toString() %>" method="post">
-	<input name="<portlet:namespace />assignmentsRedirect" type="hidden" value="" />
-	<input name="<portlet:namespace />supportLaborId" type="hidden" value="<%= supportLaborId %>" />
+	<aui:input name="assignmentsRedirect" type="hidden" value="" />
+	<aui:input name="supportLaborId" type="hidden" value="<%= supportLaborId %>" />
 
 	<liferay-ui:message key="assign-support-workers-to" />: <%= HtmlUtil.escape(supportLabor.getName()) %>
 
 	<br /><br />
 
-	<input name="<portlet:namespace />addSupportWorkerIds" type="hidden" value="" />
-	<input name="<portlet:namespace />removeSupportWorkerIds" type="hidden" value="" />
+	<aui:input name="addSupportWorkerIds" type="hidden" value="" />
+	<aui:input name="removeSupportWorkerIds" type="hidden" value="" />
 
 	<liferay-ui:tabs
 		backURL="<%= redirect %>"

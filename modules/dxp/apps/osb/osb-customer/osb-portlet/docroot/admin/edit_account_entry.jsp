@@ -122,14 +122,18 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<span class="first segment">
 				<liferay-ui:message key="created-by" />:
 
-				<span class="txt-sb"><%= HtmlUtil.escape(PortalUtil.getUserName(accountEntry.getUserId(), accountEntry.getUserName())) %></span>
+				<span class="txt-sb">
+					<%= HtmlUtil.escape(PortalUtil.getUserName(accountEntry.getUserId(), accountEntry.getUserName())) %>
+				</span>
 			</span>
 			<span class="spacer"></span>
 
 			<span class="segment">
 				<liferay-ui:message key="last-modified" />:
 
-				<span class="txt-sb"><%= HtmlUtil.escape(PortalUtil.getUserName(accountEntry.getModifiedUserId(), accountEntry.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(accountEntry.getModifiedDate()) %></span>
+				<span class="txt-sb">
+					<%= HtmlUtil.escape(PortalUtil.getUserName(accountEntry.getModifiedUserId(), accountEntry.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(accountEntry.getModifiedDate()) %>
+				</span>
 			</span>
 			<span class="spacer"></span>
 
@@ -192,10 +196,12 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						workflowTaskURL.setParameter("workflowTaskId", String.valueOf(workflowTask.getWorkflowTaskId()));
 						%>
 
-						<a href="<%= workflowTaskURL.toString() %>" target="_blank"><%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %></a>
+						<aui:a href="<%= workflowTaskURL.toString() %>" label="<%= accountEntry.getStatusLabel() %>" target="_blank" />
 					</c:when>
 					<c:otherwise>
-						<span class="txt-sb"><%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %></span>
+						<span class="txt-sb">
+							<%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %>
+						</span>
 					</c:otherwise>
 				</c:choose>
 
@@ -208,7 +214,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					workflowTasksURL.setParameter("accountEntryCode", StringPool.QUOTE + accountEntry.getCode() + StringPool.QUOTE);
 					%>
 
-					(<a href="<%= workflowTasksURL.toString() %>" target="_blank"><liferay-ui:message key="open-workflow-tasks" /></a>)
+					(<aui:a href="<%= workflowTasksURL.toString() %>" label="open-workflow-tasks" target="_blank" />)
 				</c:if>
 			</span>
 
@@ -348,9 +354,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 							<portlet:param name="corpProjectId" value="<%= String.valueOf(corpProject.getCorpProjectId()) %>" />
 						</liferay-portlet:renderURL>--%>
 
-						<a href="#" target="_blank">
-							<%= HtmlUtil.escape(corpProject.getName()) %>
-						</a>
+						<aui:a href="#" label="<%= corpProject.getName() %>" target="_blank" />
 					</c:if>
 				</span>
 
@@ -440,9 +444,13 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<span id="<portlet:namespace />partnerEntryCode">
 					<c:choose>
 						<c:when test="<%= RoleLocalServiceUtil.hasUserRole(permissionChecker.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) && (partnerEntryId > 0) %>">
-							<a href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /><portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntryId) %>" /></portlet:renderURL>">
-								<%= partnerEntryCode %>
-							</a>
+							<portlet:renderURL var="partnerEntryURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+								<portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" />
+								<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+								<portlet:param name="partnerEntryId" value="<%= String.valueOf(partnerEntryId) %>" />
+							</portlet:renderURL>
+
+							<aui:a href="<%= partnerEntryURL.toString() %>" label="<%= partnerEntryCode %>" />
 						</c:when>
 						<c:otherwise>
 							<%= partnerEntryCode %>
@@ -538,7 +546,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 						<aui:input name="accountAttachmentId" type="hidden" value="<%= accountAttachment.getAccountAttachmentId() %>" />
 						<aui:input name="deleteAccountAttachment" type="hidden" />
 
-						<a href="<%= accountAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(accountAttachment.getFileName()) %></a>
+						<aui:a href="<%= accountAttachmentURL.toString() %>" label="<%= accountAttachment.getFileName() %>" target="_blank" />
 
 						<aui:button onClick='<%= renderResponse.getNamespace() + "removeAccountAttachment();" %>' value="remove" />
 					</div>
@@ -628,7 +636,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
 			</portlet:renderURL>
 
-			<a class="btn btn-default" href="<%= HtmlUtil.escape(assignWorkersURL) %>"><liferay-ui:message key="assign-workers" /></a>
+			<aui:a cssClass="btn btn-default" href="<%= assignWorkersURL %>" label="assign-workers" />
 
 			<portlet:renderURL var="assignCustomersURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="mvcPath" value="/admin/edit_account_entry_customers.jsp" />
@@ -636,7 +644,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
 			</portlet:renderURL>
 
-			<a class="btn btn-default" href="<%= HtmlUtil.escape(assignCustomersURL) %>"><liferay-ui:message key="assign-customers" /></a>
+			<aui:a cssClass="btn btn-default" href="<%= assignCustomersURL %>" label="assign-customers" />
 
 			<portlet:renderURL var="viewOrdersEntriesURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="tabs1" value="sales" />
@@ -647,7 +655,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<portlet:param name="accountEntryName" value="<%= accountEntry.getName() %>" />
 			</portlet:renderURL>
 
-			<a class="btn btn-default" href="<%= HtmlUtil.escape(viewOrdersEntriesURL) %>"><liferay-ui:message key="view-orders" /></a>
+			<aui:a cssClass="btn btn-default" href="<%= viewOrdersEntriesURL %>" label="view-orders" />
 
 			<c:if test="<%= PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED && permissionChecker.isOmniadmin() %>">
 				<portlet:actionURL name="auditAccountEntry" var="auditOrdersURL">
@@ -655,11 +663,11 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
 				</portlet:actionURL>
 
-				<a class="btn btn-default" href="<%= HtmlUtil.escape(auditOrdersURL) %>"><liferay-ui:message key="audit-project" /></a>
+				<aui:a cssClass="btn btn-default" href="<%= auditOrdersURL %>" label="audit-project" />
 			</c:if>
 		</c:if>
 
-		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 	</div>
 
 	<br />

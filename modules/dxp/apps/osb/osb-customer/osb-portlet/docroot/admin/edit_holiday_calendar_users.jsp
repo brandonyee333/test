@@ -36,15 +36,15 @@ portletURL.setParameter("holidayCalendarId", String.valueOf(holidayCalendarId));
 %>
 
 <aui:form action="<%= portletURL.toString() %>" method="post">
-	<input name="<portlet:namespace />assignmentsRedirect" type="hidden" value="" />
-	<input name="<portlet:namespace />holidayCalendarId" type="hidden" value="<%= holidayCalendarId %>" />
+	<aui:input name="assignmentsRedirect" type="hidden" value="" />
+	<aui:input name="holidayCalendarId" type="hidden" value="<%= holidayCalendarId %>" />
 
 	<liferay-ui:message key="assign-users-to" />: <%= HtmlUtil.escape(holidayCalendar.getName()) %>
 
 	<br /><br />
 
-	<input name="<portlet:namespace />addUserIds" type="hidden" value="" />
-	<input name="<portlet:namespace />removeUserIds" type="hidden" value="" />
+	<aui:input name="addUserIds" type="hidden" value="" />
+	<aui:input name="removeUserIds" type="hidden" value="" />
 
 	<liferay-ui:tabs
 		backURL="<%= redirect %>"

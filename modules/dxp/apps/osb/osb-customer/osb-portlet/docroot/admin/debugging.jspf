@@ -34,32 +34,11 @@ String tabs3 = ParamUtil.getString(request, "tabs3", "license");
 		</portlet:actionURL>
 
 		<aui:form action="<%= debugRabbitMQURL %>" method="post">
-			<table class="lfr-table">
-				<tr>
-					<td>
-						<liferay-ui:message key="routing-key" />
-					</td>
-					<td>
-						<aui:input label="" name="routingKey" type="text" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<liferay-ui:message key="message" />
-					</td>
-					<td>
-						<aui:input label="" name="message" type="textarea" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<liferay-ui:message key="properties" />
-					</td>
-					<td>
-						<aui:input label="" name="properties" type="textarea" />
-					</td>
-				</tr>
-			</table>
+			<aui:input name="routingKey" type="text" />
+
+			<aui:input name="message" type="textarea" />
+
+			<aui:input name="properties" type="textarea" />
 
 			<aui:button type="submit" value="submit" />
 		</aui:form>
@@ -138,15 +117,11 @@ String tabs3 = ParamUtil.getString(request, "tabs3", "license");
 
 		<aui:form action="<%= debugLicenseFilesURL %>" enctype="multipart/form-data" method="post">
 			<div class="ctrl-holder">
-				<label for="<portlet:namespace />license"><liferay-ui:message key="license-file" /></label>
-
-				<input id="<portlet:namespace />license" name="<portlet:namespace />license" type="file" />
+				<aui:input label="license-file" name="license" type="file" />
 			</div>
 
 			<div class="ctrl-holder">
-				<label for="<portlet:namespace />serverId"><liferay-ui:message key="server-id-file" /></label>
-
-				<input id="<portlet:namespace />serverId" name="<portlet:namespace />serverId" type="file" />
+				<aui:input label="server-id-file" name="serverId" type="file" />
 			</div>
 
 			<aui:button type="submit" value="submit" />

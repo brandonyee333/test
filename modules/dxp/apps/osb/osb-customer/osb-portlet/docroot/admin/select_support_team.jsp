@@ -160,7 +160,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 							SupportRegion supportRegion = supportRegions.get(i);
 						%>
 
-							<a href="<%= rowHREF %>"><%= HtmlUtil.escape(supportRegion.getName()) %></a>
+							<aui:a href="<%= rowHREF %>" label="<%= supportRegion.getName() %>" />
 
 							<%= ((i + 1) < supportRegions.size()) ? "<br />" : "" %>
 
@@ -214,7 +214,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 							AccountEntry accountEntry = accountEntries.get(i);
 						%>
 
-							<a href="<%= rowHREF %>"><%= HtmlUtil.escape(accountEntry.getName()) %></a>
+							<aui:a href="<%= rowHREF %>" label="<%= accountEntry.getName() %>" />
 
 							<%= ((i + 1) < accountEntries.size()) ? "<br />" : "" %>
 

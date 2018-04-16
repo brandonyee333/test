@@ -54,7 +54,7 @@ portletURL.setParameter("callback", callback);
 				<tr>
 					<td>
 						<aui:select label="" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>">
-							<option value=""></option>
+							<aui:option value="" />
 
 							<%
 							List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -62,7 +62,7 @@ portletURL.setParameter("callback", callback);
 							for (ProductEntry productEntry : productEntries) {
 							%>
 
-								<option <%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
+								<aui:option label="<%= productEntry.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" value="<%= productEntry.getProductEntryId() %>" />
 
 							<%
 							}
@@ -72,7 +72,7 @@ portletURL.setParameter("callback", callback);
 					</td>
 					<td>
 						<aui:select label="" name="<%= displayTerms.SUPPORT_RESPONSE_IDS %>">
-							<option value=""></option>
+							<aui:option value="" />
 
 							<%
 							List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -80,7 +80,7 @@ portletURL.setParameter("callback", callback);
 							for (SupportResponse supportResponse : supportResponses) {
 							%>
 
-								<option <%= ArrayUtil.contains(displayTerms.getSupportResponseIds(), supportResponse.getSupportResponseId()) ? "selected" : "" %> value="<%= supportResponse.getSupportResponseId() %>"><%= HtmlUtil.escape(supportResponse.getName()) %></option>
+								<aui:option label="<%= supportResponse.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportResponseIds(), supportResponse.getSupportResponseId()) %>" value="<%= supportResponse.getSupportResponseId() %>" />
 
 							<%
 							}

@@ -27,7 +27,7 @@
 		<tr>
 			<td>
 				<aui:select label="" multiple="<%= true %>" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>">
-					<option value=""><liferay-ui:message key="any" /></option>
+					<aui:option label="any" value="" />
 
 					<%
 					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -35,7 +35,7 @@
 					for (ProductEntry productEntry : productEntries) {
 					%>
 
-						<option <%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
+						<aui:option label="<%= productEntry.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" value="<%= productEntry.getProductEntryId() %>" />
 
 					<%
 					}
@@ -45,7 +45,7 @@
 			</td>
 			<td>
 				<aui:select label="" multiple="<%= true %>" name="<%= displayTerms.SUPPORT_RESPONSE_IDS %>">
-					<option value=""><liferay-ui:message key="any" /></option>
+					<aui:option label="any" value="" />
 
 					<%
 					List<SupportResponse> supportResponses = SupportResponseLocalServiceUtil.getSupportResponses(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -53,7 +53,7 @@
 					for (SupportResponse supportResponse : supportResponses) {
 					%>
 
-						<option <%= ArrayUtil.contains(displayTerms.getSupportResponseIds(), supportResponse.getSupportResponseId()) ? "selected" : "" %> value="<%= supportResponse.getSupportResponseId() %>"><%= HtmlUtil.escape(supportResponse.getName()) %></option>
+						<aui:option label="<%= supportResponse.getName() %>" selected="<%= ArrayUtil.contains(displayTerms.getSupportResponseIds(), supportResponse.getSupportResponseId()) %>" value="<%= supportResponse.getSupportResponseId() %>" />
 
 					<%
 					}

@@ -75,7 +75,12 @@ String mvcPath = ParamUtil.getString(renderRequest, "mvcPath");
 <br />
 
 <div>
-	<a class="btn btn-default" href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>"><liferay-ui:message key="add-partner" /></a>
+	<portlet:renderURL var="editPartnerEntryURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+		<portlet:param name="mvcPath" value="/admin/edit_partner_entry.jsp" />
+		<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+	</portlet:renderURL>
+
+	<aui:a cssClass="btn btn-default" href="<%= editPartnerEntryURL %>" label="add-partner" />
 </div>
 
 <br />

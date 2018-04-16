@@ -141,7 +141,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (SupportRegion supportRegion : supportRegions) {
 									%>
 
-										<option <%= (supportRegionId == supportRegion.getSupportRegionId()) ? "selected" : "" %> value="<%= supportRegion.getSupportRegionId() %>"><%= supportRegion.getName() %></option>
+										<aui:option label="<%= supportRegion.getName() %>" selected="<%= supportRegionId == supportRegion.getSupportRegionId() %>" value="<%= supportRegion.getSupportRegionId() %>" />
 
 									<%
 									}
@@ -163,7 +163,9 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (int i = 0; i <= 20; i++) {
 									%>
 
-										<option <%= (ratio == ((((double)i) * 5) / 100)) ? "selected" : "" %> value="<%= (((double)i) * 5) / 100 %>"><%= i * 5 %>% <liferay-ui:message key="utilization" /> / <%= 100 - (i * 5) %>% <liferay-ui:message key="business-hours-left" /></option>
+										<aui:option selected="<%= ratio == ((((double)i) * 5) / 100) %>" value="<%= (((double)i) * 5) / 100 %>">
+											<%= i * 5 %>% <liferay-ui:message key="utilization" /> / <%= 100 - (i * 5) %>% <liferay-ui:message key="business-hours-left" />
+										</aui:option>
 
 									<%
 									}
@@ -255,7 +257,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										}
 									%>
 
-										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 									<%
 									}
@@ -362,7 +364,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (int i = 0; i < locales.length; i++) {
 									%>
 
-										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 									<%
 									}
@@ -382,7 +384,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (String curProductDisplayName : ProductEntryConstants.DISPLAY_NAMES) {
 									%>
 
-										<option <%= (curProductDisplayName.equals(productDisplayName)) ? "selected" : "" %> value="<%= HtmlUtil.escape(curProductDisplayName) %>"><%= LanguageUtil.get(request, curProductDisplayName) %></option>
+										<aui:option label="<%= curProductDisplayName %>" selected="<%= curProductDisplayName.equals(productDisplayName) %>" value="<%= curProductDisplayName %>" />
 
 									<%
 									}
@@ -421,7 +423,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										}
 									%>
 
-										<option <%= (curComponent == component) ? "selected" : "" %> <%= optionStyle %> value="<%= curComponent %>"><%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %></option>
+										<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= curComponent == component %>" style="<%= optionStyle %>" value="<%= curComponent %>" />
 
 									<%
 									}
@@ -496,7 +498,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										}
 									%>
 
-										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 									<%
 									}
@@ -585,7 +587,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 
 										<%= supportRegion.getName() %>
 
-										<input <%= ArrayUtil.contains(supportRegionIds, supportRegion.getSupportRegionId()) ? "checked" : "" %> name="<portlet:namespace />supportRegions" type="checkbox" value="<%= supportRegion.getSupportRegionId() %>" />
+										<aui:input checked="<%= ArrayUtil.contains(supportRegionIds, supportRegion.getSupportRegionId()) %>" name="supportRegions" type="checkbox" value="<%= supportRegion.getSupportRegionId() %>" />
 
 									<%
 									}
@@ -681,7 +683,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (String curProductEntryDisplayName : ProductEntryConstants.DISPLAY_NAMES_DXP) {
 									%>
 
-										<option <%= productEntryDisplayName.equals(curProductEntryDisplayName) ? "selected" : "" %> value="<%= curProductEntryDisplayName %>"><%= LanguageUtil.get(request, curProductEntryDisplayName) %></option>
+										<aui:option label="<%= curProductEntryDisplayName %>" selected="<%= productEntryDisplayName.equals(curProductEntryDisplayName) %>" value="<%= curProductEntryDisplayName %>" />
 
 									<%
 									}
@@ -718,7 +720,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (int i = 0; i < locales.length; i++) {
 									%>
 
-										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 									<%
 									}
@@ -747,7 +749,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										}
 									%>
 
-										<option <%= (curStatus == status) ? "selected" : "" %> <%= optionStyle %> value="<%= curStatus %>"><%= LanguageUtil.get(request, TicketEntryConstants.getStatusLabel(curStatus)) %></option>
+										<aui:option label="<%= TicketEntryConstants.getStatusLabel(curStatus) %>" selected="<%= curStatus == status %>" style="<%= optionStyle %>" value="<%= curStatus %>" />
 
 									<%
 									}
@@ -799,7 +801,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									for (int i = 0; i < locales.length; i++) {
 									%>
 
-										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 									<%
 									}
@@ -828,7 +830,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										}
 									%>
 
-										<option <%= (curTier == tier) ? "selected" : "" %> <%= optionStyle %> value="<%= curTier %>"><%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(curTier)) %></option>
+										<aui:option label="<%= AccountEntryConstants.getTierLabel(curTier) %>" selected="<%= curTier == tier %>" style="<%= optionStyle %>" value="<%= curTier %>" />
 
 									<%
 									}
@@ -881,7 +883,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										}
 									%>
 
-										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 									<%
 									}
@@ -1020,7 +1022,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										}
 									%>
 
-										<option <%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 									<%
 									}
@@ -1088,7 +1090,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										}
 									%>
 
-										<option <%= (currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i]))) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 									<%
 									}
@@ -1138,7 +1140,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 										}
 									%>
 
-										<option <%= (currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i]))) ? "selected" : "" %> <%= optionStyle %> value="<%= LocaleUtil.toLanguageId(locales[i]) %>"><%= locales[i].getDisplayName(locale) %></option>
+										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" style="<%= optionStyle %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
 
 									<%
 									}

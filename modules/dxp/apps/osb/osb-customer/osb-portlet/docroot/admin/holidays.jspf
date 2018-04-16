@@ -77,7 +77,7 @@
 						HolidayEntry holidayEntry = holidayEntries.get(i);
 					%>
 
-						<a href="<%= rowURL %>"><%= HtmlUtil.escape(holidayEntry.getName()) %> (<%= shortDateFormatDate.format(holidayEntry.getStartDate()) %> - <%= shortDateFormatDate.format(holidayEntry.getEndDate()) %>)</a>
+						<aui:a href="<%= rowURL.toString() %>" label='<%= holidayEntry.getName() + " (" + shortDateFormatDate.format(holidayEntry.getStartDate()) + " - " + shortDateFormatDate.format(holidayEntry.getEndDate()) + ")" %>' />
 
 						<%= ((i + 1) < holidayEntries.size()) ? "<br />" : "" %>
 
@@ -124,7 +124,7 @@
 						User curUser = UserLocalServiceUtil.getUser(holidayCalendarRel.getUserId());
 					%>
 
-						<a href="<%= rowURL %>"><%= HtmlUtil.escape(curUser.getFullName()) %></a>
+						<aui:a href="<%= rowURL.toString() %>" label="<%= curUser.getFullName() %>" />
 
 						<%= ((i + 1) < holidayCalendarRels.size()) ? "<br />" : "" %>
 
@@ -143,7 +143,12 @@
 	</liferay-ui:search-container-row>
 
 	<div>
-		<a class="btn btn-default" href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_holiday_calendar.jsp" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:renderURL>"><liferay-ui:message key="add-holiday-calendar" /></a>
+		<portlet:renderURL var="editHolidayCalendarURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/edit_holiday_calendar.jsp" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+		</portlet:renderURL>
+
+		<aui:a cssClass="btn btn-default" href="<%= editHolidayCalendarURL %>" label="add-holiday-calendar" />
 	</div>
 
 	<br />

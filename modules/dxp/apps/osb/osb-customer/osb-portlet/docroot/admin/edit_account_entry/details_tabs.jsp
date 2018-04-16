@@ -69,26 +69,26 @@ for (SupportRegion supportRegion : supportRegions) {
 	<ul class="lfr-nav nav nav-tabs">
 		<c:if test="<%= accountEntry != null %>">
 			<li class="tab" data-content="<portlet:namespace />offeringsContent" id="<portlet:namespace />offerings">
-				<a href="javascript:<portlet:namespace />revealTab('offerings');"><liferay-ui:message key="offerings" /></a>
+				<aui:a href="javascript:<portlet:namespace />revealTab('offerings');" label="offerings" />
 			</li>
 			<li class="tab" data-content="<portlet:namespace />environmentDetailsContent" id="<portlet:namespace />environmentDetails">
-				<a href="javascript:<portlet:namespace />revealTab('environmentDetails');"><liferay-ui:message key="environment-details" /></a>
+				<aui:a href="javascript:<portlet:namespace />revealTab('environmentDetails');" label="environment-details" />
 			</li>
 			<li class="tab" data-content="<portlet:namespace />projectMessagesContent" id="<portlet:namespace />projectMessages">
-				<a href="javascript:<portlet:namespace />revealTab('projectMessages');"><liferay-ui:message key="project-messages" /></a>
+				<aui:a href="javascript:<portlet:namespace />revealTab('projectMessages');" label="project-messages" />
 			</li>
 		</c:if>
 
 		<li class="tab" data-content="<portlet:namespace />supportRegionsContent" id="<portlet:namespace />supportRegions">
-			<a href="javascript:<portlet:namespace />revealTab('supportRegions');"><liferay-ui:message key="support-regions" /></a>
+			<aui:a href="javascript:<portlet:namespace />revealTab('supportRegions');" label="support-regions" />
 		</li>
 		<li class="tab" data-content="<portlet:namespace />supportLanguagesContent" id="<portlet:namespace />supportLanguages">
-			<a href="javascript:<portlet:namespace />revealTab('supportLanguages');"><liferay-ui:message key="support-languages" /></a>
+			<aui:a href="javascript:<portlet:namespace />revealTab('supportLanguages');" label="support-languages" />
 		</li>
 
 		<c:if test="<%= accountEntry != null %>">
 			<li class="tab" data-content="<portlet:namespace />historyContent" id="<portlet:namespace />history">
-				<a href="javascript:<portlet:namespace />revealTab('history');"><liferay-ui:message key="history" /></a>
+				<aui:a href="javascript:<portlet:namespace />revealTab('history');" label="history" />
 			</li>
 		</c:if>
 	</ul>
@@ -347,24 +347,32 @@ for (SupportRegion supportRegion : supportRegions) {
 													<td colspan="3">
 														<liferay-ui:message key="name" />:
 
-														<span class="field"><%= HtmlUtil.escape(accountEnvironment.getName()) %></span>
+														<span class="field">
+															<%= HtmlUtil.escape(accountEnvironment.getName()) %>
+														</span>
 													</td>
 												</tr>
 												<tr>
 													<td>
 														<liferay-ui:message key='<%= productEntry.isSocialOffice() ? "social-office-version" : "liferay-version" %>' />:
 
-														<span class="field"><%= LanguageUtil.get(request, accountEnvironment.getEnvLFRLabel()) %></span>
+														<span class="field">
+															<%= LanguageUtil.get(request, accountEnvironment.getEnvLFRLabel()) %>
+														</span>
 													</td>
 													<td>
 														<liferay-ui:message key="application-server" />:
 
-														<span class="field"><%= LanguageUtil.get(request, accountEnvironment.getEnvASLabel()) %></span>
+														<span class="field">
+															<%= LanguageUtil.get(request, accountEnvironment.getEnvASLabel()) %>
+														</span>
 													</td>
 													<td>
 														<liferay-ui:message key="database" />:
 
-														<span class="field"><%= LanguageUtil.get(request, accountEnvironment.getEnvDBLabel()) %></span>
+														<span class="field">
+															<%= LanguageUtil.get(request, accountEnvironment.getEnvDBLabel()) %>
+														</span>
 													</td>
 												</tr>
 												<tr>
@@ -382,7 +390,9 @@ for (SupportRegion supportRegion : supportRegions) {
 													<td>
 														<liferay-ui:message key="java-virtual-machine" />:
 
-														<span class="field"><%= LanguageUtil.get(request, accountEnvironment.getEnvJVMLabel()) %></span>
+														<span class="field">
+															<%= LanguageUtil.get(request, accountEnvironment.getEnvJVMLabel()) %>
+														</span>
 													</td>
 													<td />
 												</tr>
@@ -404,7 +414,9 @@ for (SupportRegion supportRegion : supportRegions) {
 															accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
 															%>
 
-															<span class="field"><a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %></a></span>
+															<span class="field">
+																<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= portalExtAccountEnvironmentAttachment.getFileName() %>" target="_blank" />
+															</span>
 														</c:if>
 
 														<br />
@@ -428,7 +440,9 @@ for (SupportRegion supportRegion : supportRegions) {
 															accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
 															%>
 
-															<span class="field"><a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %></a></span>
+															<span class="field">
+																<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= patchLevelAccountEnvironmentAttachment.getFileName() %>" target="_blank" />
+															</span>
 														</c:if>
 													</td>
 													<td />
@@ -601,7 +615,9 @@ for (SupportRegion supportRegion : supportRegions) {
 							</span>
 
 							<div class="create-date">
-								<span title="<%= fullDateFormatDateTime.format(auditEntry.getCreateDate()) %>"><%= shortDateFormatDate.format(auditEntry.getCreateDate()) %> <%= shortDateFormatTime.format(auditEntry.getCreateDate()) %></span>
+								<span title="<%= fullDateFormatDateTime.format(auditEntry.getCreateDate()) %>">
+									<%= shortDateFormatDate.format(auditEntry.getCreateDate()) %> <%= shortDateFormatTime.format(auditEntry.getCreateDate()) %>
+								</span>
 							</div>
 						</div>
 

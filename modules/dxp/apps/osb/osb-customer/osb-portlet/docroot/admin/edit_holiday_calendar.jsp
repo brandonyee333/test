@@ -95,10 +95,10 @@ String[] holidayEntriesIndexes = new String[holidayEntriesIndexCount];
 				<portlet:param name="holidayCalendarId" value="<%= String.valueOf(holidayCalendar.getHolidayCalendarId()) %>" />
 			</portlet:renderURL>
 
-			<a class="btn btn-default" href="<%= HtmlUtil.escape(assignUsersURL) %>"><liferay-ui:message key="assign-users" /></a>
+			<aui:a cssClass="btn btn-default" href="<%= assignUsersURL %>" label="assign-users" />
 		</c:if>
 
-		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 	</div>
 
 	<br />

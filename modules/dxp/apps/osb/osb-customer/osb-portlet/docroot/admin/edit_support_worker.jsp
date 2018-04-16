@@ -98,9 +98,13 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 				<liferay-ui:message key="support-team" />
 			</td>
 			<td>
-				<a href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_support_team.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /><portlet:param name="supportTeamId" value="<%= String.valueOf(supportTeam.getSupportTeamId()) %>" /></portlet:renderURL>" id="<portlet:namespace />supportTeamName">
-					<%= HtmlUtil.escape(supportTeam.getName()) %>
-				</a>
+				<portlet:renderURL var="editSupportTeamURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+					<portlet:param name="mvcPath" value="/admin/edit_support_team.jsp" />
+					<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+					<portlet:param name="supportTeamId" value="<%= String.valueOf(supportTeam.getSupportTeamId()) %>" />
+				</portlet:renderURL>
+
+				<aui:a href="<%= editSupportTeamURL %>" id="supportTeamName" label="<%= supportTeam.getName() %>" />
 
 				<portlet:renderURL var="selectSupportTeamURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 					<portlet:param name="mvcPath" value="/admin/select_support_team.jsp" />
@@ -113,7 +117,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 
 				<aui:button onClick="<%= taglibSelectSupportTeam %>" value="change" />
 
-				<input name="<portlet:namespace />supportTeamId" type="hidden" value="<%= supportTeam.getSupportTeamId() %>" />
+				<aui:input name="supportTeamId" type="hidden" value="<%= supportTeam.getSupportTeamId() %>" />
 			</td>
 		</tr>
 		<tr>
@@ -195,7 +199,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					for (ListType escalationLevelType : escalationLevelTypes) {
 					%>
 
-						<option <%= (escalationLevelType.getListTypeId() == supportWorker.getEscalationLevel()) ? "selected" : "" %> value="<%= escalationLevelType.getListTypeId() %>"><%= LanguageUtil.get(request, escalationLevelType.getName()) %></option>
+						<aui:option label="<%= escalationLevelType.getName() %>" selected="<%= escalationLevelType.getListTypeId() == supportWorker.getEscalationLevel() %>" value="<%= escalationLevelType.getListTypeId() %>" />
 
 					<%
 					}
@@ -210,8 +214,8 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 			</td>
 			<td>
 				<aui:select label="" name="escalationLevel2Role">
-					<option <%= (supportWorker.getEscalationLevel2Role() == SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER) ? "selected" : "" %> value="<%= SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER %>"><liferay-ui:message key="other" /></option>
-					<option <%= (supportWorker.getEscalationLevel2Role() != SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER) ? "selected" : "" %> value="<%= SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_PRIMARY %>"><liferay-ui:message key="primary" /></option>
+					<aui:option label="other" selected="<%= supportWorker.getEscalationLevel2Role() == SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER %>" value="<%= SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER %>" />
+					<aui:option label="primary" selected="<%= supportWorker.getEscalationLevel2Role() != SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER %>" value="<%= SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_PRIMARY %>" />
 				</aui:select>
 			</td>
 		</tr>
@@ -226,7 +230,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 					for (int i = 1; i <= 3; i++) {
 					%>
 
-						<option <%= (supportWorker.getNotifications() == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, SupportWorkerConstants.getNotificationsLabel(i)) %></option>
+						<aui:option label="<%= SupportWorkerConstants.getNotificationsLabel(i) %>" selected="<%= supportWorker.getNotifications() == i %>" value="<%= i %>" />
 
 					<%
 					}
@@ -245,9 +249,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 						<portlet:param name="supportLaborId" value="<%= String.valueOf(supportTeam.getSupportLaborId()) %>" />
 					</portlet:renderURL>
 
-					<a href="<%= supportTeamSupportLaborURL %>">
-						<liferay-ui:message key="support-team-labor-hours" />
-					</a>
+					<aui:a href="<%= supportTeamSupportLaborURL %>" label="support-team-labor-hours" />
 				</td>
 				<td>
 					<table class="lfr-table">
@@ -258,9 +260,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 							%>
 
 								<td>
-									<a href="<%= supportTeamSupportLaborURL %>">
-										<liferay-ui:message key="<%= OSBDateUtil.DAY_NAMES[i] %>" />
-									</a>
+									<aui:a href="<%= supportTeamSupportLaborURL %>" label="<%= OSBDateUtil.DAY_NAMES[i] %>" />
 								</td>
 
 							<%
@@ -277,9 +277,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 							%>
 
 								<td>
-									<a href="<%= supportTeamSupportLaborURL %>">
-										<%= supportTeamSupportLabor.formatDayHours(locale, i) %>
-									</a>
+									<aui:a href="<%= supportTeamSupportLaborURL %>" label="<%= supportTeamSupportLabor.formatDayHours(locale, i) %>" />
 								</td>
 
 							<%
@@ -301,9 +299,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 
 			<tr>
 				<td>
-					<a href="<%= supportWorkerSupportLaborURL %>">
-						<liferay-ui:message key="support-worker-labor-hours" />
-					</a>
+					<aui:a href="<%= supportWorkerSupportLaborURL %>" label="support-worker-labor-hours" />
 				</td>
 				<td>
 					<table class="lfr-table">
@@ -314,9 +310,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 							%>
 
 								<td>
-									<a href="<%= supportWorkerSupportLaborURL %>">
-										<liferay-ui:message key="<%= OSBDateUtil.DAY_NAMES[i] %>" />
-									</a>
+									<aui:a href="<%= supportWorkerSupportLaborURL %>" label="<%= OSBDateUtil.DAY_NAMES[i] %>" />
 								</td>
 
 							<%
@@ -333,9 +327,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 							%>
 
 								<td>
-									<a href="<%= supportWorkerSupportLaborURL %>">
-										<%= supportLabor.formatDayHours(locale, i) %>
-									</a>
+									<aui:a href="<%= supportWorkerSupportLaborURL %>" label="<%= supportLabor.formatDayHours(locale, i) %>" />
 								</td>
 
 							<%
@@ -354,7 +346,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 	<div>
 		<aui:button type="submit" value="save" />
 
-		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 	</div>
 
 	<br />

@@ -90,7 +90,7 @@
 						SupportTeam supportTeam = supportTeams.get(i);
 					%>
 
-						<a href="<%= rowURL %>"><%= HtmlUtil.escape(supportTeam.getName()) %></a>
+						<aui:a href="<%= rowURL %>" label="<%= supportTeam.getName() %>" />
 
 						<%= ((i + 1) < supportTeams.size()) ? "<br />" : "" %>
 
@@ -126,7 +126,12 @@
 
 	<c:if test="<%= permissionChecker.isOmniadmin() %>">
 		<div>
-			<a class="btn btn-default" href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_support_region.jsp" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:renderURL>"><liferay-ui:message key="add-support-region" /></a>
+			<portlet:renderURL var="editSupportRegionURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+				<portlet:param name="mvcPath" value="/admin/edit_support_region.jsp" />
+				<portlet:param name="redirect" value="<%= currentURL %>" />
+			</portlet:renderURL>
+
+			<aui:a cssClass="btn btn-default" href="<%= editSupportRegionURL %>" label="add-support-region" />
 		</div>
 	</c:if>
 

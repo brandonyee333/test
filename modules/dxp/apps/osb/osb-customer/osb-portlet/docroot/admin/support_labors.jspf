@@ -144,7 +144,12 @@
 	</liferay-ui:search-container-row>
 
 	<div>
-		<a class="btn btn-default" href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_support_labor.jsp" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:renderURL>"><liferay-ui:message key="add-labor-hours" /></a>
+		<portlet:renderURL var="editSupportLaborURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/edit_support_labor.jsp" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+		</portlet:renderURL>
+
+		<aui:a cssClass="btn btn-default" href="<%= editSupportLaborURL %>" label="add-labor-hours" />
 	</div>
 
 	<br />

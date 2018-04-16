@@ -186,10 +186,10 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 </portlet:actionURL>
 
 <aui:form action="<%= updateOrderEntryURL %>" method="post">
-	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
-	<input name="<portlet:namespace />orderEntryId" type="hidden" value="<%= orderEntryId %>" />
-	<input name="<portlet:namespace />offeringEntriesCount" type="hidden" value="<%= offeringEntries.size() %>" />
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
+	<aui:input name="orderEntryId" type="hidden" value="<%= orderEntryId %>" />
+	<aui:input name="offeringEntriesCount" type="hidden" value="<%= offeringEntries.size() %>" />
 
 	<liferay-ui:tabs
 		backURL="<%= backURL %>"
@@ -211,21 +211,27 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<span class="first segment">
 				<liferay-ui:message key="uuid" />:
 
-				<span class="txt-sb"><%= orderEntry.getUuid() %></span>
+				<span class="txt-sb">
+					<%= orderEntry.getUuid() %>
+				</span>
 			</span>
 			<span class="spacer"></span>
 
 			<span class="segment">
 				<liferay-ui:message key="created-by" />:
 
-				<span class="txt-sb"><%= HtmlUtil.escape(PortalUtil.getUserName(orderEntry.getUserId(), orderEntry.getUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(orderEntry.getCreateDate()) %></span>
+				<span class="txt-sb">
+					<%= HtmlUtil.escape(PortalUtil.getUserName(orderEntry.getUserId(), orderEntry.getUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(orderEntry.getCreateDate()) %>
+				</span>
 			</span>
 			<span class="spacer"></span>
 
 			<span class="segment">
 				<liferay-ui:message key="last-modified" />:
 
-				<span class="txt-sb"><%= HtmlUtil.escape(PortalUtil.getUserName(orderEntry.getModifiedUserId(), orderEntry.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(orderEntry.getModifiedDate()) %></span>
+				<span class="txt-sb">
+					<%= HtmlUtil.escape(PortalUtil.getUserName(orderEntry.getModifiedUserId(), orderEntry.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(orderEntry.getModifiedDate()) %>
+				</span>
 			</span>
 			<span class="spacer"></span>
 
@@ -259,10 +265,12 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 						workflowTaskURL.setParameter("workflowTaskId", String.valueOf(workflowTask.getWorkflowTaskId()));
 						%>
 
-						<a href="<%= workflowTaskURL.toString() %>" target="_blank"><%= LanguageUtil.get(request, orderEntry.getStatusLabel()) %></a>
+						<aui:a href="<%= workflowTaskURL.toString() %>" label="<%= orderEntry.getStatusLabel() %>" target="_blank" />
 					</c:when>
 					<c:otherwise>
-						<span class="txt-sb"><%= LanguageUtil.get(request, orderEntry.getStatusLabel()) %></span>
+						<span class="txt-sb">
+							<%= LanguageUtil.get(request, orderEntry.getStatusLabel()) %>
+						</span>
 					</c:otherwise>
 				</c:choose>
 			</span>
@@ -280,7 +288,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 				<c:choose>
 					<c:when test="<%= orderEntry == null %>">
 						<aui:select label="" name="accountEntryId">
-							<option></option>
+							<aui:option />
 
 							<%
 							List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.getAccountEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -288,7 +296,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 							for (AccountEntry accountEntry : accountEntries) {
 							%>
 
-								<option <%= (accountEntryId == accountEntry.getAccountEntryId()) ? "selected" : "" %> value="<%= accountEntry.getAccountEntryId() %>"><%= accountEntry.getName() %></option>
+								<aui:option label="<%= accountEntry.getName() %>" selected="<%= accountEntryId == accountEntry.getAccountEntryId() %>" value="<%= accountEntry.getAccountEntryId() %>" />
 
 							<%
 							}
@@ -297,13 +305,19 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 						</aui:select>
 					</c:when>
 					<c:otherwise>
-						<input name="<portlet:namespace />accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+						<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 
 						<%
 						AccountEntry accountEntry = AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
 						%>
 
-						<a href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /><portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" /></portlet:renderURL>"><%= accountEntry.getName() %></a>
+						<portlet:renderURL var="editAccountEntryURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+							<portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" />
+							<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+							<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntryId) %>" />
+						</portlet:renderURL>
+
+						<aui:a href="<%= editAccountEntryURL %>" label="<%= accountEntry.getName() %>" />
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -361,7 +375,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 							<liferay-ui:message key="prorated" />
 						</td>
 						<td>
-							<input <%= prorated ? "checked" : "" %> id="<portlet:namespace />prorated" name="<portlet:namespace />prorated" onClick="document.getElementById('<portlet:namespace />actualStartDate').style.display = this.checked ? '' : 'none';" type="checkbox" />
+							<aui:input checked="<%= prorated %>" name="prorated" onClick="document.getElementById('<portlet:namespace />actualStartDate').style.display = this.checked ? '' : 'none';" type="checkbox" />
 						</td>
 					</tr>
 				</table>
@@ -422,7 +436,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<aui:button onClick='<%= "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-reset-this-order") + "')) { location.href='" + resetOrderEntryURL + "'; } else { self.focus(); }" %>' value="reset-renewals" />
 		</c:if>
 
-		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 	</div>
 
 	<br />
@@ -486,9 +500,9 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="product"
 			>
-				<input name="<portlet:namespace />offeringEntryId_<%= index %>" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
-				<input name="<portlet:namespace />productEntryId_<%= index %>" type="hidden" value="<%= offeringEntry.getProductEntryId() %>" />
-				<input name="<portlet:namespace />productDescription_<%= index %>" type="hidden" value="<%= offeringEntry.getProductDescription() %>" />
+				<aui:input name="offeringEntryId_<%= index %>" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
+				<aui:input name="productEntryId_<%= index %>" type="hidden" value="<%= offeringEntry.getProductEntryId() %>" />
+				<aui:input name="productDescription_<%= index %>" type="hidden" value="<%= offeringEntry.getProductDescription() %>" />
 
 				<%= HtmlUtil.escape(productEntry.getName()) %>
 
@@ -500,7 +514,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="licenses"
 			>
-				<input <%= offeringEntry.isLicenses() ? "checked" : "" %> name="<portlet:namespace />licenses_<%= index %>" type="checkbox" />
+				<aui:input checked="<%= offeringEntry.isLicenses() %>" name="licenses_<%= index %>" type="checkbox" />
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
@@ -532,13 +546,13 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="support-tickets"
 			>
-				<input <%= offeringEntry.isSupportTickets() ? "checked" : "" %> name="<portlet:namespace />supportTickets_<%= index %>" type="checkbox" />
+				<aui:input checked="<%= offeringEntry.isSupportTickets() %>" name="supportTickets_<%= index %>" type="checkbox" />
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="sla"
 			>
-				<input name="<portlet:namespace />supportResponseId_<%= index %>" type="hidden" value="<%= offeringEntry.getSupportResponseId() %>" />
+				<aui:input name="supportResponseId_<%= index %>" type="hidden" value="<%= offeringEntry.getSupportResponseId() %>" />
 
 				<%= HtmlUtil.escape(supportResponse.getName()) %>
 			</liferay-ui:search-container-column-text>
@@ -560,14 +574,14 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 						}
 					%>
 
-						<option <%= (supportLifetime == lifetimeValue) ? "selected" : "" %> value="<%= lifetimeValue %>"><%= LanguageUtil.get(request, lifetimeLabel) %></option>
+						<aui:option label="<%= lifetimeLabel %>" selected="<%= supportLifetime == lifetimeValue %>" value="<%= lifetimeValue %>" />
 
 					<%
 					}
 					%>
 
 					<c:if test="<%= (supportLifetime > 0) && customLifetime %>">
-						<option selected value="<%= supportLifetime %>"><%= OfferingDefinitionConstants.getCustomLifetimeLabel(supportLifetime) %></option>
+						<aui:option label="<%= OfferingDefinitionConstants.getCustomLifetimeLabel(supportLifetime) %>" selected="<%= true %>" value="<%= supportLifetime %>" />
 					</c:if>
 				</aui:select>
 			</liferay-ui:search-container-column-text>
@@ -589,7 +603,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 						ListType productEntryVersionsType = productEntryVersionsTypes.get(i);
 					%>
 
-						<option <%= (offeringEntry.getVersion() == productEntryVersionsType.getListTypeId()) ? "selected" : "" %> value="<%= productEntryVersionsType.getListTypeId() %>"><liferay-ui:message key="<%= productEntryVersionsType.getName() %>" /></option>
+						<aui:option label="<%= productEntryVersionsType.getName() %>" selected="<%= offeringEntry.getVersion() == productEntryVersionsType.getListTypeId() %>" value="<%= productEntryVersionsType.getListTypeId() %>" />
 
 					<%
 					}
@@ -607,7 +621,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 					for (int i = 1; i <= 4; i++) {
 					%>
 
-						<option <%= (offeringEntry.getSizing() == i) ? "selected" : "" %> value="<%= i %>"><liferay-ui:message key="<%= OfferingEntryConstants.getSizingLabel(i) %>" /></option>
+						<aui:option label="<%= OfferingEntryConstants.getSizingLabel(i) %>" selected="<%= offeringEntry.getSizing() == i %>" value="<%= i %>" />
 
 					<%
 					}

@@ -86,7 +86,12 @@
 
 	<c:if test="<%= permissionChecker.isOmniadmin() %>">
 		<div>
-			<a class="btn btn-default" href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_support_response.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>"><liferay-ui:message key="add-support" /></a>
+			<portlet:renderURL var="editSupportResponseURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+				<portlet:param name="mvcPath" value="/admin/edit_support_response.jsp" />
+				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+			</portlet:renderURL>
+
+			<aui:a cssClass="btn btn-default" href="<%= editSupportResponseURL %>" label="add-support" />
 		</div>
 
 		<br />

@@ -97,7 +97,12 @@ String redirect = ParamUtil.getString(request, "redirect", searchURL.toString())
 
 		<br />
 
-		<a class="btn btn-default" href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_order_entry.jsp" /><portlet:param name="redirect" value="<%= redirect %>" /></portlet:renderURL>"><liferay-ui:message key="add-order" /></a>
+		<portlet:renderURL var="editOrderEntryURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/edit_order_entry.jsp" />
+			<portlet:param name="redirect" value="<%= redirect %>" />
+		</portlet:renderURL>
+
+		<aui:a cssClass="btn btn-default" href="<%= editOrderEntryURL %>" label="add-order" />
 
 		<br />
 

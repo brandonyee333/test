@@ -36,7 +36,7 @@ String salesforceOpportunityAction = (String)request.getAttribute("linked_object
 			portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 		%>
 
-			<a href="<%= portletURL.toString() %>" target="_blank"><%= orderEntryId %></a><br />
+			<aui:a href="<%= portletURL.toString() %>" label="<%= String.valueOf(orderEntryId) %>" target="_blank" /><br />
 
 		<%
 		}

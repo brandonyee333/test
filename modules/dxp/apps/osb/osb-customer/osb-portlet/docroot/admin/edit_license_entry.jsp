@@ -42,9 +42,9 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 </portlet:actionURL>
 
 <aui:form action="<%= updateLicenseEntryURL %>" method="post">
-	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
-	<input name="<portlet:namespace />licenseEntryId" type="hidden" value="<%= licenseEntryId %>" />
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
+	<aui:input name="licenseEntryId" type="hidden" value="<%= licenseEntryId %>" />
 
 	<liferay-ui:tabs
 		backURL="<%= backURL %>"
@@ -73,7 +73,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 			</td>
 			<td>
 				<aui:select label="" name="productEntryId">
-					<option value=""></option>
+					<aui:option value="" />
 
 					<%
 					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.getProductEntries(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -81,7 +81,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 					for (ProductEntry productEntry : productEntries) {
 					%>
 
-						<option <%= (productEntry.getProductEntryId() == productEntryId) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
+						<aui:option label="<%= productEntry.getName() %>" selected="<%= productEntry.getProductEntryId() == productEntryId %>" value="<%= productEntry.getProductEntryId() %>" />
 
 					<%
 					}
@@ -101,7 +101,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 					for (String curType : LicenseEntryConstants.TYPES) {
 					%>
 
-						<option <%= type.equals(curType) ? "selected" : "" %> value="<%= curType %>"><liferay-ui:message key="<%= curType %>" /></option>
+						<aui:option label="<%= curType %>" selected="<%= type.equals(curType) %>" value="<%= curType %>" />
 
 					<%
 					}
@@ -136,10 +136,10 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 					%>
 
 						<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-							<option disabled>--------</option>
+							<aui:option disabled="<% true %>" label="--------" />
 						</c:if>
 
-						<option <%= (portalVersionType.getListTypeId() == portalVersionMin) ? "selected" : "" %> value="<%= portalVersionType.getListTypeId() %>"><%= LanguageUtil.get(request, portalVersionType.getName()) %></option>
+						<aui:option label="<%= portalVersionType.getName() %>" selected="<%= portalVersionType.getListTypeId() == portalVersionMin %>" value="<%= portalVersionType.getListTypeId() %>" />
 
 					<%
 						previousNamePrefix = namePrefix;
@@ -162,7 +162,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 					for (ListType portalVersionType : portalVersionTypes) {
 					%>
 
-						<option <%= (portalVersionType.getListTypeId() == portalVersionMax) ? "selected" : "" %> value="<%= portalVersionType.getListTypeId() %>"><%= (portalVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) ? LanguageUtil.get(request, lastVersionType.getName()) + StringPool.PLUS : LanguageUtil.get(request, portalVersionType.getName()) %></option>
+						<aui:option label="<%= (portalVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER) ? (lastVersionType.getName() + StringPool.PLUS) : portalVersionType.getName() %>" selected="<%= portalVersionType.getListTypeId() == portalVersionMax %>" value="<%= portalVersionType.getListTypeId() %>" />
 
 					<%
 					}
@@ -177,7 +177,7 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 
 	<aui:button type="submit" value="save" />
 
-	<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+	<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 </aui:form>
 
 <c:if test="<%= windowState.equals(WindowState.MAXIMIZED) %>">

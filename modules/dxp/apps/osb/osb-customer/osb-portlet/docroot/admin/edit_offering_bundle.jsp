@@ -160,7 +160,7 @@ if (offeringBundle != null) {
 
 	<aui:button type="submit" value="save" />
 
-	<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+	<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 </aui:form>
 
 <aui:script>

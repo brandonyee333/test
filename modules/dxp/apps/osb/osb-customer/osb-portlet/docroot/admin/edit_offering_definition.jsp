@@ -44,9 +44,9 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 </portlet:actionURL>
 
 <aui:form action="<%= updateOfferingDefinitionURL %>" method="post">
-	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
-	<input name="<portlet:namespace />offeringDefinitionId" type="hidden" value="<%= offeringDefinitionId %>" />
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
+	<aui:input name="offeringDefinitionId" type="hidden" value="<%= offeringDefinitionId %>" />
 
 	<liferay-ui:tabs
 		backURL="<%= backURL %>"
@@ -89,7 +89,7 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 					for (ProductEntry productEntry : productEntries) {
 					%>
 
-						<option <%= (productEntryId == productEntry.getProductEntryId()) ? "selected" : "" %> value="<%= productEntry.getProductEntryId() %>"><%= HtmlUtil.escape(productEntry.getName()) %></option>
+						<aui:option label="<%= productEntry.getName() %>" selected="<%= productEntryId == productEntry.getProductEntryId() %>" value="<%= productEntry.getProductEntryId() %>" />
 
 					<%
 					}
@@ -157,7 +157,7 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 					for (SupportResponse supportResponse : supportResponses) {
 					%>
 
-						<option <%= (supportResponseId == supportResponse.getSupportResponseId()) ? "selected" : "" %> value="<%= supportResponse.getSupportResponseId() %>"><%= HtmlUtil.escape(supportResponse.getName()) %></option>
+						<aui:option label="<%= supportResponse.getName() %>" selected="<%= supportResponseId == supportResponse.getSupportResponseId() %>" value="<%= supportResponse.getSupportResponseId() %>" />
 
 					<%
 					}
@@ -184,5 +184,5 @@ boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "
 
 	<aui:button type="submit" value="save" />
 
-	<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+	<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 </aui:form>

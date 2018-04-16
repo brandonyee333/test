@@ -102,7 +102,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 				<tr>
 					<td>
 						<aui:select label='<%= productEntry.isSocialOffice() ? "social-office-version" : "liferay-version" %>' name="envLFR" onChange='<%= renderResponse.getNamespace() + "selectPortalVersion(this.value, 0, '', 0, '', 0, '', 0, '');" %>'>
-							<option value="0"></option>
+							<aui:option value="0" />
 
 							<%
 							List<ListType> envLFRTypes = productEntry.getAllVersionsListTypes();
@@ -120,10 +120,10 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 							%>
 
 								<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-									<option disabled>--------</option>
+									<aui:option disabled="<%= true %>" label="--------" />
 								</c:if>
 
-								<option <%= (envLFRType.getListTypeId() == envLFR) ? "selected" : "" %> value="<%= envLFRType.getListTypeId() %>"><%= LanguageUtil.get(request, envLFRType.getName()) %></option>
+								<aui:option label="<%= envLFRType.getName() %>" selected="<%= envLFRType.getListTypeId() == envLFR %>" value="<%= envLFRType.getListTypeId() %>" />
 
 							<%
 								previousNamePrefix = namePrefix;
@@ -134,12 +134,12 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 					</td>
 					<td>
 						<aui:select label="application-server" name="envAS">
-							<option value="0"></option>
+							<aui:option value="0" />
 						</aui:select>
 					</td>
 					<td>
 						<aui:select label="database" name="envDB">
-							<option value="0"></option>
+							<aui:option value="0" />
 						</aui:select>
 					</td>
 				</tr>
@@ -147,17 +147,17 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 					<td>
 						<div class="pull-left">
 							<aui:select label="operating-system" name="envOS" onChange='<%= renderResponse.getNamespace() + "selectEnvOS(this.value);" %>'>
-								<option value="0"></option>
+								<aui:option value="0" />
 							</aui:select>
 
 							<br />
 
-							<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= HtmlUtil.escapeAttribute(envOSCustom) %>" />
+							<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= envOSCustom %>" />
 						</div>
 					</td>
 					<td>
 						<aui:select label="java-virtual-machine" name="envJVM">
-							<option value="0"></option>
+							<aui:option value="0" />
 						</aui:select>
 					</td>
 					<td />
@@ -184,7 +184,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 							accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
 							%>
 
-							<a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(portalExtAccountEnvironmentAttachment.getFileName()) %></a>
+							<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= portalExtAccountEnvironmentAttachment.getFileName() %>" target="_blank" />
 						</c:if>
 
 						<aui:input label="" name="portal-ext" type="file" />
@@ -212,7 +212,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 							accountEnvironmentAttachmentURL.setResourceID("accountEnvironmentAttachment");
 							%>
 
-							<a href="<%= accountEnvironmentAttachmentURL.toString() %>" target="_blank"><%= HtmlUtil.escape(patchLevelAccountEnvironmentAttachment.getFileName()) %></a>
+							<aui:a href="<%= accountEnvironmentAttachmentURL.toString() %>" label="<%= patchLevelAccountEnvironmentAttachment.getFileName() %>" target="_blank" />
 						</c:if>
 
 						<aui:input label="" name="patch-level" type="file" />

@@ -155,7 +155,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 							SupportRegion supportRegion = supportRegions.get(i);
 						%>
 
-							<a href="<%= rowURL %>"><%= HtmlUtil.escape(supportRegion.getName()) %></a>
+							<aui:a href="<%= rowURL.toString() %>" label="<%= supportRegion.getName() %>" />
 
 							<%= ((i + 1) < supportRegions.size()) ? "<br />" : "" %>
 
@@ -181,7 +181,12 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 		</liferay-ui:search-container-row>
 
 		<div>
-			<a class="btn btn-default" href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>"><liferay-ui:message key="add-project" /></a>
+			<portlet:renderURL var="editAccountEntryURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+				<portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" />
+				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+			</portlet:renderURL>
+
+			<aui:a cssClass="btn btn-default" href="<%= editAccountEntryURL %>" label="add-project" />
 		</div>
 
 		<br />

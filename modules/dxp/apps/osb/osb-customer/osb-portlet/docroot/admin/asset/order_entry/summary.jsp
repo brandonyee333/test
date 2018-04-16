@@ -32,7 +32,7 @@ if (orderEntryId > 0) {
 %>
 
 <c:if test="<%= portletURL != null %>">
-	<strong><liferay-ui:message key="order" />:</strong> <a href="<%= portletURL.toString() %>" target="_blank"> <%= orderEntryId %></a>
+	<strong><liferay-ui:message key="order" />:</strong> <aui:a href="<%= portletURL.toString() %>" target="_blank" /> <%= orderEntryId %></a>
 
 	<br />
 </c:if>

@@ -67,46 +67,46 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 	<aui:model-context bean="<%= supportLabor %>" model="<%= SupportLabor.class %>" />
 
 	<table class="lfr-table">
-	<tr>
-		<td>
-			<liferay-ui:message key="name" />
-		</td>
-		<td>
-			<aui:input label="" name="name" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="description" />
-		</td>
-		<td>
-			<aui:input label="" name="description" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<liferay-ui:message key="time-zone" />
-		</td>
-		<td>
-			<aui:select label="" name="timeZoneId">
-				<aui:option label="" value="0" />
+		<tr>
+			<td>
+				<liferay-ui:message key="name" />
+			</td>
+			<td>
+				<aui:input label="" name="name" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="description" />
+			</td>
+			<td>
+				<aui:input label="" name="description" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="time-zone" />
+			</td>
+			<td>
+				<aui:select label="" name="timeZoneId">
+					<aui:option label="" value="0" />
 
-				<%
-				String[] timeZoneIds = PropsUtil.getArray("time.zones");
+					<%
+					String[] timeZoneIds = PropsUtil.getArray("time.zones");
 
-				for (String curTimeZoneId : timeZoneIds) {
-					TimeZone curTimeZone = TimeZone.getTimeZone(curTimeZoneId);
-				%>
+					for (String curTimeZoneId : timeZoneIds) {
+						TimeZone curTimeZone = TimeZone.getTimeZone(curTimeZoneId);
+					%>
 
-					<aui:option label="<%= curTimeZone.getDisplayName() %>" selected="<%= curTimeZoneId.equals(timeZoneId) %>" value="<%= curTimeZoneId %>" />
+						<aui:option label="<%= curTimeZone.getDisplayName() %>" selected="<%= curTimeZoneId.equals(timeZoneId) %>" value="<%= curTimeZoneId %>" />
 
-				<%
-				}
-				%>
+					<%
+					}
+					%>
 
-			</aui:select>
-		</td>
-	</tr>
+				</aui:select>
+			</td>
+		</tr>
 	</table>
 
 	<br />
@@ -121,10 +121,10 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 				<portlet:param name="supportLaborId" value="<%= String.valueOf(supportLabor.getSupportLaborId()) %>" />
 			</portlet:renderURL>
 
-			<a class="btn btn-default" href="<%= HtmlUtil.escape(assignWorkersURL) %>"><liferay-ui:message key="assign-workers" /></a>
+			<aui:a cssClass="btn btn-default" href="<%= assignWorkersURL %>" label="assign-workers" />
 		</c:if>
 
-		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 	</div>
 
 	<c:if test="<%= supportLabor != null %>">
@@ -197,68 +197,68 @@ String timeZoneId = BeanParamUtil.getString(supportLabor, request, "timeZoneId")
 	</div>
 
 	<table class="lfr-table">
-	<tr>
+		<tr>
 
-		<%
-		for (String dayName : OSBDateUtil.DAY_NAMES) {
-		%>
+			<%
+			for (String dayName : OSBDateUtil.DAY_NAMES) {
+			%>
 
-			<td>
-				<strong><liferay-ui:message key="<%= dayName %>" /></strong>
+				<td>
+					<strong><liferay-ui:message key="<%= dayName %>" /></strong>
+				</td>
+
+			<%
+			}
+			%>
+
+		</tr>
+		<tr>
+			<td colspan="7">
+				<liferay-ui:message key="opening-time" />
 			</td>
+		</tr>
+		<tr>
 
-		<%
-		}
-		%>
+			<%
+			for (String shortDayName : OSBDateUtil.SHORT_DAY_NAMES) {
+				int value = BeanParamUtil.getInteger(supportLabor, request, shortDayName + "Open");
+			%>
 
-	</tr>
-	<tr>
-		<td colspan="7">
-			<liferay-ui:message key="opening-time" />
-		</td>
-	</tr>
-	<tr>
+				<td>
+					<liferay-util:include page="/admin/input_select_half_hour_time.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="name" value='<%= shortDayName + "Open" %>' />
+						<liferay-util:param name="value" value="<%= String.valueOf(value) %>" />
+					</liferay-util:include>
+				</td>
 
-		<%
-		for (String shortDayName : OSBDateUtil.SHORT_DAY_NAMES) {
-			int value = BeanParamUtil.getInteger(supportLabor, request, shortDayName + "Open");
-		%>
+			<%
+			}
+			%>
 
-			<td>
-				<liferay-util:include page="/admin/input_select_half_hour_time.jsp" servletContext="<%= application %>">
-					<liferay-util:param name="name" value='<%= shortDayName + "Open" %>' />
-					<liferay-util:param name="value" value="<%= String.valueOf(value) %>" />
-				</liferay-util:include>
+		</tr>
+		<tr>
+			<td colspan="7">
+				<liferay-ui:message key="closing-time" />
 			</td>
+		<tr>
 
-		<%
-		}
-		%>
+			<%
+			for (String shortDayName : OSBDateUtil.SHORT_DAY_NAMES) {
+				int value = BeanParamUtil.getInteger(supportLabor, request, shortDayName + "Close");
+			%>
 
-	</tr>
-	<tr>
-		<td colspan="7">
-			<liferay-ui:message key="closing-time" />
-		</td>
-	<tr>
+				<td>
+					<liferay-util:include page="/admin/input_select_half_hour_time.jsp" servletContext="<%= application %>">
+						<liferay-util:param name="name" value='<%= shortDayName + "Close" %>' />
+						<liferay-util:param name="value" value="<%= String.valueOf(value) %>" />
+					</liferay-util:include>
+				</td>
 
-		<%
-		for (String shortDayName : OSBDateUtil.SHORT_DAY_NAMES) {
-			int value = BeanParamUtil.getInteger(supportLabor, request, shortDayName + "Close");
-		%>
+			<%
+			}
+			%>
 
-			<td>
-				<liferay-util:include page="/admin/input_select_half_hour_time.jsp" servletContext="<%= application %>">
-					<liferay-util:param name="name" value='<%= shortDayName + "Close" %>' />
-					<liferay-util:param name="value" value="<%= String.valueOf(value) %>" />
-				</liferay-util:include>
-			</td>
-
-		<%
-		}
-		%>
-
-	</tr>
+		</tr>
 	</table>
 </aui:form>
 

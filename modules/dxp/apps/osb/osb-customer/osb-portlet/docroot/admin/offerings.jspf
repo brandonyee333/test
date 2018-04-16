@@ -103,7 +103,12 @@ pageContext.setAttribute("searchURL", searchURL);
 
 		<br />
 
-		<a class="btn btn-default" href="<portlet:renderURL windowState="<%= WindowState.MAXIMIZED.toString() %>"><portlet:param name="mvcPath" value="/admin/edit_offering_definition.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:renderURL>"><liferay-ui:message key="add-offering" /></a>
+		<portlet:renderURL var="editOfferingDefinitionURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+			<portlet:param name="mvcPath" value="/admin/edit_offering_definition.jsp" />
+			<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+		</portlet:renderURL>
+
+		<aui:a cssClass="btn btn-default" href="<%= editOfferingDefinitionURL %>" label="add-offering" />
 
 		<br />
 

@@ -36,19 +36,19 @@
 			</tr>
 			<tr>
 				<td>
-					<input id="<portlet:namespace /><%= displayTerms.FIRST_NAME %>" name="<portlet:namespace /><%= displayTerms.FIRST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getFirstName()) %>" />
+					<aui:input label="" name="<%= displayTerms.FIRST_NAME %>" size="20" type="text" value="<%= displayTerms.getFirstName() %>" />
 				</td>
 				<td>
-					<input id="<portlet:namespace /><%= displayTerms.MIDDLE_NAME %>" name="<portlet:namespace /><%= displayTerms.MIDDLE_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getMiddleName()) %>" />
+					<aui:input label="" name="<%= displayTerms.MIDDLE_NAME %>" size="20" type="text" value="<%= displayTerms.getMiddleName() %>" />
 				</td>
 				<td>
-					<input id="<portlet:namespace /><%= displayTerms.LAST_NAME %>" name="<portlet:namespace /><%= displayTerms.LAST_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getLastName()) %>" />
+					<aui:input label="" name="<%= displayTerms.LAST_NAME %>" size="20" type="text" value="<%= displayTerms.getLastName() %>" />
 				</td>
 				<td>
-					<input id="<portlet:namespace /><%= displayTerms.SCREEN_NAME %>" name="<portlet:namespace /><%= displayTerms.SCREEN_NAME %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getScreenName()) %>" />
+					<aui:input label="" name="<%= displayTerms.SCREEN_NAME %>" size="20" type="text" value="<%= displayTerms.getScreenName() %>" />
 				</td>
 				<td>
-					<input id="<portlet:namespace /><%= displayTerms.EMAIL_ADDRESS %>" name="<portlet:namespace /><%= displayTerms.EMAIL_ADDRESS %>" size="20" type="text" value="<%= HtmlUtil.escape(displayTerms.getEmailAddress()) %>" />
+					<aui:input label="" name="<%= displayTerms.EMAIL_ADDRESS %>" size="20" type="text" value="<%= displayTerms.getEmailAddress() %>" />
 				</td>
 			</tr>
 		</table>

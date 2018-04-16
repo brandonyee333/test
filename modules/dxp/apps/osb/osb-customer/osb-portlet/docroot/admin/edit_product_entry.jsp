@@ -40,9 +40,9 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 </portlet:actionURL>
 
 <aui:form action="<%= updateProductEntryURL %>" method="post">
-	<input name="<portlet:namespace />redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<input name="<portlet:namespace />backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
-	<input name="<portlet:namespace />productEntryId" type="hidden" value="<%= productEntryId %>" />
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
+	<aui:input name="productEntryId" type="hidden" value="<%= productEntryId %>" />
 
 	<liferay-ui:tabs
 		backURL="<%= backURL %>"
@@ -72,13 +72,13 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 			</td>
 			<td>
 				<aui:select label="" name="type">
-					<option value=""></option>
+					<aui:option value="" />
 
 					<%
 					for (int curType : ProductEntryConstants.TYPES) {
 					%>
 
-						<option <%= (type == curType) ? "selected" : "" %> value="<%= curType %>"><%= LanguageUtil.get(request, ProductEntryConstants.getTypeLabel(curType)) %></option>
+						<aui:option label="<%= ProductEntryConstants.getTypeLabel(curType) %>" selected="<%= type == curType %>" value="<%= curType %>" />
 
 					<%
 					}
@@ -93,13 +93,13 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 			</td>
 			<td>
 				<aui:select label="" name="environment">
-					<option value=""></option>
+					<aui:option value="" />
 
 					<%
 					for (int i = 1; i <= 6; i++) {
 					%>
 
-						<option <%= (environment == i) ? "selected" : "" %> value="<%= i %>"><%= LanguageUtil.get(request, ProductEntryConstants.getEnvironmentLabel(i)) %></option>
+						<aui:option label="<%= ProductEntryConstants.getEnvironmentLabel(i) %>" selected="<%= environment == i %>" value="<%= i %>" />
 
 					<%
 					}
@@ -113,7 +113,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 				<liferay-ui:message key="version-list-type" />
 			</td>
 			<td>
-				<aui:input label="" name="versionsListType" type="text" value="<%= HtmlUtil.escapeAttribute(versionsListType) %>" />
+				<aui:input label="" name="versionsListType" type="text" value="<%= versionsListType %>" />
 			</td>
 		</tr>
 
@@ -144,7 +144,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 
 	<aui:button type="submit" value="save" />
 
-	<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+	<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 </aui:form>
 
 <c:if test="<%= windowState.equals(WindowState.MAXIMIZED) %>">

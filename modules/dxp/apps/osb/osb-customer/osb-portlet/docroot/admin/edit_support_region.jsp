@@ -127,7 +127,7 @@ if (supportRegion != null) {
 	<div>
 		<aui:button type="submit" value="save" />
 
-		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 	</div>
 
 	<c:if test="<%= supportRegion != null %>">
