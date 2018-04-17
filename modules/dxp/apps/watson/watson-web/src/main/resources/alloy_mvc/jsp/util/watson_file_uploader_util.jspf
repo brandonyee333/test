@@ -236,11 +236,11 @@ public static class WatsonFileUploaderUtil {
 			return _ORIENTATION_NORMAL;
 		}
 
-		for (DDMFormFieldValue ddmformFieldValue : ddmFormFieldValues) {
-			String ddmFormFieldValueName = ddmformFieldValue.getName();
+		for (DDMFormFieldValue ddmFormFieldValue : ddmFormFieldValues) {
+			String ddmFormFieldValueName = ddmFormFieldValue.getName();
 
 			if (ddmFormFieldValueName.equals("TIFF_ORIENTATION")) {
-				Value orientationValue = ddmformFieldValue.getValue();
+				Value orientationValue = ddmFormFieldValue.getValue();
 
 				return GetterUtil.getInteger(orientationValue.getString(orientationValue.getDefaultLocale()));
 			}
