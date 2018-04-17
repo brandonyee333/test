@@ -246,6 +246,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 		int end = ParamUtil.getInteger(request, "end", 30);
 
 		searchContext.setEnd(end);
+
 		searchContext.setEntryClassNames(new String[] {modelClass.getName()});
 		searchContext.setLike(true);
 		searchContext.setPortletIds(new String[] {WatsonPortletKeys.WATSON});
