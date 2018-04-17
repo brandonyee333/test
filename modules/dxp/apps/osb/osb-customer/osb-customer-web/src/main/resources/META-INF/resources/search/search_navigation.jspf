@@ -211,6 +211,7 @@ AssetCategory assetCategory = assetCategories.get(0);
 
 		for (var i = 0; i < nodeList.length; i++) {
 			var element = nodeList[i];
+
 			var value = element.value;
 
 			if (value && element.checked) {
@@ -229,26 +230,27 @@ AssetCategory assetCategory = assetCategories.get(0);
 
 		for (var i = 0; i < filters.length; i++) {
 			var element = filters[i];
-			var elementParent = element.parentElement;
 
-			var subfilters = elementParent.querySelectorAll('input[type="checkbox"]:checked');
+			var parentElement = element.parentElement;
 
-			while (!elementParent.classList.contains('tree-node-content')) {
-				if (elementParent.style.display == 'none') {
-					elementParent.style.display = '';
+			var subfilters = parentElement.querySelectorAll('input[type="checkbox"]:checked');
 
-					elementParent = elementParent.parentElement;
+			while (!parentElement.classList.contains('tree-node-content')) {
+				if (parentElement.style.display == 'none') {
+					parentElement.style.display = '';
+
+					parentElement = parentElement.parentElement;
 
 					if (subfilters.length > 0) {
-						<portlet:namespace />toggleIcon(elementParent, null);
+						<portlet:namespace />toggleIcon(parentElement, null);
 					}
 				}
 				else {
-					elementParent = elementParent.parentElement;
+					parentElement = parentElement.parentElement;
 				}
 			}
 
-			<portlet:namespace />toggleIcon(elementParent, null);
+			<portlet:namespace />toggleIcon(parentElement, null);
 		}
 	}
 
@@ -256,18 +258,16 @@ AssetCategory assetCategory = assetCategories.get(0);
 		var element = document.getElementById('<portlet:namespace />' + id);
 
 		if (element) {
-			var elementParent = element.parentElement;
+			var parentElement = element.parentElement;
 
 			if (element.style.display == 'none') {
 				element.style.display = '';
-
-				<portlet:namespace />toggleIcon(elementParent, true);
 			}
 			else {
 				element.style.display = 'none';
-
-				<portlet:namespace />toggleIcon(elementParent, true);
 			}
+
+			<portlet:namespace />toggleIcon(parentElement, true);
 		}
 	}
 
