@@ -36,15 +36,15 @@ String productEntryName = licenseKey.getProductEntryName();
 </portlet:actionURL>
 
 <aui:form action="<%= updateLicenseKeyURL %>" class="uni-form" method="post">
-	<aui:input name="redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<aui:input name="backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="licenseKeyId" type="hidden" value="<%= licenseKeyId %>" />
 	<aui:input name="offeringEntryId" type="hidden" value="<%= licenseKey.getOfferingEntryId() %>" />
 	<aui:input name="active" type="hidden" value="<%= licenseKey.getActive() %>" />
 
-	<div class="clearfix section">
+	<div class="section">
 		<div class="pull-right">
-			<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
+			<aui:a cssClass="btn" href="<%= backURL %>" label="back-to-previous-page" />
 		</div>
 	</div>
 
@@ -54,209 +54,221 @@ String productEntryName = licenseKey.getProductEntryName();
 		<liferay-ui:message key="enter-a-new-name-for-this-license" />
 	</h1>
 
-	<div class="callout-a">
-		<div class="callout-content">
-			<liferay-ui:input-field
-				bean="<%= licenseKeySet %>"
-				field="name"
-				model="<%= LicenseKeySet.class %>"
-			/>
+	<liferay-ui:input-field
+		bean="<%= licenseKeySet %>"
+		field="name"
+		model="<%= LicenseKeySet.class %>"
+	/>
+
+	<div class="aui-w33 content-column">
+		<div class="content-column-content left-column">
+			<span class="txt-b txt-up">
+				<liferay-ui:message key="owner" />:
+			</span>
+
+			<%= HtmlUtil.escape(licenseKey.getOwner()) %>
 		</div>
 	</div>
 
-	<div class="callout-a">
-		<div class="callout-content clearfix">
-			<div class="content-column w33">
-				<div class="content-column-content left-column">
-					<span class="txt-b txt-up"><liferay-ui:message key="owner" />:</span>
+	<div class="aui-w66 content-column">
+		<div class="content-column-content right-column">
+			<span class="txt-b txt-up"><liferay-ui:message key="description" />:</span>
 
-					<%= HtmlUtil.escape(licenseKey.getOwner()) %>
-				</div>
-			</div>
-
-			<div class="content-column w66">
-				<div class="content-column-content right-column">
-					<span class="txt-b txt-up"><liferay-ui:message key="description" />:</span>
-
-					<%= HtmlUtil.escape(licenseKey.getDescription()) %>
-				</div>
-			</div>
+			<%= HtmlUtil.escape(licenseKey.getDescription()) %>
 		</div>
+	</div>
 
-		<div class="callout-content clearfix">
-			<div class="content-column w33">
-				<div class="content-column-content left-column">
-					<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>
+	<div class="aui-w33 content-column">
+		<div class="content-column-content left-column">
+			<span class="txt-b txt-up">
+				<liferay-ui:message key="product" />:
+			</span>
 
-					<%= productEntryName %>
+			<%= productEntryName %>
 
-					<br />
+			<br />
 
-					<span class="txt-b txt-up"><liferay-ui:message key="start-date" />:</span>
+			<span class="txt-b txt-up">
+				<liferay-ui:message key="start-date" />:
+			</span>
 
-					<c:choose>
-						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
-							<liferay-ui:message key="registration" />
-						</c:when>
-						<c:otherwise>
-							<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-
-			<div class="content-column w33">
-				<div class="content-column-content middle-column">
-					<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
-
-					<%= LanguageUtil.get(request, licenseEntryType) %>
-
-					<br />
-
-					<c:choose>
-						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
-							<span class="txt-b txt-up"><liferay-ui:message key="lifetime" />:</span>
-
-							<%
-							Date startDate = licenseKey.getStartDate();
-							Date expirationDate = licenseKey.getExpirationDate();
-							%>
-
-							<%= (expirationDate.getTime() - startDate.getTime()) / Time.DAY %> <liferay-ui:message key="days" />
-						</c:when>
-						<c:otherwise>
-							<span class="txt-b txt-up"><liferay-ui:message key="expiration-date" />:</span>
-
-							<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-
-			<div class="content-column w33">
-				<div class="content-column-content right-column">
-					<span class="txt-b txt-up"><liferay-ui:message key="version" />:</span>
-
-					<%= licenseKey.getProductVersionLabel() %>
-
-					<br />
-
-					<span class="txt-b txt-up"><liferay-ui:message key="status" />:</span>
-
-					<c:choose>
-						<c:when test="<%= licenseKey.isExpired() %>">
-							<liferay-ui:icon
-								image="close"
-								label="<%= true %>"
-								message="expired"
-							/>
-						</c:when>
-						<c:when test="<%= licenseKey.isActive() %>">
-							<liferay-ui:icon
-								image="activate"
-								label="<%= true %>"
-								message="active"
-							/>
-						</c:when>
-						<c:otherwise>
-							<liferay-ui:icon
-								image="deactivate"
-								label="<%= true %>"
-								message="inactive"
-							/>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
-		</div>
-
-		<br />
-
-		<div class="callout-content">
 			<c:choose>
-				<c:when test="<%= licenseKey.getLicenseVersion() == 2 %>">
-					<c:choose>
-						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
-							<div>
-								<span class="txt-b txt-up"><liferay-ui:message key="maximum-servers" />:</span>
-
-								<%= licenseKey.getMaxServers() %>
-							</div>
-
-							<br />
-						</c:when>
-						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
-							<table class="lfr-table">
-								<tr>
-									<td>
-										<span class="txt-b txt-up"><liferay-ui:message key="mac-addresses" />:</span>
-									</td>
-									<td>
-
-										<%
-										List<LicenseKey> clusterLicenseKeys = LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
-
-										for (int i = 0; i < clusterLicenseKeys.size(); i++) {
-											LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
-										%>
-
-											<%= clusterLicenseKey.getServerId() %><%= (i + 1) < clusterLicenseKeys.size() ? "<br />" : "" %>
-
-										<%
-										}
-										%>
-
-									</td>
-								</tr>
-							</table>
-						</c:when>
-					</c:choose>
+				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
+					<liferay-ui:message key="registration" />
 				</c:when>
 				<c:otherwise>
-					<c:choose>
-						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
-							<table class="lfr-table">
-								<tr>
-									<td>
-										<span class="txt-b txt-up"><liferay-ui:message key="mac-addresses" />:</span>
-									</td>
-									<td>
-
-										<%
-										List<LicenseKey> clusterLicenseKeys = LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
-
-										for (int i = 0; i < clusterLicenseKeys.size(); i++) {
-											LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
-										%>
-
-											<%= clusterLicenseKey.getServerId() %><%= (i + 1) < clusterLicenseKeys.size() ? "<br />" : "" %>
-
-										<%
-										}
-										%>
-
-									</td>
-								</tr>
-							</table>
-						</c:when>
-						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
-							<div>
-								<span class="txt-b txt-up"><liferay-ui:message key="server-id" />:</span>
-
-								<%= licenseKey.getServerId() %>
-							</div>
-
-							<br />
-						</c:when>
-					</c:choose>
+					<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
 				</c:otherwise>
 			</c:choose>
 		</div>
 	</div>
 
+	<div class="aui-w33 content-column">
+		<div class="content-column-content middle-column">
+			<span class="txt-b txt-up">
+				<liferay-ui:message key="type" />:
+			</span>
+
+			<%= LanguageUtil.get(request, licenseEntryType) %>
+
+			<br />
+
+			<c:choose>
+				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
+					<span class="txt-b txt-up">
+						<liferay-ui:message key="lifetime" />:
+					</span>
+
+					<%
+					Date startDate = licenseKey.getStartDate();
+					Date expirationDate = licenseKey.getExpirationDate();
+					%>
+
+					<%= (expirationDate.getTime() - startDate.getTime()) / Time.DAY %> <liferay-ui:message key="days" />
+				</c:when>
+				<c:otherwise>
+					<span class="txt-b txt-up">
+						<liferay-ui:message key="expiration-date" />:
+					</span>
+
+					<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
+
+	<div class="aui-w33 content-column">
+		<div class="content-column-content right-column">
+			<span class="txt-b txt-up">
+				<liferay-ui:message key="version" />:
+			</span>
+
+			<%= licenseKey.getProductVersionLabel() %>
+
+			<br />
+
+			<span class="txt-b txt-up">
+				<liferay-ui:message key="status" />:
+			</span>
+
+			<c:choose>
+				<c:when test="<%= licenseKey.isExpired() %>">
+					<liferay-ui:icon
+						image="close"
+						label="<%= true %>"
+						message="expired"
+					/>
+				</c:when>
+				<c:when test="<%= licenseKey.isActive() %>">
+					<liferay-ui:icon
+						image="activate"
+						label="<%= true %>"
+						message="active"
+					/>
+				</c:when>
+				<c:otherwise>
+					<liferay-ui:icon
+						image="deactivate"
+						label="<%= true %>"
+						message="inactive"
+					/>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
+
+	<br />
+
+	<c:choose>
+		<c:when test="<%= licenseKey.getLicenseVersion() == 2 %>">
+			<c:choose>
+				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
+					<div>
+						<span class="txt-b txt-up">
+							<liferay-ui:message key="maximum-servers" />:
+						</span>
+
+						<%= licenseKey.getMaxServers() %>
+					</div>
+
+					<br />
+				</c:when>
+				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
+					<table class="lfr-table">
+						<tr>
+							<td>
+								<span class="txt-b txt-up">
+									<liferay-ui:message key="mac-addresses" />:
+								</span>
+							</td>
+							<td>
+
+								<%
+								List<LicenseKey> clusterLicenseKeys = LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
+
+								for (int i = 0; i < clusterLicenseKeys.size(); i++) {
+									LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
+								%>
+
+									<%= clusterLicenseKey.getServerId() %><%= (i + 1) < clusterLicenseKeys.size() ? "<br />" : "" %>
+
+								<%
+								}
+								%>
+
+							</td>
+						</tr>
+					</table>
+				</c:when>
+			</c:choose>
+		</c:when>
+		<c:otherwise>
+			<c:choose>
+				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
+					<table class="lfr-table">
+						<tr>
+							<td>
+								<span class="txt-b txt-up">
+									<liferay-ui:message key="mac-addresses" />:
+								</span>
+							</td>
+							<td>
+
+								<%
+								List<LicenseKey> clusterLicenseKeys = LicenseKeyLocalServiceUtil.getOfferingEntryLicenseKeys(licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
+
+								for (int i = 0; i < clusterLicenseKeys.size(); i++) {
+									LicenseKey clusterLicenseKey = clusterLicenseKeys.get(i);
+								%>
+
+									<%= clusterLicenseKey.getServerId() %><%= (i + 1) < clusterLicenseKeys.size() ? "<br />" : "" %>
+
+								<%
+								}
+								%>
+
+							</td>
+						</tr>
+					</table>
+				</c:when>
+				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
+					<div>
+						<span class="txt-b txt-up">
+							<liferay-ui:message key="server-id" />:
+						</span>
+
+						<%= licenseKey.getServerId() %>
+					</div>
+
+					<br />
+				</c:when>
+			</c:choose>
+		</c:otherwise>
+	</c:choose>
+
 	<div>
 		<aui:button type="submit" value="save" />
 
-		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 	</div>
 </aui:form>

@@ -14,64 +14,62 @@
  */
 --%>
 
-<div class="clearfix">
-	<div class="content-column w33">
-		<div class="content-column-content left-column">
-			<a class="callout-a display-b paragraph">
-				<div class="callout-content ha-c">
-					<div class="display-ib">
-						<div class="txt-b">
-							&nbsp;
-						</div>
+<div class="aui-w33 content-column">
+	<div class="content-column-content left-column">
+		<a class="display-b paragraph">
+			<div class="ha-c">
+				<div class="display-ib">
+					<div class="txt-b">
+						&nbsp;
+					</div>
 
-						<div class="txt-b txt-h1">
-							&nbsp;
-						</div>
+					<div class="txt-b txt-h1">
+						&nbsp;
 					</div>
 				</div>
-			</a>
-		</div>
+			</div>
+		</a>
 	</div>
+</div>
 
-	<div class="content-column w33">
-		<div class="content-column-content middle-column">
-			<a class="callout-a display-b paragraph">
-				<div class="callout-content ha-c">
-					<div class="display-ib">
-						<div class="txt-b">
-							&nbsp;
-						</div>
+<div class="aui-w33 content-column">
+	<div class="content-column-content middle-column">
+		<a class="display-b paragraph">
+			<div class="ha-c">
+				<div class="display-ib">
+					<div class="txt-b">
+						&nbsp;
+					</div>
 
-						<div class="txt-b txt-h1">
-							&nbsp;
-						</div>
+					<div class="txt-b txt-h1">
+						&nbsp;
 					</div>
 				</div>
-			</a>
-		</div>
+			</div>
+		</a>
 	</div>
+</div>
 
-	<portlet:renderURL var="addLicenseKeyURL">
-		<portlet:param name="mvcPath" value="/license/edit_app_license_key.jsp" />
-		<portlet:param name="redirect" value="<%= currentURL %>" />
-	</portlet:renderURL>
+<portlet:renderURL var="addLicenseKeyURL">
+	<portlet:param name="mvcPath" value="/license/edit_app_license_key.jsp" />
+	<portlet:param name="redirect" value="<%= currentURL %>" />
+</portlet:renderURL>
 
-	<div class="content-column w33">
-		<div class="content-column-content right-column">
-			<a class="callout-a display-b paragraph" href="<%= addLicenseKeyURL %>">
-				<div class="callout-content ha-c">
-					<div class="display-ib">
-						<div class="txt-b">
-							<liferay-ui:message key="generate-new-license" />
-						</div>
+<div class="aui-w33 content-column">
+	<div class="content-column-content right-column">
+		<a class="display-b paragraph" href="<%= addLicenseKeyURL %>">
+			<div class="ha-c">
+				<div class="display-ib">
+					<div class="txt-b">
+						<liferay-ui:message key="generate-new-license" />
+					</div>
 
-						<div class="txt-b txt-h1">
-							+
-						</div>
+					<div class="txt-b txt-h1">
+						+
 					</div>
 				</div>
-			</a>
-		</div>
+			</div>
+		</a>
 	</div>
 </div>
 

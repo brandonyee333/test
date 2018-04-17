@@ -163,9 +163,9 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 	<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 	<aui:input name="offeringEntryId" type="hidden" value="<%= offeringEntryId %>" />
 
-	<div class="clearfix section">
+	<div class="section">
 		<div class="pull-right">
-			<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
+			<aui:a cssClass="btn" href="<%= backURL %>" label="back-to-previous-page" />
 		</div>
 	</div>
 
@@ -189,96 +189,162 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 				<liferay-ui:message key="project" />
 			</h2>
 
-			<div class="callout-a">
-				<div class="callout-content">
+			<%
+			List<AccountEntry> accountEntries = new ArrayList<AccountEntry>();
+
+			if (hasUpdateAdmin) {
+				accountEntries = AccountEntryLocalServiceUtil.getAccountEntries(AccountEntryConstants.STATUSES_ACTIVE, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			}
+			else {
+				LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+
+				params.put("accountWorker", new Long[] {user.getUserId(), null});
+				params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
+
+				accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			}
+			%>
+
+			<c:choose>
+				<c:when test="<%= licenseKeySet != null %>">
+					<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
+
+					<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
+				</c:when>
+				<c:when test="<%= accountEntries.size() == 1 %>">
 
 					<%
-					List<AccountEntry> accountEntries = new ArrayList<AccountEntry>();
+					accountEntry = accountEntries.get(0);
 
-					if (hasUpdateAdmin) {
-						accountEntries = AccountEntryLocalServiceUtil.getAccountEntries(AccountEntryConstants.STATUSES_ACTIVE, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-					}
-					else {
-						LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
+					accountEntryId = accountEntry.getAccountEntryId();
 
-						params.put("accountWorker", new Long[] {user.getUserId(), null});
-						params.put("status", AccountEntryConstants.STATUSES_ACTIVE);
-
-						accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-					}
+					addLicensePermission = OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.ADD_LICENSE);
 					%>
 
-					<c:choose>
-						<c:when test="<%= licenseKeySet != null %>">
-							<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
+					<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
 
-							<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
-						</c:when>
-						<c:when test="<%= accountEntries.size() == 1 %>">
+					<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
+				</c:when>
+				<c:otherwise>
 
-							<%
-							accountEntry = accountEntries.get(0);
+					<%
+					String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey('', '', '', 0);";
+					%>
 
-							accountEntryId = accountEntry.getAccountEntryId();
+					<aui:select label="" name="accountEntryId" onChange="<%= taglibOnChange %>">
+						<aui:option value="" />
 
-							addLicensePermission = OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.ADD_LICENSE);
-							%>
+						<%
+						for (AccountEntry curAccountEntry : accountEntries) {
+						%>
 
-							<strong><%= HtmlUtil.escape(accountEntry.getName()) %></strong>
+							<aui:option label="<%= curAccountEntry.getName() %>" selected="<%= curAccountEntry.getAccountEntryId() == accountEntryId %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
 
-							<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
-						</c:when>
-						<c:otherwise>
+						<%
+						}
+						%>
 
-							<%
-							String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey('', '', '', 0);";
-							%>
-
-							<aui:select label="" name="accountEntryId" onChange="<%= taglibOnChange %>">
-								<aui:option value="" />
-
-								<%
-								for (AccountEntry curAccountEntry : accountEntries) {
-								%>
-
-									<aui:option label="<%= curAccountEntry.getName() %>" selected="<%= curAccountEntry.getAccountEntryId() == accountEntryId %>" value="<%= curAccountEntry.getAccountEntryId() %>" />
-
-								<%
-								}
-								%>
-
-							</aui:select>
-						</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
+					</aui:select>
+				</c:otherwise>
+			</c:choose>
 
 			<h2 class="section-heading">
 				<liferay-ui:message key="product" />
 			</h2>
 
-			<div class="callout-a">
-				<div class="callout-content">
+			<%
+			String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(this.value, '', '', 0);";
+			%>
+
+			<aui:select label="" name="productEntryId" onChange="<%= taglibOnChange %>">
+				<aui:option value="" />
+
+				<%
+				if (accountEntry != null) {
+					LinkedHashMap params = new LinkedHashMap();
+
+					params.put("licenseOfferingEntries", Long.valueOf(accountEntry.getAccountEntryId()));
+
+					List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+					for (ProductEntry curProductEntry : productEntries) {
+				%>
+
+						<aui:option label="<%= curProductEntry.getName() %>" selected="<%= curProductEntry.getProductEntryId() == productEntryId %>" value="<%= curProductEntry.getProductEntryId() %>" />
+
+				<%
+					}
+				}
+				%>
+
+			</aui:select>
+
+			<div class="aui-w50 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="section-heading">
+						<liferay-ui:message key="choose-liferay-version" />
+					</h2>
 
 					<%
-					String taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(this.value, '', '', 0);";
+					taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, this.value, '', 0);";
 					%>
 
-					<aui:select label="" name="productEntryId" onChange="<%= taglibOnChange %>">
+					<aui:select name="productVersion" onChange="<%= taglibOnChange %>">
 						<aui:option value="" />
 
 						<%
-						if (accountEntry != null) {
-							LinkedHashMap params = new LinkedHashMap();
+						if (productEntry != null) {
+							List<ListType> productVersionTypes = productEntry.getAllVersionsListTypes();
 
-							params.put("licenseOfferingEntries", Long.valueOf(accountEntry.getAccountEntryId()));
+							String previousNamePrefix = StringPool.BLANK;
 
-							List<ProductEntry> productEntries = ProductEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+							for (ListType productVersionType : productVersionTypes) {
+								if ((productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_4_4_0) || (productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER)) {
+									continue;
+								}
 
-							for (ProductEntry curProductEntry : productEntries) {
+								String name = productVersionType.getName();
+
+								String namePrefix = name.substring(0, 3);
 						%>
 
-								<aui:option label="<%= curProductEntry.getName() %>" selected="<%= curProductEntry.getProductEntryId() == productEntryId %>" value="<%= curProductEntry.getProductEntryId() %>" />
+								<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
+									<aui:option disabled="<%= true %>">--------</aui:option>
+								</c:if>
+
+								<aui:option label="<%= productVersionType.getName() %>" selected="<%= productVersionType.getListTypeId() == productVersion %>" value="<%= productVersionType.getListTypeId() %>" />
+
+						<%
+								previousNamePrefix = namePrefix;
+							}
+						}
+						%>
+
+					</aui:select>
+				</div>
+			</div>
+
+			<div class="aui-w50 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="section-heading">
+						<liferay-ui:message key="type" />
+					</h2>
+
+					<%
+					taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productVersion.value, this.value, 0);";
+					%>
+
+					<aui:select label="" name="licenseEntryId" onChange="<%= taglibOnChange %>">
+						<aui:option value="" />
+
+						<%
+						if (productVersion > 0) {
+							List<LicenseEntry> licenseEntries = LicenseEntryLocalServiceUtil.getLicenseEntries(productEntryId, productVersion);
+
+							for (LicenseEntry curLicenseEntry : licenseEntries) {
+						%>
+
+								<aui:option selected="<%= curLicenseEntry.getLicenseEntryId() == licenseEntryId %>" value="<%= curLicenseEntry.getLicenseEntryId() %>"><%= curLicenseEntry.getName() %> (<%= LanguageUtil.get(request, curLicenseEntry.getType()) %>)</aui:option>
 
 						<%
 							}
@@ -289,293 +355,186 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 				</div>
 			</div>
 
-			<div class="clearfix">
-				<div class="content-column w50">
-					<div class="content-column-content left-column">
-						<h2 class="section-heading">
-							<liferay-ui:message key="choose-liferay-version" />
-						</h2>
-
-						<div class="callout-a">
-							<div class="callout-content">
-
-								<%
-								taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, this.value, '', 0);";
-								%>
-
-								<aui:select name="productVersion" onChange="<%= taglibOnChange %>">
-									<aui:option value="" />
-
-									<%
-									if (productEntry != null) {
-										List<ListType> productVersionTypes = productEntry.getAllVersionsListTypes();
-
-										String previousNamePrefix = StringPool.BLANK;
-
-										for (ListType productVersionType : productVersionTypes) {
-											if ((productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_4_4_0) || (productVersionType.getListTypeId() == ProductEntryConstants.PORTAL_VERSION_OTHER)) {
-												continue;
-											}
-
-											String name = productVersionType.getName();
-
-											String namePrefix = name.substring(0, 3);
-									%>
-
-											<c:if test="<%= Validator.isNotNull(previousNamePrefix) && !previousNamePrefix.equals(namePrefix) %>">
-												<aui:option disabled="<%= true %>">--------</aui:option>
-											</c:if>
-
-											<aui:option label="<%= productVersionType.getName() %>" selected="<%= productVersionType.getListTypeId() == productVersion %>" value="<%= productVersionType.getListTypeId() %>" />
-
-									<%
-											previousNamePrefix = namePrefix;
-										}
-									}
-									%>
-
-								</aui:select>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="content-column w50">
-					<div class="content-column-content right-column">
-						<h2 class="section-heading">
-							<liferay-ui:message key="type" />
-						</h2>
-
-						<div class="callout-a">
-							<div class="callout-content">
-
-								<%
-								taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productVersion.value, this.value, 0);";
-								%>
-
-								<aui:select label="" name="licenseEntryId" onChange="<%= taglibOnChange %>">
-									<aui:option value="" />
-
-									<%
-									if (productVersion > 0) {
-										List<LicenseEntry> licenseEntries = LicenseEntryLocalServiceUtil.getLicenseEntries(productEntryId, productVersion);
-
-										for (LicenseEntry curLicenseEntry : licenseEntries) {
-									%>
-
-											<aui:option selected="<%= curLicenseEntry.getLicenseEntryId() == licenseEntryId %>" value="<%= curLicenseEntry.getLicenseEntryId() %>"><%= curLicenseEntry.getName() %> (<%= LanguageUtil.get(request, curLicenseEntry.getType()) %>)</aui:option>
-
-									<%
-										}
-									}
-									%>
-
-								</aui:select>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
 			<h2 class="section-heading">
 				<liferay-ui:message key="choose-license" />
 			</h2>
 
-			<div class="callout-a">
-				<div class="callout-content">
+			<%
+			List<OfferingEntryGroup> offeringEntryGroups = new ArrayList<OfferingEntryGroup>();
+
+			if ((accountEntry != null) && (productVersion >= 0) && (productEntry != null) && (licenseEntry != null)) {
+				LinkedHashMap params = new LinkedHashMap();
+
+				params.put("validLicense", new Long[] {productEntryId, productEntryId});
+				params.put("version", ProductEntryConstants.getMajorVersion(productVersion));
+
+				offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR, OfferingEntryConstants.TYPE_SUBSCRIPTION}, new int[0], 0, 0, 0, 0, 0, 0, params, true);
+			}
+			%>
+
+			<liferay-ui:search-container
+				delta="<%= 10 %>"
+				headerNames="start-date,lifetime,license-keys-available"
+				iteratorURL="<%= portletURL %>"
+				total="<%= offeringEntryGroups.size() %>"
+			>
+				<liferay-ui:search-container-results
+					results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
+				/>
+
+				<liferay-ui:search-container-row
+					className="com.liferay.osb.model.OfferingEntryGroup"
+					modelVar="offeringEntryGroup"
+				>
 
 					<%
-					List<OfferingEntryGroup> offeringEntryGroups = new ArrayList<OfferingEntryGroup>();
+					Calendar cal = Calendar.getInstance(timeZone, locale);
 
-					if ((accountEntry != null) && (productVersion >= 0) && (productEntry != null) && (licenseEntry != null)) {
-						LinkedHashMap params = new LinkedHashMap();
+					if ((accountEntry.getType() != AccountEntryConstants.TYPE_TRIAL) && !licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) && !licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
+						cal.setTime(offeringEntryGroup.getStartDate());
+					}
 
-						params.put("validLicense", new Long[] {productEntryId, productEntryId});
-						params.put("version", ProductEntryConstants.getMajorVersion(productVersion));
+					OfferingEntry availableOfferingEntry = null;
 
-						offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, accountEntryId, new int[] {OfferingEntryConstants.TYPE_REGULAR, OfferingEntryConstants.TYPE_SUBSCRIPTION}, new int[0], 0, 0, 0, 0, 0, 0, params, true);
+					String rowHREF = null;
+
+					if (addLicensePermission && (offeringEntryGroup.getStatus() == OfferingEntryConstants.STATUS_ACTIVE) && offeringEntryGroup.hasAvailableServers()) {
+						availableOfferingEntry = offeringEntryGroup.getAvailableLicenseOfferingEntry();
+
+						StringBuilder sb = new StringBuilder();
+
+						sb.append("javascript:");
+						sb.append(renderResponse.getNamespace());
+						sb.append("updateLicenseKey('', '', '', ");
+						sb.append(availableOfferingEntry.getOfferingEntryId());
+						sb.append(");");
+
+						rowHREF = sb.toString();
 					}
 					%>
 
-					<liferay-ui:search-container
-						delta="<%= 10 %>"
-						headerNames="start-date,lifetime,license-keys-available"
-						iteratorURL="<%= portletURL %>"
-						total="<%= offeringEntryGroups.size() %>"
+					<liferay-ui:search-container-column-text
+						name="start-date"
 					>
-						<liferay-ui:search-container-results
-							results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
-						/>
+						<c:choose>
+							<c:when test="<%= (availableOfferingEntry != null) && hasUpdateAdmin %>">
 
-						<liferay-ui:search-container-row
-							className="com.liferay.osb.model.OfferingEntryGroup"
-							modelVar="offeringEntryGroup"
-						>
+								<%
+								Calendar calendar = CalendarFactoryUtil.getCalendar(2010, 1, 1);
 
-							<%
-							Calendar cal = Calendar.getInstance(timeZone, locale);
+								Date firstEnabledDate = calendar.getTime();
 
-							if ((accountEntry.getType() != AccountEntryConstants.TYPE_TRIAL) && !licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) && !licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) {
-								cal.setTime(offeringEntryGroup.getStartDate());
-							}
+								calendar = CalendarFactoryUtil.getCalendar(2050, 1, 1);
 
-							OfferingEntry availableOfferingEntry = null;
+								Date lastEnabledDate = calendar.getTime();
+								%>
 
-							String rowHREF = null;
-
-							if (addLicensePermission && (offeringEntryGroup.getStatus() == OfferingEntryConstants.STATUS_ACTIVE) && offeringEntryGroup.hasAvailableServers()) {
-								availableOfferingEntry = offeringEntryGroup.getAvailableLicenseOfferingEntry();
-
-								StringBuilder sb = new StringBuilder();
-
-								sb.append("javascript:");
-								sb.append(renderResponse.getNamespace());
-								sb.append("updateLicenseKey('', '', '', ");
-								sb.append(availableOfferingEntry.getOfferingEntryId());
-								sb.append(");");
-
-								rowHREF = sb.toString();
-							}
-							%>
-
-							<liferay-ui:search-container-column-text
-								name="start-date"
-							>
-								<c:choose>
-									<c:when test="<%= (availableOfferingEntry != null) && hasUpdateAdmin %>">
-
-										<%
-										Calendar calendar = CalendarFactoryUtil.getCalendar(2010, 1, 1);
-
-										Date firstEnabledDate = calendar.getTime();
-
-										calendar = CalendarFactoryUtil.getCalendar(2050, 1, 1);
-
-										Date lastEnabledDate = calendar.getTime();
-										%>
-
-										<liferay-ui:input-date
-											dayParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateDay" %>'
-											dayValue="<%= cal.get(Calendar.DAY_OF_MONTH) %>"
-											firstDayOfWeek="<%= cal.getFirstDayOfWeek() %>"
-											firstEnabledDate="<%= firstEnabledDate %>"
-											formName='<%= "fm" %>'
-											lastEnabledDate="<%= lastEnabledDate %>"
-											monthParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateMonth" %>'
-											monthValue="<%= cal.get(Calendar.MONTH) %>"
-											yearParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateYear" %>'
-											yearValue="<%= cal.get(Calendar.YEAR) %>"
-										/>
-									</c:when>
-									<c:otherwise>
-										<c:if test="<%= rowHREF != null %>">
-											<a href="<%= rowHREF %>">
-										</c:if>
-
-										<%= longDateFormatDate.format(cal.getTime()) %>
-
-										<c:if test="<%= rowHREF != null %>">
-											</a>
-										</c:if>
-									</c:otherwise>
-								</c:choose>
-							</liferay-ui:search-container-column-text>
-
-							<liferay-ui:search-container-column-text
-								href="<%= rowHREF %>"
-								name="lifetime"
-							>
-								<%= (offeringEntryGroup.getLicenseLifetime() / Time.DAY) + " Days" %>
-
-								<c:if test="<%= offeringEntryGroup.getType() == OfferingEntryConstants.TYPE_SUBSCRIPTION %>">
-									- <%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>
+								<liferay-ui:input-date
+									dayParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateDay" %>'
+									dayValue="<%= cal.get(Calendar.DAY_OF_MONTH) %>"
+									firstDayOfWeek="<%= cal.getFirstDayOfWeek() %>"
+									firstEnabledDate="<%= firstEnabledDate %>"
+									formName='<%= "fm" %>'
+									lastEnabledDate="<%= lastEnabledDate %>"
+									monthParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateMonth" %>'
+									monthValue="<%= cal.get(Calendar.MONTH) %>"
+									yearParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateYear" %>'
+									yearValue="<%= cal.get(Calendar.YEAR) %>"
+								/>
+							</c:when>
+							<c:otherwise>
+								<c:if test="<%= rowHREF != null %>">
+									<a href="<%= rowHREF %>">
 								</c:if>
-							</liferay-ui:search-container-column-text>
 
-							<liferay-ui:search-container-column-text
-								href="<%= rowHREF %>"
-								name="license-keys-available"
-							>
-								<c:choose>
-									<c:when test="<%= offeringEntryGroup.getStatus() == OfferingEntryConstants.STATUS_CLOSED %>">
-										<liferay-ui:icon
-											image="close"
-											label="<%= true %>"
-											message="closed"
-										/>
-									</c:when>
-									<c:when test="<%= offeringEntryGroup.getStatus() == OfferingEntryConstants.STATUS_ON_HOLD %>">
-										<liferay-ui:icon
-											image="lock"
-											label="<%= true %>"
-											message="on-hold"
-										/>
-									</c:when>
-									<c:otherwise>
-										<%= offeringEntryGroup.getQuantity() - offeringEntryGroup.getLicenseKeysCount() %>
-									</c:otherwise>
-								</c:choose>
-							</liferay-ui:search-container-column-text>
+								<%= longDateFormatDate.format(cal.getTime()) %>
 
-							<liferay-ui:search-container-column-text
-								href="<%= rowHREF %>"
-							>
-								<c:if test="<%= addLicensePermission && (offeringEntryGroup.getStatus() == OfferingEntryConstants.STATUS_ACTIVE) && offeringEntryGroup.hasAvailableServers() %>">
-									<aui:button onClick="<%= rowHREF %>" value="choose" />
+								<c:if test="<%= rowHREF != null %>">
+									</a>
 								</c:if>
-							</liferay-ui:search-container-column-text>
-						</liferay-ui:search-container-row>
+							</c:otherwise>
+						</c:choose>
+					</liferay-ui:search-container-column-text>
 
-						<liferay-ui:search-iterator />
-					</liferay-ui:search-container>
-				</div>
-			</div>
+					<liferay-ui:search-container-column-text
+						href="<%= rowHREF %>"
+						name="lifetime"
+					>
+						<%= (offeringEntryGroup.getLicenseLifetime() / Time.DAY) + " Days" %>
+
+						<c:if test="<%= offeringEntryGroup.getType() == OfferingEntryConstants.TYPE_SUBSCRIPTION %>">
+							- <%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>
+						</c:if>
+					</liferay-ui:search-container-column-text>
+
+					<liferay-ui:search-container-column-text
+						href="<%= rowHREF %>"
+						name="license-keys-available"
+					>
+						<c:choose>
+							<c:when test="<%= offeringEntryGroup.getStatus() == OfferingEntryConstants.STATUS_CLOSED %>">
+								<liferay-ui:icon
+									image="close"
+									label="<%= true %>"
+									message="closed"
+								/>
+							</c:when>
+							<c:when test="<%= offeringEntryGroup.getStatus() == OfferingEntryConstants.STATUS_ON_HOLD %>">
+								<liferay-ui:icon
+									image="lock"
+									label="<%= true %>"
+									message="on-hold"
+								/>
+							</c:when>
+							<c:otherwise>
+								<%= offeringEntryGroup.getQuantity() - offeringEntryGroup.getLicenseKeysCount() %>
+							</c:otherwise>
+						</c:choose>
+					</liferay-ui:search-container-column-text>
+
+					<liferay-ui:search-container-column-text
+						href="<%= rowHREF %>"
+					>
+						<c:if test="<%= addLicensePermission && (offeringEntryGroup.getStatus() == OfferingEntryConstants.STATUS_ACTIVE) && offeringEntryGroup.hasAvailableServers() %>">
+							<aui:button onClick="<%= rowHREF %>" value="choose" />
+						</c:if>
+					</liferay-ui:search-container-column-text>
+				</liferay-ui:search-container-row>
+
+				<liferay-ui:search-iterator />
+			</liferay-ui:search-container>
 		</c:when>
 		<c:otherwise>
 			<h2 class="section-heading">
 				<liferay-ui:message key="name" />
 			</h2>
 
-			<div class="callout-a">
-				<div class="callout-content">
-					<c:choose>
-						<c:when test="<%= licenseKeySet != null %>">
-							<strong><%= HtmlUtil.escape(licenseKeySet.getName()) %></strong>
-						</c:when>
-						<c:otherwise>
-							<aui:input bean="<%= licenseKeySet %>" model="<%= LicenseKeySet.class %>" name="name" value="<%= accountEntry.getName() %>" />
-						</c:otherwise>
-					</c:choose>
+			<c:choose>
+				<c:when test="<%= licenseKeySet != null %>">
+					<strong><%= HtmlUtil.escape(licenseKeySet.getName()) %></strong>
+				</c:when>
+				<c:otherwise>
+					<aui:input bean="<%= licenseKeySet %>" model="<%= LicenseKeySet.class %>" name="name" value="<%= accountEntry.getName() %>" />
+				</c:otherwise>
+			</c:choose>
+
+			<div class="aui-w50 content-column">
+				<div class="content-column-content left-column">
+					<h2 class="section-heading">
+						<liferay-ui:message key="owner" />
+					</h2>
+
+					<aui:input model="<%= LicenseKey.class %>" name="owner" value="<%= accountEntry.getName() %>" />
 				</div>
 			</div>
 
-			<div class="clearfix">
-				<div class="content-column w50">
-					<div class="content-column-content left-column">
-						<h2 class="section-heading">
-							<liferay-ui:message key="owner" />
-						</h2>
+			<div class="aui-w50 content-column">
+				<div class="content-column-content right-column">
+					<h2 class="section-heading">
+						<liferay-ui:message key="description" />
+					</h2>
 
-						<div class="callout-a">
-							<div class="callout-content">
-								<aui:input model="<%= LicenseKey.class %>" name="owner" value="<%= accountEntry.getName() %>" />
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="content-column w50">
-					<div class="content-column-content right-column">
-						<h2 class="section-heading">
-							<liferay-ui:message key="description" />
-						</h2>
-
-						<div class="callout-a">
-							<div class="callout-content">
-								<aui:input model="<%= LicenseKey.class %>" name="description" value="<%= accountEntry.getName() %>" />
-							</div>
-						</div>
-					</div>
+					<aui:input model="<%= LicenseKey.class %>" name="description" value="<%= accountEntry.getName() %>" />
 				</div>
 			</div>
 
@@ -583,79 +542,91 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 				<liferay-ui:message key="license-info" />
 			</h2>
 
-			<div class="callout-a">
-				<div class="callout-content clearfix">
-					<div class="content-column w33">
-						<div class="content-column-content left-column">
-							<span class="txt-b txt-up"><liferay-ui:message key="product" />:</span>
+			<div class="aui-w33 content-column">
+				<div class="content-column-content left-column">
+					<span class="txt-b txt-up">
+						<liferay-ui:message key="product" />:
+					</span>
 
-							<%= productEntry.getName() %>
+					<%= productEntry.getName() %>
 
-							<aui:input label="" name="productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
+					<aui:input label="" name="productEntryId" type="hidden" value="<%= productEntry.getProductEntryId() %>" />
 
-							<br />
+					<br />
 
-							<span class="txt-b txt-up"><liferay-ui:message key="start-date" />:</span>
+					<span class="txt-b txt-up">
+						<liferay-ui:message key="start-date" />:
+					</span>
 
-							<%= longDateFormatDate.format(startDate) %>
+					<%= longDateFormatDate.format(startDate) %>
 
-							<aui:input name="startDateMonth" type="hidden" value="<%= startDateMonth %>" />
-							<aui:input name="startDateDay" type="hidden" value="<%= startDateDay %>" />
-							<aui:input name="startDateYear" type="hidden" value="<%= startDateYear %>" />
-						</div>
-					</div>
-
-					<div class="content-column w33">
-						<div class="content-column-content middle-column">
-							<span class="txt-b txt-up"><liferay-ui:message key="type" />:</span>
-
-							<%= HtmlUtil.escape(LanguageUtil.get(request, licenseEntryType)) %>
-
-							<aui:input label="" name="licenseEntryId" type="hidden" value="<%= licenseEntryId %>" />
-
-							<br />
-
-							<span class="txt-b txt-up"><liferay-ui:message key="expiration-date" />:</span>
-
-							<%= longDateFormatDate.format(new Date(startDate.getTime() + offeringEntry.getLicenseLifetime())) %>
-						</div>
-					</div>
-
-					<div class="content-column w33">
-						<div class="content-column-content right-column">
-							<span class="txt-b txt-up"><liferay-ui:message key="version" />:</span>
-
-							<%= LanguageUtil.get(request, LicenseKeyConstants.getProductVersionLabel(productVersion)) %>
-
-							<aui:input name="productVersion" type="hidden" value="<%= productVersion %>" />
-
-							<br />
-
-							<span class="txt-b txt-up"><liferay-ui:message key="license-keys-available" />:</span>
-
-							<%= licenseKeyMaxServers - licenseKeyCount %>
-						</div>
-					</div>
-
-					<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) %>">
-						<div class="content-column w33">
-							<div class="content-column-content left-column">
-								<span class="txt-b txt-up"><liferay-ui:message key="maximum-concurrent-users" />:</span>
-
-								<%= LanguageUtil.get(request, offeringDefinition.getMaxConcurrentUsersLabel()) %>
-							</div>
-						</div>
-
-						<div class="content-column w33">
-							<div class="content-column-content right-column">
-								<span class="txt-b txt-up"><liferay-ui:message key="maximum-users" />:</span>
-
-								<%= LanguageUtil.get(request, offeringDefinition.getMaxUsersLabel()) %>
-							</div>
-						</div>
-					</c:if>
+					<aui:input name="startDateMonth" type="hidden" value="<%= startDateMonth %>" />
+					<aui:input name="startDateDay" type="hidden" value="<%= startDateDay %>" />
+					<aui:input name="startDateYear" type="hidden" value="<%= startDateYear %>" />
 				</div>
 			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content middle-column">
+					<span class="txt-b txt-up">
+						<liferay-ui:message key="type" />:
+					</span>
+
+					<%= HtmlUtil.escape(LanguageUtil.get(request, licenseEntryType)) %>
+
+					<aui:input label="" name="licenseEntryId" type="hidden" value="<%= licenseEntryId %>" />
+
+					<br />
+
+					<span class="txt-b txt-up">
+						<liferay-ui:message key="expiration-date" />:
+					</span>
+
+					<%= longDateFormatDate.format(new Date(startDate.getTime() + offeringEntry.getLicenseLifetime())) %>
+				</div>
+			</div>
+
+			<div class="aui-w33 content-column">
+				<div class="content-column-content right-column">
+					<span class="txt-b txt-up">
+						<liferay-ui:message key="version" />:
+					</span>
+
+					<%= LanguageUtil.get(request, LicenseKeyConstants.getProductVersionLabel(productVersion)) %>
+
+					<aui:input name="productVersion" type="hidden" value="<%= productVersion %>" />
+
+					<br />
+
+					<span class="txt-b txt-up">
+						<liferay-ui:message key="license-keys-available" />:
+					</span>
+
+					<%= licenseKeyMaxServers - licenseKeyCount %>
+				</div>
+			</div>
+
+			<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) %>">
+				<div class="aui-w33 content-column">
+					<div class="content-column-content left-column">
+						<span class="txt-b txt-up">
+							<liferay-ui:message key="maximum-concurrent-users" />:
+						</span>
+
+						<%= LanguageUtil.get(request, offeringDefinition.getMaxConcurrentUsersLabel()) %>
+					</div>
+				</div>
+
+				<div class="aui-w33 content-column">
+					<div class="content-column-content right-column">
+						<span class="txt-b txt-up">
+							<liferay-ui:message key="maximum-users" />:
+						</span>
+
+						<%= LanguageUtil.get(request, offeringDefinition.getMaxUsersLabel()) %>
+					</div>
+				</div>
+			</c:if>
 
 			<c:choose>
 				<c:when test="<%= LicenseKeyConstants.getLicenseVersion(productVersion) >= 3 %>">
@@ -664,27 +635,23 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<liferay-ui:message key="maximum-connections" />
 						</h2>
 
-						<div class="callout-a">
-							<div class="callout-content">
-								<c:choose>
-									<c:when test="<%= RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) %>">
-										<aui:select name="maxHttpSessions">
-											<aui:option value="5">5</aui:option>
-											<aui:option value="6">6</aui:option>
-											<aui:option value="7">7</aui:option>
-											<aui:option value="8">8</aui:option>
-											<aui:option value="9">9</aui:option>
-											<aui:option value="10">10</aui:option>
-										</aui:select>
-									</c:when>
-									<c:otherwise>
-										5
+						<c:choose>
+							<c:when test="<%= RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) || RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID) %>">
+								<aui:select name="maxHttpSessions">
+									<aui:option value="5">5</aui:option>
+									<aui:option value="6">6</aui:option>
+									<aui:option value="7">7</aui:option>
+									<aui:option value="8">8</aui:option>
+									<aui:option value="9">9</aui:option>
+									<aui:option value="10">10</aui:option>
+								</aui:select>
+							</c:when>
+							<c:otherwise>
+								5
 
-										<aui:input name="maxHttpSessions" type="hidden" value="5" />
-									</c:otherwise>
-								</c:choose>
-							</div>
-						</div>
+								<aui:input name="maxHttpSessions" type="hidden" value="5" />
+							</c:otherwise>
+						</c:choose>
 					</c:if>
 
 					<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) %>">
@@ -692,37 +659,33 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 							<liferay-ui:message key="maximum-servers" />
 						</h2>
 
-						<div class="callout-a">
-							<div class="callout-content">
-								<c:choose>
-									<c:when test="<%= clusterId > 0 %>">
-										<strong><%= maxServers %></strong>
+						<c:choose>
+							<c:when test="<%= clusterId > 0 %>">
+								<strong><%= maxServers %></strong>
 
-										<aui:input name="maxServers" type="hidden" value="<%= maxServers %>" />
-									</c:when>
-									<c:otherwise>
-										<aui:select label="" name="maxServers">
-											<aui:option value="" />
-											<aui:option value="1">1</aui:option>
-											<aui:option value="2">2</aui:option>
-											<aui:option value="3">3</aui:option>
-											<aui:option value="4">4</aui:option>
-											<aui:option value="5">5</aui:option>
-											<aui:option value="6">6</aui:option>
-											<aui:option value="7">7</aui:option>
-											<aui:option value="8">8</aui:option>
-											<aui:option value="9">9</aui:option>
-											<aui:option value="10">10</aui:option>
-											<aui:option value="11">11</aui:option>
-											<aui:option value="12">12</aui:option>
-											<aui:option value="13">13</aui:option>
-											<aui:option value="14">14</aui:option>
-											<aui:option value="15">15</aui:option>
-										</aui:select>
-									</c:otherwise>
-								</c:choose>
-							</div>
-						</div>
+								<aui:input name="maxServers" type="hidden" value="<%= maxServers %>" />
+							</c:when>
+							<c:otherwise>
+								<aui:select label="" name="maxServers">
+									<aui:option value="" />
+									<aui:option value="1">1</aui:option>
+									<aui:option value="2">2</aui:option>
+									<aui:option value="3">3</aui:option>
+									<aui:option value="4">4</aui:option>
+									<aui:option value="5">5</aui:option>
+									<aui:option value="6">6</aui:option>
+									<aui:option value="7">7</aui:option>
+									<aui:option value="8">8</aui:option>
+									<aui:option value="9">9</aui:option>
+									<aui:option value="10">10</aui:option>
+									<aui:option value="11">11</aui:option>
+									<aui:option value="12">12</aui:option>
+									<aui:option value="13">13</aui:option>
+									<aui:option value="14">14</aui:option>
+									<aui:option value="15">15</aui:option>
+								</aui:select>
+							</c:otherwise>
+						</c:choose>
 					</c:if>
 
 					<c:choose>
@@ -743,33 +706,29 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								<liferay-ui:message key="server-id-fields" />
 							</h2>
 
-							<div class="callout-a">
-								<div class="callout-content">
-									<div id="<portlet:namespace />serverIds">
-										<aui:fieldset>
+							<div id="<portlet:namespace />serverIds">
+								<aui:fieldset>
 
-											<%
-											for (int serverIdsIndex : serverIdsIndexes) {
-											%>
+									<%
+									for (int serverIdsIndex : serverIdsIndexes) {
+									%>
 
-												<div class="lfr-form-row">
-													<div class="row-fields">
-														<aui:input fieldParam='<%= "hostName" + serverIdsIndex %>' label="host-name" name='<%= "hostName" + serverIdsIndex %>' type="text" />
+										<div class="lfr-form-row">
+											<div class="row-fields">
+												<aui:input fieldParam='<%= "hostName" + serverIdsIndex %>' label="host-name" name='<%= "hostName" + serverIdsIndex %>' type="text" />
 
-														<aui:input fieldParam='<%= "ipAddresses" + serverIdsIndex %>' label="ip-addresses" name='<%= "ipAddresses" + serverIdsIndex %>' type="textarea" />
+												<aui:input fieldParam='<%= "ipAddresses" + serverIdsIndex %>' label="ip-addresses" name='<%= "ipAddresses" + serverIdsIndex %>' type="textarea" />
 
-														<aui:input fieldParam='<%= "macAddresses" + serverIdsIndex %>' label="mac-addresses" name='<%= "macAddresses" + serverIdsIndex %>' type="textarea" />
-													</div>
-												</div>
+												<aui:input fieldParam='<%= "macAddresses" + serverIdsIndex %>' label="mac-addresses" name='<%= "macAddresses" + serverIdsIndex %>' type="textarea" />
+											</div>
+										</div>
 
-											<%
-											}
-											%>
+									<%
+									}
+									%>
 
-											<aui:input name="serverIdsIndexes" type="hidden" value="<%= StringUtil.merge(serverIdsIndexes) %>" />
-										</aui:fieldset>
-									</div>
-								</div>
+									<aui:input name="serverIdsIndexes" type="hidden" value="<%= StringUtil.merge(serverIdsIndexes) %>" />
+								</aui:fieldset>
 							</div>
 
 							<aui:script use="liferay-auto-fields">
@@ -790,28 +749,24 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								<liferay-ui:message key="maximum-servers" />
 							</h2>
 
-							<div class="callout-a">
-								<div class="callout-content">
-									<aui:select label="" name="maxServers">
-										<aui:option value="" />
-										<aui:option value="1">1</aui:option>
-										<aui:option value="2">2</aui:option>
-										<aui:option value="3">3</aui:option>
-										<aui:option value="4">4</aui:option>
-										<aui:option value="5">5</aui:option>
-										<aui:option value="6">6</aui:option>
-										<aui:option value="7">7</aui:option>
-										<aui:option value="8">8</aui:option>
-										<aui:option value="9">9</aui:option>
-										<aui:option value="10">10</aui:option>
-										<aui:option value="11">11</aui:option>
-										<aui:option value="12">12</aui:option>
-										<aui:option value="13">13</aui:option>
-										<aui:option value="14">14</aui:option>
-										<aui:option value="15">15</aui:option>
-									</aui:select>
-								</div>
-							</div>
+							<aui:select label="" name="maxServers">
+								<aui:option value="" />
+								<aui:option value="1">1</aui:option>
+								<aui:option value="2">2</aui:option>
+								<aui:option value="3">3</aui:option>
+								<aui:option value="4">4</aui:option>
+								<aui:option value="5">5</aui:option>
+								<aui:option value="6">6</aui:option>
+								<aui:option value="7">7</aui:option>
+								<aui:option value="8">8</aui:option>
+								<aui:option value="9">9</aui:option>
+								<aui:option value="10">10</aui:option>
+								<aui:option value="11">11</aui:option>
+								<aui:option value="12">12</aui:option>
+								<aui:option value="13">13</aui:option>
+								<aui:option value="14">14</aui:option>
+								<aui:option value="15">15</aui:option>
+							</aui:select>
 
 							<aui:input name="serverIds" type="hidden" value="<%= LicenseKeyConstants.SERVER_ID_CLUSTER %>" />
 						</c:when>
@@ -829,11 +784,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								<liferay-ui:message key="mac-addresses" />
 							</h2>
 
-							<div class="callout-a">
-								<div class="callout-content">
-									<textarea class="lfr-textarea" name="<portlet:namespace />serverIds"><%= HtmlUtil.escape(serverIds) %></textarea>
-								</div>
-							</div>
+							<aui:input label="<%= serverIds %>" name="<portlet:namespace />serverIds" type="textarea" />
 						</c:when>
 						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
 							<aui:input name="serverIds" type="hidden" value="<%= LicenseKeyConstants.SERVER_ID_TRIAL %>" />
@@ -847,11 +798,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								<liferay-ui:message key="mac-addresses" />
 							</h2>
 
-							<div class="callout-a">
-								<div class="callout-content">
-									<textarea class="lfr-textarea" name="<portlet:namespace />serverIds"><%= HtmlUtil.escape(serverIds) %></textarea>
-								</div>
-							</div>
+							<aui:input label="<%= serverIds %>" name="serverIds" type="textarea" />
 						</c:when>
 						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) %>">
 							<aui:input name="serverIds" type="hidden" value="<%= LicenseKeyConstants.SERVER_ID_DEVELOPER %>" />
@@ -867,11 +814,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 								<liferay-ui:message key="server-id" />
 							</h2>
 
-							<div class="callout-a">
-								<div class="callout-content">
-									<aui:input class="lfr-input-text" label="" name="serverIds" type="text" value="<%= HtmlUtil.escapeAttribute(serverIds) %>" />
-								</div>
-							</div>
+							<aui:input label="" name="serverIds" type="text" value="<%= serverIds %>" />
 						</c:when>
 						<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
 							<aui:input name="serverIds" type="hidden" value="<%= LicenseKeyConstants.SERVER_ID_TRIAL %>" />
@@ -883,7 +826,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			<div>
 				<aui:button type="submit" value="generate" />
 
-				<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+				<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 			</div>
 		</c:otherwise>
 	</c:choose>

@@ -45,14 +45,14 @@ portletURL.setParameter("licenseKeySetId", String.valueOf(licenseKeySetId));
 </portlet:actionURL>
 
 <aui:form action="<%= mergeLicenseKeySetURL %>" class="uni-form" method="post">
-	<aui:input name="redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<aui:input name="backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="toLicenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
 	<aui:input name="fromLicenseKeySetId" type="hidden" value="" />
 
 	<div class="clearfix section">
 		<div class="pull-right">
-			<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
+			<aui:a cssClass="btn" href="<%= backURL %>" label="back-to-previous-page" />
 		</div>
 	</div>
 
@@ -98,7 +98,7 @@ portletURL.setParameter("licenseKeySetId", String.valueOf(licenseKeySetId));
 					<liferay-ui:search-container-column-text
 					>
 						<c:if test="<%= curLicenseKeySet.getLicenseKeySetId() != licenseKeySetId %>">
-							<aui:button onClick='<%= "javascript:" + renderRequest.getNamespace() + "mergeLicenseKeySet(" + curLicenseKeySet.getLicenseKeySetId() + ");" %>' value="choose" />
+							<aui:button onClick='<%= "javascript:" + renderResponse.getNamespace() + "mergeLicenseKeySet(" + curLicenseKeySet.getLicenseKeySetId() + ");" %>' value="choose" />
 						</c:if>
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
@@ -109,6 +109,6 @@ portletURL.setParameter("licenseKeySetId", String.valueOf(licenseKeySetId));
 	</div>
 
 	<div>
-		<a class="btn btn-default" href="<%= HtmlUtil.escape(backURL) %>"><liferay-ui:message key="cancel" /></a>
+		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
 	</div>
 </aui:form>

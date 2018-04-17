@@ -47,8 +47,8 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 </portlet:actionURL>
 
 <aui:form action="<%= updateLicenseKeyURL %>" class="uni-form" method="post">
-	<aui:input name="redirect" type="hidden" value="<%= HtmlUtil.escape(redirect) %>" />
-	<aui:input name="backURL" type="hidden" value="<%= HtmlUtil.escape(backURL) %>" />
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="licenseKeyId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
 	<aui:input name="licenseKeySetId" type="hidden" value="<%= String.valueOf(licenseKey.getLicenseKeySetId()) %>" />
 	<aui:input name="active" type="hidden" value="<%= String.valueOf(licenseKey.getActive()) %>" />
@@ -56,7 +56,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 	<div class="clearfix section">
 		<div class="pull-right">
-			<a class="btn" href="<%= HtmlUtil.escapeAttribute(backURL) %>">&lt; <liferay-ui:message key="back-to-previous-page" /></a>
+			<aui:a cssClass="btn" href="<%= backURL %>" label="back-to-previous-page" />
 		</div>
 	</div>
 
@@ -66,100 +66,95 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 		<liferay-ui:message key="choose-license" />
 	</h1>
 
-	<div class="callout-a">
-		<div class="callout-content">
+	<%
+	LinkedHashMap params = new LinkedHashMap();
+
+	params.put("validLicense", new Long[] {0L, 0L});
+
+	List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, licenseKey.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+	%>
+
+	<liferay-ui:search-container
+		delta="<%= 10 %>"
+		headerNames="name,type,start-date,lifetime,license-keys-available"
+		iteratorURL="<%= portletURL %>"
+		total="<%= offeringEntryGroups.size() %>"
+	>
+		<liferay-ui:search-container-results
+			results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
+		/>
+
+		<liferay-ui:search-container-row
+			className="com.liferay.osb.model.OfferingEntryGroup"
+			modelVar="offeringEntryGroup"
+		>
 
 			<%
-			LinkedHashMap params = new LinkedHashMap();
+			ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
 
-			params.put("validLicense", new Long[] {0L, 0L});
+			String key = offeringEntryGroup.getKey();
 
-			List<OfferingEntryGroup> offeringEntryGroups = SupportUtil.getOfferingEntryGroups(0, licenseKey.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, params, true);
+			String rowHREF = null;
+
+			if (!key.equals(offeringEntry.getKey()) && offeringEntryGroup.hasAvailableServers() && ((productEntry == null) || (productEntry.getEnvironment() == curProductEntry.getEnvironment()))) {
+				OfferingEntry availableOfferingEntry = offeringEntryGroup.getAvailableLicenseOfferingEntry();
+
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("javascript:");
+				sb.append(renderResponse.getNamespace());
+				sb.append("moveLicenseKey(");
+				sb.append(availableOfferingEntry.getOfferingEntryId());
+				sb.append(");");
+
+				rowHREF = sb.toString();
+			}
 			%>
 
-			<liferay-ui:search-container
-				delta="<%= 10 %>"
-				headerNames="name,type,start-date,lifetime,license-keys-available"
-				iteratorURL="<%= portletURL %>"
-				total="<%= offeringEntryGroups.size() %>"
+			<liferay-ui:search-container-column-text
+				href="<%= rowHREF %>"
+				name="product"
+				value="<%= curProductEntry.getName() %>"
+			/>
+
+			<liferay-ui:search-container-column-text
+				href="<%= rowHREF %>"
+				name="lifetime"
 			>
-				<liferay-ui:search-container-results
-					results="<%= ListUtil.subList(offeringEntryGroups, searchContainer.getStart(), searchContainer.getEnd()) %>"
-				/>
+				<%= (offeringEntryGroup.getLicenseLifetime() / Time.DAY) + " Days" %>
+			</liferay-ui:search-container-column-text>
 
-				<liferay-ui:search-container-row
-					className="com.liferay.osb.model.OfferingEntryGroup"
-					modelVar="offeringEntryGroup"
-				>
+			<liferay-ui:search-container-column-text
+				href="<%= rowHREF %>"
+				name="license-keys-available"
+			>
+				<%= offeringEntryGroup.getQuantity() - offeringEntryGroup.getLicenseKeysCount() %>
+			</liferay-ui:search-container-column-text>
 
-					<%
-					ProductEntry curProductEntry = offeringEntryGroup.getProductEntry();
+			<liferay-ui:search-container-column-text
+				href="<%= rowHREF %>"
+				name="type"
+				value="<%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
+			/>
 
-					String key = offeringEntryGroup.getKey();
+			<liferay-ui:search-container-column-text
+				href="<%= rowHREF %>"
+			>
+				<c:choose>
+					<c:when test="<%= key.equals(offeringEntry.getKey()) %>">
+						<liferay-ui:icon
+							image="checked"
+							label="<%= true %>"
+							message="current"
+						/>
+					</c:when>
+					<c:when test="<%= offeringEntryGroup.hasAvailableServers() && ((productEntry == null) || (productEntry.getEnvironment() == curProductEntry.getEnvironment())) %>">
+						<aui:button onClick="<%= rowHREF %>" value="choose" />
+					</c:when>
+				</c:choose>
+			</liferay-ui:search-container-column-text>
+		</liferay-ui:search-container-row>
 
-					String rowHREF = null;
-
-					if (!key.equals(offeringEntry.getKey()) && offeringEntryGroup.hasAvailableServers() && ((productEntry == null) || (productEntry.getEnvironment() == curProductEntry.getEnvironment()))) {
-						OfferingEntry availableOfferingEntry = offeringEntryGroup.getAvailableLicenseOfferingEntry();
-
-						StringBuilder sb = new StringBuilder();
-
-						sb.append("javascript:");
-						sb.append(renderResponse.getNamespace());
-						sb.append("moveLicenseKey(");
-						sb.append(availableOfferingEntry.getOfferingEntryId());
-						sb.append(");");
-
-						rowHREF = sb.toString();
-					}
-					%>
-
-					<liferay-ui:search-container-column-text
-						href="<%= rowHREF %>"
-						name="product"
-						value="<%= curProductEntry.getName() %>"
-					/>
-
-					<liferay-ui:search-container-column-text
-						href="<%= rowHREF %>"
-						name="lifetime"
-					>
-						<%= (offeringEntryGroup.getLicenseLifetime() / Time.DAY) + " Days" %>
-					</liferay-ui:search-container-column-text>
-
-					<liferay-ui:search-container-column-text
-						href="<%= rowHREF %>"
-						name="license-keys-available"
-					>
-						<%= offeringEntryGroup.getQuantity() - offeringEntryGroup.getLicenseKeysCount() %>
-					</liferay-ui:search-container-column-text>
-
-					<liferay-ui:search-container-column-text
-						href="<%= rowHREF %>"
-						name="type"
-						value="<%= LanguageUtil.get(request, OfferingEntryConstants.getTypeLabel(offeringEntryGroup.getType())) %>"
-					/>
-
-					<liferay-ui:search-container-column-text
-						href="<%= rowHREF %>"
-					>
-						<c:choose>
-							<c:when test="<%= key.equals(offeringEntry.getKey()) %>">
-								<liferay-ui:icon
-									image="checked"
-									label="<%= true %>"
-									message="current"
-								/>
-							</c:when>
-							<c:when test="<%= offeringEntryGroup.hasAvailableServers() && ((productEntry == null) || (productEntry.getEnvironment() == curProductEntry.getEnvironment())) %>">
-								<aui:button onClick="<%= rowHREF %>" value="choose" />
-							</c:when>
-						</c:choose>
-					</liferay-ui:search-container-column-text>
-				</liferay-ui:search-container-row>
-
-				<liferay-ui:search-iterator />
-			</liferay-ui:search-container>
-		</div>
-	</div>
+		<liferay-ui:search-iterator />
+	</liferay-ui:search-container>
 </aui:form>

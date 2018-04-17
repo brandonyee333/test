@@ -46,172 +46,164 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 <liferay-ui:error exception="<%= LicenseKeyRegistrationException.class %>" message='<%= LanguageUtil.format(request, "you-must-agree-to-allow-liferay-to-contact-you-regarding-your-ee-trial-key", themeDisplay.getURLMyAccount() + "#_LFR_FN__2_notifications") %>' />
 <liferay-ui:error exception="<%= OfferingEntryStatusException.class %>" message="you-have-reached-the-maximum-allowed-number-of-trial-keys" />
 
-<div class="callout-a">
-	<div class="callout-content">
-		<div class="clearfix">
-			<div class="unit">
-				<p>
-					<strong><%= LanguageUtil.format(request, "welcome-x", StringPool.SPACE + HtmlUtil.escape(user.getFullName())) %></strong>
+<div class="unit">
+	<p>
+		<strong><%= LanguageUtil.format(request, "welcome-x", StringPool.SPACE + HtmlUtil.escape(user.getFullName())) %></strong>
 
-					<%
-					String[] arguments = {"<a href=\"mailto:sales@liferay.com\">", "</a>"};
-					%>
+		<%
+		String[] arguments = {"<a href=\"mailto:sales@liferay.com\">", "</a>"};
+		%>
 
-					<%= LanguageUtil.format(request, "license-management-help", arguments) %>
-				</p>
-			</div>
-		</div>
-	</div>
+		<%= LanguageUtil.format(request, "license-management-help", arguments) %>
+	</p>
 </div>
 
-<div class="callout-d clearfix">
-	<div class="content">
-		<div class="u-img unit">
-			<img src="<%= PortalUtil.getPathContext(request) %>/images/liferay_portal_ee.png" />
-		</div>
+<div class="content">
+	<div class="u-img unit">
+		<img src="<%= PortalUtil.getPathContext(request) %>/images/liferay_portal_ee.png" />
+	</div>
 
-		<div class="callout-content m-lr-10-20">
-			<p class="m-0 u-nfo-c">
-				Liferay Portal EE
-			</p>
+	<div class="m-lr-10-20">
+		<p class="m-0 u-nfo-c">
+			Liferay Portal EE
+		</p>
 
-			<p class="u-nfo-p">
-				<liferay-ui:message key="liferay-portal-is-an-enterprise-web-platform-for-building-business-solutions-that-deliver-immediate-results-and-long-term-value" />
-			</p>
+		<p class="u-nfo-p">
+			<liferay-ui:message key="liferay-portal-is-an-enterprise-web-platform-for-building-business-solutions-that-deliver-immediate-results-and-long-term-value" />
+		</p>
 
-			<p>
-				<portlet:actionURL name="buyLicenseKey" var="buyLicenseKeyURL">
-					<portlet:param name="redirect" value="<%= currentURL %>" />
-				</portlet:actionURL>
+		<p>
+			<portlet:actionURL name="buyLicenseKey" var="buyLicenseKeyURL">
+				<portlet:param name="redirect" value="<%= currentURL %>" />
+			</portlet:actionURL>
 
-				<a class="btn large-btn <%= osbTrialPurchased ? "disabled-btn" : "" %>" href="<%= buyLicenseKeyURL.toString() %>" <%= osbTrialPurchased ? "onClick=\'return false;'" : "" %>><liferay-ui:message key="buy" /></a>
+			<a class="btn large-btn <%= osbTrialPurchased ? "disabled-btn" : "" %>" href="<%= buyLicenseKeyURL.toString() %>" <%= osbTrialPurchased ? "onClick=\'return false;'" : "" %>><liferay-ui:message key="buy" /></a>
 
-				<c:if test="<%= osbTrialPurchased %>">
-					<span class="info">
-						<liferay-ui:message arguments='<%= "mailto:sales@liferay.com" %>' key="a-sales-representative-will-contact-you-shortly-if-you-are-not-contacted-in-a-few-days-please-contact-sales" />
-					</span>
-				</c:if>
-			</p>
-		</div>
+			<c:if test="<%= osbTrialPurchased %>">
+				<span class="info">
+					<liferay-ui:message arguments='<%= "mailto:sales@liferay.com" %>' key="a-sales-representative-will-contact-you-shortly-if-you-are-not-contacted-in-a-few-days-please-contact-sales" />
+				</span>
+			</c:if>
+		</p>
+	</div>
 
-		<div class="license-customer">
+	<div class="license-customer">
 
-			<%
-			List<LicenseKey> licenseKeys = new ArrayList<LicenseKey>();
+		<%
+		List<LicenseKey> licenseKeys = new ArrayList<LicenseKey>();
 
-			AccountEntry trialAccountEntry = AccountEntryLocalServiceUtil.fetchUserTrialAccountEntry(user.getUserId());
+		AccountEntry trialAccountEntry = AccountEntryLocalServiceUtil.fetchUserTrialAccountEntry(user.getUserId());
 
-			if (trialAccountEntry != null) {
-				licenseKeys = LicenseKeyLocalServiceUtil.getAccountEntryLicenseKeys(trialAccountEntry.getAccountEntryId());
-			}
-			%>
+		if (trialAccountEntry != null) {
+			licenseKeys = LicenseKeyLocalServiceUtil.getAccountEntryLicenseKeys(trialAccountEntry.getAccountEntryId());
+		}
+		%>
 
-			<liferay-ui:search-container
-				searchContainer="<%= new LicenseKeySearch(renderRequest, portletURL) %>"
-				total="<%= licenseKeys.size() %>"
+		<liferay-ui:search-container
+			searchContainer="<%= new LicenseKeySearch(renderRequest, portletURL) %>"
+			total="<%= licenseKeys.size() %>"
+		>
+			<liferay-ui:search-container-results
+				results="<%= licenseKeys %>"
+			/>
+
+			<liferay-ui:search-container-row
+				className="com.liferay.osb.model.LicenseKey"
+				escapedModel="<%= true %>"
+				keyProperty="licenseKeyId"
+				modelVar="licenseKey"
 			>
-				<liferay-ui:search-container-results
-					results="<%= licenseKeys %>"
+
+				<%
+				Date now = new Date();
+
+				Date expirationDate = licenseKey.getExpirationDate();
+
+				LicenseKey latestLicenseKey = LicenseKeyLocalServiceUtil.getFirstLicenseKey(licenseKey.getAccountEntryId(), new LicenseKeyExpirationDateComparator());
+
+				if (licenseKey.isExpired()) {
+					row.setClassHoverName("greyout");
+					row.setClassName("greyout");
+				}
+				%>
+
+				<liferay-ui:search-container-column-text
+					name="Name / Description"
+					value="<%= licenseKey.getDescription() %>"
 				/>
 
-				<liferay-ui:search-container-row
-					className="com.liferay.osb.model.LicenseKey"
-					escapedModel="<%= true %>"
-					keyProperty="licenseKeyId"
-					modelVar="licenseKey"
+				<liferay-ui:search-container-column-text
+					name="type"
+					translate="<%= true %>"
+					value="<%= licenseKey.getLicenseEntryType() %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					name="version"
+					value="<%= licenseKey.getProductVersionLabel() %>"
+				/>
+
+				<liferay-ui:search-container-column-text
+					name="start-date"
+					orderable="<%= true %>"
 				>
+					<div>
+						<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
+					</div>
 
-					<%
-					Date now = new Date();
+					<div class="fs-9">
+						<%= longDateFormatTime.format(licenseKey.getStartDate()) %>
+					</div>
+				</liferay-ui:search-container-column-text>
 
-					Date expirationDate = licenseKey.getExpirationDate();
+				<liferay-ui:search-container-column-text
+					name="expiration-date"
+					orderable="<%= true %>"
+				>
+					<c:choose>
+						<c:when test="<%= licenseKey.isExpired() %>">
+							<liferay-ui:icon
+								image="close"
+								label="<%= true %>"
+								message="expired"
+							/>
+						</c:when>
+						<c:otherwise>
+							<div>
+								<%= longDateFormatDate.format(expirationDate) %>
+							</div>
 
-					LicenseKey latestLicenseKey = LicenseKeyLocalServiceUtil.getFirstLicenseKey(licenseKey.getAccountEntryId(), new LicenseKeyExpirationDateComparator());
+							<div class="fs-9">
+								<%= longDateFormatTime.format(expirationDate) %>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</liferay-ui:search-container-column-text>
 
-					if (licenseKey.isExpired()) {
-						row.setClassHoverName("greyout");
-						row.setClassName("greyout");
-					}
-					%>
+				<liferay-ui:search-container-column-text>
+					<c:choose>
+						<c:when test="<%= (latestLicenseKey.getLicenseKeyId() == licenseKey.getLicenseKeyId()) && (expirationDate.getTime() <= (now.getTime() + (7 * Time.DAY))) %>">
+							<portlet:actionURL name="renewTrialLicenseKey" var="renewURL">
+								<portlet:param name="redirect" value="<%= currentURL %>" />
+							</portlet:actionURL>
 
-					<liferay-ui:search-container-column-text
-						name="Name / Description"
-						value="<%= licenseKey.getDescription() %>"
-					/>
+							<aui:a cssClass="btn" href="<%= renewURL.toString() %>" label="renew" />
+						</c:when>
+						<c:when test="<%= !licenseKey.isExpired() %>">
+							<portlet:actionURL name="resendLicenseKey" var="resendURL">
+								<portlet:param name="redirect" value="<%= currentURL %>" />
+								<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
+							</portlet:actionURL>
 
-					<liferay-ui:search-container-column-text
-						name="type"
-						translate="<%= true %>"
-						value="<%= licenseKey.getLicenseEntryType() %>"
-					/>
+							<aui:a cssClass="btn" href="<%= resendURL.toString() %>" label="resend-key" />
+						</c:when>
+					</c:choose>
+				</liferay-ui:search-container-column-text>
+			</liferay-ui:search-container-row>
 
-					<liferay-ui:search-container-column-text
-						name="version"
-						value="<%= licenseKey.getProductVersionLabel() %>"
-					/>
-
-					<liferay-ui:search-container-column-text
-						name="start-date"
-						orderable="<%= true %>"
-					>
-						<div>
-							<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
-						</div>
-
-						<div class="fs-9">
-							<%= longDateFormatTime.format(licenseKey.getStartDate()) %>
-						</div>
-					</liferay-ui:search-container-column-text>
-
-					<liferay-ui:search-container-column-text
-						name="expiration-date"
-						orderable="<%= true %>"
-					>
-						<c:choose>
-							<c:when test="<%= licenseKey.isExpired() %>">
-								<liferay-ui:icon
-									image="close"
-									label="<%= true %>"
-									message="expired"
-								/>
-							</c:when>
-							<c:otherwise>
-								<div>
-									<%= longDateFormatDate.format(expirationDate) %>
-								</div>
-
-								<div class="fs-9">
-									<%= longDateFormatTime.format(expirationDate) %>
-								</div>
-							</c:otherwise>
-						</c:choose>
-					</liferay-ui:search-container-column-text>
-
-					<liferay-ui:search-container-column-text>
-						<c:choose>
-							<c:when test="<%= (latestLicenseKey.getLicenseKeyId() == licenseKey.getLicenseKeyId()) && (expirationDate.getTime() <= (now.getTime() + (7 * Time.DAY))) %>">
-								<portlet:actionURL name="renewTrialLicenseKey" var="renewURL">
-									<portlet:param name="redirect" value="<%= currentURL %>" />
-								</portlet:actionURL>
-
-								<a class="btn" href="<%= renewURL.toString() %>"><liferay-ui:message key="renew" /></a>
-							</c:when>
-							<c:when test="<%= !licenseKey.isExpired() %>">
-								<portlet:actionURL name="resendLicenseKey" var="resendURL">
-									<portlet:param name="redirect" value="<%= currentURL %>" />
-									<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
-								</portlet:actionURL>
-
-								<a class="btn" href="<%= resendURL.toString() %>"><liferay-ui:message key="resend-key" /></a>
-							</c:when>
-						</c:choose>
-					</liferay-ui:search-container-column-text>
-				</liferay-ui:search-container-row>
-
-				<liferay-ui:search-iterator
-					paginate="<%= false %>"
-				/>
-			</liferay-ui:search-container>
-		</div>
+			<liferay-ui:search-iterator
+				paginate="<%= false %>"
+			/>
+		</liferay-ui:search-container>
 	</div>
 </div>
