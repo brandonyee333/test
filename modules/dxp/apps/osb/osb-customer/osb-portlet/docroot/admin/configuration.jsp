@@ -108,7 +108,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 			</div>
 
 			<aui:fieldset>
-				<aui:input cssClass="lfr-textarea-container" label="script" name="deadLetterFilterScript" type="textarea" value='<%= PrefsParamUtil.getString(portletPreferences, request, "deadLetterFilterScript", StringPool.BLANK) %>' />
+				<aui:input label="script" name="deadLetterFilterScript" type="textarea" value='<%= PrefsParamUtil.getString(portletPreferences, request, "deadLetterFilterScript", StringPool.BLANK) %>' />
 			</aui:fieldset>
 		</c:when>
 		<c:when test='<%= tabs1.equals("support") %>'>
@@ -178,7 +178,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 				</c:when>
 				<c:when test='<%= tabs2.equals("attachment-keywords") %>'>
 					<aui:fieldset>
-						<aui:input cssClass="lfr-textarea-container" label="keywords" name="attachmentKeywords" type="textarea" value='<%= PrefsParamUtil.getString(portletPreferences, request, "attachmentKeywords", StringPool.BLANK) %>' />
+						<aui:input label="keywords" name="attachmentKeywords" type="textarea" value='<%= PrefsParamUtil.getString(portletPreferences, request, "attachmentKeywords", StringPool.BLANK) %>' />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("banner") %>'>
@@ -269,9 +269,9 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					</table>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" ignoreRequestValue="<%= true %>" label="title" name="announcementTitle" value="<%= announcementTitle %>" />
+						<aui:input ignoreRequestValue="<%= true %>" label="title" name="announcementTitle" value="<%= announcementTitle %>" />
 
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="content" name="announcementContent" type="textarea" value="<%= announcementContent %>" />
+						<aui:input ignoreRequestValue="<%= true %>" label="content" name="announcementContent" type="textarea" value="<%= announcementContent %>" />
 					</aui:fieldset>
 
 					<%
@@ -453,13 +453,13 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" helpMessage="component-link-help" ignoreRequestValue="<%= true %>" label="component-link" name="componentLink" value="<%= componentLink %>" />
+						<aui:input helpMessage="component-link-help" ignoreRequestValue="<%= true %>" label="component-link" name="componentLink" value="<%= componentLink %>" />
 
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="message" name="componentMessage" type="textarea" value="<%= componentMessage %>" />
+						<aui:input ignoreRequestValue="<%= true %>" label="message" name="componentMessage" type="textarea" value="<%= componentMessage %>" />
 
-						<aui:input cssClass="lfr-input-text-container" helpMessage="component-message-link-help" ignoreRequestValue="<%= true %>" label="component-message-link" name="componentMessageLink" value="<%= componentMessageLink %>" />
+						<aui:input helpMessage="component-message-link-help" ignoreRequestValue="<%= true %>" label="component-message-link" name="componentMessageLink" value="<%= componentMessageLink %>" />
 
-						<aui:input cssClass="show-in-ticket-view" helpMessage="show-component-message-help" ignoreRequestValue="<%= true %>" label="show-in-ticket-view" name="showInTicketView" type="checkbox" value="<%= showInTicketView %>" />
+						<aui:input helpMessage="show-component-message-help" ignoreRequestValue="<%= true %>" label="show-in-ticket-view" name="showInTicketView" type="checkbox" value="<%= showInTicketView %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("dxp-message") %>'>
@@ -470,9 +470,9 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" ignoreRequestValue="<%= true %>" label="dxp-title" name="dxpTitle" value="<%= dxpTitle %>" />
+						<aui:input ignoreRequestValue="<%= true %>" label="dxp-title" name="dxpTitle" value="<%= dxpTitle %>" />
 
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="dxp-message" name="dxpMessage" type="textarea" value="<%= dxpMessage %>" />
+						<aui:input ignoreRequestValue="<%= true %>" label="dxp-message" name="dxpMessage" type="textarea" value="<%= dxpMessage %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("escalation-details") %>'>
@@ -510,7 +510,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					</table>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-textarea-container" label="body" name='<%= "escalationDetails_" + currentLanguageId %>' type="textarea" value="<%= escalationDetails %>" />
+						<aui:input label="body" name='<%= "escalationDetails_" + currentLanguageId %>' type="textarea" value="<%= escalationDetails %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("file-repositories") %>'>
@@ -699,7 +699,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" helpMessage="product-link-help" ignoreRequestValue="<%= true %>" label="product-link" name="productLink" value="<%= productLink %>" />
+						<aui:input helpMessage="product-link-help" ignoreRequestValue="<%= true %>" label="product-link" name="productLink" value="<%= productLink %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("status-messages") %>'>
@@ -767,7 +767,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="body" name="statusMessage" type="textarea" value="<%= statusMessage %>" />
+						<aui:input ignoreRequestValue="<%= true %>" label="body" name="statusMessage" type="textarea" value="<%= statusMessage %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("ticket-weight") %>'>
@@ -778,9 +778,9 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" label="light" name="light" value="<%= numberFormat.format(light) %>" />
+						<aui:input label="light" name="light" value="<%= numberFormat.format(light) %>" />
 
-						<aui:input cssClass="lfr-input-text-container" label="heavy" name="heavy" value="<%= numberFormat.format(heavy) %>" />
+						<aui:input label="heavy" name="heavy" value="<%= numberFormat.format(heavy) %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("tier-messages") %>'>
@@ -848,7 +848,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					%>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="body" name="tierMessage" type="textarea" value="<%= tierMessage %>" />
+						<aui:input ignoreRequestValue="<%= true %>" label="body" name="tierMessage" type="textarea" value="<%= tierMessage %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:otherwise>
@@ -895,7 +895,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					</table>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-textarea-container" ignoreRequestValue="<%= true %>" label="body" name="commentValue" type="textarea" value="<%= commentValue %>" />
+						<aui:input ignoreRequestValue="<%= true %>" label="body" name="commentValue" type="textarea" value="<%= commentValue %>" />
 					</aui:fieldset>
 				</c:otherwise>
 			</c:choose>
@@ -910,7 +910,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 			%>
 
 			<aui:fieldset>
-				<aui:input cssClass="lfr-input-text-container" label="maximum-number-of-trial-keys" name="maxTrialKeys" value="<%= maxTrialKeys %>" />
+				<aui:input label="maximum-number-of-trial-keys" name="maxTrialKeys" value="<%= maxTrialKeys %>" />
 			</aui:fieldset>
 
 			<aui:fieldset>
@@ -1034,9 +1034,9 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					</table>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" label="subject" name='<%= "emailCustomerFeedbackSubject_" + currentLanguageId %>' value="<%= emailCustomerFeedbackSubject %>" />
+						<aui:input label="subject" name='<%= "emailCustomerFeedbackSubject_" + currentLanguageId %>' value="<%= emailCustomerFeedbackSubject %>" />
 
-						<aui:input cssClass="lfr-textarea-container" label="body" name='<%= "emailCustomerFeedbackBody_" + currentLanguageId %>' type="textarea" value="<%= emailCustomerFeedbackBody %>" />
+						<aui:input label="body" name='<%= "emailCustomerFeedbackBody_" + currentLanguageId %>' type="textarea" value="<%= emailCustomerFeedbackBody %>" />
 					</aui:fieldset>
 
 					<div class="definition-of-terms">
@@ -1102,9 +1102,9 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					</table>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" label="subject" name='<%= "emailProvisioningCreateAccountSubject_" + currentLanguageId %>' value="<%= emailProvisioningCreateAccountSubject %>" />
+						<aui:input label="subject" name='<%= "emailProvisioningCreateAccountSubject_" + currentLanguageId %>' value="<%= emailProvisioningCreateAccountSubject %>" />
 
-						<aui:input cssClass="lfr-textarea-container" label="body" name='<%= "emailProvisioningCreateAccountBody_" + currentLanguageId %>' type="textarea" value="<%= emailProvisioningCreateAccountBody %>" />
+						<aui:input label="body" name='<%= "emailProvisioningCreateAccountBody_" + currentLanguageId %>' type="textarea" value="<%= emailProvisioningCreateAccountBody %>" />
 					</aui:fieldset>
 
 					<div class="definition-of-terms">
@@ -1152,9 +1152,9 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					</table>
 
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" label="subject" name='<%= "emailTicketEntrySubject_" + currentLanguageId %>' value="<%= emailTicketEntrySubject %>" />
+						<aui:input label="subject" name='<%= "emailTicketEntrySubject_" + currentLanguageId %>' value="<%= emailTicketEntrySubject %>" />
 
-						<aui:input cssClass="lfr-textarea-container" label="body" name='<%= "emailTicketEntryBody_" + currentLanguageId %>' type="textarea" value="<%= emailTicketEntryBody %>" />
+						<aui:input label="body" name='<%= "emailTicketEntryBody_" + currentLanguageId %>' type="textarea" value="<%= emailTicketEntryBody %>" />
 					</aui:fieldset>
 
 					<div class="definition-of-terms">
@@ -1333,7 +1333,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					<aui:fieldset>
 						<label class="aui-field-label">[$COMMENT_TEMPLATE$]</label>
 
-						<aui:input cssClass="lfr-textarea-container" label="" name='<%= "emailTicketEntryCommentTemplate_" + currentLanguageId %>' type="textarea" value="<%= emailTicketEntryCommentTemplate %>" />
+						<aui:input label="" name='<%= "emailTicketEntryCommentTemplate_" + currentLanguageId %>' type="textarea" value="<%= emailTicketEntryCommentTemplate %>" />
 					</aui:fieldset>
 
 					<div class="definition-of-terms">
@@ -1374,7 +1374,7 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 					<aui:fieldset>
 						<label class="aui-field-label">[$DUE_DATE_TEMPLATE$]</label>
 
-						<aui:input cssClass="lfr-textarea-container" name='<%= "emailTicketEntryDueDateTemplate_" + currentLanguageId %>' type="textarea" value="<%= emailTicketEntryDueDateTemplate %>" />
+						<aui:input name='<%= "emailTicketEntryDueDateTemplate_" + currentLanguageId %>' type="textarea" value="<%= emailTicketEntryDueDateTemplate %>" />
 					</aui:fieldset>
 
 					<div class="definition-of-terms">
@@ -1394,11 +1394,11 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 				</c:when>
 				<c:otherwise>
 					<aui:fieldset>
-						<aui:input cssClass="lfr-input-text-container" label="name" name="emailFromName" value="<%= emailFromName %>" />
+						<aui:input label="name" name="emailFromName" value="<%= emailFromName %>" />
 
 						<liferay-ui:error key="emailFromAddress" message="please-enter-a-valid-email-address" />
 
-						<aui:input cssClass="lfr-input-text-container" label="address" name="emailFromAddress" value="<%= emailFromAddress %>" />
+						<aui:input label="address" name="emailFromAddress" value="<%= emailFromAddress %>" />
 					</aui:fieldset>
 				</c:otherwise>
 			</c:choose>

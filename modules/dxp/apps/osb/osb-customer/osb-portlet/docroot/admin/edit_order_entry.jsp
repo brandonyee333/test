@@ -375,7 +375,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 							<liferay-ui:message key="prorated" />
 						</td>
 						<td>
-							<aui:input checked="<%= prorated %>" name="prorated" onClick="document.getElementById('<portlet:namespace />actualStartDate').style.display = this.checked ? '' : 'none';" type="checkbox" />
+							<aui:input checked="<%= prorated %>" name="prorated" onClick='<%= "document.getElementById('" + renderResponse.getNamespace() + "actualStartDate').style.display = this.checked ? '' : 'none';" %>' type="checkbox" />
 						</td>
 					</tr>
 				</table>

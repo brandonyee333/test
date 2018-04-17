@@ -571,7 +571,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="street1" />
 			</td>
 			<td>
-				<aui:input bean="<%= address %>" field="street1" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street1" />
+				<aui:input bean="<%= address %>" field="street1" label="" model="<%= Address.class %>" name="street1" />
 			</td>
 		</tr>
 		<tr>
@@ -579,7 +579,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="street2" />
 			</td>
 			<td>
-				<aui:input bean="<%= address %>" field="street2" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street2" />
+				<aui:input bean="<%= address %>" field="street2" label="" model="<%= Address.class %>" name="street2" />
 			</td>
 		</tr>
 		<tr>
@@ -587,7 +587,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="street3" />
 			</td>
 			<td>
-				<aui:input bean="<%= address %>" field="street3" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="street3" />
+				<aui:input bean="<%= address %>" field="street3" label="" model="<%= Address.class %>" name="street3" />
 			</td>
 		</tr>
 		<tr>
@@ -611,7 +611,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="city" />
 			</td>
 			<td>
-				<aui:input bean="<%= address %>" field="city" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="city" />
+				<aui:input bean="<%= address %>" field="city" label="" model="<%= Address.class %>" name="city" />
 			</td>
 		</tr>
 		<tr>
@@ -619,7 +619,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<liferay-ui:message key="postal-code" />
 			</td>
 			<td>
-				<aui:input bean="<%= address %>" field="zip" inputCssClass="lfr-input-text" label="" model="<%= Address.class %>" name="zip" />
+				<aui:input bean="<%= address %>" field="zip" label="" model="<%= Address.class %>" name="zip" />
 			</td>
 		</tr>
 	</table>

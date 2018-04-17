@@ -134,7 +134,7 @@ if ((productEntry != null) && Validator.isNull(dossieraIdMappings)) {
 			</td>
 			<td>
 				<aui:fieldset>
-					<aui:input cssClass="lfr-textarea-container" label="" name="dossieraIdMappings" style="width: 500px;" type="textarea" value="<%= dossieraIdMappings %>" />
+					<aui:input label="" name="dossieraIdMappings" style="width: 500px;" type="textarea" value="<%= dossieraIdMappings %>" />
 				</aui:fieldset>
 			</td>
 		</tr>
