@@ -13,7 +13,10 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 			(a, b) => b.get(sortBy).localeCompare(
 				a.get(sortBy),
 				{},
-				{ignorePunctuation: true, numeric: true}
+				{
+					ignorePunctuation: true,
+					numeric: true
+				}
 			)
 		);
 	}
@@ -22,7 +25,10 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 			(a, b) => (b.get('modifiedDateTimeStamp')).localeCompare(
 				a.get('modifiedDateTimeStamp'),
 				{},
-				{ignorePunctuation: true, numeric: true}
+				{
+					ignorePunctuation: true,
+					numeric: true
+				}
 			)
 		);
 	}
@@ -36,7 +42,10 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 			(a, b) => (b.get(sortBy) || '').localeCompare(
 				a.get(sortBy),
 				{},
-				{ignorePunctuation: true, numeric: true}
+				{
+					ignorePunctuation: true,
+					numeric: true
+				}
 			)
 		);
 	}
@@ -45,7 +54,10 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 			(a, b) => (b.get('incidentName') || '').localeCompare(
 				a.get('incidentName'),
 				{},
-				{ignorePunctuation: true, numeric: true}
+				{
+					ignorePunctuation: true,
+					numeric: true
+				}
 			)
 		);
 	}
@@ -63,7 +75,10 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 					sortVal = b.get('name').localeCompare(
 						a.get('name'),
 						{},
-						{ignorePunctuation: true, numeric: true}
+						{
+							ignorePunctuation: true,
+							numeric: true
+						}
 					);
 				}
 
@@ -76,7 +91,10 @@ export default (data = new OrderedMap(), model, sortBy = 'watsonIncidentId') => 
 			(a, b) => b.get('id').localeCompare(
 				a.get('id'),
 				{},
-				{ignorePunctuation: true, numeric: true}
+				{
+					ignorePunctuation: true,
+					numeric: true
+				}
 			)
 		);
 	}
