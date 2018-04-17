@@ -206,6 +206,21 @@ AssetCategory assetCategory = assetCategories.get(0);
 %>
 
 <aui:script>
+	function <portlet:namespace />buildResultsURL(url, selector, name) {
+		var nodeList = document.querySelectorAll(selector);
+
+		for (var i = 0; i < nodeList.length; i++) {
+			var element = nodeList[i];
+			var value = element.value;
+
+			if (value && element.checked) {
+				url += '&<portlet:namespace />' + name + '=' + value;
+			}
+		}
+
+		return url;
+	}
+
 	function <portlet:namespace />openFilters() {
 		var filters = document.querySelectorAll('input[type="checkbox"]:checked');
 
@@ -278,47 +293,36 @@ AssetCategory assetCategory = assetCategories.get(0);
 
 		if (keywordsNode) {
 			var keywords = keywordsNode.value;
-		}
 
-		if (!!keywords) {
-			keywords = encodeURIComponent(keywords);
+			if (!!keywords) {
+				keywords = encodeURIComponent(keywords);
 
-			resultsURL += '&<portlet:namespace />keywords=' + keywords;
+				resultsURL += '&<portlet:namespace />keywords=' + keywords;
+			}
 		}
 
 		if (!clearFilters) {
-			var assetCategoryIds = document.querySelectorAll('.filter-input');
-
-			for (var i = 0; i < assetCategoryIds.length; i++) {
-				var element = assetCategoryIds[i];
-				var value = element.value;
-
-				if (value && element.checked) {
-					resultsURL += '&<portlet:namespace />assetCategoryIds=' + element.value;
+			var filters = [
+				{
+					name: 'assetCategoryIds',
+					selector: '.filter-input'
+				},
+				{
+					name: 'languageIds',
+					selector: '.filter-language-input'
+				},
+				{
+					name: 'permissionTypes',
+					selector: '.filter-permission-input'
 				}
-			}
+			];
 
-			var languageIds = document.querySelectorAll('.filter-language-input');
-
-			for (var i = 0; i < languageIds.length; i++) {
-				var element = languageIds[i];
-				var value = element.value;
-
-				if (value && element.checked) {
-					resultsURL += '&<portlet:namespace />languageIds=' + element.value;
-				}
-			}
-
-			var permissionTypes = document.querySelectorAll('.filter-permission-input');
-
-			for (var i = 0; i < permissionTypes.length; i++) {
-				var element = permissionTypes[i];
-				var value = element.value;
-
-				if (value && element.checked) {
-					resultsURL += '&<portlet:namespace />permissionTypes=' + element.value;
-				}
-			}
+			resultsURL = filters.reduce(
+				function(url, currentValue) {
+					return <portlet:namespace />buildResultsURL(url, currentValue.selector, currentValue.name);
+				},
+				resultsURL
+			);
 		}
 
 		window.location.href = resultsURL;
