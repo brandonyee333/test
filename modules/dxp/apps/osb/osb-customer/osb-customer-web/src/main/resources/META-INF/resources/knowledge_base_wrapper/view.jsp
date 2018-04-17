@@ -18,6 +18,7 @@
 
 <%
 String redirect = (String)request.getAttribute(OSBCustomerWebKeys.REDIRECT);
+
 KBArticle kbArticle = (KBArticle)request.getAttribute(OSBCustomerWebKeys.KNOWLEDGE_BASE_KB_ARTICLE);
 %>
 
