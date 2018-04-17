@@ -130,7 +130,7 @@
 					#set ($relatedJournalArticle = $journalArticleLocalService.fetchLatestIndexableArticle($relatedAssetEntry.getClassPK()))
 
 					<a href="$relatedJournalArticle.getArticleId()">
-						$relatedJournalArticle.getTitle($locale)
+						$stringUtil.shorten($relatedJournalArticle.getTitle($locale), 83, "...")
 					</a>
 				#end
 			</div>
