@@ -12,11 +12,11 @@
 
 #set ($journalArticleResourcePrimKey = $journalArticle.getResourcePrimKey())
 
-#set ($isSubscribed = $subscriptionLocalService.isSubscribed($journalArticle.getCompanyId(), $permissionChecker.getUserId(), $journalArticleClassName, $journalArticleResourcePrimKey))
-
 #set ($assetEntry = $assetEntryLocalService.getEntry($journalArticleClassName, $journalArticleResourcePrimKey))
 
 #set ($assetLinks = $assetLinkLocalService.getDirectLinks($assetEntry.getEntryId(), 0))
+
+#set ($isSubscribed = $subscriptionLocalService.isSubscribed($journalArticle.getCompanyId(), $permissionChecker.getUserId(), $journalArticleClassName, $journalArticleResourcePrimKey))
 
 #set ($actionBaseURL = $request.attributes.get("_3_WAR_osbknowledgebaseportlet_actionURL"))
 #set ($editJournalArticleURL = $request.attributes.get("_3_WAR_osbknowledgebaseportlet_editJournalArticleURL"))
