@@ -32,7 +32,7 @@
 			#set ($articleContentCssClass = "col-md-5 col-md-offset-2")
 		#end
 
-		<div class="article-content $articleContentCssClass">
+		<div class="article-content ${articleContentCssClass}">
 			<div class="header">
 				<h1 class="header-title">$reserved-article-title.getData()</h1>
 
