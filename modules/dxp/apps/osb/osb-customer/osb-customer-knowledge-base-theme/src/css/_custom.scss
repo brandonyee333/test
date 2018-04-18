@@ -107,7 +107,7 @@ $has-control-menu-top-mobile: 48px;
 	.banner {
 		background: $white;
 		border-bottom: 1px solid $border-color;
-		height: 141px;
+		height: 56px;
 		position: fixed;
 		top: 0;
 		width: 100%;
@@ -488,10 +488,11 @@ $has-control-menu-top-mobile: 48px;
 	.documentation-search {
 		align-items: center;
 		background-color: #F2F5F7;
-		border-top: 1px solid $border-color;
+		border-bottom: 1px solid $border-color;
 		display: flex;
 		height: 84px;
 		justify-content: center;
+		margin-top: 56px;
 		width: 100%;
 
 		.doc-search-form {
@@ -549,7 +550,7 @@ $has-control-menu-top-mobile: 48px;
 	/* ---------- Main content ---------- */
 
 	#main-content {
-		margin: 140px auto 0;
+		margin: 0 auto;
 		padding: 0 15px;
 
 		&.columns-2 {
