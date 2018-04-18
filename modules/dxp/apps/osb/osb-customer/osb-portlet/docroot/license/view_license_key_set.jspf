@@ -39,7 +39,7 @@ while (!displayLicenseKeys.isEmpty()) {
 		<c:otherwise>
 			<div class="<%= cssClass %>" id="<portlet:namespace /><%= licenseKey.getOfferingEntryId() %>-<%= licenseKey.getClusterId() %>">
 				<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
-					<div class="aui-w33 content-column">
+					<div class="content-column w33">
 						<div class="content-column-content left-column">
 							<span class="txt-b txt-up">
 								<liferay-ui:message key="created-by" />:
@@ -49,7 +49,7 @@ while (!displayLicenseKeys.isEmpty()) {
 						</div>
 					</div>
 
-					<div class="aui-w66 content-column">
+					<div class="content-column w66">
 						<div class="content-column-content right-column">
 							<span class="txt-b txt-up">
 								<liferay-ui:message key="last-modified" />:
@@ -60,7 +60,7 @@ while (!displayLicenseKeys.isEmpty()) {
 					</div>
 				</c:if>
 
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="owner" />:
@@ -70,7 +70,7 @@ while (!displayLicenseKeys.isEmpty()) {
 					</div>
 				</div>
 
-				<div class="aui-w66 content-column">
+				<div class="content-column w66">
 					<div class="content-column-content right-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="description" />:
@@ -80,7 +80,7 @@ while (!displayLicenseKeys.isEmpty()) {
 					</div>
 				</div>
 
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="product" />:
@@ -105,7 +105,7 @@ while (!displayLicenseKeys.isEmpty()) {
 					</div>
 				</div>
 
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content middle-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="type" />:
@@ -139,7 +139,7 @@ while (!displayLicenseKeys.isEmpty()) {
 					</div>
 				</div>
 
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content right-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="version" />:

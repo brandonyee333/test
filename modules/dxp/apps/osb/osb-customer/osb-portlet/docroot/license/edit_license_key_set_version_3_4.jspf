@@ -16,7 +16,7 @@
 
 <div class="<%= cssClass %>" id="<portlet:namespace /><%= licenseKey.getOfferingEntryId() %>-<%= licenseKey.getClusterId() %>">
 	<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
-		<div class="aui-w33 content-column">
+		<div class="content-column w33">
 			<div class="content-column-content left-column">
 				<span class="txt-b txt-up">
 					<liferay-ui:message key="created-by" />:
@@ -26,7 +26,7 @@
 			</div>
 		</div>
 
-		<div class="aui-w66 content-column">
+		<div class="content-column w66">
 			<div class="content-column-content right-column">
 				<span class="txt-b txt-up">
 					<liferay-ui:message key="last-modified" />:
@@ -38,7 +38,7 @@
 	</c:if>
 
 	<c:if test="<%= !licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) %>">
-		<div class="aui-w33 content-column">
+		<div class="content-column w33">
 			<div class="content-column-content left-column">
 				<span class="txt-b txt-up">
 					<liferay-ui:message key="owner" />:
@@ -48,7 +48,7 @@
 			</div>
 		</div>
 
-		<div class="aui-w66 content-column">
+		<div class="content-column w66">
 			<div class="content-column-content right-column">
 				<span class="txt-b txt-up">
 					<liferay-ui:message key="description" />:
@@ -59,7 +59,7 @@
 		</div>
 	</c:if>
 
-	<div class="aui-w33 content-column">
+	<div class="content-column w33">
 		<div class="content-column-content left-column">
 			<span class="txt-b txt-up">
 				<liferay-ui:message key="product" />:
@@ -84,7 +84,7 @@
 		</div>
 	</div>
 
-	<div class="aui-w33 content-column">
+	<div class="content-column w33">
 		<div class="content-column-content middle-column">
 			<span class="txt-b txt-up">
 				<liferay-ui:message key="type" />:
@@ -118,7 +118,7 @@
 		</div>
 	</div>
 
-	<div class="aui-w33 content-column">
+	<div class="content-column w33">
 		<div class="content-column-content right-column">
 			<span class="txt-b txt-up">
 				<liferay-ui:message key="version" />:
@@ -161,7 +161,7 @@
 	</div>
 
 	<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
-		<div class="aui-w100 content-column">
+		<div class="content-column w100">
 			<div class="content-column-content">
 				<span class="txt-b txt-up">
 					<liferay-ui:message key="maximum-connections" />:
@@ -173,7 +173,7 @@
 	</c:if>
 
 	<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) %>">
-		<div class="aui-w33 content-column">
+		<div class="content-column w33">
 			<div class="content-column-content left-column">
 				<span class="txt-b txt-up">
 					<liferay-ui:message key="maximum-concurrent-users" />:
@@ -183,7 +183,7 @@
 			</div>
 		</div>
 
-		<div class="aui-w33 content-column">
+		<div class="content-column w33">
 			<div class="content-column-content right-column">
 				<span class="txt-b txt-up">
 					<liferay-ui:message key="maximum-users" />:
@@ -195,7 +195,7 @@
 	</c:if>
 
 	<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) %>">
-		<div class="aui-w100 content-column">
+		<div class="content-column w100">
 			<div class="content-column-content">
 				<span class="txt-b txt-up">
 					<liferay-ui:message key="maximum-servers" />:
@@ -220,7 +220,7 @@
 
 				<div class="separator"></div>
 
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="owner" />:
@@ -230,7 +230,7 @@
 					</div>
 				</div>
 
-				<div class="aui-w66 content-column">
+				<div class="content-column w66">
 					<div class="content-column-content right-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="description" />:
@@ -240,7 +240,7 @@
 					</div>
 				</div>
 
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="host-name" />:
@@ -280,7 +280,7 @@
 					</div>
 				</div>
 
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content middle-column">
 						<table class="lfr-table">
 							<tr>
@@ -307,7 +307,7 @@
 					</div>
 				</div>
 
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content right-column">
 						<table class="lfr-table">
 							<tr>
@@ -401,7 +401,7 @@
 		</c:when>
 		<c:otherwise>
 			<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_LIMITED) || licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content left-column">
 						<span class="txt-b txt-up">
 							<liferay-ui:message key="host-name" />:
@@ -411,7 +411,7 @@
 					</div>
 				</div>
 
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content middle-column">
 						<table class="lfr-table">
 							<tr>
@@ -438,7 +438,7 @@
 					</div>
 				</div>
 
-				<div class="aui-w33 content-column">
+				<div class="content-column w33">
 					<div class="content-column-content right-column">
 						<table class="lfr-table">
 							<tr>
@@ -470,7 +470,7 @@
 				%>
 
 				<c:if test="<%= Validator.isNotNull(serverId) %>">
-					<div class="aui-w100 content-column">
+					<div class="content-column w100">
 						<div class="content-column-content">
 							<span class="txt-b txt-up">
 								<liferay-ui:message key="server-id" />:

@@ -29,7 +29,7 @@ searchURL.setParameter("tabs1", tabs1);
 pageContext.setAttribute("searchURL", searchURL);
 %>
 
-<div class="aui-w33 content-column">
+<div class="content-column w33">
 	<div class="content-column-content left-column">
 		<a class="display-b paragraph">
 			<div class="ha-c">
@@ -47,7 +47,7 @@ pageContext.setAttribute("searchURL", searchURL);
 	</div>
 </div>
 
-<div class="aui-w33 content-column">
+<div class="content-column w33">
 	<div class="content-column-content middle-column">
 		<a class="display-b paragraph">
 			<div class="ha-c">
@@ -70,7 +70,7 @@ pageContext.setAttribute("searchURL", searchURL);
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 </portlet:renderURL>
 
-<div class="aui-w33 content-column">
+<div class="content-column w33">
 	<div class="content-column-content right-column">
 		<a class="display-b paragraph" href="<%= addLicenseKeyURL %>">
 			<div class="ha-c">
