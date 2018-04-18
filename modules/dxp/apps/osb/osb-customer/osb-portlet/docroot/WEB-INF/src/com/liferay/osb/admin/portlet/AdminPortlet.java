@@ -107,6 +107,7 @@ import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
 import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;
+import com.liferay.osb.service.OfferingEntryServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
@@ -1063,6 +1064,21 @@ public class AdminPortlet extends MVCPortlet {
 				offeringDefinitionId, productEntryId, supportResponseId,
 				productDescription, licenses, unlimitedLicenses,
 				maxConcurrentUsers, maxUsers, supportTickets);
+		}
+	}
+
+	public void updateOfferingEntryStatus(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		String key = ParamUtil.getString(actionRequest, "key");
+
+		long[] offeringEntryIds = StringUtil.split(
+			ParamUtil.getString(actionRequest, "offeringEntryIds"), 0L);
+		int status = ParamUtil.getInteger(actionRequest, "status_" + key);
+
+		for (long offeringEntryId : offeringEntryIds) {
+			OfferingEntryServiceUtil.updateStatus(offeringEntryId, status);
 		}
 	}
 

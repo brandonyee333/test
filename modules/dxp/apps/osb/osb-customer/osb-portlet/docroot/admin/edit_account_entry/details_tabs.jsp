@@ -152,12 +152,29 @@ for (SupportRegion supportRegion : supportRegions) {
 
 						ProductEntry productEntry = offeringEntryGroup.getProductEntry();
 						SupportResponse supportResponse = offeringEntryGroup.getSupportResponse();
+
+						String key = offeringEntryGroup.getKey();
+
+						key = StringUtil.replace(key, CharPool.COMMA, CharPool.UNDERLINE);
+						key = StringUtil.replace(key, CharPool.EQUAL, CharPool.UNDERLINE);
 						%>
 
 						<liferay-ui:search-container-column-text
 							name="status"
 						>
-							<%= LanguageUtil.get(request, OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus())) %>
+							<aui:select label="" name='<%= "status_" + key %>' onChange='<%= renderResponse.getNamespace() + "updateOfferingEntry('" + key + "', '" + StringUtil.merge(offeringEntryGroup.getOfferingEntryIds()) + "', '" + OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus()) + "');" %>'>
+
+								<%
+								for (int i = 1; i <= 3; i++) {
+								%>
+
+									<aui:option label="<%= OfferingEntryConstants.getStatusLabel(i) %>" selected="<%= offeringEntryGroup.getStatus() == i %>" value="<%= i %>" />
+
+								<%
+								}
+								%>
+
+							</aui:select>
 						</liferay-ui:search-container-column-text>
 
 						<liferay-ui:search-container-column-text
@@ -756,6 +773,29 @@ for (SupportRegion supportRegion : supportRegions) {
 </div>
 
 <aui:script>
+	Liferay.provide(
+		window,
+		'<portlet:namespace />updateOfferingEntry',
+		function(key, offeringEntryIds, oldStatusLabel) {
+			var A = AUI();
+
+			var newStatusLabel = A.one('#<portlet:namespace />status_' + key + ' option:selected').html();
+
+			if (confirm(Liferay.Language.get('are-you-sure-you-want-to-modify-the-status-from-x-to-x', [oldStatusLabel, newStatusLabel.trim()]))) {
+				var form = A.one('#<portlet:namespace />fm');
+
+				if (form) {
+					form.one('#<portlet:namespace />key').val(key);
+					form.one('#<portlet:namespace />offeringEntryIds').val(offeringEntryIds);
+					form.one('#<portlet:namespace />redirect').val('<%= portletURL.toString() %>');
+
+					submitForm(form, '<portlet:actionURL name="updateOfferingEntryStatus"><portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" /></portlet:actionURL>');
+				}
+			}
+		},
+		['aui-base']
+	);
+
 	Liferay.provide(
 		window,
 		'<portlet:namespace />reveal',

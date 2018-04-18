@@ -83,6 +83,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 	<aui:input name="accountProjectId" type="hidden" value="<%= AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID %>" />
 	<aui:input name="corpProjectId" type="hidden" value="<%= corpProjectId %>" />
+	<aui:input name="key" type="hidden" />
+	<aui:input name="offeringEntryIds" type="hidden" />
 	<aui:input name="partnerEntryId" type="hidden" value="<%= partnerEntryId %>" />
 	<aui:input name="addressId" type="hidden" value="<%= addressId %>" />
 
