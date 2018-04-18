@@ -10,13 +10,11 @@
 #set ($journalArticle = $journalArticleLocalService.getArticle($groupId, $reserved-article-id.getData()))
 #set ($oldestArticle = $journalArticleLocalService.getArticle($groupId, $reserved-article-id.getData(), 1.0))
 
-#set ($journalArticleResourcePrimKey = $journalArticle.getResourcePrimKey())
-
-#set ($assetEntry = $assetEntryLocalService.getEntry($journalArticleClassName, $journalArticleResourcePrimKey))
+#set ($assetEntry = $assetEntryLocalService.getEntry($journalArticleClassName, $journalArticle.getResourcePrimKey()))
 
 #set ($assetLinks = $assetLinkLocalService.getDirectLinks($assetEntry.getEntryId(), 0))
 
-#set ($isSubscribed = $subscriptionLocalService.isSubscribed($journalArticle.getCompanyId(), $permissionChecker.getUserId(), $journalArticleClassName, $journalArticleResourcePrimKey))
+#set ($isSubscribed = $subscriptionLocalService.isSubscribed($journalArticle.getCompanyId(), $permissionChecker.getUserId(), $journalArticleClassName, $journalArticle.getResourcePrimKey()))
 
 #set ($actionBaseURL = $request.attributes.get("_3_WAR_osbknowledgebaseportlet_actionURL"))
 #set ($editJournalArticleURL = $request.attributes.get("_3_WAR_osbknowledgebaseportlet_editJournalArticleURL"))
@@ -37,7 +35,7 @@
 				<h1 class="header-title">$reserved-article-title.getData()</h1>
 
 				<div class="metadata">
-					$osbTemplateUtil.renderAssetCategories($locale, $journalArticleClassName, $journalArticleResourcePrimKey)
+					$osbTemplateUtil.renderAssetCategories($locale, $journalArticleClassName, $journalArticle.getResourcePrimKey())
 				</div>
 
 				#set ($portraitURL = $osbTemplateUtil.getPortraitURL("@image_path@", $oldestArticle.getUserId()))
@@ -113,8 +111,7 @@
 
 					#if ($permissionChecker.hasPermission($groupId, $journalArticleClassName, $journalArticle.getResourcePrimKey(), "UPDATE"))
 						<a class="suggest-edit" href="$editJournalArticleURL">
-							<i class="icon-lightbulb"></i>
-							$languageUtil.get($locale, "suggest-an-edit")
+							<i class="icon-lightbulb"></i> $languageUtil.get($locale, "suggest-an-edit")
 						</a>
 					#end
 				</h4>
@@ -189,7 +186,7 @@
 
 					actionURL.setParameter('javax.portlet.action', 'subscribe');
 					actionURL.setParameter('redirect', '$request.attributes.CURRENT_URL');
-					actionURL.setParameter('resourcePrimKey', $journalArticleResourcePrimKey);
+					actionURL.setParameter('resourcePrimKey', $journalArticle.getResourcePrimKey());
 					actionURL.setParameter('subscribe', subscribe);
 
 					${randomNamespace}submitForm(actionURL.toString());
