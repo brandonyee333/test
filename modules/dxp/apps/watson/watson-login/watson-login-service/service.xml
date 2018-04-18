@@ -20,6 +20,7 @@
 		<!-- Other fields -->
 
 		<column name="active" type="boolean" />
+		<column name="loginIP" type="String" />
 		<column name="token" type="String" />
 		<column name="expirationDate" type="Date" />
 		<column name="loginDate" type="Date" />
