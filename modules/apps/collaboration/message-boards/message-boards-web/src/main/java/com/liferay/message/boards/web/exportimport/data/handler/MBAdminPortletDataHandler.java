@@ -16,6 +16,8 @@ package com.liferay.message.boards.web.exportimport.data.handler;
 
 import com.liferay.exportimport.kernel.lar.BasePortletDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportHelper;
+import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
@@ -23,7 +25,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
-import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.message.boards.kernel.constants.MBConstants;
 import com.liferay.message.boards.kernel.model.MBBan;
 import com.liferay.message.boards.kernel.model.MBCategory;
@@ -46,12 +47,14 @@ import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.messageboards.service.permission.MBPermission;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
@@ -262,18 +265,42 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences)
 		throws Exception {
 
-		if (ExportImportDateUtil.isRangeFromLastPublishDate(
-				portletDataContext)) {
+		Map<String, String[]> parameterMap =
+			portletDataContext.getParameterMap();
 
-			_staging.populateLastPublishDateCounts(
-				portletDataContext,
-				new StagedModelType[] {
-					new StagedModelType(MBBan.class.getName()),
-					new StagedModelType(MBCategory.class.getName()),
-					new StagedModelType(MBMessage.class.getName()),
-					new StagedModelType(MBThread.class.getName()),
-					new StagedModelType(MBThreadFlag.class.getName())
-				});
+		String rangeValue = MapUtil.getString(
+			parameterMap, ExportImportDateUtil.RANGE);
+
+		if (rangeValue.equals(
+				ExportImportDateUtil.RANGE_FROM_LAST_PUBLISH_DATE)) {
+
+			ManifestSummary manifestSummary =
+				portletDataContext.getManifestSummary();
+
+			String[] classNames = {
+				MBBan.class.getName(), MBCategory.class.getName(),
+				MBMessage.class.getName(), MBThread.class.getName(),
+				MBThreadFlag.class.getName()
+			};
+
+			for (String className : classNames) {
+				StagedModelType stagedModelType = new StagedModelType(
+					className);
+
+				long modelAdditionCount = manifestSummary.getModelAdditionCount(
+					stagedModelType);
+
+				if (modelAdditionCount > -1) {
+					continue;
+				}
+
+				long modelDeletionCount =
+					_exportImportHelper.getModelDeletionCount(
+						portletDataContext, stagedModelType);
+
+				manifestSummary.addModelDeletionCount(
+					stagedModelType, modelDeletionCount);
+			}
 
 			return;
 		}
@@ -408,14 +435,14 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 		_mbThreadLocalService = mbThreadLocalService;
 	}
 
+	@Reference
+	private ExportImportHelper _exportImportHelper;
+
 	private MBBanLocalService _mbBanLocalService;
 	private MBCategoryLocalService _mbCategoryLocalService;
 	private MBMessageLocalService _mbMessageLocalService;
 	private MBStatsUserLocalService _mbStatsUserLocalService;
 	private MBThreadFlagLocalService _mbThreadFlagLocalService;
 	private MBThreadLocalService _mbThreadLocalService;
-
-	@Reference
-	private Staging _staging;
 
 }

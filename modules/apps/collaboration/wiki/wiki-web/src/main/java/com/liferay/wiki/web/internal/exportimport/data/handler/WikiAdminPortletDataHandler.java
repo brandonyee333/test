@@ -16,6 +16,8 @@ package com.liferay.wiki.web.internal.exportimport.data.handler;
 
 import com.liferay.exportimport.kernel.lar.BasePortletDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportHelper;
+import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
@@ -23,11 +25,11 @@ import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerControl;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
-import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.wiki.constants.WikiConstants;
 import com.liferay.wiki.constants.WikiPortletKeys;
@@ -40,6 +42,7 @@ import com.liferay.wiki.service.permission.WikiResourcePermissionChecker;
 import com.liferay.wiki.util.WikiCacheThreadLocal;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
@@ -217,15 +220,39 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences)
 		throws Exception {
 
-		if (ExportImportDateUtil.isRangeFromLastPublishDate(
-				portletDataContext)) {
+		Map<String, String[]> parameterMap =
+			portletDataContext.getParameterMap();
 
-			_staging.populateLastPublishDateCounts(
-				portletDataContext,
-				new StagedModelType[] {
-					new StagedModelType(WikiNode.class.getName()),
-					new StagedModelType(WikiPage.class.getName())
-				});
+		String rangeValue = MapUtil.getString(
+			parameterMap, ExportImportDateUtil.RANGE);
+
+		if (rangeValue.equals(
+				ExportImportDateUtil.RANGE_FROM_LAST_PUBLISH_DATE)) {
+
+			ManifestSummary manifestSummary =
+				portletDataContext.getManifestSummary();
+
+			String[] classNames =
+				{WikiNode.class.getName(), WikiPage.class.getName()};
+
+			for (String className : classNames) {
+				StagedModelType stagedModelType = new StagedModelType(
+					className);
+
+				long modelAdditionCount = manifestSummary.getModelAdditionCount(
+					stagedModelType);
+
+				if (modelAdditionCount > -1) {
+					continue;
+				}
+
+				long modelDeletionCount =
+					_exportImportHelper.getModelDeletionCount(
+						portletDataContext, stagedModelType);
+
+				manifestSummary.addModelDeletionCount(
+					stagedModelType, modelDeletionCount);
+			}
 
 			return;
 		}
@@ -263,13 +290,12 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 	}
 
 	@Reference
+	private ExportImportHelper _exportImportHelper;
+
+	@Reference
 	private MultiVMPool _multiVMPool;
 
 	private PortalCache<?, ?> _portalCache;
-
-	@Reference
-	private Staging _staging;
-
 	private WikiNodeLocalService _wikiNodeLocalService;
 	private WikiPageLocalService _wikiPageLocalService;
 

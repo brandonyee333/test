@@ -31,6 +31,8 @@ import com.liferay.document.library.kernel.service.DLFileShortcutLocalService;
 import com.liferay.document.library.kernel.service.DLFolderLocalService;
 import com.liferay.exportimport.kernel.lar.BasePortletDataHandler;
 import com.liferay.exportimport.kernel.lar.ExportImportDateUtil;
+import com.liferay.exportimport.kernel.lar.ExportImportHelper;
+import com.liferay.exportimport.kernel.lar.ManifestSummary;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
@@ -39,7 +41,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
-import com.liferay.exportimport.kernel.staging.Staging;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.string.StringPool;
@@ -59,6 +60,7 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileShortcut;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.service.RepositoryLocalService;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.xml.Element;
@@ -70,6 +72,7 @@ import com.liferay.portlet.documentlibrary.constants.DLConstants;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
@@ -332,18 +335,42 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences)
 		throws Exception {
 
-		if (ExportImportDateUtil.isRangeFromLastPublishDate(
-				portletDataContext)) {
+		Map<String, String[]> parameterMap =
+			portletDataContext.getParameterMap();
 
-			_staging.populateLastPublishDateCounts(
-				portletDataContext,
-				new StagedModelType[] {
-					new StagedModelType(DLFileEntry.class.getName()),
-					new StagedModelType(DLFileEntryType.class.getName()),
-					new StagedModelType(DLFileShortcut.class.getName()),
-					new StagedModelType(DLFolder.class.getName()),
-					new StagedModelType(Repository.class.getName())
-				});
+		String rangeValue = MapUtil.getString(
+			parameterMap, ExportImportDateUtil.RANGE);
+
+		if (rangeValue.equals(
+				ExportImportDateUtil.RANGE_FROM_LAST_PUBLISH_DATE)) {
+
+			ManifestSummary manifestSummary =
+				portletDataContext.getManifestSummary();
+
+			String[] classNames = {
+				DLFileEntry.class.getName(), DLFileEntryType.class.getName(),
+				DLFileShortcut.class.getName(), DLFolder.class.getName(),
+				Repository.class.getName()
+			};
+
+			for (String className : classNames) {
+				StagedModelType stagedModelType = new StagedModelType(
+					className);
+
+				long modelAdditionCount = manifestSummary.getModelAdditionCount(
+					stagedModelType);
+
+				if (modelAdditionCount > -1) {
+					continue;
+				}
+
+				long modelDeletionCount =
+					_exportImportHelper.getModelDeletionCount(
+						portletDataContext, stagedModelType);
+
+				manifestSummary.addModelDeletionCount(
+					stagedModelType, modelDeletionCount);
+			}
 
 			return;
 		}
@@ -670,12 +697,12 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 	private DLFolderLocalService _dlFolderLocalService;
 
 	@Reference
+	private ExportImportHelper _exportImportHelper;
+
+	@Reference
 	private Portal _portal;
 
 	@Reference
 	private RepositoryLocalService _repositoryLocalService;
-
-	@Reference
-	private Staging _staging;
 
 }
