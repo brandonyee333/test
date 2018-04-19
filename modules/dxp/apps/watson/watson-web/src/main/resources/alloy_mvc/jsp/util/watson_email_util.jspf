@@ -15,9 +15,11 @@
 --%>
 
 <%!
-public static class WatsonWorkflowUtil {
+public static class WatsonEmailUtil {
 	public static void sendAddressEmail(User fromUser, WatsonAddress watsonAddress, boolean sendFullAddress, boolean sendCoordinates, String description, String toEmailAddress) throws Exception {
 		Locale locale = LocaleUtil.getMostRelevantLocale();
+
+		String subject = LanguageUtil.format(locale, "x-has-sent-you-information-about-a-location", new String[] {fromUser.getFullName()});
 
 		StringBundler emailSB = new StringBundler();
 
@@ -104,29 +106,11 @@ public static class WatsonWorkflowUtil {
 		emailSB.append("<br />");
 		emailSB.append(description);
 
-		MailMessage mailMessage = new MailMessage();
-
-		mailMessage.setBody(emailSB.toString());
-
-		InternetAddress from = new InternetAddress(fromUser.getEmailAddress(), fromUser.getFullName());
-
-		mailMessage.setFrom(from);
-
-		mailMessage.setHTMLFormat(true);
-
-		String subject = LanguageUtil.format(locale, "x-has-sent-you-information-about-a-location", new String[] {fromUser.getFullName()});
-
-		mailMessage.setSubject(subject);
-
-		InternetAddress to = new InternetAddress(toEmailAddress, StringPool.BLANK);
-
-		mailMessage.setTo(to);
-
-		MailServiceUtil.sendEmail(mailMessage);
+		sendEmail(fromUser, subject, emailSB.toString(), toEmailAddress);
 	}
 
 	public static void sendAuthenticationEmail(User user, WatsonTokenAuthEntry watsonTokenAuthEntry) throws Exception {
-		MailMessage mailMessage = new MailMessage();
+		String subject = LanguageUtil.format(user.getLocale(), "authorization-code", new Object[0]);
 
 		StringBundler sb = new StringBundler(3);
 
@@ -137,23 +121,7 @@ public static class WatsonWorkflowUtil {
 		sb.append("<br /><br />");
 		sb.append(LanguageUtil.format(user.getLocale(), "this-code-will-expire-in-30-minutes", new String[0]));
 
-		mailMessage.setBody(sb.toString());
-
-		InternetAddress from = new InternetAddress(user.getEmailAddress(), user.getFullName());
-
-		mailMessage.setFrom(from);
-
-		mailMessage.setHTMLFormat(true);
-
-		String subject = LanguageUtil.format(user.getLocale(), "authorization-code", new Object[0]);
-
-		mailMessage.setSubject(subject);
-
-		InternetAddress to = new InternetAddress(user.getEmailAddress(), user.getFullName());
-
-		mailMessage.setTo(to);
-
-		MailServiceUtil.sendEmail(mailMessage);
+		sendEmail(user, subject, sb.toString(), user.getEmailAddress());
 	}
 
 	public static void sendCitizenshipRequestEmail(User fromUser, String childURL) throws Exception {
@@ -162,7 +130,7 @@ public static class WatsonWorkflowUtil {
 		List<User> citizenshipGroupUsers = UserLocalServiceUtil.getUserGroupUsers(userGroup.getUserGroupId());
 
 		for (User citizenshipGroupUser : citizenshipGroupUsers) {
-			MailMessage mailMessage = new MailMessage();
+			String subject = LanguageUtil.format(citizenshipGroupUser.getLocale(), "citizenship-process-initiated", new Object[0]);
 
 			StringBundler sb = new StringBundler(5);
 
@@ -177,24 +145,27 @@ public static class WatsonWorkflowUtil {
 			sb.append("<br /><br />");
 			sb.append(LanguageUtil.format(citizenshipGroupUser.getLocale(), "thank-you", new String[0]));
 
-			mailMessage.setBody(sb.toString());
-
-			InternetAddress from = new InternetAddress(fromUser.getEmailAddress(), fromUser.getFullName());
-
-			mailMessage.setFrom(from);
-
-			mailMessage.setHTMLFormat(true);
-
-			String subject = LanguageUtil.format(citizenshipGroupUser.getLocale(), "citizenship-process-initiated", new Object[0]);
-
-			mailMessage.setSubject(subject);
-
-			InternetAddress to = new InternetAddress(citizenshipGroupUser.getEmailAddress(), citizenshipGroupUser.getFullName());
-
-			mailMessage.setTo(to);
-
-			MailServiceUtil.sendEmail(mailMessage);
+			sendEmail(fromUser, subject, sb.toString(), citizenshipGroupUser.getEmailAddress());
 		}
+	}
+
+	public static void sendEmail(User fromUser, String subject, String message, String toEmailAddress) throws Exception {
+		MailMessage mailMessage = new MailMessage();
+
+		mailMessage.setBody(message);
+
+		InternetAddress from = new InternetAddress(fromUser.getEmailAddress(), fromUser.getFullName());
+
+		mailMessage.setFrom(from);
+
+		mailMessage.setHTMLFormat(true);
+		mailMessage.setSubject(subject);
+
+		InternetAddress to = new InternetAddress(toEmailAddress, StringPool.BLANK);
+
+		mailMessage.setTo(to);
+
+		MailServiceUtil.sendEmail(mailMessage);
 	}
 
 	public static void sendTranslationEmail(User fromUser, String model, String name, String url) throws Exception {
@@ -204,6 +175,8 @@ public static class WatsonWorkflowUtil {
 
 		for (User translationUser : translationUsers) {
 			StringBundler sb = new StringBundler(7);
+
+			String subject = LanguageUtil.format(translationUser.getLocale(), "a-translation-has-been-requested", new Object[0]);
 
 			sb.append(LanguageUtil.format(translationUser.getLocale(), "dear-x", new String[] {translationUser.getFullName()}));
 			sb.append("<br /><br />");
@@ -218,25 +191,7 @@ public static class WatsonWorkflowUtil {
 			sb.append("<br />");
 			sb.append(fromUser.getFullName());
 
-			MailMessage mailMessage = new MailMessage();
-
-			mailMessage.setBody(sb.toString());
-
-			InternetAddress from = new InternetAddress(fromUser.getEmailAddress(), fromUser.getFullName());
-
-			mailMessage.setFrom(from);
-
-			mailMessage.setHTMLFormat(true);
-
-			String subject = LanguageUtil.format(translationUser.getLocale(), "a-translation-has-been-requested", new Object[0]);
-
-			mailMessage.setSubject(subject);
-
-			InternetAddress to = new InternetAddress(translationUser.getEmailAddress(), translationUser.getFullName());
-
-			mailMessage.setTo(to);
-
-			MailServiceUtil.sendEmail(mailMessage);
+			sendEmail(fromUser, subject, sb.toString(), translationUser.getEmailAddress());
 		}
 	}
 

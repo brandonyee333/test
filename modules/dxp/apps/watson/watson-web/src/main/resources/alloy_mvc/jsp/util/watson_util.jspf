@@ -38,7 +38,7 @@ public static class WatsonUtil {
 
 		WatsonTokenAuthEntry watsonTokenAuthEntry = WatsonTokenAuthEntryLocalServiceUtil.addWatsonTokenAuthEntry(user, authToken, latestLoginIP);
 
-		WatsonWorkflowUtil.sendAuthenticationEmail(user, watsonTokenAuthEntry);
+		WatsonEmailUtil.sendAuthenticationEmail(user, watsonTokenAuthEntry);
 	}
 
 }

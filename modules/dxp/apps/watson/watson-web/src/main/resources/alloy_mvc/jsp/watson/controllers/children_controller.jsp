@@ -311,7 +311,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		String translationURL = ParamUtil.getString(request, "translationURL");
 
-		WatsonWorkflowUtil.sendTranslationEmail(user, getModelProperName(WatsonChild.baseModelClass, locale), watsonChild.getPrimaryName(), translationURL);
+		WatsonEmailUtil.sendTranslationEmail(user, getModelProperName(WatsonChild.baseModelClass, locale), watsonChild.getPrimaryName(), translationURL);
 
 		respondWith(StringPool.BLANK);
 	}
@@ -360,7 +360,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		WatsonWorkflowUtil.sendCitizenshipRequestEmail(user, url);
+		WatsonEmailUtil.sendCitizenshipRequestEmail(user, url);
 
 		watsonChild.setCitizenshipWatsonListTypeId(WatsonListType.CHILD_CITIZENSHIP_TYPE_IN_PROGRESS);
 

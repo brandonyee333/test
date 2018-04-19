@@ -261,7 +261,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		String translationURL = ParamUtil.getString(request, "translationURL");
 
-		WatsonWorkflowUtil.sendTranslationEmail(user, getModelProperName(WatsonActivity.baseModelClass, locale), watsonActivity.getName(locale), translationURL);
+		WatsonEmailUtil.sendTranslationEmail(user, getModelProperName(WatsonActivity.baseModelClass, locale), watsonActivity.getName(locale), translationURL);
 
 		respondWith(StringPool.BLANK);
 	}

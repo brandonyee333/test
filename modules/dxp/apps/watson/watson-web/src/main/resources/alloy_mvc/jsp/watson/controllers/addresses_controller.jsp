@@ -217,7 +217,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		String translationURL = ParamUtil.getString(request, "translationURL");
 
-		WatsonWorkflowUtil.sendTranslationEmail(user, getModelProperName(WatsonAddress.baseModelClass, locale), watsonAddress.getName(locale), translationURL);
+		WatsonEmailUtil.sendTranslationEmail(user, getModelProperName(WatsonAddress.baseModelClass, locale), watsonAddress.getName(locale), translationURL);
 
 		respondWith(StringPool.BLANK);
 	}
@@ -271,7 +271,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		String description = ParamUtil.getString(request, "description");
 		String toEmailAddress = ParamUtil.getString(request, "emailAddress");
 
-		WatsonWorkflowUtil.sendAddressEmail(user, watsonAddress, sendFullAddress, sendCoordinates, description, toEmailAddress);
+		WatsonEmailUtil.sendAddressEmail(user, watsonAddress, sendFullAddress, sendCoordinates, description, toEmailAddress);
 
 		respondWith(StringPool.BLANK);
 	}
