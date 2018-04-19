@@ -23,8 +23,6 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.PropsValues;
 
-import com.yahoo.platform.yui.compressor.CssCompressor;
-
 import org.apache.commons.lang.time.StopWatch;
 
 /**
@@ -83,7 +81,7 @@ public class MinifierUtil {
 			cssCompressor.compress(
 				unsyncStringWriter, PropsValues.YUI_COMPRESSOR_CSS_LINE_BREAK);
 
-			return _processMinifiedCss(unsyncStringWriter.toString());
+			return unsyncStringWriter.toString();
 		}
 		catch (Exception e) {
 			_log.error("Unable to minify CSS:\n" + content, e);
@@ -136,114 +134,6 @@ public class MinifierUtil {
 						" took ", String.valueOf(stopWatch.getTime()), " ms"));
 			}
 		}
-	}
-
-	private String _processMinifiedCss(String minifiedCss) {
-		int index = 0;
-
-		while ((index = minifiedCss.indexOf("calc(", index)) != -1) {
-			index += 5;
-
-			int parenthesesCount = 0;
-			int startIndex = index;
-
-			for (parenthesesCount = 1;
-				 (parenthesesCount != 0) && (index < minifiedCss.length());
-				 index++) {
-
-				char c = minifiedCss.charAt(index);
-
-				if (c == '(') {
-					parenthesesCount++;
-				}
-				else if (c == ')') {
-					parenthesesCount--;
-				}
-			}
-
-			if (parenthesesCount == 0) {
-				StringBundler sb = new StringBundler(3);
-
-				sb.append(minifiedCss.substring(0, startIndex));
-
-				String replacement = minifiedCss.substring(
-					startIndex, index - 1);
-
-				replacement = _separateOperatorsFromNegativeNumbers(
-					replacement);
-
-				replacement = _surroundDivisionOperatorsWithSpaces(replacement);
-				replacement = _surroundMultiplicationOperatorsWithSpaces(
-					replacement);
-				replacement = _surroundSubstractionOperatorsWithSpaces(
-					replacement);
-				replacement = _surroundSumOperatorsWithSpaces(replacement);
-
-				replacement = _removeSpacesInsideNegativeNumbers(replacement);
-
-				sb.append(replacement);
-
-				sb.append(minifiedCss.substring(index - 1));
-
-				index += replacement.length() - (index - startIndex);
-
-				minifiedCss = sb.toString();
-			}
-		}
-
-		return minifiedCss;
-	}
-
-	private String _removeSpacesInsideNegativeNumbers(String replacement) {
-		String anyMinusPrecededByAnOperator = "([+\\-*/])[ ]+-[ ]+(\\d)";
-		String leftmostMinus = "^- ";
-
-		replacement = replacement.replaceAll(
-			anyMinusPrecededByAnOperator, "$1 -$2");
-		replacement = replacement.replaceAll(leftmostMinus, "-");
-
-		return replacement;
-	}
-
-	private String _separateOperatorsFromNegativeNumbers(String replacement) {
-		replacement = replacement.replaceAll("\\+-", "+ -");
-		replacement = replacement.replaceAll("--", "- -");
-		replacement = replacement.replaceAll("\\*-", "* -");
-		replacement = replacement.replaceAll("/-", "/ -");
-
-		return replacement;
-	}
-
-	private String _surroundDivisionOperatorsWithSpaces(String replacement) {
-		replacement = replacement.replaceAll("([^ ])/", "$1 /");
-		replacement = replacement.replaceAll("/([^ ])", "/ $1");
-
-		return replacement;
-	}
-
-	private String _surroundMultiplicationOperatorsWithSpaces(
-		String replacement) {
-
-		replacement = replacement.replaceAll("([^ ])\\*", "$1 *");
-		replacement = replacement.replaceAll("\\*([^ ])", "* $1");
-
-		return replacement;
-	}
-
-	private String _surroundSubstractionOperatorsWithSpaces(
-		String replacement) {
-
-		replacement = replacement.replaceAll("([^ ])-", "$1 -");
-		replacement = replacement.replaceAll("-([^ ])", "- $1");
-
-		return replacement;
-	}
-
-	private String _surroundSumOperatorsWithSpaces(String replacement) {
-		replacement = replacement.replaceAll("([^ ])\\+", "$1 +");
-		replacement = replacement.replaceAll("\\+([^ ])", "+ $1");
-
-		return replacement;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(MinifierUtil.class);
