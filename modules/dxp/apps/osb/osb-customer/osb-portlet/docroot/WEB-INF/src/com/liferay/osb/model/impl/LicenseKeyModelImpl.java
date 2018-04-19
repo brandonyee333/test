@@ -70,6 +70,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	 */
 	public static final String TABLE_NAME = "OSB_LicenseKey";
 	public static final Object[][] TABLE_COLUMNS = {
+			{ "uuid_", Types.VARCHAR },
 			{ "licenseKeyId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "userName", Types.VARCHAR },
@@ -78,7 +79,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 			{ "modifiedUserName", Types.VARCHAR },
 			{ "modifiedDate", Types.TIMESTAMP },
 			{ "licenseKeySetId", Types.BIGINT },
-			{ "assetReceiptLicenseId", Types.BIGINT },
+			{ "assetReceiptLicenseUuid", Types.VARCHAR },
 			{ "accountEntryId", Types.BIGINT },
 			{ "orderEntryId", Types.BIGINT },
 			{ "offeringEntryId", Types.BIGINT },
@@ -114,6 +115,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
 	static {
+		TABLE_COLUMNS_MAP.put("uuid_", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("licenseKeyId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
@@ -122,7 +124,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		TABLE_COLUMNS_MAP.put("modifiedUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("licenseKeySetId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("assetReceiptLicenseId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("assetReceiptLicenseUuid", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("accountEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("orderEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("offeringEntryId", Types.BIGINT);
@@ -156,7 +158,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		TABLE_COLUMNS_MAP.put("active_", Types.BOOLEAN);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_LicenseKey (licenseKeyId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,licenseKeySetId LONG,assetReceiptLicenseId LONG,accountEntryId LONG,orderEntryId LONG,offeringEntryId LONG,licenseEntryId LONG,productEntryId LONG,supportResponseId LONG,accountEntryName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productEntryName VARCHAR(75) null,productId VARCHAR(75) null,productVersion INTEGER,productVersionLabel VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_LicenseKey (uuid_ VARCHAR(75) null,licenseKeyId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,licenseKeySetId LONG,assetReceiptLicenseUuid VARCHAR(75) null,accountEntryId LONG,orderEntryId LONG,offeringEntryId LONG,licenseEntryId LONG,productEntryId LONG,supportResponseId LONG,accountEntryName VARCHAR(500) null,licenseEntryName VARCHAR(75) null,licenseEntryType VARCHAR(75) null,licenseVersion INTEGER,productEntryName VARCHAR(75) null,productId VARCHAR(75) null,productVersion INTEGER,productVersionLabel VARCHAR(75) null,clusterId LONG,owner VARCHAR(75) null,maxServers INTEGER,maxConcurrentUsers LONG,maxUsers LONG,maxHttpSessions INTEGER,description VARCHAR(255) null,hostName VARCHAR(75) null,ipAddresses STRING null,macAddresses STRING null,serverId STRING null,key_ STRING null,startDate DATE null,expirationDate DATE null,additionalInfo STRING null,complimentary BOOLEAN,active_ BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_LicenseKey";
 	public static final String ORDER_BY_JPQL = " ORDER BY licenseKey.active DESC, licenseKey.licenseKeyId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_LicenseKey.active_ DESC, OSB_LicenseKey.licenseKeyId ASC";
@@ -174,7 +176,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 			true);
 	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 1L;
 	public static final long ACTIVE_COLUMN_BITMASK = 2L;
-	public static final long ASSETRECEIPTLICENSEID_COLUMN_BITMASK = 4L;
+	public static final long ASSETRECEIPTLICENSEUUID_COLUMN_BITMASK = 4L;
 	public static final long CLUSTERID_COLUMN_BITMASK = 8L;
 	public static final long COMPLIMENTARY_COLUMN_BITMASK = 16L;
 	public static final long LICENSEENTRYTYPE_COLUMN_BITMASK = 32L;
@@ -186,7 +188,8 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	public static final long PRODUCTID_COLUMN_BITMASK = 2048L;
 	public static final long SERVERID_COLUMN_BITMASK = 4096L;
 	public static final long USERID_COLUMN_BITMASK = 8192L;
-	public static final long LICENSEKEYID_COLUMN_BITMASK = 16384L;
+	public static final long UUID_COLUMN_BITMASK = 16384L;
+	public static final long LICENSEKEYID_COLUMN_BITMASK = 32768L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -201,6 +204,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 		LicenseKey model = new LicenseKeyImpl();
 
+		model.setUuid(soapModel.getUuid());
 		model.setLicenseKeyId(soapModel.getLicenseKeyId());
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
@@ -209,7 +213,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		model.setModifiedUserName(soapModel.getModifiedUserName());
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setLicenseKeySetId(soapModel.getLicenseKeySetId());
-		model.setAssetReceiptLicenseId(soapModel.getAssetReceiptLicenseId());
+		model.setAssetReceiptLicenseUuid(soapModel.getAssetReceiptLicenseUuid());
 		model.setAccountEntryId(soapModel.getAccountEntryId());
 		model.setOrderEntryId(soapModel.getOrderEntryId());
 		model.setOfferingEntryId(soapModel.getOfferingEntryId());
@@ -305,6 +309,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("uuid", getUuid());
 		attributes.put("licenseKeyId", getLicenseKeyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -313,7 +318,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("licenseKeySetId", getLicenseKeySetId());
-		attributes.put("assetReceiptLicenseId", getAssetReceiptLicenseId());
+		attributes.put("assetReceiptLicenseUuid", getAssetReceiptLicenseUuid());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("orderEntryId", getOrderEntryId());
 		attributes.put("offeringEntryId", getOfferingEntryId());
@@ -354,6 +359,12 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		String uuid = (String)attributes.get("uuid");
+
+		if (uuid != null) {
+			setUuid(uuid);
+		}
+
 		Long licenseKeyId = (Long)attributes.get("licenseKeyId");
 
 		if (licenseKeyId != null) {
@@ -402,11 +413,11 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 			setLicenseKeySetId(licenseKeySetId);
 		}
 
-		Long assetReceiptLicenseId = (Long)attributes.get(
-				"assetReceiptLicenseId");
+		String assetReceiptLicenseUuid = (String)attributes.get(
+				"assetReceiptLicenseUuid");
 
-		if (assetReceiptLicenseId != null) {
-			setAssetReceiptLicenseId(assetReceiptLicenseId);
+		if (assetReceiptLicenseUuid != null) {
+			setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
 		}
 
 		Long accountEntryId = (Long)attributes.get("accountEntryId");
@@ -599,6 +610,30 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 	@JSON
 	@Override
+	public String getUuid() {
+		if (_uuid == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _uuid;
+		}
+	}
+
+	@Override
+	public void setUuid(String uuid) {
+		if (_originalUuid == null) {
+			_originalUuid = _uuid;
+		}
+
+		_uuid = uuid;
+	}
+
+	public String getOriginalUuid() {
+		return GetterUtil.getString(_originalUuid);
+	}
+
+	@JSON
+	@Override
 	public long getLicenseKeyId() {
 		return _licenseKeyId;
 	}
@@ -761,25 +796,28 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 	@JSON
 	@Override
-	public long getAssetReceiptLicenseId() {
-		return _assetReceiptLicenseId;
+	public String getAssetReceiptLicenseUuid() {
+		if (_assetReceiptLicenseUuid == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _assetReceiptLicenseUuid;
+		}
 	}
 
 	@Override
-	public void setAssetReceiptLicenseId(long assetReceiptLicenseId) {
-		_columnBitmask |= ASSETRECEIPTLICENSEID_COLUMN_BITMASK;
+	public void setAssetReceiptLicenseUuid(String assetReceiptLicenseUuid) {
+		_columnBitmask |= ASSETRECEIPTLICENSEUUID_COLUMN_BITMASK;
 
-		if (!_setOriginalAssetReceiptLicenseId) {
-			_setOriginalAssetReceiptLicenseId = true;
-
-			_originalAssetReceiptLicenseId = _assetReceiptLicenseId;
+		if (_originalAssetReceiptLicenseUuid == null) {
+			_originalAssetReceiptLicenseUuid = _assetReceiptLicenseUuid;
 		}
 
-		_assetReceiptLicenseId = assetReceiptLicenseId;
+		_assetReceiptLicenseUuid = assetReceiptLicenseUuid;
 	}
 
-	public long getOriginalAssetReceiptLicenseId() {
-		return _originalAssetReceiptLicenseId;
+	public String getOriginalAssetReceiptLicenseUuid() {
+		return GetterUtil.getString(_originalAssetReceiptLicenseUuid);
 	}
 
 	@JSON
@@ -1358,6 +1396,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	public Object clone() {
 		LicenseKeyImpl licenseKeyImpl = new LicenseKeyImpl();
 
+		licenseKeyImpl.setUuid(getUuid());
 		licenseKeyImpl.setLicenseKeyId(getLicenseKeyId());
 		licenseKeyImpl.setUserId(getUserId());
 		licenseKeyImpl.setUserName(getUserName());
@@ -1366,7 +1405,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		licenseKeyImpl.setModifiedUserName(getModifiedUserName());
 		licenseKeyImpl.setModifiedDate(getModifiedDate());
 		licenseKeyImpl.setLicenseKeySetId(getLicenseKeySetId());
-		licenseKeyImpl.setAssetReceiptLicenseId(getAssetReceiptLicenseId());
+		licenseKeyImpl.setAssetReceiptLicenseUuid(getAssetReceiptLicenseUuid());
 		licenseKeyImpl.setAccountEntryId(getAccountEntryId());
 		licenseKeyImpl.setOrderEntryId(getOrderEntryId());
 		licenseKeyImpl.setOfferingEntryId(getOfferingEntryId());
@@ -1474,6 +1513,8 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	public void resetOriginalValues() {
 		LicenseKeyModelImpl licenseKeyModelImpl = this;
 
+		licenseKeyModelImpl._originalUuid = licenseKeyModelImpl._uuid;
+
 		licenseKeyModelImpl._originalUserId = licenseKeyModelImpl._userId;
 
 		licenseKeyModelImpl._setOriginalUserId = false;
@@ -1484,9 +1525,7 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 		licenseKeyModelImpl._setOriginalLicenseKeySetId = false;
 
-		licenseKeyModelImpl._originalAssetReceiptLicenseId = licenseKeyModelImpl._assetReceiptLicenseId;
-
-		licenseKeyModelImpl._setOriginalAssetReceiptLicenseId = false;
+		licenseKeyModelImpl._originalAssetReceiptLicenseUuid = licenseKeyModelImpl._assetReceiptLicenseUuid;
 
 		licenseKeyModelImpl._originalAccountEntryId = licenseKeyModelImpl._accountEntryId;
 
@@ -1528,6 +1567,14 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	@Override
 	public CacheModel<LicenseKey> toCacheModel() {
 		LicenseKeyCacheModel licenseKeyCacheModel = new LicenseKeyCacheModel();
+
+		licenseKeyCacheModel.uuid = getUuid();
+
+		String uuid = licenseKeyCacheModel.uuid;
+
+		if ((uuid != null) && (uuid.length() == 0)) {
+			licenseKeyCacheModel.uuid = null;
+		}
 
 		licenseKeyCacheModel.licenseKeyId = getLicenseKeyId();
 
@@ -1571,7 +1618,14 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 		licenseKeyCacheModel.licenseKeySetId = getLicenseKeySetId();
 
-		licenseKeyCacheModel.assetReceiptLicenseId = getAssetReceiptLicenseId();
+		licenseKeyCacheModel.assetReceiptLicenseUuid = getAssetReceiptLicenseUuid();
+
+		String assetReceiptLicenseUuid = licenseKeyCacheModel.assetReceiptLicenseUuid;
+
+		if ((assetReceiptLicenseUuid != null) &&
+				(assetReceiptLicenseUuid.length() == 0)) {
+			licenseKeyCacheModel.assetReceiptLicenseUuid = null;
+		}
 
 		licenseKeyCacheModel.accountEntryId = getAccountEntryId();
 
@@ -1739,9 +1793,11 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(81);
+		StringBundler sb = new StringBundler(83);
 
-		sb.append("{licenseKeyId=");
+		sb.append("{uuid=");
+		sb.append(getUuid());
+		sb.append(", licenseKeyId=");
 		sb.append(getLicenseKeyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
@@ -1757,8 +1813,8 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		sb.append(getModifiedDate());
 		sb.append(", licenseKeySetId=");
 		sb.append(getLicenseKeySetId());
-		sb.append(", assetReceiptLicenseId=");
-		sb.append(getAssetReceiptLicenseId());
+		sb.append(", assetReceiptLicenseUuid=");
+		sb.append(getAssetReceiptLicenseUuid());
 		sb.append(", accountEntryId=");
 		sb.append(getAccountEntryId());
 		sb.append(", orderEntryId=");
@@ -1828,12 +1884,16 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(124);
+		StringBundler sb = new StringBundler(127);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.LicenseKey");
 		sb.append("</model-name>");
 
+		sb.append(
+			"<column><column-name>uuid</column-name><column-value><![CDATA[");
+		sb.append(getUuid());
+		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>licenseKeyId</column-name><column-value><![CDATA[");
 		sb.append(getLicenseKeyId());
@@ -1867,8 +1927,8 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 		sb.append(getLicenseKeySetId());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>assetReceiptLicenseId</column-name><column-value><![CDATA[");
-		sb.append(getAssetReceiptLicenseId());
+			"<column><column-name>assetReceiptLicenseUuid</column-name><column-value><![CDATA[");
+		sb.append(getAssetReceiptLicenseUuid());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>accountEntryId</column-name><column-value><![CDATA[");
@@ -2004,6 +2064,8 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
 			LicenseKey.class
 		};
+	private String _uuid;
+	private String _originalUuid;
 	private long _licenseKeyId;
 	private long _userId;
 	private long _originalUserId;
@@ -2017,9 +2079,8 @@ public class LicenseKeyModelImpl extends BaseModelImpl<LicenseKey>
 	private long _licenseKeySetId;
 	private long _originalLicenseKeySetId;
 	private boolean _setOriginalLicenseKeySetId;
-	private long _assetReceiptLicenseId;
-	private long _originalAssetReceiptLicenseId;
-	private boolean _setOriginalAssetReceiptLicenseId;
+	private String _assetReceiptLicenseUuid;
+	private String _originalAssetReceiptLicenseUuid;
 	private long _accountEntryId;
 	private long _originalAccountEntryId;
 	private boolean _setOriginalAccountEntryId;

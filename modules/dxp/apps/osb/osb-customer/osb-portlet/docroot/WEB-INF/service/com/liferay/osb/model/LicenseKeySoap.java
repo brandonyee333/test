@@ -34,6 +34,7 @@ public class LicenseKeySoap implements Serializable {
 	public static LicenseKeySoap toSoapModel(LicenseKey model) {
 		LicenseKeySoap soapModel = new LicenseKeySoap();
 
+		soapModel.setUuid(model.getUuid());
 		soapModel.setLicenseKeyId(model.getLicenseKeyId());
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
@@ -42,7 +43,7 @@ public class LicenseKeySoap implements Serializable {
 		soapModel.setModifiedUserName(model.getModifiedUserName());
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setLicenseKeySetId(model.getLicenseKeySetId());
-		soapModel.setAssetReceiptLicenseId(model.getAssetReceiptLicenseId());
+		soapModel.setAssetReceiptLicenseUuid(model.getAssetReceiptLicenseUuid());
 		soapModel.setAccountEntryId(model.getAccountEntryId());
 		soapModel.setOrderEntryId(model.getOrderEntryId());
 		soapModel.setOfferingEntryId(model.getOfferingEntryId());
@@ -126,6 +127,14 @@ public class LicenseKeySoap implements Serializable {
 		setLicenseKeyId(pk);
 	}
 
+	public String getUuid() {
+		return _uuid;
+	}
+
+	public void setUuid(String uuid) {
+		_uuid = uuid;
+	}
+
 	public long getLicenseKeyId() {
 		return _licenseKeyId;
 	}
@@ -190,12 +199,12 @@ public class LicenseKeySoap implements Serializable {
 		_licenseKeySetId = licenseKeySetId;
 	}
 
-	public long getAssetReceiptLicenseId() {
-		return _assetReceiptLicenseId;
+	public String getAssetReceiptLicenseUuid() {
+		return _assetReceiptLicenseUuid;
 	}
 
-	public void setAssetReceiptLicenseId(long assetReceiptLicenseId) {
-		_assetReceiptLicenseId = assetReceiptLicenseId;
+	public void setAssetReceiptLicenseUuid(String assetReceiptLicenseUuid) {
+		_assetReceiptLicenseUuid = assetReceiptLicenseUuid;
 	}
 
 	public long getAccountEntryId() {
@@ -454,6 +463,7 @@ public class LicenseKeySoap implements Serializable {
 		_active = active;
 	}
 
+	private String _uuid;
 	private long _licenseKeyId;
 	private long _userId;
 	private String _userName;
@@ -462,7 +472,7 @@ public class LicenseKeySoap implements Serializable {
 	private String _modifiedUserName;
 	private Date _modifiedDate;
 	private long _licenseKeySetId;
-	private long _assetReceiptLicenseId;
+	private String _assetReceiptLicenseUuid;
 	private long _accountEntryId;
 	private long _orderEntryId;
 	private long _offeringEntryId;

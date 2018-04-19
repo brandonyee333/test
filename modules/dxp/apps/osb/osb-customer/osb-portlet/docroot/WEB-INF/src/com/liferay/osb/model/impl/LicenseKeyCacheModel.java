@@ -66,9 +66,11 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(81);
+		StringBundler sb = new StringBundler(83);
 
-		sb.append("{licenseKeyId=");
+		sb.append("{uuid=");
+		sb.append(uuid);
+		sb.append(", licenseKeyId=");
 		sb.append(licenseKeyId);
 		sb.append(", userId=");
 		sb.append(userId);
@@ -84,8 +86,8 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		sb.append(modifiedDate);
 		sb.append(", licenseKeySetId=");
 		sb.append(licenseKeySetId);
-		sb.append(", assetReceiptLicenseId=");
-		sb.append(assetReceiptLicenseId);
+		sb.append(", assetReceiptLicenseUuid=");
+		sb.append(assetReceiptLicenseUuid);
 		sb.append(", accountEntryId=");
 		sb.append(accountEntryId);
 		sb.append(", orderEntryId=");
@@ -157,6 +159,13 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 	public LicenseKey toEntityModel() {
 		LicenseKeyImpl licenseKeyImpl = new LicenseKeyImpl();
 
+		if (uuid == null) {
+			licenseKeyImpl.setUuid(StringPool.BLANK);
+		}
+		else {
+			licenseKeyImpl.setUuid(uuid);
+		}
+
 		licenseKeyImpl.setLicenseKeyId(licenseKeyId);
 		licenseKeyImpl.setUserId(userId);
 
@@ -191,7 +200,14 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		}
 
 		licenseKeyImpl.setLicenseKeySetId(licenseKeySetId);
-		licenseKeyImpl.setAssetReceiptLicenseId(assetReceiptLicenseId);
+
+		if (assetReceiptLicenseUuid == null) {
+			licenseKeyImpl.setAssetReceiptLicenseUuid(StringPool.BLANK);
+		}
+		else {
+			licenseKeyImpl.setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
+		}
+
 		licenseKeyImpl.setAccountEntryId(accountEntryId);
 		licenseKeyImpl.setOrderEntryId(orderEntryId);
 		licenseKeyImpl.setOfferingEntryId(offeringEntryId);
@@ -332,6 +348,8 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
+		uuid = objectInput.readUTF();
+
 		licenseKeyId = objectInput.readLong();
 
 		userId = objectInput.readLong();
@@ -343,8 +361,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		modifiedDate = objectInput.readLong();
 
 		licenseKeySetId = objectInput.readLong();
-
-		assetReceiptLicenseId = objectInput.readLong();
+		assetReceiptLicenseUuid = objectInput.readUTF();
 
 		accountEntryId = objectInput.readLong();
 
@@ -396,6 +413,13 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 	@Override
 	public void writeExternal(ObjectOutput objectOutput)
 		throws IOException {
+		if (uuid == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(uuid);
+		}
+
 		objectOutput.writeLong(licenseKeyId);
 
 		objectOutput.writeLong(userId);
@@ -422,7 +446,12 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 
 		objectOutput.writeLong(licenseKeySetId);
 
-		objectOutput.writeLong(assetReceiptLicenseId);
+		if (assetReceiptLicenseUuid == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(assetReceiptLicenseUuid);
+		}
 
 		objectOutput.writeLong(accountEntryId);
 
@@ -556,6 +585,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 		objectOutput.writeBoolean(active);
 	}
 
+	public String uuid;
 	public long licenseKeyId;
 	public long userId;
 	public String userName;
@@ -564,7 +594,7 @@ public class LicenseKeyCacheModel implements CacheModel<LicenseKey>,
 	public String modifiedUserName;
 	public long modifiedDate;
 	public long licenseKeySetId;
-	public long assetReceiptLicenseId;
+	public String assetReceiptLicenseUuid;
 	public long accountEntryId;
 	public long orderEntryId;
 	public long offeringEntryId;

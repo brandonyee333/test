@@ -55,13 +55,15 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LicenseKeyServiceUtil} to access the license key remote service. Add custom service methods to {@link com.liferay.osb.service.impl.LicenseKeyServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public LicenseKey addLicenseKey(long userId, long assetReceiptLicenseId,
+	@JSONWebService
+	public LicenseKey addLicenseKey(java.lang.String userUuid,
+		java.lang.String assetReceiptLicenseUuid,
 		java.lang.String licenseEntryType, java.lang.String productEntryName,
 		java.lang.String productId, int productVersion, java.lang.String owner,
-		long maxUsers, java.lang.String description,
-		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
-		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		Date startDate, Date expirationDate) throws PortalException;
+		long maxUsers, java.lang.String description, java.lang.String hostName,
+		java.lang.String ipAddresses, java.lang.String macAddresses,
+		java.lang.String serverId, Date startDate, Date expirationDate)
+		throws PortalException;
 
 	public LicenseKey addLicenseKey(long userId, long licenseKeySetId,
 		java.lang.String name, long offeringEntryId, long licenseEntryId,
@@ -73,15 +75,27 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		int startDateYear, boolean complimentary, boolean active)
 		throws PortalException;
 
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LicenseKey getLicenseKey(java.lang.String uuid)
+		throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public LicenseKey getLicenseKey(long licenseKeyId)
 		throws PortalException;
 
+	@JSONWebService
+	public LicenseKey renewLicenseKey(java.lang.String uuid, Date startDate,
+		Date expirationDate) throws PortalException;
+
 	public LicenseKey renewLicenseKey(long licenseKeyId, Date startDate,
 		int renewTime) throws java.lang.Exception;
 
-	public LicenseKey renewLicenseKey(long licenseKeyId, Date startDate,
-		Date expirationDate) throws PortalException;
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getAssetReceiptLicenseLicenseKeysCount(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getOfferingEntryGroupLicenseKeysCount(long[] offeringEntryIds,
@@ -126,6 +140,12 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active) throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
 		throws PortalException;
@@ -167,10 +187,18 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
 		int end, OrderByComparator obc) throws PortalException;
 
-	public void updateLicenseKey(long userId, long licenseKeyId,
-		long assetReceiptLicenseId, boolean active) throws PortalException;
+	@JSONWebService
+	public void updateLicenseKey(java.lang.String userUuid,
+		java.lang.String uuid, boolean active) throws PortalException;
+
+	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
+		throws PortalException;
 
 	public void updateLicenseKey(long userId, long licenseKeyId,
 		long licenseKeySetId, long offeringEntryId, java.lang.String name,
+		boolean active) throws PortalException;
+
+	@JSONWebService
+	public void updateLicenseKeys(java.lang.String assetReceiptLicenseUuid,
 		boolean active) throws PortalException;
 }

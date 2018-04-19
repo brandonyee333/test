@@ -291,6 +291,7 @@
 		<field name="portalVersionMax" type="int" />
 	</model>
 	<model name="com.liferay.osb.model.LicenseKey">
+		<field name="uuid" type="String" />
 		<field name="licenseKeyId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
@@ -299,7 +300,7 @@
 		<field name="modifiedUserName" type="String" />
 		<field name="modifiedDate" type="Date" />
 		<field name="licenseKeySetId" type="long" />
-		<field name="assetReceiptLicenseId" type="long" />
+		<field name="assetReceiptLicenseUuid" type="String" />
 		<field name="accountEntryId" type="long" />
 		<field name="orderEntryId" type="long" />
 		<field name="offeringEntryId" type="long" />

@@ -33,19 +33,19 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
-	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
-		long assetReceiptLicenseId, java.lang.String licenseEntryType,
-		java.lang.String productEntryName, java.lang.String productId,
-		int productVersion, java.lang.String owner, long maxUsers,
-		java.lang.String description, java.lang.String[] hostNames,
-		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
-		java.lang.String[] serverIds, java.util.Date startDate,
+	public com.liferay.osb.model.LicenseKey addLicenseKey(
+		java.lang.String userUuid, java.lang.String assetReceiptLicenseUuid,
+		java.lang.String licenseEntryType, java.lang.String productEntryName,
+		java.lang.String productId, int productVersion, java.lang.String owner,
+		long maxUsers, java.lang.String description, java.lang.String hostName,
+		java.lang.String ipAddresses, java.lang.String macAddresses,
+		java.lang.String serverId, java.util.Date startDate,
 		java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyService.addLicenseKey(userId, assetReceiptLicenseId,
-			licenseEntryType, productEntryName, productId, productVersion,
-			owner, maxUsers, description, hostNames, ipAddresses, macAddresses,
-			serverIds, startDate, expirationDate);
+		return _licenseKeyService.addLicenseKey(userUuid,
+			assetReceiptLicenseUuid, licenseEntryType, productEntryName,
+			productId, productVersion, owner, maxUsers, description, hostName,
+			ipAddresses, macAddresses, serverId, startDate, expirationDate);
 	}
 
 	@Override
@@ -67,9 +67,24 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
+	public com.liferay.osb.model.LicenseKey getLicenseKey(java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.getLicenseKey(uuid);
+	}
+
+	@Override
 	public com.liferay.osb.model.LicenseKey getLicenseKey(long licenseKeyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeyService.getLicenseKey(licenseKeyId);
+	}
+
+	@Override
+	public com.liferay.osb.model.LicenseKey renewLicenseKey(
+		java.lang.String uuid, java.util.Date startDate,
+		java.util.Date expirationDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.renewLicenseKey(uuid, startDate,
+			expirationDate);
 	}
 
 	@Override
@@ -80,11 +95,12 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
-	public com.liferay.osb.model.LicenseKey renewLicenseKey(long licenseKeyId,
-		java.util.Date startDate, java.util.Date expirationDate)
+	public int getAssetReceiptLicenseLicenseKeysCount(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyService.renewLicenseKey(licenseKeyId, startDate,
-			expirationDate);
+		return _licenseKeyService.getAssetReceiptLicenseLicenseKeysCount(assetReceiptLicenseUuid,
+			complimentary, active);
 	}
 
 	@Override
@@ -154,6 +170,15 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _licenseKeyService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.model.LicenseKey> getAssetReceiptLicenseLicenseKeys(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyService.getAssetReceiptLicenseLicenseKeys(assetReceiptLicenseUuid,
+			complimentary, active);
 	}
 
 	@Override
@@ -228,11 +253,16 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
-	public void updateLicenseKey(long userId, long licenseKeyId,
-		long assetReceiptLicenseId, boolean active)
+	public void updateLicenseKey(java.lang.String userUuid,
+		java.lang.String uuid, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_licenseKeyService.updateLicenseKey(userId, licenseKeyId,
-			assetReceiptLicenseId, active);
+		_licenseKeyService.updateLicenseKey(userUuid, uuid, active);
+	}
+
+	@Override
+	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_licenseKeyService.updateLicenseKey(userId, licenseKeyId, active);
 	}
 
 	@Override
@@ -242,6 +272,13 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_licenseKeyService.updateLicenseKey(userId, licenseKeyId,
 			licenseKeySetId, offeringEntryId, name, active);
+	}
+
+	@Override
+	public void updateLicenseKeys(java.lang.String assetReceiptLicenseUuid,
+		boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_licenseKeyService.updateLicenseKeys(assetReceiptLicenseUuid, active);
 	}
 
 	@Override

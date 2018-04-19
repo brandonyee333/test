@@ -81,6 +81,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("uuid", getUuid());
 		attributes.put("licenseKeyId", getLicenseKeyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -89,7 +90,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("licenseKeySetId", getLicenseKeySetId());
-		attributes.put("assetReceiptLicenseId", getAssetReceiptLicenseId());
+		attributes.put("assetReceiptLicenseUuid", getAssetReceiptLicenseUuid());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("orderEntryId", getOrderEntryId());
 		attributes.put("offeringEntryId", getOfferingEntryId());
@@ -130,6 +131,12 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		String uuid = (String)attributes.get("uuid");
+
+		if (uuid != null) {
+			setUuid(uuid);
+		}
+
 		Long licenseKeyId = (Long)attributes.get("licenseKeyId");
 
 		if (licenseKeyId != null) {
@@ -178,11 +185,11 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 			setLicenseKeySetId(licenseKeySetId);
 		}
 
-		Long assetReceiptLicenseId = (Long)attributes.get(
-				"assetReceiptLicenseId");
+		String assetReceiptLicenseUuid = (String)attributes.get(
+				"assetReceiptLicenseUuid");
 
-		if (assetReceiptLicenseId != null) {
-			setAssetReceiptLicenseId(assetReceiptLicenseId);
+		if (assetReceiptLicenseUuid != null) {
+			setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
 		}
 
 		Long accountEntryId = (Long)attributes.get("accountEntryId");
@@ -374,6 +381,29 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 
 		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
 		_finderCacheEnabled = GetterUtil.getBoolean("finderCacheEnabled");
+	}
+
+	@Override
+	public String getUuid() {
+		return _uuid;
+	}
+
+	@Override
+	public void setUuid(String uuid) {
+		_uuid = uuid;
+
+		if (_licenseKeyRemoteModel != null) {
+			try {
+				Class<?> clazz = _licenseKeyRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setUuid", String.class);
+
+				method.invoke(_licenseKeyRemoteModel, uuid);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
 	}
 
 	@Override
@@ -594,22 +624,22 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 	}
 
 	@Override
-	public long getAssetReceiptLicenseId() {
-		return _assetReceiptLicenseId;
+	public String getAssetReceiptLicenseUuid() {
+		return _assetReceiptLicenseUuid;
 	}
 
 	@Override
-	public void setAssetReceiptLicenseId(long assetReceiptLicenseId) {
-		_assetReceiptLicenseId = assetReceiptLicenseId;
+	public void setAssetReceiptLicenseUuid(String assetReceiptLicenseUuid) {
+		_assetReceiptLicenseUuid = assetReceiptLicenseUuid;
 
 		if (_licenseKeyRemoteModel != null) {
 			try {
 				Class<?> clazz = _licenseKeyRemoteModel.getClass();
 
-				Method method = clazz.getMethod("setAssetReceiptLicenseId",
-						long.class);
+				Method method = clazz.getMethod("setAssetReceiptLicenseUuid",
+						String.class);
 
-				method.invoke(_licenseKeyRemoteModel, assetReceiptLicenseId);
+				method.invoke(_licenseKeyRemoteModel, assetReceiptLicenseUuid);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -1570,6 +1600,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 	public Object clone() {
 		LicenseKeyClp clone = new LicenseKeyClp();
 
+		clone.setUuid(getUuid());
 		clone.setLicenseKeyId(getLicenseKeyId());
 		clone.setUserId(getUserId());
 		clone.setUserName(getUserName());
@@ -1578,7 +1609,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 		clone.setModifiedUserName(getModifiedUserName());
 		clone.setModifiedDate(getModifiedDate());
 		clone.setLicenseKeySetId(getLicenseKeySetId());
-		clone.setAssetReceiptLicenseId(getAssetReceiptLicenseId());
+		clone.setAssetReceiptLicenseUuid(getAssetReceiptLicenseUuid());
 		clone.setAccountEntryId(getAccountEntryId());
 		clone.setOrderEntryId(getOrderEntryId());
 		clone.setOfferingEntryId(getOfferingEntryId());
@@ -1694,9 +1725,11 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(81);
+		StringBundler sb = new StringBundler(83);
 
-		sb.append("{licenseKeyId=");
+		sb.append("{uuid=");
+		sb.append(getUuid());
+		sb.append(", licenseKeyId=");
 		sb.append(getLicenseKeyId());
 		sb.append(", userId=");
 		sb.append(getUserId());
@@ -1712,8 +1745,8 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 		sb.append(getModifiedDate());
 		sb.append(", licenseKeySetId=");
 		sb.append(getLicenseKeySetId());
-		sb.append(", assetReceiptLicenseId=");
-		sb.append(getAssetReceiptLicenseId());
+		sb.append(", assetReceiptLicenseUuid=");
+		sb.append(getAssetReceiptLicenseUuid());
 		sb.append(", accountEntryId=");
 		sb.append(getAccountEntryId());
 		sb.append(", orderEntryId=");
@@ -1783,12 +1816,16 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(124);
+		StringBundler sb = new StringBundler(127);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.LicenseKey");
 		sb.append("</model-name>");
 
+		sb.append(
+			"<column><column-name>uuid</column-name><column-value><![CDATA[");
+		sb.append(getUuid());
+		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>licenseKeyId</column-name><column-value><![CDATA[");
 		sb.append(getLicenseKeyId());
@@ -1822,8 +1859,8 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 		sb.append(getLicenseKeySetId());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>assetReceiptLicenseId</column-name><column-value><![CDATA[");
-		sb.append(getAssetReceiptLicenseId());
+			"<column><column-name>assetReceiptLicenseUuid</column-name><column-value><![CDATA[");
+		sb.append(getAssetReceiptLicenseUuid());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>accountEntryId</column-name><column-value><![CDATA[");
@@ -1955,6 +1992,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 		return sb.toString();
 	}
 
+	private String _uuid;
 	private long _licenseKeyId;
 	private long _userId;
 	private String _userName;
@@ -1963,7 +2001,7 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 	private String _modifiedUserName;
 	private Date _modifiedDate;
 	private long _licenseKeySetId;
-	private long _assetReceiptLicenseId;
+	private String _assetReceiptLicenseUuid;
 	private long _accountEntryId;
 	private long _orderEntryId;
 	private long _offeringEntryId;

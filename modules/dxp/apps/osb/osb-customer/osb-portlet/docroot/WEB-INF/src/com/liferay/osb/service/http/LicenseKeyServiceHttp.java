@@ -99,23 +99,124 @@ public class LicenseKeyServiceHttp {
 	}
 
 	public static com.liferay.osb.model.LicenseKey addLicenseKey(
-		HttpPrincipal httpPrincipal, long userId, long assetReceiptLicenseId,
+		HttpPrincipal httpPrincipal, java.lang.String userUuid,
+		java.lang.String assetReceiptLicenseUuid,
 		java.lang.String licenseEntryType, java.lang.String productEntryName,
 		java.lang.String productId, int productVersion, java.lang.String owner,
-		long maxUsers, java.lang.String description,
-		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
-		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		java.util.Date startDate, java.util.Date expirationDate)
+		long maxUsers, java.lang.String description, java.lang.String hostName,
+		java.lang.String ipAddresses, java.lang.String macAddresses,
+		java.lang.String serverId, java.util.Date startDate,
+		java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"addLicenseKey", _addLicenseKeyParameterTypes1);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
-					assetReceiptLicenseId, licenseEntryType, productEntryName,
-					productId, productVersion, owner, maxUsers, description,
-					hostNames, ipAddresses, macAddresses, serverIds, startDate,
-					expirationDate);
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					userUuid, assetReceiptLicenseUuid, licenseEntryType,
+					productEntryName, productId, productVersion, owner,
+					maxUsers, description, hostName, ipAddresses, macAddresses,
+					serverId, startDate, expirationDate);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (com.liferay.osb.model.LicenseKey)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static java.util.List<com.liferay.osb.model.LicenseKey> getAssetReceiptLicenseLicenseKeys(
+		HttpPrincipal httpPrincipal, java.lang.String assetReceiptLicenseUuid,
+		boolean complimentary, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
+					"getAssetReceiptLicenseLicenseKeys",
+					_getAssetReceiptLicenseLicenseKeysParameterTypes2);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					assetReceiptLicenseUuid, complimentary, active);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return (java.util.List<com.liferay.osb.model.LicenseKey>)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static int getAssetReceiptLicenseLicenseKeysCount(
+		HttpPrincipal httpPrincipal, java.lang.String assetReceiptLicenseUuid,
+		boolean complimentary, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
+					"getAssetReceiptLicenseLicenseKeysCount",
+					_getAssetReceiptLicenseLicenseKeysCountParameterTypes3);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					assetReceiptLicenseUuid, complimentary, active);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+
+			return ((Integer)returnObj).intValue();
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static com.liferay.osb.model.LicenseKey getLicenseKey(
+		HttpPrincipal httpPrincipal, long licenseKeyId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
+					"getLicenseKey", _getLicenseKeyParameterTypes4);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					licenseKeyId);
 
 			Object returnObj = null;
 
@@ -140,14 +241,13 @@ public class LicenseKeyServiceHttp {
 	}
 
 	public static com.liferay.osb.model.LicenseKey getLicenseKey(
-		HttpPrincipal httpPrincipal, long licenseKeyId)
+		HttpPrincipal httpPrincipal, java.lang.String uuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
-					"getLicenseKey", _getLicenseKeyParameterTypes2);
+					"getLicenseKey", _getLicenseKeyParameterTypes5);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					licenseKeyId);
+			MethodHandler methodHandler = new MethodHandler(methodKey, uuid);
 
 			Object returnObj = null;
 
@@ -176,7 +276,7 @@ public class LicenseKeyServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
-					"getLicenseKeys", _getLicenseKeysParameterTypes3);
+					"getLicenseKeys", _getLicenseKeysParameterTypes6);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
 					productId);
@@ -209,7 +309,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"getLicenseKeySetLicenseKeys",
-					_getLicenseKeySetLicenseKeysParameterTypes4);
+					_getLicenseKeySetLicenseKeysParameterTypes7);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					licenseKeySetId);
@@ -244,7 +344,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"getOfferingEntryGroupLicenseKeys",
-					_getOfferingEntryGroupLicenseKeysParameterTypes5);
+					_getOfferingEntryGroupLicenseKeysParameterTypes8);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					offeringEntryIds, complimentary, active, start, end, obc);
@@ -278,7 +378,7 @@ public class LicenseKeyServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
 					"getOfferingEntryGroupLicenseKeysCount",
-					_getOfferingEntryGroupLicenseKeysCountParameterTypes6);
+					_getOfferingEntryGroupLicenseKeysCountParameterTypes9);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					offeringEntryIds, complimentary, active);
@@ -307,14 +407,13 @@ public class LicenseKeyServiceHttp {
 
 	public static com.liferay.osb.model.LicenseKey renewLicenseKey(
 		HttpPrincipal httpPrincipal, long licenseKeyId,
-		java.util.Date startDate, java.util.Date expirationDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		java.util.Date startDate, int renewTime) throws java.lang.Exception {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
-					"renewLicenseKey", _renewLicenseKeyParameterTypes7);
+					"renewLicenseKey", _renewLicenseKeyParameterTypes10);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
-					licenseKeyId, startDate, expirationDate);
+					licenseKeyId, startDate, renewTime);
 
 			Object returnObj = null;
 
@@ -322,8 +421,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				if (e instanceof java.lang.Exception) {
+					throw (java.lang.Exception)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -339,14 +438,15 @@ public class LicenseKeyServiceHttp {
 	}
 
 	public static com.liferay.osb.model.LicenseKey renewLicenseKey(
-		HttpPrincipal httpPrincipal, long licenseKeyId,
-		java.util.Date startDate, int renewTime) throws java.lang.Exception {
+		HttpPrincipal httpPrincipal, java.lang.String uuid,
+		java.util.Date startDate, java.util.Date expirationDate)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
-					"renewLicenseKey", _renewLicenseKeyParameterTypes8);
+					"renewLicenseKey", _renewLicenseKeyParameterTypes11);
 
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					licenseKeyId, startDate, renewTime);
+			MethodHandler methodHandler = new MethodHandler(methodKey, uuid,
+					startDate, expirationDate);
 
 			Object returnObj = null;
 
@@ -354,8 +454,8 @@ public class LicenseKeyServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof java.lang.Exception) {
-					throw (java.lang.Exception)e;
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
 				}
 
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
@@ -395,7 +495,7 @@ public class LicenseKeyServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
-					"search", _searchParameterTypes9);
+					"search", _searchParameterTypes12);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					createUserId, createDateGTDay, createDateGTMonth,
@@ -442,7 +542,7 @@ public class LicenseKeyServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
-					"search", _searchParameterTypes10);
+					"search", _searchParameterTypes13);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					keywords, params, start, end, obc);
@@ -493,7 +593,7 @@ public class LicenseKeyServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
-					"searchCount", _searchCountParameterTypes11);
+					"searchCount", _searchCountParameterTypes14);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					createUserId, createDateGTDay, createDateGTMonth,
@@ -539,7 +639,7 @@ public class LicenseKeyServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
-					"searchCount", _searchCountParameterTypes12);
+					"searchCount", _searchCountParameterTypes15);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					keywords, params);
@@ -567,15 +667,14 @@ public class LicenseKeyServiceHttp {
 	}
 
 	public static void updateLicenseKey(HttpPrincipal httpPrincipal,
-		long userId, long licenseKeyId, long assetReceiptLicenseId,
-		boolean active)
+		long userId, long licenseKeyId, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
-					"updateLicenseKey", _updateLicenseKeyParameterTypes13);
+					"updateLicenseKey", _updateLicenseKeyParameterTypes16);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
-					licenseKeyId, assetReceiptLicenseId, active);
+					licenseKeyId, active);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
@@ -601,10 +700,66 @@ public class LicenseKeyServiceHttp {
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
-					"updateLicenseKey", _updateLicenseKeyParameterTypes14);
+					"updateLicenseKey", _updateLicenseKeyParameterTypes17);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, userId,
 					licenseKeyId, licenseKeySetId, offeringEntryId, name, active);
+
+			try {
+				TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static void updateLicenseKey(HttpPrincipal httpPrincipal,
+		java.lang.String userUuid, java.lang.String uuid, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
+					"updateLicenseKey", _updateLicenseKeyParameterTypes18);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					userUuid, uuid, active);
+
+			try {
+				TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(e);
+			}
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException se) {
+			_log.error(se, se);
+
+			throw se;
+		}
+	}
+
+	public static void updateLicenseKeys(HttpPrincipal httpPrincipal,
+		java.lang.String assetReceiptLicenseUuid, boolean active)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			MethodKey methodKey = new MethodKey(LicenseKeyServiceUtil.class,
+					"updateLicenseKeys", _updateLicenseKeysParameterTypes19);
+
+			MethodHandler methodHandler = new MethodHandler(methodKey,
+					assetReceiptLicenseUuid, active);
 
 			try {
 				TunnelUtil.invoke(httpPrincipal, methodHandler);
@@ -634,36 +789,43 @@ public class LicenseKeyServiceHttp {
 			int.class, int.class, boolean.class, boolean.class
 		};
 	private static final Class<?>[] _addLicenseKeyParameterTypes1 = new Class[] {
-			long.class, long.class, java.lang.String.class,
-			java.lang.String.class, java.lang.String.class, int.class,
-			java.lang.String.class, long.class, java.lang.String.class,
-			java.lang.String[].class, java.lang.String[].class,
-			java.lang.String[].class, java.lang.String[].class,
-			java.util.Date.class, java.util.Date.class
+			java.lang.String.class, java.lang.String.class,
+			java.lang.String.class, java.lang.String.class,
+			java.lang.String.class, int.class, java.lang.String.class,
+			long.class, java.lang.String.class, java.lang.String.class,
+			java.lang.String.class, java.lang.String.class,
+			java.lang.String.class, java.util.Date.class, java.util.Date.class
 		};
-	private static final Class<?>[] _getLicenseKeyParameterTypes2 = new Class[] {
+	private static final Class<?>[] _getAssetReceiptLicenseLicenseKeysParameterTypes2 =
+		new Class[] { java.lang.String.class, boolean.class, boolean.class };
+	private static final Class<?>[] _getAssetReceiptLicenseLicenseKeysCountParameterTypes3 =
+		new Class[] { java.lang.String.class, boolean.class, boolean.class };
+	private static final Class<?>[] _getLicenseKeyParameterTypes4 = new Class[] {
 			long.class
 		};
-	private static final Class<?>[] _getLicenseKeysParameterTypes3 = new Class[] {
+	private static final Class<?>[] _getLicenseKeyParameterTypes5 = new Class[] {
+			java.lang.String.class
+		};
+	private static final Class<?>[] _getLicenseKeysParameterTypes6 = new Class[] {
 			long.class, java.lang.String.class
 		};
-	private static final Class<?>[] _getLicenseKeySetLicenseKeysParameterTypes4 = new Class[] {
+	private static final Class<?>[] _getLicenseKeySetLicenseKeysParameterTypes7 = new Class[] {
 			long.class
 		};
-	private static final Class<?>[] _getOfferingEntryGroupLicenseKeysParameterTypes5 =
+	private static final Class<?>[] _getOfferingEntryGroupLicenseKeysParameterTypes8 =
 		new Class[] {
 			long[].class, boolean.class, boolean.class, int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _getOfferingEntryGroupLicenseKeysCountParameterTypes6 =
+	private static final Class<?>[] _getOfferingEntryGroupLicenseKeysCountParameterTypes9 =
 		new Class[] { long[].class, boolean.class, boolean.class };
-	private static final Class<?>[] _renewLicenseKeyParameterTypes7 = new Class[] {
-			long.class, java.util.Date.class, java.util.Date.class
-		};
-	private static final Class<?>[] _renewLicenseKeyParameterTypes8 = new Class[] {
+	private static final Class<?>[] _renewLicenseKeyParameterTypes10 = new Class[] {
 			long.class, java.util.Date.class, int.class
 		};
-	private static final Class<?>[] _searchParameterTypes9 = new Class[] {
+	private static final Class<?>[] _renewLicenseKeyParameterTypes11 = new Class[] {
+			java.lang.String.class, java.util.Date.class, java.util.Date.class
+		};
+	private static final Class<?>[] _searchParameterTypes12 = new Class[] {
 			java.lang.Long.class, int.class, int.class, int.class, int.class,
 			int.class, int.class, java.lang.Long.class, int.class, int.class,
 			int.class, int.class, int.class, int.class, java.lang.String.class,
@@ -678,11 +840,11 @@ public class LicenseKeyServiceHttp {
 			int.class, int.class,
 			com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _searchParameterTypes10 = new Class[] {
+	private static final Class<?>[] _searchParameterTypes13 = new Class[] {
 			java.lang.String.class, java.util.LinkedHashMap.class, int.class,
 			int.class, com.liferay.portal.kernel.util.OrderByComparator.class
 		};
-	private static final Class<?>[] _searchCountParameterTypes11 = new Class[] {
+	private static final Class<?>[] _searchCountParameterTypes14 = new Class[] {
 			java.lang.Long.class, int.class, int.class, int.class, int.class,
 			int.class, int.class, java.lang.Long.class, int.class, int.class,
 			int.class, int.class, int.class, int.class, java.lang.String.class,
@@ -695,14 +857,20 @@ public class LicenseKeyServiceHttp {
 			java.lang.String.class, int.class, int.class, int.class, int.class,
 			int.class, int.class, java.util.LinkedHashMap.class, boolean.class
 		};
-	private static final Class<?>[] _searchCountParameterTypes12 = new Class[] {
+	private static final Class<?>[] _searchCountParameterTypes15 = new Class[] {
 			java.lang.String.class, java.util.LinkedHashMap.class
 		};
-	private static final Class<?>[] _updateLicenseKeyParameterTypes13 = new Class[] {
-			long.class, long.class, long.class, boolean.class
+	private static final Class<?>[] _updateLicenseKeyParameterTypes16 = new Class[] {
+			long.class, long.class, boolean.class
 		};
-	private static final Class<?>[] _updateLicenseKeyParameterTypes14 = new Class[] {
+	private static final Class<?>[] _updateLicenseKeyParameterTypes17 = new Class[] {
 			long.class, long.class, long.class, long.class,
+			java.lang.String.class, boolean.class
+		};
+	private static final Class<?>[] _updateLicenseKeyParameterTypes18 = new Class[] {
+			java.lang.String.class, java.lang.String.class, boolean.class
+		};
+	private static final Class<?>[] _updateLicenseKeysParameterTypes19 = new Class[] {
 			java.lang.String.class, boolean.class
 		};
 }

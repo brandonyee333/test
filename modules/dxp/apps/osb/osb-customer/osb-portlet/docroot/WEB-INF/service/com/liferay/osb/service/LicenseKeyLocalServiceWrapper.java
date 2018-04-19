@@ -68,18 +68,18 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 
 	@Override
 	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
-		long assetReceiptLicenseId, java.lang.String licenseEntryType,
-		java.lang.String productEntryName, java.lang.String productId,
-		int productVersion, java.lang.String owner, long maxUsers,
-		java.lang.String description, java.lang.String[] hostNames,
-		java.lang.String[] ipAddresses, java.lang.String[] macAddresses,
-		java.lang.String[] serverIds, java.util.Date startDate,
+		java.lang.String assetReceiptLicenseUuid,
+		java.lang.String licenseEntryType, java.lang.String productEntryName,
+		java.lang.String productId, int productVersion, java.lang.String owner,
+		long maxUsers, java.lang.String description, java.lang.String hostName,
+		java.lang.String ipAddresses, java.lang.String macAddresses,
+		java.lang.String serverId, java.util.Date startDate,
 		java.util.Date expirationDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKeyLocalService.addLicenseKey(userId,
-			assetReceiptLicenseId, licenseEntryType, productEntryName,
-			productId, productVersion, owner, maxUsers, description, hostNames,
-			ipAddresses, macAddresses, serverIds, startDate, expirationDate);
+			assetReceiptLicenseUuid, licenseEntryType, productEntryName,
+			productId, productVersion, owner, maxUsers, description, hostName,
+			ipAddresses, macAddresses, serverId, startDate, expirationDate);
 	}
 
 	@Override
@@ -172,6 +172,13 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 	}
 
 	@Override
+	public com.liferay.osb.model.LicenseKey getLicenseKeyByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeyLocalService.getLicenseKeyByUuid(uuid);
+	}
+
+	@Override
 	public com.liferay.osb.model.LicenseKey renewLicenseKey(long userId,
 		long licenseKeyId, java.util.Date startDate, int renewTime)
 		throws java.lang.Exception {
@@ -240,8 +247,9 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 
 	@Override
 	public int getAssetReceiptLicenseLicenseKeysCount(
-		long assetReceiptLicenseId, boolean complimentary, boolean active) {
-		return _licenseKeyLocalService.getAssetReceiptLicenseLicenseKeysCount(assetReceiptLicenseId,
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active) {
+		return _licenseKeyLocalService.getAssetReceiptLicenseLicenseKeysCount(assetReceiptLicenseUuid,
 			complimentary, active);
 	}
 
@@ -415,15 +423,16 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getAssetReceiptLicenseLicenseKeys(
-		long assetReceiptLicenseId, boolean active) {
-		return _licenseKeyLocalService.getAssetReceiptLicenseLicenseKeys(assetReceiptLicenseId,
+		java.lang.String assetReceiptLicenseUuid, boolean active) {
+		return _licenseKeyLocalService.getAssetReceiptLicenseLicenseKeys(assetReceiptLicenseUuid,
 			active);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getAssetReceiptLicenseLicenseKeys(
-		long assetReceiptLicenseId, boolean complimentary, boolean active) {
-		return _licenseKeyLocalService.getAssetReceiptLicenseLicenseKeys(assetReceiptLicenseId,
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active) {
+		return _licenseKeyLocalService.getAssetReceiptLicenseLicenseKeys(assetReceiptLicenseUuid,
 			complimentary, active);
 	}
 
@@ -452,17 +461,17 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
-		java.lang.String productId, java.lang.String serverId) {
-		return _licenseKeyLocalService.getLicenseKeys(productId, serverId);
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
+		java.lang.String serverId, boolean active, int start, int end,
+		com.liferay.portal.kernel.util.OrderByComparator obc) {
+		return _licenseKeyLocalService.getLicenseKeys(assetReceiptLicenseUuid,
+			productId, serverId, active, start, end, obc);
 	}
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LicenseKey> getLicenseKeys(
-		long assetReceiptLicenseId, java.lang.String productId,
-		java.lang.String serverId, boolean active, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc) {
-		return _licenseKeyLocalService.getLicenseKeys(assetReceiptLicenseId,
-			productId, serverId, active, start, end, obc);
+		java.lang.String productId, java.lang.String serverId) {
+		return _licenseKeyLocalService.getLicenseKeys(productId, serverId);
 	}
 
 	@Override
@@ -623,11 +632,9 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 	}
 
 	@Override
-	public void updateLicenseKey(long userId, long licenseKeyId,
-		long assetReceiptLicenseId, boolean active)
+	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_licenseKeyLocalService.updateLicenseKey(userId, licenseKeyId,
-			assetReceiptLicenseId, active);
+		_licenseKeyLocalService.updateLicenseKey(userId, licenseKeyId, active);
 	}
 
 	@Override

@@ -89,13 +89,14 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		java.lang.String additionalInfo, boolean complimentary, boolean active)
 		throws PortalException;
 
-	public LicenseKey addLicenseKey(long userId, long assetReceiptLicenseId,
+	public LicenseKey addLicenseKey(long userId,
+		java.lang.String assetReceiptLicenseUuid,
 		java.lang.String licenseEntryType, java.lang.String productEntryName,
 		java.lang.String productId, int productVersion, java.lang.String owner,
-		long maxUsers, java.lang.String description,
-		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
-		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		Date startDate, Date expirationDate) throws PortalException;
+		long maxUsers, java.lang.String description, java.lang.String hostName,
+		java.lang.String ipAddresses, java.lang.String macAddresses,
+		java.lang.String serverId, Date startDate, Date expirationDate)
+		throws PortalException;
 
 	public LicenseKey addLicenseKey(long userId, long licenseKeySetId,
 		java.lang.String name, long offeringEntryId, long licenseEntryId,
@@ -158,6 +159,10 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	public LicenseKey getLicenseKey(long licenseKeyId)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public LicenseKey getLicenseKeyByUuid(java.lang.String uuid)
+		throws PortalException;
+
 	public LicenseKey renewLicenseKey(long userId, long licenseKeyId,
 		Date startDate, int renewTime) throws java.lang.Exception;
 
@@ -198,7 +203,8 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getAssetReceiptLicenseLicenseKeysCount(
-		long assetReceiptLicenseId, boolean complimentary, boolean active);
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active);
 
 	/**
 	* Returns the number of license keies.
@@ -312,11 +318,12 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
-		long assetReceiptLicenseId, boolean active);
+		java.lang.String assetReceiptLicenseUuid, boolean active);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
-		long assetReceiptLicenseId, boolean complimentary, boolean active);
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active);
 
 	/**
 	* Returns a range of all the license keies.
@@ -336,13 +343,14 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(java.lang.String productId,
-		java.lang.String serverId);
+	public List<LicenseKey> getLicenseKeys(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
+		java.lang.String serverId, boolean active, int start, int end,
+		OrderByComparator obc);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<LicenseKey> getLicenseKeys(long assetReceiptLicenseId,
-		java.lang.String productId, java.lang.String serverId, boolean active,
-		int start, int end, OrderByComparator obc);
+	public List<LicenseKey> getLicenseKeys(java.lang.String productId,
+		java.lang.String serverId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LicenseKey> getLicenseKeys(long userId,
@@ -434,8 +442,8 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	public void updateLicenseKey(long licenseKeyId, long accountEntryId,
 		long offeringEntryId, long orderEntryId) throws PortalException;
 
-	public void updateLicenseKey(long userId, long licenseKeyId,
-		long assetReceiptLicenseId, boolean active) throws PortalException;
+	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
+		throws PortalException;
 
 	public void updateLicenseKey(long userId, long licenseKeyId,
 		long licenseKeySetId, long offeringEntryId, java.lang.String name,

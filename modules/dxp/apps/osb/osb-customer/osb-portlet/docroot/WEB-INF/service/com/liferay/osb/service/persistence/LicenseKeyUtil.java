@@ -110,6 +110,160 @@ public class LicenseKeyUtil {
 	}
 
 	/**
+	* Returns all the license keies where uuid = &#63;.
+	*
+	* @param uuid the uuid
+	* @return the matching license keies
+	*/
+	public static List<LicenseKey> findByUuid(java.lang.String uuid) {
+		return getPersistence().findByUuid(uuid);
+	}
+
+	/**
+	* Returns a range of all the license keies where uuid = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of license keies
+	* @param end the upper bound of the range of license keies (not inclusive)
+	* @return the range of matching license keies
+	*/
+	public static List<LicenseKey> findByUuid(java.lang.String uuid, int start,
+		int end) {
+		return getPersistence().findByUuid(uuid, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the license keies where uuid = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of license keies
+	* @param end the upper bound of the range of license keies (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching license keies
+	*/
+	public static List<LicenseKey> findByUuid(java.lang.String uuid, int start,
+		int end, OrderByComparator<LicenseKey> orderByComparator) {
+		return getPersistence().findByUuid(uuid, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the license keies where uuid = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param uuid the uuid
+	* @param start the lower bound of the range of license keies
+	* @param end the upper bound of the range of license keies (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching license keies
+	*/
+	public static List<LicenseKey> findByUuid(java.lang.String uuid, int start,
+		int end, OrderByComparator<LicenseKey> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByUuid(uuid, start, end, orderByComparator,
+			retrieveFromCache);
+	}
+
+	/**
+	* Returns the first license key in the ordered set where uuid = &#63;.
+	*
+	* @param uuid the uuid
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching license key
+	* @throws NoSuchLicenseKeyException if a matching license key could not be found
+	*/
+	public static LicenseKey findByUuid_First(java.lang.String uuid,
+		OrderByComparator<LicenseKey> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
+		return getPersistence().findByUuid_First(uuid, orderByComparator);
+	}
+
+	/**
+	* Returns the first license key in the ordered set where uuid = &#63;.
+	*
+	* @param uuid the uuid
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching license key, or <code>null</code> if a matching license key could not be found
+	*/
+	public static LicenseKey fetchByUuid_First(java.lang.String uuid,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		return getPersistence().fetchByUuid_First(uuid, orderByComparator);
+	}
+
+	/**
+	* Returns the last license key in the ordered set where uuid = &#63;.
+	*
+	* @param uuid the uuid
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching license key
+	* @throws NoSuchLicenseKeyException if a matching license key could not be found
+	*/
+	public static LicenseKey findByUuid_Last(java.lang.String uuid,
+		OrderByComparator<LicenseKey> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
+		return getPersistence().findByUuid_Last(uuid, orderByComparator);
+	}
+
+	/**
+	* Returns the last license key in the ordered set where uuid = &#63;.
+	*
+	* @param uuid the uuid
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching license key, or <code>null</code> if a matching license key could not be found
+	*/
+	public static LicenseKey fetchByUuid_Last(java.lang.String uuid,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		return getPersistence().fetchByUuid_Last(uuid, orderByComparator);
+	}
+
+	/**
+	* Returns the license keies before and after the current license key in the ordered set where uuid = &#63;.
+	*
+	* @param licenseKeyId the primary key of the current license key
+	* @param uuid the uuid
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next license key
+	* @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
+	*/
+	public static LicenseKey[] findByUuid_PrevAndNext(long licenseKeyId,
+		java.lang.String uuid, OrderByComparator<LicenseKey> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
+		return getPersistence()
+				   .findByUuid_PrevAndNext(licenseKeyId, uuid, orderByComparator);
+	}
+
+	/**
+	* Removes all the license keies where uuid = &#63; from the database.
+	*
+	* @param uuid the uuid
+	*/
+	public static void removeByUuid(java.lang.String uuid) {
+		getPersistence().removeByUuid(uuid);
+	}
+
+	/**
+	* Returns the number of license keies where uuid = &#63;.
+	*
+	* @param uuid the uuid
+	* @return the number of matching license keies
+	*/
+	public static int countByUuid(java.lang.String uuid) {
+		return getPersistence().countByUuid(uuid);
+	}
+
+	/**
 	* Returns all the license keies where licenseKeySetId = &#63;.
 	*
 	* @param licenseKeySetId the license key set ID
@@ -782,66 +936,246 @@ public class LicenseKeyUtil {
 	}
 
 	/**
-	* Returns all the license keies where assetReceiptLicenseId = &#63; and active = &#63;.
+	* Returns all the license keies where userId = &#63; and productId = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param active the active
+	* @param userId the user ID
+	* @param productId the product ID
 	* @return the matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_A(long assetReceiptLicenseId,
-		boolean active) {
-		return getPersistence().findByARLI_A(assetReceiptLicenseId, active);
+	public static List<LicenseKey> findByU_PI(long userId,
+		java.lang.String productId) {
+		return getPersistence().findByU_PI(userId, productId);
 	}
 
 	/**
-	* Returns a range of all the license keies where assetReceiptLicenseId = &#63; and active = &#63;.
+	* Returns a range of all the license keies where userId = &#63; and productId = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param userId the user ID
+	* @param productId the product ID
+	* @param start the lower bound of the range of license keies
+	* @param end the upper bound of the range of license keies (not inclusive)
+	* @return the range of matching license keies
+	*/
+	public static List<LicenseKey> findByU_PI(long userId,
+		java.lang.String productId, int start, int end) {
+		return getPersistence().findByU_PI(userId, productId, start, end);
+	}
+
+	/**
+	* Returns an ordered range of all the license keies where userId = &#63; and productId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param productId the product ID
+	* @param start the lower bound of the range of license keies
+	* @param end the upper bound of the range of license keies (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @return the ordered range of matching license keies
+	*/
+	public static List<LicenseKey> findByU_PI(long userId,
+		java.lang.String productId, int start, int end,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		return getPersistence()
+				   .findByU_PI(userId, productId, start, end, orderByComparator);
+	}
+
+	/**
+	* Returns an ordered range of all the license keies where userId = &#63; and productId = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param userId the user ID
+	* @param productId the product ID
+	* @param start the lower bound of the range of license keies
+	* @param end the upper bound of the range of license keies (not inclusive)
+	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the ordered range of matching license keies
+	*/
+	public static List<LicenseKey> findByU_PI(long userId,
+		java.lang.String productId, int start, int end,
+		OrderByComparator<LicenseKey> orderByComparator,
+		boolean retrieveFromCache) {
+		return getPersistence()
+				   .findByU_PI(userId, productId, start, end,
+			orderByComparator, retrieveFromCache);
+	}
+
+	/**
+	* Returns the first license key in the ordered set where userId = &#63; and productId = &#63;.
+	*
+	* @param userId the user ID
+	* @param productId the product ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching license key
+	* @throws NoSuchLicenseKeyException if a matching license key could not be found
+	*/
+	public static LicenseKey findByU_PI_First(long userId,
+		java.lang.String productId,
+		OrderByComparator<LicenseKey> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
+		return getPersistence()
+				   .findByU_PI_First(userId, productId, orderByComparator);
+	}
+
+	/**
+	* Returns the first license key in the ordered set where userId = &#63; and productId = &#63;.
+	*
+	* @param userId the user ID
+	* @param productId the product ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the first matching license key, or <code>null</code> if a matching license key could not be found
+	*/
+	public static LicenseKey fetchByU_PI_First(long userId,
+		java.lang.String productId,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		return getPersistence()
+				   .fetchByU_PI_First(userId, productId, orderByComparator);
+	}
+
+	/**
+	* Returns the last license key in the ordered set where userId = &#63; and productId = &#63;.
+	*
+	* @param userId the user ID
+	* @param productId the product ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching license key
+	* @throws NoSuchLicenseKeyException if a matching license key could not be found
+	*/
+	public static LicenseKey findByU_PI_Last(long userId,
+		java.lang.String productId,
+		OrderByComparator<LicenseKey> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
+		return getPersistence()
+				   .findByU_PI_Last(userId, productId, orderByComparator);
+	}
+
+	/**
+	* Returns the last license key in the ordered set where userId = &#63; and productId = &#63;.
+	*
+	* @param userId the user ID
+	* @param productId the product ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the last matching license key, or <code>null</code> if a matching license key could not be found
+	*/
+	public static LicenseKey fetchByU_PI_Last(long userId,
+		java.lang.String productId,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		return getPersistence()
+				   .fetchByU_PI_Last(userId, productId, orderByComparator);
+	}
+
+	/**
+	* Returns the license keies before and after the current license key in the ordered set where userId = &#63; and productId = &#63;.
+	*
+	* @param licenseKeyId the primary key of the current license key
+	* @param userId the user ID
+	* @param productId the product ID
+	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	* @return the previous, current, and next license key
+	* @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
+	*/
+	public static LicenseKey[] findByU_PI_PrevAndNext(long licenseKeyId,
+		long userId, java.lang.String productId,
+		OrderByComparator<LicenseKey> orderByComparator)
+		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
+		return getPersistence()
+				   .findByU_PI_PrevAndNext(licenseKeyId, userId, productId,
+			orderByComparator);
+	}
+
+	/**
+	* Removes all the license keies where userId = &#63; and productId = &#63; from the database.
+	*
+	* @param userId the user ID
+	* @param productId the product ID
+	*/
+	public static void removeByU_PI(long userId, java.lang.String productId) {
+		getPersistence().removeByU_PI(userId, productId);
+	}
+
+	/**
+	* Returns the number of license keies where userId = &#63; and productId = &#63;.
+	*
+	* @param userId the user ID
+	* @param productId the product ID
+	* @return the number of matching license keies
+	*/
+	public static int countByU_PI(long userId, java.lang.String productId) {
+		return getPersistence().countByU_PI(userId, productId);
+	}
+
+	/**
+	* Returns all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	*
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
+	* @param active the active
+	* @return the matching license keies
+	*/
+	public static List<LicenseKey> findByARLU_A(
+		java.lang.String assetReceiptLicenseUuid, boolean active) {
+		return getPersistence().findByARLU_A(assetReceiptLicenseUuid, active);
+	}
+
+	/**
+	* Returns a range of all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	*
+	* <p>
+	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	* </p>
+	*
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param active the active
 	* @param start the lower bound of the range of license keies
 	* @param end the upper bound of the range of license keies (not inclusive)
 	* @return the range of matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_A(long assetReceiptLicenseId,
-		boolean active, int start, int end) {
+	public static List<LicenseKey> findByARLU_A(
+		java.lang.String assetReceiptLicenseUuid, boolean active, int start,
+		int end) {
 		return getPersistence()
-				   .findByARLI_A(assetReceiptLicenseId, active, start, end);
+				   .findByARLU_A(assetReceiptLicenseUuid, active, start, end);
 	}
 
 	/**
-	* Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and active = &#63;.
+	* Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param active the active
 	* @param start the lower bound of the range of license keies
 	* @param end the upper bound of the range of license keies (not inclusive)
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_A(long assetReceiptLicenseId,
-		boolean active, int start, int end,
-		OrderByComparator<LicenseKey> orderByComparator) {
+	public static List<LicenseKey> findByARLU_A(
+		java.lang.String assetReceiptLicenseUuid, boolean active, int start,
+		int end, OrderByComparator<LicenseKey> orderByComparator) {
 		return getPersistence()
-				   .findByARLI_A(assetReceiptLicenseId, active, start, end,
+				   .findByARLU_A(assetReceiptLicenseUuid, active, start, end,
 			orderByComparator);
 	}
 
 	/**
-	* Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and active = &#63;.
+	* Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param active the active
 	* @param start the lower bound of the range of license keies
 	* @param end the upper bound of the range of license keies (not inclusive)
@@ -849,117 +1183,123 @@ public class LicenseKeyUtil {
 	* @param retrieveFromCache whether to retrieve from the finder cache
 	* @return the ordered range of matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_A(long assetReceiptLicenseId,
-		boolean active, int start, int end,
-		OrderByComparator<LicenseKey> orderByComparator,
+	public static List<LicenseKey> findByARLU_A(
+		java.lang.String assetReceiptLicenseUuid, boolean active, int start,
+		int end, OrderByComparator<LicenseKey> orderByComparator,
 		boolean retrieveFromCache) {
 		return getPersistence()
-				   .findByARLI_A(assetReceiptLicenseId, active, start, end,
+				   .findByARLU_A(assetReceiptLicenseUuid, active, start, end,
 			orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	* Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and active = &#63;.
+	* Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching license key
 	* @throws NoSuchLicenseKeyException if a matching license key could not be found
 	*/
-	public static LicenseKey findByARLI_A_First(long assetReceiptLicenseId,
-		boolean active, OrderByComparator<LicenseKey> orderByComparator)
+	public static LicenseKey findByARLU_A_First(
+		java.lang.String assetReceiptLicenseUuid, boolean active,
+		OrderByComparator<LicenseKey> orderByComparator)
 		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
 		return getPersistence()
-				   .findByARLI_A_First(assetReceiptLicenseId, active,
+				   .findByARLU_A_First(assetReceiptLicenseUuid, active,
 			orderByComparator);
 	}
 
 	/**
-	* Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and active = &#63;.
+	* Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching license key, or <code>null</code> if a matching license key could not be found
 	*/
-	public static LicenseKey fetchByARLI_A_First(long assetReceiptLicenseId,
-		boolean active, OrderByComparator<LicenseKey> orderByComparator) {
+	public static LicenseKey fetchByARLU_A_First(
+		java.lang.String assetReceiptLicenseUuid, boolean active,
+		OrderByComparator<LicenseKey> orderByComparator) {
 		return getPersistence()
-				   .fetchByARLI_A_First(assetReceiptLicenseId, active,
+				   .fetchByARLU_A_First(assetReceiptLicenseUuid, active,
 			orderByComparator);
 	}
 
 	/**
-	* Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and active = &#63;.
+	* Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching license key
 	* @throws NoSuchLicenseKeyException if a matching license key could not be found
 	*/
-	public static LicenseKey findByARLI_A_Last(long assetReceiptLicenseId,
-		boolean active, OrderByComparator<LicenseKey> orderByComparator)
+	public static LicenseKey findByARLU_A_Last(
+		java.lang.String assetReceiptLicenseUuid, boolean active,
+		OrderByComparator<LicenseKey> orderByComparator)
 		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
 		return getPersistence()
-				   .findByARLI_A_Last(assetReceiptLicenseId, active,
+				   .findByARLU_A_Last(assetReceiptLicenseUuid, active,
 			orderByComparator);
 	}
 
 	/**
-	* Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and active = &#63;.
+	* Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching license key, or <code>null</code> if a matching license key could not be found
 	*/
-	public static LicenseKey fetchByARLI_A_Last(long assetReceiptLicenseId,
-		boolean active, OrderByComparator<LicenseKey> orderByComparator) {
+	public static LicenseKey fetchByARLU_A_Last(
+		java.lang.String assetReceiptLicenseUuid, boolean active,
+		OrderByComparator<LicenseKey> orderByComparator) {
 		return getPersistence()
-				   .fetchByARLI_A_Last(assetReceiptLicenseId, active,
+				   .fetchByARLU_A_Last(assetReceiptLicenseUuid, active,
 			orderByComparator);
 	}
 
 	/**
-	* Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseId = &#63; and active = &#63;.
+	* Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseUuid = &#63; and active = &#63;.
 	*
 	* @param licenseKeyId the primary key of the current license key
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next license key
 	* @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
 	*/
-	public static LicenseKey[] findByARLI_A_PrevAndNext(long licenseKeyId,
-		long assetReceiptLicenseId, boolean active,
+	public static LicenseKey[] findByARLU_A_PrevAndNext(long licenseKeyId,
+		java.lang.String assetReceiptLicenseUuid, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator)
 		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
 		return getPersistence()
-				   .findByARLI_A_PrevAndNext(licenseKeyId,
-			assetReceiptLicenseId, active, orderByComparator);
+				   .findByARLU_A_PrevAndNext(licenseKeyId,
+			assetReceiptLicenseUuid, active, orderByComparator);
 	}
 
 	/**
-	* Removes all the license keies where assetReceiptLicenseId = &#63; and active = &#63; from the database.
+	* Removes all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63; from the database.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param active the active
 	*/
-	public static void removeByARLI_A(long assetReceiptLicenseId, boolean active) {
-		getPersistence().removeByARLI_A(assetReceiptLicenseId, active);
+	public static void removeByARLU_A(
+		java.lang.String assetReceiptLicenseUuid, boolean active) {
+		getPersistence().removeByARLU_A(assetReceiptLicenseUuid, active);
 	}
 
 	/**
-	* Returns the number of license keies where assetReceiptLicenseId = &#63; and active = &#63;.
+	* Returns the number of license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param active the active
 	* @return the number of matching license keies
 	*/
-	public static int countByARLI_A(long assetReceiptLicenseId, boolean active) {
-		return getPersistence().countByARLI_A(assetReceiptLicenseId, active);
+	public static int countByARLU_A(java.lang.String assetReceiptLicenseUuid,
+		boolean active) {
+		return getPersistence().countByARLU_A(assetReceiptLicenseUuid, active);
 	}
 
 	/**
@@ -1502,251 +1842,51 @@ public class LicenseKeyUtil {
 	}
 
 	/**
-	* Returns all the license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
+	* Returns all the license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	*
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	* @return the matching license keies
-	*/
-	public static List<LicenseKey> findByU_ARLI_PI(long userId,
-		long assetReceiptLicenseId, java.lang.String productId) {
-		return getPersistence()
-				   .findByU_ARLI_PI(userId, assetReceiptLicenseId, productId);
-	}
-
-	/**
-	* Returns a range of all the license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	* @param start the lower bound of the range of license keies
-	* @param end the upper bound of the range of license keies (not inclusive)
-	* @return the range of matching license keies
-	*/
-	public static List<LicenseKey> findByU_ARLI_PI(long userId,
-		long assetReceiptLicenseId, java.lang.String productId, int start,
-		int end) {
-		return getPersistence()
-				   .findByU_ARLI_PI(userId, assetReceiptLicenseId, productId,
-			start, end);
-	}
-
-	/**
-	* Returns an ordered range of all the license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	* @param start the lower bound of the range of license keies
-	* @param end the upper bound of the range of license keies (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching license keies
-	*/
-	public static List<LicenseKey> findByU_ARLI_PI(long userId,
-		long assetReceiptLicenseId, java.lang.String productId, int start,
-		int end, OrderByComparator<LicenseKey> orderByComparator) {
-		return getPersistence()
-				   .findByU_ARLI_PI(userId, assetReceiptLicenseId, productId,
-			start, end, orderByComparator);
-	}
-
-	/**
-	* Returns an ordered range of all the license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	* @param start the lower bound of the range of license keies
-	* @param end the upper bound of the range of license keies (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of matching license keies
-	*/
-	public static List<LicenseKey> findByU_ARLI_PI(long userId,
-		long assetReceiptLicenseId, java.lang.String productId, int start,
-		int end, OrderByComparator<LicenseKey> orderByComparator,
-		boolean retrieveFromCache) {
-		return getPersistence()
-				   .findByU_ARLI_PI(userId, assetReceiptLicenseId, productId,
-			start, end, orderByComparator, retrieveFromCache);
-	}
-
-	/**
-	* Returns the first license key in the ordered set where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	*
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching license key
-	* @throws NoSuchLicenseKeyException if a matching license key could not be found
-	*/
-	public static LicenseKey findByU_ARLI_PI_First(long userId,
-		long assetReceiptLicenseId, java.lang.String productId,
-		OrderByComparator<LicenseKey> orderByComparator)
-		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
-		return getPersistence()
-				   .findByU_ARLI_PI_First(userId, assetReceiptLicenseId,
-			productId, orderByComparator);
-	}
-
-	/**
-	* Returns the first license key in the ordered set where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	*
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the first matching license key, or <code>null</code> if a matching license key could not be found
-	*/
-	public static LicenseKey fetchByU_ARLI_PI_First(long userId,
-		long assetReceiptLicenseId, java.lang.String productId,
-		OrderByComparator<LicenseKey> orderByComparator) {
-		return getPersistence()
-				   .fetchByU_ARLI_PI_First(userId, assetReceiptLicenseId,
-			productId, orderByComparator);
-	}
-
-	/**
-	* Returns the last license key in the ordered set where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	*
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching license key
-	* @throws NoSuchLicenseKeyException if a matching license key could not be found
-	*/
-	public static LicenseKey findByU_ARLI_PI_Last(long userId,
-		long assetReceiptLicenseId, java.lang.String productId,
-		OrderByComparator<LicenseKey> orderByComparator)
-		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
-		return getPersistence()
-				   .findByU_ARLI_PI_Last(userId, assetReceiptLicenseId,
-			productId, orderByComparator);
-	}
-
-	/**
-	* Returns the last license key in the ordered set where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	*
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the last matching license key, or <code>null</code> if a matching license key could not be found
-	*/
-	public static LicenseKey fetchByU_ARLI_PI_Last(long userId,
-		long assetReceiptLicenseId, java.lang.String productId,
-		OrderByComparator<LicenseKey> orderByComparator) {
-		return getPersistence()
-				   .fetchByU_ARLI_PI_Last(userId, assetReceiptLicenseId,
-			productId, orderByComparator);
-	}
-
-	/**
-	* Returns the license keies before and after the current license key in the ordered set where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	*
-	* @param licenseKeyId the primary key of the current license key
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	* @return the previous, current, and next license key
-	* @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
-	*/
-	public static LicenseKey[] findByU_ARLI_PI_PrevAndNext(long licenseKeyId,
-		long userId, long assetReceiptLicenseId, java.lang.String productId,
-		OrderByComparator<LicenseKey> orderByComparator)
-		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
-		return getPersistence()
-				   .findByU_ARLI_PI_PrevAndNext(licenseKeyId, userId,
-			assetReceiptLicenseId, productId, orderByComparator);
-	}
-
-	/**
-	* Removes all the license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63; from the database.
-	*
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	*/
-	public static void removeByU_ARLI_PI(long userId,
-		long assetReceiptLicenseId, java.lang.String productId) {
-		getPersistence()
-			.removeByU_ARLI_PI(userId, assetReceiptLicenseId, productId);
-	}
-
-	/**
-	* Returns the number of license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	*
-	* @param userId the user ID
-	* @param assetReceiptLicenseId the asset receipt license ID
-	* @param productId the product ID
-	* @return the number of matching license keies
-	*/
-	public static int countByU_ARLI_PI(long userId, long assetReceiptLicenseId,
-		java.lang.String productId) {
-		return getPersistence()
-				   .countByU_ARLI_PI(userId, assetReceiptLicenseId, productId);
-	}
-
-	/**
-	* Returns all the license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
-	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	* @return the matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_C_A(long assetReceiptLicenseId,
-		boolean complimentary, boolean active) {
+	public static List<LicenseKey> findByARLU_C_A(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active) {
 		return getPersistence()
-				   .findByARLI_C_A(assetReceiptLicenseId, complimentary, active);
+				   .findByARLU_C_A(assetReceiptLicenseUuid, complimentary,
+			active);
 	}
 
 	/**
-	* Returns a range of all the license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	* Returns a range of all the license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	* @param start the lower bound of the range of license keies
 	* @param end the upper bound of the range of license keies (not inclusive)
 	* @return the range of matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_C_A(long assetReceiptLicenseId,
-		boolean complimentary, boolean active, int start, int end) {
+	public static List<LicenseKey> findByARLU_C_A(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active, int start, int end) {
 		return getPersistence()
-				   .findByARLI_C_A(assetReceiptLicenseId, complimentary,
+				   .findByARLU_C_A(assetReceiptLicenseUuid, complimentary,
 			active, start, end);
 	}
 
 	/**
-	* Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	* Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	* @param start the lower bound of the range of license keies
@@ -1754,22 +1894,23 @@ public class LicenseKeyUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_C_A(long assetReceiptLicenseId,
-		boolean complimentary, boolean active, int start, int end,
+	public static List<LicenseKey> findByARLU_C_A(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active, int start, int end,
 		OrderByComparator<LicenseKey> orderByComparator) {
 		return getPersistence()
-				   .findByARLI_C_A(assetReceiptLicenseId, complimentary,
+				   .findByARLU_C_A(assetReceiptLicenseUuid, complimentary,
 			active, start, end, orderByComparator);
 	}
 
 	/**
-	* Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	* Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	* @param start the lower bound of the range of license keies
@@ -1778,132 +1919,136 @@ public class LicenseKeyUtil {
 	* @param retrieveFromCache whether to retrieve from the finder cache
 	* @return the ordered range of matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_C_A(long assetReceiptLicenseId,
-		boolean complimentary, boolean active, int start, int end,
+	public static List<LicenseKey> findByARLU_C_A(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active, int start, int end,
 		OrderByComparator<LicenseKey> orderByComparator,
 		boolean retrieveFromCache) {
 		return getPersistence()
-				   .findByARLI_C_A(assetReceiptLicenseId, complimentary,
+				   .findByARLU_C_A(assetReceiptLicenseUuid, complimentary,
 			active, start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	* Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	* Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching license key
 	* @throws NoSuchLicenseKeyException if a matching license key could not be found
 	*/
-	public static LicenseKey findByARLI_C_A_First(long assetReceiptLicenseId,
-		boolean complimentary, boolean active,
-		OrderByComparator<LicenseKey> orderByComparator)
+	public static LicenseKey findByARLU_C_A_First(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active, OrderByComparator<LicenseKey> orderByComparator)
 		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
 		return getPersistence()
-				   .findByARLI_C_A_First(assetReceiptLicenseId, complimentary,
-			active, orderByComparator);
+				   .findByARLU_C_A_First(assetReceiptLicenseUuid,
+			complimentary, active, orderByComparator);
 	}
 
 	/**
-	* Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	* Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching license key, or <code>null</code> if a matching license key could not be found
 	*/
-	public static LicenseKey fetchByARLI_C_A_First(long assetReceiptLicenseId,
-		boolean complimentary, boolean active,
-		OrderByComparator<LicenseKey> orderByComparator) {
+	public static LicenseKey fetchByARLU_C_A_First(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active, OrderByComparator<LicenseKey> orderByComparator) {
 		return getPersistence()
-				   .fetchByARLI_C_A_First(assetReceiptLicenseId, complimentary,
-			active, orderByComparator);
+				   .fetchByARLU_C_A_First(assetReceiptLicenseUuid,
+			complimentary, active, orderByComparator);
 	}
 
 	/**
-	* Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	* Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching license key
 	* @throws NoSuchLicenseKeyException if a matching license key could not be found
 	*/
-	public static LicenseKey findByARLI_C_A_Last(long assetReceiptLicenseId,
-		boolean complimentary, boolean active,
-		OrderByComparator<LicenseKey> orderByComparator)
+	public static LicenseKey findByARLU_C_A_Last(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active, OrderByComparator<LicenseKey> orderByComparator)
 		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
 		return getPersistence()
-				   .findByARLI_C_A_Last(assetReceiptLicenseId, complimentary,
+				   .findByARLU_C_A_Last(assetReceiptLicenseUuid, complimentary,
 			active, orderByComparator);
 	}
 
 	/**
-	* Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	* Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching license key, or <code>null</code> if a matching license key could not be found
 	*/
-	public static LicenseKey fetchByARLI_C_A_Last(long assetReceiptLicenseId,
-		boolean complimentary, boolean active,
-		OrderByComparator<LicenseKey> orderByComparator) {
+	public static LicenseKey fetchByARLU_C_A_Last(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active, OrderByComparator<LicenseKey> orderByComparator) {
 		return getPersistence()
-				   .fetchByARLI_C_A_Last(assetReceiptLicenseId, complimentary,
-			active, orderByComparator);
+				   .fetchByARLU_C_A_Last(assetReceiptLicenseUuid,
+			complimentary, active, orderByComparator);
 	}
 
 	/**
-	* Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	* Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	*
 	* @param licenseKeyId the primary key of the current license key
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the previous, current, and next license key
 	* @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
 	*/
-	public static LicenseKey[] findByARLI_C_A_PrevAndNext(long licenseKeyId,
-		long assetReceiptLicenseId, boolean complimentary, boolean active,
-		OrderByComparator<LicenseKey> orderByComparator)
+	public static LicenseKey[] findByARLU_C_A_PrevAndNext(long licenseKeyId,
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active, OrderByComparator<LicenseKey> orderByComparator)
 		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
 		return getPersistence()
-				   .findByARLI_C_A_PrevAndNext(licenseKeyId,
-			assetReceiptLicenseId, complimentary, active, orderByComparator);
+				   .findByARLU_C_A_PrevAndNext(licenseKeyId,
+			assetReceiptLicenseUuid, complimentary, active, orderByComparator);
 	}
 
 	/**
-	* Removes all the license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63; from the database.
+	* Removes all the license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63; from the database.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	*/
-	public static void removeByARLI_C_A(long assetReceiptLicenseId,
-		boolean complimentary, boolean active) {
+	public static void removeByARLU_C_A(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active) {
 		getPersistence()
-			.removeByARLI_C_A(assetReceiptLicenseId, complimentary, active);
+			.removeByARLU_C_A(assetReceiptLicenseUuid, complimentary, active);
 	}
 
 	/**
-	* Returns the number of license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	* Returns the number of license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param complimentary the complimentary
 	* @param active the active
 	* @return the number of matching license keies
 	*/
-	public static int countByARLI_C_A(long assetReceiptLicenseId,
-		boolean complimentary, boolean active) {
+	public static int countByARLU_C_A(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active) {
 		return getPersistence()
-				   .countByARLI_C_A(assetReceiptLicenseId, complimentary, active);
+				   .countByARLU_C_A(assetReceiptLicenseUuid, complimentary,
+			active);
 	}
 
 	/**
@@ -2615,30 +2760,30 @@ public class LicenseKeyUtil {
 	}
 
 	/**
-	* Returns all the license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	* Returns all the license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
 	* @return the matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_PI_SI_A(
-		long assetReceiptLicenseId, java.lang.String productId,
+	public static List<LicenseKey> findByARLU_PI_SI_A(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
 		java.lang.String serverId, boolean active) {
 		return getPersistence()
-				   .findByARLI_PI_SI_A(assetReceiptLicenseId, productId,
+				   .findByARLU_PI_SI_A(assetReceiptLicenseUuid, productId,
 			serverId, active);
 	}
 
 	/**
-	* Returns a range of all the license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	* Returns a range of all the license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
@@ -2646,22 +2791,22 @@ public class LicenseKeyUtil {
 	* @param end the upper bound of the range of license keies (not inclusive)
 	* @return the range of matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_PI_SI_A(
-		long assetReceiptLicenseId, java.lang.String productId,
+	public static List<LicenseKey> findByARLU_PI_SI_A(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
 		java.lang.String serverId, boolean active, int start, int end) {
 		return getPersistence()
-				   .findByARLI_PI_SI_A(assetReceiptLicenseId, productId,
+				   .findByARLU_PI_SI_A(assetReceiptLicenseUuid, productId,
 			serverId, active, start, end);
 	}
 
 	/**
-	* Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	* Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
@@ -2670,23 +2815,23 @@ public class LicenseKeyUtil {
 	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	* @return the ordered range of matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_PI_SI_A(
-		long assetReceiptLicenseId, java.lang.String productId,
+	public static List<LicenseKey> findByARLU_PI_SI_A(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
 		java.lang.String serverId, boolean active, int start, int end,
 		OrderByComparator<LicenseKey> orderByComparator) {
 		return getPersistence()
-				   .findByARLI_PI_SI_A(assetReceiptLicenseId, productId,
+				   .findByARLU_PI_SI_A(assetReceiptLicenseUuid, productId,
 			serverId, active, start, end, orderByComparator);
 	}
 
 	/**
-	* Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	* Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	*
 	* <p>
 	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	* </p>
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
@@ -2696,20 +2841,20 @@ public class LicenseKeyUtil {
 	* @param retrieveFromCache whether to retrieve from the finder cache
 	* @return the ordered range of matching license keies
 	*/
-	public static List<LicenseKey> findByARLI_PI_SI_A(
-		long assetReceiptLicenseId, java.lang.String productId,
+	public static List<LicenseKey> findByARLU_PI_SI_A(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
 		java.lang.String serverId, boolean active, int start, int end,
 		OrderByComparator<LicenseKey> orderByComparator,
 		boolean retrieveFromCache) {
 		return getPersistence()
-				   .findByARLI_PI_SI_A(assetReceiptLicenseId, productId,
+				   .findByARLU_PI_SI_A(assetReceiptLicenseUuid, productId,
 			serverId, active, start, end, orderByComparator, retrieveFromCache);
 	}
 
 	/**
-	* Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	* Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
@@ -2717,39 +2862,39 @@ public class LicenseKeyUtil {
 	* @return the first matching license key
 	* @throws NoSuchLicenseKeyException if a matching license key could not be found
 	*/
-	public static LicenseKey findByARLI_PI_SI_A_First(
-		long assetReceiptLicenseId, java.lang.String productId,
+	public static LicenseKey findByARLU_PI_SI_A_First(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
 		java.lang.String serverId, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator)
 		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
 		return getPersistence()
-				   .findByARLI_PI_SI_A_First(assetReceiptLicenseId, productId,
-			serverId, active, orderByComparator);
+				   .findByARLU_PI_SI_A_First(assetReceiptLicenseUuid,
+			productId, serverId, active, orderByComparator);
 	}
 
 	/**
-	* Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	* Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the first matching license key, or <code>null</code> if a matching license key could not be found
 	*/
-	public static LicenseKey fetchByARLI_PI_SI_A_First(
-		long assetReceiptLicenseId, java.lang.String productId,
+	public static LicenseKey fetchByARLU_PI_SI_A_First(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
 		java.lang.String serverId, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator) {
 		return getPersistence()
-				   .fetchByARLI_PI_SI_A_First(assetReceiptLicenseId, productId,
-			serverId, active, orderByComparator);
+				   .fetchByARLU_PI_SI_A_First(assetReceiptLicenseUuid,
+			productId, serverId, active, orderByComparator);
 	}
 
 	/**
-	* Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	* Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
@@ -2757,40 +2902,40 @@ public class LicenseKeyUtil {
 	* @return the last matching license key
 	* @throws NoSuchLicenseKeyException if a matching license key could not be found
 	*/
-	public static LicenseKey findByARLI_PI_SI_A_Last(
-		long assetReceiptLicenseId, java.lang.String productId,
+	public static LicenseKey findByARLU_PI_SI_A_Last(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
 		java.lang.String serverId, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator)
 		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
 		return getPersistence()
-				   .findByARLI_PI_SI_A_Last(assetReceiptLicenseId, productId,
+				   .findByARLU_PI_SI_A_Last(assetReceiptLicenseUuid, productId,
 			serverId, active, orderByComparator);
 	}
 
 	/**
-	* Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	* Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
 	* @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	* @return the last matching license key, or <code>null</code> if a matching license key could not be found
 	*/
-	public static LicenseKey fetchByARLI_PI_SI_A_Last(
-		long assetReceiptLicenseId, java.lang.String productId,
+	public static LicenseKey fetchByARLU_PI_SI_A_Last(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
 		java.lang.String serverId, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator) {
 		return getPersistence()
-				   .fetchByARLI_PI_SI_A_Last(assetReceiptLicenseId, productId,
-			serverId, active, orderByComparator);
+				   .fetchByARLU_PI_SI_A_Last(assetReceiptLicenseUuid,
+			productId, serverId, active, orderByComparator);
 	}
 
 	/**
-	* Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	* Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	*
 	* @param licenseKeyId the primary key of the current license key
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
@@ -2798,45 +2943,47 @@ public class LicenseKeyUtil {
 	* @return the previous, current, and next license key
 	* @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
 	*/
-	public static LicenseKey[] findByARLI_PI_SI_A_PrevAndNext(
-		long licenseKeyId, long assetReceiptLicenseId,
+	public static LicenseKey[] findByARLU_PI_SI_A_PrevAndNext(
+		long licenseKeyId, java.lang.String assetReceiptLicenseUuid,
 		java.lang.String productId, java.lang.String serverId, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator)
 		throws com.liferay.osb.exception.NoSuchLicenseKeyException {
 		return getPersistence()
-				   .findByARLI_PI_SI_A_PrevAndNext(licenseKeyId,
-			assetReceiptLicenseId, productId, serverId, active,
+				   .findByARLU_PI_SI_A_PrevAndNext(licenseKeyId,
+			assetReceiptLicenseUuid, productId, serverId, active,
 			orderByComparator);
 	}
 
 	/**
-	* Removes all the license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63; from the database.
+	* Removes all the license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63; from the database.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
 	*/
-	public static void removeByARLI_PI_SI_A(long assetReceiptLicenseId,
-		java.lang.String productId, java.lang.String serverId, boolean active) {
+	public static void removeByARLU_PI_SI_A(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
+		java.lang.String serverId, boolean active) {
 		getPersistence()
-			.removeByARLI_PI_SI_A(assetReceiptLicenseId, productId, serverId,
+			.removeByARLU_PI_SI_A(assetReceiptLicenseUuid, productId, serverId,
 			active);
 	}
 
 	/**
-	* Returns the number of license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	* Returns the number of license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID
+	* @param assetReceiptLicenseUuid the asset receipt license uuid
 	* @param productId the product ID
 	* @param serverId the server ID
 	* @param active the active
 	* @return the number of matching license keies
 	*/
-	public static int countByARLI_PI_SI_A(long assetReceiptLicenseId,
-		java.lang.String productId, java.lang.String serverId, boolean active) {
+	public static int countByARLU_PI_SI_A(
+		java.lang.String assetReceiptLicenseUuid, java.lang.String productId,
+		java.lang.String serverId, boolean active) {
 		return getPersistence()
-				   .countByARLI_PI_SI_A(assetReceiptLicenseId, productId,
+				   .countByARLU_PI_SI_A(assetReceiptLicenseUuid, productId,
 			serverId, active);
 	}
 

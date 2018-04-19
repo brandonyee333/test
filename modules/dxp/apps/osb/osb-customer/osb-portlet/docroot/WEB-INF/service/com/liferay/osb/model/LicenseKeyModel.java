@@ -63,6 +63,21 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey> {
 	public void setPrimaryKey(long primaryKey);
 
 	/**
+	 * Returns the uuid of this license key.
+	 *
+	 * @return the uuid of this license key
+	 */
+	@AutoEscape
+	public String getUuid();
+
+	/**
+	 * Sets the uuid of this license key.
+	 *
+	 * @param uuid the uuid of this license key
+	 */
+	public void setUuid(String uuid);
+
+	/**
 	 * Returns the license key ID of this license key.
 	 *
 	 * @return the license key ID of this license key
@@ -205,18 +220,19 @@ public interface LicenseKeyModel extends BaseModel<LicenseKey> {
 	public void setLicenseKeySetId(long licenseKeySetId);
 
 	/**
-	 * Returns the asset receipt license ID of this license key.
+	 * Returns the asset receipt license uuid of this license key.
 	 *
-	 * @return the asset receipt license ID of this license key
+	 * @return the asset receipt license uuid of this license key
 	 */
-	public long getAssetReceiptLicenseId();
+	@AutoEscape
+	public String getAssetReceiptLicenseUuid();
 
 	/**
-	 * Sets the asset receipt license ID of this license key.
+	 * Sets the asset receipt license uuid of this license key.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID of this license key
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid of this license key
 	 */
-	public void setAssetReceiptLicenseId(long assetReceiptLicenseId);
+	public void setAssetReceiptLicenseUuid(String assetReceiptLicenseUuid);
 
 	/**
 	 * Returns the account entry ID of this license key.

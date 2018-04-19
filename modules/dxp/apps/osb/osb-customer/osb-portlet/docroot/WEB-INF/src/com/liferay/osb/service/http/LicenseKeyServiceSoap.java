@@ -92,22 +92,53 @@ public class LicenseKeyServiceSoap {
 	}
 
 	public static com.liferay.osb.model.LicenseKeySoap addLicenseKey(
-		long userId, long assetReceiptLicenseId,
+		java.lang.String userUuid, java.lang.String assetReceiptLicenseUuid,
 		java.lang.String licenseEntryType, java.lang.String productEntryName,
 		java.lang.String productId, int productVersion, java.lang.String owner,
-		long maxUsers, java.lang.String description,
-		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
-		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		java.util.Date startDate, java.util.Date expirationDate)
-		throws RemoteException {
+		long maxUsers, java.lang.String description, java.lang.String hostName,
+		java.lang.String ipAddresses, java.lang.String macAddresses,
+		java.lang.String serverId, java.util.Date startDate,
+		java.util.Date expirationDate) throws RemoteException {
 		try {
-			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.addLicenseKey(userId,
-					assetReceiptLicenseId, licenseEntryType, productEntryName,
-					productId, productVersion, owner, maxUsers, description,
-					hostNames, ipAddresses, macAddresses, serverIds, startDate,
-					expirationDate);
+			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.addLicenseKey(userUuid,
+					assetReceiptLicenseUuid, licenseEntryType,
+					productEntryName, productId, productVersion, owner,
+					maxUsers, description, hostName, ipAddresses, macAddresses,
+					serverId, startDate, expirationDate);
 
 			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.LicenseKeySoap[] getAssetReceiptLicenseLicenseKeys(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active) throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.LicenseKey> returnValue = LicenseKeyServiceUtil.getAssetReceiptLicenseLicenseKeys(assetReceiptLicenseUuid,
+					complimentary, active);
+
+			return com.liferay.osb.model.LicenseKeySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static int getAssetReceiptLicenseLicenseKeysCount(
+		java.lang.String assetReceiptLicenseUuid, boolean complimentary,
+		boolean active) throws RemoteException {
+		try {
+			int returnValue = LicenseKeyServiceUtil.getAssetReceiptLicenseLicenseKeysCount(assetReceiptLicenseUuid,
+					complimentary, active);
+
+			return returnValue;
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -120,6 +151,20 @@ public class LicenseKeyServiceSoap {
 		long licenseKeyId) throws RemoteException {
 		try {
 			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.getLicenseKey(licenseKeyId);
+
+			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.model.LicenseKeySoap getLicenseKey(
+		java.lang.String uuid) throws RemoteException {
+		try {
+			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.getLicenseKey(uuid);
 
 			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
 		}
@@ -193,22 +238,6 @@ public class LicenseKeyServiceSoap {
 	}
 
 	public static com.liferay.osb.model.LicenseKeySoap renewLicenseKey(
-		long licenseKeyId, java.util.Date startDate,
-		java.util.Date expirationDate) throws RemoteException {
-		try {
-			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.renewLicenseKey(licenseKeyId,
-					startDate, expirationDate);
-
-			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	public static com.liferay.osb.model.LicenseKeySoap renewLicenseKey(
 		long licenseKeyId, java.util.Date startDate, int renewTime)
 		throws RemoteException {
 		try {
@@ -224,11 +253,26 @@ public class LicenseKeyServiceSoap {
 		}
 	}
 
-	public static void updateLicenseKey(long userId, long licenseKeyId,
-		long assetReceiptLicenseId, boolean active) throws RemoteException {
+	public static com.liferay.osb.model.LicenseKeySoap renewLicenseKey(
+		java.lang.String uuid, java.util.Date startDate,
+		java.util.Date expirationDate) throws RemoteException {
 		try {
-			LicenseKeyServiceUtil.updateLicenseKey(userId, licenseKeyId,
-				assetReceiptLicenseId, active);
+			com.liferay.osb.model.LicenseKey returnValue = LicenseKeyServiceUtil.renewLicenseKey(uuid,
+					startDate, expirationDate);
+
+			return com.liferay.osb.model.LicenseKeySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void updateLicenseKey(long userId, long licenseKeyId,
+		boolean active) throws RemoteException {
+		try {
+			LicenseKeyServiceUtil.updateLicenseKey(userId, licenseKeyId, active);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -243,6 +287,32 @@ public class LicenseKeyServiceSoap {
 		try {
 			LicenseKeyServiceUtil.updateLicenseKey(userId, licenseKeyId,
 				licenseKeySetId, offeringEntryId, name, active);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void updateLicenseKey(java.lang.String userUuid,
+		java.lang.String uuid, boolean active) throws RemoteException {
+		try {
+			LicenseKeyServiceUtil.updateLicenseKey(userUuid, uuid, active);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static void updateLicenseKeys(
+		java.lang.String assetReceiptLicenseUuid, boolean active)
+		throws RemoteException {
+		try {
+			LicenseKeyServiceUtil.updateLicenseKeys(assetReceiptLicenseUuid,
+				active);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

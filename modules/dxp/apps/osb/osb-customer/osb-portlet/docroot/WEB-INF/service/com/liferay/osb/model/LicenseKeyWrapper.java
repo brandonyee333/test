@@ -57,6 +57,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	public Map<String, Object> getModelAttributes() {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
+		attributes.put("uuid", getUuid());
 		attributes.put("licenseKeyId", getLicenseKeyId());
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
@@ -65,7 +66,7 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("licenseKeySetId", getLicenseKeySetId());
-		attributes.put("assetReceiptLicenseId", getAssetReceiptLicenseId());
+		attributes.put("assetReceiptLicenseUuid", getAssetReceiptLicenseUuid());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("orderEntryId", getOrderEntryId());
 		attributes.put("offeringEntryId", getOfferingEntryId());
@@ -103,6 +104,12 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
+		String uuid = (String)attributes.get("uuid");
+
+		if (uuid != null) {
+			setUuid(uuid);
+		}
+
 		Long licenseKeyId = (Long)attributes.get("licenseKeyId");
 
 		if (licenseKeyId != null) {
@@ -151,11 +158,11 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 			setLicenseKeySetId(licenseKeySetId);
 		}
 
-		Long assetReceiptLicenseId = (Long)attributes.get(
-				"assetReceiptLicenseId");
+		String assetReceiptLicenseUuid = (String)attributes.get(
+				"assetReceiptLicenseUuid");
 
-		if (assetReceiptLicenseId != null) {
-			setAssetReceiptLicenseId(assetReceiptLicenseId);
+		if (assetReceiptLicenseUuid != null) {
+			setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
 		}
 
 		Long accountEntryId = (Long)attributes.get("accountEntryId");
@@ -549,6 +556,16 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	}
 
 	/**
+	* Returns the asset receipt license uuid of this license key.
+	*
+	* @return the asset receipt license uuid of this license key
+	*/
+	@Override
+	public java.lang.String getAssetReceiptLicenseUuid() {
+		return _licenseKey.getAssetReceiptLicenseUuid();
+	}
+
+	/**
 	* Returns the description of this license key.
 	*
 	* @return the description of this license key
@@ -708,6 +725,16 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 		return _licenseKey.getUserUuid();
 	}
 
+	/**
+	* Returns the uuid of this license key.
+	*
+	* @return the uuid of this license key
+	*/
+	@Override
+	public java.lang.String getUuid() {
+		return _licenseKey.getUuid();
+	}
+
 	@Override
 	public java.lang.String toString() {
 		return _licenseKey.toString();
@@ -766,16 +793,6 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public long getAccountEntryId() {
 		return _licenseKey.getAccountEntryId();
-	}
-
-	/**
-	* Returns the asset receipt license ID of this license key.
-	*
-	* @return the asset receipt license ID of this license key
-	*/
-	@Override
-	public long getAssetReceiptLicenseId() {
-		return _licenseKey.getAssetReceiptLicenseId();
 	}
 
 	/**
@@ -954,13 +971,14 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	}
 
 	/**
-	* Sets the asset receipt license ID of this license key.
+	* Sets the asset receipt license uuid of this license key.
 	*
-	* @param assetReceiptLicenseId the asset receipt license ID of this license key
+	* @param assetReceiptLicenseUuid the asset receipt license uuid of this license key
 	*/
 	@Override
-	public void setAssetReceiptLicenseId(long assetReceiptLicenseId) {
-		_licenseKey.setAssetReceiptLicenseId(assetReceiptLicenseId);
+	public void setAssetReceiptLicenseUuid(
+		java.lang.String assetReceiptLicenseUuid) {
+		_licenseKey.setAssetReceiptLicenseUuid(assetReceiptLicenseUuid);
 	}
 
 	@Override
@@ -1372,6 +1390,16 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	@Override
 	public void setUserUuid(java.lang.String userUuid) {
 		_licenseKey.setUserUuid(userUuid);
+	}
+
+	/**
+	* Sets the uuid of this license key.
+	*
+	* @param uuid the uuid of this license key
+	*/
+	@Override
+	public void setUuid(java.lang.String uuid) {
+		_licenseKey.setUuid(uuid);
 	}
 
 	@Override

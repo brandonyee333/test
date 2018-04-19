@@ -42,6 +42,8 @@ import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.Serializable;
 
@@ -90,6 +92,550 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByUuid",
+			new String[] {
+				String.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByUuid",
+			new String[] { String.class.getName() },
+			LicenseKeyModelImpl.UUID_COLUMN_BITMASK |
+			LicenseKeyModelImpl.ACTIVE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_UUID = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid",
+			new String[] { String.class.getName() });
+
+	/**
+	 * Returns all the license keies where uuid = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @return the matching license keies
+	 */
+	@Override
+	public List<LicenseKey> findByUuid(String uuid) {
+		return findByUuid(uuid, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the license keies where uuid = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @return the range of matching license keies
+	 */
+	@Override
+	public List<LicenseKey> findByUuid(String uuid, int start, int end) {
+		return findByUuid(uuid, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the license keies where uuid = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching license keies
+	 */
+	@Override
+	public List<LicenseKey> findByUuid(String uuid, int start, int end,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		return findByUuid(uuid, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the license keies where uuid = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param uuid the uuid
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching license keies
+	 */
+	@Override
+	public List<LicenseKey> findByUuid(String uuid, int start, int end,
+		OrderByComparator<LicenseKey> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID;
+			finderArgs = new Object[] { uuid };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_UUID;
+			finderArgs = new Object[] { uuid, start, end, orderByComparator };
+		}
+
+		List<LicenseKey> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<LicenseKey>)finderCache.getResult(finderPath,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (LicenseKey licenseKey : list) {
+					if (!Objects.equals(uuid, licenseKey.getUuid())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(3 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(3);
+			}
+
+			query.append(_SQL_SELECT_LICENSEKEY_WHERE);
+
+			boolean bindUuid = false;
+
+			if (uuid == null) {
+				query.append(_FINDER_COLUMN_UUID_UUID_1);
+			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
+			else {
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(LicenseKeyModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindUuid) {
+					qPos.add(uuid);
+				}
+
+				if (!pagination) {
+					list = (List<LicenseKey>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<LicenseKey>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first license key in the ordered set where uuid = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key
+	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
+	 */
+	@Override
+	public LicenseKey findByUuid_First(String uuid,
+		OrderByComparator<LicenseKey> orderByComparator)
+		throws NoSuchLicenseKeyException {
+		LicenseKey licenseKey = fetchByUuid_First(uuid, orderByComparator);
+
+		if (licenseKey != null) {
+			return licenseKey;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("uuid=");
+		msg.append(uuid);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchLicenseKeyException(msg.toString());
+	}
+
+	/**
+	 * Returns the first license key in the ordered set where uuid = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key, or <code>null</code> if a matching license key could not be found
+	 */
+	@Override
+	public LicenseKey fetchByUuid_First(String uuid,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		List<LicenseKey> list = findByUuid(uuid, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last license key in the ordered set where uuid = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key
+	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
+	 */
+	@Override
+	public LicenseKey findByUuid_Last(String uuid,
+		OrderByComparator<LicenseKey> orderByComparator)
+		throws NoSuchLicenseKeyException {
+		LicenseKey licenseKey = fetchByUuid_Last(uuid, orderByComparator);
+
+		if (licenseKey != null) {
+			return licenseKey;
+		}
+
+		StringBundler msg = new StringBundler(4);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("uuid=");
+		msg.append(uuid);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchLicenseKeyException(msg.toString());
+	}
+
+	/**
+	 * Returns the last license key in the ordered set where uuid = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key, or <code>null</code> if a matching license key could not be found
+	 */
+	@Override
+	public LicenseKey fetchByUuid_Last(String uuid,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		int count = countByUuid(uuid);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<LicenseKey> list = findByUuid(uuid, count - 1, count,
+				orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the license keies before and after the current license key in the ordered set where uuid = &#63;.
+	 *
+	 * @param licenseKeyId the primary key of the current license key
+	 * @param uuid the uuid
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next license key
+	 * @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
+	 */
+	@Override
+	public LicenseKey[] findByUuid_PrevAndNext(long licenseKeyId, String uuid,
+		OrderByComparator<LicenseKey> orderByComparator)
+		throws NoSuchLicenseKeyException {
+		LicenseKey licenseKey = findByPrimaryKey(licenseKeyId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			LicenseKey[] array = new LicenseKeyImpl[3];
+
+			array[0] = getByUuid_PrevAndNext(session, licenseKey, uuid,
+					orderByComparator, true);
+
+			array[1] = licenseKey;
+
+			array[2] = getByUuid_PrevAndNext(session, licenseKey, uuid,
+					orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected LicenseKey getByUuid_PrevAndNext(Session session,
+		LicenseKey licenseKey, String uuid,
+		OrderByComparator<LicenseKey> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(4 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(3);
+		}
+
+		query.append(_SQL_SELECT_LICENSEKEY_WHERE);
+
+		boolean bindUuid = false;
+
+		if (uuid == null) {
+			query.append(_FINDER_COLUMN_UUID_UUID_1);
+		}
+		else if (uuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_UUID_UUID_3);
+		}
+		else {
+			bindUuid = true;
+
+			query.append(_FINDER_COLUMN_UUID_UUID_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(LicenseKeyModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		if (bindUuid) {
+			qPos.add(uuid);
+		}
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(licenseKey);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<LicenseKey> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the license keies where uuid = &#63; from the database.
+	 *
+	 * @param uuid the uuid
+	 */
+	@Override
+	public void removeByUuid(String uuid) {
+		for (LicenseKey licenseKey : findByUuid(uuid, QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS, null)) {
+			remove(licenseKey);
+		}
+	}
+
+	/**
+	 * Returns the number of license keies where uuid = &#63;.
+	 *
+	 * @param uuid the uuid
+	 * @return the number of matching license keies
+	 */
+	@Override
+	public int countByUuid(String uuid) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_UUID;
+
+		Object[] finderArgs = new Object[] { uuid };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(2);
+
+			query.append(_SQL_COUNT_LICENSEKEY_WHERE);
+
+			boolean bindUuid = false;
+
+			if (uuid == null) {
+				query.append(_FINDER_COLUMN_UUID_UUID_1);
+			}
+			else if (uuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_UUID_UUID_3);
+			}
+			else {
+				bindUuid = true;
+
+				query.append(_FINDER_COLUMN_UUID_UUID_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindUuid) {
+					qPos.add(uuid);
+				}
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_UUID_UUID_1 = "licenseKey.uuid IS NULL";
+	private static final String _FINDER_COLUMN_UUID_UUID_2 = "licenseKey.uuid = ?";
+	private static final String _FINDER_COLUMN_UUID_UUID_3 = "(licenseKey.uuid IS NULL OR licenseKey.uuid = '')";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_LICENSEKEYSETID =
 		new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
@@ -2170,91 +2716,88 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 	private static final String _FINDER_COLUMN_U_AEI_USERID_2 = "licenseKey.userId = ? AND ";
 	private static final String _FINDER_COLUMN_U_AEI_ACCOUNTENTRYID_2 = "licenseKey.accountEntryId = ?";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLI_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_U_PI = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByARLI_A",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_PI",
 			new String[] {
-				Long.class.getName(), Boolean.class.getName(),
+				Long.class.getName(), String.class.getName(),
 				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_A =
-		new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_PI = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByARLI_A",
-			new String[] { Long.class.getName(), Boolean.class.getName() },
-			LicenseKeyModelImpl.ASSETRECEIPTLICENSEID_COLUMN_BITMASK |
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByU_PI",
+			new String[] { Long.class.getName(), String.class.getName() },
+			LicenseKeyModelImpl.USERID_COLUMN_BITMASK |
+			LicenseKeyModelImpl.PRODUCTID_COLUMN_BITMASK |
 			LicenseKeyModelImpl.ACTIVE_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_ARLI_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_COUNT_BY_U_PI = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByARLI_A",
-			new String[] { Long.class.getName(), Boolean.class.getName() });
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_PI",
+			new String[] { Long.class.getName(), String.class.getName() });
 
 	/**
-	 * Returns all the license keies where assetReceiptLicenseId = &#63; and active = &#63;.
+	 * Returns all the license keies where userId = &#63; and productId = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param active the active
+	 * @param userId the user ID
+	 * @param productId the product ID
 	 * @return the matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_A(long assetReceiptLicenseId,
-		boolean active) {
-		return findByARLI_A(assetReceiptLicenseId, active, QueryUtil.ALL_POS,
+	public List<LicenseKey> findByU_PI(long userId, String productId) {
+		return findByU_PI(userId, productId, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the license keies where assetReceiptLicenseId = &#63; and active = &#63;.
+	 * Returns a range of all the license keies where userId = &#63; and productId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param active the active
+	 * @param userId the user ID
+	 * @param productId the product ID
 	 * @param start the lower bound of the range of license keies
 	 * @param end the upper bound of the range of license keies (not inclusive)
 	 * @return the range of matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_A(long assetReceiptLicenseId,
-		boolean active, int start, int end) {
-		return findByARLI_A(assetReceiptLicenseId, active, start, end, null);
+	public List<LicenseKey> findByU_PI(long userId, String productId,
+		int start, int end) {
+		return findByU_PI(userId, productId, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and active = &#63;.
+	 * Returns an ordered range of all the license keies where userId = &#63; and productId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param active the active
+	 * @param userId the user ID
+	 * @param productId the product ID
 	 * @param start the lower bound of the range of license keies
 	 * @param end the upper bound of the range of license keies (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_A(long assetReceiptLicenseId,
-		boolean active, int start, int end,
-		OrderByComparator<LicenseKey> orderByComparator) {
-		return findByARLI_A(assetReceiptLicenseId, active, start, end,
-			orderByComparator, true);
+	public List<LicenseKey> findByU_PI(long userId, String productId,
+		int start, int end, OrderByComparator<LicenseKey> orderByComparator) {
+		return findByU_PI(userId, productId, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and active = &#63;.
+	 * Returns an ordered range of all the license keies where userId = &#63; and productId = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param active the active
+	 * @param userId the user ID
+	 * @param productId the product ID
 	 * @param start the lower bound of the range of license keies
 	 * @param end the upper bound of the range of license keies (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
@@ -2262,9 +2805,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @return the ordered range of matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_A(long assetReceiptLicenseId,
-		boolean active, int start, int end,
-		OrderByComparator<LicenseKey> orderByComparator,
+	public List<LicenseKey> findByU_PI(long userId, String productId,
+		int start, int end, OrderByComparator<LicenseKey> orderByComparator,
 		boolean retrieveFromCache) {
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -2273,13 +2815,13 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_A;
-			finderArgs = new Object[] { assetReceiptLicenseId, active };
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_PI;
+			finderArgs = new Object[] { userId, productId };
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLI_A;
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_U_PI;
 			finderArgs = new Object[] {
-					assetReceiptLicenseId, active,
+					userId, productId,
 					
 					start, end, orderByComparator
 				};
@@ -2293,8 +2835,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (LicenseKey licenseKey : list) {
-					if ((assetReceiptLicenseId != licenseKey.getAssetReceiptLicenseId()) ||
-							(active != licenseKey.getActive())) {
+					if ((userId != licenseKey.getUserId()) ||
+							!Objects.equals(productId, licenseKey.getProductId())) {
 						list = null;
 
 						break;
@@ -2316,9 +2858,21 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			query.append(_SQL_SELECT_LICENSEKEY_WHERE);
 
-			query.append(_FINDER_COLUMN_ARLI_A_ASSETRECEIPTLICENSEID_2);
+			query.append(_FINDER_COLUMN_U_PI_USERID_2);
 
-			query.append(_FINDER_COLUMN_ARLI_A_ACTIVE_2);
+			boolean bindProductId = false;
+
+			if (productId == null) {
+				query.append(_FINDER_COLUMN_U_PI_PRODUCTID_1);
+			}
+			else if (productId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_U_PI_PRODUCTID_3);
+			}
+			else {
+				bindProductId = true;
+
+				query.append(_FINDER_COLUMN_U_PI_PRODUCTID_2);
+			}
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
@@ -2340,9 +2894,11 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				qPos.add(assetReceiptLicenseId);
+				qPos.add(userId);
 
-				qPos.add(active);
+				if (bindProductId) {
+					qPos.add(productId);
+				}
 
 				if (!pagination) {
 					list = (List<LicenseKey>)QueryUtil.list(q, getDialect(),
@@ -2375,20 +2931,20 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and active = &#63;.
+	 * Returns the first license key in the ordered set where userId = &#63; and productId = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param active the active
+	 * @param userId the user ID
+	 * @param productId the product ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license key
 	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey findByARLI_A_First(long assetReceiptLicenseId,
-		boolean active, OrderByComparator<LicenseKey> orderByComparator)
+	public LicenseKey findByU_PI_First(long userId, String productId,
+		OrderByComparator<LicenseKey> orderByComparator)
 		throws NoSuchLicenseKeyException {
-		LicenseKey licenseKey = fetchByARLI_A_First(assetReceiptLicenseId,
-				active, orderByComparator);
+		LicenseKey licenseKey = fetchByU_PI_First(userId, productId,
+				orderByComparator);
 
 		if (licenseKey != null) {
 			return licenseKey;
@@ -2398,11 +2954,11 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("assetReceiptLicenseId=");
-		msg.append(assetReceiptLicenseId);
+		msg.append("userId=");
+		msg.append(userId);
 
-		msg.append(", active=");
-		msg.append(active);
+		msg.append(", productId=");
+		msg.append(productId);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -2410,18 +2966,18 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and active = &#63;.
+	 * Returns the first license key in the ordered set where userId = &#63; and productId = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param active the active
+	 * @param userId the user ID
+	 * @param productId the product ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license key, or <code>null</code> if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey fetchByARLI_A_First(long assetReceiptLicenseId,
-		boolean active, OrderByComparator<LicenseKey> orderByComparator) {
-		List<LicenseKey> list = findByARLI_A(assetReceiptLicenseId, active, 0,
-				1, orderByComparator);
+	public LicenseKey fetchByU_PI_First(long userId, String productId,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		List<LicenseKey> list = findByU_PI(userId, productId, 0, 1,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2431,20 +2987,20 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and active = &#63;.
+	 * Returns the last license key in the ordered set where userId = &#63; and productId = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param active the active
+	 * @param userId the user ID
+	 * @param productId the product ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license key
 	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey findByARLI_A_Last(long assetReceiptLicenseId,
-		boolean active, OrderByComparator<LicenseKey> orderByComparator)
+	public LicenseKey findByU_PI_Last(long userId, String productId,
+		OrderByComparator<LicenseKey> orderByComparator)
 		throws NoSuchLicenseKeyException {
-		LicenseKey licenseKey = fetchByARLI_A_Last(assetReceiptLicenseId,
-				active, orderByComparator);
+		LicenseKey licenseKey = fetchByU_PI_Last(userId, productId,
+				orderByComparator);
 
 		if (licenseKey != null) {
 			return licenseKey;
@@ -2454,11 +3010,11 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("assetReceiptLicenseId=");
-		msg.append(assetReceiptLicenseId);
+		msg.append("userId=");
+		msg.append(userId);
 
-		msg.append(", active=");
-		msg.append(active);
+		msg.append(", productId=");
+		msg.append(productId);
 
 		msg.append(StringPool.CLOSE_CURLY_BRACE);
 
@@ -2466,24 +3022,24 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and active = &#63;.
+	 * Returns the last license key in the ordered set where userId = &#63; and productId = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param active the active
+	 * @param userId the user ID
+	 * @param productId the product ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license key, or <code>null</code> if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey fetchByARLI_A_Last(long assetReceiptLicenseId,
-		boolean active, OrderByComparator<LicenseKey> orderByComparator) {
-		int count = countByARLI_A(assetReceiptLicenseId, active);
+	public LicenseKey fetchByU_PI_Last(long userId, String productId,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		int count = countByU_PI(userId, productId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<LicenseKey> list = findByARLI_A(assetReceiptLicenseId, active,
-				count - 1, count, orderByComparator);
+		List<LicenseKey> list = findByU_PI(userId, productId, count - 1, count,
+				orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2493,19 +3049,18 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseId = &#63; and active = &#63;.
+	 * Returns the license keies before and after the current license key in the ordered set where userId = &#63; and productId = &#63;.
 	 *
 	 * @param licenseKeyId the primary key of the current license key
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param active the active
+	 * @param userId the user ID
+	 * @param productId the product ID
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next license key
 	 * @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
 	 */
 	@Override
-	public LicenseKey[] findByARLI_A_PrevAndNext(long licenseKeyId,
-		long assetReceiptLicenseId, boolean active,
-		OrderByComparator<LicenseKey> orderByComparator)
+	public LicenseKey[] findByU_PI_PrevAndNext(long licenseKeyId, long userId,
+		String productId, OrderByComparator<LicenseKey> orderByComparator)
 		throws NoSuchLicenseKeyException {
 		LicenseKey licenseKey = findByPrimaryKey(licenseKeyId);
 
@@ -2516,13 +3071,13 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			LicenseKey[] array = new LicenseKeyImpl[3];
 
-			array[0] = getByARLI_A_PrevAndNext(session, licenseKey,
-					assetReceiptLicenseId, active, orderByComparator, true);
+			array[0] = getByU_PI_PrevAndNext(session, licenseKey, userId,
+					productId, orderByComparator, true);
 
 			array[1] = licenseKey;
 
-			array[2] = getByARLI_A_PrevAndNext(session, licenseKey,
-					assetReceiptLicenseId, active, orderByComparator, false);
+			array[2] = getByU_PI_PrevAndNext(session, licenseKey, userId,
+					productId, orderByComparator, false);
 
 			return array;
 		}
@@ -2534,8 +3089,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		}
 	}
 
-	protected LicenseKey getByARLI_A_PrevAndNext(Session session,
-		LicenseKey licenseKey, long assetReceiptLicenseId, boolean active,
+	protected LicenseKey getByU_PI_PrevAndNext(Session session,
+		LicenseKey licenseKey, long userId, String productId,
 		OrderByComparator<LicenseKey> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
@@ -2550,9 +3105,21 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		query.append(_SQL_SELECT_LICENSEKEY_WHERE);
 
-		query.append(_FINDER_COLUMN_ARLI_A_ASSETRECEIPTLICENSEID_2);
+		query.append(_FINDER_COLUMN_U_PI_USERID_2);
 
-		query.append(_FINDER_COLUMN_ARLI_A_ACTIVE_2);
+		boolean bindProductId = false;
+
+		if (productId == null) {
+			query.append(_FINDER_COLUMN_U_PI_PRODUCTID_1);
+		}
+		else if (productId.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_U_PI_PRODUCTID_3);
+		}
+		else {
+			bindProductId = true;
+
+			query.append(_FINDER_COLUMN_U_PI_PRODUCTID_2);
+		}
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
@@ -2622,7 +3189,600 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		qPos.add(assetReceiptLicenseId);
+		qPos.add(userId);
+
+		if (bindProductId) {
+			qPos.add(productId);
+		}
+
+		if (orderByComparator != null) {
+			Object[] values = orderByComparator.getOrderByConditionValues(licenseKey);
+
+			for (Object value : values) {
+				qPos.add(value);
+			}
+		}
+
+		List<LicenseKey> list = q.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the license keies where userId = &#63; and productId = &#63; from the database.
+	 *
+	 * @param userId the user ID
+	 * @param productId the product ID
+	 */
+	@Override
+	public void removeByU_PI(long userId, String productId) {
+		for (LicenseKey licenseKey : findByU_PI(userId, productId,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+			remove(licenseKey);
+		}
+	}
+
+	/**
+	 * Returns the number of license keies where userId = &#63; and productId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param productId the product ID
+	 * @return the number of matching license keies
+	 */
+	@Override
+	public int countByU_PI(long userId, String productId) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_U_PI;
+
+		Object[] finderArgs = new Object[] { userId, productId };
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler query = new StringBundler(3);
+
+			query.append(_SQL_COUNT_LICENSEKEY_WHERE);
+
+			query.append(_FINDER_COLUMN_U_PI_USERID_2);
+
+			boolean bindProductId = false;
+
+			if (productId == null) {
+				query.append(_FINDER_COLUMN_U_PI_PRODUCTID_1);
+			}
+			else if (productId.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_U_PI_PRODUCTID_3);
+			}
+			else {
+				bindProductId = true;
+
+				query.append(_FINDER_COLUMN_U_PI_PRODUCTID_2);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				qPos.add(userId);
+
+				if (bindProductId) {
+					qPos.add(productId);
+				}
+
+				count = (Long)q.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_U_PI_USERID_2 = "licenseKey.userId = ? AND ";
+	private static final String _FINDER_COLUMN_U_PI_PRODUCTID_1 = "licenseKey.productId IS NULL";
+	private static final String _FINDER_COLUMN_U_PI_PRODUCTID_2 = "licenseKey.productId = ?";
+	private static final String _FINDER_COLUMN_U_PI_PRODUCTID_3 = "(licenseKey.productId IS NULL OR licenseKey.productId = '')";
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLU_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByARLU_A",
+			new String[] {
+				String.class.getName(), Boolean.class.getName(),
+				
+			Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_A =
+		new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByARLU_A",
+			new String[] { String.class.getName(), Boolean.class.getName() },
+			LicenseKeyModelImpl.ASSETRECEIPTLICENSEUUID_COLUMN_BITMASK |
+			LicenseKeyModelImpl.ACTIVE_COLUMN_BITMASK);
+	public static final FinderPath FINDER_PATH_COUNT_BY_ARLU_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByARLU_A",
+			new String[] { String.class.getName(), Boolean.class.getName() });
+
+	/**
+	 * Returns all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	 *
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
+	 * @param active the active
+	 * @return the matching license keies
+	 */
+	@Override
+	public List<LicenseKey> findByARLU_A(String assetReceiptLicenseUuid,
+		boolean active) {
+		return findByARLU_A(assetReceiptLicenseUuid, active, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
+	 * @param active the active
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @return the range of matching license keies
+	 */
+	@Override
+	public List<LicenseKey> findByARLU_A(String assetReceiptLicenseUuid,
+		boolean active, int start, int end) {
+		return findByARLU_A(assetReceiptLicenseUuid, active, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
+	 * @param active the active
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching license keies
+	 */
+	@Override
+	public List<LicenseKey> findByARLU_A(String assetReceiptLicenseUuid,
+		boolean active, int start, int end,
+		OrderByComparator<LicenseKey> orderByComparator) {
+		return findByARLU_A(assetReceiptLicenseUuid, active, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
+	 * @param active the active
+	 * @param start the lower bound of the range of license keies
+	 * @param end the upper bound of the range of license keies (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @return the ordered range of matching license keies
+	 */
+	@Override
+	public List<LicenseKey> findByARLU_A(String assetReceiptLicenseUuid,
+		boolean active, int start, int end,
+		OrderByComparator<LicenseKey> orderByComparator,
+		boolean retrieveFromCache) {
+		boolean pagination = true;
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+				(orderByComparator == null)) {
+			pagination = false;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_A;
+			finderArgs = new Object[] { assetReceiptLicenseUuid, active };
+		}
+		else {
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLU_A;
+			finderArgs = new Object[] {
+					assetReceiptLicenseUuid, active,
+					
+					start, end, orderByComparator
+				};
+		}
+
+		List<LicenseKey> list = null;
+
+		if (retrieveFromCache) {
+			list = (List<LicenseKey>)finderCache.getResult(finderPath,
+					finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (LicenseKey licenseKey : list) {
+					if (!Objects.equals(assetReceiptLicenseUuid,
+								licenseKey.getAssetReceiptLicenseUuid()) ||
+							(active != licenseKey.getActive())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler query = null;
+
+			if (orderByComparator != null) {
+				query = new StringBundler(4 +
+						(orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				query = new StringBundler(4);
+			}
+
+			query.append(_SQL_SELECT_LICENSEKEY_WHERE);
+
+			boolean bindAssetReceiptLicenseUuid = false;
+
+			if (assetReceiptLicenseUuid == null) {
+				query.append(_FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_1);
+			}
+			else if (assetReceiptLicenseUuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_3);
+			}
+			else {
+				bindAssetReceiptLicenseUuid = true;
+
+				query.append(_FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_2);
+			}
+
+			query.append(_FINDER_COLUMN_ARLU_A_ACTIVE_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
+					orderByComparator);
+			}
+			else
+			 if (pagination) {
+				query.append(LicenseKeyModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = query.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query q = session.createQuery(sql);
+
+				QueryPos qPos = QueryPos.getInstance(q);
+
+				if (bindAssetReceiptLicenseUuid) {
+					qPos.add(assetReceiptLicenseUuid);
+				}
+
+				qPos.add(active);
+
+				if (!pagination) {
+					list = (List<LicenseKey>)QueryUtil.list(q, getDialect(),
+							start, end, false);
+
+					Collections.sort(list);
+
+					list = Collections.unmodifiableList(list);
+				}
+				else {
+					list = (List<LicenseKey>)QueryUtil.list(q, getDialect(),
+							start, end);
+				}
+
+				cacheResult(list);
+
+				finderCache.putResult(finderPath, finderArgs, list);
+			}
+			catch (Exception e) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(e);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	 *
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
+	 * @param active the active
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key
+	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
+	 */
+	@Override
+	public LicenseKey findByARLU_A_First(String assetReceiptLicenseUuid,
+		boolean active, OrderByComparator<LicenseKey> orderByComparator)
+		throws NoSuchLicenseKeyException {
+		LicenseKey licenseKey = fetchByARLU_A_First(assetReceiptLicenseUuid,
+				active, orderByComparator);
+
+		if (licenseKey != null) {
+			return licenseKey;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("assetReceiptLicenseUuid=");
+		msg.append(assetReceiptLicenseUuid);
+
+		msg.append(", active=");
+		msg.append(active);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchLicenseKeyException(msg.toString());
+	}
+
+	/**
+	 * Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	 *
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
+	 * @param active the active
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching license key, or <code>null</code> if a matching license key could not be found
+	 */
+	@Override
+	public LicenseKey fetchByARLU_A_First(String assetReceiptLicenseUuid,
+		boolean active, OrderByComparator<LicenseKey> orderByComparator) {
+		List<LicenseKey> list = findByARLU_A(assetReceiptLicenseUuid, active,
+				0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	 *
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
+	 * @param active the active
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key
+	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
+	 */
+	@Override
+	public LicenseKey findByARLU_A_Last(String assetReceiptLicenseUuid,
+		boolean active, OrderByComparator<LicenseKey> orderByComparator)
+		throws NoSuchLicenseKeyException {
+		LicenseKey licenseKey = fetchByARLU_A_Last(assetReceiptLicenseUuid,
+				active, orderByComparator);
+
+		if (licenseKey != null) {
+			return licenseKey;
+		}
+
+		StringBundler msg = new StringBundler(6);
+
+		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		msg.append("assetReceiptLicenseUuid=");
+		msg.append(assetReceiptLicenseUuid);
+
+		msg.append(", active=");
+		msg.append(active);
+
+		msg.append(StringPool.CLOSE_CURLY_BRACE);
+
+		throw new NoSuchLicenseKeyException(msg.toString());
+	}
+
+	/**
+	 * Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	 *
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
+	 * @param active the active
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching license key, or <code>null</code> if a matching license key could not be found
+	 */
+	@Override
+	public LicenseKey fetchByARLU_A_Last(String assetReceiptLicenseUuid,
+		boolean active, OrderByComparator<LicenseKey> orderByComparator) {
+		int count = countByARLU_A(assetReceiptLicenseUuid, active);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<LicenseKey> list = findByARLU_A(assetReceiptLicenseUuid, active,
+				count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseUuid = &#63; and active = &#63;.
+	 *
+	 * @param licenseKeyId the primary key of the current license key
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
+	 * @param active the active
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next license key
+	 * @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
+	 */
+	@Override
+	public LicenseKey[] findByARLU_A_PrevAndNext(long licenseKeyId,
+		String assetReceiptLicenseUuid, boolean active,
+		OrderByComparator<LicenseKey> orderByComparator)
+		throws NoSuchLicenseKeyException {
+		LicenseKey licenseKey = findByPrimaryKey(licenseKeyId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			LicenseKey[] array = new LicenseKeyImpl[3];
+
+			array[0] = getByARLU_A_PrevAndNext(session, licenseKey,
+					assetReceiptLicenseUuid, active, orderByComparator, true);
+
+			array[1] = licenseKey;
+
+			array[2] = getByARLU_A_PrevAndNext(session, licenseKey,
+					assetReceiptLicenseUuid, active, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception e) {
+			throw processException(e);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected LicenseKey getByARLU_A_PrevAndNext(Session session,
+		LicenseKey licenseKey, String assetReceiptLicenseUuid, boolean active,
+		OrderByComparator<LicenseKey> orderByComparator, boolean previous) {
+		StringBundler query = null;
+
+		if (orderByComparator != null) {
+			query = new StringBundler(5 +
+					(orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			query = new StringBundler(4);
+		}
+
+		query.append(_SQL_SELECT_LICENSEKEY_WHERE);
+
+		boolean bindAssetReceiptLicenseUuid = false;
+
+		if (assetReceiptLicenseUuid == null) {
+			query.append(_FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_1);
+		}
+		else if (assetReceiptLicenseUuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_3);
+		}
+		else {
+			bindAssetReceiptLicenseUuid = true;
+
+			query.append(_FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_2);
+		}
+
+		query.append(_FINDER_COLUMN_ARLU_A_ACTIVE_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				query.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(WHERE_GREATER_THAN);
+					}
+					else {
+						query.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			query.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				query.append(_ORDER_BY_ENTITY_ALIAS);
+				query.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						query.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						query.append(ORDER_BY_ASC);
+					}
+					else {
+						query.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			query.append(LicenseKeyModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = query.toString();
+
+		Query q = session.createQuery(sql);
+
+		q.setFirstResult(0);
+		q.setMaxResults(2);
+
+		QueryPos qPos = QueryPos.getInstance(q);
+
+		if (bindAssetReceiptLicenseUuid) {
+			qPos.add(assetReceiptLicenseUuid);
+		}
 
 		qPos.add(active);
 
@@ -2645,31 +3805,31 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Removes all the license keies where assetReceiptLicenseId = &#63; and active = &#63; from the database.
+	 * Removes all the license keies where assetReceiptLicenseUuid = &#63; and active = &#63; from the database.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param active the active
 	 */
 	@Override
-	public void removeByARLI_A(long assetReceiptLicenseId, boolean active) {
-		for (LicenseKey licenseKey : findByARLI_A(assetReceiptLicenseId,
+	public void removeByARLU_A(String assetReceiptLicenseUuid, boolean active) {
+		for (LicenseKey licenseKey : findByARLU_A(assetReceiptLicenseUuid,
 				active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(licenseKey);
 		}
 	}
 
 	/**
-	 * Returns the number of license keies where assetReceiptLicenseId = &#63; and active = &#63;.
+	 * Returns the number of license keies where assetReceiptLicenseUuid = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param active the active
 	 * @return the number of matching license keies
 	 */
 	@Override
-	public int countByARLI_A(long assetReceiptLicenseId, boolean active) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_ARLI_A;
+	public int countByARLU_A(String assetReceiptLicenseUuid, boolean active) {
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_ARLU_A;
 
-		Object[] finderArgs = new Object[] { assetReceiptLicenseId, active };
+		Object[] finderArgs = new Object[] { assetReceiptLicenseUuid, active };
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -2678,9 +3838,21 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			query.append(_SQL_COUNT_LICENSEKEY_WHERE);
 
-			query.append(_FINDER_COLUMN_ARLI_A_ASSETRECEIPTLICENSEID_2);
+			boolean bindAssetReceiptLicenseUuid = false;
 
-			query.append(_FINDER_COLUMN_ARLI_A_ACTIVE_2);
+			if (assetReceiptLicenseUuid == null) {
+				query.append(_FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_1);
+			}
+			else if (assetReceiptLicenseUuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_3);
+			}
+			else {
+				bindAssetReceiptLicenseUuid = true;
+
+				query.append(_FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_2);
+			}
+
+			query.append(_FINDER_COLUMN_ARLU_A_ACTIVE_2);
 
 			String sql = query.toString();
 
@@ -2693,7 +3865,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				qPos.add(assetReceiptLicenseId);
+				if (bindAssetReceiptLicenseUuid) {
+					qPos.add(assetReceiptLicenseUuid);
+				}
 
 				qPos.add(active);
 
@@ -2714,8 +3888,10 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_ARLI_A_ASSETRECEIPTLICENSEID_2 = "licenseKey.assetReceiptLicenseId = ? AND ";
-	private static final String _FINDER_COLUMN_ARLI_A_ACTIVE_2 = "licenseKey.active = ?";
+	private static final String _FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_1 = "licenseKey.assetReceiptLicenseUuid IS NULL AND ";
+	private static final String _FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_2 = "licenseKey.assetReceiptLicenseUuid = ? AND ";
+	private static final String _FINDER_COLUMN_ARLU_A_ASSETRECEIPTLICENSEUUID_3 = "(licenseKey.assetReceiptLicenseUuid IS NULL OR licenseKey.assetReceiptLicenseUuid = '') AND ";
+	private static final String _FINDER_COLUMN_ARLU_A_ACTIVE_2 = "licenseKey.active = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_OEI_CI = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByOEI_CI",
@@ -4478,682 +5654,58 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	private static final String _FINDER_COLUMN_PI_SI_SERVERID_1 = "licenseKey.serverId IS NULL";
 	private static final String _FINDER_COLUMN_PI_SI_SERVERID_2 = "licenseKey.serverId = ?";
 	private static final String _FINDER_COLUMN_PI_SI_SERVERID_3 = "(licenseKey.serverId IS NULL OR licenseKey.serverId = '')";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_U_ARLI_PI =
-		new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLU_C_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_ARLI_PI",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByARLU_C_A",
 			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				String.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_COUNT_BY_U_ARLI_PI =
-		new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
-			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByU_ARLI_PI",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				String.class.getName()
-			});
-
-	/**
-	 * Returns all the license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 * @return the matching license keies
-	 */
-	@Override
-	public List<LicenseKey> findByU_ARLI_PI(long userId,
-		long assetReceiptLicenseId, String productId) {
-		return findByU_ARLI_PI(userId, assetReceiptLicenseId, productId,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-	}
-
-	/**
-	 * Returns a range of all the license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 * @param start the lower bound of the range of license keies
-	 * @param end the upper bound of the range of license keies (not inclusive)
-	 * @return the range of matching license keies
-	 */
-	@Override
-	public List<LicenseKey> findByU_ARLI_PI(long userId,
-		long assetReceiptLicenseId, String productId, int start, int end) {
-		return findByU_ARLI_PI(userId, assetReceiptLicenseId, productId, start,
-			end, null);
-	}
-
-	/**
-	 * Returns an ordered range of all the license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 * @param start the lower bound of the range of license keies
-	 * @param end the upper bound of the range of license keies (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching license keies
-	 */
-	@Override
-	public List<LicenseKey> findByU_ARLI_PI(long userId,
-		long assetReceiptLicenseId, String productId, int start, int end,
-		OrderByComparator<LicenseKey> orderByComparator) {
-		return findByU_ARLI_PI(userId, assetReceiptLicenseId, productId, start,
-			end, orderByComparator, true);
-	}
-
-	/**
-	 * Returns an ordered range of all the license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 * @param start the lower bound of the range of license keies
-	 * @param end the upper bound of the range of license keies (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
-	 * @return the ordered range of matching license keies
-	 */
-	@Override
-	public List<LicenseKey> findByU_ARLI_PI(long userId,
-		long assetReceiptLicenseId, String productId, int start, int end,
-		OrderByComparator<LicenseKey> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
-		FinderPath finderPath = null;
-		Object[] finderArgs = null;
-
-		finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_U_ARLI_PI;
-		finderArgs = new Object[] {
-				userId, assetReceiptLicenseId, productId,
-				
-				start, end, orderByComparator
-			};
-
-		List<LicenseKey> list = null;
-
-		if (retrieveFromCache) {
-			list = (List<LicenseKey>)finderCache.getResult(finderPath,
-					finderArgs, this);
-
-			if ((list != null) && !list.isEmpty()) {
-				for (LicenseKey licenseKey : list) {
-					if ((userId != licenseKey.getUserId()) ||
-							(assetReceiptLicenseId >= licenseKey.getAssetReceiptLicenseId()) ||
-							!Objects.equals(productId, licenseKey.getProductId())) {
-						list = null;
-
-						break;
-					}
-				}
-			}
-		}
-
-		if (list == null) {
-			StringBundler query = null;
-
-			if (orderByComparator != null) {
-				query = new StringBundler(5 +
-						(orderByComparator.getOrderByFields().length * 2));
-			}
-			else {
-				query = new StringBundler(5);
-			}
-
-			query.append(_SQL_SELECT_LICENSEKEY_WHERE);
-
-			query.append(_FINDER_COLUMN_U_ARLI_PI_USERID_2);
-
-			query.append(_FINDER_COLUMN_U_ARLI_PI_ASSETRECEIPTLICENSEID_2);
-
-			boolean bindProductId = false;
-
-			if (productId == null) {
-				query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_1);
-			}
-			else if (productId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_3);
-			}
-			else {
-				bindProductId = true;
-
-				query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_2);
-			}
-
-			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
-			}
-			else
-			 if (pagination) {
-				query.append(LicenseKeyModelImpl.ORDER_BY_JPQL);
-			}
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				qPos.add(userId);
-
-				qPos.add(assetReceiptLicenseId);
-
-				if (bindProductId) {
-					qPos.add(productId);
-				}
-
-				if (!pagination) {
-					list = (List<LicenseKey>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LicenseKey>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
-
-				cacheResult(list);
-
-				finderCache.putResult(finderPath, finderArgs, list);
-			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return list;
-	}
-
-	/**
-	 * Returns the first license key in the ordered set where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching license key
-	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
-	 */
-	@Override
-	public LicenseKey findByU_ARLI_PI_First(long userId,
-		long assetReceiptLicenseId, String productId,
-		OrderByComparator<LicenseKey> orderByComparator)
-		throws NoSuchLicenseKeyException {
-		LicenseKey licenseKey = fetchByU_ARLI_PI_First(userId,
-				assetReceiptLicenseId, productId, orderByComparator);
-
-		if (licenseKey != null) {
-			return licenseKey;
-		}
-
-		StringBundler msg = new StringBundler(8);
-
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		msg.append("userId=");
-		msg.append(userId);
-
-		msg.append(", assetReceiptLicenseId=");
-		msg.append(assetReceiptLicenseId);
-
-		msg.append(", productId=");
-		msg.append(productId);
-
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-		throw new NoSuchLicenseKeyException(msg.toString());
-	}
-
-	/**
-	 * Returns the first license key in the ordered set where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching license key, or <code>null</code> if a matching license key could not be found
-	 */
-	@Override
-	public LicenseKey fetchByU_ARLI_PI_First(long userId,
-		long assetReceiptLicenseId, String productId,
-		OrderByComparator<LicenseKey> orderByComparator) {
-		List<LicenseKey> list = findByU_ARLI_PI(userId, assetReceiptLicenseId,
-				productId, 0, 1, orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the last license key in the ordered set where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching license key
-	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
-	 */
-	@Override
-	public LicenseKey findByU_ARLI_PI_Last(long userId,
-		long assetReceiptLicenseId, String productId,
-		OrderByComparator<LicenseKey> orderByComparator)
-		throws NoSuchLicenseKeyException {
-		LicenseKey licenseKey = fetchByU_ARLI_PI_Last(userId,
-				assetReceiptLicenseId, productId, orderByComparator);
-
-		if (licenseKey != null) {
-			return licenseKey;
-		}
-
-		StringBundler msg = new StringBundler(8);
-
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-		msg.append("userId=");
-		msg.append(userId);
-
-		msg.append(", assetReceiptLicenseId=");
-		msg.append(assetReceiptLicenseId);
-
-		msg.append(", productId=");
-		msg.append(productId);
-
-		msg.append(StringPool.CLOSE_CURLY_BRACE);
-
-		throw new NoSuchLicenseKeyException(msg.toString());
-	}
-
-	/**
-	 * Returns the last license key in the ordered set where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching license key, or <code>null</code> if a matching license key could not be found
-	 */
-	@Override
-	public LicenseKey fetchByU_ARLI_PI_Last(long userId,
-		long assetReceiptLicenseId, String productId,
-		OrderByComparator<LicenseKey> orderByComparator) {
-		int count = countByU_ARLI_PI(userId, assetReceiptLicenseId, productId);
-
-		if (count == 0) {
-			return null;
-		}
-
-		List<LicenseKey> list = findByU_ARLI_PI(userId, assetReceiptLicenseId,
-				productId, count - 1, count, orderByComparator);
-
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Returns the license keies before and after the current license key in the ordered set where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	 *
-	 * @param licenseKeyId the primary key of the current license key
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next license key
-	 * @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
-	 */
-	@Override
-	public LicenseKey[] findByU_ARLI_PI_PrevAndNext(long licenseKeyId,
-		long userId, long assetReceiptLicenseId, String productId,
-		OrderByComparator<LicenseKey> orderByComparator)
-		throws NoSuchLicenseKeyException {
-		LicenseKey licenseKey = findByPrimaryKey(licenseKeyId);
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			LicenseKey[] array = new LicenseKeyImpl[3];
-
-			array[0] = getByU_ARLI_PI_PrevAndNext(session, licenseKey, userId,
-					assetReceiptLicenseId, productId, orderByComparator, true);
-
-			array[1] = licenseKey;
-
-			array[2] = getByU_ARLI_PI_PrevAndNext(session, licenseKey, userId,
-					assetReceiptLicenseId, productId, orderByComparator, false);
-
-			return array;
-		}
-		catch (Exception e) {
-			throw processException(e);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
-	protected LicenseKey getByU_ARLI_PI_PrevAndNext(Session session,
-		LicenseKey licenseKey, long userId, long assetReceiptLicenseId,
-		String productId, OrderByComparator<LicenseKey> orderByComparator,
-		boolean previous) {
-		StringBundler query = null;
-
-		if (orderByComparator != null) {
-			query = new StringBundler(6 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
-					(orderByComparator.getOrderByFields().length * 3));
-		}
-		else {
-			query = new StringBundler(5);
-		}
-
-		query.append(_SQL_SELECT_LICENSEKEY_WHERE);
-
-		query.append(_FINDER_COLUMN_U_ARLI_PI_USERID_2);
-
-		query.append(_FINDER_COLUMN_U_ARLI_PI_ASSETRECEIPTLICENSEID_2);
-
-		boolean bindProductId = false;
-
-		if (productId == null) {
-			query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_1);
-		}
-		else if (productId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_3);
-		}
-		else {
-			bindProductId = true;
-
-			query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_2);
-		}
-
-		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
-
-			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
-			}
-
-			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
-
-				if ((i + 1) < orderByConditionFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
-					}
-					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
-					}
-					else {
-						query.append(WHERE_LESSER_THAN);
-					}
-				}
-			}
-
-			query.append(ORDER_BY_CLAUSE);
-
-			String[] orderByFields = orderByComparator.getOrderByFields();
-
-			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
-
-				if ((i + 1) < orderByFields.length) {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
-					}
-					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
-					}
-				}
-				else {
-					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
-					}
-					else {
-						query.append(ORDER_BY_DESC);
-					}
-				}
-			}
-		}
-		else {
-			query.append(LicenseKeyModelImpl.ORDER_BY_JPQL);
-		}
-
-		String sql = query.toString();
-
-		Query q = session.createQuery(sql);
-
-		q.setFirstResult(0);
-		q.setMaxResults(2);
-
-		QueryPos qPos = QueryPos.getInstance(q);
-
-		qPos.add(userId);
-
-		qPos.add(assetReceiptLicenseId);
-
-		if (bindProductId) {
-			qPos.add(productId);
-		}
-
-		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(licenseKey);
-
-			for (Object value : values) {
-				qPos.add(value);
-			}
-		}
-
-		List<LicenseKey> list = q.list();
-
-		if (list.size() == 2) {
-			return list.get(1);
-		}
-		else {
-			return null;
-		}
-	}
-
-	/**
-	 * Removes all the license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63; from the database.
-	 *
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 */
-	@Override
-	public void removeByU_ARLI_PI(long userId, long assetReceiptLicenseId,
-		String productId) {
-		for (LicenseKey licenseKey : findByU_ARLI_PI(userId,
-				assetReceiptLicenseId, productId, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null)) {
-			remove(licenseKey);
-		}
-	}
-
-	/**
-	 * Returns the number of license keies where userId = &#63; and assetReceiptLicenseId &gt; &#63; and productId = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @param assetReceiptLicenseId the asset receipt license ID
-	 * @param productId the product ID
-	 * @return the number of matching license keies
-	 */
-	@Override
-	public int countByU_ARLI_PI(long userId, long assetReceiptLicenseId,
-		String productId) {
-		FinderPath finderPath = FINDER_PATH_WITH_PAGINATION_COUNT_BY_U_ARLI_PI;
-
-		Object[] finderArgs = new Object[] {
-				userId, assetReceiptLicenseId, productId
-			};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
-
-		if (count == null) {
-			StringBundler query = new StringBundler(4);
-
-			query.append(_SQL_COUNT_LICENSEKEY_WHERE);
-
-			query.append(_FINDER_COLUMN_U_ARLI_PI_USERID_2);
-
-			query.append(_FINDER_COLUMN_U_ARLI_PI_ASSETRECEIPTLICENSEID_2);
-
-			boolean bindProductId = false;
-
-			if (productId == null) {
-				query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_1);
-			}
-			else if (productId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_3);
-			}
-			else {
-				bindProductId = true;
-
-				query.append(_FINDER_COLUMN_U_ARLI_PI_PRODUCTID_2);
-			}
-
-			String sql = query.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query q = session.createQuery(sql);
-
-				QueryPos qPos = QueryPos.getInstance(q);
-
-				qPos.add(userId);
-
-				qPos.add(assetReceiptLicenseId);
-
-				if (bindProductId) {
-					qPos.add(productId);
-				}
-
-				count = (Long)q.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
-
-				throw processException(e);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
-	}
-
-	private static final String _FINDER_COLUMN_U_ARLI_PI_USERID_2 = "licenseKey.userId = ? AND ";
-	private static final String _FINDER_COLUMN_U_ARLI_PI_ASSETRECEIPTLICENSEID_2 =
-		"licenseKey.assetReceiptLicenseId > ? AND ";
-	private static final String _FINDER_COLUMN_U_ARLI_PI_PRODUCTID_1 = "licenseKey.productId IS NULL";
-	private static final String _FINDER_COLUMN_U_ARLI_PI_PRODUCTID_2 = "licenseKey.productId = ?";
-	private static final String _FINDER_COLUMN_U_ARLI_PI_PRODUCTID_3 = "(licenseKey.productId IS NULL OR licenseKey.productId = '')";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLI_C_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
-			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByARLI_C_A",
-			new String[] {
-				Long.class.getName(), Boolean.class.getName(),
+				String.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName(),
 				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_C_A =
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_C_A =
 		new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByARLI_C_A",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByARLU_C_A",
 			new String[] {
-				Long.class.getName(), Boolean.class.getName(),
+				String.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
 			},
-			LicenseKeyModelImpl.ASSETRECEIPTLICENSEID_COLUMN_BITMASK |
+			LicenseKeyModelImpl.ASSETRECEIPTLICENSEUUID_COLUMN_BITMASK |
 			LicenseKeyModelImpl.COMPLIMENTARY_COLUMN_BITMASK |
 			LicenseKeyModelImpl.ACTIVE_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_ARLI_C_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_COUNT_BY_ARLU_C_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByARLI_C_A",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByARLU_C_A",
 			new String[] {
-				Long.class.getName(), Boolean.class.getName(),
+				String.class.getName(), Boolean.class.getName(),
 				Boolean.class.getName()
 			});
 
 	/**
-	 * Returns all the license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	 * Returns all the license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 * @return the matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_C_A(long assetReceiptLicenseId,
+	public List<LicenseKey> findByARLU_C_A(String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active) {
-		return findByARLI_C_A(assetReceiptLicenseId, complimentary, active,
+		return findByARLU_C_A(assetReceiptLicenseUuid, complimentary, active,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	 * Returns a range of all the license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 * @param start the lower bound of the range of license keies
@@ -5161,20 +5713,20 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @return the range of matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_C_A(long assetReceiptLicenseId,
+	public List<LicenseKey> findByARLU_C_A(String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active, int start, int end) {
-		return findByARLI_C_A(assetReceiptLicenseId, complimentary, active,
+		return findByARLU_C_A(assetReceiptLicenseUuid, complimentary, active,
 			start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	 * Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 * @param start the lower bound of the range of license keies
@@ -5183,21 +5735,21 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @return the ordered range of matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_C_A(long assetReceiptLicenseId,
+	public List<LicenseKey> findByARLU_C_A(String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active, int start, int end,
 		OrderByComparator<LicenseKey> orderByComparator) {
-		return findByARLI_C_A(assetReceiptLicenseId, complimentary, active,
+		return findByARLU_C_A(assetReceiptLicenseUuid, complimentary, active,
 			start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	 * Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 * @param start the lower bound of the range of license keies
@@ -5207,7 +5759,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @return the ordered range of matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_C_A(long assetReceiptLicenseId,
+	public List<LicenseKey> findByARLU_C_A(String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active, int start, int end,
 		OrderByComparator<LicenseKey> orderByComparator,
 		boolean retrieveFromCache) {
@@ -5218,15 +5770,15 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_C_A;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_C_A;
 			finderArgs = new Object[] {
-					assetReceiptLicenseId, complimentary, active
+					assetReceiptLicenseUuid, complimentary, active
 				};
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLI_C_A;
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLU_C_A;
 			finderArgs = new Object[] {
-					assetReceiptLicenseId, complimentary, active,
+					assetReceiptLicenseUuid, complimentary, active,
 					
 					start, end, orderByComparator
 				};
@@ -5240,7 +5792,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (LicenseKey licenseKey : list) {
-					if ((assetReceiptLicenseId != licenseKey.getAssetReceiptLicenseId()) ||
+					if (!Objects.equals(assetReceiptLicenseUuid,
+								licenseKey.getAssetReceiptLicenseUuid()) ||
 							(complimentary != licenseKey.getComplimentary()) ||
 							(active != licenseKey.getActive())) {
 						list = null;
@@ -5264,11 +5817,23 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			query.append(_SQL_SELECT_LICENSEKEY_WHERE);
 
-			query.append(_FINDER_COLUMN_ARLI_C_A_ASSETRECEIPTLICENSEID_2);
+			boolean bindAssetReceiptLicenseUuid = false;
 
-			query.append(_FINDER_COLUMN_ARLI_C_A_COMPLIMENTARY_2);
+			if (assetReceiptLicenseUuid == null) {
+				query.append(_FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_1);
+			}
+			else if (assetReceiptLicenseUuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_3);
+			}
+			else {
+				bindAssetReceiptLicenseUuid = true;
 
-			query.append(_FINDER_COLUMN_ARLI_C_A_ACTIVE_2);
+				query.append(_FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_2);
+			}
+
+			query.append(_FINDER_COLUMN_ARLU_C_A_COMPLIMENTARY_2);
+
+			query.append(_FINDER_COLUMN_ARLU_C_A_ACTIVE_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
@@ -5290,7 +5855,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				qPos.add(assetReceiptLicenseId);
+				if (bindAssetReceiptLicenseUuid) {
+					qPos.add(assetReceiptLicenseUuid);
+				}
 
 				qPos.add(complimentary);
 
@@ -5327,9 +5894,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	 * Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -5337,11 +5904,11 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey findByARLI_C_A_First(long assetReceiptLicenseId,
+	public LicenseKey findByARLU_C_A_First(String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator)
 		throws NoSuchLicenseKeyException {
-		LicenseKey licenseKey = fetchByARLI_C_A_First(assetReceiptLicenseId,
+		LicenseKey licenseKey = fetchByARLU_C_A_First(assetReceiptLicenseUuid,
 				complimentary, active, orderByComparator);
 
 		if (licenseKey != null) {
@@ -5352,8 +5919,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("assetReceiptLicenseId=");
-		msg.append(assetReceiptLicenseId);
+		msg.append("assetReceiptLicenseUuid=");
+		msg.append(assetReceiptLicenseUuid);
 
 		msg.append(", complimentary=");
 		msg.append(complimentary);
@@ -5367,19 +5934,19 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	 * Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching license key, or <code>null</code> if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey fetchByARLI_C_A_First(long assetReceiptLicenseId,
+	public LicenseKey fetchByARLU_C_A_First(String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator) {
-		List<LicenseKey> list = findByARLI_C_A(assetReceiptLicenseId,
+		List<LicenseKey> list = findByARLU_C_A(assetReceiptLicenseUuid,
 				complimentary, active, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -5390,9 +5957,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	 * Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -5400,11 +5967,11 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey findByARLI_C_A_Last(long assetReceiptLicenseId,
+	public LicenseKey findByARLU_C_A_Last(String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator)
 		throws NoSuchLicenseKeyException {
-		LicenseKey licenseKey = fetchByARLI_C_A_Last(assetReceiptLicenseId,
+		LicenseKey licenseKey = fetchByARLU_C_A_Last(assetReceiptLicenseUuid,
 				complimentary, active, orderByComparator);
 
 		if (licenseKey != null) {
@@ -5415,8 +5982,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("assetReceiptLicenseId=");
-		msg.append(assetReceiptLicenseId);
+		msg.append("assetReceiptLicenseUuid=");
+		msg.append(assetReceiptLicenseUuid);
 
 		msg.append(", complimentary=");
 		msg.append(complimentary);
@@ -5430,25 +5997,26 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	 * Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching license key, or <code>null</code> if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey fetchByARLI_C_A_Last(long assetReceiptLicenseId,
+	public LicenseKey fetchByARLU_C_A_Last(String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator) {
-		int count = countByARLI_C_A(assetReceiptLicenseId, complimentary, active);
+		int count = countByARLU_C_A(assetReceiptLicenseUuid, complimentary,
+				active);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<LicenseKey> list = findByARLI_C_A(assetReceiptLicenseId,
+		List<LicenseKey> list = findByARLU_C_A(assetReceiptLicenseUuid,
 				complimentary, active, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -5459,10 +6027,10 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	 * Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	 *
 	 * @param licenseKeyId the primary key of the current license key
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
@@ -5470,8 +6038,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
 	 */
 	@Override
-	public LicenseKey[] findByARLI_C_A_PrevAndNext(long licenseKeyId,
-		long assetReceiptLicenseId, boolean complimentary, boolean active,
+	public LicenseKey[] findByARLU_C_A_PrevAndNext(long licenseKeyId,
+		String assetReceiptLicenseUuid, boolean complimentary, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator)
 		throws NoSuchLicenseKeyException {
 		LicenseKey licenseKey = findByPrimaryKey(licenseKeyId);
@@ -5483,14 +6051,14 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			LicenseKey[] array = new LicenseKeyImpl[3];
 
-			array[0] = getByARLI_C_A_PrevAndNext(session, licenseKey,
-					assetReceiptLicenseId, complimentary, active,
+			array[0] = getByARLU_C_A_PrevAndNext(session, licenseKey,
+					assetReceiptLicenseUuid, complimentary, active,
 					orderByComparator, true);
 
 			array[1] = licenseKey;
 
-			array[2] = getByARLI_C_A_PrevAndNext(session, licenseKey,
-					assetReceiptLicenseId, complimentary, active,
+			array[2] = getByARLU_C_A_PrevAndNext(session, licenseKey,
+					assetReceiptLicenseUuid, complimentary, active,
 					orderByComparator, false);
 
 			return array;
@@ -5503,8 +6071,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		}
 	}
 
-	protected LicenseKey getByARLI_C_A_PrevAndNext(Session session,
-		LicenseKey licenseKey, long assetReceiptLicenseId,
+	protected LicenseKey getByARLU_C_A_PrevAndNext(Session session,
+		LicenseKey licenseKey, String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator, boolean previous) {
 		StringBundler query = null;
@@ -5520,11 +6088,23 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		query.append(_SQL_SELECT_LICENSEKEY_WHERE);
 
-		query.append(_FINDER_COLUMN_ARLI_C_A_ASSETRECEIPTLICENSEID_2);
+		boolean bindAssetReceiptLicenseUuid = false;
 
-		query.append(_FINDER_COLUMN_ARLI_C_A_COMPLIMENTARY_2);
+		if (assetReceiptLicenseUuid == null) {
+			query.append(_FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_1);
+		}
+		else if (assetReceiptLicenseUuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_3);
+		}
+		else {
+			bindAssetReceiptLicenseUuid = true;
 
-		query.append(_FINDER_COLUMN_ARLI_C_A_ACTIVE_2);
+			query.append(_FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_2);
+		}
+
+		query.append(_FINDER_COLUMN_ARLU_C_A_COMPLIMENTARY_2);
+
+		query.append(_FINDER_COLUMN_ARLU_C_A_ACTIVE_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
@@ -5594,7 +6174,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		qPos.add(assetReceiptLicenseId);
+		if (bindAssetReceiptLicenseUuid) {
+			qPos.add(assetReceiptLicenseUuid);
+		}
 
 		qPos.add(complimentary);
 
@@ -5619,16 +6201,16 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Removes all the license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63; from the database.
+	 * Removes all the license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63; from the database.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 */
 	@Override
-	public void removeByARLI_C_A(long assetReceiptLicenseId,
+	public void removeByARLU_C_A(String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active) {
-		for (LicenseKey licenseKey : findByARLI_C_A(assetReceiptLicenseId,
+		for (LicenseKey licenseKey : findByARLU_C_A(assetReceiptLicenseUuid,
 				complimentary, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 				null)) {
 			remove(licenseKey);
@@ -5636,20 +6218,20 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the number of license keies where assetReceiptLicenseId = &#63; and complimentary = &#63; and active = &#63;.
+	 * Returns the number of license keies where assetReceiptLicenseUuid = &#63; and complimentary = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param complimentary the complimentary
 	 * @param active the active
 	 * @return the number of matching license keies
 	 */
 	@Override
-	public int countByARLI_C_A(long assetReceiptLicenseId,
+	public int countByARLU_C_A(String assetReceiptLicenseUuid,
 		boolean complimentary, boolean active) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_ARLI_C_A;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_ARLU_C_A;
 
 		Object[] finderArgs = new Object[] {
-				assetReceiptLicenseId, complimentary, active
+				assetReceiptLicenseUuid, complimentary, active
 			};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
@@ -5659,11 +6241,23 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			query.append(_SQL_COUNT_LICENSEKEY_WHERE);
 
-			query.append(_FINDER_COLUMN_ARLI_C_A_ASSETRECEIPTLICENSEID_2);
+			boolean bindAssetReceiptLicenseUuid = false;
 
-			query.append(_FINDER_COLUMN_ARLI_C_A_COMPLIMENTARY_2);
+			if (assetReceiptLicenseUuid == null) {
+				query.append(_FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_1);
+			}
+			else if (assetReceiptLicenseUuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_3);
+			}
+			else {
+				bindAssetReceiptLicenseUuid = true;
 
-			query.append(_FINDER_COLUMN_ARLI_C_A_ACTIVE_2);
+				query.append(_FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_2);
+			}
+
+			query.append(_FINDER_COLUMN_ARLU_C_A_COMPLIMENTARY_2);
+
+			query.append(_FINDER_COLUMN_ARLU_C_A_ACTIVE_2);
 
 			String sql = query.toString();
 
@@ -5676,7 +6270,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				qPos.add(assetReceiptLicenseId);
+				if (bindAssetReceiptLicenseUuid) {
+					qPos.add(assetReceiptLicenseUuid);
+				}
 
 				qPos.add(complimentary);
 
@@ -5699,9 +6295,14 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_ARLI_C_A_ASSETRECEIPTLICENSEID_2 = "licenseKey.assetReceiptLicenseId = ? AND ";
-	private static final String _FINDER_COLUMN_ARLI_C_A_COMPLIMENTARY_2 = "licenseKey.complimentary = ? AND ";
-	private static final String _FINDER_COLUMN_ARLI_C_A_ACTIVE_2 = "licenseKey.active = ?";
+	private static final String _FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_1 =
+		"licenseKey.assetReceiptLicenseUuid IS NULL AND ";
+	private static final String _FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_2 =
+		"licenseKey.assetReceiptLicenseUuid = ? AND ";
+	private static final String _FINDER_COLUMN_ARLU_C_A_ASSETRECEIPTLICENSEUUID_3 =
+		"(licenseKey.assetReceiptLicenseUuid IS NULL OR licenseKey.assetReceiptLicenseUuid = '') AND ";
+	private static final String _FINDER_COLUMN_ARLU_C_A_COMPLIMENTARY_2 = "licenseKey.complimentary = ? AND ";
+	private static final String _FINDER_COLUMN_ARLU_C_A_ACTIVE_2 = "licenseKey.active = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_OEI_CI_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByOEI_CI_A",
@@ -7887,61 +8488,61 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	private static final String _FINDER_COLUMN_PEN_SI_A_SERVERID_2 = "licenseKey.serverId = ? AND ";
 	private static final String _FINDER_COLUMN_PEN_SI_A_SERVERID_3 = "(licenseKey.serverId IS NULL OR licenseKey.serverId = '') AND ";
 	private static final String _FINDER_COLUMN_PEN_SI_A_ACTIVE_2 = "licenseKey.active = ?";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLI_PI_SI_A =
+	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLU_PI_SI_A =
 		new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByARLI_PI_SI_A",
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByARLU_PI_SI_A",
 			new String[] {
-				Long.class.getName(), String.class.getName(),
+				String.class.getName(), String.class.getName(),
 				String.class.getName(), Boolean.class.getName(),
 				
 			Integer.class.getName(), Integer.class.getName(),
 				OrderByComparator.class.getName()
 			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_PI_SI_A =
+	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_PI_SI_A =
 		new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByARLI_PI_SI_A",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByARLU_PI_SI_A",
 			new String[] {
-				Long.class.getName(), String.class.getName(),
+				String.class.getName(), String.class.getName(),
 				String.class.getName(), Boolean.class.getName()
 			},
-			LicenseKeyModelImpl.ASSETRECEIPTLICENSEID_COLUMN_BITMASK |
+			LicenseKeyModelImpl.ASSETRECEIPTLICENSEUUID_COLUMN_BITMASK |
 			LicenseKeyModelImpl.PRODUCTID_COLUMN_BITMASK |
 			LicenseKeyModelImpl.SERVERID_COLUMN_BITMASK |
 			LicenseKeyModelImpl.ACTIVE_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_ARLI_PI_SI_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
+	public static final FinderPath FINDER_PATH_COUNT_BY_ARLU_PI_SI_A = new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByARLI_PI_SI_A",
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByARLU_PI_SI_A",
 			new String[] {
-				Long.class.getName(), String.class.getName(),
+				String.class.getName(), String.class.getName(),
 				String.class.getName(), Boolean.class.getName()
 			});
 
 	/**
-	 * Returns all the license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	 * Returns all the license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
 	 * @return the matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_PI_SI_A(long assetReceiptLicenseId,
+	public List<LicenseKey> findByARLU_PI_SI_A(String assetReceiptLicenseUuid,
 		String productId, String serverId, boolean active) {
-		return findByARLI_PI_SI_A(assetReceiptLicenseId, productId, serverId,
+		return findByARLU_PI_SI_A(assetReceiptLicenseUuid, productId, serverId,
 			active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
-	 * Returns a range of all the license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	 * Returns a range of all the license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
@@ -7950,20 +8551,20 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @return the range of matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_PI_SI_A(long assetReceiptLicenseId,
+	public List<LicenseKey> findByARLU_PI_SI_A(String assetReceiptLicenseUuid,
 		String productId, String serverId, boolean active, int start, int end) {
-		return findByARLI_PI_SI_A(assetReceiptLicenseId, productId, serverId,
+		return findByARLU_PI_SI_A(assetReceiptLicenseUuid, productId, serverId,
 			active, start, end, null);
 	}
 
 	/**
-	 * Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	 * Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
@@ -7973,21 +8574,21 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @return the ordered range of matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_PI_SI_A(long assetReceiptLicenseId,
+	public List<LicenseKey> findByARLU_PI_SI_A(String assetReceiptLicenseUuid,
 		String productId, String serverId, boolean active, int start, int end,
 		OrderByComparator<LicenseKey> orderByComparator) {
-		return findByARLI_PI_SI_A(assetReceiptLicenseId, productId, serverId,
+		return findByARLU_PI_SI_A(assetReceiptLicenseUuid, productId, serverId,
 			active, start, end, orderByComparator, true);
 	}
 
 	/**
-	 * Returns an ordered range of all the license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	 * Returns an ordered range of all the license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LicenseKeyModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
@@ -7998,7 +8599,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @return the ordered range of matching license keies
 	 */
 	@Override
-	public List<LicenseKey> findByARLI_PI_SI_A(long assetReceiptLicenseId,
+	public List<LicenseKey> findByARLU_PI_SI_A(String assetReceiptLicenseUuid,
 		String productId, String serverId, boolean active, int start, int end,
 		OrderByComparator<LicenseKey> orderByComparator,
 		boolean retrieveFromCache) {
@@ -8009,15 +8610,15 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 				(orderByComparator == null)) {
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_PI_SI_A;
+			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_PI_SI_A;
 			finderArgs = new Object[] {
-					assetReceiptLicenseId, productId, serverId, active
+					assetReceiptLicenseUuid, productId, serverId, active
 				};
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLI_PI_SI_A;
+			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_ARLU_PI_SI_A;
 			finderArgs = new Object[] {
-					assetReceiptLicenseId, productId, serverId, active,
+					assetReceiptLicenseUuid, productId, serverId, active,
 					
 					start, end, orderByComparator
 				};
@@ -8031,7 +8632,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			if ((list != null) && !list.isEmpty()) {
 				for (LicenseKey licenseKey : list) {
-					if ((assetReceiptLicenseId != licenseKey.getAssetReceiptLicenseId()) ||
+					if (!Objects.equals(assetReceiptLicenseUuid,
+								licenseKey.getAssetReceiptLicenseUuid()) ||
 							!Objects.equals(productId, licenseKey.getProductId()) ||
 							!Objects.equals(serverId, licenseKey.getServerId()) ||
 							(active != licenseKey.getActive())) {
@@ -8056,37 +8658,49 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			query.append(_SQL_SELECT_LICENSEKEY_WHERE);
 
-			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_ASSETRECEIPTLICENSEID_2);
+			boolean bindAssetReceiptLicenseUuid = false;
+
+			if (assetReceiptLicenseUuid == null) {
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_1);
+			}
+			else if (assetReceiptLicenseUuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_3);
+			}
+			else {
+				bindAssetReceiptLicenseUuid = true;
+
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_2);
+			}
 
 			boolean bindProductId = false;
 
 			if (productId == null) {
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_1);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_1);
 			}
 			else if (productId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_3);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_3);
 			}
 			else {
 				bindProductId = true;
 
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_2);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_2);
 			}
 
 			boolean bindServerId = false;
 
 			if (serverId == null) {
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_1);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_1);
 			}
 			else if (serverId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_3);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_3);
 			}
 			else {
 				bindServerId = true;
 
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_2);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_2);
 			}
 
-			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_ACTIVE_2);
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ACTIVE_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
@@ -8108,7 +8722,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				qPos.add(assetReceiptLicenseId);
+				if (bindAssetReceiptLicenseUuid) {
+					qPos.add(assetReceiptLicenseUuid);
+				}
 
 				if (bindProductId) {
 					qPos.add(productId);
@@ -8151,9 +8767,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	 * Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
@@ -8162,11 +8778,11 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey findByARLI_PI_SI_A_First(long assetReceiptLicenseId,
+	public LicenseKey findByARLU_PI_SI_A_First(String assetReceiptLicenseUuid,
 		String productId, String serverId, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator)
 		throws NoSuchLicenseKeyException {
-		LicenseKey licenseKey = fetchByARLI_PI_SI_A_First(assetReceiptLicenseId,
+		LicenseKey licenseKey = fetchByARLU_PI_SI_A_First(assetReceiptLicenseUuid,
 				productId, serverId, active, orderByComparator);
 
 		if (licenseKey != null) {
@@ -8177,8 +8793,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("assetReceiptLicenseId=");
-		msg.append(assetReceiptLicenseId);
+		msg.append("assetReceiptLicenseUuid=");
+		msg.append(assetReceiptLicenseUuid);
 
 		msg.append(", productId=");
 		msg.append(productId);
@@ -8195,9 +8811,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the first license key in the ordered set where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	 * Returns the first license key in the ordered set where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
@@ -8205,10 +8821,10 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @return the first matching license key, or <code>null</code> if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey fetchByARLI_PI_SI_A_First(long assetReceiptLicenseId,
-		String productId, String serverId, boolean active,
-		OrderByComparator<LicenseKey> orderByComparator) {
-		List<LicenseKey> list = findByARLI_PI_SI_A(assetReceiptLicenseId,
+	public LicenseKey fetchByARLU_PI_SI_A_First(
+		String assetReceiptLicenseUuid, String productId, String serverId,
+		boolean active, OrderByComparator<LicenseKey> orderByComparator) {
+		List<LicenseKey> list = findByARLU_PI_SI_A(assetReceiptLicenseUuid,
 				productId, serverId, active, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -8219,9 +8835,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	 * Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
@@ -8230,11 +8846,11 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @throws NoSuchLicenseKeyException if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey findByARLI_PI_SI_A_Last(long assetReceiptLicenseId,
+	public LicenseKey findByARLU_PI_SI_A_Last(String assetReceiptLicenseUuid,
 		String productId, String serverId, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator)
 		throws NoSuchLicenseKeyException {
-		LicenseKey licenseKey = fetchByARLI_PI_SI_A_Last(assetReceiptLicenseId,
+		LicenseKey licenseKey = fetchByARLU_PI_SI_A_Last(assetReceiptLicenseUuid,
 				productId, serverId, active, orderByComparator);
 
 		if (licenseKey != null) {
@@ -8245,8 +8861,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("assetReceiptLicenseId=");
-		msg.append(assetReceiptLicenseId);
+		msg.append("assetReceiptLicenseUuid=");
+		msg.append(assetReceiptLicenseUuid);
 
 		msg.append(", productId=");
 		msg.append(productId);
@@ -8263,9 +8879,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the last license key in the ordered set where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	 * Returns the last license key in the ordered set where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
@@ -8273,17 +8889,17 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @return the last matching license key, or <code>null</code> if a matching license key could not be found
 	 */
 	@Override
-	public LicenseKey fetchByARLI_PI_SI_A_Last(long assetReceiptLicenseId,
+	public LicenseKey fetchByARLU_PI_SI_A_Last(String assetReceiptLicenseUuid,
 		String productId, String serverId, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator) {
-		int count = countByARLI_PI_SI_A(assetReceiptLicenseId, productId,
+		int count = countByARLU_PI_SI_A(assetReceiptLicenseUuid, productId,
 				serverId, active);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<LicenseKey> list = findByARLI_PI_SI_A(assetReceiptLicenseId,
+		List<LicenseKey> list = findByARLU_PI_SI_A(assetReceiptLicenseUuid,
 				productId, serverId, active, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -8294,10 +8910,10 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	 * Returns the license keies before and after the current license key in the ordered set where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	 *
 	 * @param licenseKeyId the primary key of the current license key
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
@@ -8306,8 +8922,8 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	 * @throws NoSuchLicenseKeyException if a license key with the primary key could not be found
 	 */
 	@Override
-	public LicenseKey[] findByARLI_PI_SI_A_PrevAndNext(long licenseKeyId,
-		long assetReceiptLicenseId, String productId, String serverId,
+	public LicenseKey[] findByARLU_PI_SI_A_PrevAndNext(long licenseKeyId,
+		String assetReceiptLicenseUuid, String productId, String serverId,
 		boolean active, OrderByComparator<LicenseKey> orderByComparator)
 		throws NoSuchLicenseKeyException {
 		LicenseKey licenseKey = findByPrimaryKey(licenseKeyId);
@@ -8319,14 +8935,14 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			LicenseKey[] array = new LicenseKeyImpl[3];
 
-			array[0] = getByARLI_PI_SI_A_PrevAndNext(session, licenseKey,
-					assetReceiptLicenseId, productId, serverId, active,
+			array[0] = getByARLU_PI_SI_A_PrevAndNext(session, licenseKey,
+					assetReceiptLicenseUuid, productId, serverId, active,
 					orderByComparator, true);
 
 			array[1] = licenseKey;
 
-			array[2] = getByARLI_PI_SI_A_PrevAndNext(session, licenseKey,
-					assetReceiptLicenseId, productId, serverId, active,
+			array[2] = getByARLU_PI_SI_A_PrevAndNext(session, licenseKey,
+					assetReceiptLicenseUuid, productId, serverId, active,
 					orderByComparator, false);
 
 			return array;
@@ -8339,9 +8955,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		}
 	}
 
-	protected LicenseKey getByARLI_PI_SI_A_PrevAndNext(Session session,
-		LicenseKey licenseKey, long assetReceiptLicenseId, String productId,
-		String serverId, boolean active,
+	protected LicenseKey getByARLU_PI_SI_A_PrevAndNext(Session session,
+		LicenseKey licenseKey, String assetReceiptLicenseUuid,
+		String productId, String serverId, boolean active,
 		OrderByComparator<LicenseKey> orderByComparator, boolean previous) {
 		StringBundler query = null;
 
@@ -8356,37 +8972,49 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		query.append(_SQL_SELECT_LICENSEKEY_WHERE);
 
-		query.append(_FINDER_COLUMN_ARLI_PI_SI_A_ASSETRECEIPTLICENSEID_2);
+		boolean bindAssetReceiptLicenseUuid = false;
+
+		if (assetReceiptLicenseUuid == null) {
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_1);
+		}
+		else if (assetReceiptLicenseUuid.equals(StringPool.BLANK)) {
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_3);
+		}
+		else {
+			bindAssetReceiptLicenseUuid = true;
+
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_2);
+		}
 
 		boolean bindProductId = false;
 
 		if (productId == null) {
-			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_1);
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_1);
 		}
 		else if (productId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_3);
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_3);
 		}
 		else {
 			bindProductId = true;
 
-			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_2);
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_2);
 		}
 
 		boolean bindServerId = false;
 
 		if (serverId == null) {
-			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_1);
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_1);
 		}
 		else if (serverId.equals(StringPool.BLANK)) {
-			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_3);
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_3);
 		}
 		else {
 			bindServerId = true;
 
-			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_2);
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_2);
 		}
 
-		query.append(_FINDER_COLUMN_ARLI_PI_SI_A_ACTIVE_2);
+		query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ACTIVE_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
@@ -8456,7 +9084,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		QueryPos qPos = QueryPos.getInstance(q);
 
-		qPos.add(assetReceiptLicenseId);
+		if (bindAssetReceiptLicenseUuid) {
+			qPos.add(assetReceiptLicenseUuid);
+		}
 
 		if (bindProductId) {
 			qPos.add(productId);
@@ -8487,39 +9117,39 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	}
 
 	/**
-	 * Removes all the license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63; from the database.
+	 * Removes all the license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63; from the database.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
 	 */
 	@Override
-	public void removeByARLI_PI_SI_A(long assetReceiptLicenseId,
+	public void removeByARLU_PI_SI_A(String assetReceiptLicenseUuid,
 		String productId, String serverId, boolean active) {
-		for (LicenseKey licenseKey : findByARLI_PI_SI_A(assetReceiptLicenseId,
-				productId, serverId, active, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null)) {
+		for (LicenseKey licenseKey : findByARLU_PI_SI_A(
+				assetReceiptLicenseUuid, productId, serverId, active,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 			remove(licenseKey);
 		}
 	}
 
 	/**
-	 * Returns the number of license keies where assetReceiptLicenseId = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
+	 * Returns the number of license keies where assetReceiptLicenseUuid = &#63; and productId = &#63; and serverId = &#63; and active = &#63;.
 	 *
-	 * @param assetReceiptLicenseId the asset receipt license ID
+	 * @param assetReceiptLicenseUuid the asset receipt license uuid
 	 * @param productId the product ID
 	 * @param serverId the server ID
 	 * @param active the active
 	 * @return the number of matching license keies
 	 */
 	@Override
-	public int countByARLI_PI_SI_A(long assetReceiptLicenseId,
+	public int countByARLU_PI_SI_A(String assetReceiptLicenseUuid,
 		String productId, String serverId, boolean active) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_ARLI_PI_SI_A;
+		FinderPath finderPath = FINDER_PATH_COUNT_BY_ARLU_PI_SI_A;
 
 		Object[] finderArgs = new Object[] {
-				assetReceiptLicenseId, productId, serverId, active
+				assetReceiptLicenseUuid, productId, serverId, active
 			};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
@@ -8529,37 +9159,49 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 			query.append(_SQL_COUNT_LICENSEKEY_WHERE);
 
-			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_ASSETRECEIPTLICENSEID_2);
+			boolean bindAssetReceiptLicenseUuid = false;
+
+			if (assetReceiptLicenseUuid == null) {
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_1);
+			}
+			else if (assetReceiptLicenseUuid.equals(StringPool.BLANK)) {
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_3);
+			}
+			else {
+				bindAssetReceiptLicenseUuid = true;
+
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_2);
+			}
 
 			boolean bindProductId = false;
 
 			if (productId == null) {
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_1);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_1);
 			}
 			else if (productId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_3);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_3);
 			}
 			else {
 				bindProductId = true;
 
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_2);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_2);
 			}
 
 			boolean bindServerId = false;
 
 			if (serverId == null) {
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_1);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_1);
 			}
 			else if (serverId.equals(StringPool.BLANK)) {
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_3);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_3);
 			}
 			else {
 				bindServerId = true;
 
-				query.append(_FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_2);
+				query.append(_FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_2);
 			}
 
-			query.append(_FINDER_COLUMN_ARLI_PI_SI_A_ACTIVE_2);
+			query.append(_FINDER_COLUMN_ARLU_PI_SI_A_ACTIVE_2);
 
 			String sql = query.toString();
 
@@ -8572,7 +9214,9 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 				QueryPos qPos = QueryPos.getInstance(q);
 
-				qPos.add(assetReceiptLicenseId);
+				if (bindAssetReceiptLicenseUuid) {
+					qPos.add(assetReceiptLicenseUuid);
+				}
 
 				if (bindProductId) {
 					qPos.add(productId);
@@ -8601,15 +9245,19 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_ARLI_PI_SI_A_ASSETRECEIPTLICENSEID_2 =
-		"licenseKey.assetReceiptLicenseId = ? AND ";
-	private static final String _FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_1 = "licenseKey.productId IS NULL AND ";
-	private static final String _FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_2 = "licenseKey.productId = ? AND ";
-	private static final String _FINDER_COLUMN_ARLI_PI_SI_A_PRODUCTID_3 = "(licenseKey.productId IS NULL OR licenseKey.productId = '') AND ";
-	private static final String _FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_1 = "licenseKey.serverId IS NULL AND ";
-	private static final String _FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_2 = "licenseKey.serverId = ? AND ";
-	private static final String _FINDER_COLUMN_ARLI_PI_SI_A_SERVERID_3 = "(licenseKey.serverId IS NULL OR licenseKey.serverId = '') AND ";
-	private static final String _FINDER_COLUMN_ARLI_PI_SI_A_ACTIVE_2 = "licenseKey.active = ?";
+	private static final String _FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_1 =
+		"licenseKey.assetReceiptLicenseUuid IS NULL AND ";
+	private static final String _FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_2 =
+		"licenseKey.assetReceiptLicenseUuid = ? AND ";
+	private static final String _FINDER_COLUMN_ARLU_PI_SI_A_ASSETRECEIPTLICENSEUUID_3 =
+		"(licenseKey.assetReceiptLicenseUuid IS NULL OR licenseKey.assetReceiptLicenseUuid = '') AND ";
+	private static final String _FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_1 = "licenseKey.productId IS NULL AND ";
+	private static final String _FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_2 = "licenseKey.productId = ? AND ";
+	private static final String _FINDER_COLUMN_ARLU_PI_SI_A_PRODUCTID_3 = "(licenseKey.productId IS NULL OR licenseKey.productId = '') AND ";
+	private static final String _FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_1 = "licenseKey.serverId IS NULL AND ";
+	private static final String _FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_2 = "licenseKey.serverId = ? AND ";
+	private static final String _FINDER_COLUMN_ARLU_PI_SI_A_SERVERID_3 = "(licenseKey.serverId IS NULL OR licenseKey.serverId = '') AND ";
+	private static final String _FINDER_COLUMN_ARLU_PI_SI_A_ACTIVE_2 = "licenseKey.active = ?";
 	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_OEI_LET_C_A =
 		new FinderPath(LicenseKeyModelImpl.ENTITY_CACHE_ENABLED,
 			LicenseKeyModelImpl.FINDER_CACHE_ENABLED, LicenseKeyImpl.class,
@@ -10047,6 +10695,10 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		licenseKey.setNew(true);
 		licenseKey.setPrimaryKey(licenseKeyId);
 
+		String uuid = PortalUUIDUtil.generate();
+
+		licenseKey.setUuid(uuid);
+
 		return licenseKey;
 	}
 
@@ -10143,6 +10795,12 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 
 		LicenseKeyModelImpl licenseKeyModelImpl = (LicenseKeyModelImpl)licenseKey;
 
+		if (Validator.isNull(licenseKey.getUuid())) {
+			String uuid = PortalUUIDUtil.generate();
+
+			licenseKey.setUuid(uuid);
+		}
+
 		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
@@ -10193,9 +10851,13 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		}
 		else
 		 if (isNew) {
-			Object[] args = new Object[] {
-					licenseKeyModelImpl.getLicenseKeySetId()
-				};
+			Object[] args = new Object[] { licenseKeyModelImpl.getUuid() };
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+				args);
+
+			args = new Object[] { licenseKeyModelImpl.getLicenseKeySetId() };
 
 			finderCache.removeResult(FINDER_PATH_COUNT_BY_LICENSEKEYSETID, args);
 			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_LICENSEKEYSETID,
@@ -10223,12 +10885,21 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 				args);
 
 			args = new Object[] {
-					licenseKeyModelImpl.getAssetReceiptLicenseId(),
+					licenseKeyModelImpl.getUserId(),
+					licenseKeyModelImpl.getProductId()
+				};
+
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_U_PI, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_PI,
+				args);
+
+			args = new Object[] {
+					licenseKeyModelImpl.getAssetReceiptLicenseUuid(),
 					licenseKeyModelImpl.getActive()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLI_A, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_A,
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLU_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_A,
 				args);
 
 			args = new Object[] {
@@ -10259,13 +10930,13 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 				args);
 
 			args = new Object[] {
-					licenseKeyModelImpl.getAssetReceiptLicenseId(),
+					licenseKeyModelImpl.getAssetReceiptLicenseUuid(),
 					licenseKeyModelImpl.getComplimentary(),
 					licenseKeyModelImpl.getActive()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLI_C_A, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_C_A,
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLU_C_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_C_A,
 				args);
 
 			args = new Object[] {
@@ -10299,14 +10970,14 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 				args);
 
 			args = new Object[] {
-					licenseKeyModelImpl.getAssetReceiptLicenseId(),
+					licenseKeyModelImpl.getAssetReceiptLicenseUuid(),
 					licenseKeyModelImpl.getProductId(),
 					licenseKeyModelImpl.getServerId(),
 					licenseKeyModelImpl.getActive()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLI_PI_SI_A, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_PI_SI_A,
+			finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLU_PI_SI_A, args);
+			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_PI_SI_A,
 				args);
 
 			args = new Object[] {
@@ -10326,6 +10997,23 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		}
 
 		else {
+			if ((licenseKeyModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						licenseKeyModelImpl.getOriginalUuid()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+					args);
+
+				args = new Object[] { licenseKeyModelImpl.getUuid() };
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_UUID, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_UUID,
+					args);
+			}
+
 			if ((licenseKeyModelImpl.getColumnBitmask() &
 					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_LICENSEKEYSETID.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
@@ -10405,23 +11093,44 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			}
 
 			if ((licenseKeyModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_A.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_PI.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						licenseKeyModelImpl.getOriginalAssetReceiptLicenseId(),
-						licenseKeyModelImpl.getOriginalActive()
+						licenseKeyModelImpl.getOriginalUserId(),
+						licenseKeyModelImpl.getOriginalProductId()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLI_A, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_A,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_U_PI, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_PI,
 					args);
 
 				args = new Object[] {
-						licenseKeyModelImpl.getAssetReceiptLicenseId(),
+						licenseKeyModelImpl.getUserId(),
+						licenseKeyModelImpl.getProductId()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_U_PI, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_U_PI,
+					args);
+			}
+
+			if ((licenseKeyModelImpl.getColumnBitmask() &
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_A.getColumnBitmask()) != 0) {
+				Object[] args = new Object[] {
+						licenseKeyModelImpl.getOriginalAssetReceiptLicenseUuid(),
+						licenseKeyModelImpl.getOriginalActive()
+					};
+
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLU_A, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_A,
+					args);
+
+				args = new Object[] {
+						licenseKeyModelImpl.getAssetReceiptLicenseUuid(),
 						licenseKeyModelImpl.getActive()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLI_A, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_A,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLU_A, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_A,
 					args);
 			}
 
@@ -10489,25 +11198,25 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			}
 
 			if ((licenseKeyModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_C_A.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_C_A.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						licenseKeyModelImpl.getOriginalAssetReceiptLicenseId(),
+						licenseKeyModelImpl.getOriginalAssetReceiptLicenseUuid(),
 						licenseKeyModelImpl.getOriginalComplimentary(),
 						licenseKeyModelImpl.getOriginalActive()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLI_C_A, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_C_A,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLU_C_A, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_C_A,
 					args);
 
 				args = new Object[] {
-						licenseKeyModelImpl.getAssetReceiptLicenseId(),
+						licenseKeyModelImpl.getAssetReceiptLicenseUuid(),
 						licenseKeyModelImpl.getComplimentary(),
 						licenseKeyModelImpl.getActive()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLI_C_A, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_C_A,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLU_C_A, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_C_A,
 					args);
 			}
 
@@ -10581,27 +11290,27 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 			}
 
 			if ((licenseKeyModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_PI_SI_A.getColumnBitmask()) != 0) {
+					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_PI_SI_A.getColumnBitmask()) != 0) {
 				Object[] args = new Object[] {
-						licenseKeyModelImpl.getOriginalAssetReceiptLicenseId(),
+						licenseKeyModelImpl.getOriginalAssetReceiptLicenseUuid(),
 						licenseKeyModelImpl.getOriginalProductId(),
 						licenseKeyModelImpl.getOriginalServerId(),
 						licenseKeyModelImpl.getOriginalActive()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLI_PI_SI_A, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_PI_SI_A,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLU_PI_SI_A, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_PI_SI_A,
 					args);
 
 				args = new Object[] {
-						licenseKeyModelImpl.getAssetReceiptLicenseId(),
+						licenseKeyModelImpl.getAssetReceiptLicenseUuid(),
 						licenseKeyModelImpl.getProductId(),
 						licenseKeyModelImpl.getServerId(),
 						licenseKeyModelImpl.getActive()
 					};
 
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLI_PI_SI_A, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLI_PI_SI_A,
+				finderCache.removeResult(FINDER_PATH_COUNT_BY_ARLU_PI_SI_A, args);
+				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ARLU_PI_SI_A,
 					args);
 			}
 
@@ -10649,6 +11358,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		licenseKeyImpl.setNew(licenseKey.isNew());
 		licenseKeyImpl.setPrimaryKey(licenseKey.getPrimaryKey());
 
+		licenseKeyImpl.setUuid(licenseKey.getUuid());
 		licenseKeyImpl.setLicenseKeyId(licenseKey.getLicenseKeyId());
 		licenseKeyImpl.setUserId(licenseKey.getUserId());
 		licenseKeyImpl.setUserName(licenseKey.getUserName());
@@ -10657,7 +11367,7 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 		licenseKeyImpl.setModifiedUserName(licenseKey.getModifiedUserName());
 		licenseKeyImpl.setModifiedDate(licenseKey.getModifiedDate());
 		licenseKeyImpl.setLicenseKeySetId(licenseKey.getLicenseKeySetId());
-		licenseKeyImpl.setAssetReceiptLicenseId(licenseKey.getAssetReceiptLicenseId());
+		licenseKeyImpl.setAssetReceiptLicenseUuid(licenseKey.getAssetReceiptLicenseUuid());
 		licenseKeyImpl.setAccountEntryId(licenseKey.getAccountEntryId());
 		licenseKeyImpl.setOrderEntryId(licenseKey.getOrderEntryId());
 		licenseKeyImpl.setOfferingEntryId(licenseKey.getOfferingEntryId());
@@ -11109,6 +11819,6 @@ public class LicenseKeyPersistenceImpl extends BasePersistenceImpl<LicenseKey>
 	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No LicenseKey exists with the key {";
 	private static final Log _log = LogFactoryUtil.getLog(LicenseKeyPersistenceImpl.class);
 	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"key", "active"
+				"uuid", "key", "active"
 			});
 }

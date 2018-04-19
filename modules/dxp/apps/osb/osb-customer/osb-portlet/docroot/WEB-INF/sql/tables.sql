@@ -290,6 +290,7 @@ create table OSB_LicenseEntry (
 );
 
 create table OSB_LicenseKey (
+	uuid_ VARCHAR(75) null,
 	licenseKeyId LONG not null primary key,
 	userId LONG,
 	userName VARCHAR(75) null,
@@ -298,7 +299,7 @@ create table OSB_LicenseKey (
 	modifiedUserName VARCHAR(75) null,
 	modifiedDate DATE null,
 	licenseKeySetId LONG,
-	assetReceiptLicenseId LONG,
+	assetReceiptLicenseUuid VARCHAR(75) null,
 	accountEntryId LONG,
 	orderEntryId LONG,
 	offeringEntryId LONG,
