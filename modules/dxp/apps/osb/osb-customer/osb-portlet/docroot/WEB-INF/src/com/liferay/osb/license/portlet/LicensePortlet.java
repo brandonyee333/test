@@ -309,8 +309,6 @@ public class LicensePortlet extends MVCPortlet {
 
 		long licenseKeySetId = ParamUtil.getLong(
 			actionRequest, "licenseKeySetId");
-		long assetReceiptLicenseId = ParamUtil.getLong(
-			actionRequest, "assetReceiptLicenseId");
 		String name = ParamUtil.getString(actionRequest, "name");
 		long offeringEntryId = ParamUtil.getLong(
 			actionRequest, "offeringEntryId");
@@ -367,48 +365,26 @@ public class LicensePortlet extends MVCPortlet {
 		}
 
 		if (licenseKeyId <= 0) {
-			if (assetReceiptLicenseId > 0) {
-				/*LicenseKey licenseKey = LicenseKeyServiceUtil.addLicenseKey(
-					themeDisplay.getUserId(), assetReceiptLicenseId, owner,
-					description,
-					hostNames.toArray(new String[hostNames.size()]),
-					ipAddresses.toArray(new String[ipAddresses.size()]),
-					macAddresses.toArray(new String[macAddresses.size()]),
-					serverIds, startDateMonth, startDateDay, startDateYear);
+			LicenseKey licenseKey = LicenseKeyServiceUtil.addLicenseKey(
+				themeDisplay.getUserId(), licenseKeySetId, name,
+				offeringEntryId, licenseEntryId, 0, productVersion, clusterId,
+				owner, maxServers, maxHttpSessions, description,
+				hostNames.toArray(new String[hostNames.size()]),
+				ipAddresses.toArray(new String[ipAddresses.size()]),
+				macAddresses.toArray(new String[macAddresses.size()]),
+				serverIds, startDateMonth, startDateDay, startDateYear, false,
+				true);
 
-				actionRequest.setAttribute(
-					"licenseKeyId", licenseKey.getLicenseKeyId());*/
-			}
-			else {
-				LicenseKey licenseKey = LicenseKeyServiceUtil.addLicenseKey(
-					themeDisplay.getUserId(), licenseKeySetId, name,
-					offeringEntryId, licenseEntryId, 0, productVersion,
-					clusterId, owner, maxServers, maxHttpSessions, description,
-					hostNames.toArray(new String[hostNames.size()]),
-					ipAddresses.toArray(new String[ipAddresses.size()]),
-					macAddresses.toArray(new String[macAddresses.size()]),
-					serverIds, startDateMonth, startDateDay, startDateYear,
-					false, true);
-
-				actionRequest.setAttribute(
-					"clusterId", licenseKey.getClusterId());
-				actionRequest.setAttribute(
-					"licenseKeySetId", licenseKey.getLicenseKeySetId());
-				actionRequest.setAttribute(
-					"offeringEntryId", licenseKey.getOfferingEntryId());
-			}
+			actionRequest.setAttribute("clusterId", licenseKey.getClusterId());
+			actionRequest.setAttribute(
+				"licenseKeySetId", licenseKey.getLicenseKeySetId());
+			actionRequest.setAttribute(
+				"offeringEntryId", licenseKey.getOfferingEntryId());
 		}
 		else {
-			if (assetReceiptLicenseId > 0) {
-				LicenseKeyServiceUtil.updateLicenseKey(
-					themeDisplay.getUserId(), licenseKeyId,
-					assetReceiptLicenseId, active);
-			}
-			else {
-				LicenseKeyServiceUtil.updateLicenseKey(
-					themeDisplay.getUserId(), licenseKeyId, licenseKeySetId,
-					offeringEntryId, name, active);
-			}
+			LicenseKeyServiceUtil.updateLicenseKey(
+				themeDisplay.getUserId(), licenseKeyId, licenseKeySetId,
+				offeringEntryId, name, active);
 		}
 	}
 
@@ -587,8 +563,7 @@ public class LicensePortlet extends MVCPortlet {
 		LicenseKey licenseKey = LicenseKeyServiceUtil.getLicenseKey(
 			licenseKeyId);
 
-		if ((licenseKey.getAssetReceiptLicenseId() <= 0) &&
-			!OrganizationLocalServiceUtil.hasUserOrganization(
+		if (!OrganizationLocalServiceUtil.hasUserOrganization(
 				themeDisplay.getUserId(),
 				OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 

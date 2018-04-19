@@ -47,7 +47,7 @@
 
 		<reference entity="ListType" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="LicenseKey" remote-service="true">
+	<entity local-service="true" name="LicenseKey" remote-service="true" uuid="true">
 
 		<!-- PK fields -->
 
@@ -65,7 +65,7 @@
 		<!-- Other fields -->
 
 		<column name="licenseKeySetId" type="long" />
-		<column name="assetReceiptLicenseId" type="long" />
+		<column name="assetReceiptLicenseUuid" type="String" />
 		<column name="accountEntryId" type="long" />
 		<column name="orderEntryId" type="long" />
 		<column name="offeringEntryId" type="long" />
@@ -120,8 +120,12 @@
 			<finder-column name="userId" />
 			<finder-column name="accountEntryId" />
 		</finder>
-		<finder name="ARLI_A" return-type="Collection">
-			<finder-column name="assetReceiptLicenseId" />
+		<finder name="U_PI" return-type="Collection">
+			<finder-column name="userId" />
+			<finder-column name="productId" />
+		</finder>
+		<finder name="ARLU_A" return-type="Collection">
+			<finder-column name="assetReceiptLicenseUuid" />
 			<finder-column name="active" />
 		</finder>
 		<finder name="OEI_CI" return-type="Collection">
@@ -136,13 +140,8 @@
 			<finder-column name="productId" />
 			<finder-column name="serverId" />
 		</finder>
-		<finder name="U_ARLI_PI" return-type="Collection">
-			<finder-column name="userId" />
-			<finder-column name="assetReceiptLicenseId" comparator=">" />
-			<finder-column name="productId" />
-		</finder>
-		<finder name="ARLI_C_A" return-type="Collection">
-			<finder-column name="assetReceiptLicenseId" />
+		<finder name="ARLU_C_A" return-type="Collection">
+			<finder-column name="assetReceiptLicenseUuid" />
 			<finder-column name="complimentary" />
 			<finder-column name="active" />
 		</finder>
@@ -161,8 +160,8 @@
 			<finder-column name="serverId" />
 			<finder-column name="active" />
 		</finder>
-		<finder name="ARLI_PI_SI_A" return-type="Collection">
-			<finder-column name="assetReceiptLicenseId" />
+		<finder name="ARLU_PI_SI_A" return-type="Collection">
+			<finder-column name="assetReceiptLicenseUuid" />
 			<finder-column name="productId" />
 			<finder-column name="serverId" />
 			<finder-column name="active" />

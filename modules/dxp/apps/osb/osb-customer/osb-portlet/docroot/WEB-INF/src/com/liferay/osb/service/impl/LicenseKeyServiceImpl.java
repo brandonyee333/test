@@ -30,6 +30,7 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -104,28 +105,56 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			true);
 	}
 
+	@JSONWebService
 	public LicenseKey addLicenseKey(
-			long userId, long assetReceiptLicenseId, String licenseEntryType,
-			String productEntryName, String productId, int productVersion,
-			String owner, long maxUsers, String description, String[] hostNames,
-			String[] ipAddresses, String[] macAddresses, String[] serverIds,
-			Date startDate, Date expirationDate)
+			String userUuid, String assetReceiptLicenseUuid,
+			String licenseEntryType, String productEntryName, String productId,
+			int productVersion, String owner, long maxUsers, String description,
+			String hostName, String ipAddresses, String macAddresses,
+			String serverId, Date startDate, Date expirationDate)
 		throws PortalException {
 
-		OSBAssetReceiptPermission.check(
-			getPermissionChecker(), OSBActionKeys.ADD_LICENSE);
+		validateJSONWebServicePermissions();
+
+		User user = userLocalService.getUserByUuidAndCompanyId(
+			userUuid, OSBConstants.COMPANY_ID);
 
 		return licenseKeyLocalService.addLicenseKey(
-			userId, assetReceiptLicenseId, licenseEntryType, productEntryName,
-			productId, productVersion, owner, maxUsers, description, hostNames,
-			ipAddresses, macAddresses, serverIds, startDate, expirationDate);
+			user.getUserId(), assetReceiptLicenseUuid, licenseEntryType,
+			productEntryName, productId, productVersion, owner, maxUsers,
+			description, hostName, ipAddresses, macAddresses, serverId,
+			startDate, expirationDate);
+	}
+
+	@JSONWebService
+	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
+			String assetReceiptLicenseUuid, boolean complimentary,
+			boolean active)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getAssetReceiptLicenseLicenseKeys(
+			assetReceiptLicenseUuid, complimentary, active);
+	}
+
+	@JSONWebService
+	public int getAssetReceiptLicenseLicenseKeysCount(
+			String assetReceiptLicenseUuid, boolean complimentary,
+			boolean active)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getAssetReceiptLicenseLicenseKeysCount(
+			assetReceiptLicenseUuid, complimentary, active);
 	}
 
 	public LicenseKey getLicenseKey(long licenseKeyId) throws PortalException {
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
 
-		if (licenseKey.getAssetReceiptLicenseId() > 0) {
+		if (Validator.isNotNull(licenseKey.getAssetReceiptLicenseUuid())) {
 			OSBAssetReceiptPermission.check(
 				getPermissionChecker(), OSBActionKeys.VIEW);
 		}
@@ -135,6 +164,13 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		return licenseKey;
+	}
+
+	@JSONWebService
+	public LicenseKey getLicenseKey(String uuid) throws PortalException {
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getLicenseKeyByUuid(uuid);
 	}
 
 	public List<LicenseKey> getLicenseKeys(long userId, String productId)
@@ -187,17 +223,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	public LicenseKey renewLicenseKey(
-			long licenseKeyId, Date startDate, Date expirationDate)
-		throws PortalException {
-
-		OSBAssetReceiptPermission.check(
-			getPermissionChecker(), OSBActionKeys.RENEW_LICENSE);
-
-		return licenseKeyLocalService.renewLicenseKey(
-			getUserId(), licenseKeyId, startDate, expirationDate);
-	}
-
-	public LicenseKey renewLicenseKey(
 			long licenseKeyId, Date startDate, int renewTime)
 		throws Exception {
 
@@ -210,6 +235,21 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		return licenseKeyLocalService.renewLicenseKey(
 			getUserId(), licenseKeyId, startDate, renewTime);
+	}
+
+	@JSONWebService
+	public LicenseKey renewLicenseKey(
+			String uuid, Date startDate, Date expirationDate)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKeyByUuid(
+			uuid);
+
+		return licenseKeyLocalService.renewLicenseKey(
+			getUserId(), licenseKey.getLicenseKeyId(), startDate,
+			expirationDate);
 	}
 
 	public List<LicenseKey> search(
@@ -303,19 +343,13 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		return licenseKeyLocalService.searchCount(keywords, params);
 	}
 
-	public void updateLicenseKey(
-			long userId, long licenseKeyId, long assetReceiptLicenseId,
-			boolean active)
+	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
 		throws PortalException {
 
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
 
-		if (licenseKey.getAssetReceiptLicenseId() != assetReceiptLicenseId) {
-			OSBLicenseKeyPermission.check(
-				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_ADMIN);
-		}
-		else if (licenseKey.getActive() != active) {
+		if (licenseKey.getActive() != active) {
 			if (Validator.isNull(licenseKey.getServerId())) {
 				OSBLicenseKeyPermission.check(
 					getPermissionChecker(), licenseKey,
@@ -331,8 +365,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_BASIC);
 		}
 
-		licenseKeyLocalService.updateLicenseKey(
-			userId, licenseKeyId, assetReceiptLicenseId, active);
+		licenseKeyLocalService.updateLicenseKey(userId, licenseKeyId, active);
 	}
 
 	public void updateLicenseKey(
@@ -360,6 +393,36 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		licenseKeyLocalService.updateLicenseKey(
 			userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
 			active);
+	}
+
+	@JSONWebService
+	public void updateLicenseKey(String userUuid, String uuid, boolean active)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		User user = userLocalService.getUserByUuidAndCompanyId(
+			userUuid, OSBConstants.COMPANY_ID);
+
+		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKeyByUuid(
+			uuid);
+
+		licenseKeyLocalService.updateLicenseKey(
+			user.getUserId(), licenseKey.getLicenseKeyId(), active);
+	}
+
+	@JSONWebService
+	public void updateLicenseKeys(
+			String assetReceiptLicenseUuid, boolean active)
+		throws PortalException {
+
+		List<LicenseKey> licenseKeys = licenseKeyPersistence.findByARLU_A(
+			assetReceiptLicenseUuid, !active);
+
+		for (LicenseKey licenseKey : licenseKeys) {
+			licenseKeyLocalService.updateLicenseKey(
+				getUserId(), licenseKey.getLicenseKeyId(), active);
+		}
 	}
 
 	protected void addPermissionParams(LinkedHashMap<String, Object> params)
@@ -422,6 +485,14 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		return false;
+	}
+
+	protected void validateJSONWebServicePermissions() throws PortalException {
+		if (!roleLocalService.hasUserRole(
+				getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			throw new PrincipalException();
+		}
 	}
 
 }

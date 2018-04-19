@@ -102,7 +102,7 @@ public class OSBConstants {
 
 	public static long USER_DEFAULT_USER_ID = 10161;
 
-	public static long USER_JSON_USER_ID = 154734;
+	public static long USER_JSON_USER_ID = 23463;
 
 	public static long USER_SUPPORT_PM_USER_ID = 100627579;
 

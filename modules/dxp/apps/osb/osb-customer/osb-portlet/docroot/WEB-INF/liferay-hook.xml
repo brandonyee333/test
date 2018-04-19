@@ -16,6 +16,14 @@
 			<param-value>json.service.api.lcs.token</param-value>
 		</init-param>
 	</servlet-filter>
+	<servlet-filter>
+		<servlet-filter-name>OSB Secure WEB JSON Filter</servlet-filter-name>
+		<servlet-filter-impl>com.liferay.osb.servlet.filters.OSBSecureJSONFilter</servlet-filter-impl>
+		<init-param>
+			<param-name>token_property</param-name>
+			<param-value>json.service.api.web.token</param-value>
+		</init-param>
+	</servlet-filter>
 	<servlet-filter-mapping>
 		<servlet-filter-name>OSB Secure LCS JSON Filter</servlet-filter-name>
 		<url-pattern>/api/jsonws/company/get-company-by-web-id/*</url-pattern>
@@ -32,6 +40,12 @@
 		<url-pattern>/api/secure/jsonws/user/add-organization-users/*</url-pattern>
 		<url-pattern>/api/secure/jsonws/user/get-organization-users/*</url-pattern>
 		<url-pattern>/api/secure/jsonws/user/get-user-by-email-address/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</servlet-filter-mapping>
+	<servlet-filter-mapping>
+		<servlet-filter-name>OSB Secure WEB JSON Filter</servlet-filter-name>
+		<url-pattern>/api/jsonws/osb-portlet.licensekey/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</servlet-filter-mapping>
