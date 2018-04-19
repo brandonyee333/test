@@ -289,7 +289,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					taglibOnChange = renderResponse.getNamespace() + "updateLicenseKey(document." + renderResponse.getNamespace() + "fm." + renderResponse.getNamespace() + "productEntryId.value, this.value, '', 0);";
 					%>
 
-					<aui:select name="productVersion" onChange="<%= taglibOnChange %>">
+					<aui:select label="" name="productVersion" onChange="<%= taglibOnChange %>">
 						<aui:option value="" />
 
 						<%

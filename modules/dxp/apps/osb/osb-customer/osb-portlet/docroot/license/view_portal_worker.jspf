@@ -29,66 +29,14 @@ searchURL.setParameter("tabs1", tabs1);
 pageContext.setAttribute("searchURL", searchURL);
 %>
 
-<div class="content-column w33">
-	<div class="content-column-content left-column">
-		<a class="display-b paragraph">
-			<div class="ha-c">
-				<div class="display-ib">
-					<div class="txt-b">
-						&nbsp;
-					</div>
-
-					<div class="txt-b txt-h1">
-						&nbsp;
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
-</div>
-
-<div class="content-column w33">
-	<div class="content-column-content middle-column">
-		<a class="display-b paragraph">
-			<div class="ha-c">
-				<div class="display-ib">
-					<div class="txt-b">
-						&nbsp;
-					</div>
-
-					<div class="txt-b txt-h1">
-						&nbsp;
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
-</div>
-
 <portlet:renderURL var="addLicenseKeyURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 	<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 </portlet:renderURL>
 
-<div class="content-column w33">
-	<div class="content-column-content right-column">
-		<a class="display-b paragraph" href="<%= addLicenseKeyURL %>">
-			<div class="ha-c">
-				<div class="display-ib">
-					<div class="txt-b">
-						<liferay-ui:message key="generate-new-license" />
-					</div>
-
-					<div class="txt-b txt-h1">
-						+
-					</div>
-				</div>
-			</div>
-		</a>
-	</div>
-</div>
-
-<div class="license-tabs"></div>
+<a href="<%= addLicenseKeyURL %>">
+	<liferay-ui:message key="generate-new-license" />+
+</a>
 
 <aui:form action="<%= searchURL.toString() %>" method="post" onSubmit="submitForm(this); return false;">
 	<liferay-portlet:renderURLParams varImpl="searchURL" />
@@ -156,9 +104,9 @@ pageContext.setAttribute("searchURL", searchURL);
 					}
 					%>
 
-					<span class="display-b btn-a <%= cssClass %>">
+					<div class="<%= cssClass %>">
 						<%= accountEntry.getName() %>
-					</span>
+					</div>
 				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text

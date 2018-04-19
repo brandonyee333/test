@@ -6,8 +6,6 @@
 	}
 
 	#toggle_id_license_key_searchbasic input {
-		-moz-border-radius: 2px;
-		-webkit-border-radius: 2px;
 		border-radius: 2px;
 		font: 20px/1.33 Arial;
 		height: 32px;
@@ -28,22 +26,6 @@
 	.checkboxes-input-column {
 		display: table-cell;
 		width: 178px;
-	}
-
-	.content-column {
-		padding-top: 20px;
-	}
-
-	.aui-button-input, .btn {
-		&.disabled-btn,
-		&.disabled-btn:active,
-		&.disabled-btn:focus,
-		&.disabled-btn:hover {
-			background-color: #7B7C7F;
-			border-color: #7B7C7F;
-			color: #BABEC2;
-			cursor: default;
-		}
 	}
 
 	.highlight-cluster {
@@ -75,7 +57,7 @@
 
 	.license-customer {
 		.results-grid {
-			margin: 50px 50px 0 50px;
+			margin: 50px 50px 0;
 		}
 
 		.results-header {
@@ -83,7 +65,6 @@
 		}
 
 		.taglib-search-iterator {
-			*border-collapse: expression('separate', cellSpacing=0);
 			border-collapse: separate;
 			margin: 0 0 18px;
 
@@ -100,17 +81,8 @@
 		padding-bottom: 10px;
 	}
 
-	.license-tabs {
-		margin: 0 0 9px;
-		text-align: right;
-	}
-
 	.license-worker .taglib-search-iterator a {
 		color: #474A4B;
-	}
-
-	.m-lr-10-20 {
-		margin: 0 10px 0 20px;
 	}
 
 	.multiple-select {
@@ -138,10 +110,6 @@
 
 		a {
 			text-decoration: none;
-
-			&.btn-a {
-				color: #FFF;
-			}
 		}
 
 		td {
@@ -157,17 +125,6 @@
 		.greyout {
 			color: #C7C8C8;
 		}
-	}
-
-	.taglib-search-toggle {
-		padding: 0 20px;
-	}
-
-	.u-nfo-c {
-		color: #1D6799;
-		font-family: 'CartoGothicStd', Arial, san-serif;
-		font-size: 2.5em;
-		font-weight: bold;
 	}
 
 	.content-column-content {
@@ -197,28 +154,6 @@
 			width: 50vw;
 		}
 	}
-}
-
-.vp320 .license-customer .results-grid {
-	margin: 10px;
-}
-
-.vp320 td,
-.vp320 th,
-.vp480 td,
-.vp480 th {
-	font-size: 10px;
-	padding: 3px 3px;
-}
-
-.vp320 td,
-.vp320 th {
-	font-size: 8px;
-}
-
-.vp320 .u-nfo-c,
-.vp480 .u-nfo-c {
-	font-size: 1.5em;
 }
 
 @media all and (max-width: 720px) {

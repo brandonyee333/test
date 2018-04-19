@@ -33,7 +33,7 @@ portletURL.setParameter("tabs1", tabs1);
 pageContext.setAttribute("portletURL", portletURL);
 %>
 
-<h1 class="nm section-heading">
+<h1 class="section-heading">
 	<liferay-ui:message key="license-management" />
 </h1>
 

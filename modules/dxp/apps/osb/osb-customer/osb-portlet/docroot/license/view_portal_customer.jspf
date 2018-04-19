@@ -59,32 +59,24 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 </div>
 
 <div class="content">
-	<div class="u-img unit">
-		<img src="<%= PortalUtil.getPathContext(request) %>/images/liferay_portal_ee.png" />
-	</div>
+	<img src="<%= PortalUtil.getPathContext(request) %>/images/liferay_portal_ee.png" />
 
-	<div class="m-lr-10-20">
-		<p class="m-0 u-nfo-c">
-			Liferay Portal EE
-		</p>
+	<div>
+		<h2>Liferay Portal EE</h2>
 
-		<p class="u-nfo-p">
-			<liferay-ui:message key="liferay-portal-is-an-enterprise-web-platform-for-building-business-solutions-that-deliver-immediate-results-and-long-term-value" />
-		</p>
+		<liferay-ui:message key="liferay-portal-is-an-enterprise-web-platform-for-building-business-solutions-that-deliver-immediate-results-and-long-term-value" />
 
-		<p>
-			<portlet:actionURL name="buyLicenseKey" var="buyLicenseKeyURL">
-				<portlet:param name="redirect" value="<%= currentURL %>" />
-			</portlet:actionURL>
+		<portlet:actionURL name="buyLicenseKey" var="buyLicenseKeyURL">
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+		</portlet:actionURL>
 
-			<a class="btn large-btn <%= osbTrialPurchased ? "disabled-btn" : "" %>" href="<%= buyLicenseKeyURL.toString() %>" <%= osbTrialPurchased ? "onClick=\'return false;'" : "" %>><liferay-ui:message key="buy" /></a>
+		<aui:button cssClass="large-btn" disabled="<%= osbTrialPurchased %>" href="<%= buyLicenseKeyURL.toString() %>" value="buy" />
 
-			<c:if test="<%= osbTrialPurchased %>">
-				<span class="info">
-					<liferay-ui:message arguments='<%= "mailto:sales@liferay.com" %>' key="a-sales-representative-will-contact-you-shortly-if-you-are-not-contacted-in-a-few-days-please-contact-sales" />
-				</span>
-			</c:if>
-		</p>
+		<c:if test="<%= osbTrialPurchased %>">
+			<span class="info">
+				<liferay-ui:message arguments='<%= "mailto:sales@liferay.com" %>' key="a-sales-representative-will-contact-you-shortly-if-you-are-not-contacted-in-a-few-days-please-contact-sales" />
+			</span>
+		</c:if>
 	</div>
 
 	<div class="license-customer">

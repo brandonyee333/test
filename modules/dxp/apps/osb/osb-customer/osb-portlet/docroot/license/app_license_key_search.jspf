@@ -94,7 +94,7 @@ Date lastEnabledDate = calendar.getTime();
 				<aui:button onClick="<%= taglibSelectCreateUser %>" value="choose" />
 			</td>
 			<td colspan="2">
-				<aui:select label="last-edited-by" name="<portlet:namespace /><%= displayTerms.MODIFIED_USER_ID %>">
+				<aui:select label="last-edited-by" name="<%= displayTerms.MODIFIED_USER_ID %>">
 					<aui:option value="" />
 					<aui:option label="me" selected="<%= user.getUserId() == displayTerms.getModifiedUserId() %>" value="<%= user.getUserId() %>" />
 

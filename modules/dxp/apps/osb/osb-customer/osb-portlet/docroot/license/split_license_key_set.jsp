@@ -269,6 +269,6 @@ String productEntryName = licenseKey.getProductEntryName();
 	<div>
 		<aui:button type="submit" value="save" />
 
-		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
+		<aui:button href="<%= backURL %>" value="cancel" />
 	</div>
 </aui:form>
