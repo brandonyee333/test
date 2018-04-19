@@ -436,7 +436,9 @@
 	</target>
 
 	<target depends="get-artifact-properties" if="download.artifact.wsdd" name="move-artifact-wsdd" unless="artifact.exclude">
-		<loadfile property="artifact.location.wsdd.dest">
+		<loadfile
+			property="artifact.location.wsdd.dest"
+		>
 			<filterchain>
 				<replaceregex pattern="\.jar$" replace="-wsdd.jar" />
 
@@ -445,7 +447,9 @@
 			<propertyresource name="artifact.location.dest" />
 		</loadfile>
 
-		<loadfile property="artifact.location.wsdd.src">
+		<loadfile
+			property="artifact.location.wsdd.src"
+		>
 			<filterchain>
 				<replaceregex pattern="\.jar$" replace="-wsdd.jar" />
 
