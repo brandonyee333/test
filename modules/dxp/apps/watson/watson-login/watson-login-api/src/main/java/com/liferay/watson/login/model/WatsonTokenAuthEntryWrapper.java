@@ -64,7 +64,8 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
-		attributes.put("active", isActive());
+		attributes.put("active", getActive());
+		attributes.put("loginIP", getLoginIP());
 		attributes.put("token", getToken());
 		attributes.put("expirationDate", getExpirationDate());
 		attributes.put("loginDate", getLoginDate());
@@ -109,6 +110,12 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 
 		if (active != null) {
 			setActive(active);
+		}
+
+		String loginIP = (String)attributes.get("loginIP");
+
+		if (loginIP != null) {
+			setLoginIP(loginIP);
 		}
 
 		String token = (String)attributes.get("token");
@@ -193,6 +200,16 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	@Override
 	public Date getLoginDate() {
 		return _watsonTokenAuthEntry.getLoginDate();
+	}
+
+	/**
+	* Returns the login ip of this watson token auth entry.
+	*
+	* @return the login ip of this watson token auth entry
+	*/
+	@Override
+	public java.lang.String getLoginIP() {
+		return _watsonTokenAuthEntry.getLoginIP();
 	}
 
 	/**
@@ -369,6 +386,16 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 	@Override
 	public void setLoginDate(Date loginDate) {
 		_watsonTokenAuthEntry.setLoginDate(loginDate);
+	}
+
+	/**
+	* Sets the login ip of this watson token auth entry.
+	*
+	* @param loginIP the login ip of this watson token auth entry
+	*/
+	@Override
+	public void setLoginIP(java.lang.String loginIP) {
+		_watsonTokenAuthEntry.setLoginIP(loginIP);
 	}
 
 	@Override

@@ -413,7 +413,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		if (WatsonTokenAuthEntryLocalServiceUtil.hasAuthenticatedSession(user)) {
+		String latestLoginIP = PortalUtil.getHttpServletRequest(portletRequest).getRemoteAddr();
+
+		if (WatsonTokenAuthEntryLocalServiceUtil.hasAuthenticatedSession(user, latestLoginIP)) {
 			respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED);
 
 			return;
@@ -422,7 +424,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		boolean forceIssueNewToken = ParamUtil.getBoolean(request, "force");
 
 		if (forceIssueNewToken || !WatsonTokenAuthEntryLocalServiceUtil.hasPendingToken(user)) {
-			WatsonUtil.sendTwoFactorAuthEmail(user);
+			WatsonUtil.sendTwoFactorAuthEmail(user, latestLoginIP);
 		}
 
 		respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_PENDING);
@@ -434,8 +436,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		String authToken = ParamUtil.getString(request, "token");
+		String latestLoginIP = PortalUtil.getHttpServletRequest(portletRequest).getRemoteAddr();
 
-		String authTokenResult = WatsonTokenAuthEntryLocalServiceUtil.verifyWatsonTokenAuthEntry(user, authToken);
+		String authTokenResult = WatsonTokenAuthEntryLocalServiceUtil.verifyWatsonTokenAuthEntry(user, authToken, latestLoginIP);
 
 		if (authTokenResult.equals(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED)) {
 			respondWith(authTokenResult);

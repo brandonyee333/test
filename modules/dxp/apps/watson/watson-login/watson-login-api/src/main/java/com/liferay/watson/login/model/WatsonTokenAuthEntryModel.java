@@ -173,6 +173,21 @@ public interface WatsonTokenAuthEntryModel extends BaseModel<WatsonTokenAuthEntr
 	public void setActive(boolean active);
 
 	/**
+	 * Returns the login ip of this watson token auth entry.
+	 *
+	 * @return the login ip of this watson token auth entry
+	 */
+	@AutoEscape
+	public String getLoginIP();
+
+	/**
+	 * Sets the login ip of this watson token auth entry.
+	 *
+	 * @param loginIP the login ip of this watson token auth entry
+	 */
+	public void setLoginIP(String loginIP);
+
+	/**
 	 * Returns the token of this watson token auth entry.
 	 *
 	 * @return the token of this watson token auth entry

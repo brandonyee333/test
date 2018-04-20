@@ -75,6 +75,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			{ "userName", Types.VARCHAR },
 			{ "createDate", Types.TIMESTAMP },
 			{ "active_", Types.BOOLEAN },
+			{ "loginIP", Types.VARCHAR },
 			{ "token", Types.VARCHAR },
 			{ "expirationDate", Types.TIMESTAMP },
 			{ "loginDate", Types.TIMESTAMP }
@@ -88,12 +89,13 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("active_", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("loginIP", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("token", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("expirationDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("loginDate", Types.TIMESTAMP);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table WatsonTokenAuthEntry (watsonTokenAuthEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,active_ BOOLEAN,token VARCHAR(75) null,expirationDate DATE null,loginDate DATE null)";
+	public static final String TABLE_SQL_CREATE = "create table WatsonTokenAuthEntry (watsonTokenAuthEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,active_ BOOLEAN,loginIP VARCHAR(75) null,token VARCHAR(75) null,expirationDate DATE null,loginDate DATE null)";
 	public static final String TABLE_SQL_DROP = "drop table WatsonTokenAuthEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY watsonTokenAuthEntry.watsonTokenAuthEntryId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY WatsonTokenAuthEntry.watsonTokenAuthEntryId ASC";
@@ -132,7 +134,8 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
-		model.setActive(soapModel.isActive());
+		model.setActive(soapModel.getActive());
+		model.setLoginIP(soapModel.getLoginIP());
 		model.setToken(soapModel.getToken());
 		model.setExpirationDate(soapModel.getExpirationDate());
 		model.setLoginDate(soapModel.getLoginDate());
@@ -206,7 +209,8 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
-		attributes.put("active", isActive());
+		attributes.put("active", getActive());
+		attributes.put("loginIP", getLoginIP());
 		attributes.put("token", getToken());
 		attributes.put("expirationDate", getExpirationDate());
 		attributes.put("loginDate", getLoginDate());
@@ -254,6 +258,12 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 		if (active != null) {
 			setActive(active);
+		}
+
+		String loginIP = (String)attributes.get("loginIP");
+
+		if (loginIP != null) {
+			setLoginIP(loginIP);
 		}
 
 		String token = (String)attributes.get("token");
@@ -394,6 +404,22 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@JSON
 	@Override
+	public String getLoginIP() {
+		if (_loginIP == null) {
+			return "";
+		}
+		else {
+			return _loginIP;
+		}
+	}
+
+	@Override
+	public void setLoginIP(String loginIP) {
+		_loginIP = loginIP;
+	}
+
+	@JSON
+	@Override
 	public String getToken() {
 		if (_token == null) {
 			return "";
@@ -466,7 +492,8 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		watsonTokenAuthEntryImpl.setUserId(getUserId());
 		watsonTokenAuthEntryImpl.setUserName(getUserName());
 		watsonTokenAuthEntryImpl.setCreateDate(getCreateDate());
-		watsonTokenAuthEntryImpl.setActive(isActive());
+		watsonTokenAuthEntryImpl.setActive(getActive());
+		watsonTokenAuthEntryImpl.setLoginIP(getLoginIP());
 		watsonTokenAuthEntryImpl.setToken(getToken());
 		watsonTokenAuthEntryImpl.setExpirationDate(getExpirationDate());
 		watsonTokenAuthEntryImpl.setLoginDate(getLoginDate());
@@ -570,7 +597,15 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			watsonTokenAuthEntryCacheModel.createDate = Long.MIN_VALUE;
 		}
 
-		watsonTokenAuthEntryCacheModel.active = isActive();
+		watsonTokenAuthEntryCacheModel.active = getActive();
+
+		watsonTokenAuthEntryCacheModel.loginIP = getLoginIP();
+
+		String loginIP = watsonTokenAuthEntryCacheModel.loginIP;
+
+		if ((loginIP != null) && (loginIP.length() == 0)) {
+			watsonTokenAuthEntryCacheModel.loginIP = null;
+		}
 
 		watsonTokenAuthEntryCacheModel.token = getToken();
 
@@ -603,7 +638,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(21);
 
 		sb.append("{watsonTokenAuthEntryId=");
 		sb.append(getWatsonTokenAuthEntryId());
@@ -616,7 +651,9 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		sb.append(", createDate=");
 		sb.append(getCreateDate());
 		sb.append(", active=");
-		sb.append(isActive());
+		sb.append(getActive());
+		sb.append(", loginIP=");
+		sb.append(getLoginIP());
 		sb.append(", token=");
 		sb.append(getToken());
 		sb.append(", expirationDate=");
@@ -630,7 +667,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(31);
+		StringBundler sb = new StringBundler(34);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.watson.login.model.WatsonTokenAuthEntry");
@@ -658,7 +695,11 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(isActive());
+		sb.append(getActive());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>loginIP</column-name><column-value><![CDATA[");
+		sb.append(getLoginIP());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>token</column-name><column-value><![CDATA[");
@@ -692,6 +733,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 	private String _userName;
 	private Date _createDate;
 	private boolean _active;
+	private String _loginIP;
 	private String _token;
 	private Date _expirationDate;
 	private Date _loginDate;

@@ -33,10 +33,10 @@ public static class WatsonUtil {
 		return watsonUserJSONObject;
 	}
 
-	public static void sendTwoFactorAuthEmail(User user) throws Exception {
+	public static void sendTwoFactorAuthEmail(User user, String latestLoginIP) throws Exception {
 		String authToken = StringUtil.shorten(String.valueOf(Math.abs(SecureRandomUtil.nextInt())), 6, StringPool.BLANK);
 
-		WatsonTokenAuthEntry watsonTokenAuthEntry = WatsonTokenAuthEntryLocalServiceUtil.addWatsonTokenAuthEntry(user, authToken);
+		WatsonTokenAuthEntry watsonTokenAuthEntry = WatsonTokenAuthEntryLocalServiceUtil.addWatsonTokenAuthEntry(user, authToken, latestLoginIP);
 
 		WatsonWorkflowUtil.sendAuthenticationEmail(user, watsonTokenAuthEntry);
 	}

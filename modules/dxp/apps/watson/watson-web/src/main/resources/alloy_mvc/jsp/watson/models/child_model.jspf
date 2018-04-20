@@ -338,7 +338,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 		}
 	}
 
-	public static boolean hasCitizenship(long citizenshipWatsonListTypeId) throws Exception {
+	public static boolean hasCitizenship(long citizenshipWatsonListTypeId) {
 		if ((citizenshipWatsonListTypeId == 0) || (citizenshipWatsonListTypeId == WatsonListType.CHILD_CITIZENSHIP_TYPE_STATELESS) || (citizenshipWatsonListTypeId == WatsonListType.CHILD_CITIZENSHIP_TYPE_UNKNOWN)) {
 			return false;
 		}

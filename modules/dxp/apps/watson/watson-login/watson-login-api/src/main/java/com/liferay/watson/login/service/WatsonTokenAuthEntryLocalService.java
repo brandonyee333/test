@@ -62,7 +62,7 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 	 * Never modify or reference this interface directly. Always use {@link WatsonTokenAuthEntryLocalServiceUtil} to access the watson token auth entry local service. Add custom service methods to {@link com.liferay.watson.login.service.impl.WatsonTokenAuthEntryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public WatsonTokenAuthEntry addWatsonTokenAuthEntry(User user,
-		java.lang.String authToken);
+		java.lang.String authToken, java.lang.String latestLoginIP);
 
 	/**
 	* Adds the watson token auth entry to the database. Also notifies the appropriate model listeners.
@@ -80,7 +80,6 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 	* @param watsonTokenAuthEntryId the primary key for the new watson token auth entry
 	* @return the new watson token auth entry
 	*/
-	@Transactional(enabled = false)
 	public WatsonTokenAuthEntry createWatsonTokenAuthEntry(
 		long watsonTokenAuthEntryId);
 
@@ -233,7 +232,8 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 		long watsonTokenAuthEntryId) throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasAuthenticatedSession(User user);
+	public boolean hasAuthenticatedSession(User user,
+		java.lang.String latestLoginIP);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasPendingToken(User user);
@@ -249,5 +249,5 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 		WatsonTokenAuthEntry watsonTokenAuthEntry);
 
 	public java.lang.String verifyWatsonTokenAuthEntry(User user,
-		java.lang.String authToken);
+		java.lang.String authToken, java.lang.String latestLoginIP);
 }

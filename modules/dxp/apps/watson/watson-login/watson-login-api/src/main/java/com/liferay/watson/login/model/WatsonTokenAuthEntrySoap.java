@@ -40,7 +40,8 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 		soapModel.setUserId(model.getUserId());
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
-		soapModel.setActive(model.isActive());
+		soapModel.setActive(model.getActive());
+		soapModel.setLoginIP(model.getLoginIP());
 		soapModel.setToken(model.getToken());
 		soapModel.setExpirationDate(model.getExpirationDate());
 		soapModel.setLoginDate(model.getLoginDate());
@@ -151,6 +152,14 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 		_active = active;
 	}
 
+	public String getLoginIP() {
+		return _loginIP;
+	}
+
+	public void setLoginIP(String loginIP) {
+		_loginIP = loginIP;
+	}
+
 	public String getToken() {
 		return _token;
 	}
@@ -181,6 +190,7 @@ public class WatsonTokenAuthEntrySoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private boolean _active;
+	private String _loginIP;
 	private String _token;
 	private Date _expirationDate;
 	private Date _loginDate;

@@ -16,6 +16,7 @@ const authStates = {
 	approved: Liferay.Language.get('approved'),
 	expired: Liferay.Language.get('expired'),
 	invalid: Liferay.Language.get('invalid'),
+	'invalid-ip': Liferay.Language.get('invalid-ip'),
 	pending: Liferay.Language.get('pending')
 };
 

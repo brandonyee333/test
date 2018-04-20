@@ -65,7 +65,7 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(21);
 
 		sb.append("{watsonTokenAuthEntryId=");
 		sb.append(watsonTokenAuthEntryId);
@@ -79,6 +79,8 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 		sb.append(createDate);
 		sb.append(", active=");
 		sb.append(active);
+		sb.append(", loginIP=");
+		sb.append(loginIP);
 		sb.append(", token=");
 		sb.append(token);
 		sb.append(", expirationDate=");
@@ -113,6 +115,13 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 		}
 
 		watsonTokenAuthEntryImpl.setActive(active);
+
+		if (loginIP == null) {
+			watsonTokenAuthEntryImpl.setLoginIP("");
+		}
+		else {
+			watsonTokenAuthEntryImpl.setLoginIP(loginIP);
+		}
 
 		if (token == null) {
 			watsonTokenAuthEntryImpl.setToken("");
@@ -151,6 +160,7 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 		createDate = objectInput.readLong();
 
 		active = objectInput.readBoolean();
+		loginIP = objectInput.readUTF();
 		token = objectInput.readUTF();
 		expirationDate = objectInput.readLong();
 		loginDate = objectInput.readLong();
@@ -176,6 +186,13 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 
 		objectOutput.writeBoolean(active);
 
+		if (loginIP == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(loginIP);
+		}
+
 		if (token == null) {
 			objectOutput.writeUTF("");
 		}
@@ -193,6 +210,7 @@ public class WatsonTokenAuthEntryCacheModel implements CacheModel<WatsonTokenAut
 	public String userName;
 	public long createDate;
 	public boolean active;
+	public String loginIP;
 	public String token;
 	public long expirationDate;
 	public long loginDate;

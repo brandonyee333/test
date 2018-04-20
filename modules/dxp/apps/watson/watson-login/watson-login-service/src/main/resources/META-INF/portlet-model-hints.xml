@@ -8,6 +8,7 @@
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="active" type="boolean" />
+		<field name="loginIP" type="String" />
 		<field name="token" type="String" />
 		<field name="expirationDate" type="Date" />
 		<field name="loginDate" type="Date" />

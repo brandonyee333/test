@@ -1199,6 +1199,7 @@ public class WatsonTokenAuthEntryPersistenceImpl extends BasePersistenceImpl<Wat
 		watsonTokenAuthEntryImpl.setUserName(watsonTokenAuthEntry.getUserName());
 		watsonTokenAuthEntryImpl.setCreateDate(watsonTokenAuthEntry.getCreateDate());
 		watsonTokenAuthEntryImpl.setActive(watsonTokenAuthEntry.isActive());
+		watsonTokenAuthEntryImpl.setLoginIP(watsonTokenAuthEntry.getLoginIP());
 		watsonTokenAuthEntryImpl.setToken(watsonTokenAuthEntry.getToken());
 		watsonTokenAuthEntryImpl.setExpirationDate(watsonTokenAuthEntry.getExpirationDate());
 		watsonTokenAuthEntryImpl.setLoginDate(watsonTokenAuthEntry.getLoginDate());

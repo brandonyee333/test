@@ -12,6 +12,7 @@
 		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property column="active_" name="active" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="loginIP" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="token" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="expirationDate" type="org.hibernate.type.TimestampType" />
 		<property name="loginDate" type="org.hibernate.type.TimestampType" />
