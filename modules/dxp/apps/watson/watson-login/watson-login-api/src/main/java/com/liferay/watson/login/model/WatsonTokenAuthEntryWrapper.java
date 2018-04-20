@@ -64,7 +64,7 @@ public class WatsonTokenAuthEntryWrapper implements WatsonTokenAuthEntry,
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
-		attributes.put("active", getActive());
+		attributes.put("active", isActive());
 		attributes.put("token", getToken());
 		attributes.put("expirationDate", getExpirationDate());
 		attributes.put("loginDate", getLoginDate());

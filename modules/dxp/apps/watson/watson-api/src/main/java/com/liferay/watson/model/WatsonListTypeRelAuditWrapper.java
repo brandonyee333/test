@@ -70,7 +70,7 @@ public class WatsonListTypeRelAuditWrapper implements WatsonListTypeRelAudit,
 		attributes.put("watsonListTypeRelId", getWatsonListTypeRelId());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
-		attributes.put("primary", getPrimary());
+		attributes.put("primary", isPrimary());
 		attributes.put("value", getValue());
 		attributes.put("type", getType());
 		attributes.put("status", getStatus());

@@ -221,8 +221,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		attributes.put("occupation", getOccupation());
 		attributes.put("height", getHeight());
 		attributes.put("weight", getWeight());
-		attributes.put("accepted", getAccepted());
-		attributes.put("rescued", getRescued());
+		attributes.put("accepted", isAccepted());
+		attributes.put("rescued", isRescued());
 		attributes.put("status", getStatus());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -1100,8 +1100,8 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		watsonPersonImpl.setOccupation(getOccupation());
 		watsonPersonImpl.setHeight(getHeight());
 		watsonPersonImpl.setWeight(getWeight());
-		watsonPersonImpl.setAccepted(getAccepted());
-		watsonPersonImpl.setRescued(getRescued());
+		watsonPersonImpl.setAccepted(isAccepted());
+		watsonPersonImpl.setRescued(isRescued());
 		watsonPersonImpl.setStatus(getStatus());
 
 		watsonPersonImpl.resetOriginalValues();
@@ -1309,9 +1309,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 			watsonPersonCacheModel.weight = null;
 		}
 
-		watsonPersonCacheModel.accepted = getAccepted();
+		watsonPersonCacheModel.accepted = isAccepted();
 
-		watsonPersonCacheModel.rescued = getRescued();
+		watsonPersonCacheModel.rescued = isRescued();
 
 		watsonPersonCacheModel.status = getStatus();
 
@@ -1377,9 +1377,9 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		sb.append(", weight=");
 		sb.append(getWeight());
 		sb.append(", accepted=");
-		sb.append(getAccepted());
+		sb.append(isAccepted());
 		sb.append(", rescued=");
-		sb.append(getRescued());
+		sb.append(isRescued());
 		sb.append(", status=");
 		sb.append(getStatus());
 		sb.append("}");
@@ -1505,11 +1505,11 @@ public class WatsonPersonModelImpl extends BaseModelImpl<WatsonPerson>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>accepted</column-name><column-value><![CDATA[");
-		sb.append(getAccepted());
+		sb.append(isAccepted());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>rescued</column-name><column-value><![CDATA[");
-		sb.append(getRescued());
+		sb.append(isRescued());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");

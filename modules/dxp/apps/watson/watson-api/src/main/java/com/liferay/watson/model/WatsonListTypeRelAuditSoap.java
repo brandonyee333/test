@@ -45,7 +45,7 @@ public class WatsonListTypeRelAuditSoap implements Serializable {
 		soapModel.setWatsonListTypeRelId(model.getWatsonListTypeRelId());
 		soapModel.setClassNameId(model.getClassNameId());
 		soapModel.setClassPK(model.getClassPK());
-		soapModel.setPrimary(model.getPrimary());
+		soapModel.setPrimary(model.isPrimary());
 		soapModel.setValue(model.getValue());
 		soapModel.setType(model.getType());
 		soapModel.setStatus(model.getStatus());

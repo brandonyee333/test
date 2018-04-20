@@ -16,7 +16,8 @@ package com.liferay.watson.login.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osgi.util.ServiceTrackerFactory;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -285,6 +286,17 @@ public class WatsonTokenAuthEntryLocalServiceUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<WatsonTokenAuthEntryLocalService, WatsonTokenAuthEntryLocalService> _serviceTracker =
-		ServiceTrackerFactory.open(WatsonTokenAuthEntryLocalService.class);
+	private static ServiceTracker<WatsonTokenAuthEntryLocalService, WatsonTokenAuthEntryLocalService> _serviceTracker;
+
+	static {
+		Bundle bundle = FrameworkUtil.getBundle(WatsonTokenAuthEntryLocalService.class);
+
+		ServiceTracker<WatsonTokenAuthEntryLocalService, WatsonTokenAuthEntryLocalService> serviceTracker =
+			new ServiceTracker<WatsonTokenAuthEntryLocalService, WatsonTokenAuthEntryLocalService>(bundle.getBundleContext(),
+				WatsonTokenAuthEntryLocalService.class, null);
+
+		serviceTracker.open();
+
+		_serviceTracker = serviceTracker;
+	}
 }

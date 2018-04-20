@@ -171,7 +171,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 		attributes.put("watsonListTypeId", getWatsonListTypeId());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
-		attributes.put("primary", getPrimary());
+		attributes.put("primary", isPrimary());
 		attributes.put("value", getValue());
 		attributes.put("type", getType());
 		attributes.put("status", getStatus());
@@ -652,7 +652,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 		watsonListTypeRelImpl.setWatsonListTypeId(getWatsonListTypeId());
 		watsonListTypeRelImpl.setClassNameId(getClassNameId());
 		watsonListTypeRelImpl.setClassPK(getClassPK());
-		watsonListTypeRelImpl.setPrimary(getPrimary());
+		watsonListTypeRelImpl.setPrimary(isPrimary());
 		watsonListTypeRelImpl.setValue(getValue());
 		watsonListTypeRelImpl.setType(getType());
 		watsonListTypeRelImpl.setStatus(getStatus());
@@ -765,7 +765,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 
 		watsonListTypeRelCacheModel.classPK = getClassPK();
 
-		watsonListTypeRelCacheModel.primary = getPrimary();
+		watsonListTypeRelCacheModel.primary = isPrimary();
 
 		watsonListTypeRelCacheModel.value = getValue();
 
@@ -813,7 +813,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 		sb.append(", classPK=");
 		sb.append(getClassPK());
 		sb.append(", primary=");
-		sb.append(getPrimary());
+		sb.append(isPrimary());
 		sb.append(", value=");
 		sb.append(getValue());
 		sb.append(", type=");
@@ -875,7 +875,7 @@ public class WatsonListTypeRelModelImpl extends BaseModelImpl<WatsonListTypeRel>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>primary</column-name><column-value><![CDATA[");
-		sb.append(getPrimary());
+		sb.append(isPrimary());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>value</column-name><column-value><![CDATA[");

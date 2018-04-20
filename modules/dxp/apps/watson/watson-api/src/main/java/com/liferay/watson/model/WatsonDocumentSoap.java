@@ -44,7 +44,7 @@ public class WatsonDocumentSoap implements Serializable {
 		soapModel.setSubtypeWatsonListTypeId(model.getSubtypeWatsonListTypeId());
 		soapModel.setTypeWatsonListTypeId(model.getTypeWatsonListTypeId());
 		soapModel.setWatsonChildId(model.getWatsonChildId());
-		soapModel.setOriginalDocument(model.getOriginalDocument());
+		soapModel.setOriginalDocument(model.isOriginalDocument());
 		soapModel.setReceivedDate(model.getReceivedDate());
 		soapModel.setImagePayload(model.getImagePayload());
 		soapModel.setStatus(model.getStatus());

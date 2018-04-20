@@ -88,8 +88,8 @@ public class WatsonPersonAuditWrapper implements WatsonPersonAudit,
 		attributes.put("occupation", getOccupation());
 		attributes.put("height", getHeight());
 		attributes.put("weight", getWeight());
-		attributes.put("accepted", getAccepted());
-		attributes.put("rescued", getRescued());
+		attributes.put("accepted", isAccepted());
+		attributes.put("rescued", isRescued());
 		attributes.put("status", getStatus());
 
 		return attributes;

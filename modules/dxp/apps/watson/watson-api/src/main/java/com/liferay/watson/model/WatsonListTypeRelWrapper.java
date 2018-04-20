@@ -68,7 +68,7 @@ public class WatsonListTypeRelWrapper implements WatsonListTypeRel,
 		attributes.put("watsonListTypeId", getWatsonListTypeId());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
-		attributes.put("primary", getPrimary());
+		attributes.put("primary", isPrimary());
 		attributes.put("value", getValue());
 		attributes.put("type", getType());
 		attributes.put("status", getStatus());

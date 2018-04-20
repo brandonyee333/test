@@ -43,7 +43,7 @@ public class WatsonListTypeRelSoap implements Serializable {
 		soapModel.setWatsonListTypeId(model.getWatsonListTypeId());
 		soapModel.setClassNameId(model.getClassNameId());
 		soapModel.setClassPK(model.getClassPK());
-		soapModel.setPrimary(model.getPrimary());
+		soapModel.setPrimary(model.isPrimary());
 		soapModel.setValue(model.getValue());
 		soapModel.setType(model.getType());
 		soapModel.setStatus(model.getStatus());

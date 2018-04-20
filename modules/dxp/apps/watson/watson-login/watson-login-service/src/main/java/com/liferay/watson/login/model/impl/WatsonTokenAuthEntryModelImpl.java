@@ -206,7 +206,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		attributes.put("userId", getUserId());
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
-		attributes.put("active", getActive());
+		attributes.put("active", isActive());
 		attributes.put("token", getToken());
 		attributes.put("expirationDate", getExpirationDate());
 		attributes.put("loginDate", getLoginDate());
@@ -466,7 +466,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		watsonTokenAuthEntryImpl.setUserId(getUserId());
 		watsonTokenAuthEntryImpl.setUserName(getUserName());
 		watsonTokenAuthEntryImpl.setCreateDate(getCreateDate());
-		watsonTokenAuthEntryImpl.setActive(getActive());
+		watsonTokenAuthEntryImpl.setActive(isActive());
 		watsonTokenAuthEntryImpl.setToken(getToken());
 		watsonTokenAuthEntryImpl.setExpirationDate(getExpirationDate());
 		watsonTokenAuthEntryImpl.setLoginDate(getLoginDate());
@@ -570,7 +570,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 			watsonTokenAuthEntryCacheModel.createDate = Long.MIN_VALUE;
 		}
 
-		watsonTokenAuthEntryCacheModel.active = getActive();
+		watsonTokenAuthEntryCacheModel.active = isActive();
 
 		watsonTokenAuthEntryCacheModel.token = getToken();
 
@@ -616,7 +616,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		sb.append(", createDate=");
 		sb.append(getCreateDate());
 		sb.append(", active=");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append(", token=");
 		sb.append(getToken());
 		sb.append(", expirationDate=");
@@ -658,7 +658,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>active</column-name><column-value><![CDATA[");
-		sb.append(getActive());
+		sb.append(isActive());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>token</column-name><column-value><![CDATA[");

@@ -169,7 +169,7 @@ public class WatsonDocumentAuditModelImpl extends BaseModelImpl<WatsonDocumentAu
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("watsonChildId", getWatsonChildId());
 		attributes.put("watsonDocumentId", getWatsonDocumentId());
-		attributes.put("originalDocument", getOriginalDocument());
+		attributes.put("originalDocument", isOriginalDocument());
 		attributes.put("receivedDate", getReceivedDate());
 		attributes.put("imagePayload", getImagePayload());
 		attributes.put("status", getStatus());
@@ -518,7 +518,7 @@ public class WatsonDocumentAuditModelImpl extends BaseModelImpl<WatsonDocumentAu
 		watsonDocumentAuditImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
 		watsonDocumentAuditImpl.setWatsonChildId(getWatsonChildId());
 		watsonDocumentAuditImpl.setWatsonDocumentId(getWatsonDocumentId());
-		watsonDocumentAuditImpl.setOriginalDocument(getOriginalDocument());
+		watsonDocumentAuditImpl.setOriginalDocument(isOriginalDocument());
 		watsonDocumentAuditImpl.setReceivedDate(getReceivedDate());
 		watsonDocumentAuditImpl.setImagePayload(getImagePayload());
 		watsonDocumentAuditImpl.setStatus(getStatus());
@@ -635,7 +635,7 @@ public class WatsonDocumentAuditModelImpl extends BaseModelImpl<WatsonDocumentAu
 
 		watsonDocumentAuditCacheModel.watsonDocumentId = getWatsonDocumentId();
 
-		watsonDocumentAuditCacheModel.originalDocument = getOriginalDocument();
+		watsonDocumentAuditCacheModel.originalDocument = isOriginalDocument();
 
 		Date receivedDate = getReceivedDate();
 
@@ -688,7 +688,7 @@ public class WatsonDocumentAuditModelImpl extends BaseModelImpl<WatsonDocumentAu
 		sb.append(", watsonDocumentId=");
 		sb.append(getWatsonDocumentId());
 		sb.append(", originalDocument=");
-		sb.append(getOriginalDocument());
+		sb.append(isOriginalDocument());
 		sb.append(", receivedDate=");
 		sb.append(getReceivedDate());
 		sb.append(", imagePayload=");
@@ -758,7 +758,7 @@ public class WatsonDocumentAuditModelImpl extends BaseModelImpl<WatsonDocumentAu
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>originalDocument</column-name><column-value><![CDATA[");
-		sb.append(getOriginalDocument());
+		sb.append(isOriginalDocument());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>receivedDate</column-name><column-value><![CDATA[");

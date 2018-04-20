@@ -174,7 +174,7 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 		attributes.put("watsonListTypeRelId", getWatsonListTypeRelId());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
-		attributes.put("primary", getPrimary());
+		attributes.put("primary", isPrimary());
 		attributes.put("value", getValue());
 		attributes.put("type", getType());
 		attributes.put("status", getStatus());
@@ -673,7 +673,7 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 		watsonListTypeRelAuditImpl.setWatsonListTypeRelId(getWatsonListTypeRelId());
 		watsonListTypeRelAuditImpl.setClassNameId(getClassNameId());
 		watsonListTypeRelAuditImpl.setClassPK(getClassPK());
-		watsonListTypeRelAuditImpl.setPrimary(getPrimary());
+		watsonListTypeRelAuditImpl.setPrimary(isPrimary());
 		watsonListTypeRelAuditImpl.setValue(getValue());
 		watsonListTypeRelAuditImpl.setType(getType());
 		watsonListTypeRelAuditImpl.setStatus(getStatus());
@@ -788,7 +788,7 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 
 		watsonListTypeRelAuditCacheModel.classPK = getClassPK();
 
-		watsonListTypeRelAuditCacheModel.primary = getPrimary();
+		watsonListTypeRelAuditCacheModel.primary = isPrimary();
 
 		watsonListTypeRelAuditCacheModel.value = getValue();
 
@@ -838,7 +838,7 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 		sb.append(", classPK=");
 		sb.append(getClassPK());
 		sb.append(", primary=");
-		sb.append(getPrimary());
+		sb.append(isPrimary());
 		sb.append(", value=");
 		sb.append(getValue());
 		sb.append(", type=");
@@ -904,7 +904,7 @@ public class WatsonListTypeRelAuditModelImpl extends BaseModelImpl<WatsonListTyp
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>primary</column-name><column-value><![CDATA[");
-		sb.append(getPrimary());
+		sb.append(isPrimary());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>value</column-name><column-value><![CDATA[");

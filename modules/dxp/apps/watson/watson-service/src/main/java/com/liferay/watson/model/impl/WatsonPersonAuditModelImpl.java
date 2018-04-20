@@ -224,8 +224,8 @@ public class WatsonPersonAuditModelImpl extends BaseModelImpl<WatsonPersonAudit>
 		attributes.put("occupation", getOccupation());
 		attributes.put("height", getHeight());
 		attributes.put("weight", getWeight());
-		attributes.put("accepted", getAccepted());
-		attributes.put("rescued", getRescued());
+		attributes.put("accepted", isAccepted());
+		attributes.put("rescued", isRescued());
 		attributes.put("status", getStatus());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
@@ -1120,8 +1120,8 @@ public class WatsonPersonAuditModelImpl extends BaseModelImpl<WatsonPersonAudit>
 		watsonPersonAuditImpl.setOccupation(getOccupation());
 		watsonPersonAuditImpl.setHeight(getHeight());
 		watsonPersonAuditImpl.setWeight(getWeight());
-		watsonPersonAuditImpl.setAccepted(getAccepted());
-		watsonPersonAuditImpl.setRescued(getRescued());
+		watsonPersonAuditImpl.setAccepted(isAccepted());
+		watsonPersonAuditImpl.setRescued(isRescued());
 		watsonPersonAuditImpl.setStatus(getStatus());
 
 		watsonPersonAuditImpl.resetOriginalValues();
@@ -1331,9 +1331,9 @@ public class WatsonPersonAuditModelImpl extends BaseModelImpl<WatsonPersonAudit>
 			watsonPersonAuditCacheModel.weight = null;
 		}
 
-		watsonPersonAuditCacheModel.accepted = getAccepted();
+		watsonPersonAuditCacheModel.accepted = isAccepted();
 
-		watsonPersonAuditCacheModel.rescued = getRescued();
+		watsonPersonAuditCacheModel.rescued = isRescued();
 
 		watsonPersonAuditCacheModel.status = getStatus();
 
@@ -1401,9 +1401,9 @@ public class WatsonPersonAuditModelImpl extends BaseModelImpl<WatsonPersonAudit>
 		sb.append(", weight=");
 		sb.append(getWeight());
 		sb.append(", accepted=");
-		sb.append(getAccepted());
+		sb.append(isAccepted());
 		sb.append(", rescued=");
-		sb.append(getRescued());
+		sb.append(isRescued());
 		sb.append(", status=");
 		sb.append(getStatus());
 		sb.append("}");
@@ -1533,11 +1533,11 @@ public class WatsonPersonAuditModelImpl extends BaseModelImpl<WatsonPersonAudit>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>accepted</column-name><column-value><![CDATA[");
-		sb.append(getAccepted());
+		sb.append(isAccepted());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>rescued</column-name><column-value><![CDATA[");
-		sb.append(getRescued());
+		sb.append(isRescued());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");

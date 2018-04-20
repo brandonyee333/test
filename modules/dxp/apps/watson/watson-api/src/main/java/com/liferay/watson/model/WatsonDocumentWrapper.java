@@ -70,7 +70,7 @@ public class WatsonDocumentWrapper implements WatsonDocument,
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("watsonChildId", getWatsonChildId());
-		attributes.put("originalDocument", getOriginalDocument());
+		attributes.put("originalDocument", isOriginalDocument());
 		attributes.put("receivedDate", getReceivedDate());
 		attributes.put("imagePayload", getImagePayload());
 		attributes.put("status", getStatus());

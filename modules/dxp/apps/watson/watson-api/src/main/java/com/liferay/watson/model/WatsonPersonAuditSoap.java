@@ -61,8 +61,8 @@ public class WatsonPersonAuditSoap implements Serializable {
 		soapModel.setOccupation(model.getOccupation());
 		soapModel.setHeight(model.getHeight());
 		soapModel.setWeight(model.getWeight());
-		soapModel.setAccepted(model.getAccepted());
-		soapModel.setRescued(model.getRescued());
+		soapModel.setAccepted(model.isAccepted());
+		soapModel.setRescued(model.isRescued());
 		soapModel.setStatus(model.getStatus());
 
 		return soapModel;

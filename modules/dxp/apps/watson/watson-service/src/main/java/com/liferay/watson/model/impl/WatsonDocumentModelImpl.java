@@ -166,7 +166,7 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 		attributes.put("subtypeWatsonListTypeId", getSubtypeWatsonListTypeId());
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("watsonChildId", getWatsonChildId());
-		attributes.put("originalDocument", getOriginalDocument());
+		attributes.put("originalDocument", isOriginalDocument());
 		attributes.put("receivedDate", getReceivedDate());
 		attributes.put("imagePayload", getImagePayload());
 		attributes.put("status", getStatus());
@@ -497,7 +497,7 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 		watsonDocumentImpl.setSubtypeWatsonListTypeId(getSubtypeWatsonListTypeId());
 		watsonDocumentImpl.setTypeWatsonListTypeId(getTypeWatsonListTypeId());
 		watsonDocumentImpl.setWatsonChildId(getWatsonChildId());
-		watsonDocumentImpl.setOriginalDocument(getOriginalDocument());
+		watsonDocumentImpl.setOriginalDocument(isOriginalDocument());
 		watsonDocumentImpl.setReceivedDate(getReceivedDate());
 		watsonDocumentImpl.setImagePayload(getImagePayload());
 		watsonDocumentImpl.setStatus(getStatus());
@@ -612,7 +612,7 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 
 		watsonDocumentCacheModel.watsonChildId = getWatsonChildId();
 
-		watsonDocumentCacheModel.originalDocument = getOriginalDocument();
+		watsonDocumentCacheModel.originalDocument = isOriginalDocument();
 
 		Date receivedDate = getReceivedDate();
 
@@ -663,7 +663,7 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 		sb.append(", watsonChildId=");
 		sb.append(getWatsonChildId());
 		sb.append(", originalDocument=");
-		sb.append(getOriginalDocument());
+		sb.append(isOriginalDocument());
 		sb.append(", receivedDate=");
 		sb.append(getReceivedDate());
 		sb.append(", imagePayload=");
@@ -729,7 +729,7 @@ public class WatsonDocumentModelImpl extends BaseModelImpl<WatsonDocument>
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>originalDocument</column-name><column-value><![CDATA[");
-		sb.append(getOriginalDocument());
+		sb.append(isOriginalDocument());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>receivedDate</column-name><column-value><![CDATA[");

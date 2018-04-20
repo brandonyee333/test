@@ -71,7 +71,7 @@ public class WatsonDocumentAuditWrapper implements WatsonDocumentAudit,
 		attributes.put("typeWatsonListTypeId", getTypeWatsonListTypeId());
 		attributes.put("watsonChildId", getWatsonChildId());
 		attributes.put("watsonDocumentId", getWatsonDocumentId());
-		attributes.put("originalDocument", getOriginalDocument());
+		attributes.put("originalDocument", isOriginalDocument());
 		attributes.put("receivedDate", getReceivedDate());
 		attributes.put("imagePayload", getImagePayload());
 		attributes.put("status", getStatus());
