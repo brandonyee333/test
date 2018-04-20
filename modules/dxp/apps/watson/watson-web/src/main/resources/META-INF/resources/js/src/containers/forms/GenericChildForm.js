@@ -14,6 +14,7 @@ import Modal from '../../components/Modal';
 import {
 	destroyCaseworkActivities,
 	editCaseworkActivities,
+	requestCaseworkActivitiesTranslation,
 	updateCaseworkActivities,
 	updateCaseworkActivitiesDataManually,
 	updateCaseworkActivitiesFormData
@@ -22,6 +23,7 @@ import {
 import {
 	destroyCounselingReports,
 	editCounselingReports,
+	requestCounselingReportsTranslation,
 	updateCounselingReports,
 	updateCounselingReportsDataManually,
 	updateCounselingReportsFormData
@@ -30,6 +32,7 @@ import {
 import {
 	destroyDocuments,
 	editDocuments,
+	requestDocumentsTranslation,
 	updateDocuments,
 	updateDocumentsDataManually,
 	updateDocumentsFormData
@@ -40,6 +43,7 @@ import {updatePageTitle} from '../../actions/display';
 import {
 	destroyIllnesses,
 	editIllnesses,
+	requestIllnessesTranslation,
 	updateIllnesses,
 	updateIllnessesDataManually,
 	updateIllnessesFormData
@@ -48,6 +52,7 @@ import {
 import {
 	destroyLegals,
 	editLegals,
+	requestLegalsTranslation,
 	updateLegals,
 	updateLegalsDataManually,
 	updateLegalsFormData
@@ -56,6 +61,7 @@ import {
 import {
 	destroyPhysicalExams,
 	editPhysicalExams,
+	requestPhysicalExamsTranslation,
 	updatePhysicalExams,
 	updatePhysicalExamsDataManually,
 	updatePhysicalExamsFormData
@@ -64,6 +70,7 @@ import {
 import {
 	destroyProgressReports,
 	editProgressReports,
+	requestProgressReportsTranslation,
 	updateProgressReports,
 	updateProgressReportsDataManually,
 	updateProgressReportsFormData
@@ -468,6 +475,41 @@ function mapDispatchToProps(dispatch) {
 		editProgressReports: watsonReportId => {
 			dispatch(
 				editProgressReports(watsonReportId)
+			);
+		},
+		requestCaseworkActivitiesTranslation: data => {
+			dispatch(
+				requestCaseworkActivitiesTranslation(data)
+			);
+		},
+		requestCounselingReportsTranslation: data => {
+			dispatch(
+				requestCounselingReportsTranslation(data)
+			);
+		},
+		requestDocumentsTranslation: data => {
+			dispatch(
+				requestDocumentsTranslation(data)
+			);
+		},
+		requestIllnessesTranslation: data => {
+			dispatch(
+				requestIllnessesTranslation(data)
+			);
+		},
+		requestLegalsTranslation: data => {
+			dispatch(
+				requestLegalsTranslation(data)
+			);
+		},
+		requestPhysicalExamsTranslation: data => {
+			dispatch(
+				requestPhysicalExamsTranslation(data)
+			);
+		},
+		requestProgressReportsTranslation: data => {
+			dispatch(
+				requestProgressReportsTranslation(data)
 			);
 		},
 		updateCaseworkActivities: data => {
