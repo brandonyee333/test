@@ -413,9 +413,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		String latestLoginIP = PortalUtil.getHttpServletRequest(portletRequest).getRemoteAddr();
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(portletRequest);
 
-		if (WatsonTokenAuthEntryLocalServiceUtil.hasAuthenticatedSession(user, latestLoginIP)) {
+		if (WatsonTokenAuthEntryLocalServiceUtil.hasAuthenticatedSession(user, request.getRemoteAddr())) {
 			respondWith(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED);
 
 			return;
@@ -436,9 +436,9 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		}
 
 		String authToken = ParamUtil.getString(request, "token");
-		String latestLoginIP = PortalUtil.getHttpServletRequest(portletRequest).getRemoteAddr();
+		HttpServletRequest request = PortalUtil.getHttpServletRequest(portletRequest);
 
-		String authTokenResult = WatsonTokenAuthEntryLocalServiceUtil.verifyWatsonTokenAuthEntry(user, authToken, latestLoginIP);
+		String authTokenResult = WatsonTokenAuthEntryLocalServiceUtil.verifyWatsonTokenAuthEntry(user, authToken, request.getRemoteAddr());
 
 		if (authTokenResult.equals(WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_LABEL_APPROVED)) {
 			respondWith(authTokenResult);
