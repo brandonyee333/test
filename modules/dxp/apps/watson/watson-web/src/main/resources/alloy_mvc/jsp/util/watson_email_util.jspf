@@ -109,19 +109,22 @@ public static class WatsonEmailUtil {
 		sendEmail(fromUser, subject, emailSB.toString(), toEmailAddress);
 	}
 
-	public static void sendAuthenticationEmail(User user, WatsonTokenAuthEntry watsonTokenAuthEntry) throws Exception {
+	protected static void sendAuthenticationEmail(User user, WatsonTokenAuthEntry watsonTokenAuthEntry) throws Exception {
 		String subject = LanguageUtil.format(user.getLocale(), "authorization-code", new Object[0]);
 
-		StringBundler sb = new StringBundler(3);
+		String emailAuthenticationTemplate = ContentUtil.get(_CLASS_LOADER, "com/liferay/watson/web/internal/email/authentication_en_US.tmpl");
 
-		String tokenInBold = "<b>" + watsonTokenAuthEntry.getToken() + "</b>";
+		String languageId = user.getLanguageId();
 
-		sb.append(LanguageUtil.format(user.getLocale(), "here-is-the-one-time-authorization-code-x", new String[] {tokenInBold}));
+		if (languageId.equals("th")) {
+			emailAuthenticationTemplate = ContentUtil.get(_CLASS_LOADER, "com/liferay/watson/internal/email/authentication_th.tmpl");
+		}
 
-		sb.append("<br /><br />");
-		sb.append(LanguageUtil.format(user.getLocale(), "this-code-will-expire-in-30-minutes", new String[0]));
+		emailAuthenticationTemplate = StringUtil.replace(emailAuthenticationTemplate, "[$NAME$]", user.getFullName());
 
-		sendEmail(user, subject, sb.toString(), user.getEmailAddress());
+		emailAuthenticationTemplate = StringUtil.replace(emailAuthenticationTemplate, "[$AUTHORIZATION_CODE$]", watsonTokenAuthEntry.getToken());
+
+		sendEmail(user, subject, emailAuthenticationTemplate, user.getEmailAddress());
 	}
 
 	public static void sendCitizenshipRequestEmail(User fromUser, String childURL) throws Exception {
@@ -132,20 +135,21 @@ public static class WatsonEmailUtil {
 		for (User citizenshipGroupUser : citizenshipGroupUsers) {
 			String subject = LanguageUtil.format(citizenshipGroupUser.getLocale(), "citizenship-process-initiated", new Object[0]);
 
-			StringBundler sb = new StringBundler(5);
+			String emailCitizenshipRequestTemplate = ContentUtil.get(_CLASS_LOADER, "com/liferay/watson/web/internal/email/citizenship_request_en_US.tmpl");
 
-			sb.append(LanguageUtil.format(citizenshipGroupUser.getLocale(), "dear-x", new String[] {citizenshipGroupUser.getFullName()}));
-			sb.append("<br /><br />");
+			String languageId = citizenshipGroupUser.getLanguageId();
 
-			String beginChildLinkTag = "<a href=" + childURL + ">";
-			String endChildLinkTag = "</a>";
+			if (languageId.equals("th")) {
+				emailCitizenshipRequestTemplate = ContentUtil.get(_CLASS_LOADER, "com/liferay/watson/internal/email/citizenship_request_th.tmpl");
+			}
 
-			sb.append(LanguageUtil.format(citizenshipGroupUser.getLocale(), "x-has-requested-that-you-begin-the-citizenship-process-for-x-x", new String[] {fromUser.getFullName(), beginChildLinkTag, endChildLinkTag}));
+			emailCitizenshipRequestTemplate = StringUtil.replace(emailCitizenshipRequestTemplate, "[$NAME$]", citizenshipGroupUser.getFullName());
 
-			sb.append("<br /><br />");
-			sb.append(LanguageUtil.format(citizenshipGroupUser.getLocale(), "thank-you", new String[0]));
+			emailCitizenshipRequestTemplate = StringUtil.replace(emailCitizenshipRequestTemplate, "[$SENDER_NAME$]", fromUser.getFullName());
 
-			sendEmail(fromUser, subject, sb.toString(), citizenshipGroupUser.getEmailAddress());
+			emailCitizenshipRequestTemplate = StringUtil.replace(emailCitizenshipRequestTemplate, "[$URL$]", childURL);
+
+			sendEmail(fromUser, subject, emailCitizenshipRequestTemplate, citizenshipGroupUser.getEmailAddress());
 		}
 	}
 
@@ -174,28 +178,33 @@ public static class WatsonEmailUtil {
 		List<User> translationUsers = UserLocalServiceUtil.getRoleUsers(role.getRoleId());
 
 		for (User translationUser : translationUsers) {
-			StringBundler sb = new StringBundler(7);
-
 			String subject = LanguageUtil.format(translationUser.getLocale(), "a-translation-has-been-requested", new Object[0]);
 
-			sb.append(LanguageUtil.format(translationUser.getLocale(), "dear-x", new String[] {translationUser.getFullName()}));
-			sb.append("<br /><br />");
+			String emailTranslationRequestTemplate = ContentUtil.get(_CLASS_LOADER, "com/liferay/watson/web/internal/email/translation_request_en_US.tmpl");
 
-			String beginTranslateTag = "<a href=" + url + ">";
-			String endTranslateTag = "</a>";
+			String languageId = translationUser.getLanguageId();
 
-			sb.append(LanguageUtil.format(translationUser.getLocale(), "please-translate-the-contents-of-x-x-click-x-x", new String[] {model, name, beginTranslateTag, endTranslateTag}));
+			if (languageId.equals("th")) {
+				emailTranslationRequestTemplate = ContentUtil.get(_CLASS_LOADER, "com/liferay/watson/internal/email/translation_request_th.tmpl");
+			}
 
-			sb.append("<br /><br />");
-			sb.append(LanguageUtil.format(translationUser.getLocale(), "sincerely", new String[0]));
-			sb.append("<br />");
-			sb.append(fromUser.getFullName());
+			emailTranslationRequestTemplate = StringUtil.replace(emailTranslationRequestTemplate, "[$NAME$]", translationUser.getFullName());
 
-			sendEmail(fromUser, subject, sb.toString(), translationUser.getEmailAddress());
+			emailTranslationRequestTemplate = StringUtil.replace(emailTranslationRequestTemplate, "[$MODEL$]", model);
+
+			emailTranslationRequestTemplate = StringUtil.replace(emailTranslationRequestTemplate, "[$OBJECT_NAME$]", name);
+
+			emailTranslationRequestTemplate = StringUtil.replace(emailTranslationRequestTemplate, "[$URL$]", url);
+
+			emailTranslationRequestTemplate = StringUtil.replace(emailTranslationRequestTemplate, "[$SENDER_NAME$]", fromUser.getFullName());
+
+			sendEmail(fromUser, subject, emailTranslationRequestTemplate, translationUser.getEmailAddress());
 		}
 	}
 
 	private static final String _CITIZENSHIP_USER_GROUP = "Citizenship Group";
+
+	private static final ClassLoader _CLASS_LOADER = WatsonIncident.class.getClassLoader();
 
 }
 %>

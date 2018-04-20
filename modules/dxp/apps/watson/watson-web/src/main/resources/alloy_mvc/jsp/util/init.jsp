@@ -31,6 +31,7 @@ page import="com.liferay.dynamic.data.mapping.kernel.DDMFormValues" %><%@
 page import="com.liferay.dynamic.data.mapping.kernel.Value" %><%@
 page import="com.liferay.mail.kernel.model.MailMessage" %><%@
 page import="com.liferay.mail.kernel.service.MailServiceUtil" %><%@
+page import="com.liferay.petra.content.ContentUtil" %><%@
 page import="com.liferay.petra.string.CharPool" %><%@
 page import="com.liferay.portal.kernel.bean.BeanPropertiesUtil" %><%@
 page import="com.liferay.portal.kernel.dao.orm.Criterion" %><%@
