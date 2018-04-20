@@ -31,7 +31,7 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 	extends WatsonTokenAuthEntryLocalServiceBaseImpl {
 
 	public WatsonTokenAuthEntry addWatsonTokenAuthEntry(
-		User user, String authToken) {
+		User user, String authToken, String latestLoginIP) {
 
 		removeWatsonTokenAuthEntry(user);
 
@@ -43,6 +43,8 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		watsonTokenAuthEntry.setUserId(user.getUserId());
 		watsonTokenAuthEntry.setUserName(user.getFullName());
 		watsonTokenAuthEntry.setCreateDate(new Date());
+		watsonTokenAuthEntry.setActive(false);
+		watsonTokenAuthEntry.setLoginIP(latestLoginIP);
 		watsonTokenAuthEntry.setToken(authToken);
 		watsonTokenAuthEntry.setExpirationDate(getNewExpirationDate());
 		watsonTokenAuthEntry.setLoginDate(watsonTokenAuthEntry.getCreateDate());
@@ -75,13 +77,14 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		return watsonTokenAuthEntry;
 	}
 
-	public boolean hasAuthenticatedSession(User user) {
+	public boolean hasAuthenticatedSession(User user, String latestLoginIP) {
 		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchWatsonTokenAuthEntry(
 			user);
 
 		if (Validator.isNotNull(watsonTokenAuthEntry) &&
 			watsonTokenAuthEntry.isActive() &&
-			!watsonTokenAuthEntry.isExpired()) {
+			!watsonTokenAuthEntry.isExpired() &&
+			latestLoginIP.equals(watsonTokenAuthEntry.getLoginIP())) {
 
 			return true;
 		}
@@ -103,7 +106,9 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		return false;
 	}
 
-	public String verifyWatsonTokenAuthEntry(User user, String authToken) {
+	public String verifyWatsonTokenAuthEntry(
+		User user, String authToken, String latestLoginIP) {
+
 		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchWatsonTokenAuthEntry(
 			user);
 
@@ -111,6 +116,10 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 			if (watsonTokenAuthEntry.isExpired()) {
 				return WatsonTokenAuthEntryConstants.
 					AUTHORIZATION_STATUS_LABEL_EXPIRED;
+			}
+			else if (!latestLoginIP.equals(watsonTokenAuthEntry.getLoginIP())) {
+				return WatsonTokenAuthEntryConstants.
+					AUTHORIZATION_STATUS_LABEL_INVALID_IP;
 			}
 			else if (authToken.equals(watsonTokenAuthEntry.getToken())) {
 				watsonTokenAuthEntry.setActive(true);

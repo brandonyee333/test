@@ -25,11 +25,16 @@ public class WatsonTokenAuthEntryConstants {
 
 	public static final int AUTHORIZATION_STATUS_INVALID = 3;
 
+	public static final int AUTHORIZATION_STATUS_INVALID_IP = 4;
+
 	public static final String AUTHORIZATION_STATUS_LABEL_APPROVED = "approved";
 
 	public static final String AUTHORIZATION_STATUS_LABEL_EXPIRED = "expired";
 
 	public static final String AUTHORIZATION_STATUS_LABEL_INVALID = "invalid";
+
+	public static final String AUTHORIZATION_STATUS_LABEL_INVALID_IP =
+		"invalid-ip";
 
 	public static final String AUTHORIZATION_STATUS_LABEL_PENDING = "pending";
 
