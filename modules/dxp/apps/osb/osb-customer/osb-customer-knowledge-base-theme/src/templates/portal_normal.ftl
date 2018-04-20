@@ -139,7 +139,11 @@
 		</header>
 
 		<div class="documentation-search">
-			<#assign redirect = paramUtil.getString(request, "_3_WAR_osbknowledgebaseportlet_redirect") />
+			<#assign redirect = paramUtil.getString(request, "redirect") />
+
+			<#if !validator.isNotNull(redirect)>
+				<#assign redirect = paramUtil.getString(request, "_3_WAR_osbknowledgebaseportlet_redirect") />
+			</#if>
 
 			<#if validator.isNotNull(redirect)>
 				<a class="results" href="${redirect}">
