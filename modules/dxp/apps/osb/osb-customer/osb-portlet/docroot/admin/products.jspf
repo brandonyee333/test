@@ -81,7 +81,7 @@
 				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 			</portlet:renderURL>
 
-			<aui:a class="btn btn-default" href="<%= editProductEntryURL %>" label="add-product" />
+			<aui:a cssClass="btn btn-default" href="<%= editProductEntryURL %>" label="add-product" />
 		</div>
 
 		<br />

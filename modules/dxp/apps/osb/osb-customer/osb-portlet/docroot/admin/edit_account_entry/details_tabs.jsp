@@ -69,26 +69,26 @@ for (SupportRegion supportRegion : supportRegions) {
 	<ul class="lfr-nav nav nav-tabs">
 		<c:if test="<%= accountEntry != null %>">
 			<li class="tab" data-content="<portlet:namespace />offeringsContent" id="<portlet:namespace />offerings">
-				<aui:a href="javascript:<portlet:namespace />revealTab('offerings');" label="offerings" />
+				<aui:a href='<%= "javascript:" + renderResponse.getNamespace() + "revealTab('offerings');" %>' label="offerings" />
 			</li>
 			<li class="tab" data-content="<portlet:namespace />environmentDetailsContent" id="<portlet:namespace />environmentDetails">
-				<aui:a href="javascript:<portlet:namespace />revealTab('environmentDetails');" label="environment-details" />
+				<aui:a href='<%= "javascript:" + renderResponse.getNamespace() + "revealTab('environmentDetails');" %>' label="environment-details" />
 			</li>
 			<li class="tab" data-content="<portlet:namespace />projectMessagesContent" id="<portlet:namespace />projectMessages">
-				<aui:a href="javascript:<portlet:namespace />revealTab('projectMessages');" label="project-messages" />
+				<aui:a href='<%= "javascript:" + renderResponse.getNamespace() + "revealTab('projectMessages');" %>' label="project-messages" />
 			</li>
 		</c:if>
 
 		<li class="tab" data-content="<portlet:namespace />supportRegionsContent" id="<portlet:namespace />supportRegions">
-			<aui:a href="javascript:<portlet:namespace />revealTab('supportRegions');" label="support-regions" />
+			<aui:a href='<%= "javascript:" + renderResponse.getNamespace() + "revealTab('supportRegions');" %>' label="support-regions" />
 		</li>
 		<li class="tab" data-content="<portlet:namespace />supportLanguagesContent" id="<portlet:namespace />supportLanguages">
-			<aui:a href="javascript:<portlet:namespace />revealTab('supportLanguages');" label="support-languages" />
+			<aui:a href='<%= "javascript:" + renderResponse.getNamespace() + "revealTab('supportLanguages');" %>' label="support-languages" />
 		</li>
 
 		<c:if test="<%= accountEntry != null %>">
 			<li class="tab" data-content="<portlet:namespace />historyContent" id="<portlet:namespace />history">
-				<aui:a href="javascript:<portlet:namespace />revealTab('history');" label="history" />
+				<aui:a href='<%= "javascript:" + renderResponse.getNamespace() + "revealTab('history');" %>' label="history" />
 			</li>
 		</c:if>
 	</ul>

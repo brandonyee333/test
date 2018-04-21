@@ -266,8 +266,8 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 
 					</liferay-ui:search-container-column-text>
 
-					<aui:input name="maxWork_<%= curUser.getUserId() %>" type="hidden" value="<%= maxWork %>" />
-					<aui:input name="notifications_<%= curUser.getUserId() %>" type="hidden" value="<%= notifications %>" />
+					<aui:input name='<%= "maxWork_" + curUser.getUserId() %>' type="hidden" value="<%= maxWork %>" />
+					<aui:input name='<%= "notifications_" + curUser.getUserId() %>' type="hidden" value="<%= notifications %>" />
 				</c:when>
 				<c:otherwise>
 					<liferay-ui:search-container-column-text

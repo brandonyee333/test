@@ -372,9 +372,6 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 							/>
 						</td>
 						<td>
-							<liferay-ui:message key="prorated" />
-						</td>
-						<td>
 							<aui:input checked="<%= prorated %>" name="prorated" onClick='<%= "document.getElementById('" + renderResponse.getNamespace() + "actualStartDate').style.display = this.checked ? '' : 'none';" %>' type="checkbox" />
 						</td>
 					</tr>
@@ -500,9 +497,9 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="product"
 			>
-				<aui:input name="offeringEntryId_<%= index %>" type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
-				<aui:input name="productEntryId_<%= index %>" type="hidden" value="<%= offeringEntry.getProductEntryId() %>" />
-				<aui:input name="productDescription_<%= index %>" type="hidden" value="<%= offeringEntry.getProductDescription() %>" />
+				<aui:input name='<%= "offeringEntryId_" + index %>' type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
+				<aui:input name='<%= "productEntryId_" + index %>' type="hidden" value="<%= offeringEntry.getProductEntryId() %>" />
+				<aui:input name='<%= "productDescription_" + index %>' type="hidden" value="<%= offeringEntry.getProductDescription() %>" />
 
 				<%= HtmlUtil.escape(productEntry.getName()) %>
 
@@ -514,7 +511,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="licenses"
 			>
-				<aui:input checked="<%= offeringEntry.isLicenses() %>" name="licenses_<%= index %>" type="checkbox" />
+				<aui:input checked="<%= offeringEntry.isLicenses() %>" label="" name='<%= "licenses_" + index %>' type="checkbox" />
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
@@ -546,13 +543,13 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<liferay-ui:search-container-column-text
 				name="support-tickets"
 			>
-				<aui:input checked="<%= offeringEntry.isSupportTickets() %>" name="supportTickets_<%= index %>" type="checkbox" />
+				<aui:input checked="<%= offeringEntry.isSupportTickets() %>" label="" name='<%= "supportTickets_" + index %>' type="checkbox" />
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="sla"
 			>
-				<aui:input name="supportResponseId_<%= index %>" type="hidden" value="<%= offeringEntry.getSupportResponseId() %>" />
+				<aui:input name='<%= "supportResponseId_" + index %>' type="hidden" value="<%= offeringEntry.getSupportResponseId() %>" />
 
 				<%= HtmlUtil.escape(supportResponse.getName()) %>
 			</liferay-ui:search-container-column-text>
