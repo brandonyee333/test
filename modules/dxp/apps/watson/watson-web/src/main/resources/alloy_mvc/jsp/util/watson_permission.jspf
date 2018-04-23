@@ -70,7 +70,7 @@ public static class WatsonPermission extends AlloyPermission {
 	}
 
 	public static boolean check(User user, String role) throws Exception {
-		if (Validator.isNotNull(role) && Validator.isNotNull(user)) {
+		if (Validator.isNotNull(role) && Validator.isNotNull(user) && WatsonTokenAuthEntryLocalServiceUtil.hasAuthenticatedSession(user)) {
 			return RoleLocalServiceUtil.hasUserRole(user.getUserId(), user.getCompanyId(), role, true);
 		}
 
