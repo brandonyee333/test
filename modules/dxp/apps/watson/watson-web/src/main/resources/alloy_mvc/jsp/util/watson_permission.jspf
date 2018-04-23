@@ -77,5 +77,13 @@ public static class WatsonPermission extends AlloyPermission {
 		return false;
 	}
 
+	public static boolean check(User user, String role, boolean skipAuthTokenCheck) throws Exception {
+		if (Validator.isNotNull(role) && Validator.isNotNull(user) && skipAuthTokenCheck) {
+			return RoleLocalServiceUtil.hasUserRole(user.getUserId(), user.getCompanyId(), role, true);
+		}
+
+		return false;
+	}
+
 }
 %>

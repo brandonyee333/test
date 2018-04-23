@@ -20,15 +20,15 @@ public static class WatsonUtil {
 	public static JSONObject getCompositeUser(User user) throws Exception {
 		JSONObject watsonUserJSONObject = JSONFactoryUtil.createJSONObject();
 
-		watsonUserJSONObject.put("childrensHomeManagerRole", WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_MANAGER));
-		watsonUserJSONObject.put("childrensHomeStaffRole", WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_STAFF));
-		watsonUserJSONObject.put("incidentManagerRole", WatsonPermission.check(user, RoleConstants.INCIDENT_MANAGER));
-		watsonUserJSONObject.put("incidentStaffRole", WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF));
+		watsonUserJSONObject.put("childrensHomeManagerRole", WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_MANAGER, true));
+		watsonUserJSONObject.put("childrensHomeStaffRole", WatsonPermission.check(user, RoleConstants.CHILDRENS_HOME_STAFF, true));
+		watsonUserJSONObject.put("incidentManagerRole", WatsonPermission.check(user, RoleConstants.INCIDENT_MANAGER, true));
+		watsonUserJSONObject.put("incidentStaffRole", WatsonPermission.check(user, RoleConstants.INCIDENT_STAFF, true));
 		watsonUserJSONObject.put("languageId", user.getLanguageId());
-		watsonUserJSONObject.put("portalAdministratorRole", WatsonPermission.check(user, RoleConstants.ADMINISTRATOR));
-		watsonUserJSONObject.put("translatorRole", WatsonPermission.check(user, RoleConstants.WATSON_TRANSLATOR));
+		watsonUserJSONObject.put("portalAdministratorRole", WatsonPermission.check(user, RoleConstants.ADMINISTRATOR, true));
+		watsonUserJSONObject.put("translatorRole", WatsonPermission.check(user, RoleConstants.WATSON_TRANSLATOR, true));
 		watsonUserJSONObject.put("userInitials", user.getInitials());
-		watsonUserJSONObject.put("watsonAdministratorRole", WatsonPermission.check(user, RoleConstants.WATSON_ADMINISTRATOR));
+		watsonUserJSONObject.put("watsonAdministratorRole", WatsonPermission.check(user, RoleConstants.WATSON_ADMINISTRATOR, true));
 
 		return watsonUserJSONObject;
 	}
