@@ -68,13 +68,6 @@ Liferay.Watson = {
 			new Main();
 
 			this.initialized = true;
-
-			Liferay.on(
-				'sessionExpired',
-				() => {
-					window.location = WatsonConstants.urls.sessionExpired;
-				}
-			);
 		}
 	},
 	debouncedSessionExtend: noop,
