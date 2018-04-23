@@ -16,10 +16,8 @@ package com.liferay.watson.web.internal.servlet.filter;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Ticket;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
-import com.liferay.portal.kernel.service.TicketLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.BaseFilter;
 import com.liferay.portal.kernel.util.Http;
@@ -91,23 +89,6 @@ public class WatsonLoginFilter extends BaseFilter {
 		User currentUser = _portal.getUser(request);
 
 		if (currentUser == null) {
-			String ticketKey = request.getParameter("ticketKey");
-
-			if (Validator.isNotNull(ticketKey)) {
-				Ticket ticket = _ticketLocalService.fetchTicket(ticketKey);
-
-				if (ticket != null) {
-					User ticketUser = _userLocalService.fetchUser(
-						ticket.getClassPK());
-
-					if (ticketUser != null) {
-						filterChain.doFilter(request, response);
-
-						return;
-					}
-				}
-			}
-
 			String currentURL = _portal.getCurrentURL(request);
 
 			response.sendRedirect(
@@ -127,9 +108,6 @@ public class WatsonLoginFilter extends BaseFilter {
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private TicketLocalService _ticketLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;
