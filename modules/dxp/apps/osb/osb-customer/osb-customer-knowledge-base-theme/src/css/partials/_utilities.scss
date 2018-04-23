@@ -1,0 +1,13 @@
+.responsive-only {
+	display: none;
+}
+
+@include media-query(null, $screen-xs-max) {
+	.responsive-hidden {
+		display: none;
+	}
+
+	.responsive-only {
+		display: block;
+	}
+}

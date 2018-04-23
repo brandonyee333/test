@@ -1,0 +1,64 @@
+.osb-documentation-side-navigation-portlet {
+	.side-nav-wrapper {
+		border-right: 1px solid $border-color;
+		margin-top: 1em;
+		padding-right: 0.5em;
+
+		li.child {
+			padding-left: 24px;
+			text-indent: -24px;
+		}
+
+		li.parent {
+			padding-left: 17px;
+			text-indent: -17px;
+
+			& li {
+				padding-left: inherit;
+			}
+
+			& li.child {
+				padding-left: 7px;
+				text-indent: -24px;
+			}
+		}
+
+		ul {
+			margin: 0 0 10px 25px;
+		}
+
+		.side-nav-toggle {
+			line-height: 20px;
+
+			span {
+				font-family: 'source-sans-pro-light', Arial, Helvetica, sans-serif;
+				font-size: 0.65em;
+				vertical-align: middle;
+			}
+		}
+
+		.side-nav-tree {
+			.tree-node-content {
+				&.tree-node-leaf {
+					&:before {
+						color: #999;
+					}
+				}
+			}
+		}
+	}
+}
+
+@include media-query(null, $screen-xs-max) {
+	.osb-documentation-side-navigation-portlet {
+		.side-nav-wrapper {
+			border-right-width: 0;
+
+			.side-nav-toggle {
+				span {
+					font-size: 1em;
+				}
+			}
+		}
+	}
+}

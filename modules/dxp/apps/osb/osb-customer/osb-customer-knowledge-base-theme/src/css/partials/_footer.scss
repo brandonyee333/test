@@ -1,0 +1,80 @@
+.footer {
+	margin: 0.75em auto;
+	text-align: center;
+
+	a {
+		color: $gray;
+
+		&:focus, &:hover {
+			color: $orange;
+			text-decoration: none;
+		}
+	}
+
+	.social-nav {
+		border-bottom: 1px solid $border-color;
+		line-height: 20px;
+
+		a {
+			&:focus, &:hover {
+				color: $light-blue;
+			}
+		}
+
+		.nav-item {
+			padding: 10px;
+
+			.social-img {
+				background: url(@theme_image_path@/custom/social_icons_16x16.png) no-repeat;
+				float: left;
+				height: 16px;
+				padding-right: 5px;
+				width: 21px;
+
+				&.facebook {
+					background-position: 0 -16px;
+				}
+
+				&.rss {
+					background-position: 0 -48px;
+				}
+
+				&.twitter {
+					background-position: 0 -32px;
+				}
+			}
+		}
+	}
+
+	.footer-navigation {
+		margin: 0.75em auto;
+
+		.root-item {
+			padding: 0 20px;
+			text-align: left;
+
+			> a {
+				font-weight: bold;
+
+				&:hover {
+					color: $gray;
+					cursor: default;
+				}
+			}
+		}
+	}
+
+	.social-media-panel {
+		height: 45px;
+
+		.facebook-buttons {
+			margin-left: 1em;
+			text-align: left;
+		}
+	}
+
+	.copyright {
+		padding-top: 30px;
+		text-transform: uppercase;
+	}
+}

@@ -1,0 +1,22 @@
+.center-blocks, .lower-blocks {
+	margin-bottom: 20px;
+
+	.category-content {
+		padding: 20px 0;
+
+		.header {
+			color: #333;
+
+			a {
+				&, &:hover {
+					color: #333;
+					text-decoration: none;
+				}
+			}
+		}
+
+		.category-icon {
+			width: 240px;
+		}
+	}
+}
