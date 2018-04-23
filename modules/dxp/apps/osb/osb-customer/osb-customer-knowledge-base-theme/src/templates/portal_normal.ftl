@@ -141,7 +141,7 @@
 		<div class="documentation-search">
 			<#assign redirect = paramUtil.getString(request, "redirect") />
 
-			<#if !validator.isNotNull(redirect)>
+			<#if validator.isNull(redirect)>
 				<#assign redirect = paramUtil.getString(request, "_3_WAR_osbknowledgebaseportlet_redirect") />
 			</#if>
 
