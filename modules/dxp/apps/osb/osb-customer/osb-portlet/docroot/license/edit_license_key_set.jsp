@@ -50,6 +50,8 @@ calendar.add(Calendar.YEAR, 3);
 
 Date lastEnabledDate = calendar.getTime();
 
+calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("mvcPath", "/license/edit_license_key_set.jsp");
@@ -188,13 +190,14 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 
 					<liferay-ui:input-date
 						dayParam="aggregateStartDay"
-						dayValue="<%= 0 %>"
+						dayValue="<%= calendar.get(Calendar.DAY_OF_MONTH) %>"
 						firstEnabledDate="<%= firstEnabledDate %>"
 						lastEnabledDate="<%= lastEnabledDate %>"
 						monthParam="aggregateStartMonth"
-						monthValue="<%= -1 %>"
+						monthValue="<%= calendar.get(Calendar.MONTH) %>"
+						name="startDate"
 						yearParam="aggregateStartYear"
-						yearValue="<%= 0 %>"
+						yearValue="<%= calendar.get(Calendar.YEAR) %>"
 					/>
 
 					<liferay-ui:message key="duration" />:

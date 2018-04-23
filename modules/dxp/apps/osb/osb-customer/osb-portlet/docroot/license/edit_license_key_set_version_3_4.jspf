@@ -571,13 +571,14 @@
 
 						<liferay-ui:input-date
 							dayParam='<%= "startDay_" + licenseKey.getLicenseKeyId() %>'
-							dayValue="<%= 0 %>"
+							dayValue="<%= calendar.get(Calendar.DAY_OF_MONTH) %>"
 							firstEnabledDate="<%= firstEnabledDate %>"
 							lastEnabledDate="<%= lastEnabledDate %>"
 							monthParam='<%= "startMonth_" + licenseKey.getLicenseKeyId() %>'
-							monthValue="<%= -1 %>"
+							monthValue="<%= calendar.get(Calendar.MONTH) %>"
+							name="startDate"
 							yearParam='<%= "startYear_" + licenseKey.getLicenseKeyId() %>'
-							yearValue="<%= 0 %>"
+							yearValue="<%= calendar.get(Calendar.YEAR) %>"
 						/>
 
 						<c:choose>
