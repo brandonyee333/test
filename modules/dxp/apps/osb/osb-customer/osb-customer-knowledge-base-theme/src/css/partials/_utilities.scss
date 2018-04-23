@@ -1,5 +1,13 @@
+.bold {
+	font-weight: bold;
+}
+
 .responsive-only {
 	display: none;
+}
+
+.uppercase {
+	text-transform: uppercase;
 }
 
 @include media-query(null, $screen-xs-max) {
