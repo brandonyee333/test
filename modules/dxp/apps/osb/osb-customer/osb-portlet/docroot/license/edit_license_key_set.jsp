@@ -199,14 +199,14 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 
 					<liferay-ui:message key="duration" />:
 
-					<aui:select inlineField="<%= true %>" name="aggregateRenewTime">
+					<aui:select inlineField="<%= true %>" label="" name="aggregateRenewTime">
 						<aui:option label="2-weeks" value="14" />
 						<aui:option label="30-days" value="30" />
 						<aui:option label="60-days" value="60" />
 						<aui:option label="1-year" value="365" />
 					</aui:select>
 
-					<aui:a cssClass="btn" href="javascript:<portlet:namespace />renewLicenseKey();" label="renew-aggregate" />
+					<aui:a cssClass="btn" href='<%= "javascript:" + renderResponse.getNamespace() + "renewLicenseKey();" %>' label="renew-aggregate" />
 				</div>
 			</c:if>
 		</div>

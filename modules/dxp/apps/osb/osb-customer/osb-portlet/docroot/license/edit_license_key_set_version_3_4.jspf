@@ -584,7 +584,7 @@
 							<c:when test="<%= !RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID) %>">
 								<liferay-ui:message key="duration" />:
 
-								<aui:select inlineField="<%= true %>" name='<%= "renewTime_" + licenseKey.getLicenseKeyId() %>'>
+								<aui:select inlineField="<%= true %>" label="" name='<%= "renewTime_" + licenseKey.getLicenseKeyId() %>'>
 									<aui:option label="2-weeks" value="14" />
 									<aui:option label="30-days" value="30" />
 									<aui:option label="60-days" value="60" />
@@ -596,7 +596,7 @@
 							</c:otherwise>
 						</c:choose>
 
-						<aui:a cssClass="btn" href="javascript:<portlet:namespace />renewLicenseKey(<%= licenseKey.getLicenseKeyId() %>);" label="renew" />
+						<aui:a cssClass="btn" href='<%= "javascript:" + renderResponse.getNamespace() + "renewLicenseKey(" + licenseKey.getLicenseKeyId() + ");" %>' label="renew" />
 					</div>
 				</c:if>
 			</div>
