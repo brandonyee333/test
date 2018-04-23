@@ -77,6 +77,20 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		return watsonTokenAuthEntry;
 	}
 
+	public boolean hasAuthenticatedSession(User user) {
+		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchWatsonTokenAuthEntry(
+			user);
+
+		if (Validator.isNotNull(watsonTokenAuthEntry) &&
+			watsonTokenAuthEntry.isActive() &&
+			!watsonTokenAuthEntry.isExpired()) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean hasAuthenticatedSession(User user, String latestLoginIP) {
 		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchWatsonTokenAuthEntry(
 			user);
