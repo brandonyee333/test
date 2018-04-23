@@ -13,11 +13,11 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import {checkUserAuthorizationStatus, submitAuthenticationToken} from '../actions/authentication';
 
 const authStates = {
-	approved: Liferay.Language.get('approved'),
-	expired: Liferay.Language.get('expired'),
-	invalid: Liferay.Language.get('invalid'),
-	'invalid-ip': Liferay.Language.get('invalid-ip'),
-	pending: Liferay.Language.get('pending')
+	approved: Liferay.Language.get('authorization-token-approved'),
+	expired: Liferay.Language.get('authorization-token-expired'),
+	invalid: Liferay.Language.get('authorization-token-invalid'),
+	'invalid-ip': Liferay.Language.get('authorization-token-invalid-ip'),
+	pending: Liferay.Language.get('authorization-token-pending')
 };
 
 class UserAuthentication extends JSXComponent {
@@ -68,7 +68,7 @@ class UserAuthentication extends JSXComponent {
 		let alertContent = '';
 
 		if (authenticationStatus === 'pending') {
-			alertContent = emailSentTime ? sub(Liferay.Language.get('an-authorization-code-was-successfully-sent-x'), sentMoment.fromNow(false)) : Liferay.Language.get('an-authorization-code-was-successfully-sent');
+			alertContent = emailSentTime ? sub(Liferay.Language.get('an-authorization-code-was-successfully-sent-x'), sentMoment.fromNow(false)) : '';
 		}
 
 		const modal = {
@@ -110,15 +110,7 @@ class UserAuthentication extends JSXComponent {
 						visible={!!alertContent}
 					/>
 
-					<span class="login-label">{Liferay.Language.get('to-complete-the-login-process-we-have-sent-an-authorization-code')}</span>
-
-					<span class="input-container">
-						<Input class={`watson-input ${cssClass}`} onChange={this._handleOnChange} value={value} />
-
-						<Button label={Liferay.Language.get('submit')} onclick={this._handleSubmit} />
-					</span>
-
-					<span class="alert-container">
+					<span className="alert-container">
 						<Alert
 							body={errorMessage}
 							dismissible={false}
@@ -128,10 +120,18 @@ class UserAuthentication extends JSXComponent {
 						/>
 					</span>
 
+					<span class="login-label">{Liferay.Language.get('to-complete-the-login-process-we-have-sent-an-authorization-code')}</span>
+
+					<span class="input-container">
+						<Input class={`watson-input ${cssClass}`} onChange={this._handleOnChange} value={value} />
+
+						<Button label={Liferay.Language.get('submit')} onclick={this._handleSubmit} />
+					</span>
+
 					<span class="small-label-container">
 						<span class="login-small-label">{Liferay.Language.get('this-code-will-expire-in-30-minutes')}</span>
 
-						<ButtonModal action={this._handleNewTokenRequest} buttons={sendNewEmailButtons} modalData={modal} />
+						<ButtonModal action={this._handleNewTokenRequest} buttons={sendNewEmailButtons} elementClasses="auth-modal" modalData={modal} />
 					</span>
 				</div>
 			</div>
