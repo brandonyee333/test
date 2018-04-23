@@ -27,11 +27,22 @@
 	}
 
 	.authentication-content {
-		padding-top: 5%;
+		box-shadow: $mediumShadow;
+		display: flex;
+		flex-direction: column;
+		height: 85%;
+		margin: calc(48vh - 325px) auto 0;
+		max-width: 1000px;
+		min-height: 300px;
+		min-width: 320px;
+		padding-left: 3%;
+		padding-right: 3%;
+		padding-top: 4%;
 		width: 100%;
 
 		.input-container {
 			display: flex;
+			justify-content: center;
 			margin-top: 3%;
 
 			button {
@@ -44,14 +55,19 @@
 		}
 
 		.small-label-container {
-			bottom: 3%;
-			position: fixed;
+			flex-direction: column;
+			padding-left: 5%;
+			padding-right: 5%;
+			padding-top: 5%;
 
 			.login-small-label {
 				@include important-text;
 			}
 
-			div {
+			.auth-modal {
+				margin-bottom: 3%;
+				padding-left: 34%;
+				padding-right: 21%;
 				padding-top: 1.5%;
 			}
 		}
