@@ -68,8 +68,8 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 	}
 
 	function <portlet:namespace />toggleForm(hideId, showId) {
-		document.getElementById(showId).style.display = "";
-		document.getElementById(hideId).style.display = "none";
+		document.getElementById(showId).style.display = '';
+		document.getElementById(hideId).style.display = 'none';
 	}
 </script>
 
