@@ -243,8 +243,6 @@ public class WatsonResourceAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	protected WatsonResourceAudit removeImpl(
 		WatsonResourceAudit watsonResourceAudit) {
-		watsonResourceAudit = toUnwrappedModel(watsonResourceAudit);
-
 		Session session = null;
 
 		try {
@@ -276,8 +274,6 @@ public class WatsonResourceAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	public WatsonResourceAudit updateImpl(
 		WatsonResourceAudit watsonResourceAudit) {
-		watsonResourceAudit = toUnwrappedModel(watsonResourceAudit);
-
 		boolean isNew = watsonResourceAudit.isNew();
 
 		WatsonResourceAuditModelImpl watsonResourceAuditModelImpl = (WatsonResourceAuditModelImpl)watsonResourceAudit;
@@ -342,36 +338,6 @@ public class WatsonResourceAuditPersistenceImpl extends BasePersistenceImpl<Wats
 		watsonResourceAudit.resetOriginalValues();
 
 		return watsonResourceAudit;
-	}
-
-	protected WatsonResourceAudit toUnwrappedModel(
-		WatsonResourceAudit watsonResourceAudit) {
-		if (watsonResourceAudit instanceof WatsonResourceAuditImpl) {
-			return watsonResourceAudit;
-		}
-
-		WatsonResourceAuditImpl watsonResourceAuditImpl = new WatsonResourceAuditImpl();
-
-		watsonResourceAuditImpl.setNew(watsonResourceAudit.isNew());
-		watsonResourceAuditImpl.setPrimaryKey(watsonResourceAudit.getPrimaryKey());
-
-		watsonResourceAuditImpl.setWatsonResourceAuditId(watsonResourceAudit.getWatsonResourceAuditId());
-		watsonResourceAuditImpl.setGroupId(watsonResourceAudit.getGroupId());
-		watsonResourceAuditImpl.setCompanyId(watsonResourceAudit.getCompanyId());
-		watsonResourceAuditImpl.setUserId(watsonResourceAudit.getUserId());
-		watsonResourceAuditImpl.setUserName(watsonResourceAudit.getUserName());
-		watsonResourceAuditImpl.setCreateDate(watsonResourceAudit.getCreateDate());
-		watsonResourceAuditImpl.setModifiedDate(watsonResourceAudit.getModifiedDate());
-		watsonResourceAuditImpl.setOriginalWatsonResourceId(watsonResourceAudit.getOriginalWatsonResourceId());
-		watsonResourceAuditImpl.setTypeWatsonListTypeId(watsonResourceAudit.getTypeWatsonListTypeId());
-		watsonResourceAuditImpl.setWatsonIncidentId(watsonResourceAudit.getWatsonIncidentId());
-		watsonResourceAuditImpl.setWatsonResourceId(watsonResourceAudit.getWatsonResourceId());
-		watsonResourceAuditImpl.setName(watsonResourceAudit.getName());
-		watsonResourceAuditImpl.setDescription(watsonResourceAudit.getDescription());
-		watsonResourceAuditImpl.setImagePayload(watsonResourceAudit.getImagePayload());
-		watsonResourceAuditImpl.setStatus(watsonResourceAudit.getStatus());
-
-		return watsonResourceAuditImpl;
 	}
 
 	/**

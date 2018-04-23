@@ -263,8 +263,6 @@ public class WatsonHistoryAuditPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	protected WatsonHistoryAudit removeImpl(
 		WatsonHistoryAudit watsonHistoryAudit) {
-		watsonHistoryAudit = toUnwrappedModel(watsonHistoryAudit);
-
 		Session session = null;
 
 		try {
@@ -295,8 +293,6 @@ public class WatsonHistoryAuditPersistenceImpl extends BasePersistenceImpl<Watso
 
 	@Override
 	public WatsonHistoryAudit updateImpl(WatsonHistoryAudit watsonHistoryAudit) {
-		watsonHistoryAudit = toUnwrappedModel(watsonHistoryAudit);
-
 		boolean isNew = watsonHistoryAudit.isNew();
 
 		WatsonHistoryAuditModelImpl watsonHistoryAuditModelImpl = (WatsonHistoryAuditModelImpl)watsonHistoryAudit;
@@ -361,34 +357,6 @@ public class WatsonHistoryAuditPersistenceImpl extends BasePersistenceImpl<Watso
 		watsonHistoryAudit.resetOriginalValues();
 
 		return watsonHistoryAudit;
-	}
-
-	protected WatsonHistoryAudit toUnwrappedModel(
-		WatsonHistoryAudit watsonHistoryAudit) {
-		if (watsonHistoryAudit instanceof WatsonHistoryAuditImpl) {
-			return watsonHistoryAudit;
-		}
-
-		WatsonHistoryAuditImpl watsonHistoryAuditImpl = new WatsonHistoryAuditImpl();
-
-		watsonHistoryAuditImpl.setNew(watsonHistoryAudit.isNew());
-		watsonHistoryAuditImpl.setPrimaryKey(watsonHistoryAudit.getPrimaryKey());
-
-		watsonHistoryAuditImpl.setWatsonHistoryAuditId(watsonHistoryAudit.getWatsonHistoryAuditId());
-		watsonHistoryAuditImpl.setGroupId(watsonHistoryAudit.getGroupId());
-		watsonHistoryAuditImpl.setCompanyId(watsonHistoryAudit.getCompanyId());
-		watsonHistoryAuditImpl.setUserId(watsonHistoryAudit.getUserId());
-		watsonHistoryAuditImpl.setUserName(watsonHistoryAudit.getUserName());
-		watsonHistoryAuditImpl.setCreateDate(watsonHistoryAudit.getCreateDate());
-		watsonHistoryAuditImpl.setModifiedDate(watsonHistoryAudit.getModifiedDate());
-		watsonHistoryAuditImpl.setWatsonHistoryId(watsonHistoryAudit.getWatsonHistoryId());
-		watsonHistoryAuditImpl.setWatsonParentId(watsonHistoryAudit.getWatsonParentId());
-		watsonHistoryAuditImpl.setClassNameId(watsonHistoryAudit.getClassNameId());
-		watsonHistoryAuditImpl.setClassPK(watsonHistoryAudit.getClassPK());
-		watsonHistoryAuditImpl.setType(watsonHistoryAudit.getType());
-		watsonHistoryAuditImpl.setStatus(watsonHistoryAudit.getStatus());
-
-		return watsonHistoryAuditImpl;
 	}
 
 	/**

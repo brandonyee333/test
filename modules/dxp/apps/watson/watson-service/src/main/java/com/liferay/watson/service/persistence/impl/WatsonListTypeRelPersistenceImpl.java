@@ -263,8 +263,6 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@Override
 	protected WatsonListTypeRel removeImpl(WatsonListTypeRel watsonListTypeRel) {
-		watsonListTypeRel = toUnwrappedModel(watsonListTypeRel);
-
 		Session session = null;
 
 		try {
@@ -295,8 +293,6 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@Override
 	public WatsonListTypeRel updateImpl(WatsonListTypeRel watsonListTypeRel) {
-		watsonListTypeRel = toUnwrappedModel(watsonListTypeRel);
-
 		boolean isNew = watsonListTypeRel.isNew();
 
 		WatsonListTypeRelModelImpl watsonListTypeRelModelImpl = (WatsonListTypeRelModelImpl)watsonListTypeRel;
@@ -361,35 +357,6 @@ public class WatsonListTypeRelPersistenceImpl extends BasePersistenceImpl<Watson
 		watsonListTypeRel.resetOriginalValues();
 
 		return watsonListTypeRel;
-	}
-
-	protected WatsonListTypeRel toUnwrappedModel(
-		WatsonListTypeRel watsonListTypeRel) {
-		if (watsonListTypeRel instanceof WatsonListTypeRelImpl) {
-			return watsonListTypeRel;
-		}
-
-		WatsonListTypeRelImpl watsonListTypeRelImpl = new WatsonListTypeRelImpl();
-
-		watsonListTypeRelImpl.setNew(watsonListTypeRel.isNew());
-		watsonListTypeRelImpl.setPrimaryKey(watsonListTypeRel.getPrimaryKey());
-
-		watsonListTypeRelImpl.setWatsonListTypeRelId(watsonListTypeRel.getWatsonListTypeRelId());
-		watsonListTypeRelImpl.setGroupId(watsonListTypeRel.getGroupId());
-		watsonListTypeRelImpl.setCompanyId(watsonListTypeRel.getCompanyId());
-		watsonListTypeRelImpl.setUserId(watsonListTypeRel.getUserId());
-		watsonListTypeRelImpl.setUserName(watsonListTypeRel.getUserName());
-		watsonListTypeRelImpl.setCreateDate(watsonListTypeRel.getCreateDate());
-		watsonListTypeRelImpl.setModifiedDate(watsonListTypeRel.getModifiedDate());
-		watsonListTypeRelImpl.setWatsonListTypeId(watsonListTypeRel.getWatsonListTypeId());
-		watsonListTypeRelImpl.setClassNameId(watsonListTypeRel.getClassNameId());
-		watsonListTypeRelImpl.setClassPK(watsonListTypeRel.getClassPK());
-		watsonListTypeRelImpl.setPrimary(watsonListTypeRel.isPrimary());
-		watsonListTypeRelImpl.setValue(watsonListTypeRel.getValue());
-		watsonListTypeRelImpl.setType(watsonListTypeRel.getType());
-		watsonListTypeRelImpl.setStatus(watsonListTypeRel.getStatus());
-
-		return watsonListTypeRelImpl;
 	}
 
 	/**

@@ -240,8 +240,6 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 
 	@Override
 	protected WatsonVehicle removeImpl(WatsonVehicle watsonVehicle) {
-		watsonVehicle = toUnwrappedModel(watsonVehicle);
-
 		Session session = null;
 
 		try {
@@ -272,8 +270,6 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 
 	@Override
 	public WatsonVehicle updateImpl(WatsonVehicle watsonVehicle) {
-		watsonVehicle = toUnwrappedModel(watsonVehicle);
-
 		boolean isNew = watsonVehicle.isNew();
 
 		WatsonVehicleModelImpl watsonVehicleModelImpl = (WatsonVehicleModelImpl)watsonVehicle;
@@ -337,39 +333,6 @@ public class WatsonVehiclePersistenceImpl extends BasePersistenceImpl<WatsonVehi
 		watsonVehicle.resetOriginalValues();
 
 		return watsonVehicle;
-	}
-
-	protected WatsonVehicle toUnwrappedModel(WatsonVehicle watsonVehicle) {
-		if (watsonVehicle instanceof WatsonVehicleImpl) {
-			return watsonVehicle;
-		}
-
-		WatsonVehicleImpl watsonVehicleImpl = new WatsonVehicleImpl();
-
-		watsonVehicleImpl.setNew(watsonVehicle.isNew());
-		watsonVehicleImpl.setPrimaryKey(watsonVehicle.getPrimaryKey());
-
-		watsonVehicleImpl.setWatsonVehicleId(watsonVehicle.getWatsonVehicleId());
-		watsonVehicleImpl.setGroupId(watsonVehicle.getGroupId());
-		watsonVehicleImpl.setCompanyId(watsonVehicle.getCompanyId());
-		watsonVehicleImpl.setUserId(watsonVehicle.getUserId());
-		watsonVehicleImpl.setUserName(watsonVehicle.getUserName());
-		watsonVehicleImpl.setCreateDate(watsonVehicle.getCreateDate());
-		watsonVehicleImpl.setModifiedDate(watsonVehicle.getModifiedDate());
-		watsonVehicleImpl.setColorWatsonListTypeId(watsonVehicle.getColorWatsonListTypeId());
-		watsonVehicleImpl.setMakeWatsonListTypeId(watsonVehicle.getMakeWatsonListTypeId());
-		watsonVehicleImpl.setModelWatsonListTypeId(watsonVehicle.getModelWatsonListTypeId());
-		watsonVehicleImpl.setOriginalWatsonVehicleId(watsonVehicle.getOriginalWatsonVehicleId());
-		watsonVehicleImpl.setTypeWatsonListTypeId(watsonVehicle.getTypeWatsonListTypeId());
-		watsonVehicleImpl.setYearWatsonListTypeId(watsonVehicle.getYearWatsonListTypeId());
-		watsonVehicleImpl.setWatsonIncidentId(watsonVehicle.getWatsonIncidentId());
-		watsonVehicleImpl.setYear(watsonVehicle.getYear());
-		watsonVehicleImpl.setDescription(watsonVehicle.getDescription());
-		watsonVehicleImpl.setImagePayload(watsonVehicle.getImagePayload());
-		watsonVehicleImpl.setLicensePlate(watsonVehicle.getLicensePlate());
-		watsonVehicleImpl.setStatus(watsonVehicle.getStatus());
-
-		return watsonVehicleImpl;
 	}
 
 	/**

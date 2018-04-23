@@ -1066,8 +1066,6 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 
 	@Override
 	protected AkismetEntry removeImpl(AkismetEntry akismetEntry) {
-		akismetEntry = toUnwrappedModel(akismetEntry);
-
 		Session session = null;
 
 		try {
@@ -1098,8 +1096,6 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 
 	@Override
 	public AkismetEntry updateImpl(AkismetEntry akismetEntry) {
-		akismetEntry = toUnwrappedModel(akismetEntry);
-
 		boolean isNew = akismetEntry.isNew();
 
 		AkismetEntryModelImpl akismetEntryModelImpl = (AkismetEntryModelImpl)akismetEntry;
@@ -1147,30 +1143,6 @@ public class AkismetEntryPersistenceImpl extends BasePersistenceImpl<AkismetEntr
 		akismetEntry.resetOriginalValues();
 
 		return akismetEntry;
-	}
-
-	protected AkismetEntry toUnwrappedModel(AkismetEntry akismetEntry) {
-		if (akismetEntry instanceof AkismetEntryImpl) {
-			return akismetEntry;
-		}
-
-		AkismetEntryImpl akismetEntryImpl = new AkismetEntryImpl();
-
-		akismetEntryImpl.setNew(akismetEntry.isNew());
-		akismetEntryImpl.setPrimaryKey(akismetEntry.getPrimaryKey());
-
-		akismetEntryImpl.setAkismetEntryId(akismetEntry.getAkismetEntryId());
-		akismetEntryImpl.setModifiedDate(akismetEntry.getModifiedDate());
-		akismetEntryImpl.setClassNameId(akismetEntry.getClassNameId());
-		akismetEntryImpl.setClassPK(akismetEntry.getClassPK());
-		akismetEntryImpl.setType(akismetEntry.getType());
-		akismetEntryImpl.setPermalink(akismetEntry.getPermalink());
-		akismetEntryImpl.setReferrer(akismetEntry.getReferrer());
-		akismetEntryImpl.setUserAgent(akismetEntry.getUserAgent());
-		akismetEntryImpl.setUserIP(akismetEntry.getUserIP());
-		akismetEntryImpl.setUserURL(akismetEntry.getUserURL());
-
-		return akismetEntryImpl;
 	}
 
 	/**

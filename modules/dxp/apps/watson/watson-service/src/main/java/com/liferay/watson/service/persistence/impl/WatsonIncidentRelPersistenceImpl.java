@@ -262,8 +262,6 @@ public class WatsonIncidentRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@Override
 	protected WatsonIncidentRel removeImpl(WatsonIncidentRel watsonIncidentRel) {
-		watsonIncidentRel = toUnwrappedModel(watsonIncidentRel);
-
 		Session session = null;
 
 		try {
@@ -294,8 +292,6 @@ public class WatsonIncidentRelPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@Override
 	public WatsonIncidentRel updateImpl(WatsonIncidentRel watsonIncidentRel) {
-		watsonIncidentRel = toUnwrappedModel(watsonIncidentRel);
-
 		boolean isNew = watsonIncidentRel.isNew();
 
 		WatsonIncidentRelModelImpl watsonIncidentRelModelImpl = (WatsonIncidentRelModelImpl)watsonIncidentRel;
@@ -360,32 +356,6 @@ public class WatsonIncidentRelPersistenceImpl extends BasePersistenceImpl<Watson
 		watsonIncidentRel.resetOriginalValues();
 
 		return watsonIncidentRel;
-	}
-
-	protected WatsonIncidentRel toUnwrappedModel(
-		WatsonIncidentRel watsonIncidentRel) {
-		if (watsonIncidentRel instanceof WatsonIncidentRelImpl) {
-			return watsonIncidentRel;
-		}
-
-		WatsonIncidentRelImpl watsonIncidentRelImpl = new WatsonIncidentRelImpl();
-
-		watsonIncidentRelImpl.setNew(watsonIncidentRel.isNew());
-		watsonIncidentRelImpl.setPrimaryKey(watsonIncidentRel.getPrimaryKey());
-
-		watsonIncidentRelImpl.setWatsonIncidentRelId(watsonIncidentRel.getWatsonIncidentRelId());
-		watsonIncidentRelImpl.setGroupId(watsonIncidentRel.getGroupId());
-		watsonIncidentRelImpl.setCompanyId(watsonIncidentRel.getCompanyId());
-		watsonIncidentRelImpl.setUserId(watsonIncidentRel.getUserId());
-		watsonIncidentRelImpl.setUserName(watsonIncidentRel.getUserName());
-		watsonIncidentRelImpl.setCreateDate(watsonIncidentRel.getCreateDate());
-		watsonIncidentRelImpl.setModifiedDate(watsonIncidentRel.getModifiedDate());
-		watsonIncidentRelImpl.setWatsonIncidentId1(watsonIncidentRel.getWatsonIncidentId1());
-		watsonIncidentRelImpl.setWatsonIncidentId2(watsonIncidentRel.getWatsonIncidentId2());
-		watsonIncidentRelImpl.setType(watsonIncidentRel.getType());
-		watsonIncidentRelImpl.setStatus(watsonIncidentRel.getStatus());
-
-		return watsonIncidentRelImpl;
 	}
 
 	/**

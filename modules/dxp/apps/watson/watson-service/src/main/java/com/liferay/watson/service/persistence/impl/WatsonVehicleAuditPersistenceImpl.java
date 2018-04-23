@@ -242,8 +242,6 @@ public class WatsonVehicleAuditPersistenceImpl extends BasePersistenceImpl<Watso
 	@Override
 	protected WatsonVehicleAudit removeImpl(
 		WatsonVehicleAudit watsonVehicleAudit) {
-		watsonVehicleAudit = toUnwrappedModel(watsonVehicleAudit);
-
 		Session session = null;
 
 		try {
@@ -274,8 +272,6 @@ public class WatsonVehicleAuditPersistenceImpl extends BasePersistenceImpl<Watso
 
 	@Override
 	public WatsonVehicleAudit updateImpl(WatsonVehicleAudit watsonVehicleAudit) {
-		watsonVehicleAudit = toUnwrappedModel(watsonVehicleAudit);
-
 		boolean isNew = watsonVehicleAudit.isNew();
 
 		WatsonVehicleAuditModelImpl watsonVehicleAuditModelImpl = (WatsonVehicleAuditModelImpl)watsonVehicleAudit;
@@ -340,41 +336,6 @@ public class WatsonVehicleAuditPersistenceImpl extends BasePersistenceImpl<Watso
 		watsonVehicleAudit.resetOriginalValues();
 
 		return watsonVehicleAudit;
-	}
-
-	protected WatsonVehicleAudit toUnwrappedModel(
-		WatsonVehicleAudit watsonVehicleAudit) {
-		if (watsonVehicleAudit instanceof WatsonVehicleAuditImpl) {
-			return watsonVehicleAudit;
-		}
-
-		WatsonVehicleAuditImpl watsonVehicleAuditImpl = new WatsonVehicleAuditImpl();
-
-		watsonVehicleAuditImpl.setNew(watsonVehicleAudit.isNew());
-		watsonVehicleAuditImpl.setPrimaryKey(watsonVehicleAudit.getPrimaryKey());
-
-		watsonVehicleAuditImpl.setWatsonVehicleAuditId(watsonVehicleAudit.getWatsonVehicleAuditId());
-		watsonVehicleAuditImpl.setGroupId(watsonVehicleAudit.getGroupId());
-		watsonVehicleAuditImpl.setCompanyId(watsonVehicleAudit.getCompanyId());
-		watsonVehicleAuditImpl.setUserId(watsonVehicleAudit.getUserId());
-		watsonVehicleAuditImpl.setUserName(watsonVehicleAudit.getUserName());
-		watsonVehicleAuditImpl.setCreateDate(watsonVehicleAudit.getCreateDate());
-		watsonVehicleAuditImpl.setModifiedDate(watsonVehicleAudit.getModifiedDate());
-		watsonVehicleAuditImpl.setColorWatsonListTypeId(watsonVehicleAudit.getColorWatsonListTypeId());
-		watsonVehicleAuditImpl.setMakeWatsonListTypeId(watsonVehicleAudit.getMakeWatsonListTypeId());
-		watsonVehicleAuditImpl.setModelWatsonListTypeId(watsonVehicleAudit.getModelWatsonListTypeId());
-		watsonVehicleAuditImpl.setOriginalWatsonVehicleId(watsonVehicleAudit.getOriginalWatsonVehicleId());
-		watsonVehicleAuditImpl.setTypeWatsonListTypeId(watsonVehicleAudit.getTypeWatsonListTypeId());
-		watsonVehicleAuditImpl.setYearWatsonListTypeId(watsonVehicleAudit.getYearWatsonListTypeId());
-		watsonVehicleAuditImpl.setWatsonIncidentId(watsonVehicleAudit.getWatsonIncidentId());
-		watsonVehicleAuditImpl.setWatsonVehicleId(watsonVehicleAudit.getWatsonVehicleId());
-		watsonVehicleAuditImpl.setYear(watsonVehicleAudit.getYear());
-		watsonVehicleAuditImpl.setDescription(watsonVehicleAudit.getDescription());
-		watsonVehicleAuditImpl.setImagePayload(watsonVehicleAudit.getImagePayload());
-		watsonVehicleAuditImpl.setLicensePlate(watsonVehicleAudit.getLicensePlate());
-		watsonVehicleAuditImpl.setStatus(watsonVehicleAudit.getStatus());
-
-		return watsonVehicleAuditImpl;
 	}
 
 	/**

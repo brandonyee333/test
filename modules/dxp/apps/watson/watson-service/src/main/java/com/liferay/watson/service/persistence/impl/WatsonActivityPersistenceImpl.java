@@ -240,8 +240,6 @@ public class WatsonActivityPersistenceImpl extends BasePersistenceImpl<WatsonAct
 
 	@Override
 	protected WatsonActivity removeImpl(WatsonActivity watsonActivity) {
-		watsonActivity = toUnwrappedModel(watsonActivity);
-
 		Session session = null;
 
 		try {
@@ -272,8 +270,6 @@ public class WatsonActivityPersistenceImpl extends BasePersistenceImpl<WatsonAct
 
 	@Override
 	public WatsonActivity updateImpl(WatsonActivity watsonActivity) {
-		watsonActivity = toUnwrappedModel(watsonActivity);
-
 		boolean isNew = watsonActivity.isNew();
 
 		WatsonActivityModelImpl watsonActivityModelImpl = (WatsonActivityModelImpl)watsonActivity;
@@ -337,34 +333,6 @@ public class WatsonActivityPersistenceImpl extends BasePersistenceImpl<WatsonAct
 		watsonActivity.resetOriginalValues();
 
 		return watsonActivity;
-	}
-
-	protected WatsonActivity toUnwrappedModel(WatsonActivity watsonActivity) {
-		if (watsonActivity instanceof WatsonActivityImpl) {
-			return watsonActivity;
-		}
-
-		WatsonActivityImpl watsonActivityImpl = new WatsonActivityImpl();
-
-		watsonActivityImpl.setNew(watsonActivity.isNew());
-		watsonActivityImpl.setPrimaryKey(watsonActivity.getPrimaryKey());
-
-		watsonActivityImpl.setWatsonActivityId(watsonActivity.getWatsonActivityId());
-		watsonActivityImpl.setGroupId(watsonActivity.getGroupId());
-		watsonActivityImpl.setCompanyId(watsonActivity.getCompanyId());
-		watsonActivityImpl.setUserId(watsonActivity.getUserId());
-		watsonActivityImpl.setUserName(watsonActivity.getUserName());
-		watsonActivityImpl.setCreateDate(watsonActivity.getCreateDate());
-		watsonActivityImpl.setModifiedDate(watsonActivity.getModifiedDate());
-		watsonActivityImpl.setTypeWatsonListTypeId(watsonActivity.getTypeWatsonListTypeId());
-		watsonActivityImpl.setSubtypeWatsonListTypeId(watsonActivity.getSubtypeWatsonListTypeId());
-		watsonActivityImpl.setWatsonIncidentId(watsonActivity.getWatsonIncidentId());
-		watsonActivityImpl.setNarrative(watsonActivity.getNarrative());
-		watsonActivityImpl.setReportDate(watsonActivity.getReportDate());
-		watsonActivityImpl.setStartDate(watsonActivity.getStartDate());
-		watsonActivityImpl.setStatus(watsonActivity.getStatus());
-
-		return watsonActivityImpl;
 	}
 
 	/**

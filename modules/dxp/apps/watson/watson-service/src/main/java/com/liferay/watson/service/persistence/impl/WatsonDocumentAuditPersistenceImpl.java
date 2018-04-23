@@ -243,8 +243,6 @@ public class WatsonDocumentAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	protected WatsonDocumentAudit removeImpl(
 		WatsonDocumentAudit watsonDocumentAudit) {
-		watsonDocumentAudit = toUnwrappedModel(watsonDocumentAudit);
-
 		Session session = null;
 
 		try {
@@ -276,8 +274,6 @@ public class WatsonDocumentAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	public WatsonDocumentAudit updateImpl(
 		WatsonDocumentAudit watsonDocumentAudit) {
-		watsonDocumentAudit = toUnwrappedModel(watsonDocumentAudit);
-
 		boolean isNew = watsonDocumentAudit.isNew();
 
 		WatsonDocumentAuditModelImpl watsonDocumentAuditModelImpl = (WatsonDocumentAuditModelImpl)watsonDocumentAudit;
@@ -342,37 +338,6 @@ public class WatsonDocumentAuditPersistenceImpl extends BasePersistenceImpl<Wats
 		watsonDocumentAudit.resetOriginalValues();
 
 		return watsonDocumentAudit;
-	}
-
-	protected WatsonDocumentAudit toUnwrappedModel(
-		WatsonDocumentAudit watsonDocumentAudit) {
-		if (watsonDocumentAudit instanceof WatsonDocumentAuditImpl) {
-			return watsonDocumentAudit;
-		}
-
-		WatsonDocumentAuditImpl watsonDocumentAuditImpl = new WatsonDocumentAuditImpl();
-
-		watsonDocumentAuditImpl.setNew(watsonDocumentAudit.isNew());
-		watsonDocumentAuditImpl.setPrimaryKey(watsonDocumentAudit.getPrimaryKey());
-
-		watsonDocumentAuditImpl.setWatsonDocumentAuditId(watsonDocumentAudit.getWatsonDocumentAuditId());
-		watsonDocumentAuditImpl.setGroupId(watsonDocumentAudit.getGroupId());
-		watsonDocumentAuditImpl.setCompanyId(watsonDocumentAudit.getCompanyId());
-		watsonDocumentAuditImpl.setUserId(watsonDocumentAudit.getUserId());
-		watsonDocumentAuditImpl.setUserName(watsonDocumentAudit.getUserName());
-		watsonDocumentAuditImpl.setCreateDate(watsonDocumentAudit.getCreateDate());
-		watsonDocumentAuditImpl.setModifiedDate(watsonDocumentAudit.getModifiedDate());
-		watsonDocumentAuditImpl.setParentTypeWatsonListTypeId(watsonDocumentAudit.getParentTypeWatsonListTypeId());
-		watsonDocumentAuditImpl.setSubtypeWatsonListTypeId(watsonDocumentAudit.getSubtypeWatsonListTypeId());
-		watsonDocumentAuditImpl.setTypeWatsonListTypeId(watsonDocumentAudit.getTypeWatsonListTypeId());
-		watsonDocumentAuditImpl.setWatsonChildId(watsonDocumentAudit.getWatsonChildId());
-		watsonDocumentAuditImpl.setWatsonDocumentId(watsonDocumentAudit.getWatsonDocumentId());
-		watsonDocumentAuditImpl.setOriginalDocument(watsonDocumentAudit.isOriginalDocument());
-		watsonDocumentAuditImpl.setReceivedDate(watsonDocumentAudit.getReceivedDate());
-		watsonDocumentAuditImpl.setImagePayload(watsonDocumentAudit.getImagePayload());
-		watsonDocumentAuditImpl.setStatus(watsonDocumentAudit.getStatus());
-
-		return watsonDocumentAuditImpl;
 	}
 
 	/**

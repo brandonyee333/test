@@ -261,8 +261,6 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 
 	@Override
 	protected WatsonHistory removeImpl(WatsonHistory watsonHistory) {
-		watsonHistory = toUnwrappedModel(watsonHistory);
-
 		Session session = null;
 
 		try {
@@ -293,8 +291,6 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 
 	@Override
 	public WatsonHistory updateImpl(WatsonHistory watsonHistory) {
-		watsonHistory = toUnwrappedModel(watsonHistory);
-
 		boolean isNew = watsonHistory.isNew();
 
 		WatsonHistoryModelImpl watsonHistoryModelImpl = (WatsonHistoryModelImpl)watsonHistory;
@@ -358,32 +354,6 @@ public class WatsonHistoryPersistenceImpl extends BasePersistenceImpl<WatsonHist
 		watsonHistory.resetOriginalValues();
 
 		return watsonHistory;
-	}
-
-	protected WatsonHistory toUnwrappedModel(WatsonHistory watsonHistory) {
-		if (watsonHistory instanceof WatsonHistoryImpl) {
-			return watsonHistory;
-		}
-
-		WatsonHistoryImpl watsonHistoryImpl = new WatsonHistoryImpl();
-
-		watsonHistoryImpl.setNew(watsonHistory.isNew());
-		watsonHistoryImpl.setPrimaryKey(watsonHistory.getPrimaryKey());
-
-		watsonHistoryImpl.setWatsonHistoryId(watsonHistory.getWatsonHistoryId());
-		watsonHistoryImpl.setGroupId(watsonHistory.getGroupId());
-		watsonHistoryImpl.setCompanyId(watsonHistory.getCompanyId());
-		watsonHistoryImpl.setUserId(watsonHistory.getUserId());
-		watsonHistoryImpl.setUserName(watsonHistory.getUserName());
-		watsonHistoryImpl.setCreateDate(watsonHistory.getCreateDate());
-		watsonHistoryImpl.setModifiedDate(watsonHistory.getModifiedDate());
-		watsonHistoryImpl.setWatsonParentId(watsonHistory.getWatsonParentId());
-		watsonHistoryImpl.setClassNameId(watsonHistory.getClassNameId());
-		watsonHistoryImpl.setClassPK(watsonHistory.getClassPK());
-		watsonHistoryImpl.setType(watsonHistory.getType());
-		watsonHistoryImpl.setStatus(watsonHistory.getStatus());
-
-		return watsonHistoryImpl;
 	}
 
 	/**

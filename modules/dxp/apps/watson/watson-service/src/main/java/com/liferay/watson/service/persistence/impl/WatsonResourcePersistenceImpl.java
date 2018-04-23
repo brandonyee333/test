@@ -240,8 +240,6 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 
 	@Override
 	protected WatsonResource removeImpl(WatsonResource watsonResource) {
-		watsonResource = toUnwrappedModel(watsonResource);
-
 		Session session = null;
 
 		try {
@@ -272,8 +270,6 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 
 	@Override
 	public WatsonResource updateImpl(WatsonResource watsonResource) {
-		watsonResource = toUnwrappedModel(watsonResource);
-
 		boolean isNew = watsonResource.isNew();
 
 		WatsonResourceModelImpl watsonResourceModelImpl = (WatsonResourceModelImpl)watsonResource;
@@ -337,34 +333,6 @@ public class WatsonResourcePersistenceImpl extends BasePersistenceImpl<WatsonRes
 		watsonResource.resetOriginalValues();
 
 		return watsonResource;
-	}
-
-	protected WatsonResource toUnwrappedModel(WatsonResource watsonResource) {
-		if (watsonResource instanceof WatsonResourceImpl) {
-			return watsonResource;
-		}
-
-		WatsonResourceImpl watsonResourceImpl = new WatsonResourceImpl();
-
-		watsonResourceImpl.setNew(watsonResource.isNew());
-		watsonResourceImpl.setPrimaryKey(watsonResource.getPrimaryKey());
-
-		watsonResourceImpl.setWatsonResourceId(watsonResource.getWatsonResourceId());
-		watsonResourceImpl.setGroupId(watsonResource.getGroupId());
-		watsonResourceImpl.setCompanyId(watsonResource.getCompanyId());
-		watsonResourceImpl.setUserId(watsonResource.getUserId());
-		watsonResourceImpl.setUserName(watsonResource.getUserName());
-		watsonResourceImpl.setCreateDate(watsonResource.getCreateDate());
-		watsonResourceImpl.setModifiedDate(watsonResource.getModifiedDate());
-		watsonResourceImpl.setOriginalWatsonResourceId(watsonResource.getOriginalWatsonResourceId());
-		watsonResourceImpl.setTypeWatsonListTypeId(watsonResource.getTypeWatsonListTypeId());
-		watsonResourceImpl.setWatsonIncidentId(watsonResource.getWatsonIncidentId());
-		watsonResourceImpl.setName(watsonResource.getName());
-		watsonResourceImpl.setDescription(watsonResource.getDescription());
-		watsonResourceImpl.setImagePayload(watsonResource.getImagePayload());
-		watsonResourceImpl.setStatus(watsonResource.getStatus());
-
-		return watsonResourceImpl;
 	}
 
 	/**

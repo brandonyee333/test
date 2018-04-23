@@ -261,8 +261,6 @@ public class WatsonListTypePersistenceImpl extends BasePersistenceImpl<WatsonLis
 
 	@Override
 	protected WatsonListType removeImpl(WatsonListType watsonListType) {
-		watsonListType = toUnwrappedModel(watsonListType);
-
 		Session session = null;
 
 		try {
@@ -293,8 +291,6 @@ public class WatsonListTypePersistenceImpl extends BasePersistenceImpl<WatsonLis
 
 	@Override
 	public WatsonListType updateImpl(WatsonListType watsonListType) {
-		watsonListType = toUnwrappedModel(watsonListType);
-
 		boolean isNew = watsonListType.isNew();
 
 		WatsonListTypeModelImpl watsonListTypeModelImpl = (WatsonListTypeModelImpl)watsonListType;
@@ -358,31 +354,6 @@ public class WatsonListTypePersistenceImpl extends BasePersistenceImpl<WatsonLis
 		watsonListType.resetOriginalValues();
 
 		return watsonListType;
-	}
-
-	protected WatsonListType toUnwrappedModel(WatsonListType watsonListType) {
-		if (watsonListType instanceof WatsonListTypeImpl) {
-			return watsonListType;
-		}
-
-		WatsonListTypeImpl watsonListTypeImpl = new WatsonListTypeImpl();
-
-		watsonListTypeImpl.setNew(watsonListType.isNew());
-		watsonListTypeImpl.setPrimaryKey(watsonListType.getPrimaryKey());
-
-		watsonListTypeImpl.setWatsonListTypeId(watsonListType.getWatsonListTypeId());
-		watsonListTypeImpl.setGroupId(watsonListType.getGroupId());
-		watsonListTypeImpl.setCompanyId(watsonListType.getCompanyId());
-		watsonListTypeImpl.setUserId(watsonListType.getUserId());
-		watsonListTypeImpl.setUserName(watsonListType.getUserName());
-		watsonListTypeImpl.setCreateDate(watsonListType.getCreateDate());
-		watsonListTypeImpl.setModifiedDate(watsonListType.getModifiedDate());
-		watsonListTypeImpl.setParentWatsonListTypeId(watsonListType.getParentWatsonListTypeId());
-		watsonListTypeImpl.setName(watsonListType.getName());
-		watsonListTypeImpl.setType(watsonListType.getType());
-		watsonListTypeImpl.setStatus(watsonListType.getStatus());
-
-		return watsonListTypeImpl;
 	}
 
 	/**
