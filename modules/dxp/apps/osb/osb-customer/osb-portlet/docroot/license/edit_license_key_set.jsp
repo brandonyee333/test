@@ -40,17 +40,17 @@ long clusterId = ParamUtil.getLong(request, "clusterId");
 
 Calendar calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
 
-calendar.add(Calendar.YEAR, -1);
+Calendar firstEnabledCalendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
 
-Date firstEnabledDate = calendar.getTime();
+firstEnabledCalendar.add(Calendar.YEAR, -1);
 
-calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Date firstEnabledDate = firstEnabledCalendar.getTime();
 
-calendar.add(Calendar.YEAR, 3);
+Calendar lastEnabledCalendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
 
-Date lastEnabledDate = calendar.getTime();
+lastEnabledCalendar.add(Calendar.YEAR, 3);
 
-calendar = CalendarFactoryUtil.getCalendar(TimeZoneUtil.getTimeZone(StringPool.UTC), locale);
+Date lastEnabledDate = lastEnabledCalendar.getTime();
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
