@@ -90,6 +90,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		attributes.put("modifiedUserId", getModifiedUserId());
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("corpProjectUuid", getCorpProjectUuid());
 		attributes.put("corpProjectId", getCorpProjectId());
 		attributes.put("corpEntryName", getCorpEntryName());
 		attributes.put("name", getName());
@@ -166,6 +167,12 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 		if (modifiedDate != null) {
 			setModifiedDate(modifiedDate);
+		}
+
+		String corpProjectUuid = (String)attributes.get("corpProjectUuid");
+
+		if (corpProjectUuid != null) {
+			setCorpProjectUuid(corpProjectUuid);
 		}
 
 		Long corpProjectId = (Long)attributes.get("corpProjectId");
@@ -511,6 +518,30 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 				Method method = clazz.getMethod("setModifiedDate", Date.class);
 
 				method.invoke(_accountEntryRemoteModel, modifiedDate);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public String getCorpProjectUuid() {
+		return _corpProjectUuid;
+	}
+
+	@Override
+	public void setCorpProjectUuid(String corpProjectUuid) {
+		_corpProjectUuid = corpProjectUuid;
+
+		if (_accountEntryRemoteModel != null) {
+			try {
+				Class<?> clazz = _accountEntryRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setCorpProjectUuid",
+						String.class);
+
+				method.invoke(_accountEntryRemoteModel, corpProjectUuid);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -1500,6 +1531,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		clone.setModifiedUserId(getModifiedUserId());
 		clone.setModifiedUserName(getModifiedUserName());
 		clone.setModifiedDate(getModifiedDate());
+		clone.setCorpProjectUuid(getCorpProjectUuid());
 		clone.setCorpProjectId(getCorpProjectId());
 		clone.setCorpEntryName(getCorpEntryName());
 		clone.setName(getName());
@@ -1581,7 +1613,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(59);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
@@ -1599,6 +1631,8 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(getModifiedUserName());
 		sb.append(", modifiedDate=");
 		sb.append(getModifiedDate());
+		sb.append(", corpProjectUuid=");
+		sb.append(getCorpProjectUuid());
 		sb.append(", corpProjectId=");
 		sb.append(getCorpProjectId());
 		sb.append(", corpEntryName=");
@@ -1648,7 +1682,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(91);
+		StringBundler sb = new StringBundler(94);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1685,6 +1719,10 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(
 			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
 		sb.append(getModifiedDate());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>corpProjectUuid</column-name><column-value><![CDATA[");
+		sb.append(getCorpProjectUuid());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>corpProjectId</column-name><column-value><![CDATA[");
@@ -1784,6 +1822,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	private long _modifiedUserId;
 	private String _modifiedUserName;
 	private Date _modifiedDate;
+	private String _corpProjectUuid;
 	private long _corpProjectId;
 	private String _corpEntryName;
 	private String _name;

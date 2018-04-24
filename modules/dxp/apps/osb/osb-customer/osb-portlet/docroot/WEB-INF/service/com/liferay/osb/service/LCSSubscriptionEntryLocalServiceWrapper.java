@@ -250,9 +250,9 @@ public class LCSSubscriptionEntryLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
-		long corpProjectId)
+		long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _lcsSubscriptionEntryLocalService.getLCSSubscriptionEntries(corpProjectId);
+		return _lcsSubscriptionEntryLocalService.getLCSSubscriptionEntries(accountEntryId);
 	}
 
 	/**
@@ -283,9 +283,9 @@ public class LCSSubscriptionEntryLocalServiceWrapper
 	}
 
 	@Override
-	public void syncToLCS(long corpProjectId)
+	public void syncToLCS(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_lcsSubscriptionEntryLocalService.syncToLCS(corpProjectId);
+		_lcsSubscriptionEntryLocalService.syncToLCS(accountEntryId);
 	}
 
 	@Override

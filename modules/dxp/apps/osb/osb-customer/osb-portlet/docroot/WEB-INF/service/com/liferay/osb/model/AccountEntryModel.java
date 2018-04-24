@@ -221,6 +221,21 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the corp project uuid of this account entry.
+	 *
+	 * @return the corp project uuid of this account entry
+	 */
+	@AutoEscape
+	public String getCorpProjectUuid();
+
+	/**
+	 * Sets the corp project uuid of this account entry.
+	 *
+	 * @param corpProjectUuid the corp project uuid of this account entry
+	 */
+	public void setCorpProjectUuid(String corpProjectUuid);
+
+	/**
 	 * Returns the corp project ID of this account entry.
 	 *
 	 * @return the corp project ID of this account entry

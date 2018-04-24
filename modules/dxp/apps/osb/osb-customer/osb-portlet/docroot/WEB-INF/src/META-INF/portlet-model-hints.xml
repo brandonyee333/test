@@ -55,6 +55,7 @@
 		<field name="modifiedUserId" type="long" />
 		<field name="modifiedUserName" type="String" />
 		<field name="modifiedDate" type="Date" />
+		<field name="corpProjectUuid" type="String" />
 		<field name="corpProjectId" type="long" />
 		<field name="corpEntryName" type="String" />
 		<field name="name" type="String">

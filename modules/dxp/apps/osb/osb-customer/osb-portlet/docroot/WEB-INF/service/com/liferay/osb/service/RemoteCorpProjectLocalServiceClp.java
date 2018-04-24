@@ -42,19 +42,29 @@ public class RemoteCorpProjectLocalServiceClp
 
 		_methodName3 = "addCorpProjectUsers";
 
-		_methodParameterTypes3 = new String[] { "long", "long[][]" };
+		_methodParameterTypes3 = new String[] { "java.lang.String", "long[][]" };
 
-		_methodName4 = "addUserCorpProjectRoles";
+		_methodName4 = "addCorpProjectUsers";
 
-		_methodParameterTypes4 = new String[] { "long", "long[][]", "long" };
+		_methodParameterTypes4 = new String[] { "long", "long[][]" };
 
-		_methodName5 = "deleteCorpProject";
+		_methodName5 = "addUserCorpProjectRoles";
 
-		_methodParameterTypes5 = new String[] { "long" };
+		_methodParameterTypes5 = new String[] {
+				"java.lang.String", "long[][]", "long"
+			};
 
-		_methodName6 = "updateCorpProject";
+		_methodName6 = "addUserCorpProjectRoles";
 
-		_methodParameterTypes6 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes6 = new String[] { "long", "long[][]", "long" };
+
+		_methodName7 = "deleteCorpProject";
+
+		_methodParameterTypes7 = new String[] { "long" };
+
+		_methodName8 = "updateCorpProject";
+
+		_methodParameterTypes8 = new String[] { "long", "java.lang.String" };
 	}
 
 	@Override
@@ -130,11 +140,41 @@ public class RemoteCorpProjectLocalServiceClp
 	}
 
 	@Override
-	public void addCorpProjectUsers(long corpProjectId, long[] userIds)
+	public void addCorpProjectUsers(java.lang.String corpProjectUuid,
+		long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName3,
 				_methodParameterTypes3,
+				new Object[] {
+					ClpSerializer.translateInput(corpProjectUuid),
+					
+				ClpSerializer.translateInput(userIds)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void addCorpProjectUsers(long corpProjectId, long[] userIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName4,
+				_methodParameterTypes4,
 				new Object[] {
 					corpProjectId,
 					
@@ -159,11 +199,43 @@ public class RemoteCorpProjectLocalServiceClp
 	}
 
 	@Override
+	public void addUserCorpProjectRoles(java.lang.String corpProjectUuid,
+		long[] userIds, long roleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName5,
+				_methodParameterTypes5,
+				new Object[] {
+					ClpSerializer.translateInput(corpProjectUuid),
+					
+				ClpSerializer.translateInput(userIds),
+					
+				roleId
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
 	public void addUserCorpProjectRoles(long corpProjectId, long[] userIds,
 		long roleId) throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName4,
-				_methodParameterTypes4,
+			_invokableLocalService.invokeMethod(_methodName6,
+				_methodParameterTypes6,
 				new Object[] {
 					corpProjectId,
 					
@@ -193,8 +265,8 @@ public class RemoteCorpProjectLocalServiceClp
 	public void deleteCorpProject(long corpProjectId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName5,
-				_methodParameterTypes5, new Object[] { corpProjectId });
+			_invokableLocalService.invokeMethod(_methodName7,
+				_methodParameterTypes7, new Object[] { corpProjectId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -217,8 +289,8 @@ public class RemoteCorpProjectLocalServiceClp
 	public void updateCorpProject(long corpProjectId, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName6,
-				_methodParameterTypes6,
+			_invokableLocalService.invokeMethod(_methodName8,
+				_methodParameterTypes8,
 				new Object[] { corpProjectId, ClpSerializer.translateInput(name) });
 		}
 		catch (Throwable t) {
@@ -251,4 +323,8 @@ public class RemoteCorpProjectLocalServiceClp
 	private String[] _methodParameterTypes5;
 	private String _methodName6;
 	private String[] _methodParameterTypes6;
+	private String _methodName7;
+	private String[] _methodParameterTypes7;
+	private String _methodName8;
+	private String[] _methodParameterTypes8;
 }

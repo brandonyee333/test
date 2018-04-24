@@ -24,13 +24,13 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -72,7 +72,10 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public CorpProject addCorpProject(CorpProject corpProject);
 
-	public CorpProject addCorpProject(JSONObject jsonObject)
+	public CorpProject addCorpProject(long userId,
+		java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		long organizationId, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -94,9 +97,6 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	public CorpProject deleteCorpProject(CorpProject corpProject)
 		throws PortalException;
 
-	public CorpProject deleteCorpProject(JSONObject jsonObject)
-		throws PortalException;
-
 	/**
 	* Deletes the corp project with the primary key from the database. Also notifies the appropriate model listeners.
 	*
@@ -113,6 +113,10 @@ public interface CorpProjectLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CorpProject fetchCorpProject(long corpProjectId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CorpProject fetchCorpProjectByUuid(java.lang.String uuid)
+		throws PortalException;
 
 	/**
 	* Returns the corp project with the primary key.
@@ -138,7 +142,8 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public CorpProject updateCorpProject(CorpProject corpProject);
 
-	public CorpProject updateCorpProject(JSONObject jsonObject)
+	public CorpProject updateCorpProject(long corpProjectId,
+		java.lang.String name, ServiceContext serviceContext)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -259,16 +264,4 @@ public interface CorpProjectLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
-
-	public void addCorpProjectUser(JSONObject jsonObject)
-		throws PortalException;
-
-	public void addUserCorpProjectRoles(JSONObject jsonObject)
-		throws PortalException;
-
-	public void deleteUserCorpProjectRoles(JSONObject jsonObject)
-		throws PortalException;
-
-	public void unsetCorpProjectUser(JSONObject jsonObject)
-		throws PortalException;
 }

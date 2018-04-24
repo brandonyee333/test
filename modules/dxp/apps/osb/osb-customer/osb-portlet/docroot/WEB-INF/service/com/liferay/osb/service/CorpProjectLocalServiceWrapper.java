@@ -46,10 +46,15 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	}
 
 	@Override
-	public com.liferay.osb.model.CorpProject addCorpProject(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+	public com.liferay.osb.model.CorpProject addCorpProject(long userId,
+		java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		long organizationId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.addCorpProject(jsonObject);
+		return _corpProjectLocalService.addCorpProject(userId,
+			dossieraProjectKey, salesforceProjectKey, name, organizationId,
+			serviceContext);
 	}
 
 	/**
@@ -78,13 +83,6 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 		return _corpProjectLocalService.deleteCorpProject(corpProject);
 	}
 
-	@Override
-	public com.liferay.osb.model.CorpProject deleteCorpProject(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.deleteCorpProject(jsonObject);
-	}
-
 	/**
 	* Deletes the corp project with the primary key from the database. Also notifies the appropriate model listeners.
 	*
@@ -109,6 +107,13 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 	public com.liferay.osb.model.CorpProject fetchCorpProject(
 		long corpProjectId) {
 		return _corpProjectLocalService.fetchCorpProject(corpProjectId);
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProject fetchCorpProjectByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectLocalService.fetchCorpProjectByUuid(uuid);
 	}
 
 	/**
@@ -145,9 +150,11 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 
 	@Override
 	public com.liferay.osb.model.CorpProject updateCorpProject(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		long corpProjectId, java.lang.String name,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectLocalService.updateCorpProject(jsonObject);
+		return _corpProjectLocalService.updateCorpProject(corpProjectId, name,
+			serviceContext);
 	}
 
 	@Override
@@ -319,34 +326,6 @@ public class CorpProjectLocalServiceWrapper implements CorpProjectLocalService,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _corpProjectLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
-	}
-
-	@Override
-	public void addCorpProjectUser(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_corpProjectLocalService.addCorpProjectUser(jsonObject);
-	}
-
-	@Override
-	public void addUserCorpProjectRoles(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_corpProjectLocalService.addUserCorpProjectRoles(jsonObject);
-	}
-
-	@Override
-	public void deleteUserCorpProjectRoles(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_corpProjectLocalService.deleteUserCorpProjectRoles(jsonObject);
-	}
-
-	@Override
-	public void unsetCorpProjectUser(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_corpProjectLocalService.unsetCorpProjectUser(jsonObject);
 	}
 
 	@Override

@@ -432,6 +432,41 @@ public class CorpProjectClp extends BaseModelImpl<CorpProject>
 		}
 	}
 
+	@Override
+	public java.lang.String getOrganizationUuid() {
+		try {
+			String methodName = "getOrganizationUuid";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public void setOrganizationUuid(java.lang.String organizationUuid) {
+		try {
+			String methodName = "setOrganizationUuid";
+
+			Class<?>[] parameterTypes = new Class<?>[] { java.lang.String.class };
+
+			Object[] parameterValues = new Object[] { organizationUuid };
+
+			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getCorpProjectRemoteModel() {
 		return _corpProjectRemoteModel;
 	}

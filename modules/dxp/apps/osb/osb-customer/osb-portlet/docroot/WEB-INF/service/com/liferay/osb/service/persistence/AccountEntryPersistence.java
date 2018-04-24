@@ -42,6 +42,51 @@ public interface AccountEntryPersistence extends BasePersistence<AccountEntry> {
 	 */
 
 	/**
+	* Returns the account entry where corpProjectUuid = &#63; or throws a {@link NoSuchAccountEntryException} if it could not be found.
+	*
+	* @param corpProjectUuid the corp project uuid
+	* @return the matching account entry
+	* @throws NoSuchAccountEntryException if a matching account entry could not be found
+	*/
+	public AccountEntry findByCorpProjectUuid(java.lang.String corpProjectUuid)
+		throws NoSuchAccountEntryException;
+
+	/**
+	* Returns the account entry where corpProjectUuid = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	*
+	* @param corpProjectUuid the corp project uuid
+	* @return the matching account entry, or <code>null</code> if a matching account entry could not be found
+	*/
+	public AccountEntry fetchByCorpProjectUuid(java.lang.String corpProjectUuid);
+
+	/**
+	* Returns the account entry where corpProjectUuid = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	*
+	* @param corpProjectUuid the corp project uuid
+	* @param retrieveFromCache whether to retrieve from the finder cache
+	* @return the matching account entry, or <code>null</code> if a matching account entry could not be found
+	*/
+	public AccountEntry fetchByCorpProjectUuid(
+		java.lang.String corpProjectUuid, boolean retrieveFromCache);
+
+	/**
+	* Removes the account entry where corpProjectUuid = &#63; from the database.
+	*
+	* @param corpProjectUuid the corp project uuid
+	* @return the account entry that was removed
+	*/
+	public AccountEntry removeByCorpProjectUuid(
+		java.lang.String corpProjectUuid) throws NoSuchAccountEntryException;
+
+	/**
+	* Returns the number of account entries where corpProjectUuid = &#63;.
+	*
+	* @param corpProjectUuid the corp project uuid
+	* @return the number of matching account entries
+	*/
+	public int countByCorpProjectUuid(java.lang.String corpProjectUuid);
+
+	/**
 	* Returns the account entry where corpProjectId = &#63; or throws a {@link NoSuchAccountEntryException} if it could not be found.
 	*
 	* @param corpProjectId the corp project ID

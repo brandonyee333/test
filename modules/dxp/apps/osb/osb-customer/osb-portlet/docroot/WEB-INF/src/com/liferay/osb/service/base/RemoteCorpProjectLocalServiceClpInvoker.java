@@ -42,17 +42,27 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 
 		_methodParameterTypes266 = new String[] { "long", "long[][]" };
 
-		_methodName267 = "addUserCorpProjectRoles";
+		_methodName267 = "addCorpProjectUsers";
 
-		_methodParameterTypes267 = new String[] { "long", "long[][]", "long" };
+		_methodParameterTypes267 = new String[] { "java.lang.String", "long[][]" };
 
-		_methodName268 = "deleteCorpProject";
+		_methodName268 = "addUserCorpProjectRoles";
 
-		_methodParameterTypes268 = new String[] { "long" };
+		_methodParameterTypes268 = new String[] { "long", "long[][]", "long" };
 
-		_methodName269 = "updateCorpProject";
+		_methodName269 = "addUserCorpProjectRoles";
 
-		_methodParameterTypes269 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes269 = new String[] {
+				"java.lang.String", "long[][]", "long"
+			};
+
+		_methodName270 = "deleteCorpProject";
+
+		_methodParameterTypes270 = new String[] { "long" };
+
+		_methodName271 = "updateCorpProject";
+
+		_methodParameterTypes271 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -80,21 +90,37 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 
 		if (_methodName267.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes267, parameterTypes)) {
-			RemoteCorpProjectLocalServiceUtil.addUserCorpProjectRoles(((Long)arguments[0]).longValue(),
-				(long[])arguments[1], ((Long)arguments[2]).longValue());
+			RemoteCorpProjectLocalServiceUtil.addCorpProjectUsers((java.lang.String)arguments[0],
+				(long[])arguments[1]);
 
 			return null;
 		}
 
 		if (_methodName268.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes268, parameterTypes)) {
-			RemoteCorpProjectLocalServiceUtil.deleteCorpProject(((Long)arguments[0]).longValue());
+			RemoteCorpProjectLocalServiceUtil.addUserCorpProjectRoles(((Long)arguments[0]).longValue(),
+				(long[])arguments[1], ((Long)arguments[2]).longValue());
 
 			return null;
 		}
 
 		if (_methodName269.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes269, parameterTypes)) {
+			RemoteCorpProjectLocalServiceUtil.addUserCorpProjectRoles((java.lang.String)arguments[0],
+				(long[])arguments[1], ((Long)arguments[2]).longValue());
+
+			return null;
+		}
+
+		if (_methodName270.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes270, parameterTypes)) {
+			RemoteCorpProjectLocalServiceUtil.deleteCorpProject(((Long)arguments[0]).longValue());
+
+			return null;
+		}
+
+		if (_methodName271.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes271, parameterTypes)) {
 			RemoteCorpProjectLocalServiceUtil.updateCorpProject(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 
@@ -116,4 +142,8 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 	private String[] _methodParameterTypes268;
 	private String _methodName269;
 	private String[] _methodParameterTypes269;
+	private String _methodName270;
+	private String[] _methodParameterTypes270;
+	private String _methodName271;
+	private String[] _methodParameterTypes271;
 }

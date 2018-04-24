@@ -137,7 +137,7 @@ public class AccountEntryServiceSoap {
 	}
 
 	public static com.liferay.osb.model.AccountEntrySoap updateAccountEntry(
-		long accountEntryId, long corpProjectId,
+		long accountEntryId, java.lang.String corpProjectUuid,
 		java.lang.String corpEntryName, java.lang.String name,
 		java.lang.String code, int type, int industry, long partnerEntryId,
 		boolean partnerManagedSupport, int tier, int maxCustomers,
@@ -149,7 +149,7 @@ public class AccountEntryServiceSoap {
 		throws RemoteException {
 		try {
 			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.updateAccountEntry(accountEntryId,
-					corpProjectId, corpEntryName, name, code, type, industry,
+					corpProjectUuid, corpEntryName, name, code, type, industry,
 					partnerEntryId, partnerManagedSupport, tier, maxCustomers,
 					instructions, notes, languageIds, supportRegionIds,
 					addressId, street1, street2, street3, city, zip, regionId,

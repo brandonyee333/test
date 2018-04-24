@@ -130,18 +130,18 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 		_methodName279 = "addCorpProjectMessage";
 
 		_methodParameterTypes279 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
+				"long", "long", "int", "int", "java.lang.String",
+				"java.lang.String", "boolean", "boolean", "boolean",
+				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
 		_methodName280 = "checkCorpProjects";
 
 		_methodParameterTypes280 = new String[] {  };
 
-		_methodName281 = "deleteCorpProjectMessage";
+		_methodName281 = "fetchCorpProjectMessageByUuid";
 
-		_methodParameterTypes281 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
-			};
+		_methodParameterTypes281 = new String[] { "java.lang.String" };
 
 		_methodName282 = "getCorpProjectMessageByUuid";
 
@@ -154,7 +154,9 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 		_methodName284 = "updateCorpProjectMessage";
 
 		_methodParameterTypes284 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
+				"long", "long", "int", "int", "java.lang.String",
+				"java.lang.String", "boolean", "boolean", "boolean",
+				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 	}
 
@@ -269,7 +271,15 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 
 		if (_methodName279.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes279, parameterTypes)) {
-			return CorpProjectMessageLocalServiceUtil.addCorpProjectMessage((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+			return CorpProjectMessageLocalServiceUtil.addCorpProjectMessage(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue(),
+				((Integer)arguments[3]).intValue(),
+				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
+				((Boolean)arguments[6]).booleanValue(),
+				((Boolean)arguments[7]).booleanValue(),
+				((Boolean)arguments[8]).booleanValue(),
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[9]);
 		}
 
 		if (_methodName280.equals(name) &&
@@ -281,7 +291,7 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 
 		if (_methodName281.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes281, parameterTypes)) {
-			return CorpProjectMessageLocalServiceUtil.deleteCorpProjectMessage((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+			return CorpProjectMessageLocalServiceUtil.fetchCorpProjectMessageByUuid((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName282.equals(name) &&
@@ -296,7 +306,15 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 
 		if (_methodName284.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes284, parameterTypes)) {
-			return CorpProjectMessageLocalServiceUtil.updateCorpProjectMessage((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+			return CorpProjectMessageLocalServiceUtil.updateCorpProjectMessage(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				((Integer)arguments[2]).intValue(),
+				((Integer)arguments[3]).intValue(),
+				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
+				((Boolean)arguments[6]).booleanValue(),
+				((Boolean)arguments[7]).booleanValue(),
+				((Boolean)arguments[8]).booleanValue(),
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[9]);
 		}
 
 		throw new UnsupportedOperationException();

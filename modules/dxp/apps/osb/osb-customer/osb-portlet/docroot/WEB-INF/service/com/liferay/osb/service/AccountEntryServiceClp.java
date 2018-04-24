@@ -42,9 +42,9 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		_methodName3 = "updateAccountEntry";
 
 		_methodParameterTypes3 = new String[] {
-				"long", "long", "java.lang.String", "java.lang.String",
-				"java.lang.String", "int", "int", "long", "boolean", "int",
-				"int", "java.lang.String", "java.lang.String",
+				"long", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "int", "int", "long",
+				"boolean", "int", "int", "java.lang.String", "java.lang.String",
 				"java.lang.String[][]", "long[][]", "long", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String", "long", "long", "java.lang.String"
@@ -201,7 +201,7 @@ public class AccountEntryServiceClp implements AccountEntryService {
 
 	@Override
 	public com.liferay.osb.model.AccountEntry updateAccountEntry(
-		long accountEntryId, long corpProjectId,
+		long accountEntryId, java.lang.String corpProjectUuid,
 		java.lang.String corpEntryName, java.lang.String name,
 		java.lang.String code, int type, int industry, long partnerEntryId,
 		boolean partnerManagedSupport, int tier, int maxCustomers,
@@ -219,7 +219,7 @@ public class AccountEntryServiceClp implements AccountEntryService {
 					new Object[] {
 						accountEntryId,
 						
-					corpProjectId,
+					ClpSerializer.translateInput(corpProjectUuid),
 						
 					ClpSerializer.translateInput(corpEntryName),
 						

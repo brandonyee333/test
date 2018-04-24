@@ -38,7 +38,9 @@ public class CorpProjectMessageLocalServiceClp
 		_methodName1 = "addCorpProjectMessage";
 
 		_methodParameterTypes1 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
+				"long", "long", "int", "int", "java.lang.String",
+				"java.lang.String", "boolean", "boolean", "boolean",
+				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
 		_methodName2 = "createCorpProjectMessage";
@@ -53,17 +55,15 @@ public class CorpProjectMessageLocalServiceClp
 
 		_methodName4 = "deleteCorpProjectMessage";
 
-		_methodParameterTypes4 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
-			};
+		_methodParameterTypes4 = new String[] { "long" };
 
-		_methodName5 = "deleteCorpProjectMessage";
+		_methodName5 = "fetchCorpProjectMessage";
 
 		_methodParameterTypes5 = new String[] { "long" };
 
-		_methodName6 = "fetchCorpProjectMessage";
+		_methodName6 = "fetchCorpProjectMessageByUuid";
 
-		_methodParameterTypes6 = new String[] { "long" };
+		_methodParameterTypes6 = new String[] { "java.lang.String" };
 
 		_methodName7 = "getCorpProjectMessage";
 
@@ -82,7 +82,9 @@ public class CorpProjectMessageLocalServiceClp
 		_methodName10 = "updateCorpProjectMessage";
 
 		_methodParameterTypes10 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
+				"long", "long", "int", "int", "java.lang.String",
+				"java.lang.String", "boolean", "boolean", "boolean",
+				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
 		_methodName11 = "getActionableDynamicQuery";
@@ -189,14 +191,37 @@ public class CorpProjectMessageLocalServiceClp
 
 	@Override
 	public com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		long userId, long corpProjectId, int type, int severityLevel,
+		java.lang.String title, java.lang.String content, boolean displayCP,
+		boolean displayLCS, boolean displayLESA,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName1,
 					_methodParameterTypes1,
-					new Object[] { ClpSerializer.translateInput(jsonObject) });
+					new Object[] {
+						userId,
+						
+					corpProjectId,
+						
+					type,
+						
+					severityLevel,
+						
+					ClpSerializer.translateInput(title),
+						
+					ClpSerializer.translateInput(content),
+						
+					displayCP,
+						
+					displayLCS,
+						
+					displayLESA,
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -271,43 +296,13 @@ public class CorpProjectMessageLocalServiceClp
 
 	@Override
 	public com.liferay.osb.model.CorpProjectMessage deleteCorpProjectMessage(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		long corpProjectMessageId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName4,
 					_methodParameterTypes4,
-					new Object[] { ClpSerializer.translateInput(jsonObject) });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.CorpProjectMessage)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public com.liferay.osb.model.CorpProjectMessage deleteCorpProjectMessage(
-		long corpProjectMessageId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5,
 					new Object[] { corpProjectMessageId });
 		}
 		catch (Throwable t) {
@@ -335,12 +330,42 @@ public class CorpProjectMessageLocalServiceClp
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
 					new Object[] { corpProjectMessageId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.CorpProjectMessage)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProjectMessage fetchCorpProjectMessageByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6,
+					new Object[] { ClpSerializer.translateInput(uuid) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -443,14 +468,37 @@ public class CorpProjectMessageLocalServiceClp
 
 	@Override
 	public com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		long userId, long corpProjectMessageId, int type, int severityLevel,
+		java.lang.String title, java.lang.String content, boolean displayCP,
+		boolean displayLCS, boolean displayLESA,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName10,
 					_methodParameterTypes10,
-					new Object[] { ClpSerializer.translateInput(jsonObject) });
+					new Object[] {
+						userId,
+						
+					corpProjectMessageId,
+						
+					type,
+						
+					severityLevel,
+						
+					ClpSerializer.translateInput(title),
+						
+					ClpSerializer.translateInput(content),
+						
+					displayCP,
+						
+					displayLCS,
+						
+					displayLESA,
+						
+					ClpSerializer.translateInput(serviceContext)
+					});
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

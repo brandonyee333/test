@@ -16,6 +16,8 @@ package com.liferay.osb.service.base;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.service.persistence.ExpandoColumnPersistence;
+
 import com.liferay.osb.service.RemoteUserLocalService;
 import com.liferay.osb.service.persistence.AccountAttachmentPersistence;
 import com.liferay.osb.service.persistence.AccountCallPersistence;
@@ -2579,6 +2581,44 @@ public abstract class RemoteUserLocalServiceBaseImpl
 		this.userPersistence = userPersistence;
 	}
 
+	/**
+	 * Returns the expando column local service.
+	 *
+	 * @return the expando column local service
+	 */
+	public com.liferay.expando.kernel.service.ExpandoColumnLocalService getExpandoColumnLocalService() {
+		return expandoColumnLocalService;
+	}
+
+	/**
+	 * Sets the expando column local service.
+	 *
+	 * @param expandoColumnLocalService the expando column local service
+	 */
+	public void setExpandoColumnLocalService(
+		com.liferay.expando.kernel.service.ExpandoColumnLocalService expandoColumnLocalService) {
+		this.expandoColumnLocalService = expandoColumnLocalService;
+	}
+
+	/**
+	 * Returns the expando column persistence.
+	 *
+	 * @return the expando column persistence
+	 */
+	public ExpandoColumnPersistence getExpandoColumnPersistence() {
+		return expandoColumnPersistence;
+	}
+
+	/**
+	 * Sets the expando column persistence.
+	 *
+	 * @param expandoColumnPersistence the expando column persistence
+	 */
+	public void setExpandoColumnPersistence(
+		ExpandoColumnPersistence expandoColumnPersistence) {
+		this.expandoColumnPersistence = expandoColumnPersistence;
+	}
+
 	public void afterPropertiesSet() {
 		Class<?> clazz = getClass();
 
@@ -2903,6 +2943,10 @@ public abstract class RemoteUserLocalServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+	@BeanReference(type = com.liferay.expando.kernel.service.ExpandoColumnLocalService.class)
+	protected com.liferay.expando.kernel.service.ExpandoColumnLocalService expandoColumnLocalService;
+	@BeanReference(type = ExpandoColumnPersistence.class)
+	protected ExpandoColumnPersistence expandoColumnPersistence;
 	private ClassLoader _classLoader;
 	private RemoteUserLocalServiceClpInvoker _clpInvoker = new RemoteUserLocalServiceClpInvoker();
 }

@@ -64,8 +64,14 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService,
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
 
+	public void addCorpProjectUsers(java.lang.String corpProjectUuid,
+		long[] userIds) throws PortalException;
+
 	public void addCorpProjectUsers(long corpProjectId, long[] userIds)
 		throws PortalException;
+
+	public void addUserCorpProjectRoles(java.lang.String corpProjectUuid,
+		long[] userIds, long roleId) throws PortalException;
 
 	public void addUserCorpProjectRoles(long corpProjectId, long[] userIds,
 		long roleId) throws PortalException;

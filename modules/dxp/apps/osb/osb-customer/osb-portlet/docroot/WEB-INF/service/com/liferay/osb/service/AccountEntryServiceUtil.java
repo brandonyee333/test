@@ -60,7 +60,7 @@ public class AccountEntryServiceUtil {
 	}
 
 	public static com.liferay.osb.model.AccountEntry updateAccountEntry(
-		long accountEntryId, long corpProjectId,
+		long accountEntryId, java.lang.String corpProjectUuid,
 		java.lang.String corpEntryName, java.lang.String name,
 		java.lang.String code, int type, int industry, long partnerEntryId,
 		boolean partnerManagedSupport, int tier, int maxCustomers,
@@ -71,7 +71,7 @@ public class AccountEntryServiceUtil {
 		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .updateAccountEntry(accountEntryId, corpProjectId,
+				   .updateAccountEntry(accountEntryId, corpProjectUuid,
 			corpEntryName, name, code, type, industry, partnerEntryId,
 			partnerManagedSupport, tier, maxCustomers, instructions, notes,
 			languageIds, supportRegionIds, addressId, street1, street2,

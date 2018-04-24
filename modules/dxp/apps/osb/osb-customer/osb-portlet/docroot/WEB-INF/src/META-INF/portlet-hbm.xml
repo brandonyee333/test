@@ -104,6 +104,7 @@
 		<property name="modifiedUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="modifiedUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="corpProjectUuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="corpProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="corpEntryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />

@@ -56,4 +56,9 @@ public interface CorpProject extends CorpProjectModel, PersistedModel {
 
 	public com.liferay.portal.kernel.model.Group getGroup()
 		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public java.lang.String getOrganizationUuid()
+		throws com.liferay.portal.kernel.exception.PortalException;
+
+	public void setOrganizationUuid(java.lang.String organizationUuid);
 }

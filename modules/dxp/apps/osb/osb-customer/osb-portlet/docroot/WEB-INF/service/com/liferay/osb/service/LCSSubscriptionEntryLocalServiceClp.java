@@ -629,13 +629,13 @@ public class LCSSubscriptionEntryLocalServiceClp
 
 	@Override
 	public java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
-		long corpProjectId)
+		long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19, new Object[] { corpProjectId });
+					_methodParameterTypes19, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -712,11 +712,11 @@ public class LCSSubscriptionEntryLocalServiceClp
 	}
 
 	@Override
-	public void syncToLCS(long corpProjectId)
+	public void syncToLCS(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName22,
-				_methodParameterTypes22, new Object[] { corpProjectId });
+				_methodParameterTypes22, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);

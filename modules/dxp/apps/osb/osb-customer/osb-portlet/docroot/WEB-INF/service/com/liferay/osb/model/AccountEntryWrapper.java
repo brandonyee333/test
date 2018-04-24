@@ -66,6 +66,7 @@ public class AccountEntryWrapper implements AccountEntry,
 		attributes.put("modifiedUserId", getModifiedUserId());
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("corpProjectUuid", getCorpProjectUuid());
 		attributes.put("corpProjectId", getCorpProjectId());
 		attributes.put("corpEntryName", getCorpEntryName());
 		attributes.put("name", getName());
@@ -139,6 +140,12 @@ public class AccountEntryWrapper implements AccountEntry,
 
 		if (modifiedDate != null) {
 			setModifiedDate(modifiedDate);
+		}
+
+		String corpProjectUuid = (String)attributes.get("corpProjectUuid");
+
+		if (corpProjectUuid != null) {
+			setCorpProjectUuid(corpProjectUuid);
 		}
 
 		Long corpProjectId = (Long)attributes.get("corpProjectId");
@@ -505,6 +512,16 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public java.lang.String getCorpEntryName() {
 		return _accountEntry.getCorpEntryName();
+	}
+
+	/**
+	* Returns the corp project uuid of this account entry.
+	*
+	* @return the corp project uuid of this account entry
+	*/
+	@Override
+	public java.lang.String getCorpProjectUuid() {
+		return _accountEntry.getCorpProjectUuid();
 	}
 
 	@Override
@@ -891,6 +908,16 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setCorpProjectId(long corpProjectId) {
 		_accountEntry.setCorpProjectId(corpProjectId);
+	}
+
+	/**
+	* Sets the corp project uuid of this account entry.
+	*
+	* @param corpProjectUuid the corp project uuid of this account entry
+	*/
+	@Override
+	public void setCorpProjectUuid(java.lang.String corpProjectUuid) {
+		_accountEntry.setCorpProjectUuid(corpProjectUuid);
 	}
 
 	/**

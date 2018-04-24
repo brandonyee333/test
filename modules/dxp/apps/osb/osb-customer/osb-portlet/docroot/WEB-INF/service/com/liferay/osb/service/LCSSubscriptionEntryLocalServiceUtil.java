@@ -235,9 +235,9 @@ public class LCSSubscriptionEntryLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
-		long corpProjectId)
+		long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getLCSSubscriptionEntries(corpProjectId);
+		return getService().getLCSSubscriptionEntries(accountEntryId);
 	}
 
 	/**
@@ -264,9 +264,9 @@ public class LCSSubscriptionEntryLocalServiceUtil {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
 	}
 
-	public static void syncToLCS(long corpProjectId)
+	public static void syncToLCS(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().syncToLCS(corpProjectId);
+		getService().syncToLCS(accountEntryId);
 	}
 
 	public static void clearService() {

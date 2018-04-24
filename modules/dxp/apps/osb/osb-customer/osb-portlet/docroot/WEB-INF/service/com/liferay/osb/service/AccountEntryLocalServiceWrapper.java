@@ -81,7 +81,7 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 
 	@Override
 	public com.liferay.osb.model.AccountEntry addAccountEntry(long userId,
-		long corpProjectId, java.lang.String corpEntryName,
+		java.lang.String corpProjectUuid, java.lang.String corpEntryName,
 		java.lang.String name, java.lang.String code, int type, int industry,
 		long partnerEntryId, boolean partnerManagedSupport, int tier,
 		int maxCustomers, java.lang.String instructions,
@@ -91,11 +91,12 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		java.lang.String city, java.lang.String zip, long regionId,
 		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntryLocalService.addAccountEntry(userId, corpProjectId,
-			corpEntryName, name, code, type, industry, partnerEntryId,
-			partnerManagedSupport, tier, maxCustomers, instructions, notes,
-			languageIds, supportRegionIds, street1, street2, street3, city,
-			zip, regionId, countryId, ewsaDossieraProjectKey);
+		return _accountEntryLocalService.addAccountEntry(userId,
+			corpProjectUuid, corpEntryName, name, code, type, industry,
+			partnerEntryId, partnerManagedSupport, tier, maxCustomers,
+			instructions, notes, languageIds, supportRegionIds, street1,
+			street2, street3, city, zip, regionId, countryId,
+			ewsaDossieraProjectKey);
 	}
 
 	@Override
@@ -161,6 +162,12 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 
 	@Override
 	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
+		java.lang.String corpProjectUuid) {
+		return _accountEntryLocalService.fetchCorpProjectAccountEntry(corpProjectUuid);
+	}
+
+	@Override
+	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
 		long corpProjectId) {
 		return _accountEntryLocalService.fetchCorpProjectAccountEntry(corpProjectId);
 	}
@@ -213,7 +220,7 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 
 	@Override
 	public com.liferay.osb.model.AccountEntry updateAccountEntry(long userId,
-		long accountEntryId, long corpProjectId,
+		long accountEntryId, java.lang.String corpProjectUuid,
 		java.lang.String corpEntryName, java.lang.String name,
 		java.lang.String code, int type, int industry, long partnerEntryId,
 		boolean partnerManagedSupport, int tier, int maxCustomers,
@@ -224,19 +231,11 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEntryLocalService.updateAccountEntry(userId,
-			accountEntryId, corpProjectId, corpEntryName, name, code, type,
+			accountEntryId, corpProjectUuid, corpEntryName, name, code, type,
 			industry, partnerEntryId, partnerManagedSupport, tier,
 			maxCustomers, instructions, notes, languageIds, supportRegionIds,
 			addressId, street1, street2, street3, city, zip, regionId,
 			countryId, ewsaDossieraProjectKey);
-	}
-
-	@Override
-	public com.liferay.osb.model.AccountEntry updateCorpProject(
-		long accountEntryId, long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntryLocalService.updateCorpProject(accountEntryId,
-			corpProjectId);
 	}
 
 	@Override
@@ -705,9 +704,8 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public void addTrialAccountEntry(long userId, long trialLicenseKeyId)
-		throws java.lang.Exception {
-		_accountEntryLocalService.addTrialAccountEntry(userId, trialLicenseKeyId);
+	public void addTrialAccountEntry(long userId) throws java.lang.Exception {
+		_accountEntryLocalService.addTrialAccountEntry(userId);
 	}
 
 	@Override

@@ -54,9 +54,14 @@ public class CorpProjectLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.CorpProject addCorpProject(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		long userId, java.lang.String dossieraProjectKey,
+		java.lang.String salesforceProjectKey, java.lang.String name,
+		long organizationId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().addCorpProject(jsonObject);
+		return getService()
+				   .addCorpProject(userId, dossieraProjectKey,
+			salesforceProjectKey, name, organizationId, serviceContext);
 	}
 
 	/**
@@ -83,12 +88,6 @@ public class CorpProjectLocalServiceUtil {
 		return getService().deleteCorpProject(corpProject);
 	}
 
-	public static com.liferay.osb.model.CorpProject deleteCorpProject(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deleteCorpProject(jsonObject);
-	}
-
 	/**
 	* Deletes the corp project with the primary key from the database. Also notifies the appropriate model listeners.
 	*
@@ -110,6 +109,12 @@ public class CorpProjectLocalServiceUtil {
 	public static com.liferay.osb.model.CorpProject fetchCorpProject(
 		long corpProjectId) {
 		return getService().fetchCorpProject(corpProjectId);
+	}
+
+	public static com.liferay.osb.model.CorpProject fetchCorpProjectByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().fetchCorpProjectByUuid(uuid);
 	}
 
 	/**
@@ -143,9 +148,11 @@ public class CorpProjectLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.CorpProject updateCorpProject(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		long corpProjectId, java.lang.String name,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateCorpProject(jsonObject);
+		return getService()
+				   .updateCorpProject(corpProjectId, name, serviceContext);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -299,30 +306,6 @@ public class CorpProjectLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static void addCorpProjectUser(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().addCorpProjectUser(jsonObject);
-	}
-
-	public static void addUserCorpProjectRoles(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().addUserCorpProjectRoles(jsonObject);
-	}
-
-	public static void deleteUserCorpProjectRoles(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteUserCorpProjectRoles(jsonObject);
-	}
-
-	public static void unsetCorpProjectUser(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().unsetCorpProjectUser(jsonObject);
 	}
 
 	public static void clearService() {

@@ -54,9 +54,15 @@ public class CorpProjectMessageLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		long userId, long corpProjectId, int type, int severityLevel,
+		java.lang.String title, java.lang.String content, boolean displayCP,
+		boolean displayLCS, boolean displayLESA,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().addCorpProjectMessage(jsonObject);
+		return getService()
+				   .addCorpProjectMessage(userId, corpProjectId, type,
+			severityLevel, title, content, displayCP, displayLCS, displayLESA,
+			serviceContext);
 	}
 
 	/**
@@ -81,12 +87,6 @@ public class CorpProjectMessageLocalServiceUtil {
 		return getService().deleteCorpProjectMessage(corpProjectMessage);
 	}
 
-	public static com.liferay.osb.model.CorpProjectMessage deleteCorpProjectMessage(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().deleteCorpProjectMessage(jsonObject);
-	}
-
 	/**
 	* Deletes the corp project message with the primary key from the database. Also notifies the appropriate model listeners.
 	*
@@ -103,6 +103,12 @@ public class CorpProjectMessageLocalServiceUtil {
 	public static com.liferay.osb.model.CorpProjectMessage fetchCorpProjectMessage(
 		long corpProjectMessageId) {
 		return getService().fetchCorpProjectMessage(corpProjectMessageId);
+	}
+
+	public static com.liferay.osb.model.CorpProjectMessage fetchCorpProjectMessageByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().fetchCorpProjectMessageByUuid(uuid);
 	}
 
 	/**
@@ -136,9 +142,15 @@ public class CorpProjectMessageLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		long userId, long corpProjectMessageId, int type, int severityLevel,
+		java.lang.String title, java.lang.String content, boolean displayCP,
+		boolean displayLCS, boolean displayLESA,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateCorpProjectMessage(jsonObject);
+		return getService()
+				   .updateCorpProjectMessage(userId, corpProjectMessageId,
+			type, severityLevel, title, content, displayCP, displayLCS,
+			displayLESA, serviceContext);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

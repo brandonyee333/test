@@ -223,7 +223,7 @@ public interface LCSSubscriptionEntryLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LCSSubscriptionEntry> getLCSSubscriptionEntries(
-		long corpProjectId) throws PortalException;
+		long accountEntryId) throws PortalException;
 
 	/**
 	* Returns the number of rows matching the dynamic query.
@@ -243,5 +243,5 @@ public interface LCSSubscriptionEntryLocalService extends BaseLocalService,
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
 
-	public void syncToLCS(long corpProjectId) throws PortalException;
+	public void syncToLCS(long accountEntryId) throws PortalException;
 }

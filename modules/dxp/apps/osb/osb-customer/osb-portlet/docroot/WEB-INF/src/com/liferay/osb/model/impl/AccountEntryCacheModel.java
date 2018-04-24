@@ -66,7 +66,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(59);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("{accountEntryId=");
 		sb.append(accountEntryId);
@@ -84,6 +84,8 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		sb.append(modifiedUserName);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", corpProjectUuid=");
+		sb.append(corpProjectUuid);
 		sb.append(", corpProjectId=");
 		sb.append(corpProjectId);
 		sb.append(", corpEntryName=");
@@ -167,6 +169,13 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		}
 		else {
 			accountEntryImpl.setModifiedDate(new Date(modifiedDate));
+		}
+
+		if (corpProjectUuid == null) {
+			accountEntryImpl.setCorpProjectUuid(StringPool.BLANK);
+		}
+		else {
+			accountEntryImpl.setCorpProjectUuid(corpProjectUuid);
 		}
 
 		accountEntryImpl.setCorpProjectId(corpProjectId);
@@ -266,6 +275,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		modifiedUserId = objectInput.readLong();
 		modifiedUserName = objectInput.readUTF();
 		modifiedDate = objectInput.readLong();
+		corpProjectUuid = objectInput.readUTF();
 
 		corpProjectId = objectInput.readLong();
 		corpEntryName = objectInput.readUTF();
@@ -329,6 +339,13 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		}
 
 		objectOutput.writeLong(modifiedDate);
+
+		if (corpProjectUuid == null) {
+			objectOutput.writeUTF(StringPool.BLANK);
+		}
+		else {
+			objectOutput.writeUTF(corpProjectUuid);
+		}
 
 		objectOutput.writeLong(corpProjectId);
 
@@ -415,6 +432,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 	public long modifiedUserId;
 	public String modifiedUserName;
 	public long modifiedDate;
+	public String corpProjectUuid;
 	public long corpProjectId;
 	public String corpEntryName;
 	public String name;

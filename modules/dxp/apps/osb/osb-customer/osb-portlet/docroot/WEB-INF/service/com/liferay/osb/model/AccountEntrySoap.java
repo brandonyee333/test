@@ -42,6 +42,7 @@ public class AccountEntrySoap implements Serializable {
 		soapModel.setModifiedUserId(model.getModifiedUserId());
 		soapModel.setModifiedUserName(model.getModifiedUserName());
 		soapModel.setModifiedDate(model.getModifiedDate());
+		soapModel.setCorpProjectUuid(model.getCorpProjectUuid());
 		soapModel.setCorpProjectId(model.getCorpProjectId());
 		soapModel.setCorpEntryName(model.getCorpEntryName());
 		soapModel.setName(model.getName());
@@ -177,6 +178,14 @@ public class AccountEntrySoap implements Serializable {
 
 	public void setModifiedDate(Date modifiedDate) {
 		_modifiedDate = modifiedDate;
+	}
+
+	public String getCorpProjectUuid() {
+		return _corpProjectUuid;
+	}
+
+	public void setCorpProjectUuid(String corpProjectUuid) {
+		_corpProjectUuid = corpProjectUuid;
 	}
 
 	public long getCorpProjectId() {
@@ -359,6 +368,7 @@ public class AccountEntrySoap implements Serializable {
 	private long _modifiedUserId;
 	private String _modifiedUserName;
 	private Date _modifiedDate;
+	private String _corpProjectUuid;
 	private long _corpProjectId;
 	private String _corpEntryName;
 	private String _name;

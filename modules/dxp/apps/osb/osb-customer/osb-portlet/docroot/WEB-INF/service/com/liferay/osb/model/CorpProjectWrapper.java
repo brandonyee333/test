@@ -217,6 +217,12 @@ public class CorpProjectWrapper implements CorpProject,
 		return _corpProject.getName();
 	}
 
+	@Override
+	public java.lang.String getOrganizationUuid()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProject.getOrganizationUuid();
+	}
+
 	/**
 	* Returns the salesforce project key of this corp project.
 	*
@@ -416,6 +422,11 @@ public class CorpProjectWrapper implements CorpProject,
 	@Override
 	public void setOrganizationId(long organizationId) {
 		_corpProject.setOrganizationId(organizationId);
+	}
+
+	@Override
+	public void setOrganizationUuid(java.lang.String organizationUuid) {
+		_corpProject.setOrganizationUuid(organizationUuid);
 	}
 
 	/**

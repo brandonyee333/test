@@ -66,9 +66,21 @@ public class RemoteCorpProjectLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static void addCorpProjectUsers(java.lang.String corpProjectUuid,
+		long[] userIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().addCorpProjectUsers(corpProjectUuid, userIds);
+	}
+
 	public static void addCorpProjectUsers(long corpProjectId, long[] userIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addCorpProjectUsers(corpProjectId, userIds);
+	}
+
+	public static void addUserCorpProjectRoles(
+		java.lang.String corpProjectUuid, long[] userIds, long roleId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().addUserCorpProjectRoles(corpProjectUuid, userIds, roleId);
 	}
 
 	public static void addUserCorpProjectRoles(long corpProjectId,

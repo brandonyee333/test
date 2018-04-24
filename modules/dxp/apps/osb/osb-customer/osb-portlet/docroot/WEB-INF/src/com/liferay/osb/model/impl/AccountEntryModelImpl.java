@@ -79,6 +79,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			{ "modifiedUserId", Types.BIGINT },
 			{ "modifiedUserName", Types.VARCHAR },
 			{ "modifiedDate", Types.TIMESTAMP },
+			{ "corpProjectUuid", Types.VARCHAR },
 			{ "corpProjectId", Types.BIGINT },
 			{ "corpEntryName", Types.VARCHAR },
 			{ "name", Types.VARCHAR },
@@ -112,6 +113,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		TABLE_COLUMNS_MAP.put("modifiedUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("modifiedUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("corpProjectUuid", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("corpProjectId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("corpEntryName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
@@ -135,7 +137,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		TABLE_COLUMNS_MAP.put("statusMessage", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectId LONG,corpEntryName VARCHAR(75) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,lastAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,corpEntryName VARCHAR(75) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,lastAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY accountEntry.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountEntry.name ASC";
@@ -153,12 +155,13 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			true);
 	public static final long CODE_COLUMN_BITMASK = 1L;
 	public static final long CORPPROJECTID_COLUMN_BITMASK = 2L;
-	public static final long NAME_COLUMN_BITMASK = 4L;
-	public static final long PARTNERENTRYID_COLUMN_BITMASK = 8L;
-	public static final long REDIRECTACCOUNTENTRYID_COLUMN_BITMASK = 16L;
-	public static final long STATUS_COLUMN_BITMASK = 32L;
-	public static final long TYPE_COLUMN_BITMASK = 64L;
-	public static final long USERID_COLUMN_BITMASK = 128L;
+	public static final long CORPPROJECTUUID_COLUMN_BITMASK = 4L;
+	public static final long NAME_COLUMN_BITMASK = 8L;
+	public static final long PARTNERENTRYID_COLUMN_BITMASK = 16L;
+	public static final long REDIRECTACCOUNTENTRYID_COLUMN_BITMASK = 32L;
+	public static final long STATUS_COLUMN_BITMASK = 64L;
+	public static final long TYPE_COLUMN_BITMASK = 128L;
+	public static final long USERID_COLUMN_BITMASK = 256L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -181,6 +184,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		model.setModifiedUserId(soapModel.getModifiedUserId());
 		model.setModifiedUserName(soapModel.getModifiedUserName());
 		model.setModifiedDate(soapModel.getModifiedDate());
+		model.setCorpProjectUuid(soapModel.getCorpProjectUuid());
 		model.setCorpProjectId(soapModel.getCorpProjectId());
 		model.setCorpEntryName(soapModel.getCorpEntryName());
 		model.setName(soapModel.getName());
@@ -302,6 +306,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		attributes.put("modifiedUserId", getModifiedUserId());
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("corpProjectUuid", getCorpProjectUuid());
 		attributes.put("corpProjectId", getCorpProjectId());
 		attributes.put("corpEntryName", getCorpEntryName());
 		attributes.put("name", getName());
@@ -378,6 +383,12 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		if (modifiedDate != null) {
 			setModifiedDate(modifiedDate);
+		}
+
+		String corpProjectUuid = (String)attributes.get("corpProjectUuid");
+
+		if (corpProjectUuid != null) {
+			setCorpProjectUuid(corpProjectUuid);
 		}
 
 		Long corpProjectId = (Long)attributes.get("corpProjectId");
@@ -656,6 +667,32 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		_setModifiedDate = true;
 
 		_modifiedDate = modifiedDate;
+	}
+
+	@JSON
+	@Override
+	public String getCorpProjectUuid() {
+		if (_corpProjectUuid == null) {
+			return StringPool.BLANK;
+		}
+		else {
+			return _corpProjectUuid;
+		}
+	}
+
+	@Override
+	public void setCorpProjectUuid(String corpProjectUuid) {
+		_columnBitmask |= CORPPROJECTUUID_COLUMN_BITMASK;
+
+		if (_originalCorpProjectUuid == null) {
+			_originalCorpProjectUuid = _corpProjectUuid;
+		}
+
+		_corpProjectUuid = corpProjectUuid;
+	}
+
+	public String getOriginalCorpProjectUuid() {
+		return GetterUtil.getString(_originalCorpProjectUuid);
 	}
 
 	@JSON
@@ -1145,6 +1182,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		accountEntryImpl.setModifiedUserId(getModifiedUserId());
 		accountEntryImpl.setModifiedUserName(getModifiedUserName());
 		accountEntryImpl.setModifiedDate(getModifiedDate());
+		accountEntryImpl.setCorpProjectUuid(getCorpProjectUuid());
 		accountEntryImpl.setCorpProjectId(getCorpProjectId());
 		accountEntryImpl.setCorpEntryName(getCorpEntryName());
 		accountEntryImpl.setName(getName());
@@ -1232,6 +1270,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		accountEntryModelImpl._setModifiedDate = false;
 
+		accountEntryModelImpl._originalCorpProjectUuid = accountEntryModelImpl._corpProjectUuid;
+
 		accountEntryModelImpl._originalCorpProjectId = accountEntryModelImpl._corpProjectId;
 
 		accountEntryModelImpl._setOriginalCorpProjectId = false;
@@ -1303,6 +1343,14 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		}
 		else {
 			accountEntryCacheModel.modifiedDate = Long.MIN_VALUE;
+		}
+
+		accountEntryCacheModel.corpProjectUuid = getCorpProjectUuid();
+
+		String corpProjectUuid = accountEntryCacheModel.corpProjectUuid;
+
+		if ((corpProjectUuid != null) && (corpProjectUuid.length() == 0)) {
+			accountEntryCacheModel.corpProjectUuid = null;
 		}
 
 		accountEntryCacheModel.corpProjectId = getCorpProjectId();
@@ -1408,7 +1456,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(59);
+		StringBundler sb = new StringBundler(61);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
@@ -1426,6 +1474,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(getModifiedUserName());
 		sb.append(", modifiedDate=");
 		sb.append(getModifiedDate());
+		sb.append(", corpProjectUuid=");
+		sb.append(getCorpProjectUuid());
 		sb.append(", corpProjectId=");
 		sb.append(getCorpProjectId());
 		sb.append(", corpEntryName=");
@@ -1475,7 +1525,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(91);
+		StringBundler sb = new StringBundler(94);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1512,6 +1562,10 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(
 			"<column><column-name>modifiedDate</column-name><column-value><![CDATA[");
 		sb.append(getModifiedDate());
+		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>corpProjectUuid</column-name><column-value><![CDATA[");
+		sb.append(getCorpProjectUuid());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>corpProjectId</column-name><column-value><![CDATA[");
@@ -1618,6 +1672,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	private String _modifiedUserName;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
+	private String _corpProjectUuid;
+	private String _originalCorpProjectUuid;
 	private long _corpProjectId;
 	private long _originalCorpProjectId;
 	private boolean _setOriginalCorpProjectId;

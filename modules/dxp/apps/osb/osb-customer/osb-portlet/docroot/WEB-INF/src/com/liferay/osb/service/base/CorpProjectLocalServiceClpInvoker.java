@@ -130,68 +130,49 @@ public class CorpProjectLocalServiceClpInvoker {
 		_methodName291 = "addCorpProject";
 
 		_methodParameterTypes291 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
+				"long", "java.lang.String", "java.lang.String",
+				"java.lang.String", "long",
+				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
-		_methodName292 = "addCorpProjectUser";
+		_methodName292 = "deleteCorpProject";
 
 		_methodParameterTypes292 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
-			};
-
-		_methodName293 = "addUserCorpProjectRoles";
-
-		_methodParameterTypes293 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
-			};
-
-		_methodName294 = "deleteCorpProject";
-
-		_methodParameterTypes294 = new String[] {
 				"com.liferay.osb.model.CorpProject"
 			};
 
-		_methodName295 = "deleteCorpProject";
+		_methodName293 = "deleteCorpProject";
 
-		_methodParameterTypes295 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
-			};
+		_methodParameterTypes293 = new String[] { "long" };
 
-		_methodName296 = "deleteUserCorpProjectRoles";
+		_methodName294 = "fetchCorpProject";
 
-		_methodParameterTypes296 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
-			};
+		_methodParameterTypes294 = new String[] { "java.lang.String" };
 
-		_methodName297 = "fetchCorpProject";
+		_methodName295 = "fetchCorpProjectByUuid";
 
-		_methodParameterTypes297 = new String[] { "java.lang.String" };
+		_methodParameterTypes295 = new String[] { "java.lang.String" };
 
-		_methodName298 = "getCorpProjectByUuid";
+		_methodName296 = "getCorpProjectByUuid";
 
-		_methodParameterTypes298 = new String[] { "java.lang.String" };
+		_methodParameterTypes296 = new String[] { "java.lang.String" };
 
-		_methodName299 = "getCorpProjects";
+		_methodName297 = "getCorpProjects";
 
-		_methodParameterTypes299 = new String[] {
+		_methodParameterTypes297 = new String[] {
 				"java.lang.String", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName300 = "getCorpProjectsCount";
+		_methodName298 = "getCorpProjectsCount";
 
-		_methodParameterTypes300 = new String[] { "java.lang.String" };
+		_methodParameterTypes298 = new String[] { "java.lang.String" };
 
-		_methodName301 = "unsetCorpProjectUser";
+		_methodName299 = "updateCorpProject";
 
-		_methodParameterTypes301 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
-			};
-
-		_methodName302 = "updateCorpProject";
-
-		_methodParameterTypes302 = new String[] {
-				"com.liferay.portal.kernel.json.JSONObject"
+		_methodParameterTypes299 = new String[] {
+				"long", "java.lang.String",
+				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 	}
 
@@ -306,73 +287,56 @@ public class CorpProjectLocalServiceClpInvoker {
 
 		if (_methodName291.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes291, parameterTypes)) {
-			return CorpProjectLocalServiceUtil.addCorpProject((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+			return CorpProjectLocalServiceUtil.addCorpProject(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				(java.lang.String)arguments[3],
+				((Long)arguments[4]).longValue(),
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[5]);
 		}
 
 		if (_methodName292.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes292, parameterTypes)) {
-			CorpProjectLocalServiceUtil.addCorpProjectUser((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
-
-			return null;
+			return CorpProjectLocalServiceUtil.deleteCorpProject((com.liferay.osb.model.CorpProject)arguments[0]);
 		}
 
 		if (_methodName293.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes293, parameterTypes)) {
-			CorpProjectLocalServiceUtil.addUserCorpProjectRoles((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
-
-			return null;
+			return CorpProjectLocalServiceUtil.deleteCorpProject(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName294.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes294, parameterTypes)) {
-			return CorpProjectLocalServiceUtil.deleteCorpProject((com.liferay.osb.model.CorpProject)arguments[0]);
+			return CorpProjectLocalServiceUtil.fetchCorpProject((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName295.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes295, parameterTypes)) {
-			return CorpProjectLocalServiceUtil.deleteCorpProject((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+			return CorpProjectLocalServiceUtil.fetchCorpProjectByUuid((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName296.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes296, parameterTypes)) {
-			CorpProjectLocalServiceUtil.deleteUserCorpProjectRoles((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
-
-			return null;
+			return CorpProjectLocalServiceUtil.getCorpProjectByUuid((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName297.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes297, parameterTypes)) {
-			return CorpProjectLocalServiceUtil.fetchCorpProject((java.lang.String)arguments[0]);
-		}
-
-		if (_methodName298.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
-			return CorpProjectLocalServiceUtil.getCorpProjectByUuid((java.lang.String)arguments[0]);
-		}
-
-		if (_methodName299.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
 			return CorpProjectLocalServiceUtil.getCorpProjects((java.lang.String)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[3]);
 		}
 
-		if (_methodName300.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes300, parameterTypes)) {
+		if (_methodName298.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes298, parameterTypes)) {
 			return CorpProjectLocalServiceUtil.getCorpProjectsCount((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName301.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes301, parameterTypes)) {
-			CorpProjectLocalServiceUtil.unsetCorpProjectUser((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
-
-			return null;
-		}
-
-		if (_methodName302.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes302, parameterTypes)) {
-			return CorpProjectLocalServiceUtil.updateCorpProject((com.liferay.portal.kernel.json.JSONObject)arguments[0]);
+		if (_methodName299.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes299, parameterTypes)) {
+			return CorpProjectLocalServiceUtil.updateCorpProject(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1],
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[2]);
 		}
 
 		throw new UnsupportedOperationException();
@@ -436,10 +400,4 @@ public class CorpProjectLocalServiceClpInvoker {
 	private String[] _methodParameterTypes298;
 	private String _methodName299;
 	private String[] _methodParameterTypes299;
-	private String _methodName300;
-	private String[] _methodParameterTypes300;
-	private String _methodName301;
-	private String[] _methodParameterTypes301;
-	private String _methodName302;
-	private String[] _methodParameterTypes302;
 }

@@ -81,22 +81,22 @@ public class AccountEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.AccountEntry addAccountEntry(
-		long userId, long corpProjectId, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int type, int industry,
-		long partnerEntryId, boolean partnerManagedSupport, int tier,
-		int maxCustomers, java.lang.String instructions,
-		java.lang.String notes, java.lang.String[] languageIds,
-		long[] supportRegionIds, java.lang.String street1,
-		java.lang.String street2, java.lang.String street3,
-		java.lang.String city, java.lang.String zip, long regionId,
-		long countryId, java.lang.String ewsaDossieraProjectKey)
+		long userId, java.lang.String corpProjectUuid,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addAccountEntry(userId, corpProjectId, corpEntryName, name,
-			code, type, industry, partnerEntryId, partnerManagedSupport, tier,
-			maxCustomers, instructions, notes, languageIds, supportRegionIds,
-			street1, street2, street3, city, zip, regionId, countryId,
-			ewsaDossieraProjectKey);
+				   .addAccountEntry(userId, corpProjectUuid, corpEntryName,
+			name, code, type, industry, partnerEntryId, partnerManagedSupport,
+			tier, maxCustomers, instructions, notes, languageIds,
+			supportRegionIds, street1, street2, street3, city, zip, regionId,
+			countryId, ewsaDossieraProjectKey);
 	}
 
 	public static com.liferay.osb.model.AccountEntry addAccountEntryWithWorkflow(
@@ -157,6 +157,11 @@ public class AccountEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
+		java.lang.String corpProjectUuid) {
+		return getService().fetchCorpProjectAccountEntry(corpProjectUuid);
+	}
+
+	public static com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
 		long corpProjectId) {
 		return getService().fetchCorpProjectAccountEntry(corpProjectId);
 	}
@@ -203,7 +208,7 @@ public class AccountEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.AccountEntry updateAccountEntry(
-		long userId, long accountEntryId, long corpProjectId,
+		long userId, long accountEntryId, java.lang.String corpProjectUuid,
 		java.lang.String corpEntryName, java.lang.String name,
 		java.lang.String code, int type, int industry, long partnerEntryId,
 		boolean partnerManagedSupport, int tier, int maxCustomers,
@@ -214,17 +219,11 @@ public class AccountEntryLocalServiceUtil {
 		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .updateAccountEntry(userId, accountEntryId, corpProjectId,
+				   .updateAccountEntry(userId, accountEntryId, corpProjectUuid,
 			corpEntryName, name, code, type, industry, partnerEntryId,
 			partnerManagedSupport, tier, maxCustomers, instructions, notes,
 			languageIds, supportRegionIds, addressId, street1, street2,
 			street3, city, zip, regionId, countryId, ewsaDossieraProjectKey);
-	}
-
-	public static com.liferay.osb.model.AccountEntry updateCorpProject(
-		long accountEntryId, long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().updateCorpProject(accountEntryId, corpProjectId);
 	}
 
 	public static com.liferay.osb.model.AccountEntry updateInstructions(
@@ -632,9 +631,9 @@ public class AccountEntryLocalServiceUtil {
 		getService().addSupportTeamAccountEntry(supportTeamId, accountEntryId);
 	}
 
-	public static void addTrialAccountEntry(long userId, long trialLicenseKeyId)
+	public static void addTrialAccountEntry(long userId)
 		throws java.lang.Exception {
-		getService().addTrialAccountEntry(userId, trialLicenseKeyId);
+		getService().addTrialAccountEntry(userId);
 	}
 
 	public static void auditAccountEntries()

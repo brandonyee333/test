@@ -94,9 +94,9 @@ public class AccountEntryServiceClpInvoker {
 		_methodName398 = "updateAccountEntry";
 
 		_methodParameterTypes398 = new String[] {
-				"long", "long", "java.lang.String", "java.lang.String",
-				"java.lang.String", "int", "int", "long", "boolean", "int",
-				"int", "java.lang.String", "java.lang.String",
+				"long", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "int", "int", "long",
+				"boolean", "int", "int", "java.lang.String", "java.lang.String",
 				"java.lang.String[][]", "long[][]", "long", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String", "long", "long", "java.lang.String"
@@ -223,9 +223,8 @@ public class AccountEntryServiceClpInvoker {
 		if (_methodName398.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes398, parameterTypes)) {
 			return AccountEntryServiceUtil.updateAccountEntry(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue(),
-				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
-				(java.lang.String)arguments[4],
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				(java.lang.String)arguments[3], (java.lang.String)arguments[4],
 				((Integer)arguments[5]).intValue(),
 				((Integer)arguments[6]).intValue(),
 				((Long)arguments[7]).longValue(),

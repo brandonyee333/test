@@ -99,15 +99,16 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public AccountEntry addAccountEntry(AccountEntry accountEntry);
 
-	public AccountEntry addAccountEntry(long userId, long corpProjectId,
-		java.lang.String corpEntryName, java.lang.String name,
-		java.lang.String code, int type, int industry, long partnerEntryId,
-		boolean partnerManagedSupport, int tier, int maxCustomers,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String[] languageIds, long[] supportRegionIds,
-		java.lang.String street1, java.lang.String street2,
-		java.lang.String street3, java.lang.String city, java.lang.String zip,
-		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+	public AccountEntry addAccountEntry(long userId,
+		java.lang.String corpProjectUuid, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int type, int industry,
+		long partnerEntryId, boolean partnerManagedSupport, int tier,
+		int maxCustomers, java.lang.String instructions,
+		java.lang.String notes, java.lang.String[] languageIds,
+		long[] supportRegionIds, java.lang.String street1,
+		java.lang.String street2, java.lang.String street3,
+		java.lang.String city, java.lang.String zip, long regionId,
+		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws PortalException;
 
 	public AccountEntry addAccountEntryWithWorkflow(
@@ -149,6 +150,10 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public AccountEntry fetchAccountEntry(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry fetchCorpProjectAccountEntry(
+		java.lang.String corpProjectUuid);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry fetchCorpProjectAccountEntry(long corpProjectId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -183,7 +188,7 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public AccountEntry updateAccountEntry(AccountEntry accountEntry);
 
 	public AccountEntry updateAccountEntry(long userId, long accountEntryId,
-		long corpProjectId, java.lang.String corpEntryName,
+		java.lang.String corpProjectUuid, java.lang.String corpEntryName,
 		java.lang.String name, java.lang.String code, int type, int industry,
 		long partnerEntryId, boolean partnerManagedSupport, int tier,
 		int maxCustomers, java.lang.String instructions,
@@ -193,9 +198,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		java.lang.String city, java.lang.String zip, long regionId,
 		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws PortalException;
-
-	public AccountEntry updateCorpProject(long accountEntryId,
-		long corpProjectId) throws PortalException;
 
 	public AccountEntry updateInstructions(long userId, long accountEntryId,
 		java.lang.String instructions) throws PortalException;
@@ -479,8 +481,7 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public void addSupportTeamAccountEntry(long supportTeamId,
 		long accountEntryId);
 
-	public void addTrialAccountEntry(long userId, long trialLicenseKeyId)
-		throws java.lang.Exception;
+	public void addTrialAccountEntry(long userId) throws java.lang.Exception;
 
 	public void auditAccountEntries() throws PortalException;
 

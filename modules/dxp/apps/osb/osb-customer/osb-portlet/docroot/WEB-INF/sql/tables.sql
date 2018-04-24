@@ -57,6 +57,7 @@ create table OSB_AccountEntry (
 	modifiedUserId LONG,
 	modifiedUserName VARCHAR(75) null,
 	modifiedDate DATE null,
+	corpProjectUuid VARCHAR(75) null,
 	corpProjectId LONG,
 	corpEntryName VARCHAR(75) null,
 	name VARCHAR(500) null,

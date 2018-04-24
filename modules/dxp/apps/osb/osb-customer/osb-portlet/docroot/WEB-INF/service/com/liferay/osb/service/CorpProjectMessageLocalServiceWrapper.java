@@ -48,9 +48,14 @@ public class CorpProjectMessageLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		long userId, long corpProjectId, int type, int severityLevel,
+		java.lang.String title, java.lang.String content, boolean displayCP,
+		boolean displayLCS, boolean displayLESA,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectMessageLocalService.addCorpProjectMessage(jsonObject);
+		return _corpProjectMessageLocalService.addCorpProjectMessage(userId,
+			corpProjectId, type, severityLevel, title, content, displayCP,
+			displayLCS, displayLESA, serviceContext);
 	}
 
 	/**
@@ -77,13 +82,6 @@ public class CorpProjectMessageLocalServiceWrapper
 		return _corpProjectMessageLocalService.deleteCorpProjectMessage(corpProjectMessage);
 	}
 
-	@Override
-	public com.liferay.osb.model.CorpProjectMessage deleteCorpProjectMessage(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectMessageLocalService.deleteCorpProjectMessage(jsonObject);
-	}
-
 	/**
 	* Deletes the corp project message with the primary key from the database. Also notifies the appropriate model listeners.
 	*
@@ -102,6 +100,13 @@ public class CorpProjectMessageLocalServiceWrapper
 	public com.liferay.osb.model.CorpProjectMessage fetchCorpProjectMessage(
 		long corpProjectMessageId) {
 		return _corpProjectMessageLocalService.fetchCorpProjectMessage(corpProjectMessageId);
+	}
+
+	@Override
+	public com.liferay.osb.model.CorpProjectMessage fetchCorpProjectMessageByUuid(
+		java.lang.String uuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _corpProjectMessageLocalService.fetchCorpProjectMessageByUuid(uuid);
 	}
 
 	/**
@@ -139,9 +144,14 @@ public class CorpProjectMessageLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
-		com.liferay.portal.kernel.json.JSONObject jsonObject)
+		long userId, long corpProjectMessageId, int type, int severityLevel,
+		java.lang.String title, java.lang.String content, boolean displayCP,
+		boolean displayLCS, boolean displayLESA,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectMessageLocalService.updateCorpProjectMessage(jsonObject);
+		return _corpProjectMessageLocalService.updateCorpProjectMessage(userId,
+			corpProjectMessageId, type, severityLevel, title, content,
+			displayCP, displayLCS, displayLESA, serviceContext);
 	}
 
 	@Override

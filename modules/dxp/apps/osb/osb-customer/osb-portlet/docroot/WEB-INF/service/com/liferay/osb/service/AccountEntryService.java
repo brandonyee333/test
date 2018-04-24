@@ -69,7 +69,7 @@ public interface AccountEntryService extends BaseService, InvokableService {
 		throws PortalException;
 
 	public AccountEntry updateAccountEntry(long accountEntryId,
-		long corpProjectId, java.lang.String corpEntryName,
+		java.lang.String corpProjectUuid, java.lang.String corpEntryName,
 		java.lang.String name, java.lang.String code, int type, int industry,
 		long partnerEntryId, boolean partnerManagedSupport, int tier,
 		int maxCustomers, java.lang.String instructions,

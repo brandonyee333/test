@@ -24,13 +24,13 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -73,7 +73,10 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	public CorpProjectMessage addCorpProjectMessage(
 		CorpProjectMessage corpProjectMessage);
 
-	public CorpProjectMessage addCorpProjectMessage(JSONObject jsonObject)
+	public CorpProjectMessage addCorpProjectMessage(long userId,
+		long corpProjectId, int type, int severityLevel,
+		java.lang.String title, java.lang.String content, boolean displayCP,
+		boolean displayLCS, boolean displayLESA, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -95,9 +98,6 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	public CorpProjectMessage deleteCorpProjectMessage(
 		CorpProjectMessage corpProjectMessage);
 
-	public CorpProjectMessage deleteCorpProjectMessage(JSONObject jsonObject)
-		throws PortalException;
-
 	/**
 	* Deletes the corp project message with the primary key from the database. Also notifies the appropriate model listeners.
 	*
@@ -111,6 +111,10 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CorpProjectMessage fetchCorpProjectMessage(long corpProjectMessageId);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CorpProjectMessage fetchCorpProjectMessageByUuid(
+		java.lang.String uuid) throws PortalException;
 
 	/**
 	* Returns the corp project message with the primary key.
@@ -137,7 +141,10 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	public CorpProjectMessage updateCorpProjectMessage(
 		CorpProjectMessage corpProjectMessage);
 
-	public CorpProjectMessage updateCorpProjectMessage(JSONObject jsonObject)
+	public CorpProjectMessage updateCorpProjectMessage(long userId,
+		long corpProjectMessageId, int type, int severityLevel,
+		java.lang.String title, java.lang.String content, boolean displayCP,
+		boolean displayLCS, boolean displayLESA, ServiceContext serviceContext)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

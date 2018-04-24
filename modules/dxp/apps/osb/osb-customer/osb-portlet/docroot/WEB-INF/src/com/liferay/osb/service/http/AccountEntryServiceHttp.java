@@ -390,22 +390,23 @@ public class AccountEntryServiceHttp {
 	}
 
 	public static com.liferay.osb.model.AccountEntry updateAccountEntry(
-		HttpPrincipal httpPrincipal, long accountEntryId, long corpProjectId,
-		java.lang.String corpEntryName, java.lang.String name,
-		java.lang.String code, int type, int industry, long partnerEntryId,
-		boolean partnerManagedSupport, int tier, int maxCustomers,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String[] languageIds, long[] supportRegionIds,
-		long addressId, java.lang.String street1, java.lang.String street2,
-		java.lang.String street3, java.lang.String city, java.lang.String zip,
-		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		HttpPrincipal httpPrincipal, long accountEntryId,
+		java.lang.String corpProjectUuid, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int type, int industry,
+		long partnerEntryId, boolean partnerManagedSupport, int tier,
+		int maxCustomers, java.lang.String instructions,
+		java.lang.String notes, java.lang.String[] languageIds,
+		long[] supportRegionIds, long addressId, java.lang.String street1,
+		java.lang.String street2, java.lang.String street3,
+		java.lang.String city, java.lang.String zip, long regionId,
+		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
 					"updateAccountEntry", _updateAccountEntryParameterTypes9);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
-					accountEntryId, corpProjectId, corpEntryName, name, code,
+					accountEntryId, corpProjectUuid, corpEntryName, name, code,
 					type, industry, partnerEntryId, partnerManagedSupport,
 					tier, maxCustomers, instructions, notes, languageIds,
 					supportRegionIds, addressId, street1, street2, street3,
@@ -543,7 +544,7 @@ public class AccountEntryServiceHttp {
 			java.lang.String.class, java.util.LinkedHashMap.class
 		};
 	private static final Class<?>[] _updateAccountEntryParameterTypes9 = new Class[] {
-			long.class, long.class, java.lang.String.class,
+			long.class, java.lang.String.class, java.lang.String.class,
 			java.lang.String.class, java.lang.String.class, int.class, int.class,
 			long.class, boolean.class, int.class, int.class,
 			java.lang.String.class, java.lang.String.class,
