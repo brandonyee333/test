@@ -5,7 +5,7 @@ a.btn, input.btn, input[type="button"], input[type="submit"], .btn, .field-input
 }
 
 .btn, .field-input-button {
-	background: #FFF;
+	background: $white;
 	border-radius: 2px;
 	box-shadow: none;
 	color: $orange;
@@ -18,33 +18,33 @@ a.btn, input.btn, input[type="button"], input[type="submit"], .btn, .field-input
 	text-shadow: none;
 	vertical-align: top;
 
+	&:active, &:focus {
+		background: #EF8131;
+		color: $white;
+	}
+
 	&:focus {
 		outline: none;
 	}
 
 	&:hover {
 		background: $orange;
-		color: #FFF;
-	}
-
-	&:active, &:focus {
-		background: #EF8131;
-		color: #FFF;
+		color: $white;
 	}
 
 	&.btn-info {
-		background: #0E4681;
-		border-color: #0E4681;
-		color: #FFF;
-
-		&:hover {
-			background: #FFF;
-			color: #0E4681;
-		}
+		background: $dark-blue;
+		border-color: $dark-blue;
+		color: $white;
 
 		&:active, &:focus {
 			background: #89A4C1;
-			color: #0E4681;
+			color: $dark-blue;
+		}
+
+		&:hover {
+			background: $white;
+			color: $dark-blue;
 		}
 	}
 
@@ -57,14 +57,14 @@ a.btn, input.btn, input[type="button"], input[type="submit"], .btn, .field-input
 		border-color: #1BAAE1;
 		color: #1BAAE1;
 
-		&:hover {
-			background: #1BAAE1;
-			color: #FFF;
-		}
-
 		&:active, &:focus {
 			background: #0093D8;
-			color: #FFF;
+			color: $white;
+		}
+
+		&:hover {
+			background: #1BAAE1;
+			color: $white;
 		}
 	}
 

@@ -4,22 +4,24 @@
 		margin-top: 1em;
 		padding-right: 0.5em;
 
-		li.child {
-			padding-left: 24px;
-			text-indent: -24px;
-		}
-
-		li.parent {
-			padding-left: 17px;
-			text-indent: -17px;
-
-			& li {
-				padding-left: inherit;
+		li {
+			&.child {
+				padding-left: 24px;
+				text-indent: -24px;
 			}
 
-			& li.child {
-				padding-left: 7px;
-				text-indent: -24px;
+			&.parent {
+				padding-left: 17px;
+				text-indent: -17px;
+
+				& li {
+					padding-left: inherit;
+
+					&.child {
+						padding-left: 7px;
+						text-indent: -24px;
+					}
+				}
 			}
 		}
 
