@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.HotDeployMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.util.OSDetector;
 
 /**
  * @author Igor Beslic
@@ -41,7 +42,9 @@ public class LCSHotDeployMessageListener extends HotDeployMessageListener {
 
 	@Override
 	protected void onDeploy(Message message) throws Exception {
-		SigarNativeLoader.load();
+		if (!OSDetector.isAIX()) {
+			SigarNativeLoader.load();
+		}
 
 		_lcsConnectionManager.onPortletDeployed();
 
@@ -56,7 +59,9 @@ public class LCSHotDeployMessageListener extends HotDeployMessageListener {
 	protected void onUndeploy(Message message) throws Exception {
 		LCSUtil.processLCSPortletState(LCSPortletState.PLUGIN_ABSENT);
 
-		SigarNativeLoader.unload();
+		if (!OSDetector.isAIX()) {
+			SigarNativeLoader.unload();
+		}
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
