@@ -48,12 +48,8 @@
 				}
 			}
 		}
-	}
-}
 
-@include media-query(null, $screen-xs-max) {
-	.osb-documentation-side-navigation-portlet {
-		.side-nav-wrapper {
+		@include media-query(null, $screen-xs-max) {
 			border-right-width: 0;
 
 			.side-nav-toggle {
