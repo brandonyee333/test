@@ -14,28 +14,20 @@
 
 package com.liferay.lcs.util;
 
-import org.hyperic.sigar.CpuInfo;
-import org.hyperic.sigar.Sigar;
-import org.hyperic.sigar.SigarException;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Mladen Cikara
  */
-public class SigarCpuCount implements CpuCount {
+public class NProcCpuCount {
 
-	@Override
-	public int getTotalCores() throws SigarException {
-		Sigar sigar = new Sigar();
+	public int getTotalCores() throws Exception {
+		Runtime runtime = Runtime.getRuntime();
 
-		CpuInfo[] cpuInfos = sigar.getCpuInfoList();
+		Process process = runtime.exec("nproc");
 
-		CpuInfo info = cpuInfos[0];
-
-		int totalCores = info.getTotalCores();
-
-		sigar.close();
-
-		return totalCores;
+		return GetterUtil.getInteger(StringUtil.read(process.getInputStream()));
 	}
 
 }
