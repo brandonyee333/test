@@ -117,7 +117,7 @@ pageContext.setAttribute("searchURL", searchURL);
 						<strong><%= HtmlUtil.escape(licenseKeySet.getName()) %></strong>
 					</div>
 
-					<div class="fs-9">
+					<div class="small">
 						<%= licenseKey.getDescription() %>
 					</div>
 				</liferay-ui:search-container-column-text>
@@ -144,7 +144,7 @@ pageContext.setAttribute("searchURL", searchURL);
 						<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
 					</div>
 
-					<div class="fs-9">
+					<div class="small">
 						<%= longDateFormatTime.format(licenseKey.getStartDate()) %>
 					</div>
 				</liferay-ui:search-container-column-text>
@@ -158,7 +158,7 @@ pageContext.setAttribute("searchURL", searchURL);
 						<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
 					</div>
 
-					<div class="fs-9">
+					<div class="small">
 						<%= longDateFormatTime.format(licenseKey.getExpirationDate()) %>
 					</div>
 				</liferay-ui:search-container-column-text>

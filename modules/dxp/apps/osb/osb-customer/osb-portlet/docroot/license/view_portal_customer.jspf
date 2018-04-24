@@ -143,7 +143,7 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 						<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
 					</div>
 
-					<div class="fs-9">
+					<div class="small">
 						<%= longDateFormatTime.format(licenseKey.getStartDate()) %>
 					</div>
 				</liferay-ui:search-container-column-text>
@@ -165,7 +165,7 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 								<%= longDateFormatDate.format(expirationDate) %>
 							</div>
 
-							<div class="fs-9">
+							<div class="small">
 								<%= longDateFormatTime.format(expirationDate) %>
 							</div>
 						</c:otherwise>
