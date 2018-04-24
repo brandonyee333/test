@@ -240,6 +240,8 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 
 	@Override
 	protected WatsonIncident removeImpl(WatsonIncident watsonIncident) {
+		watsonIncident = toUnwrappedModel(watsonIncident);
+
 		Session session = null;
 
 		try {
@@ -270,6 +272,8 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 
 	@Override
 	public WatsonIncident updateImpl(WatsonIncident watsonIncident) {
+		watsonIncident = toUnwrappedModel(watsonIncident);
+
 		boolean isNew = watsonIncident.isNew();
 
 		WatsonIncidentModelImpl watsonIncidentModelImpl = (WatsonIncidentModelImpl)watsonIncident;
@@ -333,6 +337,44 @@ public class WatsonIncidentPersistenceImpl extends BasePersistenceImpl<WatsonInc
 		watsonIncident.resetOriginalValues();
 
 		return watsonIncident;
+	}
+
+	protected WatsonIncident toUnwrappedModel(WatsonIncident watsonIncident) {
+		if (watsonIncident instanceof WatsonIncidentImpl) {
+			return watsonIncident;
+		}
+
+		WatsonIncidentImpl watsonIncidentImpl = new WatsonIncidentImpl();
+
+		watsonIncidentImpl.setNew(watsonIncident.isNew());
+		watsonIncidentImpl.setPrimaryKey(watsonIncident.getPrimaryKey());
+
+		watsonIncidentImpl.setWatsonIncidentId(watsonIncident.getWatsonIncidentId());
+		watsonIncidentImpl.setGroupId(watsonIncident.getGroupId());
+		watsonIncidentImpl.setCompanyId(watsonIncident.getCompanyId());
+		watsonIncidentImpl.setUserId(watsonIncident.getUserId());
+		watsonIncidentImpl.setUserName(watsonIncident.getUserName());
+		watsonIncidentImpl.setCreateDate(watsonIncident.getCreateDate());
+		watsonIncidentImpl.setModifiedDate(watsonIncident.getModifiedDate());
+		watsonIncidentImpl.setExternalCaseWatsonListTypeId(watsonIncident.getExternalCaseWatsonListTypeId());
+		watsonIncidentImpl.setSourceWatsonListTypeId(watsonIncident.getSourceWatsonListTypeId());
+		watsonIncidentImpl.setTypeWatsonListTypeId(watsonIncident.getTypeWatsonListTypeId());
+		watsonIncidentImpl.setSubtypeWatsonListTypeId(watsonIncident.getSubtypeWatsonListTypeId());
+		watsonIncidentImpl.setAudienceAdultCount(watsonIncident.getAudienceAdultCount());
+		watsonIncidentImpl.setAudienceChildCount(watsonIncident.getAudienceChildCount());
+		watsonIncidentImpl.setVictimAdultCount(watsonIncident.getVictimAdultCount());
+		watsonIncidentImpl.setVictimChildCount(watsonIncident.getVictimChildCount());
+		watsonIncidentImpl.setName(watsonIncident.getName());
+		watsonIncidentImpl.setDescription(watsonIncident.getDescription());
+		watsonIncidentImpl.setExternalCaseId(watsonIncident.getExternalCaseId());
+		watsonIncidentImpl.setReportDate(watsonIncident.getReportDate());
+		watsonIncidentImpl.setStartDate(watsonIncident.getStartDate());
+		watsonIncidentImpl.setEndDate(watsonIncident.getEndDate());
+		watsonIncidentImpl.setExpenses(watsonIncident.getExpenses());
+		watsonIncidentImpl.setIncidentStatus(watsonIncident.getIncidentStatus());
+		watsonIncidentImpl.setStatus(watsonIncident.getStatus());
+
+		return watsonIncidentImpl;
 	}
 
 	/**

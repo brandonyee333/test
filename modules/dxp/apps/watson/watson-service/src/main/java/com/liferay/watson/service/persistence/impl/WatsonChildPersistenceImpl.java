@@ -236,6 +236,8 @@ public class WatsonChildPersistenceImpl extends BasePersistenceImpl<WatsonChild>
 
 	@Override
 	protected WatsonChild removeImpl(WatsonChild watsonChild) {
+		watsonChild = toUnwrappedModel(watsonChild);
+
 		Session session = null;
 
 		try {
@@ -266,6 +268,8 @@ public class WatsonChildPersistenceImpl extends BasePersistenceImpl<WatsonChild>
 
 	@Override
 	public WatsonChild updateImpl(WatsonChild watsonChild) {
+		watsonChild = toUnwrappedModel(watsonChild);
+
 		boolean isNew = watsonChild.isNew();
 
 		WatsonChildModelImpl watsonChildModelImpl = (WatsonChildModelImpl)watsonChild;
@@ -328,6 +332,42 @@ public class WatsonChildPersistenceImpl extends BasePersistenceImpl<WatsonChild>
 		watsonChild.resetOriginalValues();
 
 		return watsonChild;
+	}
+
+	protected WatsonChild toUnwrappedModel(WatsonChild watsonChild) {
+		if (watsonChild instanceof WatsonChildImpl) {
+			return watsonChild;
+		}
+
+		WatsonChildImpl watsonChildImpl = new WatsonChildImpl();
+
+		watsonChildImpl.setNew(watsonChild.isNew());
+		watsonChildImpl.setPrimaryKey(watsonChild.getPrimaryKey());
+
+		watsonChildImpl.setWatsonChildId(watsonChild.getWatsonChildId());
+		watsonChildImpl.setGroupId(watsonChild.getGroupId());
+		watsonChildImpl.setCompanyId(watsonChild.getCompanyId());
+		watsonChildImpl.setUserId(watsonChild.getUserId());
+		watsonChildImpl.setUserName(watsonChild.getUserName());
+		watsonChildImpl.setCreateDate(watsonChild.getCreateDate());
+		watsonChildImpl.setModifiedDate(watsonChild.getModifiedDate());
+		watsonChildImpl.setBirthCountryId(watsonChild.getBirthCountryId());
+		watsonChildImpl.setCitizenshipWatsonListTypeId(watsonChild.getCitizenshipWatsonListTypeId());
+		watsonChildImpl.setCountryWatsonListTypeId(watsonChild.getCountryWatsonListTypeId());
+		watsonChildImpl.setDischargeWatsonListTypeId(watsonChild.getDischargeWatsonListTypeId());
+		watsonChildImpl.setEthnicityWatsonListTypeId(watsonChild.getEthnicityWatsonListTypeId());
+		watsonChildImpl.setOriginalWatsonPersonId(watsonChild.getOriginalWatsonPersonId());
+		watsonChildImpl.setSexWatsonListTypeId(watsonChild.getSexWatsonListTypeId());
+		watsonChildImpl.setSourceSubtypeWatsonListTypeId(watsonChild.getSourceSubtypeWatsonListTypeId());
+		watsonChildImpl.setSourceWatsonListTypeId(watsonChild.getSourceWatsonListTypeId());
+		watsonChildImpl.setTypeWatsonListTypeId(watsonChild.getTypeWatsonListTypeId());
+		watsonChildImpl.setDateAccepted(watsonChild.getDateAccepted());
+		watsonChildImpl.setDateDischarged(watsonChild.getDateDischarged());
+		watsonChildImpl.setDateFollowUp(watsonChild.getDateFollowUp());
+		watsonChildImpl.setSource(watsonChild.getSource());
+		watsonChildImpl.setStatus(watsonChild.getStatus());
+
+		return watsonChildImpl;
 	}
 
 	/**

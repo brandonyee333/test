@@ -1760,6 +1760,8 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 	@Override
 	protected KaleoDraftDefinition removeImpl(
 		KaleoDraftDefinition kaleoDraftDefinition) {
+		kaleoDraftDefinition = toUnwrappedModel(kaleoDraftDefinition);
+
 		Session session = null;
 
 		try {
@@ -1791,6 +1793,8 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 	@Override
 	public KaleoDraftDefinition updateImpl(
 		KaleoDraftDefinition kaleoDraftDefinition) {
+		kaleoDraftDefinition = toUnwrappedModel(kaleoDraftDefinition);
+
 		boolean isNew = kaleoDraftDefinition.isNew();
 
 		KaleoDraftDefinitionModelImpl kaleoDraftDefinitionModelImpl = (KaleoDraftDefinitionModelImpl)kaleoDraftDefinition;
@@ -1922,6 +1926,33 @@ public class KaleoDraftDefinitionPersistenceImpl extends BasePersistenceImpl<Kal
 		kaleoDraftDefinition.resetOriginalValues();
 
 		return kaleoDraftDefinition;
+	}
+
+	protected KaleoDraftDefinition toUnwrappedModel(
+		KaleoDraftDefinition kaleoDraftDefinition) {
+		if (kaleoDraftDefinition instanceof KaleoDraftDefinitionImpl) {
+			return kaleoDraftDefinition;
+		}
+
+		KaleoDraftDefinitionImpl kaleoDraftDefinitionImpl = new KaleoDraftDefinitionImpl();
+
+		kaleoDraftDefinitionImpl.setNew(kaleoDraftDefinition.isNew());
+		kaleoDraftDefinitionImpl.setPrimaryKey(kaleoDraftDefinition.getPrimaryKey());
+
+		kaleoDraftDefinitionImpl.setKaleoDraftDefinitionId(kaleoDraftDefinition.getKaleoDraftDefinitionId());
+		kaleoDraftDefinitionImpl.setGroupId(kaleoDraftDefinition.getGroupId());
+		kaleoDraftDefinitionImpl.setCompanyId(kaleoDraftDefinition.getCompanyId());
+		kaleoDraftDefinitionImpl.setUserId(kaleoDraftDefinition.getUserId());
+		kaleoDraftDefinitionImpl.setUserName(kaleoDraftDefinition.getUserName());
+		kaleoDraftDefinitionImpl.setCreateDate(kaleoDraftDefinition.getCreateDate());
+		kaleoDraftDefinitionImpl.setModifiedDate(kaleoDraftDefinition.getModifiedDate());
+		kaleoDraftDefinitionImpl.setName(kaleoDraftDefinition.getName());
+		kaleoDraftDefinitionImpl.setTitle(kaleoDraftDefinition.getTitle());
+		kaleoDraftDefinitionImpl.setContent(kaleoDraftDefinition.getContent());
+		kaleoDraftDefinitionImpl.setVersion(kaleoDraftDefinition.getVersion());
+		kaleoDraftDefinitionImpl.setDraftVersion(kaleoDraftDefinition.getDraftVersion());
+
+		return kaleoDraftDefinitionImpl;
 	}
 
 	/**

@@ -243,6 +243,8 @@ public class WatsonIncidentAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	protected WatsonIncidentAudit removeImpl(
 		WatsonIncidentAudit watsonIncidentAudit) {
+		watsonIncidentAudit = toUnwrappedModel(watsonIncidentAudit);
+
 		Session session = null;
 
 		try {
@@ -274,6 +276,8 @@ public class WatsonIncidentAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	public WatsonIncidentAudit updateImpl(
 		WatsonIncidentAudit watsonIncidentAudit) {
+		watsonIncidentAudit = toUnwrappedModel(watsonIncidentAudit);
+
 		boolean isNew = watsonIncidentAudit.isNew();
 
 		WatsonIncidentAuditModelImpl watsonIncidentAuditModelImpl = (WatsonIncidentAuditModelImpl)watsonIncidentAudit;
@@ -338,6 +342,46 @@ public class WatsonIncidentAuditPersistenceImpl extends BasePersistenceImpl<Wats
 		watsonIncidentAudit.resetOriginalValues();
 
 		return watsonIncidentAudit;
+	}
+
+	protected WatsonIncidentAudit toUnwrappedModel(
+		WatsonIncidentAudit watsonIncidentAudit) {
+		if (watsonIncidentAudit instanceof WatsonIncidentAuditImpl) {
+			return watsonIncidentAudit;
+		}
+
+		WatsonIncidentAuditImpl watsonIncidentAuditImpl = new WatsonIncidentAuditImpl();
+
+		watsonIncidentAuditImpl.setNew(watsonIncidentAudit.isNew());
+		watsonIncidentAuditImpl.setPrimaryKey(watsonIncidentAudit.getPrimaryKey());
+
+		watsonIncidentAuditImpl.setWatsonIncidentAuditId(watsonIncidentAudit.getWatsonIncidentAuditId());
+		watsonIncidentAuditImpl.setGroupId(watsonIncidentAudit.getGroupId());
+		watsonIncidentAuditImpl.setCompanyId(watsonIncidentAudit.getCompanyId());
+		watsonIncidentAuditImpl.setUserId(watsonIncidentAudit.getUserId());
+		watsonIncidentAuditImpl.setUserName(watsonIncidentAudit.getUserName());
+		watsonIncidentAuditImpl.setCreateDate(watsonIncidentAudit.getCreateDate());
+		watsonIncidentAuditImpl.setModifiedDate(watsonIncidentAudit.getModifiedDate());
+		watsonIncidentAuditImpl.setExternalCaseWatsonListTypeId(watsonIncidentAudit.getExternalCaseWatsonListTypeId());
+		watsonIncidentAuditImpl.setSourceWatsonListTypeId(watsonIncidentAudit.getSourceWatsonListTypeId());
+		watsonIncidentAuditImpl.setTypeWatsonListTypeId(watsonIncidentAudit.getTypeWatsonListTypeId());
+		watsonIncidentAuditImpl.setSubtypeWatsonListTypeId(watsonIncidentAudit.getSubtypeWatsonListTypeId());
+		watsonIncidentAuditImpl.setAudienceAdultCount(watsonIncidentAudit.getAudienceAdultCount());
+		watsonIncidentAuditImpl.setAudienceChildCount(watsonIncidentAudit.getAudienceChildCount());
+		watsonIncidentAuditImpl.setVictimAdultCount(watsonIncidentAudit.getVictimAdultCount());
+		watsonIncidentAuditImpl.setVictimChildCount(watsonIncidentAudit.getVictimChildCount());
+		watsonIncidentAuditImpl.setWatsonIncidentId(watsonIncidentAudit.getWatsonIncidentId());
+		watsonIncidentAuditImpl.setName(watsonIncidentAudit.getName());
+		watsonIncidentAuditImpl.setDescription(watsonIncidentAudit.getDescription());
+		watsonIncidentAuditImpl.setExternalCaseId(watsonIncidentAudit.getExternalCaseId());
+		watsonIncidentAuditImpl.setReportDate(watsonIncidentAudit.getReportDate());
+		watsonIncidentAuditImpl.setStartDate(watsonIncidentAudit.getStartDate());
+		watsonIncidentAuditImpl.setEndDate(watsonIncidentAudit.getEndDate());
+		watsonIncidentAuditImpl.setExpenses(watsonIncidentAudit.getExpenses());
+		watsonIncidentAuditImpl.setIncidentStatus(watsonIncidentAudit.getIncidentStatus());
+		watsonIncidentAuditImpl.setStatus(watsonIncidentAudit.getStatus());
+
+		return watsonIncidentAuditImpl;
 	}
 
 	/**

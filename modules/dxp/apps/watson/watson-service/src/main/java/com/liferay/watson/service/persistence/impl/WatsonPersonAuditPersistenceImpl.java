@@ -241,6 +241,8 @@ public class WatsonPersonAuditPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@Override
 	protected WatsonPersonAudit removeImpl(WatsonPersonAudit watsonPersonAudit) {
+		watsonPersonAudit = toUnwrappedModel(watsonPersonAudit);
+
 		Session session = null;
 
 		try {
@@ -271,6 +273,8 @@ public class WatsonPersonAuditPersistenceImpl extends BasePersistenceImpl<Watson
 
 	@Override
 	public WatsonPersonAudit updateImpl(WatsonPersonAudit watsonPersonAudit) {
+		watsonPersonAudit = toUnwrappedModel(watsonPersonAudit);
+
 		boolean isNew = watsonPersonAudit.isNew();
 
 		WatsonPersonAuditModelImpl watsonPersonAuditModelImpl = (WatsonPersonAuditModelImpl)watsonPersonAudit;
@@ -335,6 +339,52 @@ public class WatsonPersonAuditPersistenceImpl extends BasePersistenceImpl<Watson
 		watsonPersonAudit.resetOriginalValues();
 
 		return watsonPersonAudit;
+	}
+
+	protected WatsonPersonAudit toUnwrappedModel(
+		WatsonPersonAudit watsonPersonAudit) {
+		if (watsonPersonAudit instanceof WatsonPersonAuditImpl) {
+			return watsonPersonAudit;
+		}
+
+		WatsonPersonAuditImpl watsonPersonAuditImpl = new WatsonPersonAuditImpl();
+
+		watsonPersonAuditImpl.setNew(watsonPersonAudit.isNew());
+		watsonPersonAuditImpl.setPrimaryKey(watsonPersonAudit.getPrimaryKey());
+
+		watsonPersonAuditImpl.setWatsonPersonAuditId(watsonPersonAudit.getWatsonPersonAuditId());
+		watsonPersonAuditImpl.setGroupId(watsonPersonAudit.getGroupId());
+		watsonPersonAuditImpl.setCompanyId(watsonPersonAudit.getCompanyId());
+		watsonPersonAuditImpl.setUserId(watsonPersonAudit.getUserId());
+		watsonPersonAuditImpl.setUserName(watsonPersonAudit.getUserName());
+		watsonPersonAuditImpl.setCreateDate(watsonPersonAudit.getCreateDate());
+		watsonPersonAuditImpl.setModifiedDate(watsonPersonAudit.getModifiedDate());
+		watsonPersonAuditImpl.setBirthCountryId(watsonPersonAudit.getBirthCountryId());
+		watsonPersonAuditImpl.setCitizenshipWatsonListTypeId(watsonPersonAudit.getCitizenshipWatsonListTypeId());
+		watsonPersonAuditImpl.setCountryWatsonListTypeId(watsonPersonAudit.getCountryWatsonListTypeId());
+		watsonPersonAuditImpl.setEthnicityWatsonListTypeId(watsonPersonAudit.getEthnicityWatsonListTypeId());
+		watsonPersonAuditImpl.setEyesWatsonListTypeId(watsonPersonAudit.getEyesWatsonListTypeId());
+		watsonPersonAuditImpl.setHairWatsonListTypeId(watsonPersonAudit.getHairWatsonListTypeId());
+		watsonPersonAuditImpl.setOriginalWatsonPersonId(watsonPersonAudit.getOriginalWatsonPersonId());
+		watsonPersonAuditImpl.setSexWatsonListTypeId(watsonPersonAudit.getSexWatsonListTypeId());
+		watsonPersonAuditImpl.setTypeWatsonListTypeId(watsonPersonAudit.getTypeWatsonListTypeId());
+		watsonPersonAuditImpl.setWatsonIncidentId(watsonPersonAudit.getWatsonIncidentId());
+		watsonPersonAuditImpl.setWatsonPersonId(watsonPersonAudit.getWatsonPersonId());
+		watsonPersonAuditImpl.setDescription(watsonPersonAudit.getDescription());
+		watsonPersonAuditImpl.setImagePayload(watsonPersonAudit.getImagePayload());
+		watsonPersonAuditImpl.setBirthDate(watsonPersonAudit.getBirthDate());
+		watsonPersonAuditImpl.setDateAccepted(watsonPersonAudit.getDateAccepted());
+		watsonPersonAuditImpl.setDateRescued(watsonPersonAudit.getDateRescued());
+		watsonPersonAuditImpl.setStartAge(watsonPersonAudit.getStartAge());
+		watsonPersonAuditImpl.setEndAge(watsonPersonAudit.getEndAge());
+		watsonPersonAuditImpl.setOccupation(watsonPersonAudit.getOccupation());
+		watsonPersonAuditImpl.setHeight(watsonPersonAudit.getHeight());
+		watsonPersonAuditImpl.setWeight(watsonPersonAudit.getWeight());
+		watsonPersonAuditImpl.setAccepted(watsonPersonAudit.isAccepted());
+		watsonPersonAuditImpl.setRescued(watsonPersonAudit.isRescued());
+		watsonPersonAuditImpl.setStatus(watsonPersonAudit.getStatus());
+
+		return watsonPersonAuditImpl;
 	}
 
 	/**

@@ -264,6 +264,8 @@ public class WatsonListTypeAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	protected WatsonListTypeAudit removeImpl(
 		WatsonListTypeAudit watsonListTypeAudit) {
+		watsonListTypeAudit = toUnwrappedModel(watsonListTypeAudit);
+
 		Session session = null;
 
 		try {
@@ -295,6 +297,8 @@ public class WatsonListTypeAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	public WatsonListTypeAudit updateImpl(
 		WatsonListTypeAudit watsonListTypeAudit) {
+		watsonListTypeAudit = toUnwrappedModel(watsonListTypeAudit);
+
 		boolean isNew = watsonListTypeAudit.isNew();
 
 		WatsonListTypeAuditModelImpl watsonListTypeAuditModelImpl = (WatsonListTypeAuditModelImpl)watsonListTypeAudit;
@@ -359,6 +363,33 @@ public class WatsonListTypeAuditPersistenceImpl extends BasePersistenceImpl<Wats
 		watsonListTypeAudit.resetOriginalValues();
 
 		return watsonListTypeAudit;
+	}
+
+	protected WatsonListTypeAudit toUnwrappedModel(
+		WatsonListTypeAudit watsonListTypeAudit) {
+		if (watsonListTypeAudit instanceof WatsonListTypeAuditImpl) {
+			return watsonListTypeAudit;
+		}
+
+		WatsonListTypeAuditImpl watsonListTypeAuditImpl = new WatsonListTypeAuditImpl();
+
+		watsonListTypeAuditImpl.setNew(watsonListTypeAudit.isNew());
+		watsonListTypeAuditImpl.setPrimaryKey(watsonListTypeAudit.getPrimaryKey());
+
+		watsonListTypeAuditImpl.setWatsonListTypeAuditId(watsonListTypeAudit.getWatsonListTypeAuditId());
+		watsonListTypeAuditImpl.setGroupId(watsonListTypeAudit.getGroupId());
+		watsonListTypeAuditImpl.setCompanyId(watsonListTypeAudit.getCompanyId());
+		watsonListTypeAuditImpl.setUserId(watsonListTypeAudit.getUserId());
+		watsonListTypeAuditImpl.setUserName(watsonListTypeAudit.getUserName());
+		watsonListTypeAuditImpl.setCreateDate(watsonListTypeAudit.getCreateDate());
+		watsonListTypeAuditImpl.setModifiedDate(watsonListTypeAudit.getModifiedDate());
+		watsonListTypeAuditImpl.setParentWatsonListTypeId(watsonListTypeAudit.getParentWatsonListTypeId());
+		watsonListTypeAuditImpl.setWatsonListTypeId(watsonListTypeAudit.getWatsonListTypeId());
+		watsonListTypeAuditImpl.setName(watsonListTypeAudit.getName());
+		watsonListTypeAuditImpl.setType(watsonListTypeAudit.getType());
+		watsonListTypeAuditImpl.setStatus(watsonListTypeAudit.getStatus());
+
+		return watsonListTypeAuditImpl;
 	}
 
 	/**

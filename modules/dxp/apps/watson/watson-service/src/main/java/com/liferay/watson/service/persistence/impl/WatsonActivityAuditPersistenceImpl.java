@@ -243,6 +243,8 @@ public class WatsonActivityAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	protected WatsonActivityAudit removeImpl(
 		WatsonActivityAudit watsonActivityAudit) {
+		watsonActivityAudit = toUnwrappedModel(watsonActivityAudit);
+
 		Session session = null;
 
 		try {
@@ -274,6 +276,8 @@ public class WatsonActivityAuditPersistenceImpl extends BasePersistenceImpl<Wats
 	@Override
 	public WatsonActivityAudit updateImpl(
 		WatsonActivityAudit watsonActivityAudit) {
+		watsonActivityAudit = toUnwrappedModel(watsonActivityAudit);
+
 		boolean isNew = watsonActivityAudit.isNew();
 
 		WatsonActivityAuditModelImpl watsonActivityAuditModelImpl = (WatsonActivityAuditModelImpl)watsonActivityAudit;
@@ -338,6 +342,36 @@ public class WatsonActivityAuditPersistenceImpl extends BasePersistenceImpl<Wats
 		watsonActivityAudit.resetOriginalValues();
 
 		return watsonActivityAudit;
+	}
+
+	protected WatsonActivityAudit toUnwrappedModel(
+		WatsonActivityAudit watsonActivityAudit) {
+		if (watsonActivityAudit instanceof WatsonActivityAuditImpl) {
+			return watsonActivityAudit;
+		}
+
+		WatsonActivityAuditImpl watsonActivityAuditImpl = new WatsonActivityAuditImpl();
+
+		watsonActivityAuditImpl.setNew(watsonActivityAudit.isNew());
+		watsonActivityAuditImpl.setPrimaryKey(watsonActivityAudit.getPrimaryKey());
+
+		watsonActivityAuditImpl.setWatsonActivityAuditId(watsonActivityAudit.getWatsonActivityAuditId());
+		watsonActivityAuditImpl.setGroupId(watsonActivityAudit.getGroupId());
+		watsonActivityAuditImpl.setCompanyId(watsonActivityAudit.getCompanyId());
+		watsonActivityAuditImpl.setUserId(watsonActivityAudit.getUserId());
+		watsonActivityAuditImpl.setUserName(watsonActivityAudit.getUserName());
+		watsonActivityAuditImpl.setCreateDate(watsonActivityAudit.getCreateDate());
+		watsonActivityAuditImpl.setModifiedDate(watsonActivityAudit.getModifiedDate());
+		watsonActivityAuditImpl.setWatsonActivityId(watsonActivityAudit.getWatsonActivityId());
+		watsonActivityAuditImpl.setTypeWatsonListTypeId(watsonActivityAudit.getTypeWatsonListTypeId());
+		watsonActivityAuditImpl.setSubtypeWatsonListTypeId(watsonActivityAudit.getSubtypeWatsonListTypeId());
+		watsonActivityAuditImpl.setWatsonIncidentId(watsonActivityAudit.getWatsonIncidentId());
+		watsonActivityAuditImpl.setNarrative(watsonActivityAudit.getNarrative());
+		watsonActivityAuditImpl.setReportDate(watsonActivityAudit.getReportDate());
+		watsonActivityAuditImpl.setStartDate(watsonActivityAudit.getStartDate());
+		watsonActivityAuditImpl.setStatus(watsonActivityAudit.getStatus());
+
+		return watsonActivityAuditImpl;
 	}
 
 	/**

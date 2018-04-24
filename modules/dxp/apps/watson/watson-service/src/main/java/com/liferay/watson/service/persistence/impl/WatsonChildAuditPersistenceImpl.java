@@ -241,6 +241,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 
 	@Override
 	protected WatsonChildAudit removeImpl(WatsonChildAudit watsonChildAudit) {
+		watsonChildAudit = toUnwrappedModel(watsonChildAudit);
+
 		Session session = null;
 
 		try {
@@ -271,6 +273,8 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 
 	@Override
 	public WatsonChildAudit updateImpl(WatsonChildAudit watsonChildAudit) {
+		watsonChildAudit = toUnwrappedModel(watsonChildAudit);
+
 		boolean isNew = watsonChildAudit.isNew();
 
 		WatsonChildAuditModelImpl watsonChildAuditModelImpl = (WatsonChildAuditModelImpl)watsonChildAudit;
@@ -334,6 +338,44 @@ public class WatsonChildAuditPersistenceImpl extends BasePersistenceImpl<WatsonC
 		watsonChildAudit.resetOriginalValues();
 
 		return watsonChildAudit;
+	}
+
+	protected WatsonChildAudit toUnwrappedModel(
+		WatsonChildAudit watsonChildAudit) {
+		if (watsonChildAudit instanceof WatsonChildAuditImpl) {
+			return watsonChildAudit;
+		}
+
+		WatsonChildAuditImpl watsonChildAuditImpl = new WatsonChildAuditImpl();
+
+		watsonChildAuditImpl.setNew(watsonChildAudit.isNew());
+		watsonChildAuditImpl.setPrimaryKey(watsonChildAudit.getPrimaryKey());
+
+		watsonChildAuditImpl.setWatsonChildAuditId(watsonChildAudit.getWatsonChildAuditId());
+		watsonChildAuditImpl.setGroupId(watsonChildAudit.getGroupId());
+		watsonChildAuditImpl.setCompanyId(watsonChildAudit.getCompanyId());
+		watsonChildAuditImpl.setUserId(watsonChildAudit.getUserId());
+		watsonChildAuditImpl.setUserName(watsonChildAudit.getUserName());
+		watsonChildAuditImpl.setCreateDate(watsonChildAudit.getCreateDate());
+		watsonChildAuditImpl.setModifiedDate(watsonChildAudit.getModifiedDate());
+		watsonChildAuditImpl.setBirthCountryId(watsonChildAudit.getBirthCountryId());
+		watsonChildAuditImpl.setCitizenshipWatsonListTypeId(watsonChildAudit.getCitizenshipWatsonListTypeId());
+		watsonChildAuditImpl.setCountryWatsonListTypeId(watsonChildAudit.getCountryWatsonListTypeId());
+		watsonChildAuditImpl.setDischargeWatsonListTypeId(watsonChildAudit.getDischargeWatsonListTypeId());
+		watsonChildAuditImpl.setEthnicityWatsonListTypeId(watsonChildAudit.getEthnicityWatsonListTypeId());
+		watsonChildAuditImpl.setOriginalWatsonPersonId(watsonChildAudit.getOriginalWatsonPersonId());
+		watsonChildAuditImpl.setSexWatsonListTypeId(watsonChildAudit.getSexWatsonListTypeId());
+		watsonChildAuditImpl.setSourceSubtypeWatsonListTypeId(watsonChildAudit.getSourceSubtypeWatsonListTypeId());
+		watsonChildAuditImpl.setSourceWatsonListTypeId(watsonChildAudit.getSourceWatsonListTypeId());
+		watsonChildAuditImpl.setTypeWatsonListTypeId(watsonChildAudit.getTypeWatsonListTypeId());
+		watsonChildAuditImpl.setWatsonChildId(watsonChildAudit.getWatsonChildId());
+		watsonChildAuditImpl.setDateAccepted(watsonChildAudit.getDateAccepted());
+		watsonChildAuditImpl.setDateDischarged(watsonChildAudit.getDateDischarged());
+		watsonChildAuditImpl.setDateFollowUp(watsonChildAudit.getDateFollowUp());
+		watsonChildAuditImpl.setSource(watsonChildAudit.getSource());
+		watsonChildAuditImpl.setStatus(watsonChildAudit.getStatus());
+
+		return watsonChildAuditImpl;
 	}
 
 	/**

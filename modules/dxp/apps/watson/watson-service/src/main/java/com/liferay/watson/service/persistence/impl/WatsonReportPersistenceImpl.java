@@ -258,6 +258,8 @@ public class WatsonReportPersistenceImpl extends BasePersistenceImpl<WatsonRepor
 
 	@Override
 	protected WatsonReport removeImpl(WatsonReport watsonReport) {
+		watsonReport = toUnwrappedModel(watsonReport);
+
 		Session session = null;
 
 		try {
@@ -288,6 +290,8 @@ public class WatsonReportPersistenceImpl extends BasePersistenceImpl<WatsonRepor
 
 	@Override
 	public WatsonReport updateImpl(WatsonReport watsonReport) {
+		watsonReport = toUnwrappedModel(watsonReport);
+
 		boolean isNew = watsonReport.isNew();
 
 		WatsonReportModelImpl watsonReportModelImpl = (WatsonReportModelImpl)watsonReport;
@@ -350,6 +354,39 @@ public class WatsonReportPersistenceImpl extends BasePersistenceImpl<WatsonRepor
 		watsonReport.resetOriginalValues();
 
 		return watsonReport;
+	}
+
+	protected WatsonReport toUnwrappedModel(WatsonReport watsonReport) {
+		if (watsonReport instanceof WatsonReportImpl) {
+			return watsonReport;
+		}
+
+		WatsonReportImpl watsonReportImpl = new WatsonReportImpl();
+
+		watsonReportImpl.setNew(watsonReport.isNew());
+		watsonReportImpl.setPrimaryKey(watsonReport.getPrimaryKey());
+
+		watsonReportImpl.setWatsonReportId(watsonReport.getWatsonReportId());
+		watsonReportImpl.setGroupId(watsonReport.getGroupId());
+		watsonReportImpl.setCompanyId(watsonReport.getCompanyId());
+		watsonReportImpl.setUserId(watsonReport.getUserId());
+		watsonReportImpl.setUserName(watsonReport.getUserName());
+		watsonReportImpl.setCreateDate(watsonReport.getCreateDate());
+		watsonReportImpl.setModifiedDate(watsonReport.getModifiedDate());
+		watsonReportImpl.setOriginalWatsonReportId(watsonReport.getOriginalWatsonReportId());
+		watsonReportImpl.setTypeWatsonListTypeId(watsonReport.getTypeWatsonListTypeId());
+		watsonReportImpl.setWatsonChildId(watsonReport.getWatsonChildId());
+		watsonReportImpl.setName(watsonReport.getName());
+		watsonReportImpl.setDescription(watsonReport.getDescription());
+		watsonReportImpl.setFullReport(watsonReport.getFullReport());
+		watsonReportImpl.setImagePayload(watsonReport.getImagePayload());
+		watsonReportImpl.setTimeSpent(watsonReport.getTimeSpent());
+		watsonReportImpl.setReportedUser(watsonReport.getReportedUser());
+		watsonReportImpl.setReportDate(watsonReport.getReportDate());
+		watsonReportImpl.setKey(watsonReport.getKey());
+		watsonReportImpl.setStatus(watsonReport.getStatus());
+
+		return watsonReportImpl;
 	}
 
 	/**

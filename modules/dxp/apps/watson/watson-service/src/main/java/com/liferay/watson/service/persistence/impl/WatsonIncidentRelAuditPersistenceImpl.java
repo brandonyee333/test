@@ -266,6 +266,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	protected WatsonIncidentRelAudit removeImpl(
 		WatsonIncidentRelAudit watsonIncidentRelAudit) {
+		watsonIncidentRelAudit = toUnwrappedModel(watsonIncidentRelAudit);
+
 		Session session = null;
 
 		try {
@@ -297,6 +299,8 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 	@Override
 	public WatsonIncidentRelAudit updateImpl(
 		WatsonIncidentRelAudit watsonIncidentRelAudit) {
+		watsonIncidentRelAudit = toUnwrappedModel(watsonIncidentRelAudit);
+
 		boolean isNew = watsonIncidentRelAudit.isNew();
 
 		WatsonIncidentRelAuditModelImpl watsonIncidentRelAuditModelImpl = (WatsonIncidentRelAuditModelImpl)watsonIncidentRelAudit;
@@ -362,6 +366,33 @@ public class WatsonIncidentRelAuditPersistenceImpl extends BasePersistenceImpl<W
 		watsonIncidentRelAudit.resetOriginalValues();
 
 		return watsonIncidentRelAudit;
+	}
+
+	protected WatsonIncidentRelAudit toUnwrappedModel(
+		WatsonIncidentRelAudit watsonIncidentRelAudit) {
+		if (watsonIncidentRelAudit instanceof WatsonIncidentRelAuditImpl) {
+			return watsonIncidentRelAudit;
+		}
+
+		WatsonIncidentRelAuditImpl watsonIncidentRelAuditImpl = new WatsonIncidentRelAuditImpl();
+
+		watsonIncidentRelAuditImpl.setNew(watsonIncidentRelAudit.isNew());
+		watsonIncidentRelAuditImpl.setPrimaryKey(watsonIncidentRelAudit.getPrimaryKey());
+
+		watsonIncidentRelAuditImpl.setWatsonIncidentRelAuditId(watsonIncidentRelAudit.getWatsonIncidentRelAuditId());
+		watsonIncidentRelAuditImpl.setGroupId(watsonIncidentRelAudit.getGroupId());
+		watsonIncidentRelAuditImpl.setCompanyId(watsonIncidentRelAudit.getCompanyId());
+		watsonIncidentRelAuditImpl.setUserId(watsonIncidentRelAudit.getUserId());
+		watsonIncidentRelAuditImpl.setUserName(watsonIncidentRelAudit.getUserName());
+		watsonIncidentRelAuditImpl.setCreateDate(watsonIncidentRelAudit.getCreateDate());
+		watsonIncidentRelAuditImpl.setModifiedDate(watsonIncidentRelAudit.getModifiedDate());
+		watsonIncidentRelAuditImpl.setWatsonIncidentId1(watsonIncidentRelAudit.getWatsonIncidentId1());
+		watsonIncidentRelAuditImpl.setWatsonIncidentId2(watsonIncidentRelAudit.getWatsonIncidentId2());
+		watsonIncidentRelAuditImpl.setWatsonIncidentRelId(watsonIncidentRelAudit.getWatsonIncidentRelId());
+		watsonIncidentRelAuditImpl.setType(watsonIncidentRelAudit.getType());
+		watsonIncidentRelAuditImpl.setStatus(watsonIncidentRelAudit.getStatus());
+
+		return watsonIncidentRelAuditImpl;
 	}
 
 	/**
