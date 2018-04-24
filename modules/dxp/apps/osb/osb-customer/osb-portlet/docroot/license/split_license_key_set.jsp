@@ -60,105 +60,97 @@ String productEntryName = licenseKey.getProductEntryName();
 		model="<%= LicenseKeySet.class %>"
 	/>
 
-	<div class="content-column w33">
-		<div class="content-column-content left-column">
-			<span class="bold uppercase"><liferay-ui:message key="owner" />:</span>
+	<div class="col-md-4">
+		<span class="bold uppercase">
+			<liferay-ui:message key="owner" />:
+		</span>
 
-			<%= HtmlUtil.escape(licenseKey.getOwner()) %>
-		</div>
+		<%= HtmlUtil.escape(licenseKey.getOwner()) %>
 	</div>
 
-	<div class="content-column w66">
-		<div class="content-column-content right-column">
-			<span class="bold uppercase"><liferay-ui:message key="description" />:</span>
+	<div class="col-md-8">
+		<span class="bold uppercase"><liferay-ui:message key="description" />:</span>
 
-			<%= HtmlUtil.escape(licenseKey.getDescription()) %>
-		</div>
+		<%= HtmlUtil.escape(licenseKey.getDescription()) %>
 	</div>
 
-	<div class="content-column w33">
-		<div class="content-column-content left-column">
-			<span class="bold uppercase"><liferay-ui:message key="product" />:</span>
+	<div class="col-md-4">
+		<span class="bold uppercase"><liferay-ui:message key="product" />:</span>
 
-			<%= productEntryName %>
+		<%= productEntryName %>
 
-			<br />
+		<br />
 
-			<span class="bold uppercase"><liferay-ui:message key="start-date" />:</span>
+		<span class="bold uppercase"><liferay-ui:message key="start-date" />:</span>
 
-			<c:choose>
-				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
-					<liferay-ui:message key="registration" />
-				</c:when>
-				<c:otherwise>
-					<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
-				</c:otherwise>
-			</c:choose>
-		</div>
+		<c:choose>
+			<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
+				<liferay-ui:message key="registration" />
+			</c:when>
+			<c:otherwise>
+				<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
+			</c:otherwise>
+		</c:choose>
 	</div>
 
-	<div class="content-column w33">
-		<div class="content-column-content middle-column">
-			<span class="bold uppercase"><liferay-ui:message key="type" />:</span>
+	<div class="col-md-4">
+		<span class="bold uppercase"><liferay-ui:message key="type" />:</span>
 
-			<%= LanguageUtil.get(request, licenseEntryType) %>
+		<%= LanguageUtil.get(request, licenseEntryType) %>
 
-			<br />
+		<br />
 
-			<c:choose>
-				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
-					<span class="bold uppercase"><liferay-ui:message key="lifetime" />:</span>
+		<c:choose>
+			<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
+				<span class="bold uppercase"><liferay-ui:message key="lifetime" />:</span>
 
-					<%
-					Date startDate = licenseKey.getStartDate();
-					Date expirationDate = licenseKey.getExpirationDate();
-					%>
+				<%
+				Date startDate = licenseKey.getStartDate();
+				Date expirationDate = licenseKey.getExpirationDate();
+				%>
 
-					<%= (expirationDate.getTime() - startDate.getTime()) / Time.DAY %> <liferay-ui:message key="days" />
-				</c:when>
-				<c:otherwise>
-					<span class="bold uppercase"><liferay-ui:message key="expiration-date" />:</span>
+				<%= (expirationDate.getTime() - startDate.getTime()) / Time.DAY %> <liferay-ui:message key="days" />
+			</c:when>
+			<c:otherwise>
+				<span class="bold uppercase"><liferay-ui:message key="expiration-date" />:</span>
 
-					<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
-				</c:otherwise>
-			</c:choose>
-		</div>
+				<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
+			</c:otherwise>
+		</c:choose>
 	</div>
 
-	<div class="content-column w33">
-		<div class="content-column-content right-column">
-			<span class="bold uppercase"><liferay-ui:message key="version" />:</span>
+	<div class="col-md-4">
+		<span class="bold uppercase"><liferay-ui:message key="version" />:</span>
 
-			<%= licenseKey.getProductVersionLabel() %>
+		<%= licenseKey.getProductVersionLabel() %>
 
-			<br />
+		<br />
 
-			<span class="bold uppercase"><liferay-ui:message key="status" />:</span>
+		<span class="bold uppercase"><liferay-ui:message key="status" />:</span>
 
-			<c:choose>
-				<c:when test="<%= licenseKey.isExpired() %>">
-					<liferay-ui:icon
-						image="close"
-						label="<%= true %>"
-						message="expired"
-					/>
-				</c:when>
-				<c:when test="<%= licenseKey.isActive() %>">
-					<liferay-ui:icon
-						image="activate"
-						label="<%= true %>"
-						message="active"
-					/>
-				</c:when>
-				<c:otherwise>
-					<liferay-ui:icon
-						image="deactivate"
-						label="<%= true %>"
-						message="inactive"
-					/>
-				</c:otherwise>
-			</c:choose>
-		</div>
+		<c:choose>
+			<c:when test="<%= licenseKey.isExpired() %>">
+				<liferay-ui:icon
+					image="close"
+					label="<%= true %>"
+					message="expired"
+				/>
+			</c:when>
+			<c:when test="<%= licenseKey.isActive() %>">
+				<liferay-ui:icon
+					image="activate"
+					label="<%= true %>"
+					message="active"
+				/>
+			</c:when>
+			<c:otherwise>
+				<liferay-ui:icon
+					image="deactivate"
+					label="<%= true %>"
+					message="inactive"
+				/>
+			</c:otherwise>
+		</c:choose>
 	</div>
 
 	<br />
@@ -242,9 +234,7 @@ String productEntryName = licenseKey.getProductEntryName();
 		</c:otherwise>
 	</c:choose>
 
-	<div>
-		<aui:button type="submit" value="save" />
+	<aui:button type="submit" value="save" />
 
-		<aui:button href="<%= backURL %>" value="cancel" />
-	</div>
+	<aui:button href="<%= backURL %>" value="cancel" />
 </aui:form>
