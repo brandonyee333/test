@@ -36,7 +36,7 @@ public class RegisterTrialLicenseMessageListener extends BaseMessageListener {
 		try {
 			userId = message.getLong("userId");
 
-			AccountEntryLocalServiceUtil.addTrialAccountEntry(userId, 0);
+			AccountEntryLocalServiceUtil.addTrialAccountEntry(userId);
 		}
 		catch (Exception e) {
 			/* TODO update OSBUtil integration

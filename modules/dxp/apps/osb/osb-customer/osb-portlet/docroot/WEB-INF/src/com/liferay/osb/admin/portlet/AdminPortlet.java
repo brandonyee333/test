@@ -681,7 +681,8 @@ public class AdminPortlet extends MVCPortlet {
 		long accountEntryId = ParamUtil.getLong(
 			actionRequest, "accountEntryId");
 
-		long corpProjectId = ParamUtil.getLong(actionRequest, "corpProjectId");
+		String corpProjectUuid = ParamUtil.getString(
+			actionRequest, "corpProjectUuid");
 		String name = ParamUtil.getString(actionRequest, "name");
 		String code = ParamUtil.getString(actionRequest, "code");
 		int type = ParamUtil.getInteger(actionRequest, "type");
@@ -713,18 +714,18 @@ public class AdminPortlet extends MVCPortlet {
 
 		if (accountEntryId <= 0) {
 			AccountEntryLocalServiceUtil.addAccountEntry(
-				themeDisplay.getUserId(), corpProjectId, StringPool.BLANK, name,
-				code, type, industry, partnerEntryId, partnerManagedSupport,
-				tier, maxCustomers, instructions, notes, languageIds,
-				supportRegionIds, street1, street2, street3, city, zip,
-				regionId, countryId, ewsaDossieraProjectKey);
+				themeDisplay.getUserId(), corpProjectUuid, StringPool.BLANK,
+				name, code, type, industry, partnerEntryId,
+				partnerManagedSupport, tier, maxCustomers, instructions, notes,
+				languageIds, supportRegionIds, street1, street2, street3, city,
+				zip, regionId, countryId, ewsaDossieraProjectKey);
 		}
 		else {
 			AccountEntry accountEntry =
 				AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
 
 			AccountEntryLocalServiceUtil.updateAccountEntry(
-				themeDisplay.getUserId(), accountEntryId, corpProjectId,
+				themeDisplay.getUserId(), accountEntryId, corpProjectUuid,
 				accountEntry.getCorpEntryName(), name, code, type, industry,
 				partnerEntryId, partnerManagedSupport, tier, maxCustomers,
 				instructions, notes, languageIds, supportRegionIds, addressId,

@@ -18,14 +18,7 @@ import com.liferay.osb.exception.NoSuchCorpProjectException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.base.CorpProjectLocalServiceBaseImpl;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.ListTypeConstants;
-import com.liferay.portal.kernel.model.Organization;
-import com.liferay.portal.kernel.model.OrganizationConstants;
-import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -42,99 +35,30 @@ import java.util.List;
 public class CorpProjectLocalServiceImpl
 	extends CorpProjectLocalServiceBaseImpl {
 
-	public CorpProject addCorpProject(JSONObject jsonObject)
+	public CorpProject addCorpProject(
+			long userId, String dossieraProjectKey, String salesforceProjectKey,
+			String name, long organizationId, ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userLocalService.fetchUserByUuidAndCompanyId(
-			jsonObject.getString("userUuid"), OSBConstants.COMPANY_ID);
+		User user = userLocalService.getUser(userId);
+		Date createDate = serviceContext.getCreateDate(new Date());
+		Date modifiedDate = serviceContext.getModifiedDate(new Date());
 
-		if (user == null) {
-			User remoteUser = remoteUserLocalService.translate(
-				jsonObject.getJSONObject("user"));
+		long corpProjectId = counterLocalService.increment();
 
-			ServiceContext serviceContext = new ServiceContext();
+		CorpProject corpProject = corpProjectPersistence.create(corpProjectId);
 
-			serviceContext.setCreateDate(remoteUser.getCreateDate());
-			serviceContext.setUuid(remoteUser.getUuid());
+		corpProject.setUuid(serviceContext.getUuid());
+		corpProject.setUserId(userId);
+		corpProject.setUserName(user.getFullName());
+		corpProject.setCreateDate(createDate);
+		corpProject.setModifiedDate(modifiedDate);
+		corpProject.setDossieraProjectKey(dossieraProjectKey);
+		corpProject.setSalesforceProjectKey(salesforceProjectKey);
+		corpProject.setName(name);
+		corpProject.setOrganizationId(organizationId);
 
-			user = userLocalService.addUser(
-				OSBConstants.USER_DEFAULT_USER_ID, OSBConstants.COMPANY_ID,
-				true, StringPool.BLANK, StringPool.BLANK, false,
-				remoteUser.getScreenName(), remoteUser.getEmailAddress(), 0,
-				StringPool.BLANK, remoteUser.getLocale(),
-				remoteUser.getFirstName(), remoteUser.getMiddleName(),
-				remoteUser.getLastName(), 0, 0, false, 0, 1, 1970,
-				StringPool.BLANK, new long[0], remoteUser.getOrganizationIds(),
-				remoteUser.getRoleIds(), new long[0], false, serviceContext);
-		}
-
-		long organizationId = getOrganizationId(
-			jsonObject.getJSONObject("organization"));
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setCreateDate(
-			new Date(jsonObject.getLong("createDate")));
-		serviceContext.setModifiedDate(
-			new Date(jsonObject.getLong("modifiedDate")));
-		serviceContext.setUuid(jsonObject.getString("uuid"));
-
-		return addCorpProject(
-			user.getUserId(), jsonObject.getString("dossieraProjectKey"),
-			jsonObject.getString("salesforceProjectKey"),
-			jsonObject.getString("name"), organizationId, serviceContext);
-	}
-
-	public void addCorpProjectUser(JSONObject jsonObject)
-		throws PortalException {
-
-		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
-			"corpProject");
-
-		CorpProject corpProject = getCorpProjectByUuid(
-			corpProjectJSONObject.getString("uuid"));
-
-		JSONObject userJSONObject = jsonObject.getJSONObject("user");
-
-		User user = userLocalService.fetchUserByUuidAndCompanyId(
-			userJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
-
-		if (user == null) {
-			return;
-		}
-
-		userLocalService.addOrganizationUser(
-			corpProject.getOrganizationId(), user.getUserId());
-	}
-
-	public void addUserCorpProjectRoles(JSONObject jsonObject)
-		throws PortalException {
-
-		JSONObject userJSONObject = jsonObject.getJSONObject("user");
-
-		User user = userLocalService.fetchUserByUuidAndCompanyId(
-			userJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
-
-		if (user == null) {
-			return;
-		}
-
-		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
-			"corpProject");
-
-		CorpProject corpProject = getCorpProjectByUuid(
-			corpProjectJSONObject.getString("uuid"));
-
-		Group group = corpProject.getGroup();
-
-		JSONObject roleJSONObject = jsonObject.getJSONObject("role");
-
-		Role role = roleLocalService.fetchRoleByUuidAndCompanyId(
-			roleJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
-
-		userGroupRoleLocalService.addUserGroupRoles(
-			user.getUserId(), group.getGroupId(),
-			new long[] {role.getRoleId()});
+		return corpProjectPersistence.update(corpProject);
 	}
 
 	@Override
@@ -154,43 +78,13 @@ public class CorpProjectLocalServiceImpl
 		return corpProjectPersistence.remove(corpProject);
 	}
 
-	public CorpProject deleteCorpProject(JSONObject jsonObject)
+	public CorpProject deleteCorpProject(long corpProjectId)
 		throws PortalException {
 
-		CorpProject corpProject = getCorpProjectByUuid(
-			jsonObject.getString("uuid"));
+		CorpProject corpProject = corpProjectPersistence.findByPrimaryKey(
+			corpProjectId);
 
 		return deleteCorpProject(corpProject);
-	}
-
-	public void deleteUserCorpProjectRoles(JSONObject jsonObject)
-		throws PortalException {
-
-		JSONObject userJSONObject = jsonObject.getJSONObject("user");
-
-		User user = userLocalService.fetchUserByUuidAndCompanyId(
-			userJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
-
-		if (user == null) {
-			return;
-		}
-
-		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
-			"corpProject");
-
-		CorpProject corpProject = getCorpProjectByUuid(
-			corpProjectJSONObject.getString("uuid"));
-
-		Group group = corpProject.getGroup();
-
-		JSONObject roleJSONObject = jsonObject.getJSONObject("role");
-
-		Role role = roleLocalService.fetchRoleByUuidAndCompanyId(
-			roleJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
-
-		userGroupRoleLocalService.deleteUserGroupRoles(
-			user.getUserId(), group.getGroupId(),
-			new long[] {role.getRoleId()});
 	}
 
 	public CorpProject fetchCorpProject(String dossieraProjectKey) {
@@ -198,18 +92,30 @@ public class CorpProjectLocalServiceImpl
 			dossieraProjectKey);
 	}
 
-	public CorpProject getCorpProjectByUuid(String uuid)
+	public CorpProject fetchCorpProjectByUuid(String uuid)
 		throws PortalException {
 
 		List<CorpProject> corpProjects = corpProjectPersistence.findByUuid(
 			uuid);
 
 		if (corpProjects.isEmpty()) {
-			throw new NoSuchCorpProjectException("{uuid=" + uuid + "}");
+			return null;
 		}
 		else {
 			return corpProjects.get(0);
 		}
+	}
+
+	public CorpProject getCorpProjectByUuid(String uuid)
+		throws PortalException {
+
+		CorpProject corpProject = fetchCorpProjectByUuid(uuid);
+
+		if (corpProject == null) {
+			throw new NoSuchCorpProjectException("{uuid=" + uuid + "}");
+		}
+
+		return corpProject;
 	}
 
 	public List<CorpProject> getCorpProjects(
@@ -235,106 +141,7 @@ public class CorpProjectLocalServiceImpl
 		return corpProjectPersistence.countByName(name);
 	}
 
-	public void unsetCorpProjectUser(JSONObject jsonObject)
-		throws PortalException {
-
-		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
-			"corpProject");
-
-		CorpProject corpProject = getCorpProjectByUuid(
-			corpProjectJSONObject.getString("uuid"));
-
-		JSONObject userJSONObject = jsonObject.getJSONObject("user");
-
-		User user = userLocalService.fetchUserByUuidAndCompanyId(
-			userJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
-
-		if (user == null) {
-			return;
-		}
-
-		userLocalService.unsetOrganizationUsers(
-			corpProject.getOrganizationId(), new long[] {user.getUserId()});
-	}
-
-	public CorpProject updateCorpProject(JSONObject jsonObject)
-		throws PortalException {
-
-		CorpProject corpProject = getCorpProjectByUuid(
-			jsonObject.getString("uuid"));
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setCreateDate(
-			new Date(jsonObject.getLong("modifiedDate")));
-
-		return updateCorpProject(
-			corpProject.getCorpProjectId(), jsonObject.getString("name"),
-			serviceContext);
-	}
-
-	protected CorpProject addCorpProject(
-			long userId, String dossieraProjectKey, String salesforceProjectKey,
-			String name, long organizationId, ServiceContext serviceContext)
-		throws PortalException {
-
-		User user = userLocalService.getUser(userId);
-		Date createDate = serviceContext.getCreateDate(new Date());
-		Date modifiedDate = serviceContext.getModifiedDate(new Date());
-
-		long corpProjectId = counterLocalService.increment();
-
-		CorpProject corpProject = corpProjectPersistence.create(corpProjectId);
-
-		corpProject.setUuid(serviceContext.getUuid());
-		corpProject.setUserId(userId);
-
-		if (user != null) {
-			corpProject.setUserName(user.getFullName());
-		}
-
-		corpProject.setCreateDate(createDate);
-		corpProject.setModifiedDate(modifiedDate);
-		corpProject.setDossieraProjectKey(dossieraProjectKey);
-		corpProject.setSalesforceProjectKey(salesforceProjectKey);
-		corpProject.setName(name);
-		corpProject.setOrganizationId(organizationId);
-
-		return corpProjectPersistence.update(corpProject);
-	}
-
-	protected long getOrganizationId(JSONObject jsonObject)
-		throws PortalException {
-
-		if (jsonObject == null) {
-			return 0;
-		}
-
-		String organizationUuid = jsonObject.getString("organizationUuid");
-
-		Organization organization =
-			organizationLocalService.fetchOrganizationByUuidAndCompanyId(
-				organizationUuid, OSBConstants.COMPANY_ID);
-
-		if (organization == null) {
-			String name = jsonObject.getString("name");
-
-			ServiceContext serviceContext = new ServiceContext();
-
-			serviceContext.setUuid(organizationUuid);
-
-			organization = organizationLocalService.addOrganization(
-				OSBConstants.USER_DEFAULT_USER_ID,
-				OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID, name,
-				OrganizationConstants.TYPE_ORGANIZATION, 0, 0,
-				ListTypeConstants.ORGANIZATION_STATUS_DEFAULT, StringPool.BLANK,
-				false, serviceContext);
-		}
-
-		return organization.getOrganizationId();
-	}
-
-	protected CorpProject updateCorpProject(
+	public CorpProject updateCorpProject(
 			long corpProjectId, String name, ServiceContext serviceContext)
 		throws PortalException {
 

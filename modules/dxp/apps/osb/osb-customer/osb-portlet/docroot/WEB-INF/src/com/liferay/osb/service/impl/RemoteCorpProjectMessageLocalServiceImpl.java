@@ -19,7 +19,6 @@ import com.liferay.osb.model.CorpProjectMessage;
 import com.liferay.osb.model.impl.CorpProjectMessageImpl;
 import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.RemoteCorpProjectMessageLocalServiceBaseImpl;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
@@ -47,8 +46,6 @@ public class RemoteCorpProjectMessageLocalServiceImpl
 			user.getUuid(), corpProject.getUuid(), type, severityLevel, title,
 			content, displayCP, displayLCS, displayLESA);
 
-		User responseUser = userLocalService.fetchUserByUuidAndCompanyId(
-			jsonObject.getString("userUuid"), OSBConstants.COMPANY_ID);
 		CorpProject responseCorpProject =
 			corpProjectLocalService.getCorpProjectByUuid(
 				jsonObject.getString("corpProjectUuid"));
@@ -68,7 +65,7 @@ public class RemoteCorpProjectMessageLocalServiceImpl
 		corpProjectMessage.setSeverityLevel(jsonObject.getInt("severityLevel"));
 		corpProjectMessage.setTitle(jsonObject.getString("title"));
 		corpProjectMessage.setType(jsonObject.getInt("type"));
-		corpProjectMessage.setUserId(responseUser.getUserId());
+		corpProjectMessage.setUserId(user.getUserId());
 		corpProjectMessage.setUuid(jsonObject.getString("uuid"));
 
 		return corpProjectMessage;

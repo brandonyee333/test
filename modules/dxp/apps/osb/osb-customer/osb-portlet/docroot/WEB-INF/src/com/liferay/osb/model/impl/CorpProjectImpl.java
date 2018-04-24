@@ -19,7 +19,11 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
  * @author Brian Wing Shun Chan
@@ -34,5 +38,27 @@ public class CorpProjectImpl extends CorpProjectBaseImpl {
 		return GroupLocalServiceUtil.getOrganizationGroup(
 			OSBConstants.COMPANY_ID, getOrganizationId());
 	}
+
+	public String getOrganizationUuid() throws PortalException {
+		if (Validator.isNotNull(_organizationUuid)) {
+			return _organizationUuid;
+		}
+
+		if (getOrganizationId() > 0) {
+			Organization organization =
+				OrganizationLocalServiceUtil.getOrganization(
+					getOrganizationId());
+
+			return organization.getUuid();
+		}
+
+		return StringPool.BLANK;
+	}
+
+	public void setOrganizationUuid(String organizationUuid) {
+		_organizationUuid = organizationUuid;
+	}
+
+	private String _organizationUuid;
 
 }

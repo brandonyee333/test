@@ -14,7 +14,10 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
+import com.liferay.osb.service.RemoteUserLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -26,7 +29,10 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.List;
 import java.util.Map;
@@ -55,9 +61,45 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		}
 	}
 
+	protected User addUser(JSONObject jsonObject) throws PortalException {
+		User remoteUser = RemoteUserLocalServiceUtil.translate(jsonObject);
+
+		Company company = companyLocalService.getCompany(
+			remoteUser.getCompanyId());
+
+		User defaultUser = company.getDefaultUser();
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(remoteUser.getCreateDate());
+		serviceContext.setUuid(remoteUser.getUuid());
+
+		User user = userLocalService.addUser(
+			defaultUser.getUserId(), remoteUser.getCompanyId(), true,
+			StringPool.BLANK, StringPool.BLANK, false,
+			remoteUser.getScreenName(), remoteUser.getEmailAddress(), 0,
+			StringPool.BLANK, remoteUser.getLocale(), remoteUser.getFirstName(),
+			remoteUser.getMiddleName(), remoteUser.getLastName(), 0, 0, false,
+			0, 1, 1970, StringPool.BLANK, new long[0],
+			remoteUser.getOrganizationIds(), remoteUser.getRoleIds(),
+			new long[0], false, serviceContext);
+
+		ExpandoBridge expandoBridge = user.getExpandoBridge();
+
+		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
+
+		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
+
+		return user;
+	}
+
 	protected abstract void doProcess(JSONObject jsonObject) throws Exception;
 
 	protected Organization fetchOrganization(JSONObject jsonObject) {
+		if (jsonObject == null) {
+			return null;
+		}
+
 		String uuid = jsonObject.getString("uuid");
 
 		List<Company> companies = companyLocalService.getCompanies();
@@ -76,6 +118,10 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	}
 
 	protected Role fetchRole(JSONObject jsonObject) {
+		if (jsonObject == null) {
+			return null;
+		}
+
 		String uuid = jsonObject.getString("uuid");
 
 		List<Company> companies = companyLocalService.getCompanies();
@@ -93,6 +139,10 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	}
 
 	protected User fetchUser(JSONObject jsonObject) {
+		if (jsonObject == null) {
+			return null;
+		}
+
 		String uuid = jsonObject.getString("uuid");
 
 		List<Company> companies = companyLocalService.getCompanies();
@@ -134,6 +184,13 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	}
 
 	@Reference(unbind = "-")
+	protected void setUserGroupRoleLocalService(
+		UserGroupRoleLocalService userGroupRoleLocalService) {
+
+		this.userGroupRoleLocalService = userGroupRoleLocalService;
+	}
+
+	@Reference(unbind = "-")
 	protected void setUserLocalService(UserLocalService userLocalService) {
 		this.userLocalService = userLocalService;
 	}
@@ -142,6 +199,7 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	protected JSONFactory jsonFactory;
 	protected OrganizationLocalService organizationLocalService;
 	protected RoleLocalService roleLocalService;
+	protected UserGroupRoleLocalService userGroupRoleLocalService;
 	protected UserLocalService userLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(

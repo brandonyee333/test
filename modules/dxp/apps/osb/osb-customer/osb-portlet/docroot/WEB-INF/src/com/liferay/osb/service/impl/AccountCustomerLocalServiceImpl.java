@@ -14,6 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
 import com.liferay.osb.exception.DuplicateAccountCustomerException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
@@ -137,27 +138,33 @@ public class AccountCustomerLocalServiceImpl
 				notifications);
 		}
 
-		customerUser = remoteUserLocalService.fetchUserByEmailAddress(
+		User remoteUser = remoteUserLocalService.fetchUserByEmailAddress(
 			emailAddress);
 
-		if (customerUser == null) {
+		if (remoteUser == null) {
 			throw new NoSuchUserException();
 		}
 
 		ServiceContext serviceContext = new ServiceContext();
 
-		serviceContext.setCreateDate(customerUser.getCreateDate());
-		serviceContext.setUuid(customerUser.getUuid());
+		serviceContext.setCreateDate(remoteUser.getCreateDate());
+		serviceContext.setUuid(remoteUser.getUuid());
 
 		customerUser = userLocalService.addUser(
 			OSBConstants.USER_DEFAULT_USER_ID, OSBConstants.COMPANY_ID, true,
 			StringPool.BLANK, StringPool.BLANK, false,
-			customerUser.getScreenName(), customerUser.getEmailAddress(), 0,
-			StringPool.BLANK, customerUser.getLocale(),
-			customerUser.getFirstName(), customerUser.getMiddleName(),
-			customerUser.getLastName(), 0, 0, false, 0, 1, 1970,
-			StringPool.BLANK, new long[0], customerUser.getOrganizationIds(),
-			customerUser.getRoleIds(), new long[0], false, serviceContext);
+			remoteUser.getScreenName(), remoteUser.getEmailAddress(), 0,
+			StringPool.BLANK, remoteUser.getLocale(), remoteUser.getFirstName(),
+			remoteUser.getMiddleName(), remoteUser.getLastName(), 0, 0, false,
+			0, 1, 1970, StringPool.BLANK, new long[0],
+			remoteUser.getOrganizationIds(), remoteUser.getRoleIds(),
+			new long[0], false, serviceContext);
+
+		ExpandoBridge expandoBridge = customerUser.getExpandoBridge();
+
+		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
+
+		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 
 		return addAccountCustomer(
 			userId, customerUser.getUserId(), accountEntryId, role,

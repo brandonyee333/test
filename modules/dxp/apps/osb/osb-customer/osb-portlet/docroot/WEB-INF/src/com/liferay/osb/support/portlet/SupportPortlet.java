@@ -1190,7 +1190,7 @@ public class SupportPortlet extends MVCPortlet {
 		long regionId = ParamUtil.getLong(actionRequest, "regionId");
 		long countryId = ParamUtil.getLong(actionRequest, "countryId");
 
-		AccountEntryServiceUtil.updateAccountEntry(
+		/*AccountEntryServiceUtil.updateAccountEntry(
 			accountEntryId, accountEntry.getCorpProjectId(),
 			accountEntry.getCorpEntryName(), name, code, type, industry,
 			accountEntry.getPartnerEntryId(),
@@ -1198,7 +1198,7 @@ public class SupportPortlet extends MVCPortlet {
 			instructions, notes, accountEntry.getLanguageIds(),
 			accountEntry.getSupportRegionIds(), addressId, street1, street2,
 			street3, city, zip, regionId, countryId,
-			accountEntry.getEWSADossieraProjectKey());
+			accountEntry.getEWSADossieraProjectKey());*/
 	}
 
 	public void updateAccountEntryInstructions(

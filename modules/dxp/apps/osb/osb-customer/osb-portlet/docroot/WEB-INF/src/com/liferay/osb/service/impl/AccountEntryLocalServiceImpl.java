@@ -131,13 +131,13 @@ public class AccountEntryLocalServiceImpl
 	extends AccountEntryLocalServiceBaseImpl {
 
 	public AccountEntry addAccountEntry(
-			long userId, long corpProjectId, String corpEntryName, String name,
-			String code, int type, int industry, long partnerEntryId,
-			boolean partnerManagedSupport, int tier, int maxCustomers,
-			String instructions, String notes, String[] languageIds,
-			long[] supportRegionIds, String street1, String street2,
-			String street3, String city, String zip, long regionId,
-			long countryId, String ewsaDossieraProjectKey)
+			long userId, String corpProjectUuid, String corpEntryName,
+			String name, String code, int type, int industry,
+			long partnerEntryId, boolean partnerManagedSupport, int tier,
+			int maxCustomers, String instructions, String notes,
+			String[] languageIds, long[] supportRegionIds, String street1,
+			String street2, String street3, String city, String zip,
+			long regionId, long countryId, String ewsaDossieraProjectKey)
 		throws PortalException {
 
 		// Account entry
@@ -158,7 +158,18 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setModifiedUserId(user.getUserId());
 		accountEntry.setModifiedUserName(user.getFullName());
 		accountEntry.setModifiedDate(now);
-		accountEntry.setCorpProjectId(corpProjectId);
+
+		accountEntry.setCorpProjectUuid(corpProjectUuid);
+
+		if (Validator.isNotNull(corpProjectUuid)) {
+			CorpProject corpProject =
+				corpProjectLocalService.fetchCorpProjectByUuid(corpProjectUuid);
+
+			if (corpProject != null) {
+				accountEntry.setCorpProjectId(corpProject.getCorpProjectId());
+			}
+		}
+
 		accountEntry.setCorpEntryName(corpEntryName);
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
@@ -228,7 +239,7 @@ public class AccountEntryLocalServiceImpl
 		// Account entry
 
 		accountEntry = addAccountEntry(
-			accountEntry.getUserId(), corpProject.getCorpProjectId(),
+			accountEntry.getUserId(), corpProject.getUuid(),
 			accountEntry.getCorpEntryName(), accountEntry.getName(),
 			accountEntry.getCode(), accountEntry.getType(),
 			accountEntry.getIndustry(), partnerEntryId,
@@ -282,16 +293,16 @@ public class AccountEntryLocalServiceImpl
 			}
 
 			remoteCorpProjectLocalService.addCorpProjectUsers(
-				corpProject.getCorpProjectId(), new long[] {user.getUserId()});
+				corpProject.getUuid(), new long[] {user.getUserId()});
 
 			remoteCorpProjectLocalService.addUserCorpProjectRoles(
-				corpProject.getCorpProjectId(), new long[] {user.getUserId()},
+				corpProject.getUuid(), new long[] {user.getUserId()},
 				OSBConstants.ROLE_OSB_CORP_ADMIN_ID);
 			remoteCorpProjectLocalService.addUserCorpProjectRoles(
-				corpProject.getCorpProjectId(), new long[] {user.getUserId()},
+				corpProject.getUuid(), new long[] {user.getUserId()},
 				OSBConstants.ROLE_OSB_CORP_BUYER_ID);
 			remoteCorpProjectLocalService.addUserCorpProjectRoles(
-				corpProject.getCorpProjectId(), new long[] {user.getUserId()},
+				corpProject.getUuid(), new long[] {user.getUserId()},
 				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
 
 			accountCustomerLocalService.addAccountCustomer(
@@ -378,14 +389,12 @@ public class AccountEntryLocalServiceImpl
 		return accountEntry;
 	}
 
-	public void addTrialAccountEntry(long userId, long trialLicenseKeyId)
-		throws Exception {
+	public void addTrialAccountEntry(long userId) throws Exception {
+		User user = userLocalService.getUser(userId);
 
 		validateTrial(userId);
 
 		// Corp project
-
-		User user = userLocalService.getUser(userId);
 
 		ExpandoBridge expandoBridge = user.getExpandoBridge();
 
@@ -398,7 +407,7 @@ public class AccountEntryLocalServiceImpl
 			userId, userId, StringPool.BLANK, StringPool.BLANK, companyName);
 
 		remoteCorpProjectLocalService.addUserCorpProjectRoles(
-			corpProject.getCorpProjectId(), new long[] {userId},
+			corpProject.getUuid(), new long[] {userId},
 			OSBConstants.ROLE_OSB_CORP_LCS_USER_ID);
 
 		// Account entry
@@ -435,9 +444,9 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		AccountEntry accountEntry = addAccountEntry(
-			userId, corpProject.getCorpProjectId(), StringPool.BLANK,
-			companyName, null, AccountEntryConstants.TYPE_TRIAL, industry, 0L,
-			false, AccountEntryConstants.TIER_REGULAR, 1, StringPool.BLANK,
+			userId, corpProject.getUuid(), StringPool.BLANK, companyName, null,
+			AccountEntryConstants.TYPE_TRIAL, industry, 0L, false,
+			AccountEntryConstants.TIER_REGULAR, 1, StringPool.BLANK,
 			StringPool.BLANK, new String[0], new long[0], "N/A",
 			StringPool.BLANK, StringPool.BLANK, "N/A", "N/A", 0L, countryId,
 			StringPool.BLANK);
@@ -495,37 +504,27 @@ public class AccountEntryLocalServiceImpl
 
 		// License key
 
-		if (trialLicenseKeyId <= 0) {
-			LicenseEntry licenseEntry =
-				licenseEntryLocalService.getLicenseEntry(
-					offeringEntry.getProductEntryId(),
-					LicenseEntryConstants.TYPE_DEVELOPER);
+		LicenseEntry licenseEntry = licenseEntryLocalService.getLicenseEntry(
+			offeringEntry.getProductEntryId(),
+			LicenseEntryConstants.TYPE_DEVELOPER);
 
-			int productVersion = getLatestProductVersion(
-				portletPreferences, offeringEntry.getProductEntryId());
+		int productVersion = getLatestProductVersion(
+			portletPreferences, offeringEntry.getProductEntryId());
 
-			LicenseKey licenseKey = licenseKeyLocalService.addLicenseKey(
-				userId, null, "Trial Licenses", offeringEntry, licenseEntry,
-				null, productVersion, 0, user.getFullName(), 1, 5,
-				"30-Day Trial License", new String[0], new String[0],
-				new String[0],
-				new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER},
-				cal.get(Calendar.MONTH), cal.get(Calendar.DATE),
-				cal.get(Calendar.YEAR), StringPool.BLANK, false, true);
+		LicenseKey licenseKey = licenseKeyLocalService.addLicenseKey(
+			userId, null, "Trial Licenses", offeringEntry, licenseEntry, null,
+			productVersion, 0, user.getFullName(), 1, 5, "30-Day Trial License",
+			new String[0], new String[0], new String[0],
+			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER},
+			cal.get(Calendar.MONTH), cal.get(Calendar.DATE),
+			cal.get(Calendar.YEAR), StringPool.BLANK, false, true);
 
-			licenseKeyLocalService.sendRegisteredEmail(user, licenseKey);
-		}
-		else {
-			licenseKeyLocalService.updateLicenseKey(
-				trialLicenseKeyId, accountEntry.getAccountEntryId(),
-				offeringEntry.getOfferingEntryId(),
-				orderEntry.getOrderEntryId());
-		}
+		licenseKeyLocalService.sendRegisteredEmail(user, licenseKey);
 
 		// LCS
 
 		lcsSubscriptionEntryLocalService.syncToLCS(
-			corpProject.getCorpProjectId());
+			accountEntry.getAccountEntryId());
 	}
 
 	public void auditAccountEntries() throws PortalException {
@@ -684,6 +683,11 @@ public class AccountEntryLocalServiceImpl
 	@Override
 	public AccountEntry fetchCorpProjectAccountEntry(long corpProjectId) {
 		return accountEntryPersistence.fetchByCorpProjectId(corpProjectId);
+	}
+
+	@Override
+	public AccountEntry fetchCorpProjectAccountEntry(String corpProjectUuid) {
+		return accountEntryPersistence.fetchByCorpProjectUuid(corpProjectUuid);
 	}
 
 	public AccountEntry fetchUserTrialAccountEntry(long userId) {
@@ -967,7 +971,7 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	public AccountEntry updateAccountEntry(
-			long userId, long accountEntryId, long corpProjectId,
+			long userId, long accountEntryId, String corpProjectUuid,
 			String corpEntryName, String name, String code, int type,
 			int industry, long partnerEntryId, boolean partnerManagedSupport,
 			int tier, int maxCustomers, String instructions, String notes,
@@ -986,7 +990,7 @@ public class AccountEntryLocalServiceImpl
 		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
 
 		validate(
-			accountEntryId, corpProjectId, name, code, type, industry,
+			accountEntryId, corpProjectUuid, name, code, type, industry,
 			partnerEntryId, maxCustomers, languageIds, supportRegionIds);
 
 		String oldName = accountEntry.getName();
@@ -998,7 +1002,18 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setModifiedUserId(user.getUserId());
 		accountEntry.setModifiedUserName(user.getFullName());
 		accountEntry.setModifiedDate(new Date());
-		accountEntry.setCorpProjectId(corpProjectId);
+
+		accountEntry.setCorpProjectUuid(corpProjectUuid);
+
+		if (Validator.isNotNull(corpProjectUuid)) {
+			CorpProject corpProject =
+				corpProjectLocalService.fetchCorpProjectByUuid(corpProjectUuid);
+
+			if (corpProject != null) {
+				accountEntry.setCorpProjectId(corpProject.getCorpProjectId());
+			}
+		}
+
 		accountEntry.setCorpEntryName(corpEntryName);
 		accountEntry.setName(name);
 		accountEntry.setCode(code);
@@ -1307,20 +1322,6 @@ public class AccountEntryLocalServiceImpl
 			oldAccountEntry, workflowServiceContext);
 	}
 
-	public AccountEntry updateCorpProject(
-			long accountEntryId, long corpProjectId)
-		throws PortalException {
-
-		validate(accountEntryId, corpProjectId);
-
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		accountEntry.setCorpProjectId(corpProjectId);
-
-		return accountEntryPersistence.update(accountEntry);
-	}
-
 	public AccountEntry updateInstructions(
 			long userId, long accountEntryId, String instructions)
 		throws PortalException {
@@ -1417,7 +1418,7 @@ public class AccountEntryLocalServiceImpl
 			(status == WorkflowConstants.STATUS_APPROVED)) {
 
 			validate(
-				accountEntryId, accountEntry.getCorpProjectId(),
+				accountEntryId, accountEntry.getCorpProjectUuid(),
 				accountEntry.getName(), accountEntry.getCode(),
 				accountEntry.getType(), accountEntry.getIndustry(),
 				accountEntry.getPartnerEntryId(),
@@ -1612,7 +1613,7 @@ public class AccountEntryLocalServiceImpl
 
 	public void validate(AccountEntry accountEntry) throws PortalException {
 		validate(
-			accountEntry.getAccountEntryId(), accountEntry.getCorpProjectId(),
+			accountEntry.getAccountEntryId(), accountEntry.getCorpProjectUuid(),
 			accountEntry.getName(), accountEntry.getCode(),
 			accountEntry.getType(), accountEntry.getIndustry(),
 			accountEntry.getPartnerEntryId(), accountEntry.getMaxCustomers(),
@@ -2279,12 +2280,12 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
-	protected void validate(long accountEntryId, long corpProjectId)
+	protected void validate(long accountEntryId, String corpProjectUuid)
 		throws PortalException {
 
-		if (corpProjectId > 0) {
+		if (Validator.isNotNull(corpProjectUuid)) {
 			AccountEntry accountEntry =
-				accountEntryPersistence.fetchByCorpProjectId(corpProjectId);
+				accountEntryPersistence.fetchByCorpProjectUuid(corpProjectUuid);
 
 			if ((accountEntry != null) &&
 				(accountEntry.getAccountEntryId() != accountEntryId)) {
@@ -2295,12 +2296,12 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	protected void validate(
-			long accountEntryId, long corpProjectId, String name, String code,
-			int type, int industry, long partnerEntryId, int maxCustomers,
-			String[] languageIds, long[] supportRegionIds)
+			long accountEntryId, String corpProjectUuid, String name,
+			String code, int type, int industry, long partnerEntryId,
+			int maxCustomers, String[] languageIds, long[] supportRegionIds)
 		throws PortalException {
 
-		validate(accountEntryId, corpProjectId);
+		validate(accountEntryId, corpProjectUuid);
 
 		if (Validator.isNull(name)) {
 			throw new AccountEntryNameException();
@@ -2396,14 +2397,6 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	protected void validateTrial(long userId) throws PortalException {
-
-		/* TODO update OSBUtil integration
-
-		if (!OSBUtil.isTrialEULA(OSBConstants.COMPANY_ID, userId)) {
-			throw new PrincipalException();
-		}
-
-		 */
 		if (accountEntryPersistence.countByU_T(
 				userId, AccountEntryConstants.TYPE_TRIAL) > 0) {
 

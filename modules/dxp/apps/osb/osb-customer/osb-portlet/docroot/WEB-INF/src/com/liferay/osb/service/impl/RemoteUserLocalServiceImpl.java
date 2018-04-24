@@ -14,6 +14,9 @@
 
 package com.liferay.osb.service.impl;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.model.ExpandoColumn;
+import com.liferay.expando.kernel.util.ExpandoConverterUtil;
 import com.liferay.osb.hook.model.impl.RemoteUserImpl;
 import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.RemoteUserLocalServiceBaseImpl;
@@ -25,8 +28,11 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -92,8 +98,50 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 
 		RemoteUserImpl remoteUser = new RemoteUserImpl(user);
 
+		remoteUser.setCompanyId(OSBConstants.COMPANY_ID);
 		remoteUser.setCreateDate(new Date(jsonObject.getLong("createDate")));
 		remoteUser.setEmailAddress(jsonObject.getString("emailAddress"));
+
+		JSONObject expandosJSONObject = jsonObject.getJSONObject("expandos");
+
+		if (expandosJSONObject != null) {
+			ExpandoBridge expandoBridge = remoteUser.getExpandoBridge();
+
+			Iterator<String> iterator = expandosJSONObject.keys();
+
+			while (iterator.hasNext()) {
+				String expandoTableName = iterator.next();
+
+				JSONObject expandoTableJSONObject =
+					expandosJSONObject.getJSONObject(expandoTableName);
+
+				Iterator<String> expandoTableIterator =
+					expandoTableJSONObject.keys();
+
+				while (expandoTableIterator.hasNext()) {
+					String expandoColumnName = expandoTableIterator.next();
+
+					ExpandoColumn expandoColumn =
+						expandoColumnLocalService.getColumn(
+							remoteUser.getCompanyId(), User.class.getName(),
+							expandoTableName, expandoColumnName);
+
+					if (expandoColumn == null) {
+						continue;
+					}
+
+					String expandoValueData = expandoTableJSONObject.getString(
+						expandoColumnName);
+
+					Serializable serializable =
+						ExpandoConverterUtil.getAttributeFromString(
+							expandoColumn.getType(), expandoValueData);
+
+					expandoBridge.setAttribute(expandoColumnName, serializable);
+				}
+			}
+		}
+
 		remoteUser.setFirstName(jsonObject.getString("firstName"));
 		remoteUser.setLanguageId(jsonObject.getString("languageId"));
 		remoteUser.setLastName(jsonObject.getString("lastName"));

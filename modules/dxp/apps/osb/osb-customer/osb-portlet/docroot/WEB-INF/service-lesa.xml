@@ -154,6 +154,7 @@
 
 		<!-- Other fields -->
 
+		<column name="corpProjectUuid" type="String" />
 		<column name="corpProjectId" type="long" />
 		<column name="corpEntryName" type="String" />
 		<column name="name" type="String" />
@@ -184,6 +185,9 @@
 
 		<!-- Finder methods -->
 
+		<finder name="CorpProjectUuid" return-type="AccountEntry">
+			<finder-column name="corpProjectUuid" />
+		</finder>
 		<finder name="CorpProjectId" return-type="AccountEntry">
 			<finder-column name="corpProjectId" />
 		</finder>

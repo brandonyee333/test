@@ -183,8 +183,9 @@ public class OSBCustomerQAInfrastructureUtil {
 				new Filter(code, "support-region-ids"));
 
 			AccountEntryLocalServiceUtil.addAccountEntry(
-				OSBConstants.USER_DEFAULT_USER_ID, 0, StringPool.BLANK, name,
-				code, AccountEntryConstants.TYPE_INDIVIDUAL,
+				OSBConstants.USER_DEFAULT_USER_ID, StringPool.BLANK,
+				StringPool.BLANK, name, code,
+				AccountEntryConstants.TYPE_INDIVIDUAL,
 				AccountEntryConstants.INDUSTRY_OTHER, partnerEntryId,
 				partnerManagedSupport, AccountEntryConstants.TIER_REGULAR,
 				maxCustomers, StringPool.BLANK, StringPool.BLANK,

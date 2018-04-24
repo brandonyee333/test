@@ -14,8 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
-import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.service.CorpProjectLocalServiceUtil;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -27,33 +26,20 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = "routing.key=entity.corpproject.assigned",
-	service = CorpProjectAssignedMessageProcessor.class
+	immediate = true, property = "routing.key=provisioning.trial.create",
+	service = ProvisioningTrialCreateMessageProcessor.class
 )
-public class CorpProjectAssignedMessageProcessor extends BaseMessageProcessor {
+public class ProvisioningTrialCreateMessageProcessor
+	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
-			"corpProject");
-
-		CorpProject corpProject =
-			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
-				corpProjectJSONObject.getString("uuid"));
-
-		if (corpProject == null) {
-			return;
-		}
-
-		JSONObject userJSONObject = jsonObject.getJSONObject("user");
-
-		User user = fetchUser(userJSONObject);
+		User user = fetchUser(jsonObject);
 
 		if (user == null) {
-			user = addUser(userJSONObject);
+			user = addUser(jsonObject);
 		}
 
-		userLocalService.addOrganizationUser(
-			corpProject.getOrganizationId(), user.getUserId());
+		AccountEntryLocalServiceUtil.addTrialAccountEntry(user.getUserId());
 	}
 
 	@Reference(

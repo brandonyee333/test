@@ -14,9 +14,13 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.ServiceContext;
+
+import java.util.Date;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -31,7 +35,22 @@ import org.osgi.service.component.annotations.Reference;
 public class CorpProjectUpdateMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		CorpProjectLocalServiceUtil.updateCorpProject(jsonObject);
+		CorpProject corpProject =
+			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
+				jsonObject.getString("uuid"));
+
+		if (corpProject == null) {
+			return;
+		}
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(
+			new Date(jsonObject.getLong("modifiedDate")));
+
+		CorpProjectLocalServiceUtil.updateCorpProject(
+			corpProject.getCorpProjectId(), jsonObject.getString("name"),
+			serviceContext);
 	}
 
 	@Reference(

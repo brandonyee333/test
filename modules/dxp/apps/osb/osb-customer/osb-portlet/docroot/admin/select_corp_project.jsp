@@ -63,7 +63,7 @@ portletURL.setParameter("callback", callback);
 			sb.append(renderResponse.getNamespace());
 			sb.append(callback);
 			sb.append("('");
-			sb.append(corpProject.getCorpProjectId());
+			sb.append(corpProject.getUuid());
 			sb.append("', '");
 			sb.append(UnicodeFormatter.toString(corpProject.getName()));
 			sb.append("'); window.close();");

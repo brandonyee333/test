@@ -17,7 +17,6 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.exception.NoSuchCorpProjectMessageException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
-import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.CorpProjectMessage;
 import com.liferay.osb.model.CorpProjectMessageConstants;
 import com.liferay.osb.model.OfferingDefinitionConstants;
@@ -28,10 +27,8 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.comparator.OfferingEntrySupportEndDateComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 
 import java.util.ArrayList;
@@ -47,50 +44,36 @@ import java.util.Set;
 public class CorpProjectMessageLocalServiceImpl
 	extends CorpProjectMessageLocalServiceBaseImpl {
 
-	public CorpProjectMessage addCorpProjectMessage(JSONObject jsonObject)
+	public CorpProjectMessage addCorpProjectMessage(
+			long userId, long corpProjectId, int type, int severityLevel,
+			String title, String content, boolean displayCP, boolean displayLCS,
+			boolean displayLESA, ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userLocalService.fetchUserByUuidAndCompanyId(
-			jsonObject.getString("userUuid"), OSBConstants.COMPANY_ID);
+		User user = userLocalService.getUser(userId);
+		Date createDate = serviceContext.getCreateDate(new Date());
+		Date modifiedDate = serviceContext.getModifiedDate(new Date());
 
-		if (user == null) {
-			User remoteUser = remoteUserLocalService.translate(
-				jsonObject.getJSONObject("user"));
+		long corpProjectMessageId = counterLocalService.increment();
 
-			ServiceContext serviceContext = new ServiceContext();
+		CorpProjectMessage corpProjectMessage =
+			corpProjectMessagePersistence.create(corpProjectMessageId);
 
-			serviceContext.setCreateDate(remoteUser.getCreateDate());
-			serviceContext.setUuid(remoteUser.getUuid());
+		corpProjectMessage.setUuid(serviceContext.getUuid());
+		corpProjectMessage.setUserId(userId);
+		corpProjectMessage.setUserName(user.getFullName());
+		corpProjectMessage.setCreateDate(createDate);
+		corpProjectMessage.setModifiedDate(modifiedDate);
+		corpProjectMessage.setCorpProjectId(corpProjectId);
+		corpProjectMessage.setType(type);
+		corpProjectMessage.setSeverityLevel(severityLevel);
+		corpProjectMessage.setTitle(title);
+		corpProjectMessage.setContent(content);
+		corpProjectMessage.setDisplayCP(displayCP);
+		corpProjectMessage.setDisplayLCS(displayLCS);
+		corpProjectMessage.setDisplayLESA(displayLESA);
 
-			user = userLocalService.addUser(
-				OSBConstants.USER_DEFAULT_USER_ID, OSBConstants.COMPANY_ID,
-				true, StringPool.BLANK, StringPool.BLANK, false,
-				remoteUser.getScreenName(), remoteUser.getEmailAddress(), 0,
-				StringPool.BLANK, remoteUser.getLocale(),
-				remoteUser.getFirstName(), remoteUser.getMiddleName(),
-				remoteUser.getLastName(), 0, 0, false, 0, 1, 1970,
-				StringPool.BLANK, new long[0], remoteUser.getOrganizationIds(),
-				remoteUser.getRoleIds(), new long[0], false, serviceContext);
-		}
-
-		CorpProject corpProject = corpProjectLocalService.getCorpProjectByUuid(
-			jsonObject.getString("corpProjectUuid"));
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setCreateDate(
-			new Date(jsonObject.getLong("createDate")));
-		serviceContext.setModifiedDate(
-			new Date(jsonObject.getLong("modifiedDate")));
-		serviceContext.setUuid(jsonObject.getString("uuid"));
-
-		return addCorpProjectMessage(
-			user.getUserId(), corpProject.getCorpProjectId(),
-			jsonObject.getInt("type"), jsonObject.getInt("severityLevel"),
-			jsonObject.getString("title"), jsonObject.getString("content"),
-			jsonObject.getBoolean("displayCP"),
-			jsonObject.getBoolean("displayLCS"),
-			jsonObject.getBoolean("displayLESA"), serviceContext);
+		return corpProjectMessagePersistence.update(corpProjectMessage);
 	}
 
 	public void checkCorpProjects() throws Exception {
@@ -185,83 +168,57 @@ public class CorpProjectMessageLocalServiceImpl
 		}
 	}
 
-	public CorpProjectMessage deleteCorpProjectMessage(JSONObject jsonObject)
-		throws PortalException {
-
-		CorpProjectMessage corpProjectMessage = getCorpProjectMessageByUuid(
-			jsonObject.getString("uuid"));
-
-		return deleteCorpProjectMessage(corpProjectMessage);
-	}
-
-	public CorpProjectMessage getCorpProjectMessageByUuid(String uuid)
+	public CorpProjectMessage fetchCorpProjectMessageByUuid(String uuid)
 		throws PortalException {
 
 		List<CorpProjectMessage> corpProjectMessages =
 			corpProjectMessagePersistence.findByUuid(uuid);
 
 		if (corpProjectMessages.isEmpty()) {
-			throw new NoSuchCorpProjectMessageException("{uuid=" + uuid + "}");
+			return null;
 		}
 		else {
 			return corpProjectMessages.get(0);
 		}
 	}
 
+	public CorpProjectMessage getCorpProjectMessageByUuid(String uuid)
+		throws PortalException {
+
+		CorpProjectMessage corpProjectMessage = fetchCorpProjectMessageByUuid(
+			uuid);
+
+		if (corpProjectMessage == null) {
+			throw new NoSuchCorpProjectMessageException("{uuid=" + uuid + "}");
+		}
+
+		return corpProjectMessage;
+	}
+
 	public List<CorpProjectMessage> getCorpProjectMessages(long corpProjectId) {
 		return corpProjectMessagePersistence.findByCorpProjectId(corpProjectId);
 	}
 
-	public CorpProjectMessage updateCorpProjectMessage(JSONObject jsonObject)
-		throws PortalException {
-
-		long userId = 0;
-
-		User user = userLocalService.fetchUserByUuidAndCompanyId(
-			jsonObject.getString("userUuid"), OSBConstants.COMPANY_ID);
-
-		if (user != null) {
-			userId = user.getUserId();
-		}
-
-		CorpProjectMessage corpProjectMessage = getCorpProjectMessageByUuid(
-			jsonObject.getString("uuid"));
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setCreateDate(
-			new Date(jsonObject.getLong("modifiedDate")));
-
-		return updateCorpProjectMessage(
-			userId, corpProjectMessage.getCorpProjectMessageId(),
-			jsonObject.getInt("type"), jsonObject.getInt("severityLevel"),
-			jsonObject.getString("title"), jsonObject.getString("content"),
-			jsonObject.getBoolean("displayCP"),
-			jsonObject.getBoolean("displayLCS"),
-			jsonObject.getBoolean("displayLESA"), serviceContext);
-	}
-
-	protected CorpProjectMessage addCorpProjectMessage(
-			long userId, long corpProjectId, int type, int severityLevel,
+	public CorpProjectMessage updateCorpProjectMessage(
+			long userId, long corpProjectMessageId, int type, int severityLevel,
 			String title, String content, boolean displayCP, boolean displayLCS,
 			boolean displayLESA, ServiceContext serviceContext)
 		throws PortalException {
 
-		User user = userLocalService.getUser(userId);
-		Date createDate = serviceContext.getCreateDate(new Date());
 		Date modifiedDate = serviceContext.getModifiedDate(new Date());
 
-		long corpProjectMessageId = counterLocalService.increment();
-
 		CorpProjectMessage corpProjectMessage =
-			corpProjectMessagePersistence.create(corpProjectMessageId);
+			corpProjectMessagePersistence.findByPrimaryKey(
+				corpProjectMessageId);
 
-		corpProjectMessage.setUuid(serviceContext.getUuid());
-		corpProjectMessage.setUserId(userId);
-		corpProjectMessage.setUserName(user.getFullName());
-		corpProjectMessage.setCreateDate(createDate);
+		if (userId > 0) {
+			User user = userLocalService.getUser(userId);
+
+			corpProjectMessage.setUserId(userId);
+			corpProjectMessage.setUserName(user.getFullName());
+		}
+
 		corpProjectMessage.setModifiedDate(modifiedDate);
-		corpProjectMessage.setCorpProjectId(corpProjectId);
 		corpProjectMessage.setType(type);
 		corpProjectMessage.setSeverityLevel(severityLevel);
 		corpProjectMessage.setTitle(title);
@@ -333,37 +290,6 @@ public class CorpProjectMessageLocalServiceImpl
 					corpProjectMessage.getCorpProjectMessageId());
 			}
 		}
-	}
-
-	protected CorpProjectMessage updateCorpProjectMessage(
-			long userId, long corpProjectMessageId, int type, int severityLevel,
-			String title, String content, boolean displayCP, boolean displayLCS,
-			boolean displayLESA, ServiceContext serviceContext)
-		throws PortalException {
-
-		Date modifiedDate = serviceContext.getModifiedDate(new Date());
-
-		CorpProjectMessage corpProjectMessage =
-			corpProjectMessagePersistence.findByPrimaryKey(
-				corpProjectMessageId);
-
-		if (userId > 0) {
-			User user = userLocalService.getUser(userId);
-
-			corpProjectMessage.setUserId(userId);
-			corpProjectMessage.setUserName(user.getFullName());
-		}
-
-		corpProjectMessage.setModifiedDate(modifiedDate);
-		corpProjectMessage.setType(type);
-		corpProjectMessage.setSeverityLevel(severityLevel);
-		corpProjectMessage.setTitle(title);
-		corpProjectMessage.setContent(content);
-		corpProjectMessage.setDisplayCP(displayCP);
-		corpProjectMessage.setDisplayLCS(displayLCS);
-		corpProjectMessage.setDisplayLESA(displayLESA);
-
-		return corpProjectMessagePersistence.update(corpProjectMessage);
 	}
 
 }

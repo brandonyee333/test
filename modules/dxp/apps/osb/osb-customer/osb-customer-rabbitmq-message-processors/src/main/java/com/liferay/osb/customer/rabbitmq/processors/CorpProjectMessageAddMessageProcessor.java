@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.osb.model.CorpProject;
+import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.CorpProjectMessageLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.ServiceContext;
+
+import java.util.Date;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -32,7 +38,37 @@ public class CorpProjectMessageAddMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		CorpProjectMessageLocalServiceUtil.addCorpProjectMessage(jsonObject);
+		JSONObject userJSONObject = jsonObject.getJSONObject("user");
+
+		User user = fetchUser(userJSONObject);
+
+		if (user == null) {
+			user = addUser(userJSONObject);
+		}
+
+		CorpProject corpProject =
+			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
+				jsonObject.getString("corpProjectUuid"));
+
+		if (corpProject == null) {
+			return;
+		}
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(
+			new Date(jsonObject.getLong("createDate")));
+		serviceContext.setModifiedDate(
+			new Date(jsonObject.getLong("modifiedDate")));
+		serviceContext.setUuid(jsonObject.getString("uuid"));
+
+		CorpProjectMessageLocalServiceUtil.addCorpProjectMessage(
+			user.getUserId(), corpProject.getCorpProjectId(),
+			jsonObject.getInt("type"), jsonObject.getInt("severityLevel"),
+			jsonObject.getString("title"), jsonObject.getString("content"),
+			jsonObject.getBoolean("displayCP"),
+			jsonObject.getBoolean("displayLCS"),
+			jsonObject.getBoolean("displayLESA"), serviceContext);
 	}
 
 	@Reference(

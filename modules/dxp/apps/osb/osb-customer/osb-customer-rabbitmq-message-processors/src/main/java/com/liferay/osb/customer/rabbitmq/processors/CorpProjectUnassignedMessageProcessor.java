@@ -14,8 +14,10 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import org.osgi.service.component.annotations.Component;
@@ -32,7 +34,27 @@ public class CorpProjectUnassignedMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		CorpProjectLocalServiceUtil.unsetCorpProjectUser(jsonObject);
+		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
+			"corpProject");
+
+		CorpProject corpProject =
+			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
+				corpProjectJSONObject.getString("uuid"));
+
+		if (corpProject == null) {
+			return;
+		}
+
+		JSONObject userJSONObject = jsonObject.getJSONObject("user");
+
+		User user = fetchUser(userJSONObject);
+
+		if (user == null) {
+			return;
+		}
+
+		userLocalService.unsetOrganizationUsers(
+			corpProject.getOrganizationId(), new long[] {user.getUserId()});
 	}
 
 	@Reference(

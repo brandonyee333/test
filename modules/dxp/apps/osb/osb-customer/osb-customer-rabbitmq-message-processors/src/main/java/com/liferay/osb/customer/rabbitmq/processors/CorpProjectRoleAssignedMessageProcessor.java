@@ -14,8 +14,12 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import org.osgi.service.component.annotations.Component;
@@ -32,7 +36,38 @@ public class CorpProjectRoleAssignedMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		CorpProjectLocalServiceUtil.addUserCorpProjectRoles(jsonObject);
+		JSONObject userJSONObject = jsonObject.getJSONObject("user");
+
+		User user = fetchUser(userJSONObject);
+
+		if (user == null) {
+			user = addUser(userJSONObject);
+		}
+
+		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
+			"corpProject");
+
+		CorpProject corpProject =
+			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
+				corpProjectJSONObject.getString("uuid"));
+
+		if (corpProject == null) {
+			return;
+		}
+
+		Group group = corpProject.getGroup();
+
+		JSONObject roleJSONObject = jsonObject.getJSONObject("role");
+
+		Role role = fetchRole(roleJSONObject);
+
+		if (role == null) {
+			return;
+		}
+
+		userGroupRoleLocalService.addUserGroupRoles(
+			user.getUserId(), group.getGroupId(),
+			new long[] {role.getRoleId()});
 	}
 
 	@Reference(

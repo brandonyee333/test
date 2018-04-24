@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.osb.model.CorpProjectMessage;
 import com.liferay.osb.service.CorpProjectMessageLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -32,7 +33,16 @@ public class CorpProjectMessageDeleteMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		CorpProjectMessageLocalServiceUtil.deleteCorpProjectMessage(jsonObject);
+		CorpProjectMessage corpProjectMessage =
+			CorpProjectMessageLocalServiceUtil.fetchCorpProjectMessageByUuid(
+				jsonObject.getString("uuid"));
+
+		if (corpProjectMessage == null) {
+			return;
+		}
+
+		CorpProjectMessageLocalServiceUtil.deleteCorpProjectMessage(
+			corpProjectMessage.getCorpProjectMessageId());
 	}
 
 	@Reference(

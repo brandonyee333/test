@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.model.LCSSubscriptionEntryConstants;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -27,7 +26,6 @@ import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.osb.model.impl.LCSSubscriptionEntryImpl;
-import com.liferay.osb.remote.lcs.LCSJSONWebServiceUtil;
 import com.liferay.osb.service.base.LCSSubscriptionEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -51,18 +49,15 @@ public class LCSSubscriptionEntryLocalServiceImpl
 	extends LCSSubscriptionEntryLocalServiceBaseImpl {
 
 	public List<LCSSubscriptionEntry> getLCSSubscriptionEntries(
-			long corpProjectId)
+			long accountEntryId)
 		throws PortalException {
 
 		Map<String, LCSSubscriptionEntry> lcsSubscriptionEntriesMap =
 			new HashMap<>();
 
-		AccountEntry accountEntry = accountEntryPersistence.findByCorpProjectId(
-			corpProjectId);
-
 		List<OfferingEntry> offeringEntries =
 			offeringEntryLocalService.getAccountEntryOfferingEntries(
-				accountEntry.getAccountEntryId());
+				accountEntryId);
 
 		for (OfferingEntry offeringEntry : offeringEntries) {
 			if (offeringEntry.getStatus() !=
@@ -94,19 +89,21 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		return new ArrayList<>(lcsSubscriptionEntriesMap.values());
 	}
 
-	public void syncToLCS(long corpProjectId) throws PortalException {
+	public void syncToLCS(long accountEntryId) throws PortalException {
 		if (!PortletPropsValues.REMOTE_JSON_SERVICE_API_LCS_ENABLED) {
 			return;
 		}
 
 		List<LCSSubscriptionEntry> lcsSubscriptionEntries =
-			getLCSSubscriptionEntries(corpProjectId);
+			getLCSSubscriptionEntries(accountEntryId);
 
 		String lcsSubscriptionEntriesJSON = JSONFactoryUtil.looseSerialize(
 			lcsSubscriptionEntries);
 
+		/* TODO
 		LCSJSONWebServiceUtil.sendLCSSubscriptionEntries(
 			corpProjectId, lcsSubscriptionEntriesJSON);
+		*/
 	}
 
 	protected LCSSubscriptionEntry createLCSSubscriptionEntry(

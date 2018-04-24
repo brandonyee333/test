@@ -15,17 +15,13 @@
 package com.liferay.osb.customer.rabbitmq.processors;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.expando.kernel.model.ExpandoColumn;
-import com.liferay.expando.kernel.service.ExpandoColumnLocalService;
-import com.liferay.expando.kernel.util.ExpandoConverterUtil;
+import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.User;
-
-import java.io.Serializable;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Calendar;
-import java.util.Iterator;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -46,14 +42,7 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 			return;
 		}
 
-		String emailAddress = jsonObject.getString("emailAddress");
-		String firstName = jsonObject.getString("firstName");
-		String jobTitle = jsonObject.getString("jobTitle");
-		String languageId = jsonObject.getString("languageId");
-		String lastName = jsonObject.getString("lastName");
-		String middleName = jsonObject.getString("middleName");
-		String screenName = jsonObject.getString("screenName");
-		String timeZoneId = jsonObject.getString("timeZoneId");
+		User remoteUser = RemoteUserLocalServiceUtil.translate(jsonObject);
 
 		Contact contact = user.getContact();
 
@@ -62,66 +51,32 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 		calendar.setTime(contact.getBirthday());
 
 		user = userLocalService.updateUser(
-			user.getUserId(), null, null, null, false, null, null, screenName,
-			emailAddress, user.getFacebookId(), user.getOpenId(), false, null,
-			languageId, timeZoneId, user.getGreeting(), user.getComments(),
-			firstName, middleName, lastName, contact.getPrefixId(),
-			contact.getSuffixId(), contact.isMale(),
+			user.getUserId(), null, null, null, false, null, null,
+			remoteUser.getScreenName(), remoteUser.getEmailAddress(),
+			user.getFacebookId(), user.getOpenId(), false, null,
+			remoteUser.getLanguageId(), remoteUser.getTimeZoneId(),
+			user.getGreeting(), user.getComments(), remoteUser.getFirstName(),
+			remoteUser.getMiddleName(), remoteUser.getLastName(),
+			contact.getPrefixId(), contact.getSuffixId(), contact.isMale(),
 			calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
 			calendar.get(Calendar.YEAR), contact.getSmsSn(),
 			contact.getFacebookSn(), contact.getJabberSn(),
-			contact.getSkypeSn(), contact.getTwitterSn(), jobTitle, null, null,
-			null, null, null, null);
+			contact.getSkypeSn(), contact.getTwitterSn(),
+			remoteUser.getJobTitle(), null, null, null, null, null, null);
 
-		JSONObject expandosJSONObject = jsonObject.getJSONObject("expandos");
+		ExpandoBridge expandoBridge = user.getExpandoBridge();
 
-		if (expandosJSONObject != null) {
-			ExpandoBridge expandoBridge = user.getExpandoBridge();
+		ExpandoBridge remoteExpandoBridge = remoteUser.getExpandoBridge();
 
-			Iterator<String> iterator = expandosJSONObject.keys();
-
-			while (iterator.hasNext()) {
-				String expandoTableName = iterator.next();
-
-				JSONObject expandoTableJSONObject =
-					expandosJSONObject.getJSONObject(expandoTableName);
-
-				Iterator<String> expandoTableIterator =
-					expandoTableJSONObject.keys();
-
-				while (expandoTableIterator.hasNext()) {
-					String expandoColumnName = expandoTableIterator.next();
-
-					ExpandoColumn expandoColumn =
-						expandoColumnLocalService.getColumn(
-							user.getCompanyId(), User.class.getName(),
-							expandoTableName, expandoColumnName);
-
-					if (expandoColumn == null) {
-						continue;
-					}
-
-					String expandoValueData = expandoTableJSONObject.getString(
-						expandoColumnName);
-
-					Serializable serializable =
-						ExpandoConverterUtil.getAttributeFromString(
-							expandoColumn.getType(), expandoValueData);
-
-					expandoBridge.setAttribute(
-						expandoColumnName, serializable, false);
-				}
-			}
-		}
+		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 	}
 
-	@Reference(unbind = "-")
-	protected void setExpandoColumnLocalService(
-		ExpandoColumnLocalService expandoColumnLocalService) {
-
-		this.expandoColumnLocalService = expandoColumnLocalService;
+	@Reference(
+		target = "(module.service.lifecycle=osb.portlet.initialized)",
+		unbind = "-"
+	)
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
-
-	protected ExpandoColumnLocalService expandoColumnLocalService;
 
 }

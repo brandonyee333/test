@@ -41,7 +41,7 @@ try {
 catch (NoSuchAccountEntryException nsaee) {
 }
 
-long corpProjectId = BeanParamUtil.getLong(accountEntry, request, "corpProjectId");
+String corpProjectUuid = BeanParamUtil.getString(accountEntry, request, "corpProjectUuid");
 int type = BeanParamUtil.getInteger(accountEntry, request, "type", AccountEntryConstants.TYPE_GROUP);
 int industry = BeanParamUtil.getInteger(accountEntry, request, "industry");
 long partnerEntryId = BeanParamUtil.getLong(accountEntry, request, "partnerEntryId");
@@ -82,7 +82,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 	<aui:input name="accountProjectId" type="hidden" value="<%= AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID %>" />
-	<aui:input name="corpProjectId" type="hidden" value="<%= corpProjectId %>" />
+	<aui:input name="corpProjectUuid" type="hidden" value="<%= corpProjectUuid %>" />
 	<aui:input name="key" type="hidden" />
 	<aui:input name="offeringEntryIds" type="hidden" />
 	<aui:input name="partnerEntryId" type="hidden" value="<%= partnerEntryId %>" />
@@ -98,7 +98,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<liferay-ui:error exception="<%= AccountEntryCorpProjectException.class %>">
 
 		<%
-		AccountEntry curAccountEntry = AccountEntryLocalServiceUtil.fetchCorpProjectAccountEntry(corpProjectId);
+		AccountEntry curAccountEntry = AccountEntryLocalServiceUtil.fetchCorpProjectAccountEntry(corpProjectUuid);
 		%>
 
 		<c:if test="<%= curAccountEntry != null %>">
@@ -345,7 +345,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			<td>
 
 				<%
-				CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProject(corpProjectId);
+				CorpProject corpProject = CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(corpProjectUuid);
 				%>
 
 				<span id="<portlet:namespace />corpProjectName">
@@ -755,8 +755,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		submitForm(document.<portlet:namespace />fm, '<portlet:actionURL><portlet:param name="jspPage" value="/admin/edit_account_entry.jsp" /></portlet:actionURL>');
 	}
 
-	function <portlet:namespace />selectCorpProject(corpProjectId, corpProjectName) {
-		document.<portlet:namespace />fm.<portlet:namespace />corpProjectId.value = corpProjectId;
+	function <portlet:namespace />selectCorpProject(corpProjectUuid, corpProjectName) {
+		document.<portlet:namespace />fm.<portlet:namespace />corpProjectUuid.value = corpProjectUuid;
 
 		document.getElementById('<portlet:namespace />corpProjectName').innerHTML = corpProjectName;
 	}

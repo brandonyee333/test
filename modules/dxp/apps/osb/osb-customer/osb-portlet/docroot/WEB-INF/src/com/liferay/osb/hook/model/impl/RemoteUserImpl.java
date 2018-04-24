@@ -14,6 +14,7 @@
 
 package com.liferay.osb.hook.model.impl;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
@@ -29,6 +30,11 @@ public class RemoteUserImpl extends UserWrapper {
 
 	public RemoteUserImpl(User user) {
 		super(user);
+	}
+
+	@Override
+	public ExpandoBridge getExpandoBridge() {
+		return _expandoBridge;
 	}
 
 	@Override
@@ -64,6 +70,7 @@ public class RemoteUserImpl extends UserWrapper {
 		_roleIds = ListUtil.toLongArray(roles, Role.ROLE_ID_ACCESSOR);
 	}
 
+	private ExpandoBridge _expandoBridge = new RemoteExpandoBridgeImpl();
 	private long[] _organizationIds = new long[0];
 	private List<Organization> _organizations;
 	private long[] _roleIds = new long[0];

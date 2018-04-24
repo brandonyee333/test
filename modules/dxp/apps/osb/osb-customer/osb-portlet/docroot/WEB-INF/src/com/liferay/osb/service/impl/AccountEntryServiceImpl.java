@@ -174,7 +174,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	}
 
 	public AccountEntry updateAccountEntry(
-			long accountEntryId, long corpProjectId, String corpEntryName,
+			long accountEntryId, String corpProjectUuid, String corpEntryName,
 			String name, String code, int type, int industry,
 			long partnerEntryId, boolean partnerManagedSupport, int tier,
 			int maxCustomers, String instructions, String notes,
@@ -189,7 +189,7 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			OSBActionKeys.UPDATE_ACCOUNT_INFO);
 
 		return accountEntryLocalService.updateAccountEntry(
-			getUserId(), accountEntryId, corpProjectId, corpEntryName, name,
+			getUserId(), accountEntryId, corpProjectUuid, corpEntryName, name,
 			code, type, industry, partnerEntryId, partnerManagedSupport, tier,
 			maxCustomers, instructions, notes, languageIds, supportRegionIds,
 			addressId, street1, street2, street3, city, zip, regionId,

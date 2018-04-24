@@ -14,9 +14,14 @@
 
 package com.liferay.osb.customer.rabbitmq.processors;
 
+import com.liferay.osb.model.CorpProjectMessage;
 import com.liferay.osb.service.CorpProjectMessageLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.ServiceContext;
+
+import java.util.Date;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -32,7 +37,34 @@ public class CorpProjectMessageUpdateMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		CorpProjectMessageLocalServiceUtil.updateCorpProjectMessage(jsonObject);
+		long userId = 0;
+
+		User user = fetchUser(jsonObject.getJSONObject("user"));
+
+		if (user != null) {
+			userId = user.getUserId();
+		}
+
+		CorpProjectMessage corpProjectMessage =
+			CorpProjectMessageLocalServiceUtil.fetchCorpProjectMessageByUuid(
+				jsonObject.getString("uuid"));
+
+		if (corpProjectMessage == null) {
+			return;
+		}
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCreateDate(
+			new Date(jsonObject.getLong("modifiedDate")));
+
+		CorpProjectMessageLocalServiceUtil.updateCorpProjectMessage(
+			userId, corpProjectMessage.getCorpProjectMessageId(),
+			jsonObject.getInt("type"), jsonObject.getInt("severityLevel"),
+			jsonObject.getString("title"), jsonObject.getString("content"),
+			jsonObject.getBoolean("displayCP"),
+			jsonObject.getBoolean("displayLCS"),
+			jsonObject.getBoolean("displayLESA"), serviceContext);
 	}
 
 	@Reference(
