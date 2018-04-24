@@ -544,9 +544,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 			<div class="content-column w33">
 				<div class="content-column-content left-column">
-					<span class="bold uppercase">
-						<liferay-ui:message key="product" />:
-					</span>
+					<span class="bold uppercase"><liferay-ui:message key="product" />:</span>
 
 					<%= productEntry.getName() %>
 
@@ -554,9 +552,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 					<br />
 
-					<span class="bold uppercase">
-						<liferay-ui:message key="start-date" />:
-					</span>
+					<span class="bold uppercase"><liferay-ui:message key="start-date" />:</span>
 
 					<%= longDateFormatDate.format(startDate) %>
 
@@ -568,9 +564,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 			<div class="content-column w33">
 				<div class="content-column-content middle-column">
-					<span class="bold uppercase">
-						<liferay-ui:message key="type" />:
-					</span>
+					<span class="bold uppercase"><liferay-ui:message key="type" />:</span>
 
 					<%= HtmlUtil.escape(LanguageUtil.get(request, licenseEntryType)) %>
 
@@ -578,9 +572,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 					<br />
 
-					<span class="bold uppercase">
-						<liferay-ui:message key="expiration-date" />:
-					</span>
+					<span class="bold uppercase"><liferay-ui:message key="expiration-date" />:</span>
 
 					<%= longDateFormatDate.format(new Date(startDate.getTime() + offeringEntry.getLicenseLifetime())) %>
 				</div>
@@ -588,9 +580,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 			<div class="content-column w33">
 				<div class="content-column-content right-column">
-					<span class="bold uppercase">
-						<liferay-ui:message key="version" />:
-					</span>
+					<span class="bold uppercase"><liferay-ui:message key="version" />:</span>
 
 					<%= LanguageUtil.get(request, LicenseKeyConstants.getProductVersionLabel(productVersion)) %>
 
@@ -598,9 +588,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 					<br />
 
-					<span class="bold uppercase">
-						<liferay-ui:message key="license-keys-available" />:
-					</span>
+					<span class="bold uppercase"><liferay-ui:message key="license-keys-available" />:</span>
 
 					<%= licenseKeyMaxServers - licenseKeyCount %>
 				</div>
@@ -609,9 +597,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) %>">
 				<div class="content-column w33">
 					<div class="content-column-content left-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="maximum-concurrent-users" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="maximum-concurrent-users" />:</span>
 
 						<%= LanguageUtil.get(request, offeringDefinition.getMaxConcurrentUsersLabel()) %>
 					</div>
@@ -619,9 +605,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 				<div class="content-column w33">
 					<div class="content-column-content right-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="maximum-users" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="maximum-users" />:</span>
 
 						<%= LanguageUtil.get(request, offeringDefinition.getMaxUsersLabel()) %>
 					</div>

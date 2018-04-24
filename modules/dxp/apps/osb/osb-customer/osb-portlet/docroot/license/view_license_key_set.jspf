@@ -41,9 +41,7 @@ while (!displayLicenseKeys.isEmpty()) {
 				<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
 					<div class="content-column w33">
 						<div class="content-column-content left-column">
-							<span class="bold uppercase">
-								<liferay-ui:message key="created-by" />:
-							</span>
+							<span class="bold uppercase"><liferay-ui:message key="created-by" />:</span>
 
 							<%= HtmlUtil.escape(PortalUtil.getUserName(licenseKey.getUserId(), licenseKey.getUserName())) %>
 						</div>
@@ -51,9 +49,7 @@ while (!displayLicenseKeys.isEmpty()) {
 
 					<div class="content-column w66">
 						<div class="content-column-content right-column">
-							<span class="bold uppercase">
-								<liferay-ui:message key="last-modified" />:
-							</span>
+							<span class="bold uppercase"><liferay-ui:message key="last-modified" />:</span>
 
 							<%= HtmlUtil.escape(PortalUtil.getUserName(licenseKey.getModifiedUserId(), licenseKey.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(licenseKey.getModifiedDate()) %>
 						</div>
@@ -62,9 +58,7 @@ while (!displayLicenseKeys.isEmpty()) {
 
 				<div class="content-column w33">
 					<div class="content-column-content left-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="owner" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="owner" />:</span>
 
 						<%= HtmlUtil.escape(licenseKey.getOwner()) %>
 					</div>
@@ -72,9 +66,7 @@ while (!displayLicenseKeys.isEmpty()) {
 
 				<div class="content-column w66">
 					<div class="content-column-content right-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="description" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="description" />:</span>
 
 						<%= HtmlUtil.escape(licenseKey.getDescription()) %>
 					</div>
@@ -82,17 +74,13 @@ while (!displayLicenseKeys.isEmpty()) {
 
 				<div class="content-column w33">
 					<div class="content-column-content left-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="product" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="product" />:</span>
 
 						<%= productEntryName %>
 
 						<br />
 
-						<span class="bold uppercase">
-							<liferay-ui:message key="start-date" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="start-date" />:</span>
 
 						<c:choose>
 							<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
@@ -107,9 +95,7 @@ while (!displayLicenseKeys.isEmpty()) {
 
 				<div class="content-column w33">
 					<div class="content-column-content middle-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="type" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="type" />:</span>
 
 						<%= LanguageUtil.get(request, licenseEntryType) %>
 
@@ -117,9 +103,7 @@ while (!displayLicenseKeys.isEmpty()) {
 
 						<c:choose>
 							<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
-								<span class="bold uppercase">
-									<liferay-ui:message key="lifetime" />:
-								</span>
+								<span class="bold uppercase"><liferay-ui:message key="lifetime" />:</span>
 
 								<%
 								Date startDate = licenseKey.getStartDate();
@@ -129,9 +113,7 @@ while (!displayLicenseKeys.isEmpty()) {
 								<%= (expirationDate.getTime() - startDate.getTime()) / Time.DAY %> <liferay-ui:message key="days" />
 							</c:when>
 							<c:otherwise>
-								<span class="bold uppercase">
-									<liferay-ui:message key="expiration-date" />:
-								</span>
+								<span class="bold uppercase"><liferay-ui:message key="expiration-date" />:</span>
 
 								<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
 							</c:otherwise>
@@ -141,17 +123,13 @@ while (!displayLicenseKeys.isEmpty()) {
 
 				<div class="content-column w33">
 					<div class="content-column-content right-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="version" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="version" />:</span>
 
 						<%= licenseKey.getProductVersionLabel() %>
 
 						<br />
 
-						<span class="bold uppercase">
-							<liferay-ui:message key="status" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="status" />:</span>
 
 						<c:choose>
 							<c:when test="<%= licenseKey.isExpired() %>">
@@ -186,9 +164,7 @@ while (!displayLicenseKeys.isEmpty()) {
 						<c:choose>
 							<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 								<div>
-									<span class="bold uppercase">
-										<liferay-ui:message key="maximum-servers" />:
-									</span>
+									<span class="bold uppercase"><liferay-ui:message key="maximum-servers" />:</span>
 
 									<%= licenseKey.getMaxServers() %>
 								</div>
@@ -199,9 +175,7 @@ while (!displayLicenseKeys.isEmpty()) {
 								<table class="lfr-table">
 									<tr>
 										<td>
-											<span class="bold uppercase">
-												<liferay-ui:message key="mac-addresses" />:
-											</span>
+											<span class="bold uppercase"><liferay-ui:message key="mac-addresses" />:</span>
 										</td>
 										<td>
 
@@ -232,9 +206,7 @@ while (!displayLicenseKeys.isEmpty()) {
 								<table class="lfr-table">
 									<tr>
 										<td>
-											<span class="bold uppercase">
-												<liferay-ui:message key="mac-addresses" />:
-											</span>
+											<span class="bold uppercase"><liferay-ui:message key="mac-addresses" />:</span>
 										</td>
 										<td>
 
@@ -259,9 +231,7 @@ while (!displayLicenseKeys.isEmpty()) {
 							</c:when>
 							<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
 								<div>
-									<span class="bold uppercase">
-										<liferay-ui:message key="server-id" />:
-									</span>
+									<span class="bold uppercase"><liferay-ui:message key="server-id" />:</span>
 
 									<%= licenseKey.getServerId() %>
 								</div>
@@ -276,9 +246,7 @@ while (!displayLicenseKeys.isEmpty()) {
 					<div>
 						<br />
 
-						<span class="bold uppercase">
-							<liferay-ui:message key="key" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="key" />:</span>
 
 						<liferay-ui:input-resource
 							url="<%= licenseKey.getKey() %>"

@@ -18,9 +18,7 @@
 	<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
 		<div class="content-column w33">
 			<div class="content-column-content left-column">
-				<span class="bold uppercase">
-					<liferay-ui:message key="created-by" />:
-				</span>
+				<span class="bold uppercase"><liferay-ui:message key="created-by" />:</span>
 
 				<%= HtmlUtil.escape(PortalUtil.getUserName(licenseKey.getUserId(), licenseKey.getUserName())) %>
 			</div>
@@ -28,9 +26,7 @@
 
 		<div class="content-column w66">
 			<div class="content-column-content right-column">
-				<span class="bold uppercase">
-					<liferay-ui:message key="last-modified" />:
-				</span>
+				<span class="bold uppercase"><liferay-ui:message key="last-modified" />:</span>
 
 				<%= HtmlUtil.escape(PortalUtil.getUserName(licenseKey.getModifiedUserId(), licenseKey.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(licenseKey.getModifiedDate()) %>
 			</div>
@@ -40,9 +36,7 @@
 	<c:if test="<%= !licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) %>">
 		<div class="content-column w33">
 			<div class="content-column-content left-column">
-				<span class="bold uppercase">
-					<liferay-ui:message key="owner" />:
-				</span>
+				<span class="bold uppercase"><liferay-ui:message key="owner" />:</span>
 
 				<%= HtmlUtil.escape(licenseKey.getOwner()) %>
 			</div>
@@ -50,9 +44,7 @@
 
 		<div class="content-column w66">
 			<div class="content-column-content right-column">
-				<span class="bold uppercase">
-					<liferay-ui:message key="description" />:
-				</span>
+				<span class="bold uppercase"><liferay-ui:message key="description" />:</span>
 
 				<%= HtmlUtil.escape(licenseKey.getDescription()) %>
 			</div>
@@ -61,17 +53,13 @@
 
 	<div class="content-column w33">
 		<div class="content-column-content left-column">
-			<span class="bold uppercase">
-				<liferay-ui:message key="product" />:
-			</span>
+			<span class="bold uppercase"><liferay-ui:message key="product" />:</span>
 
 			<%= productEntryName %>
 
 			<br />
 
-			<span class="bold uppercase">
-				<liferay-ui:message key="start-date" />:
-			</span>
+			<span class="bold uppercase"><liferay-ui:message key="start-date" />:</span>
 
 			<c:choose>
 				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
@@ -86,9 +74,7 @@
 
 	<div class="content-column w33">
 		<div class="content-column-content middle-column">
-			<span class="bold uppercase">
-				<liferay-ui:message key="type" />:
-			</span>
+			<span class="bold uppercase"><liferay-ui:message key="type" />:</span>
 
 			<%= LanguageUtil.get(request, licenseEntryType) %>
 
@@ -96,9 +82,7 @@
 
 			<c:choose>
 				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
-					<span class="bold uppercase">
-						<liferay-ui:message key="lifetime" />:
-					</span>
+					<span class="bold uppercase"><liferay-ui:message key="lifetime" />:</span>
 
 					<%
 					Date startDate = licenseKey.getStartDate();
@@ -108,9 +92,7 @@
 					<%= (expirationDate.getTime() - startDate.getTime()) / Time.DAY %> <liferay-ui:message key="days" />
 				</c:when>
 				<c:otherwise>
-					<span class="bold uppercase">
-						<liferay-ui:message key="expiration-date" />:
-					</span>
+					<span class="bold uppercase"><liferay-ui:message key="expiration-date" />:</span>
 
 					<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
 				</c:otherwise>
@@ -120,18 +102,14 @@
 
 	<div class="content-column w33">
 		<div class="content-column-content right-column">
-			<span class="bold uppercase">
-				<liferay-ui:message key="version" />:
-			</span>
+			<span class="bold uppercase"><liferay-ui:message key="version" />:</span>
 
 			<%= licenseKey.getProductVersionLabel() %>
 
 			<c:if test="<%= !licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) %>">
 				<br />
 
-				<span class="bold uppercase">
-					<liferay-ui:message key="status" />:
-				</span>
+				<span class="bold uppercase"><liferay-ui:message key="status" />:</span>
 
 				<c:choose>
 					<c:when test="<%= licenseKey.isExpired() %>">
@@ -163,9 +141,7 @@
 	<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 		<div class="content-column w100">
 			<div class="content-column-content">
-				<span class="bold uppercase">
-					<liferay-ui:message key="maximum-connections" />:
-				</span>
+				<span class="bold uppercase"><liferay-ui:message key="maximum-connections" />:</span>
 
 				<%= licenseKey.getMaxHttpSessions() %>
 			</div>
@@ -175,9 +151,7 @@
 	<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) %>">
 		<div class="content-column w33">
 			<div class="content-column-content left-column">
-				<span class="bold uppercase">
-					<liferay-ui:message key="maximum-concurrent-users" />:
-				</span>
+				<span class="bold uppercase"><liferay-ui:message key="maximum-concurrent-users" />:</span>
 
 				<%= LanguageUtil.get(request, OfferingDefinitionConstants.getMaxConcurrentUsersLabel(licenseKey.getMaxConcurrentUsers())) %>
 			</div>
@@ -185,9 +159,7 @@
 
 		<div class="content-column w33">
 			<div class="content-column-content right-column">
-				<span class="bold uppercase">
-					<liferay-ui:message key="maximum-users" />:
-				</span>
+				<span class="bold uppercase"><liferay-ui:message key="maximum-users" />:</span>
 
 				<%= LanguageUtil.get(request, OfferingDefinitionConstants.getMaxUsersLabel(licenseKey.getMaxUsers())) %>
 			</div>
@@ -197,9 +169,7 @@
 	<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) %>">
 		<div class="content-column w100">
 			<div class="content-column-content">
-				<span class="bold uppercase">
-					<liferay-ui:message key="maximum-servers" />:
-				</span>
+				<span class="bold uppercase"><liferay-ui:message key="maximum-servers" />:</span>
 
 				<%= licenseKey.getMaxServers() %>
 			</div>
@@ -222,9 +192,7 @@
 
 				<div class="content-column w33">
 					<div class="content-column-content left-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="owner" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="owner" />:</span>
 
 						<%= HtmlUtil.escape(clusterLicenseKey.getOwner()) %>
 					</div>
@@ -232,9 +200,7 @@
 
 				<div class="content-column w66">
 					<div class="content-column-content right-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="description" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="description" />:</span>
 
 						<%= HtmlUtil.escape(clusterLicenseKey.getDescription()) %>
 					</div>
@@ -242,17 +208,13 @@
 
 				<div class="content-column w33">
 					<div class="content-column-content left-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="host-name" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="host-name" />:</span>
 
 						<%= HtmlUtil.escape(clusterLicenseKey.getHostName()) %>
 
 						<br />
 
-						<span class="bold uppercase">
-							<liferay-ui:message key="status" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="status" />:</span>
 
 						<c:choose>
 							<c:when test="<%= clusterLicenseKey.isExpired() %>">
@@ -285,9 +247,7 @@
 						<table class="lfr-table">
 							<tr>
 								<td>
-									<span class="bold uppercase">
-										<liferay-ui:message key="ip-addresses" />:
-									</span>
+									<span class="bold uppercase"><liferay-ui:message key="ip-addresses" />:</span>
 								</td>
 								<td>
 
@@ -312,9 +272,7 @@
 						<table class="lfr-table">
 							<tr>
 								<td>
-									<span class="bold uppercase">
-										<liferay-ui:message key="mac-addresses" />:
-									</span>
+									<span class="bold uppercase"><liferay-ui:message key="mac-addresses" />:</span>
 								</td>
 								<td>
 
@@ -403,9 +361,7 @@
 			<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_LIMITED) || licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
 				<div class="content-column w33">
 					<div class="content-column-content left-column">
-						<span class="bold uppercase">
-							<liferay-ui:message key="host-name" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="host-name" />:</span>
 
 						<%= HtmlUtil.escape(licenseKey.getHostName()) %>
 					</div>
@@ -416,9 +372,7 @@
 						<table class="lfr-table">
 							<tr>
 								<td>
-									<span class="bold uppercase">
-										<liferay-ui:message key="ip-addresses" />:
-									</span>
+									<span class="bold uppercase"><liferay-ui:message key="ip-addresses" />:</span>
 								</td>
 								<td>
 
@@ -443,9 +397,7 @@
 						<table class="lfr-table">
 							<tr>
 								<td>
-									<span class="bold uppercase">
-										<liferay-ui:message key="mac-addresses" />:
-									</span>
+									<span class="bold uppercase"><liferay-ui:message key="mac-addresses" />:</span>
 								</td>
 								<td>
 
@@ -472,9 +424,7 @@
 				<c:if test="<%= Validator.isNotNull(serverId) %>">
 					<div class="content-column w100">
 						<div class="content-column-content">
-							<span class="bold uppercase">
-								<liferay-ui:message key="server-id" />:
-							</span>
+							<span class="bold uppercase"><liferay-ui:message key="server-id" />:</span>
 
 							<%= serverId %>
 						</div>

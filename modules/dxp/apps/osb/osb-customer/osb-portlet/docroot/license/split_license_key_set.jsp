@@ -62,9 +62,7 @@ String productEntryName = licenseKey.getProductEntryName();
 
 	<div class="content-column w33">
 		<div class="content-column-content left-column">
-			<span class="bold uppercase">
-				<liferay-ui:message key="owner" />:
-			</span>
+			<span class="bold uppercase"><liferay-ui:message key="owner" />:</span>
 
 			<%= HtmlUtil.escape(licenseKey.getOwner()) %>
 		</div>
@@ -80,17 +78,13 @@ String productEntryName = licenseKey.getProductEntryName();
 
 	<div class="content-column w33">
 		<div class="content-column-content left-column">
-			<span class="bold uppercase">
-				<liferay-ui:message key="product" />:
-			</span>
+			<span class="bold uppercase"><liferay-ui:message key="product" />:</span>
 
 			<%= productEntryName %>
 
 			<br />
 
-			<span class="bold uppercase">
-				<liferay-ui:message key="start-date" />:
-			</span>
+			<span class="bold uppercase"><liferay-ui:message key="start-date" />:</span>
 
 			<c:choose>
 				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
@@ -105,9 +99,7 @@ String productEntryName = licenseKey.getProductEntryName();
 
 	<div class="content-column w33">
 		<div class="content-column-content middle-column">
-			<span class="bold uppercase">
-				<liferay-ui:message key="type" />:
-			</span>
+			<span class="bold uppercase"><liferay-ui:message key="type" />:</span>
 
 			<%= LanguageUtil.get(request, licenseEntryType) %>
 
@@ -115,9 +107,7 @@ String productEntryName = licenseKey.getProductEntryName();
 
 			<c:choose>
 				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_TRIAL) %>">
-					<span class="bold uppercase">
-						<liferay-ui:message key="lifetime" />:
-					</span>
+					<span class="bold uppercase"><liferay-ui:message key="lifetime" />:</span>
 
 					<%
 					Date startDate = licenseKey.getStartDate();
@@ -127,9 +117,7 @@ String productEntryName = licenseKey.getProductEntryName();
 					<%= (expirationDate.getTime() - startDate.getTime()) / Time.DAY %> <liferay-ui:message key="days" />
 				</c:when>
 				<c:otherwise>
-					<span class="bold uppercase">
-						<liferay-ui:message key="expiration-date" />:
-					</span>
+					<span class="bold uppercase"><liferay-ui:message key="expiration-date" />:</span>
 
 					<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
 				</c:otherwise>
@@ -139,17 +127,13 @@ String productEntryName = licenseKey.getProductEntryName();
 
 	<div class="content-column w33">
 		<div class="content-column-content right-column">
-			<span class="bold uppercase">
-				<liferay-ui:message key="version" />:
-			</span>
+			<span class="bold uppercase"><liferay-ui:message key="version" />:</span>
 
 			<%= licenseKey.getProductVersionLabel() %>
 
 			<br />
 
-			<span class="bold uppercase">
-				<liferay-ui:message key="status" />:
-			</span>
+			<span class="bold uppercase"><liferay-ui:message key="status" />:</span>
 
 			<c:choose>
 				<c:when test="<%= licenseKey.isExpired() %>">
@@ -184,9 +168,7 @@ String productEntryName = licenseKey.getProductEntryName();
 			<c:choose>
 				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) || licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER) %>">
 					<div>
-						<span class="bold uppercase">
-							<liferay-ui:message key="maximum-servers" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="maximum-servers" />:</span>
 
 						<%= licenseKey.getMaxServers() %>
 					</div>
@@ -197,9 +179,7 @@ String productEntryName = licenseKey.getProductEntryName();
 					<table class="lfr-table">
 						<tr>
 							<td>
-								<span class="bold uppercase">
-									<liferay-ui:message key="mac-addresses" />:
-								</span>
+								<span class="bold uppercase"><liferay-ui:message key="mac-addresses" />:</span>
 							</td>
 							<td>
 
@@ -228,9 +208,7 @@ String productEntryName = licenseKey.getProductEntryName();
 					<table class="lfr-table">
 						<tr>
 							<td>
-								<span class="bold uppercase">
-									<liferay-ui:message key="mac-addresses" />:
-								</span>
+								<span class="bold uppercase"><liferay-ui:message key="mac-addresses" />:</span>
 							</td>
 							<td>
 
@@ -253,9 +231,7 @@ String productEntryName = licenseKey.getProductEntryName();
 				</c:when>
 				<c:when test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PRODUCTION) %>">
 					<div>
-						<span class="bold uppercase">
-							<liferay-ui:message key="server-id" />:
-						</span>
+						<span class="bold uppercase"><liferay-ui:message key="server-id" />:</span>
 
 						<%= licenseKey.getServerId() %>
 					</div>

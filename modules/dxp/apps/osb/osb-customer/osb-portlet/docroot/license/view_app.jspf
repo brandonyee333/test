@@ -117,13 +117,19 @@
 				>
 					<c:choose>
 						<c:when test="<%= licenseKey.isExpired() %>">
-							<div class="v-expired"><liferay-ui:message key="expired" /></div>
+							<div class="v-expired">
+								<liferay-ui:message key="expired" />
+							</div>
 						</c:when>
 						<c:when test="<%= !licenseKey.isActive() %>">
-							<div class="v-inactive"><liferay-ui:message key="inactive" /></div>
+							<div class="v-inactive">
+								<liferay-ui:message key="inactive" />
+							</div>
 						</c:when>
 						<c:otherwise>
-							<div class="v-active"><liferay-ui:message key="active" /></div>
+							<div class="v-active">
+								<liferay-ui:message key="active" />
+							</div>
 						</c:otherwise>
 					</c:choose>
 				</liferay-ui:search-container-column-text>
