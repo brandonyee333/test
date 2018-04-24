@@ -544,7 +544,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 			<div class="content-column w33">
 				<div class="content-column-content left-column">
-					<span class="txt-b txt-up">
+					<span class="bold uppercase">
 						<liferay-ui:message key="product" />:
 					</span>
 
@@ -554,7 +554,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 					<br />
 
-					<span class="txt-b txt-up">
+					<span class="bold uppercase">
 						<liferay-ui:message key="start-date" />:
 					</span>
 
@@ -568,7 +568,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 			<div class="content-column w33">
 				<div class="content-column-content middle-column">
-					<span class="txt-b txt-up">
+					<span class="bold uppercase">
 						<liferay-ui:message key="type" />:
 					</span>
 
@@ -578,7 +578,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 					<br />
 
-					<span class="txt-b txt-up">
+					<span class="bold uppercase">
 						<liferay-ui:message key="expiration-date" />:
 					</span>
 
@@ -588,7 +588,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 			<div class="content-column w33">
 				<div class="content-column-content right-column">
-					<span class="txt-b txt-up">
+					<span class="bold uppercase">
 						<liferay-ui:message key="version" />:
 					</span>
 
@@ -598,7 +598,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 					<br />
 
-					<span class="txt-b txt-up">
+					<span class="bold uppercase">
 						<liferay-ui:message key="license-keys-available" />:
 					</span>
 
@@ -609,7 +609,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			<c:if test="<%= licenseEntryType.equals(LicenseEntryConstants.TYPE_PER_USER) %>">
 				<div class="content-column w33">
 					<div class="content-column-content left-column">
-						<span class="txt-b txt-up">
+						<span class="bold uppercase">
 							<liferay-ui:message key="maximum-concurrent-users" />:
 						</span>
 
@@ -619,7 +619,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 				<div class="content-column w33">
 					<div class="content-column-content right-column">
-						<span class="txt-b txt-up">
+						<span class="bold uppercase">
 							<liferay-ui:message key="maximum-users" />:
 						</span>
 
