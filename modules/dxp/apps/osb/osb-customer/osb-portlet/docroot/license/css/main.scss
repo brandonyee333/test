@@ -28,6 +28,10 @@
 		width: 178px;
 	}
 
+	.content-column-content {
+		word-wrap: break-word;
+	}
+
 	.highlight-cluster {
 		border: 1px solid #000;
 	}
@@ -125,10 +129,6 @@
 		.greyout {
 			color: #C7C8C8;
 		}
-	}
-
-	.content-column-content {
-		word-wrap: break-word;
 	}
 
 	.v-active {
