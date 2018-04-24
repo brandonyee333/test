@@ -618,7 +618,7 @@
 
 		_skipParse: false,
 
-		_verbatim: true
+		_verbatim: false
 	};
 
 	CKEDITOR.plugins.add(
