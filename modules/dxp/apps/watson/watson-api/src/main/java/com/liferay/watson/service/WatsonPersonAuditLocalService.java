@@ -77,6 +77,7 @@ public interface WatsonPersonAuditLocalService extends BaseLocalService,
 	* @param watsonPersonAuditId the primary key for the new watson person audit
 	* @return the new watson person audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonPersonAudit createWatsonPersonAudit(long watsonPersonAuditId);
 
 	/**

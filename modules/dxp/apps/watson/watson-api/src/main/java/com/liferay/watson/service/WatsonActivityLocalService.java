@@ -76,6 +76,7 @@ public interface WatsonActivityLocalService extends BaseLocalService,
 	* @param watsonActivityId the primary key for the new watson activity
 	* @return the new watson activity
 	*/
+	@Transactional(enabled = false)
 	public WatsonActivity createWatsonActivity(long watsonActivityId);
 
 	/**

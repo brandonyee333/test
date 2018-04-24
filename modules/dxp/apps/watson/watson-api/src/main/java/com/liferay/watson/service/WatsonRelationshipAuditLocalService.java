@@ -77,6 +77,7 @@ public interface WatsonRelationshipAuditLocalService extends BaseLocalService,
 	* @param watsonRelationshipAuditId the primary key for the new watson relationship audit
 	* @return the new watson relationship audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonRelationshipAudit createWatsonRelationshipAudit(
 		long watsonRelationshipAuditId);
 

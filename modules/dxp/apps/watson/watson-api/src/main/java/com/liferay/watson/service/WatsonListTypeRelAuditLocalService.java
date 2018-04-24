@@ -77,6 +77,7 @@ public interface WatsonListTypeRelAuditLocalService extends BaseLocalService,
 	* @param watsonListTypeRelAuditId the primary key for the new watson list type rel audit
 	* @return the new watson list type rel audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonListTypeRelAudit createWatsonListTypeRelAudit(
 		long watsonListTypeRelAuditId);
 

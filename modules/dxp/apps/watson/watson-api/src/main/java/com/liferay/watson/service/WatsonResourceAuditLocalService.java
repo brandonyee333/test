@@ -77,6 +77,7 @@ public interface WatsonResourceAuditLocalService extends BaseLocalService,
 	* @param watsonResourceAuditId the primary key for the new watson resource audit
 	* @return the new watson resource audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonResourceAudit createWatsonResourceAudit(
 		long watsonResourceAuditId);
 

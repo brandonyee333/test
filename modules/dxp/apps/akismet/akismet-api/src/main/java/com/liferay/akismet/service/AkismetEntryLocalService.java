@@ -77,6 +77,7 @@ public interface AkismetEntryLocalService extends BaseLocalService,
 	* @param akismetEntryId the primary key for the new akismet entry
 	* @return the new akismet entry
 	*/
+	@Transactional(enabled = false)
 	public AkismetEntry createAkismetEntry(long akismetEntryId);
 
 	/**

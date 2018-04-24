@@ -77,6 +77,7 @@ public interface WatsonRelationshipLocalService extends BaseLocalService,
 	* @param watsonRelationshipId the primary key for the new watson relationship
 	* @return the new watson relationship
 	*/
+	@Transactional(enabled = false)
 	public WatsonRelationship createWatsonRelationship(
 		long watsonRelationshipId);
 

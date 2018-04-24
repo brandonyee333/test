@@ -77,6 +77,7 @@ public interface WatsonHistoryAuditLocalService extends BaseLocalService,
 	* @param watsonHistoryAuditId the primary key for the new watson history audit
 	* @return the new watson history audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonHistoryAudit createWatsonHistoryAudit(
 		long watsonHistoryAuditId);
 

@@ -77,6 +77,7 @@ public interface WatsonVehicleAuditLocalService extends BaseLocalService,
 	* @param watsonVehicleAuditId the primary key for the new watson vehicle audit
 	* @return the new watson vehicle audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonVehicleAudit createWatsonVehicleAudit(
 		long watsonVehicleAuditId);
 

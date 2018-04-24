@@ -37,6 +37,7 @@ import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -121,6 +122,7 @@ public abstract class WatsonPersonLocalServiceBaseImpl
 	 * @return the new watson person
 	 */
 	@Override
+	@Transactional(enabled = false)
 	public WatsonPerson createWatsonPerson(long watsonPersonId) {
 		return watsonPersonPersistence.create(watsonPersonId);
 	}

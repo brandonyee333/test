@@ -77,6 +77,7 @@ public interface WatsonActivityAuditLocalService extends BaseLocalService,
 	* @param watsonActivityAuditId the primary key for the new watson activity audit
 	* @return the new watson activity audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonActivityAudit createWatsonActivityAudit(
 		long watsonActivityAuditId);
 

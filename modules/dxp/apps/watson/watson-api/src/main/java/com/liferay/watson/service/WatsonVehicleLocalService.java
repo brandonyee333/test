@@ -76,6 +76,7 @@ public interface WatsonVehicleLocalService extends BaseLocalService,
 	* @param watsonVehicleId the primary key for the new watson vehicle
 	* @return the new watson vehicle
 	*/
+	@Transactional(enabled = false)
 	public WatsonVehicle createWatsonVehicle(long watsonVehicleId);
 
 	/**

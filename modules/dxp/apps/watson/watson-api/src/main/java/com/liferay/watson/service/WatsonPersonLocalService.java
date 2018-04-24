@@ -76,6 +76,7 @@ public interface WatsonPersonLocalService extends BaseLocalService,
 	* @param watsonPersonId the primary key for the new watson person
 	* @return the new watson person
 	*/
+	@Transactional(enabled = false)
 	public WatsonPerson createWatsonPerson(long watsonPersonId);
 
 	/**

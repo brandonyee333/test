@@ -76,6 +76,7 @@ public interface WatsonReportLocalService extends BaseLocalService,
 	* @param watsonReportId the primary key for the new watson report
 	* @return the new watson report
 	*/
+	@Transactional(enabled = false)
 	public WatsonReport createWatsonReport(long watsonReportId);
 
 	/**

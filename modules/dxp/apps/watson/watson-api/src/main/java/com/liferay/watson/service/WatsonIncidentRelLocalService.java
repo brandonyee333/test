@@ -77,6 +77,7 @@ public interface WatsonIncidentRelLocalService extends BaseLocalService,
 	* @param watsonIncidentRelId the primary key for the new watson incident rel
 	* @return the new watson incident rel
 	*/
+	@Transactional(enabled = false)
 	public WatsonIncidentRel createWatsonIncidentRel(long watsonIncidentRelId);
 
 	/**

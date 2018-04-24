@@ -103,6 +103,7 @@ public interface KaleoDraftDefinitionLocalService extends BaseLocalService,
 	* @param kaleoDraftDefinitionId the primary key for the new kaleo draft definition
 	* @return the new kaleo draft definition
 	*/
+	@Transactional(enabled = false)
 	public KaleoDraftDefinition createKaleoDraftDefinition(
 		long kaleoDraftDefinitionId);
 

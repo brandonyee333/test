@@ -76,6 +76,7 @@ public interface WatsonAddressLocalService extends BaseLocalService,
 	* @param watsonAddressId the primary key for the new watson address
 	* @return the new watson address
 	*/
+	@Transactional(enabled = false)
 	public WatsonAddress createWatsonAddress(long watsonAddressId);
 
 	/**

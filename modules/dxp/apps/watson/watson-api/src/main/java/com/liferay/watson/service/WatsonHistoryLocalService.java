@@ -76,6 +76,7 @@ public interface WatsonHistoryLocalService extends BaseLocalService,
 	* @param watsonHistoryId the primary key for the new watson history
 	* @return the new watson history
 	*/
+	@Transactional(enabled = false)
 	public WatsonHistory createWatsonHistory(long watsonHistoryId);
 
 	/**

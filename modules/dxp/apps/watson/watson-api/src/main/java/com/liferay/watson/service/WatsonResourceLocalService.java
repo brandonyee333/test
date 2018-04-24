@@ -76,6 +76,7 @@ public interface WatsonResourceLocalService extends BaseLocalService,
 	* @param watsonResourceId the primary key for the new watson resource
 	* @return the new watson resource
 	*/
+	@Transactional(enabled = false)
 	public WatsonResource createWatsonResource(long watsonResourceId);
 
 	/**

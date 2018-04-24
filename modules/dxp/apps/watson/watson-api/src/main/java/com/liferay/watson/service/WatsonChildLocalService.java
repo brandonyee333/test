@@ -76,6 +76,7 @@ public interface WatsonChildLocalService extends BaseLocalService,
 	* @param watsonChildId the primary key for the new watson child
 	* @return the new watson child
 	*/
+	@Transactional(enabled = false)
 	public WatsonChild createWatsonChild(long watsonChildId);
 
 	/**

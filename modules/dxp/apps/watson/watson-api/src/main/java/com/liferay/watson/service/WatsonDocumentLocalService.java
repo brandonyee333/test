@@ -76,6 +76,7 @@ public interface WatsonDocumentLocalService extends BaseLocalService,
 	* @param watsonDocumentId the primary key for the new watson document
 	* @return the new watson document
 	*/
+	@Transactional(enabled = false)
 	public WatsonDocument createWatsonDocument(long watsonDocumentId);
 
 	/**

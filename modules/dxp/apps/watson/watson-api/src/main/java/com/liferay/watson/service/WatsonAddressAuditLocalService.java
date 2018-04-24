@@ -77,6 +77,7 @@ public interface WatsonAddressAuditLocalService extends BaseLocalService,
 	* @param watsonAddressAuditId the primary key for the new watson address audit
 	* @return the new watson address audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonAddressAudit createWatsonAddressAudit(
 		long watsonAddressAuditId);
 

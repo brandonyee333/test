@@ -77,6 +77,7 @@ public interface WatsonReportAuditLocalService extends BaseLocalService,
 	* @param watsonReportAuditId the primary key for the new watson report audit
 	* @return the new watson report audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonReportAudit createWatsonReportAudit(long watsonReportAuditId);
 
 	/**

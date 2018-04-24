@@ -80,6 +80,7 @@ public interface WatsonTokenAuthEntryLocalService extends BaseLocalService,
 	* @param watsonTokenAuthEntryId the primary key for the new watson token auth entry
 	* @return the new watson token auth entry
 	*/
+	@Transactional(enabled = false)
 	public WatsonTokenAuthEntry createWatsonTokenAuthEntry(
 		long watsonTokenAuthEntryId);
 

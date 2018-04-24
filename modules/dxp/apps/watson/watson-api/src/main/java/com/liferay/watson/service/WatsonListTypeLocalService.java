@@ -76,6 +76,7 @@ public interface WatsonListTypeLocalService extends BaseLocalService,
 	* @param watsonListTypeId the primary key for the new watson list type
 	* @return the new watson list type
 	*/
+	@Transactional(enabled = false)
 	public WatsonListType createWatsonListType(long watsonListTypeId);
 
 	/**

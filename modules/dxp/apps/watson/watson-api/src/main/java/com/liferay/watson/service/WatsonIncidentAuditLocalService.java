@@ -77,6 +77,7 @@ public interface WatsonIncidentAuditLocalService extends BaseLocalService,
 	* @param watsonIncidentAuditId the primary key for the new watson incident audit
 	* @return the new watson incident audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonIncidentAudit createWatsonIncidentAudit(
 		long watsonIncidentAuditId);
 

@@ -77,6 +77,7 @@ public interface WatsonListTypeRelLocalService extends BaseLocalService,
 	* @param watsonListTypeRelId the primary key for the new watson list type rel
 	* @return the new watson list type rel
 	*/
+	@Transactional(enabled = false)
 	public WatsonListTypeRel createWatsonListTypeRel(long watsonListTypeRelId);
 
 	/**

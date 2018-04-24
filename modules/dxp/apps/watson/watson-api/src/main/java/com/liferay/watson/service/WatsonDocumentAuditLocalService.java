@@ -77,6 +77,7 @@ public interface WatsonDocumentAuditLocalService extends BaseLocalService,
 	* @param watsonDocumentAuditId the primary key for the new watson document audit
 	* @return the new watson document audit
 	*/
+	@Transactional(enabled = false)
 	public WatsonDocumentAudit createWatsonDocumentAudit(
 		long watsonDocumentAuditId);
 

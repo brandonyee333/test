@@ -76,6 +76,7 @@ public interface WatsonIncidentLocalService extends BaseLocalService,
 	* @param watsonIncidentId the primary key for the new watson incident
 	* @return the new watson incident
 	*/
+	@Transactional(enabled = false)
 	public WatsonIncident createWatsonIncident(long watsonIncidentId);
 
 	/**
