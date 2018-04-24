@@ -46,6 +46,7 @@ class DateRangeInput extends JSXComponent {
 					className="watson-input"
 					disabled={disabled}
 					endDate={endDate}
+					endDateId="endDatePicker"
 					endDatePlaceholderText={Liferay.Language.get('end-date')}
 					focusedInput={focusedInput}
 					hideKeyboardShortcutsPanel={true}
@@ -56,6 +57,7 @@ class DateRangeInput extends JSXComponent {
 					orientation="vertical"
 					reopenPickerOnClearDates={true}
 					startDate={startDate}
+					startDateId="startDatePicker"
 					startDatePlaceholderText={Liferay.Language.get('start-date')}
 				/>
 			</div>

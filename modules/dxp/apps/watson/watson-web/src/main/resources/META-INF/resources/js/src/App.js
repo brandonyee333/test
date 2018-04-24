@@ -1,3 +1,5 @@
+import 'react-dates/initialize';
+
 import {debounce} from 'lodash';
 import JSXComponent from 'metal-jsx';
 import Router from 'metal-router';
