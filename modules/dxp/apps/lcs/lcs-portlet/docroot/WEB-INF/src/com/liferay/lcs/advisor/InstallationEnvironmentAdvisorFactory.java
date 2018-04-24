@@ -14,13 +14,33 @@
 
 package com.liferay.lcs.advisor;
 
+import com.liferay.portal.kernel.util.OSDetector;
+
 /**
  * @author Igor Beslic
  */
 public class InstallationEnvironmentAdvisorFactory {
 
 	public static InstallationEnvironmentAdvisor getInstance() {
-		return new DefaultInstallationEnvironmentAdvisor();
+		if (_installationEnvironmentAdvisor == null) {
+			if (OSDetector.isAIX()) {
+				_installationEnvironmentAdvisor =
+					new AIXInstallationEnvironmentAdvisor();
+			}
+			else if (OSDetector.isLinux()) {
+				_installationEnvironmentAdvisor =
+					new LinuxInstallationEnvironmentAdvisor();
+			}
+			else {
+				_installationEnvironmentAdvisor =
+					new DefaultInstallationEnvironmentAdvisor();
+			}
+		}
+
+		return _installationEnvironmentAdvisor;
 	}
+
+	private static InstallationEnvironmentAdvisor
+		_installationEnvironmentAdvisor;
 
 }
