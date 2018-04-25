@@ -14,11 +14,39 @@
 
 package com.liferay.osb.admin.util;
 
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.OrderEntry;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.service.OrderEntryLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.OSBPortletKeys;
+import com.liferay.osb.util.SalesforceConstants;
+import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.DocumentImpl;
+import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.search.IndexWriterHelperUtil;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
 import com.liferay.portal.kernel.search.Summary;
+import com.liferay.portal.kernel.search.filter.BooleanFilter;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowTask;
+import com.liferay.portal.kernel.workflow.WorkflowTaskAssignee;
+import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
 
+import java.io.Serializable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -26,98 +54,50 @@ import javax.portlet.PortletResponse;
 /**
  * @author Amos Fong
  */
-public class WorkflowIndexer<T> extends BaseIndexer<T> {
+public class WorkflowTaskIndexer extends BaseIndexer<WorkflowTask> {
 
-	@Override
-	public String getClassName() {
+	public static final String CLASS_NAME = WorkflowTask.class.getName();
 
-		// TODO Auto-generated method stub
-
-		return null;
-	}
-
-	@Override
-	protected void doDelete(T object) throws Exception {
-
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected Document doGetDocument(T object) throws Exception {
-
-		// TODO Auto-generated method stub
-
-		return null;
-	}
-
-	@Override
-	protected Summary doGetSummary(
-			Document document, Locale locale, String snippet,
-			PortletRequest portletRequest, PortletResponse portletResponse)
-		throws Exception {
-
-		// TODO Auto-generated method stub
-
-		return null;
-	}
-
-	@Override
-	protected void doReindex(String className, long classPK) throws Exception {
-
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void doReindex(String[] ids) throws Exception {
-
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void doReindex(T object) throws Exception {
-
-		// TODO Auto-generated method stub
-
-	}
-
-	/*public static final String[] CLASS_NAMES = {WorkflowTask.class.getName()};
+	public static final String[] CLASS_NAMES = {CLASS_NAME};
 
 	public static final String PORTLET_ID = OSBPortletKeys.OSB_ADMIN;
 
-	public String[] getClassNames() {
+	@Override
+	public String getClassName() {
+		return CLASS_NAME;
+	}
+
+	public String[] getSearchClassNames() {
 		return CLASS_NAMES;
 	}
 
-	public String getPortletId() {
-		return PORTLET_ID;
+	@Override
+	public void postProcessContextBooleanFilter(
+			BooleanFilter contextBooleanFilter, SearchContext searchContext)
+		throws Exception {
 	}
 
 	@Override
-	protected void doDelete(Object obj) throws Exception {
-		WorkflowTask workflowTask = (WorkflowTask)obj;
-
+	protected void doDelete(WorkflowTask workflowTask) throws Exception {
 		Document document = new DocumentImpl();
 
 		document.addUID(
-			PORTLET_ID, WorkflowTask.class.getName(),
+			PORTLET_ID, CLASS_NAME,
 			String.valueOf(workflowTask.getWorkflowTaskId()));
 
-		SearchEngineUtil.deleteDocument(
+		IndexWriterHelperUtil.deleteDocument(
 			getSearchEngineId(), OSBConstants.COMPANY_ID,
-			document.get(Field.UID));
+			document.get(Field.UID), false);
 	}
 
 	@Override
-	protected Document doGetDocument(Object obj) throws Exception {
-		WorkflowTask workflowTask = (WorkflowTask)obj;
+	protected Document doGetDocument(WorkflowTask workflowTask)
+		throws Exception {
 
 		Document document = new DocumentImpl();
 
 		document.addUID(
-			PORTLET_ID, WorkflowTask.class.getName(),
+			PORTLET_ID, CLASS_NAME,
 			String.valueOf(workflowTask.getWorkflowTaskId()));
 
 		document.addDate(Field.CREATE_DATE, workflowTask.getCreateDate());
@@ -148,27 +128,6 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 		document.addDate("completionDate", workflowTask.getCompletionDate());
 		document.addDate("dueDate", workflowTask.getDueDate());
 
-		String salesforceOpportunityAction = GetterUtil.getString(
-			workflowContext.get(
-				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
-		int salesforceOpportunityType = GetterUtil.getInteger(
-			workflowContext.get(
-				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE));
-
-		String salesforceOpportunityTaskName =
-			SalesforceConstants.getOpportunityTaskName(
-				salesforceOpportunityType, salesforceOpportunityAction);
-
-		document.addKeyword(
-			"salesforceOpportunityTaskName", salesforceOpportunityTaskName);
-
-		document.addKeyword(
-			"salesforceOpportunityType", salesforceOpportunityType);
-		document.addKeyword(
-			"salesforceOpportunityTypeLabel",
-			SalesforceConstants.getOpportunityTypeLabel(
-				salesforceOpportunityType));
-
 		String className = (String)workflowContext.get(
 			WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME);
 		long classPK = GetterUtil.getLong(
@@ -188,8 +147,31 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 			accountEntry = orderEntry.getAccountEntry();
 		}
 
-		document.addText("projectCode", accountEntry.getCode());
-		document.addText("projectName", accountEntry.getName());
+		if (Validator.isNotNull(accountEntry)) {
+			String salesforceOpportunityAction = GetterUtil.getString(
+				workflowContext.get(
+					WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
+			int salesforceOpportunityType = GetterUtil.getInteger(
+				workflowContext.get(
+					WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE));
+
+			String salesforceOpportunityTaskName =
+				SalesforceConstants.getOpportunityTaskName(
+					salesforceOpportunityType, salesforceOpportunityAction);
+
+			document.addKeyword(
+				"salesforceOpportunityTaskName", salesforceOpportunityTaskName);
+
+			document.addKeyword(
+				"salesforceOpportunityType", salesforceOpportunityType);
+			document.addKeyword(
+				"salesforceOpportunityTypeLabel",
+				SalesforceConstants.getOpportunityTypeLabel(
+					salesforceOpportunityType));
+
+			document.addText("projectCode", accountEntry.getCode());
+			document.addText("projectName", accountEntry.getName());
+		}
 
 		return document;
 	}
@@ -204,18 +186,11 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 	}
 
 	@Override
-	protected void doReindex(Object obj) throws Exception {
-		Document document = getDocument(obj);
-
-		String searchEngineId = SearchEngineHelperUtil.getSearchEngineId(
-			document);
-
-		SearchEngineUtil.updateDocument(
-			searchEngineId, OSBConstants.COMPANY_ID, document);
-	}
-
-	@Override
 	protected void doReindex(String className, long classPK) throws Exception {
+		WorkflowTask workflowTask = WorkflowTaskManagerUtil.getWorkflowTask(
+			OSBConstants.COMPANY_ID, classPK);
+
+		doReindex(workflowTask);
 	}
 
 	@Override
@@ -232,7 +207,8 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 		int pages = count / Indexer.DEFAULT_INTERVAL;
 
 		for (int i = 0; i <= pages; i++) {
-			int start = (i * Indexer.DEFAULT_INTERVAL);
+			int start = i * Indexer.DEFAULT_INTERVAL;
+
 			int end = start + Indexer.DEFAULT_INTERVAL;
 
 			reindexWorkflowTasks(companyId, start, end);
@@ -240,8 +216,14 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 	}
 
 	@Override
-	protected String getPortletId(SearchContext searchContext) {
-		return PORTLET_ID;
+	protected void doReindex(WorkflowTask workflowTask) throws Exception {
+		Document document = getDocument(workflowTask);
+
+		String searchEngineId = SearchEngineHelperUtil.getSearchEngineId(
+			document);
+
+		IndexWriterHelperUtil.updateDocument(
+			searchEngineId, OSBConstants.COMPANY_ID, document, false);
 	}
 
 	protected void reindexWorkflowTasks(long companyId, int start, int end)
@@ -268,20 +250,11 @@ public class WorkflowIndexer<T> extends BaseIndexer<T> {
 			}
 		}
 
-		SearchEngineUtil.updateDocuments(
-			getSearchEngineId(), companyId, documents);
+		IndexWriterHelperUtil.updateDocuments(
+			getSearchEngineId(), companyId, documents, false);
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(WorkflowIndexer.class);
-
-	@Override
-	public String getClassName() {
-
-		// TODO Auto-generated method stub
-
-		return null;
-	}
-
-	*/
+	private static final Log _log = LogFactoryUtil.getLog(
+		WorkflowTaskIndexer.class);
 
 }

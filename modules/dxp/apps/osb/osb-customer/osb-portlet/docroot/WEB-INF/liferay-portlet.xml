@@ -5,6 +5,7 @@
 	<portlet>
 		<portlet-name>1</portlet-name>
 		<configuration-action-class>com.liferay.osb.admin.action.ConfigurationActionImpl</configuration-action-class>
+		<indexer-class>com.liferay.osb.admin.util.WorkflowTaskIndexer</indexer-class>
 		<scheduler-entry>
 			<scheduler-event-listener-class>com.liferay.osb.admin.messaging.AuditAccountEntryMessageListener</scheduler-event-listener-class>
 			<trigger>
