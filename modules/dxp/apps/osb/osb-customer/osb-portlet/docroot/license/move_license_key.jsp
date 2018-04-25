@@ -56,7 +56,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 
 	<div class="clearfix section">
 		<div class="pull-right">
-			<aui:a cssClass="btn" href="<%= backURL %>" label="back-to-previous-page" />
+			<aui:button onClick="<%= backURL %>" value="back-to-previous-page" />
 		</div>
 	</div>
 

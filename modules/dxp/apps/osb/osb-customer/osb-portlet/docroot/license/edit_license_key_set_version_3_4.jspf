@@ -304,7 +304,7 @@
 					<portlet:param name="maxServers" value="<%= String.valueOf(licenseKey.getMaxServers()) %>" />
 				</portlet:renderURL>
 
-				<aui:a cssClass="btn btn-default" href="<%= addLicenseKeyURL %>" label="add-new-cluster-key" />
+				<aui:button onClick="<%= addLicenseKeyURL %>" value="add-new-cluster-key" />
 			</c:if>
 		</c:when>
 		<c:otherwise>

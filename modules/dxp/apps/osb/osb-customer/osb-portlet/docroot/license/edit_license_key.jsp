@@ -165,7 +165,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 	<div class="section">
 		<div class="pull-right">
-			<aui:a cssClass="btn" href="<%= backURL %>" label="back-to-previous-page" />
+			<aui:button onClick="<%= backURL %>" value="back-to-previous-page" />
 		</div>
 	</div>
 
@@ -810,7 +810,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 			<div>
 				<aui:button type="submit" value="generate" />
 
-				<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
+				<aui:button onClick="<%= backURL %>" value="cancel" />
 			</div>
 		</c:otherwise>
 	</c:choose>

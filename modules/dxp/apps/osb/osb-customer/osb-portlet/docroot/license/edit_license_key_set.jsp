@@ -86,7 +86,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 	<aui:input name="clusterId" type="hidden" value="<%= clusterId %>" />
 
 	<div class="pull-right">
-		<aui:a cssClass="btn" href="<%= backURL %>" label="back-to-previous-page" />
+		<aui:button onClick="<%= backURL %>" value="back-to-previous-page" />
 	</div>
 
 	<h1 class="section-heading">
@@ -225,7 +225,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 				<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 			</portlet:renderURL>
 
-			<aui:a cssClass="btn btn-default" href="<%= addLicenseKeyURL %>" label="add-new-license-key" />
+			<aui:button onClick="<%= addLicenseKeyURL %>" value="add-new-license-key" />
 		</c:if>
 
 		<c:if test="<%= OSBLicenseKeySetPermission.contains(permissionChecker, licenseKeySetId, OSBActionKeys.UPDATE) %>">
@@ -235,10 +235,10 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 				<portlet:param name="licenseKeySetId" value="<%= String.valueOf(licenseKeySetId) %>" />
 			</portlet:renderURL>
 
-			<aui:a cssClass="btn btn-default" href="<%= mergeLicenseKeySetURL %>" label="merge-licenses" />
+			<aui:button onClick="<%= mergeLicenseKeySetURL %>" value="merge-licenses" />
 		</c:if>
 
-		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />
+		<aui:button onClick="<%= backURL %>" value="cancel" />
 	</div>
 </aui:form>
 

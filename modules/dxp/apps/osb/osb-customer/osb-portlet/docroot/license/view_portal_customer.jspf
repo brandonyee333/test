@@ -179,7 +179,7 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 								<portlet:param name="redirect" value="<%= currentURL %>" />
 							</portlet:actionURL>
 
-							<aui:a cssClass="btn" href="<%= renewURL.toString() %>" label="renew" />
+							<aui:button onClick="<%= renewURL.toString() %>" value="renew" />
 						</c:when>
 						<c:when test="<%= !licenseKey.isExpired() %>">
 							<portlet:actionURL name="resendLicenseKey" var="resendURL">
@@ -187,7 +187,7 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 								<portlet:param name="licenseKeyId" value="<%= String.valueOf(licenseKey.getLicenseKeyId()) %>" />
 							</portlet:actionURL>
 
-							<aui:a cssClass="btn" href="<%= resendURL.toString() %>" label="resend-key" />
+							<aui:button onClick="<%= resendURL.toString() %>" value="resend-key" />
 						</c:when>
 					</c:choose>
 				</liferay-ui:search-container-column-text>
