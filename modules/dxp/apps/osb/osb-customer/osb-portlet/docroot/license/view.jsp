@@ -37,26 +37,11 @@ pageContext.setAttribute("portletURL", portletURL);
 	<liferay-ui:message key="license-management" />
 </h1>
 
-<c:if test="<%= liferayIncOrg %>">
-	<liferay-ui:tabs
-		names="portal,app"
-		param="tabs1"
-		url="<%= portletURL.toString() %>"
-	/>
-</c:if>
-
 <c:choose>
-	<c:when test='<%= tabs1.equals("app") %>'>
-		<%@ include file="/license/view_app.jspf" %>
+	<c:when test="<%= liferayIncOrg %>">
+		<%@ include file="/license/view_portal_worker.jspf" %>
 	</c:when>
 	<c:otherwise>
-		<c:choose>
-			<c:when test="<%= liferayIncOrg %>">
-				<%@ include file="/license/view_portal_worker.jspf" %>
-			</c:when>
-			<c:otherwise>
-				<%@ include file="/license/view_portal_customer.jspf" %>
-			</c:otherwise>
-		</c:choose>
+		<%@ include file="/license/view_portal_customer.jspf" %>
 	</c:otherwise>
 </c:choose>
