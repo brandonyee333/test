@@ -77,7 +77,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 	<portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateLicenseKeySetURL %>" class="uni-form" method="post" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= updateLicenseKeySetURL %>" cssClass="container-fluid-1280 uni-form" method="post" onSubmit="submitForm(this); return false;">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
@@ -158,7 +158,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 
 	<liferay-ui:panel
 		collapsible="<%= true %>"
-		extended="<%= inactiveLicenseKeys.size() > 3 %>"
+		defaultState='<%= (inactiveLicenseKeys.size() > 3) ? "closed" : "open" %>'
 		id="inactiveLicenses"
 		persistState="<%= false %>"
 		title="deactivated-licenses"
@@ -207,7 +207,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 						<aui:option label="1-year" value="365" />
 					</aui:select>
 
-					<aui:a cssClass="btn" href='<%= "javascript:" + renderResponse.getNamespace() + "renewLicenseKey();" %>' label="renew-aggregate" />
+					<aui:button onClick='<%= renderResponse.getNamespace() + "renewLicenseKey();" %>' value="renew-aggregate" />
 				</div>
 			</c:if>
 		</div>
@@ -245,7 +245,8 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 <aui:script>
 	function <portlet:namespace/>renewLicenseKey(licenseKeyId) {
 		document.<portlet:namespace />fm.<portlet:namespace />licenseKeyId.value = licenseKeyId;
+		document.<portlet:namespace />fm.<portlet:namespace />redirect.value = '<%= currentURL %>';
 
-		submitForm(document.<portlet:namespace />fm, '<portlet:actionURL name="renewLicenseKey"><portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" /><portlet:param name="redirect" value="<%= portletURL.toString() %>" /></portlet:actionURL>');
+		submitForm(document.<portlet:namespace />fm, '<portlet:actionURL name="renewLicenseKey"><portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" /></portlet:actionURL>');
 	}
 </aui:script>
