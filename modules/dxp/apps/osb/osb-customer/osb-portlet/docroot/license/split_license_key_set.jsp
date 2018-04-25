@@ -35,7 +35,7 @@ String productEntryName = licenseKey.getProductEntryName();
 	<portlet:param name="mvcPath" value="/license/split_license_key_set.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateLicenseKeyURL %>" class="uni-form" method="post">
+<aui:form action="<%= updateLicenseKeyURL %>" cssClass="container-fluid-1280" method="post">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="licenseKeyId" type="hidden" value="<%= licenseKeyId %>" />

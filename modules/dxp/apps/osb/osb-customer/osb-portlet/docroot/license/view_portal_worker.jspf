@@ -29,17 +29,17 @@ searchURL.setParameter("tabs1", tabs1);
 pageContext.setAttribute("searchURL", searchURL);
 %>
 
-<portlet:renderURL var="addLicenseKeyURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-	<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
-	<portlet:param name="redirect" value="<%= currentURL %>" />
-</portlet:renderURL>
-
-<a href="<%= addLicenseKeyURL %>">
-	<liferay-ui:message key="generate-new-license" />+
-</a>
-
-<aui:form action="<%= searchURL.toString() %>" method="post" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= searchURL.toString() %>" cssClass="container-fluid-1280" method="post" onSubmit="submitForm(this); return false;">
 	<liferay-portlet:renderURLParams varImpl="searchURL" />
+
+	<portlet:renderURL var="addLicenseKeyURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+		<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
+		<portlet:param name="redirect" value="<%= currentURL %>" />
+	</portlet:renderURL>
+
+	<a href="<%= addLicenseKeyURL %>">
+		<liferay-ui:message key="generate-new-license" />+
+	</a>
 
 	<div class="license-worker">
 		<liferay-ui:search-container
@@ -164,7 +164,9 @@ pageContext.setAttribute("searchURL", searchURL);
 				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
-			<liferay-ui:search-iterator />
+			<liferay-ui:search-iterator
+				markupView="lexicon"
+			/>
 		</liferay-ui:search-container>
 	</div>
 </aui:form>

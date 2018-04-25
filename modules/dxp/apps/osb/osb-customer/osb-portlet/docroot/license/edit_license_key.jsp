@@ -156,7 +156,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 	<portlet:param name="mvcPath" value="/license/edit_license_key.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateLicenseKeyURL %>" method="post" onSubmit='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
+<aui:form action="<%= updateLicenseKeyURL %>" cssClass="container-fluid-1280" method="post" onSubmit='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>'>
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
@@ -501,7 +501,9 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
-				<liferay-ui:search-iterator />
+				<liferay-ui:search-iterator
+					markupView="lexicon"
+				/>
 			</liferay-ui:search-container>
 		</c:when>
 		<c:otherwise>

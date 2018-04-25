@@ -77,7 +77,7 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 	<portlet:param name="mvcPath" value="/license/edit_license_key_set.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateLicenseKeySetURL %>" cssClass="container-fluid-1280 uni-form" method="post" onSubmit="submitForm(this); return false;">
+<aui:form action="<%= updateLicenseKeySetURL %>" cssClass="container-fluid-1280" method="post" onSubmit="submitForm(this); return false;">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="licenseKeySetId" type="hidden" value="<%= licenseKeySetId %>" />
