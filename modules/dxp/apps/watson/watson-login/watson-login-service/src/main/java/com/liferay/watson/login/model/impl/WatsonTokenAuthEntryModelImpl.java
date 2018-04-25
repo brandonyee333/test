@@ -132,7 +132,7 @@ public class WatsonTokenAuthEntryModelImpl extends BaseModelImpl<WatsonTokenAuth
 		model.setUserId(soapModel.getUserId());
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
-		model.setActive(soapModel.getActive());
+		model.setActive(soapModel.isActive());
 		model.setToken(soapModel.getToken());
 		model.setExpirationDate(soapModel.getExpirationDate());
 		model.setLoginDate(soapModel.getLoginDate());
