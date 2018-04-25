@@ -317,10 +317,8 @@ while (!displayLicenseKeys.isEmpty()) {
 					</c:if>
 
 					<c:if test="<%= licenseKey.canRenew() && OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
-						<div class="pull-right">
-							<div class="pull-left">
-								<liferay-ui:message key="start-date" />:
-							</div>
+						<div class="license-duration pull-right">
+							<liferay-ui:message key="start-date" />:
 
 							<liferay-ui:input-date
 								dayParam='<%= "startDay_" + licenseKey.getLicenseKeyId() %>'
@@ -329,6 +327,7 @@ while (!displayLicenseKeys.isEmpty()) {
 								lastEnabledDate="<%= lastEnabledDate %>"
 								monthParam='<%= "startMonth_" + licenseKey.getLicenseKeyId() %>'
 								monthValue="<%= -1 %>"
+								name="startDate"
 								yearParam='<%= "startYear_" + licenseKey.getLicenseKeyId() %>'
 								yearValue="<%= 0 %>"
 							/>

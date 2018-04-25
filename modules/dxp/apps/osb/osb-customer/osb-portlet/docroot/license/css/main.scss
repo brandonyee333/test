@@ -80,6 +80,17 @@
 		}
 	}
 
+	.license-duration {
+		.form-group-inline {
+			margin: 0;
+		}
+
+		.lfr-input-date input {
+			display: inline-block;
+			width: 20%
+		}
+	}
+
 	.license-input-heading {
 		border-bottom: 1px solid #CCC;
 		padding-bottom: 10px;

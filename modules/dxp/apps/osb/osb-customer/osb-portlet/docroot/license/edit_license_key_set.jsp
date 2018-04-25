@@ -183,10 +183,8 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 			/>
 
 			<c:if test="<%= LicenseUtil.isRenewAggregate(licenseKeySetId) && OSBAccountEntryPermission.contains(permissionChecker, licenseKeySet.getAccountEntryId(), OSBActionKeys.ADD_LICENSE) %>">
-				<div class="pull-right">
-					<div class="pull-left">
-						<liferay-ui:message key="start-date" />:
-					</div>
+				<div class="license-duration pull-right">
+					<liferay-ui:message key="start-date" />:
 
 					<liferay-ui:input-date
 						dayParam="aggregateStartDay"
