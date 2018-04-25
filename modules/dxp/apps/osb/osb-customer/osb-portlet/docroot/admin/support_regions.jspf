@@ -58,51 +58,6 @@
 		/>
 
 		<liferay-ui:search-container-column-text
-			name="teams"
-		>
-
-			<%
-			List<SupportTeam> supportTeams = supportRegion.getSupportTeams();
-			%>
-
-			<c:if test="<%= !supportTeams.isEmpty() %>">
-				<span class="expand" id="<portlet:namespace />expand_<%= supportRegion.getSupportRegionId() %>">
-					<liferay-ui:icon
-						image="../arrows/01_plus"
-						label="<%= true %>"
-						message="expand"
-						url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportTeams(" + supportRegion.getSupportRegionId() + ", true);" %>'
-					/>
-				</span>
-				<span class="collapse hide" id="<portlet:namespace />collapse_<%= supportRegion.getSupportRegionId() %>">
-					<liferay-ui:icon
-						image="../arrows/01_minus"
-						label="<%= true %>"
-						message="collapse"
-						url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportTeams(" + supportRegion.getSupportRegionId() + ", false);" %>'
-					/>
-				</span>
-
-				<div class="hide" id="<portlet:namespace />supportTeams_<%= supportRegion.getSupportRegionId() %>">
-
-					<%
-					for (int i = 0; i < supportTeams.size(); i++) {
-						SupportTeam supportTeam = supportTeams.get(i);
-					%>
-
-						<aui:a href="<%= rowURL %>" label="<%= supportTeam.getName() %>" />
-
-						<%= ((i + 1) < supportTeams.size()) ? "<br />" : "" %>
-
-					<%
-					}
-					%>
-
-				</div>
-			</c:if>
-		</liferay-ui:search-container-column-text>
-
-		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"
 			name="time-zone"
 		>
@@ -141,20 +96,3 @@
 		markupView="lexicon"
 	/>
 </liferay-ui:search-container>
-
-<aui:script>
-	function <portlet:namespace />toggleSupportTeams(supportRegionId, expand) {
-		var A = AUI();
-
-		if (expand) {
-			A.one('#<portlet:namespace />supportTeams_' + supportRegionId).show();
-			A.one('#<portlet:namespace />collapse_' + supportRegionId).show();
-			A.one('#<portlet:namespace />expand_' + supportRegionId).hide();
-		}
-		else {
-			A.one('#<portlet:namespace />supportTeams_' + supportRegionId).hide();
-			A.one('#<portlet:namespace />collapse_' + supportRegionId).hide();
-			A.one('#<portlet:namespace />expand_' + supportRegionId).show();
-		}
-	}
-</aui:script>

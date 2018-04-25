@@ -29,7 +29,6 @@ import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportRegion;
-import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryServiceUtil;
@@ -37,7 +36,6 @@ import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.PortletPropsKeys;
@@ -141,41 +139,6 @@ public class SupportUtil {
 		return sb.toString();
 	}
 
-	public static Map<Locale, String> getActionInformationMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "actionInformation");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/action_information_body.tmpl"));
-
-		return map;
-	}
-
-	public static String[] getAttachmentKeywords() {
-		PortletPreferences portletPreferences = getPortletPreferences();
-
-		String[] attachmentKeywords = StringUtil.split(
-			portletPreferences.getValue(
-				"attachmentKeywords", "find the attached"),
-			StringPool.NEW_LINE);
-
-		return attachmentKeywords;
-	}
-
 	public static List<OfferingEntryGroup> getAvailableOfferingEntryGroups(
 			long userId, long accountEntryId, int[] types, int[] statuses,
 			int supportEndDateGTDay, int supportEndDateGTMonth,
@@ -199,30 +162,6 @@ public class SupportUtil {
 		}
 
 		return availableOfferingEntryGroups;
-	}
-
-	public static Map<Locale, String> getCommentGamePlanMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "commentGamePlan");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/comment_game_plan_body.tmpl"));
-
-		return map;
 	}
 
 	public static Map<Locale, String> getEmailAccountEntryTierBodyMap(
@@ -271,220 +210,6 @@ public class SupportUtil {
 					"/email_account_entry_tier_subject.tmpl"));
 
 		return map;
-	}
-
-	public static Map<Locale, String> getEmailCustomerFeedbackBodyMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailCustomerFeedbackBody");
-
-		for (Locale locale : LanguageUtil.getAvailableLocales()) {
-			String value = map.get(locale);
-
-			if (Validator.isNotNull(value)) {
-				continue;
-			}
-
-			String templateName =
-				"email_customer_feedback_body_" + locale + ".tmpl";
-
-			map.put(
-				locale,
-				_getEmailTemplate(
-					templateName, "email_customer_feedback_body.tmpl"));
-		}
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailCustomerFeedbackSubjectMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailCustomerFeedbackSubject");
-
-		for (Locale locale : LanguageUtil.getAvailableLocales()) {
-			String value = map.get(locale);
-
-			if (Validator.isNotNull(value)) {
-				continue;
-			}
-
-			String templateName =
-				"email_customer_feedback_subject_" + locale + ".tmpl";
-
-			map.put(
-				locale,
-				_getEmailTemplate(
-					templateName, "email_customer_feedback_subject.tmpl"));
-		}
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailPartnerFeedbackReminderBodyMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailLiferayFeedbackBody");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/email_partner_feedback_reminder_body.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailPartnerFeedbackReminderSubjectMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailLiferayFeedbackSubject");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/email_partner_feedback_reminder_subject.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailTeamFeedbackBodyMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailTeamFeedbackBody");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/email_team_feedback_body.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailTeamFeedbackSubjectMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailTeamFeedbackSubject");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/email_team_feedback_subject.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailWorkerFeedbackBodyMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailWorkerFeedbackBody");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/email_worker_feedback_body.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailWorkerFeedbackSubjectMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailWorkerFeedbackSubject");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/email_worker_feedback_subject.tmpl"));
-
-		return map;
-	}
-
-	public static String getEscalationDetails() {
-		PortletPreferences portletPreferences = getPortletPreferences();
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "escalationDetails");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String escalationDetails = map.get(defaultLocale);
-
-		if (Validator.isNull(escalationDetails)) {
-			escalationDetails = ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/message_escalation_details_body.tmpl");
-		}
-
-		return escalationDetails;
 	}
 
 	public static List<FileRepository> getFileRepositories() {
@@ -734,38 +459,6 @@ public class SupportUtil {
 		return portletPreferences.getValue(key, StringPool.BLANK);
 	}
 
-	public static Map<Integer, List<SupportWorker>> getSupportWorkerMap(
-		long supportTeamId) {
-
-		Map<Integer, List<SupportWorker>> supportWorkerMap = new HashMap<>();
-
-		List<SupportWorker> supportWorkers =
-			SupportWorkerLocalServiceUtil.getTeamSupportWorkers(supportTeamId);
-
-		for (SupportWorker supportWorker : supportWorkers) {
-			User user = UserLocalServiceUtil.fetchUserById(
-				supportWorker.getUserId());
-
-			if (user == null) {
-				continue;
-			}
-
-			int role = supportWorker.getRole();
-
-			List<SupportWorker> supportWorkerList = supportWorkerMap.get(role);
-
-			if (supportWorkerList == null) {
-				supportWorkerList = new ArrayList<>();
-
-				supportWorkerMap.put(role, supportWorkerList);
-			}
-
-			supportWorkerList.add(supportWorker);
-		}
-
-		return supportWorkerMap;
-	}
-
 	public static PortletPreferences getUserPreferences(long userId) {
 		int ownerType = PortletKeys.PREFS_OWNER_TYPE_USER;
 		long plid = PortletKeys.PREFS_PLID_SHARED;
@@ -802,53 +495,6 @@ public class SupportUtil {
 		}
 
 		return users;
-	}
-
-	public static boolean hasAttachmentPreview(String fileName) {
-		if (ArrayUtil.contains(
-				PortletPropsValues.TICKET_ATTACHMENT_PREVIEW_EXTENSIONS,
-				FileUtil.getExtension(fileName))) {
-
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	public static boolean isWatcher(long accountEntryId, long userId) {
-		try {
-			AccountEntry accountEntry =
-				AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
-
-			if (accountEntry.getPartnerEntryId() > 0) {
-				PartnerWorker partnerWorker =
-					PartnerWorkerLocalServiceUtil.fetchPartnerWorker(
-						userId, accountEntry.getPartnerEntryId());
-
-				if ((partnerWorker != null) &&
-					(partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_WATCHER)) {
-
-					return true;
-				}
-			}
-
-			AccountCustomer accountCustomer =
-				AccountCustomerLocalServiceUtil.fetchAccountCustomer(
-					userId, accountEntryId);
-
-			if ((accountCustomer != null) &&
-				(accountCustomer.getRole() ==
-					AccountCustomerConstants.ROLE_WATCHER)) {
-
-				return true;
-			}
-		}
-		catch (Exception e) {
-		}
-
-		return false;
 	}
 
 	public static String serialize(List<OrderEntry> orderEntries) {
@@ -948,28 +594,6 @@ public class SupportUtil {
 		request.setAttribute(HttpHeaders.USER_AGENT, userAgent);
 
 		return userAgent;
-	}
-
-	private static String _getEmailTemplate(
-		String templateName, String defaultTemplateName) {
-
-		ClassLoader portletClassLoader = SupportUtil.class.getClassLoader();
-
-		String templateDirName = "com/liferay/osb/support/dependencies/";
-
-		URL url = portletClassLoader.getResource(
-			templateDirName + templateName);
-
-		if (url != null) {
-			return ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				templateDirName + templateName);
-		}
-		else {
-			return ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				templateDirName + defaultTemplateName);
-		}
 	}
 
 }

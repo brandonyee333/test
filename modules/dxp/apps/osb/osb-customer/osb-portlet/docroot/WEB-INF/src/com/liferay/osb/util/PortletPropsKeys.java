@@ -21,8 +21,6 @@ package com.liferay.osb.util;
  */
 public interface PortletPropsKeys {
 
-	public static final String AUDIT_ACTION_MODELS = "audit.action.models";
-
 	public static final String DEVELOPER_MODE_ENABLED =
 		"developer.mode.enabled";
 
@@ -97,21 +95,6 @@ public interface PortletPropsKeys {
 
 	public static final String SUPPORT_EMAIL_ADDRESS_FROM =
 		"support.email.address.from";
-
-	public static final String SUPPORT_VERSION_2_EMAIL_ADDRESS_FEEDBACK =
-		"support.version.2.email.address.feedback";
-
-	public static final String TICKET_ATTACHMENT_INDEXING_EXTENSIONS =
-		"ticket.attachment.indexing.extensions";
-
-	public static final String TICKET_ATTACHMENT_INDEXING_MAX_SIZE =
-		"ticket.attachment.indexing.max.size";
-
-	public static final String TICKET_ATTACHMENT_PREVIEW_EXTENSIONS =
-		"ticket.attachment.preview.extensions";
-
-	public static final String TICKET_ENTRY_INDEXING_INTERVAL =
-		"ticket.entry.indexing.interval";
 
 	public static final String WEB_API_TOKEN = "web.api.token";
 

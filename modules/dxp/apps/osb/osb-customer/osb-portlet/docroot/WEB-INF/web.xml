@@ -3,7 +3,7 @@
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<context-param>
 		<param-name>portalContextConfigLocation</param-name>
-		<param-value>/WEB-INF/classes/META-INF/messaging-spring.xml,/WEB-INF/classes/META-INF/osb-spring.xml</param-value>
+		<param-value>/WEB-INF/classes/META-INF/osb-spring.xml</param-value>
 	</context-param>
 	<filter>
 		<filter-name>OSB Secure GS JSON Filter</filter-name>
@@ -39,19 +39,6 @@
 	<servlet>
 		<servlet-name>License Servlet</servlet-name>
 		<servlet-class>com.liferay.osb.servlet.LicenseServlet</servlet-class>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
-	<servlet>
-		<servlet-name>User Session Validation Servlet</servlet-name>
-		<servlet-class>com.liferay.portal.kernel.servlet.PortalDelegateServlet</servlet-class>
-		<init-param>
-			<param-name>servlet-class</param-name>
-			<param-value>com.liferay.osb.servlet.UserSessionValidationServlet</param-value>
-		</init-param>
-		<init-param>
-			<param-name>sub-context</param-name>
-			<param-value>user_session_validation</param-value>
-		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 	<servlet-mapping>

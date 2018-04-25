@@ -254,6 +254,5 @@
 		<exception>RequiredPartnerEntry</exception>
 		<exception>RequiredProductEntry</exception>
 		<exception>RequiredSupportResponse</exception>
-		<exception>RequiredSupportTeam</exception>
 	</exceptions>
 </service-builder>

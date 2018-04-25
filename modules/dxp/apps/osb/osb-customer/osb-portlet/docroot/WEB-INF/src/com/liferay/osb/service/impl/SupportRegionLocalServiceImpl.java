@@ -75,12 +75,6 @@ public class SupportRegionLocalServiceImpl
 			throw new RequiredSupportRegionException();
 		}
 
-		if (supportTeamLocalService.getSupportRegionSupportTeamsCount(
-				supportRegionId) > 0) {
-
-			throw new RequiredSupportRegionException();
-		}
-
 		return supportRegionPersistence.remove(supportRegionId);
 	}
 
@@ -96,7 +90,7 @@ public class SupportRegionLocalServiceImpl
 
 	public SupportRegion updateSupportRegion(
 			long supportRegionId, String name, String description,
-			String timeZoneId, long[] supportTeamIds)
+			String timeZoneId)
 		throws PortalException {
 
 		validate(supportRegionId, name);
@@ -110,11 +104,6 @@ public class SupportRegionLocalServiceImpl
 		supportRegion.setTimeZoneId(timeZoneId);
 
 		supportRegionPersistence.update(supportRegion);
-
-		if (supportTeamIds != null) {
-			supportRegionPersistence.setSupportTeams(
-				supportRegionId, supportTeamIds);
-		}
 
 		return supportRegion;
 	}

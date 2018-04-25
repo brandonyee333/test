@@ -23,13 +23,4 @@ public interface CMDConstants extends Constants {
 
 	public static final String CAPTCHA = "captcha";
 
-	public static final String CLOSE = "close";
-
-	public static final String REPRODUCE = "reproduce";
-
-	public static final String UPDATE_PREFERENCES = "updatePreferences";
-
-	public static final String UPDATE_PROFILE_PREFERENCES =
-		"updateProfilePreferences";
-
 }

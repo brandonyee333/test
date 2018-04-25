@@ -25,13 +25,6 @@ create table OSB_AccountEntries_SupportRegions (
 	primary key (accountEntryId, supportRegionId)
 );
 
-create table OSB_AccountEntries_SupportTeams (
-	companyId LONG not null,
-	accountEntryId LONG not null,
-	supportTeamId LONG not null,
-	primary key (accountEntryId, supportTeamId)
-);
-
 create table OSB_AccountEntry (
 	accountEntryId LONG not null primary key,
 	companyId LONG,
@@ -199,28 +192,6 @@ create table OSB_FeedbackEntry (
 	satisfied INTEGER,
 	comments VARCHAR(75) null,
 	pageURL VARCHAR(75) null
-);
-
-create table OSB_HolidayCalendar (
-	holidayCalendarId LONG not null primary key,
-	name VARCHAR(75) null,
-	description VARCHAR(75) null
-);
-
-create table OSB_HolidayCalendarRel (
-	holidayCalendarRelId LONG not null primary key,
-	holidayCalendarId LONG,
-	userId LONG
-);
-
-create table OSB_HolidayEntry (
-	holidayEntryId LONG not null primary key,
-	holidayCalendarId LONG,
-	name VARCHAR(75) null,
-	description VARCHAR(75) null,
-	startDate DATE null,
-	endDate DATE null,
-	repeatYearly BOOLEAN
 );
 
 create table OSB_LCSSubscriptionEntry (
@@ -447,27 +418,6 @@ create table OSB_SecurityPatch (
 	fileName VARCHAR(75) null
 );
 
-create table OSB_SupportLabor (
-	supportLaborId LONG not null primary key,
-	name VARCHAR(75) null,
-	description VARCHAR(75) null,
-	timeZoneId VARCHAR(75) null,
-	sunOpen INTEGER,
-	sunClose INTEGER,
-	monOpen INTEGER,
-	monClose INTEGER,
-	tueOpen INTEGER,
-	tueClose INTEGER,
-	wedOpen INTEGER,
-	wedClose INTEGER,
-	thuOpen INTEGER,
-	thuClose INTEGER,
-	friOpen INTEGER,
-	friClose INTEGER,
-	satOpen INTEGER,
-	satClose INTEGER
-);
-
 create table OSB_SupportRegion (
 	supportRegionId LONG not null primary key,
 	companyId LONG,
@@ -495,47 +445,4 @@ create table OSB_SupportResponse (
 	severity2Resolution INTEGER,
 	severity3Response INTEGER,
 	severity3Resolution INTEGER
-);
-
-create table OSB_SupportTeam (
-	supportTeamId LONG not null primary key,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	parentSupportTeamId LONG,
-	supportLaborId LONG,
-	locationSupportRegionId LONG,
-	name VARCHAR(75) null,
-	description STRING null,
-	type_ INTEGER
-);
-
-create table OSB_SupportTeamLanguage (
-	supportTeamLanguageId LONG not null primary key,
-	supportTeamId LONG,
-	languageId VARCHAR(75) null
-);
-
-create table OSB_SupportTeams_SupportRegions (
-	companyId LONG not null,
-	supportRegionId LONG not null,
-	supportTeamId LONG not null,
-	primary key (supportRegionId, supportTeamId)
-);
-
-create table OSB_SupportWorker (
-	supportWorkerId LONG not null primary key,
-	userId LONG,
-	supportTeamId LONG,
-	supportLaborId LONG,
-	role INTEGER,
-	clockedIn BOOLEAN
-);
-
-create table OSB_SupportWorkerAccountTier (
-	supportWorkerAccountTierId LONG not null primary key,
-	supportWorkerId LONG,
-	accountTier INTEGER
 );

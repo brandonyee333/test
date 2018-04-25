@@ -34,7 +34,6 @@ import com.liferay.osb.exception.AccountEnvironmentNameException;
 import com.liferay.osb.exception.DuplicateAccountCustomerException;
 import com.liferay.osb.exception.DuplicateAccountEntryException;
 import com.liferay.osb.exception.DuplicateAccountEnvironmentException;
-import com.liferay.osb.exception.DuplicateHolidayEntryException;
 import com.liferay.osb.exception.DuplicateOfferingBundleException;
 import com.liferay.osb.exception.DuplicateOfferingDefinitionException;
 import com.liferay.osb.exception.DuplicatePartnerEntryCodeException;
@@ -42,10 +41,6 @@ import com.liferay.osb.exception.DuplicatePartnerEntryDossieraAccountKeyExceptio
 import com.liferay.osb.exception.DuplicateProductEntryException;
 import com.liferay.osb.exception.DuplicateSupportRegionException;
 import com.liferay.osb.exception.DuplicateSupportResponseException;
-import com.liferay.osb.exception.DuplicateSupportTeamException;
-import com.liferay.osb.exception.HolidayCalendarNameException;
-import com.liferay.osb.exception.HolidayEntryDateException;
-import com.liferay.osb.exception.HolidayEntryStartDateLaterThanEndDateException;
 import com.liferay.osb.exception.LicenseEntryNameException;
 import com.liferay.osb.exception.LicenseEntryPortalVersionException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
@@ -66,22 +61,14 @@ import com.liferay.osb.exception.RequiredPartnerEntryException;
 import com.liferay.osb.exception.RequiredProductEntryException;
 import com.liferay.osb.exception.RequiredSupportRegionException;
 import com.liferay.osb.exception.RequiredSupportResponseException;
-import com.liferay.osb.exception.RequiredSupportTeamException;
-import com.liferay.osb.exception.SupportLaborHourException;
-import com.liferay.osb.exception.SupportLaborNameException;
 import com.liferay.osb.exception.SupportRegionNameException;
 import com.liferay.osb.exception.SupportResponseNameException;
-import com.liferay.osb.exception.SupportResponseSupportLevelException;
-import com.liferay.osb.exception.SupportTeamLocationException;
-import com.liferay.osb.exception.SupportTeamNameException;
-import com.liferay.osb.exception.SupportTeamSupportLaborException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
 import com.liferay.osb.model.AccountEnvironmentAttachmentConstants;
-import com.liferay.osb.model.HolidayEntry;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
@@ -95,9 +82,6 @@ import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentAttachmentServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.HolidayCalendarLocalServiceUtil;
-import com.liferay.osb.service.HolidayCalendarRelLocalServiceUtil;
-import com.liferay.osb.service.HolidayEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
@@ -107,14 +91,8 @@ import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
-import com.liferay.osb.service.SupportLaborLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
-import com.liferay.osb.service.SupportTeamLanguageLocalServiceUtil;
-import com.liferay.osb.service.SupportTeamLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerAccountTierLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.OSBRequestUtil;
@@ -222,16 +200,6 @@ public class AdminPortlet extends MVCPortlet {
 
 		AccountEntryLocalServiceUtil.auditAccountEntry(
 			themeDisplay.getUserId(), accountEntryId);
-	}
-
-	public void clockInOut(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long supportWorkerId = ParamUtil.getLong(
-			actionRequest, "supportWorkerId");
-
-		SupportWorkerServiceUtil.clockInOut(supportWorkerId);
 	}
 
 	public void debugLicenseFiles(
@@ -365,17 +333,6 @@ public class AdminPortlet extends MVCPortlet {
 		AccountEntryLocalServiceUtil.deleteAccountEntry(accountEntryId);
 	}
 
-	public void deleteHolidayCalendar(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long holidayCalendarId = ParamUtil.getLong(
-			actionRequest, "holidayCalendarId");
-
-		HolidayCalendarLocalServiceUtil.deleteHolidayCalendar(
-			holidayCalendarId);
-	}
-
 	public void deleteLicenseEntry(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -439,16 +396,6 @@ public class AdminPortlet extends MVCPortlet {
 		ProductEntryLocalServiceUtil.deleteProductEntry(productEntryId);
 	}
 
-	public void deleteSupportLabor(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long supportLaborId = ParamUtil.getLong(
-			actionRequest, "supportLaborId");
-
-		SupportLaborLocalServiceUtil.deleteSupportLabor(supportLaborId);
-	}
-
 	public void deleteSupportRegion(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -468,15 +415,6 @@ public class AdminPortlet extends MVCPortlet {
 
 		SupportResponseLocalServiceUtil.deleteSupportResponse(
 			supportResponseId);
-	}
-
-	public void deleteSupportTeam(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long supportTeamId = ParamUtil.getLong(actionRequest, "supportTeamId");
-
-		SupportTeamLocalServiceUtil.deleteSupportTeam(supportTeamId);
 	}
 
 	public void reindex(
@@ -538,8 +476,8 @@ public class AdminPortlet extends MVCPortlet {
 				serveAccountEnvironmentAttachment(
 					resourceRequest, resourceResponse);
 			}
-			else if (resourceID.equals("ticketEnvironment")) {
-				JSONObject jsonObject = OSBRequestUtil.getTicketEnvironment(
+			else if (resourceID.equals("accountEnvironment")) {
+				JSONObject jsonObject = OSBRequestUtil.getAccountEnvironment(
 					resourceRequest, resourceResponse);
 
 				writeJSON(resourceRequest, resourceResponse, jsonObject);
@@ -797,117 +735,6 @@ public class AdminPortlet extends MVCPortlet {
 			notifications);
 		AccountWorkerLocalServiceUtil.deleteAccountWorkers(
 			themeDisplay.getUserId(), removeUserIds, accountEntryId);
-	}
-
-	public void updateHolidayCalendar(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long holidayCalendarId = ParamUtil.getLong(
-			actionRequest, "holidayCalendarId");
-
-		String name = ParamUtil.getString(actionRequest, "name");
-		String description = ParamUtil.getString(actionRequest, "description");
-
-		int[] holidayEntriesIndexes = ParamUtil.getIntegerValues(
-			actionRequest, "holidayEntriesIndexes");
-
-		List<HolidayEntry> holidayEntries = new ArrayList<>();
-
-		for (int holidayEntriesIndex : holidayEntriesIndexes) {
-			long holidayEntryId = ParamUtil.getLong(
-				actionRequest, "holidayEntryId" + holidayEntriesIndex);
-
-			String holidayEntryName = ParamUtil.getString(
-				actionRequest, "holidayEntryName" + holidayEntriesIndex);
-			String holidayEntryDescription = ParamUtil.getString(
-				actionRequest, "holidayEntryDescription" + holidayEntriesIndex);
-
-			int holidayEntryStartDay = ParamUtil.getInteger(
-				actionRequest, "holidayEntryStartDay" + holidayEntriesIndex);
-			int holidayEntryStartMonth = ParamUtil.getInteger(
-				actionRequest, "holidayEntryStartMonth" + holidayEntriesIndex);
-			int holidayEntryStartYear = ParamUtil.getInteger(
-				actionRequest, "holidayEntryStartYear" + holidayEntriesIndex);
-			int holidayEntryEndDay = ParamUtil.getInteger(
-				actionRequest, "holidayEntryEndDay" + holidayEntriesIndex);
-			int holidayEntryEndMonth = ParamUtil.getInteger(
-				actionRequest, "holidayEntryEndMonth" + holidayEntriesIndex);
-			int holidayEntryEndYear = ParamUtil.getInteger(
-				actionRequest, "holidayEntryEndYear" + holidayEntriesIndex);
-
-			boolean repeatYearly = ParamUtil.getBoolean(
-				actionRequest,
-				"holidayEntryRepeatYearly" + holidayEntriesIndex);
-
-			if ((holidayEntryStartDay <= 0) || (holidayEntryStartMonth < 0) ||
-				(holidayEntryStartYear <= 0) || (holidayEntryEndDay <= 0) ||
-				(holidayEntryEndMonth < 0) || (holidayEntryEndYear <= 0)) {
-
-				continue;
-			}
-
-			Calendar holidayEntryStartCal = Calendar.getInstance();
-
-			holidayEntryStartCal.set(Calendar.YEAR, holidayEntryStartYear);
-			holidayEntryStartCal.set(Calendar.MONTH, holidayEntryStartMonth);
-			holidayEntryStartCal.set(Calendar.DATE, holidayEntryStartDay);
-			holidayEntryStartCal.set(Calendar.HOUR, 0);
-			holidayEntryStartCal.set(Calendar.MINUTE, 0);
-			holidayEntryStartCal.set(Calendar.SECOND, 0);
-
-			Calendar holidayEntryEndCal = Calendar.getInstance();
-
-			holidayEntryEndCal.set(Calendar.YEAR, holidayEntryEndYear);
-			holidayEntryEndCal.set(Calendar.MONTH, holidayEntryEndMonth);
-			holidayEntryEndCal.set(Calendar.DATE, holidayEntryEndDay);
-			holidayEntryEndCal.set(Calendar.HOUR, 23);
-			holidayEntryEndCal.set(Calendar.MINUTE, 59);
-			holidayEntryEndCal.set(Calendar.SECOND, 59);
-
-			if (holidayEntryStartCal.after(holidayEntryEndCal)) {
-				throw new HolidayEntryStartDateLaterThanEndDateException();
-			}
-
-			HolidayEntry holidayEntry =
-				HolidayEntryLocalServiceUtil.createHolidayEntry(holidayEntryId);
-
-			holidayEntry.setHolidayCalendarId(holidayCalendarId);
-			holidayEntry.setName(holidayEntryName);
-			holidayEntry.setDescription(holidayEntryDescription);
-			holidayEntry.setStartDate(holidayEntryStartCal.getTime());
-			holidayEntry.setEndDate(holidayEntryEndCal.getTime());
-			holidayEntry.setRepeatYearly(repeatYearly);
-
-			holidayEntries.add(holidayEntry);
-		}
-
-		if (holidayCalendarId > 0) {
-			HolidayCalendarLocalServiceUtil.updateHolidayCalendar(
-				holidayCalendarId, name, description, holidayEntries);
-		}
-		else {
-			HolidayCalendarLocalServiceUtil.addHolidayCalendar(
-				name, description, holidayEntries);
-		}
-	}
-
-	public void updateHolidayCalendarUsers(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long[] addUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "addUserIds"), 0L);
-		long[] removeUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "removeUserIds"), 0L);
-
-		long holidayCalendarId = ParamUtil.getLong(
-			actionRequest, "holidayCalendarId");
-
-		HolidayCalendarRelLocalServiceUtil.addUsers(
-			holidayCalendarId, addUserIds);
-		HolidayCalendarRelLocalServiceUtil.deleteHolidayCalendarRels(
-			holidayCalendarId, removeUserIds);
 	}
 
 	public void updateLicenseEntry(
@@ -1227,72 +1054,6 @@ public class AdminPortlet extends MVCPortlet {
 		}
 	}
 
-	public void updateSupportLabor(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long supportLaborId = ParamUtil.getLong(
-			actionRequest, "supportLaborId");
-
-		String name = ParamUtil.getString(actionRequest, "name");
-		String description = ParamUtil.getString(actionRequest, "description");
-		String timeZoneId = ParamUtil.getString(actionRequest, "timeZoneId");
-
-		int sunOpen = ParamUtil.getInteger(actionRequest, "sunOpen");
-		int sunClose = ParamUtil.getInteger(actionRequest, "sunClose");
-		int monOpen = ParamUtil.getInteger(actionRequest, "monOpen");
-		int monClose = ParamUtil.getInteger(actionRequest, "monClose");
-		int tueOpen = ParamUtil.getInteger(actionRequest, "tueOpen");
-		int tueClose = ParamUtil.getInteger(actionRequest, "tueClose");
-		int wedOpen = ParamUtil.getInteger(actionRequest, "wedOpen");
-		int wedClose = ParamUtil.getInteger(actionRequest, "wedClose");
-		int thuOpen = ParamUtil.getInteger(actionRequest, "thuOpen");
-		int thuClose = ParamUtil.getInteger(actionRequest, "thuClose");
-		int friOpen = ParamUtil.getInteger(actionRequest, "friOpen");
-		int friClose = ParamUtil.getInteger(actionRequest, "friClose");
-		int satOpen = ParamUtil.getInteger(actionRequest, "satOpen");
-		int satClose = ParamUtil.getInteger(actionRequest, "satClose");
-
-		if (supportLaborId > 0) {
-			long[] supportTeamIds = StringUtil.split(
-				ParamUtil.getString(actionRequest, "supportTeamIds"), 0L);
-
-			SupportTeamLocalServiceUtil.setSupportLaborId(
-				supportLaborId, supportTeamIds);
-
-			SupportLaborLocalServiceUtil.updateSupportLabor(
-				supportLaborId, name, description, timeZoneId, sunOpen,
-				sunClose, monOpen, monClose, tueOpen, tueClose, wedOpen,
-				wedClose, thuOpen, thuClose, friOpen, friClose, satOpen,
-				satClose);
-		}
-		else {
-			SupportLaborLocalServiceUtil.addSupportLabor(
-				name, description, timeZoneId, sunOpen, sunClose, monOpen,
-				monClose, tueOpen, tueClose, wedOpen, wedClose, thuOpen,
-				thuClose, friOpen, friClose, satOpen, satClose);
-		}
-	}
-
-	public void updateSupportLaborWorkers(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long[] addSupportWorkerIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "addSupportWorkerIds"), 0L);
-		long[] removeSupportWorkerIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "removeSupportWorkerIds"), 0L);
-
-		long supportLaborId = ParamUtil.getLong(
-			actionRequest, "supportLaborId");
-
-		SupportLaborLocalServiceUtil.addSupportWorkers(
-			addSupportWorkerIds, supportLaborId);
-
-		SupportLaborLocalServiceUtil.removeSupportWorkers(
-			removeSupportWorkerIds);
-	}
-
 	public void updateSupportRegion(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -1308,11 +1069,8 @@ public class AdminPortlet extends MVCPortlet {
 		String timeZoneId = ParamUtil.getString(actionRequest, "timeZoneId");
 
 		if (supportRegionId > 0) {
-			long[] supportTeamIds = StringUtil.split(
-				ParamUtil.getString(actionRequest, "supportTeamIds"), 0L);
-
 			SupportRegionLocalServiceUtil.updateSupportRegion(
-				supportRegionId, name, description, timeZoneId, supportTeamIds);
+				supportRegionId, name, description, timeZoneId);
 		}
 		else {
 			SupportRegionLocalServiceUtil.addSupportRegion(
@@ -1357,97 +1115,6 @@ public class AdminPortlet extends MVCPortlet {
 				severity1Resolution, severity2Response, severity2Resolution,
 				severity3Response, severity3Resolution);
 		}
-	}
-
-	public void updateSupportTeam(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long supportTeamId = ParamUtil.getLong(actionRequest, "supportTeamId");
-
-		long parentSupportTeamId = ParamUtil.getLong(
-			actionRequest, "parentSupportTeamId");
-		long supportLaborId = ParamUtil.getLong(
-			actionRequest, "supportLaborId");
-		long locationSupportRegionId = ParamUtil.getLong(
-			actionRequest, "locationSupportRegionId");
-		String name = ParamUtil.getString(actionRequest, "name");
-		String description = ParamUtil.getString(actionRequest, "description");
-		int type = ParamUtil.getInteger(actionRequest, "type");
-
-		if (supportTeamId > 0) {
-			long[] accountEntryIds = StringUtil.split(
-				ParamUtil.getString(actionRequest, "accountEntryIds"), 0L);
-			long[] supportRegionIds = StringUtil.split(
-				ParamUtil.getString(actionRequest, "supportRegionIds"), 0L);
-
-			SupportTeamLocalServiceUtil.updateSupportTeam(
-				supportTeamId, parentSupportTeamId, supportLaborId,
-				locationSupportRegionId, name, description, type,
-				accountEntryIds, supportRegionIds);
-
-			long[] childSupportTeamIds = StringUtil.split(
-				ParamUtil.getString(actionRequest, "childSupportTeamIds"), 0L);
-			String[] languageIds = StringUtil.split(
-				ParamUtil.getString(actionRequest, "languageIds"));
-
-			SupportTeamLocalServiceUtil.setChildSupportTeams(
-				supportTeamId, childSupportTeamIds);
-			SupportTeamLanguageLocalServiceUtil.setSupportTeamLanguageIds(
-				supportTeamId, languageIds);
-		}
-		else {
-			SupportTeamLocalServiceUtil.addSupportTeam(
-				themeDisplay.getUserId(), parentSupportTeamId, supportLaborId,
-				locationSupportRegionId, name, description, type);
-		}
-	}
-
-	public void updateSupportWorker(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long supportWorkerId = ParamUtil.getLong(
-			actionRequest, "supportWorkerId");
-
-		long supportTeamId = ParamUtil.getLong(actionRequest, "supportTeamId");
-
-		int[] accountTiers = StringUtil.split(
-			ParamUtil.getString(actionRequest, "accountTiers"), 0);
-
-		SupportWorkerLocalServiceUtil.updateSupportWorker(
-			supportWorkerId, supportTeamId);
-
-		SupportWorkerAccountTierLocalServiceUtil.setSupportWorkerAccountTiers(
-			supportWorkerId, accountTiers);
-	}
-
-	public void updateSupportWorkers(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long[] addUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "addUserIds"), 0L);
-		long[] removeUserIds = StringUtil.split(
-			ParamUtil.getString(actionRequest, "removeUserIds"), 0L);
-
-		long supportTeamId = ParamUtil.getLong(actionRequest, "supportTeamId");
-
-		int[] roles = new int[addUserIds.length];
-
-		for (int i = 0; i < addUserIds.length; i++) {
-			long userId = addUserIds[i];
-
-			roles[i] = ParamUtil.getInteger(actionRequest, "role_" + userId);
-		}
-
-		SupportWorkerLocalServiceUtil.addSupportWorkers(
-			addUserIds, supportTeamId, roles);
-		SupportWorkerLocalServiceUtil.deleteSupportWorkers(
-			removeUserIds, supportTeamId);
 	}
 
 	protected Properties getLicenseProperties(
@@ -1586,7 +1253,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof DuplicateAccountCustomerException ||
 			cause instanceof DuplicateAccountEntryException ||
 			cause instanceof DuplicateAccountEnvironmentException ||
-			cause instanceof DuplicateHolidayEntryException ||
 			cause instanceof DuplicateOfferingBundleException ||
 			cause instanceof DuplicateOfferingDefinitionException ||
 			cause instanceof DuplicatePartnerEntryCodeException ||
@@ -1594,13 +1260,9 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof DuplicateProductEntryException ||
 			cause instanceof DuplicateSupportRegionException ||
 			cause instanceof DuplicateSupportResponseException ||
-			cause instanceof DuplicateSupportTeamException ||
 			cause instanceof DuplicateUserEmailAddressException ||
 			cause instanceof FileExtensionException ||
 			cause instanceof FileNameException ||
-			cause instanceof HolidayCalendarNameException ||
-			cause instanceof HolidayEntryDateException ||
-			cause instanceof HolidayEntryStartDateLaterThanEndDateException ||
 			cause instanceof LicenseEntryNameException ||
 			cause instanceof LicenseEntryPortalVersionException ||
 			cause instanceof NoSuchAccountEntryException ||
@@ -1623,16 +1285,9 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof RequiredProductEntryException ||
 			cause instanceof RequiredSupportRegionException ||
 			cause instanceof RequiredSupportResponseException ||
-			cause instanceof RequiredSupportTeamException ||
 			cause instanceof ReservedUserEmailAddressException ||
-			cause instanceof SupportLaborHourException ||
-			cause instanceof SupportLaborNameException ||
 			cause instanceof SupportRegionNameException ||
 			cause instanceof SupportResponseNameException ||
-			cause instanceof SupportResponseSupportLevelException ||
-			cause instanceof SupportTeamLocationException ||
-			cause instanceof SupportTeamNameException ||
-			cause instanceof SupportTeamSupportLaborException ||
 			cause instanceof UserEmailAddressException) {
 
 			return true;

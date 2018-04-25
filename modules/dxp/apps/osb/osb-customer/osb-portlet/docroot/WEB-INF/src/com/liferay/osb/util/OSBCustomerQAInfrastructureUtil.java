@@ -26,7 +26,6 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.SupportRegion;
-import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
@@ -36,7 +35,6 @@ import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.exception.UserScreenNameException;
 import com.liferay.portal.kernel.log.Log;
@@ -84,7 +82,6 @@ public class OSBCustomerQAInfrastructureUtil {
 		checkOfferingEntries();
 		checkPartnerWorkers(OSBConstants.COMPANY_ID);
 		checkSupportRegions();
-		checkSupportWorkers(OSBConstants.COMPANY_ID);
 	}
 
 	protected static void checkAccountCustomer(
@@ -563,61 +560,6 @@ public class OSBCustomerQAInfrastructureUtil {
 				checkSupportRegion(
 					accountEntryCode, GetterUtil.getLong(supportRegionId));
 			}
-		}
-	}
-
-	protected static void checkSupportWorker(
-			long companyId, String emailAddress, long supportTeamId,
-			int[] escalationLevels, int[] roles, int[] notifications)
-		throws Exception {
-
-		long userId = UserLocalServiceUtil.getUserIdByEmailAddress(
-			companyId, emailAddress);
-
-		if (!SupportWorkerLocalServiceUtil.hasSupportWorker(
-				userId, supportTeamId)) {
-
-			SupportWorkerLocalServiceUtil.addSupportWorkers(
-				new long[] {userId}, supportTeamId, roles);
-
-			SupportWorker supportWorker =
-				SupportWorkerLocalServiceUtil.getSupportWorker(
-					userId, supportTeamId);
-
-			if (!supportWorker.isClockedIn()) {
-				SupportWorkerLocalServiceUtil.clockInOut(
-					supportWorker.getSupportWorkerId());
-			}
-		}
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Checked support worker: " + emailAddress);
-		}
-	}
-
-	protected static void checkSupportWorkers(long companyId) throws Exception {
-		for (String emailAddress :
-				OSBCustomerQAConfigurationValues.
-					OSB_QA_SUPPORT_WORKER_EMAIL_ADDRESSES) {
-
-			String[] escalationLevels = OSBCustomerQAConfigurationUtil.getArray(
-				OSBCustomerQAConfigurationKeys.OSB_QA_SUPPORT_WORKER,
-				new Filter(emailAddress, "escalation-levels"));
-			String[] notifications = OSBCustomerQAConfigurationUtil.getArray(
-				OSBCustomerQAConfigurationKeys.OSB_QA_SUPPORT_WORKER,
-				new Filter(emailAddress, "notifications"));
-			String[] roles = OSBCustomerQAConfigurationUtil.getArray(
-				OSBCustomerQAConfigurationKeys.OSB_QA_SUPPORT_WORKER,
-				new Filter(emailAddress, "roles"));
-			String supportTeamId = OSBCustomerQAConfigurationUtil.get(
-				OSBCustomerQAConfigurationKeys.OSB_QA_SUPPORT_WORKER,
-				new Filter(emailAddress, "support-team-id"));
-
-			checkSupportWorker(
-				companyId, emailAddress, GetterUtil.getLong(supportTeamId),
-				GetterUtil.getIntegerValues(escalationLevels),
-				GetterUtil.getIntegerValues(roles),
-				GetterUtil.getIntegerValues(notifications));
 		}
 	}
 

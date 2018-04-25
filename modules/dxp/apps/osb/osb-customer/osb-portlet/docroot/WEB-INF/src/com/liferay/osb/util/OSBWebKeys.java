@@ -24,8 +24,6 @@ public interface OSBWebKeys {
 
 	public static final String OSB_SEARCH_TERMS = "OSB_SEARCH_TERMS";
 
-	public static final String OSB_TICKET_ENTRY = "OSB_TICKET_ENTRY";
-
 	public static final String WORKFLOW_INSTANCE = "WORKFLOW_INSTANCE";
 
 	public static final String WORKFLOW_TASK = "WORKFLOW_TASK";

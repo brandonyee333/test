@@ -16,9 +16,6 @@
 	<import class="com.liferay.osb.model.CorpProjectMessage" />
 	<import class="com.liferay.osb.model.ExternalIdMapper" />
 	<import class="com.liferay.osb.model.FeedbackEntry" />
-	<import class="com.liferay.osb.model.HolidayCalendar" />
-	<import class="com.liferay.osb.model.HolidayCalendarRel" />
-	<import class="com.liferay.osb.model.HolidayEntry" />
 	<import class="com.liferay.osb.model.LCSSubscriptionEntry" />
 	<import class="com.liferay.osb.model.LicenseEntry" />
 	<import class="com.liferay.osb.model.LicenseKey" />
@@ -31,13 +28,8 @@
 	<import class="com.liferay.osb.model.PartnerWorker" />
 	<import class="com.liferay.osb.model.ProductEntry" />
 	<import class="com.liferay.osb.model.SecurityPatch" />
-	<import class="com.liferay.osb.model.SupportLabor" />
 	<import class="com.liferay.osb.model.SupportRegion" />
 	<import class="com.liferay.osb.model.SupportResponse" />
-	<import class="com.liferay.osb.model.SupportTeam" />
-	<import class="com.liferay.osb.model.SupportTeamLanguage" />
-	<import class="com.liferay.osb.model.SupportWorker" />
-	<import class="com.liferay.osb.model.SupportWorkerAccountTier" />
 	<class name="com.liferay.osb.model.impl.AccountAttachmentImpl" table="OSB_AccountAttachment">
 		<id name="accountAttachmentId" type="long">
 			<generator class="assigned" />
@@ -240,31 +232,6 @@
 		<property name="satisfied" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="comments" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="pageURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.HolidayCalendarImpl" table="OSB_HolidayCalendar">
-		<id name="holidayCalendarId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.HolidayCalendarRelImpl" table="OSB_HolidayCalendarRel">
-		<id name="holidayCalendarRelId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="holidayCalendarId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.HolidayEntryImpl" table="OSB_HolidayEntry">
-		<id name="holidayEntryId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="holidayCalendarId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="startDate" type="org.hibernate.type.TimestampType" />
-		<property name="endDate" type="org.hibernate.type.TimestampType" />
-		<property name="repeatYearly" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.LCSSubscriptionEntryImpl" table="OSB_LCSSubscriptionEntry">
 		<id name="lcsSubscriptionEntryId" type="long">
@@ -488,28 +455,6 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="fileName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.liferay.osb.model.impl.SupportLaborImpl" table="OSB_SupportLabor">
-		<id name="supportLaborId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="timeZoneId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="sunOpen" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="sunClose" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="monOpen" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="monClose" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="tueOpen" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="tueClose" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="wedOpen" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="wedClose" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="thuOpen" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="thuClose" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="friOpen" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="friClose" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="satOpen" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="satClose" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
 	<class name="com.liferay.osb.model.impl.SupportRegionImpl" table="OSB_SupportRegion">
 		<id name="supportRegionId" type="long">
 			<generator class="assigned" />
@@ -540,45 +485,5 @@
 		<property name="severity2Resolution" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="severity3Response" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="severity3Resolution" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.SupportTeamImpl" table="OSB_SupportTeam">
-		<id name="supportTeamId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="createDate" type="org.hibernate.type.TimestampType" />
-		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="parentSupportTeamId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="supportLaborId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="locationSupportRegionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.SupportTeamLanguageImpl" table="OSB_SupportTeamLanguage">
-		<id name="supportTeamLanguageId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="supportTeamId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="languageId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.SupportWorkerImpl" table="OSB_SupportWorker">
-		<id name="supportWorkerId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="supportTeamId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="supportLaborId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="role" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="clockedIn" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
-	<class name="com.liferay.osb.model.impl.SupportWorkerAccountTierImpl" table="OSB_SupportWorkerAccountTier">
-		<id name="supportWorkerAccountTierId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="supportWorkerId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="accountTier" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 </hibernate-mapping>

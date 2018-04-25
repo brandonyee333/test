@@ -31,12 +31,7 @@ public class OSBConstants {
 	public static final String ATTACHMENTS_DIR_ACCOUNT_ENVIRONMENT =
 		"osb/accountenvironment/";
 
-	public static final String ATTACHMENTS_DIR_SUPPORT = "osb/support/";
-
 	public static long COMPANY_ID = 10157;
-
-	public static final String EMAIL_SUPPORT_FROM_NAME_SUFFIX =
-		" [LESA Support]";
 
 	public static final long EXPANDO_OSB_COMPANY_COLUMN_ID = 29224276;
 

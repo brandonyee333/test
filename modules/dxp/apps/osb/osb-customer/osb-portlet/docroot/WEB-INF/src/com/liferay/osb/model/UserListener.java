@@ -18,7 +18,6 @@ import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -79,13 +78,6 @@ public class UserListener extends BaseModelListener<User> {
 
 		try {
 			PartnerWorkerLocalServiceUtil.deletePartnerWorkers(userId);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		try {
-			SupportWorkerLocalServiceUtil.deleteSupportWorkers(userId);
 		}
 		catch (Exception e) {
 			_log.error(e, e);

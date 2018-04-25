@@ -93,27 +93,6 @@ public class PortletPropsValues {
 	public static final String SUPPORT_EMAIL_ADDRESS_FROM = PortletProps.get(
 		PortletPropsKeys.SUPPORT_EMAIL_ADDRESS_FROM);
 
-	public static final String SUPPORT_VERSION_2_EMAIL_ADDRESS_FEEDBACK =
-		PortletProps.get(
-			PortletPropsKeys.SUPPORT_VERSION_2_EMAIL_ADDRESS_FEEDBACK);
-
-	public static final String[] TICKET_ATTACHMENT_INDEXING_EXTENSIONS =
-		PortletProps.getArray(
-			PortletPropsKeys.TICKET_ATTACHMENT_INDEXING_EXTENSIONS);
-
-	public static final int TICKET_ATTACHMENT_INDEXING_MAX_SIZE =
-		GetterUtil.getInteger(
-			PortletProps.get(
-				PortletPropsKeys.TICKET_ATTACHMENT_INDEXING_MAX_SIZE));
-
-	public static final String[] TICKET_ATTACHMENT_PREVIEW_EXTENSIONS =
-		PortletProps.getArray(
-			PortletPropsKeys.TICKET_ATTACHMENT_PREVIEW_EXTENSIONS);
-
-	public static final int TICKET_ENTRY_INDEXING_INTERVAL =
-		GetterUtil.getInteger(
-			PortletProps.get(PortletPropsKeys.TICKET_ENTRY_INDEXING_INTERVAL));
-
 	public static final String WEB_API_TOKEN = PortletProps.get(
 		PortletPropsKeys.WEB_API_TOKEN);
 

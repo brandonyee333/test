@@ -200,25 +200,6 @@
 		<field name="comments" type="String" />
 		<field name="pageURL" type="String" />
 	</model>
-	<model name="com.liferay.osb.model.HolidayCalendar">
-		<field name="holidayCalendarId" type="long" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
-	</model>
-	<model name="com.liferay.osb.model.HolidayCalendarRel">
-		<field name="holidayCalendarRelId" type="long" />
-		<field name="holidayCalendarId" type="long" />
-		<field name="userId" type="long" />
-	</model>
-	<model name="com.liferay.osb.model.HolidayEntry">
-		<field name="holidayEntryId" type="long" />
-		<field name="holidayCalendarId" type="long" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
-		<field name="startDate" type="Date" />
-		<field name="endDate" type="Date" />
-		<field name="repeatYearly" type="boolean" />
-	</model>
 	<model name="com.liferay.osb.model.LCSSubscriptionEntry">
 		<field name="lcsSubscriptionEntryId" type="long" />
 		<field name="lcsProjectId" type="long" />
@@ -441,26 +422,6 @@
 		<field name="name" type="String" />
 		<field name="fileName" type="String" />
 	</model>
-	<model name="com.liferay.osb.model.SupportLabor">
-		<field name="supportLaborId" type="long" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
-		<field name="timeZoneId" type="String" />
-		<field name="sunOpen" type="int" />
-		<field name="sunClose" type="int" />
-		<field name="monOpen" type="int" />
-		<field name="monClose" type="int" />
-		<field name="tueOpen" type="int" />
-		<field name="tueClose" type="int" />
-		<field name="wedOpen" type="int" />
-		<field name="wedClose" type="int" />
-		<field name="thuOpen" type="int" />
-		<field name="thuClose" type="int" />
-		<field name="friOpen" type="int" />
-		<field name="friClose" type="int" />
-		<field name="satOpen" type="int" />
-		<field name="satClose" type="int" />
-	</model>
 	<model name="com.liferay.osb.model.SupportRegion">
 		<field name="supportRegionId" type="long" />
 		<field name="companyId" type="long" />
@@ -487,39 +448,5 @@
 		<field name="severity2Resolution" type="int" />
 		<field name="severity3Response" type="int" />
 		<field name="severity3Resolution" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.SupportTeam">
-		<field name="supportTeamId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="parentSupportTeamId" type="long" />
-		<field name="supportLaborId" type="long" />
-		<field name="locationSupportRegionId" type="long" />
-		<field name="name" type="String" />
-		<field name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="type" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.SupportTeamLanguage">
-		<field name="supportTeamLanguageId" type="long" />
-		<field name="supportTeamId" type="long" />
-		<field name="languageId" type="String" />
-	</model>
-	<model name="com.liferay.osb.model.SupportWorker">
-		<field name="supportWorkerId" type="long" />
-		<field name="userId" type="long" />
-		<field name="supportTeamId" type="long" />
-		<field name="supportLaborId" type="long" />
-		<field name="role" type="int" />
-		<field name="clockedIn" type="boolean" />
-	</model>
-	<model name="com.liferay.osb.model.SupportWorkerAccountTier">
-		<field name="supportWorkerAccountTierId" type="long" />
-		<field name="supportWorkerId" type="long" />
-		<field name="accountTier" type="int" />
 	</model>
 </model-hints>

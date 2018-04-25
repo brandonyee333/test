@@ -114,7 +114,6 @@
 		<!-- Relationships -->
 
 		<column entity="SupportRegion" mapping-table="AccountEntries_SupportRegions" name="supportRegions" type="Collection" />
-		<column entity="SupportTeam" mapping-table="AccountEntries_SupportTeams" name="supportTeams" type="Collection" />
 
 		<!-- Other fields -->
 
@@ -487,59 +486,6 @@
 			<finder-column name="externalId" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="HolidayCalendar" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="holidayCalendarId" primary="true" type="long" />
-
-		<!-- Other fields -->
-
-		<column name="name" type="String" />
-		<column name="description" type="String" />
-	</entity>
-	<entity local-service="true" name="HolidayCalendarRel" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="holidayCalendarRelId" primary="true" type="long" />
-
-		<!--  Other fields -->
-
-		<column name="holidayCalendarId" type="long" />
-		<column name="userId" type="long" />
-
-		<!-- Finder methods -->
-
-		<finder name="HolidayCalendarId" return-type="Collection">
-			<finder-column name="holidayCalendarId" />
-		</finder>
-		<finder name="HC_U" return-type="HolidayCalendarRel">
-			<finder-column name="holidayCalendarId" />
-			<finder-column name="userId" />
-		</finder>
-	</entity>
-	<entity local-service="true" name="HolidayEntry" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="holidayEntryId" primary="true" type="long" />
-
-		<!-- Other fields -->
-
-		<column name="holidayCalendarId" type="long" />
-		<column name="name" type="String" />
-		<column name="description" type="String" />
-		<column name="startDate" type="Date" />
-		<column name="endDate" type="Date" />
-		<column name="repeatYearly" type="boolean" />
-
-		<!-- Finder methods -->
-
-		<finder name="HolidayCalendar" return-type="Collection">
-			<finder-column name="holidayCalendarId" />
-		</finder>
-	</entity>
 	<entity local-service="true" name="OfferingBundle" remote-service="true">
 
 		<!-- PK fields -->
@@ -894,38 +840,6 @@
 		<reference entity="ListType" package-path="com.liferay.portal" />
 		<reference entity="Organization" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="SupportLabor" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="supportLaborId" primary="true" type="long" />
-
-		<!-- Other fields -->
-
-		<column name="name" type="String" />
-		<column name="description" type="String" />
-		<column name="timeZoneId" type="String" />
-		<column name="sunOpen" type="int" />
-		<column name="sunClose" type="int" />
-		<column name="monOpen" type="int" />
-		<column name="monClose" type="int" />
-		<column name="tueOpen" type="int" />
-		<column name="tueClose" type="int" />
-		<column name="wedOpen" type="int" />
-		<column name="wedClose" type="int" />
-		<column name="thuOpen" type="int" />
-		<column name="thuClose" type="int" />
-		<column name="friOpen" type="int" />
-		<column name="friClose" type="int" />
-		<column name="satOpen" type="int" />
-		<column name="satClose" type="int" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column name="name" />
-		</order>
-	</entity>
 	<entity local-service="true" name="SupportRegion" remote-service="true">
 
 		<!-- PK fields -->
@@ -951,7 +865,6 @@
 
 		<column entity="AccountEntry" mapping-table="AccountEntries_SupportRegions" name="accountEntries" type="Collection" />
 		<column entity="PartnerEntry" mapping-table="PartnerEntries_SupportRegions" name="partnerEntries" type="Collection" />
-		<column entity="SupportTeam" mapping-table="SupportTeams_SupportRegions" name="supportTeams" type="Collection" />
 
 		<!-- Order -->
 
@@ -1001,131 +914,6 @@
 			<finder-column name="name" />
 		</finder>
 	</entity>
-	<entity local-service="true" name="SupportTeam" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="supportTeamId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="companyId" type="long" />
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-		<column name="modifiedDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="parentSupportTeamId" type="long" />
-		<column name="supportLaborId" type="long" />
-		<column name="locationSupportRegionId" type="long" />
-		<column name="name" type="String" />
-		<column name="description" type="String" />
-		<column name="type" type="int" />
-
-		<!-- Relationships -->
-
-		<column entity="AccountEntry" mapping-table="AccountEntries_SupportTeams" name="accountEntries" type="Collection" />
-		<column entity="SupportRegion" mapping-table="SupportTeams_SupportRegions" name="supportRegions" type="Collection" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column case-sensitive="false" name="name" />
-		</order>
-
-		<!-- Finder methods -->
-
-		<finder name="ParentSupportTeamId" return-type="Collection">
-			<finder-column name="parentSupportTeamId" />
-		</finder>
-		<finder name="SupportLaborId" return-type="Collection">
-			<finder-column name="supportLaborId" />
-		</finder>
-		<finder name="Name" return-type="SupportTeam" unique="true">
-			<finder-column name="name" />
-		</finder>
-	</entity>
-	<entity local-service="true" name="SupportTeamLanguage" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="supportTeamLanguageId" primary="true" type="long" />
-
-		<!-- Other fields -->
-
-		<column name="supportTeamId" type="long" />
-		<column name="languageId" type="String" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column name="languageId" />
-		</order>
-
-		<!-- Finder methods -->
-
-		<finder name="SupportTeamId" return-type="Collection">
-			<finder-column name="supportTeamId" />
-		</finder>
-	</entity>
-	<entity local-service="true" name="SupportWorker" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="supportWorkerId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="userId" type="long" />
-
-		<!-- Other fields -->
-
-		<column name="supportTeamId" type="long" />
-		<column name="supportLaborId" type="long" />
-		<column name="role" type="int" />
-		<column name="clockedIn" type="boolean" />
-
-		<!-- Finder methods -->
-
-		<finder name="UserId" return-type="Collection">
-			<finder-column name="userId" />
-		</finder>
-		<finder name="SupportTeamId" return-type="Collection">
-			<finder-column name="supportTeamId" />
-		</finder>
-		<finder name="SupportLaborId" return-type="Collection">
-			<finder-column name="supportLaborId" />
-		</finder>
-		<finder name="U_STI" return-type="SupportWorker" unique="true">
-			<finder-column name="userId" />
-			<finder-column name="supportTeamId" />
-		</finder>
-	</entity>
-	<entity local-service="true" name="SupportWorkerAccountTier" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="supportWorkerAccountTierId" primary="true" type="long" />
-
-		<!-- Other fields -->
-
-		<column name="supportWorkerId" type="long" />
-		<column name="accountTier" type="int" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column name="accountTier" />
-		</order>
-
-		<!-- Finder methods -->
-
-		<finder name="SupportWorkerId" return-type="Collection">
-			<finder-column name="supportWorkerId" />
-		</finder>
-	</entity>
 	<exceptions>
 		<exception>AccountAttachmentSize</exception>
 		<exception>AccountEntryCode</exception>
@@ -1149,7 +937,6 @@
 		<exception>DuplicateAccountEntry</exception>
 		<exception>DuplicateAccountEnvironment</exception>
 		<exception>DuplicateAccountEnvironmentAttachment</exception>
-		<exception>DuplicateHolidayEntry</exception>
 		<exception>DuplicateOfferingBundle</exception>
 		<exception>DuplicateOfferingDefinition</exception>
 		<exception>DuplicatePartnerEntryCode</exception>
@@ -1157,11 +944,7 @@
 		<exception>DuplicateProductEntry</exception>
 		<exception>DuplicateSupportRegion</exception>
 		<exception>DuplicateSupportResponse</exception>
-		<exception>DuplicateSupportTeam</exception>
 		<exception>FileRepositoryNotAvailable</exception>
-		<exception>HolidayCalendarName</exception>
-		<exception>HolidayEntryDate</exception>
-		<exception>HolidayEntryStartDateLaterThanEndDate</exception>
 		<exception>OfferingBundleName</exception>
 		<exception>OfferingEntryQuantity</exception>
 		<exception>OfferingEntrySizing</exception>
@@ -1175,13 +958,8 @@
 		<exception>ProductEntryName</exception>
 		<exception>RequiredAccountEntry</exception>
 		<exception>RequiredSupportRegion</exception>
-		<exception>SupportLaborHour</exception>
-		<exception>SupportLaborName</exception>
 		<exception>SupportRegionName</exception>
 		<exception>SupportResponseName</exception>
 		<exception>SupportResponseSupportLevel</exception>
-		<exception>SupportTeamLocation</exception>
-		<exception>SupportTeamName</exception>
-		<exception>SupportTeamSupportLabor</exception>
 	</exceptions>
 </service-builder>

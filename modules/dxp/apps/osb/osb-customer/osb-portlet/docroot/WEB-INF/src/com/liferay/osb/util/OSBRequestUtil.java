@@ -56,79 +56,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class OSBRequestUtil {
 
-	public static JSONArray getEarlierEnvLFRTypes(
-		ResourceRequest resourceRequest, ResourceResponse resourceResponse) {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
-
-		List<ListType> envLFRTypes = new ArrayList<>();
-
-		envLFRTypes.addAll(
-			ListTypeServiceUtil.getListTypes(
-				ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS));
-		envLFRTypes.addAll(
-			ListTypeServiceUtil.getListTypes(
-				ProductEntryConstants.
-					LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS));
-
-		Iterator<ListType> itr = envLFRTypes.iterator();
-
-		Long[] listTypesDeprecated = ArrayUtil.toLongArray(
-			ProductEntryConstants.LIST_TYPES_DEPRECATED);
-
-		while (itr.hasNext()) {
-			ListType listType = itr.next();
-
-			if (ArrayUtil.contains(
-					listTypesDeprecated, listType.getListTypeId()) ||
-				(listType.getListTypeId() >= envLFR)) {
-
-				itr.remove();
-			}
-		}
-
-		return getJSONArray(envLFRTypes, themeDisplay.getLocale());
-	}
-
-	public static JSONArray getLaterEnvLFRTypes(
-			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
-		throws PortalException {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
-		int offeringEntryId = ParamUtil.getInteger(
-			resourceRequest, "offeringEntryId");
-
-		List<ListType> envLFRTypes = new ArrayList<>();
-
-		if (offeringEntryId > 0) {
-			OfferingEntry offeringEntry =
-				OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
-
-			ProductEntry productEntry = offeringEntry.getProductEntry();
-
-			envLFRTypes = ListUtil.copy(productEntry.getAllVersionsListTypes());
-
-			Iterator<ListType> itr = envLFRTypes.iterator();
-
-			while (itr.hasNext()) {
-				ListType listType = itr.next();
-
-				if (listType.getListTypeId() <= envLFR) {
-					itr.remove();
-				}
-			}
-		}
-
-		return getJSONArray(envLFRTypes, themeDisplay.getLocale());
-	}
-
-	public static JSONObject getTicketEnvironment(
+	public static JSONObject getAccountEnvironment(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
@@ -201,50 +129,76 @@ public class OSBRequestUtil {
 		return jsonObject;
 	}
 
-	public static JSONObject getTicketEnvLFR(
+	public static JSONArray getEarlierEnvLFRTypes(
 		ResourceRequest resourceRequest, ResourceResponse resourceResponse) {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
 
-		long offeringEntryId = ParamUtil.getLong(
+		List<ListType> envLFRTypes = new ArrayList<>();
+
+		envLFRTypes.addAll(
+			ListTypeServiceUtil.getListTypes(
+				ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS));
+		envLFRTypes.addAll(
+			ListTypeServiceUtil.getListTypes(
+				ProductEntryConstants.
+					LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS));
+
+		Iterator<ListType> itr = envLFRTypes.iterator();
+
+		Long[] listTypesDeprecated = ArrayUtil.toLongArray(
+			ProductEntryConstants.LIST_TYPES_DEPRECATED);
+
+		while (itr.hasNext()) {
+			ListType listType = itr.next();
+
+			if (ArrayUtil.contains(
+					listTypesDeprecated, listType.getListTypeId()) ||
+				(listType.getListTypeId() >= envLFR)) {
+
+				itr.remove();
+			}
+		}
+
+		return getJSONArray(envLFRTypes, themeDisplay.getLocale());
+	}
+
+	public static JSONArray getLaterEnvLFRTypes(
+			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
+		throws PortalException {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		int envLFR = ParamUtil.getInteger(resourceRequest, "envLFR");
+		int offeringEntryId = ParamUtil.getInteger(
 			resourceRequest, "offeringEntryId");
 
-		try {
+		List<ListType> envLFRTypes = new ArrayList<>();
+
+		if (offeringEntryId > 0) {
 			OfferingEntry offeringEntry =
 				OfferingEntryLocalServiceUtil.getOfferingEntry(offeringEntryId);
 
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
-			List<ListType> envLFRTypes = ListUtil.copy(
-				productEntry.getAllVersionsListTypes());
+			envLFRTypes = ListUtil.copy(productEntry.getAllVersionsListTypes());
 
 			Iterator<ListType> itr = envLFRTypes.iterator();
 
-			Long[] listTypesDeprecated = ArrayUtil.toLongArray(
-				ProductEntryConstants.LIST_TYPES_DEPRECATED);
-
 			while (itr.hasNext()) {
-				ListType envLFRType = itr.next();
+				ListType listType = itr.next();
 
-				if (ArrayUtil.contains(
-						listTypesDeprecated, envLFRType.getListTypeId())) {
-
+				if (listType.getListTypeId() <= envLFR) {
 					itr.remove();
 				}
 			}
-
-			jsonObject.put(
-				"ENV_LFR", getJSONArray(envLFRTypes, themeDisplay.getLocale()));
-			jsonObject.put("ENV_LFR#key", envLFRTypes.hashCode());
-			jsonObject.put("portal", !productEntry.isSocialOffice());
-		}
-		catch (Exception e) {
 		}
 
-		return jsonObject;
+		return getJSONArray(envLFRTypes, themeDisplay.getLocale());
 	}
 
 	public static void sendError(

@@ -1759,8 +1759,6 @@ public class AccountEntryLocalServiceImpl
 		String fromName = PrefsPropsUtil.getString(
 			OSBConstants.COMPANY_ID, PropsKeys.ADMIN_EMAIL_FROM_NAME);
 
-		fromName += OSBConstants.EMAIL_SUPPORT_FROM_NAME_SUFFIX;
-
 		Map<Locale, String> subjectMap =
 			SupportUtil.getEmailAccountEntryTierSubjectMap(preferences);
 		Map<Locale, String> bodyMap =

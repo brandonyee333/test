@@ -19,11 +19,9 @@ import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
-import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -31,8 +29,6 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
-
-import java.util.List;
 
 /**
  * @author Lin Cui
@@ -115,18 +111,6 @@ public class OSBAccountEnvironmentPermission {
 			(partnerWorker.getRole() == PartnerWorkerConstants.ROLE_MEMBER)) {
 
 			return true;
-		}
-
-		try {
-			List<SupportWorker> supportWorkers =
-				SupportWorkerLocalServiceUtil.getUserSupportWorkers(
-					permissionChecker.getUserId());
-
-			if (!supportWorkers.isEmpty()) {
-				return true;
-			}
-		}
-		catch (Exception e) {
 		}
 
 		if (actionId.equals(OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) ||

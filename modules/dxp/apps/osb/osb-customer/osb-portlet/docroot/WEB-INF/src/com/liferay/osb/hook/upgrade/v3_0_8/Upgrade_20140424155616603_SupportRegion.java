@@ -51,22 +51,6 @@ public class Upgrade_20140424155616603_SupportRegion
 				"create index IX_B9459F3D on " +
 					"OSB_AccountEntries_SupportRegions (supportRegionId)");
 		}
-
-		if (!hasTable(
-				SupportRegionModelImpl.
-					MAPPING_TABLE_OSB_SUPPORTTEAMS_SUPPORTREGIONS_NAME)) {
-
-			runSQL(
-				SupportRegionModelImpl.
-					MAPPING_TABLE_OSB_SUPPORTTEAMS_SUPPORTREGIONS_SQL_CREATE);
-
-			runSQL(
-				"create index IX_F1DB9001 on OSB_SupportTeams_SupportRegions " +
-					"(supportRegionId)");
-			runSQL(
-				"create index IX_E33A26EA on OSB_SupportTeams_SupportRegions " +
-					"(supportTeamId)");
-		}
 	}
 
 	@Override

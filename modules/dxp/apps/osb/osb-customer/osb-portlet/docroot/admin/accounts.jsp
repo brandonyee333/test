@@ -198,18 +198,18 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 </aui:form>
 
 <aui:script>
-	function <portlet:namespace />toggleSupportRegions(supportTeamId, expand) {
+	function <portlet:namespace />toggleSupportRegions(accountEntryIdId, expand) {
 		var A = AUI();
 
 		if (expand) {
-			A.one('#<portlet:namespace />supportRegions_' + supportTeamId).show();
-			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportRegions').show();
-			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportRegions').hide();
+			A.one('#<portlet:namespace />supportRegions_' + accountEntryId).show();
+			A.one('#<portlet:namespace />collapse_' + accountEntryId + '_supportRegions').show();
+			A.one('#<portlet:namespace />expand_' + accountEntryId + '_supportRegions').hide();
 		}
 		else {
-			A.one('#<portlet:namespace />supportRegions_' + supportTeamId).hide();
-			A.one('#<portlet:namespace />collapse_' + supportTeamId + '_supportRegions').hide();
-			A.one('#<portlet:namespace />expand_' + supportTeamId + '_supportRegions').show();
+			A.one('#<portlet:namespace />supportRegions_' + accountEntryId).hide();
+			A.one('#<portlet:namespace />collapse_' + accountEntryId + '_supportRegions').hide();
+			A.one('#<portlet:namespace />expand_' + accountEntryId + '_supportRegions').show();
 		}
 	}
 </aui:script>

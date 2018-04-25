@@ -9,10 +9,6 @@ create index IX_E9054065 on OSB_AccountEntries_SupportRegions (accountEntryId);
 create index IX_66F378D7 on OSB_AccountEntries_SupportRegions (companyId);
 create index IX_B9459F3D on OSB_AccountEntries_SupportRegions (supportRegionId);
 
-create index IX_1910ED5C on OSB_AccountEntries_SupportTeams (accountEntryId);
-create index IX_C38F4D80 on OSB_AccountEntries_SupportTeams (companyId);
-create index IX_7AF62D4F on OSB_AccountEntries_SupportTeams (supportTeamId);
-
 create unique index IX_32214056 on OSB_AccountEntry (code_[$COLUMN_LENGTH:75$]);
 create index IX_6AA361CE on OSB_AccountEntry (corpProjectId);
 create index IX_64D9942E on OSB_AccountEntry (corpProjectUuid[$COLUMN_LENGTH:75$]);
@@ -54,10 +50,6 @@ create index IX_A16BF735 on OSB_CorpProjectMessage (uuid_[$COLUMN_LENGTH:75$]);
 
 create index IX_86A7752 on OSB_ExternalIdMapper (classNameId, classPK, type_);
 create index IX_8FBE42CF on OSB_ExternalIdMapper (classNameId, type_, externalId[$COLUMN_LENGTH:75$]);
-
-create index IX_1738CAF1 on OSB_HolidayCalendarRel (holidayCalendarId, userId);
-
-create index IX_8D6F9B60 on OSB_HolidayEntry (holidayCalendarId);
 
 create index IX_8B5D7FE4 on OSB_LicenseEntry (productEntryId, portalVersionMin);
 create unique index IX_7576438B on OSB_LicenseEntry (productEntryId, type_[$COLUMN_LENGTH:75$]);
@@ -117,19 +109,3 @@ create index IX_36A4B1D8 on OSB_SecurityPatch (portletId[$COLUMN_LENGTH:75$]);
 create unique index IX_DC67F8E7 on OSB_SupportRegion (name[$COLUMN_LENGTH:75$]);
 
 create unique index IX_9A2345B4 on OSB_SupportResponse (name[$COLUMN_LENGTH:75$]);
-
-create unique index IX_CB537ED0 on OSB_SupportTeam (name[$COLUMN_LENGTH:75$]);
-create index IX_259AEC3C on OSB_SupportTeam (parentSupportTeamId);
-create index IX_92D16E1 on OSB_SupportTeam (supportLaborId);
-
-create index IX_45C068E on OSB_SupportTeamLanguage (supportTeamId);
-
-create index IX_7FEE4C9B on OSB_SupportTeams_SupportRegions (companyId);
-create index IX_F1DB9001 on OSB_SupportTeams_SupportRegions (supportRegionId);
-create index IX_E33A26EA on OSB_SupportTeams_SupportRegions (supportTeamId);
-
-create index IX_C3CFE42 on OSB_SupportWorker (supportLaborId);
-create index IX_5B76AC85 on OSB_SupportWorker (supportTeamId);
-create unique index IX_C4442B0B on OSB_SupportWorker (userId, supportTeamId);
-
-create index IX_749683CF on OSB_SupportWorkerAccountTier (supportWorkerId);

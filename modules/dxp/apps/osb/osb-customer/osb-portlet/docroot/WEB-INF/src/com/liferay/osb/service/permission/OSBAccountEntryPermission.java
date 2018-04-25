@@ -21,13 +21,10 @@ import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
-import com.liferay.osb.model.SupportWorker;
-import com.liferay.osb.model.SupportWorkerConstants;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,8 +32,6 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
-
-import java.util.List;
 
 /**
  * @author Amos Fong
@@ -62,41 +57,6 @@ public class OSBAccountEntryPermission {
 				OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
 
 			return true;
-		}
-
-		boolean hasSupportWorkerDeveloperRole = false;
-		boolean hasSupportWorkerManagerRole = false;
-
-		try {
-			List<SupportWorker> supportWorkers =
-				SupportWorkerLocalServiceUtil.getUserSupportWorkers(
-					permissionChecker.getUserId());
-
-			if (!supportWorkers.isEmpty()) {
-				SupportWorker supportWorker = supportWorkers.get(0);
-
-				if (actionId.equals(OSBActionKeys.ADD_TICKET) &&
-					!supportWorker.isClockedIn()) {
-
-					return false;
-				}
-			}
-
-			for (SupportWorker supportWorker : supportWorkers) {
-				if (supportWorker.getRole() ==
-						SupportWorkerConstants.ROLE_DEVELOPER) {
-
-					hasSupportWorkerDeveloperRole = true;
-				}
-
-				if (supportWorker.getRole() ==
-						SupportWorkerConstants.ROLE_MANAGER) {
-
-					hasSupportWorkerManagerRole = true;
-				}
-			}
-		}
-		catch (Exception e) {
 		}
 
 		AccountWorker accountWorker = null;
@@ -139,15 +99,11 @@ public class OSBAccountEntryPermission {
 		}
 
 		if (actionId.equals(OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS)) {
-			if (hasSupportWorkerDeveloperRole) {
-				return true;
-			}
-
 			return false;
 		}
 
 		if (actionId.equals(OSBActionKeys.UPDATE_ACCOUNT_TIER)) {
-			return hasSupportWorkerManagerRole;
+			return false;
 		}
 
 		AccountCustomer accountCustomer = null;
@@ -232,10 +188,6 @@ public class OSBAccountEntryPermission {
 			}
 		}
 		catch (Exception e) {
-		}
-
-		if (actionId.equals(OSBActionKeys.ADD_TICKET)) {
-			return false;
 		}
 
 		if ((accountCustomer != null) || (partnerWorker != null)) {

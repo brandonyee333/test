@@ -264,33 +264,6 @@
 		<parameter name="wsdlServicePort" value="Plugin_OSB_AuditEntryService" />
 		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
 	</service>
-	<service name="Plugin_OSB_HolidayCalendarRelService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.HolidayCalendarRelServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="HolidayCalendarRelServiceSoap" />
-		<parameter name="wsdlServiceElement" value="HolidayCalendarRelServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_HolidayCalendarRelService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_HolidayCalendarService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.HolidayCalendarServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="HolidayCalendarServiceSoap" />
-		<parameter name="wsdlServiceElement" value="HolidayCalendarServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_HolidayCalendarService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_HolidayEntryService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.HolidayEntryServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="HolidayEntryServiceSoap" />
-		<parameter name="wsdlServiceElement" value="HolidayEntryServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_HolidayEntryService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
 	<service name="Plugin_OSB_LCSSubscriptionEntryService" provider="java:RPC" style="rpc" use="encoded">
 		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://model.osb.liferay.com" qname="ns:ArrayOf_tns2_LCSSubscriptionEntrySoap" type="java:com.liferay.osb.model.LCSSubscriptionEntrySoap[]" innerType="cmp-ns:LCSSubscriptionEntrySoap" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
 		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:LCSSubscriptionEntrySoap" type="java:com.liferay.osb.model.LCSSubscriptionEntrySoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
@@ -625,15 +598,6 @@
 		<parameter name="wsdlServicePort" value="Plugin_OSB_SecurityPatchService" />
 		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
 	</service>
-	<service name="Plugin_OSB_SupportLaborService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.SupportLaborServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="SupportLaborServiceSoap" />
-		<parameter name="wsdlServiceElement" value="SupportLaborServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_SupportLaborService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
 	<service name="Plugin_OSB_SupportRegionService" provider="java:RPC" style="rpc" use="encoded">
 		<parameter name="allowedMethods" value="*" />
 		<parameter name="className" value="com.liferay.osb.service.http.SupportRegionServiceSoap" />
@@ -650,54 +614,6 @@
 		<parameter name="wsdlPortType" value="SupportResponseServiceSoap" />
 		<parameter name="wsdlServiceElement" value="SupportResponseServiceSoapService" />
 		<parameter name="wsdlServicePort" value="Plugin_OSB_SupportResponseService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_SupportTeamLanguageService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.SupportTeamLanguageServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="SupportTeamLanguageServiceSoap" />
-		<parameter name="wsdlServiceElement" value="SupportTeamLanguageServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_SupportTeamLanguageService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_SupportTeamService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.SupportTeamServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="SupportTeamServiceSoap" />
-		<parameter name="wsdlServiceElement" value="SupportTeamServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_SupportTeamService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_SupportTeamTimeZoneService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.SupportTeamTimeZoneServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="SupportTeamTimeZoneServiceSoap" />
-		<parameter name="wsdlServiceElement" value="SupportTeamTimeZoneServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_SupportTeamTimeZoneService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_SupportWorkerAccountTierService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.SupportWorkerAccountTierServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="SupportWorkerAccountTierServiceSoap" />
-		<parameter name="wsdlServiceElement" value="SupportWorkerAccountTierServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_SupportWorkerAccountTierService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_SupportWorkerService" provider="java:RPC" style="rpc" use="encoded">
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" name="clockInOut" qname="operNS:clockInOut" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="supportWorkerId" type="tns:long"></parameter>
-		</operation>
-		<parameter name="allowedMethods" value="clockInOut" />
-		<parameter name="className" value="com.liferay.osb.service.http.SupportWorkerServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="SupportWorkerServiceSoap" />
-		<parameter name="wsdlServiceElement" value="SupportWorkerServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_SupportWorkerService" />
 		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
 	</service>
 </deployment>

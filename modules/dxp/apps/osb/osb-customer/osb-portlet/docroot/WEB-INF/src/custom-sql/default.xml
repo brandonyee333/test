@@ -1,22 +1,6 @@
 <?xml version="1.0"?>
 
 <custom-sql>
-	<sql id="com.liferay.osb.service.impl.SupportWorkerLocalServiceImpl.updateSupportTeamAssignedWork">
-		<![CDATA[
-			UPDATE
-				OSB_SupportTeam
-			SET
-				OSB_SupportTeam.assignedWork =
-					(
-						SELECT
-							SUM(OSB_SupportWorker.assignedWork)
-						FROM
-							OSB_SupportWorker
-						WHERE
-							OSB_SupportWorker.supportTeamId = OSB_SupportTeam.supportTeamId
-					)
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.countByU_CD_MU_MD_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z">
 		<![CDATA[
 			SELECT
@@ -311,50 +295,6 @@
 						(OSB_OfferingEntry.supportTickets = [$TRUE$]) AND
 						(OSB_OfferingEntry.status = ?)
 				) [$TICKET_SUPPORT_COMPARATOR$] 0
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.HolidayEntryFinder.findByU_RY">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_HolidayEntry.*}
-			FROM
-				OSB_HolidayEntry
-			INNER JOIN
-				OSB_HolidayCalendar ON
-					(OSB_HolidayCalendar.holidayCalendarId = OSB_HolidayEntry.holidayCalendarId)
-			INNER JOIN
-				OSB_HolidayCalendarRel ON
-					(OSB_HolidayCalendarRel.holidayCalendarId = OSB_HolidayCalendar.holidayCalendarId)
-			WHERE
-				(OSB_HolidayCalendarRel.userId = ?) AND
-				(OSB_HolidayEntry.repeatYearly = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.HolidayEntryFinder.findByU_RY_SD_ED">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_HolidayEntry.*}
-			FROM
-				OSB_HolidayEntry
-			INNER JOIN
-				OSB_HolidayCalendar ON
-					(OSB_HolidayCalendar.holidayCalendarId = OSB_HolidayEntry.holidayCalendarId)
-			INNER JOIN
-				OSB_HolidayCalendarRel ON
-					(OSB_HolidayCalendarRel.holidayCalendarId = OSB_HolidayCalendar.holidayCalendarId)
-			WHERE
-				(OSB_HolidayCalendarRel.userId = ?) AND
-				(OSB_HolidayEntry.repeatYearly = ?) AND
-				(
-					(
-						(OSB_HolidayEntry.startDate >= ?) AND
-						(OSB_HolidayEntry.startDate <= ?)
-					) OR
-					(
-						(OSB_HolidayEntry.endDate >= ?) AND
-						(OSB_HolidayEntry.endDate <= ?)
-					)
-				)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.LicenseKeyFinder.countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A">
@@ -795,191 +735,6 @@
 				OSB_SupportResponse.supportLevel DESC
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportTeamFinder.countByN_T">
-		<![CDATA[
-			SELECT
-				COUNT(*) AS COUNT_VALUE
-			FROM
-				OSB_SupportTeam
-			WHERE
-				(lower(OSB_SupportTeam.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-				(OSB_SupportTeam.type_ = ? [$AND_OR_NULL_CHECK$])
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportTeamFinder.findByN_T">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_SupportTeam.*}
-			FROM
-				OSB_SupportTeam
-			WHERE
-				(lower(OSB_SupportTeam.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-				(OSB_SupportTeam.type_ = ? [$AND_OR_NULL_CHECK$])
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportTeamFinder.findByU_R">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_SupportTeam.*}
-			FROM
-				OSB_SupportTeam
-			INNER JOIN
-				OSB_SupportWorker ON
-					(OSB_SupportWorker.supportTeamId = OSB_SupportTeam.supportTeamId)
-			WHERE
-				(OSB_SupportWorker.userId = ?) AND
-				(OSB_SupportWorker.role = ? OR ? = 0)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.countBySL_FN_MN_LN_SN_EA_STN">
-		<![CDATA[
-			SELECT
-				COUNT(*) AS COUNT_VALUE
-			FROM
-				OSB_SupportWorker
-			INNER JOIN
-				User_ ON
-					User_.userId = OSB_SupportWorker.userId
-			INNER JOIN
-				OSB_SupportTeam ON
-					OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId
-			WHERE
-				((OSB_SupportWorker.supportLaborId = ?) OR (? = 0)) AND
-				(
-					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(OSB_SupportTeam.name) LIKE ? [$AND_OR_NULL_CHECK$])
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.findBySupportTeamId">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_SupportWorker.*}
-			FROM
-				OSB_SupportWorker
-			INNER JOIN
-				User_ ON
-					(User_.userId = OSB_SupportWorker.userId)
-			WHERE
-				(OSB_SupportWorker.supportTeamId = ?)
-			ORDER BY
-				User_.lastName ASC,
-				User_.firstName ASC
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.findByR_STT_SRI">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_SupportWorker.*}
-			FROM
-				OSB_SupportWorker
-			INNER JOIN
-				OSB_SupportTeam ON
-					(OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId)
-			INNER JOIN
-				OSB_SupportTeams_SupportRegions ON
-					(OSB_SupportTeams_SupportRegions.supportTeamId = OSB_SupportTeam.supportTeamId)
-			WHERE
-				[$WHERE$]
-				(OSB_SupportWorker.role [$ROLE_COMPARATOR$] ?) AND
-				(OSB_SupportTeam.type_ = ?) AND
-				((OSB_SupportTeams_SupportRegions.supportRegionId = ?) OR (? = 0))
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.findBySL_FN_MN_LN_SN_EA_STN">
-		<![CDATA[
-			SELECT
-				DISTINCT {OSB_SupportWorker.*}
-			FROM
-				OSB_SupportWorker
-			INNER JOIN
-				User_ ON
-					(User_.userId = OSB_SupportWorker.userId)
-			INNER JOIN
-				OSB_SupportTeam ON
-					(OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId)
-			WHERE
-				((OSB_SupportWorker.supportLaborId = ?) OR (? = 0)) AND
-				(
-					(lower(User_.emailAddress) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.firstName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.middleName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.lastName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(User_.screenName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-					(lower(OSB_SupportTeam.name) LIKE ? [$AND_OR_NULL_CHECK$])
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinByAccountTier">
-		<![CDATA[
-			INNER JOIN
-				OSB_SupportWorkerAccountTier ON
-					(OSB_SupportWorkerAccountTier.supportWorkerId = OSB_SupportWorker.supportWorkerId)
-			WHERE
-				(OSB_SupportWorkerAccountTier.accountTier = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinByLocationSupportRegion">
-		<![CDATA[
-			WHERE
-				(OSB_SupportTeam.locationSupportRegionId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySupportRegion">
-		<![CDATA[
-			INNER JOIN
-				OSB_SupportTeams_SupportRegions ON
-					(OSB_SupportTeams_SupportRegions.supportTeamId = OSB_SupportWorker.supportTeamId)
-			WHERE
-				(OSB_SupportTeams_SupportRegions.supportRegionId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySupportTeam">
-		<![CDATA[
-			WHERE
-				(OSB_SupportWorker.supportTeamId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySupportTeamAccountEntry">
-		<![CDATA[
-			INNER JOIN
-				OSB_AccountEntries_SupportTeams ON
-					(OSB_AccountEntries_SupportTeams.supportTeamId = OSB_SupportWorker.supportTeamId)
-			WHERE
-				(OSB_AccountEntries_SupportTeams.accountEntryId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySupportTeamLanguage">
-		<![CDATA[
-			INNER JOIN
-				OSB_SupportTeamLanguage ON
-					(OSB_SupportTeamLanguage.supportTeamId = OSB_SupportWorker.supportTeamId)
-			WHERE
-				(
-					(OSB_SupportTeamLanguage.languageId = ?) OR
-					(? = 0)
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinBySupportTeamType">
-		<![CDATA[
-			INNER JOIN
-				OSB_SupportTeam ON
-					(OSB_SupportTeam.supportTeamId = OSB_SupportWorker.supportTeamId)
-			WHERE
-				(OSB_SupportTeam.type_ = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.SupportWorkerFinder.joinByUserId">
-		<![CDATA[
-			WHERE
-				(OSB_SupportWorker.userId = ?)
-		]]>
-	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountCustomerPartnerWorker">
 		<![CDATA[
 			LEFT JOIN
@@ -1063,15 +818,6 @@
 					(OSB_LicenseKey.modifiedUserId = User_.userId)
 		]]>
 	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByHolidayCalendar">
-		<![CDATA[
-			INNER JOIN
-				OSB_HolidayCalendarRel ON
-					(OSB_HolidayCalendarRel.userId = User_.userId)
-			WHERE
-				(OSB_HolidayCalendarRel.holidayCalendarId = ?)
-		]]>
-	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByOrderEntryCreateUser">
 		<![CDATA[
 			INNER JOIN
@@ -1093,22 +839,6 @@
 					(OSB_PartnerWorker.userId = User_.userId)
 			WHERE
 				(OSB_PartnerWorker.partnerEntryId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinBySupportWorker">
-		<![CDATA[
-			INNER JOIN
-				OSB_SupportWorker ON
-					(OSB_SupportWorker.userId = User_.userId)
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinBySupportWorkerTeam">
-		<![CDATA[
-			INNER JOIN
-				OSB_SupportWorker ON
-					(OSB_SupportWorker.userId = User_.userId)
-			WHERE
-				(OSB_SupportWorker.supportTeamId = ?)
 		]]>
 	</sql>
 </custom-sql>
