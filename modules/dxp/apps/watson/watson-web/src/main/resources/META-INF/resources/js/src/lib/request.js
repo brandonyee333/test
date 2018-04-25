@@ -1,5 +1,7 @@
 import {isArray, isObject, isPlainObject} from 'lodash';
 
+import fetch from './fetch';
+
 export function addParams(url, params) {
 	const separator = url.includes('?') ? '&' : '?';
 
@@ -56,54 +58,5 @@ export default request => {
 		requestConfig.body = getFormData(requestParams, fileUpload);
 	}
 
-	return fetchURL(requestURL, requestConfig);
+	return fetch(requestURL, requestConfig);
 };
-
-export function fetchURL(requestURL, requestConfig) {
-	return fetch(requestURL, requestConfig).then(
-		response => response.json(),
-		error => Promise.reject(error)
-	).then(
-		json => {
-			const {data, message, status} = json;
-
-			let retVal = json;
-
-			if (status && (data || message)) {
-				if (status === 200) {
-					retVal = {
-						data,
-						message
-					};
-				}
-				else if (status === 403) {
-					retVal = Promise.reject(
-						{
-							forbidden: true,
-							message
-						}
-					);
-				}
-				else if (data && data.errors) {
-					retVal = Promise.reject(
-						{
-							errors: data.errors,
-							message,
-							model: data.model
-						}
-					);
-				}
-				else {
-					retVal = Promise.reject(
-						{
-							data: data || message
-						}
-					);
-				}
-			}
-
-			return retVal;
-		},
-		error => Promise.reject(error)
-	);
-}
