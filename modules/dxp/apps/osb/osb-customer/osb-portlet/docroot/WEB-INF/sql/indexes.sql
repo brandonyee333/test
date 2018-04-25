@@ -1,8 +1,6 @@
 create index IX_1B961F96 on OSB_AccountAttachment (accountEntryId, accountProjectId, fileName[$COLUMN_LENGTH:75$], type_);
 create index IX_D44EEA51 on OSB_AccountAttachment (accountEntryId, accountProjectId, type_);
 
-create index IX_B268D724 on OSB_AccountCall (accountEntryId);
-
 create index IX_B590328E on OSB_AccountCustomer (accountEntryId, role);
 create index IX_F9BEADE on OSB_AccountCustomer (userId, accountEntryId);
 create index IX_A47A5E94 on OSB_AccountCustomer (userId, role);
@@ -33,18 +31,12 @@ create index IX_23139A90 on OSB_AccountEnvironmentAttachment (accountEnvironment
 
 create unique index IX_9644DED0 on OSB_AccountInformation (accountEntryId, accountProjectId, fieldId);
 
-create index IX_D37D5DC0 on OSB_AccountLink (accountEntryId);
-
 create index IX_E16E8A07 on OSB_AccountProject (accountEntryId);
 
 create index IX_640DDD4 on OSB_AccountWorker (accountEntryId, notifications);
 create index IX_9D0A292E on OSB_AccountWorker (accountEntryId, role);
 create index IX_72B97E on OSB_AccountWorker (userId, accountEntryId);
 create index IX_1224F534 on OSB_AccountWorker (userId, role);
-
-create index IX_2194BE84 on OSB_AuditAction (classNameId, classPK, mappingClassPK);
-create index IX_6E655F39 on OSB_AuditAction (modifiedDate, classNameId, classPK, mappingClassPK, action);
-create index IX_EA525690 on OSB_AuditAction (modifiedDate, classNameId, mappingClassPK, action);
 
 create index IX_56D6EFE1 on OSB_AuditEntry (classNameId, classPK, field, action);
 create index IX_6DC23F99 on OSB_AuditEntry (classNameId, classPK, visibility);
@@ -119,8 +111,6 @@ create index IX_F36C918F on OSB_PartnerWorker (userId, role);
 
 create unique index IX_190AFA9 on OSB_ProductEntry (name[$COLUMN_LENGTH:75$]);
 
-create index IX_A84DAB0D on OSB_SearchFilter (userId, classNameId);
-
 create index IX_18BFB3A4 on OSB_SecurityPatch (accountEntryId, portletId[$COLUMN_LENGTH:75$]);
 create index IX_36A4B1D8 on OSB_SecurityPatch (portletId[$COLUMN_LENGTH:75$]);
 
@@ -143,43 +133,3 @@ create index IX_5B76AC85 on OSB_SupportWorker (supportTeamId);
 create unique index IX_C4442B0B on OSB_SupportWorker (userId, supportTeamId);
 
 create index IX_749683CF on OSB_SupportWorkerAccountTier (supportWorkerId);
-
-create index IX_9FADBCC1 on OSB_SupportWorkerComponent (supportWorkerId);
-
-create index IX_58971029 on OSB_SupportWorkerSeverity (supportWorkerId);
-
-create index IX_61FA03D on OSB_TicketAttachment (createDate, ticketEntryId);
-create index IX_26149242 on OSB_TicketAttachment (ticketEntryId, fileName[$COLUMN_LENGTH:255$], visibility, status);
-create index IX_CFC835A1 on OSB_TicketAttachment (ticketEntryId, status);
-create index IX_46E45E8F on OSB_TicketAttachment (ticketEntryId, ticketSolutionId);
-create index IX_36DB14A0 on OSB_TicketAttachment (ticketEntryId, type_, status);
-create index IX_B8D980A6 on OSB_TicketAttachment (ticketEntryId, type_, visibility, status);
-create index IX_47FFB24C on OSB_TicketAttachment (type_, deleteDate);
-create index IX_6EAF2BAD on OSB_TicketAttachment (userId, ticketEntryId, visibility, status);
-
-create index IX_3225AAFC on OSB_TicketComment (ticketEntryId, type_);
-create index IX_304B8825 on OSB_TicketComment (ticketEntryId, visibility, status);
-create index IX_565F15CA on OSB_TicketComment (userId, ticketEntryId, visibility, status, type_);
-
-create unique index IX_854674BA on OSB_TicketEntry (accountEntryId, ticketId);
-create index IX_F00D9FFD on OSB_TicketEntry (companyId);
-create index IX_E0167256 on OSB_TicketEntry (modifiedDate);
-create index IX_A5B233EC on OSB_TicketEntry (offeringEntryId, resolution);
-
-create index IX_52ABA109 on OSB_TicketFeedback (ticketEntryId, subject, status);
-create index IX_55467943 on OSB_TicketFeedback (userId, ticketEntryId, subject, status);
-
-create index IX_34D48682 on OSB_TicketFlag (accountEntryId, type_);
-create index IX_415DBAE3 on OSB_TicketFlag (ticketEntryId, type_, flag);
-create unique index IX_FC942931 on OSB_TicketFlag (userId, accountEntryId, ticketEntryId, type_);
-
-create index IX_C15F4C19 on OSB_TicketInformation (ticketEntryId, fieldId);
-
-create index IX_90EFDA98 on OSB_TicketLink (ticketEntryId, ticketSolutionId);
-create index IX_F493310A on OSB_TicketLink (ticketEntryId, visibility);
-
-create index IX_F1F54CE5 on OSB_TicketSolution (ticketEntryId);
-
-create index IX_1D95DF06 on OSB_TicketWorker (sourceClassNameId, sourceClassPK);
-create index IX_26AF5491 on OSB_TicketWorker (ticketEntryId, primary_);
-create index IX_B8E7B7C6 on OSB_TicketWorker (userId, ticketEntryId);

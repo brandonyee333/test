@@ -10,22 +10,6 @@ create table OSB_AccountAttachment (
 	type_ INTEGER
 );
 
-create table OSB_AccountCall (
-	accountCallId LONG not null primary key,
-	createDate DATE null,
-	modifiedUserId LONG,
-	modifiedUserName VARCHAR(75) null,
-	modifiedDate DATE null,
-	accountEntryId LONG,
-	type_ INTEGER,
-	callDate DATE null,
-	callLength LONG,
-	summary STRING null,
-	clientsPresent STRING null,
-	notes STRING null,
-	actionItems STRING null
-);
-
 create table OSB_AccountCustomer (
 	accountCustomerId LONG not null primary key,
 	userId LONG,
@@ -127,15 +111,6 @@ create table OSB_AccountInformation (
 	data_ STRING null
 );
 
-create table OSB_AccountLink (
-	accountLinkId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	accountEntryId LONG,
-	url STRING null
-);
-
 create table OSB_AccountProject (
 	accountProjectId LONG not null primary key,
 	modifiedUserId LONG,
@@ -151,15 +126,6 @@ create table OSB_AccountWorker (
 	accountEntryId LONG,
 	role INTEGER,
 	notifications INTEGER
-);
-
-create table OSB_AuditAction (
-	auditActionId LONG not null primary key,
-	modifiedDate DATE null,
-	classNameId LONG,
-	classPK LONG,
-	mappingClassPK LONG,
-	action INTEGER
 );
 
 create table OSB_AuditEntry (
@@ -469,25 +435,12 @@ create table OSB_ProductEntry (
 	versionsListType VARCHAR(75) null
 );
 
-create table OSB_SearchFilter (
-	searchFilterId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	classNameId LONG,
-	name VARCHAR(75) null,
-	filter TEXT null,
-	visibility INTEGER
-);
-
 create table OSB_SecurityPatch (
 	securityPatchId LONG not null primary key,
 	userId LONG,
 	userName VARCHAR(75) null,
 	createDate DATE null,
 	accountEntryId LONG,
-	ticketAttachmentId LONG,
 	portletId VARCHAR(75) null,
 	envLFR INTEGER,
 	name VARCHAR(75) null,
@@ -556,9 +509,7 @@ create table OSB_SupportTeam (
 	locationSupportRegionId LONG,
 	name VARCHAR(75) null,
 	description STRING null,
-	type_ INTEGER,
-	assignedWork DOUBLE,
-	maxWork DOUBLE
+	type_ INTEGER
 );
 
 create table OSB_SupportTeamLanguage (
@@ -579,13 +530,7 @@ create table OSB_SupportWorker (
 	userId LONG,
 	supportTeamId LONG,
 	supportLaborId LONG,
-	autoAssign BOOLEAN,
-	assignedWork DOUBLE,
-	maxWork DOUBLE,
-	escalationLevel INTEGER,
 	role INTEGER,
-	escalationLevel2Role INTEGER,
-	notifications INTEGER,
 	clockedIn BOOLEAN
 );
 
@@ -593,195 +538,4 @@ create table OSB_SupportWorkerAccountTier (
 	supportWorkerAccountTierId LONG not null primary key,
 	supportWorkerId LONG,
 	accountTier INTEGER
-);
-
-create table OSB_SupportWorkerComponent (
-	supportWorkerComponentId LONG not null primary key,
-	supportWorkerId LONG,
-	component INTEGER
-);
-
-create table OSB_SupportWorkerSeverity (
-	supportWorkerSeverityId LONG not null primary key,
-	supportWorkerId LONG,
-	severity INTEGER
-);
-
-create table OSB_TicketAttachment (
-	ticketAttachmentId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	ticketEntryId LONG,
-	ticketSolutionId LONG,
-	releaseNotesId LONG,
-	fileName VARCHAR(255) null,
-	fileSize LONG,
-	type_ INTEGER,
-	visibility INTEGER,
-	extractedText TEXT null,
-	availableFileRepositoryIds STRING null,
-	replicate BOOLEAN,
-	deleteDate DATE null,
-	status INTEGER
-);
-
-create table OSB_TicketCall (
-	ticketCallId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	ticketEntryId LONG,
-	type_ INTEGER,
-	callDate DATE null,
-	callLength LONG,
-	customerName VARCHAR(75) null,
-	customerContact VARCHAR(75) null,
-	confirmation TEXT null,
-	instructions TEXT null
-);
-
-create table OSB_TicketComment (
-	ticketCommentId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	ticketEntryId LONG,
-	body TEXT null,
-	type_ INTEGER,
-	format VARCHAR(75) null,
-	visibility INTEGER,
-	settings_ VARCHAR(75) null,
-	status INTEGER
-);
-
-create table OSB_TicketEntry (
-	ticketEntryId LONG not null primary key,
-	companyId LONG,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	accountEntryId LONG,
-	orderEntryId LONG,
-	productEntryId LONG,
-	supportResponseId LONG,
-	offeringEntryId LONG,
-	supportRegionId LONG,
-	languageId VARCHAR(75) null,
-	ticketId LONG,
-	subject VARCHAR(255) null,
-	description STRING null,
-	reproductionSteps STRING null,
-	severity INTEGER,
-	status INTEGER,
-	weight INTEGER,
-	escalationLevel INTEGER,
-	envName VARCHAR(75) null,
-	envOS INTEGER,
-	envOSCustom VARCHAR(150) null,
-	envDB INTEGER,
-	envJVM INTEGER,
-	envAS INTEGER,
-	envLFR INTEGER,
-	envBrowser INTEGER,
-	envBrowserCustom VARCHAR(150) null,
-	envCS INTEGER,
-	envSearch VARCHAR(75) null,
-	component INTEGER,
-	subcomponent INTEGER,
-	subcomponentCustom VARCHAR(150) null,
-	resolution INTEGER,
-	holdDate DATE null,
-	closedDate DATE null,
-	dueDate DATE null,
-	ignoreDueDate BOOLEAN,
-	customerModifiedDate DATE null,
-	workerModifiedDate DATE null
-);
-
-create table OSB_TicketFeedback (
-	ticketFeedbackId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	modifiedDate DATE null,
-	accountEntryId LONG,
-	ticketEntryId LONG,
-	subject INTEGER,
-	satisfied INTEGER,
-	answer1 INTEGER,
-	answer2 INTEGER,
-	answer3 INTEGER,
-	rating1 INTEGER,
-	rating2 INTEGER,
-	rating3 INTEGER,
-	rating4 INTEGER,
-	comments STRING null,
-	status INTEGER
-);
-
-create table OSB_TicketFlag (
-	ticketFlagId LONG not null primary key,
-	userId LONG,
-	modifiedDate DATE null,
-	accountEntryId LONG,
-	ticketEntryId LONG,
-	type_ INTEGER,
-	flag INTEGER
-);
-
-create table OSB_TicketInformation (
-	ticketInformationId LONG not null primary key,
-	createDate DATE null,
-	modifiedDate DATE null,
-	ticketEntryId LONG,
-	fieldId LONG,
-	data_ STRING null
-);
-
-create table OSB_TicketLink (
-	ticketLinkId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	ticketEntryId LONG,
-	ticketSolutionId LONG,
-	url STRING null,
-	type_ INTEGER,
-	visibility INTEGER
-);
-
-create table OSB_TicketSolution (
-	ticketSolutionId LONG not null primary key,
-	userId LONG,
-	userName VARCHAR(75) null,
-	createDate DATE null,
-	ticketEntryId LONG,
-	summary STRING null,
-	useCustomerSummary BOOLEAN,
-	issueType INTEGER,
-	solution STRING null,
-	type_ INTEGER,
-	customerSpecific BOOLEAN,
-	environmentSpecific BOOLEAN,
-	versionSpecific BOOLEAN,
-	reviewForKB BOOLEAN,
-	status INTEGER,
-	statusByUserId LONG,
-	statusByUserName VARCHAR(75) null,
-	statusDate DATE null,
-	statusMessage TEXT null,
-	statusReason INTEGER
-);
-
-create table OSB_TicketWorker (
-	ticketWorkerId LONG not null primary key,
-	userId LONG,
-	ticketEntryId LONG,
-	sourceClassNameId LONG,
-	sourceClassPK LONG,
-	role INTEGER,
-	primary_ BOOLEAN
 );

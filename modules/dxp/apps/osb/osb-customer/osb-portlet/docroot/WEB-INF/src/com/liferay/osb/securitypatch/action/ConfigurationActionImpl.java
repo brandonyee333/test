@@ -14,9 +14,7 @@
 
 package com.liferay.osb.securitypatch.action;
 
-import com.liferay.osb.exception.NoSuchTicketAttachmentException;
 import com.liferay.osb.service.SecurityPatchLocalServiceUtil;
-import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
@@ -26,11 +24,8 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadServletRequest;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StreamUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -108,7 +103,9 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		UnsyncBufferedReader bufferedReader = new UnsyncBufferedReader(
 			new InputStreamReader(fileInputStream));
 
-		try {
+		/* Needs refactor
+		 *
+		 * try {
 			String line = null;
 
 			while (Validator.isNotNull(line = bufferedReader.readLine())) {
@@ -120,8 +117,7 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 					String fileName = GetterUtil.getString(values[2]);
 
 					SecurityPatchLocalServiceUtil.addSecurityPatch(
-						userId, ticketAttachmentId, portletId, envLFR,
-						fileName);
+						userId, portletId, envLFR, fileName);
 				}
 				else if (values.length == 4) {
 					long accountEntryId = GetterUtil.getLong(values[0]);
@@ -140,14 +136,11 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 
 			throw new ValidatorException(clazz.getName(), null);
 		}
-		catch (NoSuchTicketAttachmentException nstae) {
-			throw new ValidatorException(nstae.getMessage(), null);
-		}
 		finally {
 			bufferedReader.close();
 
 			StreamUtil.cleanUp(fileInputStream);
-		}
+		}*/
 	}
 
 	protected void updateSecurityPatch(

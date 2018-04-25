@@ -27,23 +27,7 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>OSB Secure GS JSON Filter</filter-name>
-		<url-pattern>/api/jsonws/ticketentry/search/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>OSB Secure GS JSON Filter</filter-name>
-		<url-pattern>/api/jsonws/ticketentry/search-count/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>OSB Secure GS JSON Filter</filter-name>
 		<url-pattern>/api/secure/jsonws/accountentry/get-account-entry-by-code/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>OSB Secure GS JSON Filter</filter-name>
-		<url-pattern>/api/secure/jsonws/ticketentry/search/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>OSB Secure GS JSON Filter</filter-name>
-		<url-pattern>/api/secure/jsonws/ticketentry/search-count/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>OSB Secure LCS JSON Filter</filter-name>

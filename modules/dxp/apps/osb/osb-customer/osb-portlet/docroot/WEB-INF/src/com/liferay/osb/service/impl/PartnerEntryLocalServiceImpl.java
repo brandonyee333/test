@@ -21,9 +21,7 @@ import com.liferay.osb.exception.PartnerEntryParentPartnerEntryException;
 import com.liferay.osb.exception.RequiredPartnerEntryException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.base.PartnerEntryLocalServiceBaseImpl;
-import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -252,35 +250,6 @@ public class PartnerEntryLocalServiceImpl
 			long partnerEntryId, long parentPartnerEntryId,
 			String dossieraAccountKey, String code, int status)
 		throws PortalException {
-
-		if (partnerEntryId > 0) {
-			PartnerEntry partnerEntry =
-				partnerEntryPersistence.findByPrimaryKey(partnerEntryId);
-
-			if ((status == WorkflowConstants.STATUS_INACTIVE) &&
-				(status != partnerEntry.getStatus())) {
-
-				LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-				long[] childPartnerEntryIds = SupportUtil.getPartnerEntryIds(
-					partnerEntryId);
-
-				params.put("partnerEntryIds", childPartnerEntryIds);
-
-				int ticketEntriesCount = ticketEntryLocalService.searchCount(
-					0, (String)null, new int[0], null, 0, 0, 0, 0, 0, 0, null,
-					null, null, TicketEntryConstants.STATUSES_ACTIVE,
-					new int[0], new int[0], new int[0], new long[0],
-					new long[0], new long[0], new long[0], new long[0],
-					new int[0], new int[0], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					params, true);
-
-				if (ticketEntriesCount > 0) {
-					throw new RequiredPartnerEntryException(
-						RequiredPartnerEntryException.REFERENCED_TICKET_ENTRY);
-				}
-			}
-		}
 
 		if (parentPartnerEntryId > 0) {
 			if (partnerEntryId == parentPartnerEntryId) {

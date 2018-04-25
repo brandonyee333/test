@@ -36,45 +36,6 @@
 		</security-role-ref>
 	</portlet>
 	<portlet>
-		<portlet-name>2</portlet-name>
-		<display-name>Support</display-name>
-		<portlet-class>com.liferay.osb.support.portlet.SupportPortlet</portlet-class>
-		<init-param>
-			<name>copy-request-parameters</name>
-			<value>true</value>
-		</init-param>
-		<init-param>
-			<name>template-path</name>
-			<value>/support/</value>
-		</init-param>
-		<init-param>
-			<name>view-template</name>
-			<value>/support/2/view.jsp</value>
-		</init-param>
-		<expiration-cache>0</expiration-cache>
-		<supports>
-			<mime-type>text/html</mime-type>
-		</supports>
-		<resource-bundle>content.Language</resource-bundle>
-		<portlet-info>
-			<title>Support</title>
-			<short-title>Support</short-title>
-			<keywords>Support</keywords>
-		</portlet-info>
-		<security-role-ref>
-			<role-name>administrator</role-name>
-		</security-role-ref>
-		<security-role-ref>
-			<role-name>guest</role-name>
-		</security-role-ref>
-		<security-role-ref>
-			<role-name>power-user</role-name>
-		</security-role-ref>
-		<security-role-ref>
-			<role-name>user</role-name>
-		</security-role-ref>
-	</portlet>
-	<portlet>
 		<portlet-name>3</portlet-name>
 		<display-name>Downloads</display-name>
 		<portlet-class>com.liferay.osb.downloads.portlet.DownloadsPortlet</portlet-class>

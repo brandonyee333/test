@@ -409,7 +409,7 @@ Date lastEnabledDate = calendar.getTime();
 								<aui:option label="any" value="" />
 
 								<%
-								List<ListType> envOSTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_OS);
+								List<ListType> envOSTypes = ListTypeServiceUtil.getListTypes(AccountEnvironmentConstants.LIST_TYPE_ENV_OS);
 
 								for (ListType envOSType : envOSTypes) {
 								%>
@@ -429,7 +429,7 @@ Date lastEnabledDate = calendar.getTime();
 								<aui:option label="any" value="" />
 
 								<%
-								List<ListType> envJVMTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_JVM);
+								List<ListType> envJVMTypes = ListTypeServiceUtil.getListTypes(AccountEnvironmentConstants.LIST_TYPE_ENV_JVM);
 
 								for (ListType envJVMType : envJVMTypes) {
 								%>
@@ -447,7 +447,7 @@ Date lastEnabledDate = calendar.getTime();
 								<aui:option label="any" value="" />
 
 								<%
-								List<ListType> envDBTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_DB);
+								List<ListType> envDBTypes = ListTypeServiceUtil.getListTypes(AccountEnvironmentConstants.LIST_TYPE_ENV_DB);
 
 								for (ListType envDBType : envDBTypes) {
 								%>
@@ -467,7 +467,7 @@ Date lastEnabledDate = calendar.getTime();
 								<aui:option label="any" value="" />
 
 								<%
-								List<ListType> envASTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ENV_AS);
+								List<ListType> envASTypes = ListTypeServiceUtil.getListTypes(AccountEnvironmentConstants.LIST_TYPE_ENV_AS);
 
 								for (ListType envASType : envASTypes) {
 								%>

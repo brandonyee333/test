@@ -23,9 +23,9 @@ import com.liferay.osb.exception.AccountEnvironmentNameException;
 import com.liferay.osb.exception.DuplicateAccountEnvironmentException;
 import com.liferay.osb.model.AccountEnvironment;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
+import com.liferay.osb.model.AccountEnvironmentConstants;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.base.AccountEnvironmentLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
@@ -253,15 +253,21 @@ public class AccountEnvironmentLocalServiceImpl
 			throw new DuplicateAccountEnvironmentException();
 		}
 
-		if (!isValidListType(envAS, TicketEntryConstants.LIST_TYPE_ENV_AS)) {
+		if (!isValidListType(
+				envAS, AccountEnvironmentConstants.LIST_TYPE_ENV_AS)) {
+
 			throw new AccountEnvironmentEnvASException();
 		}
 
-		if (!isValidListType(envDB, TicketEntryConstants.LIST_TYPE_ENV_DB)) {
+		if (!isValidListType(
+				envDB, AccountEnvironmentConstants.LIST_TYPE_ENV_DB)) {
+
 			throw new AccountEnvironmentEnvDBException();
 		}
 
-		if (!isValidListType(envOS, TicketEntryConstants.LIST_TYPE_ENV_OS)) {
+		if (!isValidListType(
+				envOS, AccountEnvironmentConstants.LIST_TYPE_ENV_OS)) {
+
 			throw new AccountEnvironmentEnvOSException();
 		}
 

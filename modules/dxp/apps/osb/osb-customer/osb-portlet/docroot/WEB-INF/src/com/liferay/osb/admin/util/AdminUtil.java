@@ -15,12 +15,9 @@
 package com.liferay.osb.admin.util;
 
 import com.liferay.osb.model.FileRepository;
-import com.liferay.osb.model.TicketEntry;
-import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.petra.content.ContentUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.Region;
@@ -34,7 +31,6 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -250,33 +246,6 @@ public class AdminUtil {
 		sb.append(param);
 
 		return sb.toString();
-	}
-
-	public static void reindex(String portletId, long modifiedDateOffset)
-		throws PortalException {
-
-		if (portletId.equals(OSBPortletKeys.OSB_SUPPORT)) {
-			Date date = new Date(
-				System.currentTimeMillis() - modifiedDateOffset);
-
-			int count = TicketEntryLocalServiceUtil.getTicketEntriesCount(date);
-
-			int pages = count / 5000;
-
-			for (int i = 0; i <= pages; i++) {
-				int start = i * 5000;
-
-				int end = start + 5000;
-
-				List<TicketEntry> ticketEntries =
-					TicketEntryLocalServiceUtil.getTicketEntries(
-						date, start, end);
-
-				for (TicketEntry ticketEntry : ticketEntries) {
-					TicketEntryLocalServiceUtil.reindexTicketEntry(ticketEntry);
-				}
-			}
-		}
 	}
 
 }

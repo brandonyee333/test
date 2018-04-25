@@ -33,7 +33,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 	/>
 
 	<liferay-ui:search-container
-		headerNames="name,utilization,projects,time-zones,languages"
+		headerNames="name,projects,time-zones,languages"
 		iteratorURL="<%= portletURL %>"
 		searchContainer="<%= new SupportTeamSearch(renderRequest, portletURL) %>"
 	>
@@ -170,15 +170,6 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 
 					</div>
 				</c:if>
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
-				href="<%= rowHREF %>"
-				name="utilization"
-			>
-				<%= MathUtil.format((supportTeam.getAssignedWork() / supportTeam.getMaxWork()) * 100, 1, 1) %>%
-
-				(<%= numberFormat.format(supportTeam.getAssignedWork()) %>/<%= numberFormat.format(supportTeam.getMaxWork()) %>)
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text

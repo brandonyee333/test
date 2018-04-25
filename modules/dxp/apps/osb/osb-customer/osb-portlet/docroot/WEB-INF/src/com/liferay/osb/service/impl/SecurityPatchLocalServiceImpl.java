@@ -16,9 +16,6 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SecurityPatch;
-import com.liferay.osb.model.TicketAttachment;
-import com.liferay.osb.model.TicketEntry;
-import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.base.SecurityPatchLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -36,8 +33,8 @@ public class SecurityPatchLocalServiceImpl
 	extends SecurityPatchLocalServiceBaseImpl {
 
 	public SecurityPatch addSecurityPatch(
-			long userId, long accountEntryId, long ticketAttachmentId,
-			String portletId, int envLFR, String name, String fileName)
+			long userId, long accountEntryId, String portletId, int envLFR,
+			String name, String fileName)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -53,7 +50,6 @@ public class SecurityPatchLocalServiceImpl
 		securityPatch.setUserName(user.getFullName());
 		securityPatch.setCreateDate(new Date());
 		securityPatch.setAccountEntryId(accountEntryId);
-		securityPatch.setTicketAttachmentId(ticketAttachmentId);
 		securityPatch.setPortletId(portletId);
 		securityPatch.setEnvLFR(envLFR);
 		securityPatch.setName(name);
@@ -63,11 +59,12 @@ public class SecurityPatchLocalServiceImpl
 	}
 
 	public SecurityPatch addSecurityPatch(
-			long userId, long ticketAttachmentId, String portletId, int envLFR,
-			String fileName)
+			long userId, String portletId, int envLFR, String fileName)
 		throws PortalException {
 
-		TicketAttachment ticketAttachment =
+		/* Need to refactor, removing TicketAttachment from osb-portlet
+		 *
+		 * TicketAttachment ticketAttachment =
 			ticketAttachmentPersistence.findByPrimaryKey(ticketAttachmentId);
 
 		TicketEntry ticketEntry = ticketEntryPersistence.findByPrimaryKey(
@@ -77,7 +74,9 @@ public class SecurityPatchLocalServiceImpl
 
 		return addSecurityPatch(
 			userId, ticketEntry.getAccountEntryId(), ticketAttachmentId,
-			portletId, envLFR, name, fileName);
+			portletId, envLFR, name, fileName);*/
+
+		return null;
 	}
 
 	public void deleteSecurityPatches(String portletId) {
@@ -90,14 +89,14 @@ public class SecurityPatchLocalServiceImpl
 		return securityPatchPersistence.findByAEI_PI(accountEntryId, portletId);
 	}
 
-	public String getSecurityPatchName(
-		int envLFR, TicketAttachment ticketAttachment) {
-
+	public String getSecurityPatchName(int envLFR) {
 		StringBundler sb = new StringBundler(3);
 
-		sb.append(TicketEntryConstants.getEnvLabel(envLFR));
+		/*Need to refactor, removing TicketAttachment from osb-portlet
+		 *
+		 * sb.append(TicketEntryConstants.getEnvLabel(envLFR));
 		sb.append(" - ");
-		sb.append(ticketAttachment.getFileName());
+		sb.append(ticketAttachment.getFileName());*/
 
 		return sb.toString();
 	}

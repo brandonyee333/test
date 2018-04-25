@@ -198,13 +198,6 @@ public class Upgrade_20160602105202547_OfferingDefinition
 
 			sb.setIndex(0);
 
-			sb.append("update OSB_TicketEntry set offeringDefinitionId = ");
-			sb.append(curOfferingDefinition.getOfferingDefinitionId());
-			sb.append(" where offeringDefinitionId = ");
-			sb.append(offeringDefinition.getOfferingDefinitionId());
-
-			runSQL(sb.toString());
-
 			sb.setIndex(0);
 
 			sb.append("update OSB_OfferingBundles_OfferingDefinitions set ");

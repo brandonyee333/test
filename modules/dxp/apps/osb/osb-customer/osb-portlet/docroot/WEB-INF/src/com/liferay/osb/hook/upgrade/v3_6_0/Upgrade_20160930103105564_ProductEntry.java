@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  * @author Amos Fong
@@ -169,49 +168,6 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 		convertPortalVersion7OfferingEntries();
 		splitPortalVersionAnyOfferingEntries();
 		updateListTypes();
-	}
-
-	protected void logStaleTicketEntries() throws SQLException {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		StringBundler sb = new StringBundler(18);
-
-		sb.append("select OSB_TicketEntry.ticketEntryId from OSB_TicketEntry ");
-		sb.append("inner join OSB_TicketInformation on ");
-		sb.append("OSB_TicketInformation.ticketEntryId = ");
-		sb.append("OSB_TicketEntry.ticketEntryId where data_ = '20100' or ");
-		sb.append("productEntryId = ");
-		sb.append(_deBackupProductEntryId);
-		sb.append(" or productEntryId = ");
-		sb.append(_deDevelopmentProductEntryId);
-		sb.append(" or productEntryId = ");
-		sb.append(_deEnterpriseProductEntryId);
-		sb.append(" or productEntryId = ");
-		sb.append(_deLimitedProductEntryId);
-		sb.append(" or productEntryId = ");
-		sb.append(_deNonProductionProductEntryId);
-		sb.append(" or productEntryId = ");
-		sb.append(_deOEMProductEntryId);
-		sb.append(" or productEntryId = ");
-		sb.append(_deProductionProductEntryId);
-
-		try {
-			ps = connection.prepareStatement(sb.toString());
-
-			rs = ps.executeQuery();
-
-			while (rs.next()) {
-				long ticketEntryId = rs.getLong("ticketEntryId");
-
-				if (_log.isInfoEnabled()) {
-					_log.info(ticketEntryId);
-				}
-			}
-		}
-		finally {
-			DataAccess.cleanUp(ps, rs);
-		}
 	}
 
 	protected void splitPortalVersionAnyOfferingEntries() throws Exception {
@@ -377,12 +333,6 @@ public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 			"update OSB_ProductEntry set versionsListType = " +
 				"'portalMajorVersions' where versionsListType = " +
 					"'portalMinorVersions'");
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Stale ticketEntryIds");
-
-			logStaleTicketEntries();
-		}
 
 		runSQL(
 			"update OSB_TicketInformation set data_ = '" +

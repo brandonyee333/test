@@ -16,7 +16,6 @@ package com.liferay.osb.hook.upgrade;
 
 import com.liferay.osb.hook.upgrade.v2_3_0.UpgradeAccountAttachment;
 import com.liferay.osb.hook.upgrade.v2_3_0.UpgradeAccountEnvironmentAttachment;
-import com.liferay.osb.hook.upgrade.v2_3_0.UpgradeTicketAttachment;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
@@ -35,7 +34,6 @@ public class UpgradeProcess_2_3_0 extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		upgrade(UpgradeAccountAttachment.class);
 		upgrade(UpgradeAccountEnvironmentAttachment.class);
-		upgrade(UpgradeTicketAttachment.class);
 	}
 
 }

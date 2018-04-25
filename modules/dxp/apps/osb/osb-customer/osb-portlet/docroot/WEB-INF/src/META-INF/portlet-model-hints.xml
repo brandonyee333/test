@@ -16,29 +16,6 @@
 		<field name="fileSize" type="long" />
 		<field name="type" type="int" />
 	</model>
-	<model name="com.liferay.osb.model.AccountCall">
-		<field name="accountCallId" type="long" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedUserId" type="long" />
-		<field name="modifiedUserName" type="String" />
-		<field name="modifiedDate" type="Date" />
-		<field name="accountEntryId" type="long" />
-		<field name="type" type="int" />
-		<field name="callDate" type="Date" />
-		<field name="callLength" type="long" />
-		<field name="summary" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="clientsPresent" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="notes" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="actionItems" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-	</model>
 	<model name="com.liferay.osb.model.AccountCustomer">
 		<field name="accountCustomerId" type="long" />
 		<field name="userId" type="long" />
@@ -132,16 +109,6 @@
 			<hint-collection name="TEXTAREA" />
 		</field>
 	</model>
-	<model name="com.liferay.osb.model.AccountLink">
-		<field name="accountLinkId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="accountEntryId" type="long" />
-		<field name="url" type="String">
-			<hint-collection name="URL" />
-		</field>
-	</model>
 	<model name="com.liferay.osb.model.AccountProject">
 		<field name="accountProjectId" type="long" />
 		<field name="modifiedUserId" type="long" />
@@ -156,14 +123,6 @@
 		<field name="accountEntryId" type="long" />
 		<field name="role" type="int" />
 		<field name="notifications" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.AuditAction">
-		<field name="auditActionId" type="long" />
-		<field name="modifiedDate" type="Date" />
-		<field name="classNameId" type="long" />
-		<field name="classPK" type="long" />
-		<field name="mappingClassPK" type="long" />
-		<field name="action" type="int" />
 	</model>
 	<model name="com.liferay.osb.model.AuditEntry">
 		<field name="auditEntryId" type="long" />
@@ -471,26 +430,12 @@
 		<field name="environment" type="int" />
 		<field name="versionsListType" type="String" />
 	</model>
-	<model name="com.liferay.osb.model.SearchFilter">
-		<field name="searchFilterId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="classNameId" type="long" />
-		<field name="name" type="String" />
-		<field name="filter" type="String">
-			<hint-collection name="CLOB" />
-		</field>
-		<field name="visibility" type="int" />
-	</model>
 	<model name="com.liferay.osb.model.SecurityPatch">
 		<field name="securityPatchId" type="long" />
 		<field name="userId" type="long" />
 		<field name="userName" type="String" />
 		<field name="createDate" type="Date" />
 		<field name="accountEntryId" type="long" />
-		<field name="ticketAttachmentId" type="long" />
 		<field name="portletId" type="String" />
 		<field name="envLFR" type="int" />
 		<field name="name" type="String" />
@@ -558,8 +503,6 @@
 			<hint-collection name="TEXTAREA" />
 		</field>
 		<field name="type" type="int" />
-		<field name="assignedWork" type="double" />
-		<field name="maxWork" type="double" />
 	</model>
 	<model name="com.liferay.osb.model.SupportTeamLanguage">
 		<field name="supportTeamLanguageId" type="long" />
@@ -571,242 +514,12 @@
 		<field name="userId" type="long" />
 		<field name="supportTeamId" type="long" />
 		<field name="supportLaborId" type="long" />
-		<field name="autoAssign" type="boolean" />
-		<field name="assignedWork" type="double" />
-		<field name="maxWork" type="double" />
-		<field name="escalationLevel" type="int" />
 		<field name="role" type="int" />
-		<field name="escalationLevel2Role" type="int" />
-		<field name="notifications" type="int" />
 		<field name="clockedIn" type="boolean" />
 	</model>
 	<model name="com.liferay.osb.model.SupportWorkerAccountTier">
 		<field name="supportWorkerAccountTierId" type="long" />
 		<field name="supportWorkerId" type="long" />
 		<field name="accountTier" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.SupportWorkerComponent">
-		<field name="supportWorkerComponentId" type="long" />
-		<field name="supportWorkerId" type="long" />
-		<field name="component" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.SupportWorkerSeverity">
-		<field name="supportWorkerSeverityId" type="long" />
-		<field name="supportWorkerId" type="long" />
-		<field name="severity" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.TicketAttachment">
-		<field name="ticketAttachmentId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="ticketEntryId" type="long" />
-		<field name="ticketSolutionId" type="long" />
-		<field name="releaseNotesId" type="long" />
-		<field name="fileName" type="String">
-			<hint name="max-length">255</hint>
-		</field>
-		<field name="fileSize" type="long" />
-		<field name="type" type="int" />
-		<field name="visibility" type="int" />
-		<field name="extractedText" type="String">
-			<hint-collection name="CLOB" />
-		</field>
-		<field name="availableFileRepositoryIds" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="replicate" type="boolean" />
-		<field name="deleteDate" type="Date" />
-		<field name="status" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.TicketCall">
-		<field name="ticketCallId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="ticketEntryId" type="long" />
-		<field name="type" type="int" />
-		<field name="callDate" type="Date" />
-		<field name="callLength" type="long" />
-		<field name="customerName" type="String" />
-		<field name="customerContact" type="String" />
-		<field name="confirmation" type="String">
-			<hint-collection name="TEXTAREA" />
-			<hint name="max-length">200000</hint>
-		</field>
-		<field name="instructions" type="String">
-			<hint-collection name="TEXTAREA" />
-			<hint name="max-length">200000</hint>
-		</field>
-	</model>
-	<model name="com.liferay.osb.model.TicketComment">
-		<field name="ticketCommentId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="ticketEntryId" type="long" />
-		<field name="body" type="String">
-			<hint-collection name="TEXTAREA" />
-			<hint name="max-length">200000</hint>
-		</field>
-		<field name="type" type="int" />
-		<field name="format" type="String" />
-		<field name="visibility" type="int" />
-		<field name="settings" type="String" />
-		<field name="status" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.TicketEntry">
-		<field name="ticketEntryId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="accountEntryId" type="long" />
-		<field name="orderEntryId" type="long" />
-		<field name="productEntryId" type="long" />
-		<field name="supportResponseId" type="long" />
-		<field name="offeringEntryId" type="long" />
-		<field name="supportRegionId" type="long" />
-		<field name="languageId" type="String" />
-		<field name="ticketId" type="long" />
-		<field name="subject" type="String">
-			<hint name="display-width">750</hint>
-			<hint name="max-length">255</hint>
-		</field>
-		<field name="description" type="String">
-			<hint name="display-height">300</hint>
-			<hint name="display-width">850</hint>
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="reproductionSteps" type="String">
-			<hint name="display-height">300</hint>
-			<hint name="display-width">850</hint>
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="severity" type="int" />
-		<field name="status" type="int" />
-		<field name="weight" type="int" />
-		<field name="escalationLevel" type="int" />
-		<field name="envName" type="String" />
-		<field name="envOS" type="int" />
-		<field name="envOSCustom" type="String">
-			<hint name="max-length">150</hint>
-		</field>
-		<field name="envDB" type="int" />
-		<field name="envJVM" type="int" />
-		<field name="envAS" type="int" />
-		<field name="envLFR" type="int" />
-		<field name="envBrowser" type="int" />
-		<field name="envBrowserCustom" type="String">
-			<hint name="max-length">150</hint>
-		</field>
-		<field name="envCS" type="int" />
-		<field name="envSearch" type="String" />
-		<field name="component" type="int" />
-		<field name="subcomponent" type="int" />
-		<field name="subcomponentCustom" type="String">
-			<hint name="max-length">150</hint>
-		</field>
-		<field name="resolution" type="int" />
-		<field name="holdDate" type="Date" />
-		<field name="closedDate" type="Date" />
-		<field name="dueDate" type="Date" />
-		<field name="ignoreDueDate" type="boolean" />
-		<field name="customerModifiedDate" type="Date" />
-		<field name="workerModifiedDate" type="Date" />
-	</model>
-	<model name="com.liferay.osb.model.TicketFeedback">
-		<field name="ticketFeedbackId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="accountEntryId" type="long" />
-		<field name="ticketEntryId" type="long" />
-		<field name="subject" type="int" />
-		<field name="satisfied" type="int" />
-		<field name="answer1" type="int" />
-		<field name="answer2" type="int" />
-		<field name="answer3" type="int" />
-		<field name="rating1" type="int" />
-		<field name="rating2" type="int" />
-		<field name="rating3" type="int" />
-		<field name="rating4" type="int" />
-		<field name="comments" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="status" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.TicketFlag">
-		<field name="ticketFlagId" type="long" />
-		<field name="userId" type="long" />
-		<field name="modifiedDate" type="Date" />
-		<field name="accountEntryId" type="long" />
-		<field name="ticketEntryId" type="long" />
-		<field name="type" type="int" />
-		<field name="flag" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.TicketInformation">
-		<field name="ticketInformationId" type="long" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="ticketEntryId" type="long" />
-		<field name="fieldId" type="long" />
-		<field name="data" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-	</model>
-	<model name="com.liferay.osb.model.TicketLink">
-		<field name="ticketLinkId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="ticketEntryId" type="long" />
-		<field name="ticketSolutionId" type="long" />
-		<field name="url" type="String">
-			<hint-collection name="URL" />
-		</field>
-		<field name="type" type="int" />
-		<field name="visibility" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.TicketSolution">
-		<field name="ticketSolutionId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="ticketEntryId" type="long" />
-		<field name="summary" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="useCustomerSummary" type="boolean" />
-		<field name="issueType" type="int" />
-		<field name="solution" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="type" type="int" />
-		<field name="customerSpecific" type="boolean" />
-		<field name="environmentSpecific" type="boolean" />
-		<field name="versionSpecific" type="boolean" />
-		<field name="reviewForKB" type="boolean" />
-		<field name="status" type="int" />
-		<field name="statusByUserId" type="long" />
-		<field name="statusByUserName" type="String" />
-		<field name="statusDate" type="Date" />
-		<field name="statusMessage" type="String">
-			<hint-collection name="TEXTAREA" />
-			<hint name="max-length">200000</hint>
-		</field>
-		<field name="statusReason" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.TicketWorker">
-		<field name="ticketWorkerId" type="long" />
-		<field name="userId" type="long" />
-		<field name="ticketEntryId" type="long" />
-		<field name="sourceClassNameId" type="long" />
-		<field name="sourceClassPK" type="long" />
-		<field name="role" type="int" />
-		<field name="primary" type="boolean" />
 	</model>
 </model-hints>

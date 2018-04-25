@@ -144,18 +144,4 @@ public class Upgrade_20150611162042197_OfferingEntry
 		runSQL(sb.toString());
 	}
 
-	protected void transferTicketEntries(
-			long fromOfferingEntryId, long toOfferingEntryId)
-		throws Exception {
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("update OSB_TicketEntry set offeringEntryId = ");
-		sb.append(toOfferingEntryId);
-		sb.append(" where offeringEntryId = ");
-		sb.append(fromOfferingEntryId);
-
-		runSQL(sb.toString());
-	}
-
 }

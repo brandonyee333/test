@@ -15,7 +15,6 @@
 package com.liferay.osb.hook.upgrade.v3_7_7;
 
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-import com.liferay.osb.model.TicketEntryConstants;
 
 /**
  * @author Kyle Bischof
@@ -29,11 +28,6 @@ public class Upgrade_20170626110801105_ProductEntry extends BaseUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		runSQL(
-			"update ListType set name = 'mobile-device-detection' where " +
-				"listTypeId = " +
-					TicketEntryConstants.COMPONENT_MOBILE_DEVICE_DETECTION);
-
 		runSQL(
 			"update OSB_ProductEntry set name = replace(name, 'Device " +
 				"Recognition Provider App', 'Mobile Device Detection " +

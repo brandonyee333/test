@@ -161,12 +161,6 @@ public class OfferingEntryLocalServiceImpl
 			throw new RequiredOfferingEntryException();
 		}
 
-		if (ticketEntryPersistence.countByOfferingEntryId(
-				offeringEntry.getOfferingEntryId()) > 0) {
-
-			throw new RequiredOfferingEntryException();
-		}
-
 		offeringEntry = offeringEntryPersistence.remove(offeringEntry);
 
 		accountEntryLocalService.recalculateHighestSupportResponse(

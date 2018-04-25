@@ -27,13 +27,10 @@ import com.liferay.portal.kernel.security.auth.AuthToken;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.lang.reflect.Method;
-
-import javax.portlet.ActionRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -167,16 +164,6 @@ public class OSBAuthToken implements AuthToken {
 			if (themeDisplay.getScopeGroupId() ==
 					OSBConstants.GROUP_LICENSE_ID) {
 
-				return true;
-			}
-		}
-		else if (ppid.equals(OSBPortletKeys.OSB_SUPPORT)) {
-			String portletNamespace = PortalUtil.getPortletNamespace(ppid);
-
-			String actionName = ParamUtil.getString(
-				request, portletNamespace + ActionRequest.ACTION_NAME);
-
-			if (actionName.equals("addTempTicketAttachment")) {
 				return true;
 			}
 		}

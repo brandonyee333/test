@@ -39,7 +39,9 @@ public class FileRepositoryUtil {
 
 	public static final String PATH_UPLOAD = "/upload";
 
-	public static String cleanTempFiles(
+	/*	Refactor for zendesk
+	 * 
+	 * public static String cleanTempFiles(
 			FileRepository fileRepository, long ticketEntryId)
 		throws PortalException {
 
@@ -195,7 +197,7 @@ public class FileRepositoryUtil {
 		}
 
 		return null;
-	}
+	}*/
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FileRepositoryUtil.class);

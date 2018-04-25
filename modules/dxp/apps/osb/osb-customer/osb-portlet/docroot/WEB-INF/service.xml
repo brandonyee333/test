@@ -4,6 +4,6 @@
 <service-builder database-name-max-length="64" package-path="com.liferay.osb">
 	<namespace>OSB</namespace>
 	<service-builder-import file="service-common.xml" />
-	<service-builder-import file="service-lesa.xml" />
+	<service-builder-import file="service-admin.xml" />
 	<service-builder-import file="service-license.xml" />
 </service-builder>

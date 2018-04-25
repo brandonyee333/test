@@ -120,8 +120,6 @@ public class AccountWorkerLocalServiceImpl
 				}
 			}
 		}
-
-		accountEntryLocalService.reindexAccountEntry(accountEntryId);
 	}
 
 	public void deleteAccountEntryAccountWorkers(long accountEntryId)
@@ -133,8 +131,6 @@ public class AccountWorkerLocalServiceImpl
 		for (AccountWorker accountWorker : accountWorkers) {
 			accountWorkerPersistence.remove(accountWorker);
 		}
-
-		accountEntryLocalService.reindexAccountEntry(accountEntryId);
 	}
 
 	public void deleteAccountWorkers(long userId) throws PortalException {
@@ -143,9 +139,6 @@ public class AccountWorkerLocalServiceImpl
 
 		for (AccountWorker accountWorker : accountWorkers) {
 			accountWorkerPersistence.remove(accountWorker);
-
-			accountEntryLocalService.reindexAccountEntry(
-				accountWorker.getAccountEntryId());
 		}
 	}
 
@@ -194,8 +187,6 @@ public class AccountWorkerLocalServiceImpl
 			catch (NoSuchAccountWorkerException nsawe) {
 			}
 		}
-
-		accountEntryLocalService.reindexAccountEntry(accountEntryId);
 	}
 
 	public AccountWorker getAccountWorker(long userId, long accountEntryId)

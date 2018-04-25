@@ -29,19 +29,7 @@ SupportTeam supportTeam = supportWorker.getSupportTeam();
 
 String severities = StringPool.BLANK;
 
-List<Integer> supportWorkerSeverities = supportWorker.getSeverities();
-
-for (Integer supportWorkerSeverity : supportWorkerSeverities) {
-	severities += supportWorkerSeverity + StringPool.COMMA;
-}
-
 String components = StringPool.BLANK;
-
-List<Integer> supportWorkerComponents = supportWorker.getComponents();
-
-for (Integer supportWorkerComponent : supportWorkerComponents) {
-	components += supportWorkerComponent + StringPool.COMMA;
-}
 
 String accountTiers = StringPool.BLANK;
 
@@ -76,8 +64,6 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 		backURL="<%= backURL %>"
 		names="support-worker"
 	/>
-
-	<liferay-ui:error exception="<%= SupportWorkerMaxWorkException.class %>" message="max-work-cannot-equal-0" />
 
 	<table class="lfr-table">
 		<tr>
@@ -156,56 +142,6 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 						</c:otherwise>
 					</c:choose>
 				</c:if>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="allow-lesa-to-auto-assign-tickets-to-this-user" />
-			</td>
-			<td>
-				<liferay-ui:input-field
-					bean="<%= supportWorker %>"
-					field="autoAssign"
-					model="<%= SupportWorker.class %>"
-				/>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="assigned-work" />
-			</td>
-			<td>
-				<%= numberFormat.format(supportWorker.getAssignedWork()) %>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="max-work" />
-			</td>
-			<td>
-				<aui:input label="" name="maxWork" size="5" type="text" value="<%= numberFormat.format(supportWorker.getMaxWork()) %>" />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="escalation-level" />
-			</td>
-			<td>
-				<aui:select label="" name="escalationLevel">
-
-					<%
-					List<ListType> escalationLevelTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL);
-
-					for (ListType escalationLevelType : escalationLevelTypes) {
-					%>
-
-						<aui:option label="<%= escalationLevelType.getName() %>" selected="<%= escalationLevelType.getListTypeId() == supportWorker.getEscalationLevel() %>" value="<%= escalationLevelType.getListTypeId() %>" />
-
-					<%
-					}
-					%>
-
-				</aui:select>
 			</td>
 		</tr>
 		<tr>
@@ -358,7 +294,7 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 	<br />
 
 	<liferay-ui:search-container
-		headerNames="support-team,utilization,severities,components,role"
+		headerNames="support-team,severities,components,role"
 		id="supportWorkers"
 	>
 
@@ -417,59 +353,6 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 
 			<liferay-ui:search-container-column-text
 				href="<%= rowURL %>"
-				name="utilization"
-			>
-				<%= numberFormat.format(MathUtil.format((curSupportWorker.getAssignedWork() / curSupportWorker.getMaxWork()) * 100, 1, 1)) %>%
-
-				(<%= numberFormat.format(curSupportWorker.getAssignedWork()) %>/<%= numberFormat.format(curSupportWorker.getMaxWork()) %>)
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
-				name="severities"
-			>
-
-				<%
-				List<Integer> curSeverities = curSupportWorker.getSeverities();
-
-				for (int i = 0; i < curSeverities.size(); i++) {
-					Integer curSeverity = curSeverities.get(i);
-				%>
-
-					<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(curSeverity)) %>
-
-					<%= ((i + 1) < curSeverities.size()) ? "<br />" : "" %>
-
-				<%
-				}
-				%>
-
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
-				name="components"
-			>
-
-				<%
-				List<Integer> curComponents = curSupportWorker.getComponents();
-
-				for (int i = 0; i < curComponents.size(); i++) {
-					Integer curComponent = curComponents.get(i);
-				%>
-
-					<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(curComponent)) %>
-
-					<%= ((i + 1) < curComponents.size()) ? "<br />" : "" %>
-
-				<%
-				}
-				%>
-
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
 				name="project-tiers"
 			>
 
@@ -495,104 +378,6 @@ portletURL.setParameter("supportWorkerId", String.valueOf(supportWorkerId));
 				name="role"
 				value="<%= LanguageUtil.get(request, curSupportWorker.getRoleLabel()) %>"
 			/>
-		</liferay-ui:search-container-row>
-
-		<liferay-ui:search-iterator
-			markupView="lexicon"
-			paginate="<%= false %>"
-		/>
-	</liferay-ui:search-container>
-
-	<br />
-
-	<liferay-ui:tabs
-		names="severities"
-	/>
-
-	<portlet:renderURL var="selectSeverityURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-		<portlet:param name="mvcPath" value="/admin/select_severity.jsp" />
-	</portlet:renderURL>
-
-	<%
-	String taglibSelectSeverity = "var categoryWindow = window.open('" + selectSeverityURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
-	%>
-
-	<div>
-		<aui:button onClick="<%= taglibSelectSeverity %>" value="add-severity" />
-	</div>
-
-	<br />
-
-	<liferay-ui:search-container
-		headerNames="severity,,"
-		id="severity"
-	>
-		<liferay-ui:search-container-results
-			results="<%= supportWorkerSeverities %>"
-		/>
-
-		<liferay-ui:search-container-row
-			className="java.lang.Integer"
-			modelVar="severity"
-		>
-			<liferay-ui:search-container-column-text
-				name="severity"
-			>
-				<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(severity)) %>
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text>
-				<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('severities', '" + severity + "', '" + renderResponse.getNamespace() + "severitySearchContainer', this);" %>' value="remove" />
-			</liferay-ui:search-container-column-text>
-		</liferay-ui:search-container-row>
-
-		<liferay-ui:search-iterator
-			markupView="lexicon"
-			paginate="<%= false %>"
-		/>
-	</liferay-ui:search-container>
-
-	<br />
-
-	<liferay-ui:tabs
-		names="components"
-	/>
-
-	<portlet:renderURL var="selectComponentURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-		<portlet:param name="mvcPath" value="/admin/select_component.jsp" />
-	</portlet:renderURL>
-
-	<%
-	String taglibSelectComponent = "var categoryWindow = window.open('" + selectComponentURL + "', 'category', 'directories=no,height=768,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=1024'); void(''); categoryWindow.focus();";
-	%>
-
-	<div>
-		<aui:button onClick="<%= taglibSelectComponent %>" value="add-component" />
-	</div>
-
-	<br />
-
-	<liferay-ui:search-container
-		headerNames="component,,"
-		id="component"
-	>
-		<liferay-ui:search-container-results
-			results="<%= supportWorkerComponents %>"
-		/>
-
-		<liferay-ui:search-container-row
-			className="java.lang.Integer"
-			modelVar="component"
-		>
-			<liferay-ui:search-container-column-text
-				name="component"
-			>
-				<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(component)) %>
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text>
-				<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('components', '" + component + "', '" + renderResponse.getNamespace() + "componentSearchContainer', this);" %>' value="remove" />
-			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator

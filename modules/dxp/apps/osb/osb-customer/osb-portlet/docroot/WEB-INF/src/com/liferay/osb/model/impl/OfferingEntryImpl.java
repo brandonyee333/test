@@ -30,7 +30,6 @@ import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
-import com.liferay.osb.service.TicketEntryLocalServiceUtil;
 import com.liferay.osb.util.comparator.OfferingEntryPKComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -170,12 +169,6 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 	public SupportResponse getSupportResponse() throws PortalException {
 		return SupportResponseLocalServiceUtil.getSupportResponse(
 			getSupportResponseId());
-	}
-
-	@JSON
-	public int getTicketEntriesCount() {
-		return TicketEntryLocalServiceUtil.getValidTicketEntriesCount(
-			getOfferingEntryId());
 	}
 
 	public String getTypeLabel() {

@@ -259,27 +259,6 @@ public class AuditEntryConstants {
 		else if (fieldClassName.equals(OfferingEntry.class.getName())) {
 			return "offering";
 		}
-		else if (fieldClassName.equals(TicketAttachment.class.getName())) {
-			return "attachment";
-		}
-		else if (fieldClassName.equals(TicketCall.class.getName())) {
-			return "call";
-		}
-		else if (fieldClassName.equals(TicketComment.class.getName())) {
-			return "comment";
-		}
-		else if (fieldClassName.equals(TicketFlag.class.getName())) {
-			return "flag";
-		}
-		else if (fieldClassName.equals(TicketLink.class.getName())) {
-			return "link";
-		}
-		else if (fieldClassName.equals(TicketEntry.class.getName())) {
-			return "ticket";
-		}
-		else if (fieldClassName.equals(TicketWorker.class.getName())) {
-			return "worker";
-		}
 		else {
 			return NOT_AVAILABLE;
 		}

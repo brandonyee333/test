@@ -64,10 +64,6 @@ public class OfferingEntryGroup {
 			}
 		}
 
-		int ticketEntriesCount = offeringEntry.getTicketEntriesCount();
-
-		_ticketEntriesCount += ticketEntriesCount;
-
 		if (offeringEntry.isSupportTickets()) {
 			_availableSupportOfferingEntries.add(offeringEntry);
 
@@ -157,10 +153,6 @@ public class OfferingEntryGroup {
 		return _supportResponse;
 	}
 
-	public int getTicketEntriesCount() {
-		return _ticketEntriesCount;
-	}
-
 	public int getType() {
 		return _type;
 	}
@@ -235,7 +227,6 @@ public class OfferingEntryGroup {
 	private long _supportLifetime;
 	private SupportResponse _supportResponse;
 	private boolean _supportTickets;
-	private int _ticketEntriesCount;
 	private int _type;
 	private long _userId;
 	private String _userName;

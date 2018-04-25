@@ -17,6 +17,7 @@ package com.liferay.osb.support.util;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.AccountEnvironmentConstants;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.FileRepository;
 import com.liferay.osb.model.OfferingEntry;
@@ -29,17 +30,6 @@ import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportWorker;
-import com.liferay.osb.model.TicketAttachment;
-import com.liferay.osb.model.TicketAttachmentConstants;
-import com.liferay.osb.model.TicketComment;
-import com.liferay.osb.model.TicketCommentConstants;
-import com.liferay.osb.model.TicketEntry;
-import com.liferay.osb.model.TicketEntryConstants;
-import com.liferay.osb.model.TicketEntryDiscussion;
-import com.liferay.osb.model.TicketFeedback;
-import com.liferay.osb.model.TicketFeedbackConstants;
-import com.liferay.osb.model.TicketLink;
-import com.liferay.osb.model.TicketWorker;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryServiceUtil;
@@ -48,29 +38,12 @@ import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
-import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
-import com.liferay.osb.service.TicketCommentLocalServiceUtil;
-import com.liferay.osb.service.TicketEntryLocalServiceUtil;
-import com.liferay.osb.service.TicketEntryServiceUtil;
-import com.liferay.osb.service.TicketFeedbackLocalServiceUtil;
-import com.liferay.osb.service.TicketLinkLocalServiceUtil;
-import com.liferay.osb.service.TicketWorkerLocalServiceUtil;
-import com.liferay.osb.support.util.parser.PlainTextParser;
-import com.liferay.osb.support.util.parser.SimpleBBCodeParser;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.comparator.OfferingEntryPKComparator;
-import com.liferay.osb.util.comparator.TicketEntryCreateDateComparator;
-import com.liferay.osb.util.comparator.TicketEntryDiscussionCreateDateComparator;
-import com.liferay.osb.util.comparator.TicketEntryDisplayIdComparator;
-import com.liferay.osb.util.comparator.TicketEntryDueDateComparator;
-import com.liferay.osb.util.comparator.TicketEntryModifiedDateComparator;
-import com.liferay.osb.util.comparator.TicketEntryStatusComparator;
-import com.liferay.osb.util.comparator.TicketEntrySubjectComparator;
-import com.liferay.osb.util.comparator.TicketEntryTicketWorkerComparator;
 import com.liferay.petra.content.ContentUtil;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -134,127 +107,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author Mate Thurzo
  */
 public class SupportUtil {
-
-	public static String createJIRAIssueURL(
-			HttpServletRequest request, TicketEntry ticketEntry)
-		throws PortalException {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		StringBundler sb = new StringBundler(35);
-
-		sb.append("https://issues.liferay.com/secure/CreateIssueDetails!");
-		sb.append("init.jspa?pid=11172&assignee=-1");
-
-		sb.append("&customfield_14827=");
-
-		AccountEntry accountEntry = ticketEntry.getAccountEntry();
-
-		sb.append(accountEntry.getCode());
-
-		sb.append("&customfield_14834=");
-
-		String encodedAccountEntryName = HttpUtil.encodeURL(
-			accountEntry.getName(), true);
-
-		encodedAccountEntryName = encodedAccountEntryName.replaceAll(
-			StringPool.QUOTE, "%22");
-
-		sb.append(encodedAccountEntryName);
-
-		sb.append("&priority=");
-		sb.append(5 - ticketEntry.getSeverity());
-
-		sb.append("&description=");
-
-		String encodedReproductionSteps = HttpUtil.encodeURL(
-			ticketEntry.getReproductionSteps(), true);
-
-		encodedReproductionSteps = encodedReproductionSteps.replaceAll(
-			"\\n", "%0A");
-		encodedReproductionSteps = encodedReproductionSteps.replaceAll(
-			StringPool.QUOTE, "%22");
-
-		sb.append(encodedReproductionSteps);
-
-		sb.append("&duedate=");
-
-		Date dueDate = ticketEntry.getDueDate();
-
-		Format dateFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
-			"dd/MMM/yy", themeDisplay.getTimeZone());
-
-		sb.append(dateFormat.format(dueDate.getTime()));
-
-		sb.append("&customfield_11126=");
-		sb.append(dateFormat.format(ticketEntry.getCreateDate()));
-
-		sb.append("&customfield_10731=");
-
-		String encodedTicketEntryURL = HttpUtil.encodeURL(
-			getFriendlyTicketEntryURL(request, ticketEntry.getTicketEntryId()),
-			true);
-
-		sb.append(encodedTicketEntryURL);
-
-		SupportRegion supportRegion = ticketEntry.getSupportRegion();
-
-		sb.append("&customfield_11523=");
-		sb.append(getJIRARegion(supportRegion.getName()));
-
-		if (getJIRAComponent(ticketEntry.getComponent()) > 0) {
-			sb.append("&components=");
-			sb.append(getJIRAComponent(ticketEntry.getComponent()));
-		}
-
-		if (getJIRAEnvLFR(ticketEntry.getEnvLFR()) > 0) {
-			sb.append("&versions=");
-			sb.append(getJIRAEnvLFR(ticketEntry.getEnvLFR()));
-		}
-
-		if (getJIRAEnvOS(ticketEntry.getEnvOS()) > 0) {
-			sb.append("&customfield_13629=");
-			sb.append(getJIRAEnvOS(ticketEntry.getEnvOS()));
-		}
-
-		if (getJIRAEnvJVM(ticketEntry.getEnvJVM()) > 0) {
-			sb.append("&customfield_13630=");
-			sb.append(getJIRAEnvJVM(ticketEntry.getEnvJVM()));
-		}
-
-		if (getJIRAEnvAS(ticketEntry.getEnvAS()) > 0) {
-			sb.append("&customfield_13631=");
-			sb.append(getJIRAEnvAS(ticketEntry.getEnvAS()));
-		}
-
-		if (getJIRAEnvDB(ticketEntry.getEnvDB()) > 0) {
-			sb.append("&customfield_13632=");
-			sb.append(getJIRAEnvDB(ticketEntry.getEnvDB()));
-		}
-
-		if (getJIRAEnvBrowser(ticketEntry.getEnvBrowser()) > 0) {
-			sb.append("&customfield_13633=");
-			sb.append(getJIRAEnvBrowser(ticketEntry.getEnvBrowser()));
-		}
-
-		if (getJIRAEnvCS(ticketEntry.getEnvCS()) > 0) {
-			sb.append("&customfield_18128=");
-			sb.append(getJIRAEnvCS(ticketEntry.getEnvCS()));
-		}
-
-		if (Validator.isNotNull(ticketEntry.getEnvSearch())) {
-			int[] envSearches = StringUtil.split(
-				ticketEntry.getEnvSearch(), StringPool.NEW_LINE, 0);
-
-			for (int envSearch : envSearches) {
-				sb.append("&customfield_18129=");
-				sb.append(getJIRAEnvSearch(envSearch));
-			}
-		}
-
-		return sb.toString();
-	}
 
 	public static String[] getAccountWorkerKeys(long accountEntryId) {
 		List<AccountWorker> accountWorkers =
@@ -369,54 +221,6 @@ public class SupportUtil {
 				SupportUtil.class.getClassLoader(),
 				"com/liferay/osb/support/dependencies" +
 					"/comment_game_plan_body.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getCommentTicketEntryInactiveMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "commentTicketEntryInactive");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/comment_ticket_entry_inactive_body.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getCommentTicketEntryNoticeMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "commentTicketEntryClosed");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/comment_ticket_entry_notice_body.tmpl"));
 
 		return map;
 	}
@@ -615,102 +419,6 @@ public class SupportUtil {
 		return map;
 	}
 
-	public static Map<Locale, String> getEmailTicketEntryBodyMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailTicketEntryBody");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/email_ticket_entry_body.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailTicketEntryCommentMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailTicketEntryCommentTemplate");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/email_ticket_entry_comment.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailTicketEntryDueDateMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailTicketEntryDueDateTemplate");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/email_ticket_entry_due_date.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailTicketEntrySubjectMap(
-		PortletPreferences portletPreferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			portletPreferences, "emailTicketEntrySubject");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
-					"/email_ticket_entry_subject.tmpl"));
-
-		return map;
-	}
-
 	public static Map<Locale, String> getEmailWorkerFeedbackBodyMap(
 		PortletPreferences portletPreferences) {
 
@@ -840,7 +548,9 @@ public class SupportUtil {
 		}
 	}
 
-	public static FileRepository getFileRepository(TicketEntry ticketEntry) {
+	/* Refactor for zendesk
+	 * 
+	 * public static FileRepository getFileRepository(TicketEntry ticketEntry) {
 		FileRepository defaultFileRepository = null;
 
 		for (FileRepository fileRepository : getFileRepositories()) {
@@ -858,7 +568,7 @@ public class SupportUtil {
 		}
 
 		return defaultFileRepository;
-	}
+	}*/
 
 	public static FileRepository getFirstActiveFileRepository(
 		Set<String> fileRepositoryIdsSet) {
@@ -876,44 +586,6 @@ public class SupportUtil {
 		}
 
 		return null;
-	}
-
-	public static String getFriendlyTicketEntryURL(
-			HttpServletRequest request, long ticketEntryId)
-		throws PortalException {
-
-		long customerPlid = PortalUtil.getPlidFromPortletId(
-			OSBConstants.GROUP_SUPPORT_ID, OSBPortletKeys.OSB_SUPPORT);
-
-		PortletURL ticketEntryURL = PortletURLFactoryUtil.create(
-			request, OSBPortletKeys.OSB_SUPPORT, customerPlid,
-			PortletRequest.RENDER_PHASE);
-
-		ticketEntryURL.setParameter(
-			"mvcPath", "/support/2/edit_ticket_entry.jsp");
-		ticketEntryURL.setParameter(
-			"ticketEntryId", String.valueOf(ticketEntryId));
-		ticketEntryURL.setParameter("friendly", Boolean.TRUE.toString());
-
-		return ticketEntryURL.toString();
-	}
-
-	public static String getHTML(String text) {
-		return getHTML(text, TicketCommentConstants.FORMAT_PLAIN);
-	}
-
-	public static String getHTML(String text, String format) {
-		text = HtmlUtil.escape(text);
-
-		if (format.equals(TicketCommentConstants.FORMAT_BBCODE)) {
-			text = _bbCodeParser.parse(text);
-		}
-
-		return _plainTextParser.parse(text);
-	}
-
-	public static String getHTML(TicketComment ticketComment) {
-		return getHTML(ticketComment.getBody(), ticketComment.getFormat());
 	}
 
 	public static int getListTypeIdFromName(
@@ -975,44 +647,6 @@ public class SupportUtil {
 		return new ArrayList<>(offeringEntryGroupMap.values());
 	}
 
-	public static String getOtherAssigneesUserNames(long ticketEntryId)
-		throws PortalException {
-
-		TicketWorker primaryTicketWorker =
-			TicketWorkerLocalServiceUtil.fetchPrimaryTicketWorker(
-				ticketEntryId);
-
-		long[] ticketWorkerUserIds = getTicketWorkerUserIds(ticketEntryId);
-
-		StringBundler sb = new StringBundler(
-			(ticketWorkerUserIds.length * 2) - 1);
-
-		for (int i = 0; i < ticketWorkerUserIds.length; i++) {
-			if ((primaryTicketWorker != null) &&
-				(primaryTicketWorker.getUserId() == ticketWorkerUserIds[i])) {
-
-				continue;
-			}
-
-			User user = null;
-
-			try {
-				user = UserLocalServiceUtil.getUser(ticketWorkerUserIds[i]);
-			}
-			catch (NoSuchUserException nsue) {
-				continue;
-			}
-
-			if (sb.index() > 0) {
-				sb.append(StringPool.COMMA_AND_SPACE);
-			}
-
-			sb.append(HtmlUtil.escape(user.getFullName()));
-		}
-
-		return sb.toString();
-	}
-
 	public static long[] getPartnerEntryIds(long partnerEntryId) {
 		List<PartnerEntry> childPartnerEntries =
 			PartnerEntryLocalServiceUtil.getChildPartnerEntries(
@@ -1039,7 +673,7 @@ public class SupportUtil {
 
 		listTypes = ListUtil.copy(listTypes);
 
-		int[] envListTypeIds = TicketEntryConstants.getEnvListTypeIds(
+		int[] envListTypeIds = AccountEnvironmentConstants.getEnvListTypeIds(
 			envLFR, envListType);
 
 		Long[] listTypeIds = ArrayUtil.toLongArray(envListTypeIds);
@@ -1100,28 +734,6 @@ public class SupportUtil {
 		return portletPreferences.getValue(key, StringPool.BLANK);
 	}
 
-	public static String getPrimaryAssigneeUserName(long ticketEntryId)
-		throws PortalException {
-
-		TicketWorker ticketWorker =
-			TicketWorkerLocalServiceUtil.fetchPrimaryTicketWorker(
-				ticketEntryId);
-
-		if (ticketWorker == null) {
-			return StringPool.BLANK;
-		}
-
-		try {
-			User user = UserLocalServiceUtil.getUser(ticketWorker.getUserId());
-
-			return HtmlUtil.escape(user.getFullName());
-		}
-		catch (Exception e) {
-		}
-
-		return StringPool.BLANK;
-	}
-
 	public static Map<Integer, List<SupportWorker>> getSupportWorkerMap(
 		long supportTeamId) {
 
@@ -1152,264 +764,6 @@ public class SupportUtil {
 		}
 
 		return supportWorkerMap;
-	}
-
-	public static TicketEntry getTicketEntry(String ticketDisplayId)
-		throws PortalException {
-
-		Matcher matcher = _ticketDisplayIdPattern.matcher(ticketDisplayId);
-
-		if (matcher.find()) {
-			String code = matcher.group(1);
-
-			AccountEntry accountEntry =
-				AccountEntryServiceUtil.getAccountEntryByCode(code);
-
-			long ticketId = GetterUtil.getLong(matcher.group(2));
-
-			return TicketEntryServiceUtil.getTicketEntry(
-				accountEntry.getAccountEntryId(), ticketId);
-		}
-
-		return null;
-	}
-
-	public static String[] getTicketEntryComments(
-		long ticketEntryId, int visibility) {
-
-		List<TicketComment> ticketComments =
-			TicketCommentLocalServiceUtil.getTicketComments(
-				ticketEntryId, new int[] {visibility},
-				new int[] {WorkflowConstants.STATUS_APPROVED});
-
-		String[] ticketEntryComments = new String[ticketComments.size()];
-
-		for (int i = 0; i < ticketComments.size(); i++) {
-			TicketComment ticketComment = ticketComments.get(i);
-
-			ticketEntryComments[i] = ticketComment.getBody();
-		}
-
-		return ticketEntryComments;
-	}
-
-	public static List<TicketEntryDiscussion> getTicketEntryDiscussions(
-		long userId, long ticketEntryId, int[] visibilities,
-		boolean orderByAsc) {
-
-		Map<String, TicketEntryDiscussion> ticketEntryDiscussionMap =
-			new HashMap<>();
-
-		// Ticket attachments
-
-		int[] types = {
-			TicketAttachmentConstants.TYPE_HOTFIX,
-			TicketAttachmentConstants.TYPE_LARGE_FILE,
-			TicketAttachmentConstants.TYPE_LARGE_HOTFIX,
-			TicketAttachmentConstants.TYPE_NONE
-		};
-
-		List<TicketAttachment> ticketAttachments =
-			TicketAttachmentLocalServiceUtil.getTicketAttachments(
-				ticketEntryId, types, visibilities,
-				WorkflowConstants.STATUS_APPROVED);
-
-		for (TicketAttachment ticketAttachment : ticketAttachments) {
-			String key = ticketAttachment.getKey();
-
-			TicketEntryDiscussion ticketEntryDiscussion =
-				ticketEntryDiscussionMap.get(key);
-
-			if (ticketEntryDiscussion != null) {
-				ticketEntryDiscussion.addTicketAttachment(ticketAttachment);
-			}
-			else {
-				ticketEntryDiscussion = new TicketEntryDiscussion();
-
-				ticketEntryDiscussion.addTicketAttachment(ticketAttachment);
-
-				ticketEntryDiscussionMap.put(key, ticketEntryDiscussion);
-			}
-		}
-
-		// Ticket comments
-
-		List<TicketComment> ticketComments =
-			TicketCommentLocalServiceUtil.getTicketComments(
-				ticketEntryId, visibilities,
-				new int[] {WorkflowConstants.STATUS_APPROVED});
-
-		for (TicketComment ticketComment : ticketComments) {
-			String key = ticketComment.getKey();
-
-			TicketEntryDiscussion ticketEntryDiscussion =
-				ticketEntryDiscussionMap.get(key);
-
-			if (ticketEntryDiscussion != null) {
-				ticketEntryDiscussion.setTicketComment(ticketComment);
-			}
-			else {
-				ticketEntryDiscussion = new TicketEntryDiscussion();
-
-				ticketEntryDiscussion.setTicketComment(ticketComment);
-
-				ticketEntryDiscussionMap.put(key, ticketEntryDiscussion);
-			}
-		}
-
-		// Ticket links
-
-		List<TicketLink> ticketLinks =
-			TicketLinkLocalServiceUtil.getTicketLinks(
-				ticketEntryId, visibilities);
-
-		for (TicketLink ticketLink : ticketLinks) {
-			String key = ticketLink.getKey();
-
-			TicketEntryDiscussion ticketEntryDiscussion =
-				ticketEntryDiscussionMap.get(key);
-
-			if (ticketEntryDiscussion != null) {
-				ticketEntryDiscussion.addTicketLink(ticketLink);
-			}
-			else {
-				ticketEntryDiscussion = new TicketEntryDiscussion();
-
-				ticketEntryDiscussion.addTicketLink(ticketLink);
-
-				ticketEntryDiscussionMap.put(key, ticketEntryDiscussion);
-			}
-		}
-
-		List<TicketEntryDiscussion> ticketEntryDiscussions = new ArrayList<>(
-			ticketEntryDiscussionMap.values());
-
-		Collections.sort(
-			ticketEntryDiscussions,
-			new TicketEntryDiscussionCreateDateComparator(orderByAsc));
-
-		if (visibilities.length != 1) {
-			return ticketEntryDiscussions;
-		}
-
-		TicketComment draftTicketComment =
-			TicketCommentLocalServiceUtil.fetchLastTicketComment(
-				userId, ticketEntryId, visibilities[0],
-				WorkflowConstants.STATUS_DRAFT, null);
-
-		if (draftTicketComment != null) {
-			TicketEntryDiscussion ticketEntryDiscussion =
-				new TicketEntryDiscussion();
-
-			ticketEntryDiscussion.setTicketComment(draftTicketComment);
-
-			List<TicketAttachment> draftTicketAttachments =
-				TicketAttachmentLocalServiceUtil.getTicketAttachments(
-					userId, ticketEntryId, visibilities[0],
-					WorkflowConstants.STATUS_DRAFT);
-
-			for (TicketAttachment ticketAttachment : draftTicketAttachments) {
-				ticketEntryDiscussion.addTicketAttachment(ticketAttachment);
-			}
-
-			if (orderByAsc) {
-				ticketEntryDiscussions.add(ticketEntryDiscussion);
-			}
-			else {
-				ticketEntryDiscussions.add(0, ticketEntryDiscussion);
-			}
-		}
-
-		return ticketEntryDiscussions;
-	}
-
-	public static OrderByComparator getTicketEntryOrderByComparator(
-		String orderByCol, String orderByType) {
-
-		boolean orderByAsc = false;
-
-		if (orderByType.equals("asc")) {
-			orderByAsc = true;
-		}
-
-		OrderByComparator orderByComparator = null;
-
-		if (orderByCol.equals("assignee")) {
-			orderByComparator = new TicketEntryTicketWorkerComparator(
-				orderByAsc);
-		}
-		else if (orderByCol.equals("create-date")) {
-			orderByComparator = new TicketEntryCreateDateComparator(orderByAsc);
-		}
-		else if (orderByCol.equals("display-id")) {
-			orderByComparator = new TicketEntryDisplayIdComparator(orderByAsc);
-		}
-		else if (orderByCol.equals("due-date")) {
-			orderByComparator = new TicketEntryDueDateComparator(orderByAsc);
-		}
-		else if (orderByCol.equals("modified-date")) {
-			orderByComparator = new TicketEntryModifiedDateComparator(
-				orderByAsc);
-		}
-		else if (orderByCol.equals("status")) {
-			orderByComparator = new TicketEntryStatusComparator(orderByAsc);
-		}
-		else if (orderByCol.equals("subject")) {
-			orderByComparator = new TicketEntrySubjectComparator(orderByAsc);
-		}
-		else {
-			orderByComparator = new TicketEntryCreateDateComparator(orderByAsc);
-		}
-
-		return orderByComparator;
-	}
-
-	public static long[] getTicketFeedbackUserIds(
-			long ticketEntryId, int subject)
-		throws PortalException {
-
-		TicketEntry ticketEntry = TicketEntryLocalServiceUtil.getTicketEntry(
-			ticketEntryId);
-
-		List<Long> ticketFeedbackUserIds = new ArrayList<>();
-
-		if (subject == TicketFeedbackConstants.SUBJECT_LIFERAY) {
-			List<AccountCustomer> accountCustomers =
-				AccountCustomerLocalServiceUtil.getAccountCustomers(
-					ticketEntry.getAccountEntryId());
-
-			for (AccountCustomer accountCustomer : accountCustomers) {
-				if (accountCustomer.getRole() !=
-						AccountCustomerConstants.ROLE_DEVELOPER) {
-
-					continue;
-				}
-
-				TicketFeedback ticketFeedback =
-					TicketFeedbackLocalServiceUtil.fetchFirstOpenTicketFeedback(
-						accountCustomer.getUserId(), ticketEntryId,
-						TicketFeedbackConstants.SUBJECT_LIFERAY);
-
-				if (ticketFeedback != null) {
-					ticketFeedbackUserIds.add(accountCustomer.getUserId());
-				}
-			}
-		}
-
-		return ArrayUtil.toLongArray(ticketFeedbackUserIds);
-	}
-
-	public static long[] getTicketWorkerUserIds(long ticketEntryId) {
-		List<TicketWorker> ticketWorkers =
-			TicketWorkerLocalServiceUtil.getTicketWorkers(ticketEntryId);
-
-		List<Long> ticketWorkerUserIds = new ArrayList<>();
-
-		for (TicketWorker ticketWorker : ticketWorkers) {
-			ticketWorkerUserIds.add(ticketWorker.getUserId());
-		}
-
-		return ArrayUtil.toArray(ticketWorkerUserIds.toArray(new Long[0]));
 	}
 
 	public static PortletPreferences getUserPreferences(long userId) {
@@ -1549,46 +903,6 @@ public class SupportUtil {
 			fileRepositoryId, name, host, supportRegionIds);
 	}
 
-	protected static int getJIRAComponent(int component) {
-		return GetterUtil.getInteger(_jiraComponentMapping.get(component));
-	}
-
-	protected static int getJIRAEnvAS(int envAS) {
-		return GetterUtil.getInteger(_jiraEnvASMapping.get(envAS));
-	}
-
-	protected static int getJIRAEnvBrowser(int envBrowser) {
-		return GetterUtil.getInteger(_jiraEnvBrowserMapping.get(envBrowser));
-	}
-
-	protected static int getJIRAEnvCS(int envCS) {
-		return GetterUtil.getInteger(_jiraEnvCSMapping.get(envCS));
-	}
-
-	protected static int getJIRAEnvDB(int envDB) {
-		return GetterUtil.getInteger(_jiraEnvDBMapping.get(envDB));
-	}
-
-	protected static int getJIRAEnvJVM(int envJVM) {
-		return GetterUtil.getInteger(_jiraEnvJVMMapping.get(envJVM));
-	}
-
-	protected static int getJIRAEnvLFR(int envLFR) {
-		return GetterUtil.getInteger(_jiraEnvLFRMapping.get(envLFR));
-	}
-
-	protected static int getJIRAEnvOS(int envOS) {
-		return GetterUtil.getInteger(_jiraEnvOSMapping.get(envOS));
-	}
-
-	protected static int getJIRAEnvSearch(int envSearch) {
-		return GetterUtil.getInteger(_jiraEnvSearchMapping.get(envSearch));
-	}
-
-	protected static String getJIRARegion(String supportRegionName) {
-		return GetterUtil.getString(_jiraRegionMapping.get(supportRegionName));
-	}
-
 	protected static Map<String, Object> getOrderEntryAttributes(
 		OrderEntry orderEntry) {
 
@@ -1656,306 +970,6 @@ public class SupportUtil {
 				SupportUtil.class.getClassLoader(),
 				templateDirName + defaultTemplateName);
 		}
-	}
-
-	private static final SimpleBBCodeParser _bbCodeParser =
-		new SimpleBBCodeParser();
-	private static final Map<Integer, Integer> _jiraComponentMapping =
-		new HashMap<>();
-	private static final Map<Integer, Integer> _jiraEnvASMapping =
-		new HashMap<>();
-	private static final Map<Integer, Integer> _jiraEnvBrowserMapping =
-		new HashMap<>();
-	private static final Map<Integer, Integer> _jiraEnvCSMapping =
-		new HashMap<>();
-	private static final Map<Integer, Integer> _jiraEnvDBMapping =
-		new HashMap<>();
-	private static final Map<Integer, Integer> _jiraEnvJVMMapping =
-		new HashMap<>();
-	private static final Map<Integer, Integer> _jiraEnvLFRMapping =
-		new HashMap<>();
-	private static final Map<Integer, Integer> _jiraEnvOSMapping =
-		new HashMap<>();
-	private static final Map<Integer, Integer> _jiraEnvSearchMapping =
-		new HashMap<>();
-	private static final Map<String, String> _jiraRegionMapping =
-		new HashMap<>();
-	private static final PlainTextParser _plainTextParser =
-		new PlainTextParser();
-	private static final Pattern _ticketDisplayIdPattern = Pattern.compile(
-		"^([a-zA-Z0-9]{1,15})-([0-9]+)$");
-
-	static {
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_AUTHENTICATION, 11585);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_CALENDAR, 15150);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_CLUSTERING, 15012);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_COLLABORATION_SUITE, 15151);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_CUSTOM_DEVELOPMENT, 15095);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_LIFERAY_DEVELOPER_STUDIO, 15093);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_DOCUMENT_LIBRARY, 15166);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_LAR_STAGING, 15047);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_LIFERAY_FACES, 15090);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_LIFERAY_MOBILE_SDK, 18883);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_LIFERAY_SYNC, 18884);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_PATCH_MANAGEMENT, 18880);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_SEARCH_INDEXING, 11644);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_SECURITY, 11649);
-		_jiraComponentMapping.put(TicketEntryConstants.COMPONENT_UI, 15019);
-		_jiraComponentMapping.put(
-			TicketEntryConstants.COMPONENT_WEB_CONTENT_MANAGEMENT, 15040);
-
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_GLASSFISH_3, 13389);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_GLASSFISH_3_1, 13390);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_GLASSFISH_4_0, 13391);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_JBOSS_AS_7_1, 13396);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_JBOSS_EAP_5_1, 13397);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_JBOSS_EAP_6_0, 13398);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_JBOSS_EAP_6_1, 17717);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_JBOSS_EAP_6_2, 17720);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_JBOSS_EAP_6_3, 17721);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_JBOSS_EAP_6_4, 17718);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_JBOSS_EAP_7_0, 19111);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_JONAS_5_2, 13402);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_RESIN_4, 13410);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_TCAT_6_4, 13403);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_TCAT_7_0, 13404);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_TCSERVER_2_6, 13411);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_TCSERVER_2_9, 14413);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_TCSERVER_3_1, 18432);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_TCSERVER_3_2, 20510);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_TOMCAT_6_0, 13387);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_TOMCAT_7_0, 13388);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_TOMCAT_7_0_X, 14310);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_TOMCAT_8_0, 18413);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_WEBLOGIC_10_0, 13405);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_WEBLOGIC_10_3, 13406);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_WEBLOGIC_11_G, 13407);
-		_jiraEnvASMapping.put(
-			TicketEntryConstants.ENV_AS_WEBLOGIC_12C_R1, 13409);
-		_jiraEnvASMapping.put(
-			TicketEntryConstants.ENV_AS_WEBLOGIC_12C_R2, 18814);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_WEBSPHERE_6_1, 13392);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_WEBSPHERE_7_0, 13393);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_WEBSPHERE_8, 13394);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_WEBSPHERE_8_5, 13395);
-		_jiraEnvASMapping.put(TicketEntryConstants.ENV_AS_WILDFILY_10_0, 18415);
-
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_CHROME, 15642);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_EDGE, 18811);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_FIREFOX, 15643);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_FIREFOX_ESR_45, 18812);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_IE_6, 13321);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_IE_7, 13322);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_IE_8, 13323);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_IE_9, 13324);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_IE_10, 13325);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_IE_11, 14411);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_IOS_SAFARI, 18938);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_MOBILE_CHROME, 18937);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_SAFARI_5, 13326);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_SAFARI_6, 13327);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_SAFARI_8, 18428);
-		_jiraEnvBrowserMapping.put(
-			TicketEntryConstants.ENV_BROWSER_SAFARI_9, 18429);
-		_jiraEnvBrowserMapping.put(TicketEntryConstants.ENV_BROWSER_OTHER, -1);
-
-		_jiraEnvCSMapping.put(
-			TicketEntryConstants.ENV_CS_AWS_ELASTIC_COMPUTE_CLOUD, 18940);
-		_jiraEnvCSMapping.put(
-			TicketEntryConstants.ENV_CS_AWS_RELATIONAL_DATABASE_SERVICE, 18941);
-		_jiraEnvCSMapping.put(TicketEntryConstants.ENV_CS_AWS_S3, 18942);
-		_jiraEnvCSMapping.put(TicketEntryConstants.ENV_CS_AZURE_FILES, 18943);
-		_jiraEnvCSMapping.put(
-			TicketEntryConstants.ENV_CS_AZURE_SQL_DATABASES, 18944);
-		_jiraEnvCSMapping.put(
-			TicketEntryConstants.ENV_CS_AZURE_VIRTUAL_MACHINES, 18945);
-
-		_jiraEnvDBMapping.put(TicketEntryConstants.ENV_DB_DB2_9_7, 13358);
-		_jiraEnvDBMapping.put(TicketEntryConstants.ENV_DB_DB2_10_1, 13359);
-		_jiraEnvDBMapping.put(TicketEntryConstants.ENV_DB_MARIADB_10, 17711);
-		_jiraEnvDBMapping.put(TicketEntryConstants.ENV_DB_MYSQL_5_0, 13366);
-		_jiraEnvDBMapping.put(TicketEntryConstants.ENV_DB_MYSQL_5_1, 13367);
-		_jiraEnvDBMapping.put(TicketEntryConstants.ENV_DB_MYSQL_5_5, 13368);
-		_jiraEnvDBMapping.put(TicketEntryConstants.ENV_DB_MYSQL_5_6, 13369);
-		_jiraEnvDBMapping.put(TicketEntryConstants.ENV_DB_MYSQL_5_7, 18424);
-		_jiraEnvDBMapping.put(TicketEntryConstants.ENV_DB_ORACLE_10G, 13370);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_ORACLE_10G_RELEASE_2, 13371);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_ORACLE_11G_RELEASE_1, 13372);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_ORACLE_11G_RELEASE_2, 13373);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_ORACLE_12C_RELEASE_1, 17712);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_POSTGRESQL_8_4, 13374);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_POSTGRESQL_9_0, 13375);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_POSTGRESQL_9_1, 13376);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_POSTGRESQL_9_2, 13377);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_POSTGRESQL_9_3, 17713);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_POSTGRESQL_9_4, 18813);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_SQL_SERVER_2005, 13379);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_SQL_SERVER_2008, 13380);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_SQL_SERVER_2008_R2, 13381);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_SQL_SERVER_2012, 13382);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_SQL_SERVER_2014, 17714);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_SYBASE_ASE_15_5, 13383);
-		_jiraEnvDBMapping.put(
-			TicketEntryConstants.ENV_DB_SYBASE_ASE_15_7, 13384);
-		_jiraEnvDBMapping.put(TicketEntryConstants.ENV_DB_SYBASE_ASE_16, 18412);
-
-		_jiraEnvJVMMapping.put(TicketEntryConstants.ENV_JVM_IBM_JDK_6, 13441);
-		_jiraEnvJVMMapping.put(TicketEntryConstants.ENV_JVM_IBM_JDK_7, 13442);
-		_jiraEnvJVMMapping.put(TicketEntryConstants.ENV_JVM_IBM_JDK_8, 18939);
-		_jiraEnvJVMMapping.put(TicketEntryConstants.ENV_JVM_JAVA_5, 14921);
-		_jiraEnvJVMMapping.put(TicketEntryConstants.ENV_JVM_JAVA_6, 13439);
-		_jiraEnvJVMMapping.put(TicketEntryConstants.ENV_JVM_JAVA_7, 13440);
-		_jiraEnvJVMMapping.put(TicketEntryConstants.ENV_JVM_JAVA_8, 17322);
-		_jiraEnvJVMMapping.put(
-			TicketEntryConstants.ENV_JVM_JROCKET_JDK_6, 13443);
-
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_1_3, 10432);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_1_4, 10431);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_1_5, 10430);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_1_6, 10452);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_1_7, 10531);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_1_8, 10614);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_2_4, 10429);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_2_5, 10428);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_2_6, 10451);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_2_7, 10468);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_2_8, 10490);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_5_2_9, 10615);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_6_0_10, 10641);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_6_0_11, 10713);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_6_0_12, 10792);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_6_1_10, 11610);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_6_1_20, 12522);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_6_1_30, 14611);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.PORTAL_VERSION_6_2_10, 15816);
-		_jiraEnvLFRMapping.put(
-			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_0_10, 23334);
-
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_AIX_6_1, 13417);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_AIX_7_1, 13418);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_CENTOS_5, 13414);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_CENTOS_6, 13415);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_CENTOS_7, 18417);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_DEBIAN_6_0, 17716);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_DEBIAN_7, 18418);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_DEBIAN_8, 18419);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_HP_UX, 13416);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_MAC_OS_X_10_5_PLUS, 13419);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_OPENSUSE_13_1, 13423);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_ORACLE_LINUX_6, 13424);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_ORACLE_LINUX_7, 18420);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_RED_HAT_ENTERPRISE_5, 13427);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_RED_HAT_ENTERPRISE_6, 13428);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_RED_HAT_ENTERPRISE_7, 17710);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_SOLARIS_10, 13425);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_SOLARIS_11, 17715);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_SUSE_ENTERPRISE_LINUX_11, 13429);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_SUSE_ENTERPRISE_LINUX_12, 18421);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_UBUNTU_10, 13430);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_UBUNTU_11, 13431);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_UBUNTU_12, 13432);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_UBUNTU_13, 13433);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_UBUNTU_LTS_14_04, 18422);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_WINDOWS_7, 13435);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_WINDOWS_SERVER_2008, 13437);
-		_jiraEnvOSMapping.put(
-			TicketEntryConstants.ENV_OS_WINDOWS_SERVER_2012, 13438);
-		_jiraEnvOSMapping.put(TicketEntryConstants.ENV_OS_WINDOWS_XP, 13434);
-
-		_jiraEnvSearchMapping.put(
-			TicketEntryConstants.ENV_SEARCH_ELASTICSEARCH, 18946);
-		_jiraEnvSearchMapping.put(
-			TicketEntryConstants.ENV_SEARCH_KIBANA_4_4, 18947);
-		_jiraEnvSearchMapping.put(
-			TicketEntryConstants.ENV_SEARCH_MARVEL_2_2, 18948);
-		_jiraEnvSearchMapping.put(
-			TicketEntryConstants.ENV_SEARCH_SHIELD_2_2, 18949);
-		_jiraEnvSearchMapping.put(TicketEntryConstants.ENV_SEARCH_SOLR, 18950);
-		_jiraEnvSearchMapping.put(
-			TicketEntryConstants.ENV_SEARCH_SOLRCLOUD, 18951);
-
-		_jiraRegionMapping.put("Australia", "11415");
-		_jiraRegionMapping.put("Brazil", "11418");
-		_jiraRegionMapping.put("China", "11415");
-		_jiraRegionMapping.put("Hungary", "11416");
-		_jiraRegionMapping.put("India", "11440");
-		_jiraRegionMapping.put("Japan", "16511");
-		_jiraRegionMapping.put("Spain", "11417");
-		_jiraRegionMapping.put("US", "11414");
 	}
 
 }

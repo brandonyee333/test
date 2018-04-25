@@ -15,10 +15,8 @@
 package com.liferay.osb.securitypatch.portlet;
 
 import com.liferay.osb.model.SecurityPatch;
-import com.liferay.osb.model.TicketAttachment;
 import com.liferay.osb.service.SecurityPatchLocalServiceUtil;
 import com.liferay.osb.service.SecurityPatchServiceUtil;
-import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouterUtil;
@@ -105,7 +103,8 @@ public class SecurityPatchPortlet extends MVCPortlet {
 			return securityPatch.getName();
 		}
 
-		TicketAttachment ticketAttachment =
+		/*Need to refactor, removing TicketAttachment from osb-portlet
+		 * TicketAttachment ticketAttachment =
 			TicketAttachmentLocalServiceUtil.getTicketAttachment(
 				securityPatch.getTicketAttachmentId());
 
@@ -116,7 +115,9 @@ public class SecurityPatchPortlet extends MVCPortlet {
 		SecurityPatchLocalServiceUtil.updateSecurityPatch(
 			securityPatch.getSecurityPatchId(), securityPatchName);
 
-		return securityPatchName;
+		return securityPatchName;*/
+
+		return null;
 	}
 
 	protected void sendAudit(ActionRequest actionRequest, String url) {

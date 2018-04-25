@@ -60,7 +60,6 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 	/>
 
 	<liferay-ui:error exception="<%= PrincipalException.class %>" message="you-do-not-have-the-required-permissions" />
-	<liferay-ui:error exception="<%= SupportWorkerMaxWorkException.class %>" message="max-work-cannot-equal-0" />
 
 	<aui:input name="addUserIds" type="hidden" value="" />
 	<aui:input name="removeUserIds" type="hidden" value="" />
@@ -112,9 +111,6 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			<%
 			SupportWorker supportWorker = null;
 
-			boolean autoAssign = false;
-			double assignedWork = 0;
-			double maxWork = 1;
 			int escalationLevel = 0;
 			int role = 0;
 			int notifications = 0;
@@ -122,15 +118,11 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 			try {
 				supportWorker = SupportWorkerLocalServiceUtil.getSupportWorker(curUser.getUserId(), supportTeamId);
 
-				autoAssign = supportWorker.getAutoAssign();
-				assignedWork = supportWorker.getAssignedWork();
-				maxWork = supportWorker.getMaxWork();
 				escalationLevel = supportWorker.getEscalationLevel();
 				role = supportWorker.getRole();
 				notifications = supportWorker.getNotifications();
 			}
 			catch (Exception e) {
-				assignedWork = SupportWorkerLocalServiceUtil.getAssignedWork(curUser.getUserId());
 			}
 
 			if (!curUser.isActive()) {
@@ -148,141 +140,64 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 				property="emailAddress"
 			/>
 
-			<c:choose>
-				<c:when test='<%= tabs3.equals("current") %>'>
-					<liferay-ui:search-container-column-text
-						name="status"
-					>
-						<c:if test="<%= supportWorker.getRole() != SupportWorkerConstants.ROLE_WATCHER %>">
-							<c:choose>
-								<c:when test="<%= hasClockInOutPermission %>">
-									<portlet:actionURL name="clockInOut" var="clockInOutURL">
-										<portlet:param name="mvcPath" value="/admin/edit_support_team_workers.jsp" />
-										<portlet:param name="redirect" value="<%= currentURL %>" />
-										<portlet:param name="supportTeamId" value="<%= StringUtil.valueOf(supportTeamId) %>" />
-										<portlet:param name="supportWorkerId" value="<%= StringUtil.valueOf(supportWorker.getSupportWorkerId()) %>" />
-									</portlet:actionURL>
+			<liferay-ui:search-container-column-text
+				name="status"
+			>
+				<c:if test="<%= supportWorker.getRole() != SupportWorkerConstants.ROLE_WATCHER %>">
+					<c:choose>
+						<c:when test="<%= hasClockInOutPermission %>">
+							<portlet:actionURL name="clockInOut" var="clockInOutURL">
+								<portlet:param name="mvcPath" value="/admin/edit_support_team_workers.jsp" />
+								<portlet:param name="redirect" value="<%= currentURL %>" />
+								<portlet:param name="supportTeamId" value="<%= StringUtil.valueOf(supportTeamId) %>" />
+								<portlet:param name="supportWorkerId" value="<%= StringUtil.valueOf(supportWorker.getSupportWorkerId()) %>" />
+							</portlet:actionURL>
 
-									<div class="toggle-on-off-switch">
-										<a class="toggle-on-off-switch-ctrl unlock <%= supportWorker.isClockedIn() ? "on" : "off" %>" href="<%= clockInOutURL %>">
-											<span class="toggle-on-off-switch-inner">
-												<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="in" /></span>
+							<div class="toggle-on-off-switch">
+								<a class="toggle-on-off-switch-ctrl unlock <%= supportWorker.isClockedIn() ? "on" : "off" %>" href="<%= clockInOutURL %>">
+									<span class="toggle-on-off-switch-inner">
+										<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="in" /></span>
 
-												<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="on-pto" /></span>
-											</span>
-										</a>
-									</div>
-								</c:when>
-								<c:otherwise>
-									<div class="toggle-on-off-switch">
-										<span class="toggle-on-off-switch-ctrl <%= supportWorker.isClockedIn() ? "on" : "off" %>">
-											<span class="toggle-on-off-switch-inner">
-												<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="in" /></span>
+										<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="on-pto" /></span>
+									</span>
+								</a>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="toggle-on-off-switch">
+								<span class="toggle-on-off-switch-ctrl <%= supportWorker.isClockedIn() ? "on" : "off" %>">
+									<span class="toggle-on-off-switch-inner">
+										<span class="toggle-on-off-switch-on txt-b"><liferay-ui:message key="in" /></span>
 
-												<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="on-pto" /></span>
-											</span>
-										</span>
-									</div>
-								</c:otherwise>
-							</c:choose>
-						</c:if>
-					</liferay-ui:search-container-column-text>
+										<span class="toggle-on-off-switch-off txt-b"><liferay-ui:message key="on-pto" /></span>
+									</span>
+								</span>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</c:if>
+			</liferay-ui:search-container-column-text>
 
-					<liferay-ui:search-container-column-text
-						name="auto-assign"
-					>
-						<c:choose>
-							<c:when test="<%= autoAssign %>">
-								<liferay-ui:message key="yes" />
-							</c:when>
-							<c:otherwise>
-								<liferay-ui:message key="no" />
-							</c:otherwise>
-						</c:choose>
-					</liferay-ui:search-container-column-text>
+			<liferay-ui:search-container-column-text
+				name="project-tiers"
+			>
 
-					<liferay-ui:search-container-column-text
-						name="utilization"
-					>
-						<%= numberFormat.format(MathUtil.format((assignedWork / maxWork) * 100, 1, 1)) %>%
+				<%
+				List<Integer> accountTiers = supportWorker.getAccountTiers();
 
-						(<%= numberFormat.format(assignedWork) %>/<%= numberFormat.format(maxWork) %>)
-					</liferay-ui:search-container-column-text>
+				for (int i = 0; i < accountTiers.size(); i++) {
+					Integer accountTier = accountTiers.get(i);
+				%>
 
-					<liferay-ui:search-container-column-text
-						name="severities"
-					>
+					<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountTier)) %><%= ((i + 1) < accountTiers.size()) ? "<br />" : "" %>
 
-						<%
-						List<Integer> severities = supportWorker.getSeverities();
+				<%
+				}
+				%>
 
-						for (int i = 0; i < severities.size(); i++) {
-							Integer severity = severities.get(i);
-						%>
+			</liferay-ui:search-container-column-text>
 
-							<%= LanguageUtil.get(request, TicketEntryConstants.getSeverityLabel(severity)) %><%= ((i + 1) < severities.size()) ? "<br />" : "" %>
-
-						<%
-						}
-						%>
-
-					</liferay-ui:search-container-column-text>
-
-					<liferay-ui:search-container-column-text
-						name="components"
-					>
-
-						<%
-						List<Integer> components = supportWorker.getComponents();
-
-						for (int i = 0; i < components.size(); i++) {
-							Integer component = components.get(i);
-						%>
-
-							<%= LanguageUtil.get(request, TicketEntryConstants.getComponentLabel(component)) %><%= ((i + 1) < components.size()) ? "<br />" : "" %>
-
-						<%
-						}
-						%>
-
-					</liferay-ui:search-container-column-text>
-
-					<liferay-ui:search-container-column-text
-						name="project-tiers"
-					>
-
-						<%
-						List<Integer> accountTiers = supportWorker.getAccountTiers();
-
-						for (int i = 0; i < accountTiers.size(); i++) {
-							Integer accountTier = accountTiers.get(i);
-						%>
-
-							<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountTier)) %><%= ((i + 1) < accountTiers.size()) ? "<br />" : "" %>
-
-						<%
-						}
-						%>
-
-					</liferay-ui:search-container-column-text>
-
-					<aui:input name='<%= "maxWork_" + curUser.getUserId() %>' type="hidden" value="<%= maxWork %>" />
-					<aui:input name='<%= "notifications_" + curUser.getUserId() %>' type="hidden" value="<%= notifications %>" />
-				</c:when>
-				<c:otherwise>
-					<liferay-ui:search-container-column-text
-						name="assigned-work"
-					>
-						<%= assignedWork %>
-					</liferay-ui:search-container-column-text>
-
-					<liferay-ui:search-container-column-text
-						name="max-work"
-					>
-						<aui:input disabled="<%= supportWorker != null %>" label="" name='<%= "maxWork_" + curUser.getUserId() %>' size="5" type="text" value="<%= maxWork %>" />
-					</liferay-ui:search-container-column-text>
-				</c:otherwise>
-			</c:choose>
+			<aui:input name='<%= "notifications_" + curUser.getUserId() %>' type="hidden" value="<%= notifications %>" />
 
 			<liferay-ui:search-container-column-text
 				name="notifications"
@@ -294,26 +209,6 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					%>
 
 						<aui:option label="<%= SupportWorkerConstants.getNotificationsLabel(i) %>" selected="<%= notifications == i %>" value="<%= i %>" />
-
-					<%
-					}
-					%>
-
-				</aui:select>
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
-				name="escalation-level"
-			>
-				<aui:select label="" name='<%= "escalationLevel_" + curUser.getUserId() %>'>
-
-					<%
-					List<ListType> escalationLevelTypes = ListTypeServiceUtil.getListTypes(TicketEntryConstants.LIST_TYPE_ESCALATION_LEVEL);
-
-					for (ListType escalationLevelType : escalationLevelTypes) {
-					%>
-
-						<aui:option label="<%= escalationLevelType.getName() %>" selected="<%= escalationLevelType.getListTypeId() == escalationLevel %>" value="<%= escalationLevelType.getListTypeId() %>" />
 
 					<%
 					}

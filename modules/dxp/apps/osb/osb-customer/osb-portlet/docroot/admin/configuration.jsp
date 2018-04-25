@@ -349,7 +349,6 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 
 					<%
 					String productDisplayName = ParamUtil.getString(request, "productDisplayName", ProductEntryConstants.DISPLAY_NAME_PORTAL);
-					int component = ParamUtil.getInteger(request, "component", TicketEntryConstants.COMPONENT_PROJECT_ADMINISTRATION);
 					%>
 
 					<table class="lfr-table">
@@ -385,45 +384,6 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 									%>
 
 										<aui:option label="<%= curProductDisplayName %>" selected="<%= curProductDisplayName.equals(productDisplayName) %>" value="<%= curProductDisplayName %>" />
-
-									<%
-									}
-									%>
-
-								</aui:select>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<liferay-ui:message key="component" />
-							</td>
-							<td>
-								<aui:select label="" name="component" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
-
-									<%
-									int[] components = TicketEntryConstants.getProductDisplayNameComponents(productDisplayName);
-
-									if (!ArrayUtil.contains(components, component)) {
-										component = components[0];
-									}
-
-									for (int curComponent : components) {
-										if (ArrayUtil.contains(TicketEntryConstants.COMPONENTS_DEPRECATED, curComponent)) {
-											continue;
-										}
-
-										String optionStyle = StringPool.BLANK;
-
-										String componentMessageKey = AdminUtil.getComponentPreferenceKey("componentMessage_", productDisplayName, String.valueOf(curComponent), currentLanguageId);
-
-										String componentMessage = portletPreferences.getValue(componentMessageKey, StringPool.BLANK);
-
-										if (Validator.isNotNull(componentMessage)) {
-											optionStyle = "style=\"font-weight: bold;\"";
-										}
-									%>
-
-										<aui:option label="<%= TicketEntryConstants.getComponentLabel(curComponent) %>" selected="<%= curComponent == component %>" style="<%= optionStyle %>" value="<%= curComponent %>" />
 
 									<%
 									}
@@ -700,74 +660,6 @@ Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
 
 					<aui:fieldset>
 						<aui:input helpMessage="product-link-help" ignoreRequestValue="<%= true %>" label="product-link" name="productLink" value="<%= productLink %>" />
-					</aui:fieldset>
-				</c:when>
-				<c:when test='<%= tabs2.equals("status-messages") %>'>
-
-					<%
-					int status = ParamUtil.getInteger(request, "status", TicketEntryConstants.STATUS_INCIDENT_REPORTED);
-					%>
-
-					<table class="lfr-table">
-						<tr>
-							<td>
-								<liferay-ui:message key="language" />
-							</td>
-							<td>
-								<aui:select label="" name="languageId" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
-
-									<%
-									for (int i = 0; i < locales.length; i++) {
-									%>
-
-										<aui:option label="<%= locales[i].getDisplayName(locale) %>" selected="<%= currentLanguageId.equals(LocaleUtil.toLanguageId(locales[i])) %>" value="<%= LocaleUtil.toLanguageId(locales[i]) %>" />
-
-									<%
-									}
-									%>
-
-								</aui:select>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<liferay-ui:message key="status" />
-							</td>
-							<td>
-								<aui:select label="" name="status" onChange='<%= renderResponse.getNamespace() + "updateForm();" %>'>
-
-									<%
-									for (int curStatus : TicketEntryConstants.STATUSES_WORKFLOW_ORDER) {
-										String optionStyle = StringPool.BLANK;
-
-										String statusMessageKey = AdminUtil.getPreferenceKey("statusMessage_", String.valueOf(curStatus), currentLanguageId);
-
-										String statusMessage = portletPreferences.getValue(statusMessageKey, StringPool.BLANK);
-
-										if (Validator.isNotNull(statusMessage)) {
-											optionStyle = "style=\"font-weight: bold;\"";
-										}
-									%>
-
-										<aui:option label="<%= TicketEntryConstants.getStatusLabel(curStatus) %>" selected="<%= curStatus == status %>" style="<%= optionStyle %>" value="<%= curStatus %>" />
-
-									<%
-									}
-									%>
-
-								</aui:select>
-							</td>
-						</tr>
-					</table>
-
-					<%
-					String statusMessageKey = AdminUtil.getPreferenceKey("statusMessage_", String.valueOf(status), currentLanguageId);
-
-					String statusMessage = PrefsParamUtil.getString(portletPreferences, request, statusMessageKey, StringPool.BLANK);
-					%>
-
-					<aui:fieldset>
-						<aui:input ignoreRequestValue="<%= true %>" label="body" name="statusMessage" type="textarea" value="<%= statusMessage %>" />
 					</aui:fieldset>
 				</c:when>
 				<c:when test='<%= tabs2.equals("ticket-weight") %>'>

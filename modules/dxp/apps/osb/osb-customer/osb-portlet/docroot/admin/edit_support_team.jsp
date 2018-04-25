@@ -296,7 +296,7 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 		<br />
 
 		<liferay-ui:search-container
-			headerNames="name,utilization"
+			headerNames="name"
 			id="childSupportTeam"
 		>
 			<liferay-ui:search-container-results
@@ -319,15 +319,6 @@ portletURL.setParameter("supportTeamId", String.valueOf(supportTeamId));
 					href="<%= rowURL %>"
 					property="name"
 				/>
-
-				<liferay-ui:search-container-column-text
-					href="<%= rowURL %>"
-					name="utilization"
-				>
-					<%= numberFormat.format(MathUtil.format((curSupportTeam.getAssignedWork() / curSupportTeam.getMaxWork()) * 100, 1, 1)) %>%
-
-					(<%= numberFormat.format(curSupportTeam.getAssignedWork()) %>/<%= numberFormat.format(curSupportTeam.getMaxWork()) %>)
-				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text>
 					<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('childSupportTeamIds', '" + curSupportTeam.getSupportTeamId() + "', '" + renderResponse.getNamespace() + "childSupportTeamSearchContainer', this);" %>' value="remove" />

@@ -15,7 +15,6 @@
 package com.liferay.osb.admin.action;
 
 import com.liferay.osb.admin.util.AdminUtil;
-import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -563,32 +562,12 @@ public class ConfigurationActionImpl extends DefaultConfigurationAction {
 		else if (tabs2.equals("status-messages")) {
 			updateStatusMessage(actionRequest, preferences);
 		}
-		else if (tabs2.equals("ticket-weight")) {
-			updateTicketWeight(actionRequest, preferences);
-		}
 		else if (tabs2.equals("tier-messages")) {
 			updateTierMessage(actionRequest, preferences);
 		}
 		else {
 			updateComments(actionRequest, preferences);
 		}
-	}
-
-	protected void updateTicketWeight(
-			ActionRequest actionRequest, PortletPreferences preferences)
-		throws Exception {
-
-		String light = ParamUtil.getString(actionRequest, "light");
-
-		preferences.setValue("light", light);
-
-		String heavy = ParamUtil.getString(actionRequest, "heavy");
-
-		preferences.setValue("heavy", heavy);
-
-		preferences.store();
-
-		SupportWorkerLocalServiceUtil.recalculateUtilization();
 	}
 
 	protected void updateTierMessage(

@@ -14,17 +14,7 @@
 
 package com.liferay.osb.util;
 
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.TicketEntry;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.service.TicketEntryLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Alan Zhang
@@ -38,52 +28,6 @@ public class VisibilityConstants {
 	public static final int PUBLIC = 1;
 
 	public static final int WORKERS = 2;
-
-	public static int[] getUserVisibilities(long userId, long ticketEntryId)
-		throws PortalException {
-
-		List<Integer> userVisibilities = new ArrayList<>();
-
-		for (int visibility : _DISPLAY_VISIBILITIES) {
-			if (!hasVisibility(userId, ticketEntryId, visibility)) {
-				continue;
-			}
-
-			userVisibilities.add(visibility);
-		}
-
-		return ArrayUtil.toArray(userVisibilities.toArray(new Integer[0]));
-	}
-
-	public static boolean hasVisibility(
-			long userId, long ticketEntryId, int visibility)
-		throws PortalException {
-
-		if (visibility == PUBLIC) {
-			return true;
-		}
-
-		if (OrganizationLocalServiceUtil.hasUserOrganization(
-				userId, OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-			return true;
-		}
-
-		if (visibility == WORKERS) {
-			TicketEntry ticketEntry =
-				TicketEntryLocalServiceUtil.getTicketEntry(ticketEntryId);
-
-			AccountEntry accountEntry = ticketEntry.getAccountEntry();
-
-			if (PartnerWorkerLocalServiceUtil.hasPartnerWorker(
-					userId, accountEntry.getPartnerEntryId())) {
-
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	public static String toLabel(int visibility) {
 		if (visibility == ADMIN) {

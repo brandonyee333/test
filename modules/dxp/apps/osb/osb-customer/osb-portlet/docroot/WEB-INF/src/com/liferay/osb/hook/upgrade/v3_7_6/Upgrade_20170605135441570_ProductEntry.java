@@ -53,9 +53,6 @@ public class Upgrade_20170605135441570_ProductEntry extends BaseUpgradeProcess {
 			"update OSB_OfferingEntry set productEntryId = " +
 				newProductEntryId + " where productEntryId = " +
 					oldProductEntryId);
-		runSQL(
-			"update OSB_TicketEntry set productEntryId = " + newProductEntryId +
-				" where productEntryId = " + oldProductEntryId);
 	}
 
 	private static final long _PRODUCT_ENTRY_PARTNER_ID = 6820501;

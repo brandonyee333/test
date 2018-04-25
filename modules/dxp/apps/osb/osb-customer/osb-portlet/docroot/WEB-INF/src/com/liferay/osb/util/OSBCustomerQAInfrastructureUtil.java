@@ -568,8 +568,7 @@ public class OSBCustomerQAInfrastructureUtil {
 
 	protected static void checkSupportWorker(
 			long companyId, String emailAddress, long supportTeamId,
-			double[] maxWork, int[] escalationLevels, int[] roles,
-			int[] notifications)
+			int[] escalationLevels, int[] roles, int[] notifications)
 		throws Exception {
 
 		long userId = UserLocalServiceUtil.getUserIdByEmailAddress(
@@ -579,8 +578,7 @@ public class OSBCustomerQAInfrastructureUtil {
 				userId, supportTeamId)) {
 
 			SupportWorkerLocalServiceUtil.addSupportWorkers(
-				new long[] {userId}, supportTeamId, maxWork, escalationLevels,
-				roles, notifications);
+				new long[] {userId}, supportTeamId, roles);
 
 			SupportWorker supportWorker =
 				SupportWorkerLocalServiceUtil.getSupportWorker(
@@ -605,9 +603,6 @@ public class OSBCustomerQAInfrastructureUtil {
 			String[] escalationLevels = OSBCustomerQAConfigurationUtil.getArray(
 				OSBCustomerQAConfigurationKeys.OSB_QA_SUPPORT_WORKER,
 				new Filter(emailAddress, "escalation-levels"));
-			String[] maxWork = OSBCustomerQAConfigurationUtil.getArray(
-				OSBCustomerQAConfigurationKeys.OSB_QA_SUPPORT_WORKER,
-				new Filter(emailAddress, "max-work"));
 			String[] notifications = OSBCustomerQAConfigurationUtil.getArray(
 				OSBCustomerQAConfigurationKeys.OSB_QA_SUPPORT_WORKER,
 				new Filter(emailAddress, "notifications"));
@@ -620,7 +615,6 @@ public class OSBCustomerQAInfrastructureUtil {
 
 			checkSupportWorker(
 				companyId, emailAddress, GetterUtil.getLong(supportTeamId),
-				GetterUtil.getDoubleValues(maxWork),
 				GetterUtil.getIntegerValues(escalationLevels),
 				GetterUtil.getIntegerValues(roles),
 				GetterUtil.getIntegerValues(notifications));

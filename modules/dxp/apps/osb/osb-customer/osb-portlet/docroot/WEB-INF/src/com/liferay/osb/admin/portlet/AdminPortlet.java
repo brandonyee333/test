@@ -16,8 +16,6 @@ package com.liferay.osb.admin.portlet;
 
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileNameException;
-import com.liferay.document.library.kernel.store.DLStoreUtil;
-import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.exception.AccountEntryCodeException;
 import com.liferay.osb.exception.AccountEntryCorpProjectException;
@@ -77,7 +75,6 @@ import com.liferay.osb.exception.SupportResponseSupportLevelException;
 import com.liferay.osb.exception.SupportTeamLocationException;
 import com.liferay.osb.exception.SupportTeamNameException;
 import com.liferay.osb.exception.SupportTeamSupportLaborException;
-import com.liferay.osb.exception.SupportWorkerMaxWorkException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.model.AccountEntry;
@@ -89,8 +86,6 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.SupportWorkerConstants;
-import com.liferay.osb.model.TicketSolutionConstants;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
 import com.liferay.osb.rabbitmq.ProvisioningCreateRabbitMQConsumer;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
@@ -118,15 +113,11 @@ import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.service.SupportTeamLanguageLocalServiceUtil;
 import com.liferay.osb.service.SupportTeamLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerAccountTierLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerComponentLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerServiceUtil;
-import com.liferay.osb.service.SupportWorkerSeverityLocalServiceUtil;
-import com.liferay.osb.service.TicketAttachmentLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.OSBRequestUtil;
-import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouterUtil;
@@ -150,7 +141,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.User;
@@ -159,7 +149,6 @@ import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -167,7 +156,6 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -491,56 +479,6 @@ public class AdminPortlet extends MVCPortlet {
 		SupportTeamLocalServiceUtil.deleteSupportTeam(supportTeamId);
 	}
 
-	public void migrateTicketAttachments(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		String[] attachmentsDirs = DLStoreUtil.getFileNames(
-			OSBConstants.COMPANY_ID, CompanyConstants.SYSTEM,
-			OSBConstants.ATTACHMENTS_DIR_SUPPORT);
-
-		for (String attachmentsDir : attachmentsDirs) {
-			long ticketEntryId = GetterUtil.getLong(
-				FileUtil.getShortFileName(attachmentsDir));
-
-			List<ObjectValuePair<String, File>> files = new ArrayList<>();
-
-			String[] ticketAttachments = DLStoreUtil.getFileNames(
-				OSBConstants.COMPANY_ID, CompanyConstants.SYSTEM,
-				attachmentsDir);
-
-			for (String ticketAttachment : ticketAttachments) {
-				String fileName = FileUtil.getShortFileName(ticketAttachment);
-
-				File file = DLStoreUtil.getFile(
-					OSBConstants.COMPANY_ID, CompanyConstants.SYSTEM,
-					ticketAttachment);
-
-				ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
-					fileName, file);
-
-				files.add(ovp);
-			}
-
-			try {
-				TicketAttachmentLocalServiceUtil.addTicketAttachments(
-					OSBConstants.USER_DEFAULT_USER_ID, ticketEntryId,
-					TicketSolutionConstants.DEFAULT_SOLUTION_ID, files, null,
-					VisibilityConstants.PUBLIC,
-					WorkflowConstants.STATUS_APPROVED, new ServiceContext());
-			}
-			catch (Exception e) {
-			}
-		}
-	}
-
-	public void recalculateUtilization(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		SupportWorkerLocalServiceUtil.recalculateUtilization();
-	}
-
 	public void reindex(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -551,8 +489,6 @@ public class AdminPortlet extends MVCPortlet {
 		String portletId = ParamUtil.getString(actionRequest, "portletId");
 		long modifiedDateOffset = ParamUtil.getLong(
 			actionRequest, "modifiedDateOffset");
-
-		AdminUtil.reindex(portletId, modifiedDateOffset);
 
 		User user = themeDisplay.getUser();
 
@@ -1478,31 +1414,13 @@ public class AdminPortlet extends MVCPortlet {
 			actionRequest, "supportWorkerId");
 
 		long supportTeamId = ParamUtil.getLong(actionRequest, "supportTeamId");
-		boolean autoAssign = ParamUtil.getBoolean(actionRequest, "autoAssign");
-		double maxWork = ParamUtil.getDouble(actionRequest, "maxWork");
-		int escalationLevel = ParamUtil.getInteger(
-			actionRequest, "escalationLevel");
-		int escalationLevel2Role = ParamUtil.getInteger(
-			actionRequest, "escalationLevel2Role",
-			SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_PRIMARY);
-		int notifications = ParamUtil.getInteger(
-			actionRequest, "notifications");
 
-		int[] severities = StringUtil.split(
-			ParamUtil.getString(actionRequest, "severities"), 0);
-		int[] components = StringUtil.split(
-			ParamUtil.getString(actionRequest, "components"), 0);
 		int[] accountTiers = StringUtil.split(
 			ParamUtil.getString(actionRequest, "accountTiers"), 0);
 
 		SupportWorkerLocalServiceUtil.updateSupportWorker(
-			supportWorkerId, supportTeamId, autoAssign, maxWork,
-			escalationLevel, escalationLevel2Role, notifications);
+			supportWorkerId, supportTeamId);
 
-		SupportWorkerSeverityLocalServiceUtil.setSupportWorkerSeverities(
-			supportWorkerId, severities);
-		SupportWorkerComponentLocalServiceUtil.setSupportWorkerComponents(
-			supportWorkerId, components);
 		SupportWorkerAccountTierLocalServiceUtil.setSupportWorkerAccountTiers(
 			supportWorkerId, accountTiers);
 	}
@@ -1518,26 +1436,16 @@ public class AdminPortlet extends MVCPortlet {
 
 		long supportTeamId = ParamUtil.getLong(actionRequest, "supportTeamId");
 
-		double[] maxWork = new double[addUserIds.length];
-		int[] escalationLevels = new int[addUserIds.length];
 		int[] roles = new int[addUserIds.length];
-		int[] notifications = new int[addUserIds.length];
 
 		for (int i = 0; i < addUserIds.length; i++) {
 			long userId = addUserIds[i];
 
-			escalationLevels[i] = ParamUtil.getInteger(
-				actionRequest, "escalationLevel_" + userId);
-			maxWork[i] = ParamUtil.getDouble(
-				actionRequest, "maxWork_" + userId);
 			roles[i] = ParamUtil.getInteger(actionRequest, "role_" + userId);
-			notifications[i] = ParamUtil.getInteger(
-				actionRequest, "notifications_" + userId);
 		}
 
 		SupportWorkerLocalServiceUtil.addSupportWorkers(
-			addUserIds, supportTeamId, maxWork, escalationLevels, roles,
-			notifications);
+			addUserIds, supportTeamId, roles);
 		SupportWorkerLocalServiceUtil.deleteSupportWorkers(
 			removeUserIds, supportTeamId);
 	}
@@ -1725,7 +1633,6 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof SupportTeamLocationException ||
 			cause instanceof SupportTeamNameException ||
 			cause instanceof SupportTeamSupportLaborException ||
-			cause instanceof SupportWorkerMaxWorkException ||
 			cause instanceof UserEmailAddressException) {
 
 			return true;

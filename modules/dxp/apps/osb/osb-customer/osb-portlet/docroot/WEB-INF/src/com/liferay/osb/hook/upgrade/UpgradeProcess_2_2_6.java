@@ -14,7 +14,6 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.osb.hook.upgrade.v2_2_6.UpgradeListType;
 import com.liferay.osb.hook.upgrade.v2_2_6.UpgradePortalPreferences;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
@@ -31,7 +30,6 @@ public class UpgradeProcess_2_2_6 extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgrade(UpgradeListType.class);
 		upgrade(UpgradePortalPreferences.class);
 	}
 

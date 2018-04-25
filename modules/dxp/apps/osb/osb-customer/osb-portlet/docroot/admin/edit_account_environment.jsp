@@ -152,7 +152,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 							<br />
 
-							<aui:input cssClass='<%= (envOS == TicketEntryConstants.ENV_OS_OTHER) ? "" : "hide" %>' label="" maxLength="<%= TicketInformationConstants.getMaxLength(TicketInformationConstants.FIELD_ENV_OS_CUSTOM) %>" name="envOSCustom" type="text" value="<%= envOSCustom %>" />
+							<aui:input cssClass='<%= (envOS == AccountEnvironmentConstants.ENV_OS_OTHER) ? "" : "hide" %>' label="" maxLength="75" name="envOSCustom" type="text" value="<%= envOSCustom %>" />
 						</div>
 					</td>
 					<td>
@@ -238,7 +238,7 @@ int envLFR = BeanParamUtil.getInteger(accountEnvironment, request, "envLFR");
 
 		var envOSCustom = A.one('#<portlet:namespace />envOSCustom');
 
-		if (envOS == '<%= TicketEntryConstants.ENV_OS_OTHER %>') {
+		if (envOS == '<%= AccountEnvironmentConstants.ENV_OS_OTHER %>') {
 			envOSCustom.show();
 		}
 		else {

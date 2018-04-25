@@ -42,17 +42,11 @@ import java.util.Map;
 public class SupportWorkerFinderImpl
 	extends SupportWorkerFinderBaseImpl implements SupportWorkerFinder {
 
-	public static final String COUNT_BY_U_E =
-		SupportWorkerFinder.class.getName() + ".countByU_E";
-
 	public static final String COUNT_BY_SL_FN_MN_LN_SN_EA_STN =
 		SupportWorkerFinder.class.getName() + ".countBySL_FN_MN_LN_SN_EA_STN";
 
 	public static final String FIND_BY_SUPPORT_TEAM_ID =
 		SupportWorkerFinder.class.getName() + ".findBySupportTeamId";
-
-	public static final String FIND_BY_U_E =
-		SupportWorkerFinder.class.getName() + ".findByU_E";
 
 	public static final String FIND_BY_R_STT_SRI =
 		SupportWorkerFinder.class.getName() + ".findByR_STT_SRI";
@@ -63,14 +57,8 @@ public class SupportWorkerFinderImpl
 	public static final String JOIN_BY_ACCOUNT_TIER =
 		SupportWorkerFinder.class.getName() + ".joinByAccountTier";
 
-	public static final String JOIN_BY_COMPONENT =
-		SupportWorkerFinder.class.getName() + ".joinByComponent";
-
 	public static final String JOIN_BY_LOCATION_SUPPORT_REGION =
 		SupportWorkerFinder.class.getName() + ".joinByLocationSupportRegion";
-
-	public static final String JOIN_BY_SEVERITY =
-		SupportWorkerFinder.class.getName() + ".joinBySeverity";
 
 	public static final String JOIN_BY_SUPPORT_REGION =
 		SupportWorkerFinder.class.getName() + ".joinBySupportRegion";
@@ -114,65 +102,6 @@ public class SupportWorkerFinderImpl
 		return countBySL_FN_MN_LN_SN_EA_STN(
 			supportLaborId, firstNames, middleNames, lastNames, screenNames,
 			emailAddresses, supportTeamNames, andOperator);
-	}
-
-	public int countByU_E(
-		Boolean overUtilization, int escalationLevel,
-		LinkedHashMap<String, Object> params) {
-
-		String sql = CustomSQLUtil.get(getClass(), COUNT_BY_U_E);
-
-		if (overUtilization == null) {
-			sql = StringUtil.replace(sql, _UTILIZATION_SQL, StringPool.BLANK);
-		}
-		else {
-			if (overUtilization) {
-				sql = StringUtil.replace(
-					sql, "[$UTILIZATION_COMPARATOR$]", ">=");
-			}
-			else {
-				sql = StringUtil.replace(
-					sql, "[$UTILIZATION_COMPARATOR$]", "<");
-			}
-		}
-
-		sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
-		sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			SQLQuery q = session.createSynchronizedSQLQuery(sql);
-
-			q.addScalar(COUNT_COLUMN_NAME, Type.LONG);
-
-			QueryPos qPos = QueryPos.getInstance(q);
-
-			setJoin(qPos, params);
-
-			qPos.add(escalationLevel);
-			qPos.add(escalationLevel);
-
-			Iterator<Long> itr = q.iterate();
-
-			if (itr.hasNext()) {
-				Long count = itr.next();
-
-				if (count != null) {
-					return count.intValue();
-				}
-			}
-
-			return 0;
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-		finally {
-			closeSession(session);
-		}
 	}
 
 	public int countBySL_FN_MN_LN_SN_EA_STN(
@@ -304,59 +233,9 @@ public class SupportWorkerFinderImpl
 		}
 	}
 
-	public List<SupportWorker> findByU_E(
-		Boolean overUtilization, int escalationLevel,
-		LinkedHashMap<String, Object> params) {
-
-		String sql = CustomSQLUtil.get(getClass(), FIND_BY_U_E);
-
-		if (overUtilization == null) {
-			sql = StringUtil.replace(sql, _UTILIZATION_SQL, StringPool.BLANK);
-		}
-		else {
-			if (overUtilization) {
-				sql = StringUtil.replace(
-					sql, "[$UTILIZATION_COMPARATOR$]", ">=");
-			}
-			else {
-				sql = StringUtil.replace(
-					sql, "[$UTILIZATION_COMPARATOR$]", "<");
-			}
-		}
-
-		sql = StringUtil.replace(sql, "[$JOIN$]", getJoin(params));
-		sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			SQLQuery q = session.createSynchronizedSQLQuery(sql);
-
-			q.addEntity("OSB_SupportWorker", SupportWorkerImpl.class);
-
-			QueryPos qPos = QueryPos.getInstance(q);
-
-			setJoin(qPos, params);
-
-			qPos.add(escalationLevel);
-			qPos.add(escalationLevel);
-
-			return q.list();
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-		finally {
-			closeSession(session);
-		}
-	}
-
 	public List<SupportWorker> findByR_STT_SRI(
 		int role, Integer supportTeamType, long supportRegionId,
-		String roleComparator, boolean filterByAutoAssign,
-		LinkedHashMap<String, Object> params) {
+		String roleComparator, LinkedHashMap<String, Object> params) {
 
 		String sql = CustomSQLUtil.get(getClass(), FIND_BY_R_STT_SRI);
 
@@ -372,12 +251,6 @@ public class SupportWorkerFinderImpl
 		if (supportTeamType == null) {
 			sql = StringUtil.replace(
 				sql, "(OSB_SupportTeam.type_ = ?) AND", StringPool.BLANK);
-		}
-
-		if (!filterByAutoAssign) {
-			sql = StringUtil.replace(
-				sql, "(OSB_SupportWorker.autoAssign = [$TRUE$]) AND",
-				StringPool.BLANK);
 		}
 
 		sql = StringUtil.replace(sql, "[$WHERE$]", getWhere(params));
@@ -508,12 +381,6 @@ public class SupportWorkerFinderImpl
 		if (key.equals("accountTier")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_TIER);
 		}
-		else if (key.equals("component")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_COMPONENT);
-		}
-		else if (key.equals("severity")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_SEVERITY);
-		}
 		else if (key.equals("supportRegion")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_REGION);
 		}
@@ -564,15 +431,9 @@ public class SupportWorkerFinderImpl
 		if (key.equals("accountTier")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_ACCOUNT_TIER);
 		}
-		else if (key.equals("component")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_COMPONENT);
-		}
 		else if (key.equals("locationSupportRegion")) {
 			join = CustomSQLUtil.get(
 				getClass(), JOIN_BY_LOCATION_SUPPORT_REGION);
-		}
-		else if (key.equals("severity")) {
-			join = CustomSQLUtil.get(getClass(), JOIN_BY_SEVERITY);
 		}
 		else if (key.equals("supportRegion")) {
 			join = CustomSQLUtil.get(getClass(), JOIN_BY_SUPPORT_REGION);
@@ -666,9 +527,5 @@ public class SupportWorkerFinderImpl
 			}
 		}
 	}
-
-	private static final String _UTILIZATION_SQL =
-		"(OSB_SupportWorker.assignedWork [$UTILIZATION_COMPARATOR$] " +
-			"OSB_SupportWorker.maxWork) AND";
 
 }

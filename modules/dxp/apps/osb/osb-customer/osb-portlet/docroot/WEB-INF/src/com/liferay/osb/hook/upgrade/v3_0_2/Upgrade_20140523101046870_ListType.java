@@ -36,16 +36,6 @@ public class Upgrade_20140523101046870_ListType extends BaseUpgradeProcess {
 			insertListType(
 				23043, "3.0.3",
 				"com.liferay.osb.model.ProductEntry.socialOfficeAllVersions");
-
-			insertListType(
-				27050, "jboss-5.1-eap",
-				"com.liferay.osb.model.TicketEntry.envAS");
-			insertListType(
-				30032, "opensuse-13.1",
-				"com.liferay.osb.model.TicketEntry.envOS");
-			insertListType(
-				30033, "suse-enterprise-linux-11",
-				"com.liferay.osb.model.TicketEntry.envOS");
 		}
 		catch (Exception e) {
 		}

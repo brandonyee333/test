@@ -19,15 +19,11 @@ import com.liferay.osb.model.SupportLabor;
 import com.liferay.osb.model.SupportLaborConstants;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.model.SupportWorkerAccountTier;
-import com.liferay.osb.model.SupportWorkerComponent;
 import com.liferay.osb.model.SupportWorkerConstants;
-import com.liferay.osb.model.SupportWorkerSeverity;
 import com.liferay.osb.service.HolidayEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportLaborLocalServiceUtil;
 import com.liferay.osb.service.SupportTeamLocalServiceUtil;
 import com.liferay.osb.service.SupportWorkerAccountTierLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerComponentLocalServiceUtil;
-import com.liferay.osb.service.SupportWorkerSeverityLocalServiceUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -67,46 +63,8 @@ public class SupportWorkerImpl extends SupportWorkerBaseImpl {
 		return accountTiers;
 	}
 
-	public List<Integer> getComponents() {
-		List<SupportWorkerComponent> supportWorkerComponents =
-			SupportWorkerComponentLocalServiceUtil.getSupportWorkerComponents(
-				getSupportWorkerId());
-
-		List<Integer> components = new ArrayList<>(
-			supportWorkerComponents.size());
-
-		for (SupportWorkerComponent supportWorkerComponent :
-				supportWorkerComponents) {
-
-			components.add(supportWorkerComponent.getComponent());
-		}
-
-		return components;
-	}
-
-	public String getNotificationsLabel() {
-		return SupportWorkerConstants.getNotificationsLabel(getNotifications());
-	}
-
 	public String getRoleLabel() {
 		return SupportWorkerConstants.getRoleLabel(getRole());
-	}
-
-	public List<Integer> getSeverities() {
-		List<SupportWorkerSeverity> supportWorkerSeverities =
-			SupportWorkerSeverityLocalServiceUtil.getSupportWorkerSeverities(
-				getSupportWorkerId());
-
-		List<Integer> severities = new ArrayList<>(
-			supportWorkerSeverities.size());
-
-		for (SupportWorkerSeverity supportWorkerSeverity :
-				supportWorkerSeverities) {
-
-			severities.add(supportWorkerSeverity.getSeverity());
-		}
-
-		return severities;
 	}
 
 	public SupportLabor getSupportLabor() throws PortalException {

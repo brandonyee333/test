@@ -50,8 +50,6 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
-import com.liferay.osb.model.TicketEntry;
-import com.liferay.osb.model.TicketFlagConstants;
 import com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil;
 import com.liferay.osb.service.base.AccountEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
@@ -673,10 +671,6 @@ public class AccountEntryLocalServiceImpl
 			orderEntryLocalService.deleteOrderEntry(orderEntry);
 		}
 
-		// Ticket entries
-
-		ticketEntryLocalService.deleteTicketEntries(accountEntryId);
-
 		return accountEntry;
 	}
 
@@ -879,18 +873,6 @@ public class AccountEntryLocalServiceImpl
 		accountEntryPersistence.update(accountEntry);
 	}
 
-	public void reindexAccountEntry(long accountEntryId)
-		throws PortalException {
-
-		List<TicketEntry> ticketEntries =
-			ticketEntryPersistence.findByAccountEntryId(accountEntryId);
-
-		for (TicketEntry ticketEntry : ticketEntries) {
-			ticketEntryLocalService.reindexTicketEntry(
-				ticketEntry.getTicketEntryId());
-		}
-	}
-
 	public List<AccountEntry> search(
 		Long createUserId, int createDateGTDay, int createDateGTMonth,
 		int createDateGTYear, int createDateLTDay, int createDateLTMonth,
@@ -1040,27 +1022,6 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		accountEntryPersistence.update(accountEntry);
-
-		if (!oldCode.equals(code)) {
-			long ticketCount = ticketEntryPersistence.countByAccountEntryId(
-				accountEntryId);
-
-			if (ticketCount > 0) {
-				addRedirectAccountEntry(
-					user, oldName, oldCode, accountEntry.getAccountEntryId());
-			}
-		}
-
-		if (!oldCode.equals(code) || !oldName.equals(name) ||
-			(oldPartnerEntryId != partnerEntryId) || (oldTier != tier)) {
-
-			reindexAccountEntry(accountEntryId);
-		}
-
-		if (!oldInstructions.equals(instructions)) {
-			ticketFlagPersistence.removeByAEI_T(
-				accountEntryId, TicketFlagConstants.TYPE_READ_INSTRUCTIONS);
-		}
 
 		updateEWSADosseriaProjectKey(accountEntryId, ewsaDossieraProjectKey);
 
@@ -1618,24 +1579,6 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.getType(), accountEntry.getIndustry(),
 			accountEntry.getPartnerEntryId(), accountEntry.getMaxCustomers(),
 			accountEntry.getLanguageIds(), accountEntry.getSupportRegionIds());
-	}
-
-	protected void addRedirectAccountEntry(
-		User user, String name, String code, long redirectAccountEntryId) {
-
-		long accountEntryId = counterLocalService.increment();
-
-		AccountEntry accountEntry = accountEntryPersistence.create(
-			accountEntryId);
-
-		accountEntry.setUserId(user.getUserId());
-		accountEntry.setUserName(user.getFullName());
-		accountEntry.setCreateDate(new Date());
-		accountEntry.setName(name);
-		accountEntry.setCode(code);
-		accountEntry.setRedirectAccountEntryId(redirectAccountEntryId);
-
-		accountEntryPersistence.update(accountEntry);
 	}
 
 	protected String formatLanguageIds(String[] languageIds) {

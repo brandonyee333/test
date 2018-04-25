@@ -5,7 +5,6 @@
 		<suppress checks="StaticVariableName" files="docroot/WEB-INF/service/com/liferay/osb/util/OSBConstants\.java" />
 	</checkstyle>
 	<source-check>
-		<suppress checks="JavaAPISignatureCheck" files="docroot/WEB-INF/service/com/liferay/osb/model/TicketEntryDiscussion\.java" />
 		<suppress checks="JavaAPISignatureCheck" files="docroot/WEB-INF/src/com/liferay/osb/support/util/SupportUtil\.java" />
 		<suppress checks="JavaLongLinesCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/upgrade/v3_1_0/Upgrade_20140926155021193_SalesPartnershipTerritories_SalesPartnershipCountries\.java" />
 		<suppress checks="JavaLongLinesCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/upgrade/v3_4_7/Upgrade_20160419113858448_OfferingBundle\.java" />

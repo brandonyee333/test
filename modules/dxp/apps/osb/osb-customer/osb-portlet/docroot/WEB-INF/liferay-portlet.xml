@@ -33,7 +33,7 @@
 			</trigger>
 		</scheduler-entry>
 		<scheduler-entry>
-			<scheduler-event-listener-class>com.liferay.osb.admin.messaging.CleanAuditActionMessageListener</scheduler-event-listener-class>
+			<scheduler-event-listener-class>com.liferay.osb.admin.messaging.CheckStatusAccountEntriesMessageListener</scheduler-event-listener-class>
 			<trigger>
 				<simple>
 					<simple-trigger-value>1</simple-trigger-value>
@@ -69,78 +69,6 @@
 		<preferences-unique-per-layout>false</preferences-unique-per-layout>
 		<header-portlet-css>/admin/css/main.css</header-portlet-css>
 		<css-class-wrapper>osb-portlet-admin</css-class-wrapper>
-	</portlet>
-	<portlet>
-		<portlet-name>2</portlet-name>
-		<indexer-class>com.liferay.osb.support.util.TicketEntryIndexer</indexer-class>
-		<scheduler-entry>
-			<scheduler-event-listener-class>com.liferay.osb.support.messaging.CheckInactiveTicketEntriesMessageListener</scheduler-event-listener-class>
-			<trigger>
-				<simple>
-					<simple-trigger-value>30</simple-trigger-value>
-					<time-unit>minute</time-unit>
-				</simple>
-			</trigger>
-		</scheduler-entry>
-		<scheduler-entry>
-			<scheduler-event-listener-class>com.liferay.osb.support.messaging.CheckOnHoldTicketEntriesMessageListener</scheduler-event-listener-class>
-			<trigger>
-				<simple>
-					<simple-trigger-value>1</simple-trigger-value>
-					<time-unit>day</time-unit>
-				</simple>
-			</trigger>
-		</scheduler-entry>
-		<scheduler-entry>
-			<scheduler-event-listener-class>com.liferay.osb.support.messaging.CheckStatusAccountEntriesMessageListener</scheduler-event-listener-class>
-			<trigger>
-				<simple>
-					<simple-trigger-value>1</simple-trigger-value>
-					<time-unit>day</time-unit>
-				</simple>
-			</trigger>
-		</scheduler-entry>
-		<scheduler-entry>
-			<scheduler-event-listener-class>com.liferay.osb.support.messaging.CleanTicketAttachmentMessageListener</scheduler-event-listener-class>
-			<trigger>
-				<simple>
-					<simple-trigger-value>1</simple-trigger-value>
-					<time-unit>day</time-unit>
-				</simple>
-			</trigger>
-		</scheduler-entry>
-		<scheduler-entry>
-			<scheduler-event-listener-class>com.liferay.osb.support.messaging.CustomerFeedbackNotificationMessageListener</scheduler-event-listener-class>
-			<trigger>
-				<simple>
-					<simple-trigger-value>1</simple-trigger-value>
-					<time-unit>day</time-unit>
-				</simple>
-			</trigger>
-		</scheduler-entry>
-		<scheduler-entry>
-			<scheduler-event-listener-class>com.liferay.osb.support.messaging.LiferayPartnerFeedbackNotificationMessageListener</scheduler-event-listener-class>
-			<trigger>
-				<simple>
-					<simple-trigger-value>1</simple-trigger-value>
-					<time-unit>day</time-unit>
-				</simple>
-			</trigger>
-		</scheduler-entry>
-		<scheduler-entry>
-			<scheduler-event-listener-class>com.liferay.osb.support.messaging.TeamFeedbackNotificationMessageListener</scheduler-event-listener-class>
-			<trigger>
-				<cron>
-					<cron-trigger-value>0 0 12 ? * SUN</cron-trigger-value>
-				</cron>
-			</trigger>
-		</scheduler-entry>
-		<friendly-url-mapper-class>com.liferay.osb.support.SupportFriendlyURLMapper</friendly-url-mapper-class>
-		<header-portlet-css>/support/2/css/main.css</header-portlet-css>
-		<header-portlet-javascript>/common/javascript/dynamic_uploader.js</header-portlet-javascript>
-		<header-portlet-javascript>/common/javascript/querystring_util.js</header-portlet-javascript>
-		<header-portlet-javascript>/common/javascript/resumable.js</header-portlet-javascript>
-		<css-class-wrapper>osb-portlet-support</css-class-wrapper>
 	</portlet>
 	<portlet>
 		<portlet-name>3</portlet-name>

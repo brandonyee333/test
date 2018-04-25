@@ -14,7 +14,6 @@
 
 package com.liferay.osb.admin.servlet;
 
-import com.liferay.osb.model.TicketEntryConstants;
 import com.liferay.osb.service.permission.OSBCommonPermission;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBCustomerQAInfrastructureUtil;
@@ -32,7 +31,6 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
-import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.ListTypeConstants;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationConstants;
@@ -43,7 +41,6 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.auth.AuthTokenUtil;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
-import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -102,13 +99,6 @@ public class AdminServletContextListener
 	}
 
 	protected void addListTypes() throws Exception {
-		List<ListType> statusTypes = ListTypeServiceUtil.getListTypes(
-			TicketEntryConstants.LIST_TYPE_STATUS);
-
-		if (!statusTypes.isEmpty()) {
-			return;
-		}
-
 		DB db = DBManagerUtil.getDB();
 
 		String template = StringUtil.read(
@@ -217,10 +207,6 @@ public class AdminServletContextListener
 		}
 
 		// TODO need database for OSBConstants.*_USER_ID calls
-
-		// Audit action
-
-		AdminServletContextListenerAuditActionHelper.setup();
 
 		// Expando
 

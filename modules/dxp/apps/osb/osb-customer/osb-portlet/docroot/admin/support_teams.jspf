@@ -17,7 +17,7 @@
 <liferay-ui:error exception="<%= RequiredSupportTeamException.class %>" message="you-cannot-remove-a-support-team-that-has-child-teams-or-workers-assigned-to-it" />
 
 <liferay-ui:search-container
-	headerNames="name,utilization,accounts,languages"
+	headerNames="name,accounts,languages"
 	iteratorURL="<%= portletURL %>"
 	total="<%= SupportTeamLocalServiceUtil.getSupportTeamsCount() %>"
 >
@@ -169,15 +169,6 @@
 					/>
 				</c:otherwise>
 			</c:choose>
-		</liferay-ui:search-container-column-text>
-
-		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
-			name="utilization"
-		>
-			<%= MathUtil.format((supportTeam.getAssignedWork() / supportTeam.getMaxWork()) * 100, 1, 1) %>%
-
-			(<%= numberFormat.format(supportTeam.getAssignedWork()) %>/<%= numberFormat.format(supportTeam.getMaxWork()) %>)
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text
@@ -343,12 +334,6 @@
 		</portlet:renderURL>
 
 		<aui:a cssClass="btn btn-default" href="<%= editSupportTeamURL %>" label="add-support-team" />
-
-		<portlet:actionURL name="recalculateUtilization" var="recalculateURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-			<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-		</portlet:actionURL>
-
-		<aui:a cssClass="btn btn-default" href="<%= recalculateURL %>" label="recalculate-utilization" />
 	</div>
 
 	<br />

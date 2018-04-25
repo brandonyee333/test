@@ -30,9 +30,6 @@ public class UpgradeListType extends BaseUpgradeProcess {
 		insertListType(
 			23041, "3.0.1",
 			"com.liferay.osb.model.ProductEntry.socialOfficeAllVersions");
-		insertListType(
-			26024, "liferay-mobile-sdk",
-			"com.liferay.osb.model.TicketEntry.component");
 	}
 
 }

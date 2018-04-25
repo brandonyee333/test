@@ -14,34 +14,17 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.exception.NoSuchSupportTeamException;
 import com.liferay.osb.exception.NoSuchSupportWorkerException;
-import com.liferay.osb.exception.SupportWorkerMaxWorkException;
-import com.liferay.osb.model.SupportResponse;
-import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.osb.model.SupportTeam;
 import com.liferay.osb.model.SupportTeamConstants;
 import com.liferay.osb.model.SupportWorker;
 import com.liferay.osb.model.SupportWorkerConstants;
-import com.liferay.osb.model.TicketEntry;
-import com.liferay.osb.model.TicketEntryConstants;
-import com.liferay.osb.model.TicketWorker;
-import com.liferay.osb.model.impl.TicketEntryImpl;
 import com.liferay.osb.service.base.SupportWorkerLocalServiceBaseImpl;
-import com.liferay.osb.support.util.SupportUtil;
-import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Time;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -52,8 +35,7 @@ public class SupportWorkerLocalServiceImpl
 	extends SupportWorkerLocalServiceBaseImpl {
 
 	public void addSupportWorkers(
-			long[] userIds, long supportTeamId, double[] maxWork,
-			int[] escalationLevels, int[] roles, int[] notifications)
+			long[] userIds, long supportTeamId, int[] roles)
 		throws PortalException {
 
 		SupportTeam supportTeam = supportTeamPersistence.findByPrimaryKey(
@@ -61,10 +43,6 @@ public class SupportWorkerLocalServiceImpl
 
 		for (int i = 0; i < userIds.length; i++) {
 			long userId = userIds[i];
-
-			double curMaxWork = maxWork[i];
-
-			validate(curMaxWork);
 
 			SupportWorker supportWorker = supportWorkerPersistence.fetchByU_STI(
 				userId, supportTeamId);
@@ -86,25 +64,12 @@ public class SupportWorkerLocalServiceImpl
 				supportWorker = supportWorkerPersistence.create(
 					supportWorkerId);
 
-				double assignedWork = getAssignedWork(userId);
-
 				supportWorker.setUserId(userId);
 				supportWorker.setSupportTeamId(supportTeamId);
-				supportWorker.setEscalationLevel(
-					TicketEntryConstants.ESCALATION_LEVEL_1);
-				supportWorker.setAutoAssign(true);
-				supportWorker.setAssignedWork(assignedWork);
-				supportWorker.setMaxWork(curMaxWork);
 				supportWorker.setClockedIn(clockedIn);
-
-				supportTeam.setAssignedWork(
-					supportTeam.getAssignedWork() + assignedWork);
-				supportTeam.setMaxWork(supportTeam.getMaxWork() + curMaxWork);
 			}
 
-			supportWorker.setEscalationLevel(escalationLevels[i]);
 			supportWorker.setRole(roles[i]);
-			supportWorker.setNotifications(notifications[i]);
 
 			supportWorkerPersistence.update(supportWorker);
 
@@ -131,44 +96,6 @@ public class SupportWorkerLocalServiceImpl
 		}
 	}
 
-	public void decreaseAssignedWork(long userId, double work) {
-		try {
-			List<SupportWorker> supportWorkers =
-				supportWorkerPersistence.findByUserId(userId);
-
-			for (SupportWorker supportWorker : supportWorkers) {
-				supportWorker.setAssignedWork(
-					supportWorker.getAssignedWork() - work);
-
-				supportWorkerPersistence.update(supportWorker);
-
-				SupportTeam supportTeam =
-					supportTeamPersistence.findByPrimaryKey(
-						supportWorker.getSupportTeamId());
-
-				supportTeam.setAssignedWork(
-					supportTeam.getAssignedWork() - work);
-
-				supportTeamPersistence.update(supportTeam);
-			}
-		}
-		catch (NoSuchSupportTeamException nsste) {
-		}
-	}
-
-	public void decreaseTicketEntryAssignedWork(
-		long ticketEntryId, double work) {
-
-		List<TicketWorker> ticketWorkers =
-			ticketWorkerPersistence.findByTicketEntryId(ticketEntryId);
-
-		for (TicketWorker ticketWorker : ticketWorkers) {
-			if (ticketWorker.isPrimary()) {
-				decreaseAssignedWork(ticketWorker.getUserId(), work);
-			}
-		}
-	}
-
 	public void deleteSupportWorkers(long userId) throws PortalException {
 		List<SupportWorker> supportWorkers = getUserSupportWorkers(userId);
 
@@ -185,314 +112,18 @@ public class SupportWorkerLocalServiceImpl
 		SupportTeam supportTeam = supportTeamPersistence.findByPrimaryKey(
 			supportTeamId);
 
-		double supportTeamAssignedWork = supportTeam.getAssignedWork();
-		double supportTeamMaxWork = supportTeam.getMaxWork();
-
 		for (long userId : userIds) {
 			try {
 				SupportWorker supportWorker =
 					supportWorkerPersistence.findByU_STI(userId, supportTeamId);
 
-				supportTeamAssignedWork -= supportWorker.getAssignedWork();
-				supportTeamMaxWork -= supportWorker.getMaxWork();
-
 				supportWorkerPersistence.remove(supportWorker);
-
-				supportWorkerComponentPersistence.removeBySupportWorkerId(
-					supportWorker.getSupportWorkerId());
-
-				supportWorkerSeverityPersistence.removeBySupportWorkerId(
-					supportWorker.getSupportWorkerId());
 			}
 			catch (NoSuchSupportWorkerException nsswe) {
 			}
 		}
 
-		supportTeam.setAssignedWork(supportTeamAssignedWork);
-		supportTeam.setMaxWork(supportTeamMaxWork);
-
 		supportTeamPersistence.update(supportTeam);
-	}
-
-	public double getAssignedWork(long userId) {
-		double assignedWork = 0;
-
-		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-		params.put("primaryTicketWorker", new Object[] {userId, true});
-
-		for (int weight : TicketEntryConstants.WEIGHTS) {
-			double work = TicketEntryImpl.getWork(weight);
-
-			double ticketCount = ticketEntryLocalService.searchCount(
-				0, null, new int[0], null, 0, 0, 0, 0, 0, 0, null, null, null,
-				TicketEntryConstants.STATUSES_SUPPORT_WORKER_ASSIGNED,
-				new int[0], new int[] {weight}, new int[0], new long[0],
-				new long[0], new long[0], new long[0], new long[0], new int[0],
-				new int[0], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, params, true);
-
-			assignedWork += work * ticketCount;
-		}
-
-		return assignedWork;
-	}
-
-	public SupportWorker getAvailableSupportWorker(TicketEntry ticketEntry)
-		throws PortalException {
-
-		SupportResponse supportResponse = ticketEntry.getSupportResponse();
-
-		List<SupportWorker> supportWorkers = Collections.emptyList();
-
-		if (supportResponse.isPlatinumLevel() &&
-			(ticketEntry.getSeverity() ==
-				SupportResponseConstants.SEVERITY_CRITICAL)) {
-
-			supportWorkers = supportWorkerFinder.findByR_STT_SRI(
-				SupportWorkerConstants.ROLE_WATCHER,
-				SupportTeamConstants.TYPE_PLATINUM_CRITICAL,
-				ticketEntry.getSupportRegionId(), StringPool.NOT_EQUAL, true,
-				null);
-
-			if (supportWorkers != null) {
-				SupportWorker supportWorker = getLongestOpenSupportWorker(
-					supportWorkers, ticketEntry);
-
-				if (supportWorker != null) {
-					return supportWorker;
-				}
-			}
-		}
-
-		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-		params.put("accountTier", ticketEntry.getAccountTier());
-		params.put("component", ticketEntry.getComponent());
-		params.put("severity", ticketEntry.getSeverity());
-		params.put("supportTeamAccountEntry", ticketEntry.getAccountEntryId());
-		params.put("supportTeamType", SupportTeamConstants.TYPE_NORMAL);
-
-		SupportWorker supportWorker = getMostAvailableSupportWorker(
-			ticketEntry, params);
-
-		if (supportWorker != null) {
-			return supportWorker;
-		}
-
-		params.clear();
-
-		params.put("accountTier", ticketEntry.getAccountTier());
-		params.put("component", ticketEntry.getComponent());
-		params.put("severity", ticketEntry.getSeverity());
-		params.put("supportRegion", ticketEntry.getSupportRegionId());
-		params.put(
-			"supportTeamLanguage",
-			new String[] {
-				ticketEntry.getLanguageId(), ticketEntry.getLanguageId()
-			});
-		params.put("supportTeamType", SupportTeamConstants.TYPE_NORMAL);
-
-		return getMostAvailableSupportWorker(ticketEntry, params);
-	}
-
-	public SupportWorker getLongestOpenSupportWorker(
-			List<SupportWorker> supportWorkers, TicketEntry ticketEntry)
-		throws PortalException {
-
-		SupportWorker supportWorker = null;
-
-		long timeUntilClose = 0;
-
-		for (SupportWorker curSupportWorker : supportWorkers) {
-			if (!curSupportWorker.isActive()) {
-				continue;
-			}
-
-			if (ticketWorkerLocalService.hasTicketWorker(
-					curSupportWorker.getUserId(),
-					ticketEntry.getTicketEntryId())) {
-
-				continue;
-			}
-
-			if (!curSupportWorker.isAvailable()) {
-				continue;
-			}
-
-			Long curTimeUntilClose = curSupportWorker.getTimeUntilClose();
-
-			if ((curTimeUntilClose == null) ||
-				(curTimeUntilClose > (6 * Time.HOUR))) {
-
-				curTimeUntilClose = 6 * Time.HOUR;
-			}
-
-			if ((supportWorker == null) ||
-				(curTimeUntilClose > timeUntilClose)) {
-
-				supportWorker = curSupportWorker;
-
-				timeUntilClose = curTimeUntilClose;
-			}
-		}
-
-		return supportWorker;
-	}
-
-	public SupportWorker getMostAvailableSupportWorker(
-			TicketEntry ticketEntry, LinkedHashMap<String, Object> params)
-		throws PortalException {
-
-		double utilizationWeight = GetterUtil.getDouble(
-			SupportUtil.getPreferenceValue(
-				ticketEntry.getSupportRegionId() + "_assignmentRatio"));
-
-		SupportWorker supportWorker = null;
-		Double ratio = null;
-
-		TicketWorker primaryTicketWorker =
-			ticketWorkerLocalService.fetchPrimaryTicketWorker(
-				ticketEntry.getTicketEntryId());
-
-		List<SupportWorker> supportWorkers = supportWorkerFinder.findByU_E(
-			null, ticketEntry.getEscalationLevel(), params);
-
-		for (SupportWorker curSupportWorker : supportWorkers) {
-			if (!curSupportWorker.isActive()) {
-				continue;
-			}
-
-			if ((primaryTicketWorker != null) &&
-				(curSupportWorker.getUserId() ==
-					primaryTicketWorker.getUserId())) {
-
-				continue;
-			}
-
-			if (!curSupportWorker.isAutoAssign()) {
-				continue;
-			}
-
-			if (curSupportWorker.getRole() ==
-					SupportWorkerConstants.ROLE_WATCHER) {
-
-				continue;
-			}
-
-			if (!curSupportWorker.isClockedIn()) {
-				continue;
-			}
-
-			double assignedWork = curSupportWorker.getAssignedWork();
-			double maxWork = curSupportWorker.getMaxWork();
-
-			double utilization = assignedWork / maxWork;
-
-			if ((utilizationWeight == 1) && (utilization == 0)) {
-				supportWorker = curSupportWorker;
-
-				break;
-			}
-
-			Long timeUntilClose = curSupportWorker.getTimeUntilClose();
-
-			if ((timeUntilClose == null) || (timeUntilClose > Time.DAY)) {
-				timeUntilClose = Time.DAY;
-			}
-
-			double timeRatio = (double)timeUntilClose / Time.DAY;
-
-			double curRatio =
-				(timeRatio * (1 - utilizationWeight)) +
-					((1 - utilization) * utilizationWeight);
-
-			if ((ratio == null) || (curRatio > ratio)) {
-				supportWorker = curSupportWorker;
-				ratio = curRatio;
-			}
-		}
-
-		return supportWorker;
-	}
-
-	public SupportWorker getNextOpenSupportWorker(
-			List<SupportWorker> supportWorkers, TicketEntry ticketEntry)
-		throws PortalException {
-
-		SupportWorker supportWorker = null;
-
-		long timeUntilOpen = 0;
-		Long timeUntilClose = 0L;
-
-		TicketWorker currentTicketWorker =
-			ticketWorkerLocalService.fetchLatestTicketWorker(
-				ticketEntry.getTicketEntryId());
-
-		for (SupportWorker curSupportWorker : supportWorkers) {
-			if (!curSupportWorker.isActive()) {
-				continue;
-			}
-
-			if (!curSupportWorker.isClockedIn()) {
-				continue;
-			}
-
-			if ((currentTicketWorker != null) &&
-				(currentTicketWorker.getUserId() ==
-					curSupportWorker.getUserId())) {
-
-				continue;
-			}
-
-			Long curTimeUntilOpen = curSupportWorker.getTimeUntilOpen();
-
-			if (curTimeUntilOpen == null) {
-				continue;
-			}
-
-			Long curTimeUntilClose = curSupportWorker.getTimeUntilClose();
-
-			if ((curTimeUntilClose == null) ||
-				(curTimeUntilClose > (6 * Time.HOUR))) {
-
-				curTimeUntilClose = 6 * Time.HOUR;
-			}
-
-			if (ticketWorkerLocalService.hasTicketWorker(
-					curSupportWorker.getUserId(),
-					ticketEntry.getTicketEntryId())) {
-
-				if (curTimeUntilOpen == 0) {
-					curTimeUntilClose += 30 * Time.MINUTE;
-				}
-				else {
-					curTimeUntilOpen -= 30 * Time.MINUTE;
-
-					if (curTimeUntilOpen < 0) {
-						curTimeUntilOpen = 0L;
-					}
-				}
-			}
-
-			if (supportWorker != null) {
-				if (curTimeUntilOpen > timeUntilOpen) {
-					continue;
-				}
-
-				if ((curTimeUntilOpen == timeUntilOpen) &&
-					(timeUntilClose >= curTimeUntilClose)) {
-
-					continue;
-				}
-			}
-
-			supportWorker = curSupportWorker;
-
-			timeUntilOpen = curTimeUntilOpen;
-			timeUntilClose = curTimeUntilClose;
-		}
-
-		return supportWorker;
 	}
 
 	public SupportWorker getSupportWorker(long userId, long supportTeamId)
@@ -513,7 +144,7 @@ public class SupportWorkerLocalServiceImpl
 		throws PortalException {
 
 		return supportWorkerFinder.findByR_STT_SRI(
-			-1, null, supportRegionId, StringPool.NOT_EQUAL, false, null);
+			-1, null, supportRegionId, StringPool.NOT_EQUAL, null);
 	}
 
 	public int getSupportWorkersCountBySupportLaborId(long supportLaborId)
@@ -537,8 +168,9 @@ public class SupportWorkerLocalServiceImpl
 		params.put("supportTeamType", supportTeamType);
 		params.put("userId", userId);
 
-		List<SupportWorker> userSupportWorkers = supportWorkerFinder.findByU_E(
-			null, 0, params);
+		List<SupportWorker> userSupportWorkers =
+			supportWorkerFinder.findByR_STT_SRI(
+				0, supportTeamType, 0, null, params);
 
 		for (SupportWorker userSupportWorker : userSupportWorkers) {
 			params = new LinkedHashMap<>();
@@ -552,7 +184,7 @@ public class SupportWorkerLocalServiceImpl
 			List<SupportWorker> supportWorkerManagers =
 				supportWorkerFinder.findByR_STT_SRI(
 					SupportWorkerConstants.ROLE_MANAGER, null, 0,
-					StringPool.EQUAL, false, params);
+					StringPool.EQUAL, params);
 
 			supportWorkers.addAll(supportWorkerManagers);
 		}
@@ -587,7 +219,7 @@ public class SupportWorkerLocalServiceImpl
 
 		List<SupportWorker> supportWorkers =
 			supportWorkerFinder.findByR_STT_SRI(
-				role, supportTeamType, 0, StringPool.EQUAL, false, params);
+				role, supportTeamType, 0, StringPool.EQUAL, params);
 
 		if (!supportWorkers.isEmpty()) {
 			return true;
@@ -621,44 +253,6 @@ public class SupportWorkerLocalServiceImpl
 		return false;
 	}
 
-	public void increaseAssignedWork(long userId, double work) {
-		try {
-			List<SupportWorker> supportWorkers =
-				supportWorkerPersistence.findByUserId(userId);
-
-			for (SupportWorker supportWorker : supportWorkers) {
-				supportWorker.setAssignedWork(
-					supportWorker.getAssignedWork() + work);
-
-				supportWorkerPersistence.update(supportWorker);
-
-				SupportTeam supportTeam =
-					supportTeamPersistence.findByPrimaryKey(
-						supportWorker.getSupportTeamId());
-
-				supportTeam.setAssignedWork(
-					supportTeam.getAssignedWork() + work);
-
-				supportTeamPersistence.update(supportTeam);
-			}
-		}
-		catch (NoSuchSupportTeamException nsste) {
-		}
-	}
-
-	public void increaseTicketEntryAssignedWork(
-		long ticketEntryId, double work) {
-
-		List<TicketWorker> ticketWorkers =
-			ticketWorkerPersistence.findByTicketEntryId(ticketEntryId);
-
-		for (TicketWorker ticketWorker : ticketWorkers) {
-			if (ticketWorker.isPrimary()) {
-				increaseAssignedWork(ticketWorker.getUserId(), work);
-			}
-		}
-	}
-
 	public boolean isClockedIn(long userId) {
 		List<SupportWorker> supportWorkers =
 			supportWorkerPersistence.findByUserId(userId);
@@ -685,63 +279,6 @@ public class SupportWorkerLocalServiceImpl
 		}
 
 		return false;
-	}
-
-	public void recalculateUtilization() {
-		try {
-			StringBundler sb = new StringBundler(
-				(TicketEntryConstants.WEIGHTS.length * 5) + 2);
-
-			sb.append("UPDATE OSB_SupportWorker SET ");
-			sb.append("OSB_SupportWorker.assignedWork = (");
-
-			for (int i = 0; i < TicketEntryConstants.WEIGHTS.length; i++) {
-				int weight = TicketEntryConstants.WEIGHTS[i];
-
-				String sql = CustomSQLUtil.get(getClass(), _COUNT_TICKET_ENTRY);
-
-				sql = StringUtil.replace(
-					sql, new String[] {"[$STATUS_INACTIVE$]", "[$WEIGHT$]"},
-					new String[] {
-						String.valueOf(TicketEntryConstants.STATUS_INACTIVE),
-						String.valueOf(weight)
-					});
-
-				sb.append(TicketEntryImpl.getWork(weight));
-				sb.append(" * (");
-				sb.append(sql);
-				sb.append(")");
-
-				if (i < (TicketEntryConstants.WEIGHTS.length - 1)) {
-					sb.append(" + ");
-				}
-			}
-
-			sb.append(")");
-
-			runSQL(sb.toString());
-
-			runSQL(
-				CustomSQLUtil.get(
-					getClass(), _UPDATE_SUPPORT_TEAM_ASSIGNED_WORK));
-			runSQL(
-				CustomSQLUtil.get(getClass(), _UPDATE_SUPPORT_TEAM_MAX_WORK));
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-		finally {
-			supportTeamPersistence.clearCache();
-			supportWorkerPersistence.clearCache();
-		}
-	}
-
-	public List<SupportWorker> search(
-		Boolean overUtilization, int escalationLevel,
-		LinkedHashMap<String, Object> params) {
-
-		return supportWorkerFinder.findByU_E(
-			overUtilization, escalationLevel, params);
 	}
 
 	public List<SupportWorker> search(
@@ -782,12 +319,8 @@ public class SupportWorkerLocalServiceImpl
 	}
 
 	public SupportWorker updateSupportWorker(
-			long supportWorkerId, long supportTeamId, boolean autoAssign,
-			double maxWork, int escalationlevel, int escalationLevel2Role,
-			int notifications)
+			long supportWorkerId, long supportTeamId)
 		throws PortalException {
-
-		validate(maxWork);
 
 		SupportTeam supportTeam = supportTeamPersistence.findByPrimaryKey(
 			supportTeamId);
@@ -795,69 +328,11 @@ public class SupportWorkerLocalServiceImpl
 		SupportWorker supportWorker = supportWorkerPersistence.findByPrimaryKey(
 			supportWorkerId);
 
-		if (supportTeamId != supportWorker.getSupportTeamId()) {
-			SupportTeam oldSupportTeam = supportWorker.getSupportTeam();
-
-			oldSupportTeam.setAssignedWork(
-				oldSupportTeam.getAssignedWork() -
-					supportWorker.getAssignedWork());
-			oldSupportTeam.setMaxWork(
-				oldSupportTeam.getMaxWork() - supportWorker.getMaxWork());
-
-			supportTeam.setAssignedWork(
-				supportTeam.getAssignedWork() +
-					supportWorker.getAssignedWork());
-			supportTeam.setMaxWork(supportTeam.getMaxWork() + maxWork);
-
-			supportTeamPersistence.update(oldSupportTeam);
-		}
-		else {
-			supportTeam.setMaxWork(
-				supportTeam.getMaxWork() + maxWork -
-					supportWorker.getMaxWork());
-		}
-
 		supportTeamPersistence.update(supportTeam);
 
 		supportWorker.setSupportTeamId(supportTeamId);
-		supportWorker.setAutoAssign(autoAssign);
-		supportWorker.setMaxWork(maxWork);
-		supportWorker.setEscalationLevel(escalationlevel);
-
-		if ((escalationLevel2Role <
-				SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_OTHER) ||
-			(escalationLevel2Role >
-				SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_PRIMARY)) {
-
-			escalationLevel2Role =
-				SupportWorkerConstants.ESCALATION_LEVEL_2_ROLE_PRIMARY;
-		}
-
-		supportWorker.setEscalationLevel2Role(escalationLevel2Role);
-
-		supportWorker.setNotifications(notifications);
 
 		return supportWorkerPersistence.update(supportWorker);
 	}
-
-	protected void validate(double maxWork) throws PortalException {
-		if (maxWork <= 0) {
-			throw new SupportWorkerMaxWorkException();
-		}
-	}
-
-	private static final String _COUNT_TICKET_ENTRY =
-		SupportWorkerLocalServiceImpl.class.getName() + ".countTicketEntry";
-
-	private static final String _UPDATE_SUPPORT_TEAM_ASSIGNED_WORK =
-		SupportWorkerLocalServiceImpl.class.getName() +
-			".updateSupportTeamAssignedWork";
-
-	private static final String _UPDATE_SUPPORT_TEAM_MAX_WORK =
-		SupportWorkerLocalServiceImpl.class.getName() +
-			".updateSupportTeamMaxWork";
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		SupportWorkerLocalServiceImpl.class);
 
 }
