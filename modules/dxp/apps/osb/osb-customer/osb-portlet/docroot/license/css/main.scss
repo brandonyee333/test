@@ -108,6 +108,16 @@
 		margin: 15px;
 	}
 
+	.table-cell {
+		a {
+			color: #000;
+		}
+
+		&.first {
+			vertical-align: middle;
+		}
+	}
+
 	.taglib-search-iterator {
 		background: none;
 		border-width: 0;
@@ -129,6 +139,11 @@
 		.greyout {
 			color: #C7C8C8;
 		}
+	}
+
+	.v-active, .v-expired, .v-inactive {
+		color: #FFF;
+		text-align: center;
 	}
 
 	.v-active {
