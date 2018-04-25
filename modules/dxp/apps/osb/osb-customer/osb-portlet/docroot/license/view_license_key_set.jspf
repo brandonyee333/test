@@ -39,33 +39,32 @@ while (!displayLicenseKeys.isEmpty()) {
 		<c:otherwise>
 			<div class="<%= cssClass %>" id="<portlet:namespace /><%= licenseKey.getOfferingEntryId() %>-<%= licenseKey.getClusterId() %>">
 				<c:if test="<%= OSBLicenseKeyPermission.contains(permissionChecker, licenseKey.getLicenseKeyId(), OSBActionKeys.UPDATE_ADMIN) %>">
-					<div class="col-md-4">
+					<aui:col md="4">
 						<span class="bold uppercase"><liferay-ui:message key="created-by" />:</span>
 
 						<%= HtmlUtil.escape(PortalUtil.getUserName(licenseKey.getUserId(), licenseKey.getUserName())) %>
-					</div>
+					</aui:col>
 
-					<div class="col-md-8">
+					<aui:col md="8">
 						<span class="bold uppercase"><liferay-ui:message key="last-modified" />:</span>
 
 						<%= HtmlUtil.escape(PortalUtil.getUserName(licenseKey.getModifiedUserId(), licenseKey.getModifiedUserName())) %> <liferay-ui:message key="on" /> <%= longDateFormatDateTime.format(licenseKey.getModifiedDate()) %>
-					</div>
+					</aui:col>
 				</c:if>
 
-				<div class="col-md-4">
-					<span class="bold uppercase"><liferay-ui:message key="owner" />:
-					</span>
+				<aui:col md="4">
+					<span class="bold uppercase"><liferay-ui:message key="owner" />:</span>
 
 					<%= HtmlUtil.escape(licenseKey.getOwner()) %>
-				</div>
+				</aui:col>
 
-				<div class="col-md-8">
+				<aui:col md="8">
 					<span class="bold uppercase"><liferay-ui:message key="description" />:</span>
 
 					<%= HtmlUtil.escape(licenseKey.getDescription()) %>
-				</div>
+				</aui:col>
 
-				<div class="col-md-4">
+				<aui:col md="4">
 					<span class="bold uppercase"><liferay-ui:message key="product" />:</span>
 
 					<%= productEntryName %>
@@ -82,9 +81,9 @@ while (!displayLicenseKeys.isEmpty()) {
 							<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
 						</c:otherwise>
 					</c:choose>
-				</div>
+				</aui:col>
 
-				<div class="col-md-4">
+				<aui:col md="4">
 					<span class="bold uppercase"><liferay-ui:message key="type" />:</span>
 
 					<%= LanguageUtil.get(request, licenseEntryType) %>
@@ -108,9 +107,9 @@ while (!displayLicenseKeys.isEmpty()) {
 							<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
 						</c:otherwise>
 					</c:choose>
-				</div>
+				</aui:col>
 
-				<div class="col-md-4">
+				<aui:col md="4">
 					<span class="bold uppercase"><liferay-ui:message key="version" />:</span>
 
 					<%= licenseKey.getProductVersionLabel() %>
@@ -142,7 +141,7 @@ while (!displayLicenseKeys.isEmpty()) {
 							/>
 						</c:otherwise>
 					</c:choose>
-				</div>
+				</aui:col>
 
 				<br />
 

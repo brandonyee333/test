@@ -60,21 +60,19 @@ String productEntryName = licenseKey.getProductEntryName();
 		model="<%= LicenseKeySet.class %>"
 	/>
 
-	<div class="col-md-4">
-		<span class="bold uppercase">
-			<liferay-ui:message key="owner" />:
-		</span>
+	<aui:col md="4">
+		<span class="bold uppercase"><liferay-ui:message key="owner" />:</span>
 
 		<%= HtmlUtil.escape(licenseKey.getOwner()) %>
-	</div>
+	</aui:col>
 
-	<div class="col-md-8">
+	<aui:col md="8">
 		<span class="bold uppercase"><liferay-ui:message key="description" />:</span>
 
 		<%= HtmlUtil.escape(licenseKey.getDescription()) %>
-	</div>
+	</aui:col>
 
-	<div class="col-md-4">
+	<aui:col md="4">
 		<span class="bold uppercase"><liferay-ui:message key="product" />:</span>
 
 		<%= productEntryName %>
@@ -91,9 +89,9 @@ String productEntryName = licenseKey.getProductEntryName();
 				<%= longDateFormatDate.format(licenseKey.getStartDate()) %>
 			</c:otherwise>
 		</c:choose>
-	</div>
+	</aui:col>
 
-	<div class="col-md-4">
+	<aui:col md="4">
 		<span class="bold uppercase"><liferay-ui:message key="type" />:</span>
 
 		<%= LanguageUtil.get(request, licenseEntryType) %>
@@ -117,9 +115,9 @@ String productEntryName = licenseKey.getProductEntryName();
 				<%= longDateFormatDate.format(licenseKey.getExpirationDate()) %>
 			</c:otherwise>
 		</c:choose>
-	</div>
+	</aui:col>
 
-	<div class="col-md-4">
+	<aui:col md="4">
 		<span class="bold uppercase"><liferay-ui:message key="version" />:</span>
 
 		<%= licenseKey.getProductVersionLabel() %>
@@ -151,7 +149,7 @@ String productEntryName = licenseKey.getProductEntryName();
 				/>
 			</c:otherwise>
 		</c:choose>
-	</div>
+	</aui:col>
 
 	<br />
 
