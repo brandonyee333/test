@@ -50,7 +50,7 @@ public interface RemoteCorpProjectMessageLocalService extends BaseLocalService,
 	public CorpProjectMessage addCorpProjectMessage(long userId,
 		long corpProjectId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA) throws PortalException;
+		boolean displayLCS) throws PortalException;
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,

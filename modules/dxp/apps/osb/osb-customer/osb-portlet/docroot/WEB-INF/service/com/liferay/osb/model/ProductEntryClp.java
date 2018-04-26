@@ -439,25 +439,6 @@ public class ProductEntryClp extends BaseModelImpl<ProductEntry>
 	}
 
 	@Override
-	public java.lang.String getLESADisplayName() {
-		try {
-			String methodName = "getLESADisplayName";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public java.util.List<LicenseEntry> getLicenseEntries() {
 		try {
 			String methodName = "getLicenseEntries";

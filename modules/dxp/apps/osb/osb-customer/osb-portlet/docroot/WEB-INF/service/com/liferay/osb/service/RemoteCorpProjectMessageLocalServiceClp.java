@@ -33,7 +33,7 @@ public class RemoteCorpProjectMessageLocalServiceClp
 
 		_methodParameterTypes0 = new String[] {
 				"long", "long", "int", "int", "java.lang.String",
-				"java.lang.String", "boolean", "boolean", "boolean"
+				"java.lang.String", "boolean", "boolean"
 			};
 
 		_methodName2 = "getOSGiServiceIdentifier";
@@ -49,7 +49,7 @@ public class RemoteCorpProjectMessageLocalServiceClp
 	public com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
 		long userId, long corpProjectId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA)
+		boolean displayLCS)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -71,9 +71,7 @@ public class RemoteCorpProjectMessageLocalServiceClp
 						
 					displayCP,
 						
-					displayLCS,
-						
-					displayLESA
+					displayLCS
 					});
 		}
 		catch (Throwable t) {

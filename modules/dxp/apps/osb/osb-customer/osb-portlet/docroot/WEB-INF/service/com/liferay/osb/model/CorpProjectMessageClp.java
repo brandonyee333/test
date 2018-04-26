@@ -94,7 +94,6 @@ public class CorpProjectMessageClp extends BaseModelImpl<CorpProjectMessage>
 		attributes.put("content", getContent());
 		attributes.put("displayCP", getDisplayCP());
 		attributes.put("displayLCS", getDisplayLCS());
-		attributes.put("displayLESA", getDisplayLESA());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -180,12 +179,6 @@ public class CorpProjectMessageClp extends BaseModelImpl<CorpProjectMessage>
 
 		if (displayLCS != null) {
 			setDisplayLCS(displayLCS);
-		}
-
-		Boolean displayLESA = (Boolean)attributes.get("displayLESA");
-
-		if (displayLESA != null) {
-			setDisplayLESA(displayLESA);
 		}
 
 		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
@@ -520,34 +513,6 @@ public class CorpProjectMessageClp extends BaseModelImpl<CorpProjectMessage>
 	}
 
 	@Override
-	public boolean getDisplayLESA() {
-		return _displayLESA;
-	}
-
-	@Override
-	public boolean isDisplayLESA() {
-		return _displayLESA;
-	}
-
-	@Override
-	public void setDisplayLESA(boolean displayLESA) {
-		_displayLESA = displayLESA;
-
-		if (_corpProjectMessageRemoteModel != null) {
-			try {
-				Class<?> clazz = _corpProjectMessageRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setDisplayLESA", boolean.class);
-
-				method.invoke(_corpProjectMessageRemoteModel, displayLESA);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
 	public java.lang.String getSeverityLevelLabel() {
 		try {
 			String methodName = "getSeverityLevelLabel";
@@ -669,7 +634,6 @@ public class CorpProjectMessageClp extends BaseModelImpl<CorpProjectMessage>
 		clone.setContent(getContent());
 		clone.setDisplayCP(getDisplayCP());
 		clone.setDisplayLCS(getDisplayLCS());
-		clone.setDisplayLESA(getDisplayLESA());
 
 		return clone;
 	}
@@ -732,7 +696,7 @@ public class CorpProjectMessageClp extends BaseModelImpl<CorpProjectMessage>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -760,8 +724,6 @@ public class CorpProjectMessageClp extends BaseModelImpl<CorpProjectMessage>
 		sb.append(getDisplayCP());
 		sb.append(", displayLCS=");
 		sb.append(getDisplayLCS());
-		sb.append(", displayLESA=");
-		sb.append(getDisplayLESA());
 		sb.append("}");
 
 		return sb.toString();
@@ -769,7 +731,7 @@ public class CorpProjectMessageClp extends BaseModelImpl<CorpProjectMessage>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.CorpProjectMessage");
@@ -827,10 +789,6 @@ public class CorpProjectMessageClp extends BaseModelImpl<CorpProjectMessage>
 			"<column><column-name>displayLCS</column-name><column-value><![CDATA[");
 		sb.append(getDisplayLCS());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>displayLESA</column-name><column-value><![CDATA[");
-		sb.append(getDisplayLESA());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -850,7 +808,6 @@ public class CorpProjectMessageClp extends BaseModelImpl<CorpProjectMessage>
 	private String _content;
 	private boolean _displayCP;
 	private boolean _displayLCS;
-	private boolean _displayLESA;
 	private BaseModel<?> _corpProjectMessageRemoteModel;
 	private Class<?> _clpSerializerClass = ClpSerializer.class;
 	private boolean _entityCacheEnabled;

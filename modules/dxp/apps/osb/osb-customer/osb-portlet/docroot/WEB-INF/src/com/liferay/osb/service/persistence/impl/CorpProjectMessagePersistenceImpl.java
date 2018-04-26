@@ -2319,7 +2319,6 @@ public class CorpProjectMessagePersistenceImpl extends BasePersistenceImpl<CorpP
 		corpProjectMessageImpl.setContent(corpProjectMessage.getContent());
 		corpProjectMessageImpl.setDisplayCP(corpProjectMessage.isDisplayCP());
 		corpProjectMessageImpl.setDisplayLCS(corpProjectMessage.isDisplayLCS());
-		corpProjectMessageImpl.setDisplayLESA(corpProjectMessage.isDisplayLESA());
 
 		return corpProjectMessageImpl;
 	}

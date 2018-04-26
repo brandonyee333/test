@@ -66,7 +66,7 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{uuid=");
 		sb.append(uuid);
@@ -94,8 +94,6 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 		sb.append(displayCP);
 		sb.append(", displayLCS=");
 		sb.append(displayLCS);
-		sb.append(", displayLESA=");
-		sb.append(displayLESA);
 		sb.append("}");
 
 		return sb.toString();
@@ -156,7 +154,6 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 
 		corpProjectMessageImpl.setDisplayCP(displayCP);
 		corpProjectMessageImpl.setDisplayLCS(displayLCS);
-		corpProjectMessageImpl.setDisplayLESA(displayLESA);
 
 		corpProjectMessageImpl.resetOriginalValues();
 
@@ -185,8 +182,6 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 		displayCP = objectInput.readBoolean();
 
 		displayLCS = objectInput.readBoolean();
-
-		displayLESA = objectInput.readBoolean();
 	}
 
 	@Override
@@ -236,8 +231,6 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 		objectOutput.writeBoolean(displayCP);
 
 		objectOutput.writeBoolean(displayLCS);
-
-		objectOutput.writeBoolean(displayLESA);
 	}
 
 	public String uuid;
@@ -253,5 +246,4 @@ public class CorpProjectMessageCacheModel implements CacheModel<CorpProjectMessa
 	public String content;
 	public boolean displayCP;
 	public boolean displayLCS;
-	public boolean displayLESA;
 }

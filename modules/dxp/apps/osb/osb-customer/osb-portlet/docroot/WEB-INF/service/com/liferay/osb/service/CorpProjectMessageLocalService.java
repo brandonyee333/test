@@ -76,7 +76,7 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	public CorpProjectMessage addCorpProjectMessage(long userId,
 		long corpProjectId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA, ServiceContext serviceContext)
+		boolean displayLCS, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -144,7 +144,7 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	public CorpProjectMessage updateCorpProjectMessage(long userId,
 		long corpProjectMessageId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA, ServiceContext serviceContext)
+		boolean displayLCS, ServiceContext serviceContext)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

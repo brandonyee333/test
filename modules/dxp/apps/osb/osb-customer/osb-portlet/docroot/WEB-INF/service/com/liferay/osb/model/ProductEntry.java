@@ -60,8 +60,6 @@ public interface ProductEntry extends ProductEntryModel, PersistedModel {
 
 	public java.lang.String getEnvironmentLabel();
 
-	public java.lang.String getLESADisplayName();
-
 	@com.liferay.portal.kernel.json.JSON()
 	public java.util.List<LicenseEntry> getLicenseEntries();
 

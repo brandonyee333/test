@@ -82,8 +82,7 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 			{ "title", Types.VARCHAR },
 			{ "content", Types.VARCHAR },
 			{ "displayCP", Types.BOOLEAN },
-			{ "displayLCS", Types.BOOLEAN },
-			{ "displayLESA", Types.BOOLEAN }
+			{ "displayLCS", Types.BOOLEAN }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -101,10 +100,9 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 		TABLE_COLUMNS_MAP.put("content", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("displayCP", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("displayLCS", Types.BOOLEAN);
-		TABLE_COLUMNS_MAP.put("displayLESA", Types.BOOLEAN);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_CorpProjectMessage (uuid_ VARCHAR(75) null,corpProjectMessageId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,corpProjectId LONG,type_ INTEGER,severityLevel INTEGER,title VARCHAR(75) null,content VARCHAR(75) null,displayCP BOOLEAN,displayLCS BOOLEAN,displayLESA BOOLEAN)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_CorpProjectMessage (uuid_ VARCHAR(75) null,corpProjectMessageId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,corpProjectId LONG,type_ INTEGER,severityLevel INTEGER,title VARCHAR(75) null,content VARCHAR(75) null,displayCP BOOLEAN,displayLCS BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_CorpProjectMessage";
 	public static final String ORDER_BY_JPQL = " ORDER BY corpProjectMessage.corpProjectMessageId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_CorpProjectMessage.corpProjectMessageId ASC";
@@ -151,7 +149,6 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 		model.setContent(soapModel.getContent());
 		model.setDisplayCP(soapModel.getDisplayCP());
 		model.setDisplayLCS(soapModel.getDisplayLCS());
-		model.setDisplayLESA(soapModel.getDisplayLESA());
 
 		return model;
 	}
@@ -230,7 +227,6 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 		attributes.put("content", getContent());
 		attributes.put("displayCP", getDisplayCP());
 		attributes.put("displayLCS", getDisplayLCS());
-		attributes.put("displayLESA", getDisplayLESA());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -316,12 +312,6 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 
 		if (displayLCS != null) {
 			setDisplayLCS(displayLCS);
-		}
-
-		Boolean displayLESA = (Boolean)attributes.get("displayLESA");
-
-		if (displayLESA != null) {
-			setDisplayLESA(displayLESA);
 		}
 	}
 
@@ -554,23 +544,6 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 		_displayLCS = displayLCS;
 	}
 
-	@JSON
-	@Override
-	public boolean getDisplayLESA() {
-		return _displayLESA;
-	}
-
-	@JSON
-	@Override
-	public boolean isDisplayLESA() {
-		return _displayLESA;
-	}
-
-	@Override
-	public void setDisplayLESA(boolean displayLESA) {
-		_displayLESA = displayLESA;
-	}
-
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -615,7 +588,6 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 		corpProjectMessageImpl.setContent(getContent());
 		corpProjectMessageImpl.setDisplayCP(getDisplayCP());
 		corpProjectMessageImpl.setDisplayLCS(getDisplayLCS());
-		corpProjectMessageImpl.setDisplayLESA(getDisplayLESA());
 
 		corpProjectMessageImpl.resetOriginalValues();
 
@@ -761,14 +733,12 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 
 		corpProjectMessageCacheModel.displayLCS = getDisplayLCS();
 
-		corpProjectMessageCacheModel.displayLESA = getDisplayLESA();
-
 		return corpProjectMessageCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(29);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("{uuid=");
 		sb.append(getUuid());
@@ -796,8 +766,6 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 		sb.append(getDisplayCP());
 		sb.append(", displayLCS=");
 		sb.append(getDisplayLCS());
-		sb.append(", displayLESA=");
-		sb.append(getDisplayLESA());
 		sb.append("}");
 
 		return sb.toString();
@@ -805,7 +773,7 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(46);
+		StringBundler sb = new StringBundler(43);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.CorpProjectMessage");
@@ -863,10 +831,6 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 			"<column><column-name>displayLCS</column-name><column-value><![CDATA[");
 		sb.append(getDisplayLCS());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>displayLESA</column-name><column-value><![CDATA[");
-		sb.append(getDisplayLESA());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -896,7 +860,6 @@ public class CorpProjectMessageModelImpl extends BaseModelImpl<CorpProjectMessag
 	private String _content;
 	private boolean _displayCP;
 	private boolean _displayLCS;
-	private boolean _displayLESA;
 	private long _columnBitmask;
 	private CorpProjectMessage _escapedModel;
 }

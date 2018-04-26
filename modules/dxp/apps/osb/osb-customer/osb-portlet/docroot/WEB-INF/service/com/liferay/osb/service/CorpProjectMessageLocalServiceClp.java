@@ -39,7 +39,7 @@ public class CorpProjectMessageLocalServiceClp
 
 		_methodParameterTypes1 = new String[] {
 				"long", "long", "int", "int", "java.lang.String",
-				"java.lang.String", "boolean", "boolean", "boolean",
+				"java.lang.String", "boolean", "boolean",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
@@ -83,7 +83,7 @@ public class CorpProjectMessageLocalServiceClp
 
 		_methodParameterTypes10 = new String[] {
 				"long", "long", "int", "int", "java.lang.String",
-				"java.lang.String", "boolean", "boolean", "boolean",
+				"java.lang.String", "boolean", "boolean",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
@@ -193,7 +193,7 @@ public class CorpProjectMessageLocalServiceClp
 	public com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
 		long userId, long corpProjectId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA,
+		boolean displayLCS,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
@@ -217,8 +217,6 @@ public class CorpProjectMessageLocalServiceClp
 					displayCP,
 						
 					displayLCS,
-						
-					displayLESA,
 						
 					ClpSerializer.translateInput(serviceContext)
 					});
@@ -470,7 +468,7 @@ public class CorpProjectMessageLocalServiceClp
 	public com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
 		long userId, long corpProjectMessageId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA,
+		boolean displayLCS,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
@@ -494,8 +492,6 @@ public class CorpProjectMessageLocalServiceClp
 					displayCP,
 						
 					displayLCS,
-						
-					displayLESA,
 						
 					ClpSerializer.translateInput(serviceContext)
 					});

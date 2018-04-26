@@ -56,13 +56,12 @@ public class CorpProjectMessageLocalServiceUtil {
 	public static com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
 		long userId, long corpProjectId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA,
+		boolean displayLCS,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addCorpProjectMessage(userId, corpProjectId, type,
-			severityLevel, title, content, displayCP, displayLCS, displayLESA,
-			serviceContext);
+			severityLevel, title, content, displayCP, displayLCS, serviceContext);
 	}
 
 	/**
@@ -144,13 +143,13 @@ public class CorpProjectMessageLocalServiceUtil {
 	public static com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
 		long userId, long corpProjectMessageId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA,
+		boolean displayLCS,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .updateCorpProjectMessage(userId, corpProjectMessageId,
 			type, severityLevel, title, content, displayCP, displayLCS,
-			displayLESA, serviceContext);
+			serviceContext);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

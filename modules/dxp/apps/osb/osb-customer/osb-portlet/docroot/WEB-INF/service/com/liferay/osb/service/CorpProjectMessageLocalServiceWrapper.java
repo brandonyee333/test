@@ -50,12 +50,12 @@ public class CorpProjectMessageLocalServiceWrapper
 	public com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
 		long userId, long corpProjectId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA,
+		boolean displayLCS,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _corpProjectMessageLocalService.addCorpProjectMessage(userId,
 			corpProjectId, type, severityLevel, title, content, displayCP,
-			displayLCS, displayLESA, serviceContext);
+			displayLCS, serviceContext);
 	}
 
 	/**
@@ -146,12 +146,12 @@ public class CorpProjectMessageLocalServiceWrapper
 	public com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
 		long userId, long corpProjectMessageId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA,
+		boolean displayLCS,
 		com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _corpProjectMessageLocalService.updateCorpProjectMessage(userId,
 			corpProjectMessageId, type, severityLevel, title, content,
-			displayCP, displayLCS, displayLESA, serviceContext);
+			displayCP, displayLCS, serviceContext);
 	}
 
 	@Override

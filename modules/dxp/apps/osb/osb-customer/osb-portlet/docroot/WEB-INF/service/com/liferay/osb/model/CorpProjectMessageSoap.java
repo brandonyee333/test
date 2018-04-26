@@ -47,7 +47,6 @@ public class CorpProjectMessageSoap implements Serializable {
 		soapModel.setContent(model.getContent());
 		soapModel.setDisplayCP(model.getDisplayCP());
 		soapModel.setDisplayLCS(model.getDisplayLCS());
-		soapModel.setDisplayLESA(model.getDisplayLESA());
 
 		return soapModel;
 	}
@@ -215,18 +214,6 @@ public class CorpProjectMessageSoap implements Serializable {
 		_displayLCS = displayLCS;
 	}
 
-	public boolean getDisplayLESA() {
-		return _displayLESA;
-	}
-
-	public boolean isDisplayLESA() {
-		return _displayLESA;
-	}
-
-	public void setDisplayLESA(boolean displayLESA) {
-		_displayLESA = displayLESA;
-	}
-
 	private String _uuid;
 	private long _corpProjectMessageId;
 	private long _userId;
@@ -240,5 +227,4 @@ public class CorpProjectMessageSoap implements Serializable {
 	private String _content;
 	private boolean _displayCP;
 	private boolean _displayLCS;
-	private boolean _displayLESA;
 }

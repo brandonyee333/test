@@ -71,7 +71,6 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 		attributes.put("content", getContent());
 		attributes.put("displayCP", getDisplayCP());
 		attributes.put("displayLCS", getDisplayLCS());
-		attributes.put("displayLESA", getDisplayLESA());
 
 		return attributes;
 	}
@@ -155,12 +154,6 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 		if (displayLCS != null) {
 			setDisplayLCS(displayLCS);
 		}
-
-		Boolean displayLESA = (Boolean)attributes.get("displayLESA");
-
-		if (displayLESA != null) {
-			setDisplayLESA(displayLESA);
-		}
 	}
 
 	@Override
@@ -193,16 +186,6 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 		return _corpProjectMessage.getDisplayLCS();
 	}
 
-	/**
-	* Returns the display lesa of this corp project message.
-	*
-	* @return the display lesa of this corp project message
-	*/
-	@Override
-	public boolean getDisplayLESA() {
-		return _corpProjectMessage.getDisplayLESA();
-	}
-
 	@Override
 	public boolean isCachedModel() {
 		return _corpProjectMessage.isCachedModel();
@@ -226,16 +209,6 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 	@Override
 	public boolean isDisplayLCS() {
 		return _corpProjectMessage.isDisplayLCS();
-	}
-
-	/**
-	* Returns <code>true</code> if this corp project message is display lesa.
-	*
-	* @return <code>true</code> if this corp project message is display lesa; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isDisplayLESA() {
-		return _corpProjectMessage.isDisplayLESA();
 	}
 
 	@Override
@@ -496,16 +469,6 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 	@Override
 	public void setDisplayLCS(boolean displayLCS) {
 		_corpProjectMessage.setDisplayLCS(displayLCS);
-	}
-
-	/**
-	* Sets whether this corp project message is display lesa.
-	*
-	* @param displayLESA the display lesa of this corp project message
-	*/
-	@Override
-	public void setDisplayLESA(boolean displayLESA) {
-		_corpProjectMessage.setDisplayLESA(displayLESA);
 	}
 
 	@Override

@@ -44,11 +44,11 @@ public class RemoteCorpProjectMessageLocalServiceUtil {
 	public static com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
 		long userId, long corpProjectId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA)
+		boolean displayLCS)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addCorpProjectMessage(userId, corpProjectId, type,
-			severityLevel, title, content, displayCP, displayLCS, displayLESA);
+			severityLevel, title, content, displayCP, displayLCS);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,

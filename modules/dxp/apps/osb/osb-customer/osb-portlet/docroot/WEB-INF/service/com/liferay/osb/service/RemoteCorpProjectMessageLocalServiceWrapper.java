@@ -38,11 +38,11 @@ public class RemoteCorpProjectMessageLocalServiceWrapper
 	public com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
 		long userId, long corpProjectId, int type, int severityLevel,
 		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, boolean displayLESA)
+		boolean displayLCS)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _remoteCorpProjectMessageLocalService.addCorpProjectMessage(userId,
 			corpProjectId, type, severityLevel, title, content, displayCP,
-			displayLCS, displayLESA);
+			displayLCS);
 	}
 
 	@Override

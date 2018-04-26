@@ -268,11 +268,6 @@ public class ProductEntryWrapper implements ProductEntry,
 		return _productEntry.getEnvironmentLabel();
 	}
 
-	@Override
-	public java.lang.String getLESADisplayName() {
-		return _productEntry.getLESADisplayName();
-	}
-
 	/**
 	* Returns the name of this product entry.
 	*

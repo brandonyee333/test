@@ -35,7 +35,7 @@ public class RemoteCorpProjectMessageLocalServiceClpInvoker {
 
 		_methodParameterTypes149 = new String[] {
 				"long", "long", "int", "int", "java.lang.String",
-				"java.lang.String", "boolean", "boolean", "boolean"
+				"java.lang.String", "boolean", "boolean"
 			};
 
 		_methodName150 = "deleteCorpProjectMessage";
@@ -58,8 +58,7 @@ public class RemoteCorpProjectMessageLocalServiceClpInvoker {
 				((Integer)arguments[3]).intValue(),
 				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
 				((Boolean)arguments[6]).booleanValue(),
-				((Boolean)arguments[7]).booleanValue(),
-				((Boolean)arguments[8]).booleanValue());
+				((Boolean)arguments[7]).booleanValue());
 		}
 
 		if (_methodName150.equals(name) &&

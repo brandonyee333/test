@@ -131,7 +131,7 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 
 		_methodParameterTypes171 = new String[] {
 				"long", "long", "int", "int", "java.lang.String",
-				"java.lang.String", "boolean", "boolean", "boolean",
+				"java.lang.String", "boolean", "boolean",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 
@@ -155,7 +155,7 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 
 		_methodParameterTypes176 = new String[] {
 				"long", "long", "int", "int", "java.lang.String",
-				"java.lang.String", "boolean", "boolean", "boolean",
+				"java.lang.String", "boolean", "boolean",
 				"com.liferay.portal.kernel.service.ServiceContext"
 			};
 	}
@@ -278,8 +278,7 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
 				((Boolean)arguments[6]).booleanValue(),
 				((Boolean)arguments[7]).booleanValue(),
-				((Boolean)arguments[8]).booleanValue(),
-				(com.liferay.portal.kernel.service.ServiceContext)arguments[9]);
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[8]);
 		}
 
 		if (_methodName172.equals(name) &&
@@ -313,8 +312,7 @@ public class CorpProjectMessageLocalServiceClpInvoker {
 				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
 				((Boolean)arguments[6]).booleanValue(),
 				((Boolean)arguments[7]).booleanValue(),
-				((Boolean)arguments[8]).booleanValue(),
-				(com.liferay.portal.kernel.service.ServiceContext)arguments[9]);
+				(com.liferay.portal.kernel.service.ServiceContext)arguments[8]);
 		}
 
 		throw new UnsupportedOperationException();

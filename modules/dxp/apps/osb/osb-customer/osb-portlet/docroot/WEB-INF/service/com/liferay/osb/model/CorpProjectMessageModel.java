@@ -276,27 +276,6 @@ public interface CorpProjectMessageModel extends BaseModel<CorpProjectMessage> {
 	 */
 	public void setDisplayLCS(boolean displayLCS);
 
-	/**
-	 * Returns the display lesa of this corp project message.
-	 *
-	 * @return the display lesa of this corp project message
-	 */
-	public boolean getDisplayLESA();
-
-	/**
-	 * Returns <code>true</code> if this corp project message is display lesa.
-	 *
-	 * @return <code>true</code> if this corp project message is display lesa; <code>false</code> otherwise
-	 */
-	public boolean isDisplayLESA();
-
-	/**
-	 * Sets whether this corp project message is display lesa.
-	 *
-	 * @param displayLESA the display lesa of this corp project message
-	 */
-	public void setDisplayLESA(boolean displayLESA);
-
 	@Override
 	public boolean isNew();
 
