@@ -255,7 +255,7 @@ for (SupportRegion supportRegion : supportRegions) {
 
 						<liferay-ui:search-container
 							emptyResultsMessage="there-are-no-messages"
-							headerNames="message,type,severity,display-cp,display-lcs,display-lesa"
+							headerNames="message,type,severity,display-cp,display-lcs"
 						>
 							<liferay-ui:search-container-results
 								results="<%= corpProjectMessages %>"
@@ -303,16 +303,6 @@ for (SupportRegion supportRegion : supportRegions) {
 									name="display-lcs"
 								>
 									<c:if test="<%= corpProjectMessage.isDisplayLCS() %>">
-										<liferay-ui:icon
-											image="checked"
-										/>
-									</c:if>
-								</liferay-ui:search-container-column-text>
-
-								<liferay-ui:search-container-column-text
-									name="display-lesa"
-								>
-									<c:if test="<%= corpProjectMessage.isDisplayLESA() %>">
 										<liferay-ui:icon
 											image="checked"
 										/>

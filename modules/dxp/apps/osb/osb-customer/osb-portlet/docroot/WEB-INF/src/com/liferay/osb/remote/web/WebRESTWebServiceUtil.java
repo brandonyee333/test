@@ -62,12 +62,12 @@ public class WebRESTWebServiceUtil {
 	public static JSONObject postCorpProjectMessages(
 			String userUUID, String corpProjectUUID, int type,
 			int severityLevel, String title, String content, boolean displayCP,
-			boolean displayLCS, boolean displayLESA)
+			boolean displayLCS)
 		throws RemoteServiceException {
 
 		return getWebRESTWebService().postCorpProjectMessages(
 			userUUID, corpProjectUUID, type, severityLevel, title, content,
-			displayCP, displayLCS, displayLESA);
+			displayCP, displayLCS);
 	}
 
 	public static JSONObject postCorpProjects(

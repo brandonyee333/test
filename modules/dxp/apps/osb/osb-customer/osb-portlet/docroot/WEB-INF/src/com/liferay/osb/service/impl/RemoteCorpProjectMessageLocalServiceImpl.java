@@ -34,8 +34,7 @@ public class RemoteCorpProjectMessageLocalServiceImpl
 	@Override
 	public CorpProjectMessage addCorpProjectMessage(
 			long userId, long corpProjectId, int type, int severityLevel,
-			String title, String content, boolean displayCP, boolean displayLCS,
-			boolean displayLESA)
+			String title, String content, boolean displayCP, boolean displayLCS)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -44,7 +43,7 @@ public class RemoteCorpProjectMessageLocalServiceImpl
 
 		JSONObject jsonObject = WebRESTWebServiceUtil.postCorpProjectMessages(
 			user.getUuid(), corpProject.getUuid(), type, severityLevel, title,
-			content, displayCP, displayLCS, displayLESA);
+			content, displayCP, displayLCS);
 
 		CorpProject responseCorpProject =
 			corpProjectLocalService.getCorpProjectByUuid(
@@ -59,7 +58,6 @@ public class RemoteCorpProjectMessageLocalServiceImpl
 			new Date(jsonObject.getLong("createDate")));
 		corpProjectMessage.setDisplayCP(jsonObject.getBoolean("displayCP"));
 		corpProjectMessage.setDisplayLCS(jsonObject.getBoolean("displayLCS"));
-		corpProjectMessage.setDisplayLESA(jsonObject.getBoolean("displayLESA"));
 		corpProjectMessage.setModifiedDate(
 			new Date(jsonObject.getLong("modifiedDate")));
 		corpProjectMessage.setSeverityLevel(jsonObject.getInt("severityLevel"));

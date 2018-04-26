@@ -62,7 +62,6 @@
 		<column name="content" type="String" />
 		<column name="displayCP" type="boolean" />
 		<column name="displayLCS" type="boolean" />
-		<column name="displayLESA" type="boolean" />
 
 		<!-- Finder methods -->
 

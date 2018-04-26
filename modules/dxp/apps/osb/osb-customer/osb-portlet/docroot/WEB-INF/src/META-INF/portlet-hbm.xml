@@ -207,7 +207,6 @@
 		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="displayCP" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="displayLCS" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="displayLESA" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.ExternalIdMapperImpl" table="OSB_ExternalIdMapper">
 		<id name="externalIdMapperId" type="long">

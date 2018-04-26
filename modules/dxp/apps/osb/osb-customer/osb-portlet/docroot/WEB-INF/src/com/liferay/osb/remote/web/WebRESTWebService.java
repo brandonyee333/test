@@ -41,7 +41,7 @@ public interface WebRESTWebService {
 	public JSONObject postCorpProjectMessages(
 			String userUUID, String corpProjectUUID, int type,
 			int severityLevel, String title, String content, boolean displayCP,
-			boolean displayLCS, boolean displayLESA)
+			boolean displayLCS)
 		throws RemoteServiceException;
 
 	public JSONObject postCorpProjects(

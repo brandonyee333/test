@@ -88,7 +88,7 @@ public class WebRESTWebServiceImpl
 	public JSONObject postCorpProjectMessages(
 			String userUUID, String corpProjectUUID, int type,
 			int severityLevel, String title, String content, boolean displayCP,
-			boolean displayLCS, boolean displayLESA)
+			boolean displayLCS)
 		throws RemoteServiceException {
 
 		Map<String, String> parameters = new HashMap<>();
@@ -97,7 +97,6 @@ public class WebRESTWebServiceImpl
 		parameters.put("corpProjectUUID", corpProjectUUID);
 		parameters.put("displayCP", String.valueOf(displayCP));
 		parameters.put("displayLCS", String.valueOf(displayLCS));
-		parameters.put("displayLESA", String.valueOf(displayLESA));
 		parameters.put("severityLevel", String.valueOf(severityLevel));
 		parameters.put("title", title);
 		parameters.put("type", String.valueOf(type));

@@ -47,7 +47,7 @@ public class CorpProjectMessageLocalServiceImpl
 	public CorpProjectMessage addCorpProjectMessage(
 			long userId, long corpProjectId, int type, int severityLevel,
 			String title, String content, boolean displayCP, boolean displayLCS,
-			boolean displayLESA, ServiceContext serviceContext)
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -71,7 +71,6 @@ public class CorpProjectMessageLocalServiceImpl
 		corpProjectMessage.setContent(content);
 		corpProjectMessage.setDisplayCP(displayCP);
 		corpProjectMessage.setDisplayLCS(displayLCS);
-		corpProjectMessage.setDisplayLESA(displayLESA);
 
 		return corpProjectMessagePersistence.update(corpProjectMessage);
 	}
@@ -152,7 +151,7 @@ public class CorpProjectMessageLocalServiceImpl
 					CorpProjectMessageConstants.SEVERITY_LEVEL_URGENT,
 					CorpProjectMessageConstants.AUTOMATED_TEMPLATE_PAST_DUE,
 					CorpProjectMessageConstants.AUTOMATED_TEMPLATE_PAST_DUE,
-					true, true, true);
+					true, true);
 			}
 			else {
 				remoteCorpProjectMessageLocalService.addCorpProjectMessage(
@@ -163,7 +162,7 @@ public class CorpProjectMessageLocalServiceImpl
 					CorpProjectMessageConstants.SEVERITY_LEVEL_WARNING,
 					CorpProjectMessageConstants.AUTOMATED_TEMPLATE_WARNING,
 					CorpProjectMessageConstants.AUTOMATED_TEMPLATE_WARNING,
-					true, true, true);
+					true, true);
 			}
 		}
 	}
@@ -202,7 +201,7 @@ public class CorpProjectMessageLocalServiceImpl
 	public CorpProjectMessage updateCorpProjectMessage(
 			long userId, long corpProjectMessageId, int type, int severityLevel,
 			String title, String content, boolean displayCP, boolean displayLCS,
-			boolean displayLESA, ServiceContext serviceContext)
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		Date modifiedDate = serviceContext.getModifiedDate(new Date());
@@ -225,7 +224,6 @@ public class CorpProjectMessageLocalServiceImpl
 		corpProjectMessage.setContent(content);
 		corpProjectMessage.setDisplayCP(displayCP);
 		corpProjectMessage.setDisplayLCS(displayLCS);
-		corpProjectMessage.setDisplayLESA(displayLESA);
 
 		return corpProjectMessagePersistence.update(corpProjectMessage);
 	}

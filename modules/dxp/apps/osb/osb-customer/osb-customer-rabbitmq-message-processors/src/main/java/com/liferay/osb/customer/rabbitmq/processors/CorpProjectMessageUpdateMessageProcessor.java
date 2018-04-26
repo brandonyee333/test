@@ -63,8 +63,7 @@ public class CorpProjectMessageUpdateMessageProcessor
 			jsonObject.getInt("type"), jsonObject.getInt("severityLevel"),
 			jsonObject.getString("title"), jsonObject.getString("content"),
 			jsonObject.getBoolean("displayCP"),
-			jsonObject.getBoolean("displayLCS"),
-			jsonObject.getBoolean("displayLESA"), serviceContext);
+			jsonObject.getBoolean("displayLCS"), serviceContext);
 	}
 
 	@Reference(

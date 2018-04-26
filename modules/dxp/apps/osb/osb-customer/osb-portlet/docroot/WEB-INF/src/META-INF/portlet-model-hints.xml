@@ -178,7 +178,6 @@
 		<field name="content" type="String" />
 		<field name="displayCP" type="boolean" />
 		<field name="displayLCS" type="boolean" />
-		<field name="displayLESA" type="boolean" />
 	</model>
 	<model name="com.liferay.osb.model.ExternalIdMapper">
 		<field name="externalIdMapperId" type="long" />

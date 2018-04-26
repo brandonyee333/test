@@ -168,8 +168,7 @@ create table OSB_CorpProjectMessage (
 	title VARCHAR(75) null,
 	content VARCHAR(75) null,
 	displayCP BOOLEAN,
-	displayLCS BOOLEAN,
-	displayLESA BOOLEAN
+	displayLCS BOOLEAN
 );
 
 create table OSB_ExternalIdMapper (
