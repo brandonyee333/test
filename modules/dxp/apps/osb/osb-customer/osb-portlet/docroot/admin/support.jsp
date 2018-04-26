@@ -23,22 +23,9 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 %>
 
 <liferay-ui:tabs
-	names="teams,support-regions,labor-hours,support-worker-statuses"
+	names="support-regions"
 	param="tabs2"
 	url="<%= portletURL.toString() %>"
 />
 
-<c:choose>
-	<c:when test='<%= tabs2.equals("labor-hours") %>'>
-		<%@ include file="/admin/support_labors.jspf" %>
-	</c:when>
-	<c:when test='<%= tabs2.equals("support-regions") %>'>
-		<%@ include file="/admin/support_regions.jspf" %>
-	</c:when>
-	<c:when test='<%= tabs2.equals("support-worker-statuses") %>'>
-		<%@ include file="/admin/support_worker_statuses.jspf" %>
-	</c:when>
-	<c:otherwise>
-		<%@ include file="/admin/support_teams.jspf" %>
-	</c:otherwise>
-</c:choose>
+<%@ include file="/admin/support_regions.jspf" %>

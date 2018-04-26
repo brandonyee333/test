@@ -97,8 +97,6 @@ import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.OSBRequestUtil;
 import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.audit.AuditMessage;
-import com.liferay.portal.kernel.audit.AuditRouterUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.AddressCityException;
 import com.liferay.portal.kernel.exception.AddressStreetException;
@@ -120,12 +118,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Phone;
-import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -415,30 +410,6 @@ public class AdminPortlet extends MVCPortlet {
 
 		SupportResponseLocalServiceUtil.deleteSupportResponse(
 			supportResponseId);
-	}
-
-	public void reindex(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		String portletId = ParamUtil.getString(actionRequest, "portletId");
-		long modifiedDateOffset = ParamUtil.getLong(
-			actionRequest, "modifiedDateOffset");
-
-		User user = themeDisplay.getUser();
-
-		Portlet portlet = PortletLocalServiceUtil.getPortletById(
-			themeDisplay.getCompanyId(), portletId);
-
-		AuditMessage auditMessage = new AuditMessage(
-			"REINDEX", themeDisplay.getCompanyId(), user.getUserId(),
-			user.getFullName(), Portlet.class.getName(),
-			portlet.getDisplayName(), PortalUtil.getComputerName());
-
-		AuditRouterUtil.route(auditMessage);
 	}
 
 	public void renewOrderEntry(

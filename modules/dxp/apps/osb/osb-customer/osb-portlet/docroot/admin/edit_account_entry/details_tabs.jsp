@@ -233,7 +233,7 @@ for (SupportRegion supportRegion : supportRegions) {
 						<liferay-ui:search-container-column-text
 							name="tickets"
 						>
-							<%= offeringEntryGroup.getTicketEntriesCount() %> / <%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(request, "unlimited") : "0" %>
+							<%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(request, "unlimited") : "0" %>
 						</liferay-ui:search-container-column-text>
 					</liferay-ui:search-container-row>
 

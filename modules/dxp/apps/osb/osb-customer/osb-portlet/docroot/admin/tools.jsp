@@ -17,22 +17,15 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String tabs2 = ParamUtil.getString(request, "tabs2", "reindex");
+String tabs2 = ParamUtil.getString(request, "tabs2");
 
 PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 %>
 
 <liferay-ui:tabs
-	names="reindex,debugging"
+	names="debugging"
 	param="tabs2"
 	url="<%= portletURL.toString() %>"
 />
 
-<c:choose>
-	<c:when test='<%= tabs2.equals("debugging") %>'>
-		<%@ include file="/admin/debugging.jspf" %>
-	</c:when>
-	<c:otherwise>
-		<%@ include file="/admin/reindex.jspf" %>
-	</c:otherwise>
-</c:choose>
+<%@ include file="/admin/debugging.jspf" %>
