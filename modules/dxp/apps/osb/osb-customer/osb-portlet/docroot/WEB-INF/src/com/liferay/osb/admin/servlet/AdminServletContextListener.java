@@ -368,23 +368,6 @@ public class AdminServletContextListener
 
 		OSBConstants.GROUP_LICENSE_ID = licenseGroup.getGroupId();
 
-		// Support
-
-		Group supportGroup = null;
-
-		try {
-			supportGroup = GroupLocalServiceUtil.getGroup(
-				OSBConstants.COMPANY_ID, "Support");
-		}
-		catch (Exception e) {
-			supportGroup = GroupLocalServiceUtil.addGroup(
-				OSBConstants.USER_SUPPORT_PM_USER_ID, 0, null, 0, 0, "Support",
-				StringPool.BLANK, GroupConstants.TYPE_SITE_PRIVATE, false, 0,
-				"/support", true, true, null);
-		}
-
-		OSBConstants.GROUP_SUPPORT_ID = supportGroup.getGroupId();
-
 		// Customer organization
 
 		Organization customerOrganization = null;
