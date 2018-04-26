@@ -31,7 +31,6 @@ import com.liferay.lcs.security.KeyStoreFactory;
 import com.liferay.lcs.util.LCSAlert;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.lcs.util.LCSPortletPreferencesUtil;
-import com.liferay.lcs.util.LCSUtil;
 import com.liferay.lcs.util.PortletPropsValues;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
@@ -191,54 +190,6 @@ public class LCSClusterEntryTokenAdvisor {
 		return lcsClusterEntryToken;
 	}
 
-	protected LCSClusterEntryToken processLCSCLusterEntryTokenFile(
-			int lcsPortletBuildNumber)
-		throws IOException, LCSClusterEntryTokenDecryptException,
-			   MissingLCSClusterEntryTokenException,
-			   MultipleLCSClusterEntryTokenException {
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Detecting LCS activation token file");
-		}
-
-		LCSClusterEntryToken lcsClusterEntryToken = null;
-
-		String lcsClusterEntryTokenFileName = getLCSClusterEntryTokenFileName();
-
-		File lcsClusterEntryTokenFile = new File(lcsClusterEntryTokenFileName);
-
-		byte[] bytes = FileUtil.getBytes(lcsClusterEntryTokenFile);
-
-		String lcsClusterEntryTokenJSON = null;
-
-		try {
-			lcsClusterEntryTokenJSON = decrypt(bytes, lcsPortletBuildNumber);
-		}
-		catch (EncryptorException ee) {
-			deleteLCSCLusterEntryTokenFile();
-
-			_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
-
-			StringBundler sb = new StringBundler(6);
-
-			sb.append("Unable to decrypt the LCS activation token file ");
-			sb.append(lcsClusterEntryTokenFileName);
-			sb.append(". The LCS activation token file will be deleted. ");
-			sb.append("Please make sure that the LCS portlet is compatible ");
-			sb.append("with the LCS platform version where the file was ");
-			sb.append("generated.");
-
-			throw new LCSClusterEntryTokenDecryptException(sb.toString(), ee);
-		}
-
-		ObjectMapper objectMapper = new ObjectMapper();
-
-		lcsClusterEntryToken = objectMapper.readValue(
-			lcsClusterEntryTokenJSON, LCSClusterEntryToken.class);
-
-		return lcsClusterEntryToken;
-	}
-
 	public void setLCSAlertAdvisor(LCSAlertAdvisor lcsAlertAdvisor) {
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 	}
@@ -366,6 +317,54 @@ public class LCSClusterEntryTokenAdvisor {
 		sb.append(lcsClusterEntryTokenFileNames[0]);
 
 		return sb.toString();
+	}
+
+	protected LCSClusterEntryToken processLCSCLusterEntryTokenFile(
+			int lcsPortletBuildNumber)
+		throws IOException, LCSClusterEntryTokenDecryptException,
+			   MissingLCSClusterEntryTokenException,
+			   MultipleLCSClusterEntryTokenException {
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Detecting LCS activation token file");
+		}
+
+		LCSClusterEntryToken lcsClusterEntryToken = null;
+
+		String lcsClusterEntryTokenFileName = getLCSClusterEntryTokenFileName();
+
+		File lcsClusterEntryTokenFile = new File(lcsClusterEntryTokenFileName);
+
+		byte[] bytes = FileUtil.getBytes(lcsClusterEntryTokenFile);
+
+		String lcsClusterEntryTokenJSON = null;
+
+		try {
+			lcsClusterEntryTokenJSON = decrypt(bytes, lcsPortletBuildNumber);
+		}
+		catch (EncryptorException ee) {
+			deleteLCSCLusterEntryTokenFile();
+
+			_lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_TOKEN);
+
+			StringBundler sb = new StringBundler(6);
+
+			sb.append("Unable to decrypt the LCS activation token file ");
+			sb.append(lcsClusterEntryTokenFileName);
+			sb.append(". The LCS activation token file will be deleted. ");
+			sb.append("Please make sure that the LCS portlet is compatible ");
+			sb.append("with the LCS platform version where the file was ");
+			sb.append("generated.");
+
+			throw new LCSClusterEntryTokenDecryptException(sb.toString(), ee);
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		lcsClusterEntryToken = objectMapper.readValue(
+			lcsClusterEntryTokenJSON, LCSClusterEntryToken.class);
+
+		return lcsClusterEntryToken;
 	}
 
 	protected void storeLCSConfiguration(
