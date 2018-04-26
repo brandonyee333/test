@@ -93,43 +93,6 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return ProductEntryConstants.getEnvironmentLabel(getEnvironment());
 	}
 
-	public String getLESADisplayName() {
-		if (isDeveloperTools()) {
-			return ProductEntryConstants.DISPLAY_NAME_DEVELOPER_TOOLS;
-		}
-		else if (isDeviceDetection()) {
-			return ProductEntryConstants.DISPLAY_NAME_MOBILE_DEVICE_DETECTION;
-		}
-		else if (isDigitalEnterprise()) {
-			return ProductEntryConstants.DISPLAY_NAME_DIGITAL_ENTERPRISE;
-		}
-		else if (isEnterpriseSearchPremium()) {
-			return ProductEntryConstants.DISPLAY_NAME_ENTERPRISE_SEARCH_PREMIUM;
-		}
-		else if (isEnterpriseSearchStandard()) {
-			return
-				ProductEntryConstants.DISPLAY_NAME_ENTERPRISE_SEARCH_STANDARD;
-		}
-		else if (isManagementTools()) {
-			return ProductEntryConstants.DISPLAY_NAME_MANAGEMENT_TOOLS;
-		}
-		else if (isMobileExperience()) {
-			return ProductEntryConstants.DISPLAY_NAME_MOBILE_EXPERIENCE;
-		}
-		else if (isPortal()) {
-			return ProductEntryConstants.DISPLAY_NAME_PORTAL;
-		}
-		else if (isProductivityTools()) {
-			return ProductEntryConstants.DISPLAY_NAME_PRODUCTIVITY_TOOLS;
-		}
-		else if (isSocialOffice()) {
-			return ProductEntryConstants.DISPLAY_NAME_SOCIAL_OFFICE;
-		}
-		else {
-			return StringPool.BLANK;
-		}
-	}
-
 	@JSON
 	public List<LicenseEntry> getLicenseEntries() {
 		return LicenseEntryLocalServiceUtil.getLicenseEntries(
